@@ -407,6 +407,8 @@ apply the skin class to the body tag so the changes take effect.
 
         $("#tgl_from, #tgl_to").datepicker({
             autoclose: true,
+            changeMonth: true,
+            changeYear:true,
             dateFormat:'dd-mm-yy'
         });
 

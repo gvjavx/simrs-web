@@ -94,6 +94,34 @@ public class HeaderDetailCheckup extends BaseModel{
     private String metodePembayaran;
     private String tipePelayanan;
 
+    private String noFpk;
+    private String idFpk;
+    private String statusFPK;
+
+    public String getStatusFPK() {
+        return statusFPK;
+    }
+
+    public void setStatusFPK(String statusFPK) {
+        this.statusFPK = statusFPK;
+    }
+
+    public String getIdFpk() {
+        return idFpk;
+    }
+
+    public void setIdFpk(String idFpk) {
+        this.idFpk = idFpk;
+    }
+
+    public String getNoFpk() {
+        return noFpk;
+    }
+
+    public void setNoFpk(String noFpk) {
+        this.noFpk = noFpk;
+    }
+
     public String getNoJurnal() {
         return noJurnal;
     }

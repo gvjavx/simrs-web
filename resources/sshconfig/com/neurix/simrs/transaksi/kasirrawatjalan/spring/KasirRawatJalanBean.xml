@@ -18,6 +18,8 @@
           p:riwayatTindakanDao-ref="riwayatTindakanDao"
           p:rawatInapDao-ref="rawatInapDao"
           p:uangMukaDao-ref="uangMukaDao"
+          p:checkupDetailDao-ref="checkupDetailDao"
+          p:fpkDao-ref="fpkDao"
     />
 
     <bean id="kasirRawatJalanBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -37,6 +39,9 @@
             <props>
                 <prop key="getListAllTindakan">readOnly</prop>
                 <prop key="saveAdd">PROPAGATION_REQUIRED</prop>
+
+                <prop key="saveNoFPK">PROPAGATION_REQUIRED</prop>
+                <prop key="pembayaranFPK">PROPAGATION_REQUIRED</prop>
             </props>
         </property>
     </bean>
