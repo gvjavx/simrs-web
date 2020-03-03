@@ -49,6 +49,24 @@ public class PermintaanVendor{
     private Integer noBatch;
 
     private String isMobile;
+    private String notaVendor;
+    private String urlDoc;
+
+    public String getNotaVendor() {
+        return notaVendor;
+    }
+
+    public void setNotaVendor(String notaVendor) {
+        this.notaVendor = notaVendor;
+    }
+
+    public String getUrlDoc() {
+        return urlDoc;
+    }
+
+    public void setUrlDoc(String urlDoc) {
+        this.urlDoc = urlDoc;
+    }
 
     public String getIsMobile() {
         return isMobile;

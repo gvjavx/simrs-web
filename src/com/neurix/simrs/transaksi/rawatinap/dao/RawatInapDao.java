@@ -70,6 +70,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
             String dateTo       = "";
             String branchId = "%";
             String jenisPeriksa = "%";
+            String statusBayar = "";
 
             if (bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())){
                 idPasien = bean.getIdPasien();
@@ -119,6 +120,12 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                 jenisPeriksa = bean.getIdJenisPeriksa();
             }
 
+            if (bean.getStatusBayar() != null && !"".equalsIgnoreCase(bean.getStatusBayar())) {
+                statusBayar = "\n AND b.status_bayar = '" + bean.getStatusBayar() + "'\n";
+            } else {
+                statusBayar = "\n AND b.status_bayar is null \n";
+            }
+
 
             String SQL = "SELECT\n" +
                     "b.id_detail_checkup,\n" +
@@ -137,13 +144,20 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     "e.nama_ruangan,\n" +
                     "f.nama_kelas_ruangan,\n" +
                     "f.id_kelas_ruangan,\n" +
-                    "a.no_sep\n" +
+                    "a.no_sep,\n" +
+                    "b.klaim_bpjs_flag, " +
+                    "b.status_bayar, " +
+                    "a.id_jenis_periksa_pasien,\n" +
+                    "um.status_bayar AS status_bayar_uang_muka, \n" +
+                    "um.id, " +
+                    "um.id_detail_checkup\n" +
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN im_simrs_status_pasien c ON b.status_periksa = c.id_status_pasien\n" +
                     "INNER JOIN (SELECT * FROM it_simrs_rawat_inap WHERE flag = 'Y') d ON b.id_detail_checkup = d.id_detail_checkup\n" +
                     "INNER JOIN mt_simrs_ruangan e ON d.id_ruangan = e.id_ruangan\n" +
                     "INNER JOIN im_simrs_kelas_ruangan f ON e.id_kelas_ruangan = f.id_kelas_ruangan\n" +
+                    "LEFT JOIN it_simrs_uang_muka_pendaftaran um ON um.id_detail_checkup = b.id_detail_checkup\n" +
                     "WHERE a.id_pasien LIKE :idPasien\n" +
                     "AND a.nama LIKE :nama\n" +
                     "AND b.id_pelayanan LIKE :idPelayanan\n" +
@@ -154,7 +168,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     "AND b.id_detail_checkup LIKE :idDetailCheckup\n" +
                     "AND a.branch_id LIKE :branchId\n" +
                     "AND a.id_jenis_periksa_pasien LIKE :jenisPeriksa\n" +
-                    "AND a.flag = 'Y'";
+                    "AND a.flag = 'Y'\n " +statusBayar;
 
             List<Object[]> results = new ArrayList<>();
 
@@ -236,56 +250,168 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
             }
 
             if (!results.isEmpty()){
-                RawatInap rawatInap;
                 for (Object[] obj : results){
-                    rawatInap = new RawatInap();
-                    rawatInap.setIdDetailCheckup(obj[0].toString());
-                    rawatInap.setNoCheckup(obj[1].toString());
-                    rawatInap.setIdPasien(obj[2] == null ? "" : obj[2].toString());
-                    rawatInap.setNamaPasien(obj[3] == null ? "" : obj[3].toString());
 
-                    String jalan = obj[4] == null ? "" : obj[4].toString();
+                    RawatInap inap = new RawatInap();
+                    inap.setStatusPeriksa(obj[7] == null ? "" : obj[7].toString());
+                    inap.setStatusBayar(obj[20] == null ? "" : obj[20].toString());
+                    inap.setIdJenisPeriksa(obj[19] == null ? "" : obj[19].toString());
 
-                    rawatInap.setCreatedDate(obj[5] == null ? null : (Timestamp) obj[5]);
-                    rawatInap.setDesaId(obj[6] == null ? "" : obj[6].toString());
-                    rawatInap.setStatusPeriksa(obj[7].toString());
-                    rawatInap.setStatusPeriksaName(obj[8].toString());
-                    rawatInap.setKeteranganSelesai(obj[9] == null ? "" : obj[9].toString());
-                    rawatInap.setIdRawatInap(obj[10].toString());
-                    rawatInap.setIdRuangan(obj[11].toString());
-                    rawatInap.setNoRuangan(obj[12].toString());
-                    rawatInap.setNamaRangan(obj[13].toString());
-                    rawatInap.setKelasRuanganName(obj[14].toString());
-                    rawatInap.setIdKelas(obj[15].toString());
-                    if  (obj[16] != null){
-                        rawatInap.setNoSep(obj[16].toString());
-                    }
-                    if (!"".equalsIgnoreCase(rawatInap.getDesaId())){
-                        List<Object[]> objDesaList = getListAlamatByDesaId(rawatInap.getDesaId());
-                        if (!objDesaList.isEmpty()){
-                            for (Object[] objDesa : objDesaList){
+                    if("1".equalsIgnoreCase(inap.getStatusPeriksa())){
+                        if("bpjs".equalsIgnoreCase(inap.getIdJenisPeriksa())){
+                            RawatInap rawatInap = new RawatInap();
+                            rawatInap.setIdDetailCheckup(obj[0].toString());
+                            rawatInap.setNoCheckup(obj[1].toString());
+                            rawatInap.setIdPasien(obj[2] == null ? "" : obj[2].toString());
+                            rawatInap.setNamaPasien(obj[3] == null ? "" : obj[3].toString());
 
-                                String alamatLengkap =
-                                        "Desa. "+ objDesa[0].toString() +
-                                                " Kec. " + objDesa[1].toString() +
-                                                " " + objDesa[2].toString() +
-                                                " Prov. " + objDesa[3].toString();
+                            String jalan = obj[4] == null ? "" : obj[4].toString();
 
-                                if (!"".equalsIgnoreCase(jalan)){
-                                    jalan = jalan + ", " + alamatLengkap;
-                                } else {
-                                    jalan = alamatLengkap;
+                            rawatInap.setCreatedDate(obj[5] == null ? null : (Timestamp) obj[5]);
+                            rawatInap.setDesaId(obj[6] == null ? "" : obj[6].toString());
+                            rawatInap.setStatusPeriksa(obj[7].toString());
+                            rawatInap.setStatusPeriksaName(obj[8].toString());
+                            rawatInap.setKeteranganSelesai(obj[9] == null ? "" : obj[9].toString());
+                            rawatInap.setIdRawatInap(obj[10].toString());
+                            rawatInap.setIdRuangan(obj[11].toString());
+                            rawatInap.setNoRuangan(obj[12].toString());
+                            rawatInap.setNamaRangan(obj[13].toString());
+                            rawatInap.setKelasRuanganName(obj[14].toString());
+                            rawatInap.setIdKelas(obj[15].toString());
+                            rawatInap.setNoSep(obj[16] == null ? "" : obj[16].toString());
+                            rawatInap.setKlaimBpjsFlag(obj[17] == null ? "" : obj[17].toString());
+                            rawatInap.setStatusBayar(obj[18] == null ? "" : obj[18].toString());
+                            rawatInap.setIdJenisPeriksa(obj[19] == null ? "" : obj[19].toString());
+
+                            if (!"".equalsIgnoreCase(rawatInap.getDesaId())){
+                                List<Object[]> objDesaList = getListAlamatByDesaId(rawatInap.getDesaId());
+                                if (!objDesaList.isEmpty()){
+                                    for (Object[] objDesa : objDesaList){
+
+                                        String alamatLengkap =
+                                                "Desa. "+ objDesa[0].toString() +
+                                                        " Kec. " + objDesa[1].toString() +
+                                                        " " + objDesa[2].toString() +
+                                                        " Prov. " + objDesa[3].toString();
+
+                                        if (!"".equalsIgnoreCase(jalan)){
+                                            jalan = jalan + ", " + alamatLengkap;
+                                        } else {
+                                            jalan = alamatLengkap;
+                                        }
+
+                                        rawatInap.setDesa(objDesa[0].toString());
+                                        rawatInap.setKecamatan(objDesa[1].toString());
+                                    }
+                                }
+                            }
+
+                            rawatInap.setAlamat(jalan);
+                            rawatInapList.add(rawatInap);
+                        }else{
+                            if ("Y".equalsIgnoreCase(inap.getStatusBayar())){
+                                RawatInap rawatInap = new RawatInap();
+                                rawatInap.setIdDetailCheckup(obj[0].toString());
+                                rawatInap.setNoCheckup(obj[1].toString());
+                                rawatInap.setIdPasien(obj[2] == null ? "" : obj[2].toString());
+                                rawatInap.setNamaPasien(obj[3] == null ? "" : obj[3].toString());
+
+                                String jalan = obj[4] == null ? "" : obj[4].toString();
+
+                                rawatInap.setCreatedDate(obj[5] == null ? null : (Timestamp) obj[5]);
+                                rawatInap.setDesaId(obj[6] == null ? "" : obj[6].toString());
+                                rawatInap.setStatusPeriksa(obj[7].toString());
+                                rawatInap.setStatusPeriksaName(obj[8].toString());
+                                rawatInap.setKeteranganSelesai(obj[9] == null ? "" : obj[9].toString());
+                                rawatInap.setIdRawatInap(obj[10].toString());
+                                rawatInap.setIdRuangan(obj[11].toString());
+                                rawatInap.setNoRuangan(obj[12].toString());
+                                rawatInap.setNamaRangan(obj[13].toString());
+                                rawatInap.setKelasRuanganName(obj[14].toString());
+                                rawatInap.setIdKelas(obj[15].toString());
+                                rawatInap.setNoSep(obj[16] == null ? "" : obj[16].toString());
+                                rawatInap.setKlaimBpjsFlag(obj[17] == null ? "" : obj[17].toString());
+                                rawatInap.setStatusBayar(obj[18] == null ? "" : obj[18].toString());
+                                rawatInap.setIdJenisPeriksa(obj[19] == null ? "" : obj[19].toString());
+
+                                if (!"".equalsIgnoreCase(rawatInap.getDesaId())){
+                                    List<Object[]> objDesaList = getListAlamatByDesaId(rawatInap.getDesaId());
+                                    if (!objDesaList.isEmpty()){
+                                        for (Object[] objDesa : objDesaList){
+
+                                            String alamatLengkap =
+                                                    "Desa. "+ objDesa[0].toString() +
+                                                            " Kec. " + objDesa[1].toString() +
+                                                            " " + objDesa[2].toString() +
+                                                            " Prov. " + objDesa[3].toString();
+
+                                            if (!"".equalsIgnoreCase(jalan)){
+                                                jalan = jalan + ", " + alamatLengkap;
+                                            } else {
+                                                jalan = alamatLengkap;
+                                            }
+
+                                            rawatInap.setDesa(objDesa[0].toString());
+                                            rawatInap.setKecamatan(objDesa[1].toString());
+                                        }
+                                    }
                                 }
 
-                                rawatInap.setDesa(objDesa[0].toString());
-                                rawatInap.setKecamatan(objDesa[1].toString());
+                                rawatInap.setAlamat(jalan);
+                                rawatInapList.add(rawatInap);
                             }
                         }
-                    }
+                    }else {
+                        RawatInap rawatInap = new RawatInap();
+                        rawatInap.setIdDetailCheckup(obj[0].toString());
+                        rawatInap.setNoCheckup(obj[1].toString());
+                        rawatInap.setIdPasien(obj[2] == null ? "" : obj[2].toString());
+                        rawatInap.setNamaPasien(obj[3] == null ? "" : obj[3].toString());
 
-//                    rawatInap.setCekApprove(cekApproveFlag(obj[0].toString()));
-                    rawatInap.setAlamat(jalan);
-                    rawatInapList.add(rawatInap);
+                        String jalan = obj[4] == null ? "" : obj[4].toString();
+
+                        rawatInap.setCreatedDate(obj[5] == null ? null : (Timestamp) obj[5]);
+                        rawatInap.setDesaId(obj[6] == null ? "" : obj[6].toString());
+                        rawatInap.setStatusPeriksa(obj[7].toString());
+                        rawatInap.setStatusPeriksaName(obj[8].toString());
+                        rawatInap.setKeteranganSelesai(obj[9] == null ? "" : obj[9].toString());
+                        rawatInap.setIdRawatInap(obj[10].toString());
+                        rawatInap.setIdRuangan(obj[11].toString());
+                        rawatInap.setNoRuangan(obj[12].toString());
+                        rawatInap.setNamaRangan(obj[13].toString());
+                        rawatInap.setKelasRuanganName(obj[14].toString());
+                        rawatInap.setIdKelas(obj[15].toString());
+                        rawatInap.setNoSep(obj[16] == null ? "" : obj[16].toString());
+                        rawatInap.setKlaimBpjsFlag(obj[17] == null ? "" : obj[17].toString());
+                        rawatInap.setStatusBayar(obj[18] == null ? "" : obj[18].toString());
+                        rawatInap.setIdJenisPeriksa(obj[19] == null ? "" : obj[19].toString());
+
+                        if (!"".equalsIgnoreCase(rawatInap.getDesaId())){
+                            List<Object[]> objDesaList = getListAlamatByDesaId(rawatInap.getDesaId());
+                            if (!objDesaList.isEmpty()){
+                                for (Object[] objDesa : objDesaList){
+
+                                    String alamatLengkap =
+                                            "Desa. "+ objDesa[0].toString() +
+                                                    " Kec. " + objDesa[1].toString() +
+                                                    " " + objDesa[2].toString() +
+                                                    " Prov. " + objDesa[3].toString();
+
+                                    if (!"".equalsIgnoreCase(jalan)){
+                                        jalan = jalan + ", " + alamatLengkap;
+                                    } else {
+                                        jalan = alamatLengkap;
+                                    }
+
+                                    rawatInap.setDesa(objDesa[0].toString());
+                                    rawatInap.setKecamatan(objDesa[1].toString());
+                                }
+                            }
+                        }
+
+                        rawatInap.setAlamat(jalan);
+                        rawatInapList.add(rawatInap);
+                    }
                 }
             }
         }
@@ -359,16 +485,6 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                 jenisPeriksa = bean.getIdJenisPeriksa();
             }
 
-            if (bean.getStatusBayar() != null && !"".equalsIgnoreCase(bean.getStatusBayar())) {
-                statusBayar = "\n AND b.status_bayar = '" + bean.getStatusBayar() + "'\n";
-            } else {
-                statusBayar = "\n AND b.status_bayar is null \n";
-            }
-
-//            if(bean.getNotLike() != null && !"".equalsIgnoreCase(bean.getNotLike())){
-//                notLike = "\n AND a.id_jenis_periksa_pasien NOT LIKE '"+bean.getNotLike()+"' \n";
-//            }
-
             String SQL = "SELECT\n" +
                     "b.id_detail_checkup,\n" +
                     "a.no_checkup,\n" +
@@ -386,7 +502,10 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     "e.nama_ruangan,\n" +
                     "f.nama_kelas_ruangan,\n" +
                     "f.id_kelas_ruangan,\n" +
-                    "b.no_sep, b.klaim_bpjs_flag, b.status_bayar, a.id_jenis_periksa_pasien\n" +
+                    "b.no_sep, " +
+                    "b.klaim_bpjs_flag, " +
+                    "b.status_bayar, " +
+                    "a.id_jenis_periksa_pasien\n" +
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN im_simrs_status_pasien c ON b.status_periksa = c.id_status_pasien\n" +
@@ -403,7 +522,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     "AND b.id_detail_checkup LIKE :idDetailCheckup\n" +
                     "AND a.branch_id LIKE :branchId\n" +
                     "AND a.id_jenis_periksa_pasien LIKE :jenisPeriksa\n" +
-                    "AND a.flag = 'Y'\n" + statusBayar;
+                    "AND a.flag = 'Y'\n";
 
             List<Object[]> results = new ArrayList<>();
 
@@ -485,9 +604,9 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
             }
 
             if (!results.isEmpty()){
-                RawatInap rawatInap;
-                for (Object[] obj : results){
-                    rawatInap = new RawatInap();
+                for (Object[] obj : results) {
+
+                    RawatInap rawatInap = new RawatInap();
                     rawatInap.setIdDetailCheckup(obj[0].toString());
                     rawatInap.setNoCheckup(obj[1].toString());
                     rawatInap.setIdPasien(obj[2] == null ? "" : obj[2].toString());

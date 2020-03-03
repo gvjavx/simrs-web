@@ -4,18 +4,30 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="com.neurix.simrs.transaksi.permintaanvendor.model.MtSimrsPermintaanVendorEntity" dynamic-update="true"
-           table="mt_simrs_permintaan_obat_vendor" select-before-update="true" schema="public">
+    <class name="com.neurix.simrs.transaksi.checkup.model.ItSImrsFpkEntity" dynamic-update="true"
+           table="it_simrs_fpk" select-before-update="true" schema="public">
 
-
-        <id name="idPermintaanVendor">
-            <column name="id_permintaan_obat_vendor" sql-type="varchar" length="30" not-null="true" />
+        <id name="idFpk">
+            <column name="id_fpk" sql-type="varchar" length="30" not-null="true" />
         </id>
-        <property name="idApprovalObat">
-            <column name="id_approval_obat" sql-type="varchar" length="30" not-null="false"/>
+
+        <property name="noFpk">
+            <column name="no_fpk" sql-type="varchar" length="30" not-null="false"/>
         </property>
-        <property name="idVendor">
-            <column name="id_vendor" sql-type="varchar" length="10" not-null="false"/>
+        <property name="noSep">
+            <column name="no_sep" sql-type="varchar" length="50" not-null="false"/>
+        </property>
+        <property name="idDetailCheckup">
+            <column name="id_detail_checkup" sql-type="varchar" length="30" not-null="false"/>
+        </property>
+        <property name="noSlip">
+            <column name="no_slip" sql-type="varchar" length="100" not-null="false"/>
+        </property>
+        <property name="tanggalFpk">
+            <column name="tanggal_fpk" sql-type="date" not-null="false"/>
+        </property>
+        <property name="statusBayar">
+            <column name="status_bayar" sql-type="varchar" length="1" not-null="false" />
         </property>
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />
@@ -35,14 +47,6 @@
         <property name="lastUpdateWho">
             <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
         </property>
-        <property name="branchId">
-            <column name="branch_id" sql-type="varchar" length="10" not-null="false" />
-        </property>
-        <property name="notaVendor">
-            <column name="nota_vendor" sql-type="varchar" length="100" not-null="false" />
-        </property>
-        <property name="urlDocPo">
-            <column name="url_doc_po" sql-type="varchar" length="100" not-null="false" />
-        </property>
+
     </class>
 </hibernate-mapping>

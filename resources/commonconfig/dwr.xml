@@ -462,6 +462,7 @@
       <convert converter="bean" match="com.neurix.simrs.transaksi.antrianonline.model.RegistrasiOnline"/>
       <convert converter="bean" match="com.neurix.simrs.master.pasien.model.RekamMedicLama"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkupdetail.model.UangMuka"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.permintaanvendor.model.MtSimrsPermintaanVendorEntity"/>
 
       <!--bpjs-->
       <convert converter="bean" match="com.neurix.simrs.bpjs.vclaim.model.DiagnosaResponse"/>

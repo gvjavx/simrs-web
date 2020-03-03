@@ -1409,6 +1409,50 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         return response;
     }
 
+    @Override
+    public List getListPermintaanVendorDoc(String idPermintaanVendor) throws GeneralBOException {
+        PermintaanVendor permintaanVendor = new PermintaanVendor();
+        permintaanVendor.setIdPermintaanVendor(idPermintaanVendor);
+
+        List<MtSimrsPermintaanVendorEntity> permintaanVendorEntities = getListEntityVendor(permintaanVendor);
+        if (permintaanVendorEntities.size() > 0){
+            MtSimrsPermintaanVendorEntity vendorEntity = permintaanVendorEntities.get(0);
+            if (vendorEntity.getUrlDocPo() != null && !"".equalsIgnoreCase(vendorEntity.getUrlDocPo()) && vendorEntity.getNotaVendor() != null && !"".equalsIgnoreCase(vendorEntity.getNotaVendor())){
+                return permintaanVendorEntities;
+            }
+        }
+        return new ArrayList();
+    }
+
+    @Override
+    public void saveUpoadDocPermintaanVendor(PermintaanVendor bean) throws GeneralBOException {
+
+        if (bean.getIdPermintaanVendor() != null){
+            PermintaanVendor permintaanVendor = new PermintaanVendor();
+            permintaanVendor.setIdPermintaanVendor(bean.getIdPermintaanVendor());
+            List<MtSimrsPermintaanVendorEntity> permintaanVendorEntities = getListEntityVendor(permintaanVendor);
+            if (permintaanVendorEntities.size() > 0){
+                MtSimrsPermintaanVendorEntity permintaanVendorEntity = permintaanVendorEntities.get(0);
+                permintaanVendorEntity.setAction(bean.getAction());
+                permintaanVendorEntity.setLastUpdate(bean.getLastUpdate());
+                permintaanVendorEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                permintaanVendorEntity.setNotaVendor(bean.getNotaVendor());
+                permintaanVendorEntity.setUrlDocPo(bean.getUrlDocPo());
+
+                try {
+                    permintaanVendorDao.updateAndSave(permintaanVendorEntity);
+                } catch (HibernateException e){
+                    logger.error("[PermintaanVendorBoImpl.saveUpoadDocPermintaanVendor] ERROR ", e);
+                    throw new GeneralBOException("[PermintaanVendorBoImpl.saveUpoadDocPermintaanVendor] ERROR ", e);
+                }
+            }
+        } else {
+            logger.error("[PermintaanVendorBoImpl.saveUpoadDocPermintaanVendor] ERROR ID Perintaan is null");
+            throw new GeneralBOException("[PermintaanVendorBoImpl.saveUpoadDocPermintaanVendor] ERROR ID Perintaan is null");
+        }
+
+    }
+
     // for get sequence id
 
     private String nextIdPermintanVendor() {
