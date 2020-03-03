@@ -21,6 +21,7 @@ public class ImMappingJurnalEntity implements Serializable {
     private String bukti;
     private String kodeBarang;
     private String keterangan;
+    private String kirimList;
 
     private String flag;
     private String action;
@@ -28,6 +29,14 @@ public class ImMappingJurnalEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+    public String getKirimList() {
+        return kirimList;
+    }
+
+    public void setKirimList(String kirimList) {
+        this.kirimList = kirimList;
+    }
 
     public String getKeterangan() {
         return keterangan;

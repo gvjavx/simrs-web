@@ -21,6 +21,15 @@ public class MappingJurnal extends BaseModel {
     private String keterangan;
     private String tipeJurnalName;
     private String transName;
+    private String kirimList;
+
+    public String getKirimList() {
+        return kirimList;
+    }
+
+    public void setKirimList(String kirimList) {
+        this.kirimList = kirimList;
+    }
 
     public String getTransName() {
         return transName;
