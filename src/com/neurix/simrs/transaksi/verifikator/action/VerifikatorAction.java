@@ -751,7 +751,7 @@ public class VerifikatorAction extends BaseMasterAction {
             String typePelayanan = detail.getTipePelayanan();
 
             Map hsCriteria = new HashMap();
-            hsCriteria.put("master_id", idPasien);
+            hsCriteria.put("pasien_id", idPasien);
 
             String kode = "";
             String transId = "";
