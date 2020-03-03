@@ -243,6 +243,7 @@ public class CutiPegawaiAction extends BaseMasterAction {
                     addCutiPegawai.setUnitId(cutiPegawai.getUnitId());
                     addCutiPegawai.setDivisiId(cutiPegawai.getDivisiId());
                     addCutiPegawai.setPosisiId(cutiPegawai.getPosisiId());
+                    addCutiPegawai.setProfesiId(cutiPegawai.getProfesiId());
                     addCutiPegawai.setNamaPegawai(cutiPegawai.getNamaPegawai());
                     addCutiPegawai.setTanggalMasuk(cutiPegawai.getTanggalMasuk());
                     addCutiPegawai.setSisaCutiHari(cutiPegawai.getSisaCutiHari());
@@ -1034,7 +1035,7 @@ public class CutiPegawaiAction extends BaseMasterAction {
     }
 
 
-    public String saveApprove(String CutiPegawaiId, String statusApprove, String who,String nip){
+    public String saveApprove(String CutiPegawaiId, String statusApprove, String who,String nip, String nipPengganti, String namaPengganti){
         logger.info("[SppdAction.saveEdit] start process >>>");
         CutiPegawai editCutiPegawai = new CutiPegawai();
         List<Notifikasi> notifikasiList = new ArrayList<>();
@@ -1063,6 +1064,7 @@ public class CutiPegawaiAction extends BaseMasterAction {
         editCutiPegawai.setLastUpdate(updateTime);
         editCutiPegawai.setAction("U");
         editCutiPegawai.setFlag("Y");
+        editCutiPegawai.setPegawaiPenggantiSementara(nipPengganti);
 
         try {
             notifikasiList  = cutiPegawaiBo.saveApprove(editCutiPegawai);

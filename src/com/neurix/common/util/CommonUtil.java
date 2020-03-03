@@ -961,7 +961,9 @@ public class CommonUtil {
         String[] arrTglAwal = tglawalnew.split("-");
         Integer intTglAwal = Integer.parseInt(arrTglAwal[0]+arrTglAwal[1]+arrTglAwal[2]);
 
-        if (intTglAwal<intNow){
+        Integer jarak = intTglAwal - intNow;
+
+        if (jarak>0){
             status="Boleh";
         }else {
             status="tidak";

@@ -76,6 +76,6 @@ public interface NotifikasiBo extends BaseMasterBo<Notifikasi>{
     List<PersonilPosition> daftarKabag(String nip);
 
     List<PersonilPosition> daftarKabid(String nip);
-    public String getKabid(String nip);
+    public List<String> getKabid(String nip);
     public List<Notifikasi> getJubilium();
 }

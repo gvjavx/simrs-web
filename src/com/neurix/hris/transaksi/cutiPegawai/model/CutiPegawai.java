@@ -46,6 +46,7 @@ public class CutiPegawai extends BaseModel {
     private String unitId;
     private String posisiId;
     private String bagianId;
+    private String profesiId;
 
 
     private String cutiName;
@@ -86,6 +87,14 @@ public class CutiPegawai extends BaseModel {
     private Date tanggalAktif;
     private String stTanggalAktif;
     private String flagPerbaikan;
+
+    public String getProfesiId() {
+        return profesiId;
+    }
+
+    public void setProfesiId(String profesiId) {
+        this.profesiId = profesiId;
+    }
 
     public String getFlagPerbaikan() {
         return flagPerbaikan;
