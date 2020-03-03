@@ -118,9 +118,6 @@
             <column name="percent_tk_pers" sql-type="numeric" length="10"/>
         </property>
 
-        <property name="alamatSurat">
-            <column name="alamat_surat" sql-type="varchar" length="100"/>
-        </property>
         <property name="logoName">
             <column name="logo_name" sql-type="varchar" length="100"/>
         </property>
