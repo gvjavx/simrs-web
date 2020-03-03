@@ -36,6 +36,15 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
     private CheckupDetailBo checkupDetailBoProxy;
     private JenisPriksaPasienBo jenisPriksaPasienBoProxy;
     private PeriksaRadiologiBo periksaRadiologiBoProxy;
+    private String idPeriksa;
+
+    public String getIdPeriksa() {
+        return idPeriksa;
+    }
+
+    public void setIdPeriksa(String idPeriksa) {
+        this.idPeriksa = idPeriksa;
+    }
 
     private String lab;
 
@@ -112,6 +121,7 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
 
         String id = getId();
         String lab = getLab();
+
         String jk = "";
         if (id != null && !"".equalsIgnoreCase(id)) {
 
@@ -154,6 +164,7 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
                 periksaLab.setNik(checkup.getNoKtp());
                 periksaLab.setUrlKtp(checkup.getUrlKtp());
                 periksaLab.setJenisPeriksaPasien(checkup.getStatusPeriksaName());
+
                 periksaLab.setIdPeriksaLab(lab);
                 setPeriksaLab(periksaLab);
 

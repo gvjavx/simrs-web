@@ -409,7 +409,7 @@ public class CheckupAction extends BaseMasterAction {
                     checkup.setKecamatanId(pasien.getKecamatanId());
                     checkup.setKotaId(pasien.getKotaId());
                     checkup.setProvinsiId(pasien.getProvinsiId());
-                    checkup.setUrlKtp(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_KTP_PASIEN+pasien.getUrlKtp());
+                    checkup.setUrlKtp(pasien.getUrlKtp());
 
                     List<HeaderCheckup> checkups = new ArrayList<>();
                     HeaderCheckup header = new HeaderCheckup();
@@ -476,7 +476,26 @@ public class CheckupAction extends BaseMasterAction {
                     checkup.setProfesi(online.getProfesi());
                     checkup.setNoTelp(online.getNoTelp());
                     checkup.setIdJenisPeriksaPasien(online.getIdJenisPeriksaPasien());
-                    checkup.setUrlKtp(online.getUrlKtp());
+
+                    Pasien pasien = new Pasien();
+                    pasien.setIdPasien(idPasien);
+                    List<Pasien> pasienList = new ArrayList<>();
+
+                    try {
+                        pasienList = pasienBoProxy.getByCriteria(pasien);
+                    }catch (GeneralBOException e){
+                        logger.error("FOund Error "+e.getMessage());
+                    }
+
+                    if(pasienList.size() > 0) {
+
+                        pasien = pasienList.get(0);
+
+                        if(pasien != null){
+                            checkup.setUrlKtp(pasien.getUrlKtp());
+                        }
+                    }
+
                     checkup.setIdPelayanan(antianOnline.getIdPelayanan());
                     checkup.setIdDokter(antianOnline.getIdDokter());
                     checkup.setDesaId(online.getDesaId());
@@ -2328,7 +2347,7 @@ public class CheckupAction extends BaseMasterAction {
                     headerCheckup.setProfesi(online.getProfesi());
                     headerCheckup.setNoTelp(online.getNoTelp());
                     headerCheckup.setIdJenisPeriksaPasien(online.getIdJenisPeriksaPasien());
-                    headerCheckup.setUrlKtp(online.getUrlKtp());
+//                    headerCheckup.setUrlKtp(online.getUrlKtp());
                     headerCheckup.setIdPelayanan(antianOnline.getIdPelayanan());
                     headerCheckup.setIdDokter(antianOnline.getIdDokter());
                     headerCheckup.setTglAntian(antianOnline.getLastUpdate());
