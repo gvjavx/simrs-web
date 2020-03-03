@@ -15,6 +15,7 @@ import com.neurix.simrs.transaksi.checkup.model.Fpk;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
+import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
 import com.neurix.simrs.transaksi.checkupdetail.model.UangMuka;
 import com.neurix.simrs.transaksi.kasirrawatjalan.bo.KasirRawatJalanBo;
 import com.neurix.simrs.transaksi.riwayattindakan.bo.RiwayatTindakanBo;
@@ -845,9 +846,12 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         List<Fpk> fpkList = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         KasirRawatJalanBo kasirRawatJalanBo = (KasirRawatJalanBo) ctx.getBean("kasirRawatJalanBoProxy");
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+        BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
 
         if (jsonString != null && !"".equalsIgnoreCase(jsonString)) {
             JSONArray json = new JSONArray(jsonString);
+            String fpkId = "";
             for (int i = 0; i < json.length(); i++) {
                 Fpk fpk = new Fpk();
                 JSONObject obj = json.getJSONObject(i);
@@ -855,15 +859,76 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 fpk.setNoSep(obj.getString("no_sep"));
                 fpk.setIdDetailCheckup(obj.getString("id_detail_checkup"));
                 fpk.setNoSlip(noSlip);
+
+                fpkId = obj.getString("id_fpk");
                 fpkList.add(fpk);
             }
 
+            // create map jurnal
+            List<Map> mapListKlaim = new ArrayList<>();
+            BigDecimal total = new BigDecimal(0);
+            for (Fpk fpk : fpkList){
+
+                HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+                detailCheckup.setIdDetailCheckup(fpk.getIdDetailCheckup());
+
+                List<HeaderDetailCheckup> details = checkupDetailBo.getByCriteria(detailCheckup);
+                if (details.size() > 0){
+                    for (HeaderDetailCheckup detail : details){
+                        BigDecimal nilai = checkupDetailBo.getSumJumlahTindakan(detail.getIdDetailCheckup(), "");
+                        total = total.add(nilai);
+
+                        Map mapKlaim = new HashMap();
+                        mapKlaim.put("bukti", detail.getInvoice());
+                        mapKlaim.put("pasien_id", detail.getIdPasien());
+                        mapKlaim.put("nilai", nilai);
+                        mapListKlaim.add(mapKlaim);
+                    }
+                }
+            }
+
+            String branchId = CommonUtil.userBranchLogin();
+            String userLogin = CommonUtil.userLogin();
+            Timestamp time = new Timestamp(System.currentTimeMillis());
+
+            Map mapJurnal = new HashMap();
+            mapJurnal.put("kas", total);
+            mapJurnal.put("piutang_pasien_bpjs", mapListKlaim);
+            mapJurnal.put("metode_bayar", "transfer");
+            mapJurnal.put("bank", "bri");
+
+            String noJurnal = "";
+            String catatan = "Pembayaran Piutang BPJS dengan no FPK "+fpkId;
             try {
+
+                noJurnal = billingSystemBo.createJurnal("23", mapJurnal, branchId, catatan, "Y");
+                if (!"".equalsIgnoreCase(noJurnal)){
+                    for (Fpk fpk : fpkList){
+                        HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+                        detailCheckup.setIdDetailCheckup(fpk.getIdDetailCheckup());
+                        detailCheckup.setNoJurnal(noJurnal);
+                        detailCheckup.setBranchId(branchId);
+                        detailCheckup.setAction("U");
+                        detailCheckup.setLastUpdate(time);
+                        detailCheckup.setLastUpdateWho(userLogin);
+
+                        try {
+                            checkupDetailBo.saveUpdateNoJuran(detailCheckup);
+                        } catch (GeneralBOException e){
+                            logger.error("Found Error");
+                            response.setStatus("error");
+                            response.setMsg("Found error "+e);
+                            return response;
+                        }
+                    }
+                }
+
                 response = kasirRawatJalanBo.pembayaranFPK(fpkList);
             }catch (GeneralBOException e){
                 logger.error("Found Error");
                 response.setStatus("error");
                 response.setMsg("Found error "+e);
+                return response;
             }
         }
         return response;

@@ -1033,6 +1033,52 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     }
 
     @Override
+    public ItSimrsHeaderDetailCheckupEntity getEntityDetailCheckupByIdDetail(String idDetailCheckup) throws GeneralBOException {
+        if (!"".equalsIgnoreCase(idDetailCheckup)){
+            Map hsCriteria = new HashMap();
+            hsCriteria.put("id_detail_checkup", idDetailCheckup);
+
+            List<ItSimrsHeaderDetailCheckupEntity> detailCheckupEntities = new ArrayList<>();
+            try {
+                detailCheckupEntities = checkupDetailDao.getByCriteria(hsCriteria);
+            } catch (HibernateException e){
+                logger.error("[PermintaanResepBoImpl.getEntityDetailCheckupByIdDetail] ERROR. ", e);
+                throw new GeneralBOException("[PermintaanResepBoImpl.getEntityDetailCheckupByIdDetail] ERROR. ", e);
+            }
+
+            if (detailCheckupEntities.size() > 0){
+                return detailCheckupEntities.get(0);
+            }
+        }
+        return new ItSimrsHeaderDetailCheckupEntity();
+    }
+
+    @Override
+    public void saveUpdateNoJuran(HeaderDetailCheckup bean) throws GeneralBOException {
+        if (bean != null){
+
+            HeaderDetailCheckup detail = new HeaderDetailCheckup();
+            detail.setIdDetailCheckup(bean.getIdDetailCheckup());
+
+            List<ItSimrsHeaderDetailCheckupEntity> details = getListEntityByCriteria(detail);
+            if (details.size() > 0){
+                for (ItSimrsHeaderDetailCheckupEntity detailCheckupEntity : details){
+                    detailCheckupEntity.setAction(bean.getAction());
+                    detailCheckupEntity.setNoJurnal(bean.getNoJurnal());
+                    detailCheckupEntity.setLastUpdate(bean.getLastUpdate());
+                    detailCheckupEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    try {
+                        checkupDetailDao.updateAndSave(detailCheckupEntity);
+                    } catch (HibernateException e){
+                        logger.error("[PermintaanResepBoImpl.saveUpdateNoJuran] ERROR. ", e);
+                        throw new GeneralBOException("[PermintaanResepBoImpl.saveUpdateNoJuran] ERROR. ", e);
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
     public BigDecimal getSumJumlahTindakan(String idDetailCheckup, String ket) {
         return checkupDetailDao.getSumAllTarifTindakan(idDetailCheckup, ket);
    }
