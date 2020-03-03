@@ -60,7 +60,7 @@ public class KodeRekeningDao extends GenericDao<ImKodeRekeningEntity, String> {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_kode_rekening')");
         Iterator<BigInteger> iter=query.list().iterator();
         String sId = String.format("%010d", iter.next());
-        return "KR"+sId;
+        return sId;
     }
 
     public List<ImKodeRekeningEntity> getIdByCoa(String coa) {

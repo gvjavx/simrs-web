@@ -108,6 +108,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "                    im_akun_report_detail\n" +
                 "                where\n" +
                 "                    report_id='"+reportId+"'\n" +
+                "                       and flag='Y'"+
                 "            )\n" +
                 tipeWhere +
                 "order by \n" +
@@ -199,6 +200,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "      im_akun_report_detail \n" +
                 "    where \n" +
                 "      report_id = '"+reportId+"'\n" +
+                "      and flag='Y'"+
                 "  ) \n" +
                 "  "+tipeWhere+" \n" +
                 "order by \n" +

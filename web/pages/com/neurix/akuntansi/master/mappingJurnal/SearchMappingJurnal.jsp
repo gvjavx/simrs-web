@@ -125,12 +125,7 @@
                                                         </sj:submit>
                                                     </td>
                                                     <td>
-                                                        <s:url var="urlAdd" namespace="/mappingJurnal" action="add_mappingJurnal" escapeAmp="false">
-                                                        </s:url>
-                                                        <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">
-                                                            <i class="fa fa-plus"></i>
-                                                            Add MappingJurnal
-                                                        </sj:a>
+                                                        <a href="add_mappingJurnal.action" class="btn btn-success" ><i class="fa fa-plus"></i> Add Mapping Jurnal</a>
                                                     </td>
                                                     <td>
                                                         <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_mappingJurnal"/>'">

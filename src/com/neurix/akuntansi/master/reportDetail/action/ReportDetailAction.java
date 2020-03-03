@@ -76,6 +76,76 @@ public class ReportDetailAction extends BaseMasterAction {
         return "success_save_add";
     }
 
+    public String addReportDetail(String reportId,String rekeningId){
+        logger.info("[ReportDetailAction.addReportDetail] start process >>>");
+        String status="";
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ReportDetailBo reportDetailBo = (ReportDetailBo) ctx.getBean("reportDetailBoProxy");
+        try {
+            ReportDetail reportDetail = new ReportDetail();
+            String userLogin = CommonUtil.userLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+            reportDetail.setReportId(reportId);
+            reportDetail.setRekeningId(rekeningId);
+            reportDetail.setCreatedWho(userLogin);
+            reportDetail.setLastUpdate(updateTime);
+            reportDetail.setCreatedDate(updateTime);
+            reportDetail.setLastUpdateWho(userLogin);
+            reportDetail.setAction("C");
+            reportDetail.setFlag("Y");
+
+            reportDetailBo.saveAdd(reportDetail);
+        }catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = reportDetailBoProxy.saveErrorMessage(e.getMessage(), "reportDetailBo.addReportDetail");
+            } catch (GeneralBOException e1) {
+                logger.error("[ReportDetailAction.addReportDetail] Error when saving error,", e1);
+                return ERROR;
+            }
+            logger.error("[ReportDetailAction.addReportDetail] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+            return ERROR;
+        }
+
+        logger.info("[ReportDetailAction.addReportDetail] end process >>>");
+        return status;
+    }
+
+    public String deleteReportDetail(String reportId){
+        logger.info("[ReportDetailAction.deleteReportDetail] start process >>>");
+        String status="";
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ReportDetailBo reportDetailBo = (ReportDetailBo) ctx.getBean("reportDetailBoProxy");
+        try {
+            ReportDetail reportDetail = new ReportDetail();
+            String userLogin = CommonUtil.userLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+            reportDetail.setReportId(reportId);
+            reportDetail.setLastUpdate(updateTime);
+            reportDetail.setLastUpdateWho(userLogin);
+            reportDetail.setAction("U");
+            reportDetail.setFlag("N");
+
+            reportDetailBo.deleteReportDetail(reportDetail);
+        }catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = reportDetailBoProxy.saveErrorMessage(e.getMessage(), "reportDetailBo.deleteReportDetail");
+            } catch (GeneralBOException e1) {
+                logger.error("[ReportDetailAction.deleteReportDetail] Error when saving error,", e1);
+                return ERROR;
+            }
+            logger.error("[ReportDetailAction.deleteReportDetail] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+            return ERROR;
+        }
+
+        logger.info("[ReportDetailAction.deleteReportDetail] end process >>>");
+        return status;
+    }
     @Override
     public String edit() {
         return null;

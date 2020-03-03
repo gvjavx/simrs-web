@@ -490,6 +490,11 @@
       </create>
       <convert converter="bean" match="com.neurix.akuntansi.master.reportDetail.model.ReportDetail"/>
 
+      <create creator="new">
+          <param name="class" value="com.neurix.akuntansi.master.mappingJurnal.action.MappingJurnalAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.akuntansi.master.mappingJurnal.model.MappingJurnal"/>
+
   </allow>
 
 </dwr>

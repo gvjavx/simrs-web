@@ -165,14 +165,23 @@
 </html>
 <script>
     $(document).ready(function () {
-        $("btnSaveDetailReport").click(function () {
-            if (confirm("Apakah anda ingin menyimpan perubahan COA pada report ini ?")){
-
-            }
-        })
-
         $("#btnSaveDetailReport").hide();
-
+        $("#btnSaveDetailReport").click(function () {
+            if (confirm("Apakah anda ingin menyimpan perubahan COA pada report ini ?")){
+                var data = $('.tree').tableToJSON();
+                var reportId = $('#report_id').val();
+                ReportDetailAction.deleteReportDetail(reportId,function (listData) {});
+                $.each(data, function (i, item) {
+                    var rekId = data[i]["Rekening Id"];
+                    if ($('#check_' + i).prop("checked") == true) {
+                        ReportDetailAction.addReportDetail(reportId,rekId,function (listData) {
+                        })
+                    }
+                });
+                alert("Sukses edit report detail");
+                window.location.reload();
+            }
+        });
         $('.tree').treegrid({
             expanderExpandedClass: 'glyphicon glyphicon-minus',
             expanderCollapsedClass: 'glyphicon glyphicon-plus'
@@ -256,28 +265,34 @@
                 }
                 tmp_table = "<thead style='font-size: 14px; color: white' ><tr class='active'>"+
                     "<th style='text-align: center; background-color:  #30d196'>COA ( Chart of Account )</th>"+
+                    "<th style='text-align: center; background-color:  #30d196' class='tableHide'>Rekening Id</th>"+
                     "<th style='text-align: center; background-color:  #30d196''>Nama Kode Rekening</th>"+
+                    "<th style='text-align: center; background-color:  #30d196''>Level</th>"+
                     "<th style='text-align: center; background-color:  #30d196''>cetak ?</th>"+
                     "</tr></thead>";
                 for(i = 0 ; i < data2.length ; i++){
                     var cekbox ="";
                     if (data2[i].adaCetak) {
-                        cekbox='<td align="center" class="ceknull">' + '<input type="checkbox" checked>' + '</td>';
+                        cekbox='<td align="center" class="ceknull">' + '<input type="checkbox" checked id="check_'+i+'">' + '</td>';
                     }else{
-                        cekbox='<td align="center" class="ceknull">' + '<input type="checkbox">' + '</td>';
+                        cekbox='<td align="center" class="ceknull">' + '<input type="checkbox" id="check_'+i+'">' + '</td>';
                     }
 
                     if(data2[i].parent == "-"){
                         tmp_table += '<tr style="font-size: 12px;" class=" treegrid-' + data2[i]._id+ '">' +
                             '<td >' + data2[i].coa + '</td>' +
+                            '<td class="tableHide">' + data2[i]._id + '</td>' +
                             '<td >' + data2[i].nama + '</td>' +
+                            '<td style="text-align: center;">' + data2[i].level + '</td>' +
                             cekbox +
                             "</tr>";
                     } else {
                         tmp_table += '<tr style="font-size: 12px" class=" treegrid-' + data2[i]._id + ' treegrid-parent-' + data2[i].parent + '">' +
                             + '<td style="border: 2px solid black;">' +
                             '<td >' + data2[i].coa + '</td>' +
+                            '<td class="tableHide">' + data2[i]._id + '</td>' +
                             '<td >' + data2[i].nama + '</td>' +
+                            '<td  style="text-align: center;">' + data2[i].level + '</td>' +
                             cekbox+
                             '</td>' +
                             "</tr>";
@@ -285,6 +300,7 @@
                 }
                 $('.tree').append(tmp_table);
                 $(".tree .ceknull:contains('null')").html("-");
+                $('.tableHide').hide();
                 $("#btnSaveDetailReport").show();
             });
         }
