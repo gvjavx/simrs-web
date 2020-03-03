@@ -1167,48 +1167,11 @@ public class MutasiBoImpl implements MutasiBo {
         SimpleDateFormat dt1 = new SimpleDateFormat("dd-MM-yyyy");
         String stDate = dt1.format(dataDate);
         String[]tahun = stDate.split("-");
-        label1 = "KEPUTUSAN DIREKSI PT NUSANTARA MEDICA UTAMA\n" +
-                "NOMOR : SK.07/NMU.01/I/"+tahun[2]+"\n" +
-                "\n" +
-                "TENTANG\n" ;
-
         if(mutasiList != null){
             for(Mutasi mutasi : mutasiList){
-                biodata = biodataDao.getById("nip", mutasi.getNip());
-                String gender = "";
-                resultMutasi.setBranchLamaId(mutasi.getBranchLamaId());
-                if(biodata.getGender().equalsIgnoreCase("L")){
-                    gender = "Saudara ";
-                }else{
-                    gender = "Saudari ";
-                }
-                resultMutasi.setLabel1(label1);
-                label2 = "MUTASI "+ gender.toUpperCase() +mutasi.getNama()+" SEBAGAI \n" +
-                        ""+mutasi.getPositionBaruName()+"  PT NUSANTARA MEDICA UTAMA - "+mutasi.getBranchBaruName()+"\n";
-                resultMutasi.setLabel2(label2);
-
-                label3 = "Bahwa dalam rangka mengisi formasi dan menjalankan fungsi organisasi di "+mutasi.getDivisiBaruName()+" PT PG Rajawali I "+mutasi.getBranchBaruName()+", " +
-                        "diperlukan seorang Karyawan untuk ditunjuk sebagai "+mutasi.getPositionBaruName()+".";
-                resultMutasi.setLabel3(label3);
-
-                label4 = "Bahwa "+ gender + mutasi.getNama()+" diputuskan untuk ditetapkan sebagai "
-                        +mutasi.getPositionBaruName()+" PT NUSANTARA MEDICA UTAMA – "+mutasi.getBranchBaruName()+"." ;
-                resultMutasi.setLabel4(label4);
-
-                label5 = "KEPUTUSAN DIREKSI PT NUSANTARA MEDICA UTAMA TENTANG MUTASI "+ gender.toUpperCase() +mutasi.getNama()+" SEBAGAI "+mutasi.getPositionBaruName()+
-                        " PT NUSANTARA MEDICA UTAMA - "+mutasi.getBranchBaruName()+".";
-                resultMutasi.setLabel5(label5);
-
-                label6 = "Membebaskan "+ gender + mutasi.getNama()+" dari tugas dan tanggung jawabnya sebagai "+mutasi.getPositionLamaName()+" "+mutasi.getBranchLamaName()+" PT NUSANTARA MEDICA UTAMA\n" +
-                        "Memutasi "+gender +mutasi.getNama()+" sebagai " +
-                        "" +
-                        ""+mutasi.getPositionBaruName()+" "+mutasi.getBranchBaruName()+" PT NUSANTARA MEDICA UTAMA.";
-                resultMutasi.setLabel6(label6);
-
-                label7 = "Keputusan ini berlaku surut terhitung sejak tanggal "+mutasi.getStTanggalEfektif()+" dengan " +
-                        "ketentuan apabila di kemudian hari terdapat kekeliruan dalam Surat Keputusan ini " +
-                        "maka akan diadakan perbaikan seperlunya.";
-                resultMutasi.setLabel7(label7);
+                resultMutasi.setNama(mutasi.getNama());
+                resultMutasi.setPositionLamaName(mutasi.getPositionLamaName());
+                resultMutasi.setBranchLamaName(mutasi.getBranchLamaName());
             }
         }
 

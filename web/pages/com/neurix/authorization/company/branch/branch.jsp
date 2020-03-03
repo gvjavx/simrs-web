@@ -426,7 +426,7 @@
                                         </div>
                                     </div>
                                 </s:if>
-
+                                <br>
                                 <div id="crud"></div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4" style="visibility: hidden"></label>

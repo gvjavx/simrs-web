@@ -418,15 +418,13 @@ public class MutasiAction extends BaseMasterAction{
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             MutasiBo mutasiBo = (MutasiBo) ctx.getBean("mutasiBoProxy");
             searchMutasi = mutasiBo.getDataReportMutasi(id);
-
-            String namaDirektur = mutasiBoProxy.getDirektur();
             Branch branch = new Branch();
             try{
                 BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
-                branch = branchBo.getBranchById(searchMutasi.getBranchLamaId(),"Y");
+                branch = branchBo.getBranchById("KP","Y");
             }catch( HibernateException e){
             }
-            if (searchMutasi.getBranchLamaId().equalsIgnoreCase("RS01")){
+            /*if (searchMutasi.getBranchLamaId().equalsIgnoreCase("RS01")){
                 reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS01);
             }else if (searchMutasi.getBranchLamaId().equalsIgnoreCase("RS02")){
                 reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS02);
@@ -434,20 +432,17 @@ public class MutasiAction extends BaseMasterAction{
                 reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS03);
             }else{
                 reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU);
-            }
+            }*/
+            reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU);
             String stTanggal = CommonUtil.convertDateToString( new java.util.Date());
             reportParams.put("alamatUni", branch.getAlamatSurat()+","+stTanggal);
             reportParams.put("branchName", branch.getBranchName());
-            reportParams.put("titleReport", "Report Mutasi Jabatan");
-            reportParams.put("direktur", namaDirektur);
-            reportParams.put("noMutasi", "No. Mutasi: "+id);
-            reportParams.put("strLabel1", searchMutasi.getLabel1());
-            reportParams.put("strLabel2", searchMutasi.getLabel2());
-            reportParams.put("strLabel3", searchMutasi.getLabel3());
-            reportParams.put("strLabel4", searchMutasi.getLabel4());
-            reportParams.put("strLabel5", searchMutasi.getLabel5());
-            reportParams.put("strLabel6", searchMutasi.getLabel6());
-            reportParams.put("strLabel7", searchMutasi.getLabel7());
+            reportParams.put("titleReport", "Surat Keterangan");
+
+
+            reportParams.put("namaPegawai", searchMutasi.getNama());
+            reportParams.put("jabatanLama", searchMutasi.getPositionLamaName());
+            reportParams.put("unitLama", searchMutasi.getBranchLamaName());
 
             try {
                 preDownload();

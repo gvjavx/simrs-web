@@ -164,11 +164,11 @@ To change this template use File | Settings | File Templates.
 
                             <tr>
                                 <td>
-                                    <label class="control-label"><small>Tipe :</small></label>
+                                    <label class="control-label"><small>Status :</small></label>
                                 </td>
                                 <td>
                                     <table>
-                                        <s:select list="#{'M':'Mutasi', 'R':'Resign', 'P':'Pensiun'}" id="flag" name="mutasi.tipeMutasi"
+                                        <s:select list="#{'M':'Mutasi', 'R':'Resign', 'P':'Pensiun'}" id="flag" name="mutasi.statusMutasi"
                                                   headerKey="" headerValue="" cssClass="form-control"/>
                                     </table>
 
@@ -215,7 +215,7 @@ To change this template use File | Settings | File Templates.
                                                 <i class="fa fa-calendar"></i>
                                             </div>
                                             <s:textfield id="tanggalEfektif" name="mutasi.stTanggalEfektif" cssClass="form-control pull-right"
-                                                         required="false"  cssStyle=""/>
+                                                         required="false"/>
                                         </div>
                                     </table>
                                 </td>
@@ -273,7 +273,7 @@ To change this template use File | Settings | File Templates.
                                         <display:table name="listOfSppd" class=" tableSppd table table-condensed table-striped table-hover"
                                                        requestURI="paging_displaytag_mutasi.action" id="row" pagesize="14" style="font-size:10">
 
-                                            <%--<display:column  title="Print">
+                                            <display:column  title="Print">
                                                 <s:url var="urlPrint" namespace="/mutasi" action="printReportMutasi_mutasi" escapeAmp="false">
                                                     <s:param name="id"><s:property value="#attr.row.mutasiId"/></s:param>
                                                     <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
@@ -281,7 +281,10 @@ To change this template use File | Settings | File Templates.
                                                 <s:a href="%{urlPrint}">
                                                     <img border="0" src="<s:url value="/pages/images/icon_printer_new.ico"/>" name="icon_edit">
                                                 </s:a>
-                                            </display:column>--%>
+                                                <%--<s:submit type="button" onclick="printSk()">
+                                                    <img border="0" src="<s:url value="/pages/images/icon_printer_new.ico"/>" name="icon_edit">
+                                                </s:submit>--%>
+                                            </display:column>
 
                                             <%--<display:column media="html" title="Download SK" style="align= center">
                                                 <s:if test="#attr.row.SK1">
@@ -355,4 +358,39 @@ To change this template use File | Settings | File Templates.
 </body>
 
 </html>
+<div id="modal-edit" class="modal fade" role="dialog">
+    <div class="modal-dialog" style="width: 500px">
 
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Add Nomor Surat</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="myForm">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >No. Sk Mutasi : </label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control nip" id="nip2" name="nip">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="btnSave" type="button" class="btn btn-default btn-success">Cetak Surat</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function printSk(){
+        $('#modal-edit').modal('show');
+    }
+    /*$(document).ready(function(){
+        $('#btnPrintMutasi').click(function(){
+            $('#modal-edit').modal('show');
+        });
+    });*/
+</script>

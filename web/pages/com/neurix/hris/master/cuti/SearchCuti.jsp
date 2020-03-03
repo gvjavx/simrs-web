@@ -229,8 +229,8 @@
                                             <display:column property="cutiName" sortable="true" title="Name"  />
                                             <display:column property="jumlahCuti" sortable="true" title="Jumlah Hari"  />
                                             <display:column property="tipeHari" sortable="true" title="Tipe Hari"  />
-                                            <display:column property="golonganName" sortable="true" title="Golongan"  />
-                                            <display:column property="branchName" sortable="true" title="Branch"  />
+                                            <%--<display:column property="golonganName" sortable="true" title="Golongan"  />
+                                            <display:column property="branchName" sortable="true" title="Branch"  />--%>
 
                                             <display:column property="flag" sortable="true" title="Flag" />
                                             <display:column property="createdWho" sortable="true" title="CreatedWho"/>
