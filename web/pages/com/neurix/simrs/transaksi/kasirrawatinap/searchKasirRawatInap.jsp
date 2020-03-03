@@ -13,10 +13,12 @@
 
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/KasirRawatInapAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/KasirRawatJalanAction.js"/>'></script>
     <script type='text/javascript'>
 
         $( document ).ready(function() {
-            $('#pembayaran').addClass('active');
+            $('#bayar_rawat_inap, #pembayaran_active').addClass('active');
+            $('#pembayaran_open').addClass('menu-open');
         });
 
 
@@ -34,7 +36,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Kasir Rawat Jalan
+            Kasir Rawat Inap
             <small>e-HEALTH</small>
         </h1>
     </section>
@@ -75,6 +77,23 @@
                                                   headerKey="3" headerValue="Selesai"
                                                   cssClass="form-control select2" disabled="true"/>
                                         <s:hidden name="rawatInap.statusPeriksa" value="3"></s:hidden>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Status Bayar</label>
+                                    <div class="col-sm-4">
+                                        <s:select list="#{'Y':'Sudah Dibayar'}" cssStyle="margin-top: 7px"
+                                                  id="statusBayar"
+                                                  headerKey="" headerValue="Belum Dibayar" name="rawatInap.statusBayar"
+                                                  cssClass="form-control"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Jenis Pasien</label>
+                                    <div class="col-sm-4">
+                                        <s:select list="#{'bpjs':'BPJS'}" cssStyle="margin-top: 7px"
+                                                  headerKey="umum" headerValue="UMUM" name="rawatInap.idJenisPeriksa"
+                                                  cssClass="form-control"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -164,7 +183,7 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Pasien</h3>
                     </div>
                     <div class="box-body">
-                        <table id="myTable" class="table table-bordered table-striped">
+                        <table id="sortTable" class="table table-bordered table-striped">
                             <thead >
                             <tr bgcolor="#90ee90">
                                 <td>ID Detail Checkup</td>
@@ -195,8 +214,8 @@
                                     <td align="center">
                                         <s:if test='#row.statusBayar == "Y"'>
                                             <s:url var="print_invo" namespace="/kasirinap" action="printInvoice_kasirinap" escapeAmp="false">
-                                                <s:param name="id"><s:property value="noCheckup"/></s:param>
-                                                <s:param name="idDetailCheckup"><s:property value="idDetailCheckup"/></s:param>
+                                                <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
+                                                <s:param name="jenis"><s:property value="idJenisPeriksa"/></s:param>
                                             </s:url>
                                             <s:a href="%{print_invo}" target="_blank">
                                                 <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-print-25.png"/>">
@@ -205,6 +224,15 @@
                                         <s:else>
                                             <img id="t_<s:property value="idDetailCheckup"/>" onclick="showInvoice('<s:property value="noCheckup"/>','<s:property value="idDetailCheckup"/>')" class="hvr-grow" src="<s:url value="/pages/images/icon_payment.ico"/>" style="cursor: pointer;">
                                         </s:else>
+                                        <s:if test='#row.idJenisPeriksa == "bpjs"'>
+                                            <s:url var="print_invo_bpjs" namespace="/kasirinap" action="printInvoice_kasirinap" escapeAmp="false">
+                                                <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
+                                                <s:param name="jenis"><s:property value="idJenisPeriksa"/></s:param>
+                                            </s:url>
+                                            <s:a href="%{print_invo_bpjs}" target="_blank">
+                                                <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-print-25.png"/>">
+                                            </s:a>
+                                        </s:if>
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -227,10 +255,6 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-medkit"></i> Detail Total Tarif Rawat Inap Pasien</h4>
             </div>
             <div class="modal-body">
-                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_fin">
-                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    <p id="msg_fin"></p>
-                </div>
                 <div class="alert alert-success alert-dismissible" style="display: none" id="success_fin">
                     <h4><i class="icon fa fa-info"></i> Info!</h4>
                     <p id="msg_fin2"></p>
@@ -261,6 +285,12 @@
                             </table>
                         </div>
                         <!-- /.col -->
+
+                        <input type="hidden" id="fin_id_pasien"/>
+                        <input type="hidden" id="fin_is_resep"/>
+                        <input type="hidden" id="fin_metode_bayar"/>
+                        <input type="hidden" id="fin_bukti"/>
+
                         <div class="col-md-6">
                             <table class="table table-striped">
                                 <tr>
@@ -323,11 +353,52 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_fin">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_fin"></p>
+                </div>
+                <div class="box-header with-border"></div>
+                <div class="row" style="margin-top: 15px">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Metode Bayar</label>
+                            <div class="col-md-8">
+                                <select id="metode_bayar" class="form-control" onchange="pilihMetode(this.value)">
+                                    <option value="" >[Select One]</option>
+                                    <option value="tunai">Tunai</option>
+                                    <option value="transfer">Transfer</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div style="display: none" id="pilih_bank">
+                            <div class="form-group">
+                                <label class="col-md-2" style="margin-top: 7px">Bank</label>
+                                <div class="col-md-6">
+                                    <select class="form-control" id="bank">
+                                        <option value="" >[Select One]</option>
+                                        <option value="bri">BRI</option>
+                                        <option value="bni">BNI</option>
+                                        <option value="bca">BCA</option>
+                                        <option value="mandiri">Mandiri</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4" style="margin-top: 7px">No Kartu</label>
+                                <div class="col-md-8">
+                                    <input type="number" id="no_rekening" style="margin-top: 7px" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_fin"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_fin" onclick="confirmSavePembayaranTagihan()"><i class="fa fa-arrow-right"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
                         id="load_fin"><i
@@ -361,18 +432,32 @@
 
 <script type='text/javascript'>
 
+    function pilihMetode(val){
+        console.log(val);
+        if(val != ''){
+            if(val == 'transfer'){
+                $('#pilih_bank').show();
+            }else{
+                $('#pilih_bank').hide();
+            }
+        }
+    }
+
     function formatRupiah(angka) {
-        if(angka != ""){
+        if(angka != "" && angka != null && parseInt(angka) > 0){
             var reverse = angka.toString().split('').reverse().join(''),
                 ribuan = reverse.match(/\d{1,3}/g);
             ribuan = ribuan.join('.').split('').reverse().join('');
             return ribuan;
+        } else {
+            return "0";
         }
 
     }
 
     var mapBiaya = [];
     function showInvoice(idCheckup, idDetailCheckup) {
+        $('#pilih_bank').hide();
         var table = "";
         var dataTindakan = [];
         var dataPasien = [];
@@ -392,6 +477,8 @@
         var cekTindakan = false;
         var jenisPasien = "";
         var uangMuka = 0;
+        var bukti = "";
+        var metode = "";
 
         var url = '<s:url value="/pages/images/spinner.gif"/>';
         $('#t_'+idDetailCheckup).attr('src',url).css('width', '30px', 'height', '40px');
@@ -427,6 +514,15 @@
                         kecamatan = response.namaKecamatan;
                         desa = response.namaDesa;
                         noSep = response.noSep;
+                        // metode = response.metodeBayar;
+                    if(response.metodePembayaran == "tunai"){
+                        metode = "tunai";
+                    }else if(response.metodePembayaran == "non_tunai"){
+                        metode = "non_tunai";
+                    }else{
+                        metode = "bpjs";
+                    }
+
                     // });
 
                     $("#fin_id_pasien").val(response.idPasien);
@@ -437,10 +533,11 @@
                 console.log(response);
                 var str = "";
                 $.each(response, function(i, item){
-                    str += "<tr><td>"+item.stDate+"</td><td>"+item.noNota+"</td><td align='right' style='padding-right: 20px'>"+formatRupiah(item.jumlah)+"</td></tr>"
-                    mapBiaya.push({"type":"uang_muka", "nilai":item.jumlah});
+                    str += "<tr><td>"+item.stDate+"</td><td>"+item.id+"</td><td align='right' style='padding-right: 20px'>"+formatRupiah(item.dibayar)+"</td></tr>"
+                    // mapBiaya.push({"type":"uang_muka", "nilai":item.dibayar});
                     $("#fin_no_nota").val(item.noNota);
-                    uangMuka = parseInt(uangMuka) + parseInt(item.jumlah);
+                    uangMuka = parseInt(uangMuka) + parseInt(item.dibayar);
+                    bukti = item.id;
                 });
                 $("#body_uang_muka").html(str);
             });
@@ -450,10 +547,14 @@
                 console.log(response);
                 if (dataTindakan != null) {
                     var total = 0;
+                    var totalObat = 0;
+                    var ppn = "";
+                    var totalPpn = 0;
+
                     $.each(dataTindakan, function (i, item) {
                         var tindakan = "";
                         var tarif    = "";
-                        var kategori = ""
+                        var kategori = "";
                         var btn = "";
                         var tgl = "";
 
@@ -477,6 +578,9 @@
 
                         if(item.keterangan == "resep"){
                             btn = '<img id="btn'+item.idRiwayatTindakan+'"  class="hvr-grow" onclick="detailResep(\''+item.idTindakan+'\',\''+item.idRiwayatTindakan+'\')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">';
+                            totalObat = parseInt(totalObat) + parseInt(item.totalTarif);
+                            $("#fin_is_resep").val("Y");
+                            totalPpn = (totalObat * 0.1);
                         }
 
                         table += '<tr id="row'+item.idRiwayatTindakan+'" >' +
@@ -489,12 +593,28 @@
                     });
 
                     table = table + '<tr><td colspan="3">Total</td><td align="right" style="padding-right: 20px">'+formatRupiah(total)+'</td></tr>'+
+                        '<tr><td colspan="3">PPN Obat</td><td align="right" style="padding-right: 20px">'+formatRupiah(totalPpn)+'</td></tr>'+
                         '<tr><td colspan="3">Total Biaya</td><td align="right" style="padding-right: 20px">'+formatRupiah(total-uangMuka)+'</td></tr>';
 
-                    mapBiaya.push({"type":"kas","nilai":total-uangMuka});
-                    mapBiaya.push({"type":"pendapatan_rawat_inap_non_bpjs","nilai":total});
-                    mapBiaya.push({"type":"pendapatan_obat_non_bpjs", "nilai":totalObat});
-                    mapBiaya.push({"type":"ppn_keluaran", "nilai":totalObat*0.1});
+                    // mapBiaya.push({"type":"kas","nilai":(total-uangMuka)+totalPpn});
+                    // mapBiaya.push({"type":"pendapatan_rawat_inap_non_bpjs","nilai":total});
+                    // mapBiaya.push({"type":"pendapatan_obat_non_bpjs", "nilai":totalObat});
+                    // mapBiaya.push({"type":"ppn_keluaran", "nilai":totalPpn});
+
+                    //tunai
+                    if (metode == "tunai") {
+                            //rawat jalan dengan obat
+                            mapBiaya.push({"type": "uang_muka", "nilai": uangMuka});
+                            mapBiaya.push({"type": "kas", "nilai": ((total - uangMuka) + totalPpn) });
+                            mapBiaya.push({"type": "pendapatan_rawat_jalan_non_bpjs", "nilai": total});
+                            mapBiaya.push({"type": "pendapatan_obat_non_bpjs", "nilai": totalObat});
+                            mapBiaya.push({"type": "ppn_keluaran", "nilai": totalPpn });
+
+                        //non_tunai
+                    } else {
+                        mapBiaya.push({"type": "kas", "nilai": ((total - uangMuka) + totalPpn)  });
+                        mapBiaya.push({"type": "piutang_pasien_non_bpjs", "nilai": ((total - uangMuka) + totalPpn) });
+                    }
                 }
             });
 
@@ -518,9 +638,11 @@
             $('#fin_kabupaten').html(kabupaten);
             $('#fin_kecamatan').html(kecamatan);
             $('#fin_desa').html(desa);
+            $('#fin_bukti').val(bukti);
+            $('#fin_metode_bayar').val(metode);
             $('#body_tindakan_fin').html(table);
             $('#fin_id_detail_checkup').val(idDetailCheckup);
-            $('#save_fin').attr('onclick','confirmSaveFinalClaim(\''+idCheckup+'\')');
+            // $('#save_fin').attr('onclick','confirmSaveFinalClaim(\''+idCheckup+'\')');
             $('#modal-invoice').modal({show:true, backdrop:'static'});
         }, 100);
     }
@@ -567,6 +689,65 @@
         var plus = '<s:url value="/pages/images/icons8-plus-25.png"/>';
         $('#btn'+idRiwayat).attr('src',plus);
         $('#btn'+idRiwayat).attr('onclick', 'detailResep(\''+idResep+'\',\''+idRiwayat+'\')');
+    }
+
+    function confirmSavePembayaranTagihan(){
+        var metodeBayarDiAkhir = $('#metode_bayar').val();
+        var kodeBank = $('#bank').val();
+
+        if(metodeBayarDiAkhir != ''){
+
+            if(metodeBayarDiAkhir == "transfer"){
+                if(kodeBank != ''){
+                    $('#modal-confirm-dialog').modal('show');
+                    $('#save_con').attr('onclick','savePembayaranTagihan()');
+                }else{
+                    $('#warning_fin').show().fadeOut(5000);
+                    $('#msg_fin').text("Silahkan pilih bank terlebih dahulu..!");
+                }
+            }else{
+                $('#modal-confirm-dialog').modal('show');
+                $('#save_con').attr('onclick','savePembayaranTagihan()');
+            }
+        }else{
+            $('#warning_fin').show().fadeOut(5000);
+            $('#msg_fin').text("Silahkan pilih metode pembayaran terlebih dahulu..!");
+        }
+    }
+
+    function savePembayaranTagihan() {
+        $('#modal-confirm-dialog').modal('hide');
+        var idPasien = $("#fin_id_pasien").val();
+        var idDetailCheckup = $("#fin_id_detail_checkup").val();
+        var metodeBayarDiAkhir = $('#metode_bayar').val();
+        var kodeBank = $('#bank').val();
+        var isResep = $("#fin_is_resep").val();
+        var metodeBayarDiAwal = $('#fin_metode_bayar').val();
+        var bukti = $('#fin_bukti').val();
+        var noRekening = $('#no_rekening').val();
+
+        $('#save_fin').hide();
+        $('#load_fin').show();
+        dwr.engine.setAsync(true);
+        var jsonString =  JSON.stringify(mapBiaya);
+
+        KasirRawatJalanAction.savePembayaranTagihan(jsonString, idPasien, bukti, isResep, idDetailCheckup, metodeBayarDiAkhir, kodeBank, "JRI",metodeBayarDiAwal, noRekening, {
+            callback: function (response) {
+                console.log(response.msg);
+                if (response.status == "success") {
+                    // alert("success");
+                    $('#save_fin').show();
+                    $('#load_fin').hide();
+                    $('#modal-invoice').modal('hide');
+                    $('#info_dialog').dialog('open');
+                } else {
+                    $('#save_fin').show();
+                    $('#load_fin').hide();
+                    $('#warning_fin').show().fadeOut(5000);
+                    $('#msg_fin').text(response.msg);
+                }
+            }
+        });
     }
 
 </script>

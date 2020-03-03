@@ -55,10 +55,23 @@ public class TransDao extends GenericDao<ImTransEntity, String> {
 
     // Generate surrogate id from postgre
     public String getNextTransId() throws HibernateException {
-        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_tipe_rekening')");
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_trans')");
         Iterator<BigInteger> iter=query.list().iterator();
         String sId = String.format("%02d", iter.next());
 
         return sId;
+    }
+
+    public String getTipeBayarByTransId(String transId){
+        String result="";
+        String query = "  select tipe_pembayaran from im_akun_trans where trans_id='"+transId+"' and flag='Y'";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            result = results.toString();
+        }else {
+            result=null;
+        }
+        return result;
     }
 }

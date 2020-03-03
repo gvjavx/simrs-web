@@ -75,21 +75,13 @@
 
             <result name="search">/pages/com/neurix/simrs/master/obat/searchObat.jsp</result>
             <result name="init_add">/pages/com/neurix/simrs/master/obat/addObat.jsp</result>
-            <!--<result name="edit">/pages/com/neurix/simrs/master/pasien/editRawatPasien.jsp</result>-->
-            <!--<result name="delete">/pages/com/neurix/simrs/master/pasien/deletePasien.jsp</result>-->
 
-            <!--<result name="save_add">/pages/com/neurix/hris/master/keluarga/addKeluarga.jsp</result>-->
-            <!--<result name="save_edit">/pages/com/neurix/hris/master/keluarga/addKeluarga.jsp</result>-->
-            <!--<result name="failure">/pages/com/neurix/hris/master/keluarga/editKeluarga.jsp</result>-->
-
-
-
-
-
-            <!--<result name="error" type="httpheader">-->
-            <!--<param name="status">504</param>-->
-            <!--<param name="headers.message">${actionErrors}</param>-->
-            <!--</result>-->
+            <result name="print_barcode_id_pabrik" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/printBarcodeIDPabrik.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
         </action>
 
     </package>

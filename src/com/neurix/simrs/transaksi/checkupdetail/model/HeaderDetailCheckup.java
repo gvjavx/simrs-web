@@ -84,8 +84,23 @@ public class HeaderDetailCheckup extends BaseModel{
     private String jenisPembayaran;
     private String noUangMuka;
     private BigInteger jumlahUangMuka;
+    private BigInteger jumlahUangMukaDibayar;
+    private String noJurnal;
 
     private String notLike;
+    private String invoice;
+
+    private String noCheckupOnline;
+    private String metodePembayaran;
+    private String tipePelayanan;
+
+    public String getNoJurnal() {
+        return noJurnal;
+    }
+
+    public void setNoJurnal(String noJurnal) {
+        this.noJurnal = noJurnal;
+    }
 
     public String getNotLike() {
         return notLike;
@@ -95,17 +110,28 @@ public class HeaderDetailCheckup extends BaseModel{
         this.notLike = notLike;
     }
 
-    private String noNota;
-
-    private String noCheckupOnline;
-    private String metodePembayaran;
-
-    public String getNoNota() {
-        return noNota;
+    public String getTipePelayanan() {
+        return tipePelayanan;
     }
 
-    public void setNoNota(String noNota) {
-        this.noNota = noNota;
+    public void setTipePelayanan(String tipePelayanan) {
+        this.tipePelayanan = tipePelayanan;
+    }
+
+    public BigInteger getJumlahUangMukaDibayar() {
+        return jumlahUangMukaDibayar;
+    }
+
+    public void setJumlahUangMukaDibayar(BigInteger jumlahUangMukaDibayar) {
+        this.jumlahUangMukaDibayar = jumlahUangMukaDibayar;
+    }
+
+    public String getInvoice() {
+        return invoice;
+    }
+
+    public void setInvoice(String invoice) {
+        this.invoice = invoice;
     }
 
     public String getMetodePembayaran() {

@@ -4,6 +4,7 @@ import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsUangMukaPendaftaranEntity;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
@@ -44,6 +45,7 @@ public class UangMukaDao extends GenericDao<ItSimrsUangMukaPendaftaranEntity, St
             }
         }
 
+        criteria.addOrder(Order.desc("createdDate"));
         List<ItSimrsUangMukaPendaftaranEntity> results = criteria.list();
         return results;
     }

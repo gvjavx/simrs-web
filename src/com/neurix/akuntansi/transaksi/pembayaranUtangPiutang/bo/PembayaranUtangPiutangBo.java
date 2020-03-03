@@ -27,4 +27,6 @@ public interface PembayaranUtangPiutangBo extends BaseMasterBo<PembayaranUtangPi
     String saveAddPembayaran(PembayaranUtangPiutang bean, List<PembayaranUtangPiutangDetail> pembayaranUtangPiutangDetailList) throws GeneralBOException;
 
     List<PembayaranUtangPiutangDetail> getDetailPembayaran(String pembayaranId) throws GeneralBOException;
+
+    String getKodeRekeningKasJurnal(String noJurnal) throws GeneralBOException;
 }

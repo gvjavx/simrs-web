@@ -1891,6 +1891,13 @@ public class CutiPegawaiAction extends BaseMasterAction {
         session.setAttribute("listOfResultInisialisasiCuti",listOfResult);
         return status;
     }
+
+    public String cekStatusTanggal(String tglAwal){
+        String status="";
+        status = CommonUtil.cekDateBeforeNow(tglAwal);
+        return status;
+    }
+
     public String saveInisialisasi(){
         String status="";
         HttpSession session = ServletActionContext.getRequest().getSession();

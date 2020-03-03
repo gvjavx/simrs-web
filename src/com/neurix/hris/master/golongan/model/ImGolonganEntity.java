@@ -14,12 +14,21 @@ public class ImGolonganEntity implements Serializable {
 
     private String golonganId;
     private String golonganName;
+    private Integer level;
     private String flag;
     private String action;
     private Timestamp createdDate;
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
 
     public String getGolonganId() {
         return golonganId;

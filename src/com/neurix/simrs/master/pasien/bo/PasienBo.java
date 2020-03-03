@@ -17,6 +17,8 @@ public interface PasienBo extends GeneralBo {
     public void saveDelete(Pasien bean) throws GeneralBOException;
     public List<Pasien> getListComboPasien(String query) throws GeneralBOException;
 
+    List<Pasien> getTypeAheadPasienByIdAndName(String query) throws GeneralBOException;
+
     List<Pasien> getListComboPasienByBpjs(String query) throws GeneralBOException;
 
     public List<Pasien> getDataPasien(String desaId) throws GeneralBOException;

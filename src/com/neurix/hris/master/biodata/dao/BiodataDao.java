@@ -165,7 +165,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "\t( SELECT * FROM im_hris_pegawai ) pegawai LEFT JOIN\n" +
                 "\t( SELECT * FROM it_hris_pegawai_position ) posisi ON pegawai.nip=posisi.nip\n" +
                 "WHERE\n" +
-                "\tpegawai.flag='Y' AND posisi.branch_id='KD01' AND tanggal_pensiun<='"+tanggal6Bulan+"' AND tanggal_pensiun>='"+tanggalSekarang+"' AND posisi.flag='Y'";
+                "\tpegawai.flag='Y' AND tanggal_pensiun<='"+tanggal6Bulan+"' AND tanggal_pensiun>='"+tanggalSekarang+"' AND posisi.flag='Y'";
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
                 .list();
@@ -540,7 +540,8 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "\titPosisi.pjs_flag,\n" +
                 "\tpegawai.*,\n" +
                 "\tbagian.bagian_id,\n" +
-                "\tbagian.nama_bagian\n" +
+                "\tbagian.nama_bagian,\n" +
+                "\titPosisi.profesi_id\n" +
                 "from\n" +
                 "\tim_hris_pegawai pegawai \n" +
                 "\tleft join it_hris_pegawai_position itPosisi on itPosisi.nip = pegawai.nip \n" +
@@ -638,6 +639,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             }
             result.setBagianId((String) row[72]);
             result.setBagianName((String) row[73]);
+            result.setProfesiId((String)row[74]);
 
             listOfResult.add(result);
         }
@@ -978,7 +980,8 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "\tpegawai.nip, \n" +
                 "\tpegawai.nama_pegawai, \n" +
                 "\tposition.position_name, \n" +
-                "\tpegawai.tipe_pegawai\n" +
+                "\tpegawai.tipe_pegawai, \n" +
+                "\tposisi.profesi_id\n" +
                 "\n" +
                 "\tFROM im_hris_pegawai pegawai\n" +
                 "\t\tLEFT JOIN it_hris_pegawai_position posisi \n" +
@@ -1004,6 +1007,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             result.setNamaPegawai((String) row[1]);
             result.setPositionName((String) row[2]);
             result.setTipePegawai((String) row[3]);
+            result.setProfesiId((String)row[4]);
 
             listOfResult.add(result);
         }

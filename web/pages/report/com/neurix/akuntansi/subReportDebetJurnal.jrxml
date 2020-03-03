@@ -23,7 +23,7 @@ from
 	( select DISTINCT nomor_master,nama from im_akun_master) c ON c.nomor_master=a.master_id
 where
 	no_jurnal=$P{noJurnal} and
-	jumlah_kredit<>0
+	no_nota is not null
 ORDER BY jumlah_debit DESC]]>
 	</queryString>
 	<field name="no_jurnal" class="java.lang.String"/>
@@ -40,6 +40,7 @@ ORDER BY jumlah_debit DESC]]>
 	<field name="created_who" class="java.lang.String"/>
 	<field name="last_update_who" class="java.lang.String"/>
 	<field name="jurnal_detail_id" class="java.lang.String"/>
+	<field name="kd_barang" class="java.lang.String"/>
 	<field name="kode_rekening" class="java.lang.String"/>
 	<field name="nama" class="java.lang.String">
 		<fieldDescription><![CDATA[Nama Master]]></fieldDescription>
@@ -118,7 +119,7 @@ ORDER BY jumlah_debit DESC]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{jumlah_kredit}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{jumlah_debit}.compareTo( new BigDecimal(0))==0 ? $F{jumlah_kredit} : $F{jumlah_debit}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement key="textField" x="128" y="0" width="308" height="15" uuid="49dd8bc8-e1c2-44e1-9815-bce12d0897d4"/>
@@ -129,7 +130,7 @@ ORDER BY jumlah_debit DESC]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[ $F{nama} == null ? "" : $F{nama}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nama} == null ? "" : $F{nama}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

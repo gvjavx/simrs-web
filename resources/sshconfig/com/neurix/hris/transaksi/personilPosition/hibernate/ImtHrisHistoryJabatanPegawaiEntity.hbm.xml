@@ -39,6 +39,9 @@
         <property name="divisiId">
             <column name="divisi_id" sql-type="varchar" length="3" />
         </property>
+        <property name="profesiId">
+            <column name="profesi_id" sql-type="varchar" length="20" />
+        </property>
         <property name="tanggalSkMutasi">
             <column name="tanggal_sk_mutasi" sql-type="date"/>
         </property>
@@ -50,18 +53,6 @@
         </property>
         <property name="golonganId">
             <column name="golongan_id" sql-type="varchar" length="10" />
-        </property>
-        <property name="point">
-            <column name="point" sql-type="varchar" length="10" />
-        </property>
-        <property name="pointLebih">
-            <column name="point_lebih" sql-type="varchar" length="10" />
-        </property>
-        <property name="nilaiSmk">
-            <column name="nilai_smk" sql-type="varchar" length="10" />
-        </property>
-        <property name="gradeSmk">
-            <column name="grade_smk" sql-type="varchar" length="10" />
         </property>
         <property name="golonganName">
             <column name="golongan_name" sql-type="varchar" length="100" />

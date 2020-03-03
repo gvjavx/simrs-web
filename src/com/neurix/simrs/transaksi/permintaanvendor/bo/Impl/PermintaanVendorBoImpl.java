@@ -6,6 +6,7 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.obat.dao.ObatDao;
 import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
 import com.neurix.simrs.master.obat.model.Obat;
+import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.obatpoli.model.MtSimrsObatPoliEntity;
 import com.neurix.simrs.transaksi.permintaanvendor.bo.PermintaanVendorBo;
 import com.neurix.simrs.transaksi.permintaanvendor.dao.PermintaanVendorDao;
@@ -19,6 +20,7 @@ import com.neurix.simrs.transaksi.transaksiobat.dao.TransaksiObatDetailBatchDao;
 import com.neurix.simrs.transaksi.transaksiobat.dao.TransaksiObatDetailDao;
 import com.neurix.simrs.transaksi.transaksiobat.model.*;
 import org.apache.log4j.Logger;
+import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -1329,6 +1331,76 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 
         logger.info("[PermintaanVendorBoImpl.getListApprovedBatch] END <<<");
         return obatDetailList;
+    }
+
+    @Override
+    public CrudResponse tutupPurchaseOrder(String idPermintaanVendor, String noJurnal) throws GeneralBOException {
+
+        CrudResponse response = new CrudResponse();
+
+        MtSimrsPermintaanVendorEntity entity = new MtSimrsPermintaanVendorEntity();
+
+        try {
+            entity = permintaanVendorDao.getById("idPermintaanVendor", idPermintaanVendor);
+            response.setStatus("success");
+            response.setMsg("Berhasil");
+        }catch (HibernateException e){
+            logger.error("Found Error when update permintaan vendor "+e.getMessage());
+            response.setStatus("error");
+            response.setMsg("Found Error "+e.getMessage());
+        }
+
+        if(entity != null){
+            entity.setFlag("N");
+            entity.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+            entity.setLastUpdateWho(CommonUtil.userLogin());
+
+            try{
+                permintaanVendorDao.updateAndSave(entity);
+                response.setStatus("success");
+                response.setMsg("Berhasil");
+            }catch (HibernateException e){
+                logger.error("Found Error when update add "+e.getMessage());
+                response.setStatus("error");
+                response.setMsg("Found Error "+e.getMessage());
+            }
+
+            if(entity.getIdApprovalObat() != null){
+                ImtSimrsApprovalTransaksiObatEntity approveEntity = new ImtSimrsApprovalTransaksiObatEntity();
+
+                try {
+                    approveEntity = approvalTransaksiObatDao.getById("idApprovalObat", entity.getIdApprovalObat());
+                    response.setStatus("success");
+                    response.setMsg("Berhasil");
+                }catch (HibernateException e){
+                    logger.error("Found Error "+e.getMessage());
+                    response.setStatus("error");
+                    response.setMsg("Found Error "+e.getMessage());
+                }
+
+                if(approveEntity != null){
+
+                    approveEntity.setApprovalFlag("Y");
+                    approveEntity.setFlag("N");
+                    approveEntity.setApprovePerson(CommonUtil.userLogin());
+                    approveEntity.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+                    approveEntity.setLastUpdateWho(CommonUtil.userLogin());
+                    approveEntity.setNoJurnal(noJurnal);
+
+                    try{
+                        approvalTransaksiObatDao.updateAndSave(approveEntity);
+                        response.setStatus("success");
+                        response.setMsg("Berhasil");
+                    }catch (HibernateException e){
+                        logger.error("Found Error when update add "+e.getMessage());
+                        response.setStatus("error");
+                        response.setMsg("Found Error "+e.getMessage());
+                    }
+                }
+            }
+        }
+
+        return response;
     }
 
     // for get sequence id

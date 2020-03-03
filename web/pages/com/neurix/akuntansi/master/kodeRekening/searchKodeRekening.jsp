@@ -477,8 +477,8 @@
                     tmp_table += '<tr style="font-size: 12px;" class=" treegrid-' + data2[i]._id+ '">' +
                         '<td >' + data2[i].coa + '</td>' +
                         '<td >' + data2[i].nama + '</td>' +
-                        '<td align="center">' + data2[i].level+ '</td>' +
-                        '<td align="center">' + data2[i].tipeRekeningName + '</td>' +
+                        '<td align="center" class="ceknull">' + data2[i].level+ '</td>' +
+                        '<td align="center" class="ceknull">' + data2[i].tipeRekeningName + '</td>' +
                         '<td align="center">' +
                         "<a href='javascript:;' class ='item-edit' data ='"+data2[i]._id+"' >" +
                         "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>"+
@@ -495,8 +495,8 @@
                         + '<td style="border: 2px solid black;">' +
                         '<td >' + data2[i].coa + '</td>' +
                         '<td >' + data2[i].nama + '</td>' +
-                        '<td align="center">' + data2[i].level + '</td>' +
-                        '<td align="center">' + data2[i].tipeRekeningName + '</td>' +
+                        '<td align="center" class="ceknull">' + data2[i].level + '</td>' +
+                        '<td align="center" class="ceknull">' + data2[i].tipeRekeningName + '</td>' +
                         '<td align="center">' +
                         "<a href='javascript:;' class ='item-edit' data ='"+data2[i]._id+"' >" +
                         "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>"+
@@ -509,10 +509,10 @@
                         '</td>' +
                         "</tr>";
                 }
-
             }
             $('.tree').append(tmp_table);
-        });
+            $(".tree .ceknull:contains('null')").html("-");
+    });
     }
     function cekAvailableCoaEdit(nilai){
         var coa = nilai.value;

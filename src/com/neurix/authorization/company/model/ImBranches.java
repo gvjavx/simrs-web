@@ -53,6 +53,14 @@ public class ImBranches implements Serializable {
     private String payorCd;
     private String coderNik;
 
+    public String getAlamatSurat() {
+        return alamatSurat;
+    }
+
+    public void setAlamatSurat(String alamatSurat) {
+        this.alamatSurat = alamatSurat;
+    }
+
     public String getPpkPelayanan() {
         return ppkPelayanan;
     }
@@ -124,14 +132,6 @@ public class ImBranches implements Serializable {
     private BigDecimal percentKsPers;
     private BigDecimal percentTkKary;
     private BigDecimal percentTkPers;
-
-    public String getAlamatSurat() {
-        return alamatSurat;
-    }
-
-    public void setAlamatSurat(String alamatSurat) {
-        this.alamatSurat = alamatSurat;
-    }
 
     public BigDecimal getMaxBpjsKs() {
         return maxBpjsKs;

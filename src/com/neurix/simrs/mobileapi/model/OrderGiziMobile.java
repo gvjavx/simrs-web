@@ -11,7 +11,7 @@ public class OrderGiziMobile {
 
     private String idOrderGizi;
     private String idRawatInap;
-    private String  tglOrder;
+    private String tglOrder;
     private String dietPagi;
     private String bentukMakanPagi;
     private String dietSiang;
@@ -26,6 +26,44 @@ public class OrderGiziMobile {
     private String lastUpdateWho;
     private String approveFlag;
     private String diterimaFlag;
+
+    private String tarifTotal;
+
+    private String idDietGizi;
+    private String keterangan;
+    private String bentukDiet;
+
+    public String getTarifTotal() {
+        return tarifTotal;
+    }
+
+    public void setTarifTotal(String tarifTotal) {
+        this.tarifTotal = tarifTotal;
+    }
+
+    public String getIdDietGizi() {
+        return idDietGizi;
+    }
+
+    public void setIdDietGizi(String idDietGizi) {
+        this.idDietGizi = idDietGizi;
+    }
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
+    public String getBentukDiet() {
+        return bentukDiet;
+    }
+
+    public void setBentukDiet(String bentukDiet) {
+        this.bentukDiet = bentukDiet;
+    }
 
     public String getIdOrderGizi() {
         return idOrderGizi;

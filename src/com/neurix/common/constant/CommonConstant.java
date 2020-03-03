@@ -49,6 +49,7 @@ public class CommonConstant {
     public final static String RESOURCE_PATH_SAVED_UPLOAD_PAYMENT_DIRECTORY = "C:\\xampp\\tomcat\\webapps\\";
 
     //sodiq, 18 Nov 2019, Upload KTP pasien
+    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = "C:\\Users\\pc001\\Pictures";
 //    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = "C:\\Users\\pc001\\Pictures";
 //    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = "C:\\Users\\pc001\\Pictures";
 //    public final static String RESOURCE_PATH_IMG_ASSET = "C:\\apache-tomcat-8.5.40\\webapps";
@@ -56,7 +57,7 @@ public class CommonConstant {
 
 
 //    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY="C:\\Users\\Toshiba\\Pictures";
-    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = "/mnt/image";
+//    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = "/mnt/image";
     public final static String EXTERNAL_IMG_URI = "/simrs/images";
 
     public final static String RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY = CommonUtil.getUploadFolderValue();
@@ -107,6 +108,7 @@ public class CommonConstant {
     //    public final static String URL_IMAGE_LOGO_REPORT = "C:\\Users\\Ferdi\\Downloads\\airnav2.jpg";
 //    public final static String URL_IMAGE_LOGO_REPORT = "C:\\tomcat-7-64x\\webapps\\hris\\pages\\images\\LOGO-RW.png";
         public final static String URL_IMAGE_LOGO_REPORT = "/opt/tomcat/webapps/simrs/pages/images/LOGO-RW.png";
+
     public final static String URL_LOGO_REPORT = "/opt/tomcat/webapps/simrs/pages/images/";
 
 
@@ -117,6 +119,17 @@ public class CommonConstant {
     public final static String REQUEST_CREDIT_NOTE = "RCN";
     public final static String APPROVE_CREDIT_NOTE = "ACN";
     public final static String NOTAPPROVE_CREDIT_NOTE = "NCN";
+
+
+    public final static String REPORT_PAYROLL= "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayroll.jrxml";
+    public final static String REPORT_PAYROLL_THR= "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayrollthr.jrxml";
+    public final static String REPORT_PAYROLL_JASPROD= "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayrollJasopr.jrxml";
+    public final static String REPORT_PAYROLL_PENSIUN= "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayrollPensiun.jrxml";
+    public final static String REPORT_PAYROLL_PMP= "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayrollJubileum.jrxml";
+    public final static String REPORT_PAYROLL_INSENTIF= "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayrollInsentif.jrxml";
+    public final static String REPORT_PAYROLL_CUTI_PANJANG= "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayrollCutiPanjang.jrxml";
+    public final static String REPORT_PAYROLL_CUTI_TAHUNAN= "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayrollCutiTahunan.jrxml";
+
 
     //ptpnx e-farming
     public final static String ROLE_MANAGER_QC = "MANAGER QC";

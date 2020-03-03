@@ -12,6 +12,7 @@
           p:shiftDao-ref="shiftDao"
           p:branchDao-ref="branchDao"
           p:kelompokPositionDao-ref="kelompokPositionDao"
+          p:profesiDao-ref="profesiDao"
     />
     <bean id="shiftBoProxy"
           class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -36,6 +37,8 @@
     </bean>
 
     <bean id="shiftDao" class="com.neurix.hris.master.shift.dao.ShiftDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="profesiDao" class="com.neurix.hris.master.profesi.dao.ProfesiDao"
           p:sessionFactory-ref="sessionFactory" />
 
 </beans>

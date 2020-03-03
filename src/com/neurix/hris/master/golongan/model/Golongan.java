@@ -14,6 +14,24 @@ import java.sql.Timestamp;
 public class Golongan extends BaseModel {
     private String golonganId;
     private String golonganName;
+    private String stLevel;
+    private Integer level;
+
+    public String getStLevel() {
+        return stLevel;
+    }
+
+    public void setStLevel(String stLevel) {
+        this.stLevel = stLevel;
+    }
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
 
     public String getGolonganId() {
         return golonganId;

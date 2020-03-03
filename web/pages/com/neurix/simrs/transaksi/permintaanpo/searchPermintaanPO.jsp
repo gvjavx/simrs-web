@@ -10,6 +10,7 @@
     <%@ include file="/pages/common/header.jsp" %>
     <style>
     </style>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/PermintaanVendorAction.js"/>'></script>
     <script type='text/javascript'>
 
         $(document).ready(function () {
@@ -162,7 +163,7 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar PO</h3>
                     </div>
                     <div class="box-body">
-                        <table id="myTable" class="table table-bordered table-striped">
+                        <table id="sortTable" class="table table-bordered table-striped">
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>ID PO</td>
@@ -196,6 +197,7 @@
                                             <s:a href="%{print_po}" target="_blink">
                                                 <img class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">
                                             </s:a>
+                                            <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-test-passed-25-2.png"/>" onclick="showDetailListObat('<s:property value="idPermintaanVendor"/>')">
                                         </s:if>
                                     </td>
                                 </tr>
@@ -460,9 +462,132 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-detail">
+    <div class="modal-dialog modal-flat" style="width: 60%">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Detail list obat <span id="detail_batch"></span>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none;" id="warning_detail">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_detail"></p>
+                </div>
+                <div class="box">
+                    <table class="table table-striped table-bordered" id="tabel_detail">
+                        <thead>
+                        <td>ID Barang</td>
+                        <td>Nama Obat</td>
+                        <td align="center">Qty Approve</td>
+                        <td align="center">Jenis Satuan</td>
+                        <td align="center">Action</td>
+                        </thead>
+                        <tbody id="body_detail">
+                        </tbody>
+                    </table>
+                    <p id="loading_detail" style="color: #00a65a; display: none"><img src="<s:url value="/pages/images/spinner.gif"/>" style="height: 40px; width: 40px;"> Sedang mengambil data...</p>
+                </div>
+                <input type="hidden" id="id_permintaan_vendor">
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_detail" onclick="confirmSaveTutup()"><i
+                        class="fa fa-arrow-right"></i> Save
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
+                        id="load_detail"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-confirm-dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Confirmation
+                </h4>
+            </div>
+            <div class="modal-body">
+                <h4>Do you want save this record?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
+                </button>
+                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes            </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
+
+    function showDetailListObat(idpermintaanPo){
+        $('#modal-detail').modal({show:true, backdrop:'static'});
+        $('#loading_detail').show();
+        $('#id_permintaan_vendor').val(idpermintaanPo);
+        dwr.engine.setAsync(true);
+        var table = "";
+
+        PermintaanVendorAction.getListDetailObatApproved(idpermintaanPo, null, {
+            callback: function (response) {
+                if (response != null) {
+                    $.each(response, function (i, item) {
+                        table += "<tr>" +
+                            "<td>" + item.idBarang + "</td>" +
+                            "<td>" + item.namaObat + "</td>" +
+                            "<td align='center'>" + item.qtyApprove + "</td>" +
+                            "<td align='center'>" + item.jenisSatuan + "</td>" +
+                            "<td align='center'>" + '<a target="_blank" href="printBarcodeBarang_permintaanpo.action?id='+item.idBarang+'">' +
+                            '<img class="hvr-grow" src="<s:url value="/pages/images/icons8-barcode-scanner-25.png"/>" style="cursor: pointer;"></a>'+
+                            "</td>" +
+                            "</tr>";
+                    });
+                    $('#loading_detail').hide();
+                } else {
+                    $('#loading_detail').hide();
+                }
+                $('#body_detail').html(table);
+            }
+        });
+    }
+
+    function confirmSaveTutup(){
+        $('#modal-confirm-dialog').modal('show');
+        $('#save_con').attr('onclick','saveTutup()');
+    }
+
+    function saveTutup() {
+        $('#modal-confirm-dialog').modal('hide');
+        var idPermintaan = $('#id_permintaan_vendor').val();
+        $('#save_detail').hide();
+        $('#load_detail').show();
+        dwr.engine.setAsync(true);
+        PermintaanVendorAction.tutupPurchaseOrder(idPermintaan, {callback: function (response) {
+                if (response.status == "success") {
+                    $('#modal-detail').modal('hide');
+                    $('#info_dialog').dialog('open');
+                    $('#save_detail').show();
+                    $('#load_detail').hide();
+                } else {
+                    $('#save_detail').show();
+                    $('#load_detail').hide();
+                    $('#warning_detail').show().fadeOut(5000);
+                    $('#msg_detail').text(response.msg);
+                }
+            }
+        });
+    }
 
     function toContent() {
         window.location.reload(true);

@@ -30,6 +30,7 @@
     <import resource="sshconfig/com/neurix/hris/master/golonganPkwt/spring/GolonganPkwtBean.xml"/>
     <import resource="sshconfig/com/neurix/hris/master/updateGolongan/spring/ImtUpdateGolonganBean.xml"/>
     <import resource="sshconfig/com/neurix/hris/master/department/spring/DepartmentBean.xml"/>
+    <import resource="sshconfig/com/neurix/hris/master/profesi/spring/ProfesiBean.xml"/>
     <import resource="sshconfig/com/neurix/hris/master/strukturJabatan/spring/StrukturJabatanBean.xml"/>
     <import resource="sshconfig/com/neurix/hris/master/ijin/spring/IjinBean.xml"/>
     <import resource="sshconfig/com/neurix/hris/master/tipeNotif/spring/TipeNotifBean.xml"/>
@@ -196,5 +197,7 @@
     <import resource="sshconfig/com/neurix/akuntansi/transaksi/jurnal/spring/JurnalBean.xml"/>
     <import resource="sshconfig/com/neurix/akuntansi/transaksi/pembayaranUtangPiutang/spring/PembayaranUtangPiutangBean.xml"/>
     <import resource="sshconfig/com/neurix/akuntansi/transaksi/billingSystem/spring/BillingSystemBean.xml"/>
+    <import resource="sshconfig/com/neurix/akuntansi/master/reportDetail/spring/ReportDetailBean.xml"/>
+    <import resource="sshconfig/com/neurix/akuntansi/master/mappingJurnal/spring/MappingJurnalBean.xml"/>
 
 </beans>

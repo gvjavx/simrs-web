@@ -49,6 +49,8 @@ import org.hibernate.HibernateException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -149,6 +151,8 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             detailCheckup.setLastUpdateWho(entity.getLastUpdateWho());
             detailCheckup.setTarifBpjs(entity.getTarifBpjs());
             detailCheckup.setNoSep(entity.getNoSep());
+            detailCheckup.setInvoice(entity.getInvoice());
+            detailCheckup.setNoJurnal(entity.getNoJurnal());
 
             if (detailCheckup.getStatusPeriksa() != null && !"".equalsIgnoreCase(detailCheckup.getStatusPeriksa())) {
                 StatusPasien statusPasien = new StatusPasien();
@@ -181,8 +185,8 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             }
             if (pelayananEntity != null) {
                 detailCheckup.setNamaPelayanan(pelayananEntity.getNamaPelayanan());
+                detailCheckup.setTipePelayanan(pelayananEntity.getTipePelayanan());
             }
-
             results.add(detailCheckup);
         }
 
@@ -213,7 +217,8 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             entity.setCaraPasienPulang(bean.getCaraPasienPulang());
             entity.setPendamping(bean.getPendamping());
             entity.setTempatTujuan(bean.getTempatTujuan());
-            entity.setInvoice(bean.getNoNota());
+            entity.setInvoice(bean.getInvoice());
+//            entity.setMetodePembayaran(bean.getMetodePembayaran());
 
             try {
                 checkupDetailDao.updateAndSave(entity);
@@ -291,6 +296,12 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         logger.info("[CheckupDetailBoImpl.saveEdit] End <<<<<<<<");
     }
 
+    private String dateFormater(String type){
+        java.sql.Date date = new java.sql.Date(new java.util.Date().getTime());
+        DateFormat df = new SimpleDateFormat(type);
+        return df.format(date);
+    }
+
     private List<ItSimrsHeaderChekupEntity> getListEntityCheckup(HeaderCheckup bean) throws GeneralBOException {
         logger.info("[CheckupDetailBoImpl.saveEdit] Start >>>>>>>");
         List<ItSimrsHeaderChekupEntity> entities = null;
@@ -331,6 +342,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         detailCheckupEntity.setTglAntrian(bean.getCreatedDate());
         detailCheckupEntity.setNoSep(bean.getNoSep());
         detailCheckupEntity.setTarifBpjs(bean.getTarifBpjs());
+        detailCheckupEntity.setMetodePembayaran(bean.getMetodePembayaran());
 
         try {
             checkupDetailDao.addAndSave(detailCheckupEntity);
@@ -476,6 +488,37 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
 
                     }
                 }
+            }
+        }
+
+        if(!"bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
+            // save uang muka
+            ItSimrsUangMukaPendaftaranEntity uangMukaPendaftaranEntity = new ItSimrsUangMukaPendaftaranEntity();
+            uangMukaPendaftaranEntity.setId("UM"+CommonUtil.userBranchLogin()+dateFormater("MM")+dateFormater("yy")+uangMukaDao.getNextId());
+            uangMukaPendaftaranEntity.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
+            uangMukaPendaftaranEntity.setFlag("Y");
+            uangMukaPendaftaranEntity.setAction("C");
+            uangMukaPendaftaranEntity.setCreatedDate(bean.getCreatedDate());
+            uangMukaPendaftaranEntity.setCreatedWho(bean.getCreatedWho());
+            uangMukaPendaftaranEntity.setLastUpdate(bean.getCreatedDate());
+            uangMukaPendaftaranEntity.setLastUpdateWho(bean.getCreatedWho());
+
+            if (bean.getInvoice() != null){
+                uangMukaPendaftaranEntity.setNoNota(bean.getInvoice());
+                uangMukaPendaftaranEntity.setStatusBayar("Y");
+            }
+
+            if ("".equalsIgnoreCase(bean.getJumlahUangMuka().toString()) || bean.getJumlahUangMuka() == null || bean.getJumlahUangMuka().compareTo(new BigInteger(String.valueOf(0))) == 0){
+                uangMukaPendaftaranEntity.setJumlah(new BigInteger(String.valueOf(0)));
+            } else {
+                uangMukaPendaftaranEntity.setJumlah(bean.getJumlahUangMuka());
+            }
+
+            try {
+                uangMukaDao.addAndSave(uangMukaPendaftaranEntity);
+            } catch (HibernateException e){
+                logger.error("[CheckupBoImpl.saveAdd] Error When Saving" +e.getMessage());
+                throw new GeneralBOException("[CheckupBoImpl.saveAdd] Error When Saving"+ e.getMessage());
             }
         }
 
@@ -951,7 +994,8 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                 detailCheckupEntity.setAction("U");
                 detailCheckupEntity.setLastUpdate(bean.getLastUpdate());
                 detailCheckupEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                detailCheckupEntity.setInvoice(bean.getNoNota());
+                detailCheckupEntity.setInvoice(bean.getInvoice());
+                detailCheckupEntity.setNoJurnal(bean.getNoJurnal());
                 try {
                     checkupDetailDao.updateAndSave(detailCheckupEntity);
                 } catch (HibernateException e) {
@@ -960,6 +1004,32 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                 }
             }
         }
+    }
+
+    @Override
+    public CheckResponse updateInvoiceBpjs(String idDetailCheckup, String invNumber) {
+
+        CheckResponse response = new CheckResponse();
+
+        HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+        detailCheckup.setIdDetailCheckup(idDetailCheckup);
+        List<ItSimrsHeaderDetailCheckupEntity> detailCheckupEntities = getListEntityByCriteria(detailCheckup);
+
+        if (detailCheckupEntities.size()>0){
+            ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = detailCheckupEntities.get(0);
+            detailCheckupEntity.setInvoice(invNumber);
+            try {
+                checkupDetailDao.updateAndSave(detailCheckupEntity);
+                response.setStatus("success");
+            } catch (HibernateException e){
+                response.setStatus("error");
+                response.setMessage("[PermintaanResepBoImpl.updateStatusBayarDetailCheckup] ERROR. "+ e);
+                logger.error("[PermintaanResepBoImpl.updateStatusBayarDetailCheckup] ERROR. ", e);
+                throw new GeneralBOException("[PermintaanResepBoImpl.updateStatusBayarDetailCheckup] ERROR. ", e);
+            }
+        }
+
+        return response;
     }
 
     @Override

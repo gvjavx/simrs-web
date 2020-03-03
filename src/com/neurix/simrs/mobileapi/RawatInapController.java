@@ -885,6 +885,9 @@ public class RawatInapController implements ModelDriven<Object> {
                     orderGiziMobile.setIdRawatInap(item.getIdRawatInap());
                     orderGiziMobile.setApproveFlag(item.getApproveFlag());
                     orderGiziMobile.setDiterimaFlag(item.getDiterimaFlag());
+                    orderGiziMobile.setBentukDiet(item.getBentukDiet());
+                    orderGiziMobile.setIdDietGizi(item.getIdDietGizi());
+                    orderGiziMobile.setKeterangan(item.getKeterangan());
 
                     if (item.getTglOrder() != null) {
                         orderGiziMobile.setTglOrder(item.getTglOrder().toString());
@@ -1082,6 +1085,8 @@ public class RawatInapController implements ModelDriven<Object> {
                     monVitalSignMobile.setJam(item.getJam().toString());
                     monVitalSignMobile.setNafas(item.getNafas().toString());
                     monVitalSignMobile.setNadi(item.getNadi().toString());
+                    monVitalSignMobile.setSuhu(item.getSuhu().toString());
+                    monVitalSignMobile.setStDate(item.getStDate());
 
                     listOfMonVitalSign.add(monVitalSignMobile);
                 }
@@ -1155,6 +1160,7 @@ public class RawatInapController implements ModelDriven<Object> {
         if  (action.equalsIgnoreCase("saveMonVitalSign")){
             ItSimrsMonVitalSignEntity itSimrsMonVitalSignEntity = new ItSimrsMonVitalSignEntity();
             itSimrsMonVitalSignEntity.setIdDetailCheckup(addMonVitalSign.getIdDetailCheckup());
+            itSimrsMonVitalSignEntity.setNoCheckup(addMonVitalSign.getNoCheckup());
             itSimrsMonVitalSignEntity.setJam(Integer.valueOf(addMonVitalSign.getJam()));
             itSimrsMonVitalSignEntity.setNadi(Integer.valueOf(addMonVitalSign.getNadi()));
             itSimrsMonVitalSignEntity.setNafas(Integer.valueOf(addMonVitalSign.getNafas()));

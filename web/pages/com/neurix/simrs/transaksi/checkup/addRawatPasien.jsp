@@ -590,8 +590,7 @@
                                                 <s:textfield id="no_ktp" name="headerCheckup.noKtp"
                                                              onkeypress="$(this).css('border','')"
                                                              cssClass="form-control" cssStyle="margin-top: 7px"
-                                                             data-inputmask="'mask': ['9999999999999999']"
-                                                             data-mask=""/>
+                                                             />
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -1056,6 +1055,7 @@
                             <s:hidden name="headerCheckup.idPelayananBpjs" id="idPelayananBpjs"></s:hidden>
                             <s:hidden name="headerCheckup.noCheckupOnline"></s:hidden>
 
+                            <s:if test='tipe != "bpjs"'>
                             <div class="box-header with-border"></div>
                             <div class="box-header with-border">
                                 <h3 class="box-title"><i class="fa fa-money"></i> Pembayaran</h3>
@@ -1092,7 +1092,7 @@
                                     </div>
                                 </div>
                             </div>
-
+                            </s:if>
                             <div class="box-header with-border"></div>
                             <div class="box-body">
                                 <div class="row">
@@ -1574,7 +1574,9 @@
                         icon = "fa-info";
                         title = "Info!";
                         warnClass = "alert-success";
-                        msg = "Nomor Rujukan Berhasil Diverifikasi..!";
+                        msg =   '<p>Nomor Rujukan Berhasil Diverifikasi..!</p>'+
+                                '<p>Jenis Rawat  : '+response.namaPelayanan+'</p>'+
+                                '<p>Poli Rujukan : '+response.namaPoliRujukan+'</p>';
                         $('#idPelayananBpjs').val(response.kodePoliRujukan);
                         $('#ppk_rujukan').val(response.kdProviderProvUmum);
                         $('#intansi_perujuk').val(response.namaProvPerujuk);

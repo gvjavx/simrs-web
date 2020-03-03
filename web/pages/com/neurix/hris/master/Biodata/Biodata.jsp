@@ -435,6 +435,24 @@
                                         </table>
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>Profesi :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:action id="comboProfesi" namespace="/profesi" name="searchProfesi_profesi"/>
+                                            <s:if test="isDelete()">
+                                                <s:select list="#comboProfesi.listComboProfesi" id="profesi1" name="biodata.profesiId" disabled="true" readonly="true"
+                                                          listKey="profesiId" listValue="profesiName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
+                                            </s:if>
+                                            <s:else>
+                                                <s:select list="#comboProfesi.listComboProfesi" id="profesi1" name="biodata.profesiId"
+                                                          listKey="profesiId" listValue="profesiName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
+                                            </s:else>
+                                        </table>
+                                    </td>
+                                </tr>
 
                                 <tr>
                                     <td>
@@ -812,18 +830,18 @@
 
                                 <tr>
                                     <td>
-                                        <label class="control-label"><small>Golongan :</small></label>
+                                        <label class="control-label"><small>Level :</small></label>
                                     </td>
                                     <td id="golongan1Group">
                                         <table>
                                             <s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>
                                             <s:if test="isDelete()">
                                                 <s:select list="#initComboTipe.listComboGolongan" id="golongan1" name="biodata.golongan" disabled="true"
-                                                          listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                          listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                             </s:if>
                                             <s:else>
                                                 <s:select list="#initComboTipe.listComboGolongan" id="golongan1" name="biodata.golongan"
-                                                          listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                          listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                             </s:else>
 
                                         </table>
@@ -845,22 +863,6 @@
                                         </table>
                                     </td>
                                 </tr>
-
-                                <%--<tr>
-                                    <td>
-                                        <label class="control-label"><small>Poin :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:if test="isDelete()">
-                                                <s:textfield id="poin" name="biodata.point" required="true" disabled="false" cssClass="form-control" readonly="true"/>
-                                            </s:if>
-                                            <s:else>
-                                                <s:textfield id="poin"  name="biodata.point" required="true" cssClass="form-control"/>
-                                            </s:else>
-                                        </table>
-                                    </td>
-                                </tr>--%>
 
                                 <tr>
                                     <td>
@@ -885,8 +887,18 @@
                                     <td>
                                         <table>
                                             <s:action id="initComboTipe" namespace="/golongan" name="initComboGolonganDapen_golongan"/>
-                                            <s:select list="#initComboTipe.listComboGolonganDapen" id="golongan2" name="biodata.golonganDapenId"
+
+                                            <s:if test="isDelete()">
+                                                <s:select list="#initComboTipe.listComboGolonganDapen" id="golongan2" name="biodata.golonganDapenId"
+                                                          listKey="golonganDapenId" listValue="golonganDapenName" headerKey="" headerValue="[Select one]" cssClass="form-control" disabled="true" readonly="true"/>
+                                                <s:textfield id="golongan2" name="biodata.golonganDapenId" required="true" disabled="true" cssClass="form-control" readonly="true"/>
+
+                                            </s:if>
+                                            <s:else>
+                                                <s:select list="#initComboTipe.listComboGolonganDapen" id="golongan2" name="biodata.golonganDapenId"
                                                           listKey="golonganDapenId" listValue="golonganDapenName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                            </s:else>
+
                                         </table>
                                     </td>
                                 </tr>
@@ -901,7 +913,7 @@
                                             <s:if test="isDelete()">
                                                 <s:select list="#listComboDanaPensiun.listComboPayrollDanaPensiun"
                                                           id="danaPensiun" name="biodata.danaPensiun" disabled="true"
-                                                          listKey="danaPensiunId" listValue="danaPensiun" headerValue="[Select one]" cssClass="form-control"/>
+                                                          listKey="danaPensiunId" listValue="danaPensiun" headerValue="[Select one]" cssClass="form-control" readonly="true" />
                                             </s:if>
                                             <s:else>
                                                 <s:select list="#listComboDanaPensiun.listComboPayrollDanaPensiun"
@@ -1594,6 +1606,14 @@
                             <input type="text" class="form-control" id="jabatanLain">
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Profesi : </label>
+                        <div class="col-sm-8">
+                            <s:action id="comboProfesi" namespace="/profesi" name="searchProfesi_profesi"/>
+                            <s:select list="#comboProfesi.listComboProfesi" id="profesi3" name="biodata.profesiId"
+                                      listKey="profesiId" listValue="profesiName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
+                        </div>
+                    </div>
 
                     <div class="form-group">
                         <label class="control-label col-sm-4" >Tanggal Diangkat: </label>
@@ -1622,7 +1642,7 @@
                         <div class="col-sm-8" id="golonganHistory1Group">
                             <s:action id="comboGolongan" namespace="/golongan" name="initComboGolongan_golongan"/>
                             <s:select list="#comboGolongan.listComboGolongan" id="pengalamanGolonganId1"
-                                      listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                      listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                         </div>
                         <div class="col-sm-8" id="golonganHistory2Group">
                             <s:action id="initComboTipe" namespace="/golongan" name="initComboGolonganPkwtHistory_golongan"/>
@@ -2693,6 +2713,7 @@
                         "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc'>Nama Perusahaan</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc''>Jabatan</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc''>Profesi</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal / Tahun</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc''>Tipe Pegawai</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc''>Golongan</th>" +
@@ -2705,6 +2726,7 @@
                         "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc'>Nama Perusahaan</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc''>Jabatan</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc''>Profesi</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal / Tahun</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc''>Tipe Pegawai</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc''>Golongan</th>" +
@@ -2719,6 +2741,7 @@
                             '<td >' + (i + 1) + '</td>' +
                             '<td >' + item.namaPerusahaan + '</td>' +
                             '<td align="center">' + item.jabatan + '</td>' +
+                            '<td align="center">' + item.profesiName + '</td>' +
                             '<td align="center">' + item.stTtahunMasuk + '</td>' +
                             '<td align="center">' + item.tipePegawai + '</td>' +
                             '<td align="center">' + item.golonganName + '</td>' +
@@ -2739,6 +2762,7 @@
                             '<td >' + (i + 1) + '</td>' +
                             '<td >' + item.namaPerusahaan + '</td>' +
                             '<td align="center">' + item.jabatan + '</td>' +
+                            '<td align="center">' + item.profesiName + '</td>' +
                             '<td align="center">' + item.stTtahunMasuk + '</td>' +
                             '<td align="center">' + item.tipePegawai + '</td>' +
                             '<td align="center">' + item.golonganName + '</td>' +
@@ -3446,6 +3470,7 @@
             var branchId = document.getElementById("branchIdRiwayatKerja").value;
             var divisiId = document.getElementById("departmentId").value;
             var posisiId = document.getElementById("positionId3").value;
+            var profesiId = document.getElementById("profesi3").value;
             var tanggal = document.getElementById("pengalamanTanggalMasuk").value;
             var tanggalKeluar = document.getElementById("pengalamanTanggalKeluar").value;
             var tipePegawaiId = document.getElementById("pengalamanTipePegawaiId").value;
@@ -3495,7 +3520,7 @@
             </s:if>
             <s:else>
             if (url == 'addPengalamanKerja') {
-                if (branchId == '' && divisiId == '' && posisiId == '' && tanggal == ''&& tanggalKeluar ==''&& tipePegawaiId =='') {
+                if (branchId == '' && divisiId == '' && posisiId == '' && tanggal == ''&& tanggalKeluar ==''&& tipePegawaiId ==''|| profesiId=='') {
                     alert('Isi Field Terlebih Dahulu');
                 } else {
                     var msg ="Field:  \n";
@@ -3509,6 +3534,9 @@
                         }
                         if(posisiId == ''){
                             msg+="- Jabatan\n";
+                        }
+                        if(profesiId == ''){
+                            msg+="- Profesi\n";
                         }
                         if(tanggal == ''){
                             msg+="- Tanggal Diangkat\n";
@@ -3537,7 +3565,7 @@
                         if (confirm('Are you sure you want to save this Record?')) {
                             dwr.engine.setAsync(false);
                             BiodataAction.saveAddDataPengalamaKerja(nip, branchId, divisiId, posisiId, tanggal,tanggalKeluar, tipePegawaiId,
-                                    golonganId, pjsFlag, perusahaanLain, bidangLain, jabatanLain, aktifFlag,  function (listdata) {
+                                    golonganId, pjsFlag, perusahaanLain, bidangLain, jabatanLain, aktifFlag,profesiId,  function (listdata) {
                                         alert('Data Successfully Added');
                                         $('#modal-pengalamanKerja').modal('hide');
                                         $('#myFormPengalaman')[0].reset();

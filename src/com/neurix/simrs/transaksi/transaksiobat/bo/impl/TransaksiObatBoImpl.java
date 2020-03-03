@@ -1151,6 +1151,7 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                     approvalEntity.setApprovePerson(bean.getLastUpdateWho());
                     approvalEntity.setLastUpdate(bean.getLastUpdate());
                     approvalEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    approvalEntity.setNoJurnal(bean.getNoJurnal());
 
                     try {
                         approvalTransaksiObatDao.updateAndSave(approvalEntity);
@@ -1518,6 +1519,7 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                 approvalEntity.setAction("U");
                 approvalEntity.setLastUpdate(bean.getLastUpdate());
                 approvalEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                approvalEntity.setNoJurnal(bean.getNoJurnal());
 
                 try {
                     approvalTransaksiObatDao.updateAndSave(approvalEntity);
@@ -1840,6 +1842,11 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
             }
         }
         logger.info("[ObatPoliBoImpl.updateAddStockObatPoli] END <<<<<<<<<<");
+    }
+
+    @Override
+    public List<TransaksiObatDetail> getListPermintaanBatch(String idApproval, String flagDiterima) throws GeneralBOException {
+        return transaksiObatDetailDao.getListOfObatBatchPermintaan(idApproval, flagDiterima);
     }
 
     public void setApprovalTransaksiObatDao(ApprovalTransaksiObatDao approvalTransaksiObatDao) {

@@ -2156,7 +2156,7 @@ public class BiodataAction extends BaseMasterAction{
     }
 
     public String saveAddDataPengalamaKerja(String nip, String branchId, String divisiId, String positionId, String tanggal, String tanggalKeluar,
-                                            String tipePegawaiId, String golonganId,String pjsFlag, String perusahaanLain, String bidangLain, String jabatanLain, String flagAktif){
+                                            String tipePegawaiId, String golonganId,String pjsFlag, String perusahaanLain, String bidangLain, String jabatanLain, String flagAktif, String profesiId){
         logger.info("[BiodataAction.saveAdd] start process >>>");
 
         try {
@@ -2184,6 +2184,7 @@ public class BiodataAction extends BaseMasterAction{
                 }
             }
 
+            historyJabatanPegawai.setProfesiId(profesiId);
             historyJabatanPegawai.setTanggal(tanggal);
             historyJabatanPegawai.setTanggalKeluar(tanggalKeluar);
             historyJabatanPegawai.setTipePegawaiId(tipePegawaiId);

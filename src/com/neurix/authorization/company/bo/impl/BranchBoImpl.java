@@ -135,6 +135,7 @@ public class BranchBoImpl implements BranchBo {
                     resultBranch.setAction(imBranches.getAction());
                     resultBranch.setFlag(imBranches.getFlag());
                     resultBranch.setEnabled(imBranches.getEnabled());
+
                     resultBranch.setAreaId(imBranches.getAreaId());
                     resultBranch.setAlamatSurat(imBranches.getAlamatSurat());
                     resultBranch.setLogoName(imBranches.getLogoName());

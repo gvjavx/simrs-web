@@ -150,6 +150,13 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())) {
                 hsCriteria.put("branch_id", bean.getBranchId());
             }
+            if (bean.getStTglFrom() != null && !"".equalsIgnoreCase(bean.getStTglFrom())) {
+                hsCriteria.put("date_from", bean.getStTglFrom());
+            }
+            if (bean.getGetStTglTo() != null && !"".equalsIgnoreCase(bean.getGetStTglTo())) {
+                hsCriteria.put("date_to", bean.getGetStTglTo());
+            }
+
             hsCriteria.put("flag", "Y");
             List<String> listOfNoCheckup = new ArrayList<>();
 
@@ -475,32 +482,34 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                 }
 
                 // save uang muka
-                ItSimrsUangMukaPendaftaranEntity uangMukaPendaftaranEntity = new ItSimrsUangMukaPendaftaranEntity();
-                uangMukaPendaftaranEntity.setId("UM"+bean.getBranchId()+dateFormater("MM")+dateFormater("yy")+uangMukaDao.getNextId());
-                uangMukaPendaftaranEntity.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
-                uangMukaPendaftaranEntity.setFlag("Y");
-                uangMukaPendaftaranEntity.setAction("C");
-                uangMukaPendaftaranEntity.setCreatedDate(bean.getCreatedDate());
-                uangMukaPendaftaranEntity.setCreatedWho(bean.getCreatedWho());
-                uangMukaPendaftaranEntity.setLastUpdate(bean.getCreatedDate());
-                uangMukaPendaftaranEntity.setLastUpdateWho(bean.getCreatedWho());
+                if(!"bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
+                    ItSimrsUangMukaPendaftaranEntity uangMukaPendaftaranEntity = new ItSimrsUangMukaPendaftaranEntity();
+                    uangMukaPendaftaranEntity.setId("UM"+bean.getBranchId()+dateFormater("MM")+dateFormater("yy")+uangMukaDao.getNextId());
+                    uangMukaPendaftaranEntity.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
+                    uangMukaPendaftaranEntity.setFlag("Y");
+                    uangMukaPendaftaranEntity.setAction("C");
+                    uangMukaPendaftaranEntity.setCreatedDate(bean.getCreatedDate());
+                    uangMukaPendaftaranEntity.setCreatedWho(bean.getCreatedWho());
+                    uangMukaPendaftaranEntity.setLastUpdate(bean.getCreatedDate());
+                    uangMukaPendaftaranEntity.setLastUpdateWho(bean.getCreatedWho());
 
-                if (bean.getNoNota() != null){
-                    uangMukaPendaftaranEntity.setNoNota(bean.getNoNota());
-                    uangMukaPendaftaranEntity.setStatusBayar("Y");
-                }
+                    if (bean.getNoNota() != null){
+                        uangMukaPendaftaranEntity.setNoNota(bean.getNoNota());
+                        uangMukaPendaftaranEntity.setStatusBayar("Y");
+                    }
 
-                if (bean.getUangMuka() == null || bean.getUangMuka().compareTo(new BigInteger(String.valueOf(0))) == 0){
-                    uangMukaPendaftaranEntity.setJumlah(new BigInteger(String.valueOf(0)));
-                } else {
-                    uangMukaPendaftaranEntity.setJumlah(bean.getUangMuka());
-                }
+                    if (bean.getUangMuka() == null || bean.getUangMuka().compareTo(new BigInteger(String.valueOf(0))) == 0){
+                        uangMukaPendaftaranEntity.setJumlah(new BigInteger(String.valueOf(0)));
+                    } else {
+                        uangMukaPendaftaranEntity.setJumlah(bean.getUangMuka());
+                    }
 
-                try {
-                    uangMukaDao.addAndSave(uangMukaPendaftaranEntity);
-                } catch (HibernateException e){
-                    logger.error("[CheckupBoImpl.saveAdd] Error When Saving" +e.getMessage());
-                    throw new GeneralBOException("[CheckupBoImpl.saveAdd] Error When Saving"+ e.getMessage());
+                    try {
+                        uangMukaDao.addAndSave(uangMukaPendaftaranEntity);
+                    } catch (HibernateException e){
+                        logger.error("[CheckupBoImpl.saveAdd] Error When Saving" +e.getMessage());
+                        throw new GeneralBOException("[CheckupBoImpl.saveAdd] Error When Saving"+ e.getMessage());
+                    }
                 }
 
                 if(bean.getNoCheckupOnline() != null && !"".equalsIgnoreCase(bean.getNoCheckupOnline())){
@@ -880,8 +889,31 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                     finalResult.setNoKtp(obj.getString("nik"));
                     finalResult.setNama(obj.getString("nama"));
                     finalResult.setJenisKelamin(obj.getString("sex"));
+                    finalResult.setTglLahir(Date.valueOf(obj.get("tglLahir").toString()));
                     String[] tglLahir = obj.getString("tglLahir").split("-");
                     finalResult.setStTglLahir(tglLahir[2] + "-" + tglLahir[1] + "-" + tglLahir[0]);
+
+                    if(obj.has("provUmum")){
+                        JSONObject prov = obj.getJSONObject("provUmum");
+                        finalResult.setNamaProvider(prov.getString("nmProvider"));
+                    }
+                    if(obj.has("statusPeserta")){
+                        JSONObject stsPeserta = obj.getJSONObject("statusPeserta");
+                        finalResult.setStatusBpjs(stsPeserta.getString("keterangan"));
+                    }
+                    if(obj.has("hakKelas")){
+                        JSONObject akses = obj.getJSONObject("hakKelas");
+                        finalResult.setKelasPasien(akses.getString("keterangan"));
+                        finalResult.setKelasRawat(akses.getString("kode"));
+                    }
+                    if(obj.has("mr")){
+                        JSONObject mr = obj.getJSONObject("mr");
+                        finalResult.setNoTelp(mr.getString("noTelepon"));
+                    }
+                    if(obj.has("jenisPeserta")){
+                        JSONObject jnsPeserta = obj.getJSONObject("jenisPeserta");
+                        finalResult.setProfesi(jnsPeserta.getString("keterangan"));
+                    }
                 }
             } catch (Exception e) {
                 logger.error("[CheckupBoImpl.completeBpjs] Error when get data");

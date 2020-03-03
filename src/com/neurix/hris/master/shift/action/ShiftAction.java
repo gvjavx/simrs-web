@@ -363,10 +363,10 @@ public class ShiftAction extends BaseMasterAction {
         return "init_combo_shift";
     }
 
-    public List<Shift> searchShiftByGrup(String kelompokId) {
+    public List<Shift> searchShiftByGrup(String profesiId) {
         Shift shift = new Shift();
         shift.setFlag("Y");
-        shift.setKelompokPositionId(kelompokId);
+        shift.setProfesiId(profesiId);
 
         List<Shift> listOfShift = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();

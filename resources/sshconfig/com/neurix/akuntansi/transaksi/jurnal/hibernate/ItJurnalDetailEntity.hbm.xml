@@ -22,11 +22,20 @@
         <property name="noNota">
             <column name="no_nota" sql-type="varchar" length="15" not-null="false" />
         </property>
+        <property name="kdBarang">
+            <column name="kd_barang" sql-type="varchar" length="30" not-null="false" />
+        </property>
         <property name="jumlahDebit">
             <column name="jumlah_debit" sql-type="numeric" not-null="false" />
         </property>
         <property name="jumlahKredit">
             <column name="jumlah_kredit" sql-type="numeric" not-null="false" />
+        </property>
+        <property name="pasienId">
+            <column name="pasien_id" sql-type="varchar" length="30" not-null="false" />
+        </property>
+        <property name="nomorRekening">
+            <column name="nomor_rekening" sql-type="varchar" length="30" not-null="false" />
         </property>
 
         <property name="flag">

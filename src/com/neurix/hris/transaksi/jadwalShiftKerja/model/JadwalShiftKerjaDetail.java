@@ -22,6 +22,24 @@ public class JadwalShiftKerjaDetail extends BaseModel {
     private String positionName;
     private String shiftName;
     private String kelompokName;
+    private String profesiName;
+    private String profesiid;
+
+    public String getProfesiid() {
+        return profesiid;
+    }
+
+    public void setProfesiid(String profesiid) {
+        this.profesiid = profesiid;
+    }
+
+    public String getProfesiName() {
+        return profesiName;
+    }
+
+    public void setProfesiName(String profesiName) {
+        this.profesiName = profesiName;
+    }
 
     public String getShiftName() {
         return shiftName;

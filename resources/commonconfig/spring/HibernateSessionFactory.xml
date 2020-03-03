@@ -45,6 +45,11 @@
 
 
 
+                <!--<prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs</prop>-->
+                <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
+                <!--<prop key="hibernate.connection.username">postgres</prop>-->
+                <!--<prop key="hibernate.connection.password">123456</prop>-->
+
 
             </props>
         </property>
@@ -82,6 +87,7 @@
                 <value>sshconfig/com/neurix/hris/master/golongan/hibernate/ImGolonganHistoryEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/updateGolongan/hibernate/ImtUpdateGolonganEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/department/hibernate/ImDepartmentEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/profesi/hibernate/ImProfesiEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/department/hibernate/ImDepartmentHistoryEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/strukturJabatan/hibernate/ImStrukturJabatanEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/strukturJabatan/hibernate/ImStrukturJabatanHistoryEntity.hbm.xml</value>
@@ -371,7 +377,6 @@
                 <!--Hibernate Config For Acountant Feature SIMRS is HERE-->
                 <value>sshconfig/com/neurix/akuntansi/master/kodeRekening/hibernate/ImKodeRekeningEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/master/tipeJurnal/hibernate/ImTipeJurnalEntity.hbm.xml</value>
-                <value>sshconfig/com/neurix/akuntansi/master/tipeJurnal/hibernate/ImMappingJurnalEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/master/tipeRekening/hibernate/ImTipeRekeningEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/master/trans/hibernate/ImTransEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/master/master/hibernate/ImMasterEntity.hbm.xml</value>
@@ -380,6 +385,8 @@
                 <value>sshconfig/com/neurix/akuntansi/transaksi/pembayaranUtangPiutang/hibernate/ImPembayaranUtangPiutangDetailEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/jurnal/hibernate/ItJurnalEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/jurnal/hibernate/ItJurnalDetailEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/master/reportDetail/hibernate/ImReportDetailEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/master/mappingJurnal/hibernate/ImMappingJurnalEntity.hbm.xml</value>
             </list>
         </property>
     </bean>

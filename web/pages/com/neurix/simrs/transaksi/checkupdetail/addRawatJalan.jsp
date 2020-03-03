@@ -40,6 +40,23 @@
             document.getElementById('errorMessage').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
             $.publish('showErrorDialog');
         });
+
+        function formatRupiah2(angka) {
+            var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                split = number_string.split(','),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            if (ribuan) {
+                separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+            return rupiah;
+        }
+
     </script>
 </head>
 
@@ -78,6 +95,7 @@
                                     <s:hidden id="no_detail_checkup" name="headerDetailCheckup.idDetailCheckup"/>
                                     <s:hidden id="id_pasien" name="headerDetailCheckup.idPasien"/>
                                     <s:hidden id="jenis_pasien" name="headerDetailCheckup.idJenisPeriksaPasien"/>
+                                    <s:hidden id="jenis_bayar" name="headerDetailCheckup.metodePembayaran"/>
                                     <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "bpjs"'>
                                         <tr>
                                             <td width="45%"><b>No SEP</b></td>
@@ -210,6 +228,20 @@
                                     Record has been saved successfully.
                                 </sj:dialog>
 
+                                <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true"
+                                           resizable="false"
+                                           height="250" width="600" autoOpen="false" title="Error Dialog"
+                                           buttons="{
+                                                                                'OK':function() { $('#error_dialog').dialog('close'); }
+                                                                            }"
+                                >
+                                    <div class="alert alert-danger alert-dismissible">
+                                        <label class="control-label" align="left">
+                                            <img border="0" src="<s:url value="/pages/images/icon_error.png"/>"
+                                                 name="icon_error"> System Found : <p id="errorMessage"></p>
+                                        </label>
+                                    </div>
+                                </sj:dialog>
                             </div>
                             <!-- /.col -->
                         </div>
@@ -593,6 +625,31 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div id="pembayaran" style="display: none;">
+                                    <div class="form-group">
+                                        <label class="col-md-4" style="margin-top: 10px">Metode Bayar</label>
+                                        <div class="col-md-8">
+                                            <s:select
+                                                    id="metode_bayar"
+                                                    list="#{'tunai':'Tunai','non_tunai':'Non Tunai'}"
+                                                    cssStyle="margin-top: 7px"
+                                                    headerKey="" headerValue="[Select one]"
+                                                    cssClass="form-control"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4" style="margin-top: 10px">Uang Muka</label>
+                                        <div class="col-md-8">
+                                            <div class="input-group" style="margin-top: 7px">
+                                                <div class="input-group-addon">
+                                                    Rp.
+                                                </div>
+                                                <s:hidden id="uang_muka_val"></s:hidden>
+                                                <s:textfield type="text" id="uang_muka" cssClass="form-control"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div id="form-poli" style="display: none">
                                     <div class="form-group">
                                         <label class="col-md-4" style="margin-top: 10px">Poli</label>
@@ -630,7 +687,7 @@
                                     <div class="col-md-offset-4 col-md-4 text-center">
                                         <a class="btn btn-warning" href="initForm_checkupdetail.action"><i class="fa fa-arrow-left"></i> Back</a>
                                         <%--<a class="btn btn-primary" onclick="printGelangPasien()"><i class="fa fa-print"></i> Print</a>--%>
-                                        <a class="btn btn-success" id="save_ket" onclick="confirmSaveKeterangan()"><i class="fa fa-arrow-right"></i> Close</a>
+                                        <a class="btn btn-success" id="save_ket" onclick="confirmSaveKeterangan()"><i class="fa fa-check"></i> Close</a>
                                         <button style="display: none; cursor: no-drop;" type="button"
                                                 class="btn btn-success" id="load_ket"><i class="fa fa-spinner fa-spin"></i>
                                             Sedang Menyimpan...
@@ -1434,6 +1491,18 @@
 
         hitungStatusBiaya();
 
+        var nominal = document.getElementById('uang_muka');
+        nominal.addEventListener('keyup', function (e) {
+            nominal.value = formatRupiah2(this.value);
+            var valBayar = nominal.value.replace(/[.]/g, '');
+
+            if(valBayar != ''){
+                $('#uang_muka_val').val(valBayar);
+            }else{
+                $('#uang_muka_val').val('');
+            }
+        });
+
     });
 
     function printGelangPasien() {
@@ -1570,8 +1639,10 @@
     function selectKeterangan(id) {
         var idx = id.selectedIndex;
         var idKtg = id.options[idx].value;
+        var jenisPasien = $('#jenis_pasien').val();
 
         if (idKtg == "pindah") {
+            $('#pembayaran').hide();
             $("#form-poli").attr('style', 'display:block');
             $("#kamar").attr('style', 'display:none');
             $("#form-selesai").hide();
@@ -1582,8 +1653,13 @@
             $("#form-poli").attr('style', 'display:none');
             $("#form-selesai").hide();
             $("#form-cekup").hide();
+
+            if(jenisPasien != 'bpjs'){
+                $('#pembayaran').show();
+            }
         }
         if (idKtg == "selesai" || idKtg == "") {
+            $('#pembayaran').hide();
             $("#kamar").attr('style', 'display:none');
             $("#form-poli").attr('style', 'display:none');
             $("#form-selesai").show();
@@ -1621,13 +1697,17 @@
         var tgl_cekup = "";
         var ket_cekup = "";
         var jenisPasien = $('#jenis_pasien').val();
+        var metodeBayar = "";
+        var uangMuka = "";
+        var idPasien = $('#id_pasien').val();
+
 
         if (idKtg != '') {
             if (idKtg == "pindah") {
                 poli = $("#poli_lain").val();
                 idDokter = $("#list_dokter").val();
                 if (poli != '' && idDokter != '') {
-                    $('#save_con').attr('onclick','saveKeterangan(\''+idKtg+'\', \''+poli+'\', \''+kelas+'\', \''+kamar+'\', \''+ket_selesai+'\', \''+tgl_cekup+'\', \''+ket_cekup+'\', \''+jenisPasien+'\')');
+                    $('#save_con').attr('onclick','saveKeterangan(\''+idKtg+'\', \''+poli+'\', \''+kelas+'\', \''+kamar+'\', \''+ket_selesai+'\', \''+tgl_cekup+'\', \''+ket_cekup+'\', \''+jenisPasien+'\',\''+idPasien+'\', \''+metodeBayar+'\', \''+uangMuka+'\')');
                     $('#modal-confirm-dialog').modal('show');
                 } else {
                     $('#warning_ket').show().fadeOut(5000);
@@ -1643,9 +1723,14 @@
             if (idKtg == "rujuk") {
                 kelas = $("#kelas_kamar").val();
                 kamar = $("#kamar_detail").val();
+                metodeBayar = $("#metode_bayar").val();
+                uangMuka = $("#uang_muka_val").val();
+
+                console.log(metodeBayar);
+                console.log(uangMuka);
 
                 if (kelas != '' && kamar != '') {
-                    $('#save_con').attr('onclick','saveKeterangan(\''+idKtg+'\', \''+poli+'\', \''+kelas+'\', \''+kamar+'\', \''+ket_selesai+'\', \''+tgl_cekup+'\', \''+ket_cekup+'\', \''+jenisPasien+'\')');
+                    $('#save_con').attr('onclick','saveKeterangan(\''+idKtg+'\', \''+poli+'\', \''+kelas+'\', \''+kamar+'\', \''+ket_selesai+'\', \''+tgl_cekup+'\', \''+ket_cekup+'\', \''+jenisPasien+'\',\''+idPasien+'\',\''+metodeBayar+'\', \''+uangMuka+'\')');
                     $('#modal-confirm-dialog').modal('show');
                 }
                 else {
@@ -1666,7 +1751,7 @@
                 ket_cekup = $('#cekup_ket').val();
 
                 if (ket_selesai != '') {
-                    $('#save_con').attr('onclick','saveKeterangan(\''+idKtg+'\', \''+poli+'\', \''+kelas+'\', \''+kamar+'\', \''+ket_selesai+'\', \''+tgl_cekup+'\', \''+ket_cekup+'\', \''+jenisPasien+'\')');
+                    $('#save_con').attr('onclick','saveKeterangan(\''+idKtg+'\', \''+poli+'\', \''+kelas+'\', \''+kamar+'\', \''+ket_selesai+'\', \''+tgl_cekup+'\', \''+ket_cekup+'\', \''+jenisPasien+'\',\''+idPasien+'\',\''+metodeBayar+'\', \''+uangMuka+'\')');
                     $('#modal-confirm-dialog').modal('show');
                 } else {
                     $('#warning_ket').show().fadeOut(5000);
@@ -1679,20 +1764,24 @@
         }
     }
 
-    function saveKeterangan(idKtg, poli, kelas, kamar, ket_selesai, tgl_cekup, ket_cekup, jenisPasien) {
+    function saveKeterangan(idKtg, poli, kelas, kamar, ket_selesai, tgl_cekup, ket_cekup, jenisPasien, idPasien, metodeBayar, uangMuka) {
         $('#modal-confirm-dialog').modal('hide');
         var idDokter = $('#tin_id_dokter').val();
+        var jenisBayar = $('#jenis_bayar').val();
+
         if(idKtg == "pindah"){
             $('#save_ket').hide();
             $('#load_ket').show();
             dwr.engine.setAsync(true);
-            CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, jenisPasien, "", "", "", function (response) {
-                if(response == "success"){
+            CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, jenisPasien, "", "", "", idPasien, metodeBayar, uangMuka, jenisBayar, function (response) {
+                if(response.status == "success"){
                     $('#info_dialog').dialog('open');
                     $('#close_pos').val(6);
                     $('#save_ket').show();
                     $('#load_ket').hide();
                 }else{
+                    $('#error_dialog').dialog('open');
+                    $('#errorMessage').text(response.msg);
                     $('#save_ket').show();
                     $('#load_ket').hide();
                 }
@@ -1702,22 +1791,36 @@
             $('#save_ket').hide();
             $('#load_ket').show();
             dwr.engine.setAsync(true);
-            CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, jenisPasien, "", "", "", function (response) {
-                $('#info_dialog').dialog('open');
-                $('#close_pos').val(6);
-                $('#save_ket').show();
-                $('#load_ket').hide();
+            CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, jenisPasien, "", "", "", idPasien, metodeBayar, uangMuka, jenisBayar, function (response) {
+                if(response.status == "success"){
+                    $('#info_dialog').dialog('open');
+                    $('#close_pos').val(6);
+                    $('#save_ket').show();
+                    $('#load_ket').hide();
+                }else{
+                    $('#error_dialog').dialog('open');
+                    $('#errorMessage').text(response.msg);
+                    $('#save_ket').show();
+                    $('#load_ket').hide();
+                }
             });
         }
         if(idKtg == "selesai"){
             $('#save_ket').hide();
             $('#load_ket').show();
             dwr.engine.setAsync(true);
-            CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, jenisPasien, "", "", "", function (response) {
-                $('#info_dialog').dialog('open');
-                $('#close_pos').val(6);
-                $('#save_ket').show();
-                $('#load_ket').hide();
+            CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, jenisPasien, "", "", "", idPasien, metodeBayar, uangMuka, jenisBayar, function (response) {
+                if(response.status == "success"){
+                    $('#info_dialog').dialog('open');
+                    $('#close_pos').val(6);
+                    $('#save_ket').show();
+                    $('#load_ket').hide();
+                }else{
+                    $('#error_dialog').dialog('open');
+                    $('#errorMessage').text(response.msg);
+                    $('#save_ket').show();
+                    $('#load_ket').hide();
+                }
             });
         }
     }
@@ -2801,7 +2904,8 @@
                     table += "<tr>" +
                             "<td>" + dateFormat + "</td>" +
                             "<td>" + idResep + "</td>" +
-                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="detailResep(\'' + item.idApprovalObat + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' +
+                            "<td align='center'>" +
+                        <%--'<img border="0" class="hvr-grow" onclick="detailResep(\'' + item.idApprovalObat + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' +--%>
                             ' <img onclick="printResep(\'' + idResep + '\')" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">' +
                             "</td>" +
                             "</tr>"

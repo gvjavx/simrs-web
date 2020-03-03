@@ -135,7 +135,7 @@
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </div>
-                                            <s:textfield id="tgl_to" name="headerCheckup.stTglTo"
+                                            <s:textfield id="tgl_to" name="headerCheckup.getStTglTo"
                                                          cssClass="form-control"
                                                          required="false"/>
                                         </div>
@@ -227,7 +227,7 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Rawat Pasien</h3>
                     </div>
                     <div class="box-body">
-                        <table id="myTable" class="table table-bordered table-striped">
+                        <table id="sortTable" class="table table-bordered table-striped">
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>No Checkup</td>
@@ -235,8 +235,7 @@
                                 <td>Nama</td>
                                 <td>Poli Terakhir</td>
                                 <td>Status Terakhir</td>
-                                <td>Ruangan</td>
-                                <td>No</td>
+                                <td>Desa</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
@@ -248,12 +247,11 @@
                                     <td><s:property value="nama"/></td>
                                     <td><s:property value="namaPelayanan"/></td>
                                     <td><s:property value="statusPeriksaName"/></td>
-                                    <td><s:property value="namaRuangan"/></td>
-                                    <td><s:property value="noRuangan"/></td>
+                                    <td><s:property value="namaDesa"/></td>
                                     <td align="center">
                                         <img border="0" class="hvr-grow" id="v_<s:property value="noCheckup"/>"
                                              src="<s:url value="/pages/images/icons8-search-25.png"/>"
-                                             style="cursor: pointer;" onclick="detail_pasien('<s:property value="noCheckup"/>')">
+                                             style="cursor: pointer;" onclick="detail_pasien('<s:property value="noCheckup"/>','<s:property value="idDetailCheckup"/>')">
                                         <%--<s:url var="edit" namespace="/checkup" action="edit_checkup" escapeAmp="false">--%>
                                             <%--<s:param name="id"><s:property value="noCheckup"/></s:param>--%>
                                         <%--</s:url>--%>
@@ -328,20 +326,24 @@
                                     <td><span id="det_alamat"></span></td>
                                 </tr>
                                 <tr>
-                                    <td><b>Provinsi</b></td>
-                                    <td><span id="det_provinsi"></span></td>
-                                </tr>
-                                <tr>
-                                    <td><b>Kabupaten</b></td>
-                                    <td><span id="det_kabupaten"></span></td>
+                                    <td><b>Desa</b></td>
+                                    <td><span id="det_desa"></span></td>
                                 </tr>
                                 <tr>
                                     <td><b>Kecamatan</b></td>
                                     <td><span id="det_kecamatan"></span></td>
                                 </tr>
                                 <tr>
-                                    <td><b>Desa</b></td>
-                                    <td><span id="det_desa"></span></td>
+                                    <td><b>Kabupaten</b></td>
+                                    <td><span id="det_kabupaten"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Provinsi</b></td>
+                                    <td><span id="det_provinsi"></span></td>
+                                </tr>
+                                <tr id="surat_rujukan">
+                                    <td></td>
+                                    <td><button class="btn btn-primary" id="show_rujukan"><i class="fa fa-search"></i> Surat Rujukan</button></td>
                                 </tr>
                             </table>
                         </div>
@@ -570,9 +572,30 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-rujukan">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-file-archive-o"></i> Surat Rujukan</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <img id="img_surat_rujuk" style="height: 500px; width: 100%">
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <script type='text/javascript'>
-    function detail_pasien(idCheckup) {
+    function detail_pasien(idCheckup, idDetail) {
         var table = "";
         var dataRiwayat = [];
         var dataPasien = [];
@@ -602,31 +625,40 @@
             var url = '<s:url value="/pages/images/icons8-search-25.png"/>';
             $('#v_'+idCheckup).attr('src',url).css('width', '', 'height', '');
 
-            CheckupAction.listDataPasien(idCheckup, function (response) {
-                dataPasien = response;
-                if (dataPasien != null) {
-                    $.each(dataPasien, function (i, item) {
-                        var tanggal = item.tglLahir;
+            CheckupAction.listDataPasien(idDetail, function (response) {
+                // dataPasien = response;
+                console.log(response);
+                if (response != null) {
+                //     $.each(dataPasien, function (i, item) {
+                        var tanggal = response.tglLahir;
                         var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
-                        noCheckup = item.noCheckup;
-                        nik = item.noKtp;
-                        namaPasien = item.nama;
+                        noCheckup = response.noCheckup;
+                        nik = response.noKtp;
+                        namaPasien = response.nama;
 
-                        if (item.jenisKelamin == "L") {
+                        if (response.jenisKelamin == "L") {
                             jenisKelamin = "Laki-Laki";
                         } else {
                             jenisKelamin = "Perempuan";
                         }
 
-                        tglLahir = item.tempatLahir + ", " + dateFormat;
-                        agama = item.agama;
-                        suku = item.suku;
-                        alamat = item.jalan;
-                        provinsi = item.namaProvinsi;
-                        kabupaten = item.namaKota;
-                        kecamatan = item.namaKecamatan;
-                        desa = item.namaDesa;
-                    });
+                        tglLahir = response.tempatLahir + ", " + dateFormat;
+                        agama = response.agama;
+                        suku = response.suku;
+                        alamat = response.jalan;
+                        provinsi = response.namaProvinsi;
+                        kabupaten = response.namaKota;
+                        kecamatan = response.namaKecamatan;
+                        desa = response.namaDesa;
+
+                        if(response.urlDocRujuk != null && response.urlDocRujuk != ''){
+                            $('#surat_rujukan').show();
+                        }else{
+                            $('#surat_rujukan').hide();
+                        }
+
+                    $('#show_rujukan').attr('onclick','showRujukan(\''+response.urlDocRujuk+'\')');
+                    // });
                 }
             });
 
@@ -746,10 +778,11 @@
                             $('#save_resep').show();
 
                         } else {
+                            $('#id_antrian').val('');
                             $('#load_resep').hide();
                             $('#save_resep').show();
                             $('#modal-validasi').modal('show');
-                            $('#msg_app').text("Verifikasi sudah tidak bisa dilakukan, dikarenakan sudah lewat dari jam awal pelayanan...!");
+                            $('#msg_app').text("Verifikasi sudah tidak bisa dilakukan, dikarenakan sudah lewat dari jam awal pelayanan...!, Silahkan lakukan daftar manual.");
                             console.log("false");
                         }
                     } else {
@@ -768,6 +801,15 @@
                 $('#info_dialog').dialog('open');
             }
         })
+    }
+
+    function showRujukan(url){
+        if(url != null){
+            $('#img_surat_rujuk').attr('src',url);
+            $('#modal-rujukan').modal('show');
+        }else{
+
+        }
     }
 </script>
 

@@ -50,6 +50,7 @@ public class Branch extends BaseModel implements Serializable, Comparable<Branch
         this.areaId = areaId;
     }
 
+
     public String getLogoName() {
         return logoName;
     }

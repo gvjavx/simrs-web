@@ -22,6 +22,15 @@ public class HargaObat {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String satuan;
+    private String idBarang;
+
+    public String getIdBarang() {
+        return idBarang;
+    }
+
+    public void setIdBarang(String idBarang) {
+        this.idBarang = idBarang;
+    }
 
     public String getIdObat() {
         return idObat;
