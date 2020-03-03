@@ -163,178 +163,25 @@
 <%@ include file="/pages/common/lastScript.jsp" %>
 </body>
 </html>
-<div id="modal-delete" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-md">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Delete Data</h4>
-            </div>
-            <div class="modal-body">
-                <s:form id="reportDetailDeleteForm" method="post" theme="simple" namespace="/reportDetail" action="saveEdit_reportDetail" cssClass="well form-horizontal">
-                    <div  class="form-group">
-                        <label class="control-label col-sm-4" >Rekening Id :</label>
-                        <div class="col-sm-6">
-                            <input readonly type="text" class="form-control" id="rekeningIdDelete">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" >Nama Report Detail :</label>
-                        <div class="col-sm-6">
-                            <input type="text" readonly class="form-control" id="reportDetailNameDelete">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" >COA :</label>
-                        <div class="col-sm-6">
-                            <input type="text" readonly class="form-control" id="reportDetailDelete">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" >Tipe Rekening :</label>
-                        <div class="col-sm-6">
-                            <s:select list="#{'00':'Jurnal', '01' : 'Neraca'}" id="tipeRekeningIdDelete" disabled="true"
-                                      headerKey="" headerValue="[Select one]" cssClass="form-control" />
-                        </div>
-                    </div>
-                </s:form>
-            </div>
-            <div class="modal-footer">
-                <button id="btnDelete" type="button" class="btn btn-default btn-primary"><i class="fa fa-trash"></i> Delete</button>
-                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-refresh"></i> Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="modal-edit" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-md">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Edit Data</h4>
-            </div>
-            <div class="modal-body">
-                <s:form id="reportDetailEditForm" method="post" theme="simple" namespace="/reportDetail" action="saveEdit_reportDetail" cssClass="well form-horizontal">
-                    <div  class="form-group">
-                        <label class="control-label col-sm-4" >Rekening Id :</label>
-                        <div class="col-sm-6">
-                            <input readonly type="text" class="form-control" id="rekeningIdEdit">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" >Nama Report Detail :</label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control" id="reportDetailNameEdit">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" >COA :</label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control" id="reportDetailEdit" readonly >
-                            <%--<script>
-                                $(document).ready(function() {
-                                    var functions, mapped;
-                                    $('#reportDetailEdit').typeahead({
-                                        minLength: 1,
-                                        source: function (query, process) {
-                                            functions = [];
-                                            mapped = {};
-                                            var data = [];
-                                            dwr.engine.setAsync(false);
-                                            ReportDetailAction.initTypeaheadReportDetail(query,function (listdata) {
-                                                data = listdata;
-                                            });
-                                            $.each(data, function (i, item) {
-                                                var labelItem = item.reportDetail + " | " + item.namaReportDetail;
-                                                mapped[labelItem] = {
-                                                    id: item.reportDetail,
-                                                    nama: item.namaReportDetail
-                                                };
-                                                functions.push(labelItem);
-                                            });
-                                            process(functions);
-                                        },
-                                        updater: function (item) {
-                                            var selectedObj = mapped[item];
-                                            return selectedObj.id;
-                                        }
-                                    });
-                                });
-                            </script>--%>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" >Tipe Rekening :</label>
-                        <div class="col-sm-6">
-                            <s:select list="#{'00':'Jurnal', '01' : 'Neraca'}" id="tipeRekeningIdEdit"
-                                      headerKey="" headerValue="[Select one]" cssClass="form-control" />
-                        </div>
-                    </div>
-                </s:form>
-            </div>
-            <div class="modal-footer">
-                <button id="btnEdit" type="button" class="btn btn-default btn-primary"><i class="fa fa-pencil"></i> Edit</button>
-                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-refresh"></i> Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <script>
     $(document).ready(function () {
         $("#btnSaveDetailReport").hide();
-        //btn Save
-        $('#btnEdit').click(function(){
-            var id      = $('#rekeningIdEdit').val();
-            var reportDetailName  = $('#reportDetailNameEdit').val();
-            var reportDetail= $('#reportDetailEdit').val();
-            var tipeRekeningId  = $('#tipeRekeningIdEdit').val();
-            var result = '';
-            if(id != ''&&reportDetailName != ''&&reportDetail != ''&&tipeRekeningId != ''){
-                if (confirm('Are you sure you want to save this Record?')) {
-                    ReportDetailAction.saveEdit(id, reportDetailName, reportDetail, tipeRekeningId,"edit",function(listdata) {
-                        alert('Record has been saved successfully.');
-                        location.reload();
-                    });
-                }
-            }else{
-                if (id==""){
-                    result+="ID kode rekening tidak terdeteksi \n";
-                }
-                if (reportDetailName==""){
-                    result+="Nama Report Detail masih kosong \n";
-                }
-                if (reportDetail==""){
-                    result+="COA masih Kosong \n";
-                }
-                if (tipeRekeningId==""){
-                    result+="Tipe Rekening ID masih kosong \n";
-                }
-                alert(result);
+        $("#btnSaveDetailReport").click(function () {
+            if (confirm("Apakah anda ingin menyimpan perubahan COA pada report ini ?")){
+                var data = $('.tree').tableToJSON();
+                var reportId = $('#report_id').val();
+                ReportDetailAction.deleteReportDetail(reportId,function (listData) {});
+                $.each(data, function (i, item) {
+                    var rekId = data[i]["Rekening Id"];
+                    if ($('#check_' + i).prop("checked") == true) {
+                        ReportDetailAction.addReportDetail(reportId,rekId,function (listData) {
+                        })
+                    }
+                });
+                alert("Sukses edit report detail");
+                window.location.reload();
             }
         });
-
-        $('#btnDelete').click(function(){
-            var id      = $('#rekeningIdDelete').val();
-            var result = '';
-            if(id != ''){
-                if (confirm('Are you sure you want to save this Record?')) {
-                    ReportDetailAction.saveEdit(id, "", "", "","delete",function(listdata) {
-                        alert('Record has been delete successfully.');
-                        location.reload();
-                    });
-                }
-            }else{
-                if (id==""){
-                    result+="ID kode rekening tidak terdeteksi \n";
-                }
-                alert(result);
-            }
-        });
-
         $('.tree').treegrid({
             expanderExpandedClass: 'glyphicon glyphicon-minus',
             expanderCollapsedClass: 'glyphicon glyphicon-plus'
@@ -418,28 +265,34 @@
                 }
                 tmp_table = "<thead style='font-size: 14px; color: white' ><tr class='active'>"+
                     "<th style='text-align: center; background-color:  #30d196'>COA ( Chart of Account )</th>"+
+                    "<th style='text-align: center; background-color:  #30d196' class='tableHide'>Rekening Id</th>"+
                     "<th style='text-align: center; background-color:  #30d196''>Nama Kode Rekening</th>"+
+                    "<th style='text-align: center; background-color:  #30d196''>Level</th>"+
                     "<th style='text-align: center; background-color:  #30d196''>cetak ?</th>"+
                     "</tr></thead>";
                 for(i = 0 ; i < data2.length ; i++){
                     var cekbox ="";
                     if (data2[i].adaCetak) {
-                        cekbox='<td align="center" class="ceknull">' + '<input type="checkbox" checked>' + '</td>';
+                        cekbox='<td align="center" class="ceknull">' + '<input type="checkbox" checked id="check_'+i+'">' + '</td>';
                     }else{
-                        cekbox='<td align="center" class="ceknull">' + '<input type="checkbox">' + '</td>';
+                        cekbox='<td align="center" class="ceknull">' + '<input type="checkbox" id="check_'+i+'">' + '</td>';
                     }
 
                     if(data2[i].parent == "-"){
                         tmp_table += '<tr style="font-size: 12px;" class=" treegrid-' + data2[i]._id+ '">' +
                             '<td >' + data2[i].coa + '</td>' +
+                            '<td class="tableHide">' + data2[i]._id + '</td>' +
                             '<td >' + data2[i].nama + '</td>' +
+                            '<td style="text-align: center;">' + data2[i].level + '</td>' +
                             cekbox +
                             "</tr>";
                     } else {
                         tmp_table += '<tr style="font-size: 12px" class=" treegrid-' + data2[i]._id + ' treegrid-parent-' + data2[i].parent + '">' +
                             + '<td style="border: 2px solid black;">' +
                             '<td >' + data2[i].coa + '</td>' +
+                            '<td class="tableHide">' + data2[i]._id + '</td>' +
                             '<td >' + data2[i].nama + '</td>' +
+                            '<td  style="text-align: center;">' + data2[i].level + '</td>' +
                             cekbox+
                             '</td>' +
                             "</tr>";
@@ -447,6 +300,7 @@
                 }
                 $('.tree').append(tmp_table);
                 $(".tree .ceknull:contains('null')").html("-");
+                $('.tableHide').hide();
                 $("#btnSaveDetailReport").show();
             });
         }

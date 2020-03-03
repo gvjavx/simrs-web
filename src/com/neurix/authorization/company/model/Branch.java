@@ -36,12 +36,20 @@ public class Branch extends BaseModel implements Serializable, Comparable<Branch
     private BigDecimal percentKsPers;
     private BigDecimal percentTkKary;
     private BigDecimal percentTkPers;
+    private String logoName;
+    private String logoBranch;
+
+    private String ppkPelayanan;
+    private String suratSkdp;
+    private String kodeTarif;
+    private String tarifPayorId;
+    private String payorCd;
+    private String coderNik;
 
     public void setAreaId(String areaId) {
         this.areaId = areaId;
     }
 
-    private String logoName;
 
     public String getLogoName() {
         return logoName;
@@ -59,15 +67,6 @@ public class Branch extends BaseModel implements Serializable, Comparable<Branch
     public void setAlamatSurat(String alamatSurat) {
         this.alamatSurat = alamatSurat;
     }
-
-    private String logoBranch;
-
-    private String ppkPelayanan;
-    private String suratSkdp;
-    private String kodeTarif;
-    private String tarifPayorId;
-    private String payorCd;
-    private String coderNik;
 
     public String getPpkPelayanan() {
         return ppkPelayanan;
@@ -128,7 +127,6 @@ public class Branch extends BaseModel implements Serializable, Comparable<Branch
     public String getAreaId() {
         return areaId;
     }
-
 
     public BigDecimal getMaxBpjsKs() {
         return maxBpjsKs;

@@ -63,6 +63,7 @@ FROM
               im_akun_report_detail
             where
               report_id = $P{reportId}
+	and flag='Y'
           )
         group by
           kode_rekening,

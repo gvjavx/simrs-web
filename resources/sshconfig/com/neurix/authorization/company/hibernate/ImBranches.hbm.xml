@@ -93,7 +93,6 @@
         <property name="keyEklaim">
             <column name="key_eklaim" sql-type="varchar" length="100"/>
         </property>
-
         <property name="minBpjsKs">
             <column name="min_bpjs_ks" sql-type="numeric" length="10"/>
         </property>

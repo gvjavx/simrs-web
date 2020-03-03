@@ -148,6 +148,15 @@ public class MappingJurnalBoImpl implements MappingJurnalBo {
 
             // creating object entity serializable
             ImMappingJurnalEntity imMappingJurnalEntity = new ImMappingJurnalEntity();
+            imMappingJurnalEntity.setTipeJurnalId(bean.getTipeJurnalId());
+            imMappingJurnalEntity.setTransId(bean.getTransId());
+            imMappingJurnalEntity.setKodeRekening(bean.getKodeRekening());
+            imMappingJurnalEntity.setPosisi(bean.getPosisi());
+            imMappingJurnalEntity.setMasterId(bean.getMasterId());
+            imMappingJurnalEntity.setBukti(bean.getBukti());
+            imMappingJurnalEntity.setKodeBarang(bean.getKodeBarang());
+            imMappingJurnalEntity.setKirimList(bean.getKirimList());
+            imMappingJurnalEntity.setKeterangan(bean.getKeterangan());
 
             imMappingJurnalEntity.setMappingJurnalId(mappingJurnalId);
             imMappingJurnalEntity.setFlag(bean.getFlag());
@@ -237,6 +246,7 @@ public class MappingJurnalBoImpl implements MappingJurnalBo {
                         returnMappingJurnal.setTransName("");
                     }
                     returnMappingJurnal.setKeterangan(mappingJurnalEntity.getKeterangan());
+                    returnMappingJurnal.setKirimList(mappingJurnalEntity.getKirimList());
                     returnMappingJurnal.setKodeRekening(mappingJurnalEntity.getKodeRekening());
                     returnMappingJurnal.setMasterId(mappingJurnalEntity.getMasterId());
                     returnMappingJurnal.setKodeBarang(mappingJurnalEntity.getKodeBarang());

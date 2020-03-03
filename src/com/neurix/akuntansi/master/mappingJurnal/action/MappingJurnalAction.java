@@ -8,6 +8,8 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
@@ -101,6 +103,7 @@ public class MappingJurnalAction extends BaseMasterAction {
 
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
+        session.removeAttribute("listOfResultMapping");
 
         logger.info("[MappingJurnalAction.add] stop process >>>");
         return "init_add";
@@ -309,20 +312,26 @@ public class MappingJurnalAction extends BaseMasterAction {
 
     public String saveAdd(){
         logger.info("[MappingJurnalAction.saveAdd] start process >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<MappingJurnal> listOfResult = (List<MappingJurnal>) session.getAttribute("listOfResultMapping");
+        MappingJurnal data = getMappingJurnal();
+        String userLogin = CommonUtil.userLogin();
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
         try {
-            MappingJurnal mappingJurnal = getMappingJurnal();
-            String userLogin = CommonUtil.userLogin();
-            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+            for (MappingJurnal mappingJurnal : listOfResult){
+                mappingJurnal.setTipeJurnalId(data.getTipeJurnalId());
+                mappingJurnal.setTransId(data.getTransId());
+                mappingJurnal.setCreatedWho(userLogin);
+                mappingJurnal.setLastUpdate(updateTime);
+                mappingJurnal.setCreatedDate(updateTime);
+                mappingJurnal.setLastUpdateWho(userLogin);
+                mappingJurnal.setAction("C");
+                mappingJurnal.setFlag("Y");
 
-            mappingJurnal.setCreatedWho(userLogin);
-            mappingJurnal.setLastUpdate(updateTime);
-            mappingJurnal.setCreatedDate(updateTime);
-            mappingJurnal.setLastUpdateWho(userLogin);
-            mappingJurnal.setAction("C");
-            mappingJurnal.setFlag("Y");
+                mappingJurnalBoProxy.saveAdd(mappingJurnal);
+            }
 
-            mappingJurnalBoProxy.saveAdd(mappingJurnal);
         }catch (GeneralBOException e) {
             Long logId = null;
             try {
@@ -336,8 +345,6 @@ public class MappingJurnalAction extends BaseMasterAction {
             return ERROR;
         }
 
-
-        HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
 
         logger.info("[liburAction.saveAdd] end process >>>");
@@ -365,6 +372,7 @@ public class MappingJurnalAction extends BaseMasterAction {
         }
 
         HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfResultMapping");
         session.removeAttribute("listOfResult");
         session.setAttribute("listOfResult", listOfsearchMappingJurnal);
 
@@ -408,6 +416,85 @@ public class MappingJurnalAction extends BaseMasterAction {
 
         return SUCCESS;
     }
+
+    public void saveKodeRekeningSession(String kodeRekening , String posisi,String master,String bukti, String kodeBarang,String listKirim,String parameter) {
+        logger.info("[MappingJurnalAction.savePegawaiShift] start process >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<MappingJurnal> listOfResult = (List<MappingJurnal>) session.getAttribute("listOfResultMapping");
+        boolean save = true;
+        if (listOfResult==null){
+            listOfResult= new ArrayList<>();
+        }else{
+            for (MappingJurnal mappingJurnal : listOfResult){
+                if (kodeRekening.equalsIgnoreCase(mappingJurnal.getKodeRekening())){
+                    save=false;
+                }
+            }
+        }
+        if (save){
+            MappingJurnal result = new MappingJurnal();
+            result.setKodeRekening(kodeRekening);
+            result.setPosisi(posisi);
+            result.setMasterId(master);
+            result.setBukti(bukti);
+            result.setKodeBarang(kodeBarang);
+            result.setKirimList(listKirim);
+            result.setKeterangan(parameter);
+            listOfResult.add(result);
+        }
+
+        session.setAttribute("listOfResultMapping",listOfResult);
+        logger.info("[MappingJurnalAction.savePegawaiShift] end process <<<");
+    }
+
+    public List<MappingJurnal> searchKodeRekeningSession() {
+        logger.info("[MappingJurnalAction.searchKodeRekeningSession] start process >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<MappingJurnal> listOfsearch= (List<MappingJurnal>) session.getAttribute("listOfResultMapping");
+        return listOfsearch;
+    }
+
+    public String cekBeforeAdd(String tipeJurnal,String transId){
+        String status="";
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        MappingJurnalBo mappingJurnalBo= (MappingJurnalBo) ctx.getBean("mappingJurnalBoProxy");
+        List<MappingJurnal> mappingJurnalList = new ArrayList<>();
+        MappingJurnal search = new MappingJurnal();
+        search.setFlag("Y");
+        search.setTransId(transId);
+        try {
+            mappingJurnalList=mappingJurnalBo.getByCriteria(search);
+        } catch (GeneralBOException e1) {
+            logger.error("[MappingJurnalAction.initComboMappingJurnal] Error when saving error,", e1);
+        }
+        if (mappingJurnalList.size()!=0){
+            status="Transaksi Billing ini sudah ada , gunakan edit";
+        }else{
+            HttpSession session = ServletActionContext.getRequest().getSession();
+            List<MappingJurnal> listOfsearch= (List<MappingJurnal>) session.getAttribute("listOfResultMapping");
+            boolean adaDebit=false;
+            boolean adaKredit=false;
+
+            if (listOfsearch==null){
+                status="Belum ada kode rekening, silahkan ditambahkan";
+            }else{
+                for(MappingJurnal mappingJurnal:listOfsearch){
+                    if (("D").equalsIgnoreCase(mappingJurnal.getPosisi())){
+                        adaDebit=true;
+                    }else if (("K").equalsIgnoreCase(mappingJurnal.getPosisi())){
+                        adaKredit=true;
+                    }
+                }
+                if (!adaDebit){
+                    status="Belum ada kode rekening dengan posisi debit";
+                }else if (!adaKredit){
+                    status="belum ada kode rekening dengan posisi kredit";
+                }
+            }
+        }
+        return status;
+    }
+
     public String paging(){
         return SUCCESS;
     }

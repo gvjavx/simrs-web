@@ -45,13 +45,6 @@ public class ImBranches implements Serializable {
         this.logoName = logoName;
     }
 
-    public String getAlamatSurat() {
-        return alamatSurat;
-    }
-
-    public void setAlamatSurat(String alamatSurat) {
-        this.alamatSurat = alamatSurat;
-    }
 
     private String ppkPelayanan;
     private String suratSkdp;
@@ -59,6 +52,14 @@ public class ImBranches implements Serializable {
     private String tarifPayorId;
     private String payorCd;
     private String coderNik;
+
+    public String getAlamatSurat() {
+        return alamatSurat;
+    }
+
+    public void setAlamatSurat(String alamatSurat) {
+        this.alamatSurat = alamatSurat;
+    }
 
     public String getPpkPelayanan() {
         return ppkPelayanan;

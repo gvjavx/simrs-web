@@ -129,6 +129,7 @@ FROM
           im_akun_report_detail
         WHERE
           report_id = $P{reportParams.reportId}
+	and flag='Y'
       )
     group by
       rekening_id,

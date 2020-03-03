@@ -31,6 +31,42 @@ public class ReportDetailBoImpl implements ReportDetailBo {
     }
 
     @Override
+    public void deleteReportDetail(ReportDetail bean) throws GeneralBOException {
+        logger.info("[ReportDetailBoImpl.deleteReportDetail] start process >>>");
+        if (bean!=null) {
+            List<ImReportDetailEntity> reportDetailEntityList= null;
+            try {
+                // Get data from database by ID
+                reportDetailEntityList = reportDetailDao.getReportDetailByReportId(bean.getReportId());
+            } catch (HibernateException e) {
+                logger.error("[ReportDetailBoImpl.deleteReportDetail] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data, please inform to your admin...," + e.getMessage());
+            }
+
+            if (reportDetailEntityList != null) {
+                for (ImReportDetailEntity reportDetailEntity : reportDetailEntityList){
+                    reportDetailEntity.setFlag(bean.getFlag());
+                    reportDetailEntity.setAction(bean.getAction());
+                    reportDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    reportDetailEntity.setLastUpdate(bean.getLastUpdate());
+
+                    try {
+                        // Update into database
+                        reportDetailDao.updateAndSave(reportDetailEntity);
+                    } catch (HibernateException e) {
+                        logger.error("[ReportDetailBoImpl.deleteReportDetail] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving update data, please info to your admin..." + e.getMessage());
+                    }
+                }
+            } else {
+                logger.error("[ReportDetailBoImpl.deleteReportDetail] Error, not found data with request id, please check again your data ...");
+                throw new GeneralBOException("Error, not found data with request id, please check again your data ...");
+            }
+        }
+        logger.info("[ReportDetailBoImpl.deleteReportDetail] end process <<<");
+    }
+
+    @Override
     public void saveEdit(ReportDetail bean) throws GeneralBOException {
         logger.info("[ReportDetailBoImpl.saveEdit] start process >>>");
         if (bean!=null) {
@@ -141,6 +177,7 @@ public class ReportDetailBoImpl implements ReportDetailBo {
                 logger.error("[ReportDetailBoImpl.saveAdd] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when getting sequence id, please info to your admin..." + e.getMessage());
             }
+
             // creating object entity serializable
             ImReportDetailEntity imReportDetailEntity = new ImReportDetailEntity();
 

@@ -118,6 +118,7 @@ FROM
 	  im_akun_report_detail rd ON rd.rekening_id=kode.rekening_id
     where
       rd.report_id='RPT02'
+	and rd.flag='Y'
     group by
       kode_rekening,
       kode.nama_kode_rekening,
