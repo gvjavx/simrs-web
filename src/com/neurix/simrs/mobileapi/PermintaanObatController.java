@@ -545,6 +545,7 @@ public class PermintaanObatController implements ModelDriven<Object> {
                 permintaanObatPoli.setIdBatch(item.getIdBatch());
                 permintaanObatPoli.setIdBarang(item.getIdBarang());
                 permintaanObatPoli.setJenisSatuan(item.getJenisSatuan());
+                permintaanObatPoli.setExpiredDate(item.getExpiredDate().toString());
 
                 listOfPermintaanObat.add(permintaanObatPoli);
             }
