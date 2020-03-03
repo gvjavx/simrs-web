@@ -162,12 +162,12 @@
                                                             </display:column>
                                                             <display:column media="html" title="Edit">
                                                                 <s:url var="urlEdit" namespace="/mappingJurnal" action="edit_mappingJurnal" escapeAmp="false">
-                                                                    <s:param name="id"><s:property value="#attr.row.mappingJurnalId"/></s:param>
+                                                                    <s:param name="id"><s:property value="#attr.row.transId"/></s:param>
                                                                     <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
                                                                 </s:url>
-                                                                <sj:a onClickTopics="showDialogMenu" href="%{urlEdit}">
+                                                                <s:a href="%{urlEdit}">
                                                                     <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">
-                                                                </sj:a>
+                                                                </s:a>
                                                             </display:column>
                                                             <display:column media="html" title="Delete" style="text-align:center;font-size:9">
                                                                 <s:url var="urlViewDelete" namespace="/mappingJurnal" action="delete_mappingJurnal" escapeAmp="false">
