@@ -237,6 +237,7 @@ public class MappingJurnalBoImpl implements MappingJurnalBo {
                         returnMappingJurnal.setTransName("");
                     }
                     returnMappingJurnal.setKeterangan(mappingJurnalEntity.getKeterangan());
+                    returnMappingJurnal.setKirimList(mappingJurnalEntity.getKirimList());
                     returnMappingJurnal.setKodeRekening(mappingJurnalEntity.getKodeRekening());
                     returnMappingJurnal.setMasterId(mappingJurnalEntity.getMasterId());
                     returnMappingJurnal.setKodeBarang(mappingJurnalEntity.getKodeBarang());

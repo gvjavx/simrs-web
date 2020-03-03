@@ -4,6 +4,8 @@ import com.neurix.akuntansi.master.kodeRekening.bo.KodeRekeningBo;
 import com.neurix.akuntansi.master.kodeRekening.dao.KodeRekeningDao;
 import com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity;
 import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
+import com.neurix.akuntansi.master.tipeRekening.dao.TipeRekeningDao;
+import com.neurix.akuntansi.master.tipeRekening.model.ImTipeRekeningEntity;
 import com.neurix.common.exception.GeneralBOException;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -24,6 +26,15 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
 
     protected static transient Logger logger = Logger.getLogger(KodeRekeningBoImpl.class);
     private KodeRekeningDao kodeRekeningDao;
+    private TipeRekeningDao tipeRekeningDao;
+
+    public TipeRekeningDao getTipeRekeningDao() {
+        return tipeRekeningDao;
+    }
+
+    public void setTipeRekeningDao(TipeRekeningDao tipeRekeningDao) {
+        this.tipeRekeningDao = tipeRekeningDao;
+    }
 
     @Override
     public void saveDelete(KodeRekening bean) throws GeneralBOException {
@@ -125,7 +136,6 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
 
             List<ImKodeRekeningEntity> imKodeRekeningEntityList = null;
             try {
-
                 imKodeRekeningEntityList = kodeRekeningDao.getByCriteria(hsCriteria);
             } catch (HibernateException e) {
                 logger.error("[KodeRekeningBoImpl.getSearchIjinByCriteria] Error, " + e.getMessage());
@@ -145,7 +155,16 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
                     returnKodeRekening.setLevel(kodeRekeningEntity.getLevel());
 
                     if (kodeRekeningEntity.getTipeRekeningId()!=null){
-                        returnKodeRekening.setTipeRekeningName("Jurnal");
+                        ImTipeRekeningEntity tipeRekeningEntity;
+                        try {
+                            tipeRekeningEntity = tipeRekeningDao.getById("tipeRekeningId",kodeRekeningEntity.getTipeRekeningId());
+                        } catch (HibernateException e) {
+                            logger.error("[KodeRekeningBoImpl.getSearchIjinByCriteria] Error, " + e.getMessage());
+                            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                        }
+                        if (tipeRekeningEntity!=null){
+                            returnKodeRekening.setTipeRekeningName(tipeRekeningEntity.getTipeRekeningName());
+                        }
                     }
                     returnKodeRekening.setCreatedWho(kodeRekeningEntity.getCreatedWho());
                     returnKodeRekening.setCreatedDate(kodeRekeningEntity.getCreatedDate());

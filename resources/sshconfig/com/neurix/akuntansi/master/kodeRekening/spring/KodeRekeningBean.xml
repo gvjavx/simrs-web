@@ -10,6 +10,7 @@
 
     <bean id="kodeRekeningBo" class="com.neurix.akuntansi.master.kodeRekening.bo.impl.KodeRekeningBoImpl"
           p:kodeRekeningDao-ref="kodeRekeningDao"
+          p:tipeRekeningDao-ref="tipeRekeningDao"
     />
 
     <bean id="kodeRekeningBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

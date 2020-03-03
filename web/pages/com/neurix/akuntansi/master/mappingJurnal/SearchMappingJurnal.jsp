@@ -187,10 +187,11 @@
                                                             <display:column property="tipeJurnalName" sortable="true" title="Tipe Jurnal"  />
                                                             <display:column property="transName" sortable="true" title="Nama Trans"  />
                                                             <display:column property="kodeRekening" sortable="true" title="Kode Rekening"  />
-                                                            <display:column property="posisi" sortable="true" title="Posisi"  />
-                                                            <display:column property="masterId" sortable="true" title="Master"  />
-                                                            <display:column property="bukti" sortable="true" title="Bukti"  />
-                                                            <display:column property="kodeBarang" sortable="true" title="Kode Barang"  />
+                                                            <display:column property="posisi" title="Posisi"  />
+                                                            <display:column property="masterId" title="Master"  />
+                                                            <display:column property="bukti" title="Bukti"  />
+                                                            <display:column property="kodeBarang" title="Kode Barang"  />
+                                                            <display:column property="kirimList" title="List Kirim"  />
                                                             <display:column property="keterangan" sortable="true" title="keterangan"  />
                                                             <display:column property="lastUpdate" sortable="true" title="Last Update"/>
                                                         </display:table>
