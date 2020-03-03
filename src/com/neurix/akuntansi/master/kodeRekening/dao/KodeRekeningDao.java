@@ -122,7 +122,7 @@ public class KodeRekeningDao extends GenericDao<ImKodeRekeningEntity, String> {
                 "                from  \n" +
                 "                im_akun_kode_rekening  \n" +
                 "                where  \n" +
-                "                nama_kode_rekening ilike '"+namaBank+"%'  \n" +
+                "                nama_kode_rekening ilike '%"+namaBank+"%'  \n" +
                 "                and kode_rekening ilike '"+kodeRekeningKas+"%' \n" +
                 "                and length(kode_rekening)=12 \n" +
                 "                order by rekening_id \n" +

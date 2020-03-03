@@ -1654,7 +1654,9 @@
             $("#form-selesai").hide();
             $("#form-cekup").hide();
 
-            if(jenisPasien != 'bpjs'){
+            if(jenisPasien == 'bpjs'){
+                $('#pembayaran').hide();
+            }else{
                 $('#pembayaran').show();
             }
         }

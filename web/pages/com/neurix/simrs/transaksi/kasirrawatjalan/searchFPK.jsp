@@ -303,6 +303,20 @@
                                             <center><img border="0" src="<s:url value="/pages/images/spinner.gif"/>"
                                                          alt="Loading..."/></center>
                                         </sj:dialog>
+                                        <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true"
+                                                   resizable="false"
+                                                   height="250" width="600" autoOpen="false" title="Error Dialog"
+                                                   buttons="{
+                                                                                'OK':function() { $('#error_dialog').dialog('close'); }
+                                                                            }"
+                                        >
+                                            <div class="alert alert-danger alert-dismissible">
+                                                <label class="control-label" align="left">
+                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>"
+                                                         name="icon_error"> System Found : <p id="errorMessage"></p>
+                                                </label>
+                                            </div>
+                                        </sj:dialog>
                                     </div>
                                 </div>
                             </s:form>
@@ -354,6 +368,10 @@
                                     <td><s:property value="NoSep"/></td>
                                     <td><s:property value="namaPasien"/></td>
                                     <td style="vertical-align: middle" align="center">
+                                        <s:if test='#row.noFpk != null && #row.noFpk != ""'>
+                                            <label class="label label-primary"> create fpk</label>
+                                        </s:if>
+
                                         <s:if test='#row.statusFPK == "Y"'>
                                             <label class="label label-success"> sudah bayar</label>
                                         </s:if>
@@ -369,18 +387,37 @@
                         <div class="box-header with-border"></div>
                         <div id="form-bayar" style="display: none">
                         <div class="row" style="margin-top: 10px">
-                            <div class="col-md-offset-2">
-                            <div class="form-group">
-                                <label class="col-md-2" style="margin-top: 7px">
-                                    NO SLIP
-                                </label>
-                                <div class="col-md-4">
-                                    <input class="form-control" id="no_slip">
+                            <div class="col-md-offset-3 col-md-6">
+                                <div class="form-group">
+                                    <label class="col-md-2" style="margin-top: 7px">Bank</label>
+                                    <div class="col-md-10">
+                                        <select class="form-control" id="bank">
+                                            <option value="" >[Select One]</option>
+                                            <option value="bri">BRI</option>
+                                            <option value="bni">BNI</option>
+                                            <option value="bca">BCA</option>
+                                            <option value="mandiri">Mandiri</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <button class="btn btn-success" onclick="confirmPembayaran()"><i class="fa fa-check"></i> Save Pembayaran</button>
+                                <div class="form-group">
+                                    <label class="col-md-2" style="margin-top: 7px">No Kartu</label>
+                                    <div class="col-md-10">
+                                        <input type="number" id="no_rekening" style="margin-top: 7px" class="form-control">
+                                    </div>
                                 </div>
-                            </div>
+                                <div class="form-group">
+                                    <label class="col-md-2" style="margin-top: 7px">No Slip</label>
+                                    <div class="col-md-10">
+                                        <input type="number" id="no_slip" style="margin-top: 7px" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-2" style="margin-top: 7px">&nbsp;</label>
+                                    <div class="col-md-10">
+                                        <button class="btn btn-success" onclick="confirmPembayaran()"  style="margin-top: 7px"><i class="fa fa-check"></i> Save</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         </div>
@@ -564,31 +601,36 @@
             var sep = data[i]["No Sep"];
             var idDetail = data[i]["ID Detail Checkup"];
             var idPasien = data[i]["ID Pasien"];
+            var noFpk = data[i]["No FPK"];
             var idFpk = $('#id_fpk'+sep).val();
             if ($('#check_' + sep).prop("checked") == true) {
-                result.push({'id_fpk': idFpk, 'no_sep': sep, 'id_detail_checkup': idDetail, "id_pasien":idPasien});
+                result.push({'id_fpk': idFpk, 'no_sep': sep, 'id_detail_checkup': idDetail, "id_pasien":idPasien, "no_fpk":noFpk});
             }
         });
         var jsonString = JSON.stringify(result);
-        console.log(result);
         var noSlip = $('#no_slip').val();
+        var bank = $('#bank').val();
+        var noRekening = $('#no_rekening').val();
 
-        if (data != '[]') {
+        if (data != '[]' && noSlip != '' && bank != '' && noRekening != '') {
             $('#modal-confirm-dialog').modal('hide');
             $('#waiting_dialog').dialog('open');
             dwr.engine.setAsync(true)
-            KasirRawatJalanAction.savePembayaranFPK(jsonString, noSlip,{callback: function (response) {
+            KasirRawatJalanAction.savePembayaranFPK(jsonString, noSlip, bank, noRekening, {callback: function (response) {
                 if (response.status == "success") {
                     $('#waiting_dialog').dialog('close');
                     $('#info_dialog').dialog('open');
                 } else {
                     $('#waiting_dialog').dialog('close');
-                    alert(response.msg);
+                    $('#errorMessage').text(response.msg);
+                    $('#error_dialog').dialog('open');
                 }
                 }
             });
         }else{
-
+            $('#modal-confirm-dialog').modal('hide');
+            $('#error_dialog').dialog('open');
+            $('#errorMessage').text("Silahkan Periksa inputan di atas..!");
         }
     }
 

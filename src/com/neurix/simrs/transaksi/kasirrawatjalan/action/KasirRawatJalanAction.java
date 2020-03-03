@@ -340,6 +340,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 String terbilang = angkaToTerbilang(totalJasa.longValue());
 
                 reportParams.put("invoice", checkup.getInvoice());
+                reportParams.put("idPasien", checkup.getIdPasien());
                 reportParams.put("title", "Invoice Rawat Jalan Pasien");
                 reportParams.put("itemDataSource", itemData);
                 reportParams.put("listObatDetail", itemDataObat);
@@ -517,6 +518,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(uangMukaList);
 
                 reportParams.put("itemDataSource", itemData);
+                reportParams.put("idPasien", checkup.getIdPasien());
                 reportParams.put("unit", unit);
                 reportParams.put("area", area);
                 reportParams.put("idDetailCheckup", checkup.getIdDetailCheckup());
@@ -841,7 +843,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         return response;
     }
 
-    public CrudResponse savePembayaranFPK(String jsonString, String noSlip) throws JSONException {
+    public CrudResponse savePembayaranFPK(String jsonString, String noSlip, String bank, String noRekeking) throws JSONException {
         CrudResponse response = new CrudResponse();
         List<Fpk> fpkList = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -859,9 +861,10 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 fpk.setNoSep(obj.getString("no_sep"));
                 fpk.setIdDetailCheckup(obj.getString("id_detail_checkup"));
                 fpk.setIdPasien(obj.getString("id_pasien"));
+                fpk.setNoFpk(obj.getString("no_fpk"));
                 fpk.setNoSlip(noSlip);
 
-                fpkId = obj.getString("id_fpk");
+                fpkId = obj.getString("no_fpk");
                 fpkList.add(fpk);
             }
 
@@ -896,14 +899,14 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             mapJurnal.put("kas", total);
             mapJurnal.put("piutang_pasien_bpjs", mapListKlaim);
             mapJurnal.put("metode_bayar", "transfer");
-            mapJurnal.put("bank", "bri");
-            mapJurnal.put("nomor_rekening", noSlip);
+            mapJurnal.put("bank", bank);
+            mapJurnal.put("nomor_rekening", noRekeking);
 
             String noJurnal = "";
-            String catatan = "Pembayaran Piutang BPJS dengan no FPK "+fpkId;
+            String catatan = "Pembayaran Piutang BPJS Bank "+bank+" No. Rekening "+noRekeking+" No. FPK "+fpkId;
             try {
 
-                noJurnal = billingSystemBo.createJurnal("23", mapJurnal, branchId, catatan, "Y");
+                noJurnal = billingSystemBo.createJurnal("10", mapJurnal, branchId, catatan, "Y");
                 if (!"".equalsIgnoreCase(noJurnal)){
                     for (Fpk fpk : fpkList){
                         HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
