@@ -1,14 +1,20 @@
 package com.neurix.simrs.master.obat.action;
 
+import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.obat.bo.ObatBo;
 import com.neurix.simrs.master.obat.model.Obat;
+import com.neurix.simrs.transaksi.CrudResponse;
+import com.neurix.simrs.transaksi.hargaobat.model.HargaObat;
 import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
@@ -411,6 +417,84 @@ public class ObatAction extends BaseMasterAction {
 
         logger.info("[PermintaanVendorAction.printBarcodeBarang] END process <<<");
         return "print_barcode_id_pabrik";
+    }
+
+    public String searchHargaObat(){
+        logger.info("[PermintaanVendorAction.searchHargaObat] START process <<<");
+
+        Obat obat = getObat();
+        obat.setBranchId(CommonUtil.userBranchLogin());
+
+        List<Obat> obats = new ArrayList<>();
+        try {
+            obats = obatBoProxy.getListHargaObat(obat);
+        } catch (GeneralBOException e){
+            logger.error("[ReportAction.searchHargaObat] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
+            return "search";
+        }
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfResult");
+        session.setAttribute("listOfResult", obats);
+
+        logger.info("[PermintaanVendorAction.searchHargaObat] END process <<<");
+        return "search";
+    }
+
+    public List<Obat> searchHargaObat(String idObat){
+        logger.info("[PermintaanVendorAction.searchHargaObat] START process <<<");
+
+        Obat obat = getObat();
+
+        List<Obat> obats = new ArrayList<>();
+        try {
+            obats = obatBoProxy.getListHargaObat(obat);
+        } catch (GeneralBOException e){
+            logger.error("[ReportAction.searchHargaObat] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
+            return obats;
+        }
+
+        logger.info("[PermintaanVendorAction.searchHargaObat] END process <<<");
+        return obats;
+    }
+
+    public CrudResponse saveHargaObat(String jsonString) throws JSONException{
+
+        CrudResponse response = new CrudResponse();
+        String userLogin = CommonUtil.userLogin();
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+
+        // maping untuk parameter lainnua
+        JSONArray json = new JSONArray(jsonString);
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+
+        HargaObat hargaObat = new HargaObat();
+        for (int i = 0; i < json.length(); i++) {
+            JSONObject obj = json.getJSONObject(i);
+            hargaObat.setHargaNet(new BigDecimal(obj.getString("harga_net")));
+            hargaObat.setDiskon(new BigDecimal(obj.getString("diskon")));
+            hargaObat.setHargaJual(new BigDecimal(obj.getString("harga_jual")));
+            hargaObat.setCreatedDate(time);
+            hargaObat.setCreatedWho(userLogin);
+            hargaObat.setLastUpdate(time);
+            hargaObat.setLastUpdateWho(userLogin);
+        }
+
+        try {
+            obatBo.saveHargaObat(hargaObat);
+            response.setStatus("success");
+        } catch (GeneralBOException e){
+            logger.error("[ReportAction.searchHargaObat] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
+            response.setStatus("error");
+            response.setMsg("[ReportAction.searchHargaObat] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin."+ e);
+            return response;
+        }
+        return response;
     }
 
 }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printStrukResepPasien" language="groovy" pageWidth="421" pageHeight="595" whenNoDataType="AllSectionsNoDetail" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
-	<property name="ireport.zoom" value="1.6105100000000014"/>
+	<property name="ireport.zoom" value="4.594972986357225"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="101"/>
+	<property name="ireport.y" value="365"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -51,6 +51,7 @@
 	<parameter name="reportParams.itemDataSource" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource" isForPrompting="false"/>
 	<parameter name="reportParams.unit" class="java.lang.String"/>
 	<parameter name="reportParams.area" class="java.lang.String"/>
+	<parameter name="reportParams.idPasien" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT * FROM im_simrs_obat LIMIT 1]]>
 	</queryString>
@@ -134,14 +135,14 @@
 				<textFieldExpression><![CDATA[$P{reportParams.unit}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="89" y="69" width="5" height="15" uuid="879c709f-fc38-490b-8505-f86dc140b98f"/>
+				<reportElement x="89" y="84" width="5" height="15" uuid="879c709f-fc38-490b-8505-f86dc140b98f"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="94" y="84" width="110" height="15" uuid="6ebc9968-10b9-4eed-8b94-14166c1c0cce"/>
+				<reportElement x="94" y="99" width="110" height="15" uuid="6ebc9968-10b9-4eed-8b94-14166c1c0cce"/>
 				<box leftPadding="1"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -149,7 +150,7 @@
 				<textFieldExpression><![CDATA[$P{reportParams.nama} == null ? "" : $P{reportParams.nama}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="94" y="99" width="110" height="15" uuid="4426dc1b-20c8-4880-9916-78cef3fca545"/>
+				<reportElement x="94" y="114" width="110" height="15" uuid="4426dc1b-20c8-4880-9916-78cef3fca545"/>
 				<box leftPadding="1"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -157,7 +158,7 @@
 				<textFieldExpression><![CDATA[$P{reportParams.tglLahir} == null ? "" : $P{reportParams.tglLahir}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="69" width="90" height="15" uuid="56e13786-b0d0-436d-9f1c-6c83fda8c3d0"/>
+				<reportElement x="0" y="84" width="90" height="15" uuid="56e13786-b0d0-436d-9f1c-6c83fda8c3d0"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
@@ -185,7 +186,7 @@
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="99" width="90" height="15" uuid="188f0e1f-1920-461a-8d20-2a84b475b946"/>
+				<reportElement x="0" y="114" width="90" height="15" uuid="188f0e1f-1920-461a-8d20-2a84b475b946"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
@@ -215,7 +216,7 @@
 				<text><![CDATA[Jenis Kelamin]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="89" y="99" width="5" height="15" uuid="03788217-66c4-44c3-a4fc-6670a7c8c4f2"/>
+				<reportElement x="89" y="114" width="5" height="15" uuid="03788217-66c4-44c3-a4fc-6670a7c8c4f2"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
@@ -229,7 +230,7 @@
 				<text><![CDATA[Jenis Pasien]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="94" y="69" width="110" height="15" uuid="528b66b7-194e-477d-b3e3-85caec0ba83f"/>
+				<reportElement x="94" y="84" width="110" height="15" uuid="528b66b7-194e-477d-b3e3-85caec0ba83f"/>
 				<box leftPadding="1"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -237,7 +238,7 @@
 				<textFieldExpression><![CDATA[$P{reportParams.nik} == null ? "" : $P{reportParams.nik}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="84" width="90" height="15" uuid="8ddcc7d3-cbce-4b86-9bc3-19c8c489d91e"/>
+				<reportElement x="0" y="99" width="90" height="15" uuid="8ddcc7d3-cbce-4b86-9bc3-19c8c489d91e"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
@@ -259,7 +260,29 @@
 				<text><![CDATA[Alamat]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="89" y="84" width="5" height="15" uuid="f7530842-f5a1-47ab-af08-41aab1195686"/>
+				<reportElement x="89" y="99" width="5" height="15" uuid="f7530842-f5a1-47ab-af08-41aab1195686"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="69" width="90" height="15" uuid="f2c54358-39ef-4e2a-a8d1-92fc40c7314d"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Nomor RM]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="94" y="69" width="110" height="15" uuid="42edddc9-25d9-4783-98ae-396ce23b15d7"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.idPasien} == null ? "" : $P{reportParams.idPasien}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="89" y="69" width="5" height="15" uuid="f2ce4ecb-acf9-42e5-b1a7-8103e4a337f3"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>

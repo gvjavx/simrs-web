@@ -368,30 +368,66 @@ public class CheckupAction extends BaseMasterAction {
         setTipe(tipe);
 
         HeaderCheckup checkup = new HeaderCheckup();
-        ImSimrsPasienEntity pasien = null;
-        if (idPasien != null) {
-            pasien = pasienBoProxy.getPasienByIdPasien(idPasien);
-            checkup.setNoBpjs(pasien.getNoBpjs());
-            checkup.setIdPasien(pasien.getIdPasien());
-            checkup.setNoKtp(pasien.getNoKtp());
-            checkup.setNama(pasien.getNama());
-            checkup.setJenisKelamin(pasien.getJenisKelamin());
-            checkup.setTempatLahir(pasien.getTempatLahir());
-            checkup.setTglLahir(CommonUtil.dateUtiltoDateSql(pasien.getTglLahir()));
-            checkup.setStTglLahir(CommonUtil.convertDateToString2(pasien.getTglLahir()));
-            checkup.setAgama(pasien.getAgama());
-            checkup.setProfesi(pasien.getProfesi());
-            checkup.setSuku(pasien.getSuku());
-            checkup.setJalan(pasien.getJalan());
-            checkup.setProvinsiId(pasien.getProvinsi());
-            checkup.setKotaId(pasien.getKota());
-            checkup.setKecamatanId(pasien.getKecamatan());
-            checkup.setDesaId(pasien.getDesaId());
-            checkup.setNamaDesa(pasien.getDesa());
-            checkup.setNamaKecamatan(pasien.getKecamatan());
-            checkup.setNamaKota(pasien.getKota());
-            checkup.setNamaProvinsi(pasien.getProvinsi());
-            //checkup.setIdJenisPeriksaPasien(tipe);
+
+        if (getIdPasien() != null && !"".equalsIgnoreCase(getIdPasien())) {
+
+            Pasien pasien = new Pasien();
+            pasien.setIdPasien(idPasien);
+            List<Pasien> pasienList = new ArrayList<>();
+
+            try {
+                pasienList = pasienBoProxy.getByCriteria(pasien);
+            }catch (GeneralBOException e){
+                logger.error("FOund Error "+e.getMessage());
+            }
+
+            if(pasienList.size() > 0){
+
+                pasien = pasienList.get(0);
+
+                if(pasien.getIdPasien() != null){
+                    checkup.setNoBpjs(pasien.getNoBpjs());
+                    checkup.setIdPasien(pasien.getIdPasien());
+                    checkup.setNoKtp(pasien.getNoKtp());
+                    checkup.setNama(pasien.getNama());
+                    checkup.setJenisKelamin(pasien.getJenisKelamin());
+                    checkup.setTempatLahir(pasien.getTempatLahir());
+                    checkup.setTglLahir(Date.valueOf(pasien.getTglLahir()));
+                    checkup.setStTglLahir(pasien.getTglLahir());
+                    checkup.setAgama(pasien.getAgama());
+                    checkup.setProfesi(pasien.getProfesi());
+                    checkup.setSuku(pasien.getSuku());
+                    checkup.setJalan(pasien.getJalan());
+                    checkup.setProvinsiId(pasien.getProvinsi());
+                    checkup.setKotaId(pasien.getKota());
+                    checkup.setKecamatanId(pasien.getKecamatan());
+                    checkup.setDesaId(new BigInteger(pasien.getDesaId()));
+                    checkup.setNamaDesa(pasien.getDesa());
+                    checkup.setNamaKecamatan(pasien.getKecamatan());
+                    checkup.setNamaKota(pasien.getKota());
+                    checkup.setNamaProvinsi(pasien.getProvinsi());
+                    checkup.setKecamatanId(pasien.getKecamatanId());
+                    checkup.setKotaId(pasien.getKotaId());
+                    checkup.setProvinsiId(pasien.getProvinsiId());
+                    checkup.setUrlKtp(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_KTP_PASIEN+pasien.getUrlKtp());
+
+                    List<HeaderCheckup> checkups = new ArrayList<>();
+                    HeaderCheckup header = new HeaderCheckup();
+                    header.setIdPasien(pasien.getIdPasien());
+
+                    try {
+                        checkups = checkupBoProxy.getByCriteria(header);
+                    } catch (GeneralBOException e) {
+                        logger.error("Found Error when search pasien in traksaksi");
+                    }
+
+                    if (checkups.size() > 0) {
+                        checkup.setJenisKunjungan("Lama");
+                    } else {
+                        checkup.setJenisKunjungan("Baru");
+                    }
+                }
+            }
 
         }
 

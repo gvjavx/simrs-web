@@ -891,36 +891,36 @@ public class ObatBoImpl implements ObatBo {
                         throw new GeneralBOException("[ObatBoImpl.saveHargaObat] ERROR WHEN save update harga obat, "+e.getMessage());
                     }
                 }
-            }
+            } else {
+                Obat obat = new Obat();
+                obat.setIdObat(bean.getIdObat());
+                obat.setIdBarang(bean.getIdBarang());
+                List<ImSimrsObatEntity> obatEntities = getListObatEntity(obat);
+                if (obatEntities.size() > 0){
+                    ImSimrsObatEntity obatEntity = obatEntities.get(0);
 
-            Obat obat = new Obat();
-            obat.setIdObat(bean.getIdObat());
-            obat.setIdBarang(bean.getIdBarang());
-            List<ImSimrsObatEntity> obatEntities = getListObatEntity(obat);
-            if (obatEntities.size() > 0){
-                ImSimrsObatEntity obatEntity = obatEntities.get(0);
+                    MtSimrsHargaObatEntity hargaObatEntity = new MtSimrsHargaObatEntity();
+                    hargaObatEntity.setIdObat(obatEntity.getIdObat());
+                    hargaObatEntity.setNamaObat(obatEntity.getNamaObat());
+                    hargaObatEntity.setHargaBeli(obatEntity.getHargaTerakhir());
+                    hargaObatEntity.setHargaJual(bean.getHargaJual());
+                    hargaObatEntity.setHargaRata(obatEntity.getAverageHargaBiji());
+                    hargaObatEntity.setDiskon(bean.getDiskon());
+                    hargaObatEntity.setHargaNet(bean.getHargaNet());
+                    hargaObatEntity.setSatuan("biji");
+                    hargaObatEntity.setFlag("Y");
+                    hargaObatEntity.setAction("C");
+                    hargaObatEntity.setCreatedDate(bean.getCreatedDate());
+                    hargaObatEntity.setCreatedWho(bean.getCreatedWho());
+                    hargaObatEntity.setLastUpdate(bean.getLastUpdate());
+                    hargaObatEntity.setLastUpdateWho(bean.getLastUpdateWho());
 
-                MtSimrsHargaObatEntity hargaObatEntity = new MtSimrsHargaObatEntity();
-                hargaObatEntity.setIdObat(obatEntity.getIdObat());
-                hargaObatEntity.setNamaObat(obatEntity.getNamaObat());
-                hargaObatEntity.setHargaBeli(obatEntity.getHargaTerakhir());
-                hargaObatEntity.setHargaJual(bean.getHargaJual());
-                hargaObatEntity.setHargaRata(obatEntity.getAverageHargaBiji());
-                hargaObatEntity.setDiskon(bean.getDiskon());
-                hargaObatEntity.setHargaNet(bean.getHargaNet());
-                hargaObatEntity.setSatuan("biji");
-                hargaObatEntity.setFlag("Y");
-                hargaObatEntity.setAction("C");
-                hargaObatEntity.setCreatedDate(bean.getCreatedDate());
-                hargaObatEntity.setCreatedWho(bean.getCreatedWho());
-                hargaObatEntity.setLastUpdate(bean.getLastUpdate());
-                hargaObatEntity.setLastUpdateWho(bean.getLastUpdateWho());
-
-                try {
-                    hargaObatDao.addAndSave(hargaObatEntity);
-                } catch (HibernateException e){
-                    logger.error("[ObatBoImpl.saveHargaObat] ERROR save add harga obat, "+e.getMessage());
-                    throw new GeneralBOException("[ObatBoImpl.saveHargaObat] ERROR WHEN save add harga obat, "+e.getMessage());
+                    try {
+                        hargaObatDao.addAndSave(hargaObatEntity);
+                    } catch (HibernateException e){
+                        logger.error("[ObatBoImpl.saveHargaObat] ERROR save add harga obat, "+e.getMessage());
+                        throw new GeneralBOException("[ObatBoImpl.saveHargaObat] ERROR WHEN save add harga obat, "+e.getMessage());
+                    }
                 }
             }
         }

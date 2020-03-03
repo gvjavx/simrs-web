@@ -203,7 +203,7 @@
                                         <s:else>
                                             <s:if test='#row.cekApprove == false'>
                                                 <s:if test='#row.statusPeriksa == "3"'>
-                                                    <img id="t_<s:property value="noCheckup"/>" onclick="finalClaim('<s:property value="noCheckup"/>','<s:property value="idDetailCheckup"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-test-passed-25-2.png"/>" style="cursor: pointer;">
+                                                    <img id="t_<s:property value="noCheckup"/>" onclick="finalClaim('<s:property value="noCheckup"/>','<s:property value="idDetailCheckup"/>','<s:property value="idPasien"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-test-passed-25-2.png"/>" style="cursor: pointer;">
                                                 </s:if>
                                             </s:if>
                                             <s:else>
@@ -855,7 +855,7 @@
         });
     }
 
-    function finalClaim(idCheckup, idDetailCheckup) {
+    function finalClaim(idCheckup, idDetailCheckup, idPasien) {
         $('#fin_sts_cover_biaya').html('');
         $('#fin_b_bpjs').html('');
         $('#fin_sts_biaya_tindakan').html('');
@@ -973,28 +973,28 @@
             $('#fin_desa').html(desa);
             $('#body_tindakan_fin').html(table);
             $('#fin_id_detail_checkup').val(idDetailCheckup);
-            $('#save_fin').attr('onclick','confirmSaveFinalClaim(\''+idDetailCheckup+'\')');
+            $('#save_fin').attr('onclick','confirmSaveFinalClaim(\''+idDetailCheckup+'\',\''+idPasien+'\')');
             $('#modal-final-claim').modal({show:true, backdrop:'static'});
         }, 100);
     }
 
-    function confirmSaveFinalClaim(idDetailCheckup){
+    function confirmSaveFinalClaim(idDetailCheckup, idPasien){
         var data = $('#tabel_tindakan_fin').tableToJSON();
         if(data.length > 0){
             $('#modal-confirm-dialog').modal('show');
-            $('#save_con').attr('onclick','saveFinalClaim(\''+idDetailCheckup+'\')');
+            $('#save_con').attr('onclick','saveFinalClaim(\''+idDetailCheckup+'\',\''+idPasien+'\')');
         }else{
             $('#msg_fin').text("Tidak ada data tindakan dalam tabel...!");
             $('#warning_fin').show().fadeOut(5000);
         }
     }
 
-    function saveFinalClaim(idDetailCheckup){
+    function saveFinalClaim(idDetailCheckup, idPasien){
         $('#modal-confirm-dialog').modal('hide');
         $('#save_fin').hide();
         $('#load_fin').show();
         dwr.engine.setAsync(true);
-        VerifikatorAction.finalClaim(idDetailCheckup, function (response) {
+        VerifikatorAction.finalClaim(idDetailCheckup,idPasien, function (response) {
             if(response.status == "200"){
                 $('#load_fin').hide();
                 $('#save_fin').show();

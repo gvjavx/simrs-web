@@ -82,6 +82,7 @@ import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -1160,6 +1161,150 @@ public class CheckupDetailAction extends BaseMasterAction {
         response.setInvoice(invoice);
         return response;
     }
+
+    private JurnalResponse closingJurnalNonTunaiBpjs(String idDetailCheckup, String idPoli, String idPasien) {
+
+        JurnalResponse response = new JurnalResponse();
+        String branchId = CommonUtil.userBranchLogin();
+        String invoice = "";
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+        PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
+        BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
+
+        Pelayanan pelayanan = new Pelayanan();
+        pelayanan.setIdPelayanan(idPoli);
+
+        List<Pelayanan> pelayanans = new ArrayList<>();
+        try {
+            pelayanans = pelayananBo.getByCriteria(pelayanan);
+        } catch (GeneralBOException e) {
+            logger.error("[CheckupDetailAction.closingJurnalNonTunai] Error when pelayanan, ", e);
+        }
+
+        String kode = "";
+        String transId = "";
+        String ketPoli = "";
+        String ketResep = "";
+        if (pelayanans.size() > 0) {
+            Pelayanan pelayananData = pelayanans.get(0);
+
+            HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
+            headerDetailCheckup.setIdDetailCheckup(idDetailCheckup);
+            headerDetailCheckup.setStatusBayar("Y");
+            List<HeaderDetailCheckup> detailCheckupUangMuka = checkupDetailBo.getListUangPendaftaran(headerDetailCheckup);
+
+
+            // mencari jumlah um dan no bukti uang muka
+            BigDecimal jumlahUm = new BigDecimal(0);
+            String idUm = "";
+            if (detailCheckupUangMuka.size() > 0) {
+                for (HeaderDetailCheckup detailCheckup : detailCheckupUangMuka) {
+                    jumlahUm = new BigDecimal(detailCheckup.getJumlahUangMukaDibayar());
+                    idUm = detailCheckup.getNoUangMuka();
+                }
+            }
+
+            // get all sum tindakan, sum resep
+            String isResep = checkupDetailBo.findResep(idDetailCheckup);
+            BigDecimal jumlahResep = checkupDetailBo.getSumJumlahTindakan(idDetailCheckup, "resep");
+            BigDecimal jumlahTindakan = checkupDetailBo.getSumJumlahTindakan(idDetailCheckup, "");
+            BigDecimal ppnObat = new BigDecimal(0);
+            if (jumlahResep.compareTo(new BigDecimal(0)) == 1) {
+                ppnObat = jumlahResep.multiply(new BigDecimal(0.1)).setScale(2, BigDecimal.ROUND_HALF_UP);
+            }
+
+            // jumlah tindakan saja. tindakan total - jumlah resep
+            jumlahTindakan = jumlahTindakan.subtract(jumlahResep);
+
+
+            Map hsCriteria = new HashMap();
+            hsCriteria.put("pasien_id", idPasien);
+
+            BigDecimal jumlah = new BigDecimal(0);
+
+            if ("Y".equalsIgnoreCase(isResep) || "rawat_inap".equalsIgnoreCase(pelayananData.getTipePelayanan())) {
+                ketResep = "Dengan Obat";
+
+                // kredit jumlah obat
+                hsCriteria.put("pendapatan_obat_bpjs", jumlahResep);
+                // kredit ppn
+                hsCriteria.put("ppn_keluaran", ppnObat);
+
+                // jika ada resep dan ppn untuk debit piutang
+                jumlah = jumlah.add(jumlahResep.add(ppnObat));
+            } else {
+                ketResep = "Tanpa Obat";
+            }
+
+            if ("rawat_jalan".equalsIgnoreCase(pelayananData.getTipePelayanan()) || "igd".equalsIgnoreCase(pelayananData.getTipePelayanan())) {
+                kode = "JRJ";
+                ketPoli = "Rawat Jalan";
+            }
+            if ("rawat_inap".equalsIgnoreCase(pelayananData.getTipePelayanan())) {
+                kode = "JRI";
+                ketPoli = "Rawat Inap";
+            }
+
+            // tambahkan jumlah tindakan juga untuk debit piutang
+            jumlah = jumlah.add(jumlahTindakan);
+
+            // create invoice nummber
+            invoice = billingSystemBo.createInvoiceNumber(kode, branchId);
+            if ("JRJ".equalsIgnoreCase(kode)) {
+
+                // create list map piutang
+                Map mapPiutang = new HashMap();
+                mapPiutang.put("bukti", invoice);
+                mapPiutang.put("nilai", jumlah.subtract(jumlahUm));
+
+                // debit piutang pasien
+                hsCriteria.put("piutang_pasien_bpjs", mapPiutang);
+
+                // kredit jumlah tindakan
+                hsCriteria.put("pendapatan_rawat_jalan_bpjs", jumlahTindakan);
+
+                if ("Y".equalsIgnoreCase(isResep)) {
+                    transId = "03";
+                } else {
+                    transId = "02";
+                }
+
+            }
+            if ("JRI".equalsIgnoreCase(kode)) {
+
+                // create map piutang
+                Map mapPiutang = new HashMap();
+                mapPiutang.put("bukti", invoice);
+                mapPiutang.put("nilai", jumlah.subtract(jumlahUm));
+
+                // debit piutang pasien
+                hsCriteria.put("piutang_pasien_bpjs", mapPiutang);
+
+                // kredit jumlah tindakan
+                hsCriteria.put("pendapatan_rawat_inap_bpjs", jumlahTindakan);
+                transId = "06";
+            }
+
+            String catatan = "Closing Pasien "+ketPoli+" BPJS "+ketResep+" Piutang No Pasien "+idPasien;
+
+            try {
+                billingSystemBo.createJurnal(transId, hsCriteria, branchId, catatan, "Y");
+                response.setStatus("success");
+                response.setMsg("[Berhasil]");
+            } catch (GeneralBOException e) {
+                logger.error("[CheckupDetailAction.closingJurnalNonTunai] Error, ", e);
+                response.setStatus("error");
+                response.setMsg("[CheckupDetailAction.closingJurnalNonTunai] Error, " + e);
+                return response;
+            }
+        }
+
+        response.setInvoice(invoice);
+        return response;
+    }
+
+
 
 //    private String getInvoiceNumber(String transId){ return billingSystemBoProxy.createInvoiceNumber(transId);}
 
@@ -2414,26 +2559,52 @@ public class CheckupDetailAction extends BaseMasterAction {
             checkup.setTindakanList(tindakans);
             checkup.setUrlKtp(checkup.getUrlKtp());
 
-            String fileName = "";
+//            String fileName = "";
+//            if (this.fileUploadDoc != null) {
+//                if ("image/jpeg".equalsIgnoreCase(this.fileUploadDocContentType)) {
+//                    if (this.fileUploadDoc.length() <= 5242880 && this.fileUploadDoc.length() > 0) {
+//
+//                        // file name
+//                        fileName = "SURAT_RUJUK_" + checkup.getNoKtp() + "_" + this.fileUploadDocFileName;
+//
+//                        // deklarasi path file
+//                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_DOC_RUJUK_PASIEN;
+//                        logger.info("[CheckupAction.uploadImages] FILEPATH :" + filePath);
+//
+//                        // persiapan pemindahan file
+//                        File fileToCreate = new File(filePath, fileName);
+//
+//                        try {
+//                            // pemindahan file
+//                            FileUtils.copyFile(this.fileUploadDoc, fileToCreate);
+//                            logger.info("[CheckupAction.uploadImages] SUCCES PINDAH");
+//                            checkup.setUrlDocRujuk(fileName);
+//                        } catch (IOException e) {
+//                            logger.error("[CheckupAction.uploadImages] error, " + e.getMessage());
+//                        }
+//                    }
+//                }
+//            }
             if (this.fileUploadDoc != null) {
                 if ("image/jpeg".equalsIgnoreCase(this.fileUploadDocContentType)) {
                     if (this.fileUploadDoc.length() <= 5242880 && this.fileUploadDoc.length() > 0) {
 
                         // file name
-                        fileName = "SURAT_RUJUK_" + checkup.getNoKtp() + "_" + this.fileUploadDocFileName;
-
+                        String fileName = this.fileUploadDocFileName;
+                        String fileNameReplace = fileName.replace(" ", "_");
+                        String newFileName = checkup.getNoKtp() + "-"+dateFormater("MM")+dateFormater("yy")+"-"+fileNameReplace;
                         // deklarasi path file
                         String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_DOC_RUJUK_PASIEN;
                         logger.info("[CheckupAction.uploadImages] FILEPATH :" + filePath);
 
                         // persiapan pemindahan file
-                        File fileToCreate = new File(filePath, fileName);
+                        File fileToCreate = new File(filePath, newFileName);
 
                         try {
                             // pemindahan file
                             FileUtils.copyFile(this.fileUploadDoc, fileToCreate);
                             logger.info("[CheckupAction.uploadImages] SUCCES PINDAH");
-                            checkup.setUrlDocRujuk(fileName);
+                            checkup.setUrlDocRujuk(newFileName);
                         } catch (IOException e) {
                             logger.error("[CheckupAction.uploadImages] error, " + e.getMessage());
                         }
@@ -2457,6 +2628,12 @@ public class CheckupDetailAction extends BaseMasterAction {
         logger.info("[CheckupDetailAction.saveAdd] end process >>>");
         return "search";
 
+    }
+
+    private String dateFormater(String type){
+        java.sql.Date date = new java.sql.Date(new java.util.Date().getTime());
+        DateFormat df = new SimpleDateFormat(type);
+        return df.format(date);
     }
 
     public String printResepPasien() {
@@ -2485,6 +2662,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
         reportParams.put("area", CommonUtil.userAreaName());
         reportParams.put("unit", CommonUtil.userBranchNameLogin());
+        reportParams.put("idPasien", headerCheckup.getIdPasien());
         reportParams.put("resepId", idResep);
         reportParams.put("logo", logo);
         reportParams.put("nik", headerCheckup.getNoKtp());

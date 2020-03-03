@@ -751,7 +751,7 @@ public class VerifikatorAction extends BaseMasterAction {
             String typePelayanan = detail.getTipePelayanan();
 
             Map hsCriteria = new HashMap();
-            hsCriteria.put("master_id", idPasien);
+            hsCriteria.put("pasien_id", idPasien);
 
             String kode = "";
             String transId = "";
@@ -775,7 +775,7 @@ public class VerifikatorAction extends BaseMasterAction {
             // jika ada resep atau rawat inap
             if ("Y".equalsIgnoreCase(isResep) || "rawat_inap".equalsIgnoreCase(typePelayanan)) {
                 // hitung ppn
-                BigDecimal ppn = jmlResep.multiply(new BigDecimal(0.1));
+                BigDecimal ppn = jmlResep.multiply(new BigDecimal(0.1)).setScale(2, BigDecimal.ROUND_HALF_UP);
 
                 // kredit pendapatan obat dan ppn obat
                 hsCriteria.put("pendapatan_obat_bpjs", jmlResep);
@@ -828,6 +828,7 @@ public class VerifikatorAction extends BaseMasterAction {
                 logger.error("[VerifikatorAction.finalClaim] Error When send data seneter per eklaim", e);
                 response.setStatus("error");
                 response.setMessage("[VerifikatorAction.finalClaim] Error When send data seneter per eklaim "+ e);
+                return response;
             }
 
             // update invoice to detailcheckup
