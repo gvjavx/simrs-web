@@ -23,6 +23,16 @@ public class MappingJurnal extends BaseModel {
     private String transName;
     private String kirimList;
 
+    private String kodeRekeningName;
+
+    public String getKodeRekeningName() {
+        return kodeRekeningName;
+    }
+
+    public void setKodeRekeningName(String kodeRekeningName) {
+        this.kodeRekeningName = kodeRekeningName;
+    }
+
     public String getKirimList() {
         return kirimList;
     }

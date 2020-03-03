@@ -498,19 +498,19 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
     //case 4
     // untuk Pembuatan Hutang Usaha
     public void createJurnalBillingCase4 (){
-        Map hutangUsaha = new HashMap();
-        hutangUsaha.put("bukti","INVHU000001");
-        hutangUsaha.put("nilai",new BigDecimal(10000000));
+        Map piutangPasienBpjs = new HashMap();
+        piutangPasienBpjs.put("bukti","INVHU000001");
+        piutangPasienBpjs.put("nilai",new BigDecimal(10000000));
 
         Map data = new HashMap();
-        data.put("master_id","00000008");
-        data.put("bukti","CB000050");
-        data.put("hutang_usaha",hutangUsaha);
-        data.put("kas", new BigDecimal(10000000));
-        data.put("metode_bayar", "tunai");
+        data.put("pasien_id","RS0103200013");
+        data.put("piutang_pasien_bpjs",piutangPasienBpjs);
+        data.put("pendapatan_rawat_jalan_bpjs", new BigDecimal(10000000));
+        data.put("metode_bayar", "transfer");
+        data.put("bank", "mandiri");
 
         try {
-            billingSystemBoProxy.createJurnal("22",data,"RS03","TEST 4 : untuk pembuatan hutang usaha","Y");
+            billingSystemBoProxy.createJurnal("02",data,"RS03","TEST 4 : Closing Pasien Rawat Jalan BPJS tanpa Obat","Y");
         }catch (Exception e){
             logger.error("[BpjsController.createJurnalBillingCase3] Error : " + "[" + e + "]");
         }

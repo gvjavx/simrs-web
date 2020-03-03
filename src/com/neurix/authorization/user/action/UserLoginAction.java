@@ -436,7 +436,8 @@ public class UserLoginAction extends ActionSupport {
 
         String result;
         FingerPrint finalResult = new FingerPrint();
-        result= CommonConstant.addRawatPasien+"?idPasien="+userId;
+        String texttipe = ",bpjs";
+        result= CommonConstant.addRawatPasien+"?idPasien="+userId+texttipe;
         finalResult.setDataResult(result);
         fingerPrint=finalResult;
         logger.info("[BpjsController.prosesLoginFinger] end process <<<");

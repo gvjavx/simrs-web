@@ -1,5 +1,8 @@
 package com.neurix.akuntansi.master.mappingJurnal.bo.impl;
 
+import com.neurix.akuntansi.master.kodeRekening.dao.KodeRekeningDao;
+import com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity;
+import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.master.mappingJurnal.bo.MappingJurnalBo;
 import com.neurix.akuntansi.master.mappingJurnal.dao.MappingJurnalDao;
 import com.neurix.akuntansi.master.mappingJurnal.model.ImMappingJurnalEntity;
@@ -30,6 +33,15 @@ public class MappingJurnalBoImpl implements MappingJurnalBo {
     private MappingJurnalDao mappingJurnalDao;
     private TipeJurnalDao tipeJurnalDao;
     private TransDao transDao;
+    private KodeRekeningDao kodeRekeningDao;
+
+    public KodeRekeningDao getKodeRekeningDao() {
+        return kodeRekeningDao;
+    }
+
+    public void setKodeRekeningDao(KodeRekeningDao kodeRekeningDao) {
+        this.kodeRekeningDao = kodeRekeningDao;
+    }
 
     public TipeJurnalDao getTipeJurnalDao() {
         return tipeJurnalDao;
@@ -248,6 +260,18 @@ public class MappingJurnalBoImpl implements MappingJurnalBo {
                     returnMappingJurnal.setKeterangan(mappingJurnalEntity.getKeterangan());
                     returnMappingJurnal.setKirimList(mappingJurnalEntity.getKirimList());
                     returnMappingJurnal.setKodeRekening(mappingJurnalEntity.getKodeRekening());
+                    if (mappingJurnalEntity.getKodeRekening()!=null){
+                        List<ImKodeRekeningEntity> kodeRekeningList = new ArrayList<>();
+                        try {
+                            kodeRekeningList = kodeRekeningDao.getIdByCoa(mappingJurnalEntity.getKodeRekening());
+                        } catch (HibernateException e) {
+                            logger.error("[MappingJurnalBoImpl.getSearchMappingJurnalByCriteria] Error, " + e.getMessage());
+                            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                        }
+                        for (ImKodeRekeningEntity kodeRekeningEntity:kodeRekeningList){
+                            returnMappingJurnal.setKodeRekeningName(kodeRekeningEntity.getNamaKodeRekening());
+                        }
+                    }
                     returnMappingJurnal.setMasterId(mappingJurnalEntity.getMasterId());
                     returnMappingJurnal.setKodeBarang(mappingJurnalEntity.getKodeBarang());
                     returnMappingJurnal.setPosisi(mappingJurnalEntity.getPosisi());
