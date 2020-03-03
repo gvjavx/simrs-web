@@ -11,6 +11,7 @@ import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
 import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
+import com.neurix.simrs.transaksi.checkup.model.Fpk;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
@@ -36,6 +37,7 @@ import javax.xml.soap.Detail;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -377,9 +379,9 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             }
         }
 
-        if("bpjs".equalsIgnoreCase(jenisPasien)){
+        if ("bpjs".equalsIgnoreCase(jenisPasien)) {
             return "print_invoice_bpjs";
-        }else{
+        } else {
             return "print_invoice_umum";
         }
 
@@ -600,7 +602,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         return obatDetailList;
     }
 
-    public CrudResponse saveUangMuka(String id, String idPasien, String biaya, String jumlahDibayar, String metodeBayar, String kodeBank, String noRekening){
+    public CrudResponse saveUangMuka(String id, String idPasien, String biaya, String jumlahDibayar, String metodeBayar, String kodeBank, String noRekening) {
         CrudResponse response = new CrudResponse();
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -613,7 +615,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         String branchId = CommonUtil.userBranchLogin();
         try {
             noNota = billingSystemBo.createInvoiceNumber(transId, branchId);
-        } catch (GeneralBOException e){
+        } catch (GeneralBOException e) {
             response.setStatus("error");
             response.setMsg("[KasirRawatJalanAction.saveUangMuka] ERROR " + e);
             return response;
@@ -624,7 +626,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         hsCriteria.put("metode_bayar", metodeBayar);
         hsCriteria.put("bank", kodeBank);
 
-        if (!"".equalsIgnoreCase(noRekening)){
+        if (!"".equalsIgnoreCase(noRekening)) {
             hsCriteria.put("nomor_rekening", noRekening);
         }
 
@@ -638,11 +640,11 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         try {
 
             String catatan = "Uang Muka untuk No Pasien " + idPasien;
-            if (!"".equalsIgnoreCase(noRekening)){
-                catatan = catatan+" No. Rekening "+noRekening;
+            if (!"".equalsIgnoreCase(noRekening)) {
+                catatan = catatan + " No. Rekening " + noRekening;
             }
 
-            String noJurnal =  billingSystemBo.createJurnal(transId, hsCriteria, branchId, catatan,"Y");
+            String noJurnal = billingSystemBo.createJurnal(transId, hsCriteria, branchId, catatan, "Y");
 
             UangMuka uangMuka = new UangMuka();
             uangMuka.setNoNota(noNota);
@@ -662,57 +664,13 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         return response;
     }
 
-    private HeaderCheckup getHeaderCheckup(String noCheckup) {
-        logger.info("[CheckupDetailAction.getHeaderCheckup] start process >>>");
-
-        HeaderCheckup headerCheckup = new HeaderCheckup();
-        headerCheckup.setNoCheckup(noCheckup);
-
-        List<HeaderCheckup> headerCheckupList = new ArrayList<>();
-        try {
-            headerCheckupList = checkupBoProxy.getByCriteria(headerCheckup);
-        } catch (GeneralBOException e) {
-            logger.error("[CheckupDetailAction.getHeaderCheckup] Error When Get Header Checkup Data", e);
-        }
-
-        HeaderCheckup result = new HeaderCheckup();
-        if (!headerCheckupList.isEmpty()) {
-            result = headerCheckupList.get(0);
-        }
-
-        logger.info("[CheckupDetailAction.getHeaderCheckup] end process <<<");
-        return result;
-    }
-
-    private JenisPriksaPasien getListJenisPeriksaPasien(String idJenisPeriksa) {
-        logger.info("[CheckupDetailAction.getListJenisPeriksaPasien] start process >>>");
-
-        JenisPriksaPasien jenisPriksaPasien = new JenisPriksaPasien();
-        jenisPriksaPasien.setIdJenisPeriksaPasien(idJenisPeriksa);
-
-        List<JenisPriksaPasien> jenisPriksaPasienList = new ArrayList<>();
-        try {
-            jenisPriksaPasienList = jenisPriksaPasienBoProxy.getListAllJenisPeriksa(jenisPriksaPasien);
-        } catch (GeneralBOException e) {
-            logger.error("[CheckupDetailAction.getListJenisPeriksaPasien] Error When Get Jenis Pasien Data", e);
-        }
-
-        JenisPriksaPasien result = new JenisPriksaPasien();
-        if (!jenisPriksaPasienList.isEmpty()) {
-            result = jenisPriksaPasienList.get(0);
-        }
-
-        logger.info("[CheckupDetailAction.getListJenisPeriksaPasien] end process <<<");
-        return result;
-    }
-
     public CrudResponse savePembayaranTagihan(String jsonString, String idPasien, String noNota, String withObat, String idDetailCheckup, String metodeBayar, String kodeBank, String type, String jenis, String noRekening) throws JSONException {
 
         Map hsCriteria = new HashMap();
         hsCriteria.put("pasien_id", idPasien);
         hsCriteria.put("metode_bayar", metodeBayar);
         hsCriteria.put("bank", kodeBank);
-        if (!"".equalsIgnoreCase(noRekening)){
+        if (!"".equalsIgnoreCase(noRekening)) {
             hsCriteria.put("nomor_rekening", noRekening);
         }
 
@@ -727,9 +685,9 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         for (int i = 0; i < json.length(); i++) {
             JSONObject obj = json.getJSONObject(i);
 
-            if ("uang_muka".equalsIgnoreCase(obj.getString("type").toString())){
+            if ("uang_muka".equalsIgnoreCase(obj.getString("type").toString())) {
                 uangMuka = new BigDecimal(obj.getLong("nilai"));
-            } else if ("piutang_pasien_non_bpjs".equalsIgnoreCase(obj.getString("type").toString())){
+            } else if ("piutang_pasien_non_bpjs".equalsIgnoreCase(obj.getString("type").toString())) {
                 uangPiutang = new BigDecimal(obj.getLong("nilai"));
             } else {
                 hsCriteria.put(obj.getString("type").toString(), new BigDecimal(obj.getLong("nilai")));
@@ -745,28 +703,28 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
         String ketTerangan = "";
         String transId = "";
-        if ("tunai".equalsIgnoreCase(jenis) && "JRJ".equalsIgnoreCase(type) && !"Y".equalsIgnoreCase(withObat)){
+        if ("tunai".equalsIgnoreCase(jenis) && "JRJ".equalsIgnoreCase(type) && !"Y".equalsIgnoreCase(withObat)) {
             transId = "18";
             ketTerangan = "Closing Pasien Rawat Jalan Umum Tunai tanpa Obat ";
         }
-        if ("tunai".equalsIgnoreCase(jenis) && "JRJ".equalsIgnoreCase(type) && "Y".equalsIgnoreCase(withObat)){
+        if ("tunai".equalsIgnoreCase(jenis) && "JRJ".equalsIgnoreCase(type) && "Y".equalsIgnoreCase(withObat)) {
             transId = "19";
             ketTerangan = "Closing Pasien Rawat Jalan Umum Tunai dengan Obat ";
         }
-        if ("tunai".equalsIgnoreCase(jenis) && "JRI".equalsIgnoreCase(type)){
+        if ("tunai".equalsIgnoreCase(jenis) && "JRI".equalsIgnoreCase(type)) {
             transId = "20";
             ketTerangan = "Closing Pasien Rawat Inap Umum Tunai ";
         }
 
         // jika piutang
         String invNumber = "";
-        if ("non_tunai".equalsIgnoreCase(jenis) || "bpjs".equalsIgnoreCase(jenis)){
+        if ("non_tunai".equalsIgnoreCase(jenis) || "bpjs".equalsIgnoreCase(jenis)) {
 
             HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
             detailCheckup.setIdDetailCheckup(idDetailCheckup);
             List<HeaderDetailCheckup> detailCheckups = checkupDetailBo.getByCriteria(detailCheckup);
-            if (detailCheckups.size() > 0){
-                for (HeaderDetailCheckup data : detailCheckups){
+            if (detailCheckups.size() > 0) {
+                for (HeaderDetailCheckup data : detailCheckups) {
                     invNumber = data.getInvoice();
                 }
             }
@@ -776,7 +734,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             mapPiutang.put("bukti", invNumber);
             mapPiutang.put("nilai", uangPiutang);
 
-            if ("bpjs".equalsIgnoreCase(jenis)){
+            if ("bpjs".equalsIgnoreCase(jenis)) {
                 transId = "10";
                 ketTerangan = "Pembayaran Piutang Pasien BPJS";
                 hsCriteria.put("piutang_pasien_bpjs", mapPiutang);
@@ -795,19 +753,19 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             hsCriteria.put("uang_muka", mapUangMuka);
         }
 
-        if (!"".equalsIgnoreCase(transId)){
+        if (!"".equalsIgnoreCase(transId)) {
             try {
-                String text="";
-                if (("transfer").equalsIgnoreCase(metodeBayar)){
-                    text=" pada Bank "+kodeBank;
+                String text = "";
+                if (("transfer").equalsIgnoreCase(metodeBayar)) {
+                    text = " pada Bank " + kodeBank;
                 }
 
-                String catatan = ketTerangan + " untuk No Pasien " + idPasien +" menggunakan metode "+metodeBayar+text;
-                if (!"".equalsIgnoreCase(noRekening)){
-                    catatan = catatan + " No. Rekening "+noRekening;
+                String catatan = ketTerangan + " untuk No Pasien " + idPasien + " menggunakan metode " + metodeBayar + text;
+                if (!"".equalsIgnoreCase(noRekening)) {
+                    catatan = catatan + " No. Rekening " + noRekening;
                 }
 
-                String noJurnal = billingSystemBo.createJurnal(transId, hsCriteria, branchId , catatan,"Y");
+                String noJurnal = billingSystemBo.createJurnal(transId, hsCriteria, branchId, catatan, "Y");
 
                 HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
                 detailCheckup.setIdDetailCheckup(idDetailCheckup);
@@ -824,6 +782,89 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         } else {
             response.setStatus("error");
             response.setMsg("[KasirRawatJalanAction.savePembayaranTagihan] ERROR Method Belum ada");
+        }
+        return response;
+    }
+
+    public String searchFPK() {
+        logger.info("[KasirRawatJalanAction.searchFPK] start process >>>");
+
+        HeaderDetailCheckup headerDetailCheckup = getHeaderDetailCheckup();
+        List<HeaderDetailCheckup> listOfsearchHeaderDetailCheckup = new ArrayList();
+        headerDetailCheckup.setBranchId(CommonUtil.userBranchLogin());
+
+        try {
+            listOfsearchHeaderDetailCheckup = kasirRawatJalanBoProxy.getSearchFPK(headerDetailCheckup);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            logger.error("[KasirRawatJalanAction.searchFPK] Error when searching pasien by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
+            return ERROR;
+        }
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+
+        session.removeAttribute("listOfResult");
+        session.setAttribute("listOfResult", listOfsearchHeaderDetailCheckup);
+
+        logger.info("[KasirRawatJalanAction.search] end process <<<");
+        return "search";
+    }
+
+    public CrudResponse saveNoFPK(String jsonString, String noFPK, String tanggal) throws JSONException {
+        CrudResponse response = new CrudResponse();
+        List<Fpk> fpkList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        KasirRawatJalanBo kasirRawatJalanBo = (KasirRawatJalanBo) ctx.getBean("kasirRawatJalanBoProxy");
+
+        if (jsonString != null && !"".equalsIgnoreCase(jsonString)) {
+            JSONArray json = new JSONArray(jsonString);
+            for (int i = 0; i < json.length(); i++) {
+                Fpk fpk = new Fpk();
+                JSONObject obj = json.getJSONObject(i);
+                fpk.setNoSep(obj.getString("no_sep"));
+                fpk.setIdDetailCheckup(obj.getString("id_detail_checkup"));
+                fpk.setNoFpk(noFPK);
+                fpk.setTanggalFpk(Date.valueOf(tanggal));
+                fpkList.add(fpk);
+            }
+
+            try {
+                response = kasirRawatJalanBo.saveNoFPK(fpkList);
+            }catch (GeneralBOException e){
+                logger.error("Found Error");
+                response.setStatus("error");
+                response.setMsg("Found error "+e);
+            }
+        }
+        return response;
+    }
+
+    public CrudResponse savePembayaranFPK(String jsonString, String noSlip) throws JSONException {
+        CrudResponse response = new CrudResponse();
+        List<Fpk> fpkList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        KasirRawatJalanBo kasirRawatJalanBo = (KasirRawatJalanBo) ctx.getBean("kasirRawatJalanBoProxy");
+
+        if (jsonString != null && !"".equalsIgnoreCase(jsonString)) {
+            JSONArray json = new JSONArray(jsonString);
+            for (int i = 0; i < json.length(); i++) {
+                Fpk fpk = new Fpk();
+                JSONObject obj = json.getJSONObject(i);
+                fpk.setIdFpk(obj.getString("id_fpk"));
+                fpk.setNoSep(obj.getString("no_sep"));
+                fpk.setIdDetailCheckup(obj.getString("id_detail_checkup"));
+                fpk.setNoSlip(noSlip);
+                fpkList.add(fpk);
+            }
+
+            try {
+                response = kasirRawatJalanBo.pembayaranFPK(fpkList);
+            }catch (GeneralBOException e){
+                logger.error("Found Error");
+                response.setStatus("error");
+                response.setMsg("Found error "+e);
+            }
         }
         return response;
     }

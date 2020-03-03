@@ -387,6 +387,10 @@ public class CheckupAction extends BaseMasterAction {
             checkup.setKotaId(pasien.getKota());
             checkup.setKecamatanId(pasien.getKecamatan());
             checkup.setDesaId(pasien.getDesaId());
+            checkup.setNamaDesa(pasien.getDesa());
+            checkup.setNamaKecamatan(pasien.getKecamatan());
+            checkup.setNamaKota(pasien.getKota());
+            checkup.setNamaProvinsi(pasien.getProvinsi());
             //checkup.setIdJenisPeriksaPasien(tipe);
 
         }

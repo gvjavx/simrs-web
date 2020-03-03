@@ -1,7 +1,14 @@
 package com.neurix.simrs.transaksi.kasirrawatjalan.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.transaksi.CrudResponse;
+import com.neurix.simrs.transaksi.checkup.dao.FpkDao;
+import com.neurix.simrs.transaksi.checkup.model.Fpk;
+import com.neurix.simrs.transaksi.checkup.model.ItSImrsFpkEntity;
+import com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao;
 import com.neurix.simrs.transaksi.checkupdetail.dao.UangMukaDao;
+import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsUangMukaPendaftaranEntity;
 import com.neurix.simrs.transaksi.checkupdetail.model.UangMuka;
 import com.neurix.simrs.transaksi.kasirrawatjalan.bo.KasirRawatJalanBo;
@@ -25,6 +32,16 @@ public class KasirRawatJalanBoImpl implements KasirRawatJalanBo {
     private RiwayatTindakanDao riwayatTindakanDao;
     private RawatInapDao rawatInapDao;
     private UangMukaDao uangMukaDao;
+    private CheckupDetailDao checkupDetailDao;
+    private FpkDao fpkDao;
+
+    public void setFpkDao(FpkDao fpkDao) {
+        this.fpkDao = fpkDao;
+    }
+
+    public void setCheckupDetailDao(CheckupDetailDao checkupDetailDao) {
+        this.checkupDetailDao = checkupDetailDao;
+    }
 
     public void setUangMukaDao(UangMukaDao uangMukaDao) {
         this.uangMukaDao = uangMukaDao;
@@ -136,5 +153,100 @@ public class KasirRawatJalanBoImpl implements KasirRawatJalanBo {
             }
         }
 
+    }
+
+    @Override
+    public List<HeaderDetailCheckup> getSearchFPK(HeaderDetailCheckup bean) throws GeneralBOException {
+
+        List<HeaderDetailCheckup> list = new ArrayList<>();
+        if(bean != null){
+
+            try {
+                list = checkupDetailDao.getSearchFPK(bean);
+            }catch (HibernateException e){
+                logger.error("Found Error "+e.getMessage());
+            }
+        }
+        return list;
+    }
+
+    @Override
+    public CrudResponse saveNoFPK(List<Fpk> listData) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
+        if(listData != null){
+
+            for (Fpk list: listData){
+                ItSImrsFpkEntity entity = new ItSImrsFpkEntity();
+                entity.setIdFpk("FPK"+getNextIdFpk());
+                entity.setNoSep(list.getNoSep());
+                entity.setNoFpk(list.getNoFpk());
+                entity.setIdDetailCheckup(list.getIdDetailCheckup());
+                entity.setTanggalFpk(list.getTanggalFpk());
+                entity.setFlag("Y");
+                entity.setAction("C");
+                entity.setCreatedWho(CommonUtil.userLogin());
+                entity.setLastUpdateWho(CommonUtil.userLogin());
+                entity.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+                entity.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+
+                try {
+                    fpkDao.addAndSave(entity);
+                    response.setStatus("success");
+                }catch (HibernateException e){
+                    logger.error("Found Error");
+                    response.setStatus("error");
+                    response.setMsg("Found Error "+e);
+                }
+            }
+        }
+        return response;
+    }
+
+    @Override
+    public CrudResponse pembayaranFPK(List<Fpk> listData) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
+        if(listData != null){
+
+            for (Fpk list: listData){
+                ItSImrsFpkEntity entity = new ItSImrsFpkEntity();
+
+                try {
+                    entity = fpkDao.getById("idFpk", list.getIdFpk());
+                }catch (HibernateException e){
+                    logger.error("Found Error");
+                    response.setStatus("error");
+                    response.setMsg("Found Errror "+e);
+                }
+
+                if(entity != null){
+
+                    entity.setStatusBayar("Y");
+                    entity.setNoSlip(list.getNoSlip());
+                    entity.setAction("U");
+                    entity.setLastUpdateWho(CommonUtil.userLogin());
+                    entity.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+
+                    try {
+                        fpkDao.updateAndSave(entity);
+                        response.setStatus("success");
+                    }catch (HibernateException e){
+                        logger.error("Found Error");
+                        response.setStatus("error");
+                        response.setMsg("Found Error "+e);
+                    }
+                }
+            }
+        }
+        return response;
+    }
+
+    private String getNextIdFpk() {
+        String id = "";
+        try {
+            id = fpkDao.getNextSeq();
+        } catch (HibernateException e) {
+            logger.error("[RiwayatTindakanBoImpl.getNextIdRiwayatTindakan] ERROR When create sequences", e);
+        }
+        return id;
     }
 }

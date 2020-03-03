@@ -113,4 +113,6 @@
           p:sessionFactory-ref="sessionFactory" />
     <bean id="uangMukaDao" class="com.neurix.simrs.transaksi.checkupdetail.dao.UangMukaDao"
           p:sessionFactory-ref="sessionFactory" />
+    <bean id="fpkDao" class="com.neurix.simrs.transaksi.checkup.dao.FpkDao"
+          p:sessionFactory-ref="sessionFactory" />
 </beans>
