@@ -33,6 +33,7 @@
           p:tindakanDao-ref="tindakanDao"
           p:antrianOnlineDao-ref="antrianOnlineDao"
           p:uangMukaDao-ref="uangMukaDao"
+          p:dokterDao-ref="dokterDao"
     />
 
     <bean id="checkupController" class="com.neurix.simrs.mobileapi.CheckupController"

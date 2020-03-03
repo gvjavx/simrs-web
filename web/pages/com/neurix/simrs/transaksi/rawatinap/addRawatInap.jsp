@@ -2501,7 +2501,7 @@
     });
 
     function hitungStatusBiaya() {
-        CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, function (response) {
+        CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, "RI", function (response) {
             if (response.idJenisPeriksaPasien == "bpjs") {
                 $('#status_bpjs').show();
                 if (response.tarifBpjs != null && response.tarifTindakan != null) {

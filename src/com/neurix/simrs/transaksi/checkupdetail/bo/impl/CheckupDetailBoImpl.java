@@ -2,6 +2,9 @@ package com.neurix.simrs.transaksi.checkupdetail.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.dokter.dao.DokterDao;
+import com.neurix.simrs.master.dokter.model.Dokter;
+import com.neurix.simrs.master.dokter.model.ImSimrsDokterEntity;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.ruangan.dao.RuanganDao;
@@ -71,6 +74,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     private TindakanDao tindakanDao;
     private AntrianOnlineDao antrianOnlineDao;
     private UangMukaDao uangMukaDao;
+    private DokterDao dokterDao;
 
     @Override
     public List<HeaderDetailCheckup> getByCriteria(HeaderDetailCheckup bean) throws GeneralBOException {
@@ -1089,6 +1093,35 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         return checkupDetailDao.getFindResepInRiwayatTrans(idDetailCheckup);
     }
 
+    @Override
+    public List<Dokter> getListDokterByDetailCheckup(String idDetailCheckup) throws GeneralBOException {
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_detail_checkup", idDetailCheckup);
+        hsCriteria.put("flag", "Y");
+
+        List<ItSimrsDokterTeamEntity> dokterTeamEntities = dokterTeamDao.getByCriteria(hsCriteria);
+        List<Dokter> dokterList = new ArrayList<>();
+        if (dokterTeamEntities.size() > 0){
+            for (ItSimrsDokterTeamEntity dokterTeamEntity : dokterTeamEntities){
+
+                hsCriteria = new HashMap();
+                hsCriteria.put("id_dokter", dokterTeamEntity.getIdDokter());
+
+                List<ImSimrsDokterEntity> dokterEntities = dokterDao.getByCriteria(hsCriteria);
+                if (dokterEntities.size() > 0){
+                    Dokter dokter;
+                    for (ImSimrsDokterEntity dokterEntity : dokterEntities){
+                        dokter = new Dokter();
+                        dokter.setIdDokter(dokterEntity.getIdDokter());
+                        dokter.setNamaDokter(dokterEntity.getNamaDokter());
+                        dokterList.add(dokter);
+                    }
+                }
+            }
+        }
+        return dokterList;
+    }
+
     private String getNextDetailCheckupId() {
         String id = "";
         try {
@@ -1189,5 +1222,9 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
 
     public void setUangMukaDao(UangMukaDao uangMukaDao) {
         this.uangMukaDao = uangMukaDao;
+    }
+
+    public void setDokterDao(DokterDao dokterDao) {
+        this.dokterDao = dokterDao;
     }
 }

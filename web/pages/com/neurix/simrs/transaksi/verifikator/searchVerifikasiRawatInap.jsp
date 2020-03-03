@@ -563,7 +563,7 @@
     }
 
     function hitungStatusBiaya(idDetailCheckup) {
-        CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, function (response) {
+        CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, "RI", function (response) {
             if (response.idJenisPeriksaPasien == "bpjs") {
                 if (response.tarifBpjs != null && response.tarifTindakan != null) {
 

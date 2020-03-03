@@ -37,6 +37,16 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
     private JenisPriksaPasienBo jenisPriksaPasienBoProxy;
     private PeriksaRadiologiBo periksaRadiologiBoProxy;
 
+    private String lab;
+
+    public String getLab() {
+        return lab;
+    }
+
+    public void setLab(String lab) {
+        this.lab = lab;
+    }
+
     public void setPeriksaRadiologiBoProxy(PeriksaRadiologiBo periksaRadiologiBoProxy) {
         this.periksaRadiologiBoProxy = periksaRadiologiBoProxy;
     }
@@ -101,6 +111,7 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
 //        List<PeriksaLab> listOfResult = (List) session.getAttribute("listOfResult");
 
         String id = getId();
+        String lab = getLab();
         String jk = "";
         if (id != null && !"".equalsIgnoreCase(id)) {
 
@@ -143,6 +154,7 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
                 periksaLab.setNik(checkup.getNoKtp());
                 periksaLab.setUrlKtp(checkup.getUrlKtp());
                 periksaLab.setJenisPeriksaPasien(checkup.getStatusPeriksaName());
+                periksaLab.setIdPeriksaLab(lab);
                 setPeriksaLab(periksaLab);
 
             } else {

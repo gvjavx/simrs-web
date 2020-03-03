@@ -430,7 +430,7 @@
 
     function listSelectDokter() {
         var option = "";
-        CheckupAction.listOfDokter(idPoli, function (response) {
+        PeriksaLabAction.getListDokterTeamByNoDetail(idDetailCheckup, function (response) {
             option = "<option value=''>[Select One]</option>";
             if (response != null) {
                 $.each(response, function (i, item) {
@@ -518,6 +518,29 @@
         }
 
         $('#lab_lab').html(option);
+    }
+
+    function listLab() {
+
+        var table   = "";
+        var data    = [];
+        var lab     = "";
+
+        PeriksaLabAction.listOrderLab(idDetailCheckup, idPeriksaLab, function (response) {
+            data = response;
+            if (data != null) {
+                var idPeriksaLab = "";
+                $.each(data, function (i, item) {
+                    if(item.idKategoriLab == "02"){
+                        if (item.labName != null) {
+                            lab = item.labName;
+                        }
+                    }
+                });
+            }
+        });
+
+        $('#lab_name').html(lab);
     }
 
     function listSelectParameter(select){
@@ -667,27 +690,7 @@
         }
     }
 
-    function listLab() {
 
-        var table   = "";
-        var data    = [];
-        var lab     = "";
-
-        PeriksaLabAction.listOrderLab(idDetailCheckup, function (response) {
-            data = response;
-            if (data != null) {
-                $.each(data, function (i, item) {
-                    if(item.idKategoriLab == "02"){
-                        if (item.labName != null) {
-                            lab = item.labName;
-                        }
-                    }
-                });
-            }
-        });
-
-        $('#lab_name').html(lab);
-    }
 
     function printPeriksaLab(){
         window.open('printPeriksaLab_periksalab.action?id='+idDetailCheckup, "_blank");

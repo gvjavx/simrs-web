@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.checkupdetail.bo;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.master.statuspasien.bo.StatusPasienBo;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
@@ -40,4 +41,6 @@ public interface CheckupDetailBo {
     public CheckResponse updateInvoiceBpjs(String idDetailCheckup, String invNumber);
     public ItSimrsHeaderDetailCheckupEntity getEntityDetailCheckupByIdDetail(String idDetailCheckup) throws GeneralBOException;
     public void saveUpdateNoJuran(HeaderDetailCheckup bean) throws GeneralBOException;
+    public List<Dokter> getListDokterByDetailCheckup(String idDetailCheckup) throws GeneralBOException;
+
 }
