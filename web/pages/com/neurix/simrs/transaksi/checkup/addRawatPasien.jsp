@@ -1452,6 +1452,12 @@
             input.trigger('fileselect', [label]);
         });
 
+        var src = '<s:property value="headerCheckup.urlKtp"/>';
+        console.log(src);
+        if(src != ''){
+            $('#img-upload').attr('src',src);
+        }
+
         $('.btn-file :file').on('fileselect', function (event, label) {
 
             var input = $(this).parents('.input-group').find(':text'),
@@ -1464,6 +1470,7 @@
             }
 
         });
+
         function readURL(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
@@ -1479,6 +1486,7 @@
         $("#imgInp").change(function () {
             readURL(this);
         });
+
         console.log(isOnline);
 
         var nominal = document.getElementById('uang_muka');
@@ -1602,10 +1610,11 @@
     }
 
     function initlistPenjamin() {
-        var url_string = window.location.href;
-        var url = new URL(url_string);
-        var tipe = url.searchParams.get("tipe");
+        // var url_string = window.location.href;
+        // var url = new URL(url_string);
+        // var tipe = url.searchParams.get("tipe");
 
+        var tipe = '<s:property value="tipe"/>';
         var option = "";
         CheckupAction.getComboJenisPeriksaPasienWithBpjs(function (response) {
             if (response.length > 0) {

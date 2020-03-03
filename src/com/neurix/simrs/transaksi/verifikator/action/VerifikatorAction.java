@@ -819,7 +819,7 @@ public class VerifikatorAction extends BaseMasterAction {
                 transId = "02";
 
 
-            String catatan = "Closing Pasien "+ketPoli+" BPJS "+ketObat+" id Pasien :"+idPasien;
+            String catatan = "Closing Pasien "+ketPoli+" BPJS "+ketObat+" No Pasien "+idPasien;
 
             try {
                 billingSystemBo.createJurnal(transId, hsCriteria, unitId, catatan, "Y");

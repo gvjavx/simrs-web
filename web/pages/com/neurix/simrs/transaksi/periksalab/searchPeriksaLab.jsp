@@ -181,9 +181,11 @@
                                     <td><s:property value="idDetailCheckup"/></td>
                                     <td><s:property value="namaPasien"/></td>
                                     <td><s:property value="labName"/></td>
+                                    <%--<td><s:property value="idPeriksaLab"/></td>--%>
                                     <td align="center">
                                         <s:url var="add_periksa_lab" namespace="/periksalab" action="add_periksalab" escapeAmp="false">
                                             <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
+                                            <s:param name="lab"><s:property value="idPeriksaLab"/></s:param>
                                         </s:url>
                                         <s:a href="%{add_periksa_lab}">
                                             <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer; ">

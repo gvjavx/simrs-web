@@ -329,6 +329,10 @@
                                     <td style="vertical-align: middle"><span class="label label-success" id="det_no_sep"></span></td>
                                 </tr>
                                 <tr>
+                                    <td><b>No RM</b></td>
+                                    <td><span id="det_no_rm"></span></td>
+                                </tr>
+                                <tr>
                                     <td><b>No Checkup</b></td>
                                     <td><span id="det_no_checkup"></span></td>
                                 </tr>
@@ -551,6 +555,7 @@
                         kecamatan = response.namaKecamatan;
                         desa = response.namaDesa;
                         noSep = response.noSep;
+                        $('#det_no_rm').html(response.idPasien);
 
                         if(response.idJenisPeriksaPasien == "bpjs"){
                             $('#show_sep, #bar_bpjs').show();

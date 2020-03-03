@@ -183,7 +183,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             }
         }
         logger.info("[CheckupBoImpl.getByCriteria] End <<<<<<<");
-        return null;
+        return new ArrayList<>();
     }
 
     @Override

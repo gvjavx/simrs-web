@@ -252,6 +252,10 @@
                                     <td style="vertical-align: middle"><span class="label label-success" id="det_no_sep"></span></td>
                                 </tr>
                                 <tr>
+                                    <td><b>No RM</b></td>
+                                    <td><span id="det_no_rm"></span></td>
+                                </tr>
+                                <tr>
                                     <td><b>No Checkup</b></td>
                                     <td><span id="det_no_checkup"></span></td>
                                 </tr>
@@ -405,6 +409,10 @@
                                 <tr>
                                     <td><b>No SEP</b></td>
                                     <td style="vertical-align: middle"><span class="label label-success" id="fin_no_sep"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>No RM</b></td>
+                                    <td><span id="fin_no_rm"></span></td>
                                 </tr>
                                 <tr>
                                     <td><b>No Checkup</b></td>
@@ -563,8 +571,7 @@
     }
 
     function hitungStatusBiaya(idDetailCheckup) {
-        CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, function (response) {
-            if (response.idJenisPeriksaPasien == "bpjs") {
+        CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, "RI", function (response) {
                 if (response.tarifBpjs != null && response.tarifTindakan != null) {
 
                     var coverBiaya = response.tarifBpjs;
@@ -606,8 +613,7 @@
                         $('#fin_b_tindakan').html(formatRupiah(biayaTindakan) + " (" + persen + "%)");
                     }
                 }
-            } else {
-            }
+
         });
     }
 
@@ -670,6 +676,7 @@
                         kecamatan = response.namaKecamatan;
                         desa = response.namaDesa;
                         noSep = response.noSep;
+                        $('#det_no_rm').html(response.idPasien);
                     // });
                 }
             });
@@ -915,6 +922,7 @@
                         kecamatan = response.namaKecamatan;
                         desa = response.namaDesa;
                         noSep = response.noSep;
+                        $('#fin_no_rm').html(response.idPasien);
                     // });
                 }
             });
