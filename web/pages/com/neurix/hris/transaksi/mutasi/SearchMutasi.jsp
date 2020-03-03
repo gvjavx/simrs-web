@@ -50,7 +50,7 @@ To change this template use File | Settings | File Templates.
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Mutasi
+            Mutasi / Rotasi
             <small>e-HEALTH</small>
         </h1>
     </section>
@@ -246,7 +246,7 @@ To change this template use File | Settings | File Templates.
                                         </sj:submit>
                                     </td>
                                     <td>
-                                        <a href="add_mutasi.action" class="btn btn-success" ><i class="fa fa-plus"></i> Add Mutasi</a>
+                                        <a href="add_mutasi.action" class="btn btn-success" ><i class="fa fa-plus"></i> Add Mutasi / Rotasi</a>
                                     </td>
                                     <td>
                                         <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_mutasi"/>'">
@@ -319,6 +319,7 @@ To change this template use File | Settings | File Templates.
                                             <display:column property="positionBaruName" sortable="true" title="Posisi Baru"  />
                                             <display:column property="stTanggalEfektif" sortable="true" title="Tanggal Efektif"  />
                                             <display:column property="statusName" sortable="true" title="Status"  />
+                                            <display:column property="tipeMutasiName" sortable="true" title="Tipe"  />
 
                                         </display:table>
                                     </td>

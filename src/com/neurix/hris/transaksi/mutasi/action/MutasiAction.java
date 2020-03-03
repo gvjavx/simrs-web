@@ -654,7 +654,8 @@ public class MutasiAction extends BaseMasterAction{
 
     public boolean saveAnggotaAdd(String nip, String personName, String branchLamaId, String branchLamaName, String divisiLamaId, String divisiLamaName,
                                String positionLamaId, String positionLamaName, String pjsLama, String menggantikanId, String menggantikanNama, String branchBaruId, String branchBaruName,
-                               String divisiBaruId, String divisiBaruName, String positionBaruId, String positionBaruName, String pjsBaru, String status){
+                               String divisiBaruId, String divisiBaruName, String positionBaruId, String positionBaruName, String pjsBaru, String status, String tipe, String levelLama,
+                                  String levelBaru, String levelLamaName, String levelBaruName){
         logger.info("[SppdAction.saveAdd] start process >>>");
         List<Mutasi> mutasiList = null;
         HttpSession session = ServletActionContext.getRequest().getSession();
@@ -673,6 +674,8 @@ public class MutasiAction extends BaseMasterAction{
                 mutasi.setDivisiLamaName(divisiLamaName);
                 mutasi.setPositionLamaId(positionLamaId);
                 mutasi.setPositionLamaName(positionLamaName);
+                mutasi.setLevelLama(levelLama);
+                mutasi.setLevelLamaName(levelLamaName);
                 mutasi.setPjsLama(pjsLama);
 
                 if (menggantikanId!=null){
@@ -693,6 +696,8 @@ public class MutasiAction extends BaseMasterAction{
                 mutasi.setDivisiBaruName(divisiBaruName);
                 mutasi.setPositionBaruId(positionBaruId);
                 mutasi.setPositionBaruName(positionBaruName);
+                mutasi.setLevelBaru(levelBaru);
+                mutasi.setLevelBaruName(levelBaruName);
                 mutasi.setPjs(pjsBaru);
 
                 mutasi.setStatus(status);
@@ -709,6 +714,14 @@ public class MutasiAction extends BaseMasterAction{
                     }
                     else{
                         mutasi.setStatusName("Move Holding");
+                    }
+                }
+                mutasi.setTipeMutasi(tipe);
+                if (tipe!=""){
+                    if ("MT".equalsIgnoreCase(tipe)){
+                        mutasi.setTipeMutasiName("Mutasi");
+                    }else if ("RT".equalsIgnoreCase(tipe)){
+                        mutasi.setTipeMutasiName("Rotasi");
                     }
                 }
 

@@ -273,12 +273,17 @@ public class MutasiBoImpl implements MutasiBo {
                     }
                     itMutasiEntity.setPositionLamaId(mutasi.getPositionLamaId());
                     itMutasiEntity.setMenggantikanNip(mutasi.getPenggantiNip());
-                    itMutasiEntity.setTipeMutasi(mutasi.getStatus());
+                    itMutasiEntity.setStatus(mutasi.getStatus());
+                    itMutasiEntity.setTipeMutasi(mutasi.getTipeMutasi());
+                    itMutasiEntity.setLevelLama(mutasi.getLevelLama());
+                    itMutasiEntity.setLevelLamaName(mutasi.getLevelLamaName());
 
                     if(mutasi.getStatus().equalsIgnoreCase("M")){
                         itMutasiEntity.setBranchBaruId(mutasi.getBranchBaruId());
                         itMutasiEntity.setDivisiBaruId(mutasi.getDivisiBaruId());
                         itMutasiEntity.setPositionBaruId(mutasi.getPositionBaruId());
+                        itMutasiEntity.setLevelBaru(mutasi.getLevelBaru());
+                        itMutasiEntity.setLevelBaruName(mutasi.getLevelBaruName());
                     }
                     itMutasiEntity.setPjs(mutasi.getPjs());
 
@@ -608,18 +613,26 @@ public class MutasiBoImpl implements MutasiBo {
                     returnMutasi.setAction(itMutasiEntity.getAction());
                     returnMutasi.setFlag(itMutasiEntity.getFlag());
 
-                    if (itMutasiEntity.getTipeMutasi()!= null){
-                        if ("M".equalsIgnoreCase(itMutasiEntity.getTipeMutasi())){
+                    if (itMutasiEntity.getStatus()!= null){
+                        if ("M".equalsIgnoreCase(itMutasiEntity.getStatus())){
                             returnMutasi.setStatusName("Move");
                         }
-                        else if ("P".equalsIgnoreCase(itMutasiEntity.getTipeMutasi())){
+                        else if ("P".equalsIgnoreCase(itMutasiEntity.getStatus())){
                             returnMutasi.setStatusName("Pensiun");
                         }
-                        else if ("R".equalsIgnoreCase(itMutasiEntity.getTipeMutasi())){
+                        else if ("R".equalsIgnoreCase(itMutasiEntity.getStatus())){
                             returnMutasi.setStatusName("Resign");
                         }
                         else{
                             returnMutasi.setStatusName("Move Holding");
+                        }
+                    }
+                    returnMutasi.setTipeMutasi(itMutasiEntity.getTipeMutasi());
+                    if (itMutasiEntity.getTipeMutasi()!= null) {
+                        if ("MT".equalsIgnoreCase(itMutasiEntity.getTipeMutasi())) {
+                            returnMutasi.setTipeMutasiName("Mutasi");
+                        } else {
+                            returnMutasi.setTipeMutasiName("Rotasi");
                         }
                     }
                     listOfResult.add(returnMutasi);

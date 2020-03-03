@@ -164,7 +164,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
             unit = " and branch_id = '"+branchId+"'  ";
         }
         if(!divisiId.equalsIgnoreCase("")){
-            bagian = " and department_id = '"+divisiId+"' ";
+            bagian = "department_id = '"+divisiId+"' ";
         }
 
         List<ImPosition> listOfResult = new ArrayList<ImPosition>();
@@ -173,9 +173,8 @@ public class PositionDao extends GenericDao<ImPosition,String> {
                 "\tposition_id,\n" +
                 "\tposition_name\n" +
                 "from\n" +
-                "\tstruktur_jabatan\n" +
-                "where\n" +
-                "\tbranch_id is not null\n" + unit + bagian + "\n" +
+                "\tim_position\n" +
+                "where\n" + bagian + "\n" +
                 "\torder by position_name";
 
         results = this.sessionFactory.getCurrentSession()
