@@ -563,9 +563,10 @@
         $.each(data, function (i, item) {
             var sep = data[i]["No Sep"];
             var idDetail = data[i]["ID Detail Checkup"];
+            var idPasien = data[i]["ID Pasien"];
             var idFpk = $('#id_fpk'+sep).val();
             if ($('#check_' + sep).prop("checked") == true) {
-                result.push({'id_fpk': idFpk,'no_sep': sep,'no_sep': sep, 'id_detail_checkup': idDetail});
+                result.push({'id_fpk': idFpk, 'no_sep': sep, 'id_detail_checkup': idDetail, "id_pasien":idPasien});
             }
         });
         var jsonString = JSON.stringify(result);
@@ -581,7 +582,8 @@
                     $('#waiting_dialog').dialog('close');
                     $('#info_dialog').dialog('open');
                 } else {
-                    $('#waiting_dialog').dialog('open');
+                    $('#waiting_dialog').dialog('close');
+                    alert(response.msg);
                 }
                 }
             });

@@ -858,6 +858,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 fpk.setIdFpk(obj.getString("id_fpk"));
                 fpk.setNoSep(obj.getString("no_sep"));
                 fpk.setIdDetailCheckup(obj.getString("id_detail_checkup"));
+                fpk.setIdPasien(obj.getString("id_pasien"));
                 fpk.setNoSlip(noSlip);
 
                 fpkId = obj.getString("id_fpk");
@@ -880,7 +881,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
                         Map mapKlaim = new HashMap();
                         mapKlaim.put("bukti", detail.getInvoice());
-                        mapKlaim.put("pasien_id", detail.getIdPasien());
+                        mapKlaim.put("pasien_id", fpk.getIdPasien());
                         mapKlaim.put("nilai", nilai);
                         mapListKlaim.add(mapKlaim);
                     }
@@ -896,6 +897,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             mapJurnal.put("piutang_pasien_bpjs", mapListKlaim);
             mapJurnal.put("metode_bayar", "transfer");
             mapJurnal.put("bank", "bri");
+            mapJurnal.put("nomor_rekening", noSlip);
 
             String noJurnal = "";
             String catatan = "Pembayaran Piutang BPJS dengan no FPK "+fpkId;
