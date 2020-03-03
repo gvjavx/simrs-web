@@ -286,6 +286,22 @@
 
         }
 
+        function formatRupiah2(angka) {
+            var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                split = number_string.split(','),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            if (ribuan) {
+                separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+            return rupiah;
+        }
+
 
     </script>
 </head>
@@ -921,6 +937,8 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <s:if test='tipe == "bpjs"'>
                             <div class="box-header with-border"></div>
                             <div class="box-header with-border">
                                 <h3 class="box-title"><i class="fa fa-user"></i> Data Rujukan</h3>
@@ -1004,6 +1022,7 @@
                                     </div>
                                 </div>
                             </div>
+                            </s:if>
                             <%--<div class="box-header with-border"></div>--%>
                             <%--<div class="box-header with-border">--%>
                                 <%--<h3 class="box-title"><i class="fa fa-user"></i> Form Inputan</h3>--%>
@@ -1413,6 +1432,8 @@
 
     $(document).ready(function () {
         $('#igd').addClass('active');
+        initlistPenjamin();
+        listDokter();
 
         $(document).on('change', '.btn-file :file', function () {
             var input = $(this),
@@ -1448,8 +1469,17 @@
             readURL(this);
         });
 
-        initlistPenjamin();
-        listDokter();
+        var nominal = document.getElementById('uang_muka');
+        nominal.addEventListener('keyup', function (e) {
+            nominal.value = formatRupiah2(this.value);
+            var valBayar = nominal.value.replace(/[.]/g, '');
+
+            if(valBayar != ''){
+                $('#uang_muka_val').val(valBayar);
+            }else{
+                $('#uang_muka_val').val('');
+            }
+        });
     });
 
     function setFormAdmisi() {
@@ -1657,7 +1687,6 @@
                 $.each(response, function (i, item) {
                     option += "<option value='" + item.idDokter + "'>" + item.namaDokter + "</option>";
                 });
-
                 $('#dokter').html(option);
             } else {
                 option = option;

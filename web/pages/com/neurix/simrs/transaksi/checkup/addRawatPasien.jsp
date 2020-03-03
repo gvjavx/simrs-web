@@ -1443,6 +1443,8 @@
         $("#bahasa").val("indonesia");
         $("#bahasa").attr("readOnly","true");
         $('#pendaftaran').addClass('active');
+        initlistPenjamin();
+        initListDokter();
 
         $(document).on('change', '.btn-file :file', function () {
             var input = $(this),
@@ -1477,9 +1479,6 @@
         $("#imgInp").change(function () {
             readURL(this);
         });
-
-        initlistPenjamin();
-        initListDokter();
         console.log(isOnline);
 
         var nominal = document.getElementById('uang_muka');
