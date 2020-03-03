@@ -119,6 +119,14 @@
                                         </tr>
                                     </s:if>
                                     <tr>
+                                        <td width="45%"><b>No RM</b></td>
+                                        <td style="vertical-align: middle;">
+                                            <table>
+                                                <s:label name="headerDetailCheckup.idPasien"></s:label>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <td width="45%"><b>No Checkup</b></td>
                                         <td>
                                             <table>

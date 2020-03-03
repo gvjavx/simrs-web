@@ -271,6 +271,10 @@
                                     <td style="vertical-align: middle"><span class="label label-success" id="fin_no_sep"></span></td>
                                 </tr>
                                 <tr>
+                                    <td><b>No RM</b></td>
+                                    <td><span id="fin_no_rm"></span></td>
+                                </tr>
+                                <tr>
                                     <td><b>ID Detail Checkup</b></td>
                                     <td><span id="fin_no_checkup"></span></td>
                                 </tr>
@@ -523,6 +527,8 @@
                         metode = "bpjs";
                     }
 
+                    $('#fin_no_rm').html(response.idPasien);
+
                     // });
 
                     $("#fin_id_pasien").val(response.idPasien);
@@ -594,7 +600,7 @@
 
                     table = table + '<tr><td colspan="3">Total</td><td align="right" style="padding-right: 20px">'+formatRupiah(total)+'</td></tr>'+
                         '<tr><td colspan="3">PPN Obat</td><td align="right" style="padding-right: 20px">'+formatRupiah(totalPpn)+'</td></tr>'+
-                        '<tr><td colspan="3">Total Biaya</td><td align="right" style="padding-right: 20px">'+formatRupiah(total-uangMuka)+'</td></tr>';
+                        '<tr><td colspan="3">Total Biaya</td><td align="right" style="padding-right: 20px">'+formatRupiah((total-uangMuka)+totalPpn)+'</td></tr>';
 
                     // mapBiaya.push({"type":"kas","nilai":(total-uangMuka)+totalPpn});
                     // mapBiaya.push({"type":"pendapatan_rawat_inap_non_bpjs","nilai":total});
@@ -606,7 +612,7 @@
                             //rawat jalan dengan obat
                             mapBiaya.push({"type": "uang_muka", "nilai": uangMuka});
                             mapBiaya.push({"type": "kas", "nilai": ((total - uangMuka) + totalPpn) });
-                            mapBiaya.push({"type": "pendapatan_rawat_jalan_non_bpjs", "nilai": total});
+                            mapBiaya.push({"type": "pendapatan_rawat_inap_non_bpjs", "nilai": total});
                             mapBiaya.push({"type": "pendapatan_obat_non_bpjs", "nilai": totalObat});
                             mapBiaya.push({"type": "ppn_keluaran", "nilai": totalPpn });
 
