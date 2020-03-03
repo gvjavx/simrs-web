@@ -82,6 +82,7 @@ import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -2414,26 +2415,52 @@ public class CheckupDetailAction extends BaseMasterAction {
             checkup.setTindakanList(tindakans);
             checkup.setUrlKtp(checkup.getUrlKtp());
 
-            String fileName = "";
+//            String fileName = "";
+//            if (this.fileUploadDoc != null) {
+//                if ("image/jpeg".equalsIgnoreCase(this.fileUploadDocContentType)) {
+//                    if (this.fileUploadDoc.length() <= 5242880 && this.fileUploadDoc.length() > 0) {
+//
+//                        // file name
+//                        fileName = "SURAT_RUJUK_" + checkup.getNoKtp() + "_" + this.fileUploadDocFileName;
+//
+//                        // deklarasi path file
+//                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_DOC_RUJUK_PASIEN;
+//                        logger.info("[CheckupAction.uploadImages] FILEPATH :" + filePath);
+//
+//                        // persiapan pemindahan file
+//                        File fileToCreate = new File(filePath, fileName);
+//
+//                        try {
+//                            // pemindahan file
+//                            FileUtils.copyFile(this.fileUploadDoc, fileToCreate);
+//                            logger.info("[CheckupAction.uploadImages] SUCCES PINDAH");
+//                            checkup.setUrlDocRujuk(fileName);
+//                        } catch (IOException e) {
+//                            logger.error("[CheckupAction.uploadImages] error, " + e.getMessage());
+//                        }
+//                    }
+//                }
+//            }
             if (this.fileUploadDoc != null) {
                 if ("image/jpeg".equalsIgnoreCase(this.fileUploadDocContentType)) {
                     if (this.fileUploadDoc.length() <= 5242880 && this.fileUploadDoc.length() > 0) {
 
                         // file name
-                        fileName = "SURAT_RUJUK_" + checkup.getNoKtp() + "_" + this.fileUploadDocFileName;
-
+                        String fileName = this.fileUploadDocFileName;
+                        String fileNameReplace = fileName.replace(" ", "_");
+                        String newFileName = checkup.getNoKtp() + "-"+dateFormater("MM")+dateFormater("yy")+"-"+fileNameReplace;
                         // deklarasi path file
                         String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_DOC_RUJUK_PASIEN;
                         logger.info("[CheckupAction.uploadImages] FILEPATH :" + filePath);
 
                         // persiapan pemindahan file
-                        File fileToCreate = new File(filePath, fileName);
+                        File fileToCreate = new File(filePath, newFileName);
 
                         try {
                             // pemindahan file
                             FileUtils.copyFile(this.fileUploadDoc, fileToCreate);
                             logger.info("[CheckupAction.uploadImages] SUCCES PINDAH");
-                            checkup.setUrlDocRujuk(fileName);
+                            checkup.setUrlDocRujuk(newFileName);
                         } catch (IOException e) {
                             logger.error("[CheckupAction.uploadImages] error, " + e.getMessage());
                         }
@@ -2457,6 +2484,12 @@ public class CheckupDetailAction extends BaseMasterAction {
         logger.info("[CheckupDetailAction.saveAdd] end process >>>");
         return "search";
 
+    }
+
+    private String dateFormater(String type){
+        java.sql.Date date = new java.sql.Date(new java.util.Date().getTime());
+        DateFormat df = new SimpleDateFormat(type);
+        return df.format(date);
     }
 
     public String printResepPasien() {
@@ -2485,6 +2518,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
         reportParams.put("area", CommonUtil.userAreaName());
         reportParams.put("unit", CommonUtil.userBranchNameLogin());
+        reportParams.put("idPasien", headerCheckup.getIdPasien());
         reportParams.put("resepId", idResep);
         reportParams.put("logo", logo);
         reportParams.put("nik", headerCheckup.getNoKtp());

@@ -1151,6 +1151,7 @@ public class TransaksiObatAction extends BaseMasterAction {
             }
 
             reportParams.put("resepId", idResep);
+            reportParams.put("idPasien", checkup.getIdPasien());
             reportParams.put("nik", checkup.getNoKtp());
             reportParams.put("nama", checkup.getNama());
             String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());

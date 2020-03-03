@@ -1028,6 +1028,45 @@
                             <s:hidden name="headerCheckup.noMr" id="no_mr"></s:hidden>
                             <s:hidden name="headerCheckup.idPelayananBpjs" id="idPelayananBpjs"></s:hidden>
 
+                            <s:if test='tipe != "bpjs"'>
+                                <div class="box-header with-border"></div>
+                                <div class="box-header with-border">
+                                    <h3 class="box-title"><i class="fa fa-money"></i> Pembayaran</h3>
+                                </div>
+                                <div class="box-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 10px">Metode pembayaran</label>
+                                                <div class="col-md-8">
+                                                    <s:select
+                                                            list="#{'tunai':'Tunai','non_tunai':'Non Tunai'}"
+                                                            cssStyle="margin-top: 7px"
+                                                            name="headerCheckup.metodePembayaran"
+                                                            headerKey="" headerValue="[Select one]"
+                                                            cssClass="form-control"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 10px">Uang Muka</label>
+
+                                                <div class="col-md-8">
+                                                    <div class="input-group" style="margin-top: 7px">
+                                                        <div class="input-group-addon">
+                                                            Rp.
+                                                        </div>
+                                                        <s:hidden name="headerCheckup.uangMuka" id="uang_muka_val"></s:hidden>
+                                                        <s:textfield type="text" id="uang_muka" cssClass="form-control"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </s:if>
+
                             <div class="box-header with-border"></div>
                             <div class="box-body">
                                 <div class="row">

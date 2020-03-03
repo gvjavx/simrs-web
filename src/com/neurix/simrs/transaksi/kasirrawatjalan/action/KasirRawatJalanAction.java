@@ -339,6 +339,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 String terbilang = angkaToTerbilang(totalJasa.longValue());
 
                 reportParams.put("invoice", checkup.getInvoice());
+                reportParams.put("idPasien", checkup.getIdPasien());
                 reportParams.put("title", "Invoice Rawat Jalan Pasien");
                 reportParams.put("itemDataSource", itemData);
                 reportParams.put("listObatDetail", itemDataObat);
@@ -516,6 +517,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(uangMukaList);
 
                 reportParams.put("itemDataSource", itemData);
+                reportParams.put("idPasien", checkup.getIdPasien());
                 reportParams.put("unit", unit);
                 reportParams.put("area", area);
                 reportParams.put("idDetailCheckup", checkup.getIdDetailCheckup());
@@ -840,7 +842,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         return response;
     }
 
-    public CrudResponse savePembayaranFPK(String jsonString, String noSlip) throws JSONException {
+    public CrudResponse savePembayaranFPK(String jsonString, String noSlip, String bank, String noRekeking) throws JSONException {
         CrudResponse response = new CrudResponse();
         List<Fpk> fpkList = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();

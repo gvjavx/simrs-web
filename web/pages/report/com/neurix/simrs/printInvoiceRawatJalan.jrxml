@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printInvoiceRawatJalan" language="groovy" pageWidth="421" pageHeight="595" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
-	<property name="ireport.zoom" value="1.3310000000000035"/>
+	<property name="ireport.zoom" value="1.7715610000000053"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="217"/>
+	<property name="ireport.y" value="69"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -94,6 +94,7 @@
 	<parameter name="reportParams.terbilang" class="java.lang.String"/>
 	<parameter name="reportParams.invoice" class="java.lang.String"/>
 	<parameter name="reportParams.title" class="java.lang.String"/>
+	<parameter name="reportParams.idPasien" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT * FROM im_simrs_pasien LIMIT 1]]>
 	</queryString>
@@ -125,7 +126,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="151" splitType="Stretch">
+		<band height="157" splitType="Stretch">
 			<staticText>
 				<reportElement x="248" y="39" width="59" height="19" uuid="f1001fbb-6e3b-4ec3-920b-036db1549a87"/>
 				<textElement>
@@ -145,14 +146,14 @@
 				<imageExpression><![CDATA[$P{reportParams.logo}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="0" y="104" width="90" height="15" uuid="6c44ef7d-db93-4127-8056-c6e5dc48fb34"/>
+				<reportElement x="0" y="119" width="90" height="15" uuid="6c44ef7d-db93-4127-8056-c6e5dc48fb34"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[Nama]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="119" width="90" height="15" uuid="a5b9a80e-195a-4a19-a403-96703a2a8764"/>
+				<reportElement x="0" y="134" width="90" height="15" uuid="a5b9a80e-195a-4a19-a403-96703a2a8764"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
@@ -173,28 +174,28 @@
 				<text><![CDATA[Jenis Pasien]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="89" width="90" height="15" uuid="3ec64ed1-e2b1-43c7-990e-b5ef6bdabd53"/>
+				<reportElement x="0" y="104" width="90" height="15" uuid="3ec64ed1-e2b1-43c7-990e-b5ef6bdabd53"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[NIK]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="91" y="89" width="5" height="15" uuid="27bb378b-d5ad-4e5d-84d1-73a09bac82ed"/>
+				<reportElement x="91" y="104" width="5" height="15" uuid="27bb378b-d5ad-4e5d-84d1-73a09bac82ed"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="91" y="104" width="5" height="15" uuid="c68a50c7-f5e0-4775-aaff-1bfefa19e52d"/>
+				<reportElement x="91" y="119" width="5" height="15" uuid="c68a50c7-f5e0-4775-aaff-1bfefa19e52d"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="91" y="119" width="5" height="15" uuid="3f134a74-d8ce-4e88-8153-5afc04245054"/>
+				<reportElement x="91" y="134" width="5" height="15" uuid="3f134a74-d8ce-4e88-8153-5afc04245054"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
@@ -215,7 +216,7 @@
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="96" y="89" width="98" height="15" uuid="ba387fca-a220-41d7-86a0-f7bdbc0958e7"/>
+				<reportElement x="96" y="104" width="98" height="15" uuid="ba387fca-a220-41d7-86a0-f7bdbc0958e7"/>
 				<box leftPadding="1"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -223,7 +224,7 @@
 				<textFieldExpression><![CDATA[$P{reportParams.nik} == null ? "" : $P{reportParams.nik}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="96" y="104" width="98" height="15" uuid="85597b11-0127-46c5-9839-b72b43d88ddd"/>
+				<reportElement x="96" y="119" width="98" height="15" uuid="85597b11-0127-46c5-9839-b72b43d88ddd"/>
 				<box leftPadding="1"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -231,7 +232,7 @@
 				<textFieldExpression><![CDATA[$P{reportParams.nama} == null ? "" : $P{reportParams.nama}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="96" y="119" width="98" height="15" uuid="6ea987d3-b994-439c-849a-28abc91b7a06"/>
+				<reportElement x="96" y="134" width="98" height="15" uuid="6ea987d3-b994-439c-849a-28abc91b7a06"/>
 				<box leftPadding="1"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -330,6 +331,28 @@
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.title} == null ? "" : $P{reportParams.title}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="91" y="89" width="5" height="15" uuid="b5bd61fc-ffef-4579-b96c-a4e92f6e45fe"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="89" width="90" height="15" uuid="6216c7fc-3e1d-4b26-b475-e420933965d4"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Nomor RM]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="96" y="89" width="98" height="15" uuid="c4b1c756-4111-40d7-82ee-1364c8fcd0fe"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.idPasien} == null ? "" : $P{reportParams.idPasien}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
