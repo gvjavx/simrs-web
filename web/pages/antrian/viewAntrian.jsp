@@ -187,33 +187,32 @@
 
         detailBranch(branchId);
 
-        // setInterval(function () {
+        setInterval(function () {
             var tableAntrian = "";
             var poli = "";
 
             CheckupAction.getListAntriaPasien(branchId, poliId, function (response) {
                 if(response.length > 0){
-
-                    var tes = "";
+                    var pol = "";
                     $.each(response, function (i, item) {
 
-                        var pelayanan = "";
-                        // console.log(tes);
-                        // console.log(tes2);
-                        tes = item.namaPelayanan;
+                        if(i == 0){
 
-                        if(tes == item.namaPelayanan){
-                            tes = "";
+                            pol = item.namaPelayanan;
+
                         }else{
-                            tes = item.namaPelayanan;
+                            var tes = item.namaPelayanan;
+                            var tes2 = response[i - 1]["namaPelayanan"];
 
+                            if(tes == tes2){
+                                pol = "";
+                            }else{
+                                pol = item.namaPelayanan;
+                            }
                         }
 
-                        console.log(tes);
-                        // if(item[i].namaPelayan);
-                        console.log();
                         tableAntrian += '<tr>' +
-                            '<td>'+item.namaPelayanan.toUpperCase()+'</td>'+
+                            '<td>'+pol.toUpperCase()+'</td>'+
                             '<td><i class="fa fa-user"></i> '+item.nama.toUpperCase()+'</td>'+
                             '<td>'+item.namaDesa.toUpperCase()+'</td>'+
                             '<td style="vertical-align: middle"><label class="label label-warning"> Selanjutnya</label></td>' +
@@ -242,7 +241,7 @@
                     $('#body_periksa').html("");
                 }
             });
-        // },1000);
+        },1000);
     }
 
     function detailBranch(branch) {

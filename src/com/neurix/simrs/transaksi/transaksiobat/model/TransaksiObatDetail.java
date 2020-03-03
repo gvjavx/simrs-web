@@ -28,6 +28,7 @@ public class TransaksiObatDetail extends BaseModel {
     private BigInteger totalDibayar;
     private BigInteger nominal;
     private BigInteger kembalian;
+    private BigInteger ppnBayar;
 
     private BigInteger qtyApprove;
 
@@ -61,6 +62,23 @@ public class TransaksiObatDetail extends BaseModel {
     private String stTotalbayar;
 
     private String flagVerifikasi;
+    private String noJurnal;
+
+    public String getNoJurnal() {
+        return noJurnal;
+    }
+
+    public void setNoJurnal(String noJurnal) {
+        this.noJurnal = noJurnal;
+    }
+
+    public BigInteger getPpnBayar() {
+        return ppnBayar;
+    }
+
+    public void setPpnBayar(BigInteger ppnBayar) {
+        this.ppnBayar = ppnBayar;
+    }
 
     public String getFlagVerifikasi() {
         return flagVerifikasi;

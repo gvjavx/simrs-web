@@ -10,6 +10,7 @@ import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -163,7 +164,7 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
         String idDetil       = "%";
         String nama           = "%";
         String status         = "%";
-        String flag         = "Y";
+        String flag         = "%";
 
         if (bean.getIsUmum() != null && !"".equalsIgnoreCase(bean.getIsUmum())){
             isUmum = bean.getIsUmum();
@@ -194,7 +195,7 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.id_detail_checkup = b.id_detail_checkup\n" +
                 "INNER JOIN it_simrs_header_checkup c ON b.no_checkup = c.no_checkup\n" +
                 "INNER JOIN im_simrs_status_pasien d ON a.status = d.id_status_pasien\n" +
-                "WHERE a.flag = :flag \n" +
+                "WHERE a.flag LIKE :flag \n" +
                 "AND a.branch_id LIKE :branchId\n" +
                 "AND a.is_umum LIKE :isUmum\n" +
                 "AND a.id_permintaan_resep LIKE :idResep\n" +
@@ -309,6 +310,48 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
         }
 
         return transaksiObatDetails;
+    }
+
+    public List getListOfObatBatchPermintaan(String idApproval, String flagDiterima){
+
+        String strDiterimaFlag = "";
+        if (!"".equalsIgnoreCase(flagDiterima)){
+            strDiterimaFlag = "\n AND odb.approve_flag = 'Y'";
+        }
+
+        String SQL = "SELECT \n" +
+                "od.id_approval_obat,\n" +
+                "od.id_transaksi_obat_detail,\n" +
+                "odb.id_barang,\n" +
+                "odb.qty_approve,\n" +
+                "odb.jenis_satuan,\n" +
+                "CASE WHEN odb.jenis_satuan = 'box' THEN od.average_harga_box WHEN odb.jenis_satuan = 'lembar' THEN od.average_harga_lembar WHEN odb.jenis_satuan = 'biji' THEN od.average_harga_biji ELSE 0 END as harga\n" +
+                "FROM mt_simrs_transaksi_obat_detail_batch odb\n" +
+                "INNER JOIN mt_simrs_transaksi_obat_detail od ON od.id_transaksi_obat_detail = odb.id_transaksi_obat_detail\n" +
+                "WHERE od.id_approval_obat = :idApprove\n" +
+                "AND odb.status = 'Y'"+strDiterimaFlag;
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("idApprove", idApproval)
+                .list();
+
+        List<TransaksiObatDetail> trans = new ArrayList<>();
+        if (results.size() > 0){
+
+            TransaksiObatDetail obatDetail;
+            for (Object[] obj : results){
+                BigDecimal harga = obj[5] == null ? new BigDecimal(0) : (BigDecimal) obj[5];
+                obatDetail = new TransaksiObatDetail();
+                obatDetail.setIdApprovalObat(obj[0].toString());
+                obatDetail.setIdTransaksiObatDetail(obj[1].toString());
+                obatDetail.setIdBarang(obj[2].toString());
+                obatDetail.setQtyApprove(obj[3] == null ? new BigInteger(String.valueOf(0)) : (BigInteger) obj[3]);
+                obatDetail.setJenisSatuan(obj[4].toString());
+                obatDetail.setHarga(new BigInteger(harga.toString()));
+                trans.add(obatDetail);
+            }
+        }
+        return trans;
     }
 
     public String getNextId(){

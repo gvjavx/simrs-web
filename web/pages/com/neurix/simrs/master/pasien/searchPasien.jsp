@@ -1,10 +1,3 @@
-<%--
-Created by IntelliJ IDEA.
-User: thinkpad
-Date: 15/02/2018
-Time: 16.59
-To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib prefix="sj" uri="/struts-jquery-tags" %>
@@ -16,32 +9,21 @@ To change this template use File | Settings | File Templates.
 <head>
     <%@ include file="/pages/common/header.jsp" %>
     <style>
-        .checkApprove {width: 20px; height: 20px;}
-        .pagebanner{
-            background-color: #ededed;
-            width: 100%;
-            font-size: 14px;
-        }
-        .pagelinks{
-            background-color: #ededed;
-            width: 100%;
-            font-size: 14px;
-            margin-bottom: 30px;
-        }
     </style>
+
+    <script type='text/javascript' src='<s:url value="/dwr/interface/PasienAction.js"/>'></script>
     <script type='text/javascript'>
 
-        function link(){
-            window.location.href="<s:url action='initForm_pasien'/>";
-        }
+        $( document ).ready(function() {
+            $('#pasien').addClass('active');
+        });
+
 
     </script>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/PositionAction.js"/>'></script>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/PasienAction.js"/>'></script>
 </head>
 
-<body class="hold-transition skin-blue sidebar-mini" >
-
+<body class="hold-transition skin-blue fixed sidebar-mini">
+<div class="se-pre-con"></div>
 <%@ include file="/pages/common/headerNav.jsp" %>
 
 <ivelincloud:mainMenu/>
@@ -51,329 +33,572 @@ To change this template use File | Settings | File Templates.
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Pasien
+            Data Pasien
             <small>e-HEALTH</small>
         </h1>
     </section>
+
     <!-- Main content -->
     <section class="content">
+        <!-- Your Page Content Here -->
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Search Form</h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Data Pasien</h3>
                     </div>
-                    <table width="100%" align="center">
-                        <tr>
-                            <td align="center">
-                                <s:form id="pasienForm" method="post"  theme="simple" namespace="/pasien" action="search_pasien.action" cssClass="form-horizontal">
-
-                                    <s:hidden name="addOrEdit"/>
-                                    <s:hidden name="delete"/>
-
-                                    <table>
-                                        <tr>
-                                            <td width="10%" align="center">
-                                                <%@ include file="/pages/common/message.jsp" %>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                    <table>
-                                        <tr >
-                                            <td>
-                                                <label class="control-label"><small>ID Pasien</small></label>
-                                            </td>
-                                            <td>
-                                                <table>
-                                                    <s:textfield cssStyle="margin-top: 7px" id="id_pasien" name="pasien.idPasien" required="false" readonly="false" cssClass="form-control"/>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <label class="control-label"><small>No KTP</small></label>
-                                            </td>
-                                            <td>
-                                                <table>
-                                                    <s:textfield cssStyle="margin-top: 7px"  id="no_ktp" name="pasien.noKtp" required="false" readonly="false" cssClass="form-control"/>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <label class="control-label"><small>Nama Pasien</small></label>
-                                            </td>
-                                            <td>
-                                                <table>
-                                                    <s:textfield cssStyle="margin-top: 7px" id="nama_pasien" name="pasien.nama" required="false" readonly="false" cssClass="form-control"/>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <label class="control-label"><small>Alamat</small></label>
-                                            </td>
-                                            <td>
-                                                <table>
-                                                    <s:textarea cssStyle="margin-top: 7px"  id="alamat" name="pasien.alamat" required="false" readonly="false" cssClass="form-control"/>
-                                                </table>
-                                            </td>
-                                        </tr>
-
-                                    </table>
-                                    <br>
-                                    <div id="actions" class="form-actions">
-                                        <table align="center">
-                                            <tr>
-                                                <td>
-                                                    <sj:submit type="button" cssClass="btn btn-primary" formIds="pasienForm" id="search" name="search"
-                                                               onClickTopics="showDialogLoading" onCompleteTopics="closeDialogLoading" >
-                                                        <i class="fa fa-search"></i>
-                                                        Search
-                                                    </sj:submit>
-                                                </td>
-                                                <td>
-                                                    <a href="add_pasien.action" class="btn btn-success" ><i class="fa fa-plus"></i> Add Pasien</a>
-                                                </td>
-                                                <td>
-                                                    <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_pasien"/>'">
-                                                        <i class="fa fa-refresh"></i> Reset
-                                                    </button>
-                                                </td>
-                                                <td>
-                                                    <button type="button" class="btn btn-primary" onclick="showModalUpload()">
-                                                        <i class="fa fa-plus"></i> Upload Rekam Medic Lama
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-
-                                    <br>
-                                    <br>
-                                    <center>
-                                        <table id="showdata" width="90%">
-                                            <tr>
-                                                <td align="center">
-                                                    <sj:dialog id="waiting_dialog_loading" openTopics="showDialogLoading" closeTopics="closeDialogLoading" modal="true"
-                                                               resizable="false"
-                                                               height="350" width="600" autoOpen="false" title="Loading ...">
-                                                        Please don't close this window, server is processing your request ...
-                                                        </br>
-                                                        </br>
-                                                        </br>
-                                                        <center>
-                                                            <img border="0" src="<s:url value="/pages/images/indicator-read.gif"/>" name="image_indicator_read">
-                                                        </center>
-                                                    </sj:dialog>
-                                                    <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
-                                                               height="800" width="1100" autoOpen="false"
-                                                               title="Edit Pasien ">
-                                                    </sj:dialog>
-                                                    <sj:dialog id="view_dialog_menu" openTopics="showDialogMenuView" modal="true"
-                                                               height="700" width="1100" autoOpen="false"
-                                                               title="Rekruitmen ">
-                                                        <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
-                                                    </sj:dialog>
-
-                                                    <sj:dialog id="view_dialog_user" openTopics="showDialogMenuUser" modal="true"
-                                                               height="300" width="500" autoOpen="false"
-                                                               title="Edit for Mobile User">
-                                                        <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
-                                                    </sj:dialog>
-
-                                                    <s:set name="listOfPasien" value="#session.listOfResult" scope="request" />
-                                                    <display:table name="listOfPasien" class="tablePasien table table-condensed table-striped table-hover"
-                                                                   requestURI="paging_displaytag_rekruitmen.action" export="true" id="row" pagesize="14" style="font-size:12">
-                                                        <display:column media="html" title="Edit">
-                                                                <s:url var="urlEdit" namespace="/pasien" action="edit_pasien" escapeAmp="false">
-                                                                    <s:param name="id"><s:property value="#attr.row.idPasien"/></s:param>
-                                                                    <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
-                                                                </s:url>
-                                                                <sj:a onClickTopics="showDialogMenu" href="%{urlEdit}">
-                                                                    <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">
-                                                                </sj:a>
-                                                        </display:column>
-                                                        <display:column media="html" title="Delete" style="text-align:center;font-size:9">
-                                                            <s:url var="urlViewDelete" namespace="/pasien" action="delete_pasien" escapeAmp="false">
-                                                                <s:param name="id"><s:property value="#attr.row.idPasien" /></s:param>
-                                                                <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
-                                                            </s:url>
-                                                            <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
-                                                                <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
-                                                            </sj:a>
-                                                        </display:column>
-                                                        <display:column property="idPasien" sortable="true" title="Pasien ID"  />
-                                                        <display:column property="nama" sortable="true" title="Nama"  />
-                                                        <display:column property="jenisKelamin" sortable="true" title="Gender"  />
-                                                        <display:column property="email" sortable="true" title="Email" />
-                                                        <display:column property="password" sortable="true" title="Password" />
-                                                        <display:column property="noKtp" sortable="true" title="No. KTP" />
-                                                        <display:column property="noBpjs" sortable="true" title="No. BPJS" />
-                                                        <display:column property="tempatLahir" sortable="true" title="Temp. Lahir" />
-                                                        <display:column property="tglLahir" sortable="true" title="Tgl Lahir" />
-                                                        <display:column property="jalan" sortable="true" title="Jalan" />
-                                                        <display:column property="agama" sortable="true" title="Agama" />
-                                                        <display:column property="noTelp" sortable="true" title="No. Telp" />
-
-                                                        <display:column media="html" title="User" style="text-align:center;font-size:9">
-                                                            <s:if test="#attr.row.password == null">
-                                                                <s:url var="urlViewDelete" namespace="/pasien" action="view_pasien" escapeAmp="false">
-                                                                    <s:param name="id"><s:property value="#attr.row.idPasien" /></s:param>
-                                                                    <s:param name="tipe">create</s:param>
-                                                                </s:url>
-                                                                <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenuUser" href="%{urlViewDelete}">
-                                                                    <i class="fa fa-plus"></i> Create User
-                                                                </sj:a>
-                                                            </s:if>
-                                                            <s:else>
-                                                                <s:url var="urlViewDelete" namespace="/pasien" action="view_pasien" escapeAmp="false">
-                                                                    <s:param name="id"><s:property value="#attr.row.idPasien" /></s:param>
-                                                                    <s:param name="tipe">edit</s:param>
-                                                                </s:url>
-                                                                <sj:a cssClass="btn btn-primary" onClickTopics="showDialogMenuUser" href="%{urlViewDelete}">
-                                                                   <i class="fa fa-edit"></i> Edit Password
-                                                                </sj:a>
-                                                            </s:else>
-                                                        </display:column>
-                                                        <display:column media="html" title="Print Card" style="text-align:center;font-size:9">
-                                                            <s:url var="urlViewDelete" namespace="/pasien" action="printCard_pasien" escapeAmp="false">
-                                                                <s:param name="id"><s:property value="#attr.row.idPasien" /></s:param>
-                                                            </s:url>
-                                                            <s:a cssClass="btn btn-danger" onClickTopics="showDialogMenuUser" href="%{urlViewDelete}">
-                                                                <img border="0" src="<s:url value="/pages/images/icon_printer_new.ico"/>" name="icon_printer_new">
-                                                            </s:a>
-                                                        </display:column>
-                                                        <display:column media="html" title="Add Finger">
-                                                            <a href="javascript:;" data="<s:property value="%{#attr.row.idPasien}" />" class="item-register-finger">
-                                                                <img border="0" src="<s:url value="/pages/images/finger.png"/>" name="icon-register-finger">
-                                                            </a>
-                                                        </display:column>
-                                                    </display:table>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </center>
-                                </s:form>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <div class="modal fade" id="modal-upload">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header" style="background-color: #00a65a">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Rekam Medik Pasien <span id="nama_medik"></span></h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="box">
-                            <s:form id="uploadForm" method="post" enctype="multipart/form-data" theme="simple" namespace="/pasien" action="saveUploadRmLama_pasien.action" cssClass="form-horizontal">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <s:form id="pasienForm" method="post" namespace="/pasien" action="search_pasien.action" theme="simple" cssClass="form-horizontal">
                                 <div class="form-group">
-                                    <label class="col-md-4" style="margin-top: 7px">ID Pasien</label>
-                                    <div class="col-md-8">
-                                        <s:textfield id="upload_pasien" name="pasien.idPasien"
-                                                     onkeypress="$(this).css('border','');"
+                                    <label class="control-label col-sm-4">ID Pasien</label>
+                                    <div class="col-sm-4">
+                                        <s:textfield id="id_pasien" cssStyle="margin-top: 7px"
+                                                     name="pasien.idPasien" required="false"
+                                                     readonly="false" cssClass="form-control"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Nama</label>
+                                    <div class="col-sm-4">
+                                        <s:textfield id="nama_pasien" name="pasien.nama"
+                                                     required="false" readonly="false"
                                                      cssClass="form-control" cssStyle="margin-top: 7px"/>
                                     </div>
-                                    <script>
-                                        function tesPasien(val) {
-                                            $('#isi').html('<a href="#">Link 1</a><a href="#">Link 2</a><a href="#">Link 3</a>');
-                                        }
-                                    </script>
-                                    <script type="application/javascript">
-                                        var functions, mapped;
-                                        $('#upload_pasien').typeahead({
-                                            minLength: 1,
-                                            source: function (query, process) {
-                                                functions = [];
-                                                mapped = {};
-
-                                                var data = [];
-                                                dwr.engine.setAsync(false);
-
-                                                PasienAction.getListComboPasien(query, function (listdata) {
-                                                    data = listdata;
-                                                });
-
-                                                $.each(data, function (i, item) {
-                                                    var labelItem = "";
-
-                                                    if (item.noBpjs != '' && item.noBpjs != null) {
-                                                        labelItem = item.noKtp + "-" + item.noBpjs + "-" + item.nama;
-                                                    } else {
-                                                        labelItem = item.noKtp + "-" + item.nama;
-                                                    }
-                                                    mapped[labelItem] = {
-                                                        id: item.idPasien,
-                                                        nama: item.nama
-                                                    };
-                                                    functions.push(labelItem);
-                                                });
-                                                process(functions);
-
-                                            },
-                                            updater: function (item) {
-                                                var selectedObj = mapped[item];
-                                                return selectedObj.id;
-                                            }
-                                        });
-                                    </script>
                                 </div>
-                                <a href="#" class="btn btn-primary pull-right" onclick="addInputUpload()"><i class="fa fa-plus"></i> Add Upload</a>
-                                <br/>
-                                <div id="body-rm">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4"></label>
+                                    <div class="col-sm-6" style="margin-top: 7px">
+                                        <sj:submit type="button" cssClass="btn btn-success" formIds="pasienForm" id="search" name="search"
+                                                   onClickTopics="showDialogLoading" onCompleteTopics="closeDialogLoading" >
+                                            <i class="fa fa-search"></i>
+                                            Search
+                                        </sj:submit>
+                                        <a type="button" class="btn btn-danger" href="initForm_pasien.action">
+                                            <i class="fa fa-refresh"></i> Reset
+                                        </a>
+                                        <a href="add_pasien.action" class="btn btn-primary" ><i class="fa fa-plus"></i> Add Pasien</a>
+                                        <button type="button" class="btn btn-primary" onclick="showModalUpload()">
+                                            <i class="fa fa-plus"></i> Upload Rekam Medik Lama
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-5"></label>
+                                    <div class="col-sm-5" style="display: none">
 
+                                        <sj:dialog id="waiting_dialog" openTopics="showDialogLoading"
+                                                   closeTopics="closeDialog" modal="true"
+                                                   resizable="false"
+                                                   height="250" width="600" autoOpen="false"
+                                                   title="Searching ...">
+                                            Please don't close this window, server is processing your request ...
+                                            <br>
+                                            <center>
+                                                <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                     src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                     name="image_indicator_write">
+                                                <br>
+                                                <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                     src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                     name="image_indicator_write">
+                                            </center>
+                                        </sj:dialog>
+                                        <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true"
+                                                   resizable="false"
+                                                   closeOnEscape="false"
+                                                   height="200" width="400" autoOpen="false" title="Infomation Dialog"
+                                                   buttons="{
+                                                                                'OK':function() {
+                                                                                         $('#info_dialog').dialog('close');
+                                                                                         window.location.reload(true);
+                                                                                     }
+                                                                            }"
+                                        >
+                                            <s:hidden id="close_pos"></s:hidden>
+                                            <img border="0" src="<s:url value="/pages/images/icon_success.png"/>"
+                                                 name="icon_success">
+                                            Record has been saved successfully.
+                                        </sj:dialog>
+                                        <sj:dialog id="view_dialog_user" openTopics="showDialogUser" modal="true" resizable="false" cssStyle="text-align:left;"
+                                                   height="650" width="900" autoOpen="false" title="View Detail"
+                                        >
+                                            <center><img border="0" src="<s:url value="/pages/images/spinner.gif"/>" alt="Loading..."/></center>
+                                        </sj:dialog>
+                                    </div>
                                 </div>
                             </s:form>
                         </div>
-                    <div class="modal-footer" style="background-color: #cacaca">
-                        <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
-                        </button>
-                        <sj:submit type="button" cssClass="btn btn-primary" formIds="uploadForm" id="save" name="save"
-                                   onClickTopics="showDialogLoading" onCompleteTopics="closeDialogLoading" >
-                            <i class="fa fa-search"></i>
-                            Save
-                        </sj:submit>
+                    </div>
+                    <div class="box-header with-border"></div>
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Pasien</h3>
+                    </div>
+                    <div class="box-body">
+                        <table id="sortTable" class="table table-bordered table-striped tablePasien">
+                            <thead >
+                            <tr bgcolor="#90ee90">
+                                <td>ID Pasien</td>
+                                <td>Nama</td>
+                                <td>Jenis Kelamin</td>
+                                <td>Tempat, Tgl Lahir</td>
+                                <td>Password</td>
+                                <td align="center">Action</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <s:iterator value="#session.listOfResult" var="row">
+                                <tr>
+                                    <td><s:property value="idPasien"/></td>
+                                    <td><s:property value="nama"/></td>
+                                    <td>
+                                        <s:if test='#row.jenisKelamin == "L"'>
+                                            Laki-Laki
+                                        </s:if>
+                                        <s:else>
+                                            Perempuan
+                                        </s:else>
+                                    </td>
+                                    <td><s:property value="tempatLahir"/>, <s:property value="tglLahir"/></td>
+                                    <td><s:property value="password"/></td>
+                                    <td align="center">
+                                        <img id="t<s:property value="idPasien"/>" class="hvr-grow" onclick="detail('<s:property value="idPasien"/>')" style="cursor: pointer" src="<s:url value="/pages/images/icons8-view-25.png"/>">
+                                        <s:if test='#row.password == null || #row.password == ""'>
+                                            <img class="hvr-grow" onclick="setPassword('<s:property value="idPasien"/>')" style="cursor: pointer" src="<s:url value="/pages/images/icons8-create-25.png"/>">
+                                        </s:if>
+                                        <s:else>
+                                            <img class="hvr-grow" onclick="setPassword('<s:property value="idPasien"/>')" style="cursor: pointer" src="<s:url value="/pages/images/icons8-create-orange-25.png"/>">
+                                        </s:else>
+                                        <s:url var="print_card" namespace="/pasien" action="printCard_pasien" escapeAmp="false">
+                                            <s:param name="id"><s:property value="idPasien"/></s:param>
+                                        </s:url>
+                                        <s:a href="%{print_card}" target="_blank">
+                                            <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-print-25.png"/>">
+                                        </s:a>
+                                            <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/finger.png"/>" onclick="registrasiFinger('<s:property value="idPasien"/>')">
+                                    </td>
+                                </tr>
+                            </s:iterator>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <!-- Your Page Content Here -->
-        <div class="row">
-            <div class="col-md-12">
-
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-
             </div>
         </div>
     </section>
     <!-- /.content -->
 </div>
-<!-- /.content-wrapper -->
 
-<%@ include file="/pages/common/footer.jsp" %>
+<div class="modal fade" id="modal-upload">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Rekam Medik Pasien <span id="nama_medik"></span></h4>
+            </div>
+            <div class="modal-body">
+                <s:form id="uploadForm" method="post" enctype="multipart/form-data" theme="simple" namespace="/pasien" action="saveUploadRmLama_pasien.action" cssClass="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">ID Pasien</label>
+                        <div class="col-md-7">
+                            <div class="input-group">
+                                <s:textfield id="upload_pasien" name="pasien.idPasien"
+                                             onkeypress="$(this).css('border','');"
+                                             cssClass="form-control"/>
+                                <div class="input-group-btn">
+                                    <a href="#" class="btn btn-primary pull-right" onclick="addInputUpload()"><i class="fa fa-plus"></i> Add Upload</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Nama Pasien</label>
+                        <div class="col-md-7">
+                            <s:textfield id="upload_nama_pasien" name="pasien.idPasien"
+                                         cssStyle="margin-top: 7px"
+                                         onkeypress="$(this).css('border','');"
+                                         cssClass="form-control" readonly="true"/>
+                        </div>
+                    </div>
+                    <script>
+                        function tesPasien(val) {
+                            $('#isi').html('<a href="#">Link 1</a><a href="#">Link 2</a><a href="#">Link 3</a>');
+                        }
+                    </script>
+                    <script type="application/javascript">
+                        var functions, mapped;
+                        $('#upload_pasien').typeahead({
+                            minLength: 1,
+                            source: function (query, process) {
+                                functions = [];
+                                mapped = {};
 
-<%@ include file="/pages/common/lastScript.jsp" %>
+                                var data = [];
+                                dwr.engine.setAsync(false);
 
-</body>
-</html>
-<script>
+                                PasienAction.getListComboPasien(query, function (listdata) {
+                                    data = listdata;
+                                });
+
+                                $.each(data, function (i, item) {
+                                    var labelItem = "";
+
+                                    if (item.noBpjs != '' && item.noBpjs != null) {
+                                        labelItem = item.noKtp + "-" + item.noBpjs + "-" + item.nama;
+                                    } else {
+                                        labelItem = item.noKtp + "-" + item.nama;
+                                    }
+                                    mapped[labelItem] = {
+                                        id: item.idPasien,
+                                        nama: item.nama
+                                    };
+                                    functions.push(labelItem);
+                                });
+                                process(functions);
+
+                            },
+                            updater: function (item) {
+                                var selectedObj = mapped[item];
+                                $('#upload_nama_pasien').val(selectedObj.nama);
+                                return selectedObj.id;
+                            }
+                        });
+                    </script>
+                    <br/>
+                    <div id="body-rm">
+                    </div>
+                </s:form>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <sj:submit type="button" cssClass="btn btn-success" formIds="uploadForm" id="save" name="save"
+                           onClickTopics="showDialogLoading" onCompleteTopics="closeDialogLoading" >
+                    <i class="fa fa-arrow-right"></i>
+                    Save
+                </sj:submit>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-password">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-user"></i> Edit Password</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_password">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_password"></p>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">ID Pasien</label>
+                        <div class="col-md-7">
+                            <input class="form-control" id="set_id_pasien" readonly
+                                   oninput="var warn =$('#war_set_id_pasien').is(':visible'); if (warn){$('#cor_set_id_pasien').show().fadeOut(3000);$('#war_set_id_pasien').hide()}">
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_set_id_pasien">
+                                <i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_set_id_pasien"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Nama</label>
+                        <div class="col-md-7">
+                            <input class="form-control" id="set_nama" readonly style="margin-top: 7px"
+                                   oninput="var warn =$('#war_set_nama').is(':visible'); if (warn){$('#cor_set_nama').show().fadeOut(3000);$('#war_set_nama').hide()}">
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_set_nama">
+                                <i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_set_nama"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Password</label>
+                        <div class="col-md-7">
+                            <input class="form-control" id="set_password" style="margin-top: 7px"
+                                   oninput="var warn =$('#war_set_password').is(':visible'); if (warn){$('#cor_set_password').show().fadeOut(3000);$('#war_set_password').hide()}">
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_set_password">
+                                <i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_set_password"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_password"><i
+                        class="fa fa-arrow-right"></i> Save
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_password"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-detail">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-user"></i> Detail Data Pasien</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <img id="img_ktp" style="height: 200px; width: 100%">
+                            <table class="table table-striped" style="margin-top: 20px">
+                                <tr>
+                                    <td><b>ID Pasien</b></td>
+                                    <td><span id="an_id_pasien"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>NIK</b></td>
+                                    <td><span id="an_nik"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Nama</b></td>
+                                    <td><span id="an_nama"></span></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-md-6">
+                            <table class="table table-striped">
+                                <tr>
+                                    <td><b>Jenis Kelamin</b></td>
+                                    <td><span id="an_jenis_kelamin"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Tempat, Tgl Lahir</b></td>
+                                    <td><span id="an_tgl"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Agama</b></td>
+                                    <td><span id="an_agama"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Suku</b></td>
+                                    <td><span id="an_suku"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Alamat</b></td>
+                                    <td><span id="an_alamat"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Desa</b></td>
+                                    <td><span id="an_desa"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Kecamatan</b></td>
+                                    <td><span id="an_kecamatan"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Kabupaten</b></td>
+                                    <td><span id="an_kabupaten"></span></td>
+                                </tr>
+
+                                <tr>
+                                    <td><b>Provinsi</b></td>
+                                    <td><span id="an_provinsi"></span></td>
+                                </tr>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-confirm-dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Confirmation
+                </h4>
+            </div>
+            <div class="modal-body">
+                <h4>Do you want save this record?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
+                </button>
+                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes            </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type='text/javascript'>
+
+    function detail(pasiendId) {
+
+        var table = "";
+        var nik = "";
+        var namaPasien = "";
+        var jenisKelamin = "";
+        var tglLahir = "";
+        var agama = "";
+        var suku = "";
+        var alamat = "";
+        var provinsi = "";
+        var kabupaten = "";
+        var kecamatan = "";
+        var desa = "";
+        var idPasien = "";
+
+        var url = '<s:url value="/pages/images/spinner.gif"/>';
+        $('#t'+pasiendId).attr('src',url).css('width', '30px', 'height', '40px');
+
+
+        setTimeout(function () {
+
+            var url = '<s:url value="/pages/images/icons8-view-25.png"/>';
+            $('#t'+pasiendId).attr('src',url).css('width', '', 'height', '');
+
+            PasienAction.getDataPasien(pasiendId, function (response) {
+                console.log(response);
+                if (response != null) {
+
+                    nik = response.noKtp;
+                    namaPasien = response.nama;
+
+                    if (response.jenisKelamin == "L") {
+                        jenisKelamin = "Laki-Laki";
+                    } else {
+                        jenisKelamin = "Perempuan";
+                    }
+
+                    tglLahir = response.tempatLahir + ", " + formateDate(response.tglLahir);
+                    agama = response.agama;
+                    suku = response.suku;
+                    alamat = response.jalan;
+                    provinsi = response.provinsi;
+                    kabupaten = response.kota;
+                    kecamatan = response.kecamatan;
+                    desa = response.desa;
+                    idPasien = response.idPasien;
+                    $('#img_ktp').attr('src',response.urlKtp);
+                }
+            });
+
+            $('#an_id_pasien').html(idPasien);
+            $('#an_nik').html(nik);
+            $('#an_nama').html(namaPasien);
+            $('#an_jenis_kelamin').html(jenisKelamin);
+            $('#an_tgl').html(tglLahir);
+            $('#an_agama').html(agama);
+            $('#an_suku').html(suku);
+            $('#an_alamat').html(alamat);
+            $('#an_provinsi').html(provinsi);
+            $('#an_kabupaten').html(kabupaten);
+            $('#an_kecamatan').html(kecamatan);
+            $('#an_desa').html(desa);
+            $('#modal-detail').modal({show:true, backdrop:'static'});
+        }, 100);
+    }
+
+    function formateDate(tanggal){
+
+        var tgl = "";
+        if(tanggal != null && tanggal != ''){
+            tgl = $.datepicker.formatDate("dd-mm-yy", new Date(tanggal));
+        }
+        return tgl;
+    }
+
+    function setPassword(idPasien){
+        if(idPasien != ''){
+            $('#modal-password').modal({show:true, backdrop:'static'});
+            PasienAction.getDataPasien(idPasien, function (response) {
+                if(response.idPasien != null){
+                    $('#set_id_pasien').val(response.idPasien);
+                    $('#set_nama').val(response.nama);
+                    $('#set_password').val(response.password);
+                }else{
+
+                }
+            });
+
+            $('#save_password').attr('onclick','savePassword(\''+idPasien+'\')');
+        }
+    }
+
+    function savePassword(idPasien){
+        var password = $('#set_password').val();
+        if(password != ''){
+
+            $('#save_password').hide();
+            $('#load_password').show();
+            dwr.engine.setAsync(true);
+            PasienAction.setPasswordPasien(idPasien, password, function (response) {
+                if(response.status == "success"){
+                    $('#modal-password').modal('hide');
+                    $('#info_dialog').dialog('open');
+                    $('#save_password').show();
+                    $('#load_password').hide();
+                }else{
+                    $('#save_password').show();
+                    $('#load_password').hide();
+                    $('#warning_password').show().fadeOut(5000);
+                    $('#msg_password').text(response.message);
+                }
+            });
+        }else{
+            $('#warning_password').show().fadeOut(5000);
+            $('#msg_password').text('Silahkan cek kembali data inputan..!');
+            if(password == ''){
+                $('#war_set_password').show();
+            }
+        }
+    }
+
     $('.tablePasien').on('click', '.item-register-finger', function() {
+
+
         var idPasien = $(this).attr('data');
         var url=btoa('http://localhost:8080/simrs/registerFinger.action?userId='+idPasien);
         console.log(url);
         var href ='finspot:FingerspotReg;'+url;
         window.location.href =href ;
     });
+
+    function registrasiFinger(idPasien){
+        if(idPasien != ''){
+            console.log(idPasien);
+            var url=btoa('http://localhost:8080/simrs/registerFinger.action?userId='+idPasien);
+            console.log(url);
+            var href ='finspot:FingerspotReg;'+url;
+            console.log(href);
+            window.location.href =href ;
+        }
+    }
 
     function showModalUpload(){
         $("#modal-upload").modal("show");
@@ -385,12 +610,12 @@ To change this template use File | Settings | File Templates.
 
         var str = "";
         str += '<div class="form-group">'+
-                '<label class="col-md-4" style="margin-top: 7px">Upload Foto Rekam Medic '+i+'</label>'+
-                '<div class="col-md-8">'+
-                '<input type="file" name="fileUploadImage" class="form form-control">'+
-                <%--'<s:file id="upload-img" name="fileUploadImage" cssClass="form form-control"/>'+--%>
-                '</div>'+
-                '</div>';
+            '<label class="col-md-3" style="margin-top: 8px">Upload Foto Rekam Medik '+i+'</label>'+
+            '<div class="col-md-7">'+
+            '<input type="file" name="fileUploadImage" class="form form-control" style="margin-top: 7px">'+
+            <%--'<s:file id="upload-img" name="fileUploadImage" cssClass="form form-control"/>'+--%>
+            '</div>'+
+            '</div>';
         if (n > 0){
             $("#body-rekam-medic-"+n+"").html(str+'<div id="body-rekam-medic-'+i+'"></div>');
         } else {
@@ -464,5 +689,11 @@ To change this template use File | Settings | File Templates.
             }
         });
     }*/
+
 </script>
 
+<%@ include file="/pages/common/footer.jsp" %>
+<%@ include file="/pages/common/lastScript.jsp" %>
+
+</body>
+</html>

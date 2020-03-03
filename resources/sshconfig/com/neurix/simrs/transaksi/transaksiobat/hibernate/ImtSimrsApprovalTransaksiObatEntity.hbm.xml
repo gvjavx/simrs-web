@@ -51,7 +51,9 @@
         <property name="branchId">
             <column name="branch_id" sql-type="varchar" length="10" not-null="false" />
         </property>
-
+        <property name="noJurnal">
+            <column name="no_jurnal" sql-type="varchar" length="100" not-null="false" />
+        </property>
 
     </class>
 </hibernate-mapping>

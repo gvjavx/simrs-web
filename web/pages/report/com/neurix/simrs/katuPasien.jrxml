@@ -76,12 +76,6 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.desa}]]></textFieldExpression>
 			</textField>
-			<componentElement>
-				<reportElement x="0" y="22" width="117" height="25" uuid="f0456d87-5f6f-4697-95b3-7ea92bc43c46"/>
-				<jr:Code39 xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" textPosition="bottom">
-					<jr:codeExpression><![CDATA[$P{reportParams.id}]]></jr:codeExpression>
-				</jr:Code39>
-			</componentElement>
 			<staticText>
 				<reportElement x="0" y="121" width="59" height="16" forecolor="#666666" uuid="34553456-73a1-4501-aceb-439154af7c8d"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -96,6 +90,12 @@
 				</textElement>
 				<text><![CDATA[PT. Nusantara Medika Utama]]></text>
 			</staticText>
+			<componentElement>
+				<reportElement x="5" y="19" width="117" height="25" uuid="9675f320-f531-445a-a75e-b1e16a73e73f"/>
+				<jr:Code128 xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" textPosition="bottom">
+					<jr:codeExpression><![CDATA[$P{reportParams.id}]]></jr:codeExpression>
+				</jr:Code128>
+			</componentElement>
 		</band>
 	</detail>
 </jasperReport>

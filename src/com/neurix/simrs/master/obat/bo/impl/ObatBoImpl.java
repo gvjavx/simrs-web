@@ -11,6 +11,10 @@ import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
 import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.master.obatgejala.dao.ObatGejalaDao;
 import com.neurix.simrs.master.obatgejala.model.ImSimrsObatGejalaEntity;
+import com.neurix.simrs.transaksi.hargaobat.dao.HargaObatDao;
+import com.neurix.simrs.transaksi.hargaobat.model.HargaObat;
+import com.neurix.simrs.transaksi.hargaobat.model.MtSimrsHargaObatEntity;
+import com.neurix.simrs.transaksi.obatinap.model.ItSimrsObatInapEntity;
 import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
 import com.neurix.simrs.transaksi.transaksiobat.dao.TransaksiObatDetailBatchDao;
 import com.neurix.simrs.transaksi.transaksiobat.model.MtSimrsTransaksiObatDetailBatchEntity;
@@ -33,6 +37,7 @@ public class ObatBoImpl implements ObatBo {
     private JenisObatDao jenisObatDao;
     private ObatGejalaDao obatGejalaDao;
     private TransaksiObatDetailBatchDao batchDao;
+    private HargaObatDao hargaObatDao;
 
     public void setBatchDao(TransaksiObatDetailBatchDao batchDao) {
         this.batchDao = batchDao;
@@ -54,6 +59,9 @@ public class ObatBoImpl implements ObatBo {
         return logger;
     }
 
+    public void setHargaObatDao(HargaObatDao hargaObatDao) {
+        this.hargaObatDao = hargaObatDao;
+    }
 
     @Override
     public List<Obat> getByCriteria(Obat bean) throws GeneralBOException {
@@ -200,7 +208,8 @@ public class ObatBoImpl implements ObatBo {
         return obats;
     }
 
-    private List<ImSimrsObatEntity> getListEntityObat(Obat bean) throws GeneralBOException{
+    @Override
+    public List<ImSimrsObatEntity> getListEntityObat(Obat bean) throws GeneralBOException{
         logger.info("[ObatBoImpl.getListEntityObat] Start >>>>>>>");
 
         Map hsCriteria = new HashMap();
@@ -225,6 +234,9 @@ public class ObatBoImpl implements ObatBo {
         }
         if (bean.getIdSeqObat() != null && !"".equalsIgnoreCase(bean.getIdSeqObat())){
             hsCriteria.put("id_squen", bean.getIdSeqObat());
+        }
+        if (bean.getIdObat() != null && !"".equalsIgnoreCase(bean.getIdObat())){
+            hsCriteria.put("id_barang", bean.getIdObat());
         }
 
         List<ImSimrsObatEntity> obatEntityList = new ArrayList<>();
@@ -794,6 +806,24 @@ public class ObatBoImpl implements ObatBo {
         return obatList;
     }
 
+    @Override
+    public ImSimrsObatEntity getObatByIdBarang(String idBarang) throws GeneralBOException {
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_barang", idBarang);
+        List<ImSimrsObatEntity> obatEntities = new ArrayList<>();
+        try {
+            obatEntities = obatDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[ObatBoImpl.getObatByIdBarang] ERROR, "+e.getMessage());
+            throw new GeneralBOException("[ObatBoImpl.getObatByIdBarang] ERROR, "+e.getMessage());
+        }
+
+        if (obatEntities.size() > 0){
+            return obatEntities.get(0);
+        }
+        return null;
+    }
+
     private String getIdNextObatGejala() throws GeneralBOException{
         String id = "";
 
@@ -833,5 +863,66 @@ public class ObatBoImpl implements ObatBo {
         return id;
     }
 
+    @Override
+    public List<Obat> getListHargaObat(Obat bean) throws GeneralBOException {
+        return hargaObatDao.listObatForHargaJual(bean);
+    }
 
+    @Override
+    public void saveHargaObat(HargaObat bean) throws GeneralBOException {
+        if (bean.getIdObat() != null && bean.getIdBarang() != null){
+
+            Map hsCriteria = new HashMap();
+            hsCriteria.put("id_obat", bean.getIdObat());
+            List<MtSimrsHargaObatEntity> hargaObatEntities = hargaObatDao.getByCriteria(hsCriteria);
+            if (hargaObatEntities.size() > 0){
+                for (MtSimrsHargaObatEntity obatEntity : hargaObatEntities){
+                    obatEntity.setHargaJual(bean.getHargaJual());
+                    obatEntity.setDiskon(bean.getDiskon());
+                    obatEntity.setHargaNet(bean.getHargaNet());
+                    obatEntity.setFlag("Y");
+                    obatEntity.setAction("U");
+                    obatEntity.setLastUpdate(bean.getLastUpdate());
+                    obatEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    try {
+                        hargaObatDao.updateAndSave(obatEntity);
+                    } catch (HibernateException e){
+                        logger.error("[ObatBoImpl.saveHargaObat] ERROR save update harga obat, "+e.getMessage());
+                        throw new GeneralBOException("[ObatBoImpl.saveHargaObat] ERROR WHEN save update harga obat, "+e.getMessage());
+                    }
+                }
+            }
+
+            Obat obat = new Obat();
+            obat.setIdObat(bean.getIdObat());
+            obat.setIdBarang(bean.getIdBarang());
+            List<ImSimrsObatEntity> obatEntities = getListObatEntity(obat);
+            if (obatEntities.size() > 0){
+                ImSimrsObatEntity obatEntity = obatEntities.get(0);
+
+                MtSimrsHargaObatEntity hargaObatEntity = new MtSimrsHargaObatEntity();
+                hargaObatEntity.setIdObat(obatEntity.getIdObat());
+                hargaObatEntity.setNamaObat(obatEntity.getNamaObat());
+                hargaObatEntity.setHargaBeli(obatEntity.getHargaTerakhir());
+                hargaObatEntity.setHargaJual(bean.getHargaJual());
+                hargaObatEntity.setHargaRata(obatEntity.getAverageHargaBiji());
+                hargaObatEntity.setDiskon(bean.getDiskon());
+                hargaObatEntity.setHargaNet(bean.getHargaNet());
+                hargaObatEntity.setSatuan("biji");
+                hargaObatEntity.setFlag("Y");
+                hargaObatEntity.setAction("C");
+                hargaObatEntity.setCreatedDate(bean.getCreatedDate());
+                hargaObatEntity.setCreatedWho(bean.getCreatedWho());
+                hargaObatEntity.setLastUpdate(bean.getLastUpdate());
+                hargaObatEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                try {
+                    hargaObatDao.addAndSave(hargaObatEntity);
+                } catch (HibernateException e){
+                    logger.error("[ObatBoImpl.saveHargaObat] ERROR save add harga obat, "+e.getMessage());
+                    throw new GeneralBOException("[ObatBoImpl.saveHargaObat] ERROR WHEN save add harga obat, "+e.getMessage());
+                }
+            }
+        }
+    }
 }

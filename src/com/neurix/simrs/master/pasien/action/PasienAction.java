@@ -9,10 +9,12 @@ import com.neurix.simrs.master.pasien.model.ImSImrsRekamMedicLamaEntity;
 import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
 import com.neurix.simrs.master.pasien.model.ImSimrsUploadRekamMedicLamaEntity;
 import com.neurix.simrs.master.pasien.model.Pasien;
+import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.context.ApplicationContext;
+import org.springframework.security.access.method.P;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
@@ -20,6 +22,8 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -38,6 +42,34 @@ public class PasienAction extends BaseMasterAction {
     private String[] fileUploadImageFileName;
 
     private String tipe;
+
+    private File fileUpload;
+    private String fileUploadFileName;
+    private String fileUploadContentType;
+
+    public File getFileUpload() {
+        return fileUpload;
+    }
+
+    public void setFileUpload(File fileUpload) {
+        this.fileUpload = fileUpload;
+    }
+
+    public String getFileUploadFileName() {
+        return fileUploadFileName;
+    }
+
+    public void setFileUploadFileName(String fileUploadFileName) {
+        this.fileUploadFileName = fileUploadFileName;
+    }
+
+    public String getFileUploadContentType() {
+        return fileUploadContentType;
+    }
+
+    public void setFileUploadContentType(String fileUploadContentType) {
+        this.fileUploadContentType = fileUploadContentType;
+    }
 
     public static Logger getLogger() {
         return logger;
@@ -313,6 +345,42 @@ public class PasienAction extends BaseMasterAction {
             pasien.setLastUpdate(updateTime);
             pasien.setLastUpdateWho(userLogin);
 
+            if (this.fileUpload != null) {
+                if ("image/jpeg".equalsIgnoreCase(this.fileUploadContentType)) {
+                    if (this.fileUpload.length() <= 5242880 && this.fileUpload.length() > 0) {
+
+                        // file name
+                        String  fileName = this.fileUploadFileName;
+                        String fileNameReplace = fileName.replace(" ", "_");
+                        String newFileName = pasien.getNoKtp() + "-"+dateFormater("MM")+dateFormater("yy")+ "-" +fileNameReplace;
+                        // deklarasi path file
+                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_KTP_PASIEN;
+                        logger.info("[CheckupAction.uploadImages] FILEPATH :" + filePath);
+
+                        // persiapan pemindahan file
+                        File fileToCreate = new File(filePath, newFileName);
+
+                        try {
+                            // pemindahan file
+                            FileUtils.copyFile(this.fileUpload, fileToCreate);
+                            logger.info("[CheckupAction.uploadImages] SUCCES PINDAH");
+                            pasien.setUrlKtp(newFileName);
+                        } catch (IOException e) {
+                            Long logId = null;
+                            try {
+                                logId = pasienBoProxy.saveErrorMessage(e.getMessage(), "pasienBO.saveAdd");
+                            } catch (GeneralBOException e1) {
+                                logger.error("[pasienAction.saveAdd] Error when saving error,", e1);
+                                return ERROR;
+                            }
+                            logger.error("[CheckupAction.uploadImages] error, " + e.getMessage());
+                            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+                            return ERROR;
+                        }
+                    }
+                }
+            }
+
             pasienBoProxy.saveAdd(pasien);
         }catch (GeneralBOException e){
             Long logId = null;
@@ -331,6 +399,12 @@ public class PasienAction extends BaseMasterAction {
         session.removeAttribute("listOfResult");
         logger.info("[pasienAction.saveAdd] end process >>>>");
         return "add";
+    }
+
+    private String dateFormater(String type){
+        java.sql.Date date = new java.sql.Date(new java.util.Date().getTime());
+        DateFormat df = new SimpleDateFormat(type);
+        return df.format(date);
     }
 
     public String saveEdit(){
@@ -451,8 +525,13 @@ public class PasienAction extends BaseMasterAction {
         logger.info("[PasienAction.listPasienWithId] end process <<<");
         return pasienList;
     }
+
     @Override
     public String initForm() {
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        Pasien pasien = new Pasien();
+        setPasien(pasien);
+        session.removeAttribute("listOfResult");
         return "search";
     }
 
@@ -478,6 +557,24 @@ public class PasienAction extends BaseMasterAction {
             listOfPasien = pasienBo.getListComboPasien(query);
         } catch (GeneralBOException e) {
             logger.error("[PasienAction.getListComboPasien] Error when get combo pasien, please inform to your admin.", e);
+        }
+
+        logger.info("[PasienAction.getListComboPasien] end process <<<");
+        return listOfPasien;
+    }
+
+    public List getTypeAheadPasienByIdAndName(String query){
+        logger.info("[PasienAction.getTypeAheadPasienByIdAndName] start process >>>");
+
+        List<Pasien> listOfPasien = new ArrayList();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PasienBo pasienBo = (PasienBo) ctx.getBean("pasienBoProxy");
+
+        try {
+            listOfPasien = pasienBo.getTypeAheadPasienByIdAndName(query);
+        } catch (GeneralBOException e) {
+            logger.error("[PasienAction.getTypeAheadPasienByIdAndName] Error when get combo pasien, please inform to your admin.", e);
         }
 
         logger.info("[PasienAction.getListComboPasien] end process <<<");
@@ -588,6 +685,69 @@ public class PasienAction extends BaseMasterAction {
         }
 
         return "search";
+    }
+
+    public Pasien getDataPasien(String idPasien){
+
+        Pasien pasien = new Pasien();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PasienBo pasienBo = (PasienBo) ctx.getBean("pasienBoProxy");
+        List<Pasien> pasienList = new ArrayList<>();
+
+        if(!"".equalsIgnoreCase(idPasien) && idPasien != null){
+
+            Pasien listPasien = new Pasien();
+            listPasien.setIdPasien(idPasien);
+
+            try {
+                pasienList = pasienBo.getByCriteria(listPasien);
+            }catch (GeneralBOException e){
+                logger.error("Found Error when search data pasien "+e.getMessage());
+            }
+
+            if(pasienList.size() > 0 ){
+                pasien = pasienList.get(0);
+
+                if(!"".equalsIgnoreCase(pasien.getIdPasien()) && pasien.getIdPasien() != null ){
+                    setPasien(pasien);
+                }
+            }
+        }
+
+        return pasien;
+    }
+
+    public CheckResponse setPasswordPasien(String idPasien, String password){
+
+        CheckResponse response = new CheckResponse();
+
+        Pasien pasien = new Pasien();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PasienBo pasienBo = (PasienBo) ctx.getBean("pasienBoProxy");
+        List<Pasien> pasienList = new ArrayList<>();
+        String userLogin = CommonUtil.userLogin();
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+
+        if(!"".equalsIgnoreCase(idPasien) && idPasien != null){
+
+            Pasien listPasien = new Pasien();
+            listPasien.setIdPasien(idPasien);
+            listPasien.setPassword(password);
+            listPasien.setLastUpdate(time);
+            listPasien.setLastUpdateWho(userLogin);
+
+            try {
+                pasienBo.saveEditPassword(listPasien);
+                response.setStatus("success");
+                response.setMessage("Berhasil menyimpan password");
+            }catch (GeneralBOException e){
+                logger.error("Found Error when search data pasien "+e.getMessage());
+                response.setStatus("error");
+                response.setMessage("Found Error when update password "+e.getMessage());
+            }
+        }
+
+        return response;
     }
 
     public String getTipe() {

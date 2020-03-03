@@ -47,6 +47,33 @@ public class Obat extends BaseModel {
 
     private String idBarang;
     private String jenisSatuan;
+    private BigDecimal hargaJual;
+    private BigDecimal hargaNet;
+    private BigDecimal diskon;
+
+    public BigDecimal getHargaJual() {
+        return hargaJual;
+    }
+
+    public void setHargaJual(BigDecimal hargaJual) {
+        this.hargaJual = hargaJual;
+    }
+
+    public BigDecimal getHargaNet() {
+        return hargaNet;
+    }
+
+    public void setHargaNet(BigDecimal hargaNet) {
+        this.hargaNet = hargaNet;
+    }
+
+    public BigDecimal getDiskon() {
+        return diskon;
+    }
+
+    public void setDiskon(BigDecimal diskon) {
+        this.diskon = diskon;
+    }
 
     public String getIdBarang() {
         return idBarang;

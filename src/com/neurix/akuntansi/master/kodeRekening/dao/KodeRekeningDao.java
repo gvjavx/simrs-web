@@ -90,16 +90,40 @@ public class KodeRekeningDao extends GenericDao<ImKodeRekeningEntity, String> {
         return results;
     }
 
+    //
+    public String getKodeRekeningKas(){
+        String result="";
+        String query = "select \n" +
+                "  kode_rekening \n" +
+                "from \n" +
+                "  im_akun_kode_rekening \n" +
+                "where \n" +
+                "  nama_kode_rekening ilike '%kas%' \n" +
+                "order by \n" +
+                "  rekening_id asc \n" +
+                "limit \n" +
+                "  1\n";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            result = results.toString();
+        }else {
+            result=null;
+        }
+        return result;
+    }
+
     //for search bank in billing
     public String searchRekeningIdBankLikeName(String namaBank){
         String result="";
+        String kodeRekeningKas=getKodeRekeningKas();
         String query = "select  \n" +
                 "                  rekening_id  \n" +
                 "                from  \n" +
                 "                im_akun_kode_rekening  \n" +
                 "                where  \n" +
                 "                nama_kode_rekening ilike '"+namaBank+"%'  \n" +
-                "                and kode_rekening ilike '1.1.01%' \n" +
+                "                and kode_rekening ilike '"+kodeRekeningKas+"%' \n" +
                 "                and length(kode_rekening)=12 \n" +
                 "                order by rekening_id \n" +
                 "                limit 1";
@@ -115,16 +139,39 @@ public class KodeRekeningDao extends GenericDao<ImKodeRekeningEntity, String> {
     //for search bank in billing
     public String searchRekeningIdTunaiLikeName(String namaTunai){
         String result="";
+        String kodeRekeningKas=getKodeRekeningKas();
         String query = "select  \n" +
                 "                  rekening_id  \n" +
                 "                from  \n" +
                 "                im_akun_kode_rekening  \n" +
                 "                where  \n" +
-                "                nama_kode_rekening like 'Kas Tunai'  \n" +
-                "                and kode_rekening ilike '1.1.01%' \n" +
+                "                nama_kode_rekening like '"+namaTunai+"'  \n" +
+                "                and kode_rekening ilike '"+kodeRekeningKas+"%' \n" +
                 "                and length(kode_rekening)=12 \n" +
                 "                order by rekening_id \n" +
                 "                limit 1";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            result = results.toString();
+        }else {
+            result=null;
+        }
+        return result;
+    }
+
+    //untuk mendapat kode rekening kas dari jurnal
+    public String getKodeRekeningKasForJurnal(String noJurnal){
+        String result="";
+        String kodeRekeningKas=getKodeRekeningKas();
+        String query = "select \n" +
+                "  kode_rekening\n" +
+                "from \n" +
+                "  it_akun_jurnal_detail jd INNER JOIN \n" +
+                "  im_akun_kode_rekening kr ON jd.rekening_id=kr.rekening_id\n" +
+                "where \n" +
+                "  no_jurnal='"+noJurnal+"'\n" +
+                "  and kode_rekening ilike '"+kodeRekeningKas+"%'\n";
         Object results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query).uniqueResult();
         if (results!=null){

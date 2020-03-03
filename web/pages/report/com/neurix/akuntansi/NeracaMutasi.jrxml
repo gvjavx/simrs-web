@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="NeracaMutasi" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="814" leftMargin="14" rightMargin="14" topMargin="28" bottomMargin="28" isFloatColumnFooter="true" uuid="cceafb7a-fad7-473b-93f1-95b3c60e87df">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="0.8481952367449703"/>
+	<property name="ireport.zoom" value="2.0000000000000036"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="35"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -24,6 +24,7 @@
 	</parameter>
 	<parameter name="reportParams.alamatSurat" class="java.lang.String"/>
 	<parameter name="reportParams.reportName" class="java.lang.String"/>
+	<parameter name="reportParams.areaId" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT DISTINCT
   a.grup as grup,
@@ -130,8 +131,7 @@ FROM
     select
       rekening_id_parent as rekening_id_parent,
       sum(jumlah_debit) as jumlah_debit,
-      sum(jumlah_kredit) as jumlah_kredit,
-      branch_id as branch_id
+      sum(jumlah_kredit) as jumlah_kredit
     from
       (
         select
@@ -140,8 +140,7 @@ FROM
 		  (y.jumlah_debit * x.kurs) as jumlah_debit,
           (y.jumlah_kredit * x.kurs) as jumlah_kredit,
           x.created_date as created_date,
-          x.registered_flag as registered_flag,
-          x.branch_id
+          x.registered_flag as registered_flag
         from
           it_akun_jurnal x
           INNER JOIN it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal
@@ -167,12 +166,10 @@ FROM
           and x.registered_flag = 'Y'
           and x.flag = 'Y'
           AND y.rekening_id IN (rek.rekening_id)
+	AND x.branch_id IN ($P!{reportParams.branchId})
       ) k
-    where
-      branch_id = $P{reportParams.branchId}
     group by
-      rekening_id_parent,
-      branch_id
+      rekening_id_parent
   ) b ON b.rekening_id_parent = a.rekening_id
   LEFT OUTER JOIN (
     select
@@ -184,7 +181,7 @@ FROM
     from
       it_akun_saldo_akhir
     where
-      to_date(periode, 'MM-yyyy') = to_date($P{reportParams.periode}, 'MM-yyyy') - Interval '1 month' and branch_id = $P{reportParams.branchId}
+      to_date(periode, 'MM-yyyy') = to_date($P{reportParams.periode}, 'MM-yyyy') - Interval '1 month' and branch_id IN ($P!{reportParams.branchId})
   ) c ON a.rekening_id = c.rekening_id]]>
 	</queryString>
 	<field name="grup" class="java.lang.String"/>
@@ -824,19 +821,6 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<reportElement x="0" y="-15" width="95" height="50" uuid="4819e379-50d0-4361-b4a3-d4a4dd37ecbd"/>
 				<imageExpression><![CDATA[$P{reportParams.urlLogo}]]></imageExpression>
 			</image>
-			<staticText>
-				<reportElement key="staticText-10" x="0" y="27" width="214" height="15" uuid="cafe956a-f22c-4a92-8f95-702c012e9f14"/>
-				<box leftPadding="2">
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font size="8" isBold="false" pdfFontName="Helvetica"/>
-				</textElement>
-				<text><![CDATA[PT. NUSANTARA MEDIKA UTAMA]]></text>
-			</staticText>
 			<textField isBlankWhenNull="false">
 				<reportElement key="textField-13" x="2" y="41" width="208" height="18" uuid="361bce90-c5f2-4404-8b4a-46082dd4dcc1"/>
 				<box>
@@ -848,7 +832,14 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement>
 					<font size="9" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Unit : " + $P{reportParams.kota}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{reportParams.kota}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="27" width="210" height="15" uuid="a684b147-b0eb-4373-a360-63e23e4cef41"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.areaId}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>

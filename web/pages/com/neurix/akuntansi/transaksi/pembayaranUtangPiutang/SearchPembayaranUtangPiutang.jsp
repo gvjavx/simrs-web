@@ -204,7 +204,7 @@
                                                             <display:column property="noJurnal" sortable="true" title="No. Jurnal" />
                                                             <display:column property="stTipeTransaksi" sortable="true" title="Tipe Transaksi"  />
                                                             <display:column property="stTanggal" sortable="true" title="Tanggal"  />
-                                                            <display:column property="kodeRekeningKas" sortable="true" title="Kode Rekening Kas"  />
+                                                            <display:column property="metodePembayaran" sortable="true" title="Metode Pembayaran"  />
                                                             <display:column property="bayar" sortable="true" title="Total Bayar"  />
                                                             <display:column property="keterangan" sortable="true" title="Keterangan"  />
                                                             <display:column property="noSlipBank" sortable="true" title="No. Slip Bank"  />
@@ -292,9 +292,9 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-4">Kode Rekening Kas</label>
+                                <label class="col-md-4">Metode Pembayaran</label>
                                 <div class="col-md-6">
-                                    <s:textfield id="mod_kode_rekening_kas" onkeypress="$(this).css('border','')" readonly="true"
+                                    <s:textfield id="mod_metode_bayar" onkeypress="$(this).css('border','')" readonly="true"
                                                  cssClass="form-control"/>
                                     <br>
                                 </div>
@@ -352,7 +352,7 @@
                 $('#mod_no_jurnal').val(data.noJurnal);
                 $('#mod_tipe_transaksi').val(data.stTipeTransaksi);
                 $('#mod_tanggal').val(data.stTanggal);
-                $('#mod_kode_rekening_kas').val(data.kodeRekeningKas);
+                $('#mod_metode_bayar').val(data.metodePembayaran);
                 $('#mod_no_slip_bank').val(data.noSlipBank);
                 $('#mod_keterangan').val(data.keterangan);
                 $('#mod_total_bayar').val(data.stBayar);
@@ -370,7 +370,7 @@
                 $('#mod_no_jurnal').val(data.noJurnal);
                 $('#mod_tipe_transaksi').val(data.stTipeTransaksi);
                 $('#mod_tanggal').val(data.stTanggal);
-                $('#mod_kode_rekening_kas').val(data.kodeRekeningKas);
+                $('#mod_metode_bayar').val(data.metodePembayaran);
                 $('#mod_no_slip_bank').val(data.noSlipBank);
                 $('#mod_keterangan').val(data.keterangan);
                 $('#mod_total_bayar').val(data.stBayar);
@@ -378,6 +378,8 @@
             loadPembayaran();
             $("#modal-posting-jurnal").find('.modal-title').text('Posting Jurnal');
             $("#modal-posting-jurnal").modal('show');
+            $("#btnPostingJurnal").show();
+
         });
         $('.tablePembayaranUtangPiutang').on('click', '.item-cetak-bukti', function() {
             var noJurnal = $(this).attr('data');
@@ -388,10 +390,12 @@
         });
         $('#btnPostingJurnal').click(function () {
             var pembayaranId =  $('#mod_pembayaran_id').val();
-            PembayaranUtangPiutangAction.postingJurnal(pembayaranId,function (listdata) {
-                alert(listdata);
-                window.location.reload();
-            })
+            if (confirm("apakah anda ingin memposting pembayaran dengan pembayaran id "+pembayaranId +" ?")){
+                PembayaranUtangPiutangAction.postingJurnal(pembayaranId,function (listdata) {
+                    alert(listdata);
+                    window.location.reload();
+                })
+            }
         })
     });
 </script>

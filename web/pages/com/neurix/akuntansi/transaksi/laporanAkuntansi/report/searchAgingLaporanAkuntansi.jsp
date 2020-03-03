@@ -16,6 +16,7 @@
 <head>
     <%@ include file="/pages/common/header.jsp" %>
     <script type='text/javascript' src='<s:url value="/dwr/interface/MasterAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/PasienAction.js"/>'></script>
 
     <script type='text/javascript'>
 
@@ -37,7 +38,7 @@
             var tipeLaporan = document.getElementById("tipeLaporan").value;
             var master = document.getElementById("masterId").value;
 
-            if ( unit != '' && periodeTahun != ''&& periodeBulan != '') {
+            if ( unit != '' && periodeTahun != ''&& periodeBulan != ''&&master!='') {
                 event.originalEvent.options.submit = false;
                 var url = "printReportAging_laporanAkuntansi.action?laporanAkuntansi.tipeLaporan="+tipeLaporan+"&laporanAkuntansi.unit="+unit+"&laporanAkuntansi.tahun="+periodeTahun+"&laporanAkuntansi.bulan="+periodeBulan+"&laporanAkuntansi.masterId="+master;
                 window.open(url,'_blank');
@@ -52,6 +53,8 @@
                 }
                 if ( periodeBulan == '') {
                     msg += 'Field <strong>Bulan </strong> masih belum dipilih' + '<br/>';
+                }if ( master== '') {
+                    msg += 'Field <strong>Vendor </strong> masih belum diisi' + '<br/>';
                 }
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
@@ -116,6 +119,7 @@
                                                 </td>
                                                 <td>
                                                     <s:textfield  id="tipeLaporanName" name="laporanAkuntansi.tipeLaporanName" readonly="true" cssClass="form-control"/>
+                                                    <s:hidden id="tipeAging" name="laporanAkuntansi.tipePerson"/>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -150,10 +154,15 @@
                                                                   headerValue="[Select one]"/>
                                                     </table>
                                                 </td>
+                                                <script>
+                                                    var dt = new Date();
+                                                    $('#periodeBulan').val(("0" + (dt.getMonth() + 1)).slice(-2));
+                                                    $('#periodeTahun').val(dt.getFullYear());
+                                                </script>
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Master :</small></label>
+                                                    <label class="control-label"><small>Vendor :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -161,33 +170,67 @@
                                                     </table>
                                                     <script>
                                                         $(document).ready(function() {
+                                                            var tipePerson = $('#tipeAging').val();
                                                             var functions, mapped;
-                                                            $('#masterId').typeahead({
-                                                                minLength: 1,
-                                                                source: function (query, process) {
-                                                                    functions = [];
-                                                                    mapped = {};
-                                                                    var data = [];
-                                                                    dwr.engine.setAsync(false);
-                                                                    MasterAction.initTypeaheadMaster(query,function (listdata) {
-                                                                        data = listdata;
-                                                                    });
-                                                                    $.each(data, function (i, item) {
-                                                                        var labelItem = item.nomorVendor + " | " + item.nama;
-                                                                        mapped[labelItem] = {
-                                                                            id: item.nomorVendor,
-                                                                            nama: item.nama
-                                                                        };
-                                                                        functions.push(labelItem);
-                                                                    });
-                                                                    process(functions);
-                                                                },
-                                                                updater: function (item) {
-                                                                    var selectedObj = mapped[item];
-                                                                    $('#masterName').val(selectedObj.nama);
-                                                                    return selectedObj.id;
-                                                                }
-                                                            });
+                                                            if (tipePerson=='usaha'){
+                                                                $('#masterId').typeahead({
+                                                                    minLength: 1,
+                                                                    source: function (query, process) {
+                                                                        functions = [];
+                                                                        mapped = {};
+                                                                        var data = [];
+                                                                        dwr.engine.setAsync(false);
+                                                                        MasterAction.initTypeaheadMaster(query,function (listdata) {
+                                                                            data = listdata;
+                                                                        });
+                                                                        $.each(data, function (i, item) {
+                                                                            var labelItem = item.nomorVendor + " | " + item.nama;
+                                                                            mapped[labelItem] = {
+                                                                                id: item.nomorVendor,
+                                                                                nama: item.nama
+                                                                            };
+                                                                            functions.push(labelItem);
+                                                                        });
+                                                                        process(functions);
+                                                                    },
+                                                                    updater: function (item) {
+                                                                        var selectedObj = mapped[item];
+                                                                        $('#masterName').val(selectedObj.nama);
+                                                                        return selectedObj.id;
+                                                                    }
+                                                                });
+                                                            }else if (tipePerson=='pasien') {
+                                                                $('#masterId').typeahead({
+                                                                    minLength: 1,
+                                                                    source: function (query, process) {
+                                                                        functions = [];
+                                                                        mapped = {};
+
+                                                                        var data = [];
+                                                                        dwr.engine.setAsync(false);
+
+                                                                        PasienAction.getListComboPasien(query, function (listdata) {
+                                                                            data = listdata;
+                                                                        });
+
+                                                                        $.each(data, function (i, item) {
+                                                                            var labelItem = item.idPasien+" | "+item.nama;
+                                                                            mapped[labelItem] = {
+                                                                                id: item.idPasien,
+                                                                                nama:item.nama
+                                                                            };
+                                                                            functions.push(labelItem);
+                                                                        });
+                                                                        process(functions);
+
+                                                                    },
+                                                                    updater: function (item) {
+                                                                        var selectedObj = mapped[item];
+                                                                        $('#masterName').val(selectedObj.nama);
+                                                                        return selectedObj.id;
+                                                                    }
+                                                                });
+                                                            }
                                                         });
                                                     </script>
                                                 </td>

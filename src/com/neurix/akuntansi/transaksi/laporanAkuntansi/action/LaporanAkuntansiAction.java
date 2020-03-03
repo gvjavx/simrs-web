@@ -303,9 +303,14 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
 
         return "search_laporan_mutasi_jurnal";
     }
+    public String searchReportIkhtisarPendapatan() {
+        logger.info("[LaporanAkuntansiAction.searchReportIkhtisarPendapatan] start process >>>");
 
+        return "search_laporan_ikhtisar_pendapatan";
+    }
     public String searchReportIkhtisar() {
         logger.info("[LaporanAkuntansiAction.searchReportIkhtisarSubBukuBesar] start process >>>");
+
         switch(laporanAkuntansi.getTipeLaporan()) {
             case "hutang_usaha":
                 laporanAkuntansi.setTipeLaporanName("HUTANG USAHA");
@@ -313,8 +318,14 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
             case "piutang_usaha":
                 laporanAkuntansi.setTipeLaporanName("PIUTANG USAHA");
                 break;
+            case "piutang_pasien":
+                laporanAkuntansi.setTipeLaporanName("PIUTANG PASIEN");
+                break;
             case "uang_muka":
                 laporanAkuntansi.setTipeLaporanName("UANG MUKA");
+                break;
+            case "uang_muka_p":
+                laporanAkuntansi.setTipeLaporanName("UANG MUKA PASIEN");
                 break;
             default:
                 laporanAkuntansi.setTipeLaporanName("NOT FOUND");
@@ -323,15 +334,27 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
     }
     public String searchReportAging() {
         logger.info("[LaporanAkuntansiAction.searchReportAging] start process >>>");
+
         switch(laporanAkuntansi.getTipeLaporan()) {
             case "hutang_usaha":
                 laporanAkuntansi.setTipeLaporanName("HUTANG USAHA");
+                laporanAkuntansi.setTipePerson("usaha");
                 break;
             case "piutang_usaha":
                 laporanAkuntansi.setTipeLaporanName("PIUTANG USAHA");
+                laporanAkuntansi.setTipePerson("usaha");
                 break;
             case "uang_muka":
                 laporanAkuntansi.setTipeLaporanName("UANG MUKA");
+                laporanAkuntansi.setTipePerson("usaha");
+                break;
+            case "piutang_pasien":
+                laporanAkuntansi.setTipeLaporanName("PIUTANG PASIEN");
+                laporanAkuntansi.setTipePerson("pasien");
+                break;
+            case "uang_muka_p":
+                laporanAkuntansi.setTipeLaporanName("UANG MUKA PASIEN");
+                laporanAkuntansi.setTipePerson("pasien");
                 break;
             default:
                 laporanAkuntansi.setTipeLaporanName("NOT FOUND");
@@ -344,13 +367,28 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         LaporanAkuntansiBo laporanAkuntansiBo = (LaporanAkuntansiBo) ctx.getBean("laporanAkuntansiBoProxy");
         BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
-        BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
         LaporanAkuntansi data = getLaporanAkuntansi();
         LaporanAkuntansi dataAtasan = laporanAkuntansiBo.getNipDanNamaManagerKeuanganDanGeneralManager(data.getUnit());
         Branch branch = branchBo.getBranchById(data.getUnit(),"Y");
+        String unit = "";
+        if (("KP").equalsIgnoreCase(data.getUnit())){
+            List<Branch> branchList = new ArrayList<>();
+            branchList = branchBo.getAll();
+            int i = 1;
+            for (Branch dataUnit : branchList){
+                if (i==1){
+                    unit="'"+dataUnit.getBranchId()+"'";
+                }else{
+                    unit=unit+",'"+dataUnit.getBranchId()+"'";
+                }
+                i++;
+            }
+        }else{
+            unit="'"+data.getUnit()+"'";
+        }
 
         reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
-        reportParams.put("branchId", data.getUnit());
+        reportParams.put("branchId", unit);
         reportParams.put("periodeTitle", CommonUtil.convertNumberToStringBulan(data.getBulan())+" "+data.getTahun());
         Date now = new Date();
         reportParams.put("tanggal", CommonUtil.convertDateToString(now));
@@ -361,6 +399,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         reportParams.put("periode", data.getBulan()+"-"+data.getTahun());
         reportParams.put("kota",branch.getBranchName());
         reportParams.put("alamatSurat",branch.getAlamatSurat());
+        reportParams.put("areaId",CommonUtil.userAreaName());
         try {
             preDownload();
         } catch (SQLException e) {
@@ -384,9 +423,25 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         LaporanAkuntansi data = getLaporanAkuntansi();
         LaporanAkuntansi dataAtasan = laporanAkuntansiBo.getNipDanNamaManagerKeuanganDanGeneralManager(data.getUnit());
         Branch branch = branchBo.getBranchById(data.getUnit(),"Y");
+        String unit = "";
+        if (("KP").equalsIgnoreCase(data.getUnit())){
+            List<Branch> branchList = new ArrayList<>();
+            branchList = branchBo.getAll();
+            int i = 1;
+            for (Branch dataUnit : branchList){
+                if (i==1){
+                    unit="'"+dataUnit.getBranchId()+"'";
+                }else{
+                    unit=unit+",'"+dataUnit.getBranchId()+"'";
+                }
+                i++;
+            }
+        }else{
+            unit="'"+data.getUnit()+"'";
+        }
 
         reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
-        reportParams.put("branchId", data.getUnit());
+        reportParams.put("branchId", unit);
         reportParams.put("periodeTitle", CommonUtil.convertNumberToStringBulan(data.getBulan())+" "+data.getTahun());
         Date now = new Date();
         reportParams.put("tanggal", CommonUtil.convertDateToString(now));
@@ -397,6 +452,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         reportParams.put("periode", data.getBulan()+"-"+data.getTahun());
         reportParams.put("kota",branch.getBranchName());
         reportParams.put("alamatSurat",branch.getAlamatSurat());
+        reportParams.put("areaId",CommonUtil.userAreaName());
         try {
             preDownload();
         } catch (SQLException e) {
@@ -421,9 +477,25 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         LaporanAkuntansi data = getLaporanAkuntansi();
         LaporanAkuntansi dataAtasan = laporanAkuntansiBo.getNipDanNamaManagerKeuanganDanGeneralManager(data.getUnit());
         Branch branch = branchBo.getBranchById(data.getUnit(),"Y");
+        String unit = "";
+        if (("KP").equalsIgnoreCase(data.getUnit())){
+            List<Branch> branchList = new ArrayList<>();
+            branchList = branchBo.getAll();
+            int i = 1;
+            for (Branch dataUnit : branchList){
+                if (i==1){
+                    unit="'"+dataUnit.getBranchId()+"'";
+                }else{
+                    unit=unit+",'"+dataUnit.getBranchId()+"'";
+                }
+                i++;
+            }
+        }else{
+            unit="'"+data.getUnit()+"'";
+        }
 
         reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
-        reportParams.put("branchId", data.getUnit());
+        reportParams.put("branchId", unit);
         reportParams.put("periodeTitle", CommonUtil.convertNumberToStringBulan(data.getBulan())+" "+data.getTahun());
         Date now = new Date();
         reportParams.put("tanggal", CommonUtil.convertDateToString(now));
@@ -434,6 +506,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         reportParams.put("periode", data.getBulan()+"-"+data.getTahun());
         reportParams.put("kota",branch.getBranchName());
         reportParams.put("alamatSurat",branch.getAlamatSurat());
+        reportParams.put("areaId",CommonUtil.userAreaName());
         try {
             preDownload();
         } catch (SQLException e) {
@@ -458,9 +531,25 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         LaporanAkuntansi data = getLaporanAkuntansi();
         LaporanAkuntansi dataAtasan = laporanAkuntansiBo.getNipDanNamaManagerKeuanganDanGeneralManager(data.getUnit());
         Branch branch = branchBo.getBranchById(data.getUnit(),"Y");
+        String unit = "";
+        if (("KP").equalsIgnoreCase(data.getUnit())){
+            List<Branch> branchList = new ArrayList<>();
+            branchList = branchBo.getAll();
+            int i = 1;
+            for (Branch dataUnit : branchList){
+                if (i==1){
+                    unit="'"+dataUnit.getBranchId()+"'";
+                }else{
+                    unit=unit+",'"+dataUnit.getBranchId()+"'";
+                }
+                i++;
+            }
+        }else{
+            unit="'"+data.getUnit()+"'";
+        }
 
         reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
-        reportParams.put("branchId", data.getUnit());
+        reportParams.put("branchId", unit);
         reportParams.put("periodeTitle", CommonUtil.convertNumberToStringBulan(data.getBulan())+" "+data.getTahun());
         Date now = new Date();
         reportParams.put("tanggal", CommonUtil.convertDateToString(now));
@@ -473,8 +562,10 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         reportParams.put("alamatSurat",branch.getAlamatSurat());
         reportParams.put("kode_rekening",data.getKodeRekening());
         reportParams.put("nomor_master",data.getMasterId());
+        reportParams.put("branch_id",data.getUnit());
         reportParams.put("rekening_id",data.getRekeningId());
         reportParams.put("reportTitle", "KARTU BUKU BESAR PER BUKU BANTU");
+        reportParams.put("areaId", CommonUtil.userAreaName());
 
         try {
             preDownload();
@@ -501,24 +592,49 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         LaporanAkuntansi dataAtasan = laporanAkuntansiBo.getNipDanNamaManagerKeuanganDanGeneralManager(data.getUnit());
         Branch branch = branchBo.getBranchById(data.getUnit(),"Y");
         String titleReport="";
-
-        if (data.getTipeJurnalId().equalsIgnoreCase("JKM")){
-            titleReport="MUTASI JURNAL KAS MASUK";
-        }else if (data.getTipeJurnalId().equalsIgnoreCase("JPD")){
-            titleReport="MUTASI JURNAL PERSEDIAAN";
-        }else if (data.getTipeJurnalId().equalsIgnoreCase("JRI")){
-            titleReport="MUTASI JURNAL RAWAT INAP";
-        }else if (data.getTipeJurnalId().equalsIgnoreCase("JRJ")){
-            titleReport="MUTASI JURNAL RAWAT JALAN";
-        }else if (data.getTipeJurnalId().equalsIgnoreCase("JKK")){
-            titleReport="MUTASI JURNAL KAS KELUAR";
+        String unit = "";
+        if (("KP").equalsIgnoreCase(data.getUnit())){
+            List<Branch> branchList = new ArrayList<>();
+            branchList = branchBo.getAll();
+            int i = 1;
+            for (Branch dataUnit : branchList){
+                if (i==1){
+                    unit="'"+dataUnit.getBranchId()+"'";
+                }else{
+                    unit=unit+",'"+dataUnit.getBranchId()+"'";
+                }
+                i++;
+            }
         }else{
-            titleReport="NOTHING";
+            unit="'"+data.getUnit()+"'";
+        }
+
+        switch (data.getTipeJurnalId()){
+            case ("JKM"):
+                titleReport="MUTASI JURNAL KAS MASUK";
+                break;
+            case ("JKK"):
+                titleReport="MUTASI JURNAL KAS KELUAR";
+                break;
+            case ("JPD"):
+                titleReport="MUTASI JURNAL PERSEDIAAN";
+                break;
+            case ("JRI"):
+                titleReport="MUTASI JURNAL RAWAT INAP";
+                break;
+            case ("JRJ"):
+                titleReport="MUTASI JURNAL RAWAT JALAN";
+                break;
+            case ("JJO"):
+                titleReport="MUTASI JURNAL JUAL OBAT";
+                break;
+                default:
+                    titleReport="";
         }
 
         reportParams.put("reportTitle", titleReport);
         reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
-        reportParams.put("branchId", data.getUnit());
+        reportParams.put("branchId", unit);
         reportParams.put("periodeTitle", CommonUtil.convertNumberToStringBulan(data.getBulan())+" "+data.getTahun());
         Date now = new Date();
         reportParams.put("tanggal", CommonUtil.convertDateToString(now));
@@ -530,6 +646,8 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         reportParams.put("kota",branch.getBranchName());
         reportParams.put("alamatSurat",branch.getAlamatSurat());
         reportParams.put("jurnalType",data.getTipeJurnalId());
+        reportParams.put("areaId",CommonUtil.userAreaName());
+        System.out.println(CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
         try {
             preDownload();
         } catch (SQLException e) {
@@ -556,24 +674,58 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         Branch branch = branchBo.getBranchById(data.getUnit(),"Y");
         String titleReport="";
         String reportId="";
-
-        if (data.getTipeLaporan().equalsIgnoreCase("hutang_usaha")){
-            titleReport="IKHTISAR HUTANG USAHA";
-            reportId="RPT04";
-        }else if (data.getTipeLaporan().equalsIgnoreCase("piutang_usaha")){
-            titleReport="IKHTISAR PIUTANG USAHA";
-            reportId="RPT05";
-        }else if (data.getTipeLaporan().equalsIgnoreCase("uang_muka")){
-            titleReport="IKHTISAR UANG MUKA";
-            reportId="RPT06";
+        String report="";
+        String unit = "";
+        if (("KP").equalsIgnoreCase(data.getUnit())){
+            List<Branch> branchList = new ArrayList<>();
+            branchList = branchBo.getAll();
+            int i = 1;
+            for (Branch dataUnit : branchList){
+                if (i==1){
+                    unit="'"+dataUnit.getBranchId()+"'";
+                }else{
+                    unit=unit+",'"+dataUnit.getBranchId()+"'";
+                }
+                i++;
+            }
         }else{
-            reportId="NOTHING";
+            unit="'"+data.getUnit()+"'";
+        }
+
+        switch (data.getTipeLaporan()){
+            case ("hutang_usaha"):
+                titleReport="IKHTISAR HUTANG USAHA";
+                reportId="RPT04";
+                report="print_report_akuntansi_ikhitisar_sub_buku_besar";
+                break;
+            case("piutang_usaha"):
+                titleReport="IKHTISAR PIUTANG USAHA";
+                reportId="RPT05";
+                report="print_report_akuntansi_ikhitisar_sub_buku_besar";
+                break;
+            case ("uang_muka"):
+                titleReport="IKHTISAR UANG MUKA";
+                reportId="RPT06";
+                report="print_report_akuntansi_ikhitisar_sub_buku_besar";
+                break;
+            case ("uang_muka_p"):
+                titleReport="IKHTISAR UANG MUKA PASIEN";
+                reportId="RPT15";
+                report="print_report_akuntansi_ikhitisar_sub_buku_besar_pasien";
+                break;
+            case ("piutang_pasien"):
+                titleReport="IKHTISAR PIUTANG PASIEN";
+                reportId="RPT13";
+                report="print_report_akuntansi_ikhitisar_sub_buku_besar_pasien";
+                break;
+                default:
+                    titleReport="";
         }
 
         reportParams.put("reportTitle", titleReport);
         reportParams.put("reportId", reportId);
         reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
-        reportParams.put("branchId", data.getUnit());
+        reportParams.put("branchId", unit);
         reportParams.put("periodeTitle", CommonUtil.convertNumberToStringBulan(data.getBulan())+" "+data.getTahun());
         Date now = new Date();
         reportParams.put("tanggal", CommonUtil.convertDateToString(now));
@@ -584,6 +736,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         reportParams.put("periode", data.getBulan()+"-"+data.getTahun());
         reportParams.put("kota",branch.getBranchName());
         reportParams.put("alamatSurat",branch.getAlamatSurat());
+        reportParams.put("areaId",CommonUtil.userAreaName());
         try {
             preDownload();
         } catch (SQLException e) {
@@ -597,7 +750,65 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
             addActionError("Error, " + "[code=" + logId + "] Found problem when downloading data, please inform to your admin.");
         }
         logger.info("[LaporanAkuntansiAction.printReportIkhtisarSubBukuBesar] end process <<<");
-        return "print_report_akuntansi_ikhitisar_sub_buku_besar";
+        return report;
+    }
+
+    public String printReportIkhtisarPendapatan(){
+        logger.info("[LaporanAkuntansiAction.printReportIkhtisarPendapatan] start process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        LaporanAkuntansiBo laporanAkuntansiBo = (LaporanAkuntansiBo) ctx.getBean("laporanAkuntansiBoProxy");
+        BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+        LaporanAkuntansi data = getLaporanAkuntansi();
+        LaporanAkuntansi dataAtasan = laporanAkuntansiBo.getNipDanNamaManagerKeuanganDanGeneralManager(data.getUnit());
+        Branch branch = branchBo.getBranchById(data.getUnit(),"Y");
+        String titleReport="IKHTISAR PENDAPATAN";
+        String reportId="RPT12";
+        String unit = "";
+        if (("KP").equalsIgnoreCase(data.getUnit())){
+            List<Branch> branchList = new ArrayList<>();
+            branchList = branchBo.getAll();
+            int i = 1;
+            for (Branch dataUnit : branchList){
+                if (i==1){
+                    unit="'"+dataUnit.getBranchId()+"'";
+                }else{
+                    unit=unit+",'"+dataUnit.getBranchId()+"'";
+                }
+                i++;
+            }
+        }else{
+            unit="'"+data.getUnit()+"'";
+        }
+
+        reportParams.put("reportTitle", titleReport);
+        reportParams.put("reportId", reportId);
+        reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
+        reportParams.put("branchId", unit);
+        reportParams.put("periodeTitle", CommonUtil.convertNumberToStringBulan(data.getBulan())+" "+data.getTahun());
+        Date now = new Date();
+        reportParams.put("tanggal", CommonUtil.convertDateToString(now));
+        reportParams.put("namaGeneralManager", dataAtasan.getNamaGeneralManager());
+        reportParams.put("nipGeneralManager", dataAtasan.getNipGeneralManager());
+        reportParams.put("namaManagerKeuangan", dataAtasan.getNamaManagerKeuangan());
+        reportParams.put("nipManagerKeuangan", dataAtasan.getNipManagerKeuangan());
+        reportParams.put("periode", data.getBulan()+"-"+data.getTahun());
+        reportParams.put("kota",branch.getBranchName());
+        reportParams.put("alamatSurat",branch.getAlamatSurat());
+        reportParams.put("areaId",CommonUtil.userAreaName());
+        try {
+            preDownload();
+        } catch (SQLException e) {
+            Long logId = null;
+            try {
+                logId = laporanAkuntansiBo.saveErrorMessage(e.getMessage(), "printReportIkhtisarPendapatan");
+            } catch (GeneralBOException e1) {
+                logger.error("[LaporanAkuntansiAction.printReportIkhtisarPendapatan] Error when downloading ,", e1);
+            }
+            logger.error("[LaporanAkuntansiAction.printReportIkhtisarPendapatan] Error when print report ," + "[" + logId + "] Found problem when downloading data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when downloading data, please inform to your admin.");
+        }
+        logger.info("[LaporanAkuntansiAction.printReportIkhtisarPendapatan] end process <<<");
+        return "print_report_akuntansi_ikhitisar_pendapatan";
     }
 
     public String printReportAging(){
@@ -611,20 +822,55 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         String periode =dataLaporan.getBulan()+"-"+dataLaporan.getTahun();
         String titleReport="";
         String reportId="";
+        String tipeAging ="";
+        String unit = "";
+        if (("KP").equalsIgnoreCase(dataLaporan.getUnit())){
+            List<Branch> branchList = new ArrayList<>();
+            branchList = branchBo.getAll();
+            int i = 1;
+            for (Branch dataUnit : branchList){
+                if (i==1){
+                    unit="'"+dataUnit.getBranchId()+"'";
+                }else{
+                    unit=unit+",'"+dataUnit.getBranchId()+"'";
+                }
+                i++;
+            }
+        }else{
+            unit="'"+dataLaporan.getUnit()+"'";
+        }
 
-        if (dataLaporan.getTipeLaporan().equalsIgnoreCase("hutang_usaha")){
-            titleReport="AGING HUTANG USAHA";
-            reportId="RPT07";
+        switch (dataLaporan.getTipeLaporan()){
+            case("hutang_usaha") :
+                titleReport="AGING HUTANG USAHA";
+                reportId="RPT07";
+                tipeAging ="usaha";
+                break;
+            case ("piutang_usaha"):
+                titleReport="AGING PIUTANG USAHA";
+                reportId="RPT08";
+                tipeAging ="usaha";
+                break;
+            case ("uang_muka"):
+                titleReport="AGING UANG MUKA";
+                reportId="RPT09";
+                tipeAging ="usaha";
+                break;
+            case ("uang_muka_p"):
+                titleReport="AGING UANG MUKA PASIEN";
+                reportId="RPT16";
+                tipeAging ="pasien";
+                break;
+            case ("piutang_pasien"):
+                titleReport="AGING PIUTANG PASIEN";
+                reportId="RPT14";
+                tipeAging ="pasien";
+                break;
+                default:
+                    titleReport="";
         }
-        if (dataLaporan.getTipeLaporan().equalsIgnoreCase("piutang_usaha")){
-            titleReport="AGING PIUTANG USAHA";
-            reportId="RPT08";
-        }
-        if (dataLaporan.getTipeLaporan().equalsIgnoreCase("uang_muka")){
-            titleReport="AGING UANG MUKA";
-            reportId="RPT09";
-        }
-        List<Aging> agingList = laporanAkuntansiBo.getAging(dataLaporan.getUnit(),periode,dataLaporan.getMasterId(),dataLaporan.getTipeLaporan(),reportId);
+
+        List<Aging> agingList = laporanAkuntansiBo.getAging(unit,periode,dataLaporan.getMasterId(),tipeAging,reportId);
         List<Aging> listOfAgingTemp = new ArrayList<>();
 
         String []jumlahTanggalTahunKabisat = {"","31","29","31","30","31","30","31","31","30","31","30","31"};
@@ -762,6 +1008,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
             reportParams.put("periode",periode);
             reportParams.put("kota",branch.getBranchName());
             reportParams.put("alamatSurat",branch.getAlamatSurat());
+            reportParams.put("areaId",CommonUtil.userAreaName());
             try {
                 preDownload();
             } catch (SQLException e) {

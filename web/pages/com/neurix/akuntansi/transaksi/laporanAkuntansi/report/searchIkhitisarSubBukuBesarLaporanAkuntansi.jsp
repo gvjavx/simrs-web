@@ -147,6 +147,11 @@
                                                                   headerValue="[Select one]"/>
                                                     </table>
                                                 </td>
+                                                <script>
+                                                    var dt = new Date();
+                                                    $('#periodeBulan').val(("0" + (dt.getMonth() + 1)).slice(-2));
+                                                    $('#periodeTahun').val(dt.getFullYear());
+                                                </script>
                                             </tr>
                                         </table>
                                         <br>

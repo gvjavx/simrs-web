@@ -45,7 +45,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
         return results;
     }
 
-    public List<Aging> getAging(String branchId, String periode,String masterId,String tipeAging,String reportId){
+    public List<Aging> getAging(String branchId, String periode,String masterId,String reportId){
         List<Aging> listOfResult = new ArrayList<>();
         String tipeWhere = "";
         if (!"".equalsIgnoreCase(masterId)){
@@ -77,20 +77,12 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "        where \n" +
                 "          flag = 'Y' \n" +
                 "          and registered_flag = 'Y'\n" +
-                "\t\t  and branch_id='"+branchId+"'\n" +
+                "\t\t  and branch_id IN ("+branchId+")\n" +
                 "      ) a \n" +
                 "      inner join it_akun_jurnal_detail b on b.no_jurnal = a.no_jurnal \n" +
                 "      inner join im_akun_mata_uang c on a.mata_uang_id = c.mata_uang_id \n" +
                 "      inner join im_akun_master d on b.master_id = d.nomor_master \n" +
                 "\t  INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = b.rekening_id\n" +
-                "      INNER JOIN (\n" +
-                "\t  \tSELECT\n" +
-                "\t\t  *\n" +
-                "\t\tFROM\n" +
-                "\t\t\tim_akun_setting_aging_tipe_jurnal\n" +
-                "\t\tWHERE\n" +
-                "\t\t  tipe_aging='"+tipeAging+"' AND flag='Y'\n" +
-                "\t  ) saj ON saj.tipe_jurnal_id=a.tipe_jurnal_id AND saj.rekening_id=b.rekening_id\n" +
                 "      INNER JOIN (\n" +
                 "        select \n" +
                 "          * \n" +
@@ -108,8 +100,15 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "    cast(tgljurnal as TEXT), \n" +
                 "    'MM-yyyy'\n" +
                 "  ) < (\n" +
-                "    to_date('"+periode+"', 'MM-yyyy')+ Interval '1 month'\n" +
-                "  ) \n" +
+                "    to_date('"+periode+"', 'MM-yyyy')+ Interval '1 month') " +
+                "and rekening_id IN (\n" +
+                "                select\n" +
+                "                    rekening_id\n" +
+                "                from\n" +
+                "                    im_akun_report_detail\n" +
+                "                where\n" +
+                "                    report_id='"+reportId+"'\n" +
+                "            )\n" +
                 tipeWhere +
                 "order by \n" +
                 "  mastergrp, \n" +
@@ -132,6 +131,96 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
             data.setNamaMaster((String) row[7]);
             data.setMasterGrp(row[8].toString());
             data.setKurs(BigDecimal.valueOf(Double.parseDouble(row[9].toString())));
+            listOfResult.add(data);
+        }
+        return listOfResult;
+    }
+
+    public List<Aging> getAgingPasien(String branchId, String periode,String masterId,String reportId){
+        List<Aging> listOfResult = new ArrayList<>();
+        String tipeWhere = "";
+        if (!"".equalsIgnoreCase(masterId)){
+            tipeWhere = "and masterId like '"+masterId+"'";
+        }
+        List<Object[]> results = new ArrayList<Object[]>();
+        String query = "select \n" +
+                "  * \n" +
+                "from \n" +
+                "  (\n" +
+                "    select \n" +
+                "      kr.kode_rekening, \n" +
+                "      b.rekening_id, \n" +
+                "      b.no_nota as noNota, \n" +
+                "      a.tanggal_jurnal as tglJurnal, \n" +
+                "      c.kode_mata_uang as mataUang, \n" +
+                "      (b.jumlah_debit - b.jumlah_kredit) as total, \n" +
+                "      b.pasien_id as masterId, \n" +
+                "      d.nama as namaMaster, \n" +
+                "      f.nilai_kurs as kurs \n" +
+                "    from \n" +
+                "      (\n" +
+                "        -- mencari semua data di jurnal yang di joinkan dengan setting aging jurnal          \n" +
+                "        select \n" +
+                "          * \n" +
+                "        from \n" +
+                "          it_akun_jurnal \n" +
+                "        where \n" +
+                "          flag = 'Y' \n" +
+                "          and registered_flag = 'Y' \n" +
+                "\t\t  and branch_id IN ("+branchId+")\n" +
+                "      ) a \n" +
+                "      inner join it_akun_jurnal_detail b on b.no_jurnal = a.no_jurnal \n" +
+                "      inner join im_akun_mata_uang c on a.mata_uang_id = c.mata_uang_id \n" +
+                "      inner join im_simrs_pasien d on b.pasien_id = d.id_pasien \n" +
+                "      INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = b.rekening_id \n" +
+                "      INNER JOIN (\n" +
+                "        select \n" +
+                "          * \n" +
+                "        from \n" +
+                "          mt_akun_kurs \n" +
+                "        where \n" +
+                "          flag = 'A'\n" +
+                "      ) f on f.mata_uang_id = a.mata_uang_id \n" +
+                "    where \n" +
+                "      a.flag = 'Y' \n" +
+                "      and a.registered_flag = 'Y'\n" +
+                "  ) foo \n" +
+                "where \n" +
+                "  to_date(\n" +
+                "    cast(tgljurnal as TEXT), \n" +
+                "    'MM-yyyy'\n" +
+                "  ) < (\n" +
+                "    to_date('"+periode+"', 'MM-yyyy')+ Interval '1 month'\n" +
+                "  ) \n" +
+                "  and rekening_id IN (\n" +
+                "    select \n" +
+                "      rekening_id \n" +
+                "    from \n" +
+                "      im_akun_report_detail \n" +
+                "    where \n" +
+                "      report_id = '"+reportId+"'\n" +
+                "  ) \n" +
+                "  "+tipeWhere+" \n" +
+                "order by \n" +
+                "  masterId, \n" +
+                "  tglJurnal, \n" +
+                "  masterId asc\n";
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        for (Object[] row : results) {
+            Aging data= new Aging();
+            data.setKodeRekening((String) row[0]);
+            data.setRekeningId((String) row[1]);
+            data.setNoNota((String) row[2]);
+            data.setTglJurnal((Date) row[3]);
+            data.setMataUang((String) row[4]);
+            data.setTotal(BigDecimal.valueOf(Double.parseDouble(row[5].toString())));
+            data.setMasterId((String) row[6]);
+            data.setNamaMaster((String) row[7]);
+//            data.setMasterGrp(row[8].toString());
+            data.setKurs(BigDecimal.valueOf(Double.parseDouble(row[8].toString())));
             listOfResult.add(data);
         }
         return listOfResult;

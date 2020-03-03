@@ -18,6 +18,7 @@
 		<defaultValueExpression><![CDATA["40023"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="rekening_id" class="java.lang.String"/>
+	<parameter name="branch_id" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select
     (CASE WHEN sum(a.jumlah_debit) IS NULL THEN 0.0 ELSE sum(a.jumlah_debit) END) as debit,
@@ -25,13 +26,14 @@
 from
 	it_akun_jurnal_detail a
     inner join it_akun_jurnal b on a.no_jurnal = b.no_jurnal
-	left outer join m_mata_uang mu ON (b.mata_uang_id = mu.mata_uang_id)
+	left outer join im_akun_mata_uang mu ON (b.mata_uang_id = mu.mata_uang_id)
 where
 	b.created_date < to_date($P{periode}, 'MM-yyyy')
     and a.rekening_id = $P{rekening_id}
     and a.master_id = $P{nomor_master}
     and lower(mu.kode_mata_uang) = 'rph'
-    and b.registered_flag = 'Y']]>
+    and b.registered_flag = 'Y'
+    and b.branch_id IN ( $P!{branch_id} )]]>
 	</queryString>
 	<field name="debit" class="java.math.BigDecimal"/>
 	<field name="kredit" class="java.math.BigDecimal"/>

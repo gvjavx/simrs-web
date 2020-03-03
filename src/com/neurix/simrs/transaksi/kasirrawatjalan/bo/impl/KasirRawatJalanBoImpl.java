@@ -72,7 +72,7 @@ public class KasirRawatJalanBoImpl implements KasirRawatJalanBo {
             }
             if(bean.getStatusBayar() != null && !"".equalsIgnoreCase(bean.getStatusBayar())){
                 hsCriterian.put("status_bayar", bean.getStatusBayar());
-                hsCriterian.put("nota_not_null", "Y");
+//                hsCriterian.put("nota_not_null", "Y");
             }
 
             List<ItSimrsUangMukaPendaftaranEntity> entityList = new ArrayList<>();
@@ -89,6 +89,7 @@ public class KasirRawatJalanBoImpl implements KasirRawatJalanBo {
                     uangMuka.setIdDetailCheckup(entity.getIdDetailCheckup());
                     uangMuka.setId(entity.getId());
                     uangMuka.setJumlah(entity.getJumlah());
+                    uangMuka.setDibayar(entity.getJumlahDibayar());
                     uangMuka.setCreatedDate(entity.getCreatedDate());
                     uangMuka.setCreatedWho(entity.getCreatedWho());
                     uangMuka.setFlag(entity.getFlag());
@@ -122,9 +123,9 @@ public class KasirRawatJalanBoImpl implements KasirRawatJalanBo {
                 pendaftaranEntity.setStatusBayar("Y");
                 pendaftaranEntity.setAction("U");
                 pendaftaranEntity.setJumlahDibayar(bean.getDibayar());
-//                pendaftaranEntity.setNoNota(bean.getNoNota());
                 pendaftaranEntity.setLastUpdate(bean.getLastUpdate());
                 pendaftaranEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                pendaftaranEntity.setNoJurnal(bean.getNoJurnal());
 
                 try {
                     uangMukaDao.updateAndSave(pendaftaranEntity);

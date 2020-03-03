@@ -16,8 +16,11 @@
         <property name="tanggal">
             <column name="tanggal" sql-type="date" not-null="false" />
         </property>
-        <property name="kodeRekeningKas">
-            <column name="kode_rekening_kas" sql-type="varchar" length="20" not-null="false" />
+        <property name="metodeBayar">
+            <column name="metode_bayar" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="bank">
+            <column name="bank" sql-type="varchar" length="20" not-null="false" />
         </property>
         <property name="bayar">
             <column name="bayar" sql-type="numeric" not-null="false" />
