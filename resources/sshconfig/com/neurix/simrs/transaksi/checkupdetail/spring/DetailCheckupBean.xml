@@ -39,6 +39,10 @@
         p:checkupDetailBoProxy-ref="checkupDetailBoProxy"
     />
 
+    <bean id="antrianOnlineController" class="com.neurix.simrs.mobileapi.AntrianOnlineController"
+          p:checkupDetailBoProxy-ref="checkupDetailBoProxy"
+    />
+
     <bean id="checkupDetailBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="checkupDetailBo">
         <property name="interceptorNames">
