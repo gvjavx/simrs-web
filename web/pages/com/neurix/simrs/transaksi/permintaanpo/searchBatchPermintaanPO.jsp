@@ -150,31 +150,31 @@
                             <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                             <p id="msg_po"></p>
                         </div>
-                        <div class="row">
-                            <div class="col-md-offset-2 col-md-8" >
-                                <div class="box-header with-border">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <h3 class="box-title"><i class="fa fa-file-text-o"></i> Dokumen Vendor</h3>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <a class="btn btn-success pull-right" onclick="upload()"><i class="fa fa-upload"></i> Upload</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <table class="table table-bordered table-striped" id="tabel_doc">
-                                    <thead>
-                                    <tr bgcolor="#90ee90">
-                                        <td>Nota Vendor</td>
-                                        <td>Action</td>
-                                    </tr>
-                                    </thead>
-                                    <tbody id="body-doc">
+                        <%--<div class="row">--%>
+                            <%--<div class="col-md-offset-2 col-md-8" >--%>
+                                <%--<div class="box-header with-border">--%>
+                                    <%--<div class="row">--%>
+                                        <%--<div class="col-md-6">--%>
+                                            <%--<h3 class="box-title"><i class="fa fa-file-text-o"></i> Dokumen Vendor</h3>--%>
+                                        <%--</div>--%>
+                                        <%--<div class="col-md-6">--%>
+                                            <%--<a class="btn btn-success pull-right" onclick="upload()"><i class="fa fa-upload"></i> Upload</a>--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                                <%--<table class="table table-bordered table-striped" id="tabel_doc">--%>
+                                    <%--<thead>--%>
+                                    <%--<tr bgcolor="#90ee90">--%>
+                                        <%--<td>Nota Vendor</td>--%>
+                                        <%--<td>Action</td>--%>
+                                    <%--</tr>--%>
+                                    <%--</thead>--%>
+                                    <%--<tbody id="body-doc">--%>
 
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                                    <%--</tbody>--%>
+                                <%--</table>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
                         <div class="row">
                             <div class="col-md-offset-2 col-md-8" >
                                 <div class="box-header with-border">
@@ -431,7 +431,6 @@
 
         var file = $("#file-doc")[0].files[0];
         var notaVendor = $("#nota-vendor").val();
-//        console.log(file.mozFullPath);
         PermintaanVendorAction.uploadDocVendor(file, notaVendor, idpermintaanPo, function(response){
             console.log(response);
         })
