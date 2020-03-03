@@ -52,12 +52,14 @@ public class BranchController implements ModelDriven<Object> {
 
         if(modelBranch != null){
             for(com.neurix.authorization.company.model.Branch branch : modelBranch){
-                Branch model = new Branch();
-                model.setBranchId(branch.getBranchId());
-                model.setBranchAddress(branch.getBranchAddress());
-                model.setBranchName(branch.getBranchName());
+                if (!branch.getBranchId().equalsIgnoreCase("KP")) {
+                    Branch model = new Branch();
+                    model.setBranchId(branch.getBranchId());
+                    model.setBranchAddress(branch.getBranchAddress());
+                    model.setBranchName(branch.getBranchName());
 
-                branches.add(model);
+                    branches.add(model);
+                }
             }
         }
         listOfBranch = branches;
