@@ -109,11 +109,11 @@ public class CommonConstant {
 //    public final static String URL_IMAGE_LOGO_REPORT = "C:\\tomcat-7-64x\\webapps\\hris\\pages\\images\\LOGO-RW.png";
 //        public final static String URL_IMAGE_LOGO_REPORT = "/opt/tomcat/webapps/simrs/pages/images/LOGO-RW.png";
 
-//    public final static String URL_IMAGE_LOGO_REPORT = "C:\\tomcat-7-64x\\webapps\\simrs\\pages\\images\\LOGO-RW.png";
-//    public final static String URL_LOGO_REPORT = "C:\\tomcat-7-64x\\webapps\\simrs\\pages\\images\\";
+    public final static String URL_IMAGE_LOGO_REPORT = "C:\\tomcat-7-64x\\webapps\\simrs\\pages\\images\\LOGO-RW.png";
+    public final static String URL_LOGO_REPORT = "C:\\tomcat-7-64x\\webapps\\simrs\\pages\\images\\";
 
-    public final static String URL_IMAGE_LOGO_REPORT = "/opt/tomcat/webapps/simrs/pages/images/LOGO-RW.png";
-    public final static String URL_LOGO_REPORT = "/opt/tomcat/webapps/simrs/pages/images/";
+//    public final static String URL_IMAGE_LOGO_REPORT = "/opt/tomcat/webapps/simrs/pages/images/LOGO-RW.png";
+//    public final static String URL_LOGO_REPORT = "/opt/tomcat/webapps/simrs/pages/images/";
 
     public final static String RESOURCE_DOCUMENT_PAYROLL = "/opt/tomcat/webapps/mnt/documents/";
 
@@ -182,8 +182,8 @@ public class CommonConstant {
     public final static String LOGO_RS03 = "/pages/images/RS03.png";
     public final static String LOGO_NMU = "/pages/images/logo-nmu-copy.png";
 
-//    public final static String LOGO_REPORT_PAYROLL = "C:\\tomcat-7-64x\\webapps\\simrs\\pages\\images\\logo-nmu-copy.png";
-    public final static String LOGO_REPORT_PAYROLL = "/opt/tomcat/webapps/simrs/pages/images/logo-nmu-copy.png";
+    public final static String LOGO_REPORT_PAYROLL = "C:\\tomcat-7-64x\\webapps\\simrs\\pages\\images\\logo-nmu-copy.png";
+//    public final static String LOGO_REPORT_PAYROLL = "/opt/tomcat/webapps/simrs/pages/images/logo-nmu-copy.png";
 
     public final static String IMAGE_CARD  = "/pages/images/card.png";
 
