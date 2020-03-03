@@ -23,6 +23,15 @@ public class Fpk {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String idPasien;
+
+    public String getIdPasien() {
+        return idPasien;
+    }
+
+    public void setIdPasien(String idPasien) {
+        this.idPasien = idPasien;
+    }
 
     public String getIdDetailCheckup() {
         return idDetailCheckup;

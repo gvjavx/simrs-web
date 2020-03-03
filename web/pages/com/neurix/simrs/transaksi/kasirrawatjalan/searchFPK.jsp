@@ -600,9 +600,11 @@
         $.each(data, function (i, item) {
             var sep = data[i]["No Sep"];
             var idDetail = data[i]["ID Detail Checkup"];
+            var idPasien = data[i]["ID Pasien"];
+            var noFpk = data[i]["No FPK"];
             var idFpk = $('#id_fpk'+sep).val();
             if ($('#check_' + sep).prop("checked") == true) {
-                result.push({'id_fpk': idFpk,'no_sep': sep,'no_sep': sep, 'id_detail_checkup': idDetail});
+                result.push({'id_fpk': idFpk, 'no_sep': sep, 'id_detail_checkup': idDetail, "id_pasien":idPasien, "no_fpk":noFpk});
             }
         });
         var jsonString = JSON.stringify(result);
