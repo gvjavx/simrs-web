@@ -491,7 +491,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "AND pr.status IS NOT NULL\n" +
                 "AND pr.flag = 'Y'\n" +
                 "AND a.branch_id LIKE :branchId \n" +
-                "AND b.id_pelayanan LIKE :poliId AND pl.tipe_pelayanan = 'rawat_jalan' \n" +
+                "AND b.id_pelayanan LIKE :poliId AND pl.tipe_pelayanan = 'rawat_jalan' OR  pl.tipe_pelayanan = 'igd' \n" +
                 "AND CAST(a.created_date AS date) = current_date\n" +
                 "ORDER BY c.nama_pelayanan, pr.tgl_antrian ASC";
 
