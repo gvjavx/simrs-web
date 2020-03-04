@@ -165,7 +165,8 @@ public class MutasiDao extends GenericDao<ItMutasiEntity, String> {
                 "  to_char(mutasi.tanggal_efektif, 'dd-MM-yyyy') AS tanggal_efektif,\n" +
                 "  mutasi.pjs,\n" +
                 "  to_char(now(), 'dd-MM-yyyy') AS tanggal_sekarang,\n" +
-                "  mutasi.branch_lama_id\n" +
+                "  mutasi.branch_lama_id,\n" +
+                "  mutasi.level_baru_name\n" +
                 "FROM it_hris_mutasi_jabatan mutasi\n" +
                 "LEFT JOIN im_hris_pegawai personil\n" +
                 "  ON personil.nip = mutasi.nip\n" +
@@ -236,6 +237,7 @@ public class MutasiDao extends GenericDao<ItMutasiEntity, String> {
             }else{
                 mutasi.setBranchLamaId("");
             }
+            mutasi.setLevelBaruName(rows[13].toString());
             listOfResult.add(mutasi);
         }
 

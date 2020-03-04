@@ -18,6 +18,8 @@ public class ImPayrollDanaPensiunEntity implements Serializable {
     private String danaPensiunId;
     private String danaPensiun;
     private BigDecimal persentase;
+    private BigDecimal persentaseKary;
+    private BigDecimal persentasePers;
 
     private String flag;
     private String action;
@@ -28,6 +30,22 @@ public class ImPayrollDanaPensiunEntity implements Serializable {
 
     private ImGolonganEntity imGolonganEntity;
     private ImBranches imBranches;
+
+    public BigDecimal getPersentaseKary() {
+        return persentaseKary;
+    }
+
+    public void setPersentaseKary(BigDecimal persentaseKary) {
+        this.persentaseKary = persentaseKary;
+    }
+
+    public BigDecimal getPersentasePers() {
+        return persentasePers;
+    }
+
+    public void setPersentasePers(BigDecimal persentasePers) {
+        this.persentasePers = persentasePers;
+    }
 
     public ImBranches getImBranches() {
         return imBranches;

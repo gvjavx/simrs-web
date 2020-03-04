@@ -1,4 +1,4 @@
-package com.neurix.hris.master.payrollSkalaGajiPensiunRni.action;
+package com.neurix.hris.master.payrollSkalaGajiPensiunDplk.action;
 
 //import com.neurix.authorization.company.bo.AreaBo;
 import com.neurix.common.action.BaseMasterAction;
@@ -6,8 +6,6 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.payrollSkalaGajiPensiunDplk.bo.PayrollSkalaGajiPensiunDplkBo;
 import com.neurix.hris.master.payrollSkalaGajiPensiunDplk.model.payrollSkalaGajiPensiunDplk;
-import com.neurix.hris.master.payrollSkalaGajiPensiunRni.bo.PayrollSkalaGajiPensiunRniBo;
-import com.neurix.hris.master.payrollSkalaGajiPensiunRni.model.payrollSkalaGajiPensiunRni;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 
@@ -21,18 +19,16 @@ import java.util.List;
  * Created by Ferdi on 05/02/2015.
  */
 
-public class PayrollSkalaGajiPensiunRniAction extends BaseMasterAction{
-    protected static transient Logger logger = Logger.getLogger(PayrollSkalaGajiPensiunRniAction.class);
-    private PayrollSkalaGajiPensiunRniBo payrollSkalaGajiPensiunRniBoProxy;
-    private payrollSkalaGajiPensiunRni payrollSkalaGajiPensiunRni;
+public class PayrollSkalaGajiPensiunDplkAction extends BaseMasterAction{
+    protected static transient Logger logger = Logger.getLogger(PayrollSkalaGajiPensiunDplkAction.class);
     private PayrollSkalaGajiPensiunDplkBo payrollSkalaGajiPensiunDplkBoProxy;
-    private com.neurix.hris.master.payrollSkalaGajiPensiunDplk.model.payrollSkalaGajiPensiunDplk payrollSkalaGajiPensiunDplk;
+    private payrollSkalaGajiPensiunDplk payrollSkalaGajiPensiunDplk;
 
-    public com.neurix.hris.master.payrollSkalaGajiPensiunDplk.model.payrollSkalaGajiPensiunDplk getPayrollSkalaGajiPensiunDplk() {
+    public payrollSkalaGajiPensiunDplk getPayrollSkalaGajiPensiunDplk() {
         return payrollSkalaGajiPensiunDplk;
     }
 
-    public void setPayrollSkalaGajiPensiunDplk(com.neurix.hris.master.payrollSkalaGajiPensiunDplk.model.payrollSkalaGajiPensiunDplk payrollSkalaGajiPensiunDplk) {
+    public void setPayrollSkalaGajiPensiunDplk(payrollSkalaGajiPensiunDplk payrollSkalaGajiPensiunDplk) {
         this.payrollSkalaGajiPensiunDplk = payrollSkalaGajiPensiunDplk;
     }
 
@@ -44,78 +40,62 @@ public class PayrollSkalaGajiPensiunRniAction extends BaseMasterAction{
         this.payrollSkalaGajiPensiunDplkBoProxy = payrollSkalaGajiPensiunDplkBoProxy;
     }
 
-    public com.neurix.hris.master.payrollSkalaGajiPensiunRni.model.payrollSkalaGajiPensiunRni getPayrollSkalaGajiPensiunRni() {
-        return payrollSkalaGajiPensiunRni;
-    }
+    private List<payrollSkalaGajiPensiunDplk> listComboPayrollSkalaGajiPensiun = new ArrayList<payrollSkalaGajiPensiunDplk>();
 
-    public void setPayrollSkalaGajiPensiunRni(com.neurix.hris.master.payrollSkalaGajiPensiunRni.model.payrollSkalaGajiPensiunRni payrollSkalaGajiPensiunRni) {
-        this.payrollSkalaGajiPensiunRni = payrollSkalaGajiPensiunRni;
-    }
-
-    public PayrollSkalaGajiPensiunRniBo getPayrollSkalaGajiPensiunRniBoProxy() {
-        return payrollSkalaGajiPensiunRniBoProxy;
-    }
-
-    public void setPayrollSkalaGajiPensiunRniBoProxy(PayrollSkalaGajiPensiunRniBo payrollSkalaGajiPensiunRniBoProxy) {
-        this.payrollSkalaGajiPensiunRniBoProxy = payrollSkalaGajiPensiunRniBoProxy;
-    }
-
-    private List<payrollSkalaGajiPensiunRni> listComboPayrollSkalaGajiPensiun = new ArrayList<payrollSkalaGajiPensiunRni>();
-
-    public List<payrollSkalaGajiPensiunRni> getListComboPayrollSkalaGajiPensiun() {
+    public List<payrollSkalaGajiPensiunDplk> getListComboPayrollSkalaGajiPensiun() {
         return listComboPayrollSkalaGajiPensiun;
     }
 
-    public void setListComboPayrollSkalaGajiPensiun(List<payrollSkalaGajiPensiunRni> listComboPayrollSkalaGajiPensiun) {
+    public void setListComboPayrollSkalaGajiPensiun(List<payrollSkalaGajiPensiunDplk> listComboPayrollSkalaGajiPensiun) {
         this.listComboPayrollSkalaGajiPensiun = listComboPayrollSkalaGajiPensiun;
     }
 
-    private List<payrollSkalaGajiPensiunRni> initComboPayrollSkalaGajiPensiun;
+    private List<payrollSkalaGajiPensiunDplk> initComboPayrollSkalaGajiPensiun;
 
     public static Logger getLogger() {
         return logger;
     }
 
     public static void setLogger(Logger logger) {
-        PayrollSkalaGajiPensiunRniAction.logger = logger;
+        PayrollSkalaGajiPensiunDplkAction.logger = logger;
     }
 
 
-    public List<payrollSkalaGajiPensiunRni> getInitComboPayrollSkalaGajiPensiun() {
+    public List<payrollSkalaGajiPensiunDplk> getInitComboPayrollSkalaGajiPensiun() {
         return initComboPayrollSkalaGajiPensiun;
     }
 
-    public void setInitComboPayrollSkalaGajiPensiun(List<payrollSkalaGajiPensiunRni> initComboPayrollSkalaGajiPensiun) {
+    public void setInitComboPayrollSkalaGajiPensiun(List<payrollSkalaGajiPensiunDplk> initComboPayrollSkalaGajiPensiun) {
         this.initComboPayrollSkalaGajiPensiun = initComboPayrollSkalaGajiPensiun;
     }
 
-    public payrollSkalaGajiPensiunRni init(String kode, String flag){
+    public payrollSkalaGajiPensiunDplk init(String kode, String flag){
         logger.info("[PayrollSkalaGajiPensiunAction.init] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
-        List<payrollSkalaGajiPensiunRni> listOfResult = (List<payrollSkalaGajiPensiunRni>) session.getAttribute("listOfResult");
+        List<payrollSkalaGajiPensiunDplk> listOfResult = (List<payrollSkalaGajiPensiunDplk>) session.getAttribute("listOfResult");
 
         if(kode != null && !"".equalsIgnoreCase(kode)){
             if(listOfResult != null){
-                for (payrollSkalaGajiPensiunRni payrollSkalaGajiPensiun: listOfResult) {
+                for (payrollSkalaGajiPensiunDplk payrollSkalaGajiPensiun: listOfResult) {
                     if(kode.equalsIgnoreCase(payrollSkalaGajiPensiun.getSkalaGajiPensiunId()) && flag.equalsIgnoreCase(payrollSkalaGajiPensiun.getFlag())){
-                        setPayrollSkalaGajiPensiunRni(payrollSkalaGajiPensiun);
+                        setPayrollSkalaGajiPensiunDplk(payrollSkalaGajiPensiun);
                         break;
                     }
                 }
             } else {
-                setPayrollSkalaGajiPensiunRni(new payrollSkalaGajiPensiunRni());
+                setPayrollSkalaGajiPensiunDplk(new payrollSkalaGajiPensiunDplk());
             }
 
             logger.info("[PayrollSkalaGajiPensiunAction.init] end process >>>");
         }
-        return getPayrollSkalaGajiPensiunRni();
+        return getPayrollSkalaGajiPensiunDplk();
     }
 
     @Override
     public String add() {
         logger.info("[PayrollSkalaGajiPensiunAction.add] start process >>>");
-        payrollSkalaGajiPensiunRni addPayrollSkalaGajiPensiun = new payrollSkalaGajiPensiunRni();
-        setPayrollSkalaGajiPensiunRni(addPayrollSkalaGajiPensiun);
+        payrollSkalaGajiPensiunDplk addPayrollSkalaGajiPensiun = new payrollSkalaGajiPensiunDplk();
+        setPayrollSkalaGajiPensiunDplk(addPayrollSkalaGajiPensiun);
         setAddOrEdit(true);
         setAdd(true);
 
@@ -132,7 +112,7 @@ public class PayrollSkalaGajiPensiunRniAction extends BaseMasterAction{
         String itemId = getId();
         String itemFlag = getFlag();
 
-        payrollSkalaGajiPensiunRni editPayrollSkalaGajiPensiun = new payrollSkalaGajiPensiunRni();
+        payrollSkalaGajiPensiunDplk editPayrollSkalaGajiPensiun = new payrollSkalaGajiPensiunDplk();
 
         if(itemFlag != null){
             try {
@@ -140,7 +120,7 @@ public class PayrollSkalaGajiPensiunRniAction extends BaseMasterAction{
             } catch (GeneralBOException e) {
                 Long logId = null;
                 try {
-                    logId = payrollSkalaGajiPensiunRniBoProxy.saveErrorMessage(e.getMessage(), "PayrollSkalaGajiPensiunBO.getPayrollSkalaGajiPensiunByCriteria");
+                    logId = payrollSkalaGajiPensiunDplkBoProxy.saveErrorMessage(e.getMessage(), "PayrollSkalaGajiPensiunBO.getPayrollSkalaGajiPensiunByCriteria");
                 } catch (GeneralBOException e1) {
                     logger.error("[PayrollSkalaGajiPensiunAction.edit] Error when retrieving edit data,", e1);
                 }
@@ -150,16 +130,16 @@ public class PayrollSkalaGajiPensiunRniAction extends BaseMasterAction{
             }
 
             if(editPayrollSkalaGajiPensiun != null) {
-                setPayrollSkalaGajiPensiunRni(editPayrollSkalaGajiPensiun);
+                setPayrollSkalaGajiPensiunDplk(editPayrollSkalaGajiPensiun);
             } else {
                 editPayrollSkalaGajiPensiun.setFlag(itemFlag);
-                setPayrollSkalaGajiPensiunRni(editPayrollSkalaGajiPensiun);
+                setPayrollSkalaGajiPensiunDplk(editPayrollSkalaGajiPensiun);
                 addActionError("Error, Unable to find data with id = " + itemId);
                 return "failure";
             }
         } else {
             editPayrollSkalaGajiPensiun.setFlag(getFlag());
-            setPayrollSkalaGajiPensiunRni(editPayrollSkalaGajiPensiun);
+            setPayrollSkalaGajiPensiunDplk(editPayrollSkalaGajiPensiun);
             addActionError("Error, Unable to edit again with flag = N.");
             return "failure";
         }
@@ -175,7 +155,7 @@ public class PayrollSkalaGajiPensiunRniAction extends BaseMasterAction{
 
         String itemId = getId();
         String itemFlag = getFlag();
-        payrollSkalaGajiPensiunRni deletePayrollSkalaGajiPensiun = new payrollSkalaGajiPensiunRni();
+        payrollSkalaGajiPensiunDplk deletePayrollSkalaGajiPensiun = new payrollSkalaGajiPensiunDplk();
 
         if (itemFlag != null ) {
 
@@ -184,7 +164,7 @@ public class PayrollSkalaGajiPensiunRniAction extends BaseMasterAction{
             } catch (GeneralBOException e) {
                 Long logId = null;
                 try {
-                    logId = payrollSkalaGajiPensiunRniBoProxy.saveErrorMessage(e.getMessage(), "PayrollSkalaGajiPensiunBO.getAlatById");
+                    logId = payrollSkalaGajiPensiunDplkBoProxy.saveErrorMessage(e.getMessage(), "PayrollSkalaGajiPensiunBO.getAlatById");
                 } catch (GeneralBOException e1) {
                     logger.error("[PayrollSkalaGajiPensiunAction.delete] Error when retrieving delete data,", e1);
                 }
@@ -194,17 +174,17 @@ public class PayrollSkalaGajiPensiunRniAction extends BaseMasterAction{
             }
 
             if (deletePayrollSkalaGajiPensiun != null) {
-                setPayrollSkalaGajiPensiunRni(deletePayrollSkalaGajiPensiun);
+                setPayrollSkalaGajiPensiunDplk(deletePayrollSkalaGajiPensiun);
 
             } else {
                 deletePayrollSkalaGajiPensiun.setFlag(itemFlag);
-                setPayrollSkalaGajiPensiunRni(deletePayrollSkalaGajiPensiun);
+                setPayrollSkalaGajiPensiunDplk(deletePayrollSkalaGajiPensiun);
                 addActionError("Error, Unable to find data with id = " + itemId);
                 return "failure";
             }
         } else {
             deletePayrollSkalaGajiPensiun.setFlag(itemFlag);
-            setPayrollSkalaGajiPensiunRni(deletePayrollSkalaGajiPensiun);
+            setPayrollSkalaGajiPensiunDplk(deletePayrollSkalaGajiPensiun);
             addActionError("Error, Unable to delete again with flag = N.");
             return "failure";
         }
@@ -228,7 +208,7 @@ public class PayrollSkalaGajiPensiunRniAction extends BaseMasterAction{
         logger.info("[PayrollSkalaGajiPensiunAction.saveEdit] start process >>>");
         try {
 
-            payrollSkalaGajiPensiunRni editPayrollSkalaGajiPensiun = getPayrollSkalaGajiPensiunRni();
+            payrollSkalaGajiPensiunDplk editPayrollSkalaGajiPensiun = getPayrollSkalaGajiPensiunDplk();
 
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
@@ -238,11 +218,11 @@ public class PayrollSkalaGajiPensiunRniAction extends BaseMasterAction{
             editPayrollSkalaGajiPensiun.setAction("U");
             editPayrollSkalaGajiPensiun.setFlag("Y");
 
-            payrollSkalaGajiPensiunRniBoProxy.saveEdit(editPayrollSkalaGajiPensiun);
+            payrollSkalaGajiPensiunDplkBoProxy.saveEdit(editPayrollSkalaGajiPensiun);
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
-                logId = payrollSkalaGajiPensiunRniBoProxy.saveErrorMessage(e.getMessage(), "PayrollSkalaGajiPensiunBO.saveEdit");
+                logId = payrollSkalaGajiPensiunDplkBoProxy.saveErrorMessage(e.getMessage(), "PayrollSkalaGajiPensiunBO.saveEdit");
             } catch (GeneralBOException e1) {
                 logger.error("[PayrollSkalaGajiPensiunAction.saveEdit] Error when saving error,", e1);
                 return ERROR;
@@ -261,7 +241,7 @@ public class PayrollSkalaGajiPensiunRniAction extends BaseMasterAction{
         logger.info("[PayrollSkalaGajiPensiunAction.saveDelete] start process >>>");
         try {
 
-            payrollSkalaGajiPensiunRni deletePayrollSkalaGajiPensiun = getPayrollSkalaGajiPensiunRni();
+            payrollSkalaGajiPensiunDplk deletePayrollSkalaGajiPensiun = getPayrollSkalaGajiPensiunDplk();
 
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
@@ -271,11 +251,11 @@ public class PayrollSkalaGajiPensiunRniAction extends BaseMasterAction{
             deletePayrollSkalaGajiPensiun.setAction("D");
             deletePayrollSkalaGajiPensiun.setFlag("N");
 
-            payrollSkalaGajiPensiunRniBoProxy.saveDelete(deletePayrollSkalaGajiPensiun);
+            payrollSkalaGajiPensiunDplkBoProxy.saveDelete(deletePayrollSkalaGajiPensiun);
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
-                logId = payrollSkalaGajiPensiunRniBoProxy.saveErrorMessage(e.getMessage(), "PayrollSkalaGajiPensiunBO.saveDelete");
+                logId = payrollSkalaGajiPensiunDplkBoProxy.saveErrorMessage(e.getMessage(), "PayrollSkalaGajiPensiunBO.saveDelete");
             } catch (GeneralBOException e1) {
                 logger.error("[PayrollSkalaGajiPensiunAction.saveDelete] Error when saving error,", e1);
                 return ERROR;
@@ -294,7 +274,7 @@ public class PayrollSkalaGajiPensiunRniAction extends BaseMasterAction{
         logger.info("[PayrollSkalaGajiPensiunAction.saveAdd] start process >>>");
 
         try {
-            payrollSkalaGajiPensiunRni payrollSkalaGajiPensiun = getPayrollSkalaGajiPensiunRni();
+            payrollSkalaGajiPensiunDplk payrollSkalaGajiPensiun = getPayrollSkalaGajiPensiunDplk();
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
@@ -306,11 +286,11 @@ public class PayrollSkalaGajiPensiunRniAction extends BaseMasterAction{
             payrollSkalaGajiPensiun.setAction("C");
             payrollSkalaGajiPensiun.setFlag("Y");
 
-            payrollSkalaGajiPensiunRniBoProxy.saveAdd(payrollSkalaGajiPensiun);
+            payrollSkalaGajiPensiunDplkBoProxy.saveAdd(payrollSkalaGajiPensiun);
         }catch (GeneralBOException e) {
             Long logId = null;
             try {
-                logId = payrollSkalaGajiPensiunRniBoProxy.saveErrorMessage(e.getMessage(), "liburBO.saveAdd");
+                logId = payrollSkalaGajiPensiunDplkBoProxy.saveErrorMessage(e.getMessage(), "liburBO.saveAdd");
             } catch (GeneralBOException e1) {
                 logger.error("[liburAction.saveAdd] Error when saving error,", e1);
                 return ERROR;
@@ -332,15 +312,15 @@ public class PayrollSkalaGajiPensiunRniAction extends BaseMasterAction{
     public String search() {
         logger.info("[PayrollSkalaGajiPensiunAction.search] start process >>>");
 
-        payrollSkalaGajiPensiunRni searchPayrollSkalaGajiPensiun = getPayrollSkalaGajiPensiunRni();
-        List<payrollSkalaGajiPensiunRni> listOfsearchPayrollSkalaGajiPensiun = new ArrayList();
+        payrollSkalaGajiPensiunDplk searchPayrollSkalaGajiPensiun = getPayrollSkalaGajiPensiunDplk();
+        List<payrollSkalaGajiPensiunDplk> listOfsearchPayrollSkalaGajiPensiun = new ArrayList();
 
         try {
-            listOfsearchPayrollSkalaGajiPensiun = payrollSkalaGajiPensiunRniBoProxy.getByCriteria(searchPayrollSkalaGajiPensiun);
+            listOfsearchPayrollSkalaGajiPensiun = payrollSkalaGajiPensiunDplkBoProxy.getByCriteria(searchPayrollSkalaGajiPensiun);
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
-                logId = payrollSkalaGajiPensiunRniBoProxy.saveErrorMessage(e.getMessage(), "PayrollSkalaGajiPensiunBO.getByCriteria");
+                logId = payrollSkalaGajiPensiunDplkBoProxy.saveErrorMessage(e.getMessage(), "PayrollSkalaGajiPensiunBO.getByCriteria");
             } catch (GeneralBOException e1) {
                 logger.error("[PayrollSkalaGajiPensiunAction.search] Error when saving error,", e1);
                 return ERROR;
@@ -363,16 +343,16 @@ public class PayrollSkalaGajiPensiunRniAction extends BaseMasterAction{
     public String searchPayrollSkalaGajiPensiun() {
         logger.info("[PayrollSkalaGajiPensiunAction.search] start process >>>");
 
-        payrollSkalaGajiPensiunRni searchPayrollSkalaGajiPensiun = new payrollSkalaGajiPensiunRni();
+        payrollSkalaGajiPensiunDplk searchPayrollSkalaGajiPensiun = new payrollSkalaGajiPensiunDplk();
         searchPayrollSkalaGajiPensiun.setFlag("Y");
-        List<payrollSkalaGajiPensiunRni> listOfsearchPayrollSkalaGajiPensiun = new ArrayList();
+        List<payrollSkalaGajiPensiunDplk> listOfsearchPayrollSkalaGajiPensiun = new ArrayList();
 
         try {
-            listOfsearchPayrollSkalaGajiPensiun = payrollSkalaGajiPensiunRniBoProxy.getByCriteria(searchPayrollSkalaGajiPensiun);
+            listOfsearchPayrollSkalaGajiPensiun = payrollSkalaGajiPensiunDplkBoProxy.getByCriteria(searchPayrollSkalaGajiPensiun);
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
-                logId = payrollSkalaGajiPensiunRniBoProxy.saveErrorMessage(e.getMessage(), "PayrollSkalaGajiPensiunBO.getByCriteria");
+                logId = payrollSkalaGajiPensiunDplkBoProxy.saveErrorMessage(e.getMessage(), "PayrollSkalaGajiPensiunBO.getByCriteria");
             } catch (GeneralBOException e1) {
                 logger.error("[PayrollSkalaGajiPensiunAction.search] Error when saving error,", e1);
                 return ERROR;
@@ -398,28 +378,20 @@ public class PayrollSkalaGajiPensiunRniAction extends BaseMasterAction{
         logger.info("[PayrollSkalaGajiPensiunAction.initForm] end process >>>");
         return INPUT;
     }
-    public String initFormDplk() {
-        logger.info("[PayrollSkalaGajiPensiunAction.initForm] start process >>>");
-        HttpSession session = ServletActionContext.getRequest().getSession();
-
-        session.removeAttribute("listOfResult");
-        logger.info("[PayrollSkalaGajiPensiunAction.initForm] end process >>>");
-        return "input_dplk";
-    }
 
     public String initPayrollSkalaGajiPensiun() {
         logger.info("[PayrollSkalaGajiPensiunAction.search] start process >>>");
 
-        payrollSkalaGajiPensiunRni searchPayrollSkalaGajiPensiun = new payrollSkalaGajiPensiunRni();
+        payrollSkalaGajiPensiunDplk searchPayrollSkalaGajiPensiun = new payrollSkalaGajiPensiunDplk();
         searchPayrollSkalaGajiPensiun.setFlag("Y");
-        List<payrollSkalaGajiPensiunRni> listOfsearchPayrollSkalaGajiPensiun = new ArrayList();
+        List<payrollSkalaGajiPensiunDplk> listOfsearchPayrollSkalaGajiPensiun = new ArrayList();
 
         try {
-            listOfsearchPayrollSkalaGajiPensiun = payrollSkalaGajiPensiunRniBoProxy.getByCriteria(searchPayrollSkalaGajiPensiun);
+            listOfsearchPayrollSkalaGajiPensiun = payrollSkalaGajiPensiunDplkBoProxy.getByCriteria(searchPayrollSkalaGajiPensiun);
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
-                logId = payrollSkalaGajiPensiunRniBoProxy.saveErrorMessage(e.getMessage(), "PayrollSkalaGajiPensiunBO.getByCriteria");
+                logId = payrollSkalaGajiPensiunDplkBoProxy.saveErrorMessage(e.getMessage(), "PayrollSkalaGajiPensiunBO.getByCriteria");
             } catch (GeneralBOException e1) {
                 logger.error("[PayrollSkalaGajiPensiunAction.search] Error when saving error,", e1);
                 return ERROR;

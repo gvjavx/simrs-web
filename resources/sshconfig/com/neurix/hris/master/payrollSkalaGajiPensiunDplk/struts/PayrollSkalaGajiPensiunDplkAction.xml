@@ -5,7 +5,7 @@
         "http://struts.apache.org/dtds/struts-2.3.dtd">
 
 <struts>
-    <package name="payrollSkalaGajiPensiunRni" namespace="/payrollSkalaGajiPensiunRni" extends="struts-default, jasperreports-default, json-default">
+    <package name="payrollSkalaGajiPensiunDplk" namespace="/payrollSkalaGajiPensiunDplk" extends="struts-default, jasperreports-default, json-default">
 
         <result-types>
             <result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult" default="false" />
@@ -69,22 +69,21 @@
             <exception-mapping exception="java.lang.RuntimeException" result="global_error" />
         </global-exception-mappings>
 
-        <action name="*_payrollSkalaGajiPensiunRni"
-                class="com.neurix.hris.master.payrollSkalaGajiPensiunRni.action.PayrollSkalaGajiPensiunRniAction" method="{1}">
+        <action name="*_payrollSkalaGajiPensiunDplk"
+                class="com.neurix.hris.master.payrollSkalaGajiPensiunDplk.action.PayrollSkalaGajiPensiunDplkAction" method="{1}">
             <interceptor-ref name="ivelinStack" />
-            <result name="input">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunRni/SearchPayrollSkalaGajiPensiunRni.jsp</result>
-            <result name="input_dplk">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunDplk/SearchPayrollSkalaGajiPensiunDplk.jsp</result>
-            <result name="success">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunRni/SearchPayrollSkalaGajiPensiunRni.jsp</result>
+            <result name="input">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunDplk/SearchPayrollSkalaGajiPensiunDplk.jsp</result>
+            <result name="success">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunDplk/SearchPayrollSkalaGajiPensiunDplk.jsp</result>
 
-            <result name="error">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunRni/addPayrollSkalaGajiPensiunRni.jsp</result>
-            <result name="init_add">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunRni/addPayrollSkalaGajiPensiunRni.jsp</result>
-            <result name="success_save_add">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunRni/addPayrollSkalaGajiPensiunRni.jsp</result>
+            <result name="error">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunDplk/addPayrollSkalaGajiPensiunDplk.jsp</result>
+            <result name="init_add">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunDplk/addPayrollSkalaGajiPensiunDplk.jsp</result>
+            <result name="success_save_add">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunDplk/addPayrollSkalaGajiPensiunDplk.jsp</result>
 
-            <result name="success_save_delete">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunRni/deletePayrollSkalaGajiPensiunRni.jsp</result>
-            <result name="init_delete">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunRni/deletePayrollSkalaGajiPensiunRni.jsp</result>
-            <result name="init_edit">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunRni/editPayrollSkalaGajiPensiunRni.jsp</result>
-            <result name="success_save_edit">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunRni/editPayrollSkalaGajiPensiunRni.jsp</result>
-            <result name="failure">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunRni/editPayrollSkalaGajiPensiunRni.jsp</result>
+            <result name="success_save_delete">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunDplk/deletePayrollSkalaGajiPensiunDplk.jsp</result>
+            <result name="init_delete">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunDplk/deletePayrollSkalaGajiPensiunDplk.jsp</result>
+            <result name="init_edit">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunDplk/editPayrollSkalaGajiPensiunDplk.jsp</result>
+            <result name="success_save_edit">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunDplk/editPayrollSkalaGajiPensiunDplk.jsp</result>
+            <result name="failure">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunDplk/editPayrollSkalaGajiPensiunDplk.jsp</result>
 
 
 
@@ -97,10 +96,10 @@
         </action>
 
 
-        <action name="paging_payrollSkalaGajiPensiunRni"
-                class="com.neurix.hris.master.payrollSkalaGajiPensiunRni.action.PayrollSkalaGajiPensiunRniAction" method="paging">
+        <action name="paging_payrollSkalaGajiPensiunDplk"
+                class="com.neurix.hris.master.payrollSkalaGajiPensiunDplk.action.PayrollSkalaGajiPensiunDplkAction" method="paging">
             <interceptor-ref name="defaultStack"/>
-            <result name="success">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunRni/SearchPayrollSkalaGajiPensiunRni.jsp</result>
+            <result name="success">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunDplk/SearchPayrollSkalaGajiPensiunDplk.jsp</result>
         </action>
 
     </package>

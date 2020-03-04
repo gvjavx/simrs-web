@@ -8,7 +8,7 @@
 <head>
     <script type="text/javascript">
 
-        function callSearch2() {
+        function callSearch() {
             //$('#waiting_dialog').dialog('close');
             $('#view_dialog_menu').dialog('close');
             $('#info_dialog').dialog('close');
@@ -16,12 +16,12 @@
         };
 
         $.subscribe('beforeProcessSave', function (event, data) {
-            var dapen = document.getElementById("danaPensiun1").value;
+            var golonganId = document.getElementById("golonganId1").value;
+            var point = document.getElementById("point1").value;
             var nilai = document.getElementById("nilai1").value;
-            var nilai1 = document.getElementById("nilai11").value;
 
-            if (dapen != '' && nilai != ''&& nilai1 != '' ) {
-                if(isNaN(nilai.replace('.','')) == false && isNaN(nilai1.replace('.','')) == false){
+            if (golonganId != '' && point != '' && nilai != '' ) {
+                if(isNaN(point) ==  false && isNaN(nilai) == false){
                     if (confirm('Do you want to save this record?')) {
                         event.originalEvent.options.submit = true;
                         $.publish('showDialog');
@@ -32,10 +32,11 @@
                 }else{
                     event.originalEvent.options.submit = false;
                     var msg = "";
-                    if (isNaN(nilai.replace('.',''))) {
-                        msg += 'Field <strong>Persentase Karyawan</strong> Harus angka tanpa koma.' + '<br/>';
+                    if (isNaN(point)) {
+                        msg += 'Field <strong>point</strong> Harus angka tanpa koma.' + '<br/>';
                     }
-                    if (isNaN(nilai1.replace('.',''))) {
+
+                    if (isNaN(nilai)) {
                         msg += 'Field <strong>nilai</strong> Harus angka tanpa koma.' + '<br/>';
                     }
 
@@ -46,8 +47,12 @@
             } else {
                 event.originalEvent.options.submit = false;
                 var msg = "";
-                if (dapen == '') {
-                    msg += 'Field <strong>Nama</strong> is required.' + '<br/>';
+                if (golonganId == '') {
+                    msg += 'Field <strong>Golongan </strong> is required.' + '<br/>';
+                }
+
+                if (point == '') {
+                    msg += 'Field <strong>Point</strong> is required.' + '<br/>';
                 }
 
                 if (nilai == '') {
@@ -88,14 +93,14 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="addPayrollDanaPensiunForm" method="post" theme="simple" namespace="/payrollDanaPensiun" action="saveAdd_payrollDanaPensiun" cssClass="well form-horizontal">
+            <s:form id="formEdit" method="post" theme="simple" namespace="/payrollSkalaGajiPensiunRni" action="saveEdit_payrollSkalaGajiPensiunRni" cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
 
 
 
-                <legend align="left">Add Dana Pensiun</legend>
+                <legend align="left">Edit Dana Pensiun</legend>
 
 
                 <table>
@@ -105,37 +110,52 @@
                         </td>
                     </tr>
                 </table>
-                
+
                 <table >
-                    
                     <tr>
                         <td>
-                            <label class="control-label"><small>Nama Dapen :</small></label>
+                            <label class="control-label"><small>Id :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="danaPensiun1" name="payrollDanaPensiun.danaPensiun" required="true" cssClass="form-control"/>
+                                <s:textfield  id="skalaGajiId1" readonly="true" name="payrollSkalaGajiPensiunRni.skalaGajiPensiunId" required="true"  cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
 
                     <tr>
                         <td>
-                            <label class="control-label"><small>Persentase Karyawan :</small></label>
+                            <label class="control-label"><small>Golongan :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="nilai1" name="payrollDanaPensiun.stPersentaseKary" required="true" cssClass="form-control"/>
+                                <%--<s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>
+                                <s:select list="#initComboTipe.listComboGolongan" id="golonganId1" name="payrollSkalaGajiPensiunRni.golonganId" disabled="true"
+                                          listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
+                                <s:textfield  id="golonganId1" name="payrollSkalaGajiPensiunRni.golonganName" readonly="true" required="true"  cssClass="form-control"/>
+
                             </table>
                         </td>
                     </tr>
+
                     <tr>
                         <td>
-                            <label class="control-label"><small>Persentase Perusahaan :</small></label>
+                            <label class="control-label"><small>Masa Kerja :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="nilai11" name="payrollDanaPensiun.stPersentasePers" required="true" cssClass="form-control"/>
+                                <s:textfield  id="point1" name="payrollSkalaGajiPensiunRni.poin" required="true"  cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Nilai :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield  id="nilai1" name="payrollSkalaGajiPensiunRni.nilai" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -148,7 +168,7 @@
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                             <%--<button type="submit" class="btn btn-default">Submit</button>--%>
-                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="addPayrollDanaPensiunForm" id="save" name="save"
+                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="formEdit" id="save" name="save"
                                    onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
                                    onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
                             <i class="fa fa-check"></i>
@@ -184,8 +204,7 @@
                                                    buttons="{
                                                               'OK':function() {
                                                                     //$(this).dialog('close');
-                                                                      callSearch2();
-                                                                      link();
+                                                                      callSearch();
                                                                    }
                                                             }"
                                         >
@@ -232,4 +251,3 @@
 </table>
 </body>
 </html>
-

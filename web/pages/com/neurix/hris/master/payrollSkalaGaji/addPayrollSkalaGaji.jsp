@@ -6,9 +6,9 @@
 
 <html>
 <head>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/PayrollSkalaGajiAction.js"/>'></script>
     <script type="text/javascript">
-
-        function callSearch2() {
+    function callSearch2() {
             //$('#waiting_dialog').dialog('close');
             $('#view_dialog_menu').dialog('close');
             $('#info_dialog').dialog('close');
@@ -21,13 +21,21 @@
 
             if (golonganId != ''&& nilai != '' ) {
                 if(isNaN(nilai) == false){
-                    if (confirm('Do you want to save this record?')) {
-                        event.originalEvent.options.submit = true;
-                        $.publish('showDialog');
-                    } else {
-                        // Cancel Submit comes with 1.8.0
-                        event.originalEvent.options.submit = false;
-                    }
+                    /*PayrollSkalaGajiAction.cekIfExistDwr(golonganId, function(data){
+                        if(data != 'exist'){*/
+                            if (confirm('Do you want to save this record?')) {
+                                event.originalEvent.options.submit = true;
+                                $.publish('showDialog');
+                            } else {
+                                // Cancel Submit comes with 1.8.0
+                                event.originalEvent.options.submit = false;
+                            }
+                        /*}else{
+                            document.getElementById('errorValidationMessage').innerHTML = 'Data Sudah Ada';
+                            $.publish('showErrorValidationDialog');
+                            event.originalEvent.options.submit = false;
+                        }
+                    });*/
                 }else{
                     event.originalEvent.options.submit = false;
                     var msg = "";

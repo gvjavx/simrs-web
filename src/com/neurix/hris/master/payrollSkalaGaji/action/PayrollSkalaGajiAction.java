@@ -8,6 +8,8 @@ import com.neurix.hris.master.payrollSkalaGaji.bo.PayrollSkalaGajiBo;
 import com.neurix.hris.master.payrollSkalaGaji.model.PayrollSkalaGaji;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
@@ -206,6 +208,15 @@ public class PayrollSkalaGajiAction extends BaseMasterAction{
     @Override
     public String save() {
         return null;
+    }
+
+    public String cekIfExistDwr(String golonganId){
+        String status = "";
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PayrollSkalaGajiBo skalaGajiBo = (PayrollSkalaGajiBo) ctx.getBean("payrollSkalaGajiBo");
+        status = skalaGajiBo.cekStatus(golonganId);
+        return status;
+
     }
 
     public String saveEdit(){

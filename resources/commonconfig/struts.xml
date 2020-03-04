@@ -119,6 +119,8 @@
     <include file="sshconfig/com/neurix/hris/master/payrollSkalaGaji/struts/PayrollSkalaGajiAction.xml"/>
     <include file="sshconfig/com/neurix/hris/master/payrollSkalaGajiPkwt/struts/PayrollSkalaGajiPkwtAction.xml"/>
     <include file="sshconfig/com/neurix/hris/master/payrollSkalaGajiPensiun/struts/PayrollSkalaGajiPensiunAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/payrollSkalaGajiPensiunDplk/struts/PayrollSkalaGajiPensiunDplkAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/payrollSkalaGajiPensiunRni/struts/PayrollSkalaGajiPensiunRniAction.xml"/>
     <include file="sshconfig/com/neurix/hris/master/branchTunjangan/struts/BranchTunjanganAction.xml"/>
     <include file="sshconfig/com/neurix/hris/master/payrollBajuDinas/struts/PayrollBajuDinasAction.xml"/>
     <include file="sshconfig/com/neurix/hris/master/payrollAirListrik/struts/PayrollAirListrikAction.xml"/>

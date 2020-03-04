@@ -404,6 +404,12 @@
       <convert converter="bean" match="com.neurix.simrs.transaksi.permintaanvendor.model.PermintaanVendor"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse"/>
 
+      <!--Master Hcm-->
+      <create creator="new">
+          <param name="class" value="com.neurix.hris.master.payrollSkalaGaji.action.PayrollSkalaGajiAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.hris.master.payrollSkalaGaji.model.PayrollSkalaGaji"/>
+
   </allow>
 
 </dwr>

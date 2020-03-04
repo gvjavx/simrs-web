@@ -99,7 +99,7 @@
                                 </td>
                             </tr>
 
-                            <tr>
+                            <%--<tr>
                                 <td>
                                     <label class="control-label"><small>Tahun :</small></label>
                                 </td>
@@ -109,7 +109,7 @@
                                                   headerKey="" headerValue="[Select one]" cssClass="form-control" />
                                     </table>
                                 </td>
-                            </tr>
+                            </tr>--%>
 
 
                             <tr>
@@ -165,7 +165,7 @@
                                 <tr>
                                     <td align="center">
                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
-                                                   height="400" width="550" autoOpen="false"
+                                                   height="500" width="550" autoOpen="false"
                                                    title="Payroll Skala Gaji ">
                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                         </sj:dialog>

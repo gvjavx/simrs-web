@@ -17,10 +17,9 @@
 
         $.subscribe('beforeProcessSave', function (event, data) {
             var golonganId = document.getElementById("golonganId1").value;
-            var point = document.getElementById("point1").value;
             var nilai = document.getElementById("nilai1").value;
 
-            if (golonganId != '' && point != '' && nilai != '' ) {
+            if (golonganId != ''&& nilai != '' ) {
                 if(isNaN(nilai) == false){
                     if (confirm('Do you want to save this record?')) {
                         event.originalEvent.options.submit = true;
@@ -32,10 +31,6 @@
                 }else{
                     event.originalEvent.options.submit = false;
                     var msg = "";
-                    /*if (isNaN(point)) {
-                        msg += 'Field <strong>point</strong> Harus angka tanpa koma.' + '<br/>';
-                    }*/
-
                     if (isNaN(nilai)) {
                         msg += 'Field <strong>Gaji Level</strong> Harus angka tanpa koma.' + '<br/>';
                     }
@@ -127,11 +122,13 @@
                         <td>
                             <table>
                                 <s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>
-                                <s:select list="#initComboTipe.listComboGolongan" id="golonganId1" name="payrollSkalaGaji.golonganId"
+                                <s:select list="#initComboTipe.listComboGolongan" id="golonganId1" name="payrollSkalaGaji.golonganId" disabled="true"
                                           listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                 <%--<s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>--%>
                                 <%--<s:select list="#initComboTipe.listComboGolongan" id="golonganId1" name="payrollSkalaGaji.golonganId"--%>
                                           <%--listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
+                                <s:textfield type="number" min="0" id="golonganId12" name="payrollSkalaGaji.golonganId" required="true" cssClass="form-control" cssStyle="display: none"/>
+
                             </table>
                         </td>
                     </tr>

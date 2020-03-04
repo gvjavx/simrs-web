@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="newReportMutasi" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8e506c74-d8ab-4e72-b68c-624eb5e52f8b">
-	<property name="ireport.zoom" value="1.771561000000001"/>
+	<property name="ireport.zoom" value="1.610510000000001"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="96"/>
+	<property name="ireport.y" value="629"/>
 	<parameter name="reportParams.branchName" class="java.lang.String"/>
 	<parameter name="reportParams.titleReport" class="java.lang.String"/>
 	<parameter name="reportParams.urlLogo" class="java.lang.String"/>
@@ -11,6 +11,10 @@
 	<parameter name="reportParams.unitLama" class="java.lang.String"/>
 	<parameter name="reportParams.kota" class="java.lang.String"/>
 	<parameter name="reportParams.branchLamaName" class="java.lang.String"/>
+	<parameter name="reportParams.tanggalSk" class="java.lang.String"/>
+	<parameter name="reportParams.unitBaru" class="java.lang.String"/>
+	<parameter name="reportParams.jabatanBaru" class="java.lang.String"/>
+	<parameter name="reportParams.levelBaru" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select * from it_hris_mutasi_jabatan limit 1]]>
 	</queryString>
@@ -77,7 +81,7 @@ new com.google.zxing.qrcode.QRCodeWriter().encode($F{nip},com.google.zxing.Barco
 		</band>
 	</pageHeader>
 	<detail>
-		<band height="500" splitType="Stretch">
+		<band height="600" splitType="Stretch">
 			<staticText>
 				<reportElement x="2" y="0" width="72" height="17" uuid="3ae5bca9-30cb-4779-8025-6b9866d9f5ca"/>
 				<textElement>
@@ -162,9 +166,192 @@ new com.google.zxing.qrcode.QRCodeWriter().encode($F{nip},com.google.zxing.Barco
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.unitLama}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="2" y="185" width="553" height="17" uuid="f672101b-0b10-4d05-901c-c3781c9ccdce"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Direksi PT. Nusantara Medika Utama dengan ini menetapkan bahwa terhitung mulai Tanggal:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="2" y="202" width="553" height="17" uuid="1354f46e-ee09-4b7b-bc87-fedc4e2b3be4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.tanggalSk}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="2" y="241" width="553" height="17" uuid="742717c8-40bd-4d1d-83d3-4cc0adee4df8"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Saudara dipindahkan:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="51" y="274" width="84" height="17" uuid="d48c059b-3c69-49b6-9b69-cb9b5ac36a26"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- Dari]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="51" y="291" width="84" height="17" uuid="4e2a3fdc-10d3-46c0-892c-551ec582b3f7"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- Ke]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="135" y="274" width="11" height="17" uuid="5d70c95e-8d36-4371-a4b8-5d8465ac4c65"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="135" y="291" width="11" height="17" uuid="2c890e34-1ecd-410c-8866-34e1b326f486"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="146" y="274" width="177" height="17" uuid="44f6a9f7-cac6-4a1f-af03-da4225e13629"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.unitLama}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="146" y="291" width="177" height="17" uuid="18ca4523-4a7e-4bef-a102-f6c6bb0a1dcd"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.unitBaru}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="2" y="326" width="553" height="17" uuid="fcf0a61e-ce8f-4072-a9da-8f3fdcb24ed6"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[dengan:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="51" y="364" width="84" height="17" uuid="470f9a31-15ba-4101-ad3c-bbbb636342aa"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- Jabatan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="51" y="381" width="84" height="17" uuid="fa876255-96a7-4c00-9dd7-81112a3a6e50"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[(Baru/tetap)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="51" y="398" width="84" height="17" uuid="70b37129-9416-4831-bd9a-d67e3d4e6875"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- Level]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="51" y="415" width="84" height="17" uuid="7775f0c5-6f7c-4a0d-a4cf-17cd14365c5d"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[(Baru/tetap)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="51" y="432" width="84" height="17" uuid="c1f927f5-e7b0-42f1-9eec-fe66e31df858"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- Gaji Pokok]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="51" y="449" width="84" height="17" uuid="f52ecabf-9fd4-4126-a933-f0a79716c57f"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[(Baru/tetap)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="135" y="364" width="11" height="17" uuid="9a642178-3ca9-467d-9459-7b6737799741"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="135" y="398" width="11" height="17" uuid="4617120b-2212-4b93-89ac-23a75623b4fa"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="135" y="432" width="11" height="17" uuid="a03d1306-1fa0-4fa9-91d9-6a5f1ba6b8f5"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="489" width="552" height="71" uuid="f666fb4c-f0cc-460b-a074-c611947bb07e"/>
+				<textElement textAlignment="Justified">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Segala sesuatunya akan dirubah dan diatur kembali sebagaimana mestinya, apabila dikemudian hari ternyata terdapat kekeliruan dan/ atau kekhilafan dalam penetapan ini.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="323" y="560" width="207" height="17" uuid="9b4a6c79-9e8c-49f9-89ef-f04024ec029e"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[PT. NUSANTARA MEDIKA UTAMA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="323" y="577" width="207" height="17" uuid="bf6c2a4c-9b16-4629-9001-adb037753d64"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[DIREKSI]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="148" y="364" width="177" height="17" uuid="f56cb7d7-1bdb-43be-bc2b-62882590b6e0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.jabatanBaru}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="148" y="398" width="177" height="17" uuid="034102db-cfb0-42a0-9b3d-519ee3d959dc"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.levelBaru}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="54" splitType="Stretch"/>
+		<band height="54" splitType="Stretch">
+			<staticText>
+				<reportElement x="2" y="20" width="207" height="17" uuid="def8744b-0ac8-4314-965d-89bb466245b5"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Tindasan untuk:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="7" y="37" width="548" height="17" uuid="d146edca-8001-4cbb-9f80-06ffcb8fa0aa"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["-/- Kepala Rumah Sakit "+$P{reportParams.unitLama}]]></textFieldExpression>
+			</textField>
+		</band>
 	</pageFooter>
 </jasperReport>

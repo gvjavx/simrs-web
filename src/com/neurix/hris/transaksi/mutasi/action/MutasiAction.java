@@ -443,6 +443,9 @@ public class MutasiAction extends BaseMasterAction{
             reportParams.put("namaPegawai", searchMutasi.getNama());
             reportParams.put("jabatanLama", searchMutasi.getPositionLamaName());
             reportParams.put("unitLama", searchMutasi.getBranchLamaName());
+            reportParams.put("jabatanBaru", searchMutasi.getPositionBaruName());
+            reportParams.put("unitBaru", searchMutasi.getBranchBaruName());
+            reportParams.put("levelBaru", searchMutasi.getLevelBaruName());
 
             try {
                 preDownload();

@@ -110,7 +110,6 @@ public class PayrollSkalaGajiBoImpl implements PayrollSkalaGajiBo {
 
             if (imPayrollSkalaGajiEntity != null) {
                 imPayrollSkalaGajiEntity.setSkalaGajiId(bean.getSkalaGajiId());
-                imPayrollSkalaGajiEntity.setGolonganId(bean.getGolonganId());
                 imPayrollSkalaGajiEntity.setNilai(bean.getNilai());
                 imPayrollSkalaGajiEntity.setSantunanKhusus(bean.getSantunanKhusus());
                 imPayrollSkalaGajiEntity.setRumah(bean.getRumah());
@@ -187,6 +186,9 @@ public class PayrollSkalaGajiBoImpl implements PayrollSkalaGajiBo {
             }else{
                 imPayrollSkalaGajiEntity.setBbm(bean.getBbm());
             }
+            imPayrollSkalaGajiEntity.setTotal(imPayrollSkalaGajiEntity.getNilai().add(imPayrollSkalaGajiEntity.getSantunanKhusus())
+                    .add(imPayrollSkalaGajiEntity.getRumah()).add(imPayrollSkalaGajiEntity.getListrik())
+                    .add(imPayrollSkalaGajiEntity.getAir()).add(imPayrollSkalaGajiEntity.getBbm()));
             imPayrollSkalaGajiEntity.setFlag(bean.getFlag());
             imPayrollSkalaGajiEntity.setAction(bean.getAction());
             imPayrollSkalaGajiEntity.setCreatedWho(bean.getCreatedWho());
@@ -290,4 +292,21 @@ public class PayrollSkalaGajiBoImpl implements PayrollSkalaGajiBo {
     public Long saveErrorMessage(String message, String moduleMethod) throws GeneralBOException {
         return null;
     }
+    public String cekStatus(String golonganId)throws GeneralBOException{
+        String status ="";
+        ImPayrollSkalaGajiEntity skalaGajiEntity = new ImPayrollSkalaGajiEntity();
+        try {
+            skalaGajiEntity = payrollSkalaGajiDao.getById("golonganId", golonganId);
+        } catch (HibernateException e) {
+            logger.error("[PayrollSkalaGajiBoImpl.getSearchPayrollSkalaGajiByCriteria] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        if (skalaGajiEntity!=null){
+            status = "exist";
+        }else{
+            status="notExits";
+        }
+        return status;
+    }
+
 }

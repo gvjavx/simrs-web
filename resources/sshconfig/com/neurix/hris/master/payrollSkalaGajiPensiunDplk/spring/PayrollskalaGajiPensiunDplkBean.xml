@@ -5,14 +5,14 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
-    <bean id="payrollSkalaGajiPensiunRniAction" class="com.neurix.hris.master.payrollSkalaGajiPensiunRni.action.PayrollSkalaGajiPensiunRniAction"
-          p:payrollSkalaGajiPensiunRniBoProxy-ref="payrollSkalaGajiPensiunRniBoProxy" />
+    <bean id="payrollSkalaGajiPensiunDplkAction" class="com.neurix.hris.master.payrollSkalaGajiPensiunDplk.action.PayrollSkalaGajiPensiunDplkAction"
+          p:payrollSkalaGajiPensiunDplkBoProxy-ref="payrollSkalaGajiPensiunDplkBoProxy" />
 
-    <bean id="payrollSkalaGajiPensiunRniBo" class="com.neurix.hris.master.payrollSkalaGajiPensiunRni.bo.impl.PayrollSkalaGajiPensiunRniBoImpl"
-          p:payrollSkalaGajiPensiunRniDao-ref="payrollSkalaGajiPensiunRniDao" />
+    <bean id="payrollSkalaGajiPensiunDplkBo" class="com.neurix.hris.master.payrollSkalaGajiPensiunDplk.bo.impl.PayrollSkalaGajiPensiunDplkBoImpl"
+          p:payrollSkalaGajiPensiunDplkDao-ref="payrollSkalaGajiPensiunDplkDao" />
 
-    <bean id="payrollSkalaGajiPensiunRniBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
-          p:target-ref="payrollSkalaGajiPensiunRniBo">
+    <bean id="payrollSkalaGajiPensiunDplkBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="payrollSkalaGajiPensiunDplkBo">
         <property name="interceptorNames">
             <list>
                 <value>transactionUserInterceptor</value>
@@ -31,7 +31,7 @@
         </property>
     </bean>
 
-    <bean id="payrollSkalaGajiPensiunRniDao" class="com.neurix.hris.master.payrollSkalaGajiPensiunRni.dao.PayrollSkalaGajiPensiunRniDao"
+    <bean id="payrollSkalaGajiPensiunDplkDao" class="com.neurix.hris.master.payrollSkalaGajiPensiunDplk.dao.PayrollSkalaGajiPensiunDplkDao"
           p:sessionFactory-ref="sessionFactory" />
 
 </beans>

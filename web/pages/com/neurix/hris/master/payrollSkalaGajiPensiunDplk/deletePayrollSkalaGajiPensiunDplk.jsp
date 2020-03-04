@@ -8,7 +8,7 @@
 <head>
     <script type="text/javascript">
 
-        function callSearch2() {
+        function callSearch() {
             //$('#waiting_dialog').dialog('close');
             $('#view_dialog_menu').dialog('close');
             $('#info_dialog').dialog('close');
@@ -16,49 +16,50 @@
         };
 
         $.subscribe('beforeProcessSave', function (event, data) {
-            var dapen = document.getElementById("danaPensiun1").value;
-            var nilai = document.getElementById("nilai1").value;
-            var nilai1 = document.getElementById("nilai11").value;
+            var idDepartment = document.getElementById("skalaGajiId1").value;
+            var nameDepartment    = document.getElementById("golonganId1").value;
 
-            if (dapen != '' && nilai != ''&& nilai1 != '' ) {
-                if(isNaN(nilai.replace('.','')) == false && isNaN(nilai1.replace('.','')) == false){
-                    if (confirm('Do you want to save this record?')) {
-                        event.originalEvent.options.submit = true;
-                        $.publish('showDialog');
-                    } else {
-                        // Cancel Submit comes with 1.8.0
-                        event.originalEvent.options.submit = false;
-                    }
-                }else{
+
+
+            if (nameDepartment != '' ) {
+                if (confirm('Do you want to save this record?')) {
+                    event.originalEvent.options.submit = true;
+                    $.publish('showDialog');
+
+                } else {
+                    // Cancel Submit comes with 1.8.0
                     event.originalEvent.options.submit = false;
-                    var msg = "";
-                    if (isNaN(nilai.replace('.',''))) {
-                        msg += 'Field <strong>Persentase Karyawan</strong> Harus angka tanpa koma.' + '<br/>';
-                    }
-                    if (isNaN(nilai1.replace('.',''))) {
-                        msg += 'Field <strong>nilai</strong> Harus angka tanpa koma.' + '<br/>';
-                    }
-
-                    document.getElementById('errorValidationMessage').innerHTML = msg;
-
-                    $.publish('showErrorValidationDialog');
                 }
+
+
             } else {
-                event.originalEvent.options.submit = false;
-                var msg = "";
-                if (dapen == '') {
-                    msg += 'Field <strong>Nama</strong> is required.' + '<br/>';
-                }
 
-                if (nilai == '') {
-                    msg += 'Field <strong>Nilai</strong> is required.' + '<br/>';
+                event.originalEvent.options.submit = false;
+
+                var msg = "";
+
+                if (nameDepartment == '') {
+                    msg += 'Field <strong>Department Name</strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
                 $.publish('showErrorValidationDialog');
+
             }
         });
+
+        $.subscribe('beforeProcessDelete', function (event, data) {
+            if (confirm('Do you want to delete this record ?')) {
+                event.originalEvent.options.submit = true;
+                $.publish('showDialog');
+
+            } else {
+                // Cancel Submit comes with 1.8.0
+                event.originalEvent.options.submit = false;
+            }
+        });
+
 
         $.subscribe('successDialog', function (event, data) {
             if (event.originalEvent.request.status == 200) {
@@ -88,14 +89,14 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="addPayrollDanaPensiunForm" method="post" theme="simple" namespace="/payrollDanaPensiun" action="saveAdd_payrollDanaPensiun" cssClass="well form-horizontal">
+            <s:form id="formEdit" method="post" theme="simple" namespace="/payrollSkalaGajiPensiunDplk" action="saveDelete_payrollSkalaGajiPensiunDplk" cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
 
 
 
-                <legend align="left">Add Dana Pensiun</legend>
+                <legend align="left">Delete Skala Gaji Pensiun</legend>
 
 
                 <table>
@@ -105,37 +106,51 @@
                         </td>
                     </tr>
                 </table>
-                
+
                 <table >
-                    
                     <tr>
                         <td>
-                            <label class="control-label"><small>Nama Dapen :</small></label>
+                            <label class="control-label"><small>Id :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="danaPensiun1" name="payrollDanaPensiun.danaPensiun" required="true" cssClass="form-control"/>
+                                <s:textfield  id="skalaGajiId1" readonly="true" name="payrollSkalaGajiPensiunDplk.skalaGajiPensiunId" required="true"  cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
 
                     <tr>
                         <td>
-                            <label class="control-label"><small>Persentase Karyawan :</small></label>
+                            <label class="control-label"><small>Golongan :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="nilai1" name="payrollDanaPensiun.stPersentaseKary" required="true" cssClass="form-control"/>
+                                <%--<s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>
+                                <s:select list="#initComboTipe.listComboGolongan" id="golonganId1" name="payrollSkalaGajiPensiunDplk.golonganId" disabled="true"
+                                          listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
+                                    <s:textfield  id="golonganId1" name="payrollSkalaGajiPensiunDplk.golonganName" readonly="true" required="true"  cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
+
                     <tr>
                         <td>
-                            <label class="control-label"><small>Persentase Perusahaan :</small></label>
+                            <label class="control-label"><small>Poin :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="nilai11" name="payrollDanaPensiun.stPersentasePers" required="true" cssClass="form-control"/>
+                                <s:textfield  id="point1" name="payrollSkalaGajiPensiunDplk.poin" required="true"  cssClass="form-control" readonly="true"/>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Nilai :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield readonly="true"  id="nilai1" name="payrollSkalaGajiPensiunDplk.nilai" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -148,11 +163,11 @@
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                             <%--<button type="submit" class="btn btn-default">Submit</button>--%>
-                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="addPayrollDanaPensiunForm" id="save" name="save"
+                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="formEdit" id="save" name="save"
                                    onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
                                    onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
-                            <i class="fa fa-check"></i>
-                            Save
+                            <i class="fa fa-trash"></i>
+                            Delete
                         </sj:submit>
                         <button type="button" id="cancel" class="btn btn-danger" onclick="cancelBtn();">
                             <i class="fa fa-refresh"/> Cancel
@@ -184,8 +199,7 @@
                                                    buttons="{
                                                               'OK':function() {
                                                                     //$(this).dialog('close');
-                                                                      callSearch2();
-                                                                      link();
+                                                                      callSearch();
                                                                    }
                                                             }"
                                         >
@@ -232,4 +246,3 @@
 </table>
 </body>
 </html>
-
