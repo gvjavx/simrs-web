@@ -36,6 +36,25 @@ public class ImPayrollBpjsEntity implements Serializable {
     private BigDecimal minBpjsTk;
     private BigDecimal MaxBpjsTk;
 
+    private String branchId;
+    private String branchName;
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
+    public String getBranchName() {
+        return branchName;
+    }
+
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
+    }
+
     public Double getIuranBpjsKsKaryPersen() {
         return iuranBpjsKsKaryPersen;
     }

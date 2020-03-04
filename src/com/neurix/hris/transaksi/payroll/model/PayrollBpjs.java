@@ -26,7 +26,7 @@ public class PayrollBpjs extends BaseModel {
     private BigDecimal minBpjsKs;
     private BigDecimal maxBpjsKs;
     private BigDecimal minBpjsTk;
-    private BigDecimal MaxBpjsTk;
+    private BigDecimal maxBpjsTk;
     private String iuranBpjsKsKary;
     private String iuranBpjsKsPers;
     private String iuranBpjsTkKary;
@@ -35,6 +35,25 @@ public class PayrollBpjs extends BaseModel {
     private BigDecimal iuranBpjsKsPersNilai;
     private BigDecimal iuranBpjsTkKaryNilai;
     private BigDecimal iuranBpjsTkPersNilai;
+
+    private String branchId;
+    private String branchName;
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
+    public String getBranchName() {
+        return branchName;
+    }
+
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
+    }
 
     public String getIuranBpjsKsKary() {
         return iuranBpjsKsKary;
@@ -141,11 +160,11 @@ public class PayrollBpjs extends BaseModel {
     }
 
     public BigDecimal getMaxBpjsTk() {
-        return MaxBpjsTk;
+        return maxBpjsTk;
     }
 
     public void setMaxBpjsTk(BigDecimal maxBpjsTk) {
-        MaxBpjsTk = maxBpjsTk;
+        this.maxBpjsTk = maxBpjsTk;
     }
 
     public BigDecimal getMinBpjsKs() {
