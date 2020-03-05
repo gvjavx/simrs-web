@@ -23,6 +23,14 @@ public class PayrollBpjs extends BaseModel {
     private Double iuranBpjsKsPersPersen;
     private Double iuranBpjsTkKaryPersen;
     private Double iuranBpjsTkPersPersen;
+    private Double iuranKary;
+    private Double jpkKary;
+    private Double jkkPers;
+    private Double jhtPers;
+    private Double jkmPers;
+    private Double iuranPers;
+    private Double jpkPers;
+
     private BigDecimal minBpjsKs;
     private BigDecimal maxBpjsKs;
     private BigDecimal minBpjsTk;
@@ -38,6 +46,62 @@ public class PayrollBpjs extends BaseModel {
 
     private String branchId;
     private String branchName;
+
+    public Double getIuranKary() {
+        return iuranKary;
+    }
+
+    public void setIuranKary(Double iuranKary) {
+        this.iuranKary = iuranKary;
+    }
+
+    public Double getIuranPers() {
+        return iuranPers;
+    }
+
+    public void setIuranPers(Double iuranPers) {
+        this.iuranPers = iuranPers;
+    }
+
+    public Double getJhtPers() {
+        return jhtPers;
+    }
+
+    public void setJhtPers(Double jhtPers) {
+        this.jhtPers = jhtPers;
+    }
+
+    public Double getJkkPers() {
+        return jkkPers;
+    }
+
+    public void setJkkPers(Double jkkPers) {
+        this.jkkPers = jkkPers;
+    }
+
+    public Double getJkmPers() {
+        return jkmPers;
+    }
+
+    public void setJkmPers(Double jkmPers) {
+        this.jkmPers = jkmPers;
+    }
+
+    public Double getJpkKary() {
+        return jpkKary;
+    }
+
+    public void setJpkKary(Double jpkKary) {
+        this.jpkKary = jpkKary;
+    }
+
+    public Double getJpkPers() {
+        return jpkPers;
+    }
+
+    public void setJpkPers(Double jpkPers) {
+        this.jpkPers = jpkPers;
+    }
 
     public String getBranchId() {
         return branchId;

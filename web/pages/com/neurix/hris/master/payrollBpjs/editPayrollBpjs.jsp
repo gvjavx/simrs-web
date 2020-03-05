@@ -27,8 +27,24 @@
             var percentBpjsTkKary = document.getElementById("percentBpjsTkKary1").value;
             var percentBpjsTkPers = document.getElementById("percentBpjsTkPers1").value;
 
+
+            var iuranKaryawan = document.getElementById("iuranKaryawan1").value;
+             var jpkKaryawan = document.getElementById("jpkKaryawan1").value;
+
+
+             var jkkPers = document.getElementById("jkkPers1").value;
+             var jhtPers = document.getElementById("jhtPers1").value;
+             var jkmPers = document.getElementById("jkmPers1").value;
+             var iurPers = document.getElementById("iurPers1").value;
+             var jpkPers = document.getElementById("jpkPers1").value;
+
+
+
+
             if (unit != ''&& minBpjsKs != '' && maxBpjsKs != '' && minBpjsTk != '' && maxBpjsTk != ''
-                    && percentBpjsKsKary != '' && percentBpjsKsPers != '' && percentBpjsTkKary != '' && percentBpjsTkPers != '') {
+                    && percentBpjsKsKary != '' && percentBpjsKsPers != '' && percentBpjsTkKary != ''
+                    && percentBpjsTkPers != ''&& iuranKaryawan != ''&& jpkKaryawan != ''
+                    && jkkPers != ''&& jhtPers != ''&& jkmPers != ''&& iurPers != ''&& jpkPers != '') {
                 if(isNaN(minBpjsKs) ==  false && isNaN(maxBpjsKs) == false && isNaN(minBpjsTk) == false && isNaN(maxBpjsTk) == false){
                     if (confirm('Do you want to save this record?')) {
                         event.originalEvent.options.submit = true;
@@ -87,6 +103,28 @@
                 if (percentBpjsTkPers == '') {
                     msg += 'Field <strong>persen BpjsTk Pers </strong> is required.' + '<br/>';
                 }
+
+                if (iuranKaryawan == '') {
+                 msg += 'Field <strong>iuranKaryawan </strong> is required.' + '<br/>';
+                 }
+                 if (jpkKaryawan == '') {
+                 msg += 'Field <strong>jpkKaryawan</strong> is required.' + '<br/>';
+                 }
+                 if (jkkPers == '') {
+                 msg += 'Field <strong>jkkPers </strong> is required.' + '<br/>';
+                 }
+                 if (jhtPers == '') {
+                 msg += 'Field <strong>jhtPers </strong> is required.' + '<br/>';
+                 }
+                 if (jkmPers == '') {
+                 msg += 'Field <strong>jkmPers </strong> is required.' + '<br/>';
+                 }
+                 if (iurPers == '') {
+                 msg += 'Field <strong>iurPers </strong> is required.' + '<br/>';
+                 }
+                 if (jpkPers == '') {
+                 msg += 'Field <strong>jpkPers </strong> is required.' + '<br/>';
+                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
@@ -223,11 +261,91 @@
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Persen Bpjs Tk Kary(%) :</small></label>
+                            <h5>Persen BPJS Tk Karyawan</h5>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Iuran Karyawan(%) :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="percentBpjsTkKary1" name="payrollBpjs.iuranBpjsTkKaryPersen" required="true" cssClass="form-control"/>
+                                <s:textfield id="iuranKaryawan1" name="payrollBpjs.iuranKary" required="true" cssClass="form-control" onchange="setPersenTkKary()" />
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Jpk Karyawan(%) :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield id="jpkKaryawan1" name="payrollBpjs.jpkKary" required="true" cssClass="form-control" onchange="setPersenTkKary()" />
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Persen Bpjs Tk Karyawan(%) :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield readonly="true" id="percentBpjsTkKary1" name="payrollBpjs.iuranBpjsTkKaryPersen" required="true" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h5>Persen BPJS Tk Perusahaan</h5>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Jkk Pers(%) :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield id="jkkPers1" name="payrollBpjs.jkkPers" required="true" cssClass="form-control" onchange="setiuranTkPers()"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Jht Pers(%) :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield id="jhtPers1" name="payrollBpjs.jhtPers" required="true" cssClass="form-control" onchange="setiuranTkPers()"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Jkm Pers(%) :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield id="jkmPers1" name="payrollBpjs.jkmPers" required="true" cssClass="form-control" onchange="setiuranTkPers()"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Iuran Pers(%) :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield readonly="true" id="iurPers1" name="payrollBpjs.iuranPers" required="true" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>JPK Perusahaan(%) :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield id="jpkPers1" name="payrollBpjs.jpkPers" required="true" cssClass="form-control" onchange="setPersenTkPers()"/>
                             </table>
                         </td>
                     </tr>
@@ -237,12 +355,36 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="percentBpjsTkPers1" name="payrollBpjs.iuranBpjsTkPersPersen" required="true" cssClass="form-control"/>
+                                <s:textfield readonly="true" id="percentBpjsTkPers1" name="payrollBpjs.iuranBpjsTkPersPersen" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
 
                 </table>
+                <script>
+                    function setPersenTkKary(){
+                        var iurKary = document.getElementById("iuranKaryawan1").value;
+                        var jpkKary = document.getElementById("jpkKaryawan1").value;
+
+                        var percentKary = parseFloat(iurKary)+parseFloat(jpkKary);
+                        $('#percentBpjsTkKary1').val(percentKary);
+                    }
+                    function setiuranTkPers(){
+                        var jkkPers = document.getElementById("jkkPers1").value;
+                        var jhtPers = document.getElementById("jhtPers1").value;
+                        var jkmPers = document.getElementById("jkmPers1").value;
+
+                        var iuranPers = parseFloat(jkkPers)+parseFloat(jhtPers)+parseFloat(jkmPers);
+                        $('#iurPers1').val(iuranPers);
+                    }
+                    function setPersenTkPers(){
+                        var iurPers = document.getElementById("iurPers1").value;
+                        var jpkPers = document.getElementById("jpkPers1").value;
+
+                        var percentPers = parseFloat(iurPers)+parseFloat(jpkPers);
+                        $('#percentBpjsTkPers1').val(percentPers);
+                    }
+                </script>
 
 
 

@@ -134,6 +134,15 @@ public class PayrollBpjsBoImpl implements PayrollBpjsBo {
                 imPayrollBpjsEntity.setMaxBpjsTk(bean.getMaxBpjsTk());
                 imPayrollBpjsEntity.setMinBpjsTk(bean.getMinBpjsTk());
 
+                imPayrollBpjsEntity.setIuranKary(bean.getIuranKary());
+                imPayrollBpjsEntity.setJpkKary(bean.getJpkKary());
+
+                imPayrollBpjsEntity.setJkkPers(bean.getJkkPers());
+                imPayrollBpjsEntity.setJhtPers(bean.getJhtPers());
+                imPayrollBpjsEntity.setJkmPers(bean.getJkmPers());
+                imPayrollBpjsEntity.setIuranPers(bean.getIuranPers());
+                imPayrollBpjsEntity.setJpkPers(bean.getJpkPers());
+
                 imPayrollBpjsEntity.setIuranBpjsKsKaryPersen(bean.getIuranBpjsKsKaryPersen());
                 imPayrollBpjsEntity.setIuranBpjsKsPersPersen(bean.getIuranBpjsKsPersPersen());
                 imPayrollBpjsEntity.setIuranBpjsTkKaryPersen(bean.getIuranBpjsTkKaryPersen());
@@ -203,6 +212,15 @@ public class PayrollBpjsBoImpl implements PayrollBpjsBo {
             imPayrollBpjsEntity.setMinBpjsKs(bean.getMinBpjsKs());
             imPayrollBpjsEntity.setMaxBpjsTk(bean.getMaxBpjsTk());
             imPayrollBpjsEntity.setMinBpjsTk(bean.getMinBpjsTk());
+
+            imPayrollBpjsEntity.setIuranKary(bean.getIuranKary());
+            imPayrollBpjsEntity.setJpkKary(bean.getJpkKary());
+
+            imPayrollBpjsEntity.setJkkPers(bean.getJkkPers());
+            imPayrollBpjsEntity.setJhtPers(bean.getJhtPers());
+            imPayrollBpjsEntity.setJkmPers(bean.getJkmPers());
+            imPayrollBpjsEntity.setIuranPers(bean.getIuranPers());
+            imPayrollBpjsEntity.setJpkPers(bean.getJpkPers());
 
             imPayrollBpjsEntity.setIuranBpjsKsKaryPersen(bean.getIuranBpjsKsKaryPersen());
             imPayrollBpjsEntity.setIuranBpjsKsPersPersen(bean.getIuranBpjsKsPersPersen());
@@ -278,6 +296,15 @@ public class PayrollBpjsBoImpl implements PayrollBpjsBo {
                     returnPayrollSkalaGaji.setMaxBpjsKs(payrollSkalaGajiEntity.getMaxBpjsKs());
                     returnPayrollSkalaGaji.setMinBpjsTk(payrollSkalaGajiEntity.getMinBpjsTk());
                     returnPayrollSkalaGaji.setMaxBpjsTk(payrollSkalaGajiEntity.getMaxBpjsTk());
+
+                    returnPayrollSkalaGaji.setIuranKary(payrollSkalaGajiEntity.getIuranKary());
+                    returnPayrollSkalaGaji.setJpkKary(payrollSkalaGajiEntity.getJpkKary());
+
+                    returnPayrollSkalaGaji.setJkkPers(payrollSkalaGajiEntity.getJkkPers());
+                    returnPayrollSkalaGaji.setJhtPers(payrollSkalaGajiEntity.getJhtPers());
+                    returnPayrollSkalaGaji.setJkmPers(payrollSkalaGajiEntity.getJkmPers());
+                    returnPayrollSkalaGaji.setIuranPers(payrollSkalaGajiEntity.getIuranPers());
+                    returnPayrollSkalaGaji.setJpkPers(payrollSkalaGajiEntity.getJpkPers());
 
                     returnPayrollSkalaGaji.setIuranBpjsKsKaryPersen(payrollSkalaGajiEntity.getIuranBpjsKsKaryPersen());
                     returnPayrollSkalaGaji.setIuranBpjsKsPersPersen(payrollSkalaGajiEntity.getIuranBpjsKsPersPersen());
