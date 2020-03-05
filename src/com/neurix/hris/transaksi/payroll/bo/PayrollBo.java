@@ -135,7 +135,7 @@ public interface PayrollBo extends BaseMasterBo<Payroll>{
     public ImPayrollSkalaGajiEntity getSkalaGajiSimRs(String golonganId);
     public ImPayrollSkalaGajiPkwtEntity getSkalaGajiSimRsPkwt(String golonganId);
 
-    public BigDecimal hitungIuranBpjs(BigDecimal dasarPerhitunganBpjs, BigDecimal minBpjs, BigDecimal maxBpjs, BigDecimal percent);
+    public BigDecimal hitungIuranBpjs(BigDecimal dasarPerhitunganBpjs, BigDecimal minBpjs, BigDecimal maxBpjs, Double percent);
 
     public List<PayrollTunjanganLain> getDetailEditTunjLainSys(String payrollId) throws GeneralBOException;
 }

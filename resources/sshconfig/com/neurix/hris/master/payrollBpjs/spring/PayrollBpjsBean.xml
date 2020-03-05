@@ -10,6 +10,7 @@
 
     <bean id="payrollBpjsBo" class="com.neurix.hris.master.payrollBpjs.bo.impl.PayrollBpjsBoImpl"
           p:payrollBpjsDao-ref="payrollBpjsDao"
+          p:branchDao-ref="branchDao"
     />
 
     <bean id="payrollBpjsBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -33,5 +34,7 @@
     </bean>
 
     <bean id="payrollBpjsDao" class="com.neurix.hris.transaksi.payroll.dao.PayrollBpjsDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="branchDao" class="com.neurix.authorization.company.dao.BranchDao"
           p:sessionFactory-ref="sessionFactory" />
 </beans>

@@ -112,6 +112,24 @@ public class Payroll extends BaseModel {
     //flag tambahan irfan
     private String flagCutiTahunan;
     private String flagCutiPanjang;
+    private String profesiId;
+    private String profesiName;
+
+    public String getProfesiId() {
+        return profesiId;
+    }
+
+    public void setProfesiId(String profesiId) {
+        this.profesiId = profesiId;
+    }
+
+    public String getProfesiName() {
+        return profesiName;
+    }
+
+    public void setProfesiName(String profesiName) {
+        this.profesiName = profesiName;
+    }
 
     public String getFlagCutiPanjang() {
         return flagCutiPanjang;

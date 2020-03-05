@@ -142,66 +142,71 @@ public class PayrollSkalaGajiBoImpl implements PayrollSkalaGajiBo {
     public PayrollSkalaGaji saveAdd(PayrollSkalaGaji bean) throws GeneralBOException {
         logger.info("[PayrollSkalaGajiBoImpl.saveAdd] start process >>>");
         if (bean!=null) {
+            String status = cekStatus(bean.getGolonganId());
             String payrollSkalaGajiId;
-            try {
-                // Generating ID, get from postgre sequence
-                payrollSkalaGajiId = payrollSkalaGajiDao.getNextSkalaGaji();
-            } catch (HibernateException e) {
-                logger.error("[PayrollSkalaGajiBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when getting sequence payrollSkalaGajiId id, please info to your admin..." + e.getMessage());
-            }
+            if (!status.equalsIgnoreCase("exist")){
+                try {
+                    // Generating ID, get from postgre sequence
+                    payrollSkalaGajiId = payrollSkalaGajiDao.getNextSkalaGaji();
+                } catch (HibernateException e) {
+                    logger.error("[PayrollSkalaGajiBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when getting sequence payrollSkalaGajiId id, please info to your admin..." + e.getMessage());
+                }
 
-            // creating object entity serializable
-            ImPayrollSkalaGajiEntity imPayrollSkalaGajiEntity = new ImPayrollSkalaGajiEntity();
+                // creating object entity serializable
+                ImPayrollSkalaGajiEntity imPayrollSkalaGajiEntity = new ImPayrollSkalaGajiEntity();
 
-            imPayrollSkalaGajiEntity.setSkalaGajiId(payrollSkalaGajiId);
-            imPayrollSkalaGajiEntity.setGolonganId(bean.getGolonganId());
-            if (bean.getNilai()==null){
-                imPayrollSkalaGajiEntity.setNilai(BigDecimal.valueOf(0));
-            }else{
-                imPayrollSkalaGajiEntity.setNilai(bean.getNilai());
-            }
-            if (bean.getSantunanKhusus()==null){
-                imPayrollSkalaGajiEntity.setSantunanKhusus(BigDecimal.valueOf(0));
-            }else{
-                imPayrollSkalaGajiEntity.setSantunanKhusus(bean.getSantunanKhusus());
-            }
-            if (bean.getRumah()==null){
-                imPayrollSkalaGajiEntity.setRumah(BigDecimal.valueOf(0));
-            }else{
-                imPayrollSkalaGajiEntity.setRumah(bean.getRumah());
-            }
-            if (bean.getListrik()==null){
-                imPayrollSkalaGajiEntity.setListrik(BigDecimal.valueOf(0));
-            }else{
-                imPayrollSkalaGajiEntity.setListrik(bean.getListrik());
-            }
-            if (bean.getAir()==null){
-                imPayrollSkalaGajiEntity.setAir(BigDecimal.valueOf(0));
-            }else{
-                imPayrollSkalaGajiEntity.setAir(bean.getAir());
-            }
-            if (bean.getBbm()==null){
-                imPayrollSkalaGajiEntity.setBbm(BigDecimal.valueOf(0));
-            }else{
-                imPayrollSkalaGajiEntity.setBbm(bean.getBbm());
-            }
-            imPayrollSkalaGajiEntity.setTotal(imPayrollSkalaGajiEntity.getNilai().add(imPayrollSkalaGajiEntity.getSantunanKhusus())
-                    .add(imPayrollSkalaGajiEntity.getRumah()).add(imPayrollSkalaGajiEntity.getListrik())
-                    .add(imPayrollSkalaGajiEntity.getAir()).add(imPayrollSkalaGajiEntity.getBbm()));
-            imPayrollSkalaGajiEntity.setFlag(bean.getFlag());
-            imPayrollSkalaGajiEntity.setAction(bean.getAction());
-            imPayrollSkalaGajiEntity.setCreatedWho(bean.getCreatedWho());
-            imPayrollSkalaGajiEntity.setLastUpdateWho(bean.getLastUpdateWho());
-            imPayrollSkalaGajiEntity.setCreatedDate(bean.getCreatedDate());
-            imPayrollSkalaGajiEntity.setLastUpdate(bean.getLastUpdate());
+                imPayrollSkalaGajiEntity.setSkalaGajiId(payrollSkalaGajiId);
+                imPayrollSkalaGajiEntity.setGolonganId(bean.getGolonganId());
+                if (bean.getNilai()==null){
+                    imPayrollSkalaGajiEntity.setNilai(BigDecimal.valueOf(0));
+                }else{
+                    imPayrollSkalaGajiEntity.setNilai(bean.getNilai());
+                }
+                if (bean.getSantunanKhusus()==null){
+                    imPayrollSkalaGajiEntity.setSantunanKhusus(BigDecimal.valueOf(0));
+                }else{
+                    imPayrollSkalaGajiEntity.setSantunanKhusus(bean.getSantunanKhusus());
+                }
+                if (bean.getRumah()==null){
+                    imPayrollSkalaGajiEntity.setRumah(BigDecimal.valueOf(0));
+                }else{
+                    imPayrollSkalaGajiEntity.setRumah(bean.getRumah());
+                }
+                if (bean.getListrik()==null){
+                    imPayrollSkalaGajiEntity.setListrik(BigDecimal.valueOf(0));
+                }else{
+                    imPayrollSkalaGajiEntity.setListrik(bean.getListrik());
+                }
+                if (bean.getAir()==null){
+                    imPayrollSkalaGajiEntity.setAir(BigDecimal.valueOf(0));
+                }else{
+                    imPayrollSkalaGajiEntity.setAir(bean.getAir());
+                }
+                if (bean.getBbm()==null){
+                    imPayrollSkalaGajiEntity.setBbm(BigDecimal.valueOf(0));
+                }else{
+                    imPayrollSkalaGajiEntity.setBbm(bean.getBbm());
+                }
+                imPayrollSkalaGajiEntity.setTotal(imPayrollSkalaGajiEntity.getNilai().add(imPayrollSkalaGajiEntity.getSantunanKhusus())
+                        .add(imPayrollSkalaGajiEntity.getRumah()).add(imPayrollSkalaGajiEntity.getListrik())
+                        .add(imPayrollSkalaGajiEntity.getAir()).add(imPayrollSkalaGajiEntity.getBbm()));
+                imPayrollSkalaGajiEntity.setFlag(bean.getFlag());
+                imPayrollSkalaGajiEntity.setAction(bean.getAction());
+                imPayrollSkalaGajiEntity.setCreatedWho(bean.getCreatedWho());
+                imPayrollSkalaGajiEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                imPayrollSkalaGajiEntity.setCreatedDate(bean.getCreatedDate());
+                imPayrollSkalaGajiEntity.setLastUpdate(bean.getLastUpdate());
 
-            try {
-                // insert into database
-                payrollSkalaGajiDao.addAndSave(imPayrollSkalaGajiEntity);
-            } catch (HibernateException e) {
-                logger.error("[PayrollSkalaGajiBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when saving new data PayrollSkalaGaji, please info to your admin..." + e.getMessage());
+                try {
+                    // insert into database
+                    payrollSkalaGajiDao.addAndSave(imPayrollSkalaGajiEntity);
+                } catch (HibernateException e) {
+                    logger.error("[PayrollSkalaGajiBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data PayrollSkalaGaji, please info to your admin..." + e.getMessage());
+                }
+            }else{
+                throw new GeneralBOException("Maaf Data Telah Ada");
             }
         }
 

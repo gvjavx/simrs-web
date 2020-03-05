@@ -16,11 +16,20 @@
         };
 
         $.subscribe('beforeProcessSave', function (event, data) {
-            var golonganId = document.getElementById("golonganId1").value;
-            var nilai = document.getElementById("nilai1").value;
+            var unit = document.getElementById("branchId1").value;
+            var minBpjsKs = document.getElementById("minBpjsKs1").value;
+            var maxBpjsKs = document.getElementById("maxBpjsKs1").value;
+            var minBpjsTk = document.getElementById("minBpjsTk1").value;
+            var maxBpjsTk = document.getElementById("maxBpjsTk1").value;
 
-            if (golonganId != ''&& nilai != '' ) {
-                if(isNaN(point) ==  false && isNaN(nilai) == false){
+            var percentBpjsKsKary = document.getElementById("percentBpjsKsKary1").value;
+            var percentBpjsKsPers = document.getElementById("percentBpjsKsPers1").value;
+            var percentBpjsTkKary = document.getElementById("percentBpjsTkKary1").value;
+            var percentBpjsTkPers = document.getElementById("percentBpjsTkPers1").value;
+
+            if (unit != ''&& minBpjsKs != '' && maxBpjsKs != '' && minBpjsTk != '' && maxBpjsTk != ''
+                    && percentBpjsKsKary != '' && percentBpjsKsPers != '' && percentBpjsTkKary != '' && percentBpjsTkPers != '') {
+                if(isNaN(minBpjsKs) ==  false && isNaN(maxBpjsKs) == false && isNaN(minBpjsTk) == false && isNaN(maxBpjsTk) == false){
                     if (confirm('Do you want to save this record?')) {
                         event.originalEvent.options.submit = true;
                         $.publish('showDialog');
@@ -31,8 +40,17 @@
                 }else{
                     event.originalEvent.options.submit = false;
                     var msg = "";
-                    if (isNaN(nilai)) {
-                        msg += 'Field <strong>nilai</strong> Harus angka tanpa koma.' + '<br/>';
+                    if (isNaN(minBpjsKs)) {
+                        msg += 'Field <strong>min Bpjs Ks</strong> Harus angka tanpa koma.' + '<br/>';
+                    }
+                    if (isNaN(maxBpjsKs)) {
+                        msg += 'Field <strong>max Bpjs Ks</strong> Harus angka tanpa koma.' + '<br/>';
+                    }
+                    if (isNaN(minBpjsTk)) {
+                        msg += 'Field <strong>min Bpjs Tk</strong> Harus angka tanpa koma.' + '<br/>';
+                    }
+                    if (isNaN(maxBpjsTk)) {
+                        msg += 'Field <strong>max Bpjs Tk</strong> Harus angka tanpa koma.' + '<br/>';
                     }
 
                     document.getElementById('errorValidationMessage').innerHTML = msg;
@@ -42,11 +60,32 @@
             } else {
                 event.originalEvent.options.submit = false;
                 var msg = "";
-                if (golonganId == '') {
+                if (unit == '') {
                     msg += 'Field <strong>Golongan </strong> is required.' + '<br/>';
                 }
-                if (nilai == '') {
-                    msg += 'Field <strong>Nilai</strong> is required.' + '<br/>';
+                if (minBpjsKs == '') {
+                    msg += 'Field <strong>min BpjsKs </strong> is required.' + '<br/>';
+                }
+                if (maxBpjsKs == '') {
+                    msg += 'Field <strong>max BpjsKs </strong> is required.' + '<br/>';
+                }
+                if (minBpjsTk == '') {
+                    msg += 'Field <strong>min BpjsTk </strong> is required.' + '<br/>';
+                }
+                if (maxBpjsTk == '') {
+                    msg += 'Field <strong>max BpjsTk </strong> is required.' + '<br/>';
+                }
+                if (percentBpjsKsKary == '') {
+                    msg += 'Field <strong>persen BpjsKs Kary </strong> is required.' + '<br/>';
+                }
+                if (percentBpjsKsPers == '') {
+                    msg += 'Field <strong>persen BpjsKs Pers </strong> is required.' + '<br/>';
+                }
+                if (percentBpjsTkKary == '') {
+                    msg += 'Field <strong>persen BpjsTk Kary </strong> is required.' + '<br/>';
+                }
+                if (percentBpjsTkPers == '') {
+                    msg += 'Field <strong>persen BpjsTk Pers </strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
@@ -90,7 +129,7 @@
 
 
 
-                <legend align="left">Edit Payroll Gaji Pkwt</legend>
+                <legend align="left">Edit Payroll Bpjs</legend>
 
 
                 <table>
@@ -114,53 +153,91 @@
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Golongan :</small></label>
+                            <label class="control-label"><small>Unit :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:action id="initComboTipe" namespace="/golongan" name="initComboGolonganPkwt_golongan"/>
-                                <s:select list="#initComboTipe.listComboGolonganPkwt" id="golonganId1" name="payrollBpjs.golonganPkwtId"
-                                          listKey="golonganPkwtId" listValue="golonganPkwtName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                <s:textfield  id="branchId1" readonly="true" name="payrollBpjs.branchId" required="true"  cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Gaji Pokok :</small></label>
+                            <label class="control-label"><small>Min Bpjs Ks :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield type="number" min="0" id="nilai1" name="payrollBpjs.gajiPokokNilai" required="true" cssClass="form-control"/>
+                                <s:textfield type="number" min="0" id="minBpjsKs1" name="payrollBpjs.minBpjsKs" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Santunan Khusus :</small></label>
+                            <label class="control-label"><small>Max Bpjs Ks :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield type="number" min="0" id="sankhus1" name="payrollBpjs.santunanKhususNilai" required="true" cssClass="form-control"/>
+                                <s:textfield type="number" min="0" id="maxBpjsKs1" name="payrollBpjs.maxBpjsKs" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Tunj. Fungsional :</small></label>
+                            <label class="control-label"><small>Min Bpjs Tk :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield type="number" min="0" id="tunjFungsional1" name="payrollBpjs.tunjFunsionalNilai" required="true" cssClass="form-control"/>
+                                <s:textfield type="number" min="0" id="minBpjsTk1" name="payrollBpjs.minBpjsTk" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Tunj. Tambahan :</small></label>
+                            <label class="control-label"><small>Max Bpjs Tk :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield type="number" min="0" id="tunjTambahan1" name="payrollBpjs.tunjtambahanNilai" required="true" cssClass="form-control"/>
+                                <s:textfield type="number" min="0" id="maxBpjsTk1" name="payrollBpjs.maxBpjsTk" required="true" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Persen Bpjs Ks Kary(%) :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield id="percentBpjsKsKary1" name="payrollBpjs.iuranBpjsKsKaryPersen" required="true" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Persen Bpjs Ks Pers(%) :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield id="percentBpjsKsPers1" name="payrollBpjs.iuranBpjsKsPersPersen" required="true" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Persen Bpjs Tk Kary(%) :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield id="percentBpjsTkKary1" name="payrollBpjs.iuranBpjsTkKaryPersen" required="true" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Persen Bpjs Tk Pers(%) :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield id="percentBpjsTkPers1" name="payrollBpjs.iuranBpjsTkPersPersen" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>

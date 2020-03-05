@@ -93,7 +93,7 @@
                                 <td>
                                     <table>
                                         <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                                        <s:select list="#initComboBranch.listOfComboBranch" id="branch1" name="payrollBpjs.branchId"
+                                        <s:select list="#initComboBranch.listOfComboBranch" id="branch" name="payrollBpjs.branchId"
                                                   listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                     </table>
                                 </td>
@@ -134,7 +134,7 @@
                                         </s:url>
                                         <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">
                                             <i class="fa fa-plus"></i>
-                                            Add Skala Gaji Pkwt
+                                            Add Payroll Bpjs
                                         </sj:a>
                                     </td>
                                     <td>
@@ -153,7 +153,7 @@
                                 <tr>
                                     <td align="center">
                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
-                                                   height="400" width="550" autoOpen="false"
+                                                   height="550" width="550" autoOpen="false"
                                                    title="Payroll Skala Gaji Pkwt">
                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                         </sj:dialog>
@@ -184,6 +184,7 @@
 
                                             </display:column>
                                             <display:column property="bpjsId" sortable="true" title="Skala Gaji ID" />
+                                            <display:column property="branchName" sortable="true" title="Unit" />
                                             <display:column property="minBpjsKs" sortable="true" title="Min Bpjs Ks" />
                                             <display:column property="maxBpjsKs" sortable="true" title="Max Bpjs Ks" />
                                             <display:column property="minBpjsTk" sortable="true" title="Min Bpjs Tk" />

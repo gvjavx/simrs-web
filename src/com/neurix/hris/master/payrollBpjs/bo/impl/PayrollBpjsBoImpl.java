@@ -1,5 +1,8 @@
 package com.neurix.hris.master.payrollBpjs.bo.impl;
 
+import com.neurix.authorization.company.dao.BranchDao;
+import com.neurix.authorization.company.model.ImBranches;
+import com.neurix.authorization.company.model.ImBranchesPK;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.payrollBpjs.bo.PayrollBpjsBo;
@@ -25,6 +28,15 @@ public class PayrollBpjsBoImpl implements PayrollBpjsBo {
 
     protected static transient Logger logger = Logger.getLogger(PayrollBpjsBoImpl.class);
     private PayrollBpjsDao payrollBpjsDao;
+    private BranchDao branchDao;
+
+    public BranchDao getBranchDao() {
+        return branchDao;
+    }
+
+    public void setBranchDao(BranchDao branchDao) {
+        this.branchDao = branchDao;
+    }
 
     public static Logger getLogger() {
         return logger;
@@ -117,6 +129,16 @@ public class PayrollBpjsBoImpl implements PayrollBpjsBo {
                 imPayrollBpjsHistoryEntity.setCreatedWho(imPayrollBpjsEntity.getLastUpdateWho());
                 imPayrollBpjsHistoryEntity.setCreatedDate(imPayrollBpjsEntity.getLastUpdate());*/
 
+                imPayrollBpjsEntity.setMaxBpjsKs(bean.getMaxBpjsKs());
+                imPayrollBpjsEntity.setMinBpjsKs(bean.getMinBpjsKs());
+                imPayrollBpjsEntity.setMaxBpjsTk(bean.getMaxBpjsTk());
+                imPayrollBpjsEntity.setMinBpjsTk(bean.getMinBpjsTk());
+
+                imPayrollBpjsEntity.setIuranBpjsKsKaryPersen(bean.getIuranBpjsKsKaryPersen());
+                imPayrollBpjsEntity.setIuranBpjsKsPersPersen(bean.getIuranBpjsKsPersPersen());
+                imPayrollBpjsEntity.setIuranBpjsTkKaryPersen(bean.getIuranBpjsTkKaryPersen());
+                imPayrollBpjsEntity.setIuranBpjsTkPersPersen(bean.getIuranBpjsTkPersPersen());
+
                 imPayrollBpjsEntity.setBpjsId(bean.getBpjsId());
                 imPayrollBpjsEntity.setFlag(bean.getFlag());
                 imPayrollBpjsEntity.setAction(bean.getAction());
@@ -161,6 +183,31 @@ public class PayrollBpjsBoImpl implements PayrollBpjsBo {
             ImPayrollBpjsEntity imPayrollBpjsEntity = new ImPayrollBpjsEntity();
 
             imPayrollBpjsEntity.setBpjsId(payrollBpjsId);
+            ImBranches imBranches = null;
+            ImBranchesPK primaryKey = new ImBranchesPK();
+            primaryKey.setId(bean.getBranchId());
+
+            try {
+                imBranches = branchDao.getById(primaryKey,"Y");
+            } catch (HibernateException e) {
+                logger.error("[BranchBoImpl.getBranchById] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when retrieving Branch based on id and flag, please info to your admin..." + e.getMessage());
+            }
+            if (imBranches!=null){
+                imPayrollBpjsEntity.setBranchName(imBranches.getBranchName());
+            }else{
+                imPayrollBpjsEntity.setBranchName("-");
+            }
+            imPayrollBpjsEntity.setBranchId(bean.getBranchId());
+            imPayrollBpjsEntity.setMaxBpjsKs(bean.getMaxBpjsKs());
+            imPayrollBpjsEntity.setMinBpjsKs(bean.getMinBpjsKs());
+            imPayrollBpjsEntity.setMaxBpjsTk(bean.getMaxBpjsTk());
+            imPayrollBpjsEntity.setMinBpjsTk(bean.getMinBpjsTk());
+
+            imPayrollBpjsEntity.setIuranBpjsKsKaryPersen(bean.getIuranBpjsKsKaryPersen());
+            imPayrollBpjsEntity.setIuranBpjsKsPersPersen(bean.getIuranBpjsKsPersPersen());
+            imPayrollBpjsEntity.setIuranBpjsTkKaryPersen(bean.getIuranBpjsTkKaryPersen());
+            imPayrollBpjsEntity.setIuranBpjsTkPersPersen(bean.getIuranBpjsTkPersPersen());
             imPayrollBpjsEntity.setFlag(bean.getFlag());
             imPayrollBpjsEntity.setAction(bean.getAction());
             imPayrollBpjsEntity.setCreatedWho(bean.getCreatedWho());

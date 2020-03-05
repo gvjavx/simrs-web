@@ -918,6 +918,7 @@ public class PayrollAction extends BaseMasterAction{
                         payrollPerson.setStMasaKerjaGol(payroll.getStMasaKerjaGol());
                         payrollPerson.setMasaKerjaGol(payroll.getMasaKerjaGol());
                         payrollPerson.setGolonganDapenId(payroll.getGolonganDapenId());
+                        payrollPerson.setGolonganDapenName(payroll.getGolonganDapenName());
                         payrollPerson.setGajiPensiunNilai(payroll.getGajiPensiunNilai());
                         payrollPerson.setGajiPensiun(payroll.getGajiPensiun());
 

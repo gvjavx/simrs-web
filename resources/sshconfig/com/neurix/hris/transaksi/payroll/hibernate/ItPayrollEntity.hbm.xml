@@ -47,6 +47,14 @@
         <property name="branchName">
             <column name="branch_name" sql-type="varchar" length="20" not-null="false" />
         </property>
+        <property name="profesiId">
+            <column name="profesi_id" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="profesiName">
+            <column name="profesi_name" sql-type="varchar" length="100" not-null="false" />
+        </property>
+
+
         <property name="point">
             <column name="point" sql-type="integer" length="5" precision="2" not-null="false" />
         </property>

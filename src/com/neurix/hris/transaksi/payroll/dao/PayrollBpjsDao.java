@@ -44,6 +44,9 @@ public class PayrollBpjsDao extends GenericDao<ImPayrollBpjsEntity, String> {
             if (mapCriteria.get("branch_id")!=null) {
                 criteria.add(Restrictions.eq("branchId", (String) mapCriteria.get("branch_id")));
             }
+            if (mapCriteria.get("flag")!=null) {
+                criteria.add(Restrictions.eq("flag", (String) mapCriteria.get("flag")));
+            }
             
         }
 
@@ -68,10 +71,10 @@ public class PayrollBpjsDao extends GenericDao<ImPayrollBpjsEntity, String> {
         return results;
     }
     public String getNextBpjs() throws HibernateException {
-        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_payroll_Bpjs')");
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_payroll_bpjs')");
         Iterator<BigInteger> iter=query.list().iterator();
         String sId = String.format("%05d", iter.next());
-        return "SGPK"+sId;
+        return "BPJS"+sId;
     }
     
 }

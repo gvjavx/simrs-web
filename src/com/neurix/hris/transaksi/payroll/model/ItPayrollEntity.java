@@ -177,7 +177,8 @@ public class ItPayrollEntity implements Serializable {
     private int masaKerjaGol;
     private String golonganDapenId;
     private String golonganDapenName;
-
+    private String profesiId;
+    private String profesiName;
     //tunjangan - tunjangan
     private BigDecimal tambahanLain;
     private BigDecimal tunjanganLain;
@@ -229,6 +230,22 @@ public class ItPayrollEntity implements Serializable {
     //flag baru
     private String flagCutiTahunan;
     private String flagCutiPanjang;
+
+    public String getProfesiId() {
+        return profesiId;
+    }
+
+    public void setProfesiId(String profesiId) {
+        this.profesiId = profesiId;
+    }
+
+    public String getProfesiName() {
+        return profesiName;
+    }
+
+    public void setProfesiName(String profesiName) {
+        this.profesiName = profesiName;
+    }
 
     public String getFlagCutiPanjang() {
         return flagCutiPanjang;

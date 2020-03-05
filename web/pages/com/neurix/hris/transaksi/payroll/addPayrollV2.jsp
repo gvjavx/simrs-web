@@ -347,13 +347,12 @@
                                             <display:column property="nama" sortable="true" title="Nama" />
                                             <display:column property="departmentName" sortable="true" title="Bidang" />
                                             <display:column property="positionName" sortable="true" title="Jabatan" />
-                                            <display:column property="golonganName" sortable="true" title="Golongan" />
+                                            <display:column property="golonganName" sortable="true" title="Level" />
                                             <display:column property="tipePegawaiName" sortable="true" title="Tipe Pegawai" />
                                             <display:column style="text-align:right;" property="gajiKotor" sortable="true" title="Gaji Kotor" />
                                             <display:column style="text-align:right;" property="totalB" sortable="true" title="Potongan" />
                                             <display:column style="text-align:right;" property="pphGaji" sortable="true" title="PPh" />
                                             <display:column style="text-align:right;" property="totalGajiBersih" sortable="true" title="Gaji Bersih" />
-                                            <display:column style="text-align:right;" property="totalRapel" sortable="true" title="Rapel" />
                                             <display:column style="text-align:right;" property="totalThr" sortable="true" title="Thr" />
                                             <display:column style="text-align:right;" property="totalJasProd" sortable="true" title="Jasprod" />
                                             <display:column style="color: #00cc00;" property="tanggalJubileum" sortable="true" title="Jubileum" />
@@ -538,7 +537,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-sm-1" >Golongan</label>
+                            <label class="control-label col-sm-1" >Level</label>
                             <div class="col-sm-1">
                                 <input readonly style="padding-left: 8px; padding-right: 0px" type="text" class="form-control nip" id="golongan" name="nip">
                             </div>
