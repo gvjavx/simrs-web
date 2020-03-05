@@ -557,7 +557,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         return "init_add";
     }
 
-    public HeaderDetailCheckup getStatusBiayaTindakan(String idDetailCheckup) {
+    public HeaderDetailCheckup getStatusBiayaTindakan(String idDetailCheckup, String jenis) {
 
         HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
         detailCheckup.setIdDetailCheckup(idDetailCheckup);
@@ -572,6 +572,15 @@ public class CheckupDetailAction extends BaseMasterAction {
         TransaksiObatBo transaksiObatBo = (TransaksiObatBo) ctx.getBean("transaksiObatBoProxy");
         RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
         OrderGiziBo orderGiziBo = (OrderGiziBo) ctx.getBean("orderGiziBoProxy");
+
+
+        // total biaya for tindakan rawat inap harus approve dulu
+        if ("RI".equalsIgnoreCase(jenis)){
+            HeaderDetailCheckup biayaTindakanRawatInap = getListBiayaForRawatInap(idDetailCheckup);
+            if (biayaTindakanRawatInap.getTarifTindakan() != null && biayaTindakanRawatInap.getTarifTindakan().compareTo(new BigDecimal(0)) == 1){
+                return biayaTindakanRawatInap;
+            }
+        }
 
         List<HeaderDetailCheckup> detailCheckupList = new ArrayList<>();
 
@@ -736,6 +745,55 @@ public class CheckupDetailAction extends BaseMasterAction {
                 //=======END HITUNG TARIF TINDAKAN==========================
             }
 
+        }
+
+        return detailCheckup;
+    }
+
+    public HeaderDetailCheckup getListBiayaForRawatInap(String idDetailCheckup){
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+
+        HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+
+        if (idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)){
+
+            detailCheckup.setIdDetailCheckup(idDetailCheckup);
+
+            BigDecimal totalBiayaTindakan = checkupDetailBo.getSumJumlahTindakan(idDetailCheckup, "");
+
+            List<HeaderDetailCheckup> detailCheckupList = new ArrayList<>();
+
+            try {
+                detailCheckupList = checkupDetailBo.getByCriteria(detailCheckup);
+            } catch (GeneralBOException e) {
+                logger.error("[CheckupDetailAction.getListBiayaForRawatInap] Error When Get Header Checkup Data", e);
+            }
+
+            if (detailCheckupList.size() > 0){
+                HeaderDetailCheckup headerDetailCheckup = detailCheckupList.get(0);
+                if (headerDetailCheckup.getNoCheckup() != null && !"".equalsIgnoreCase(headerDetailCheckup.getNoCheckup())){
+
+                    HeaderCheckup headerCheckup = new HeaderCheckup();
+                    headerCheckup.setNoCheckup(headerDetailCheckup.getNoCheckup());
+
+                    List<HeaderCheckup> headerCheckups = new ArrayList<>();
+                    try {
+                        headerCheckups = checkupBo.getByCriteria(headerCheckup);
+                    } catch (GeneralBOException e) {
+                        logger.error("[CheckupDetailAction.getListBiayaForRawatInap] Error When Get Header Checkup Data", e);
+                    }
+
+                    if (headerCheckups.size() > 0){
+                        HeaderCheckup checkup = headerCheckups.get(0);
+
+                        detailCheckup.setTarifBpjs(checkup.getTarifBpjs());
+                        detailCheckup.setTarifTindakan(totalBiayaTindakan);
+                    }
+                }
+            }
         }
 
         return detailCheckup;

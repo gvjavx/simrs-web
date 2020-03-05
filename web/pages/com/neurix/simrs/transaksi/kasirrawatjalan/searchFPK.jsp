@@ -400,12 +400,12 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="col-md-2" style="margin-top: 7px">No Kartu</label>
-                                    <div class="col-md-10">
-                                        <input type="number" id="no_rekening" style="margin-top: 7px" class="form-control">
-                                    </div>
-                                </div>
+                                <%--<div class="form-group">--%>
+                                    <%--<label class="col-md-2" style="margin-top: 7px">No Kartu</label>--%>
+                                    <%--<div class="col-md-10">--%>
+                                        <%--<input type="number" id="no_rekening" style="margin-top: 7px" class="form-control">--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
                                 <div class="form-group">
                                     <label class="col-md-2" style="margin-top: 7px">No Slip</label>
                                     <div class="col-md-10">
@@ -610,9 +610,9 @@
         var jsonString = JSON.stringify(result);
         var noSlip = $('#no_slip').val();
         var bank = $('#bank').val();
-        var noRekening = $('#no_rekening').val();
+        var noRekening = "";
 
-        if (data != '[]' && noSlip != '' && bank != '' && noRekening != '') {
+        if (data != '[]' && noSlip != '' && bank != '') {
             $('#modal-confirm-dialog').modal('hide');
             $('#waiting_dialog').dialog('open');
             dwr.engine.setAsync(true)

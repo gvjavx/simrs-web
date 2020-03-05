@@ -612,7 +612,7 @@
                             //rawat jalan dengan obat
                             mapBiaya.push({"type": "uang_muka", "nilai": uangMuka});
                             mapBiaya.push({"type": "kas", "nilai": ((total - uangMuka) + totalPpn) });
-                            mapBiaya.push({"type": "pendapatan_rawat_inap_non_bpjs", "nilai": total});
+                            mapBiaya.push({"type": "pendapatan_rawat_inap_non_bpjs", "nilai": total-totalObat});
                             mapBiaya.push({"type": "pendapatan_obat_non_bpjs", "nilai": totalObat});
                             mapBiaya.push({"type": "ppn_keluaran", "nilai": totalPpn });
 

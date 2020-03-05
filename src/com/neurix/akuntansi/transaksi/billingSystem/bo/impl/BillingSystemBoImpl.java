@@ -207,10 +207,6 @@ public class BillingSystemBoImpl implements BillingSystemBo {
 
                 if (data.get("nomor_rekening")!=null){
                     nomorRekeningPembayaran = (String) data.get("nomor_rekening");
-                }else{
-                    status="ERROR : Nomor rekening tidak ada";
-                    logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
-                    throw new GeneralBOException("Found problem "+status+", please info to your admin...");
                 }
 
                 try {
@@ -280,6 +276,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                         }
                     }else{
                         masterId=null;
+                        pasienId=null;
                     }
 
                     ///////////////////////DIGUNAKAN UNTUK PENGECEKAN DAN PENGAMBILAN BUKTI DAN NILAI UNTUK JURNAL BUKAN LIST  //////////////////////////////
@@ -436,6 +433,8 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                                                 logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
                                                 throw new GeneralBOException("Found problem "+status+", please info to your admin...");
                                             }
+                                        }else{
+                                            masterId=null;
                                         }
 
                                         ///////////////////////MEMASUKKAN KE ENTITY  //////////////////////////////

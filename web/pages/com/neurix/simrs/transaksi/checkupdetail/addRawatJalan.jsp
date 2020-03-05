@@ -1517,7 +1517,7 @@
     }
 
     function hitungStatusBiaya() {
-        CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, function (response) {
+        CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, "RJ", function (response) {
             console.log(response);
             if (response.idJenisPeriksaPasien == "bpjs") {
                 $('#status_bpjs').show();

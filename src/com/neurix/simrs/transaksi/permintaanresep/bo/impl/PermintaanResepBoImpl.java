@@ -59,6 +59,7 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
                     permintaanResep.setLastUpdate(resepEntity.getLastUpdate());
                     permintaanResep.setLastUpdateWho(resepEntity.getLastUpdateWho());
                     permintaanResep.setIdDokter(resepEntity.getIdDokter());
+                    permintaanResep.setTujuanPelayanan(resepEntity.getTujuanPelayanan());
 
                     ImSimrsPasienEntity pasienEntity = getDataPasienById(resepEntity.getIdPasien());
                     if (pasienEntity != null) {

@@ -379,7 +379,7 @@ public class UserLoginAction extends ActionSupport {
 
         String result;
         FingerPrint finalResult = new FingerPrint();
-        result= "http://localhost:8080/simrs/pasien/search_pasien.action";
+        result= "http://localhost:8080/simrs/pasien/search_pasien.action?id_pasien="+userId;
         finalResult.setDataResult(result);
         fingerPrint=finalResult;
         logger.info("[BpjsController.prosesRegisterFinger] end process <<<");
@@ -436,7 +436,8 @@ public class UserLoginAction extends ActionSupport {
 
         String result;
         FingerPrint finalResult = new FingerPrint();
-        result= CommonConstant.addRawatPasien+"?idPasien="+userId;
+        String texttipe = ",bpjs";
+        result= CommonConstant.addRawatPasien+"?idPasien="+userId+texttipe;
         finalResult.setDataResult(result);
         fingerPrint=finalResult;
         logger.info("[BpjsController.prosesLoginFinger] end process <<<");

@@ -370,9 +370,11 @@ public class CheckupAction extends BaseMasterAction {
         HeaderCheckup checkup = new HeaderCheckup();
 
         if (getIdPasien() != null && !"".equalsIgnoreCase(getIdPasien())) {
-
+            String[] pasienFinger =idPasien.split(",");
+            setTipe(pasienFinger[1]);
+            tipe=pasienFinger[1];
             Pasien pasien = new Pasien();
-            pasien.setIdPasien(idPasien);
+            pasien.setIdPasien(pasienFinger[0]);
             List<Pasien> pasienList = new ArrayList<>();
 
             try {

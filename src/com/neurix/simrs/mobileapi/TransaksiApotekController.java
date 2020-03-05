@@ -431,7 +431,7 @@ public class TransaksiApotekController implements ModelDriven<Object> {
             TransaksiObatDetail beanTransaksi = new TransaksiObatDetail();
             beanTransaksi.setIdApprovalObat(idApprovalObat);
             beanTransaksi.setBranchId(branchId);
-            beanTransaksi.setFlag("Y");
+//            beanTransaksi.setFlag("Y");
             beanTransaksi.setIdPelayanan(idPelayanan);
 
             try {

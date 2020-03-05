@@ -195,6 +195,7 @@ FROM
           im_akun_report_detail
         WHERE
           report_id = 'RPT01'
+	and flag='Y'
       )
   ) c ON a.rekening_id = c.rekening_id
 order by

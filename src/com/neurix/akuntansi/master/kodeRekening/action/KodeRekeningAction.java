@@ -278,8 +278,9 @@ public class KodeRekeningAction extends BaseMasterAction {
         return listOfsearchKodeRekening;
     }
 
-    public Boolean saveEdit(String id, String kodeRekeningName,String coa, String tipeRekeningId,String tipeEdit){
+    public String saveEdit(String id, String kodeRekeningName,String coa, String tipeRekeningId,String tipeEdit){
         logger.info("[KodeRekeningAction.saveEdit] start process >>>");
+        String status="";
         String userLogin = CommonUtil.userLogin();
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
         KodeRekening edit = new KodeRekening();
@@ -303,17 +304,17 @@ public class KodeRekeningAction extends BaseMasterAction {
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
-                logId = kodeRekeningBo.saveErrorMessage(e.getMessage(), "StrukturJabatanBO.saveEdit");
+                logId = kodeRekeningBo.saveErrorMessage(e.getMessage(), "kodeRekeningBoProxy.saveEdit");
             } catch (GeneralBOException e1) {
                 logger.error("[KodeRekeningAction.saveEdit] Error when saving error,", e1);
-                return false;
+                return status;
             }
             logger.error("[KodeRekeningAction.saveEdit] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-            return false;
+            return status;
         }
         logger.info("[KodeRekeningAction.saveEdit] end process <<<");
-        return true;
+        return status;
     }
     public List<KodeRekening> searchKodeRekening(String coa) {
         logger.info("[KodeRekeningAction.searchKodeRekening] start process >>>");

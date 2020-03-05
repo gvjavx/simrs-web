@@ -880,12 +880,17 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 if (details.size() > 0){
                     for (HeaderDetailCheckup detail : details){
                         BigDecimal nilai = checkupDetailBo.getSumJumlahTindakan(detail.getIdDetailCheckup(), "");
-                        total = total.add(nilai);
+                        BigDecimal nilaiObat = checkupDetailBo.getSumJumlahTindakan(detail.getIdDetailCheckup(), "resep");
+
+                        BigDecimal ppn = nilaiObat.multiply(new BigDecimal(0.1)).setScale(2, BigDecimal.ROUND_HALF_UP);
+                        BigDecimal totalNilai = nilai.add(ppn);
+
+                        total = total.add(totalNilai);
 
                         Map mapKlaim = new HashMap();
                         mapKlaim.put("bukti", detail.getInvoice());
                         mapKlaim.put("pasien_id", fpk.getIdPasien());
-                        mapKlaim.put("nilai", nilai);
+                        mapKlaim.put("nilai", totalNilai);
                         mapListKlaim.add(mapKlaim);
                     }
                 }
@@ -900,10 +905,9 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             mapJurnal.put("piutang_pasien_bpjs", mapListKlaim);
             mapJurnal.put("metode_bayar", "transfer");
             mapJurnal.put("bank", bank);
-            mapJurnal.put("nomor_rekening", noRekeking);
 
             String noJurnal = "";
-            String catatan = "Pembayaran Piutang BPJS Bank "+bank+" No. Rekening "+noRekeking+" No. FPK "+fpkId;
+            String catatan = "Pembayaran Piutang BPJS Bank "+bank+" No. FPK "+fpkId+" No. Slip "+noSlip;
             try {
 
                 noJurnal = billingSystemBo.createJurnal("10", mapJurnal, branchId, catatan, "Y");

@@ -512,6 +512,7 @@ public class RawatInapAction extends BaseMasterAction {
         reportParams.put("resepId", idResep);
         reportParams.put("logo", logo);
         reportParams.put("nik", headerCheckup.getNoKtp());
+        reportParams.put("idPasien", headerCheckup.getIdPasien());
         reportParams.put("nama", headerCheckup.getNama());
         reportParams.put("tglLahir", headerCheckup.getTempatLahir() + ", " + headerCheckup.getStTglLahir().toString());
         if ("L".equalsIgnoreCase(headerCheckup.getJenisKelamin())) {

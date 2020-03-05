@@ -12,6 +12,8 @@ import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
 import com.neurix.simrs.master.obat.bo.ObatBo;
 import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
 import com.neurix.simrs.master.obat.model.Obat;
+import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
+import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.JurnalResponse;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
@@ -797,7 +799,29 @@ public class TransaksiObatAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         TransaksiObatBo transaksiObatBo = (TransaksiObatBo) ctx.getBean("transaksiObatBoProxy");
         BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
+        PermintaanResepBo permintaanResepBo = (PermintaanResepBo) ctx.getBean("permintaanResepBoProxy");
         ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+        PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
+
+        String namaApotek = "";
+        PermintaanResep permintaanResep = new PermintaanResep();
+        permintaanResep.setIdApprovalObat(idApprove);
+        List<PermintaanResep> permintaanReseps = permintaanResepBo.getByCriteria(permintaanResep);
+        if (permintaanReseps.size() > 0){
+            for (PermintaanResep dataPermintaan : permintaanReseps){
+
+                Pelayanan pelayanan = new Pelayanan();
+                pelayanan.setIdPelayanan(dataPermintaan.getTujuanPelayanan());
+                List<Pelayanan> pelayanans = pelayananBo.getByCriteria(pelayanan);
+                if (pelayanans.size() > 0 ){
+                    for (Pelayanan dataPelayanan : pelayanans){
+                        namaApotek = dataPelayanan.getNamaPelayanan();
+                    }
+                }
+            }
+        }
+
+
 
         BigDecimal biayaPersediaan = new BigDecimal(0);
         List<Map> listMapPersediaan = new ArrayList<>();
@@ -835,8 +859,13 @@ public class TransaksiObatAction extends BaseMasterAction {
         mapJurnal.put("persediaan_apotik", listMapPersediaan);
 
         String branchId = CommonUtil.userBranchLogin();
-        String catatan = "Pengeluaran Obat Apotik " + branchId;
+        String branchName = CommonUtil.userBranchNameLogin();
+
+        String catatan = "Pengeluaran Obat "+namaApotek+" "+branchName;
+
+
         String noJurnal = "";
+
         try {
             noJurnal = billingSystemBo.createJurnal("17", mapJurnal, branchId, catatan, "Y");
             response.setNoJurnal(noJurnal);

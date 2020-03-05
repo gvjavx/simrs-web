@@ -203,7 +203,7 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                 "AND c.nama LIKE :nama\n" +
                 "AND a.status LIKE :status\n" +
                 "AND a.tujuan_pelayanan LIKE :idTujuan\n" +
-                "ORDER BY a.tgl_antrian ASC";
+                "ORDER BY a.tgl_antrian DESC";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("isUmum", isUmum)

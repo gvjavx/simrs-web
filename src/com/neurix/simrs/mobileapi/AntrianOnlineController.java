@@ -9,11 +9,14 @@ import com.neurix.simrs.transaksi.antrianonline.bo.AntrianOnlineBo;
 import com.neurix.simrs.transaksi.antrianonline.model.AntianOnline;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
+import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
+import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.opensymphony.xwork2.ModelDriven;
 import org.apache.log4j.Logger;
 import org.apache.struts2.rest.DefaultHttpHeaders;
 import org.apache.struts2.rest.HttpHeaders;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -30,6 +33,7 @@ public class AntrianOnlineController implements ModelDriven<Object> {
     private Collection<HeaderCheckupMobile> listOfHeaderCheckup = new ArrayList<>();
     private AntrianOnlineBo antrianOnlineBoProxy;
     private CheckupBo checkupBoProxy;
+    private CheckupDetailBo checkupDetailBoProxy;
 
     private String idAntrianOnline;
     private String noCheckupOnline;
@@ -43,6 +47,14 @@ public class AntrianOnlineController implements ModelDriven<Object> {
     private String action;
 
     private String idDetailCheckup;
+
+    public CheckupDetailBo getCheckupDetailBoProxy() {
+        return checkupDetailBoProxy;
+    }
+
+    public void setCheckupDetailBoProxy(CheckupDetailBo checkupDetailBoProxy) {
+        this.checkupDetailBoProxy = checkupDetailBoProxy;
+    }
 
     public CheckupBo getCheckupBoProxy() {
         return checkupBoProxy;
@@ -186,6 +198,8 @@ public class AntrianOnlineController implements ModelDriven<Object> {
 
     public HttpHeaders create() {
         logger.info("[AntrianOnlineController.create] start process POST / <<<");
+
+        Timestamp now = new Timestamp(System.currentTimeMillis());
 
         AntianOnline antianOnline = new AntianOnline();
         antianOnline.setIdPelayanan(idPelayanan);

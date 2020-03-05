@@ -1,5 +1,8 @@
 package com.neurix.akuntansi.master.mappingJurnal.bo.impl;
 
+import com.neurix.akuntansi.master.kodeRekening.dao.KodeRekeningDao;
+import com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity;
+import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.master.mappingJurnal.bo.MappingJurnalBo;
 import com.neurix.akuntansi.master.mappingJurnal.dao.MappingJurnalDao;
 import com.neurix.akuntansi.master.mappingJurnal.model.ImMappingJurnalEntity;
@@ -30,6 +33,15 @@ public class MappingJurnalBoImpl implements MappingJurnalBo {
     private MappingJurnalDao mappingJurnalDao;
     private TipeJurnalDao tipeJurnalDao;
     private TransDao transDao;
+    private KodeRekeningDao kodeRekeningDao;
+
+    public KodeRekeningDao getKodeRekeningDao() {
+        return kodeRekeningDao;
+    }
+
+    public void setKodeRekeningDao(KodeRekeningDao kodeRekeningDao) {
+        this.kodeRekeningDao = kodeRekeningDao;
+    }
 
     public TipeJurnalDao getTipeJurnalDao() {
         return tipeJurnalDao;
@@ -148,6 +160,15 @@ public class MappingJurnalBoImpl implements MappingJurnalBo {
 
             // creating object entity serializable
             ImMappingJurnalEntity imMappingJurnalEntity = new ImMappingJurnalEntity();
+            imMappingJurnalEntity.setTipeJurnalId(bean.getTipeJurnalId());
+            imMappingJurnalEntity.setTransId(bean.getTransId());
+            imMappingJurnalEntity.setKodeRekening(bean.getKodeRekening());
+            imMappingJurnalEntity.setPosisi(bean.getPosisi());
+            imMappingJurnalEntity.setMasterId(bean.getMasterId());
+            imMappingJurnalEntity.setBukti(bean.getBukti());
+            imMappingJurnalEntity.setKodeBarang(bean.getKodeBarang());
+            imMappingJurnalEntity.setKirimList(bean.getKirimList());
+            imMappingJurnalEntity.setKeterangan(bean.getKeterangan());
 
             imMappingJurnalEntity.setMappingJurnalId(mappingJurnalId);
             imMappingJurnalEntity.setFlag(bean.getFlag());
@@ -237,7 +258,20 @@ public class MappingJurnalBoImpl implements MappingJurnalBo {
                         returnMappingJurnal.setTransName("");
                     }
                     returnMappingJurnal.setKeterangan(mappingJurnalEntity.getKeterangan());
+                    returnMappingJurnal.setKirimList(mappingJurnalEntity.getKirimList());
                     returnMappingJurnal.setKodeRekening(mappingJurnalEntity.getKodeRekening());
+                    if (mappingJurnalEntity.getKodeRekening()!=null){
+                        List<ImKodeRekeningEntity> kodeRekeningList = new ArrayList<>();
+                        try {
+                            kodeRekeningList = kodeRekeningDao.getIdByCoa(mappingJurnalEntity.getKodeRekening());
+                        } catch (HibernateException e) {
+                            logger.error("[MappingJurnalBoImpl.getSearchMappingJurnalByCriteria] Error, " + e.getMessage());
+                            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                        }
+                        for (ImKodeRekeningEntity kodeRekeningEntity:kodeRekeningList){
+                            returnMappingJurnal.setKodeRekeningName(kodeRekeningEntity.getNamaKodeRekening());
+                        }
+                    }
                     returnMappingJurnal.setMasterId(mappingJurnalEntity.getMasterId());
                     returnMappingJurnal.setKodeBarang(mappingJurnalEntity.getKodeBarang());
                     returnMappingJurnal.setPosisi(mappingJurnalEntity.getPosisi());

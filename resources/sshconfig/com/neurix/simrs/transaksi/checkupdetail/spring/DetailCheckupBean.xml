@@ -33,10 +33,15 @@
           p:tindakanDao-ref="tindakanDao"
           p:antrianOnlineDao-ref="antrianOnlineDao"
           p:uangMukaDao-ref="uangMukaDao"
+          p:dokterDao-ref="dokterDao"
     />
 
     <bean id="checkupController" class="com.neurix.simrs.mobileapi.CheckupController"
         p:checkupDetailBoProxy-ref="checkupDetailBoProxy"
+    />
+
+    <bean id="antrianOnlineController" class="com.neurix.simrs.mobileapi.AntrianOnlineController"
+          p:checkupDetailBoProxy-ref="checkupDetailBoProxy"
     />
 
     <bean id="checkupDetailBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

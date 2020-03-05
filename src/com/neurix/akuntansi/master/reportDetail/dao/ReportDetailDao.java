@@ -56,4 +56,22 @@ public class ReportDetailDao extends GenericDao<ImReportDetailEntity, String> {
         String sId = String.format("%05d", iter.next());
         return "RD"+sId;
     }
+
+    public List<ImReportDetailEntity> getReportDetailByReportIdNRekeningId(String reportId,String rekeningId) {
+        Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ImReportDetailEntity.class);
+        criteria.add(Restrictions.eq("reportId", reportId));
+        criteria.add(Restrictions.eq("rekeningId", rekeningId));
+        // Order by
+        criteria.addOrder(Order.asc("reportDetailId"));
+        List<ImReportDetailEntity> results = criteria.list();
+        return results;
+    }
+    public List<ImReportDetailEntity> getReportDetailByReportId(String reportId) {
+        Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ImReportDetailEntity.class);
+        criteria.add(Restrictions.eq("reportId", reportId));
+        // Order by
+        criteria.addOrder(Order.asc("reportDetailId"));
+        List<ImReportDetailEntity> results = criteria.list();
+        return results;
+    }
 }

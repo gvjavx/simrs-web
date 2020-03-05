@@ -9,6 +9,7 @@ import com.neurix.simrs.master.obat.bo.ObatBo;
 import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
 import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.master.vendor.bo.VendorBo;
+import com.neurix.simrs.master.vendor.model.ImSimrsVendorEntity;
 import com.neurix.simrs.master.vendor.model.Vendor;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.permintaanresep.bo.PermintaanResepBo;
@@ -944,6 +945,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
             PermintaanVendorBo permintaanVendorBo = (PermintaanVendorBo) ctx.getBean("permintaanVendorBoProxy");
             TransaksiObatBo transaksiObatBo = (TransaksiObatBo) ctx.getBean("transaksiObatBoProxy");
             BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
+            VendorBo vendorBo = (VendorBo) ctx.getBean("vendorBoProxy");
 
             // create jurnal
             PermintaanVendor permintaanVendor = new PermintaanVendor();
@@ -952,10 +954,23 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
             String idVendor = "";
             String idApproval = "";
+            String namaVendor = "";
             if (permintaanVendorEntities.size() > 0){
                 for (PermintaanVendor data : permintaanVendorEntities){
                     idVendor = data.getIdVendor();
                     idApproval = data.getIdApprovalObat();
+
+                    if (!"".equalsIgnoreCase(idVendor)){
+                        Vendor vendor = new Vendor();
+                        vendor.setIdVendor(idVendor);;
+
+                        List<Vendor> vendors = vendorBo.getByCriteria(vendor);
+                        if (vendors.size() > 0){
+                            for (Vendor dataVendor : vendors){
+                                namaVendor = dataVendor.getNamaVendor();
+                            }
+                        }
+                    }
                 }
             }
 
@@ -968,23 +983,27 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
                     BigDecimal hargaRata = new BigDecimal(trans.getHarga());
                     BigDecimal hargaTotal = hargaRata.multiply(new BigDecimal(trans.getQtyApprove()));
+                    BigDecimal hargaPpn = hargaTotal.multiply(new BigDecimal(0.1)).setScale(2, BigDecimal.ROUND_HALF_UP);
 
                     // hutang usaha
                     hutangUsaha = hutangUsaha.add(hargaTotal);
 
+                    //ppn
+                    ppn = ppn.add(hargaPpn);
+
                     Map mapHutangUsaha = new HashMap();
                     mapHutangUsaha.put("kd_barang", trans.getIdBarang());
-                    mapHutangUsaha.put("nilai", hargaTotal);
+                    mapHutangUsaha.put("nilai", hargaTotal.subtract(hargaPpn));
                     listMapPersediaan.add(mapHutangUsaha);
                 }
             }
 
             // ppn
-            ppn = hutangUsaha.multiply(new BigDecimal(0.1)).setScale(2, BigDecimal.ROUND_HALF_UP);
+//            ppn = hutangUsaha.multiply(new BigDecimal(0.1)).setScale(2, BigDecimal.ROUND_HALF_UP);
 
             Map mapHutangVendor = new HashMap();
             mapHutangVendor.put("bukti", idPermintaanVendor);
-            mapHutangVendor.put("nilai", hutangUsaha.add(ppn));
+            mapHutangVendor.put("nilai", hutangUsaha);
 
             Map jurnalMap = new HashMap();
             jurnalMap.put("master_id", idVendor);
@@ -992,7 +1011,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
             jurnalMap.put("ppn_masukan", ppn);
             jurnalMap.put("hutang_vendor", mapHutangVendor);
 
-            String catatan = "Penerimaan Barang Gudang dari no vendor : "+idVendor;
+            String catatan = "Penerimaan Barang Gudang dari Vendor "+idVendor+" - "+namaVendor;
 
             String noJurnal = "";
             try {

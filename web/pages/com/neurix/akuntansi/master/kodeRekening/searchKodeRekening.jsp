@@ -284,43 +284,14 @@
                         <label class="control-label col-sm-4" >COA :</label>
                         <div class="col-sm-6">
                             <input type="text" class="form-control" id="kodeRekeningEdit" readonly >
-                            <%--<script>
-                                $(document).ready(function() {
-                                    var functions, mapped;
-                                    $('#kodeRekeningEdit').typeahead({
-                                        minLength: 1,
-                                        source: function (query, process) {
-                                            functions = [];
-                                            mapped = {};
-                                            var data = [];
-                                            dwr.engine.setAsync(false);
-                                            KodeRekeningAction.initTypeaheadKodeRekening(query,function (listdata) {
-                                                data = listdata;
-                                            });
-                                            $.each(data, function (i, item) {
-                                                var labelItem = item.kodeRekening + " | " + item.namaKodeRekening;
-                                                mapped[labelItem] = {
-                                                    id: item.kodeRekening,
-                                                    nama: item.namaKodeRekening
-                                                };
-                                                functions.push(labelItem);
-                                            });
-                                            process(functions);
-                                        },
-                                        updater: function (item) {
-                                            var selectedObj = mapped[item];
-                                            return selectedObj.id;
-                                        }
-                                    });
-                                });
-                            </script>--%>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-4" >Tipe Rekening :</label>
                         <div class="col-sm-6">
-                            <s:select list="#{'00':'Jurnal', '01' : 'Neraca'}" id="tipeRekeningIdEdit"
-                                      headerKey="" headerValue="[Select one]" cssClass="form-control" />
+                            <s:action id="initComboTipeRekening" namespace="/tipeRekening" name="initComboTipeRekening_tipeRekening"/>
+                            <s:select list="#initComboTipeRekening.listOfComboTipeRekening" id="tipeRekeningIdEdit" name="kodeRekening.tipeRekeningId"
+                                      listKey="tipeRekeningId" listValue="tipeRekeningName"  headerKey="" headerValue="[Select one]" cssClass="form-control" cssStyle="margin-top: 7px"/>
                         </div>
                     </div>
                 </s:form>
@@ -372,8 +343,12 @@
             if(id != ''){
                 if (confirm('Are you sure you want to save this Record?')) {
                     KodeRekeningAction.saveEdit(id, "", "", "","delete",function(listdata) {
-                        alert('Record has been delete successfully.');
-                        location.reload();
+                        if (listdata==""){
+                            alert('Record has been delete successfully.');
+                            location.reload();
+                        } else{
+                            alert(listdata);
+                        }
                     });
                 }
             }else{

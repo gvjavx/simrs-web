@@ -1613,8 +1613,8 @@
         // var url_string = window.location.href;
         // var url = new URL(url_string);
         // var tipe = url.searchParams.get("tipe");
-        var tipe = '<s:property value="tipe"/>';
 
+        var tipe = '<s:property value="tipe"/>';
         var option = "";
         CheckupAction.getComboJenisPeriksaPasienWithBpjs(function (response) {
             if (response.length > 0) {
