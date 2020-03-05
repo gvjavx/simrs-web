@@ -566,7 +566,7 @@
                                             <option value=''>[Select One]</option>
                                             <option value='selesai'>Selesai</option>
                                             <option value='pindah'>Pindah Poli Lain</option>
-                                            <option value='rujuk'>Rujuk Rawat Inap</option>
+                                            <%--<option value='rujuk'>Rujuk Rawat Inap</option>--%>
                                         </select>
                                     </div>
                                 </div>
@@ -1654,6 +1654,12 @@
             $("#kamar").attr('style', 'display:none');
             $("#form-selesai").hide();
             $("#form-cekup").hide();
+
+            if(jenisPasien == 'bpjs'){
+                $('#pembayaran').hide();
+            }else{
+                $('#pembayaran').show();
+            }
         }
         if (idKtg == "rujuk") {
             $("#kamar").attr('style', 'display:block');
