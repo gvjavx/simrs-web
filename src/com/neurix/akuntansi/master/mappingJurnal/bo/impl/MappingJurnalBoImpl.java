@@ -126,6 +126,13 @@ public class MappingJurnalBoImpl implements MappingJurnalBo {
                 throw new GeneralBOException("Found problem when searching data MappingJurnal by Kode MappingJurnal, please inform to your admin...," + e.getMessage());
             }
             if (imMappingJurnalEntity != null) {
+                imMappingJurnalEntity.setKodeRekening(bean.getKodeRekening());
+                imMappingJurnalEntity.setPosisi(bean.getPosisi());
+                imMappingJurnalEntity.setMasterId(bean.getMasterId());
+                imMappingJurnalEntity.setBukti(bean.getBukti());
+                imMappingJurnalEntity.setKodeBarang(bean.getKodeBarang());
+                imMappingJurnalEntity.setKirimList(bean.getKirimList());
+                imMappingJurnalEntity.setKeterangan(bean.getKeterangan());
                 imMappingJurnalEntity.setFlag(bean.getFlag());
                 imMappingJurnalEntity.setAction(bean.getAction());
                 imMappingJurnalEntity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -228,6 +235,7 @@ public class MappingJurnalBoImpl implements MappingJurnalBo {
             if(imMappingJurnalEntity != null){
                 MappingJurnal returnMappingJurnal;
                 // Looping from dao to object and save in collection
+                String transId="";
                 for(ImMappingJurnalEntity mappingJurnalEntity : imMappingJurnalEntity){
                     returnMappingJurnal = new MappingJurnal();
                     returnMappingJurnal.setMappingJurnalId(mappingJurnalEntity.getMappingJurnalId());
@@ -273,6 +281,7 @@ public class MappingJurnalBoImpl implements MappingJurnalBo {
                         }
                     }
                     returnMappingJurnal.setMasterId(mappingJurnalEntity.getMasterId());
+                    returnMappingJurnal.setTransId(mappingJurnalEntity.getTransId());
                     returnMappingJurnal.setKodeBarang(mappingJurnalEntity.getKodeBarang());
                     returnMappingJurnal.setPosisi(mappingJurnalEntity.getPosisi());
                     returnMappingJurnal.setBukti(mappingJurnalEntity.getBukti());
@@ -281,6 +290,14 @@ public class MappingJurnalBoImpl implements MappingJurnalBo {
                     returnMappingJurnal.setLastUpdate(mappingJurnalEntity.getLastUpdate());
                     returnMappingJurnal.setAction(mappingJurnalEntity.getAction());
                     returnMappingJurnal.setFlag(mappingJurnalEntity.getFlag());
+
+                    if (!transId.equalsIgnoreCase(mappingJurnalEntity.getTransId())){
+                        transId=mappingJurnalEntity.getTransId();
+                        returnMappingJurnal.setTransBaru(true);
+                    }else{
+                        returnMappingJurnal.setTipeJurnalName("");
+                        returnMappingJurnal.setTransName("");
+                    }
                     listOfResult.add(returnMappingJurnal);
                 }
             }

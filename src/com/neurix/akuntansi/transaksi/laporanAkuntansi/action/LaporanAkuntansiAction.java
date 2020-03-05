@@ -866,14 +866,12 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
                 reportId="RPT14";
                 tipeAging ="pasien";
                 break;
-                default:
-                    titleReport="";
         }
 
         List<Aging> agingList = laporanAkuntansiBo.getAging(unit,periode,dataLaporan.getMasterId(),tipeAging,reportId);
         List<Aging> listOfAgingTemp = new ArrayList<>();
         if (agingList.size()==0){
-            return "error_aging";
+            return "print_report_akuntansi_aging";
         }
         String []jumlahTanggalTahunKabisat = {"","31","29","31","30","31","30","31","31","30","31","30","31"};
         String []jumlahTanggalTahunBiasa = {"","31","28","31","30","31","30","31","31","30","31","30","31"};
@@ -918,7 +916,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
                 }
             }
         }else{
-            return ERROR;
+            return "print_report_akuntansi_aging";
         }
 
         if(listOfAgingTemp.size()>0){
@@ -989,7 +987,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
                 }
             }
         }else{
-            return ERROR;
+            return "print_report_akuntansi_aging";
         }
 
         //JIka list yang akan dicetak di report tidak ada, maka tidak usah dilanjutkan ke pencetakan report
