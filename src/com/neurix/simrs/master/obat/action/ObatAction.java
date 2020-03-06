@@ -445,11 +445,16 @@ public class ObatAction extends BaseMasterAction {
     public List<Obat> searchHargaObat(String idObat){
         logger.info("[PermintaanVendorAction.searchHargaObat] START process <<<");
 
-        Obat obat = getObat();
+        Obat obat = new Obat();
+        obat.setIdObat(idObat);
+        obat.setBranchId(CommonUtil.userBranchLogin());
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
 
         List<Obat> obats = new ArrayList<>();
         try {
-            obats = obatBoProxy.getListHargaObat(obat);
+            obats = obatBo.getListHargaObat(obat);
         } catch (GeneralBOException e){
             logger.error("[ReportAction.searchHargaObat] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
@@ -460,7 +465,7 @@ public class ObatAction extends BaseMasterAction {
         return obats;
     }
 
-    public CrudResponse saveHargaObat(String jsonString) throws JSONException{
+    public CrudResponse saveHargaObat(String idObat, String idBarang, String jsonString) throws JSONException{
 
         CrudResponse response = new CrudResponse();
         String userLogin = CommonUtil.userLogin();
@@ -475,6 +480,8 @@ public class ObatAction extends BaseMasterAction {
         HargaObat hargaObat = new HargaObat();
         for (int i = 0; i < json.length(); i++) {
             JSONObject obj = json.getJSONObject(i);
+            hargaObat.setIdObat(idObat);
+            hargaObat.setIdBarang(idBarang);
             hargaObat.setHargaNet(new BigDecimal(obj.getString("harga_net")));
             hargaObat.setDiskon(new BigDecimal(obj.getString("diskon")));
             hargaObat.setHargaJual(new BigDecimal(obj.getString("harga_jual")));
