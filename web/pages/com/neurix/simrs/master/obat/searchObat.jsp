@@ -164,8 +164,6 @@
                         <table id="myTable" class="table table-bordered table-striped">
                             <thead>
                             <tr bgcolor="#90ee90">
-                                <td>ID Barang</td>
-                                <td width="20%">Expired Date</td>
                                 <td>Nama Obat</td>
                                 <td>Jenis Obat</td>
                                 <td>Lembar/ Box</td>
@@ -179,8 +177,6 @@
                             <tbody>
                             <s:iterator value="#session.listOfResult" status="listOfPeriksaLab" var="row">
                                 <tr>
-                                    <td><s:property value="idBarang"/></td>
-                                    <td><s:if test='#row.expiredDate != null'><script>var tgl = '<s:property value="expiredDate"/>'; if(tgl != null){var format = $.datepicker.formatDate('dd-mm-yy', new Date(tgl)); document.write(format);} </script></s:if></td>
                                     <td><s:property value="namaObat"/></td>
                                     <td><s:property escape="false" value="jenisObat"/></td>
                                     <td><s:property value="lembarPerBox"/></td>
@@ -189,8 +185,8 @@
                                     <td><s:property value="qtyLembar"/></td>
                                     <td><s:property value="qtyBiji"/></td>
                                     <td align="center">
-                                        <%--<img onclick="editObat('<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="flag"/>','<s:property value="qtyBox"/>','<s:property value="qtyLembar"/>','<s:property value="qtyBiji"/>','<s:property value="lembarPerBox"/>','<s:property value="bijiPerLembar"/>','<s:property value="averageHargaBox"/>','<s:property value="averageHargaLembar"/>','<s:property value="averageHargaBiji"/>','<s:property value="idPabrik"/>','<s:property value="merk"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-search-25.png"/>" style="cursor: pointer;">--%>
-                                        <img onclick="editObat('<s:property value="idSeqObat"/>','<s:property value="namaObat"/>','<s:property value="flag"/>','<s:property value="qtyBox"/>','<s:property value="qtyLembar"/>','<s:property value="qtyBiji"/>','<s:property value="lembarPerBox"/>','<s:property value="bijiPerLembar"/>','<s:property value="averageHargaBox"/>','<s:property value="averageHargaLembar"/>','<s:property value="averageHargaBiji"/>','<s:property value="idPabrik"/>','<s:property value="merk"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
+                                        <img onclick="detailObat('<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="flag"/>','<s:property value="lembarPerBox"/>','<s:property value="bijiPerLembar"/>','<s:property value="merk"/>','<s:property value="jenisObat"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-search-25.png"/>" style="cursor: pointer;">
+                                        <%--<img onclick="editObat('<s:property value="idSeqObat"/>','<s:property value="namaObat"/>','<s:property value="flag"/>','<s:property value="qtyBox"/>','<s:property value="qtyLembar"/>','<s:property value="qtyBiji"/>','<s:property value="lembarPerBox"/>','<s:property value="bijiPerLembar"/>','<s:property value="averageHargaBox"/>','<s:property value="averageHargaLembar"/>','<s:property value="averageHargaBiji"/>','<s:property value="idPabrik"/>','<s:property value="merk"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">--%>
                                             <s:url var="print_id_pabrik" namespace="/obat" action="printIDPabrik_obat" escapeAmp="false">
                                                 <s:param name="idPabrik"><s:property value="idPabrik"/></s:param>
                                             </s:url>
@@ -391,6 +387,69 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-detail-obat">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Detail Obat</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <table class="table table-striped">
+                            <tr>
+                                <td width="30%"><b>ID Obat</b></td>
+                                <td><span id="det_id_obat"></span></td>
+                            </tr>
+                            <tr>
+                                <td><b>Nama Obat</b></td>
+                                <td><span id="det_nama_obat"></span></td>
+                            </tr>
+                            <tr>
+                                <td ><b>Jenis Obat</b></td>
+                                <td style="vertical-align: middle"><span id="det_jenis_obat"></span></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <table class="table table-striped">
+                            <tr>
+                                <td width="30%"><b>Merk Obat</b></td>
+                                <td><span id="det_merk_obat"></span></td>
+                            </tr>
+                            <tr>
+                                <td><b>Lembar/Box</b></td>
+                                <td><span id="det_lembar_obat"></span></td>
+                            </tr>
+                            <tr>
+                                <td><b>Biji/Lembar</b></td>
+                                <td><span id="det_biji_obat"></span></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <td>ID Barang</td>
+                        <td>Expired Date</td>
+                        <td>Qty Box</td>
+                        <td>Qty Lembar</td>
+                        <td>Qty Biji</td>
+                    </thead>
+                    <tbody id="body_detail">
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
 
@@ -543,6 +602,48 @@
             alert('id obat kosong');
         }
         return data;
+    }
+
+    function detailObat(idObat, namaObat, flag, lembarPerBox, bijiPerLembar, merk, jenis){
+        if(idObat != null && idObat != ''){
+            $('#det_id_obat').text(idObat);
+            $('#det_nama_obat').text(namaObat);
+            $('#det_jenis_obat').html(jenis);
+            $('#det_merk_obat').text(merk);
+            $('#det_lembar_obat').text(lembarPerBox);
+            $('#det_biji_obat').text(bijiPerLembar);
+
+            var table = "";
+            ObatAction.getListObatDetail(idObat, function (response) {
+                if(response.length > 0){
+                    $.each(response, function (i, item) {
+
+                        table += '<tr>' +
+                                '<td>'+item.idBarang+'</td>'+
+                                '<td>'+formaterDate(item.expiredDate)+'</td>'+
+                                '<td>'+item.qtyBox+'</td>'+
+                                '<td>'+item.qtyLembar+'</td>'+
+                                '<td>'+item.qtyBiji+'</td>'+
+                                '</tr>'
+                    });
+
+                    $('#body_detail').html(table);
+                }else{
+
+                }
+            });
+            $('#modal-detail-obat').modal({show:true, backdrop:'static'});
+        }
+    }
+
+    function formaterDate(tanggal){
+        var tgl = "";
+
+        if(tanggal != null && tanggal != ''){
+            tgl = $.datepicker.formatDate("dd-mm-yy", new Date(tanggal));
+        }
+
+        return tgl;
     }
 
 </script>

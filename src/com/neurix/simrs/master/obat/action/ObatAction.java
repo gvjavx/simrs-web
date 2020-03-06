@@ -121,7 +121,7 @@ public class ObatAction extends BaseMasterAction {
 
         List<Obat> obatList = new ArrayList<>();
         try {
-            obatList = obatBoProxy.getByCriteria(obat);
+            obatList = obatBoProxy.getListObatByGroup(obat);
         } catch (HibernateException e){
             logger.error("[ObatAction.search] ERROR when get data list obat, ", e);
             addActionError("[ObatAction.search] ERROR when get data list obat, "+e.getMessage());
@@ -495,6 +495,27 @@ public class ObatAction extends BaseMasterAction {
             return response;
         }
         return response;
+    }
+
+    public List<Obat> getListObatDetail(String idObat){
+        List<Obat> obatList = new ArrayList<>();
+
+        if(idObat != null && !"".equalsIgnoreCase(idObat)){
+
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+            Obat obat = new Obat();
+            obat.setIdObat(idObat);
+            obat.setBranchId(CommonUtil.userBranchLogin());
+
+            try {
+                obatList = obatBo.getListObatDetail(obat);
+            }catch (GeneralBOException e){
+                logger.error("Found Error when search by id Obat "+e.getMessage());
+            }
+        }
+
+        return obatList;
     }
 
 }
