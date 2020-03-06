@@ -1491,22 +1491,39 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
     // -------------------------------------------------------------------------------------//
     //------------------------------------END JASPROD---------------------------------------//
     //--------------------------------------------------------------------------------------//
-    public BigDecimal hitungIuranBpjs(BigDecimal dasarPerhitunganBpjs, BigDecimal minBpjs, BigDecimal maxBpjs, Double percent){
+    public BigDecimal hitungIuranBpjs(BigDecimal dasarPerhitunganBpjs,Double percent){
         BigDecimal hasil = new BigDecimal(0);
-        int greater, smaller;
-        //membandingkan gaji + sankhus dengan batas min max bpjs ks
-        greater = dasarPerhitunganBpjs.compareTo(maxBpjs);
-        smaller = dasarPerhitunganBpjs.compareTo(minBpjs);
+        hasil = CommonUtil.percentage(dasarPerhitunganBpjs, BigDecimal.valueOf(percent));
+        return hasil;
+    }
+    public BigDecimal hitungIuranBpjsTk(BigDecimal dasar, String branchId,String jenis){
+        BigDecimal hasil = new BigDecimal(0);
+        BigDecimal iuran = new BigDecimal(0);
+        BigDecimal jpk = new BigDecimal(0);
+        Integer greater, smaller;
+
+        ImPayrollBpjsEntity bpjs = new ImPayrollBpjsEntity();
+        bpjs = payrollBpjsDao.getById("branchId", branchId);
+
+        greater = dasar.compareTo(bpjs.getMaxBpjsTk());
+        smaller = dasar.compareTo(bpjs.getMinBpjsTk());
 
         if (smaller == 0 || smaller == 1) {
             if (greater == 0 || greater == 1) {
-                dasarPerhitunganBpjs = maxBpjs;
+                dasar = bpjs.getMaxBpjsTk();
             }
         } else {
-            dasarPerhitunganBpjs = minBpjs;
+            dasar = bpjs.getMinBpjsTk();
         }
-        hasil = CommonUtil.percentage(dasarPerhitunganBpjs, BigDecimal.valueOf(percent));
-
+        if (jenis.equalsIgnoreCase("kary")){
+            iuran = CommonUtil.percentage(dasar, BigDecimal.valueOf(bpjs.getIuranKary()));
+            jpk = CommonUtil.percentage(dasar, BigDecimal.valueOf(bpjs.getJpkKary()));
+            hasil = iuran.add(jpk);
+        }else{
+            iuran = CommonUtil.percentage(dasar, BigDecimal.valueOf(bpjs.getIuranPers()));
+            jpk = CommonUtil.percentage(dasar, BigDecimal.valueOf(bpjs.getJpkPers()));
+            hasil = iuran.add(jpk);
+        }
         return hasil;
     }
     @Override
@@ -1931,12 +1948,12 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                         ImPayrollBpjsEntity payrollBpjsEntity = new ImPayrollBpjsEntity();
                         payrollBpjsEntity = payrollBpjsDao.getById("branchId", payrollEntity.getBranchId());
                         //Bpjs Ks
-                        iuranBpjsKsKary = hitungIuranBpjs(dasarPerhitunganBpjs, payrollBpjsEntity.getMinBpjsKs(),payrollBpjsEntity.getMaxBpjsKs(),payrollBpjsEntity.getIuranBpjsKsKaryPersen());
-                        iuranBpjsKsPers = hitungIuranBpjs(dasarPerhitunganBpjs, payrollBpjsEntity.getMinBpjsKs(),payrollBpjsEntity.getMaxBpjsKs(),payrollBpjsEntity.getIuranBpjsKsPersPersen());
+                        iuranBpjsKsKary = hitungIuranBpjs(dasarPerhitunganBpjs, payrollBpjsEntity.getIuranBpjsKsKaryPersen());
+                        iuranBpjsKsPers = hitungIuranBpjs(dasarPerhitunganBpjs, payrollBpjsEntity.getIuranBpjsKsPersPersen());
 
                         //Bpjs Tk
-                        iuranBpjsTkKary = hitungIuranBpjs(dasarPerhitunganBpjs, payrollBpjsEntity.getMinBpjsTk(),payrollBpjsEntity.getMaxBpjsTk(),payrollBpjsEntity.getIuranBpjsTkKaryPersen());
-                        iuranBpjsTkPers = hitungIuranBpjs(dasarPerhitunganBpjs, payrollBpjsEntity.getMinBpjsKs(),payrollBpjsEntity.getMaxBpjsKs(),payrollBpjsEntity.getIuranBpjsTkPersPersen());
+                        iuranBpjsTkKary = hitungIuranBpjsTk(dasarPerhitunganBpjs, payrollEntity.getBranchId(), "kary");
+                        iuranBpjsTkPers = hitungIuranBpjsTk(dasarPerhitunganBpjs, payrollEntity.getBranchId(), "pers");
 
                         //perhitungan iuran pensiun
                         if (payrollEntity.getDanaPensiun() != null) {
@@ -20965,6 +20982,9 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
             //menghiitung bruto
             bruto = hitungBrutoSebulanSimRs(gaji,tunjPph,tunjLain,bonus);
             //menghitung netto
+            if ((CommonUtil.percentage(bruto, BigDecimal.valueOf(5))).compareTo(BigDecimal.valueOf(500000))<1){
+                biayaJabatan = CommonUtil.percentage(bruto, BigDecimal.valueOf(5));
+            }
             netto = hitungNettoSebulanSimRs(bruto,iuranPegawai, biayaJabatan);
             //menghitung pkp
             pkp = hitungPkpSetahunSimRs(netto,ptkp, bonus);

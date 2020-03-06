@@ -353,10 +353,10 @@
                                             <display:column style="text-align:right;" property="totalB" sortable="true" title="Potongan" />
                                             <display:column style="text-align:right;" property="pphGaji" sortable="true" title="PPh" />
                                             <display:column style="text-align:right;" property="totalGajiBersih" sortable="true" title="Gaji Bersih" />
-                                            <display:column style="text-align:right;" property="totalThr" sortable="true" title="Thr" />
+                                            <%--<display:column style="text-align:right;" property="totalThr" sortable="true" title="Thr" />
                                             <display:column style="text-align:right;" property="totalJasProd" sortable="true" title="Jasprod" />
                                             <display:column style="color: #00cc00;" property="tanggalJubileum" sortable="true" title="Jubileum" />
-                                            <display:column style="color: red;" property="stTanggalPensiun" sortable="true" title="Pensiun" />
+                                            <display:column style="color: red;" property="stTanggalPensiun" sortable="true" title="Pensiun" />--%>
                                             <%--<display:column style="text-align:center;" media="html" title="Promosi">
                                                 <s:if test="#attr.row.flagPromosiOn">
                                                     <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-promosi">
