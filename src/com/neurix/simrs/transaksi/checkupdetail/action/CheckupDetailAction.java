@@ -740,6 +740,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                 //=======START HITUNG TARIF TINDAKAN==========================
 
                 detailCheckup.setTarifBpjs(detailCheckup.getTarifBpjs());
+                detailCheckup.setKodeCbg(detailCheckup.getKodeCbg());
                 detailCheckup.setTarifTindakan(totalTarifTindakan);
 
                 //=======END HITUNG TARIF TINDAKAN==========================
@@ -790,6 +791,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                         HeaderCheckup checkup = headerCheckups.get(0);
 
                         detailCheckup.setTarifBpjs(checkup.getTarifBpjs());
+                        detailCheckup.setKodeCbg(checkup.getKodeCbg());
                         detailCheckup.setTarifTindakan(totalBiayaTindakan);
                     }
                 }

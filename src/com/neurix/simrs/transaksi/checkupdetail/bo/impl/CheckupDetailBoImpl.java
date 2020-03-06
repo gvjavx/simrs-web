@@ -157,6 +157,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             detailCheckup.setNoSep(entity.getNoSep());
             detailCheckup.setInvoice(entity.getInvoice());
             detailCheckup.setNoJurnal(entity.getNoJurnal());
+            detailCheckup.setKodeCbg(entity.getKodeCbg());
 
             if (detailCheckup.getStatusPeriksa() != null && !"".equalsIgnoreCase(detailCheckup.getStatusPeriksa())) {
                 StatusPasien statusPasien = new StatusPasien();

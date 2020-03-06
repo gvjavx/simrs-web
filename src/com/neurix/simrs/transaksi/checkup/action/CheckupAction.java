@@ -934,6 +934,9 @@ public class CheckupAction extends BaseMasterAction {
                                         if (!"".equalsIgnoreCase(grouping1Response.getCbgTarif()) && grouping1Response.getCbgTarif() != null) {
                                             if (!"0".equalsIgnoreCase(grouping1Response.getCbgTarif())) {
                                                 tarifCbg = new BigDecimal(grouping1Response.getCbgTarif());
+
+                                                //=====kode CBG INA=======
+                                                checkup.setKodeCbg(grouping1Response.getCbgCode());
                                             }
                                         }
 
@@ -1006,11 +1009,19 @@ public class CheckupAction extends BaseMasterAction {
         try {
 
             try {
-                JSONObject obj = new JSONObject(checkup.getAdmisi());
-                checkup.setKetKeyakinan(obj.getString("keyakinan"));
-                checkup.setBahasa(obj.getString("penerjemah"));
-                checkup.setAlatBantu(obj.getString("alatBantu"));
-                checkup.setAlergi(obj.getString("alergi"));
+                List<Asesmen> asesmenList = new ArrayList<>();
+                if(checkup.getAdmisi() != null && !"".equalsIgnoreCase(checkup.getAdmisi())){
+                    JSONArray json = new JSONArray(checkup.getAdmisi());
+                    for (int i=0; i < json.length(); i++){
+                        JSONObject obj = json.getJSONObject(i);
+                        Asesmen asesmen = new Asesmen();
+                        asesmen.setParameter(obj.getString("parameter"));
+                        asesmen.setJawaban(obj.getString("jawaban"));
+                        asesmen.setKeterangan(obj.getString("keterangan"));
+                        asesmenList.add(asesmen);
+                    }
+                }
+                checkup.setAsesmenList(asesmenList);
             } catch (JSONException e) {
                 logger.error("[CheckupAction.saveAdd] Error Convert json to data admisi.", e);
             }
@@ -1043,12 +1054,6 @@ public class CheckupAction extends BaseMasterAction {
             checkup.setStatusPeriksa("0");
             checkup.setNoSep(genNoSep);
             checkup.setTindakanList(tindakans);
-
-            // if uang muka is null or uang muka is 0 then generate invoice
-//            if (checkup.getUangMuka() == null || checkup.getUangMuka().compareTo(new BigInteger(String.valueOf(0))) == 0){
-//                checkup.setNoNota(createJurnalUangMuka(checkup.getIdPasien(), "0"));
-//            }
-//                checkup.setUrlKtp(checkup.getUrlKtp());
 
             if (this.fileUploadDoc != null) {
                 if ("image/jpeg".equalsIgnoreCase(this.fileUploadDocContentType)) {
