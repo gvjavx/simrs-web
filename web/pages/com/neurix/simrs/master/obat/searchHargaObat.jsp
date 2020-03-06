@@ -161,7 +161,7 @@
                         <table id="myTable" class="table table-bordered table-striped">
                             <thead>
                             <tr bgcolor="#90ee90">
-                                <td>Id Obat</td>
+                                <td>ID Obat</td>
                                 <td>Nama Obat</td>
                                 <td>Merk</td>
                                 <td>Harga Rata-rata (Bijian)</td>
@@ -221,31 +221,34 @@
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                     <p id="msg_exits"></p>
                 </div>
-                <div class="row">
+                <div class="row" style="margin-top: 7px">
                     <div class="form-group">
-                        <label class="col-md-5" style="margin-top: 7px">Id Obat</label>
+                        <label class="col-md-5" style="margin-top: 7px">ID Obat</label>
                         <div class="col-md-7">
-                            <span id="mod-id-obat"></span>
+                            <input id="mod-id-obat" class="form-control" readonly="true">
+                            <%--<span id="mod-id-obat"></span>--%>
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" style="margin-top: 7px">
                     <div class="form-group">
                         <label class="col-md-5" style="margin-top: 7px">Nama Obat</label>
                         <div class="col-md-7">
-                            <span id="mod-nama-obat"></span>
+                            <input id="mod-nama-obat" class="form-control" readonly="true">
+                            <%--<span id="mod-nama-obat"></span>--%>
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" style="margin-top: 7px">
                     <div class="form-group">
                         <label class="col-md-5" style="margin-top: 7px">Merek</label>
                         <div class="col-md-7">
-                            <span id="mod-merk"></span>
+                            <input id="mod-merk" class="form-control" readonly="true">
+                            <%--<span id=""></span>--%>
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" style="margin-top: 7px">
                     <div class="form-group">
                         <label class="col-md-5" style="margin-top: 7px">Harga Rata-Rata (Bijian)</label>
                         <div class="col-md-7">
@@ -253,7 +256,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" style="margin-top: 7px">
                     <div class="form-group">
                         <label class="col-md-5" style="margin-top: 7px">Harga Net</label>
                         <div class="col-md-7">
@@ -261,7 +264,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" style="margin-top: 7px">
                     <div class="form-group">
                         <label class="col-md-5" style="margin-top: 7px">Diskon</label>
                         <div class="col-md-7">
@@ -269,7 +272,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" style="margin-top: 7px">
                     <div class="form-group">
                         <label class="col-md-5" style="margin-top: 7px">Harga Jual</label>
                         <div class="col-md-7">
@@ -342,9 +345,9 @@
         ObatAction.searchHargaObat(id, function (response) {
            if (response.length > 0){
                $.each(response, function(i, item){
-                   $("#mod-id-obat").text(item.idObat);
-                   $("#mod-nama-obat").text(item.namaObat);
-                   $("#mod-merk").text(item.merk);
+                   $('#mod-id-obat').val(item.idObat);
+                   $("#mod-nama-obat").val(item.namaObat);
+                   $("#mod-merk").val(item.merk);
                    $("#mod-harga-rata").val(item.averageHargaBiji);
                    $("#mod-harga-net").val(item.hargaNet);
                    $("#mod-diskon").val(item.diskon);

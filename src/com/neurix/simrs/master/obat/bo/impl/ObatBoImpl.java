@@ -20,6 +20,7 @@ import com.neurix.simrs.transaksi.transaksiobat.dao.TransaksiObatDetailBatchDao;
 import com.neurix.simrs.transaksi.transaksiobat.model.MtSimrsTransaksiObatDetailBatchEntity;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatBatch;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
+import javafx.collections.ObservableList;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -350,53 +351,45 @@ public class ObatBoImpl implements ObatBo {
     }
 
     @Override
-    public void saveEdit(Obat bean, List<String> idJenisObats) throws GeneralBOException {
+    public CheckObatResponse saveEdit(Obat bean, List<String> idJenisObats) throws GeneralBOException {
         logger.info("[ObatBoImpl.saveEdit] Start >>>>>>>");
 
-//        List<ImSimrsObatEntity> obatEntities = getListEntityObat(bean);
-
-//        if (!obatEntities.isEmpty() && obatEntities.size() > 0)
-//        {
-//            ImSimrsObatEntity obatEntity = obatEntities.get(0);
+        CheckObatResponse response = new CheckObatResponse();
 
         if (bean != null) {
 
-            ImSimrsObatEntity obatEntity = new ImSimrsObatEntity();
+            Obat obat = new Obat();
+            obat.setIdObat(bean.getIdObat());
+            List<ImSimrsObatEntity> entityList = getListObatEntity(obat);
 
-            try {
-                obatEntity = obatDao.getById("idSeqObat", bean.getIdSeqObat());
-            } catch (HibernateException e) {
-                logger.error("Found Error when update obat " + e.getMessage());
-            }
+            if(entityList.size()>0){
+                for (ImSimrsObatEntity obatEntity: entityList){
 
-            if (obatEntity != null) {
+                    obatEntity.setNamaObat(bean.getNamaObat());
+                    obatEntity.setLastUpdate(bean.getLastUpdate());
+                    obatEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    obatEntity.setLembarPerBox(bean.getLembarPerBox());
+                    obatEntity.setBijiPerLembar(bean.getBijiPerLembar());
+                    obatEntity.setIdPabrik(bean.getIdPabrik());
+                    obatEntity.setMerk(bean.getMerk());
+                    obatEntity.setAction(bean.getAction());
 
-                obatEntity.setNamaObat(bean.getNamaObat());
-                obatEntity.setQty(bean.getQty());
-                obatEntity.setHarga(bean.getHarga());
-                obatEntity.setLastUpdate(bean.getLastUpdate());
-                obatEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                obatEntity.setQtyBox(bean.getQtyBox());
-                obatEntity.setLembarPerBox(bean.getLembarPerBox());
-                obatEntity.setQtyLembar(bean.getQtyLembar());
-                obatEntity.setBijiPerLembar(bean.getBijiPerLembar());
-                obatEntity.setQtyBiji(bean.getQtyBiji());
-                obatEntity.setAverageHargaBox(bean.getAverageHargaBox());
-                obatEntity.setAverageHargaLembar(bean.getAverageHargaLembar());
-                obatEntity.setAverageHargaBiji(bean.getAverageHargaBiji());
-                obatEntity.setIdPabrik(bean.getIdPabrik());
-                obatEntity.setMerk(bean.getMerk());
-
-                try {
-                    obatDao.updateAndSave(obatEntity);
-                } catch (HibernateException e) {
-                    logger.error("[ObatBoImpl.saveEdit] error when update data obat " + e.getMessage());
-                    throw new GeneralBOException("[ObatBoImpl.saveEdit] error when update data obat " + e.getMessage());
+                    try {
+                        obatDao.updateAndSave(obatEntity);
+                        response.setStatus("success");
+                        response.setMessage("Berhasil");
+                    } catch (HibernateException e) {
+                        response.setStatus("error");
+                        response.setMessage("Found Error when update obat "+e.getMessage());
+                        logger.error("[ObatBoImpl.saveEdit] error when update data obat " + e.getMessage());
+                        throw new GeneralBOException("[ObatBoImpl.saveEdit] error when update data obat " + e.getMessage());
+                    }
                 }
-
-                updateObatGejala(idJenisObats, obatEntity.getIdObat());
+                updateObatGejala(idJenisObats, bean.getIdObat());
             }
         }
+
+        return response;
     }
 
     @Override

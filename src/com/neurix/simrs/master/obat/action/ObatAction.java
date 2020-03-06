@@ -284,8 +284,9 @@ public class ObatAction extends BaseMasterAction {
         return checkObatResponse;
     }
 
-    public String editObat(String idObat, String namaObat, List<String> jenisObat, String merek, String pabrik, BigInteger box, BigInteger lembarBox, BigInteger lembar, BigInteger bijiLembar, BigInteger biji, BigDecimal hargaBox, BigDecimal hargaLembar, BigDecimal hargaBiji){
+    public CheckObatResponse editObat(String idObat, String namaObat, List<String> jenisObat, String merek, String pabrik, BigInteger lembarBox,BigInteger bijiLembar){
         logger.info("[ObatAction.saveObatInap] start process >>>");
+        CheckObatResponse response = new CheckObatResponse();
         try {
             String userLogin = CommonUtil.userLogin();
             String userArea = CommonUtil.userBranchLogin();
@@ -295,34 +296,29 @@ public class ObatAction extends BaseMasterAction {
             ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
 
             Obat obat = new Obat();
-            obat.setIdSeqObat(idObat);
+            obat.setIdObat(idObat);
             obat.setNamaObat(namaObat);
-            obat.setQtyBox(box);
-            obat.setQtyLembar(lembar);
-            obat.setQtyBiji(biji);
             obat.setMerk(merek);
             obat.setIdPabrik(pabrik);
             obat.setLembarPerBox(lembarBox);
             obat.setBijiPerLembar(bijiLembar);
-            obat.setAverageHargaBox(hargaBox);
-            obat.setAverageHargaLembar(hargaLembar);
-            obat.setAverageHargaBiji(hargaBiji);
             obat.setLastUpdate(updateTime);
             obat.setLastUpdateWho(userLogin);
             obat.setBranchId(userArea);
             obat.setAction("U");
 
-            obatBo.saveEdit(obat, jenisObat);
+            response = obatBo.saveEdit(obat, jenisObat);
 
         }catch (GeneralBOException e) {
             Long logId = null;
             logger.error("[ObatInapAction.saveObatInap] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            response.setStatus("error");
+            response.setMessage("Found Error when save edit obat "+e.getMessage());
         }
 
         logger.info("[ObatAction.saveObatInap] end process >>>");
-        return SUCCESS;
+        return response;
     }
 
     public List<Obat> getJenisObatByIdObat(String idObat){

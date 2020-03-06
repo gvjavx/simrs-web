@@ -66,12 +66,6 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                 criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
             }
 
-
-
-//            criteria.add(Restrictions.ne("qtyBox", new BigInteger(String.valueOf(0))));
-//            criteria.add(Restrictions.ne("qtyLembar", new BigInteger(String.valueOf(0))));
-//            criteria.add(Restrictions.ne("qtyBiji", new BigInteger(String.valueOf(0))));
-
             if (mapCriteria.get("asc") != null){
                 criteria.addOrder(Order.asc("createdDate"));
             } else if (mapCriteria.get("desc") != null){
@@ -508,7 +502,7 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                     "b.nama_jenis_obat \n" +
                     "FROM im_simrs_obat_gejala a\n" +
                     "INNER JOIN im_simrs_jenis_obat b ON a.id_jenis_obat = b.id_jenis_obat\n" +
-                    "WHERE a.id_obat = :id";
+                    "WHERE a.id_obat = :id AND a.flag = 'Y' ";
 
             List<Object[]> resuts = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("id", idObat)
