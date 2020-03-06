@@ -359,6 +359,32 @@
                             </tbody>
                         </table>
                     </div>
+
+                    <%--<s:if test='rawatInap.idJenisPeriksa == "bpjs"'>--%>
+                        <%--<div class="box-header with-border" id="pos_tindakan">--%>
+                        <%--</div>--%>
+                        <%--<div class="box-header with-border">--%>
+                            <%--<h3 class="box-title"><i class="fa fa-stethoscope"></i> Tindakan BPJS</h3>--%>
+                        <%--</div>--%>
+                        <%--<div class="box-body">--%>
+                            <%--<button class="btn btn-success btn-outline" style="margin-bottom: 10px;"--%>
+                                    <%--onclick="showModal(8)"><i class="fa fa-plus"></i> Tambah Tindakan BPJS--%>
+                            <%--</button>--%>
+                            <%--<table class="table table-bordered table-striped">--%>
+                                <%--<thead>--%>
+                                <%--<tr bgcolor="#90ee90">--%>
+                                    <%--<td>ID (ICS 9)</td>--%>
+                                    <%--<td>Nama Tindakan</td>--%>
+                                    <%--<td align="center">Action</td>--%>
+                                <%--</tr>--%>
+                                <%--</thead>--%>
+                                <%--<tbody id="body_tindakan_bpjs">--%>
+                                <%--</tbody>--%>
+                            <%--</table>--%>
+                        <%--</div>--%>
+                    <%--</s:if>--%>
+
+
                     <div id="status_bpjs" style="display: none">
                         <div class="box-header with-border">
                         </div>
@@ -918,6 +944,85 @@
                         class="fa fa-arrow-right"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_diagnosa">
+                    <i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-tindakan-bpjs">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-stethoscope"></i> Tambah Tindakan BPJS</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning-tindakan-bpjs">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    Silahkan cek kembali data inputan!
+                </div>
+                <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3">Tindakan BPJS</label>
+                            <div class="col-md-7">
+                                <s:textfield id="tindakan-bpjs" style="margin-top: 7px"
+                                             name="headerCheckup.tindakanBpjs"
+                                             onkeypress="$(this).css('border','')"
+                                             cssClass="form-control" required="false"/>
+                                <script>
+                                    var menus, mapped;
+                                    $('#tindakan-bpjs').typeahead({
+                                        minLength: 3,
+                                        source: function (query, process) {
+                                            menus = [];
+                                            mapped = {};
+
+                                            var data = [];
+                                            dwr.engine.setAsync(false);
+                                            CheckupAction.getListTindakanBpjs(query, function (listdata) {
+                                                data = listdata;
+                                            });
+
+                                            $.each(data, function (i, item) {
+                                                var labelItem = item.namaTindakanBpjs;
+                                                mapped[labelItem] = {
+                                                    id: item.kodeTindakanBpjs,
+                                                    label: labelItem,
+                                                    name: item.namaTindakanBpjs
+                                                };
+                                                menus.push(labelItem);
+                                            });
+
+                                            process(menus);
+                                        },
+                                        updater: function (item) {
+                                            var selectedObj = mapped[item];
+                                            // insert to textarea diagnosa_ket
+                                            $("#tindakan-bpjs-ket").val(selectedObj.name);
+                                            return selectedObj.id;
+                                        }
+                                    });
+                                </script>
+                            </div>
+                            <div class="col-md-offset-3 col-md-7">
+                                <s:textarea rows="4" id="tindakan-bpjs-ket"
+                                            cssStyle="margin-top: 7px" readonly="true"
+                                            name="headerCheckup.namaTindakanBpjs"
+                                            cssClass="form-control"></s:textarea>
+                            </div>
+                        </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save-tindakan-bpjs"><i
+                        class="fa fa-arrow-right"></i> Save
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load-tindakan-bpjs">
                     <i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
             </div>
@@ -2741,6 +2846,8 @@
             $('#resep_nama_obat').attr("onchange", "var warn =$('#war_rep_obat').is(':visible'); if (warn){$('#cor_rep_obat').show().fadeOut(3000);$('#war_rep_obat').hide()}; setStokObatApotek(this)");
             $('#body_detail').html('');
             $('#modal-resep-head').modal('show');
+        } else if (select == 8){
+            $('#modal-tindakan-bpjs').modal('show');
         }
     }
 

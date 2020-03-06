@@ -65,6 +65,7 @@ import com.neurix.simrs.transaksi.teamdokter.model.ItSimrsDokterTeamEntity;
 import com.neurix.simrs.transaksi.tindakanrawat.dao.TindakanRawatDao;
 import com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity;
 import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
+import com.neurix.simrs.transaksi.transaksitindakanbpjs.dao.TransaksiTindakanBpjsDao;
 import com.neurix.simrs.transaksi.transfusi.dao.TranfusiDao;
 import com.neurix.simrs.transaksi.transfusi.model.ItSimrsTranfusiEntity;
 import org.apache.log4j.Logger;
@@ -117,10 +118,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
     private UangMukaDao uangMukaDao;
     private AntrianOnlineDao antrianOnlineDao;
     private AsesmenDao asesmenDao;
-
-    public void setAsesmenDao(AsesmenDao asesmenDao) {
-        this.asesmenDao = asesmenDao;
-    }
+    private TransaksiTindakanBpjsDao transaksiTindakanBpjsDao;
 
     @Override
     public List<HeaderCheckup> getByCriteria(HeaderCheckup bean) throws GeneralBOException {
@@ -2060,5 +2058,13 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
 
     public void setAntrianOnlineDao(AntrianOnlineDao antrianOnlineDao) {
         this.antrianOnlineDao = antrianOnlineDao;
+    }
+
+    public void setTransaksiTindakanBpjsDao(TransaksiTindakanBpjsDao transaksiTindakanBpjsDao) {
+        this.transaksiTindakanBpjsDao = transaksiTindakanBpjsDao;
+    }
+
+    public void setAsesmenDao(AsesmenDao asesmenDao) {
+        this.asesmenDao = asesmenDao;
     }
 }

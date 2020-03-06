@@ -530,7 +530,7 @@
                                                     onchange="var warn =$('#war_catatan').is(':visible'); if (warn){$('#cor_catatan').show().fadeOut(3000);$('#war_catatan').hide()}; selectKeterangan(this)">
                                                 <option value=''>[Select One]</option>
                                                 <option value='selesai'>Selesai</option>
-                                                <option value='pindah'>Pindah Poli Lain</option>
+                                                <%--<option value='pindah'>Pindah Poli Lain</option>--%>
                                                 <option value='rujuk'>Rujuk Rawat Inap</option>
                                             </select>
                                         </div>

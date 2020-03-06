@@ -468,6 +468,7 @@
       <convert converter="bean" match="com.neurix.simrs.bpjs.vclaim.model.DiagnosaResponse"/>
       <convert converter="bean" match="com.neurix.simrs.bpjs.vclaim.model.PesertaResponse"/>
       <convert converter="bean" match="com.neurix.simrs.bpjs.vclaim.model.RujukanResponse"/>
+      <convert converter="bean" match="com.neurix.simrs.bpjs.vclaim.model.TindakanResponse"/>
 
 
       <!--AKUNTANSI-->
