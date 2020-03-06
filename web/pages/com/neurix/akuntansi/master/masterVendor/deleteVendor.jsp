@@ -16,14 +16,11 @@
         };
 
         $.subscribe('beforeProcessSave', function (event, data) {
-            var transId = document.getElementById("transIdEdit").value;
-            var transName    = document.getElementById("transNameEdit").value;
-
-            if (transId != '' && transName != '') {
-                if (confirm('Do you want to save this record?')) {
+            var idVendor = document.getElementById("vendorIdDelete").value;
+            if (idVendor != '' ) {
+                if (confirm('Do you want to Delete this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
-
                 } else {
                     // Cancel Submit comes with 1.8.0
                     event.originalEvent.options.submit = false;
@@ -31,15 +28,10 @@
             } else {
                 event.originalEvent.options.submit = false;
                 var msg = "";
-                if (transId == '') {
-                    msg += 'Field <strong>Transaksi ID</strong> not found.' + '<br/>';
-                }
-
-                if (transName == '') {
-                    msg += 'Field <strong>Nama Transaksi</strong> is required.' + '<br/>';
+                if (idVendor == '') {
+                    msg += 'Field <strong>Vendor ID</strong> not found.' + '<br/>';
                 }
                 document.getElementById('errorValidationMessage').innerHTML = msg;
-
                 $.publish('showErrorValidationDialog');
             }
         });
@@ -51,7 +43,6 @@
         });
 
         $.subscribe('errorDialog', function (event, data) {
-
 //            alert(event.originalEvent.request.getResponseHeader('message'));
             document.getElementById('errorMessage').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
             $.publish('showErrorDialog');
@@ -60,6 +51,8 @@
         function cancelBtn() {
             $('#view_dialog_menu').dialog('close');
         };
+
+
     </script>
 
 </head>
@@ -69,10 +62,11 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="modifyRolefuncForm" method="post" theme="simple" namespace="/trans" action="saveEdit_trans" cssClass="well form-horizontal">
+            <s:form id="modifyRolefuncForm" method="post" theme="simple" namespace="/masterVendor" action="saveDelete_masterVendor" cssClass="well form-horizontal">
+
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
-                <legend align="left">Edit Transaksi</legend>
+                <legend align="left">Delete Vendor</legend>
                 <table>
                     <tr>
                         <td width="10%" align="center">
@@ -84,40 +78,83 @@
                 <table >
                     <tr>
                         <td>
-                            <label class="control-label"><small>Transaksi Id :</small></label>
+                            <label class="control-label"><small>Vendor Id :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="transIdEdit" name="trans.transId" required="true" readonly="true" cssClass="form-control"/>
+                                <s:textfield  id="vendorIdDelete" name="masterVendor.nomorMaster" required="true" readonly="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Nama Transaksi :</small></label>
+                            <label class="control-label"><small>Nama Vendor :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="transNameEdit" name="trans.transName" required="true" disabled="false" cssClass="form-control"/>
+                                <s:textfield id="vendorNameDelete" name="masterVendor.nama" readonly="true" required="true" disabled="false" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Alamat :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textarea rows="2" id="alamatDelete" name="masterVendor.alamat" readonly="true" required="true" disabled="false" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>NPWP :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield id="npwpDelete" name="masterVendor.npwp" readonly="true" required="true" disabled="false" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Email :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield id="emailDelete" name="masterVendor.email" readonly="true" required="true" disabled="false" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>No. Telp. :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield id="noTelpDelete" name="masterVendor.nama" readonly="true" required="true" disabled="false" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
                 </table>
                 <br>
+                <br>
+                <br>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                            <%--<button type="submit" class="btn btn-default">Submit</button>--%>
                         <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="modifyRolefuncForm" id="save" name="save"
                                    onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
                                    onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
-                            <i class="fa fa-check"></i>
-                            Save
+                            <i class="fa fa-trash"></i>
+                            Delete
                         </sj:submit>
                         <button type="button" id="cancel" class="btn btn-danger" onclick="cancelBtn();">
                             <i class="fa fa-refresh"/> Cancel
                         </button>
                     </div>
                 </div>
+
+
                 <div id="actions" class="form-actions">
                     <table>
                         <tr>
@@ -132,7 +169,7 @@
                                             </br>
                                             </br>
                                             <center>
-                                                <img border="0" src="<s:url value="/pages/images/indicator-write.gif"/>" name="image_indicator_write">
+                                                <img border="0" src="<s:url value="/pages/images/indicator-trash.gif"/>" name="image_indicator_write">
                                             </center>
                                         </sj:dialog>
 
@@ -188,3 +225,32 @@
 </table>
 </body>
 </html>
+<script>
+    window.loadKodeRekening = function () {
+        $('.kodeRekeningTable').find('tbody').remove();
+        $('.kodeRekeningTable').find('thead').remove();
+        dwr.engine.setAsync(false);
+        var tmp_table_kode_rekening = "";
+        KodeRekeningAction.searchKodeRekening("",function (listdata) {
+            tmp_table_kode_rekening = "<thead style='font-size: 14px' ><tr class='active'>" +
+                "<th style='text-align: center; color: #fff; background-color:  #30d196'>No</th>" +
+                "<th style='text-align: center; color: #fff; background-color:  #30d196''>COA</th>" +
+                "<th style='text-align: center; color: #fff; background-color:  #30d196''>Nama Kode Rekening</th>" +
+                "<th style='text-align: center; color: #fff; background-color:  #30d196''>Posisi Rekening</th>" +
+                "</tr></thead>";
+            var i = i;
+            $.each(listdata, function (i, item) {
+                tmp_table_kode_rekening += '<tr style="font-size: 12px;" ">' +
+                    '<td align="center">' + (i + 1) + '</td>' +
+                    '<td align="center">' + item.kodeRekening + '</td>' +
+                    '<td align="center">' + item.namaKodeRekening + '</td>' +
+                    '<td align="center">' + item.posisiName + '</td>' +
+                    "</tr>";
+            });
+            $('.kodeRekeningTable').append(tmp_table_kode_rekening);
+        });
+    };
+    $(document).ready(function () {
+        loadKodeRekening();
+    })
+</script>

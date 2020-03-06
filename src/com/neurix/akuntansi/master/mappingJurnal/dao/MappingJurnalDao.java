@@ -48,6 +48,7 @@ public class MappingJurnalDao extends GenericDao<ImMappingJurnalEntity, String> 
 
         // Order by
         criteria.addOrder(Order.asc("tipeJurnalId"));
+        criteria.addOrder(Order.asc("posisi"));
         criteria.addOrder(Order.asc("transId"));
 
         List<ImMappingJurnalEntity> results = criteria.list();

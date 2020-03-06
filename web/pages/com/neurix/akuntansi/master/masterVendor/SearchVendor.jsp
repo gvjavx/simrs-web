@@ -15,7 +15,13 @@
 <html>
 <head>
     <%@ include file="/pages/common/header.jsp" %>
-
+    <script type='text/javascript' src='<s:url value="/dwr/interface/KodeRekeningAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/pages/dist/js/akuntansi.js"/>'></script>
+    <style>
+        .modal-backdrop {
+            z-index: -1;
+        }
+    </style>
     <style>
         .pagebanner{
             background-color: #ededed;
@@ -30,9 +36,22 @@
         }
     </style>
     <script type='text/javascript'>
-
+        function cekAvailableCoa(nilai){
+            var coa = nilai.value;
+            var length = nilai.length;
+            if (length!=0){
+                dwr.engine.setAsync(false);
+                KodeRekeningAction.cekAvailableCoa(coa, function(listdata) {
+                    if (listdata.length==0){
+                        alert("COA tidak ada");
+                        $('#kodeRekening').val("");
+                        $('#namaKodeRekening').val("");
+                    }
+                });
+            }
+        }
         function link(){
-            window.location.href="<s:url action='initForm_trans'/>";
+            window.location.href="<s:url action='initForm_masterVendor'/>";
         }
 
     </script>
@@ -49,7 +68,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Tipe Transaksi
+            Vendor
             <small>e-HEALTH</small>
         </h1>
     </section>
@@ -59,13 +78,13 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Tipe Transaksi</h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Vendor</h3>
                     </div>
                     <div class="box-body">
                         <table width="100%" align="center">
                             <tr>
                                 <td align="center">
-                                    <s:form id="transForm" method="post"  theme="simple" namespace="/trans" action="search_trans.action" cssClass="form-horizontal">
+                                    <s:form id="vendorForm" method="post"  theme="simple" namespace="/masterVendor" action="search_masterVendor.action" cssClass="form-horizontal">
                                         <table>
                                             <tr>
                                                 <td width="10%" align="center">
@@ -77,21 +96,21 @@
                                         <table >
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Transaksi Id :</small></label>
+                                                    <label class="control-label"><small>Vendor Id :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:textfield  id="transId" name="trans.transId" cssClass="form-control"/>
+                                                        <s:textfield  id="vendorId" name="masterVendor.nomorMaster" cssClass="form-control"/>
                                                     </table>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Nama Transaksi :</small></label>
+                                                    <label class="control-label"><small>Nama Vendor :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:textfield  id="transName" name="trans.transName" cssClass="form-control"/>
+                                                        <s:textfield  id="vendorName" name="masterVendor.nama" cssClass="form-control"/>
                                                     </table>
                                                 </td>
                                             </tr>
@@ -101,7 +120,7 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:select list="#{'N':'Non-Active'}" id="flag" name="trans.flag"
+                                                        <s:select list="#{'N':'Non-Active'}" id="flag" name="masterVendor.flag"
                                                                   headerKey="Y" headerValue="Active" cssClass="form-control" />
                                                     </table>
 
@@ -113,22 +132,22 @@
                                             <table align="center">
                                                 <tr>
                                                     <td>
-                                                        <sj:submit type="button" cssClass="btn btn-primary" formIds="transForm" id="search" name="search"
+                                                        <sj:submit type="button" cssClass="btn btn-primary" formIds="vendorForm" id="search" name="search"
                                                                    onClickTopics="showDialog" onCompleteTopics="closeDialog" >
                                                             <i class="fa fa-search"></i>
                                                             Search
                                                         </sj:submit>
                                                     </td>
                                                     <td>
-                                                        <s:url var="urlAdd" namespace="/trans" action="add_trans" escapeAmp="false">
+                                                        <s:url var="urlAdd" namespace="/masterVendor" action="add_masterVendor" escapeAmp="false">
                                                         </s:url>
                                                         <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">
                                                             <i class="fa fa-plus"></i>
-                                                            Add Tipe Transaksi
+                                                            Add Vendor
                                                         </sj:a>
                                                     </td>
                                                     <td>
-                                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_trans"/>'">
+                                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_vendor"/>'">
                                                             <i class="fa fa-refresh"></i> Reset
                                                         </button>
                                                     </td>
@@ -139,21 +158,21 @@
                                         <br>
                                         <br>
                                         <center>
-                                            <table id="showdata" width="60%">
+                                            <table id="showdata" width="70%">
                                                 <tr>
                                                     <td align="center">
                                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
-                                                                   height="300" width="550" autoOpen="false"
-                                                                   title="Tipe Transaksi">
+                                                                   height="500" width="600" autoOpen="false"
+                                                                   title="Vendor ">
                                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                                         </sj:dialog>
 
-                                                        <s:set name="listOfTrans" value="#session.listOfResult" scope="request" />
-                                                        <display:table name="listOfTrans" class="table table-condensed table-striped table-hover"
-                                                                       requestURI="paging_displaytag_trans.action" export="true" id="row" pagesize="14" style="font-size:10">
+                                                        <s:set name="listOfVendor" value="#session.listOfResult" scope="request" />
+                                                        <display:table name="listOfVendor" class="table table-condensed table-striped table-hover"
+                                                                       requestURI="paging_displaytag_masterVendor.action" export="true" id="row" pagesize="20" style="font-size:10">
                                                             <display:column media="html" title="View">
-                                                                <s:url var="urlView" namespace="/trans" action="view_trans" escapeAmp="false">
-                                                                    <s:param name="id"><s:property value="#attr.row.transId"/></s:param>
+                                                                <s:url var="urlView" namespace="/masterVendor" action="view_masterVendor" escapeAmp="false">
+                                                                    <s:param name="id"><s:property value="#attr.row.nomorMaster"/></s:param>
                                                                     <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
                                                                 </s:url>
                                                                 <sj:a onClickTopics="showDialogMenu" href="%{urlView}">
@@ -161,8 +180,8 @@
                                                                 </sj:a>
                                                             </display:column>
                                                             <display:column media="html" title="Edit">
-                                                                <s:url var="urlEdit" namespace="/trans" action="edit_trans" escapeAmp="false">
-                                                                    <s:param name="id"><s:property value="#attr.row.transId"/></s:param>
+                                                                <s:url var="urlEdit" namespace="/masterVendor" action="edit_masterVendor" escapeAmp="false">
+                                                                    <s:param name="id"><s:property value="#attr.row.nomorMaster"/></s:param>
                                                                     <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
                                                                 </s:url>
                                                                 <sj:a onClickTopics="showDialogMenu" href="%{urlEdit}">
@@ -170,16 +189,20 @@
                                                                 </sj:a>
                                                             </display:column>
                                                             <display:column media="html" title="Delete" style="text-align:center;font-size:9">
-                                                                <s:url var="urlViewDelete" namespace="/trans" action="delete_trans" escapeAmp="false">
-                                                                    <s:param name="id"><s:property value="#attr.row.transId" /></s:param>
+                                                                <s:url var="urlViewDelete" namespace="/masterVendor" action="delete_masterVendor" escapeAmp="false">
+                                                                    <s:param name="id"><s:property value="#attr.row.nomorMaster" /></s:param>
                                                                     <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
                                                                 </s:url>
                                                                 <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
                                                                     <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
                                                                 </sj:a>
                                                             </display:column>
-                                                            <display:column property="transId" sortable="true" title="Transaksi ID" />
-                                                            <display:column property="transName" sortable="true" title="Nama Transaksi"  />
+                                                            <display:column property="nomorMaster" sortable="true" title="Vendor ID" />
+                                                            <display:column property="nama" sortable="true" title="Nama Vendor"  />
+                                                            <display:column property="alamat" sortable="true" title="Alamat"  />
+                                                            <display:column property="npwp" sortable="true" title="NPWP"  />
+                                                            <display:column property="email" sortable="true" title="email"  />
+                                                            <display:column property="noTelp" sortable="true" title="No. Telp."  />
                                                             <display:column property="flag" sortable="true" title="Flag" />
                                                             <display:column property="createdWho" sortable="true" title="Created Who"/>
                                                             <display:column property="lastUpdate" sortable="true" title="Last Update"/>

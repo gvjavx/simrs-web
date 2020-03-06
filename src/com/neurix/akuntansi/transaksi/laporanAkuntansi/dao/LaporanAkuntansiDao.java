@@ -227,4 +227,17 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
         }
         return listOfResult;
     }
+
+    public String getLevelKodeRekening(String reportId){
+        String result="";
+        String query = "select level_kode_rekening from im_akun_report where report_id='"+reportId+"' limit 1";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            result = results.toString();
+        }else {
+            result=null;
+        }
+        return result;
+    }
 }

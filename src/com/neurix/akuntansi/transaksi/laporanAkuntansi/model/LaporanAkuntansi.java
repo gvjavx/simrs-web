@@ -33,6 +33,16 @@ public class LaporanAkuntansi extends BaseModel {
     private String tipeLaporanName;
     private String tipePerson;
 
+    private String levelKodeRekening;
+
+    public String getLevelKodeRekening() {
+        return levelKodeRekening;
+    }
+
+    public void setLevelKodeRekening(String levelKodeRekening) {
+        this.levelKodeRekening = levelKodeRekening;
+    }
+
     public String getTipePerson() {
         return tipePerson;
     }

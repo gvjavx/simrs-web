@@ -240,7 +240,7 @@
                 data2Tmp= new Array();
                 $.each(data, function(i,item){
                     data2.push({_id : item.rekeningId, level : item.level,  nama : item.namaKodeRekening, parent : item.parentId, coa : item.kodeRekening,
-                        tipeRekening : item.tipeRekeningId, status : item.flag,tipeRekeningName: item.tipeRekeningName,adaCetak:item.adaRekeningReport});
+                        tipeRekening : item.tipeRekeningId, status : item.flag,tipeRekeningName: item.tipeRekeningName,adaCetak:item.adaRekeningReport,bisaCek:item.bisaCek});
                 });
                 function hierarhySort(hashArr, key, result) {
                     if (hashArr[key] == undefined){
@@ -272,7 +272,9 @@
                     "</tr></thead>";
                 for(i = 0 ; i < data2.length ; i++){
                     var cekbox ="";
-                    if (data2[i].adaCetak) {
+                    if (!data2[i].bisaCek){
+                        cekbox='<td align="center" class="ceknull"></td>';
+                    }else if (data2[i].adaCetak) {
                         cekbox='<td align="center" class="ceknull">' + '<input type="checkbox" checked id="check_'+i+'">' + '</td>';
                     }else{
                         cekbox='<td align="center" class="ceknull">' + '<input type="checkbox" id="check_'+i+'">' + '</td>';

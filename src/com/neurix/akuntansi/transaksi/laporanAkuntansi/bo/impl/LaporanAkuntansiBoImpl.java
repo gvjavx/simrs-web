@@ -173,6 +173,17 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
     }
 
     @Override
+    public String levelKodeRekening(String reportId) throws GeneralBOException {
+        String level="";
+        try {
+            level = laporanAkuntansiDao.getLevelKodeRekening(reportId);
+        } catch (HibernateException e) {
+            logger.error("[LaporanAkuntansiBoImpl.getSearchLaporanAkuntansiByCriteria] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        return level;
+    }
+    @Override
     public List<LaporanAkuntansi> getAll() throws GeneralBOException {
         return null;
     }

@@ -191,7 +191,7 @@
                                                             <display:column property="bukti" title="Bukti"  />
                                                             <display:column property="kodeBarang" title="Kode Barang"  />
                                                             <display:column property="kirimList" title="List Kirim"  />
-                                                            <display:column property="keterangan" sortable="true" title="keterangan"  />
+                                                            <display:column property="keterangan" sortable="true" title="Parameter"  />
                                                             <%--<display:column property="lastUpdate" sortable="true" title="Last Update"/>--%>
                                                         </display:table>
                                                     </td>

@@ -7,8 +7,7 @@
 <html>
 <head>
     <script type="text/javascript">
-
-        function callSearch() {
+        function callSearch2() {
             //$('#waiting_dialog').dialog('close');
             $('#view_dialog_menu').dialog('close');
             $('#info_dialog').dialog('close');
@@ -16,10 +15,13 @@
         };
 
         $.subscribe('beforeProcessSave', function (event, data) {
-            var transId = document.getElementById("transIdEdit").value;
-            var transName    = document.getElementById("transNameEdit").value;
-
-            if (transId != '' && transName != '') {
+            var nameVendor = document.getElementById("vendorNameAdd").value;
+            var alamat = document.getElementById("alamatAdd").value;
+            var npwp = document.getElementById("npwpAdd").value;
+            var email = document.getElementById("emailAdd").value;
+            var notelp = document.getElementById("noTelpAdd").value;
+            dwr.engine.setAsync(false);
+            if (nameVendor != ''&&alamat!=''&&npwp!=''&&email!=''&&notelp!='') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -31,16 +33,25 @@
             } else {
                 event.originalEvent.options.submit = false;
                 var msg = "";
-                if (transId == '') {
-                    msg += 'Field <strong>Transaksi ID</strong> not found.' + '<br/>';
+                if (nameVendor == '') {
+                    msg += 'Field <strong>Nama Vendor</strong> is required.' + '<br/>';
                 }
-
-                if (transName == '') {
-                    msg += 'Field <strong>Nama Transaksi</strong> is required.' + '<br/>';
+                if (alamat == '') {
+                    msg += 'Field <strong>Alamat</strong> is required.' + '<br/>';
+                }
+                if (npwp == '') {
+                    msg += 'Field <strong>NPWP</strong> is required.' + '<br/>';
+                }
+                if (email == '') {
+                    msg += 'Field <strong>email</strong> is required.' + '<br/>';
+                }
+                if (notelp == '') {
+                    msg += 'Field <strong>No. Telp.</strong> is required.' + '<br/>';
                 }
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
                 $.publish('showErrorValidationDialog');
+
             }
         });
         $.subscribe('successDialog', function (event, data) {
@@ -51,8 +62,6 @@
         });
 
         $.subscribe('errorDialog', function (event, data) {
-
-//            alert(event.originalEvent.request.getResponseHeader('message'));
             document.getElementById('errorMessage').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
             $.publish('showErrorDialog');
         });
@@ -69,10 +78,10 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="modifyRolefuncForm" method="post" theme="simple" namespace="/trans" action="saveEdit_trans" cssClass="well form-horizontal">
+            <s:form id="modifyRolefuncForm" method="post" theme="simple" namespace="/masterVendor" action="saveAdd_masterVendor" cssClass="well form-horizontal">
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
-                <legend align="left">Edit Transaksi</legend>
+                <legend align="left">Add Vendor</legend>
                 <table>
                     <tr>
                         <td width="10%" align="center">
@@ -80,33 +89,62 @@
                         </td>
                     </tr>
                 </table>
-
                 <table >
                     <tr>
                         <td>
-                            <label class="control-label"><small>Transaksi Id :</small></label>
+                            <label class="control-label"><small>Nama Vendor :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="transIdEdit" name="trans.transId" required="true" readonly="true" cssClass="form-control"/>
+                                <s:textfield id="vendorNameAdd" name="masterVendor.nama" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Nama Transaksi :</small></label>
+                            <label class="control-label"><small>Alamat :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="transNameEdit" name="trans.transName" required="true" disabled="false" cssClass="form-control"/>
+                                <s:textarea rows="2" id="alamatAdd" name="masterVendor.alamat" required="true" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>NPWP :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield id="npwpAdd" name="masterVendor.npwp" required="true" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Email :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield id="emailAdd" name="masterVendor.email" required="true" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>No. Telp. :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield id="noTelpAdd" name="masterVendor.noTelp" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
                 </table>
                 <br>
+                <br>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                            <%--<button type="submit" class="btn btn-default">Submit</button>--%>
                         <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="modifyRolefuncForm" id="save" name="save"
                                    onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
                                    onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
@@ -118,6 +156,7 @@
                         </button>
                     </div>
                 </div>
+
                 <div id="actions" class="form-actions">
                     <table>
                         <tr>
@@ -140,8 +179,8 @@
                                                    height="200" width="400" autoOpen="false" title="Infomation Dialog"
                                                    buttons="{
                                                               'OK':function() {
-                                                                    //$(this).dialog('close');
-                                                                      callSearch();
+                                                                      callSearch2();
+                                                                      link();
                                                                    }
                                                             }"
                                         >

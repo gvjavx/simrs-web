@@ -199,5 +199,6 @@
     <import resource="sshconfig/com/neurix/akuntansi/transaksi/billingSystem/spring/BillingSystemBean.xml"/>
     <import resource="sshconfig/com/neurix/akuntansi/master/reportDetail/spring/ReportDetailBean.xml"/>
     <import resource="sshconfig/com/neurix/akuntansi/master/mappingJurnal/spring/MappingJurnalBean.xml"/>
+    <import resource="sshconfig/com/neurix/akuntansi/master/masterVendor/spring/MasterVendorBean.xml"/>
 
 </beans>
