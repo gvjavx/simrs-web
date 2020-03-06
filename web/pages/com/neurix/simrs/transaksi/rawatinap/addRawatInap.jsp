@@ -360,29 +360,29 @@
                         </table>
                     </div>
 
-                    <s:if test='rawatInap.idJenisPeriksa == "bpjs"'>
-                        <div class="box-header with-border" id="pos_tindakan">
-                        </div>
-                        <div class="box-header with-border">
-                            <h3 class="box-title"><i class="fa fa-stethoscope"></i> Tindakan BPJS</h3>
-                        </div>
-                        <div class="box-body">
-                            <button class="btn btn-success btn-outline" style="margin-bottom: 10px;"
-                                    onclick="showModal(8)"><i class="fa fa-plus"></i> Tambah Tindakan BPJS
-                            </button>
-                            <table class="table table-bordered table-striped">
-                                <thead>
-                                <tr bgcolor="#90ee90">
-                                    <td>ID (ICS 9)</td>
-                                    <td>Nama Tindakan</td>
-                                    <td align="center">Action</td>
-                                </tr>
-                                </thead>
-                                <tbody id="body_tindakan_bpjs">
-                                </tbody>
-                            </table>
-                        </div>
-                    </s:if>
+                    <%--<s:if test='rawatInap.idJenisPeriksa == "bpjs"'>--%>
+                        <%--<div class="box-header with-border" id="pos_tindakan">--%>
+                        <%--</div>--%>
+                        <%--<div class="box-header with-border">--%>
+                            <%--<h3 class="box-title"><i class="fa fa-stethoscope"></i> Tindakan BPJS</h3>--%>
+                        <%--</div>--%>
+                        <%--<div class="box-body">--%>
+                            <%--<button class="btn btn-success btn-outline" style="margin-bottom: 10px;"--%>
+                                    <%--onclick="showModal(8)"><i class="fa fa-plus"></i> Tambah Tindakan BPJS--%>
+                            <%--</button>--%>
+                            <%--<table class="table table-bordered table-striped">--%>
+                                <%--<thead>--%>
+                                <%--<tr bgcolor="#90ee90">--%>
+                                    <%--<td>ID (ICS 9)</td>--%>
+                                    <%--<td>Nama Tindakan</td>--%>
+                                    <%--<td align="center">Action</td>--%>
+                                <%--</tr>--%>
+                                <%--</thead>--%>
+                                <%--<tbody id="body_tindakan_bpjs">--%>
+                                <%--</tbody>--%>
+                            <%--</table>--%>
+                        <%--</div>--%>
+                    <%--</s:if>--%>
 
 
                     <div id="status_bpjs" style="display: none">
