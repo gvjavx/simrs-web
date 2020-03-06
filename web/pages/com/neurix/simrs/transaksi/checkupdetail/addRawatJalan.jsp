@@ -1298,11 +1298,11 @@
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Jenis Satuan</label>
                         <div class="col-md-7">
-                            <s:select list="#{'box':'Box','lembar':'Lembar','biji':'Biji'}"
+                            <s:select list="#{'lembar':'Lembar','box':'Box'}"
                                       cssStyle="margin-top: 7px; width: 100%"
                                       onchange="var warn = $('#war_rep_jenis_satuan').is(':visible'); if (warn){$('#cor_rep_jenis_satuan').show().fadeOut(3000);$('#war_rep_jenis_satuan').hide()}"
                                       id="resep_jenis_satuan"
-                                      headerKey="" headerValue="[Select one]"
+                                      headerKey="biji" headerValue="Biji"
                                       cssClass="form-control select2"/>
                         </div>
                         <div class="col-md-2">
@@ -3086,8 +3086,10 @@
                     bijiPerLembar = idObat.split('|')[6];
                 }
 
-                $('#resep_stok_box').val(qtyBox);
-                $('#resep_stok_lembar').val(qtyLembar);
+                var total = parseInt(qtyBiji)+(parseInt(qtyBox)*parseInt(lembarPerBox))+(parseInt(qtyLembar)*parseInt(bijiPerLembar));
+
+                //$('#resep_stok_box').val(qtyBox);
+                //$('#resep_stok_lembar').val(qtyLembar);
                 $('#resep_stok_biji').val(qtyBiji);
 
                 $('#resep_keterangan').val('');
