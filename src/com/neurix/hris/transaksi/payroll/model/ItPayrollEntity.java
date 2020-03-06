@@ -95,7 +95,7 @@ public class ItPayrollEntity implements Serializable {
     private BigDecimal bapor;
     private BigDecimal zakat;
     private BigDecimal umr;
-    private BigDecimal lainLain;
+
     private String ApprovalFlag;
     private String flagPayroll;
     private String danaPensiun;
@@ -226,10 +226,20 @@ public class ItPayrollEntity implements Serializable {
     private BigDecimal listrik;
     private BigDecimal iuranProfesi;
     private BigDecimal potonganLain;
+    private BigDecimal lainLain;
+    private String idLainLain;
 
     //flag baru
     private String flagCutiTahunan;
     private String flagCutiPanjang;
+
+    public String getIdLainLain() {
+        return idLainLain;
+    }
+
+    public void setIdLainLain(String idLainLain) {
+        this.idLainLain = idLainLain;
+    }
 
     public String getProfesiId() {
         return profesiId;

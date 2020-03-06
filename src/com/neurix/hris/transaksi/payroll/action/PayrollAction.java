@@ -504,7 +504,7 @@ public class PayrollAction extends BaseMasterAction{
                                     String tunjPeralihan,String pemondokan,String komunikasi, //komponen A
                                     String kopkar, String iuranSp, String iuranPiikb, String bankBri, String bankMandiri, // Komponen rincian C
                                     String infaq, String perkesDanObat, String listrik, String iuranProfesi, String potonganLain, // Komponen rincian C
-                                    String flagJubileum, String flagPensiun){
+                                    String flagJubileum, String flagPensiun, String nilaiPtt, String idPtt){
         Payroll newPayroll = new Payroll();
         newPayroll.setNip(nip);
 //        newPayroll.setTipePegawai(tipePegawai);
@@ -537,6 +537,11 @@ public class PayrollAction extends BaseMasterAction{
         newPayroll.setIuranProfesiNilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(iuranProfesi))));
         newPayroll.setPotonganLain(potonganLain);
         newPayroll.setPotonganLainNilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(potonganLain))));
+
+        //Komponen D
+        newPayroll.setLainLain(nilaiPtt);
+        newPayroll.setIdLainLain(idPtt);
+        newPayroll.setLainLainNilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(nilaiPtt))));
 
         newPayroll.setCentangJubileum(flagJubileum);
         newPayroll.setFlagJubileum(flagJubileum);
@@ -1012,6 +1017,11 @@ public class PayrollAction extends BaseMasterAction{
                         payrollPerson.setIuranYpks(payroll.getIuranYpks());
                         payrollPerson.setIuranYpksNilai(payroll.getIuranYpksNilai());
 
+                        //Komponen D
+                        payrollPerson.setLainLainNilai(payroll.getLainLainNilai());
+                        payrollPerson.setLainLain(payroll.getLainLain());
+                        payrollPerson.setIdLainLain(payroll.getIdLainLain());
+
 
                         //Rincian Potongan lain - lain
                         payrollPerson.setKopkar(payroll.getKopkar());
@@ -1212,6 +1222,10 @@ public class PayrollAction extends BaseMasterAction{
                 payrollPerson.setFlagPjs(payroll.getFlagPjs());
                 payrollPerson.setGajiPensiun(payroll.getGajiPensiun());
                 payrollPerson.setGajiPensiunNilai(payroll.getGajiPensiunNilai());
+                payrollPerson.setGolonganDapenId(payroll.getGolonganDapenId());
+                payrollPerson.setGolonganDapenName(payroll.getGolonganDapenName());
+                payrollPerson.setMasaKerjaGol(payroll.getMasaKerjaGol());
+                payrollPerson.setStMasaKerjaGol(payroll.getStMasaKerjaGol());
 
 
                 payrollPerson.setFlagPayroll(payroll.getFlagPayroll());
@@ -1263,6 +1277,8 @@ public class PayrollAction extends BaseMasterAction{
                 payrollPerson.setKomunikasiNilai(payroll.getKomunikasiNilai());
                 payrollPerson.setTunjanganLembur(payroll.getTunjanganLembur());
                 payrollPerson.setTunjanganLemburNilai(payroll.getTunjanganLemburNilai());
+                payrollPerson.setTambahanLain(payroll.getTambahanLain());
+                payrollPerson.setTambahanLainNilai(payroll.getTambahanLainNilai());
                 payrollPerson.setTotalA(payroll.getTotalA());
                 payrollPerson.setTotalANilai(payroll.getTotalANilai()); //Nilai Total A
 
@@ -1315,6 +1331,11 @@ public class PayrollAction extends BaseMasterAction{
                 payrollPerson.setTotalPotonganLainNilai(payroll.getTotalPotonganLainNilai());
                 payrollPerson.setIuranYpks(payroll.getIuranYpks());
                 payrollPerson.setIuranYpksNilai(payroll.getIuranYpksNilai());
+
+                //Komponen D
+                payrollPerson.setLainLain(payroll.getLainLain());
+                payrollPerson.setIdLainLain(payroll.getIdLainLain());
+                payrollPerson.setLainLainNilai(payroll.getLainLainNilai());
 
 
                 //Rincian Potongan lain - lain

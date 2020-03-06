@@ -176,6 +176,9 @@
         <property name="lainLain">
             <column name="lain_lain" sql-type="numeric" length="10" precision="2" not-null="false" />
         </property>
+        <property name="idLainLain">
+            <column name="id_lain_lain" sql-type="varchar" length="10" not-null="false" />
+        </property>
         <property name="approvalFlag">
             <column name="approval_flag" sql-type="varchar" length="1" not-null="false" />
         </property>

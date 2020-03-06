@@ -68,54 +68,64 @@
             };
 
             $.subscribe('beforeProcessSave', function (event, data) {
+                var date = new Date();
+                var currentMonth = date.getMonth();
+                var currentYears = date.getYear();
                 var branch = document.getElementById("branchId").value;
 //                var insentifTahun = document.getElementById("insentifTahun").value;
                 var bulan = document.getElementById("bulanPayroll").value;
+                var bulanPayroll = parseInt(bulan, 10);
                 var tahun = document.getElementById("tahunPayroll").value;
                 var thr = document.getElementById("flagThr").value;
                 var insentifTipe = document.getElementById("flagInsentif").value;
                 var thrTipe = 'y';
                 var hasil = cekApprove(branch, bulan, tahun, thrTipe);
                 //alert(hasil);
-                if (branch != '' && bulan != '0' && tahun != '0') {
-                    if(thr == 'Y'){
-                        event.originalEvent.options.submit = true;
-                        $.publish('showDialog');
-                        if(thrTipe != ''){
+                if (bulanPayroll==currentMonth+1){
+                    if (branch != '' && bulan != '0' && tahun != '0') {
+                        if(thr == 'Y'){
                             event.originalEvent.options.submit = true;
                             $.publish('showDialog');
+                            if(thrTipe != ''){
+                                event.originalEvent.options.submit = true;
+                                $.publish('showDialog');
+                            }else{
+                                event.originalEvent.options.submit = false;
+                                var msg = "";
+                                msg += 'Tipe THR harus dipilih.' + '<br/>';
+                                document.getElementById('errorValidationMessage').innerHTML = msg;
+
+                                $.publish('showErrorValidationDialog');
+                            }
                         }else{
-                            event.originalEvent.options.submit = false;
-                            var msg = "";
-                            msg += 'Tipe THR harus dipilih.' + '<br/>';
-                            document.getElementById('errorValidationMessage').innerHTML = msg;
-
-                            $.publish('showErrorValidationDialog');
+                            event.originalEvent.options.submit = true;
+                            $.publish('showDialog');
                         }
-                    }else{
-                        event.originalEvent.options.submit = true;
-                        $.publish('showDialog');
-                    }
 
-                } else {
+                    } else {
+                        event.originalEvent.options.submit = false;
+                        var msg = "";
+                        if (branch == '') {
+                            msg += 'Field <strong>Branch</strong> is required.' + '<br/>';
+                        }
+
+                        if (bulan == '0') {
+                            msg += 'Field <strong>Bulan</strong> is required.' + '<br/>';
+                        }
+
+                        if (tahun == '0') {
+                            msg += 'Field <strong>Tahun</strong> is required.' + '<br/>';
+                        }
+
+                        document.getElementById('errorValidationMessage').innerHTML = msg;
+
+                        $.publish('showErrorValidationDialog');
+
+                    }
+                }else{
                     event.originalEvent.options.submit = false;
-                    var msg = "";
-                    if (branch == '') {
-                        msg += 'Field <strong>Branch</strong> is required.' + '<br/>';
-                    }
-
-                    if (bulan == '0') {
-                        msg += 'Field <strong>Bulan</strong> is required.' + '<br/>';
-                    }
-
-                    if (tahun == '0') {
-                        msg += 'Field <strong>Tahun</strong> is required.' + '<br/>';
-                    }
-
-                    document.getElementById('errorValidationMessage').innerHTML = msg;
-
+                    document.getElementById('errorValidationMessage').innerHTML = "Payroll Yang bisa Diproses Hanya Bulan Ini";
                     $.publish('showErrorValidationDialog');
-
                 }
             });
 

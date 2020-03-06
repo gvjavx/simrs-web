@@ -801,6 +801,7 @@ public class Payroll extends BaseModel {
     private BigDecimal baporNilai;
     private String zakat;
     private BigDecimal zakatNilai;
+    private String idLainLain;
     private String lainLain;
     private BigDecimal lainLainNilai;
     private String ApprovalFlag;
@@ -1050,6 +1051,14 @@ public class Payroll extends BaseModel {
     private BigDecimal rapelGajiGolongan;
     private BigDecimal rapelTunjangan;
     private BigDecimal kastPrs;
+
+    public String getIdLainLain() {
+        return idLainLain;
+    }
+
+    public void setIdLainLain(String idLainLain) {
+        this.idLainLain = idLainLain;
+    }
 
     public BigDecimal getKastPrs() {
         return kastPrs;
