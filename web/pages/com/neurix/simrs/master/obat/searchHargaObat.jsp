@@ -56,20 +56,20 @@
                                                      <%--readonly="false" cssClass="form-control"/>--%>
                                     <%--</div>--%>
                                 <%--</div>--%>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">Jenis Obat</label>
-                                    <div class="col-sm-4">
-                                        <s:action id="initJenis" namespace="/jenisobat"
-                                                  name="getListJenisObat_jenisobat"/>
-                                        <s:select cssStyle="margin-top: 7px; width: 100%"
-                                                  list="#initJenis.listOfJenisObat" id="obat_jenis_obat"
-                                                  listKey="idJenisObat"
-                                                  listValue="namaJenisObat"
-                                                  name="obat.idJenisObat"
-                                                  headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control select2"/>
-                                    </div>
-                                </div>
+                                <%--<div class="form-group">--%>
+                                    <%--<label class="control-label col-sm-4">Jenis Obat</label>--%>
+                                    <%--<div class="col-sm-4">--%>
+                                        <%--<s:action id="initJenis" namespace="/jenisobat"--%>
+                                                  <%--name="getListJenisObat_jenisobat"/>--%>
+                                        <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
+                                                  <%--list="#initJenis.listOfJenisObat" id="obat_jenis_obat"--%>
+                                                  <%--listKey="idJenisObat"--%>
+                                                  <%--listValue="namaJenisObat"--%>
+                                                  <%--name="obat.idJenisObat"--%>
+                                                  <%--headerKey="" headerValue="[Select one]"--%>
+                                                  <%--cssClass="form-control select2"/>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Nama Obat</label>
                                     <div class="col-sm-4">
@@ -87,12 +87,12 @@
                                                      <%--cssClass="form-control" cssStyle="margin-top: 7px"/>--%>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">Flag</label>
-                                    <div class="col-sm-4">
-                                        <s:select cssClass="form-control" cssStyle="margin-top: 7px" list="#{'N':'Non Active'}" headerKey="Y" headerValue="Active" name="obat.flag"/>
-                                    </div>
-                                </div>
+                                <%--<div class="form-group">--%>
+                                    <%--<label class="control-label col-sm-4">Flag</label>--%>
+                                    <%--<div class="col-sm-4">--%>
+                                        <%--<s:select cssClass="form-control" cssStyle="margin-top: 7px" list="#{'N':'Non Active'}" headerKey="Y" headerValue="Active" name="obat.flag"/>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
 
                                 <br>
                                 <div class="form-group">
