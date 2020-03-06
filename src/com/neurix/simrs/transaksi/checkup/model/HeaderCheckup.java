@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -77,7 +78,7 @@ public class HeaderCheckup {
     private String jenisTransaksi;
     private BigDecimal tarifBpjs;
     private List<Tindakan> tindakanList;
-    private List<Asesmen> asesmenList;
+    private List<Asesmen> asesmenList = new ArrayList<>();
 
     private String ketKeyakinan;
     private String bantuanBahasa;
