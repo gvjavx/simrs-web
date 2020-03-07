@@ -199,6 +199,7 @@
     <include file="sshconfig/com/neurix/simrs/transaksi/kasirrawatjalan/struts/UangMukaAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/master/obat/struts/HargaObatAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/kasirrawatjalan/struts/CreateFpkAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/master/vendor/struts/VendorAction.xml"/>
 
     <!--AKUNTANSI-->
     <!--MASTER -->

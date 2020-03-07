@@ -17,6 +17,15 @@ public class Vendor extends BaseModel {
     private String lastUpdateWho;
     private Timestamp createdDate;
     private String createdWho;
+    private String npwp;
+
+    public String getNpwp() {
+        return npwp;
+    }
+
+    public void setNpwp(String npwp) {
+        this.npwp = npwp;
+    }
 
     public String getIdVendor() {
         return idVendor;
