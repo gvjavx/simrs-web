@@ -1,7 +1,7 @@
 package com.neurix.hris.master.payrollTunjanganJabatanStruktural.dao;
 
 import com.neurix.common.dao.GenericDao;
-import com.neurix.hris.master.payrollTunjanganJabatanStruktural.model.ImmPayrollTunjanganJabatanStrukturalEntity;
+import com.neurix.hris.transaksi.payroll.model.ImPayrollTunjanganJabatanStrukturalEntity;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -20,16 +20,16 @@ import java.util.Map;
  * Time: 13:58
  * To change this template use File | Settings | File Templates.
  */
-public class PayrollTunjanganJabatanStrukturalDao extends GenericDao<ImmPayrollTunjanganJabatanStrukturalEntity, String> {
+public class PayrollTunjanganJabatanStrukturalDao extends GenericDao<ImPayrollTunjanganJabatanStrukturalEntity, String> {
 
     @Override
-    protected Class<ImmPayrollTunjanganJabatanStrukturalEntity>  getEntityClass() {
-        return ImmPayrollTunjanganJabatanStrukturalEntity.class;
+    protected Class<ImPayrollTunjanganJabatanStrukturalEntity>  getEntityClass() {
+        return ImPayrollTunjanganJabatanStrukturalEntity.class;
     }
 
     @Override
-    public List<ImmPayrollTunjanganJabatanStrukturalEntity> getByCriteria(Map mapCriteria) {
-        Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ImmPayrollTunjanganJabatanStrukturalEntity.class);
+    public List<ImPayrollTunjanganJabatanStrukturalEntity> getByCriteria(Map mapCriteria) {
+        Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ImPayrollTunjanganJabatanStrukturalEntity.class);
 
         // Get Collection and sorting
         if (mapCriteria!=null) {
@@ -37,33 +37,17 @@ public class PayrollTunjanganJabatanStrukturalDao extends GenericDao<ImmPayrollT
                 criteria.add(Restrictions.eq("tunjJabatanStrukturalId", (String) mapCriteria.get("tunjJabatanStrukturalId")));
             }
 
-            if (mapCriteria.get("positionId")!=null) {
-                criteria.add(Restrictions.eq("positionId", (String) mapCriteria.get("positionId")));
+            if (mapCriteria.get("kelompokId")!=null) {
+                criteria.add(Restrictions.eq("kelompokId", (String) mapCriteria.get("kelompokId")));
             }
-
-            if (mapCriteria.get("nilai")!=null) {
-                criteria.add(Restrictions.eq("nilai", (String) mapCriteria.get("nilai")));
-            }
-
-            if (mapCriteria.get("branchId")!=null) {
-                criteria.add(Restrictions.eq("branchId", (String) mapCriteria.get("branchId")));
-            }
-
             if (mapCriteria.get("flag")!=null) {
                 criteria.add(Restrictions.eq("flag", (String) mapCriteria.get("flag")));
             }
-            if (mapCriteria.get("positionName")!=null) {
-                criteria.add(Restrictions.eq("positionName", (String) mapCriteria.get("positionName")));
-            }
-            if (mapCriteria.get("branchName")!=null) {
-                criteria.add(Restrictions.eq("branchName", (String) mapCriteria.get("branchName")));
-            }
-
         }
 
         // Order by
-        criteria.addOrder(Order.desc("tunjJabatanStrukturalId"));
-        List<ImmPayrollTunjanganJabatanStrukturalEntity> results = criteria.list();
+        criteria.addOrder(Order.desc("tunjJabStrukturId"));
+        List<ImPayrollTunjanganJabatanStrukturalEntity> results = criteria.list();
         return results;
     }
 
@@ -76,10 +60,9 @@ public class PayrollTunjanganJabatanStrukturalDao extends GenericDao<ImmPayrollT
         return "TJS" + sId;
     }
 
-    public List<ImmPayrollTunjanganJabatanStrukturalEntity> getData2(String positionId, String branchId) throws HibernateException {
-        List<ImmPayrollTunjanganJabatanStrukturalEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImmPayrollTunjanganJabatanStrukturalEntity.class)
-                .add(Restrictions.eq("positionId", positionId))
-                .add(Restrictions.eq("branchId", branchId))
+    public List<ImPayrollTunjanganJabatanStrukturalEntity> getData2(String kelompokId) throws HibernateException {
+        List<ImPayrollTunjanganJabatanStrukturalEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImPayrollTunjanganJabatanStrukturalEntity.class)
+                .add(Restrictions.eq("kelompokId", kelompokId))
                 .add(Restrictions.eq("flag", "Y"))
                 .list();
 

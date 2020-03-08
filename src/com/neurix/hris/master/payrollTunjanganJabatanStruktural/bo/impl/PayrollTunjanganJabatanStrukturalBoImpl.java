@@ -5,11 +5,13 @@ import com.neurix.authorization.company.model.ImBranches;
 import com.neurix.authorization.position.dao.PositionDao;
 import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.hris.master.kelompokPosition.dao.KelompokPositionDao;
+import com.neurix.hris.master.kelompokPosition.model.ImKelompokPositionEntity;
 import com.neurix.hris.master.payrollTunjanganJabatanStruktural.bo.PayrollTunjanganJabatanStrukturalBo;
 import com.neurix.hris.master.payrollTunjanganJabatanStruktural.dao.PayrollTunjanganJabatanStrukturalDao;
-import com.neurix.hris.master.payrollTunjanganJabatanStruktural.model.ImmPayrollTunjanganJabatanStrukturalEntity;
+import com.neurix.hris.transaksi.payroll.model.ImPayrollTunjanganJabatanStrukturalEntity;
 //import com.neurix.hris.master.payrollTunjanganJabatanStruktural.model.ImPayrollTunjanganJabatanStrukturalHistoryEntity;
-import com.neurix.hris.master.payrollTunjanganJabatanStruktural.model.PayrollTunjanganJabatanStruktural;
+import com.neurix.hris.transaksi.payroll.model.PayrollTunjanganJabatanStruktural;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -30,7 +32,16 @@ public class PayrollTunjanganJabatanStrukturalBoImpl implements PayrollTunjangan
     protected static transient Logger logger = Logger.getLogger(PayrollTunjanganJabatanStrukturalBoImpl.class);
     private PayrollTunjanganJabatanStrukturalDao payrollTunjanganJabatanStrukturalDao;
     private PositionDao positionDao;
+    private KelompokPositionDao kelompokPositionDao;
     private BranchDao branchDao;
+
+    public KelompokPositionDao getKelompokPositionDao() {
+        return kelompokPositionDao;
+    }
+
+    public void setKelompokPositionDao(KelompokPositionDao kelompokPositionDao) {
+        this.kelompokPositionDao = kelompokPositionDao;
+    }
 
     public BranchDao getBranchDao() {
         return branchDao;
@@ -71,13 +82,13 @@ public class PayrollTunjanganJabatanStrukturalBoImpl implements PayrollTunjangan
 
         if (bean!=null) {
 
-            String payrollTunjanganJabatanStruktural = bean.getTunjJabatanStrukturalId();
+            String payrollTunjanganJabatanStruktural = bean.getTunjJabStrukturId();
 
-            ImmPayrollTunjanganJabatanStrukturalEntity imPayrollTunjanganJabatanStrukturalEntity = null;
+            ImPayrollTunjanganJabatanStrukturalEntity imPayrollTunjanganJabatanStrukturalEntity = null;
 
             try {
                 // Get data from database by ID
-                imPayrollTunjanganJabatanStrukturalEntity = payrollTunjanganJabatanStrukturalDao.getById("tunjJabatanStrukturalId", payrollTunjanganJabatanStruktural);
+                imPayrollTunjanganJabatanStrukturalEntity = payrollTunjanganJabatanStrukturalDao.getById("tunjJabStrukturId", payrollTunjanganJabatanStruktural);
             } catch (HibernateException e) {
                 logger.error("[PayrollTunjanganJabatanStrukturalBoImpl.saveDelete] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when searching data alat by Kode alat, please inform to your admin...," + e.getMessage());
@@ -86,7 +97,6 @@ public class PayrollTunjanganJabatanStrukturalBoImpl implements PayrollTunjangan
             if (imPayrollTunjanganJabatanStrukturalEntity != null) {
 
                 // Modify from bean to entity serializable
-                imPayrollTunjanganJabatanStrukturalEntity.setTunjJabatanStrukturalId(bean.getTunjJabatanStrukturalId());
                 imPayrollTunjanganJabatanStrukturalEntity.setFlag(bean.getFlag());
                 imPayrollTunjanganJabatanStrukturalEntity.setAction(bean.getAction());
                 imPayrollTunjanganJabatanStrukturalEntity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -115,13 +125,13 @@ public class PayrollTunjanganJabatanStrukturalBoImpl implements PayrollTunjangan
         logger.info("[PayrollTunjanganJabatanStrukturalBoImpl.saveEdit] start process >>>");
         if (bean!=null) {
             String historyId = "";
-            String payrollTunjanganJabatanStruktural = bean.getTunjJabatanStrukturalId();
+            String payrollTunjanganJabatanStruktural = bean.getTunjJabStrukturId();
 
-            ImmPayrollTunjanganJabatanStrukturalEntity imPayrollTunjanganJabatanStrukturalEntity = null;
+            ImPayrollTunjanganJabatanStrukturalEntity imPayrollTunjanganJabatanStrukturalEntity = null;
 //            ImPayrollTunjanganJabatanStrukturalHistoryEntity imPayrollTunjanganJabatanStrukturalHistoryEntity = new ImPayrollTunjanganJabatanStrukturalHistoryEntity();
             try {
                 // Get data from database by ID
-                imPayrollTunjanganJabatanStrukturalEntity = payrollTunjanganJabatanStrukturalDao.getById("tunjJabatanStrukturalId", payrollTunjanganJabatanStruktural);
+                imPayrollTunjanganJabatanStrukturalEntity = payrollTunjanganJabatanStrukturalDao.getById("tunjJabStrukturId", payrollTunjanganJabatanStruktural);
                 //historyId = payrollTunjanganJabatanStrukturalDao.getNextSkalaGaji();
             } catch (HibernateException e) {
                 logger.error("[PayrollTunjanganJabatanStrukturalBoImpl.saveEdit] Error, " + e.getMessage());
@@ -139,11 +149,9 @@ public class PayrollTunjanganJabatanStrukturalBoImpl implements PayrollTunjangan
                 imPayrollTunjanganJabatanStrukturalHistoryEntity.setCreatedWho(imPayrollTunjanganJabatanStrukturalEntity.getLastUpdateWho());
                 imPayrollTunjanganJabatanStrukturalHistoryEntity.setCreatedDate(imPayrollTunjanganJabatanStrukturalEntity.getLastUpdate());*/
 
-                imPayrollTunjanganJabatanStrukturalEntity.setTunjJabatanStrukturalId(bean.getTunjJabatanStrukturalId());
-                imPayrollTunjanganJabatanStrukturalEntity.setPositionId(bean.getPositionId());
-                imPayrollTunjanganJabatanStrukturalEntity.setNilai(bean.getNilai());
-                imPayrollTunjanganJabatanStrukturalEntity.setBranchId(bean.getBranchId());
-                
+                imPayrollTunjanganJabatanStrukturalEntity.setTunjJabatan(bean.getTunjJabatan());
+                imPayrollTunjanganJabatanStrukturalEntity.setTunjStruktural(bean.getTunjStruktural());
+
                 imPayrollTunjanganJabatanStrukturalEntity.setFlag(bean.getFlag());
                 imPayrollTunjanganJabatanStrukturalEntity.setAction(bean.getAction());
                 imPayrollTunjanganJabatanStrukturalEntity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -180,12 +188,12 @@ public class PayrollTunjanganJabatanStrukturalBoImpl implements PayrollTunjangan
             }
 
             // creating object entity serializable
-            ImmPayrollTunjanganJabatanStrukturalEntity imPayrollTunjanganJabatanStrukturalEntity = new ImmPayrollTunjanganJabatanStrukturalEntity();
+            ImPayrollTunjanganJabatanStrukturalEntity imPayrollTunjanganJabatanStrukturalEntity = new ImPayrollTunjanganJabatanStrukturalEntity();
 
-            imPayrollTunjanganJabatanStrukturalEntity.setTunjJabatanStrukturalId(payrollTunjanganJabatanStruktural);
-            imPayrollTunjanganJabatanStrukturalEntity.setPositionId(bean.getPositionId());
-            imPayrollTunjanganJabatanStrukturalEntity.setNilai(bean.getNilai());
-            imPayrollTunjanganJabatanStrukturalEntity.setBranchId(bean.getBranchId());
+            imPayrollTunjanganJabatanStrukturalEntity.setTunjJabStrukturId(payrollTunjanganJabatanStruktural);
+            imPayrollTunjanganJabatanStrukturalEntity.setKelompokId(bean.getKelompokId());
+            imPayrollTunjanganJabatanStrukturalEntity.setTunjJabatan(bean.getTunjJabatan());
+            imPayrollTunjanganJabatanStrukturalEntity.setTunjStruktural(bean.getTunjStruktural());
             imPayrollTunjanganJabatanStrukturalEntity.setFlag(bean.getFlag());
             imPayrollTunjanganJabatanStrukturalEntity.setAction(bean.getAction());
             imPayrollTunjanganJabatanStrukturalEntity.setCreatedWho(bean.getCreatedWho());
@@ -216,14 +224,11 @@ public class PayrollTunjanganJabatanStrukturalBoImpl implements PayrollTunjangan
         if (searchBean != null) {
             Map hsCriteria = new HashMap();
 
-            if (searchBean.getTunjJabatanStrukturalId() != null && !"".equalsIgnoreCase(searchBean.getTunjJabatanStrukturalId())) {
-                hsCriteria.put("tunjJabatanStrukturalId", searchBean.getTunjJabatanStrukturalId());
+            if (searchBean.getTunjJabStrukturId() != null && !"".equalsIgnoreCase(searchBean.getTunjJabStrukturId())) {
+                hsCriteria.put("tunjJabStrukturId", searchBean.getTunjJabStrukturId());
             }
-            if (searchBean.getPositionId() != null && !"".equalsIgnoreCase(searchBean.getPositionId())) {
-                hsCriteria.put("positionId", searchBean.getPositionId());
-            }
-            if (searchBean.getBranchId() != null && !"".equalsIgnoreCase(searchBean.getBranchId())) {
-                hsCriteria.put("branchId", searchBean.getBranchId());
+            if (searchBean.getKelompokId() != null && !"".equalsIgnoreCase(searchBean.getKelompokId())) {
+                hsCriteria.put("kelompokId", searchBean.getPositionId());
             }
 
 
@@ -239,7 +244,7 @@ public class PayrollTunjanganJabatanStrukturalBoImpl implements PayrollTunjangan
             }
 
 
-            List<ImmPayrollTunjanganJabatanStrukturalEntity> imPayrollTunjanganJabatanStrukturalEntity = null;
+            List<ImPayrollTunjanganJabatanStrukturalEntity> imPayrollTunjanganJabatanStrukturalEntity = null;
             try {
                 imPayrollTunjanganJabatanStrukturalEntity = payrollTunjanganJabatanStrukturalDao.getByCriteria(hsCriteria);
             } catch (HibernateException e) {
@@ -250,43 +255,25 @@ public class PayrollTunjanganJabatanStrukturalBoImpl implements PayrollTunjangan
             if(imPayrollTunjanganJabatanStrukturalEntity != null){
                 PayrollTunjanganJabatanStruktural returnPayrollTunjanganJabatanStruktural;
                 // Looping from dao to object and save in collection
-                for(ImmPayrollTunjanganJabatanStrukturalEntity payrollTunjanganJabatanStrukturalEntity : imPayrollTunjanganJabatanStrukturalEntity){
+                for(ImPayrollTunjanganJabatanStrukturalEntity payrollTunjanganJabatanStrukturalEntity : imPayrollTunjanganJabatanStrukturalEntity){
                     returnPayrollTunjanganJabatanStruktural = new PayrollTunjanganJabatanStruktural();
-                    returnPayrollTunjanganJabatanStruktural.setTunjJabatanStrukturalId(payrollTunjanganJabatanStrukturalEntity.getTunjJabatanStrukturalId());
-                    returnPayrollTunjanganJabatanStruktural.setPositionId(payrollTunjanganJabatanStrukturalEntity.getPositionId());
-                    returnPayrollTunjanganJabatanStruktural.setBranchId(payrollTunjanganJabatanStrukturalEntity.getBranchId());
+                    returnPayrollTunjanganJabatanStruktural.setTunjJabStrukturId(payrollTunjanganJabatanStrukturalEntity.getTunjJabStrukturId());
+                    returnPayrollTunjanganJabatanStruktural.setKelompokId(payrollTunjanganJabatanStrukturalEntity.getKelompokId());
+                    returnPayrollTunjanganJabatanStruktural.setTunjJabatan(payrollTunjanganJabatanStrukturalEntity.getTunjJabatan());
+                    returnPayrollTunjanganJabatanStruktural.setTunjStruktural(payrollTunjanganJabatanStrukturalEntity.getTunjStruktural());
 
 
-                    if(returnPayrollTunjanganJabatanStruktural.getPositionId() != null){
+                    if(returnPayrollTunjanganJabatanStruktural.getKelompokId() != null){
                         try {
-                            ImPosition position = positionDao.getById("positionId",payrollTunjanganJabatanStrukturalEntity.getPositionId());
+                            ImKelompokPositionEntity position = kelompokPositionDao.getById("kelompokId",payrollTunjanganJabatanStrukturalEntity.getKelompokId());
                             if (position!=null){
-                                returnPayrollTunjanganJabatanStruktural.setPositionName(position.getPositionName());
+                                returnPayrollTunjanganJabatanStruktural.setKelompokName(position.getKelompokName());
                             }
                         } catch (HibernateException e) {
                             logger.error("[PayrollTunjanganJabatanStrukturalBoImpl.getSearchPayrollTunjanganJabatanStrukturalByCriteria] Error, " + e.getMessage());
                             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
                         }
                     }
-
-                    if(returnPayrollTunjanganJabatanStruktural.getBranchId() != null){
-                        try {
-                            hsCriteria = new HashMap();
-                            hsCriteria.put("branch_id",payrollTunjanganJabatanStrukturalEntity.getBranchId());
-                            hsCriteria.put("flag","Y");
-                            List<ImBranches> branchesList = branchDao.getByCriteria(hsCriteria);
-                            if (branchesList!=null){
-                                for(ImBranches imBranches : branchesList){
-                                    returnPayrollTunjanganJabatanStruktural.setBranchName(imBranches.getBranchName());
-                                }
-                            }
-
-                        } catch (HibernateException e) {
-                            logger.error("[PayrollTunjanganJabatanStrukturalBoImpl.getSearchPayrollTunjanganJabatanStrukturalByCriteria] Error, " + e.getMessage());
-                            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
-                        }
-                    }
-                    returnPayrollTunjanganJabatanStruktural.setNilai(payrollTunjanganJabatanStrukturalEntity.getNilai());
 
                     returnPayrollTunjanganJabatanStruktural.setCreatedWho(payrollTunjanganJabatanStrukturalEntity.getCreatedWho());
                     returnPayrollTunjanganJabatanStruktural.setCreatedDate(payrollTunjanganJabatanStrukturalEntity.getCreatedDate());
