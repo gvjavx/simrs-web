@@ -37,6 +37,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.rest.DefaultHttpHeaders;
 import org.apache.struts2.rest.HttpHeaders;
 
+import java.io.File;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -111,6 +112,25 @@ public class RawatInapController implements ModelDriven<Object> {
     private String jsonMonCairan;
     private String jsonMonVitalSign;
     private String jsonMonPemberianObat;
+
+    private String fileTtdName;
+    private File fileTtd;
+
+    public String getFileTtdName() {
+        return fileTtdName;
+    }
+
+    public void setFileTtdName(String fileTtdName) {
+        this.fileTtdName = fileTtdName;
+    }
+
+    public File getFileTtd() {
+        return fileTtd;
+    }
+
+    public void setFileTtd(File fileTtd) {
+        this.fileTtd = fileTtd;
+    }
 
     public Collection<MonPemberianObatMobile> getListOfMonPemberianObat() {
         return listOfMonPemberianObat;
