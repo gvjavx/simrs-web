@@ -16,6 +16,9 @@ import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.ImPembayaranU
 import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.ImPembayaranUtangPiutangEntity;
 import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.PembayaranUtangPiutang;
 import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.PembayaranUtangPiutangDetail;
+import com.neurix.authorization.company.dao.BranchDao;
+import com.neurix.authorization.company.model.Branch;
+import com.neurix.authorization.company.model.ImBranches;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.biodata.dao.BiodataDao;
@@ -47,6 +50,15 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
     private JurnalDao jurnalDao;
     private JurnalDetailDao jurnalDetailDao;
     private TransDao transDao;
+    private BranchDao branchDao;
+
+    public BranchDao getBranchDao() {
+        return branchDao;
+    }
+
+    public void setBranchDao(BranchDao branchDao) {
+        this.branchDao = branchDao;
+    }
 
     public TransDao getTransDao() {
         return transDao;
@@ -323,11 +335,27 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
     public List<PembayaranUtangPiutangDetail> getSearchNotaPembayaran(String masterId,String transaksiId,String branchId) throws GeneralBOException {
         logger.info("[PembayaranUtangPiutangBoImpl.getSearchNotaPembayaran] start process >>>");
         List<PembayaranUtangPiutangDetail> listOfResult = new ArrayList<>();
-
+        String unit="";
+        if (("KP").equalsIgnoreCase(branchId)){
+            List<ImBranches> branchList = new ArrayList<>();
+            branchList = branchDao.getAllBranch();
+            int i = 1;
+            for (ImBranches dataUnit : branchList){
+                if (i==1){
+                    unit="'"+dataUnit.getPrimaryKey().getId()+"'";
+                }else{
+                    unit=unit+",'"+dataUnit.getPrimaryKey().getId()+"'";
+                }
+                i++;
+            }
+        }else{
+            unit="'"+branchId+"'";
+        }
         List<PembayaranUtangPiutangDetail> pembayaranUtangPiutangDetailList ;
+
         try {
             String tipeBayar = transDao.getTipeBayarByTransId(transaksiId);
-            pembayaranUtangPiutangDetailList = pembayaranUtangPiutangDao.getSearchNotaPembayaran(masterId,transaksiId,branchId,tipeBayar);
+            pembayaranUtangPiutangDetailList = pembayaranUtangPiutangDao.getSearchNotaPembayaran(masterId,transaksiId,unit,tipeBayar);
         } catch (HibernateException e) {
             logger.error("[PembayaranUtangPiutangBoImpl.getSearchPembayaranUtangPiutangByCriteria] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());

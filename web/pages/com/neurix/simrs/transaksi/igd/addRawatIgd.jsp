@@ -69,6 +69,64 @@
             margin-bottom: 7px;
         }
 
+        *, *:before, *:after {
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        .new {
+            padding: 50px;
+        }
+
+        .form-check {
+            display: inline-block;
+            padding-left: 2px;
+        }
+
+        .form-check input {
+            padding: 0;
+            height: initial;
+            width: initial;
+            margin-bottom: 0;
+            display: none;
+            cursor: pointer;
+        }
+
+        .form-check label {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .form-check label:before {
+            content:'';
+            -webkit-appearance: none;
+            background-color: transparent;
+            border: 2px solid #0079bf;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
+            padding: 10px;
+            display: inline-block;
+            position: relative;
+            vertical-align: middle;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        .form-check input:checked + label:after {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 2px;
+            left: 9px;
+            width: 6px;
+            height: 14px;
+            border: solid #0079bf;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
     </style>
 </head>
 
@@ -118,6 +176,14 @@
                                             </td>
                                         </tr>
                                     </s:if>
+                                    <tr>
+                                        <td width="45%"><b>No RM</b></td>
+                                        <td style="vertical-align: middle;">
+                                            <table>
+                                                <s:label name="headerDetailCheckup.idPasien"></s:label>
+                                            </table>
+                                        </td>
+                                    </tr>
                                     <tr>
                                         <td width="45%"><b>No Checkup</b></td>
                                         <td>
@@ -522,7 +588,7 @@
                                                     onchange="var warn =$('#war_catatan').is(':visible'); if (warn){$('#cor_catatan').show().fadeOut(3000);$('#war_catatan').hide()}; selectKeterangan(this)">
                                                 <option value=''>[Select One]</option>
                                                 <option value='selesai'>Selesai</option>
-                                                <option value='pindah'>Pindah Poli Lain</option>
+                                                <%--<option value='pindah'>Pindah Poli Lain</option>--%>
                                                 <option value='rujuk'>Rujuk Rawat Inap</option>
                                             </select>
                                         </div>
@@ -1214,31 +1280,35 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Stok Obat</label>
-                        <div class="col-md-2">
-                            <label style="margin-top: 7px">Box</label>
-                            <input class="form-control" type="number" min="1" id="resep_stok_box"
-                                   readonly>
-                        </div>
-                        <div class="col-md-2">
-                            <label style="margin-top: 7px">Lembar</label>
-                            <input class="form-control" type="number" min="1" id="resep_stok_lembar"
-                                   readonly>
-                        </div>
-                        <div class="col-md-3">
-                            <label style="margin-top: 7px">Biji</label>
-                            <input class="form-control" type="number" min="1" id="resep_stok_biji"
-                                   readonly>
+                        <label class="col-md-3" style="margin-top: 7px">Stok Obat (Biji)</label>
+                        <%--<div class="col-md-2">--%>
+                            <%--<label style="margin-top: 7px">Box</label>--%>
+                            <%--<input class="form-control" type="number" min="1" id="resep_stok_box"--%>
+                                   <%--readonly>--%>
+                        <%--</div>--%>
+                        <%--<div class="col-md-2">--%>
+                            <%--<label style="margin-top: 7px">Lembar</label>--%>
+                            <%--<input class="form-control" type="number" min="1" id="resep_stok_lembar"--%>
+                                   <%--readonly>--%>
+                        <%--</div>--%>
+                        <div class="col-md-7">
+                            <%--<label style="margin-top: 7px">Stok (Biji)</label>--%>
+                            <div class="input-group" style="margin-top: 7px; width: 40%">
+                                <input class="form-control" type="number" min="1" id="resep_stok_biji" readonly>
+                                <div class="input-group-addon">
+                                    Biji
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Jenis Satuan</label>
                         <div class="col-md-7">
-                            <s:select list="#{'box':'Box','lembar':'Lembar','biji':'Biji'}"
+                            <s:select list="#{'lembar':'Lembar','box':'Box'}"
                                       cssStyle="margin-top: 7px; width: 100%"
                                       onchange="var warn = $('#war_rep_jenis_satuan').is(':visible'); if (warn){$('#cor_rep_jenis_satuan').show().fadeOut(3000);$('#war_rep_jenis_satuan').hide()}"
                                       id="resep_jenis_satuan"
-                                      headerKey="" headerValue="[Select one]"
+                                      headerKey="biji" headerValue="Biji"
                                       cssClass="form-control select2"/>
                         </div>
                         <div class="col-md-2">
@@ -1246,6 +1316,46 @@
                                id="war_rep_jenis_satuan"><i class="fa fa-times"></i> required</p>
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
                                id="cor_rep_jenis_satuan"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Pemberian</label>
+                        <div class="col-md-7">
+                            <s:select list="#{'sebelum':'Sebelum'}"
+                                      cssStyle="margin-top: 7px; width: 100%"
+                                      onchange="var warn = $('#war_rep_jenis_satuan').is(':visible'); if (warn){$('#cor_rep_jenis_satuan').show().fadeOut(3000);$('#war_rep_jenis_satuan').hide()}"
+                                      id="resep_waktu"
+                                      headerKey="sesudah" headerValue="Sesudah"
+                                      cssClass="form-control select2"/>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_rep_waktu"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_rep_waktu"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Keterangan</label>
+                        <div class="col-md-7">
+                                <div class="form-check" style="margin-top: 7px;">
+                                    <input type="checkbox" name="cek_waktu" id="pagi">
+                                    <label for="pagi"></label> Pagi
+                                </div>
+                                <div class="form-check" style="margin-top: 7px; margin-left: 10px">
+                                    <input type="checkbox" name="cek_waktu" id="siang">
+                                    <label for="siang"></label> Siang
+                                </div>
+                                <div class="form-check" style="margin-top: 7px; margin-left: 10px">
+                                    <input type="checkbox" name="cek_waktu" id="malam">
+                                    <label for="malam"></label> Malam
+                                </div>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_rep_cek_waktu"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_rep_cek_waktu"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
                     <div class="form-group">
@@ -2056,7 +2166,7 @@
     });
 
     function hitungStatusBiaya() {
-        CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, function (response) {
+        CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, "RJ", function (response) {
             console.log(response);
             if (response.idJenisPeriksaPasien == "bpjs") {
                 $('#status_bpjs').show();
@@ -3614,9 +3724,11 @@
                     bijiPerLembar = idObat.split('|')[6];
                 }
 
-                $('#resep_stok_box').val(qtyBox);
-                $('#resep_stok_lembar').val(qtyLembar);
-                $('#resep_stok_biji').val(qtyBiji);
+                var total = parseInt(qtyBiji)+(parseInt(qtyBox)*parseInt(lembarPerBox))+(parseInt(qtyLembar)*parseInt(bijiPerLembar));
+
+                //$('#resep_stok_box').val(qtyBox);
+                //$('#resep_stok_lembar').val(qtyLembar);
+                $('#resep_stok_biji').val(total);
 
                 $('#resep_keterangan').val('');
                 $('#resep_qty').val('');

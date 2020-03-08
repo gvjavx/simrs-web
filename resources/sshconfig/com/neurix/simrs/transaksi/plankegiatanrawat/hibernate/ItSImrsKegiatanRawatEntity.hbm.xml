@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.neurix.simrs.transaksi.permintaanresep.model.ImSimrsPermintaanResepEntity" dynamic-update="true"
+           table="mt_simrs_permintaan_resep" select-before-update="true" schema="public">
+
+
+        <id name="idPermintaanResep">
+            <column name="id_permintaan_resep" sql-type="varchar" length="30" not-null="true" />
+        </id>
+        <property name="idApprovalObat">
+            <column name="id_approval_obat" sql-type="varchar" length="30" not-null="false"/>
+        </property>
+        <property name="idDetailCheckup">
+            <column name="id_detail_checkup" sql-type="varchar" length="30" not-null="false"/>
+        </property>
+        <property name="idPasien">
+            <column name="id_pasien" sql-type="varchar" length="100" not-null="false"/>
+        </property>
+        <property name="keterangan">
+            <column name="keterangan" sql-type="varchar" length="1000" not-null="false"/>
+        </property>
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="timestamp" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="timestamp" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="branchId">
+            <column name="branch_id" sql-type="varchar" length="10" not-null="false" />
+        </property>
+        <property name="isUmum">
+            <column name="is_umum" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="status">
+            <column name="status" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="tglAntrian">
+            <column name="tgl_antrian" sql-type="timestamp" not-null="false" />
+        </property>
+        <property name="tujuanPelayanan">
+            <column name="tujuan_pelayanan" sql-type="varchar" length="30" not-null="false" />
+        </property>
+    </class>
+</hibernate-mapping>

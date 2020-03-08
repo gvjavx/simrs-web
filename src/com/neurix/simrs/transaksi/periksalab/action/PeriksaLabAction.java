@@ -4,6 +4,7 @@ import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
 import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
@@ -40,6 +41,15 @@ public class PeriksaLabAction extends BaseMasterAction {
     private CheckupDetailBo checkupDetailBoProxy;
     private JenisPriksaPasienBo jenisPriksaPasienBoProxy;
     private String id;
+    private String lab;
+
+    public String getLab() {
+        return lab;
+    }
+
+    public void setLab(String lab) {
+        this.lab = lab;
+    }
 
     public void setJenisPriksaPasienBoProxy(JenisPriksaPasienBo jenisPriksaPasienBoProxy) {
         this.jenisPriksaPasienBoProxy = jenisPriksaPasienBoProxy;
@@ -93,6 +103,7 @@ public class PeriksaLabAction extends BaseMasterAction {
 //        List<PeriksaLab> listOfResult = (List) session.getAttribute("listOfResult");
 
         String id = getId();
+        String lab = getLab();
         String jk = "";
         if (id != null && !"".equalsIgnoreCase(id)) {
 
@@ -134,6 +145,7 @@ public class PeriksaLabAction extends BaseMasterAction {
                 periksaLab.setNik(checkup.getNoKtp());
                 periksaLab.setUrlKtp(checkup.getUrlKtp());
                 periksaLab.setJenisPeriksaPasien(checkup.getStatusPeriksaName());
+                periksaLab.setIdPeriksaLab(lab);
 
                 setPeriksaLab(periksaLab);
 
@@ -308,12 +320,13 @@ public class PeriksaLabAction extends BaseMasterAction {
         return SUCCESS;
     }
 
-    public List<PeriksaLab> listOrderLab(String idDetailCheckup) {
+    public List<PeriksaLab> listOrderLab(String idDetailCheckup, String lab) {
 
         logger.info("[PeriksaLabAction.listOrderLab] start process >>>");
         List<PeriksaLab> periksaLabList = new ArrayList<>();
         PeriksaLab periksaLab = new PeriksaLab();
         periksaLab.setIdDetailCheckup(idDetailCheckup);
+        periksaLab.setIdPeriksaLab(lab);
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
@@ -332,6 +345,13 @@ public class PeriksaLabAction extends BaseMasterAction {
         } else {
             return null;
         }
+    }
+
+    public List<Dokter> getListDokterTeamByNoDetail(String idDetailCheckup){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+
+        return checkupDetailBo.getListDokterByDetailCheckup(idDetailCheckup);
     }
 
     public List<PeriksaLabDetail> listParameterPemeriksaan(String idPeriksaLab) {

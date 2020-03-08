@@ -14,7 +14,7 @@ public interface ObatBo{
     public List<Obat> getListObatByJenisObat(String idObat, String branchId) throws GeneralBOException;
     public List<Obat> getJenisObat(Obat bean) throws GeneralBOException;
     public void saveAdd(Obat bean, List<String> idJenisObats) throws GeneralBOException;
-    public void saveEdit(Obat bean, List<String> idJenisObats) throws GeneralBOException;
+    public CheckObatResponse saveEdit(Obat bean, List<String> idJenisObats) throws GeneralBOException;
 
     public List<Obat> getListNamaObat(Obat bean) throws GeneralBOException;
 
@@ -29,4 +29,7 @@ public interface ObatBo{
     public ImSimrsObatEntity getObatByIdBarang(String idBarang) throws GeneralBOException;
     public List<Obat> getListHargaObat(Obat bean) throws GeneralBOException;
     public void saveHargaObat(HargaObat bean) throws GeneralBOException;
+
+    public List<Obat> getListObatByGroup(Obat bean) throws GeneralBOException;
+    public List<Obat> getListObatDetail(Obat bean) throws GeneralBOException;
 }

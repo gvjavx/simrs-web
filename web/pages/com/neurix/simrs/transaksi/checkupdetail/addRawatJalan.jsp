@@ -107,6 +107,13 @@
                                         </tr>
                                     </s:if>
                                     <tr>
+                                        <td><b>No RM</b></td>
+                                        <td>
+                                            <table><s:label
+                                                    name="headerDetailCheckup.idPasien"></s:label></table>
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <td width="45%"><b>No Checkup</b></td>
                                         <td>
                                             <table>
@@ -401,7 +408,7 @@
                             <div class="row">
                                 <div class="col-md-offset-2 col-md-8">
                                     <h5>
-                                        Cover Biaya Bpjs
+                                        Cover Biaya Bpjs dengan kode CBG <b id="kode_cbg"></b>
                                         <small class="pull-right" style="margin-top: 7px">Rp. <span id="b_bpjs"></span>
                                         </small>
                                     </h5>
@@ -559,7 +566,7 @@
                                             <option value=''>[Select One]</option>
                                             <option value='selesai'>Selesai</option>
                                             <option value='pindah'>Pindah Poli Lain</option>
-                                            <option value='rujuk'>Rujuk Rawat Inap</option>
+                                            <%--<option value='rujuk'>Rujuk Rawat Inap</option>--%>
                                         </select>
                                     </div>
                                 </div>
@@ -1291,11 +1298,11 @@
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Jenis Satuan</label>
                         <div class="col-md-7">
-                            <s:select list="#{'box':'Box','lembar':'Lembar','biji':'Biji'}"
+                            <s:select list="#{'lembar':'Lembar','box':'Box'}"
                                       cssStyle="margin-top: 7px; width: 100%"
                                       onchange="var warn = $('#war_rep_jenis_satuan').is(':visible'); if (warn){$('#cor_rep_jenis_satuan').show().fadeOut(3000);$('#war_rep_jenis_satuan').hide()}"
                                       id="resep_jenis_satuan"
-                                      headerKey="" headerValue="[Select one]"
+                                      headerKey="biji" headerValue="Biji"
                                       cssClass="form-control select2"/>
                         </div>
                         <div class="col-md-2">
@@ -1510,7 +1517,7 @@
     }
 
     function hitungStatusBiaya() {
-        CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, function (response) {
+        CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, "RJ", function (response) {
             console.log(response);
             if (response.idJenisPeriksaPasien == "bpjs") {
                 $('#status_bpjs').show();
@@ -1518,6 +1525,7 @@
 
                     var coverBiaya = response.tarifBpjs;
                     var biayaTindakan = response.tarifTindakan;
+                    $('#kode_cbg').text(response.kodeCbg);
 
                     var persen = "";
                     if (coverBiaya != '' && biayaTindakan) {
@@ -1647,6 +1655,12 @@
             $("#kamar").attr('style', 'display:none');
             $("#form-selesai").hide();
             $("#form-cekup").hide();
+
+            if(jenisPasien == 'bpjs'){
+                $('#pembayaran').hide();
+            }else{
+                $('#pembayaran').show();
+            }
         }
         if (idKtg == "rujuk") {
             $("#kamar").attr('style', 'display:block');
@@ -2042,7 +2056,7 @@
 
             if (id != '') {
                 dwr.engine.setAsync(true);
-                TindakanRawatAction.editTindakanRawat(id, idDetailCheckup, idTindakan, idDokter, idPerawat, qty, idJenisPeriksa, {
+                TindakanRawatAction.editTindakanRawat(id, idDetailCheckup, idTindakan, idDokter, idPerawat, qty, {
                     callback: function (response) {
                         if (response == "success") {
                             dwr.engine.setAsync(false);
@@ -3072,8 +3086,10 @@
                     bijiPerLembar = idObat.split('|')[6];
                 }
 
-                $('#resep_stok_box').val(qtyBox);
-                $('#resep_stok_lembar').val(qtyLembar);
+                var total = parseInt(qtyBiji)+(parseInt(qtyBox)*parseInt(lembarPerBox))+(parseInt(qtyLembar)*parseInt(bijiPerLembar));
+
+                //$('#resep_stok_box').val(qtyBox);
+                //$('#resep_stok_lembar').val(qtyLembar);
                 $('#resep_stok_biji').val(qtyBiji);
 
                 $('#resep_keterangan').val('');

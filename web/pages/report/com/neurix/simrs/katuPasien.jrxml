@@ -3,6 +3,7 @@
 	<property name="ireport.zoom" value="1.6105100000000117"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<property name="ireport.callouts" value="##Tue Mar 03 19:41:31 ICT 2020"/>
 	<parameter name="reportParams.id" class="java.lang.String"/>
 	<parameter name="reportParams.nama" class="java.lang.String"/>
 	<parameter name="reportParams.notelp" class="java.lang.String"/>
@@ -35,46 +36,32 @@
 				<reportElement x="5" y="62" width="100" height="1" uuid="cb59498b-f6ca-4ff3-983c-ff931d8fd839"/>
 			</line>
 			<textField isBlankWhenNull="true">
-				<reportElement x="5" y="74" width="90" height="13" uuid="b871e64a-e83e-4a65-86aa-8744bca20c8c"/>
+				<reportElement x="5" y="74" width="148" height="13" uuid="b871e64a-e83e-4a65-86aa-8744bca20c8c"/>
 				<textElement verticalAlignment="Middle">
 					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.alamat}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="5" y="62" width="88" height="13" uuid="f7478f79-831d-4f76-b873-39e1d29254ad"/>
+				<reportElement x="5" y="61" width="100" height="13" uuid="f7478f79-831d-4f76-b873-39e1d29254ad"/>
 				<textElement verticalAlignment="Middle">
 					<font size="6" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.notelp}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="5" y="87" width="47" height="13" uuid="9409049f-28b4-4efc-89ba-b767d8b55add"/>
+				<reportElement x="5" y="87" width="148" height="13" uuid="9409049f-28b4-4efc-89ba-b767d8b55add"/>
 				<textElement verticalAlignment="Middle">
 					<font size="6"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.prov}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{reportParams.desa}+", "+$P{reportParams.prov}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="52" y="87" width="43" height="13" uuid="eff79c7b-d3ba-4af8-949a-48c79e2275e5"/>
+				<reportElement x="5" y="100" width="148" height="13" uuid="4f1702b8-7be4-474e-875c-ee2e814072f8"/>
 				<textElement verticalAlignment="Middle">
 					<font size="6"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.kota}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="5" y="100" width="38" height="13" uuid="4f1702b8-7be4-474e-875c-ee2e814072f8"/>
-				<textElement verticalAlignment="Middle">
-					<font size="6"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.kec}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="43" y="100" width="41" height="13" uuid="c3ad04cd-01b1-407a-bab4-b25d8bc9c0d1"/>
-				<textElement verticalAlignment="Middle">
-					<font size="6"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.desa}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{reportParams.kota}+", "+$P{reportParams.prov}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="0" y="121" width="59" height="16" forecolor="#666666" uuid="34553456-73a1-4501-aceb-439154af7c8d"/>
@@ -91,7 +78,7 @@
 				<text><![CDATA[PT. Nusantara Medika Utama]]></text>
 			</staticText>
 			<componentElement>
-				<reportElement x="5" y="19" width="117" height="25" uuid="9675f320-f531-445a-a75e-b1e16a73e73f"/>
+				<reportElement x="5" y="22" width="117" height="25" uuid="9675f320-f531-445a-a75e-b1e16a73e73f"/>
 				<jr:Code128 xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" textPosition="bottom">
 					<jr:codeExpression><![CDATA[$P{reportParams.id}]]></jr:codeExpression>
 				</jr:Code128>

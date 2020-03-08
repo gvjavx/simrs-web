@@ -16,7 +16,20 @@
 
         $( document ).ready(function() {
             $('#pasien').addClass('active');
+            searchPasien();
         });
+
+        function searchPasien(){
+            var url_string = window.location.href;
+            var url = new URL(url_string);
+            var idPasien = url.searchParams.get("id_pasien");
+
+            if(idPasien != null){
+                $('#modal-success-pasien').modal('show');
+                $('#val_id_pasien').val(idPasien);
+
+            }
+        }
 
 
     </script>
@@ -120,6 +133,22 @@
                                                  name="icon_success">
                                             Record has been saved successfully.
                                         </sj:dialog>
+                                        <%--<sj:dialog id="success_dialog" openTopics="showInfoDialog" modal="true"--%>
+                                                   <%--resizable="false"--%>
+                                                   <%--closeOnEscape="false"--%>
+                                                   <%--height="200" width="400" autoOpen="false" title="Infomation Dialog"--%>
+                                                   <%--buttons="{--%>
+                                                                                <%--'OK':function() {--%>
+                                                                                         <%--$('#success_dialog').dialog('close');--%>
+                                                                                         <%--pasienSuccess();--%>
+                                                                                     <%--}--%>
+                                                                            <%--}"--%>
+                                        <%-->--%>
+                                            <%--<s:hidden id="val_id_pasien"></s:hidden>--%>
+                                            <%--<img border="0" src="<s:url value="/pages/images/icon_success.png"/>"--%>
+                                                 <%--name="icon_success">--%>
+                                            <%--Record has been saved successfully.--%>
+                                        <%--</sj:dialog>--%>
                                         <sj:dialog id="view_dialog_user" openTopics="showDialogUser" modal="true" resizable="false" cssStyle="text-align:left;"
                                                    height="650" width="900" autoOpen="false" title="View Detail"
                                         >
@@ -455,7 +484,37 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-success-pasien">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"></h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-success alert-dismissible">
+                    <h4><i class="icon fa fa-info"></i> Info!</h4>
+                    Berhasil melakukan registrasi fingerprint
+                </div>
+            </div>
+            <input id="val_id_pasien" type="hidden">
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-success" onclick="pasienSuccess()"><i class="fa fa-check"></i> OK
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type='text/javascript'>
+
+    function pasienSuccess(){
+        var idPasien = $('#val_id_pasien').val();
+        $('#id_pasien').val(idPasien);
+        document.pasienForm.action = 'search_pasien.action';
+        document.pasienForm.submit();
+    }
 
     function detail(pasiendId) {
 

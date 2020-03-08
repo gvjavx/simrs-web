@@ -370,9 +370,11 @@ public class CheckupAction extends BaseMasterAction {
         HeaderCheckup checkup = new HeaderCheckup();
 
         if (getIdPasien() != null && !"".equalsIgnoreCase(getIdPasien())) {
-
+            String[] pasienFinger =idPasien.split(",");
+            setTipe(pasienFinger[1]);
+            tipe=pasienFinger[1];
             Pasien pasien = new Pasien();
-            pasien.setIdPasien(idPasien);
+            pasien.setIdPasien(pasienFinger[0]);
             List<Pasien> pasienList = new ArrayList<>();
 
             try {
@@ -409,7 +411,7 @@ public class CheckupAction extends BaseMasterAction {
                     checkup.setKecamatanId(pasien.getKecamatanId());
                     checkup.setKotaId(pasien.getKotaId());
                     checkup.setProvinsiId(pasien.getProvinsiId());
-                    checkup.setUrlKtp(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_KTP_PASIEN+pasien.getUrlKtp());
+                    checkup.setUrlKtp(pasien.getUrlKtp());
 
                     List<HeaderCheckup> checkups = new ArrayList<>();
                     HeaderCheckup header = new HeaderCheckup();
@@ -476,7 +478,26 @@ public class CheckupAction extends BaseMasterAction {
                     checkup.setProfesi(online.getProfesi());
                     checkup.setNoTelp(online.getNoTelp());
                     checkup.setIdJenisPeriksaPasien(online.getIdJenisPeriksaPasien());
-                    checkup.setUrlKtp(online.getUrlKtp());
+
+                    Pasien pasien = new Pasien();
+                    pasien.setIdPasien(idPasien);
+                    List<Pasien> pasienList = new ArrayList<>();
+
+                    try {
+                        pasienList = pasienBoProxy.getByCriteria(pasien);
+                    }catch (GeneralBOException e){
+                        logger.error("FOund Error "+e.getMessage());
+                    }
+
+                    if(pasienList.size() > 0) {
+
+                        pasien = pasienList.get(0);
+
+                        if(pasien != null){
+                            checkup.setUrlKtp(pasien.getUrlKtp());
+                        }
+                    }
+
                     checkup.setIdPelayanan(antianOnline.getIdPelayanan());
                     checkup.setIdDokter(antianOnline.getIdDokter());
                     checkup.setDesaId(online.getDesaId());
@@ -913,6 +934,9 @@ public class CheckupAction extends BaseMasterAction {
                                         if (!"".equalsIgnoreCase(grouping1Response.getCbgTarif()) && grouping1Response.getCbgTarif() != null) {
                                             if (!"0".equalsIgnoreCase(grouping1Response.getCbgTarif())) {
                                                 tarifCbg = new BigDecimal(grouping1Response.getCbgTarif());
+
+                                                //=====kode CBG INA=======
+                                                checkup.setKodeCbg(grouping1Response.getCbgCode());
                                             }
                                         }
 
@@ -985,11 +1009,19 @@ public class CheckupAction extends BaseMasterAction {
         try {
 
             try {
-                JSONObject obj = new JSONObject(checkup.getAdmisi());
-                checkup.setKetKeyakinan(obj.getString("keyakinan"));
-                checkup.setBahasa(obj.getString("penerjemah"));
-                checkup.setAlatBantu(obj.getString("alatBantu"));
-                checkup.setAlergi(obj.getString("alergi"));
+                List<Asesmen> asesmenList = new ArrayList<>();
+                if(checkup.getAdmisi() != null && !"".equalsIgnoreCase(checkup.getAdmisi())){
+                    JSONArray json = new JSONArray(checkup.getAdmisi());
+                    for (int i=0; i < json.length(); i++){
+                        JSONObject obj = json.getJSONObject(i);
+                        Asesmen asesmen = new Asesmen();
+                        asesmen.setParameter(obj.getString("parameter"));
+                        asesmen.setJawaban(obj.getString("jawaban"));
+                        asesmen.setKeterangan(obj.getString("keterangan"));
+                        asesmenList.add(asesmen);
+                    }
+                }
+                checkup.setAsesmenList(asesmenList);
             } catch (JSONException e) {
                 logger.error("[CheckupAction.saveAdd] Error Convert json to data admisi.", e);
             }
@@ -1022,12 +1054,6 @@ public class CheckupAction extends BaseMasterAction {
             checkup.setStatusPeriksa("0");
             checkup.setNoSep(genNoSep);
             checkup.setTindakanList(tindakans);
-
-            // if uang muka is null or uang muka is 0 then generate invoice
-//            if (checkup.getUangMuka() == null || checkup.getUangMuka().compareTo(new BigInteger(String.valueOf(0))) == 0){
-//                checkup.setNoNota(createJurnalUangMuka(checkup.getIdPasien(), "0"));
-//            }
-//                checkup.setUrlKtp(checkup.getUrlKtp());
 
             if (this.fileUploadDoc != null) {
                 if ("image/jpeg".equalsIgnoreCase(this.fileUploadDocContentType)) {
@@ -2328,7 +2354,7 @@ public class CheckupAction extends BaseMasterAction {
                     headerCheckup.setProfesi(online.getProfesi());
                     headerCheckup.setNoTelp(online.getNoTelp());
                     headerCheckup.setIdJenisPeriksaPasien(online.getIdJenisPeriksaPasien());
-                    headerCheckup.setUrlKtp(online.getUrlKtp());
+//                    headerCheckup.setUrlKtp(online.getUrlKtp());
                     headerCheckup.setIdPelayanan(antianOnline.getIdPelayanan());
                     headerCheckup.setIdDokter(antianOnline.getIdDokter());
                     headerCheckup.setTglAntian(antianOnline.getLastUpdate());
@@ -2387,5 +2413,20 @@ public class CheckupAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
         return checkupBo.getListUploadRekamMedicLama(headId);
+    }
+
+    public List getListTindakanBpjs(String namaTindakan) {
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BpjsBo bpjsBo = (BpjsBo) ctx.getBean("bpjsBoProxy");
+        String branchId = CommonUtil.userBranchLogin();
+        return bpjsBo.GetTindakanByAPIBpjs(namaTindakan, branchId);
+    }
+
+    public List getListTindakanBpjsByIdDetailCheckup(String idDetailCheckup) {
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+
+        return null;
     }
 }

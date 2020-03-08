@@ -66,6 +66,12 @@
                             <div class="col-md-6">
                                 <table class="table table-striped" style="margin-top: 20px">
                                     <tr>
+                                        <td><b>No RM</b></td>
+                                        <td>
+                                            <table><s:label name="periksaLab.idPasien"></s:label></table>
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <td width="45%"><b>No Checkup</b></td>
                                         <td>
                                             <s:hidden id="id_periksa_lab" name="periksaLab.idPeriksaLab"></s:hidden>
@@ -430,7 +436,7 @@
 
     function listSelectDokter() {
         var option = "";
-        CheckupAction.listOfDokter(idPoli, function (response) {
+        PeriksaLabAction.getListDokterTeamByNoDetail(idDetailCheckup, function (response) {
             option = "<option value=''>[Select One]</option>";
             if (response != null) {
                 $.each(response, function (i, item) {
@@ -518,6 +524,29 @@
         }
 
         $('#lab_lab').html(option);
+    }
+
+    function listLab() {
+
+        var table   = "";
+        var data    = [];
+        var lab     = "";
+
+        PeriksaLabAction.listOrderLab(idDetailCheckup, idPeriksaLab, function (response) {
+            data = response;
+            if (data != null) {
+                var idPeriksaLab = "";
+                $.each(data, function (i, item) {
+                    if(item.idKategoriLab == "02"){
+                        if (item.labName != null) {
+                            lab = item.labName;
+                        }
+                    }
+                });
+            }
+        });
+
+        $('#lab_name').html(lab);
     }
 
     function listSelectParameter(select){
@@ -667,27 +696,7 @@
         }
     }
 
-    function listLab() {
 
-        var table   = "";
-        var data    = [];
-        var lab     = "";
-
-        PeriksaLabAction.listOrderLab(idDetailCheckup, function (response) {
-            data = response;
-            if (data != null) {
-                $.each(data, function (i, item) {
-                    if(item.idKategoriLab == "02"){
-                        if (item.labName != null) {
-                            lab = item.labName;
-                        }
-                    }
-                });
-            }
-        });
-
-        $('#lab_name').html(lab);
-    }
 
     function printPeriksaLab(){
         window.open('printPeriksaLab_periksalab.action?id='+idDetailCheckup, "_blank");

@@ -132,6 +132,55 @@
             transform: rotateZ(180deg);
         }
 
+        .custom02 input[type="radio"] {
+            display: none;
+        }
+        .custom02 label {
+            position: relative;
+            display: inline-block;
+            padding: 3px 3px 3px 20px;
+            cursor: pointer;
+        }
+        .custom02 label::before,
+        .custom02 label::after {
+            position: absolute;
+            content: '';
+            top: 50%;
+            border-radius: 100%;
+            -webkit-transition: all .2s;
+            transition: all .2s;
+        }
+        .custom02 label::before {
+            left: 0;
+            width: 14px;
+            height: 14px;
+            margin-top: -8px;
+            background: #f3f3f3;
+            border: 1px solid #ccc;
+        }
+        .custom02 label:hover::before {
+            background: #fff;
+        }
+        .custom02 label::after {
+            opacity: 0;
+            left: 3px;
+            width: 8px;
+            height: 8px;
+            margin-top: -5px;
+            background: #3498db;
+            -webkit-transform: scale(2);
+            transform: scale(2);
+        }
+        .custom02 input[type="radio"]:checked + label::before {
+            background: #fff;
+            border: 1px solid #3498db;
+        }
+        .custom02 input[type="radio"]:checked + label::after {
+            opacity: 1;
+            -webkit-transform: scale(1);
+            transform: scale(1);
+        }
+
     </style>
     <script type='text/javascript' src='<s:url value="/dwr/interface/ProvinsiAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
@@ -958,8 +1007,7 @@
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Perujuk/Asal</label>
                                             <div class="col-md-8">
-                                                <s:select
-                                                        list="#{'sendiri':'Sendiri','dokter':'Dokter','puskesmas':'Puskesmas','rs':'RS Lain','bidan':'Bidan','polis':'Polisi'}"
+                                                <s:select list="#{'puskesmas':'PPK 1 - Puskesmas','rs':'PPK 2 - RS Lain'}"
                                                         cssStyle="margin-top: 7px"
                                                         name="headerCheckup.rujuk"
                                                         onchange="changePlaceHolder(this)"
@@ -967,6 +1015,7 @@
                                                         headerKey="" headerValue="[Select one]"
                                                         cssClass="form-control"/>
                                             </div>
+                                            <%--list="#{'sendiri':'Sendiri','dokter':'Dokter','puskesmas':'Puskesmas','rs':'RS Lain','bidan':'Bidan','polis':'Polisi'}--%>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Keterangan Perujuk</label>
@@ -1273,51 +1322,88 @@
                 </div>
                 <div class="row">
                     <div class="form-group">
-                        <label class="col-md-6">Adakah hal hal yang berkaitan dengan keyakinan anda yang perlu kami
+                        <label class="col-md-7">Adakah hal yang berkaitan dengan keyakinan anda yang perlu kami
                             ketahui ?</label>
-                        <div class="col-md-6"><input class="form-control" id="pre_keyakinan"></div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group">
-                        <label class="col-md-6" style="margin-top: 7px">Apakah anda membutuhkan penerjemah bahasa
-                            ?</label>
-                        <div class="col-md-6">
-                            <label>
-                                <input type="radio" name="r3" class="flat-red"> Ya
-                            </label>
-                            <label>
-                                <input type="radio" name="r3" class="flat-red" checked> Tidak
-                            </label>
-                            <input class="form-control" style="margin-top: 7px" id="pre_penerjemah">
+                        <div class="col-md-4">
+                            <div class="custom02">
+                                <input type="radio" value="Ada" id="pre01-01" name="pre01" /><label for="pre01-01">Ada</label>
+                                <input type="radio" value="Tidak Ada" id="pre01-02" name="pre01" /><label for="pre01-02">Tidak Ada</label>
+                            </div>
+                            <textarea rows="2" style="display: none" class="form-control" id="pre_keyakinan"></textarea>
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" style="margin-top: 7px">
                     <div class="form-group">
-                        <label class="col-md-6" style="margin-top: 7px">Apakah anda memiliki masalah dalam berbicara,
+                        <label class="col-md-7">Apakah anda membutuhkan penerjemah bahasa
+                            ?</label>
+                        <div class="col-md-4">
+                            <div class="custom02">
+                                <input type="radio" value="Ya" id="pre02-01" name="pre02" /><label for="pre02-01">Ya</label>
+                                <input type="radio" value="Tidak" id="pre02-02" name="pre02" /><label for="pre02-02">Tidak</label>
+                            </div>
+                            <input class="form-control" style="display: none" id="pre_penerjemah">
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 7px">
+                    <div class="form-group">
+                        <label class="col-md-7">Apakah anda memiliki masalah dalam berbicara,
                             pendengaran, penglihatan ?</label>
-                        <div class="col-md-6"><input class="form-control" style="margin-top: 7px" id="pre_indra"></div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group">
-                        <label class="col-md-6" style="margin-top: 7px">Apakah kontak yang diisi sudah benar ?</label>
-                        <div class="col-md-6"><input class="form-control" style="margin-top: 7px" id="pre_kontak"></div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group">
-                        <label class="col-md-6" style="margin-top: 7px">Apakah anda membutuhkan alat bantu khusus
-                            ?</label>
-                        <div class="col-md-6"><input class="form-control" style="margin-top: 7px" id="pre_alat_bantu">
+                        <div class="col-md-4">
+                            <div class="custom02">
+                                <input type="radio" value="Ya" id="pre03-01" name="pre03" /><label for="pre03-01">Ya</label>
+                                <input type="radio" value="Tidak" id="pre03-02" name="pre03" /><label for="pre03-02">Tidak</label>
+                            </div>
+                            <textarea style="display: none" class="form-control" id="pre_indra"></textarea>
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" style="margin-top: 7px">
                     <div class="form-group">
-                        <label class="col-md-6" style="margin-top: 7px">Apakah anda mempunyai riwayat alergi ?</label>
-                        <div class="col-md-6"><input class="form-control" style="margin-top: 7px" id="pre_alergi"></div>
+                        <label class="col-md-7">Apakah kontak yang diisi sudah benar ?</label>
+                        <div class="col-md-4">
+                            <div class="custom02">
+                                <input type="radio" value="Ya" id="pre04-01" name="pre04" /><label for="pre04-01">Ya</label>
+                                <input type="radio" value="Tidak" id="pre04-02" name="pre04" /><label for="pre04-02">Tidak</label>
+                            </div>
+                            <input style="display: none" class="form-control" id="pre_kontak">
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 7px">
+                    <div class="form-group">
+                        <label class="col-md-7" >Apakah anda membutuhkan alat bantu khusus
+                            ?</label>
+                        <div class="col-md-4">
+                            <div class="custom02">
+                                <input type="radio" value="Ya" id="pre05-01" name="pre05" /><label for="pre05-01">Ya</label>
+                                <input type="radio" value="Tidak" id="pre05-02" name="pre05" /><label for="pre05-02">Tidak</label>
+                            </div>
+                            <select style="display: none" class="form-control" id="pre_alat_bantu">
+                                <option value="Kursi roda">Kursi roda</option>
+                                <option value="Tongkat/kruk">Tongkak/kruk</option>
+                                <option value="Brankar">Brankar</option>
+                                <option value="Alat bantu dengar">Alat bantu dengar</option>
+                                <option value="Asisten pribadi">Asisten pribadi</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 7px">
+                    <div class="form-group">
+                        <label class="col-md-7">Apakah anda mempunyai riwayat alergi ?</label>
+                        <div class="col-md-4">
+                            <div class="custom02">
+                                <input type="radio" value="Ya" id="pre06-01" name="pre06" /><label for="pre06-01">Ya</label>
+                                <input type="radio" value="Tidak" id="pre06-02" name="pre06" /><label for="pre06-02">Tidak</label>
+                            </div>
+                            <select style="display: none; width: 50%" class="form-control" id="pre_alergi">
+                                <option value="Obat">Obat</option>
+                                <option value="Lainnya">Lainnya</option>
+                            </select>
+                            <textarea style="display: none; margin-top: 7px" class="form-control" id="pre_ket_alergi"></textarea>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1446,11 +1532,68 @@
         initlistPenjamin();
         initListDokter();
 
+        $('[name=pre01],[name=pre02],[name=pre03],[name=pre04],[name=pre05],[name=pre06]').click(function(){
+
+            var check1 = $('[name=pre01]:checked').val();
+
+            if(check1 == "Ada"){
+                $('#pre_keyakinan').show();
+            }else{
+                $('#pre_keyakinan').hide();
+            }
+
+            var check2 = $('[name=pre02]:checked').val();
+            if(check2 == "Ya"){
+                $('#pre_penerjemah').show();
+            }else{
+                $('#pre_penerjemah').hide();
+            }
+
+            var check3 = $('[name=pre03]:checked').val();
+            if(check3 == "Ya"){
+                $('#pre_indra').show();
+            }else{
+                $('#pre_indra').hide();
+            }
+
+            var check4 = $('[name=pre04]:checked').val();
+            if(check4 == "Tidak"){
+                $('#pre_kontak').show();
+            }else{
+                $('#pre_kontak').hide();
+            }
+
+            var check5 = $('[name=pre05]:checked').val();
+            if(check5 == "Ya"){
+                $('#pre_alat_bantu').show();
+            }else{
+                $('#pre_alat_bantu').hide();
+            }
+
+            var check6 = $('[name=pre06]:checked').val();
+            if(check6 == "Ya"){
+                $('#pre_alergi').show();
+                $('#pre_ket_alergi').show();
+            }else{
+                $('#pre_alergi').hide();
+                $('#pre_ket_alergi').hide();
+            }
+
+
+
+        });
+
         $(document).on('change', '.btn-file :file', function () {
             var input = $(this),
                     label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
             input.trigger('fileselect', [label]);
         });
+
+        var src = '<s:property value="headerCheckup.urlKtp"/>';
+        console.log(src);
+        if(src != ''){
+            $('#img-upload').attr('src',src);
+        }
 
         $('.btn-file :file').on('fileselect', function (event, label) {
 
@@ -1464,6 +1607,7 @@
             }
 
         });
+
         function readURL(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
@@ -1479,62 +1623,91 @@
         $("#imgInp").change(function () {
             readURL(this);
         });
+
         console.log(isOnline);
 
         var nominal = document.getElementById('uang_muka');
-        nominal.addEventListener('keyup', function (e) {
-            nominal.value = formatRupiah2(this.value);
-            var valBayar = nominal.value.replace(/[.]/g, '');
+        if(nominal != null && nominal != ''){
+            nominal.addEventListener('keyup', function (e) {
+                nominal.value = formatRupiah2(this.value);
+                var valBayar = nominal.value.replace(/[.]/g, '');
 
-            if(valBayar != ''){
-                $('#uang_muka_val').val(valBayar);
-            }else{
-                $('#uang_muka_val').val('');
-            }
-        });
-
+                if(valBayar != ''){
+                    $('#uang_muka_val').val(valBayar);
+                }else{
+                    $('#uang_muka_val').val('');
+                }
+            });
+        }
 
     });
 
     function setFormAdmisi() {
         $('#modal-admisi').modal({show: true, backdrop: 'static'});
-        var dataAdmisi = $('#data_admisi').val();
-        if (json != null) {
-            var json = JSON.parse(dataAdmisi);
-            $('#pre_keyakinan').val(json.keyakinan);
-            $('#pre_penerjemah').val(json.penerjemah);
-            $('#pre_indra').val(json.indra);
-            $('#pre_kontak').val(json.kontak);
-            $('#pre_alat_bantu').val(json.alatBantu);
-            $('#pre_alergi').val(json.alergi);
-        }
+        // var dataAdmisi = $('#data_admisi').val();
+        // if (json != null) {
+        //     var json = JSON.parse(dataAdmisi);
+        //     $.each
+        //     $('#pre_keyakinan').val(json.keyakinan);
+        //     $('#pre_penerjemah').val(json.penerjemah);
+        //     $('#pre_indra').val(json.indra);
+        //     $('#pre_kontak').val(json.kontak);
+        //     $('#pre_alat_bantu').val(json.alatBantu);
+        //     $('#pre_alergi').val(json.alergi);
+        // }
     }
 
     function saveFormAdmisi() {
 
-        var data = "";
+        var data = [];
+        var check1 = $('[name=pre01]:checked').val();
+        var check2 = $('[name=pre02]:checked').val();
+        var check3 = $('[name=pre03]:checked').val();
+        var check4 = $('[name=pre04]:checked').val();
+        var check5 = $('[name=pre05]:checked').val();
+        var check6 = $('[name=pre06]:checked').val();
+
         var keyakinan = $('#pre_keyakinan').val();
         var penerjemah = $('#pre_penerjemah').val();
         var indra = $('#pre_indra').val();
         var kontak = $('#pre_kontak').val();
         var alatBantu = $('#pre_alat_bantu').val();
         var alergi = $('#pre_alergi').val();
+        var ketAlergi = $('#pre_ket_alergi').val();
 
-        data = {
-            'keyakinan': keyakinan,
-            'penerjemah': penerjemah,
-            'indra': indra,
-            'kontak': kontak,
-            'alatBantu': alatBantu,
-            'alergi': alergi
-        };
+        var hslAlergi = "";
 
+        if(alergi != '' && ketAlergi != ''){
+            hslAlergi = alergi+', '+ketAlergi;
+        }else{
+            if(alergi != ''){
+                hslAlergi = alergi;
+            }
+        }
+
+        data.push({'parameter':'Adakah hal yang berkaitan dengan keyakinan anda yang perlu kami ketahui ?', 'jawaban':check1, 'keterangan':keyakinan});
+        data.push({'parameter':'Apakah anda membutuhkan penerjemah bahasa ?', 'jawaban':check2, 'keterangan':penerjemah});
+        data.push({'parameter':'Apakah anda memiliki masalah dalam berbicara, pendengaran, penglihatan ?', 'jawaban':check3, 'keterangan':indra});
+        data.push({'parameter':'Apakah kontak yang diisi sudah benar ?', 'jawaban':check4, 'keterangan':kontak});
+        data.push({'parameter':'Apakah anda membutuhkan alat bantu khusus ?', 'jawaban':check5, 'keterangan':alatBantu});
+        data.push({'parameter':'Apakah anda mempunyai riwayat alergi ?', 'jawaban':check6, 'keterangan':hslAlergi});
+
+        // data = {
+        //     'keyakinan': keyakinan,
+        //     'penerjemah': penerjemah,
+        //     'indra': indra,
+        //     'kontak': kontak,
+        //     'alatBantu': alatBantu,
+        //     'alergi': alergi
+        // };
+
+        console.log(data);
         var stringJson = JSON.stringify(data);
         $('#data_admisi').val(stringJson);
         var dataAdmisi = $('#data_admisi').val();
         var json = JSON.parse(dataAdmisi);
 
-        if (keyakinan != '' && penerjemah != '' && indra != '' && kontak != '' && alatBantu != '' && alergi != '') {
+        if (check1 != '' && check2 != '' && check3 != '' && check4 != '' && check5 != '' && check6 != '') {
             $('#btn-admisi').addClass("btn btn-warning");
         } else {
             $('#btn-admisi').removeClass("btn btn-warning").addClass("btn btn-primary");
@@ -1602,10 +1775,11 @@
     }
 
     function initlistPenjamin() {
-        var url_string = window.location.href;
-        var url = new URL(url_string);
-        var tipe = url.searchParams.get("tipe");
+        // var url_string = window.location.href;
+        // var url = new URL(url_string);
+        // var tipe = url.searchParams.get("tipe");
 
+        var tipe = '<s:property value="tipe"/>';
         var option = "";
         CheckupAction.getComboJenisPeriksaPasienWithBpjs(function (response) {
             if (response.length > 0) {
@@ -2004,6 +2178,10 @@
             $("#bahasa").val("indonesia");
         }
     }
+
+    $('.pre01').click(function () {
+        console.log('tes');
+    });
 
     var listAlergi = [];
 

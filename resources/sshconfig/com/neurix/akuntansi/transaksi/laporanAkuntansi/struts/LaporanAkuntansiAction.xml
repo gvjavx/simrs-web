@@ -75,7 +75,8 @@
             <result name="input">/pages/com/neurix/akuntansi/transaksi/laporanAkuntansi/InitLaporanAkuntansi.jsp</result>
             <result name="success">/pages/com/neurix/akuntansi/transaksi/laporanAkuntansi/SearchLaporanAkuntansi.jsp</result>
 
-            <result name="error">/pages/com/neurix/akuntansi/transaksi/laporanAkuntansi/addLaporanAkuntansi.jsp</result>
+            <result name="error">/pages/com/neurix/akuntansi/transaksi/laporanAkuntansi/InitLaporanAkuntansi.jsp</result>
+            <result name="error_aging">/pages/com/neurix/akuntansi/transaksi/laporanAkuntansi/report/searchAgingLaporanAkuntansi.jsp</result>
 
             <result name="init_add">/pages/com/neurix/akuntansi/transaksi/laporanAkuntansi/addLaporanAkuntansi.jsp</result>
             <result name="success_save_add">/pages/com/neurix/akuntansi/transaksi/laporanAkuntansi/addLaporanAkuntansi.jsp</result>

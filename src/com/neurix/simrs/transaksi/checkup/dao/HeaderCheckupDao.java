@@ -491,7 +491,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "AND pr.status IS NOT NULL\n" +
                 "AND pr.flag = 'Y'\n" +
                 "AND a.branch_id LIKE :branchId \n" +
-                "AND b.id_pelayanan LIKE :poliId AND pl.tipe_pelayanan = 'rawat_jalan' \n" +
+                "AND b.id_pelayanan LIKE :poliId AND pl.tipe_pelayanan = 'rawat_jalan' OR  pl.tipe_pelayanan = 'igd' \n" +
                 "AND CAST(a.created_date AS date) = current_date\n" +
                 "ORDER BY c.nama_pelayanan, pr.tgl_antrian ASC";
 
@@ -641,7 +641,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "a.profesi,\n" +
                     "a.no_telp,\n" +
                     "a.agama,\n" +
-                    "a.url_ktp,\n" +
+                    "j.url_ktp,\n" +
                     "a.id_jenis_periksa_pasien,\n" +
                     "b.id_detail_checkup,\n" +
                     "b.id_pelayanan,\n" +
@@ -667,6 +667,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "INNER JOIN im_hris_kecamatan f ON e.kecamatan_id = f.kecamatan_id\n" +
                     "INNER JOIN im_hris_kota g ON f.kota_id = g.kota_id\n" +
                     "INNER JOIN im_hris_provinsi h ON g.provinsi_id = h.provinsi_id\n" +
+                    "INNER JOIN im_simrs_pasien j ON a.id_pasien = j.id_pasien\n"+
                     "LEFT JOIN it_simrs_rawat_inap i ON b.id_detail_checkup = i.id_detail_checkup\n" +
                     "WHERE b.id_detail_checkup = :id";
 

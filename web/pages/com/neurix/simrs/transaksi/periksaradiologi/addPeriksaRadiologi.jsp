@@ -13,6 +13,7 @@
 
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PeriksaRadiologiAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/PeriksaLabAction.js"/>'></script>
 
     <script type='text/javascript'>
 
@@ -63,6 +64,12 @@
 
                             <div class="col-md-6">
                                 <table class="table table-striped" style="margin-top: 20px">
+                                    <tr>
+                                        <td><b>No RM</b></td>
+                                        <td>
+                                            <table><s:label name="periksaLab.idPasien"></s:label></table>
+                                        </td>
+                                    </tr>
                                     <tr>
                                         <td width="45%"><b>No Checkup</b></td>
                                         <td>
@@ -295,7 +302,7 @@
 
     function listSelectDokter() {
         var option = "";
-        CheckupAction.listOfDokter(idPoli, function (response) {
+        PeriksaLabAction.getListDokterTeamByNoDetail(idDetailCheckup, function (response) {
             option = "<option value=''>[Select One]</option>";
             if (response != null) {
                 $.each(response, function (i, item) {

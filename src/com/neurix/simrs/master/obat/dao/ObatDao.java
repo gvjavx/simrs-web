@@ -5,8 +5,6 @@ import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
 import com.neurix.simrs.master.obat.model.Obat;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
@@ -67,12 +65,6 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
             if (mapCriteria.get("flag") != null){
                 criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
             }
-
-
-
-//            criteria.add(Restrictions.ne("qtyBox", new BigInteger(String.valueOf(0))));
-//            criteria.add(Restrictions.ne("qtyLembar", new BigInteger(String.valueOf(0))));
-//            criteria.add(Restrictions.ne("qtyBiji", new BigInteger(String.valueOf(0))));
 
             if (mapCriteria.get("asc") != null){
                 criteria.addOrder(Order.asc("createdDate"));
@@ -410,6 +402,177 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
             for (Object[] obj : resuts){
                 list.add(obj[0].toString());
             }
+        }
+
+        return list;
+    }
+
+    public List<Obat> getListObatGroup(Obat bean){
+
+        List<Obat> list = new ArrayList<>();
+        String idPabrik = "%";
+        String idJenis = "%";
+        String idObat = "%";
+        String branchId = "%";
+        String flag = "%";
+
+        if(bean != null){
+
+            if(bean.getIdPabrik() != null && !"".equalsIgnoreCase(bean.getIdPabrik())){
+                idPabrik = bean.getIdPabrik();
+            }
+            if(bean.getIdJenisObat() != null && !"".equalsIgnoreCase(bean.getIdJenisObat())){
+                idJenis = bean.getIdJenisObat();
+            }
+            if(bean.getIdObat() != null && !"".equalsIgnoreCase(bean.getIdObat())){
+                idObat = bean.getIdObat();
+            }
+            if(bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())){
+                flag = bean.getFlag();
+            }
+            if(bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
+                branchId = bean.getBranchId();
+            }
+
+            String SQL = "SELECT \n" +
+                    "a.id_pabrik,\n" +
+                    "a.id_obat,\n" +
+                    "a.nama_obat, \n" +
+                    "a.lembar_per_box, \n" +
+                    "a.biji_per_lembar, \n" +
+                    "SUM(a.qty_box) as box,\n" +
+                    "SUM(a.qty_lembar) as lembar, \n" +
+                    "SUM(a.qty_biji) as biji, \n" +
+                    "a.merk, \n"+
+                    "a.flag \n" +
+                    "FROM im_simrs_obat a\n" +
+                    "INNER JOIN im_simrs_obat_gejala b ON a.id_obat = b.id_obat\n" +
+                    "WHERE a.branch_id LIKE :branchId\n" +
+                    "AND a.id_pabrik LIKE :idPabrik\n" +
+                    "AND a.id_obat LIKE :idObat\n" +
+                    "AND a.flag LIKE :flag\n" +
+                    "AND b.id_jenis_obat LIKE :idJenis\n" +
+                    "GROUP BY \n" +
+                    "a.id_pabrik,\n" +
+                    "a.id_obat,\n" +
+                    "a.nama_obat,\n" +
+                    "a.lembar_per_box,\n" +
+                    "a.biji_per_lembar,"+
+                    "a.merk,\n"+
+                    "a.flag\n";
+
+            List<Object[]> resuts = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("branchId", branchId)
+                    .setParameter("idPabrik", idPabrik)
+                    .setParameter("idObat", idObat)
+                    .setParameter("flag", flag)
+                    .setParameter("idJenis", idJenis)
+                    .list();
+
+            if (resuts.size() > 0){
+                for (Object[] obj : resuts){
+                    Obat obat = new Obat();
+                    obat.setIdPabrik(obj[0] == null ? "" : obj[0].toString());
+                    obat.setIdObat(obj[1] == null ? "" : obj[1].toString());
+                    obat.setNamaObat(obj[2] == null ? "" : obj[2].toString());
+                    obat.setLembarPerBox(obj[3] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[3].toString()));
+                    obat.setBijiPerLembar(obj[4] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[4].toString()));
+                    obat.setQtyBox(obj[5] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[5].toString()));
+                    obat.setQtyLembar(obj[6] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[6].toString()));
+                    obat.setQtyBiji(obj[7] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[7].toString()));
+                    obat.setMerk(obj[8] == null ? "" : obj[8].toString());
+                    obat.setFlag(obj[9] == null ? "" : obj[9].toString());
+                    obat.setJenisObat(getObatGejalaByIdObat(obj[1].toString()));
+                    list.add(obat);
+                }
+            }
+
+        }
+        return list;
+    }
+
+    private String getObatGejalaByIdObat(String idObat){
+
+        String jenisObat = "";
+
+        if(idObat != null && !"".equalsIgnoreCase(idObat)){
+            String SQL = "SELECT \n" +
+                    "a.id_obat_gejala, \n" +
+                    "a.id_obat, \n" +
+                    "b.nama_jenis_obat \n" +
+                    "FROM im_simrs_obat_gejala a\n" +
+                    "INNER JOIN im_simrs_jenis_obat b ON a.id_jenis_obat = b.id_jenis_obat\n" +
+                    "WHERE a.id_obat = :id AND a.flag = 'Y' ";
+
+            List<Object[]> resuts = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("id", idObat)
+                    .list();
+
+            if (resuts.size() > 0){
+                for (Object[] obj : resuts){
+                    StringBuilder addedScript = new StringBuilder();
+                    if(obj[2] != null){
+                        jenisObat = jenisObat + addedScript.append("<label class=\"label label-primary\">" + obj[2].toString() + "</label>");
+                    }
+                }
+            }
+        }
+        return jenisObat;
+    }
+
+    public List<Obat> getListObatDetail(Obat bean){
+
+        List<Obat> list = new ArrayList<>();
+        String idBarang = "%";
+        String idObat = "%";
+        String branchId = "%";
+
+        if(bean != null){
+
+            if(bean.getIdBarang() != null && !"".equalsIgnoreCase(bean.getIdBarang())){
+                idBarang = bean.getIdBarang();
+            }
+            if(bean.getIdObat() != null && !"".equalsIgnoreCase(bean.getIdObat())){
+                idObat = bean.getIdObat();
+            }
+            if(bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
+                branchId = bean.getBranchId();
+            }
+
+            String SQL = "SELECT id_barang, \n" +
+                    "expired_date, \n" +
+                    "id_obat, \n" +
+                    "nama_obat, \n" +
+                    "qty_box, \n" +
+                    "qty_lembar, \n" +
+                    "qty_biji\n" +
+                    "FROM im_simrs_obat\n" +
+                    "WHERE id_obat LIKE :idObat\n" +
+                    "AND id_barang LIKE :idBarang\n" +
+                    "AND branch_id LIKE :branchId\n ORDER BY expired_date ASC";
+
+            List<Object[]> resuts = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("branchId", branchId)
+                    .setParameter("idBarang", idBarang)
+                    .setParameter("idObat", idObat)
+                    .list();
+
+            if (resuts.size() > 0){
+                for (Object[] obj : resuts){
+                    Obat obat = new Obat();
+                    obat.setIdBarang(obj[0] == null ? "" : obj[0].toString());
+                    if(obj[1] != null){
+                        obat.setExpiredDate(Date.valueOf(obj[1].toString()));
+                    }
+                    obat.setIdObat(obj[2] == null ? "" : obj[2].toString());
+                    obat.setNamaObat(obj[3] == null ? "" : obj[3].toString());
+                    obat.setQtyBox(obj[4] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[4].toString()));
+                    obat.setQtyLembar(obj[5] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[5].toString()));
+                    obat.setQtyBiji(obj[6] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[6].toString()));
+                    list.add(obat);
+                }
+            }
+
         }
 
         return list;

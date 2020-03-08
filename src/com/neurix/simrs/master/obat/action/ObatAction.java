@@ -121,7 +121,7 @@ public class ObatAction extends BaseMasterAction {
 
         List<Obat> obatList = new ArrayList<>();
         try {
-            obatList = obatBoProxy.getByCriteria(obat);
+            obatList = obatBoProxy.getListObatByGroup(obat);
         } catch (HibernateException e){
             logger.error("[ObatAction.search] ERROR when get data list obat, ", e);
             addActionError("[ObatAction.search] ERROR when get data list obat, "+e.getMessage());
@@ -284,8 +284,9 @@ public class ObatAction extends BaseMasterAction {
         return checkObatResponse;
     }
 
-    public String editObat(String idObat, String namaObat, List<String> jenisObat, String merek, String pabrik, BigInteger box, BigInteger lembarBox, BigInteger lembar, BigInteger bijiLembar, BigInteger biji, BigDecimal hargaBox, BigDecimal hargaLembar, BigDecimal hargaBiji){
+    public CheckObatResponse editObat(String idObat, String namaObat, List<String> jenisObat, String merek, String pabrik, BigInteger lembarBox,BigInteger bijiLembar){
         logger.info("[ObatAction.saveObatInap] start process >>>");
+        CheckObatResponse response = new CheckObatResponse();
         try {
             String userLogin = CommonUtil.userLogin();
             String userArea = CommonUtil.userBranchLogin();
@@ -295,34 +296,29 @@ public class ObatAction extends BaseMasterAction {
             ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
 
             Obat obat = new Obat();
-            obat.setIdSeqObat(idObat);
+            obat.setIdObat(idObat);
             obat.setNamaObat(namaObat);
-            obat.setQtyBox(box);
-            obat.setQtyLembar(lembar);
-            obat.setQtyBiji(biji);
             obat.setMerk(merek);
             obat.setIdPabrik(pabrik);
             obat.setLembarPerBox(lembarBox);
             obat.setBijiPerLembar(bijiLembar);
-            obat.setAverageHargaBox(hargaBox);
-            obat.setAverageHargaLembar(hargaLembar);
-            obat.setAverageHargaBiji(hargaBiji);
             obat.setLastUpdate(updateTime);
             obat.setLastUpdateWho(userLogin);
             obat.setBranchId(userArea);
             obat.setAction("U");
 
-            obatBo.saveEdit(obat, jenisObat);
+            response = obatBo.saveEdit(obat, jenisObat);
 
         }catch (GeneralBOException e) {
             Long logId = null;
             logger.error("[ObatInapAction.saveObatInap] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            response.setStatus("error");
+            response.setMessage("Found Error when save edit obat "+e.getMessage());
         }
 
         logger.info("[ObatAction.saveObatInap] end process >>>");
-        return SUCCESS;
+        return response;
     }
 
     public List<Obat> getJenisObatByIdObat(String idObat){
@@ -445,11 +441,16 @@ public class ObatAction extends BaseMasterAction {
     public List<Obat> searchHargaObat(String idObat){
         logger.info("[PermintaanVendorAction.searchHargaObat] START process <<<");
 
-        Obat obat = getObat();
+        Obat obat = new Obat();
+        obat.setIdObat(idObat);
+        obat.setBranchId(CommonUtil.userBranchLogin());
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
 
         List<Obat> obats = new ArrayList<>();
         try {
-            obats = obatBoProxy.getListHargaObat(obat);
+            obats = obatBo.getListHargaObat(obat);
         } catch (GeneralBOException e){
             logger.error("[ReportAction.searchHargaObat] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
@@ -460,7 +461,7 @@ public class ObatAction extends BaseMasterAction {
         return obats;
     }
 
-    public CrudResponse saveHargaObat(String jsonString) throws JSONException{
+    public CrudResponse saveHargaObat(String idObat, String idBarang, String jsonString) throws JSONException{
 
         CrudResponse response = new CrudResponse();
         String userLogin = CommonUtil.userLogin();
@@ -475,6 +476,8 @@ public class ObatAction extends BaseMasterAction {
         HargaObat hargaObat = new HargaObat();
         for (int i = 0; i < json.length(); i++) {
             JSONObject obj = json.getJSONObject(i);
+            hargaObat.setIdObat(idObat);
+            hargaObat.setIdBarang(idBarang);
             hargaObat.setHargaNet(new BigDecimal(obj.getString("harga_net")));
             hargaObat.setDiskon(new BigDecimal(obj.getString("diskon")));
             hargaObat.setHargaJual(new BigDecimal(obj.getString("harga_jual")));
@@ -495,6 +498,27 @@ public class ObatAction extends BaseMasterAction {
             return response;
         }
         return response;
+    }
+
+    public List<Obat> getListObatDetail(String idObat){
+        List<Obat> obatList = new ArrayList<>();
+
+        if(idObat != null && !"".equalsIgnoreCase(idObat)){
+
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+            Obat obat = new Obat();
+            obat.setIdObat(idObat);
+            obat.setBranchId(CommonUtil.userBranchLogin());
+
+            try {
+                obatList = obatBo.getListObatDetail(obat);
+            }catch (GeneralBOException e){
+                logger.error("Found Error when search by id Obat "+e.getMessage());
+            }
+        }
+
+        return obatList;
     }
 
 }

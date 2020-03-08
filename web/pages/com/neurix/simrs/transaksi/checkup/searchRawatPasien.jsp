@@ -717,7 +717,7 @@
         if (idPasien==""){
             alert("nomor BPJS masih kosong");
         } else{
-            var url=btoa('http://localhost:8080/simrs/loginFinger.action?userId='+idPasien);
+            var url=btoa('http://localhost:8080/simrs/loginFinger.action?userId='+idPasien+'&tipe=bpjs');
             window.location.href = 'finspot:FingerspotVer;'+url;
         }
     });

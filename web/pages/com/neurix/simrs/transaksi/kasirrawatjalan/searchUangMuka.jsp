@@ -324,6 +324,10 @@
                                     <td style="vertical-align: middle"><span class="label label-success" id="fin_no_sep"></span></td>
                                 </tr>
                                 <tr>
+                                    <td><b>No RM</b></td>
+                                    <td><span id="fin_no_rm"></span></td>
+                                </tr>
+                                <tr>
                                     <td><b>ID Detail Checkup</b></td>
                                     <td><span id="fin_no_checkup"></span></td>
                                 </tr>
@@ -552,6 +556,7 @@
                         desa = response.namaDesa;
                         noSep = response.noSep;
                         jenisPasien = response.idJenisPeriksaPasien;
+                        $('#fin_no_rm').html(response.idPasien);
                     // });
                 }
             });

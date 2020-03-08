@@ -79,6 +79,10 @@ public class PembayaranUtangPiutangDao extends GenericDao<ImPembayaranUtangPiuta
     }
     public List<PembayaranUtangPiutangDetail> getSearchNotaPembayaran(String masterId,String tipeTransaksi,String branchId,String tipeBayar) throws HibernateException {
         List<PembayaranUtangPiutangDetail> listOfResult = new ArrayList<PembayaranUtangPiutangDetail>();
+        String whereBranch ="";
+        if (!("").equalsIgnoreCase(branchId)){
+            whereBranch="and a.branch_id IN ("+branchId+")";
+        }
         String debit="";
         switch (tipeBayar){
             case "PP":
@@ -154,7 +158,7 @@ public class PembayaranUtangPiutangDao extends GenericDao<ImPembayaranUtangPiuta
                 "    where \n" +
                 "      a.flag = 'Y' \n" +
                 "      and a.registered_flag = 'Y' \n" +
-                "      and a.branch_id='"+branchId+"'" +
+                whereBranch +
                 "    group by \n" +
                 "      b.no_nota, \n" +
                 "      a.mata_uang_id, \n" +

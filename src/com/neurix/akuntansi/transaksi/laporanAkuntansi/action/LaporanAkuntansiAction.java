@@ -872,7 +872,9 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
 
         List<Aging> agingList = laporanAkuntansiBo.getAging(unit,periode,dataLaporan.getMasterId(),tipeAging,reportId);
         List<Aging> listOfAgingTemp = new ArrayList<>();
-
+        if (agingList.size()==0){
+            return "error_aging";
+        }
         String []jumlahTanggalTahunKabisat = {"","31","29","31","30","31","30","31","31","30","31","30","31"};
         String []jumlahTanggalTahunBiasa = {"","31","28","31","30","31","30","31","31","30","31","30","31"};
         String jumlahTanggalTemp="";

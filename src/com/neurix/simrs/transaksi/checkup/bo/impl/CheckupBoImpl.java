@@ -22,6 +22,7 @@ import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.antrianonline.dao.AntrianOnlineDao;
 import com.neurix.simrs.transaksi.antrianonline.model.ItSimrsAntianOnlineEntity;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
+import com.neurix.simrs.transaksi.checkup.dao.AsesmenDao;
 import com.neurix.simrs.transaksi.checkup.dao.CheckupAlergiDao;
 import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao;
 import com.neurix.simrs.transaksi.checkup.model.*;
@@ -64,6 +65,7 @@ import com.neurix.simrs.transaksi.teamdokter.model.ItSimrsDokterTeamEntity;
 import com.neurix.simrs.transaksi.tindakanrawat.dao.TindakanRawatDao;
 import com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity;
 import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
+import com.neurix.simrs.transaksi.transaksitindakanbpjs.dao.TransaksiTindakanBpjsDao;
 import com.neurix.simrs.transaksi.transfusi.dao.TranfusiDao;
 import com.neurix.simrs.transaksi.transfusi.model.ItSimrsTranfusiEntity;
 import org.apache.log4j.Logger;
@@ -115,6 +117,8 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
     private UploadRekamMedicLamaDao uploadRekamMedicLamaDao;
     private UangMukaDao uangMukaDao;
     private AntrianOnlineDao antrianOnlineDao;
+    private AsesmenDao asesmenDao;
+    private TransaksiTindakanBpjsDao transaksiTindakanBpjsDao;
 
     @Override
     public List<HeaderCheckup> getByCriteria(HeaderCheckup bean) throws GeneralBOException {
@@ -183,7 +187,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             }
         }
         logger.info("[CheckupBoImpl.getByCriteria] End <<<<<<<");
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
@@ -375,6 +379,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                 detailCheckupEntity.setLastUpdateWho(bean.getLastUpdateWho());
                 detailCheckupEntity.setNoCheckupOnline(bean.getNoCheckupOnline());
                 detailCheckupEntity.setMetodePembayaran(bean.getMetodePembayaran());
+                detailCheckupEntity.setKodeCbg(bean.getKodeCbg());
 
                 //TGL Antrin dari tabel antrian online
                 if ("Y".equalsIgnoreCase(bean.getIsOnline())) {
@@ -539,6 +544,31 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                             antrianOnlineDao.updateAndSave(onlineEntity);
                         }catch (HibernateException e){
                             logger.error("Found Error when update antrian online");
+                        }
+                    }
+                }
+
+                if(bean.getAsesmenList().size() > 0){
+
+                    for (Asesmen list: bean.getAsesmenList()){
+
+                        ItSimrsAsesmenEntity asesmen = new ItSimrsAsesmenEntity();
+                        asesmen.setIdAsesmen("ASM"+getNextIdAsesmen());
+                        asesmen.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
+                        asesmen.setParameter(list.getParameter());
+                        asesmen.setJawaban(list.getJawaban());
+                        asesmen.setKeterangan(list.getKeterangan());
+                        asesmen.setFlag("Y");
+                        asesmen.setAction("C");
+                        asesmen.setCreatedWho(bean.getCreatedWho());
+                        asesmen.setCreatedDate(bean.getCreatedDate());
+                        asesmen.setLastUpdate(bean.getLastUpdate());
+                        asesmen.setLastUpdateWho(bean.getLastUpdateWho());
+
+                        try {
+                            asesmenDao.addAndSave(asesmen);
+                        }catch (HibernateException e){
+                            logger.error("Found Error "+e.getMessage());
                         }
                     }
                 }
@@ -1905,6 +1935,16 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
         return id;
     }
 
+    private String getNextIdAsesmen() {
+        String id = "";
+        try {
+            id = asesmenDao.getNextSeq();
+        } catch (HibernateException e) {
+            logger.error("[RiwayatTindakanBoImpl.getNextIdRiwayatTindakan] ERROR When create sequences", e);
+        }
+        return id;
+    }
+
     public void setHeaderCheckupDao(HeaderCheckupDao headerCheckupDao) {
         this.headerCheckupDao = headerCheckupDao;
     }
@@ -2018,5 +2058,13 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
 
     public void setAntrianOnlineDao(AntrianOnlineDao antrianOnlineDao) {
         this.antrianOnlineDao = antrianOnlineDao;
+    }
+
+    public void setTransaksiTindakanBpjsDao(TransaksiTindakanBpjsDao transaksiTindakanBpjsDao) {
+        this.transaksiTindakanBpjsDao = transaksiTindakanBpjsDao;
+    }
+
+    public void setAsesmenDao(AsesmenDao asesmenDao) {
+        this.asesmenDao = asesmenDao;
     }
 }

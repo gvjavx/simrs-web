@@ -12,6 +12,7 @@
           p:mappingJurnalDao-ref="mappingJurnalDao"
           p:tipeJurnalDao-ref="tipeJurnalDao"
           p:transDao-ref="transDao"
+          p:kodeRekeningDao-ref="kodeRekeningDao"
     />
 
     <bean id="mappingJurnalBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
