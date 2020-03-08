@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="newReportMutasi" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8e506c74-d8ab-4e72-b68c-624eb5e52f8b">
 	<property name="ireport.zoom" value="1.610510000000001"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="629"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="reportParams.branchName" class="java.lang.String"/>
 	<parameter name="reportParams.titleReport" class="java.lang.String"/>
 	<parameter name="reportParams.urlLogo" class="java.lang.String"/>
@@ -15,6 +15,7 @@
 	<parameter name="reportParams.unitBaru" class="java.lang.String"/>
 	<parameter name="reportParams.jabatanBaru" class="java.lang.String"/>
 	<parameter name="reportParams.levelBaru" class="java.lang.String"/>
+	<parameter name="reportParams.noSurat" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select * from it_hris_mutasi_jabatan limit 1]]>
 	</queryString>
@@ -333,6 +334,27 @@ new com.google.zxing.qrcode.QRCodeWriter().encode($F{nip},com.google.zxing.Barco
 					<font size="12" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.levelBaru}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="85" y="34" width="83" height="17" uuid="1e67237e-5a7a-4a99-9b29-3cb22483a571"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PEMINDAHAN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="85" y="17" width="11" height="17" uuid="35ff73c9-66c0-4483-acfc-921394155b27"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="85" y="0" width="205" height="17" uuid="6d1c811c-0614-4cb0-a3a1-fb738d05bd01"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.noSurat}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

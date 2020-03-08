@@ -283,7 +283,7 @@ To change this template use File | Settings | File Templates.
                                                 </s:a>
                                             </display:column>--%>
                                             <display:column media="html" title="Print">
-                                                <a href="javascript:;" data="<s:property value="%{#attr.row.mutasiId}"/>" class="item-print">
+                                                <a href="javascript:;" data="<s:property value="%{#attr.row.mutasiId}"/>" class="item-print" id="<s:property value="%{#attr.row.mutasiId}"/>">
                                                     <img border="0" src="<s:url value="/pages/images/icon_printer_new.ico"/>" name="icon_edit">
                                                 </a>
                                             </display:column>
@@ -372,9 +372,15 @@ To change this template use File | Settings | File Templates.
             <div class="modal-body">
                 <form class="form-horizontal" id="myForm">
                     <div class="form-group">
+                        <label class="control-label col-sm-4" >Mutasi Id : </label>
+                        <div class="col-sm-8">
+                            <input readonly type="text"  class="form-control nip" id="idMutasi" name="nip">
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="control-label col-sm-4" >No. Sk Mutasi : </label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control nip" id="nip2" name="nip">
+                            <input type="text" class="form-control nip" id="noSurat" name="nip">
                         </div>
                     </div>
                 </form>
@@ -392,7 +398,32 @@ To change this template use File | Settings | File Templates.
     }*/
     $(document).ready(function(){
         $('.tableSppd').on('click', '.item-print', function(){
+            var id = $(this).attr('id');
+            $('#idMutasi').val(id);
             $('#modal-edit').modal('show');
         });
+
+        $('#btnSave').click(function(){
+            var idMutasi = document.getElementById("idMutasi").value;
+            var noSurat = document.getElementById("noSurat").value;
+            var msg='Apakah Anda ingin Surat Keterangan ?';
+            var msg2="Field:\n";
+            dwr.engine.setAsync(false);
+            if(noSurat!=''){
+                if (confirm(msg)) {
+                    var addr = "simrs/mutasi/printReportMutasi_mutasi.action?idSurat="+idMutasi+"&noSurat="+noSurat;
+                    var currentLoc = window.location.href;
+                    var newAdd = currentLoc.split('simrs/')[0] + addr;
+                    window.location.href = newAdd;
+                }
+            }else{
+                msg2 += "-No Surat\n";
+                alert(msg2+"Masih Kosong");
+            }
+
+        });
+
+
+
     });
 </script>

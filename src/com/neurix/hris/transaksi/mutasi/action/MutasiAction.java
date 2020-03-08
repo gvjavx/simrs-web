@@ -48,6 +48,24 @@ public class MutasiAction extends BaseMasterAction{
 
     private String fileUploadContentType;
     private String fileUploadFileName;
+    private String idMutasi;
+    private String noSurat;
+
+    public String getIdMutasi() {
+        return idMutasi;
+    }
+
+    public void setIdMutasi(String idMutasi) {
+        this.idMutasi = idMutasi;
+    }
+
+    public String getNoSurat() {
+        return noSurat;
+    }
+
+    public void setNoSurat(String noSurat) {
+        this.noSurat = noSurat;
+    }
 
     public MutasiDoc getMutasiDoc() {
         return mutasiDoc;
@@ -410,7 +428,8 @@ public class MutasiAction extends BaseMasterAction{
 
     public String printReportMutasi() {
         logger.info("[ReportAction.printReportMutasi] start process >>>");
-        String id = getId();
+        String id = getIdMutasi();
+        String noSurat = getNoSurat();
         if (id != null) {
             Mutasi searchMutasi = new Mutasi();
 
@@ -424,20 +443,13 @@ public class MutasiAction extends BaseMasterAction{
                 branch = branchBo.getBranchById("KP","Y");
             }catch( HibernateException e){
             }
-            /*if (searchMutasi.getBranchLamaId().equalsIgnoreCase("RS01")){
-                reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS01);
-            }else if (searchMutasi.getBranchLamaId().equalsIgnoreCase("RS02")){
-                reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS02);
-            }else if (searchMutasi.getBranchLamaId().equalsIgnoreCase("RS03")){
-                reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS03);
-            }else{
-                reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU);
-            }*/
             reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU);
             String stTanggal = CommonUtil.convertDateToString( new java.util.Date());
             reportParams.put("alamatUni", branch.getAlamatSurat()+","+stTanggal);
             reportParams.put("branchName", branch.getBranchName());
             reportParams.put("titleReport", "Surat Keterangan");
+            reportParams.put("noSurat", noSurat);
+            reportParams.put("tanggalSk", searchMutasi.getStTanggalEfektif());
 
 
             reportParams.put("namaPegawai", searchMutasi.getNama());
