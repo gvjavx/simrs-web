@@ -103,9 +103,19 @@
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Unit</label>
                                             <div class="col-md-8">
-                                                <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
-                                                <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="branch_id"  onchange="isiKeteterangan()" name="pembayaranUtangPiutang.branchId" required="true"
-                                                          listKey="branchId" listValue="branchName" headerKey="" headerValue="" />
+                                                <s:if test='#pembayaranUtangPiutang.branchId == "KP"'>
+                                                    <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
+                                                    <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="branch_id"  onchange="isiKeteterangan()" name="pembayaranUtangPiutang.branchId" required="true"
+                                                              listKey="branchId" listValue="branchName" headerKey="" headerValue="" />
+                                                </s:if>
+                                                <s:else>
+                                                    <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
+                                                    <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="branch_id_view" name="pembayaranUtangPiutang.branchId" required="true" disabled="true"
+                                                              listKey="branchId" listValue="branchName" headerKey="" headerValue="" />
+
+                                                    <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="branch_id" name="pembayaranUtangPiutang.branchId" required="true" cssStyle="display: none"
+                                                              listKey="branchId" listValue="branchName" headerKey="" headerValue="" />
+                                                </s:else>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -645,7 +655,6 @@
         var branchName = $('#branch_id option:selected').text();
         var bank = $('#bank option:selected').text();
         var noSlipBank = $('#no_slip_bank').val();
-
         var keterangan ="";
         if (metodeBayar!=""){
             metodeBayar = "dengan metode bayar "+metodeBayar;

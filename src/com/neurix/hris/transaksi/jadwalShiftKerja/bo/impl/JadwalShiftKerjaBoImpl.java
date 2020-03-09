@@ -624,4 +624,17 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
         logger.info("[JadwalShiftKerjaBoImpl.getJadwalShiftKerjaByUnitAndTanggal] end process <<<");
         return dataFinal;
     }
+    @Override
+    public List<JadwalShiftKerjaDetail> getJadwalShiftKerjaByUnitAndProfesiAndTanggal(String branchId, Date tglFrom,Date tglTo,String profesiId) throws GeneralBOException {
+        logger.info("[JadwalShiftKerjaBoImpl.getJadwalShiftKerjaByUnitAndTanggal] start process >>>");
+        List<JadwalShiftKerjaDetail> dataFinal = new ArrayList<>();
+        try {
+            dataFinal = jadwalShiftKerjaDao.getJadwalShiftKerjaByUnitAndProfesiAndTanggal(branchId,tglFrom,tglTo,profesiId);
+        } catch (HibernateException e) {
+            logger.error("[JadwalShiftKerjaBoImpl.getJadwalShiftKerjaByUnitAndTanggal] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        logger.info("[JadwalShiftKerjaBoImpl.getJadwalShiftKerjaByUnitAndTanggal] end process <<<");
+        return dataFinal;
+    }
 }

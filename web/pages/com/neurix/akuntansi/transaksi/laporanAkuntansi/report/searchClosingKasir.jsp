@@ -15,6 +15,7 @@
 <html>
 <head>
     <%@ include file="/pages/common/header.jsp" %>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/LaporanAkuntansiAction.js"/>'></script>
     <script type='text/javascript'>
 
         function callSearch2() {
@@ -30,13 +31,13 @@
 
         $.subscribe('beforeProcessSave', function (event, data) {
             var unit    = document.getElementById("branchId").value;
-            var periodeTahun = document.getElementById("periodeTahun").value;
-            var periodeBulan = document.getElementById("periodeBulan").value;
-            var tipeLaporan = document.getElementById("tipeLaporanId").value;
+            var tglFrom = document.getElementById("tglFrom").value;
+            var tglTo = document.getElementById("tglTo").value;
+            var nipKasir = document.getElementById("kasir").value;
 
-            if ( unit != '' && periodeTahun != ''&& periodeBulan != ''&&tipeLaporan!='') {
+            if ( unit != '' && tglFrom != ''&& tglTo != ''&&nipKasir!='') {
                 event.originalEvent.options.submit = false;
-                var url = "printReportIkhtisarSubBukuBesar_laporanAkuntansi.action?laporanAkuntansi.tipeLaporan="+tipeLaporan+"&laporanAkuntansi.unit="+unit+"&laporanAkuntansi.tahun="+periodeTahun+"&laporanAkuntansi.bulan="+periodeBulan;
+                var url = "printReportClosingKasir_laporanAkuntansi.action?laporanAkuntansi.unit="+unit+"&laporanAkuntansi.stTanggalAwal="+tglFrom+"&laporanAkuntansi.stTanggalAkhir="+tglTo+"&laporanAkuntansi.nip="+nipKasir;
                 window.open(url,'_blank');
             } else {
                 event.originalEvent.options.submit = false;
@@ -44,14 +45,14 @@
                 if ( unit == '') {
                     msg += 'Field <strong>Unit </strong> masih belum dipilih' + '<br/>';
                 }
-                if ( periodeTahun == '') {
-                    msg += 'Field <strong>Tahun </strong> masih belum dipilih' + '<br/>';
+                if ( tglFrom == '') {
+                    msg += 'Field <strong>Tanggal dari </strong> masih belum dipilih' + '<br/>';
                 }
-                if ( periodeBulan == '') {
-                    msg += 'Field <strong>Bulan </strong> masih belum dipilih' + '<br/>';
+                if ( tglTo == '') {
+                    msg += 'Field <strong>Tanggal sampai </strong> masih belum dipilih' + '<br/>';
                 }
-                if ( tipeLaporan == '') {
-                    msg += 'Field <strong>Tipe Laporan </strong> masih belum dipilih' + '<br/>';
+                if ( nipKasir == '') {
+                    msg += 'Field <strong>Kasir </strong> masih belum dipilih' + '<br/>';
                 }
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
@@ -84,7 +85,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Laporan Ikhitisar
+            Closing Kasir Tunai
             <small>e-HEALTH</small>
         </h1>
     </section>
@@ -94,13 +95,14 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Laporan Ikhitisar</h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Closing Kasir Tunai</h3>
                     </div>
                     <div class="box-body">
                         <table width="100%" align="center">
                             <tr>
                                 <td align="center">
-                                    <s:form id="laporanAkuntansiForm" method="post"  theme="simple" namespace="/laporanAkuntansi" action="printReportNeracaMutasi_laporanAkuntansi.action" cssClass="form-horizontal">
+                                    <s:form id="laporanAkuntansiForm" method="post"  theme="simple" namespace="/laporanAkuntansi" action="printReportNeracaSaldo_laporanAkuntansi.action" cssClass="form-horizontal">
+                                        <s:hidden name="tipeLaporan" value="neraca_saldo"/>
                                         <table>
                                             <tr>
                                                 <td width="10%" align="center">
@@ -118,7 +120,7 @@
                                                         <s:if test='#laporanAkuntansi.unit == "KP"'>
                                                             <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                                                             <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="laporanAkuntansi.unit"
-                                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" onchange="listKasir();" cssClass="form-control"/>
                                                         </s:if>
                                                         <s:else>
                                                             <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
@@ -131,39 +133,47 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Tipe Laporan :</small></label>
+                                                    <label class="control-label"><small>Tanggal :</small></label>
                                                 </td>
                                                 <td>
-                                                    <s:select list="#{'hutang_usaha':'Hutang Usaha', 'piutang_usaha' : 'Piutang Usaha', 'uang_muka':'Uang Muka','piutang_pasien':'Piutang Pasien','uang_muka_p':'Uang Muka Pasien'}"
-                                                              id="tipeLaporanId" name="laporanAkuntansi.tipeLaporanId"
-                                                              headerKey="" headerValue="[Select One]" cssClass="form-control" />
+                                                    <table>
+                                                        <div class="input-group date">
+                                                            <div class="input-group-addon">
+                                                                <i class="fa fa-calendar"></i>
+                                                            </div>
+                                                            <s:textfield id="tglFrom" cssClass="form-control pull-right" onchange="listKasir();"
+                                                                         required="false" size="7"  cssStyle=""/>
+                                                            <div class="input-group-addon">
+                                                                s/d
+                                                            </div>
+                                                            <div class="input-group-addon">
+                                                                <i class="fa fa-calendar"></i>
+                                                            </div>
+                                                            <s:textfield id="tglTo" cssClass="form-control pull-right" onchange="listKasir();"
+                                                                         required="false" size="7"  cssStyle=""/>
+                                                        </div>
+                                                        <script>
+                                                            $('#tglFrom').datepicker({
+                                                                dateFormat: 'dd-mm-yy'
+                                                            });
+                                                            $('#tglTo').datepicker({
+                                                                dateFormat: 'dd-mm-yy'
+                                                            });
+                                                        </script>
+                                                    </table>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Periode :</small></label>
+                                                    <label class="control-label"><small>Kasir :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:select list="#{'01':'Januari', '02' : 'Februari', '03':'Maret', '04':'April', '05':'Mei', '06':'Juni', '07':'Juli',
-                                '08': 'Agustus', '09' : 'September', '10' : 'Oktober', '11' : 'November', '12' : 'Desember'}"
-                                                                  id="periodeBulan" name="laporanAkuntansi.bulan"
-                                                                  headerKey="" headerValue="[Select One]" cssClass="form-control" />
+                                                        <select id="kasir" class="form-control">
+                                                            <option value=''>[Select One]</option>
+                                                        </select>
                                                     </table>
                                                 </td>
-                                                <td>
-                                                    <table>
-                                                        <s:action id="comboPeriode" namespace="/rekruitmen" name="initComboPeriodeTahunSekarang10_rekruitmen"/>
-                                                        <s:select cssClass="form-control" list="#comboPeriode.listOfComboPeriode" id="periodeTahun"
-                                                                  name="laporanAkuntansi.tahun" required="true" headerKey=""
-                                                                  headerValue="[Select one]"/>
-                                                    </table>
-                                                </td>
-                                                <script>
-                                                    var dt = new Date();
-                                                    $('#periodeBulan').val(("0" + (dt.getMonth() + 1)).slice(-2));
-                                                    $('#periodeTahun').val(dt.getFullYear());
-                                                </script>
                                             </tr>
                                         </table>
                                         <br>
@@ -178,7 +188,7 @@
                                                         </sj:submit>
                                                     </td>
                                                     <td>
-                                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="searchReportNeracaMutasi_laporanAkuntansi.action"/>'">
+                                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="searchReportNeracaSaldo_laporanAkuntansi.action"/>'">
                                                             <i class="fa fa-refresh"></i> Reset
                                                         </button>
                                                     </td>
@@ -254,3 +264,24 @@
 <%@ include file="/pages/common/lastScript.jsp" %>
 </body>
 </html>
+<script>
+    function listKasir(){
+        var branchId =$('#branchId').val();
+        var tglFrom =$('#tglFrom').val();
+        var tglTo=$('#tglTo').val();
+        var option = "";
+        if (branchId!=''&&tglFrom!=''&&tglTo!=''){
+            LaporanAkuntansiAction.listKasirByBranch(branchId,tglFrom,tglTo, function(response){
+                option = "<option value=''>[Select One]</option>";
+                if (response != null){
+                    $.each(response, function (i, item) {
+                        option += "<option value='"+item.nip+"'>"+item.shiftName+" | "+item.namaPegawai+ "</option>";
+                    });
+                }else{
+                    option = option;
+                }
+            });
+            $('#kasir').html(option);
+        }
+    }
+</script>

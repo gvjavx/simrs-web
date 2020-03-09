@@ -35,8 +35,17 @@ public class LaporanAkuntansi extends BaseModel {
     private String stTanggalAwal;
     private String stTanggalAkhir;
     private String tipeTanggal;
+    private String nip;
 
     private String levelKodeRekening;
+
+    public String getNip() {
+        return nip;
+    }
+
+    public void setNip(String nip) {
+        this.nip = nip;
+    }
 
     public String getStTanggalAwal() {
         return stTanggalAwal;

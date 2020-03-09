@@ -95,6 +95,26 @@
                                         <table >
                                             <tr>
                                                 <td>
+                                                    <label class="control-label"><small>Unit :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:if test='#pembayaranUtangPiutang.branchId == "KP"'>
+                                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                                            <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="pembayaranUtangPiutang.branchId"
+                                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                        </s:if>
+                                                        <s:else>
+                                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                                            <s:select list="#initComboBranch.listOfComboBranch" id="branchIdView" name="pembayaranUtangPiutang.branchId" disabled="true"
+                                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                            <s:hidden id="branchId" name="pembayaranUtangPiutang.branchId" />
+                                                        </s:else>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
                                                     <label class="control-label"><small>Pembayaran Hutang Piutang ID :</small></label>
                                                 </td>
                                                 <td>

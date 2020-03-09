@@ -12,6 +12,11 @@ import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.hris.master.biodata.bo.BiodataBo;
+import com.neurix.hris.master.biodata.model.Biodata;
+import com.neurix.hris.transaksi.jadwalShiftKerja.bo.JadwalShiftKerjaBo;
+import com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalShiftKerja;
+import com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalShiftKerjaDetail;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -395,89 +400,116 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
 
     public String searchReportNeracaSaldo() {
         logger.info("[LaporanAkuntansiAction.searchReportNeracaSaldo] start process >>>");
-
+        String branchId = CommonUtil.userBranchLogin();
+        LaporanAkuntansi data = new LaporanAkuntansi();
+        if (branchId!=null){
+            data.setUnit(branchId);
+        }else{
+            data.setUnit("");
+        }
+        laporanAkuntansi=data;
         return "search_laporan_neraca_saldo";
     }
 
     public String searchReportNeracaMutasi() {
         logger.info("[LaporanAkuntansiAction.searchReportNeracaMutasi] start process >>>");
-
+        String branchId = CommonUtil.userBranchLogin();
+        LaporanAkuntansi data = new LaporanAkuntansi();
+        if (branchId!=null){
+            data.setUnit(branchId);
+        }else{
+            data.setUnit("");
+        }
+        laporanAkuntansi=data;
         return "search_laporan_neraca_mutasi";
     }
 
     public String searchReportIkhtisarBukuBesar() {
         logger.info("[LaporanAkuntansiAction.searchReportIkhitisarBukuBesar] start process >>>");
-
+        String branchId = CommonUtil.userBranchLogin();
+        LaporanAkuntansi data = new LaporanAkuntansi();
+        if (branchId!=null){
+            data.setUnit(branchId);
+        }else{
+            data.setUnit("");
+        }
+        laporanAkuntansi=data;
         return "search_laporan_ikhitisar_buku_besar";
     }
 
     public String searchReportKartuBukuBesar() {
         logger.info("[LaporanAkuntansiAction.searchReportKartuBukuBesar] start process >>>");
-
+        String branchId = CommonUtil.userBranchLogin();
+        LaporanAkuntansi data = new LaporanAkuntansi();
+        if (branchId!=null){
+            data.setUnit(branchId);
+        }else{
+            data.setUnit("");
+        }
+        laporanAkuntansi=data;
         return "search_laporan_kartu_buku_besar";
     }
 
     public String searchReportMutasiJurnal() {
         logger.info("[LaporanAkuntansiAction.searchReportMutasiJurnal] start process >>>");
-
+        String branchId = CommonUtil.userBranchLogin();
+        LaporanAkuntansi data = new LaporanAkuntansi();
+        if (branchId!=null){
+            data.setUnit(branchId);
+        }else{
+            data.setUnit("");
+        }
+        laporanAkuntansi=data;
         return "search_laporan_mutasi_jurnal";
+    }
+    public String searchClosingKasir() {
+        logger.info("[LaporanAkuntansiAction.searchReportMutasiJurnal] start process >>>");
+        String branchId = CommonUtil.userBranchLogin();
+        LaporanAkuntansi data = new LaporanAkuntansi();
+        if (branchId!=null){
+            data.setUnit(branchId);
+        }else{
+            data.setUnit("");
+        }
+        laporanAkuntansi=data;
+        return "search_closing_kasir";
     }
     public String searchReportIkhtisarPendapatan() {
         logger.info("[LaporanAkuntansiAction.searchReportIkhtisarPendapatan] start process >>>");
-
+        String branchId = CommonUtil.userBranchLogin();
+        LaporanAkuntansi data = new LaporanAkuntansi();
+        if (branchId!=null){
+            data.setUnit(branchId);
+        }else{
+            data.setUnit("");
+        }
+        laporanAkuntansi=data;
         return "search_laporan_ikhtisar_pendapatan";
     }
+
     public String searchReportIkhtisar() {
         logger.info("[LaporanAkuntansiAction.searchReportIkhtisarSubBukuBesar] start process >>>");
-
-        switch(laporanAkuntansi.getTipeLaporan()) {
-            case "hutang_usaha":
-                laporanAkuntansi.setTipeLaporanName("HUTANG USAHA");
-                break;
-            case "piutang_usaha":
-                laporanAkuntansi.setTipeLaporanName("PIUTANG USAHA");
-                break;
-            case "piutang_pasien":
-                laporanAkuntansi.setTipeLaporanName("PIUTANG PASIEN");
-                break;
-            case "uang_muka":
-                laporanAkuntansi.setTipeLaporanName("UANG MUKA");
-                break;
-            case "uang_muka_p":
-                laporanAkuntansi.setTipeLaporanName("UANG MUKA PASIEN");
-                break;
-            default:
-                laporanAkuntansi.setTipeLaporanName("NOT FOUND");
+        String branchId = CommonUtil.userBranchLogin();
+        LaporanAkuntansi data = new LaporanAkuntansi();
+        if (branchId!=null){
+            data.setUnit(branchId);
+        }else{
+            data.setUnit("");
         }
+        laporanAkuntansi=data;
         return "search_laporan_ikhitisar_sub_buku_besar";
     }
+
     public String searchReportAging() {
         logger.info("[LaporanAkuntansiAction.searchReportAging] start process >>>");
-
-        switch(laporanAkuntansi.getTipeLaporan()) {
-            case "hutang_usaha":
-                laporanAkuntansi.setTipeLaporanName("HUTANG USAHA");
-                laporanAkuntansi.setTipePerson("usaha");
-                break;
-            case "piutang_usaha":
-                laporanAkuntansi.setTipeLaporanName("PIUTANG USAHA");
-                laporanAkuntansi.setTipePerson("usaha");
-                break;
-            case "uang_muka":
-                laporanAkuntansi.setTipeLaporanName("UANG MUKA");
-                laporanAkuntansi.setTipePerson("usaha");
-                break;
-            case "piutang_pasien":
-                laporanAkuntansi.setTipeLaporanName("PIUTANG PASIEN");
-                laporanAkuntansi.setTipePerson("pasien");
-                break;
-            case "uang_muka_p":
-                laporanAkuntansi.setTipeLaporanName("UANG MUKA PASIEN");
-                laporanAkuntansi.setTipePerson("pasien");
-                break;
-            default:
-                laporanAkuntansi.setTipeLaporanName("NOT FOUND");
+        String branchId = CommonUtil.userBranchLogin();
+        LaporanAkuntansi data = new LaporanAkuntansi();
+        if (branchId!=null){
+            data.setUnit(branchId);
+        }else{
+            data.setUnit("");
         }
+        laporanAkuntansi=data;
         return "search_laporan_aging";
     }
 
@@ -799,6 +831,52 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         }
         logger.info("[LaporanAkuntansiAction.printReportMutasiJurnal] end process <<<");
         return "print_report_mutasi_jurnal";
+    }
+
+    public String printReportClosingKasir(){
+        logger.info("[LaporanAkuntansiAction.printReportClosingKasir] start process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        LaporanAkuntansiBo laporanAkuntansiBo = (LaporanAkuntansiBo) ctx.getBean("laporanAkuntansiBoProxy");
+        BiodataBo biodataBo = (BiodataBo) ctx.getBean("biodataBoProxy");
+        BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+        LaporanAkuntansi data = getLaporanAkuntansi();
+        Branch branch = branchBo.getBranchById(data.getUnit(),"Y");
+        Biodata biodata = biodataBo.getBiodataByNip(data.getNip());
+        String titleReport="LAPORAN CLOSING KASIR TUNAI";
+        java.sql.Date tglFrom = CommonUtil.convertStringToDate(data.getStTanggalAwal());
+        java.sql.Date tglTo = CommonUtil.convertStringToDate(data.getStTanggalAkhir());
+        String kodeRekeningKas = laporanAkuntansiBo.getKodeRekeningkas();
+        Date now = new Date();
+
+        reportParams.put("reportTitle", titleReport);
+        reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
+        reportParams.put("branchId", data.getUnit());
+        reportParams.put("periodeTitle", data.getStTanggalAwal() +" s/d "+data.getStTanggalAkhir());
+        reportParams.put("tanggal", CommonUtil.convertDateToString(now));
+        reportParams.put("periode", data.getBulan()+"-"+data.getTahun());
+        reportParams.put("kota",branch.getBranchName());
+        reportParams.put("alamatSurat",branch.getAlamatSurat());
+        reportParams.put("jurnalType",data.getTipeJurnalId());
+        reportParams.put("areaId",CommonUtil.userAreaName());
+        reportParams.put("kasirName",biodata.getNamaPegawai());
+        reportParams.put("kasirNip",data.getNip());
+        reportParams.put("tglFrom",tglFrom);
+        reportParams.put("tglTo",tglTo);
+        reportParams.put("kodeRekeningKas",kodeRekeningKas);
+        try {
+            preDownload();
+        } catch (SQLException e) {
+            Long logId = null;
+            try {
+                logId = laporanAkuntansiBo.saveErrorMessage(e.getMessage(), "printReportMutasiJurnal");
+            } catch (GeneralBOException e1) {
+                logger.error("[LaporanAkuntansiAction.printReportMutasiJurnal] Error when downloading ,", e1);
+            }
+            logger.error("[LaporanAkuntansiAction.printReportMutasiJurnal] Error when print report ," + "[" + logId + "] Found problem when downloading data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when downloading data, please inform to your admin.");
+        }
+        logger.info("[LaporanAkuntansiAction.printReportClosingKasir] end process <<<");
+        return "print_report_closing_kasir";
     }
 
     public String printReportIkhtisarSubBukuBesar(){
@@ -1288,7 +1366,33 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
 
         return "success_save_delete";
     }
-    
+
+    public List<JadwalShiftKerjaDetail> listKasirByBranch(String branchId, String stTglFrom ,String stTglTo){
+        logger.info("[LaporanAkuntansiAction.listKasirByBranch] start process >>>");
+        List<JadwalShiftKerjaDetail> detailList= new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        JadwalShiftKerjaBo jadwalShiftKerjaBo = (JadwalShiftKerjaBo) ctx.getBean("jadwalShiftKerjaBoProxy");
+        java.sql.Date tglFrom = CommonUtil.convertStringToDate(stTglFrom);
+        java.sql.Date tglTo = CommonUtil.convertStringToDate(stTglTo);
+        String profesiId="PR117";
+        try {
+            detailList=jadwalShiftKerjaBo.getJadwalShiftKerjaByUnitAndProfesiAndTanggal(branchId,tglFrom,tglTo,profesiId);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = laporanAkuntansiBoProxy.saveErrorMessage(e.getMessage(), "LaporanAkuntansiBO.listKasirByBranch");
+            } catch (GeneralBOException e1) {
+                logger.error("[LaporanAkuntansiAction.listKasirByBranch] Error when saving error,", e1);
+            }
+            logger.error("[LaporanAkuntansiAction.listKasirByBranch] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
+        }
+
+        logger.info("[LaporanAkuntansiAction.listKasirByBranch] end process <<<");
+
+        return detailList;
+    }
+
     private String getMataUangKurs(String mataUangId) {
         return "0";
     }

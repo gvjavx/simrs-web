@@ -1,5 +1,6 @@
 package com.neurix.akuntansi.transaksi.laporanAkuntansi.bo.impl;
 
+import com.neurix.akuntansi.master.kodeRekening.dao.KodeRekeningDao;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.bo.LaporanAkuntansiBo;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.dao.LaporanAkuntansiDao;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.Aging;
@@ -28,6 +29,15 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
     private LaporanAkuntansiDao laporanAkuntansiDao;
     private PersonilPositionDao personilPositionDao;
     private BiodataDao biodataDao;
+    private KodeRekeningDao kodeRekeningDao;
+
+    public KodeRekeningDao getKodeRekeningDao() {
+        return kodeRekeningDao;
+    }
+
+    public void setKodeRekeningDao(KodeRekeningDao kodeRekeningDao) {
+        this.kodeRekeningDao = kodeRekeningDao;
+    }
 
     public BiodataDao getBiodataDao() {
         return biodataDao;
@@ -285,6 +295,19 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
         }
         return level;
     }
+
+    @Override
+    public String getKodeRekeningkas() throws GeneralBOException {
+        String kodeRekeningKas="";
+        try {
+            kodeRekeningKas = kodeRekeningDao.getKodeRekeningKas()+"%";
+        } catch (HibernateException e) {
+            logger.error("[LaporanAkuntansiBoImpl.getSearchLaporanAkuntansiByCriteria] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        return kodeRekeningKas;
+    }
+
     @Override
     public List<LaporanAkuntansi> getAll() throws GeneralBOException {
         return null;

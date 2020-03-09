@@ -100,7 +100,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
         logger.info("[PembayaranUtangPiutangBoImpl.createJurnal] start process >>>");
         String noJurnal;
         String status;
-        userLogin = CommonUtil.userLogin();
+        userLogin = CommonUtil.userIdLogin();
         updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
         String tipeJurnalId;
         String sumber = null;
