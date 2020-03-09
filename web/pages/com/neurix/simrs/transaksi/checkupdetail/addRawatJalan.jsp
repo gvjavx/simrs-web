@@ -3314,12 +3314,12 @@
                     $.each(response, function (i, item) {
                         option += "<option value='" + item.idObat + "|" + item.namaObat + "|" + item.qtyBox + "|" + item.qtyLembar + "|" + item.qtyBiji + "|" + item.lembarPerBox + "|" + item.bijiPerLembar + "|" + item.flagKronis + "'>" + item.namaObat + "</option>";
                     });
+                    $('#resep_nama_obat').html(option);
                 }
             });
         } else {
             option = "";
         }
-        $('#resep_nama_obat').html(option);
     }
 
     function labelKronis(flag){
