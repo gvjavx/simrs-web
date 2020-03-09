@@ -5,8 +5,11 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.vendor.bo.VendorBo;
 import com.neurix.simrs.master.vendor.model.Vendor;
+import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
@@ -77,7 +80,7 @@ public class VendorAction extends BaseMasterAction {
 
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
-        session.setAttribute("listOfResult",vendorList);
+        session.setAttribute("listOfResult", vendorList);
 
         logger.info("[VendorAction.search] END process >>>");
         return "search";
@@ -95,6 +98,44 @@ public class VendorAction extends BaseMasterAction {
 
         logger.info("[VendorAction.initForm] END process >>>");
         return "search";
+    }
+
+    public CheckResponse saveVendor(String data) {
+        CheckResponse response = new CheckResponse();
+
+        if (data != null && !"".equalsIgnoreCase(data)) {
+            try {
+                JSONObject obj = new JSONObject(data);
+
+            } catch (JSONException e) {
+                response.setStatus("error");
+                response.setMessage("Found Error when convert json to data "+e);
+                logger.error("[VendorAction.saveVendor] Error Convert json to data vendor.", e);
+            }
+        }
+
+        return response;
+    }
+
+    public CheckResponse saveEdit(String data) {
+        CheckResponse response = new CheckResponse();
+
+        if (data != null && !"".equalsIgnoreCase(data)) {
+            try {
+                Vendor vendor = new Vendor();
+                JSONObject obj = new JSONObject(data);
+                vendor.setNamaVendor(obj.getString("nama_vendor"));
+                vendor.setNpwp(obj.getString("npwp"));
+                vendor.setAlamat(obj.getString("alamat"));
+
+            } catch (JSONException e) {
+                response.setStatus("error");
+                response.setMessage("Found Error when convert json to data "+e);
+                logger.error("[VendorAction.saveVendor] Error Convert json to data vendor.", e);
+            }
+        }
+
+        return response;
     }
 
     @Override
