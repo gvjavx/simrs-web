@@ -477,7 +477,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         }
 
         String SQL = "SELECT a.id_pasien, a.nama, a.desa_id, d.desa_name, b.id_pelayanan,\n" +
-                "c.nama_pelayanan, d.kecamatan_id, e.kecamatan_name, b.tgl_antrian\n" +
+                "c.nama_pelayanan, d.kecamatan_id, e.kecamatan_name, b.tgl_antrian, rc.flag_racik,\n" +
+                "pr.id_permintaan_resep\n" +
                 "FROM it_simrs_header_checkup a\n" +
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                 "INNER JOIN im_hris_desa d ON CAST(a.desa_id AS character varying) = d.desa_id\n" +
@@ -485,6 +486,24 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "INNER JOIN mt_simrs_permintaan_resep pr ON pr.id_detail_checkup = b.id_detail_checkup \n" +
                 "INNER JOIN im_simrs_pelayanan c ON c.id_pelayanan = pr.tujuan_pelayanan\n" +
                 "INNER JOIN im_simrs_pelayanan pl ON pl.id_pelayanan = b.id_pelayanan\n" +
+                "LEFT JOIN \n" +
+                "(\n" +
+                "\tSELECT \n" +
+                "\ta.flag_racik,\n" +
+                "\tb.id_approval_obat,\n" +
+                "\tb.created_date\n" +
+                "\tFROM mt_simrs_transaksi_obat_detail a\n" +
+                "\tINNER JOIN\n" +
+                "\t(\n" +
+                "\t\tSELECT \n" +
+                "\t\ta.id_approval_obat, \n" +
+                "\t\tMAX(a.created_date) as created_date \n" +
+                "\t\tFROM mt_simrs_transaksi_obat_detail a\n" +
+                "\t\tWHERE a.flag_racik = 'Y'\n" +
+                "\t\tGROUP BY\n" +
+                "\t\ta.id_approval_obat\n" +
+                "\t) b ON b.id_approval_obat = a.id_approval_obat AND b.created_date = a.created_date\n" +
+                ") rc ON rc.id_approval_obat = pr.id_approval_obat\n" +
                 "WHERE b.status_periksa = '1'\n" +
                 "AND pr.status IS NOT NULL\n" +
                 "AND pr.flag = 'Y'\n" +
@@ -508,6 +527,11 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 checkup.setNamaDesa(obj[3].toString());
                 checkup.setNamaPelayanan(obj[5].toString());
                 checkup.setNamaKecamatan(obj[7].toString());
+                checkup.setTglAntian((Timestamp) obj[8]);
+                if (obj[9] != null && "Y".equalsIgnoreCase(obj[9].toString())){
+                    checkup.setKetRacik("Obat Racik, Harap Menunggu");
+                }
+                checkup.setIdPermintaanResep(obj[10].toString());
                 listOfResult.add(checkup);
             }
         }

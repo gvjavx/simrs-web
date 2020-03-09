@@ -2133,7 +2133,7 @@ public class CheckupAction extends BaseMasterAction {
         try {
             result = checkupBo.getListAntrian(branch, poli);
         } catch (GeneralBOException e) {
-            logger.error("Foun Error" + e);
+            logger.error("Found Error" + e);
         }
 
         return result;
@@ -2147,7 +2147,7 @@ public class CheckupAction extends BaseMasterAction {
         try {
             result = checkupBo.getListPeriksa(branch, poli);
         } catch (GeneralBOException e) {
-            logger.error("Foun Error" + e);
+            logger.error("Found Error" + e);
         }
 
         return result;
@@ -2161,7 +2161,7 @@ public class CheckupAction extends BaseMasterAction {
         try {
             result = checkupBo.getListAntrianApotikPeriksa(branch, poli);
         } catch (GeneralBOException e) {
-            logger.error("Foun Error" + e);
+            logger.error("Found Error" + e);
         }
         return result;
     }

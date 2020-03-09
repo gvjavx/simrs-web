@@ -93,6 +93,14 @@ public class PermintaanResepAction extends BaseMasterAction{
                         detail.setQty(new BigInteger(obj.getString("Qty")));
                         detail.setKeterangan(obj.getString("Keterangan"));
                         detail.setJenisSatuan(obj.getString("Jenis Satuan"));
+                        if ("Y".equalsIgnoreCase(obj.getString("Racik"))){
+                            detail.setFlagRacik(obj.getString("Racik"));
+                        } else {
+                            detail.setFlagRacik("");
+                        }
+                        if (!"".equalsIgnoreCase(obj.getString("Pengambilan Berikutnya"))){
+                            detail.setHariKronis(new Integer(obj.getString("Pengambilan Berikutnya")));
+                        }
                         detailList.add(detail);
                     }
                 }
