@@ -4049,4 +4049,42 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
         }
         return listOfResult;
     }
+
+    public BigDecimal totalLain(String tahun){
+        BigDecimal total = new BigDecimal(0);
+        String query="select sum(lain_lain) as totalLain from it_hris_payroll where tahun ='"+tahun+"'";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            total = BigDecimal.valueOf(Double.parseDouble(results.toString()));
+        }else{
+            total = BigDecimal.valueOf(0);
+        }
+        return total;
+    }
+    public BigDecimal pttSelainPayroll(String tahun){
+        BigDecimal total = new BigDecimal(0);
+        String query="select sum(gaji_kotor) as totalLain from it_hris_payroll where flag_payroll ='N'"+"and tahun ='"+tahun+"'";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            total = BigDecimal.valueOf(Double.parseDouble(results.toString()));
+        }else{
+            total = BigDecimal.valueOf(0);
+        }
+        return total;
+    }
+
+    public BigDecimal pph11Bulan(String tahun){
+        BigDecimal total = new BigDecimal(0);
+        String query="select sum(pph_gaji) as totalLain from it_hris_payroll where tahun ='"+tahun+"'";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            total = BigDecimal.valueOf(Double.parseDouble(results.toString()));
+        }else{
+            total = BigDecimal.valueOf(0);
+        }
+        return total;
+    }
 }

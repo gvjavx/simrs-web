@@ -1142,7 +1142,7 @@ public class CutiPegawaiAction extends BaseMasterAction {
 
         try {
             cutiPegawaiList = cutiPegawaiBo.getByCriteria(cutiPegawai);
-            strukturJabatanList = strukturJabatanBo.getPerBagianSys();
+//            strukturJabatanList = strukturJabatanBo.getPerBagianSys();
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
@@ -1190,14 +1190,18 @@ public class CutiPegawaiAction extends BaseMasterAction {
                     biodataAtasan.setNamaPegawai("");
                 }
                 
-                String kabag = null;
+                /*String kabag = null;
                 personilPositionList = notifikasiBo.daftarKabag(cutiPegawai1.getNip());
                 for (PersonilPosition personilPosition : personilPositionList){
                     Biodata  biodataKabag = biodataBo.detailBiodataSys(personilPosition.getNip());
                     kabag=biodataKabag.getNamaPegawai();
-                }
-                if (personilPositionList.size()==0){
-                    reportParams.put("atasan1", biodataAtasan.getNamaPegawai());
+                }*/
+                reportParams.put("atasan2", "");
+                reportParams.put("tulisanAtasan1", "Atasan");
+                reportParams.put("tulisanAtasan2", "");
+                reportParams.put("atasan1", biodataAtasan.getNamaPegawai());
+
+                /*if (personilPositionList.size()==0){
                     reportParams.put("atasan2", "");
                     reportParams.put("tulisanAtasan1", "Atasan");
                     reportParams.put("tulisanAtasan2", "");
@@ -1207,11 +1211,10 @@ public class CutiPegawaiAction extends BaseMasterAction {
                     reportParams.put("tulisanAtasan1", "Atasan");
                     reportParams.put("tulisanAtasan2", "");
                 }else{
-                    reportParams.put("atasan1",kabag);
                     reportParams.put("atasan2", biodataAtasan.getNamaPegawai());
                     reportParams.put("tulisanAtasan1", "Kepala Bagian");
                     reportParams.put("tulisanAtasan2", "Atasan");
-                }
+                }*/
 
 
                 if (result.getSisaCutiTahunan()==null){

@@ -406,6 +406,19 @@
             <column name="potongan_lain" sql-type="numeric" length="10" precision="2" not-null="false" />
         </property>
 
+        <!--pph 21-->
+        <property name="pphSeharusnya">
+            <column name="pph_seharusnya" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="pph11Bulan">
+            <column name="pph_11_bulan" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="selisihPph">
+            <column name="selisih_pph" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="totalLain11Bulan">
+            <column name="total_lain_11_bulan" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
 
         <many-to-one name="imDepartmentEntity" class="com.neurix.hris.master.department.model.ImDepartmentEntity"
                      insert="false" update="false" fetch="select" cascade="all">

@@ -686,6 +686,9 @@
                             <div class="col-sm-2">
                                 <input style="text-align: right" readonly type="text" class="form-control nip" id="iuranBpjsTkPeg" name="nip">
                             </div>
+                            <div class="col-sm-3" align="center">
+                                <h4 id="headerPph12">e. PPH Bulan 12</h4>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-1" >Tunj. Struktural</label>
@@ -702,6 +705,10 @@
                             <div class="col-sm-2">
                                 <input style="text-align: right" readonly type="text" class="form-control nip" id="iuranBpjsTkPers" name="nip">
                             </div>
+                            <label class="control-label col-sm-1" id="labelTotalPtt" >Total Ptt Setahun. </label>
+                            <div class="col-sm-2">
+                                <input style="text-align: right"  type="text" class="form-control nip" id="totalPtt" name="nip">
+                            </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-1" >Tunj. Fungs</label>
@@ -715,6 +722,10 @@
                             <label class="control-label col-sm-1" >Iur. Bpjs Ks Peg. </label>
                             <div class="col-sm-2">
                                 <input style="text-align: right" readonly type="text" class="form-control nip" id="iuranBpjsKsPeg" name="nip">
+                            </div>
+                            <label class="control-label col-sm-1" id="labelPph11Bulan" >Pph 11 Bulan </label>
+                            <div class="col-sm-2">
+                                <input style="text-align: right"  type="text" class="form-control nip" id="pph11Bulan" name="nip">
                             </div>
                         </div>
                         <br>
@@ -731,6 +742,10 @@
                             <div class="col-sm-2">
                                 <input style="text-align: right" readonly type="text" class="form-control nip" id="iuranBpjsKsPers" name="nip">
                             </div>
+                            <label class="control-label col-sm-1" id="labelPphSeharusnya" >Pph Seharusnya </label>
+                            <div class="col-sm-2">
+                                <input style="text-align: right" type="text" class="form-control nip" id="pphSeharusnya" name="nip">
+                            </div>
                         </div>
                         <div class="form-group">
                             <div class="col-sm-3"></div>
@@ -741,6 +756,10 @@
                             <label class="control-label col-sm-1" >Pot. Pph</label>
                             <div class="col-sm-2">
                                 <input readonly style="text-align: right" readonly type="text" class="form-control nip" id="pphGaji1" name="nip">
+                            </div>
+                            <label class="control-label col-sm-1" id="labelSelisih" >Selisih pph 21 </label>
+                            <div class="col-sm-2">
+                                <input style="text-align: right" type="text" class="form-control nip" id="selisihPph" name="nip">
                             </div>
                         </div>
                         <div class="form-group">
@@ -4198,6 +4217,27 @@
                 }
 
                 if(listdata.flagPayroll == "Y"){
+                    if(listdata.bulan =='12'){
+                        $("#headerPph12").show();
+                        $("#labelTotalPtt").show();
+                        $("#labelPph11Bulan").show();
+                        $("#labelPphSeharusnya").show();
+                        $("#labelSelisih").show();
+                        $("#totalPtt").show();
+                        $("#pph11Bulan").show();
+                        $("#pphSeharusnya").show();
+                        $("#selisihPph").show();
+                    }else{
+                        $("#headerPph12").hide();
+                        $("#labelTotalPtt").hide();
+                        $("#labelPph11Bulan").hide();
+                        $("#labelPphSeharusnya").hide();
+                        $("#labelSelisih").hide();
+                        $("#totalPtt").hide();
+                        $("#pph11Bulan").hide();
+                        $("#pphSeharusnya").hide();
+                        $("#selisihPph").hide();
+                    }
                 }else{
                     $('#tunjLain').attr('readonly', true);
                     $('#tunjPeralihan').attr('readonly', true);
@@ -4305,6 +4345,13 @@
                 $('#totalB').val(listdata.totalB);
                 $('#totalC').val(listdata.totalC);
                 $('#gajiBersih').val(listdata.totalGajiBersih);
+
+                //pph bulan 12
+                $('#totalPtt').val(listdata.totalLain11Bulan);
+                $('#pph11Bulan').val(listdata.pph11Bulan);
+                $('#pphSeharusnya').val(listdata.pphSeharusnya);
+                $('#selisihPph').val(listdata.selisihPph);
+
 
             });
             //alert( $('#branchId1').text);

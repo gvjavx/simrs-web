@@ -115,6 +115,80 @@ public class Payroll extends BaseModel {
     private String profesiId;
     private String profesiName;
 
+    private BigDecimal pphSeharusnyaNilai;
+    private BigDecimal pph11BulanNilai;
+    private BigDecimal selisihPphNilai;
+    private BigDecimal totalLain11BulanNilai;
+
+    private String pphSeharusnya;
+    private String pph11Bulan;
+    private String selisihPph;
+    private String totalLain11Bulan;
+
+    public String getPph11Bulan() {
+        return pph11Bulan;
+    }
+
+    public void setPph11Bulan(String pph11Bulan) {
+        this.pph11Bulan = pph11Bulan;
+    }
+
+    public BigDecimal getPph11BulanNilai() {
+        return pph11BulanNilai;
+    }
+
+    public void setPph11BulanNilai(BigDecimal pph11BulanNilai) {
+        this.pph11BulanNilai = pph11BulanNilai;
+    }
+
+    public String getPphSeharusnya() {
+        return pphSeharusnya;
+    }
+
+    public void setPphSeharusnya(String pphSeharusnya) {
+        this.pphSeharusnya = pphSeharusnya;
+    }
+
+    public BigDecimal getPphSeharusnyaNilai() {
+        return pphSeharusnyaNilai;
+    }
+
+    public void setPphSeharusnyaNilai(BigDecimal pphSeharusnyaNilai) {
+        this.pphSeharusnyaNilai = pphSeharusnyaNilai;
+    }
+
+    public String getSelisihPph() {
+        return selisihPph;
+    }
+
+    public void setSelisihPph(String selisihPph) {
+        this.selisihPph = selisihPph;
+    }
+
+    public BigDecimal getSelisihPphNilai() {
+        return selisihPphNilai;
+    }
+
+    public void setSelisihPphNilai(BigDecimal selisihPphNilai) {
+        this.selisihPphNilai = selisihPphNilai;
+    }
+
+    public String getTotalLain11Bulan() {
+        return totalLain11Bulan;
+    }
+
+    public void setTotalLain11Bulan(String totalLain11Bulan) {
+        this.totalLain11Bulan = totalLain11Bulan;
+    }
+
+    public BigDecimal getTotalLain11BulanNilai() {
+        return totalLain11BulanNilai;
+    }
+
+    public void setTotalLain11BulanNilai(BigDecimal totalLain11BulanNilai) {
+        this.totalLain11BulanNilai = totalLain11BulanNilai;
+    }
+
     public String getProfesiId() {
         return profesiId;
     }

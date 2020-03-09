@@ -1024,6 +1024,17 @@ public class PayrollAction extends BaseMasterAction{
                         payrollPerson.setIuranYpks(payroll.getIuranYpks());
                         payrollPerson.setIuranYpksNilai(payroll.getIuranYpksNilai());
 
+                        //pph bulan 12
+                        payrollPerson.setPphSeharusnyaNilai(payroll.getPphSeharusnyaNilai());
+                        payrollPerson.setPph11BulanNilai(payroll.getPph11BulanNilai());
+                        payrollPerson.setSelisihPphNilai(payroll.getSelisihPphNilai());
+                        payrollPerson.setTotalLain11BulanNilai(payroll.getTotalLain11BulanNilai());
+
+                        payrollPerson.setPphSeharusnya(payroll.getPphSeharusnya());
+                        payrollPerson.setPph11Bulan(payroll.getPph11Bulan());
+                        payrollPerson.setSelisihPph(payroll.getSelisihPph());
+                        payrollPerson.setTotalLain11Bulan(payroll.getTotalLain11Bulan());
+
                         //Komponen D
                         payrollPerson.setLainLainNilai(payroll.getLainLainNilai());
                         payrollPerson.setLainLain(payroll.getLainLain());

@@ -229,6 +229,44 @@ public class ItPayrollEntity implements Serializable {
     private BigDecimal lainLain;
     private String idLainLain;
 
+    //pph bulan 12
+    private BigDecimal pphSeharusnya;
+    private BigDecimal pph11Bulan;
+    private BigDecimal selisihPph;
+    private BigDecimal totalLain11Bulan;
+
+    public BigDecimal getPph11Bulan() {
+        return pph11Bulan;
+    }
+
+    public void setPph11Bulan(BigDecimal pph11Bulan) {
+        this.pph11Bulan = pph11Bulan;
+    }
+
+    public BigDecimal getPphSeharusnya() {
+        return pphSeharusnya;
+    }
+
+    public void setPphSeharusnya(BigDecimal pphSeharusnya) {
+        this.pphSeharusnya = pphSeharusnya;
+    }
+
+    public BigDecimal getSelisihPph() {
+        return selisihPph;
+    }
+
+    public void setSelisihPph(BigDecimal selisihPph) {
+        this.selisihPph = selisihPph;
+    }
+
+    public BigDecimal getTotalLain11Bulan() {
+        return totalLain11Bulan;
+    }
+
+    public void setTotalLain11Bulan(BigDecimal totalLain11Bulan) {
+        this.totalLain11Bulan = totalLain11Bulan;
+    }
+
     //flag baru
     private String flagCutiTahunan;
     private String flagCutiPanjang;

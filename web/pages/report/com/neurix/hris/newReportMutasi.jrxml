@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="newReportMutasi" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8e506c74-d8ab-4e72-b68c-624eb5e52f8b">
 	<property name="ireport.zoom" value="1.610510000000001"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="576"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="reportParams.branchName" class="java.lang.String"/>
 	<parameter name="reportParams.titleReport" class="java.lang.String"/>
 	<parameter name="reportParams.urlLogo" class="java.lang.String"/>
@@ -17,6 +17,7 @@
 	<parameter name="reportParams.levelBaru" class="java.lang.String"/>
 	<parameter name="reportParams.noSurat" class="java.lang.String"/>
 	<parameter name="reportParams.gajiBaru" class="java.lang.String"/>
+	<parameter name="reportParams.date" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select * from it_hris_mutasi_jabatan limit 1]]>
 	</queryString>
@@ -51,19 +52,19 @@
 				<reportElement x="2" y="71" width="555" height="1" uuid="6a9069a1-b5bf-4b05-b4e9-fa4e6e0b69c6"/>
 			</line>
 			<staticText>
-				<reportElement x="3" y="47" width="143" height="20" uuid="baee2e0d-720b-459e-99ef-b91d5d8ddb6e"/>
+				<reportElement x="3" y="38" width="143" height="20" uuid="baee2e0d-720b-459e-99ef-b91d5d8ddb6e"/>
 				<textElement>
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[PT. NUSANTARA MEDIKA UTAMA]]></text>
 			</staticText>
 			<image>
-				<reportElement x="507" y="3" width="50" height="50" uuid="c29e768e-043f-4f3d-992c-053579a615f1"/>
+				<reportElement x="491" y="3" width="50" height="50" uuid="c29e768e-043f-4f3d-992c-053579a615f1"/>
 				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(
 new com.google.zxing.qrcode.QRCodeWriter().encode($F{nip},com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement x="3" y="32" width="145" height="17" uuid="e3c08a6a-4037-471c-8acf-21f4d70911e4"/>
+				<reportElement x="3" y="43" width="145" height="17" uuid="e3c08a6a-4037-471c-8acf-21f4d70911e4"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
@@ -79,6 +80,20 @@ new com.google.zxing.qrcode.QRCodeWriter().encode($F{nip},com.google.zxing.Barco
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{mutasi_id}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="447" y="53" width="79" height="20" uuid="a20c672a-a51a-441a-8d11-68e7c7692725"/>
+				<textElement verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Printed Date :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="507" y="53" width="80" height="20" uuid="7969effe-65c8-4079-9242-c05f54f015a8"/>
+				<textElement verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.date}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
