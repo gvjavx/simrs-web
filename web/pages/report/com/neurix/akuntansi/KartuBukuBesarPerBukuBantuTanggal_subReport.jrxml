@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="KartuBukuBesarPerBukuBantu_subReport" pageWidth="535" pageHeight="842" columnWidth="535" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="8d0c155b-2d1c-492c-9262-7e28850676f8">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="nomor_master" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["40023"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="rekening_id" class="java.lang.String"/>
+	<parameter name="branch_id" class="java.lang.String"/>
+	<parameter name="tanggal_awal" class="java.sql.Date"/>
+	<queryString>
+		<![CDATA[select
+    (CASE WHEN sum(a.jumlah_debit) IS NULL THEN 0.0 ELSE sum(a.jumlah_debit) END) as debit,
+    (CASE WHEN sum(a.jumlah_kredit) IS NULL THEN 0.0 ELSE sum(a.jumlah_kredit) END) as kredit
+from
+	it_akun_jurnal_detail a
+    inner join it_akun_jurnal b on a.no_jurnal = b.no_jurnal
+	left outer join im_akun_mata_uang mu ON (b.mata_uang_id = mu.mata_uang_id)
+where
+    b.created_date < $P{tanggal_awal}
+    and a.rekening_id = $P{rekening_id}
+    and a.master_id = $P{nomor_master}
+    and lower(mu.kode_mata_uang) = 'rph'
+    and b.registered_flag = 'Y'
+    and b.branch_id IN ( $P!{branch_id} )]]>
+	</queryString>
+	<field name="debit" class="java.math.BigDecimal"/>
+	<field name="kredit" class="java.math.BigDecimal"/>
+	<variable name="debit_awal" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{debit}]]></variableExpression>
+	</variable>
+	<variable name="kredit_awal" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{kredit}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-1" mode="Transparent" x="0" y="0" width="92" height="18" uuid="92555ed2-b091-4889-884a-5721db6c52a9"/>
+				<box leftPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{debit}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-2" mode="Transparent" x="92" y="0" width="92" height="18" uuid="de60751f-bd01-45e9-8899-a85b92774097"/>
+				<box leftPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{kredit}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

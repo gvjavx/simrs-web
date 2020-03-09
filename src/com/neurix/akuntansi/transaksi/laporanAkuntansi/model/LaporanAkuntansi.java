@@ -32,8 +32,35 @@ public class LaporanAkuntansi extends BaseModel {
     private String tipeJurnalId;
     private String tipeLaporanName;
     private String tipePerson;
+    private String stTanggalAwal;
+    private String stTanggalAkhir;
+    private String tipeTanggal;
 
     private String levelKodeRekening;
+
+    public String getStTanggalAwal() {
+        return stTanggalAwal;
+    }
+
+    public void setStTanggalAwal(String stTanggalAwal) {
+        this.stTanggalAwal = stTanggalAwal;
+    }
+
+    public String getStTanggalAkhir() {
+        return stTanggalAkhir;
+    }
+
+    public void setStTanggalAkhir(String stTanggalAkhir) {
+        this.stTanggalAkhir = stTanggalAkhir;
+    }
+
+    public String getTipeTanggal() {
+        return tipeTanggal;
+    }
+
+    public void setTipeTanggal(String tipeTanggal) {
+        this.tipeTanggal = tipeTanggal;
+    }
 
     public String getLevelKodeRekening() {
         return levelKodeRekening;

@@ -16,6 +16,9 @@
         <property name="url">
             <column name="report_url" sql-type="varchar" length="100" />
         </property>
+        <property name="levelKodeRekening">
+            <column name="level_kode_rekening" sql-type="varchar" length="15" />
+        </property>
 
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />

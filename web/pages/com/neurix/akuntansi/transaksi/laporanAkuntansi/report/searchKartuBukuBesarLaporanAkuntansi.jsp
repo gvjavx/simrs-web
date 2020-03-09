@@ -38,28 +38,62 @@
             var masterId = document.getElementById("masterId").value;
             var kodeRekening = document.getElementById("kode_rekening").value;
             var rekeningId= document.getElementById("rekening_id").value;
+            var tipeTanggal= document.getElementById("tipeTanggal").value;
+            var tanggalAwal= document.getElementById("tglFrom").value;
+            var tanggalAkhir= document.getElementById("tglTo").value;
 
-            if ( unit != '' && periodeTahun != ''&& periodeBulan != ''&&masterId!=''&&kodeRekening!='') {
-                event.originalEvent.options.submit = false;
-                var url = "printReportKartuBukuBesar_laporanAkuntansi.action?laporanAkuntansi.unit="+unit+"&laporanAkuntansi.tahun="+periodeTahun+"&laporanAkuntansi.bulan="+periodeBulan+"&laporanAkuntansi.masterId="+masterId+"&laporanAkuntansi.kodeRekening="+kodeRekening+"&laporanAkuntansi.rekeningId="+rekeningId;
-                window.open(url,'_blank');
+            if ( unit != ''&&masterId!=''&&kodeRekening!=''&&tipeTanggal!='') {
+                if (tipeTanggal=='P'){
+                    if (periodeTahun != ''&& periodeBulan != ''){
+                        event.originalEvent.options.submit = false;
+                        var url = "printReportKartuBukuBesar_laporanAkuntansi.action?laporanAkuntansi.unit="+unit+"&laporanAkuntansi.tahun="+periodeTahun+"&laporanAkuntansi.bulan="+periodeBulan+"&laporanAkuntansi.masterId="+masterId+"&laporanAkuntansi.kodeRekening="+kodeRekening+"&laporanAkuntansi.rekeningId="+rekeningId+"&laporanAkuntansi.tipeTanggal="+tipeTanggal;
+                        window.open(url,'_blank');
+                    } else {
+                        event.originalEvent.options.submit = false;
+                        var msg = "";
+                        if ( periodeTahun == '') {
+                            msg += 'Field <strong>Periode Tahun </strong> masih belum dipilih' + '<br/>';
+                        }
+                        if ( periodeBulan == '') {
+                            msg += 'Field <strong>Periode Bulan </strong> masih belum dipilih' + '<br/>';
+                        }
+                        document.getElementById('errorValidationMessage').innerHTML = msg;
+
+                        $.publish('showErrorValidationDialog');
+                    }
+                }else if (tipeTanggal=='T'){
+                    if (tanggalAwal != ''&& tanggalAkhir != ''){
+                        event.originalEvent.options.submit = false;
+                        var url = "printReportKartuBukuBesar_laporanAkuntansi.action?laporanAkuntansi.unit="+unit+"&laporanAkuntansi.stTanggalAwal="+tanggalAwal+"&laporanAkuntansi.stTanggalAkhir="+tanggalAkhir+"&laporanAkuntansi.masterId="+masterId+"&laporanAkuntansi.kodeRekening="+kodeRekening+"&laporanAkuntansi.rekeningId="+rekeningId+"&laporanAkuntansi.tipeTanggal="+tipeTanggal;
+                        window.open(url,'_blank');
+                    }else {
+                        event.originalEvent.options.submit = false;
+                        var msg = "";
+                        if ( tanggalAwal == '') {
+                            msg += 'Field <strong>Tanggal Awal </strong> masih belum dipilih' + '<br/>';
+                        }
+                        if ( tanggalAkhir == '') {
+                            msg += 'Field <strong>Tanggal Sampai </strong> masih belum dipilih' + '<br/>';
+                        }
+                        document.getElementById('errorValidationMessage').innerHTML = msg;
+
+                        $.publish('showErrorValidationDialog');
+                    }
+                }
             } else {
                 event.originalEvent.options.submit = false;
                 var msg = "";
                 if ( unit == '') {
                     msg += 'Field <strong>Unit </strong> masih belum dipilih' + '<br/>';
                 }
-                if ( periodeTahun == '') {
-                    msg += 'Field <strong>Tahun </strong> masih belum dipilih' + '<br/>';
-                }
-                if ( periodeBulan == '') {
-                    msg += 'Field <strong>Bulan </strong> masih belum dipilih' + '<br/>';
-                }
                 if ( masterId == '') {
                     msg += 'Field <strong>Kode Vendor </strong> masih belum dipilih' + '<br/>';
                 }
                 if ( kodeRekening == '') {
                     msg += 'Field <strong>Kode Rekening </strong> masih belum dipilih' + '<br/>';
+                }
+                if ( tipeTanggal == '') {
+                    msg += 'Field <strong>Tipe Tanggal </strong> masih belum dipilih' + '<br/>';
                 }
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
@@ -131,6 +165,50 @@
                                                 </td>
                                             </tr>
                                             <tr>
+                                                <td>
+                                                    <label class="control-label"><small>Tipe Tanggal :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:select list="#{'P':'Periode', 'T' : 'Tanggal'}"
+                                                                  id="tipeTanggal" onchange="changeTipeTanggal()"
+                                                                  headerKey="" headerValue="[Select One]" cssClass="form-control" />
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr id="filter_tanggal">
+                                                <td>
+                                                    <label class="control-label"><small>Tanggal :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <div class="input-group date">
+                                                            <div class="input-group-addon">
+                                                                <i class="fa fa-calendar"></i>
+                                                            </div>
+                                                            <s:textfield id="tglFrom" name="cutiPegawai.stTanggalDari" cssClass="form-control pull-right"
+                                                                         required="false" size="7"  cssStyle=""/>
+                                                            <div class="input-group-addon">
+                                                                s/d
+                                                            </div>
+                                                            <div class="input-group-addon">
+                                                                <i class="fa fa-calendar"></i>
+                                                            </div>
+                                                            <s:textfield id="tglTo" name="cutiPegawai.stTanggalSelesai" cssClass="form-control pull-right"
+                                                                         required="false" size="7"  cssStyle=""/>
+                                                        </div>
+                                                        <script>
+                                                            $('#tglFrom').datepicker({
+                                                                dateFormat: 'dd-mm-yy'
+                                                            });
+                                                            $('#tglTo').datepicker({
+                                                                dateFormat: 'dd-mm-yy'
+                                                            });
+                                                        </script>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr id="filter_periode">
                                                 <td>
                                                     <label class="control-label"><small>Periode :</small></label>
                                                 </td>
@@ -341,3 +419,23 @@
 <%@ include file="/pages/common/lastScript.jsp" %>
 </body>
 </html>
+
+<script>
+    function changeTipeTanggal() {
+        var tipeTanggal = $('#tipeTanggal').val();
+        if (tipeTanggal=='T'){
+            $('#filter_tanggal').show();
+            $('#filter_periode').hide();
+        } else if (tipeTanggal=='P'){
+            $('#filter_tanggal').hide();
+            $('#filter_periode').show();
+        } else{
+            $('#filter_tanggal').hide();
+            $('#filter_periode').hide();
+        }
+    }
+    $(document).ready(function () {
+
+        changeTipeTanggal();
+    })
+</script>

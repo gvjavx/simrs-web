@@ -12,11 +12,11 @@ import java.sql.Timestamp;
  */
 public class ImMasterEntity implements Serializable {
     private MasterPK primaryKey;
-    private String akunMasterId;
     private String nama;
     private String alamat;
     private String npwp;
-    private String branchId;
+    private String email;
+    private String noTelp;
 
     private String flag;
     private String action;
@@ -26,20 +26,28 @@ public class ImMasterEntity implements Serializable {
     private String lastUpdateWho;
     private String nomorVendor;
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getNoTelp() {
+        return noTelp;
+    }
+
+    public void setNoTelp(String noTelp) {
+        this.noTelp = noTelp;
+    }
+
     public String getNomorVendor() {
         return nomorVendor;
     }
 
     public void setNomorVendor(String nomorVendor) {
         this.nomorVendor = nomorVendor;
-    }
-
-    public String getAkunMasterId() {
-        return akunMasterId;
-    }
-
-    public void setAkunMasterId(String akunMasterId) {
-        this.akunMasterId = akunMasterId;
     }
 
     public MasterPK getPrimaryKey() {
@@ -72,14 +80,6 @@ public class ImMasterEntity implements Serializable {
 
     public void setNpwp(String npwp) {
         this.npwp = npwp;
-    }
-
-    public String getBranchId() {
-        return branchId;
-    }
-
-    public void setBranchId(String branchId) {
-        this.branchId = branchId;
     }
 
     public String getFlag() {

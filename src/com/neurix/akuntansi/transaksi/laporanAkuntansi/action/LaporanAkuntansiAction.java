@@ -117,7 +117,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
     }
 
     public LaporanAkuntansi init(String kode, String flag){
-       /* logger.info("[LaporanAkuntansiAction.init] start process >>>");
+        logger.info("[LaporanAkuntansiAction.init] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<LaporanAkuntansi> listOfResult = (List<LaporanAkuntansi>) session.getAttribute("listOfResult");
 
@@ -134,7 +134,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
             }
 
             logger.info("[LaporanAkuntansiAction.init] end process >>>");
-        }*/
+        }
         return getLaporanAkuntansi();
     }
 
@@ -156,22 +156,132 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
     @Override
     public String edit() {
         logger.info("[LaporanAkuntansiAction.edit] start process >>>");
+        String itemId = getId();
+        String itemFlag = getFlag();
 
+        LaporanAkuntansi editLaporanAkuntansi = new LaporanAkuntansi();
+
+        if(itemFlag != null){
+            try {
+                editLaporanAkuntansi = init(itemId, itemFlag);
+            } catch (GeneralBOException e) {
+                Long logId = null;
+                try {
+                    logId = laporanAkuntansiBoProxy.saveErrorMessage(e.getMessage(), "LaporanAkuntansiBO.getLaporanAkuntansiByCriteria");
+                } catch (GeneralBOException e1) {
+                    logger.error("[LaporanAkuntansiAction.edit] Error when retrieving edit data,", e1);
+                }
+                logger.error("[LaporanAkuntansiAction.edit] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
+                addActionError("Error, " + "[code=" + logId + "] Found problem when retrieving data for edit, please inform to your admin.");
+                return "failure";
+            }
+
+            if(editLaporanAkuntansi != null) {
+                setLaporanAkuntansi(editLaporanAkuntansi);
+            } else {
+                editLaporanAkuntansi.setFlag(itemFlag);
+                editLaporanAkuntansi.setLaporanAkuntansiId(itemId);
+                setLaporanAkuntansi(editLaporanAkuntansi);
+                addActionError("Error, Unable to find data with id = " + itemId);
+                return "failure";
+            }
+        } else {
+            editLaporanAkuntansi.setLaporanAkuntansiId(itemId);
+            editLaporanAkuntansi.setFlag(getFlag());
+            setLaporanAkuntansi(editLaporanAkuntansi);
+            addActionError("Error, Unable to edit again with flag = N.");
+            return "failure";
+        }
+
+        setAddOrEdit(true);
         return "init_edit";
     }
 
     @Override
     public String delete() {
-
-
         logger.info("[LaporanAkuntansiAction.delete] end process <<<");
+        String itemId = getId();
+        String itemFlag = getFlag();
+        LaporanAkuntansi deleteLaporanAkuntansi = new LaporanAkuntansi();
 
+        if (itemFlag != null ) {
+
+            try {
+                deleteLaporanAkuntansi = init(itemId, itemFlag);
+            } catch (GeneralBOException e) {
+                Long logId = null;
+                try {
+                    logId = laporanAkuntansiBoProxy.saveErrorMessage(e.getMessage(), "LaporanAkuntansiBO.getAlatById");
+                } catch (GeneralBOException e1) {
+                    logger.error("[LaporanAkuntansiAction.delete] Error when retrieving delete data,", e1);
+                }
+                logger.error("[LaporanAkuntansiAction.delete] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
+                addActionError("Error, " + "[code=" + logId + "] Found problem when retrieving data for delete, please inform to your admin.");
+                return "failure";
+            }
+
+            if (deleteLaporanAkuntansi != null) {
+                setLaporanAkuntansi(deleteLaporanAkuntansi);
+
+            } else {
+                deleteLaporanAkuntansi.setLaporanAkuntansiId(itemId);
+                deleteLaporanAkuntansi.setFlag(itemFlag);
+                setLaporanAkuntansi(deleteLaporanAkuntansi);
+                addActionError("Error, Unable to find data with id = " + itemId);
+                return "failure";
+            }
+        } else {
+            deleteLaporanAkuntansi.setLaporanAkuntansiId(itemId);
+            deleteLaporanAkuntansi.setFlag(itemFlag);
+            setLaporanAkuntansi(deleteLaporanAkuntansi);
+            addActionError("Error, Unable to delete again with flag = N.");
+            return "failure";
+        }
         return "init_delete";
     }
 
     @Override
     public String view() {
-        return null;
+        logger.info("[LaporanAkuntansiAction.view] start process >>>");
+
+        String itemId = getId();
+        String itemFlag = getFlag();
+        LaporanAkuntansi deleteLaporanAkuntansi = new LaporanAkuntansi();
+
+        if (itemFlag != null ) {
+            try {
+                deleteLaporanAkuntansi = init(itemId, itemFlag);
+            } catch (GeneralBOException e) {
+                Long logId = null;
+                try {
+                    logId = laporanAkuntansiBoProxy.saveErrorMessage(e.getMessage(), "LaporanAkuntansiBO.getAlatById");
+                } catch (GeneralBOException e1) {
+                    logger.error("[LaporanAkuntansiAction.view] Error when retrieving delete data,", e1);
+                }
+                logger.error("[LaporanAkuntansiAction.view] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
+                addActionError("Error, " + "[code=" + logId + "] Found problem when retrieving data for delete, please inform to your admin.");
+                return "failure";
+            }
+
+            if (deleteLaporanAkuntansi != null) {
+                setLaporanAkuntansi(deleteLaporanAkuntansi);
+
+            } else {
+                deleteLaporanAkuntansi.setLaporanAkuntansiId(itemId);
+                deleteLaporanAkuntansi.setFlag(itemFlag);
+                setLaporanAkuntansi(deleteLaporanAkuntansi);
+                addActionError("Error, Unable to find data with id = " + itemId);
+                return "failure";
+            }
+        } else {
+            deleteLaporanAkuntansi.setLaporanAkuntansiId(itemId);
+            deleteLaporanAkuntansi.setFlag(itemFlag);
+            setLaporanAkuntansi(deleteLaporanAkuntansi);
+            addActionError("Error, Unable to delete again with flag = N.");
+            return "failure";
+        }
+        logger.info("[LaporanAkuntansiAction.view] end process <<<");
+        return "init_view";
     }
 
     @Override
@@ -272,6 +382,15 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         session.removeAttribute("listOfResult");
         logger.info("[LaporanAkuntansiAction.initForm] end process >>>");
         return INPUT;
+    }
+
+    public String initForm2() {
+        logger.info("[LaporanAkuntansiAction.initForm2] start process >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+
+        session.removeAttribute("listOfResult");
+        logger.info("[LaporanAkuntansiAction.initForm2] end process >>>");
+        return "input2";
     }
 
     public String searchReportNeracaSaldo() {
@@ -496,7 +615,6 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
 
         reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
         reportParams.put("branchId", unit);
-        reportParams.put("periodeTitle", CommonUtil.convertNumberToStringBulan(data.getBulan())+" "+data.getTahun());
         Date now = new Date();
         reportParams.put("tanggal", CommonUtil.convertDateToString(now));
         reportParams.put("namaGeneralManager", dataAtasan.getNamaGeneralManager());
@@ -504,6 +622,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         reportParams.put("namaManagerKeuangan", dataAtasan.getNamaManagerKeuangan());
         reportParams.put("nipManagerKeuangan", dataAtasan.getNipManagerKeuangan());
         reportParams.put("periode", data.getBulan()+"-"+data.getTahun());
+        reportParams.put("periodeTitle", CommonUtil.convertNumberToStringBulan(data.getBulan())+" "+data.getTahun());
         reportParams.put("kota",branch.getBranchName());
         reportParams.put("alamatSurat",branch.getAlamatSurat());
         reportParams.put("areaId",CommonUtil.userAreaName());
@@ -550,14 +669,12 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
 
         reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
         reportParams.put("branchId", unit);
-        reportParams.put("periodeTitle", CommonUtil.convertNumberToStringBulan(data.getBulan())+" "+data.getTahun());
         Date now = new Date();
         reportParams.put("tanggal", CommonUtil.convertDateToString(now));
         reportParams.put("namaGeneralManager", dataAtasan.getNamaGeneralManager());
         reportParams.put("nipGeneralManager", dataAtasan.getNipGeneralManager());
         reportParams.put("namaManagerKeuangan", dataAtasan.getNamaManagerKeuangan());
         reportParams.put("nipManagerKeuangan", dataAtasan.getNipManagerKeuangan());
-        reportParams.put("periode", data.getBulan()+"-"+data.getTahun());
         reportParams.put("kota",branch.getBranchName());
         reportParams.put("alamatSurat",branch.getAlamatSurat());
         reportParams.put("kode_rekening",data.getKodeRekening());
@@ -580,7 +697,27 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
             addActionError("Error, " + "[code=" + logId + "] Found problem when downloading data, please inform to your admin.");
         }
         logger.info("[LaporanAkuntansiAction.printReportKartuBukuBesar] end process <<<");
-        return "print_report_akuntansi_kartu_buku_besar";
+        if (("T").equalsIgnoreCase(data.getTipeTanggal())){
+            java.sql.Date tanggalAwal = CommonUtil.convertStringToDate(data.getStTanggalAwal());
+            java.sql.Date tanggalAkhir = CommonUtil.convertStringToDate(data.getStTanggalAkhir());
+
+            Calendar c = Calendar.getInstance();
+            c.setTime(tanggalAkhir);
+            c.add(Calendar.DATE, 1);
+
+            java.sql.Date tanggalAkhirBaru = new java.sql.Date(c.getTimeInMillis());
+
+            reportParams.put("tanggalAwal",tanggalAwal );
+            reportParams.put("tanggalAkhir", tanggalAkhirBaru);
+            reportParams.put("periodeTitle", data.getStTanggalAwal()+" s/d "+data.getStTanggalAkhir());
+            return "print_report_akuntansi_kartu_buku_besar_tanggal";
+        }else if (("P").equalsIgnoreCase(data.getTipeTanggal())){
+            reportParams.put("periode", data.getBulan()+"-"+data.getTahun());
+            reportParams.put("periodeTitle", CommonUtil.convertNumberToStringBulan(data.getBulan())+" "+data.getTahun());
+            return "print_report_akuntansi_kartu_buku_besar";
+        }else{
+            return ERROR;
+        }
     }
 
     public String printReportMutasiJurnal(){
@@ -1052,6 +1189,106 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         }
         return dataReturn;
     }
+
+    public String saveAdd(){
+        logger.info("[LaporanAkuntansiAction.saveAdd] start process >>>");
+
+        try {
+            LaporanAkuntansi vendor = getLaporanAkuntansi();
+            String userLogin = CommonUtil.userLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+            vendor.setCreatedWho(userLogin);
+            vendor.setLastUpdate(updateTime);
+            vendor.setCreatedDate(updateTime);
+            vendor.setLastUpdateWho(userLogin);
+            vendor.setAction("C");
+            vendor.setFlag("Y");
+
+            laporanAkuntansiBoProxy.saveAdd(vendor);
+        }catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = laporanAkuntansiBoProxy.saveErrorMessage(e.getMessage(), "liburBO.saveAdd");
+            } catch (GeneralBOException e1) {
+                logger.error("[liburAction.saveAdd] Error when saving error,", e1);
+                return ERROR;
+            }
+            logger.error("[liburAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+            return ERROR;
+        }
+
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfResult");
+
+        logger.info("[liburAction.saveAdd] end process >>>");
+        return "success_save_add";
+    }
+
+    public String saveEdit(){
+        logger.info("[LaporanAkuntansiAction.saveEdit] start process >>>");
+        try {
+            LaporanAkuntansi editLaporanAkuntansi = getLaporanAkuntansi();
+            String userLogin = CommonUtil.userLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+            editLaporanAkuntansi.setLastUpdateWho(userLogin);
+            editLaporanAkuntansi.setLastUpdate(updateTime);
+            editLaporanAkuntansi.setAction("U");
+            editLaporanAkuntansi.setFlag("Y");
+
+            laporanAkuntansiBoProxy.saveEdit(editLaporanAkuntansi);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = laporanAkuntansiBoProxy.saveErrorMessage(e.getMessage(), "LaporanAkuntansiBO.saveEdit");
+            } catch (GeneralBOException e1) {
+                logger.error("[LaporanAkuntansiAction.saveEdit] Error when saving error,", e1);
+                return ERROR;
+            }
+            logger.error("[LaporanAkuntansiAction.saveEdit] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
+            return ERROR;
+        }
+
+        logger.info("[LaporanAkuntansiAction.saveEdit] end process <<<");
+
+        return "success_save_edit";
+    }
+
+    public String saveDelete(){
+        logger.info("[LaporanAkuntansiAction.saveDelete] start process >>>");
+        try {
+            LaporanAkuntansi deleteLaporanAkuntansi = getLaporanAkuntansi();
+            String userLogin = CommonUtil.userLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+            deleteLaporanAkuntansi.setLastUpdate(updateTime);
+            deleteLaporanAkuntansi.setLastUpdateWho(userLogin);
+            deleteLaporanAkuntansi.setAction("U");
+            deleteLaporanAkuntansi.setFlag("N");
+
+            laporanAkuntansiBoProxy.saveDelete(deleteLaporanAkuntansi);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = laporanAkuntansiBoProxy.saveErrorMessage(e.getMessage(), "LaporanAkuntansiBO.saveDelete");
+            } catch (GeneralBOException e1) {
+                logger.error("[LaporanAkuntansiAction.saveDelete] Error when saving error,", e1);
+                return ERROR;
+            }
+            logger.error("[LaporanAkuntansiAction.saveDelete] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
+            return ERROR;
+        }
+
+        logger.info("[LaporanAkuntansiAction.saveDelete] end process <<<");
+
+        return "success_save_delete";
+    }
+    
     private String getMataUangKurs(String mataUangId) {
         return "0";
     }
