@@ -1,5 +1,8 @@
 package com.neurix.simrs.master.vendor.bo.impl;
 
+import com.neurix.akuntansi.master.masterVendor.bo.MasterVendorBo;
+import com.neurix.akuntansi.master.masterVendor.dao.MasterVendorDao;
+import com.neurix.akuntansi.master.masterVendor.model.ImMasterVendorEntity;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.vendor.bo.VendorBo;
 import com.neurix.simrs.master.vendor.dao.VendorDao;
@@ -17,6 +20,11 @@ import java.util.Map;
 public class VendorBoImpl implements VendorBo {
     protected static transient Logger logger = Logger.getLogger(VendorBoImpl.class);
     private VendorDao vendorDao;
+    private MasterVendorDao masterVendorDao;
+
+    public void setMasterVendorDao(MasterVendorDao masterVendorDao) {
+        this.masterVendorDao = masterVendorDao;
+    }
 
     public static Logger getLogger() {
         return logger;
@@ -84,8 +92,33 @@ public class VendorBoImpl implements VendorBo {
         CheckResponse response = new CheckResponse();
         if(bean != null){
 
+            ImMasterVendorEntity imVendorEntity = new ImMasterVendorEntity();
+
+            imVendorEntity.setNomorMaster(getNextIdVendor());
+            imVendorEntity.setNama(bean.getNamaVendor());
+            imVendorEntity.setAlamat(bean.getAlamat());
+            imVendorEntity.setNpwp(bean.getNpwp());
+            imVendorEntity.setEmail(bean.getEmail());
+            imVendorEntity.setNoTelp(bean.getNoTelp());
+            imVendorEntity.setFlag(bean.getFlag());
+            imVendorEntity.setAction(bean.getAction());
+            imVendorEntity.setCreatedWho(bean.getCreatedWho());
+            imVendorEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            imVendorEntity.setCreatedDate(bean.getCreatedDate());
+            imVendorEntity.setLastUpdate(bean.getLastUpdate());
+
+            try {
+                masterVendorDao.addAndSave(imVendorEntity);
+                response.setStatus("success");
+            } catch (HibernateException e) {
+                response.setStatus("error");
+                response.setMessage("Found Error when save vendor "+e.getMessage());
+                logger.error("[VendorBoImpl.saveAdd] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when saving new data Vendor, please info to your admin..." + e.getMessage());
+            }
+
             ImSimrsVendorEntity vendorEntity = new ImSimrsVendorEntity();
-            vendorEntity.setIdVendor("VNR"+getNextIdVendor());
+            vendorEntity.setIdVendor(imVendorEntity.getNomorMaster());
             vendorEntity.setNpwp(bean.getNpwp());
             vendorEntity.setNamaVendor(bean.getNamaVendor());
             vendorEntity.setEmail(bean.getEmail());
@@ -95,17 +128,18 @@ public class VendorBoImpl implements VendorBo {
             vendorEntity.setCreatedDate(bean.getCreatedDate());
             vendorEntity.setLastUpdateWho(bean.getLastUpdateWho());
             vendorEntity.setLastUpdate(bean.getLastUpdate());
-            vendorEntity.setFlag("Y");
-            vendorEntity.setAction("C");
+            vendorEntity.setFlag(bean.getFlag());
+            vendorEntity.setAction(bean.getAction());
 
             try {
                 vendorDao.addAndSave(vendorEntity);
                 response.setStatus("success");
             }catch (HibernateException e){
                 response.setStatus("error");
-                response.setMessage("Found Error when update vendor "+e.getMessage());
+                response.setMessage("Found Error when save vendor "+e.getMessage());
                 logger.error("[VendorBoImpl.saveAdd] Found Error when save vendor");
             }
+
 
         }
         logger.info("[VendorBoImpl.saveAdd] END process >>>>>>");
@@ -118,10 +152,10 @@ public class VendorBoImpl implements VendorBo {
         CheckResponse response = new CheckResponse();
         if(bean != null){
 
-            ImSimrsVendorEntity vendorEntity = new ImSimrsVendorEntity();
+            ImMasterVendorEntity imVendorEntity = new ImMasterVendorEntity();
 
             try {
-                vendorEntity = vendorDao.getById("idVendor", bean.getIdVendor());
+                imVendorEntity = masterVendorDao.getById("nomorMaster", bean.getIdVendor());
                 response.setStatus("success");
             }catch (HibernateException e){
                 response.setStatus("error");
@@ -129,26 +163,63 @@ public class VendorBoImpl implements VendorBo {
                 logger.error("Found Error when search vendor "+e.getMessage());
             }
 
-            if(vendorEntity != null) {
+            if(imVendorEntity != null){
 
-                vendorEntity.setNpwp(bean.getNpwp());
-                vendorEntity.setNamaVendor(bean.getNamaVendor());
-                vendorEntity.setEmail(bean.getEmail());
-                vendorEntity.setNoTelp(bean.getNoTelp());
-                vendorEntity.setAlamat(bean.getAlamat());
-                vendorEntity.setCreatedWho(bean.getCreatedWho());
-                vendorEntity.setCreatedDate(bean.getCreatedDate());
-                vendorEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                vendorEntity.setLastUpdate(bean.getLastUpdate());
-                vendorEntity.setAction("U");
+                imVendorEntity.setNama(bean.getNamaVendor());
+                imVendorEntity.setAlamat(bean.getAlamat());
+                imVendorEntity.setNpwp(bean.getNpwp());
+                imVendorEntity.setEmail(bean.getEmail());
+                imVendorEntity.setNoTelp(bean.getNoTelp());
+                imVendorEntity.setFlag("Y");
+                imVendorEntity.setAction(bean.getAction());
+                imVendorEntity.setCreatedWho(bean.getCreatedWho());
+                imVendorEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                imVendorEntity.setCreatedDate(bean.getCreatedDate());
+                imVendorEntity.setLastUpdate(bean.getLastUpdate());
 
                 try {
-                    vendorDao.updateAndSave(vendorEntity);
+                    masterVendorDao.updateAndSave(imVendorEntity);
+                    response.setStatus("success");
+                } catch (HibernateException e) {
+                    response.setStatus("error");
+                    response.setMessage("Found Error when update vendor "+e.getMessage());
+                    logger.error("[VendorBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data Vendor, please info to your admin..." + e.getMessage());
+                }
+
+                ImSimrsVendorEntity vendorEntity = new ImSimrsVendorEntity();
+
+                try {
+                    vendorEntity = vendorDao.getById("idVendor", bean.getIdVendor());
                     response.setStatus("success");
                 }catch (HibernateException e){
                     response.setStatus("error");
-                    response.setMessage("Found Error when update vendor "+e.getMessage());
-                    logger.error("[VendorBoImpl.saveEdit] Found Error when save update vendor");
+                    response.setMessage("Found Error when search vendor by id "+e.getMessage());
+                    logger.error("Found Error when search vendor "+e.getMessage());
+                }
+
+                if(vendorEntity != null) {
+
+                    vendorEntity.setNpwp(bean.getNpwp());
+                    vendorEntity.setNamaVendor(bean.getNamaVendor());
+                    vendorEntity.setEmail(bean.getEmail());
+                    vendorEntity.setNoTelp(bean.getNoTelp());
+                    vendorEntity.setAlamat(bean.getAlamat());
+                    vendorEntity.setCreatedWho(bean.getCreatedWho());
+                    vendorEntity.setCreatedDate(bean.getCreatedDate());
+                    vendorEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    vendorEntity.setLastUpdate(bean.getLastUpdate());
+                    vendorEntity.setAction("U");
+                    vendorEntity.setFlag("Y");
+
+                    try {
+                        vendorDao.updateAndSave(vendorEntity);
+                        response.setStatus("success");
+                    }catch (HibernateException e){
+                        response.setStatus("error");
+                        response.setMessage("Found Error when update vendor "+e.getMessage());
+                        logger.error("[VendorBoImpl.saveEdit] Found Error when save update vendor");
+                    }
                 }
             }
 
@@ -160,7 +231,7 @@ public class VendorBoImpl implements VendorBo {
     private String getNextIdVendor() {
         String id = "";
         try {
-            id = vendorDao.getNextSeq();
+            id = masterVendorDao.getNextVendorId();
         } catch (HibernateException e) {
             logger.error("[VendorBoImpl.getNextId] Error when get next id vendor", e);
         }

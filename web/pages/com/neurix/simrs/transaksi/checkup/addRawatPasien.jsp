@@ -531,7 +531,7 @@
                                             </div>
                                         </s:if>
                                         <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">ID Pasien</label>
+                                            <label class="col-md-4" style="margin-top: 7px">NO RM</label>
                                             <div class="col-md-8">
                                                 <s:textfield id="id_pasien" name="headerCheckup.idPasien"
                                                              onkeypress="$(this).css('border','');"

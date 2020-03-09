@@ -231,7 +231,7 @@
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>No Checkup</td>
-                                <td>ID Pasien</td>
+                                <td>NO RM</td>
                                 <td>Nama</td>
                                 <td>Poli Terakhir</td>
                                 <td>Status Terakhir</td>
@@ -288,6 +288,10 @@
                     <div class="row">
                         <div class="col-md-6">
                             <table class="table table-striped">
+                                <tr>
+                                    <td><b>No RM</b></td>
+                                    <td><span id="det_no_rm"></span></td>
+                                </tr>
                                 <tr>
                                     <td><b>No Checkup</b></td>
                                     <td><span id="det_no_checkup"></span></td>
@@ -650,6 +654,7 @@
                         kabupaten = response.namaKota;
                         kecamatan = response.namaKecamatan;
                         desa = response.namaDesa;
+                        $('#det_no_rm').text(response.idPasien);
 
                         if(response.urlDocRujuk != null && response.urlDocRujuk != ''){
                             $('#surat_rujukan').show();

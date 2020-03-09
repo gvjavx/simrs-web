@@ -180,23 +180,34 @@
         cekListAntrian();
     });
 
+    function setLocalStorege(key, value){
+        localStorage.setItem(key, value);
+    }
+
+    function getLocalStorage(key){
+        return localStorage.getItem(key);
+    }
+
     function cekListAntrian() {
         var urlString = window.location;
         var url = new URL(urlString);
-        var branch = url.searchParams.get("branch");
-        var poli = url.searchParams.get("poli");
+        // var branch = url.searchParams.get("branch");
+        // var poli = url.searchParams.get("poli");
+        var branch = getLocalStorage("branchId");
+        var poli = getLocalStorage("poli");
 
+        var branchId = "";
+        var poliId = "";
 
-        var branchId = null;
-        var poliId = null;
-
-        if(branch != ''){
+        if(branch != 'null'){
             branchId = branch;
         }
 
-        if(poli != ''){
+        if(poli != 'null'){
             poliId = poli;
         }
+
+        console.log(poliId);
 
         detailBranch(branchId);
 

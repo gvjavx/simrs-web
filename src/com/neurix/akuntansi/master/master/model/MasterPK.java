@@ -11,16 +11,7 @@ import java.sql.Timestamp;
  * To change this template use File | Settings | File Templates.
  */
 public class MasterPK implements Serializable {
-    private String masterId;
     private String nomorMaster;
-
-    public String getMasterId() {
-        return masterId;
-    }
-
-    public void setMasterId(String masterId) {
-        this.masterId = masterId;
-    }
 
     public String getNomorMaster() {
         return nomorMaster;

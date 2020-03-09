@@ -9,6 +9,7 @@
 
     <bean id="vendorBo" class="com.neurix.simrs.master.vendor.bo.impl.VendorBoImpl"
         p:vendorDao-ref="vendorDao"
+          p:masterVendorDao-ref="masterVendorDao"
     />
 
     <bean id="vendorBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

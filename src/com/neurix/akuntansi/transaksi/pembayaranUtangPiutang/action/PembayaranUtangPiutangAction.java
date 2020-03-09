@@ -387,35 +387,35 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
             ///////    MEMBUAT BILLING   /////////////
             //////////////////////////////////////////
 
+
             //Jika pembayaran berhasil
             //MEMBUAT BILLING
+            List<Map> dataMap = new ArrayList<>();
+            String parameter = "";
             for (PembayaranUtangPiutangDetail pembayaranUtangPiutangDetail : pembayaranUtangPiutangDetailList){
                 BigDecimal jumlahPembayaran = new BigDecimal(pembayaranUtangPiutangDetail.getStJumlahPembayaran().replace(".",""));
-                Map hutangUsaha = new HashMap();
-                hutangUsaha.put("bukti",pembayaranUtangPiutangDetail.getNoNota());
-                hutangUsaha.put("nilai",jumlahPembayaran);
 
-                Map data = new HashMap();
-                data.put("master_id",pembayaranUtangPiutangDetail.getMasterId());
-                data.put("hutang_usaha",hutangUsaha);
-                data.put("kas",jumlahPembayaran);
-                data.put("metode_bayar",pembayaranUtangPiutang.getMetodePembayaran());
-                data.put("bank",pembayaranUtangPiutang.getBank());
-                try {
-                    noJurnal= billingSystemBoProxy.createJurnal(pembayaranUtangPiutang.getTipeTransaksi(),data,pembayaranUtangPiutang.getBranchId(),pembayaranUtangPiutang.getKeterangan(),"N");
-                }catch (GeneralBOException e) {
-                    Long logId = null;
-                    try {
-                        logId = pembayaranUtangPiutangBoProxy.saveErrorMessage(e.getMessage(), "PembayaranUtangPiutangAction.createJurnalPembayaran");
-                    } catch (GeneralBOException e1) {
-                        logger.error("[PembayaranUtangPiutangAction.createJurnalPembayaran] Error when saving error,", e1);
-                        return ERROR;
-                    }
-                    logger.error("[PembayaranUtangPiutangAction.createJurnalPembayaran] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-                    addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-                    return ERROR;
-                }
+                Map hs = new HashMap();
+                hs.put("bukti",pembayaranUtangPiutangDetail.getNoNota());
+                hs.put("nilai",jumlahPembayaran);
+                hs.put("master_id", pembayaranUtangPiutangDetail.getMasterId());
+                dataMap.add(hs);
             }
+            switch (pembayaranUtangPiutang.getTipeTransaksi()){
+                case ("12"):
+                    parameter="hutang_usaha";
+                    break;
+                case ("21"):
+                    parameter="piutang_rekanan";
+                    break;
+            }
+            Map data = new HashMap();
+            data.put(parameter,dataMap);
+
+            data.put("kas",bayar);
+            data.put("metode_bayar",pembayaranUtangPiutang.getMetodePembayaran());
+            data.put("bank",pembayaranUtangPiutang.getBank());
+            noJurnal= billingSystemBoProxy.createJurnal(pembayaranUtangPiutang.getTipeTransaksi(),data,pembayaranUtangPiutang.getBranchId(),pembayaranUtangPiutang.getKeterangan(),"N");
             pembayaranUtangPiutang.setNoJurnal(noJurnal);
            pembayaranUtangPiutangBoProxy.saveAddPembayaran(pembayaranUtangPiutang,pembayaranUtangPiutangDetailList);
         }catch (GeneralBOException e) {
@@ -521,15 +521,14 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         logger.info("[PembayaranUtangPiutangAction.saveDetailPembayaran] end process >>>");
         return status;
     }
-    public String deleteDetailPembayaran(String kodeVendor) {
+    public String deleteDetailPembayaran(String noNota) {
         logger.info("[PembayaranUtangPiutangAction.deleteDetailPembayaran] start process >>>");
         String status="";
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<PembayaranUtangPiutangDetail> piutangDetailList = (List<PembayaranUtangPiutangDetail>) session.getAttribute("listOfResultPembayaranDetail");
         List<PembayaranUtangPiutangDetail> piutangDetailArrayList = new ArrayList<>();
         for (PembayaranUtangPiutangDetail pembayaranUtangPiutangDetail:piutangDetailList){
-            if (pembayaranUtangPiutangDetail.getMasterId().equalsIgnoreCase(kodeVendor)){
-                break;
+            if (pembayaranUtangPiutangDetail.getNoNota().equalsIgnoreCase(noNota)){
             }else{
                 piutangDetailArrayList.add(pembayaranUtangPiutangDetail);
             }
@@ -596,9 +595,30 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         logger.info("[PembayaranUtangPiutangAction.searchNotaPembayaran] start process >>>");
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PembayaranUtangPiutangBo pembayaranUtangPiutangBo = (PembayaranUtangPiutangBo) ctx.getBean("pembayaranUtangPiutangBoProxy");
-        List<PembayaranUtangPiutangDetail> pembayaranUtangPiutangDetailList = pembayaranUtangPiutangBo.getSearchNotaPembayaran(masterId,transaksiId,branchId);
+        HttpSession session = ServletActionContext.getRequest().getSession();
+
+        List<PembayaranUtangPiutangDetail> listDataDb = pembayaranUtangPiutangBo.getSearchNotaPembayaran(masterId,transaksiId,branchId);
+        List<PembayaranUtangPiutangDetail> listDataSession = (List<PembayaranUtangPiutangDetail>) session.getAttribute("listOfResultPembayaranDetail");
+        List<PembayaranUtangPiutangDetail> result= new ArrayList<>();
+        if (listDataSession==null){
+            result.addAll(listDataDb);
+        }else{
+            //jika sudah ada pada session tidak usah ditampilkan
+            for (PembayaranUtangPiutangDetail dataDb : listDataDb){
+                boolean ada = false;
+                for (PembayaranUtangPiutangDetail dataSession : listDataSession){
+                    if (dataDb.getNoNota().equalsIgnoreCase(dataSession.getNoNota())){
+                        ada=true;
+                        break;
+                    }
+                }
+                if (!ada){
+                    result.add(dataDb);
+                }
+            }
+        }
         logger.info("[PembayaranUtangPiutangAction.searchNotaPembayaran] end process >>>");
-        return pembayaranUtangPiutangDetailList;
+        return result;
     }
 
     public String postingJurnal(String pembayaranId){

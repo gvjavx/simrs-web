@@ -41,6 +41,7 @@ ORDER BY jumlah_debit DESC]]>
 	<field name="last_update_who" class="java.lang.String"/>
 	<field name="jurnal_detail_id" class="java.lang.String"/>
 	<field name="kd_barang" class="java.lang.String"/>
+	<field name="pasien_id" class="java.lang.String"/>
 	<field name="kode_rekening" class="java.lang.String"/>
 	<field name="nama" class="java.lang.String">
 		<fieldDescription><![CDATA[Nama Master]]></fieldDescription>
@@ -83,7 +84,7 @@ ORDER BY jumlah_debit DESC]]>
 				<text><![CDATA[Jumlah Uang]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-1" x="128" y="0" width="308" height="15" uuid="98cc99d1-4289-4430-a580-1b3bdc4b2784"/>
+				<reportElement key="staticText-1" x="218" y="0" width="218" height="15" uuid="98cc99d1-4289-4430-a580-1b3bdc4b2784"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -94,6 +95,19 @@ ORDER BY jumlah_debit DESC]]>
 					<font isBold="false" isUnderline="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[Nama Perkiraan - Lawan / Uraian]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-1" x="128" y="0" width="90" height="15" uuid="cc86d00e-fc3b-444b-97ec-2c2682acd0e6"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font isBold="false" isUnderline="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<text><![CDATA[No. Nota]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
@@ -107,7 +121,7 @@ ORDER BY jumlah_debit DESC]]>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[( $F{kode_rekening} == null ? "" : $F{kode_rekening} )]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="false">
@@ -122,15 +136,26 @@ ORDER BY jumlah_debit DESC]]>
 				<textFieldExpression><![CDATA[$F{jumlah_debit}.compareTo( new BigDecimal(0))==0 ? $F{jumlah_kredit} : $F{jumlah_debit}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField" x="128" y="0" width="308" height="15" uuid="49dd8bc8-e1c2-44e1-9815-bce12d0897d4"/>
+				<reportElement key="textField" x="218" y="0" width="218" height="15" uuid="49dd8bc8-e1c2-44e1-9815-bce12d0897d4"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{nama} == null ? "" : $F{nama}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="128" y="0" width="90" height="15" uuid="7b1a2e52-db57-45f6-8e2f-0f13c77b18ac"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[( $F{no_nota} == null ? "" : $F{no_nota} )]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

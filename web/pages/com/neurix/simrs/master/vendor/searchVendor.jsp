@@ -51,6 +51,14 @@
                             <s:form id="vendorForm" method="post" namespace="/vendor" action="search_vendor.action"
                                     theme="simple" cssClass="form-horizontal">
                                 <div class="form-group">
+                                    <label class="control-label col-sm-4">NPWP</label>
+                                    <div class="col-sm-4">
+                                        <s:textfield id="npwp" name="vendor.npwp"
+                                                     required="false" readonly="false"
+                                                     cssClass="form-control" cssStyle="margin-top: 7px"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label class="control-label col-sm-4">Nama</label>
                                     <div class="col-sm-4">
                                         <s:textfield id="nama_pasien" name="vendor.namaVendor"

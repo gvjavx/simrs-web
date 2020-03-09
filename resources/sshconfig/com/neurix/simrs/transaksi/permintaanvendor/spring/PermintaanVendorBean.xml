@@ -21,6 +21,7 @@
          p:obatDao-ref="obatDao"
           p:tempObatGejalaDao-ref="tempObatGejalaDao"
           p:transaksiObatDetailBatchDao-ref="transaksiObatDetailBatchDao"
+          p:vendorDao-ref="vendorDao"
     />
 
     <bean id="permintaanVendorBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

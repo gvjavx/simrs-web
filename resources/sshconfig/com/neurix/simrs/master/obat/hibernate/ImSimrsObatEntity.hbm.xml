@@ -88,5 +88,9 @@
             <column name="id_barang" sql-type="varchar" length="30" not-null="false"/>
         </property>
 
+        <property name="minStok">
+            <column name="min_stok" sql-type="bigint" not-null="false"/>
+        </property>
+
     </class>
 </hibernate-mapping>

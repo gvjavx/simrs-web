@@ -444,7 +444,8 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                     "SUM(a.qty_lembar) as lembar, \n" +
                     "SUM(a.qty_biji) as biji, \n" +
                     "a.merk, \n"+
-                    "a.flag \n" +
+                    "a.flag, \n" +
+                    "a.min_stok \n" +
                     "FROM im_simrs_obat a\n" +
                     "INNER JOIN im_simrs_obat_gejala b ON a.id_obat = b.id_obat\n" +
                     "WHERE a.branch_id LIKE :branchId\n" +
@@ -459,7 +460,7 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                     "a.lembar_per_box,\n" +
                     "a.biji_per_lembar,"+
                     "a.merk,\n"+
-                    "a.flag\n";
+                    "a.flag, a.min_stok\n";
 
             List<Object[]> resuts = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("branchId", branchId)
@@ -482,7 +483,17 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                     obat.setQtyBiji(obj[7] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[7].toString()));
                     obat.setMerk(obj[8] == null ? "" : obj[8].toString());
                     obat.setFlag(obj[9] == null ? "" : obj[9].toString());
+                    obat.setMinStok(obj[10] == null ? new BigInteger(String.valueOf("0")) : new BigInteger(String.valueOf(obj[10].toString())));
                     obat.setJenisObat(getObatGejalaByIdObat(obj[1].toString()));
+
+                    if(obat.getQtyBox() != null && obat.getMinStok() != null){
+                        if(obat.getQtyBox().intValue() >= obat.getMinStok().intValue()){
+                            obat.setIsMinStok("N");
+                        }else{
+                            obat.setIsMinStok("Y");
+                        }
+                    }
+
                     list.add(obat);
                 }
             }

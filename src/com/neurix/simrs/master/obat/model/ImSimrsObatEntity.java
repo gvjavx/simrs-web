@@ -33,6 +33,16 @@ public class ImSimrsObatEntity implements Serializable{
     private String merk;
     private String idBarang;
 
+    private BigInteger minStok;
+
+    public BigInteger getMinStok() {
+        return minStok;
+    }
+
+    public void setMinStok(BigInteger minStok) {
+        this.minStok = minStok;
+    }
+
     public String getIdBarang() {
         return idBarang;
     }

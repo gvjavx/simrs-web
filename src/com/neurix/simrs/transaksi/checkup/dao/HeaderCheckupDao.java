@@ -337,7 +337,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         }
 
         if (poli != null && !"".equalsIgnoreCase(poli)) {
-            pelayanan = poli;
+            pelayanan = "\n AND b.id_pelayanan IN ("+poli+") \n";
         }
 
         String SQL = "SELECT \n" +
@@ -364,14 +364,13 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "LEFT JOIN it_simrs_uang_muka_pendaftaran f ON b.id_detail_checkup = f.id_detail_checkup\n" +
                 "WHERE b.status_periksa = '0'\n" +
                 "AND a.branch_id LIKE :branchId \n" +
-                "AND b.id_pelayanan LIKE :poliId \n" +
+                pelayanan +
                 "AND CAST(a.created_date AS date) = current_date\n" +
                 "ORDER BY c.nama_pelayanan, b.tgl_antrian ASC";
 
         List<Object[]> result = new ArrayList<>();
         result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("branchId", branch)
-                .setParameter("poliId", pelayanan)
                 .list();
 
         if (!result.isEmpty()) {
@@ -423,7 +422,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         }
 
         if (poli != null && !"".equalsIgnoreCase(poli)) {
-            pelayanan = poli;
+            pelayanan = "\n AND b.id_pelayanan IN ("+poli+") \n";;
         }
 
         String SQL = "SELECT a.id_pasien, a.nama, a.desa_id, d.desa_name, b.id_pelayanan,\n" +
@@ -435,8 +434,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "INNER JOIN im_hris_kecamatan e ON d.kecamatan_id = e.kecamatan_id\n" +
                 "LEFT JOIN mt_simrs_permintaan_resep pr ON pr.id_detail_checkup = b.id_detail_checkup \n" +
                 "WHERE b.status_periksa = '1'\n" +
-                "AND a.branch_id LIKE :branchId \n" +
-                "AND b.id_pelayanan LIKE :poliId AND c.tipe_pelayanan = 'rawat_jalan' \n" +
+                "AND a.branch_id LIKE :branchId \n" + pelayanan +
+                "AND c.tipe_pelayanan = 'rawat_jalan' \n" +
                 "AND CAST(a.created_date AS date) = current_date\n" +
                 "AND pr.id_detail_checkup IS NULL \n" +
                 "ORDER BY c.nama_pelayanan, b.tgl_antrian ASC";
@@ -444,7 +443,6 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         List<Object[]> result = new ArrayList<>();
         result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("branchId", branch)
-                .setParameter("poliId", pelayanan)
                 .list();
 
         if (!result.isEmpty()) {
