@@ -467,7 +467,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Right">
 					<font size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{tambahan_lain}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{tambahan_lain}+$F{lain_lain}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="109" y="23" width="149" height="25" uuid="9a24f933-1098-42f0-ad2a-6aba776b8875"/>

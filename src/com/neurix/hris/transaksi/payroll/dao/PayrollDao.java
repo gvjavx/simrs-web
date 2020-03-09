@@ -138,7 +138,8 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
                 "WHERE pegawai.flag = 'Y'\n" +
                 "AND posisi.flag = 'Y'\n" +
                 "AND posisi.branch_id = '"+branchId+"'\n" +
-                strWhere;
+                strWhere+"\n" +
+                "ORDER BY position.kelompok_id";
 
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)

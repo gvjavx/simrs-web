@@ -302,7 +302,7 @@
                                                 </s:else>
                                             </display:column>
 
-                                            <display:column media="html" title="Print Draft">
+                                            <%--<display:column media="html" title="Print Draft">
                                                 <s:if test="#attr.row.flagEdit">
                                                     <a href="javascript:;" draftBulan="<s:property value="%{#attr.row.bulan}"/>"
                                                        draftTahun="<s:property value="%{#attr.row.tahun}"/>"
@@ -313,7 +313,7 @@
                                                         <img border="0" src="<s:url value="/pages/images/icon_printer_new.ico"/>" name="icon_edit">
                                                     </a>
                                                 </s:if>
-                                            </display:column>
+                                            </display:column>--%>
 
                                             <display:column media="html" title="Print Slip">
                                                 <s:if test="#attr.row.flagEdit">

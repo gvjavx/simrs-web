@@ -548,7 +548,11 @@
             </div>
             <div class="modal-body" align="left">
                 <form class="form-horizontal" id="formEdit">
-
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            <input style="display: none" readonly type="text" class="form-control nip" id="payrollId2" name="nip">
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label class="control-label col-sm-1" >Bulan / Tahun </label>
                         <div class="col-sm-1">
@@ -709,11 +713,17 @@
                         <div class="col-sm-2">
                             <input readonly style="text-align: right"  type="text" class="form-control nip" id="iuranDapenPeg" name="nip">
                         </div>
-                        <label class="control-label col-sm-1" >Tipe Ptt</label>
-                        <div class="col-sm-1">
-                            <a href="javascript:;" class="detailPtt" style="display: inline">
-                                <span style="font-size: 25px" class="glyphicon glyphicon-zoom-in"></span>
-                            </a>
+                        <label class="control-label col-sm-1" for="tipePttId1">Tipe Ptt:</label>
+                        <div class="col-sm-2">
+                            <select class="form-control" id="tipePttId1">
+                                <option value="0">[Select One]</option>
+                                <option value="t">Tantiem</option>
+                                <option value="R">Rekreasi</option>
+                                <option value="tk">Tunjangan Khusus</option>
+                                <option value="bPer">Biaya Pernikahan</option>
+                                <option value="bPin">Biaya Pindah</option>
+                                <option value="bPis">Biaya Pisah</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
@@ -731,7 +741,7 @@
                         </div>
                         <label class="control-label col-sm-1" >Nilai Ptt</label>
                         <div class="col-sm-2">
-                            <input style="text-align: right" readonly type="text" class="form-control nip" id="nilaiPtt" name="nip">
+                            <input style="text-align: right" type="text" class="form-control nip" id="nilaiPtt" name="nip" onfocusout="updateNilai(this.id, this.value)">
                         </div>
                     </div>
                     <div class="form-group">
@@ -3307,6 +3317,8 @@
         var potonganLain = document.getElementById("potonganLain").value;
         var tunjPph = document.getElementById("tunjPph").value;
         var pphGaji = document.getElementById("pphGaji1").value;
+        var nilaiPtt = document.getElementById("nilaiPtt").value;
+        var idPtt = document.getElementById("tipePttId1").value;
 
 
 
@@ -3334,7 +3346,7 @@
                 PayrollAction.saveEditData(payrollId, nip, tunjanganPeralihan,pemondokan,
                         komunikasi, kopkar, iuranSp, iuranPiikb,bankBri, bankMandiri, infaq, perkesDanObat,
                         listrik, iuranProfesi, potonganLain,
-                        flagJubileum, flagPensiun, tunjPph, pphGaji, function(listdata) {
+                        flagJubileum, flagPensiun, tunjPph, pphGaji,nilaiPtt,idPtt, function(listdata) {
                             alert('Data Berhasil Dirubah');
                             $('#modal-edit').modal('hide');
                             $('#formEdit')[0].reset();
@@ -3957,18 +3969,6 @@
                     $('.detailGaji').hide();
                 }
 
-                if(listdata.flagRapel == 'Y'){
-                    $('.detailRapel').show();
-                }else{
-                    $('.detailRapel').hide();
-                }
-
-                if(listdata.flagPendidikan == 'Y'){
-                    $('.detailPendidikan').show();
-                }else{
-                    $('.detailPendidikan').hide();
-                }
-
                 if(listdata.flagJasprod == 'Y'){
                     $('.detailJasprod').show();
                 }else{
@@ -4078,6 +4078,9 @@
                 $('#pphGaji1').val(listdata.pphGaji);
                 $('#totalPotonganLain').val(listdata.totalPotonganLain);
 
+                $('#nilaiPtt').val(listdata.lainLain);
+                $('#tipePttId1').val(listdata.idLainLain).change();
+
                 //detail komponen C potongan lain -lain
                 $('#kopkar').val(listdata.kopkar);
                 $('#iuranSp').val(listdata.iuranSp);
@@ -4096,77 +4099,6 @@
                 $('#totalB').val(listdata.totalB);
                 $('#totalC').val(listdata.totalC);
                 $('#gajiBersih').val(listdata.totalGajiBersih);
-
-
-
-
-
-                /*$('#pphGaji').val(listdata.pphGaji);
-                 $('#pphPengobatan').val(listdata.pphPengobatan);
-                 $('#iuranPensiun').val(listdata.iuranPensiun);
-                 $('#iuranBpjsKes').val(listdata.iuranBpjsKesehatan);
-                 $('#iuranBpjsTk').val(listdata.iuranBpjsTk);
-                 $('#iuranBpjsPensiun').val(listdata.iuranBpjsPensiun);
-                 $('#uangMukaLain').val(listdata.uangMukaLainnya);
-                 $('#kekuranganIuranBpjs').val(listdata.kekuranganBpjsTk);*/
-                /*$('#totalB').val(listdata.totalB);
-                 $('#totalD').val(listdata.totalTambahan);*/
-
-                /*                $('#pengobatan').val(listdata.pengobatan);
-                 if(listdata.branchId != 'KD01'){
-                 $('.detailPengobatan').show;
-                 }else{
-                 $('.detailPengobatan').hide();
-                 }*/
-                /*$('#fieldBiayaPengobatan').val(listdata.pengobatan);
-                 $('#koperasi').val(listdata.koperasi);
-                 $('#dansos').val(listdata.dansos);
-                 $('#sp').val(listdata.SP);
-                 $('#bazis').val(listdata.bazis);
-                 $('#bapor').val(listdata.bapor);
-                 $('#zakatProfesi').val(listdata.zakat);
-                 $('#lainLain').val(listdata.lainLain);
-                 $('#totalC').val(listdata.totalC);
-
-                 $('#gajiBersih').val(listdata.totalGajiBersih);
-
-                 $('#pphGajiNilai').val(listdata.pphGaji);
-
-                 $('#rapel').val(listdata.totalRapel);
-                 $('#thr').val(listdata.totalThrBersih);
-                 $('#pendidikan').val(listdata.totalPendidikan);
-                 $('#jasprod').val(listdata.totalJasProd);
-                 $('#insentif').val(listdata.totalInsentif);
-                 $('#pensiun').val(listdata.nettoPensiun);
-                 $('#jubileum').val(listdata.nettoJubileum);*/
-
-                //modal jubileum
-                /*$('#jubileumMasKer1').val(listdata.stTanggalAktif);
-                 $('#jubileumMasKer2').val(listdata.stTanggalAktifSekarang);
-                 $('#jubileumGolongan').val(listdata.golonganName);
-                 $('#jubileumPoint').val(listdata.point);*/
-
-                /*if(listdata.centangKalkulasiPph == "Y"){
-                 $("#pphGaji").prop('readonly', true);
-                 document.getElementById("checkKalkulasiPph").checked = true;
-                 }else{
-                 $("#pphGaji").prop('readonly', false);
-                 document.getElementById("checkKalkulasiPph").checked = false;
-                 }*/
-
-                /*if(listdata.centangKalkulasiPphPengobatan == "Y"){
-                 $("#pphPengobatanBayar").prop('readonly', true);
-                 document.getElementById("checkKalkulasiPphPengobatan").checked = true;
-                 }else{
-                 $("#pphPengobatanBayar").prop('readonly', false);
-                 document.getElementById("checkKalkulasiPphPengobatan").checked = false;
-                 }*/
-
-                /*$('#pphPengobatanJumlah').val(listdata.jumlahPengobatan);
-                 $('#pphPengobatanHarusDibayar').val(listdata.hutangPphPengobatan);
-                 $('#pphPengobatanTerbayar').val(listdata.jumlahPphPengobatan);
-                 $('#pphPengobatanKurang').val(listdata.kurangPphPengobatan);
-                 $('#pphPengobatanBayar').val(listdata.pphPengobatan);*/
             });
             //alert( $('#branchId1').text);
             $('#modal-edit').find('.modal-title').text('Detail Payroll');
@@ -4570,12 +4502,13 @@
             $('#bulan').val(listdata.bulan);
             $('#tahun').val(listdata.tahun);
             $('#nip').val(listdata.nip);
-            $('#nama').val(listdata.nama);
             if(listdata.npwp != null){
                 $('#npwp').val(listdata.npwp);
             }else{
                 $('#npwp').val("-");
             }
+            $('#branchId2').val(listdata.branchId);
+            $('#nama').val(listdata.nama);
             $('#divisi').val(listdata.departmentName);
             $('#golongan').val(listdata.golonganName);
             $('#point').val(listdata.point);
@@ -4583,165 +4516,68 @@
             $('#statusKeluarga').val(listdata.statusKeluarga);
             $('#jumlahAnak').val(listdata.jumlahAnak);
             $('#gajiPensiun').val(listdata.gajiPensiun);
+            $('#tipePegawai').val(listdata.tipePegawai);
+            $('#tipePegawaiName').val(listdata.tipePegawaiName);
 
             $('#multifikator').val(listdata.multifikator);
             $('#gajiBpjs').val(listdata.gajiBpjs);
 
-            if(listdata.centangJubileum == "Y"){
-                document.getElementById("checkApproveJubileum").checked = true;
-                $('#detailJubileum').show();
-            }else{
-                document.getElementById("checkApproveJubileum").checked = false;
-                $('#detailJubileum').hide();
-            }
-
+            //komponen A
             $('#gaji').val(listdata.gajiGolongan);
             $('#tunjUmk').val(listdata.tunjanganUmk);
-            $('#tunjStruktural').val(listdata.tunjanganStruktural);
-            $('#tunjPeralihan').val(listdata.tunjanganPeralihan);
-            $('#tunjPendidikan').val(listdata.tunjanganPendidikan);
             $('#tunjJabStruktural').val(listdata.tunjanganJabatanStruktural);
+            $('#tunjStruktural').val(listdata.tunjanganStruktural);
             $('#tunjStrategis').val(listdata.tunjanganStrategis);
-            $('#kompensasi').val(listdata.kompensasi);
-            $('#transport').val(listdata.tunjanganTransport);
-            $('#listrikAir').val(listdata.tunjanganAirListrik);
-            $('#tunjPengobatan').val(listdata.tunjanganPengobatan);
-            $('#tunjPerumahan').val(listdata.tunjanganPerumahan);
-            $('#tunjPph').val(listdata.tunjanganPph);
+            $('#tunjPeralihan').val(listdata.tunjanganPeralihan);
+            $('#tunjTambahan').val(listdata.tunjanganTambahan);
             $('#tunjLain').val(listdata.tunjanganLain);
-            $('#tunjLembur').val(listdata.tunjanganLembur);
-            $('#fieldBiayaLembur').val(listdata.tunjanganLembur);
+            $('#pemondokan').val(listdata.pemondokan);
+            $('#komunikasi').val(listdata.komunikasi);
+
+            //komponen B
+            //RLAB
+            $('#tunjRumah').val(listdata.tunjanganRumah);
+            $('#tunjListrik').val(listdata.tunjanganListrik);
+            $('#tunjAir').val(listdata.tunjanganAir);
+            $('#tunjBbm').val(listdata.tunjanganBbm);
+            $('#totalRlab').val(listdata.totalRlab);
+            $('#tunjDapen').val(listdata.iuranDapenPersh);
+            $('#tunjBpjsKs').val(listdata.tunjanganBpjsKs);
+            $('#tunjBpjsTk').val(listdata.tunjanganBpjsTk);
+            $('#tunjPph').val(listdata.tunjanganPph);
+
+            //komponen C
+            $('#iuranDapenPeg').val(listdata.iuranDapenPeg);
+            $('#iuranDapenPersh').val(listdata.iuranDapenPersh);
+            $('#iuranBpjsTkPeg').val(listdata.iuranBpjsTkKary);
+            $('#iuranBpjsTkPers').val(listdata.iuranBpjsTkPers);
+            $('#iuranBpjsKsPeg').val(listdata.iuranBpjsKsKary);
+            $('#iuranBpjsKsPers').val(listdata.iuranBpjsKsPersh);
+            $('#pphGaji1').val(listdata.pphGaji);
+            $('#totalPotonganLain').val(listdata.totalPotonganLain);
+
+            //detail komponen C potongan lain -lain
+            $('#kopkar').val(listdata.kopkar);
+            $('#iuranSp').val(listdata.iuranSp);
+            $('#iuranPiiKb').val(listdata.iuranPiikb);
+            $('#bankBri').val(listdata.bankBri);
+            $('#bankMandiri').val(listdata.bankMandiri);
+            $('#infaq').val(listdata.infaq);
+            $('#perkesDanObat').val(listdata.perkesDanObat);
+            $('#listrik').val(listdata.listrik);
+            $('#iuranProfesi').val(listdata.iuranProfesi);
+            $('#potonganLain').val(listdata.potonganLain);
+
+            //Komponen D
+            $('#nilaiPtt').val(listdata.lainLain);
+            $('#tipePttId1').val(listdata.idLainLain).change();
+
+
+            //Total
             $('#totalA').val(listdata.totalA);
-
-
-            $('#pphGaji').val(listdata.pphGaji);
-            $('#pphPengobatan').val(listdata.pphPengobatan);
-            $('#iuranPensiun').val(listdata.iuranPensiun);
-            $('#iuranBpjsKes').val(listdata.iuranBpjsKesehatan);
-            $('#iuranBpjsTk').val(listdata.iuranBpjsTk);
-            $('#iuranBpjsPensiun').val(listdata.iuranBpjsPensiun);
-            $('#uangMukaLain').val(listdata.uangMukaLainnya);
-            $('#kekuranganIuranBpjs').val(listdata.kekuranganBpjsTk);
             $('#totalB').val(listdata.totalB);
-
-            $('#pengobatan').val(listdata.pengobatan);
-            $('#fieldBiayaPengobatan').val(listdata.pengobatan);
-            $('#koperasi').val(listdata.koperasi);
-            $('#dansos').val(listdata.dansos);
-            $('#sp').val(listdata.SP);
-            $('#bazis').val(listdata.bazis);
-            $('#bapor').val(listdata.bapor);
-            $('#zakatProfesi').val(listdata.zakat);
-            $('#lainLain').val(listdata.lainLain);
-            $('#jumlahDetailLainLain').val(listdata.lainLain);
             $('#totalC').val(listdata.totalC);
-            $('#totalD').val(listdata.totalTambahan);
-
             $('#gajiBersih').val(listdata.totalGajiBersih);
-
-            $('#pphGajiNilai').val(listdata.pphGaji);
-
-            $('#K').val(listdata.totalRapel);
-            $('#thr').val(listdata.totalThr);
-            $('#pendidikan').val(listdata.totalPendidikan);
-            $('#jasprod').val(listdata.totalJasProd);
-            $('#insentif').val(listdata.totalInsentif);
-            $('#pensiun').val(listdata.totalPensiun);
-            $('#jubileum').val(listdata.totalJubileum);
-            $('#totalJubileum').val(listdata.nettoJubileum);
-
-            //modal jubileum
-            $('#jubileumMasKer1').val(listdata.stTanggalAktif);
-            $('#jubileumMasKer2').val(listdata.stTanggalAktifSekarang);
-            $('#jubileumGolongan').val(listdata.golonganName);
-
-            //modal Pensiun
-            $('#pensiunGolongan').val(listdata.golonganName);
-            $('#pensiunPoint').val(listdata.point);
-            $('#pensiunTgl2').val(listdata.stTanggalAktifSekarang);
-            $('#pensiunMasaKerjaTahun').val(listdata.masaKerjaTahun);
-            $('#pensiunMasaKerjaBulan').val(listdata.masaKerjaBulan);
-
-
-            $('#tipePegawai').val(listdata.tipePegawai);
-            $('#tipePegawaiName').val(listdata.tipePegawaiName);
-
-            $('#jubileumPoint').val(listdata.point);
-
-            if(listdata.tipePegawai == "TP03" && listdata.strukturGaji != "G"){
-                $('.detailGaji').show();
-            }else{
-                $('.detailGaji').hide();
-            }
-
-            if(listdata.centangJubileum == "Y"){
-                document.getElementById("checkApproveJubileum").checked = true;
-            }else{
-                document.getElementById("checkApproveJubileum").checked = false;
-            }
-
-            if(listdata.centangPensiun == "Y"){
-                document.getElementById("checkApprovePensiun").checked = true;
-            }else{
-                document.getElementById("checkApprovePensiun").checked = false;
-            }
-
-
-            if(listdata.flagJubileumOn == true){
-                $('#checkApproveJubileum').removeAttr('disabled');
-                $('#jubileum').val(listdata.totalKaliJubileum);
-            }else{
-                $('#checkApproveJubileum').prop('disabled', 'true');
-            }
-
-            if(listdata.flagPensiunOn == true){
-                $('#checkApprovePensiun').removeAttr('disabled');
-                $('#pensiun').val(listdata.totalPensiun);
-            }else{
-                $('#checkApprovePensiun').prop('disabled', 'true');
-            }
-
-            if(listdata.tipePegawai == "TP03" && listdata.strukturGaji != "G"){
-                $('.detailGaji').show();
-            }else{
-                $('.detailGaji').hide();
-            }
-
-            if(listdata.flagRapel == 'Y'){
-                $('.detailRapel').show();
-            }else{
-                $('.detailRapel').hide();
-            }
-
-            if(listdata.flagPendidikan == 'Y'){
-                $('.detailPendidikan').show();
-            }else{
-                $('.detailPendidikan').hide();
-            }
-
-            if(listdata.flagJasprod == 'Y'){
-                if(listdata.tipePegawai != "TP03" && listdata.kelompokId != "KL00" && listdata.kelompokId != "KL01"){
-                    $('.detailJasprod').show();
-                }else{
-                    $('.detailJasprod').hide();
-                }
-            }else{
-                $('.detailJasprod').hide();
-            }
-
-            if(listdata.flagThr == 'Y'){
-                $('.detailThr').show();
-            }else{
-                $('.detailThr').hide();
-            }
-
-            if(listdata.flagPayroll == 'Y'){
-                $('.checkListrikAir').show();
-                $('.checkPerumahan').show();
-            }else{
-                $('.checkListrikAir').hide();
-                $('.checkPerumahan').hide();
-            }
 
         });
     }
@@ -4901,6 +4737,10 @@
             $('#listrik').val(listdata.listrik);
             $('#iuranProfesi').val(listdata.iuranProfesi);
             $('#potonganLain').val(listdata.potonganLain);
+
+            //Komponen D
+            $('#nilaiPtt').val(listdata.lainLain);
+            $('#tipePttId1').val(listdata.idLainLain).change();
 
 
             //Total
@@ -5143,6 +4983,10 @@
         var pemondokan = document.getElementById("pemondokan").value;
         var komunikasi = document.getElementById("komunikasi").value;
 
+        // Komponen D
+        var nilaiPtt = document.getElementById("nilaiPtt").value;
+        var idPtt = document.getElementById("tipePttId1").value;
+
 
         //komponen rincian potongan
         var kopkar = document.getElementById("kopkar").value;
@@ -5176,7 +5020,7 @@
                 PayrollAction.saveEditSessionDataUsingPayrollId(payrollId, nip, tunjanganPeralihan,pemondokan,
                         komunikasi, kopkar, iuranSp, iuranPiikb,bankBri, bankMandiri, infaq, perkesDanObat,
                         listrik, iuranProfesi, potonganLain,
-                        flagJubileum, flagPensiun, function(listdata) {
+                        flagJubileum, flagPensiun, nilaiPtt,idPtt, function(listdata) {
                             reloadDataModal();
                         });
             }else if(tipe == "JP"){

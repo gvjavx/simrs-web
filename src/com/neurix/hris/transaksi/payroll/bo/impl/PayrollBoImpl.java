@@ -2586,11 +2586,11 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                     payroll.setTotalC(CommonUtil.numbericFormat(totalC, "###,###"));
                     payroll.setTotalCNilai(totalC);
 
-                    jumlahGajiKotor = totalA.add(totalB);
+                    jumlahGajiKotor = totalA.add(totalB).add(lainLain);
                     payroll.setGajiKotor(CommonUtil.numbericFormat(jumlahGajiKotor, "###,###"));
                     payroll.setGajiKotorNilai(jumlahGajiKotor);
 
-                    gajiBersih = totalA.add(totalB).subtract(totalC);
+                    gajiBersih = jumlahGajiKotor.subtract(totalC);
                     payroll.setTotalGajiBersih(CommonUtil.numbericFormat(gajiBersih, "###,###"));
                     payroll.setTotalGajiBersihNilai(gajiBersih);
 
@@ -7357,45 +7357,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                 }
             }
 
-            //JUBILEUMSYS
-            /*if(itPayrollEntity2.getFlagJubileum() != null){
-                if(itPayrollEntity2.getFlagJubileum().equalsIgnoreCase("Y")){
-                    String jubileumSudahDibayar = "N";
-                    List<ItPayrollEntity> itJubileumList = payrollDao.cekJubileum(payroll.getNip());
-                    if(itJubileumList.size() == 0){
-                        PayrollJubileum payrollJubileum = payrollJubileum(payroll.getBulan(), payroll.getTahun(), payroll.getNip(), payroll.getBranchId(),
-                                itPayrollEntity2.getGajiGolongan(), itPayrollEntity2.getTunjanganUmk(), itPayrollEntity2.getTunjanganStruktural(), itPayrollEntity2.getTunjanganPeralihan(),
-                                itPayrollEntity2.getTunjanganJabatanStruktural(), itPayrollEntity2.getFlagPayroll());
-                        payroll.setTanggalJubileum(payrollJubileum.getTanggalJubileum());
-                        payroll.setFlagJubileumOn(payrollJubileum.isFlagJubileum());
 
-                        List<ItPayrollJubileumEntity> payrollJubileum2 = payrollJubileumDao.getJubileum(payrollId);
-                        if(payrollJubileum2.size() > 0){
-                            for(ItPayrollJubileumEntity itPayrollJubileumEntity: payrollJubileum2){
-                                if(itPayrollJubileumEntity.getFlag().equalsIgnoreCase("Y")){
-                                    payroll.setCentangJubileum("Y");
-                                    itPayrollEntity2.setNettoJubileum(itPayrollJubileumEntity.getNettoJubileum());
-                                    break;
-                                }
-                            }
-                        }
-                    }else{
-                        List<ItPayrollJubileumEntity> payrollJubileum = payrollJubileumDao.getJubileum(payrollId);
-                        if(payrollJubileum.size() > 0){
-                            for(ItPayrollJubileumEntity itPayrollJubileumEntity: payrollJubileum){
-                                payroll.setCentangJubileum("Y");
-                                itPayrollEntity2.setNettoJubileum(itPayrollJubileumEntity.getNettoJubileum());
-                                break;
-                            }
-                        }else{
-                            payroll.setCentangJubileum("Y");
-                            itPayrollEntity2.setNettoJubileum(BigDecimal.valueOf(0));
-                        }
-                    }
-                }else{
-                    itPayrollEntity2.setNettoJubileum(BigDecimal.valueOf(0));
-                }
-            }*/
         }
 
         List<ItPersonilPositionEntity> itPersonilPositionEntity = null;
@@ -7475,6 +7437,11 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
         payroll.setIuranDapenPegNilai(itPayrollEntity2.getIuranDapenPeg());
         payroll.setIuranDapenPersh(CommonUtil.numbericFormat(itPayrollEntity2.getIuranDapenPersh(),"###,###"));
         payroll.setIuranDapenPershNilai(itPayrollEntity2.getIuranDapenPersh());
+
+        //Komponen D
+        payroll.setIdLainLain(itPayrollEntity2.getIdLainLain());
+        payroll.setLainLain(CommonUtil.numbericFormat(itPayrollEntity2.getLainLain(),"###,###"));
+        payroll.setLainLainNilai(itPayrollEntity2.getLainLain());
 
         //Iuran Bpjs
         payroll.setIuranBpjsKsKary(CommonUtil.numbericFormat(itPayrollEntity2.getIuranBpjsKsKary(),"###,###"));
@@ -8138,6 +8105,16 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                 itPayrollEntity.setKomunikasi(payroll.getKomunikasiNilai());
 
 
+                itPayrollEntity.setIdLainLain(payroll.getIdLainLain());
+                itPayrollEntity.setLainLain(payroll.getLainLainNilai());
+
+                itPayrollEntity.setTotalA(payroll.getTotalANilai());
+                itPayrollEntity.setTotalB(payroll.getTotalBNilai());
+                itPayrollEntity.setTotalC(payroll.getTotalCNilai());
+                itPayrollEntity.setGajiKotor(payroll.getGajiKotorNilai());
+                itPayrollEntity.setGajiBersih(payroll.getTotalGajiBersihNilai());
+
+
                 itPayrollEntity.setKopkar(payroll.getKopkarNilai());
                 itPayrollEntity.setIuranSp(payroll.getIuranSpNilai());
                 itPayrollEntity.setIuranPiikb(payroll.getIuranPiikbNilai());
@@ -8155,473 +8132,14 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                 itPayrollEntity.setLastUpdate(payroll.getLastUpdate());
                 payrollDao.updateAndSave(itPayrollEntity);
 
-
-
-                /*BigDecimal totalJubileum = new BigDecimal(0);
-                BigDecimal jumlahJubileum = new BigDecimal(0);
-                BigDecimal nettoJubileum = new BigDecimal(0);
-                if(payroll.getCentangJubileum().equalsIgnoreCase("Y")){
-                    PayrollJubileum payrollJubileum = payrollJubileum(itPayrollEntity.getBulan(), itPayrollEntity.getTahun(), itPayrollEntity.getNip(), itPayrollEntity.getBranchId(),
-                            itPayrollEntity.getGajiGolongan(), itPayrollEntity.getTunjanganUmk(), itPayrollEntity.getTunjanganStruktural(), payroll.getTunjanganPeralihanNilai(),
-                            itPayrollEntity.getTunjanganJabatanStruktural(), itPayrollEntity.getFlagPayroll());
-                    itPayrollJubileumEntity.setGajiGolongan(payrollJubileum.getGajiGolonganNilai());
-                    itPayrollJubileumEntity.setTunjanganUmk(payrollJubileum.getTunjanganUmkNilai());
-                    itPayrollJubileumEntity.setTunjanganStruktural(payrollJubileum.getTunjanganStrukturalNilai());
-                    itPayrollJubileumEntity.setTunjanganPeralihan(payrollJubileum.getTunjanganPeralihanNilai());
-                    itPayrollJubileumEntity.setTunjanganJabStruktural(payrollJubileum.getTunjanganJabStrukturalNilai());
-                    itPayrollJubileumEntity.setTotal(payrollJubileum.getBesarJubileumNilai());
-                    itPayrollJubileumEntity.setGrandTotal(payrollJubileum.getTotalJubileumNilai());
-                    itPayrollJubileumEntity.setFlag("Y");
-                    itPayrollEntity.setFlagJubileum("Y");
-
-                    totalJubileum = payrollJubileum.getTotalJubileumNilai();
-                }*/
-
-                /*BigDecimal nettoPensiun = new BigDecimal(0);
-                if(itPayrollPensiunEntity.getFlag() != null){
-                    if(itPayrollPensiunEntity.getFlag().equalsIgnoreCase("Y")){
-                        nettoPensiun = itPayrollPensiunEntity.getNettoPensiun();
-                    }
-                }*/
-
                 //jika terjadi perubahan nilai tunjangan Peralihan
                 if (perubahanPeralihan.equalsIgnoreCase("Y")) {
-                    /*if(payroll.getCentangJubileum().equalsIgnoreCase("Y")){
-                        PayrollJubileum payrollJubileum = payrollJubileum(itPayrollEntity.getBulan(), itPayrollEntity.getTahun(), payroll.getNip(), itPayrollEntity.getBranchId(),
-                                itPayrollEntity.getGajiGolongan(), itPayrollEntity.getTunjanganUmk(), itPayrollEntity.getTunjanganStruktural(), payroll.getTunjanganPeralihanNilai(),
-                                itPayrollEntity.getTunjanganJabatanStruktural(), itPayrollEntity.getFlagPayroll());
-                        itPayrollJubileumEntity.setGajiGolongan(payrollJubileum.getGajiGolonganNilai());
-                        itPayrollJubileumEntity.setTunjanganUmk(payrollJubileum.getTunjanganUmkNilai());
-                        itPayrollJubileumEntity.setTunjanganStruktural(payrollJubileum.getTunjanganStrukturalNilai());
-                        itPayrollJubileumEntity.setTunjanganPeralihan(payrollJubileum.getTunjanganPeralihanNilai());
-                        itPayrollJubileumEntity.setTunjanganJabStruktural(payrollJubileum.getTunjanganJabStrukturalNilai());
-                        itPayrollJubileumEntity.setTotal(payrollJubileum.getBesarJubileumNilai());
-                        itPayrollJubileumEntity.setGrandTotal(payrollJubileum.getTotalJubileumNilai());
-                        itPayrollJubileumEntity.setFlag("Y");
-                        itPayrollEntity.setFlagJubileum("Y");
-
-                        totalJubileum = payrollJubileum.getTotalJubileumNilai();
-                    }*/
-
-                    /*if(payroll.getCentangPensiun().equalsIgnoreCase("Y")){
-                        DateTime tglAktif = new DateTime(itPayrollEntity.getImBiodataEntity().getTanggalAktif());
-                        java.sql.Date dateAktif = itPayrollEntity.getImBiodataEntity().getTanggalAktif();
-                        java.sql.Date datePensiun = itPayrollEntity.getImBiodataEntity().getTanggalPensiun();
-
-                        DateTime tanggalPayroll = new DateTime(CommonUtil.convertToDate("01-" + itPayrollEntity.getBulan() + "-" + itPayrollEntity.getTahun()).getTime());
-                        String strTanggalPayroll = itPayrollEntity.getBulan() + "-" + itPayrollEntity.getTahun();
-                        Period p = new Period(tglAktif, tanggalPayroll , PeriodType.yearMonthDayTime());
-                        PayrollPensiun payrollPensiun = getPensiun(itPayrollEntity.getNip(), dateAktif, datePensiun, strTanggalPayroll
-                                , itPayrollEntity.getGolonganName(), itPayrollEntity.getPoint() + "",
-                                p.getYears() + "", p.getMonths() + "" ,itPayrollEntity.getGajiGolongan(), itPayrollEntity.getTunjanganUmk(), itPayrollEntity.getTunjanganStruktural(),
-                                itPayrollEntity.getTunjanganJabatanStruktural(), payroll.getTunjanganPeralihanNilai(), itPayrollEntity.getFlagPayroll());
-                        nettoPensiun = payrollPensiun.getJumlahBiayaPensiunNilai();
-
-                        itPayrollPensiunEntity.setTunjanganPeralihan(payrollPensiun.getTunjanganPeralihanNilai());
-                        itPayrollPensiunEntity.setJumlahBiayaPensiun(payrollPensiun.getJumlahBiayaPensiunNilai());
-                        itPayrollPensiunEntity.setPphPensiun(payrollPensiun.getPphPensiunNilai());
-
-                        itPayrollEntity.setFlagPensiun("Y");
-                        itPayrollPensiunEntity.setFlag("Y");
-                    }*/
                 }
 
-                //pphGaji
-//                PayrollPph payrollPph = null;
-                /*if(itPayrollEntity.getFlagPayroll().equalsIgnoreCase("Y")) {
-                    payrollPph = payrollPphGaji(itPayrollEntity.getNip(),itPayrollEntity.getBranchId(), itPayrollEntity.getBulan(), itPayrollEntity.getTahun(),
-                            itPayrollEntity.getGolonganId(), itPayrollEntity.getTanggalAktif(), itPayrollEntity.getPoint() + "", itPayrollEntity.getTunjanganPengobatan(),
-                            itPayrollEntity.getGender(), itPayrollEntity.getStatusKeluarga(), itPayrollEntity.getJumlahAnak(), itPayrollEntity.getTipePegawai(), itPayrollEntity.getStatusPegawai(), itPayrollEntity.getGajiGolongan(), itPayrollEntity.getTunjanganUmk(), itPayrollEntity.getTunjanganStruktural(),
-                            payroll.getTunjanganPeralihanNilai(), itPayrollEntity.getTunjanganJabatanStruktural(), itPayrollEntity.getTunjanganStrategis(),
-                            payroll.getKompensasiNilai(), payroll.getTunjanganTransportNilai(), itPayrollEntity.getTunjanganAirListrik(), itPayrollEntity.getTunjanganPerumahan(), itPayrollEntity.getTunjanganPph(), itPayrollEntity.getTunjanganLembur(), payroll.getTunjanganLainNilai(),
-                            itPayrollEntity.getTotalThr(), itPayrollEntity.getTotalPendidikan(), itPayrollEntity.getTotalJasProd(), itPayrollEntity.getTotalRapel(),
-                            nettoPensiun, totalJubileum, itPayrollEntity.getIuranPensiun(), itPayrollEntity.getIuranBpjsTk(),
-                            itPayrollEntity.getIuranBpjsPensiun(), itPayrollEntity.getTunjanganBajuDinas(),
-                            itPayrollEntity.getBulan(), itPayrollEntity.getTahun(), itPayrollEntity.getImPosition().getKelompokId());
-                    if(payroll.getCentangKalkulasiPph().equalsIgnoreCase("N")){
-                        payrollPph.setTunjanganPphNilaiBulan(payroll.getTunjanganPphNilai());
-                        payrollPph.setPphGajiNilai(payroll.getPphGajiNilai());
-                    }
-                }else{
-                    //Asumsi digunakan untuk pemerataan pajak tahun
-                    PayrollThr payrollAsumsiThr = getAsumsiThr(itPayrollEntity.getNip(), itPayrollEntity.getGajiGolongan(), itPayrollEntity.getTunjanganUmk(),
-                            itPayrollEntity.getTunjanganStruktural(), itPayrollEntity.getTunjanganJabatanStruktural(), itPayrollEntity.getTunjanganStrategis(),
-                            BigDecimal.valueOf(0), itPayrollEntity.getTunjanganPeralihan(), itPayrollEntity.getBulan(), itPayrollEntity.getTahun(), itPayrollEntity.getBranchId());
-                    PayrollPendidikan payrollAsumsiPendidikan = getAsumsiPendidikan(itPayrollEntity.getNip(), itPayrollEntity.getGajiGolongan(), itPayrollEntity.getTunjanganUmk(),
-                            itPayrollEntity.getTunjanganStruktural(), itPayrollEntity.getTunjanganJabatanStruktural(), itPayrollEntity.getTunjanganStrategis(),
-                            itPayrollEntity.getKompensasi(), itPayrollEntity.getTunjanganAirListrik(), BigDecimal.valueOf(0), itPayrollEntity.getTunjanganPeralihan(), itPayrollEntity.getBulan(), itPayrollEntity.getTahun(),
-                            itPayrollEntity.getBranchId());
-                    BigDecimal nilaiAsumsiJasprod = getAsumsiJasprod(itPayrollEntity.getNip(), itPayrollEntity.getBulan(), itPayrollEntity.getTahun(), itPayrollEntity.getBranchId());
-
-                    payrollPph = payrollPphGaji2(itPayrollEntity.getNip(), itPayrollEntity.getGender(), itPayrollEntity.getStatusKeluarga(),
-                            itPayrollEntity.getJumlahAnak(), itPayrollEntity.getTipePegawai(), itPayrollEntity.getStatusPegawai(), itPayrollEntity.getTotalThr(),
-                            itPayrollEntity.getTotalPendidikan(), itPayrollEntity.getTotalJasProd(), itPayrollEntity.getTotalInsentif(), itPayrollEntity.getTotalRapel(),
-                            itPayrollEntity.getTotalPensiun(), totalJubileum, payrollAsumsiThr.getTotalThrNilai(), payrollAsumsiPendidikan.getTotalPendidikanNilai(),
-                            nilaiAsumsiJasprod);
-
-                }*/
-
-
-                /*BigDecimal gajiKotor = jumlahGajiKotor(itPayrollEntity.getGajiGolongan(), itPayrollEntity.getTunjanganUmk(), itPayrollEntity.getTunjanganStruktural(),
-                        payroll.getTunjanganPeralihanNilai(), itPayrollEntity.getTunjanganJabatanStruktural(), itPayrollEntity.getTunjanganStrategis(),
-                        payroll.getKompensasiNilai(), itPayrollEntity.getTunjanganTransport(), itPayrollEntity.getTunjanganAirListrik(), itPayrollEntity.getTunjanganPengobatan(),
-                        itPayrollEntity.getTunjanganPerumahan(), itPayrollEntity.getTunjanganPph(), payroll.getTunjanganLainNilai(), itPayrollEntity.getTunjanganLembur());
-                itPayrollEntity.setTotalA(gajiKotor); //Jumlah A*/
-
-                /*BigDecimal realisasiPphGaji = payrollPph.getPphGajiNilai() ;
-                if(imPosition.getKelompokId().equalsIgnoreCase("KL03") || imPosition.getKelompokId().equalsIgnoreCase("KL02") ||
-                        imPosition.getKelompokId().equalsIgnoreCase("KL01") || imPosition.getKelompokId().equalsIgnoreCase("KL00")){
-                    //digunakan untuk jabatan kabid ke atas
-                    //komisaris tidak disetahunkan
-                    if(!"KL00".equals(imPosition.getKelompokId())){
-                        PayrollPph payrollPph1 = kalkulasiPphTahunKabid(itPayrollEntity.getNip(), itPayrollEntity.getBulan(), itPayrollEntity.getTahun(), itPayrollEntity.getBranchId(),
-                                payrollPph.getPphGajiNilai(), payroll.getPphPengobatanNilai(), gajiKotor, itPayrollEntity.getIuranPensiun(), itPayrollEntity.getIuranBpjsTk(), itPayrollEntity.getIuranBpjsPensiun(),
-                                itPayrollEntity.getStatusKeluarga(), itPayrollEntity.getJumlahAnak(), itPayrollEntity.getGender(), payrollAsumsiThr.getTotalThrNilai(),
-                                payrollAsumsiPendidikan.getTotalPendidikanNilai(), payrollPph.getThrNilai(), payrollPph.getPendidikanNilai(), payroll.getPengobatanNilai(),
-                                payrollPph.getPakaianDinasNilai(), payrollPph.getIuranJkmJkkNilai(), itPayrollEntity.getFlagThr(), itPayrollEntity.getFlagPendidikan(), itPayrollEntity.getFlagJasprod(),
-                                itPayrollEntity.getTunjanganLembur(), "Y", payroll.getCentangKalkulasiPphPengobatan());
-
-                        if(payroll.getCentangKalkulasiPph().equalsIgnoreCase("Y")){
-                            realisasiPphGaji = payrollPph1.getPphGajiNilai();
-                        }
-
-                        tunjPengobatan = payrollPph1.getTunjanganPengobatanNilai();
-
-                        // Jumlah Pengobatan Selama 1 Tahun
-                        payrollPph.setJumlahPengobatanNilai(payrollPph1.getJumlahPengobatanNilai());
-                        payrollPph.setJumlahPengobatan(CommonUtil.numbericFormat(payrollPph1.getJumlahPengobatanNilai(), "###,###"));
-                        payrollPph.setJumlahPphPengobatanNilai(payrollPph1.getJumlahPphPengobatanNilai());
-                        payrollPph.setJumlahPphPengobatan(CommonUtil.numbericFormat(payrollPph1.getJumlahPphPengobatanNilai(), "###,###"));
-                        payrollPph.setKurangPphPengobatanNilai(payrollPph1.getKurangPphPengobatanNilai());
-                        payrollPph.setKurangPphPengobatan(CommonUtil.numbericFormat(payrollPph1.getKurangPphPengobatanNilai(), "###,###"));
-                        payrollPph.setPphPengobatanNilai(payrollPph1.getPphPengobatanNilai());
-                        payrollPph.setPphPengobatan(CommonUtil.numbericFormat(payrollPph1.getPphPengobatanNilai(), "###,###"));
-                        payrollPph.setHutangPphPengobatanNilai(payrollPph1.getHutangPphPengobatanNilai());
-                        payrollPph.setHutangPphPengobatan(CommonUtil.numbericFormat(payrollPph1.getHutangPphPengobatanNilai(), "###,###"));
-
-                        payroll.setJumlahPengobatanNilai(payrollPph1.getJumlahPengobatanNilai());
-                        payroll.setJumlahPengobatan(CommonUtil.numbericFormat(payrollPph1.getJumlahPengobatanNilai(), "###,###"));
-                        payroll.setJumlahPphPengobatanNilai(payrollPph1.getJumlahPphPengobatanNilai());
-                        payroll.setJumlahPphPengobatan(CommonUtil.numbericFormat(payrollPph1.getJumlahPphPengobatanNilai(), "###,###"));
-                        payroll.setHutangPphPengobatanNilai(payrollPph1.getHutangPphPengobatanNilai());
-                        payroll.setHutangPphPengobatan(CommonUtil.numbericFormat(payrollPph1.getHutangPphPengobatanNilai(), "###,###"));
-                        payroll.setKurangPphPengobatanNilai(payrollPph1.getKurangPphPengobatanNilai());
-                        payroll.setKurangPphPengobatan(CommonUtil.numbericFormat(payrollPph1.getKurangPphPengobatanNilai(), "###,###"));
-                        payroll.setPphPengobatanNilai(payrollPph1.getPphPengobatanNilai());
-                        payroll.setPphPengobatan(CommonUtil.numbericFormat(payrollPph1.getPphPengobatanNilai(), "###,###"));
-                    }
-
-
-                    gajiKotor = jumlahGajiKotor(itPayrollEntity.getGajiGolongan(), itPayrollEntity.getTunjanganUmk(), itPayrollEntity.getTunjanganStruktural(),
-                            itPayrollEntity.getTunjanganPeralihan(), itPayrollEntity.getTunjanganJabatanStruktural(), itPayrollEntity.getTunjanganStrategis(),
-                            itPayrollEntity.getKompensasi(), itPayrollEntity.getTunjanganTransport(), itPayrollEntity.getTunjanganAirListrik(),
-                            tunjPengobatan, itPayrollEntity.getTunjanganPerumahan(), realisasiPphGaji, itPayrollEntity.getTunjanganLain(),
-                            itPayrollEntity.getTunjanganLembur());
-                    BigDecimal tunjPph = realisasiPphGaji;
-
-                    BigDecimal tunjPphTahun = realisasiPphGaji.multiply(BigDecimal.valueOf(12));
-                    //hapus bruto yang tersimpan dulu, kemudian tambahkan tunjangan pph baru
-                    BigDecimal brutoAddTpph = payrollPph.getBrutoNilai().subtract(payrollPph.getTunjanganPphNilaiTahun());
-                    brutoAddTpph = brutoAddTpph.add(tunjPphTahun);
-
-                    payrollPph.setTunjanganPphNilaiTahun(tunjPphTahun);
-                    payrollPph.setTunjanganPphTahun(CommonUtil.numbericFormat(tunjPphTahun, "###,###"));
-
-                    payrollPph.setBrutoNilai(brutoAddTpph);
-                    payrollPph.setBruto(CommonUtil.numbericFormat(brutoAddTpph, "###,###"));
-
-                    BigDecimal pphGajiBiayaJabatan = getBiayaJabatan(brutoAddTpph).setScale(2, BigDecimal.ROUND_HALF_UP);
-
-                    BigDecimal reduce = pphGajiBiayaJabatan.add(payrollPph.getIuranPensiunNilai()).add(payrollPph.getPtkpNilai());
-                    BigDecimal pphGajiPkp = brutoAddTpph.subtract(reduce).setScale(2, BigDecimal.ROUND_HALF_UP); //PPH GAJI PKP(Penghasilan Kena Pajak)
-                    payrollPph.setPkpNilai(pphGajiPkp);
-                    payrollPph.setPkp(CommonUtil.numbericFormat(pphGajiPkp, "###,###"));
-
-                    BigDecimal hutangPajak = hitungHutangPajak(pphGajiPkp);
-                    BigDecimal pphGaji = hutangPajak.divide(BigDecimal.valueOf(12), 2, RoundingMode.HALF_UP) ;
-                    payrollPph.setHutangPphNilai(hutangPajak);
-                    payrollPph.setHutangPph(CommonUtil.numbericFormat(hutangPajak, "###,###"));
-
-                    payrollPph.setPphGajiNilai(realisasiPphGaji);
-                    payrollPph.setTunjanganPphNilaiBulan(realisasiPphGaji);
-
-                    itPayrollEntity.setTotalA(gajiKotor);
-                }else{
-                    //AKIRA
-                    //PKWT tidak mendapat asumsi pendidikan
-                    if(payrollPerson.getKelompokId().equalsIgnoreCase("KL08")){
-                        payrollAsumsiPendidikan.setTotalPendidikan("0");
-                        payrollAsumsiPendidikan.setTotalPendidikanNilai(BigDecimal.valueOf(0));
-                    }
-
-                    PayrollPph payrollPph1 = kalkulasiPphTahun(itPayrollEntity.getNip(), itPayrollEntity.getBulan(), itPayrollEntity.getTahun(), itPayrollEntity.getBranchId(),
-                            payrollPph.getPphGajiNilai(),
-                            // PPh Obat
-                            payroll.getPphPengobatanNilai(),
-                            gajiKotor, itPayrollEntity.getIuranPensiun(), itPayrollEntity.getIuranBpjsTk(), itPayrollEntity.getIuranBpjsPensiun(),
-                            itPayrollEntity.getStatusKeluarga(), itPayrollEntity.getJumlahAnak(), itPayrollEntity.getGender(), payrollAsumsiThr.getTotalThrNilai(),
-                            payrollAsumsiPendidikan.getTotalPendidikanNilai(), nilaiAsumsiJasprod, payrollPph.getThrNilai(), payrollPph.getPendidikanNilai(),
-                            payrollPph.getJasprodNilai(),payroll.getPengobatanNilai(), payrollPph.getPakaianDinasNilai(), payrollPph.getIuranJkmJkkNilai(),
-                            itPayrollEntity.getFlagThr(), itPayrollEntity.getFlagPendidikan(), itPayrollEntity.getFlagJasprod(),
-                            itPayrollEntity.getTunjanganLembur(), "Y", payroll.getCentangKalkulasiPphPengobatan());
-                    if(payroll.getCentangKalkulasiPph().equalsIgnoreCase("Y")){
-                        realisasiPphGaji = payrollPph1.getPphGajiNilai();
-                    }
-
-                    // Jumlah Pengobatan Selama 1 Tahun
-                    payrollPph.setJumlahPengobatanNilai(payrollPph1.getJumlahPengobatanNilai());
-                    payrollPph.setJumlahPengobatan(CommonUtil.numbericFormat(payrollPph1.getJumlahPengobatanNilai(), "###,###"));
-                    payrollPph.setJumlahPphPengobatanNilai(payrollPph1.getJumlahPphPengobatanNilai());
-                    payrollPph.setJumlahPphPengobatan(CommonUtil.numbericFormat(payrollPph1.getJumlahPphPengobatanNilai(), "###,###"));
-                    payrollPph.setKurangPphPengobatanNilai(payrollPph1.getKurangPphPengobatanNilai());
-                    payrollPph.setKurangPphPengobatan(CommonUtil.numbericFormat(payrollPph1.getKurangPphPengobatanNilai(), "###,###"));
-                    payrollPph.setPphPengobatanNilai(payrollPph1.getPphPengobatanNilai());
-                    payrollPph.setPphPengobatan(CommonUtil.numbericFormat(payrollPph1.getPphPengobatanNilai(), "###,###"));
-                    payrollPph.setHutangPphPengobatanNilai(payrollPph1.getHutangPphPengobatanNilai());
-                    payrollPph.setHutangPphPengobatan(CommonUtil.numbericFormat(payrollPph1.getHutangPphPengobatanNilai(), "###,###"));
-
-                    payroll.setJumlahPengobatanNilai(payrollPph1.getJumlahPengobatanNilai());
-                    payroll.setJumlahPengobatan(CommonUtil.numbericFormat(payrollPph1.getJumlahPengobatanNilai(), "###,###"));
-                    payroll.setJumlahPphPengobatanNilai(payrollPph1.getJumlahPphPengobatanNilai());
-                    payroll.setJumlahPphPengobatan(CommonUtil.numbericFormat(payrollPph1.getJumlahPphPengobatanNilai(), "###,###"));
-                    payroll.setHutangPphPengobatanNilai(payrollPph1.getHutangPphPengobatanNilai());
-                    payroll.setHutangPphPengobatan(CommonUtil.numbericFormat(payrollPph1.getHutangPphPengobatanNilai(), "###,###"));
-                    payroll.setKurangPphPengobatanNilai(payrollPph1.getKurangPphPengobatanNilai());
-                    payroll.setKurangPphPengobatan(CommonUtil.numbericFormat(payrollPph1.getKurangPphPengobatanNilai(), "###,###"));
-                    payroll.setPphPengobatanNilai(payrollPph1.getPphPengobatanNilai());
-                    payroll.setPphPengobatan(CommonUtil.numbericFormat(payrollPph1.getPphPengobatanNilai(), "###,###"));
-
-                    payrollPph.setPphGajiNilai(realisasiPphGaji);
-                    payrollPph.setPphGaji(CommonUtil.numbericFormat(realisasiPphGaji, "###,###"));
-                }*/
-
-                /*itPayrollPphEntity.setGaji(payrollPph.getGajiNilai());
-                itPayrollPphEntity.setIuranJkmJkk(payrollPph.getIuranJkmJkkNilai());
-                itPayrollPphEntity.setTunjanganPeralihan(payrollPph.getTunjanganPeralihanNilai());
-                itPayrollPphEntity.setTunjanganAirListrik(payrollPph.getTunjanganAirListrikNilai());
-                itPayrollPphEntity.setTunjanganPerumahan(payrollPph.getTunjanganPerumahanNilai());
-                itPayrollPphEntity.setTunjanganKompensasi(payrollPph.getTunjanganKompensasiNilai());
-                itPayrollPphEntity.setTunjanganTransport(payrollPph.getTunjanganTransportNilai());
-                itPayrollPphEntity.setTunjanganLainLain(payrollPph.getTunjanganLainLainNilai());
-                itPayrollPphEntity.setTunjanganLembur(payrollPph.getTunjanganLemburNilai());
-                itPayrollPphEntity.setJubileum(payrollPph.getJubileumNilai());
-                itPayrollPphEntity.setPensiun(payrollPph.getPensiunNilai());
-                itPayrollPphEntity.setBruto(payrollPph.getBrutoNilai());
-                itPayrollPphEntity.setPkp(payrollPph.getPkpNilai());
-                itPayrollPphEntity.setHutangPph(payrollPph.getHutangPphNilai());
-                itPayrollPphEntity.setReduce(payrollPph.getJumlahBNilai());
-                itPayrollPphEntity.setPphGaji(payrollPph.getPphGajiNilai());
-                itPayrollPphEntity.setFlagKalkulasiPph(payroll.getCentangKalkulasiPph());
-                itPayrollPphEntity.setFlagKalkulasiPphPengobatan(payroll.getCentangKalkulasiPphPengobatan());*/
-
-//                payrollPphDao.updateAndSave(itPayrollPphEntity);
-
-                /*itPayrollEntity.setPphGaji(payrollPph.getPphGajiNilai()); //Pph Gaji
-                payroll.setPphGajiNilai(payrollPph.getPphGajiNilai()); //Pph Gaji Nilai
-
-                itPayrollEntity.setTunjanganPph(payrollPph.getTunjanganPphNilaiBulan());
-                payroll.setTunjanganPphNilai(payrollPph.getTunjanganPphNilaiBulan());*/
-
-                /*BigDecimal jumlahB = hitungTotalB(payrollPph.getPphGajiNilai(), itPayrollEntity.getPphPengobatan(), itPayrollEntity.getIuranPensiun(),
-                        itPayrollEntity.getIuranBpjsTk(), itPayrollEntity.getIuranBpjsPensiun(), itPayrollEntity.getIuranBpjsKesehatan(), itPayrollEntity.getUangMukaLainnya(),
-                        itPayrollEntity.getKekuranganBpjsTk());
-
-
-                BigDecimal jumlahC = hitungTotalC(itPayrollEntity.getPengobatan(), payroll.getKoperasiNilai(), payroll.getDansosNilai(), payroll.getSPNilai(),
-                        payroll.getBazisNilai(), payroll.getBaporNilai(), itPayrollEntity.getZakat(), payroll.getLainLainNilai());
-
-                itPayrollEntity.setTotalB(jumlahB);
-                itPayrollEntity.setTotalC(jumlahC);
-
-                BigDecimal totalTambahan = itPayrollEntity.getTotalRapel().add(itPayrollEntity.getTotalThr()).add(itPayrollEntity.getTotalPendidikan())
-                        .add(itPayrollEntity.getTotalJasProd()).add(totalJubileum).add(nettoPensiun);
-                itPayrollEntity.setTotalD(totalTambahan);
-
-                BigDecimal gajiBersih = gajiKotor.subtract(jumlahB).subtract(jumlahC).add(totalTambahan);
-                itPayrollEntity.setGajiBersih(gajiBersih);*/
             }
 
 
-        /*}else if(itPayrollEntity.getFlagPensiun().equalsIgnoreCase("Y") && itPayrollEntity.getFlagPensiun() != null ){
-            BigDecimal nettoPensiun = new BigDecimal(0);
 
-            String pensiunBaru = "N";
-            List<ItPayrollPensiunEntity> itPayrollPensiunEntities = payrollPensiunDao.getPensiun(payroll.getPayrollId());
-            if(itPayrollPensiunEntities.size() > 0){
-                for(ItPayrollPensiunEntity itPayrollPensiunEntity1: itPayrollPensiunEntities){
-                    itPayrollPensiunEntity = itPayrollPensiunEntity1;
-                }
-            }else{
-                itPayrollPensiunEntity = new ItPayrollPensiunEntity();
-                itPayrollPensiunEntity.setFlag("N");
-                pensiunBaru = "Y";
-            }
-
-            //pensiun
-            List<PayrollPensiun> payrollPensiunList = new ArrayList<>();
-            if(!payroll.getCentangPensiun().equalsIgnoreCase(itPayrollPensiunEntity.getFlag())){
-                PayrollPensiun payrollPensiun = new PayrollPensiun();
-                if(payroll.getCentangPensiun().equalsIgnoreCase("Y")){
-                    DateTime tglAktif = new DateTime(itPayrollEntity.getImBiodataEntity().getTanggalAktif());
-                    DateTime tanggalPayroll = new DateTime(CommonUtil.convertToDate("01-" + itPayrollEntity.getBulan() + "-" + itPayrollEntity.getTahun()).getTime());
-                    String strTanggalPayroll = itPayrollEntity.getBulan() + "-" + itPayrollEntity.getTahun();
-                    java.sql.Date dateAktif = itPayrollEntity.getImBiodataEntity().getTanggalAktif();
-                    java.sql.Date datePensiun = itPayrollEntity.getImBiodataEntity().getTanggalPensiun();
-                    Period p = new Period(tglAktif, tanggalPayroll , PeriodType.yearMonthDayTime());
-                    payrollPensiun = getPensiun(itPayrollEntity.getNip(), dateAktif, datePensiun, strTanggalPayroll
-                            , itPayrollEntity.getGolonganName(), itPayrollEntity.getPoint() + "",
-                            p.getYears() + "", p.getMonths() + "", itPayrollEntity.getGajiGolongan(), itPayrollEntity.getTunjanganUmk(), itPayrollEntity.getTunjanganStruktural(),
-                            itPayrollEntity.getTunjanganJabatanStruktural(), payroll.getTunjanganPeralihanNilai(), itPayrollEntity.getFlagPayroll());
-                    nettoPensiun = payrollPensiun.getNettoPensiunNilai();
-
-                    itPayrollPensiunEntity.setGajiGolongan(payrollPensiun.getGajiGolonganNilai());
-                    itPayrollPensiunEntity.setTunjanganUmk(payrollPensiun.getTunjanganUmkNilai());
-                    itPayrollPensiunEntity.setTunjanganStruktural(payrollPensiun.getTunjanganStrukturalNilai());
-                    itPayrollPensiunEntity.setTunjanganJabatanStruktural(payrollPensiun.getTunjanganJabatanStrukturalNilai());
-                    itPayrollPensiunEntity.setTunjanganPeralihan(payrollPensiun.getTunjanganPeralihanNilai());
-                    itPayrollPensiunEntity.setTanggalAktif(payrollPensiun.getTanggalAktif());
-                    itPayrollPensiunEntity.setTanggalPensiun(payrollPensiun.getTanggalPensiun());
-                    itPayrollPensiunEntity.setFaktorPensiun(BigDecimal.valueOf(Double.parseDouble(payrollPensiun.getFaktorPensiun())));
-                    itPayrollPensiunEntity.setFaktorPenghargaan(BigDecimal.valueOf(Double.parseDouble(payrollPensiun.getFaktorPenghargaan())));
-                    itPayrollPensiunEntity.setJumlahTunjangan(payrollPensiun.getJumlahTunjanganNilai());
-                    itPayrollPensiunEntity.setTunjanganPensiun(payrollPensiun.getTunjanganPensiunNilai());
-                    itPayrollPensiunEntity.setTunjanganPenghargaan(payrollPensiun.getTunjanganPenghargaanNilai());
-                    itPayrollPensiunEntity.setJumlahBiayaPensiun(payrollPensiun.getJumlahBiayaPensiunNilai());
-                    itPayrollPensiunEntity.setPphPensiun(payrollPensiun.getPphPensiunNilai());
-
-                    itPayrollPensiunEntity.setFlag("Y");
-
-                }else{
-                    nettoPensiun = BigDecimal.valueOf(0);
-                    itPayrollPensiunEntity.setFlag("N");
-                }
-
-
-                if(pensiunBaru.equalsIgnoreCase("Y")){
-                    itPayrollPensiunEntity.setPensiunId(payrollPensiunDao.getNextPayrollPensiunId(itPayrollEntity.getTahun()));
-                    itPayrollPensiunEntity.setPayrollId(payroll.getPayrollId());
-
-                    itPayrollPensiunEntity.setGajiGolongan(payrollPensiun.getGajiGolonganNilai());
-                    itPayrollPensiunEntity.setTunjanganUmk(payrollPensiun.getTunjanganUmkNilai());
-                    itPayrollPensiunEntity.setTunjanganStruktural(payrollPensiun.getTunjanganStrukturalNilai());
-                    itPayrollPensiunEntity.setTunjanganJabatanStruktural(payrollPensiun.getTunjanganJabatanStrukturalNilai());
-                    itPayrollPensiunEntity.setTunjanganPeralihan(payrollPensiun.getTunjanganPeralihanNilai());
-                    itPayrollPensiunEntity.setTanggalAktif(payrollPensiun.getTanggalAktif());
-                    itPayrollPensiunEntity.setTanggalPensiun(payrollPensiun.getTanggalPensiun());
-                    itPayrollPensiunEntity.setFaktorPensiun(BigDecimal.valueOf(Double.parseDouble(payrollPensiun.getFaktorPensiun())));
-                    itPayrollPensiunEntity.setFaktorPenghargaan(BigDecimal.valueOf(Double.parseDouble(payrollPensiun.getFaktorPenghargaan())));
-                    itPayrollPensiunEntity.setJumlahTunjangan(payrollPensiun.getJumlahTunjanganNilai());
-                    itPayrollPensiunEntity.setTunjanganPensiun(payrollPensiun.getTunjanganPensiunNilai());
-                    itPayrollPensiunEntity.setTunjanganPenghargaan(payrollPensiun.getTunjanganPenghargaanNilai());
-                    itPayrollPensiunEntity.setJumlahBiayaPensiun(payrollPensiun.getJumlahBiayaPensiunNilai());
-                    itPayrollPensiunEntity.setPph1Nilai(payrollPensiun.getPph1Nilai());
-                    itPayrollPensiunEntity.setPph2Nilai(payrollPensiun.getPph2Nilai());
-                    itPayrollPensiunEntity.setPph3Nilai(payrollPensiun.getPph3Nilai());
-                    itPayrollPensiunEntity.setPph4Nilai(payrollPensiun.getPph4Nilai());
-                    itPayrollPensiunEntity.setPphPensiun(payrollPensiun.getPphPensiunNilai());
-                    itPayrollPensiunEntity.setPenggantianPerumahan(payrollPensiun.getPenggantianPerumahanNilai());
-                    itPayrollPensiunEntity.setNettoPensiun(payrollPensiun.getNettoPensiunNilai());
-
-                    String userLogin = CommonUtil.userLogin();
-                    Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-                    itPayrollPensiunEntity.setAction("C");
-                    itPayrollPensiunEntity.setFlag("Y");
-                    itPayrollPensiunEntity.setCreatedDate(updateTime);
-                    itPayrollPensiunEntity.setCreatedWho(userLogin);
-                    itPayrollPensiunEntity.setLastUpdate(updateTime);
-                    itPayrollPensiunEntity.setLastUpdateWho(userLogin);
-
-                    payrollPensiunDao.addAndSave(itPayrollPensiunEntity);
-                }else{
-                    String userLogin = CommonUtil.userLogin();
-                    Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-                    itPayrollPensiunEntity.setLastUpdate(updateTime);
-                    itPayrollPensiunEntity.setLastUpdateWho(userLogin);
-                    payrollPensiunDao.updateAndSave(itPayrollPensiunEntity);
-                }
-
-                itPayrollEntity.setNettoPensiun(nettoPensiun);
-            }
-
-            BigDecimal totalTambahan = nettoPensiun;
-            itPayrollEntity.setTotalD(totalTambahan);
-            itPayrollEntity.setGajiBersih(totalTambahan);
-            payrollDao.updateAndSave(itPayrollEntity);
-        }else if(itPayrollEntity.getFlagJubileum().equalsIgnoreCase("Y") && itPayrollEntity.getFlagJubileum() != null ){
-            String jubileumBaru = "N";
-            BigDecimal nettoJubileum = new BigDecimal(0);
-
-            List<ItPayrollJubileumEntity> itPayrollJubileumEntities = payrollJubileumDao.getJubileum(payroll.getPayrollId());
-            if(itPayrollJubileumEntities.size() > 0){
-                for(ItPayrollJubileumEntity itPayrollJubileumEntity1: itPayrollJubileumEntities){
-                    itPayrollJubileumEntity = itPayrollJubileumEntity1;
-                }
-            }else{
-                itPayrollJubileumEntity = new ItPayrollJubileumEntity();
-                itPayrollJubileumEntity.setFlag("N");
-                jubileumBaru = "Y";
-            }
-
-            //jubileum
-            String tmpFlagJubileum ;
-            if(jubileumBaru.equalsIgnoreCase("Y")){
-                tmpFlagJubileum = "N";
-            }else{
-                tmpFlagJubileum = itPayrollJubileumEntity.getFlag();
-            }
-            if(!payroll.getCentangJubileum().equalsIgnoreCase(tmpFlagJubileum)){
-                PayrollJubileum payrollJubileum = new PayrollJubileum();
-                if(payroll.getCentangJubileum().equalsIgnoreCase("Y")){
-                    payrollJubileum = payrollJubileum(itPayrollEntity.getBulan(), itPayrollEntity.getTahun(), itPayrollEntity.getNip(), itPayrollEntity.getBranchId(), itPayrollEntity.getGajiGolongan(),
-                            itPayrollEntity.getTunjanganUmk(), itPayrollEntity.getTunjanganStruktural(), payroll.getTunjanganPeralihanNilai(),
-                            itPayrollEntity.getTunjanganJabatanStruktural(), itPayrollEntity.getFlagPayroll());
-                    itPayrollJubileumEntity.setGajiGolongan(payrollJubileum.getGajiGolonganNilai());
-                    itPayrollJubileumEntity.setTunjanganUmk(payrollJubileum.getTunjanganUmkNilai());
-                    itPayrollJubileumEntity.setTunjanganStruktural(payrollJubileum.getTunjanganStrukturalNilai());
-                    itPayrollJubileumEntity.setTunjanganPeralihan(payrollJubileum.getTunjanganPeralihanNilai());
-                    itPayrollJubileumEntity.setTunjanganJabStruktural(payrollJubileum.getTunjanganJabStrukturalNilai());
-                    itPayrollJubileumEntity.setTotal(payrollJubileum.getBesarJubileumNilai());
-                    itPayrollJubileumEntity.setTanggalJubileum(CommonUtil.convertStringToDate(payrollJubileum.getTanggalJubileum()));
-                    itPayrollJubileumEntity.setGrandTotal(payrollJubileum.getTotalJubileumNilai());
-                    itPayrollJubileumEntity.setPphJubileum(payrollJubileum.getPphJubileumNilai());
-                    itPayrollJubileumEntity.setNettoJubileum(payrollJubileum.getNettoJubileumNilai());
-
-                    itPayrollJubileumEntity.setFlag("Y");
-                    nettoJubileum = payrollJubileum.getNettoJubileumNilai();
-
-                }else{
-                    nettoJubileum = BigDecimal.valueOf(0);
-                    itPayrollJubileumEntity.setFlag("N");
-                }
-                itPayrollEntity.setTotalJubileum(nettoJubileum);
-
-                String userLogin = CommonUtil.userLogin();
-                Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-
-                if(jubileumBaru.equalsIgnoreCase("Y")){
-                    itPayrollJubileumEntity.setJubileumId(payrollJubileumDao.getNextJubileumId(itPayrollEntity.getTahun()));
-                    itPayrollJubileumEntity.setPayrollId(payroll.getPayrollId());
-                    itPayrollJubileumEntity.setAction("C");
-
-                    itPayrollJubileumEntity.setCreatedDate(updateTime);
-                    itPayrollJubileumEntity.setCreatedWho(userLogin);
-                    itPayrollJubileumEntity.setLastUpdateWho(userLogin);
-                    itPayrollJubileumEntity.setLastUpdate(updateTime);
-
-                    payrollJubileumDao.addAndSave(itPayrollJubileumEntity);
-                }else{
-                    itPayrollJubileumEntity.setLastUpdateWho(userLogin);
-                    itPayrollJubileumEntity.setLastUpdate(updateTime);
-                    payrollJubileumDao.updateAndSave(itPayrollJubileumEntity);
-                }
-                BigDecimal totalTambahan = nettoJubileum;
-                itPayrollEntity.setTotalD(totalTambahan);
-                itPayrollEntity.setGajiBersih(totalTambahan);
-                payrollDao.updateAndSave(itPayrollEntity);
-            }
-
-        }
-        session.removeAttribute("listDataPayrollJubileum");*/
         }
     }
 
@@ -8866,7 +8384,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                     BigDecimal nilaiA = payrollPerson.getGajiGolonganNilai().add(payrollPerson.getTunjanganUmkNilai()).add(payrollPerson.getTunjanganJabatanStrukturalNilai())
                             .add(payrollPerson.getTunjanganStrukturalNilai()).add(payrollPerson.getTunjanganStrategisNilai()).add(payrollPerson.getTunjanganPeralihanNilai())
                             .add(payrollPerson.getTunjanganLainNilai()).add(payrollPerson.getTunjanganTambahanNilai()).add( payrollPerson.getPemondokanNilai())
-                    .add(payrollPerson.getKomunikasiNilai());
+                    .add(payrollPerson.getKomunikasiNilai()).add(payrollPerson.getLainLainNilai());
                     payrollPerson.setTotalA(CommonUtil.numbericFormat(nilaiA, "###,###")); //Total A
                     payrollPerson.setTotalANilai(nilaiA); //Total A
 
@@ -8891,14 +8409,11 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                     payrollPerson.setTotalC(CommonUtil.numbericFormat(nilaiC, "###,###")); //Total C
                     payrollPerson.setTotalCNilai(nilaiC); //Total C
 
-                    BigDecimal gajiBersih = nilaiA.add(payrollPerson.getTotalBNilai()).add(nilaiC);
+                    BigDecimal gajiBersih = nilaiA.add(payrollPerson.getTotalBNilai()).subtract(nilaiC);
                     payrollPerson.setTotalGajiBersih(CommonUtil.numbericFormat(gajiBersih, "###,###")); //gaji bersih
                     payrollPerson.setTotalGajiBersihNilai(gajiBersih); //gaji bersih
 
 
-                    }else{
-                        //AKIRA
-                        //PKWT Tidak mendapat pendidikan
                     }
 
 
@@ -8936,6 +8451,10 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                     payrollPerson.setKomunikasiNilai(payroll.getKomunikasiNilai());
                     payrollPerson.setKomunikasi(CommonUtil.numbericFormat(payroll.getKomunikasiNilai(), "###,###"));
 
+                    payrollPerson.setIdLainLain(payroll.getIdLainLain());
+                    payrollPerson.setLainLainNilai(payroll.getLainLainNilai());
+                    payrollPerson.setLainLain(CommonUtil.numbericFormat(payroll.getLainLainNilai(), "###,###"));
+
 
                     payrollPerson.setKopkarNilai(payroll.getKopkarNilai());
                     payrollPerson.setKopkar(CommonUtil.numbericFormat(payroll.getKopkarNilai(), "###,###"));
@@ -8968,7 +8487,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                             payrollPerson.getPemondokanNilai(), payrollPerson.getKomunikasiNilai(),
                             payrollPerson.getTotalRlabNilai(), payrollPerson.getTunjanganLemburNilai(),
                             payrollPerson.getIuranDapenPershNilai(),payrollPerson.getTunjanganBpjsTkNilai(),payrollPerson.getTunjanganBpjsKsNilai(),
-                            BigDecimal.valueOf(0),payrollPerson.getIuranDapenPegNilai(),payrollPerson.getIuranBpjsTkKaryNilai(),payrollPerson.getIuranBpjsKsKaryNilai(),
+                            payrollPerson.getLainLainNilai(),payrollPerson.getIuranDapenPegNilai(),payrollPerson.getIuranBpjsTkKaryNilai(),payrollPerson.getIuranBpjsKsKaryNilai(),
                             payrollPerson.getStatusKeluarga(), payrollPerson.getJumlahAnak());
                     payrollPerson.setPphGajiNilai(payrollPph.getPphGajiNilai());
                     payrollPerson.setPphGaji(payrollPph.getPphGaji());
@@ -8979,7 +8498,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                     BigDecimal nilaiA = payrollPerson.getGajiGolonganNilai().add(payrollPerson.getTunjanganUmkNilai()).add(payrollPerson.getTunjanganJabatanStrukturalNilai())
                             .add(payrollPerson.getTunjanganStrukturalNilai()).add(payrollPerson.getTunjanganStrategisNilai()).add(payrollPerson.getTunjanganPeralihanNilai())
                             .add(payrollPerson.getTunjanganLainNilai()).add(payrollPerson.getTunjanganTambahanNilai()).add( payrollPerson.getPemondokanNilai())
-                            .add(payrollPerson.getKomunikasiNilai());
+                            .add(payrollPerson.getKomunikasiNilai()).add(payrollPerson.getLainLainNilai());
                     payrollPerson.setTotalA(CommonUtil.numbericFormat(nilaiA, "###,###")); //Total A
                     payrollPerson.setTotalANilai(nilaiA); //Total A
 
@@ -8996,7 +8515,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                     payrollPerson.setTotalC(CommonUtil.numbericFormat(nilaiC, "###,###")); //Total C
                     payrollPerson.setTotalCNilai(nilaiC); //Total C
 
-                    BigDecimal gajiBersih = nilaiA.add(payrollPerson.getTotalBNilai()).add(nilaiC);
+                    BigDecimal gajiBersih = nilaiA.add(payrollPerson.getTotalBNilai()).subtract(nilaiC);
                     payrollPerson.setTotalGajiBersih(CommonUtil.numbericFormat(gajiBersih, "###,###")); //gaji bersih
                     payrollPerson.setTotalGajiBersihNilai(gajiBersih);
 
@@ -9008,237 +8527,6 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                     payrollPerson.setTotalPotonganLainNilai(totalPotonganLain);
                     payrollPerson.setTotalPotonganLain(CommonUtil.numbericFormat(totalPotonganLain, "###,###"));
 
-
-
-
-
-                    /*BigDecimal gaji = payroll.getGajiGolonganNilai();
-                    BigDecimal umk = payroll.getTunjanganUmkNilai();
-                    BigDecimal struktural = payroll.getTunjanganStrukturalNilai();
-                    BigDecimal peralihan = payroll.getTunjanganPeralihanNilai();
-                    BigDecimal jabatanStruktural = payroll.getTunjanganJabatanStrukturalNilai();
-                    if(payrollPerson.getFlagPayroll().equalsIgnoreCase("N")){
-                        //mengambil Nilai Dari bln sebelumnya jika ada
-                        List<ItPayrollEntity> itPayrollEntity = null;
-                        itPayrollEntity = payrollDao.getLastPayroll(payrollPerson.getNip());
-                        if (itPayrollEntity.size() > 0) {
-                            for (ItPayrollEntity itPayrollEntity1 : itPayrollEntity) {
-                                gaji = itPayrollEntity1.getGajiGolongan();
-                                umk = itPayrollEntity1.getTunjanganUmk();
-                                struktural = itPayrollEntity1.getTunjanganStruktural();
-                                peralihan = itPayrollEntity1.getTunjanganPeralihan();
-                                jabatanStruktural = itPayrollEntity1.getTunjanganJabatanStruktural();
-                            }
-                        }
-                    }*/
-
-                    //pphGaji
-                    /*if(payrollPerson.getFlagPayroll().equalsIgnoreCase("Y")){
-                        payrollPph=  payrollPphGaji(payrollPerson.getNip(),payrollPerson.getBranchId(), payrollPerson.getBulan(), payrollPerson.getTahun(),
-                                payrollPerson.getGolonganId(), payrollPerson.getTanggalAktif(), payrollPerson.getPoint()+ "", payrollPerson.getTunjanganPengobatanNilai(),
-                                payrollPerson.getGender(), payrollPerson.getStatusKeluarga(), payrollPerson.getJumlahAnak(), payrollPerson.getTipePegawai(),
-                                payrollPerson.getStatusPegawai(), payrollPerson.getGajiGolonganNilai(), payrollPerson.getTunjanganUmkNilai(), payrollPerson.getTunjanganStrukturalNilai(),
-                                payroll.getTunjanganPeralihanNilai(), payrollPerson.getTunjanganJabatanStrukturalNilai(), payrollPerson.getTunjanganStrategisNilai(),
-                                payroll.getKompensasiNilai(), payroll.getTunjanganTransportNilai(), payrollPerson.getTunjanganAirListrikNilai(),
-                                payrollPerson.getTunjanganPerumahanNilai(), payrollPerson.getTunjanganPphNilai(), payrollPerson.getTunjanganLemburNilai(),
-                                payroll.getTunjanganLainNilai(), payrollPerson.getTotalThrNilai(), payrollPerson.getTotalPendidikanNilai(), payrollPerson.getTotalJasProdNilai(),
-                                payrollPerson.getTotalRapelNilai(), BigDecimal.valueOf(0), BigDecimal.valueOf(0), payrollPerson.getIuranPensiunNilai(), payrollPerson.getIuranBpjsTkNilai(),
-                                payrollPerson.getIuranBpjsPensiunNilai(), payrollPerson.getTunjanganBajuDinasNilai(), payrollPerson.getBulan(), payrollPerson.getTahun(),
-                                payrollPerson.getKelompokId());
-                        if(payroll.getCentangKalkulasiPph().equalsIgnoreCase("N")){
-                            if(payrollPph.getTunjanganPphNilaiBulan().compareTo(BigDecimal.valueOf(0)) > 0){
-                            }
-                            payrollPph.setTunjanganPphNilaiBulan(payroll.getTunjanganPphNilai());
-                            payrollPph.setPphGajiNilai(payroll.getPphGajiNilai());
-                        }
-
-                    }else{
-                        //Asumsi digunakan untuk pemerataan pajak tahun
-                        PayrollThr payrollAsumsiThr = getAsumsiThr(payrollPerson.getNip(), payrollPerson.getGajiGolonganNilai(), payrollPerson.getTunjanganUmkNilai(),
-                                payrollPerson.getTunjanganStrukturalNilai(), payrollPerson.getTunjanganJabatanStrukturalNilai(), payrollPerson.getTunjanganStrategisNilai(),
-                                BigDecimal.valueOf(0), payrollPerson.getTunjanganPeralihanNilai(), payrollPerson.getBulan(), payrollPerson.getTahun(), payrollPerson.getBranchId());
-                        PayrollPendidikan payrollAsumsiPendidikan = getAsumsiPendidikan(payrollPerson.getNip(), payrollPerson.getGajiGolonganNilai(), payrollPerson.getTunjanganUmkNilai(),
-                                payrollPerson.getTunjanganStrukturalNilai(), payrollPerson.getTunjanganJabatanStrukturalNilai(), payrollPerson.getTunjanganStrategisNilai(),
-                                payrollPerson.getKompensasiNilai(), payrollPerson.getTunjanganAirListrikNilai(), BigDecimal.valueOf(0), payrollPerson.getTunjanganPeralihanNilai(),
-                                payrollPerson.getBulan(), payrollPerson.getTahun(), payrollPerson.getBranchId());
-                        BigDecimal nilaiAsumsiJasprod = getAsumsiJasprod(payrollPerson.getNip(), payrollPerson.getBulan(), payrollPerson.getTahun(), payrollPerson.getBranchId());
-
-                        payrollPph = payrollPphGaji2(payrollPerson.getNip(), payrollPerson.getGender(), payrollPerson.getStatusKeluarga(),
-                                payrollPerson.getJumlahAnak(), payrollPerson.getTipePegawai(), payrollPerson.getStatusPegawai(), payrollPerson.getTotalThrNilai(),
-                                payrollPerson.getTotalPendidikanNilai(), payrollPerson.getTotalJasProdNilai(), payrollPerson.getTotalInsentifNilai(),
-                                payrollPerson.getTotalRapelNilai(), BigDecimal.valueOf(0), BigDecimal.valueOf(0), payrollAsumsiThr.getTotalThrNilai(),
-                                payrollAsumsiPendidikan.getTotalPendidikanNilai(), nilaiAsumsiJasprod);
-                    }*/
-
-
-                    /*BigDecimal tunjPengobatan = new BigDecimal(0);
-                    payrollPerson.setPengobatanNilai(payroll.getPengobatanNilai());
-                    payrollPerson.setPengobatan(CommonUtil.numbericFormat(payroll.getPengobatanNilai(), "###,###"));
-                    payrollPerson.setPphPengobatanNilai(payroll.getPphPengobatanNilai());
-                    payrollPerson.setPphPengobatan(CommonUtil.numbericFormat(payrollPerson.getPphPengobatanNilai(), "###,###"));
-                    tunjPengobatan = payroll.getPengobatanNilai().add(payrollPerson.getPphPengobatanNilai());
-                    payrollPerson.setTunjanganPengobatanNilai(tunjPengobatan);
-                    payrollPerson.setTunjanganPengobatan(CommonUtil.numbericFormat(tunjPengobatan, "###,###"));
-                    payrollPerson.setTunjanganPphNilai(payrollPph.getTunjanganPphNilaiBulan());
-                    payrollPerson.setTunjanganPph(CommonUtil.numbericFormat(payrollPph.getTunjanganPphNilaiBulan(), "###,###"));*/
-
-                    /*BigDecimal gajiKotor = jumlahGajiKotor(payrollPerson.getGajiGolonganNilai(), payrollPerson.getTunjanganUmkNilai(), payrollPerson.getTunjanganStrukturalNilai(),
-                            payroll.getTunjanganPeralihanNilai(), payrollPerson.getTunjanganJabatanStrukturalNilai(), payrollPerson.getTunjanganStrategisNilai(),
-                            payroll.getKompensasiNilai(), payrollPerson.getTunjanganTransportNilai(), payrollPerson.getTunjanganAirListrikNilai(),tunjPengobatan,
-                            payrollPerson.getTunjanganPerumahanNilai(), payrollPerson.getTunjanganPphNilai(), payroll.getTunjanganLainNilai(), payrollPerson.getTunjanganLemburNilai());
-                    payrollPerson.setTotalANilai(gajiKotor); //Jumlah A
-                    payrollPerson.setTotalA(CommonUtil.numbericFormat(gajiKotor, "###,###")); //Jumlah A*/
-
-                    //Asumsi digunakan untuk pemerataan pajak tahun
-                    /*PayrollThr payrollAsumsiThr = getAsumsiThr(payrollPerson.getNip(), payrollPerson.getGajiGolonganNilai(), payrollPerson.getTunjanganUmkNilai(),
-                            payrollPerson.getTunjanganStrukturalNilai(), payrollPerson.getTunjanganJabatanStrukturalNilai(), payrollPerson.getTunjanganStrategisNilai(),
-                            BigDecimal.valueOf(0), payrollPerson.getTunjanganPeralihanNilai(), payrollPerson.getBulan(), payrollPerson.getTahun(), payrollPerson.getBranchId());
-                    PayrollPendidikan payrollAsumsiPendidikan = getAsumsiPendidikan(payrollPerson.getNip(), payrollPerson.getGajiGolonganNilai(), payrollPerson.getTunjanganUmkNilai(),
-                            payrollPerson.getTunjanganStrukturalNilai(), payrollPerson.getTunjanganJabatanStrukturalNilai(), payrollPerson.getTunjanganStrategisNilai(),
-                            payrollPerson.getKompensasiNilai(), payrollPerson.getTunjanganAirListrikNilai(), BigDecimal.valueOf(0), payrollPerson.getTunjanganPeralihanNilai(), payrollPerson.getBulan(),
-                            payrollPerson.getTahun(), payrollPerson.getBranchId());
-                    BigDecimal nilaiAsumsiJasprod = getAsumsiJasprod(payrollPerson.getNip(), payrollPerson.getBulan(), payrollPerson.getTahun(), payrollPerson.getBranchId());
-
-                    if(payrollPerson.getKelompokId().equalsIgnoreCase("KL01") || payrollPerson.getKelompokId().equalsIgnoreCase("KL00")){
-                        payrollAsumsiPendidikan.setTotalPendidikan("0");
-                        payrollAsumsiPendidikan.setTotalPendidikanNilai(BigDecimal.valueOf(0));
-                    }*/
-
-                    //Relisasi Pph Gaji selama 1 tahun
-                    /*BigDecimal realisasiPphGaji = payrollPph.getPphGajiNilai();
-                    if(payrollPerson.getKelompokId().equalsIgnoreCase("KL03") || payrollPerson.getKelompokId().equalsIgnoreCase("KL02") ||
-                            payrollPerson.getKelompokId().equalsIgnoreCase("KL01") || payrollPerson.getKelompokId().equalsIgnoreCase("KL00")){
-                        //digunakan untuk jabatan kabid ke atas
-                        //komisaris tidak disetahunkan
-                        if(!"KL00".equals(payrollPerson.getKelompokId())){
-                            if(payroll.getCentangKalkulasiPph().equalsIgnoreCase("Y")){
-                                PayrollPph payrollPph1 = kalkulasiPphTahunKabid(payrollPerson.getNip(), payrollPerson.getBulan(), payrollPerson.getTahun(), payrollPerson.getBranchId(),
-                                        payrollPph.getPphGajiNilai(), payroll.getPphPengobatanNilai(), gajiKotor, payrollPerson.getIuranPensiunNilai(), payrollPerson.getIuranBpjsTkNilai(), payrollPerson.getIuranBpjsPensiunNilai(),
-                                        payrollPerson.getStatusKeluarga(), payrollPerson.getJumlahAnak(), payrollPerson.getGender(), payrollAsumsiThr.getTotalThrNilai(),
-                                        payrollAsumsiPendidikan.getTotalPendidikanNilai(), payrollPph.getThrNilai(), payrollPph.getPendidikanNilai(), payroll.getPengobatanNilai(),
-                                        payrollPph.getPakaianDinasNilai(), payrollPph.getIuranJkmJkkNilai(), payrollPerson.getFlagThr(), payrollPerson.getFlagPendidikan(), payrollPerson.getFlagJasprod(),
-                                        payrollPerson.getTunjanganLemburNilai(), "Y", payroll.getCentangKalkulasiPphPengobatan());
-                                if(payroll.getCentangKalkulasiPph().equalsIgnoreCase("Y")){
-                                    realisasiPphGaji = payrollPph1.getPphGajiNilai();
-                                }
-
-                                // Jumlah Pengobatan Selama 1 Tahun
-                                payrollPph.setJumlahPengobatanNilai(payrollPph1.getJumlahPengobatanNilai());
-                                payrollPph.setJumlahPengobatan(CommonUtil.numbericFormat(payrollPph1.getJumlahPengobatanNilai(), "###,###"));
-                                payrollPph.setJumlahPphPengobatanNilai(payrollPph1.getJumlahPphPengobatanNilai());
-                                payrollPph.setJumlahPphPengobatan(CommonUtil.numbericFormat(payrollPph1.getJumlahPphPengobatanNilai(), "###,###"));
-                                payrollPph.setKurangPphPengobatanNilai(payrollPph1.getKurangPphPengobatanNilai());
-                                payrollPph.setKurangPphPengobatan(CommonUtil.numbericFormat(payrollPph1.getKurangPphPengobatanNilai(), "###,###"));
-                                payrollPph.setPphPengobatanNilai(payrollPph1.getPphPengobatanNilai());
-                                payrollPph.setPphPengobatan(CommonUtil.numbericFormat(payrollPph1.getPphPengobatanNilai(), "###,###"));
-                                payrollPph.setHutangPphPengobatanNilai(payrollPph1.getHutangPphPengobatanNilai());
-                                payrollPph.setHutangPphPengobatan(CommonUtil.numbericFormat(payrollPph1.getHutangPphPengobatanNilai(), "###,###"));
-
-                                payrollPerson.setJumlahPengobatanNilai(payrollPph1.getJumlahPengobatanNilai());
-                                payrollPerson.setJumlahPengobatan(CommonUtil.numbericFormat(payrollPph1.getJumlahPengobatanNilai(), "###,###"));
-                                payrollPerson.setJumlahPphPengobatanNilai(payrollPph1.getJumlahPphPengobatanNilai());
-                                payrollPerson.setJumlahPphPengobatan(CommonUtil.numbericFormat(payrollPph1.getJumlahPphPengobatanNilai(), "###,###"));
-                                payrollPerson.setHutangPphPengobatanNilai(payrollPph1.getHutangPphPengobatanNilai());
-                                payrollPerson.setHutangPphPengobatan(CommonUtil.numbericFormat(payrollPph1.getHutangPphPengobatanNilai(), "###,###"));
-                                payrollPerson.setKurangPphPengobatanNilai(payrollPph1.getKurangPphPengobatanNilai());
-                                payrollPerson.setKurangPphPengobatan(CommonUtil.numbericFormat(payrollPph1.getKurangPphPengobatanNilai(), "###,###"));
-                                payrollPerson.setPphPengobatanNilai(payrollPph1.getPphPengobatanNilai());
-                                payrollPerson.setPphPengobatan(CommonUtil.numbericFormat(payrollPph1.getPphPengobatanNilai(), "###,###"));
-                            }
-                        }
-
-                        gajiKotor = jumlahGajiKotor(gaji, payrollPerson.getTunjanganUmkNilai(), payrollPerson.getTunjanganStrukturalNilai(),
-                                payrollPerson.getTunjanganPeralihanNilai(), payrollPerson.getTunjanganJabatanStrukturalNilai(), payrollPerson.getTunjanganStrategisNilai(),
-                                payrollPerson.getKompensasiNilai(), payrollPerson.getTunjanganTransportNilai(), payrollPerson.getTunjanganAirListrikNilai(),
-                                tunjPengobatan, payrollPerson.getTunjanganPerumahanNilai(), realisasiPphGaji, payrollPerson.getTunjanganLainNilai(),
-                                payrollPerson.getTunjanganLemburNilai());
-                        BigDecimal tunjPph = realisasiPphGaji;
-
-                        BigDecimal tunjPphTahun = realisasiPphGaji.multiply(BigDecimal.valueOf(12));
-                        //hapus bruto yang tersimpan dulu, kemudian tambahkan tunjangan pph baru
-                        BigDecimal brutoAddTpph = payrollPph.getBrutoNilai().subtract(payrollPph.getTunjanganPphNilaiTahun());
-                        brutoAddTpph = brutoAddTpph.add(tunjPphTahun);
-
-                        payrollPph.setTunjanganPphNilaiTahun(tunjPphTahun);
-                        payrollPph.setTunjanganPphTahun(CommonUtil.numbericFormat(tunjPphTahun, "###,###"));
-
-                        payrollPph.setBrutoNilai(brutoAddTpph);
-                        payrollPph.setBruto(CommonUtil.numbericFormat(brutoAddTpph, "###,###"));
-
-                        BigDecimal pphGajiBiayaJabatan = getBiayaJabatan(brutoAddTpph).setScale(2, BigDecimal.ROUND_HALF_UP);
-
-                        BigDecimal reduce = pphGajiBiayaJabatan.add(payrollPph.getIuranPensiunNilai()).add(payrollPph.getPtkpNilai());
-                        BigDecimal pphGajiPkp = brutoAddTpph.subtract(reduce).setScale(2, BigDecimal.ROUND_HALF_UP); //PPH GAJI PKP(Penghasilan Kena Pajak)
-                        payrollPph.setPkpNilai(pphGajiPkp);
-                        payrollPph.setPkp(CommonUtil.numbericFormat(pphGajiPkp, "###,###"));
-
-                        BigDecimal hutangPajak = hitungHutangPajak(pphGajiPkp);
-                        BigDecimal pphGaji = hutangPajak.divide(BigDecimal.valueOf(12), 2, RoundingMode.HALF_UP) ;
-                        payrollPph.setHutangPphNilai(hutangPajak);
-                        payrollPph.setHutangPph(CommonUtil.numbericFormat(hutangPajak, "###,###"));
-
-                        payrollPph.setPphGajiNilai(realisasiPphGaji);
-                        payrollPph.setPphGaji(CommonUtil.numbericFormat(realisasiPphGaji, "###,###"));
-
-                        payrollPerson.setTunjanganPphNilai(realisasiPphGaji);
-                        payrollPerson.setTunjanganPph(CommonUtil.numbericFormat(realisasiPphGaji, "###,###"));
-
-                        payrollPerson.setTotalANilai(gajiKotor);
-                        payrollPerson.setTotalA(CommonUtil.numbericFormat(gajiKotor, "###,###"));
-                    }else{
-                        //digunakan untuk jabatan kabag ke bawah
-                        //AKIRA
-                        //PKWT tidak mendapat asumsi Pendidikan
-                        if(payrollPerson.getKelompokId().equalsIgnoreCase("KL08")){
-                            payrollAsumsiPendidikan.setTotalPendidikan("0");
-                            payrollAsumsiPendidikan.setTotalPendidikanNilai(BigDecimal.valueOf(0));
-                        }
-
-                        //AKIRA
-                        //Agar gaji kotor tidak bertambah karena pph pengobatan
-//                        gajiKotor = gajiKotor.subtract(tunjPengobatan);
-                        PayrollPph payrollPph1 = new PayrollPph();
-                        payrollPph1 = kalkulasiPphTahun(payrollPerson.getNip(), payrollPerson.getBulan(), payrollPerson.getTahun(), payrollPerson.getBranchId(),
-                                payrollPph.getPphGajiNilai(), payroll.getPphPengobatanNilai(), gajiKotor, payrollPerson.getIuranPensiunNilai(), payrollPerson.getIuranBpjsTkNilai(), payrollPerson.getIuranBpjsPensiunNilai(),
-                                payrollPerson.getStatusKeluarga(), payrollPerson.getJumlahAnak(), payrollPerson.getGender(), payrollAsumsiThr.getTotalThrNilai(),
-                                payrollAsumsiPendidikan.getTotalPendidikanNilai(), nilaiAsumsiJasprod, payrollPph.getThrNilai(), payrollPph.getPendidikanNilai(),
-                                payrollPph.getJasprodNilai(), payroll.getPengobatanNilai(), payrollPph.getPakaianDinasNilai(), payrollPph.getIuranJkmJkkNilai(),
-                                payrollPerson.getFlagThr(), payrollPerson.getFlagPendidikan(),
-                                payrollPerson.getFlagJasprod(), payrollPerson.getTunjanganLemburNilai(), "Y", payroll.getCentangKalkulasiPphPengobatan());
-
-                        if(payroll.getCentangKalkulasiPph().equalsIgnoreCase("Y")){
-                            realisasiPphGaji = payrollPph1.getPphGajiNilai();
-                        }
-
-                        payrollPph.setPphGajiNilai(realisasiPphGaji);
-                        payrollPph.setPphGaji(CommonUtil.numbericFormat(realisasiPphGaji, "###,###"));
-                    }
-
-                    payrollPerson.setPphGaji(payrollPph.getPphGaji()); //Pph Gaji
-                    payroll.setPphGajiNilai(payrollPph.getPphGajiNilai()); //Pph Gaji Nilai*/
-
-                    /*BigDecimal jumlahB = hitungTotalB(payrollPph.getPphGajiNilai(), payrollPerson.getPphPengobatanNilai(), payrollPerson.getIuranPensiunNilai(),
-                            payrollPerson.getIuranBpjsTkNilai(), payrollPerson.getIuranBpjsPensiunNilai(), payrollPerson.getIuranBpjsKesehatanNilai(),payrollPerson.getUangMukaLainnyaNilai(),
-                            payrollPerson.getKekuranganBpjsTkNilai());
-
-
-
-                    BigDecimal jumlahC = hitungTotalC(payrollPerson.getPengobatanNilai(), payroll.getKoperasiNilai(), payroll.getDansosNilai(), payroll.getSPNilai(),
-                            payroll.getBazisNilai(), payroll.getBaporNilai(), payrollPerson.getZakatNilai(), payroll.getLainLainNilai());
-
-                    payrollPerson.setTotalBNilai(jumlahB);
-                    payrollPerson.setTotalB(CommonUtil.numbericFormat(jumlahB, "###,###"));
-                    payrollPerson.setTotalCNilai(jumlahC);
-                    payrollPerson.setTotalC(CommonUtil.numbericFormat(jumlahC, "###,###"));
-
-                    BigDecimal totalTambahan = payrollPerson.getTotalRapelNilai().add(payrollPerson.getTotalThrNilai()).add(payrollPerson.getTotalPendidikanNilai())
-                            .add(payrollPerson.getTotalJasProdNilai());
-                    BigDecimal gajiBersih = gajiKotor.subtract(jumlahB).subtract(jumlahC).add(totalTambahan);
-
-                    payrollPerson.setTotalTambahanNilai(totalTambahan);
-                    payrollPerson.setTotalTambahan(CommonUtil.numbericFormat(totalTambahan, "###,###"));
-                    payrollPerson.setTotalGajiBersihNilai(gajiBersih);
-                    payrollPerson.setTotalGajiBersih(CommonUtil.numbericFormat(gajiBersih, "###,###"));*/
                 }
 
                 session.removeAttribute("listDataPayrollPphPerson");

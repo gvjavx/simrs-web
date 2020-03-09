@@ -81,7 +81,7 @@
                 var thrTipe = 'y';
                 var hasil = cekApprove(branch, bulan, tahun, thrTipe);
                 //alert(hasil);
-                if (bulanPayroll==currentMonth+1){
+                if (bulanPayroll>=currentMonth+1){
                     if (branch != '' && bulan != '0' && tahun != '0') {
                         if(thr == 'Y'){
                             event.originalEvent.options.submit = true;
@@ -124,7 +124,7 @@
                     }
                 }else{
                     event.originalEvent.options.submit = false;
-                    document.getElementById('errorValidationMessage').innerHTML = "Payroll Yang bisa Diproses Hanya Bulan Ini";
+                    document.getElementById('errorValidationMessage').innerHTML = "Payroll Bulan Sebelumnya Tidak Bisa Diproses";
                     $.publish('showErrorValidationDialog');
                 }
             });
