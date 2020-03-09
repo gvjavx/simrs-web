@@ -10,9 +10,13 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class VendorAction extends BaseMasterAction {
@@ -102,10 +106,36 @@ public class VendorAction extends BaseMasterAction {
 
     public CheckResponse saveVendor(String data) {
         CheckResponse response = new CheckResponse();
+        String userLogin = CommonUtil.userLogin();
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        VendorBo vendorBo = (VendorBo) ctx.getBean("vendorBoProxy");
 
         if (data != null && !"".equalsIgnoreCase(data)) {
             try {
+
+                Vendor vendor = new Vendor();
                 JSONObject obj = new JSONObject(data);
+                vendor.setNamaVendor(obj.getString("nama_vendor"));
+                vendor.setNpwp(obj.getString("npwp"));
+                vendor.setAlamat(obj.getString("alamat"));
+                vendor.setEmail(obj.getString("email"));
+                vendor.setNoTelp(obj.getString("no_telp"));
+                vendor.setFlag("Y");
+                vendor.setAction("C");
+                vendor.setCreatedWho(userLogin);
+                vendor.setCreatedDate(updateTime);
+                vendor.setLastUpdate(updateTime);
+                vendor.setLastUpdateWho(userLogin);
+
+                try {
+                    response = vendorBo.saveAdd(vendor);
+                }catch (GeneralBOException e){
+                    response.setStatus("error");
+                    response.setMessage("Found Error when save add vendor "+e.getMessage());
+                    logger.error("Found Error when save add vendor "+e.getMessage());
+                }
 
             } catch (JSONException e) {
                 response.setStatus("error");
@@ -117,16 +147,37 @@ public class VendorAction extends BaseMasterAction {
         return response;
     }
 
-    public CheckResponse saveEdit(String data) {
+    public CheckResponse saveEditVendor(String data) {
+
         CheckResponse response = new CheckResponse();
+        String userLogin = CommonUtil.userLogin();
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        VendorBo vendorBo = (VendorBo) ctx.getBean("vendorBoProxy");
 
         if (data != null && !"".equalsIgnoreCase(data)) {
             try {
+
                 Vendor vendor = new Vendor();
                 JSONObject obj = new JSONObject(data);
+                vendor.setIdVendor(obj.getString("id_vendor"));
                 vendor.setNamaVendor(obj.getString("nama_vendor"));
                 vendor.setNpwp(obj.getString("npwp"));
                 vendor.setAlamat(obj.getString("alamat"));
+                vendor.setEmail(obj.getString("email"));
+                vendor.setNoTelp(obj.getString("no_telp"));
+                vendor.setAction("U");
+                vendor.setLastUpdate(updateTime);
+                vendor.setLastUpdateWho(userLogin);
+
+                try {
+                    response = vendorBo.saveEdit(vendor);
+                }catch (GeneralBOException e){
+                    response.setStatus("error");
+                    response.setMessage("Found Error when save edit vendor "+e.getMessage());
+                    logger.error("Found Error when save edit vendor "+e.getMessage());
+                }
 
             } catch (JSONException e) {
                 response.setStatus("error");

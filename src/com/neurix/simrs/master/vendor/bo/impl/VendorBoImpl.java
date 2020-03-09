@@ -100,7 +100,9 @@ public class VendorBoImpl implements VendorBo {
 
             try {
                 vendorDao.addAndSave(vendorEntity);
+                response.setStatus("success");
             }catch (HibernateException e){
+                response.setStatus("error");
                 response.setMessage("Found Error when update vendor "+e.getMessage());
                 logger.error("[VendorBoImpl.saveAdd] Found Error when save vendor");
             }
@@ -144,7 +146,7 @@ public class VendorBoImpl implements VendorBo {
                     vendorDao.updateAndSave(vendorEntity);
                     response.setStatus("success");
                 }catch (HibernateException e){
-                    response.setStatus("success");
+                    response.setStatus("error");
                     response.setMessage("Found Error when update vendor "+e.getMessage());
                     logger.error("[VendorBoImpl.saveEdit] Found Error when save update vendor");
                 }

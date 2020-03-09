@@ -11,26 +11,12 @@
     <style>
     </style>
 
-    <script type='text/javascript' src='<s:url value="/dwr/interface/PasienAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/VendorAction.js"/>'></script>
     <script type='text/javascript'>
 
-        $( document ).ready(function() {
-            $('#pasien').addClass('active');
-            searchPasien();
+        $(document).ready(function () {
+            $('#vendor_obat').addClass('active');
         });
-
-        function searchPasien(){
-            var url_string = window.location.href;
-            var url = new URL(url_string);
-            var idPasien = url.searchParams.get("id_pasien");
-
-            if(idPasien != null){
-                $('#modal-success-pasien').modal('show');
-                $('#val_id_pasien').val(idPasien);
-
-            }
-        }
-
 
     </script>
 </head>
@@ -46,7 +32,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Data Pasien
+            Data Vendor
             <small>e-HEALTH</small>
         </h1>
     </section>
@@ -58,23 +44,16 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Data Pasien</h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Data Vendor</h3>
                     </div>
                     <div class="box-body">
                         <div class="form-group">
-                            <s:form id="pasienForm" method="post" namespace="/pasien" action="search_pasien.action" theme="simple" cssClass="form-horizontal">
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">ID Pasien</label>
-                                    <div class="col-sm-4">
-                                        <s:textfield id="id_pasien" cssStyle="margin-top: 7px"
-                                                     name="pasien.idPasien" required="false"
-                                                     readonly="false" cssClass="form-control"/>
-                                    </div>
-                                </div>
+                            <s:form id="vendorForm" method="post" namespace="/vendor" action="search_vendor.action"
+                                    theme="simple" cssClass="form-horizontal">
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Nama</label>
                                     <div class="col-sm-4">
-                                        <s:textfield id="nama_pasien" name="pasien.nama"
+                                        <s:textfield id="nama_pasien" name="vendor.namaVendor"
                                                      required="false" readonly="false"
                                                      cssClass="form-control" cssStyle="margin-top: 7px"/>
                                     </div>
@@ -82,18 +61,18 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4"></label>
                                     <div class="col-sm-6" style="margin-top: 7px">
-                                        <sj:submit type="button" cssClass="btn btn-success" formIds="pasienForm" id="search" name="search"
-                                                   onClickTopics="showDialogLoading" onCompleteTopics="closeDialogLoading" >
+                                        <sj:submit type="button" cssClass="btn btn-success" formIds="vendorForm"
+                                                   id="search" name="search"
+                                                   onClickTopics="showDialogLoading"
+                                                   onCompleteTopics="closeDialogLoading">
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
-                                        <a type="button" class="btn btn-danger" href="initForm_pasien.action">
+                                        <a type="button" class="btn btn-danger" href="initForm_vendor.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
-                                        <a href="add_pasien.action" class="btn btn-primary" ><i class="fa fa-plus"></i> Add Pasien</a>
-                                        <button type="button" class="btn btn-primary" onclick="showModalUpload()">
-                                            <i class="fa fa-plus"></i> Upload Rekam Medik Lama
-                                        </button>
+                                        <a onclick="addVendor()" class="btn btn-primary"><i class="fa fa-plus"></i>
+                                            Add Vendor</a>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -112,7 +91,8 @@
                                                      src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
                                                      name="image_indicator_write">
                                                 <br>
-                                                <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                <img class="spin" border="0"
+                                                     style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
                                                      src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
                                                      name="image_indicator_write">
                                             </center>
@@ -133,26 +113,12 @@
                                                  name="icon_success">
                                             Record has been saved successfully.
                                         </sj:dialog>
-                                        <%--<sj:dialog id="success_dialog" openTopics="showInfoDialog" modal="true"--%>
-                                                   <%--resizable="false"--%>
-                                                   <%--closeOnEscape="false"--%>
-                                                   <%--height="200" width="400" autoOpen="false" title="Infomation Dialog"--%>
-                                                   <%--buttons="{--%>
-                                                                                <%--'OK':function() {--%>
-                                                                                         <%--$('#success_dialog').dialog('close');--%>
-                                                                                         <%--pasienSuccess();--%>
-                                                                                     <%--}--%>
-                                                                            <%--}"--%>
-                                        <%-->--%>
-                                            <%--<s:hidden id="val_id_pasien"></s:hidden>--%>
-                                            <%--<img border="0" src="<s:url value="/pages/images/icon_success.png"/>"--%>
-                                                 <%--name="icon_success">--%>
-                                            <%--Record has been saved successfully.--%>
-                                        <%--</sj:dialog>--%>
-                                        <sj:dialog id="view_dialog_user" openTopics="showDialogUser" modal="true" resizable="false" cssStyle="text-align:left;"
+                                        <sj:dialog id="view_dialog_user" openTopics="showDialogUser" modal="true"
+                                                   resizable="false" cssStyle="text-align:left;"
                                                    height="650" width="900" autoOpen="false" title="View Detail"
                                         >
-                                            <center><img border="0" src="<s:url value="/pages/images/spinner.gif"/>" alt="Loading..."/></center>
+                                            <center><img border="0" src="<s:url value="/pages/images/spinner.gif"/>"
+                                                         alt="Loading..."/></center>
                                         </sj:dialog>
                                     </div>
                                 </div>
@@ -165,46 +131,24 @@
                     </div>
                     <div class="box-body">
                         <table id="sortTable" class="table table-bordered table-striped tablePasien">
-                            <thead >
+                            <thead>
                             <tr bgcolor="#90ee90">
-                                <td>ID Pasien</td>
+                                <td>ID Vendor</td>
                                 <td>Nama</td>
-                                <td>Jenis Kelamin</td>
-                                <td>Tempat, Tgl Lahir</td>
-                                <td>Password</td>
+                                <td>Npwp</td>
+                                <td>email</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
                             <tbody>
                             <s:iterator value="#session.listOfResult" var="row">
                                 <tr>
-                                    <td><s:property value="idPasien"/></td>
-                                    <td><s:property value="nama"/></td>
-                                    <td>
-                                        <s:if test='#row.jenisKelamin == "L"'>
-                                            Laki-Laki
-                                        </s:if>
-                                        <s:else>
-                                            Perempuan
-                                        </s:else>
-                                    </td>
-                                    <td><s:property value="tempatLahir"/>, <s:property value="tglLahir"/></td>
-                                    <td><s:property value="password"/></td>
+                                    <td><s:property value="idVendor"/></td>
+                                    <td><s:property value="namaVendor"/></td>
+                                    <td><s:property value="npwp"/></td>
+                                    <td><s:property value="email"/></td>
                                     <td align="center">
-                                        <img id="t<s:property value="idPasien"/>" class="hvr-grow" onclick="detail('<s:property value="idPasien"/>')" style="cursor: pointer" src="<s:url value="/pages/images/icons8-view-25.png"/>">
-                                        <s:if test='#row.password == null || #row.password == ""'>
-                                            <img class="hvr-grow" onclick="setPassword('<s:property value="idPasien"/>')" style="cursor: pointer" src="<s:url value="/pages/images/icons8-create-25.png"/>">
-                                        </s:if>
-                                        <s:else>
-                                            <img class="hvr-grow" onclick="setPassword('<s:property value="idPasien"/>')" style="cursor: pointer" src="<s:url value="/pages/images/icons8-create-orange-25.png"/>">
-                                        </s:else>
-                                        <s:url var="print_card" namespace="/pasien" action="printCard_pasien" escapeAmp="false">
-                                            <s:param name="id"><s:property value="idPasien"/></s:param>
-                                        </s:url>
-                                        <s:a href="%{print_card}" target="_blank">
-                                            <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-print-25.png"/>">
-                                        </s:a>
-                                            <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/finger.png"/>" onclick="registrasiFinger('<s:property value="idPasien"/>')">
+                                        <img class="hvr-grow" onclick="editVendor('<s:property value="idVendor"/>','<s:property value="namaVendor"/>','<s:property value="npwp"/>','<s:property value="email"/>','<s:property value="noTelp"/>','<s:property value="alamat"/>')" style="cursor: pointer" src="<s:url value="/pages/images/icons8-create-25.png"/>">
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -218,151 +162,88 @@
     <!-- /.content -->
 </div>
 
-<div class="modal fade" id="modal-upload">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #00a65a">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Rekam Medik Pasien <span id="nama_medik"></span></h4>
-            </div>
-            <div class="modal-body">
-                <s:form id="uploadForm" method="post" enctype="multipart/form-data" theme="simple" namespace="/pasien" action="saveUploadRmLama_pasien.action" cssClass="form-horizontal">
-                    <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">ID Pasien</label>
-                        <div class="col-md-7">
-                            <div class="input-group">
-                                <s:textfield id="upload_pasien" name="pasien.idPasien"
-                                             onkeypress="$(this).css('border','');"
-                                             cssClass="form-control"/>
-                                <div class="input-group-btn">
-                                    <a href="#" class="btn btn-primary pull-right" onclick="addInputUpload()"><i class="fa fa-plus"></i> Add Upload</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Nama Pasien</label>
-                        <div class="col-md-7">
-                            <s:textfield id="upload_nama_pasien" name="pasien.idPasien"
-                                         cssStyle="margin-top: 7px"
-                                         onkeypress="$(this).css('border','');"
-                                         cssClass="form-control" readonly="true"/>
-                        </div>
-                    </div>
-                    <script>
-                        function tesPasien(val) {
-                            $('#isi').html('<a href="#">Link 1</a><a href="#">Link 2</a><a href="#">Link 3</a>');
-                        }
-                    </script>
-                    <script type="application/javascript">
-                        var functions, mapped;
-                        $('#upload_pasien').typeahead({
-                            minLength: 1,
-                            source: function (query, process) {
-                                functions = [];
-                                mapped = {};
-
-                                var data = [];
-                                dwr.engine.setAsync(false);
-
-                                PasienAction.getListComboPasien(query, function (listdata) {
-                                    data = listdata;
-                                });
-
-                                $.each(data, function (i, item) {
-                                    var labelItem = "";
-
-                                    if (item.noBpjs != '' && item.noBpjs != null) {
-                                        labelItem = item.noKtp + "-" + item.noBpjs + "-" + item.nama;
-                                    } else {
-                                        labelItem = item.noKtp + "-" + item.nama;
-                                    }
-                                    mapped[labelItem] = {
-                                        id: item.idPasien,
-                                        nama: item.nama
-                                    };
-                                    functions.push(labelItem);
-                                });
-                                process(functions);
-
-                            },
-                            updater: function (item) {
-                                var selectedObj = mapped[item];
-                                $('#upload_nama_pasien').val(selectedObj.nama);
-                                return selectedObj.id;
-                            }
-                        });
-                    </script>
-                    <br/>
-                    <div id="body-rm">
-                    </div>
-                </s:form>
-            </div>
-            <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
-                </button>
-                <sj:submit type="button" cssClass="btn btn-success" formIds="uploadForm" id="save" name="save"
-                           onClickTopics="showDialogLoading" onCompleteTopics="closeDialogLoading" >
-                    <i class="fa fa-arrow-right"></i>
-                    Save
-                </sj:submit>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="modal-password">
+<div class="modal fade" id="modal-add">
     <div class="modal-dialog modal-flat">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-user"></i> Edit Password</h4>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-user"></i> <span id="set_judul"></span></h4>
             </div>
             <div class="modal-body">
-                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_password">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_add">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    <p id="msg_password"></p>
+                    <p id="msg_add"></p>
                 </div>
                 <div class="row">
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">ID Pasien</label>
+                        <label class="col-md-3" style="margin-top: 7px">Nama Vendor</label>
                         <div class="col-md-7">
-                            <input class="form-control" id="set_id_pasien" readonly
-                                   oninput="var warn =$('#war_set_id_pasien').is(':visible'); if (warn){$('#cor_set_id_pasien').show().fadeOut(3000);$('#war_set_id_pasien').hide()}">
+                            <input class="form-control" id="set_nama_vendor"
+                                   oninput="var warn =$('#war_set_nama_vendor').is(':visible'); if (warn){$('#cor_set_nama_vendor').show().fadeOut(3000);$('#war_set_nama_vendor').hide()}">
                         </div>
                         <div class="col-md-2">
-                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_set_id_pasien">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_set_nama_vendor">
                                 <i class="fa fa-times"></i> required</p>
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                               id="cor_set_id_pasien"><i class="fa fa-check"></i> correct</p>
+                               id="cor_set_nama_vendor"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Nama</label>
+                        <label class="col-md-3" style="margin-top: 7px">Npwp</label>
                         <div class="col-md-7">
-                            <input class="form-control" id="set_nama" readonly style="margin-top: 7px"
-                                   oninput="var warn =$('#war_set_nama').is(':visible'); if (warn){$('#cor_set_nama').show().fadeOut(3000);$('#war_set_nama').hide()}">
+                            <input class="form-control" id="set_npwp" style="margin-top: 7px"
+                                   oninput="var warn =$('#war_set_npwp').is(':visible'); if (warn){$('#cor_set_npwp').show().fadeOut(3000);$('#war_set_npwp').hide()}">
                         </div>
                         <div class="col-md-2">
-                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_set_nama">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_set_npwp">
                                 <i class="fa fa-times"></i> required</p>
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                               id="cor_set_nama"><i class="fa fa-check"></i> correct</p>
+                               id="cor_set_npwp"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Password</label>
+                        <label class="col-md-3" style="margin-top: 7px">Email</label>
                         <div class="col-md-7">
-                            <input class="form-control" id="set_password" style="margin-top: 7px"
-                                   oninput="var warn =$('#war_set_password').is(':visible'); if (warn){$('#cor_set_password').show().fadeOut(3000);$('#war_set_password').hide()}">
+                            <input class="form-control" id="set_email" style="margin-top: 7px"
+                                   oninput="var warn =$('#war_set_email').is(':visible'); if (warn){$('#cor_set_email').show().fadeOut(3000);$('#war_set_email').hide()}">
                         </div>
                         <div class="col-md-2">
-                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_set_password">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_set_email">
                                 <i class="fa fa-times"></i> required</p>
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                               id="cor_set_password"><i class="fa fa-check"></i> correct</p>
+                               id="cor_set_email"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">No Telp</label>
+                        <div class="col-md-7">
+                            <input class="form-control" id="set_telp" style="margin-top: 7px"
+                                   oninput="var warn =$('#war_set_telp').is(':visible'); if (warn){$('#cor_set_telp').show().fadeOut(3000);$('#war_set_telp').hide()}">
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_set_telp">
+                                <i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_set_telp"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Alamat</label>
+                        <div class="col-md-7">
+                            <textarea rows="3" class="form-control" id="set_alamat" style="margin-top: 7px"
+                                      oninput="var warn =$('#war_set_alamat').is(':visible'); if (warn){$('#cor_set_alamat').show().fadeOut(3000);$('#war_set_alamat').hide()}"></textarea>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_set_alamat">
+                                <i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_set_alamat"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
                 </div>
@@ -370,10 +251,110 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_password"><i
+                <button type="button" class="btn btn-success" id="save_add"><i
                         class="fa fa-arrow-right"></i> Save
                 </button>
-                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_password"><i
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_add"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-edit">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-user"></i> Edit Vendor</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_edit">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_edit"></p>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Nama Vendor</label>
+                        <div class="col-md-7">
+                            <input class="form-control" id="edit_nama_vendor" readonly
+                                   oninput="var warn =$('#war_edit_nama_vendor').is(':visible'); if (warn){$('#cor_edit_nama_vendor').show().fadeOut(3000);$('#war_edit_nama_vendor').hide()}">
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_edit_nama_vendor">
+                                <i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_edit_nama_vendor"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Npwp</label>
+                        <div class="col-md-7">
+                            <input class="form-control" id="edit_npwp" readonly style="margin-top: 7px"
+                                   oninput="var warn =$('#war_edit_npwp').is(':visible'); if (warn){$('#cor_edit_npwp').show().fadeOut(3000);$('#war_edit_npwp').hide()}">
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_edit_npwp">
+                                <i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_edit_npwp"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Email</label>
+                        <div class="col-md-7">
+                            <input class="form-control" id="edit_email" style="margin-top: 7px"
+                                   oninput="var warn =$('#war_edit_email').is(':visible'); if (warn){$('#cor_edit_email').show().fadeOut(3000);$('#war_edit_email').hide()}">
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_edit_email">
+                                <i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_edit_email"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">No Telp</label>
+                        <div class="col-md-7">
+                            <input class="form-control" id="edit_telp" style="margin-top: 7px"
+                                   oninput="var warn =$('#war_edit_telp').is(':visible'); if (warn){$('#cor_edit_telp').show().fadeOut(3000);$('#war_edit_telp').hide()}">
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_edit_telp">
+                                <i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_edit_telp"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Alamat</label>
+                        <div class="col-md-7">
+                            <textarea class="form-control" id="edit_alamat" style="margin-top: 7px"
+                                      oninput="var warn =$('#war_edit_alamat').is(':visible'); if (warn){$('#cor_edit_alamat').show().fadeOut(3000);$('#war_edit_alamat').hide()}"></textarea>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_edit_alamat">
+                                <i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_edit_alamat"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_edit"><i
+                        class="fa fa-arrow-right"></i> Save
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_edit"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
             </div>
@@ -478,7 +459,8 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
                 </button>
-                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes            </button>
+                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes
+                </button>
             </div>
         </div>
     </div>
@@ -509,245 +491,103 @@
 
 <script type='text/javascript'>
 
-    function pasienSuccess(){
-        var idPasien = $('#val_id_pasien').val();
-        $('#id_pasien').val(idPasien);
-        document.pasienForm.action = 'search_pasien.action';
-        document.pasienForm.submit();
+    function addVendor() {
+        $('#modal-add').modal({show: true, backdrop: 'static'});
+        $('#save_add').attr('onclick','saveVendor("")');
+        $('#set_judul').text("Tambah Vendor");
     }
 
-    function detail(pasiendId) {
+    function saveVendor(idVendor) {
 
-        var table = "";
-        var nik = "";
-        var namaPasien = "";
-        var jenisKelamin = "";
-        var tglLahir = "";
-        var agama = "";
-        var suku = "";
-        var alamat = "";
-        var provinsi = "";
-        var kabupaten = "";
-        var kecamatan = "";
-        var desa = "";
-        var idPasien = "";
+        var data = "";
+        var nama = $('#set_nama_vendor').val();
+        var npwp = $('#set_npwp').val();
+        var email = $('#set_email').val();
+        var noTelp = $('#set_telp').val();
+        var alamat = $('#set_alamat').val();
 
-        var url = '<s:url value="/pages/images/spinner.gif"/>';
-        $('#t'+pasiendId).attr('src',url).css('width', '30px', 'height', '40px');
+        if(nama != '' && npwp != '' && email != '' && noTelp != '' && alamat != ''){
 
+            if(idVendor != ''){
+                $('#save_add').hide();
+                $('#load_add').show();
+                data = {'id_vendor':idVendor,'nama_vendor':nama,'npwp':npwp,'email':email,'no_telp':noTelp,'alamat':alamat};
+                var dataString = JSON.stringify(data);
+                dwr.engine.setAsync(true);
+                VendorAction.saveEditVendor(dataString, {
+                    callback: function (response) {
+                        if (response.status == "success") {
+                            $('#modal-add').modal('hide');
+                            $('#info_dialog').dialog('open');
+                            $('#save_add').show();
+                            $('#load_add').hide();
 
-        setTimeout(function () {
-
-            var url = '<s:url value="/pages/images/icons8-view-25.png"/>';
-            $('#t'+pasiendId).attr('src',url).css('width', '', 'height', '');
-
-            PasienAction.getDataPasien(pasiendId, function (response) {
-                console.log(response);
-                if (response != null) {
-
-                    nik = response.noKtp;
-                    namaPasien = response.nama;
-
-                    if (response.jenisKelamin == "L") {
-                        jenisKelamin = "Laki-Laki";
-                    } else {
-                        jenisKelamin = "Perempuan";
+                        } else {
+                            $('#warning_add').show().fadeOut(5000);
+                            $('#msg_add').text(response.message);
+                            $('#save_add').show();
+                            $('#load_add').hide();
+                        }
                     }
+                });
+            }else{
+                $('#save_add').hide();
+                $('#load_add').show();
+                data = {'nama_vendor':nama,'npwp':npwp,'email':email,'no_telp':noTelp,'alamat':alamat};
+                var dataString = JSON.stringify(data);
+                dwr.engine.setAsync(true);
+                VendorAction.saveVendor(dataString, {
+                    callback: function (response) {
+                        if (response.status == "success") {
+                            $('#modal-add').modal('hide');
+                            $('#info_dialog').dialog('open');
+                            $('#save_add').show();
+                            $('#load_add').hide();
 
-                    tglLahir = response.tempatLahir + ", " + formateDate(response.tglLahir);
-                    agama = response.agama;
-                    suku = response.suku;
-                    alamat = response.jalan;
-                    provinsi = response.provinsi;
-                    kabupaten = response.kota;
-                    kecamatan = response.kecamatan;
-                    desa = response.desa;
-                    idPasien = response.idPasien;
-                    $('#img_ktp').attr('src',response.urlKtp);
-                }
-            });
-
-            $('#an_id_pasien').html(idPasien);
-            $('#an_nik').html(nik);
-            $('#an_nama').html(namaPasien);
-            $('#an_jenis_kelamin').html(jenisKelamin);
-            $('#an_tgl').html(tglLahir);
-            $('#an_agama').html(agama);
-            $('#an_suku').html(suku);
-            $('#an_alamat').html(alamat);
-            $('#an_provinsi').html(provinsi);
-            $('#an_kabupaten').html(kabupaten);
-            $('#an_kecamatan').html(kecamatan);
-            $('#an_desa').html(desa);
-            $('#modal-detail').modal({show:true, backdrop:'static'});
-        }, 100);
-    }
-
-    function formateDate(tanggal){
-
-        var tgl = "";
-        if(tanggal != null && tanggal != ''){
-            tgl = $.datepicker.formatDate("dd-mm-yy", new Date(tanggal));
-        }
-        return tgl;
-    }
-
-    function setPassword(idPasien){
-        if(idPasien != ''){
-            $('#modal-password').modal({show:true, backdrop:'static'});
-            PasienAction.getDataPasien(idPasien, function (response) {
-                if(response.idPasien != null){
-                    $('#set_id_pasien').val(response.idPasien);
-                    $('#set_nama').val(response.nama);
-                    $('#set_password').val(response.password);
-                }else{
-
-                }
-            });
-
-            $('#save_password').attr('onclick','savePassword(\''+idPasien+'\')');
-        }
-    }
-
-    function savePassword(idPasien){
-        var password = $('#set_password').val();
-        if(password != ''){
-
-            $('#save_password').hide();
-            $('#load_password').show();
-            dwr.engine.setAsync(true);
-            PasienAction.setPasswordPasien(idPasien, password, function (response) {
-                if(response.status == "success"){
-                    $('#modal-password').modal('hide');
-                    $('#info_dialog').dialog('open');
-                    $('#save_password').show();
-                    $('#load_password').hide();
-                }else{
-                    $('#save_password').show();
-                    $('#load_password').hide();
-                    $('#warning_password').show().fadeOut(5000);
-                    $('#msg_password').text(response.message);
-                }
-            });
+                        } else {
+                            $('#warning_add').show().fadeOut(5000);
+                            $('#msg_add').text(response.message);
+                            $('#save_add').show();
+                            $('#load_add').hide();
+                        }
+                    }
+                });
+            }
         }else{
-            $('#warning_password').show().fadeOut(5000);
-            $('#msg_password').text('Silahkan cek kembali data inputan..!');
-            if(password == ''){
-                $('#war_set_password').show();
+            $('#warning_add').show().fadeOut(5000);
+            $('#msg_add').text("Silahkan cek kembali data inputan berikut...!");
+
+            if(nama == ''){
+                $('#war_set_nama_vendor').show();
+            }
+            if(npwp == ''){
+                $('#war_set_npwp').show();
+            }
+            if(email == ''){
+                $('#war_set_email').show();
+            }
+            if(noTelp == ''){
+                $('#war_set_telp').show();
+            }
+            if(alamat == ''){
+                $('#war_set_alamat').show();
             }
         }
     }
 
-    $('.tablePasien').on('click', '.item-register-finger', function() {
+    function editVendor(idVendor, nama, npwp, email, noTelp, alamat) {
 
-
-        var idPasien = $(this).attr('data');
-        var url=btoa('http://localhost:8080/simrs/registerFinger.action?userId='+idPasien);
-        console.log(url);
-        var href ='finspot:FingerspotReg;'+url;
-        window.location.href =href ;
-    });
-
-    function registrasiFinger(idPasien){
-        if(idPasien != ''){
-            console.log(idPasien);
-            var url=btoa('http://localhost:8080/simrs/registerFinger.action?userId='+idPasien);
-            console.log(url);
-            var href ='finspot:FingerspotReg;'+url;
-            console.log(href);
-            window.location.href =href ;
-        }
+        $('#set_nama_vendor').val(nama);
+        $('#set_npwp').val(npwp);
+        $('#set_email').val(email);
+        $('#set_telp').val(noTelp);
+        $('#set_alamat').val(alamat);
+        $('#modal-add').modal({show:true, backdrop:'static'});
+        $('#save_add').attr('onclick','saveVendor(\''+idVendor+'\')');
+        $('#set_judul').text("Edit Vendor");
     }
 
-    function showModalUpload(){
-        $("#modal-upload").modal("show");
-    }
 
-    var n = 0;
-    var i = 1;
-    function addInputUpload() {
-
-        var str = "";
-        str += '<div class="form-group">'+
-            '<label class="col-md-3" style="margin-top: 8px">Upload Foto Rekam Medik '+i+'</label>'+
-            '<div class="col-md-7">'+
-            '<input type="file" name="fileUploadImage" class="form form-control" style="margin-top: 7px">'+
-            <%--'<s:file id="upload-img" name="fileUploadImage" cssClass="form form-control"/>'+--%>
-            '</div>'+
-            '</div>';
-        if (n > 0){
-            $("#body-rekam-medic-"+n+"").html(str+'<div id="body-rekam-medic-'+i+'"></div>');
-        } else {
-            $("#body-rm").html('<div id="body-rekam-medic-'+n+'">'+str+'</div><div id="body-rekam-medic-'+i+'"></div>');
-        }
-        n++;
-        i++;
-    }
-
-    /*function user_register(user_id, user_name) {
-        regStats = 0;
-        regCt = -1;
-        try
-        {
-            timer_register.stop();
-        }
-        catch(err)
-        {
-            console.log('Registration timer has been init');
-        }
-        var limit = 4;
-        var ct = 1;
-        var timeout = 5000;
-
-        timer_register = $.timer(timeout, function() {
-            console.log("'"+user_name+"' registration checking...");
-            user_checkregister(user_id,$("#user_finger_"+user_id).html());
-            if (ct>=limit || regStats==1)
-            {
-                timer_register.stop();
-                console.log("'"+user_name+"' registration checking end");
-                if (ct>=limit && regStats==0)
-                {
-                    alert("'"+user_name+"' registration fail!");
-                }
-                if (regStats==1)
-                {
-                    $("#user_finger_"+user_id).html(regCt);
-                    alert("'"+user_name+"' registration success!");
-                    load('http://localhost:8080/simrs/');
-                }
-            }
-            ct++;
-        });
-    }
-
-    function user_checkregister(user_id, current) {
-        $.ajax({
-            url			:	"user.php?action=checkreg&user_id="+user_id+"&current="+current,
-            type		:	"GET",
-            success		:	function(data)
-            {
-                try
-                {
-                    var res = jQuery.parseJSON(data);
-                    if (res.result)
-                    {
-                        regStats = 1;
-                        $.each(res, function(key, value){
-                            if (key=='current')
-                            {
-                                regCt = value;
-                            }
-                        });
-                    }
-                }
-                catch(err)
-                {
-                    alert(err.message);
-                }
-            }
-        });
-    }*/
 
 </script>
 
