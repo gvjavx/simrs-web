@@ -1495,6 +1495,8 @@
                                id="war_rep_obat"><i class="fa fa-times"></i> required</p>
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
                                id="cor_rep_obat"><i class="fa fa-check"></i> correct</p>
+                            <p style="margin-top: 17px; display: none; margin-left: -20px" id="label-kronis"><label class="label label-warning" >Obat Kronis</label></p>
+                            <input type="hidden" id="val-kronis"/>
                         </div>
                     </div>
                     <div class="form-group">
@@ -1581,7 +1583,7 @@
                         <label class="col-md-3" style="margin-top: 7px">Jumlah</label>
                         <div class="col-md-7">
                             <input oninput="var warn =$('#war_rep_qty').is(':visible'); if (warn){$('#cor_rep_qty').show().fadeOut(3000);$('#war_rep_qty').hide()}"
-                                   style="margin-top: 7px" value="1" class="form-control" type="number" min="1"
+                                   style="margin-top: 7px; width: 40%" value="1" class="form-control" type="number" min="1"
                                    id="resep_qty">
                         </div>
                         <div class="col-md-2">
@@ -1589,6 +1591,21 @@
                                id="war_rep_qty"><i class="fa fa-times"></i> required</p>
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
                                id="cor_rep_qty"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="form-hari" style="display: none;">
+                        <label class="col-md-3" style="margin-top: 7px; font-size:12px">Pengambilan Berikutnya(Hari)</label>
+                        <div class="col-md-7">
+                            <input oninput="var warn =$('#war_rep_qty').is(':visible'); if (warn){$('#cor_rep_hari').show().fadeOut(3000);$('#war_rep_hari').hide()}"
+                                   style="margin-top: 7px; width: 40%;" value="7" class="form-control" type="number" min="1"
+                                   id="hari-kronis">
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_rep_hari"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_rep_hari"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
 
@@ -1602,8 +1619,8 @@
                                 <option value="Y">Ya</option>
                             </select>
                             <%--<input oninput="var warn =$('#war_rep_qty').is(':visible'); if (warn){$('#cor_rep_qty').show().fadeOut(3000);$('#war_rep_qty').hide()}"--%>
-                                   <%--style="margin-top: 7px" value="1" class="form-control" type="number" min="1"--%>
-                                   <%--id="resep_qty">--%>
+                            <%--style="margin-top: 7px" value="1" class="form-control" type="number" min="1"--%>
+                            <%--id="resep_qty">--%>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
@@ -1613,17 +1630,17 @@
                         </div>
                     </div>
                     <%--<div class="form-group">--%>
-                        <%--<label class="col-md-3" style="margin-top: 7px">Keterangan</label>--%>
-                        <%--<div class="col-md-7">--%>
-                            <%--<textarea id="resep_keterangan" rows="4" class="form-control" style="margin-top: 7px"--%>
-                                      <%--oninput="var warn =$('#war_rep_ket').is(':visible'); if (warn){$('#cor_rep_ket').show().fadeOut(3000);$('#war_rep_ket').hide()}"></textarea>--%>
-                        <%--</div>--%>
-                        <%--<div class="col-md-2">--%>
-                            <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px"--%>
-                               <%--id="war_rep_ket"><i class="fa fa-times"></i> required</p>--%>
-                            <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px"--%>
-                               <%--id="cor_rep_ket"><i class="fa fa-check"></i> correct</p>--%>
-                        <%--</div>--%>
+                    <%--<label class="col-md-3" style="margin-top: 7px">Keterangan</label>--%>
+                    <%--<div class="col-md-7">--%>
+                    <%--<textarea id="resep_keterangan" rows="4" class="form-control" style="margin-top: 7px"--%>
+                    <%--oninput="var warn =$('#war_rep_ket').is(':visible'); if (warn){$('#cor_rep_ket').show().fadeOut(3000);$('#war_rep_ket').hide()}"></textarea>--%>
+                    <%--</div>--%>
+                    <%--<div class="col-md-2">--%>
+                    <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px"--%>
+                    <%--id="war_rep_ket"><i class="fa fa-times"></i> required</p>--%>
+                    <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px"--%>
+                    <%--id="cor_rep_ket"><i class="fa fa-check"></i> correct</p>--%>
+                    <%--</div>--%>
                     <%--</div>--%>
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px"></label>
@@ -1647,7 +1664,7 @@
                         id="desti_apotek"></span></b>
                 </div>
                 <div class="box">
-                    <table class="table table-striped table-bordered" id="tabel_rese_detail">
+                    <table class="table table-striped table-bordered" id="tabel_rese_detail" style="font-size: 13px;">
                         <thead>
                         <td>ID</td>
                         <td>Obat</td>
@@ -1655,6 +1672,8 @@
                         <td align="center">Jenis Satuan</td>
                         <td>Keterangan</td>
                         <td>Racik</td>
+                        <td>Kronis</td>
+                        <td>Pengambilan Berikutnya</td>
                         <td align="center" width="5%">Action</td>
                         </thead>
                         <tbody id="body_detail">
@@ -4042,6 +4061,12 @@
         var listObat = $("input[name=cek_waktu]:checked");
         var pemberian = $("#resep_waktu").val();
         var jenisResep = $("#jenis_resep").val();
+        var flagKronis = $("#val-kronis").val();
+        var hariKronis = "";
+
+        if (flagKronis == "Y"){
+            hariKronis = $("#hari-kronis").val();
+        }
 
         var i = 0;
         var waktu = [];
@@ -4110,6 +4135,8 @@
                         '<td align="center">' + jenisSatuan + '</td>' +
                         '<td>' + ket + '</td>' +
                         '<td>' + jenisResep + '</td>' +
+                        '<td>' + labelKronis(flagKronis) + '</td>' +
+                        '<td aling="center">' + hariKronis + '</td>' +
                         '<td align="center"><img border="0" onclick="delRowObat(\'' + id + '\')" class="hvr-grow" src="<s:url value="/pages/images/delete-flat.png"/>" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
                         '</tr>';
                     $('#body_detail').append(row);
@@ -4811,6 +4838,7 @@
         var qtyBiji = "";
         var lembarPerBox = "";
         var bijiPerLembar = "";
+        var flagKronis = "";
         var idx = select.selectedIndex;
 
         if (idx > 0) {
@@ -4838,9 +4866,19 @@
                 if (idObat.split('|')[6] != 'null' && idObat.split('|')[6] != '') {
                     bijiPerLembar = idObat.split('|')[6];
                 }
+                if (idObat.split('|')[7] != 'null' && idObat.split('|')[7] != '') {
+                    flagKronis = idObat.split('|')[7];
+                }
 
                 var total = parseInt(qtyBiji)+(parseInt(qtyBox)*parseInt(lembarPerBox))+(parseInt(qtyLembar)*parseInt(bijiPerLembar));
 
+                if (flagKronis == "Y"){
+                    labelKronis(flagKronis);
+                    $("#form-hari").show();
+                } else {
+                    labelKronis(flagKronis);
+                    $("#form-hari").hide();
+                }
                 //$('#resep_stok_box').val(qtyBox);
                 //$('#resep_stok_lembar').val(qtyLembar);
                 $('#resep_stok_biji').val(total);
@@ -4850,6 +4888,18 @@
                 $('#resep_qty').val('');
                 $('#resep_jenis_satuan').val('').trigger('change');
             }
+        }
+    }
+
+    function labelKronis(flag){
+        if (flag == "Y"){
+            $("#label-kronis").show();
+            $("#val-kronis").val(flag);
+            return 'Obat Kronis';
+        } else {
+            $("#label-kronis").hide();
+            $("#val-kronis").val("");
+            return "";
         }
     }
 

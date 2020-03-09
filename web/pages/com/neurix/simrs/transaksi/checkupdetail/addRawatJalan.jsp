@@ -1307,8 +1307,6 @@
                                id="war_rep_apotek"><i class="fa fa-times"></i> required</p>
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
                                id="cor_rep_apotek"><i class="fa fa-check"></i> correct</p>
-                            <label class="label label-warning" id="label-kronis" style="margin-top: 12px; display: none; margin-left: -20px">Obat Kronis</label>
-                            <input type="hidden" id="val-kronis"/>
                         </div>
                     </div>
                     <div class="form-group">
@@ -1324,6 +1322,8 @@
                                id="war_rep_obat"><i class="fa fa-times"></i> required</p>
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
                                id="cor_rep_obat"><i class="fa fa-check"></i> correct</p>
+                            <p style="margin-top: 17px; display: none; margin-left: -20px" id="label-kronis"><label class="label label-warning" >Obat Kronis</label></p>
+                            <input type="hidden" id="val-kronis"/>
                         </div>
                     </div>
                     <div class="form-group">

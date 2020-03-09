@@ -2325,7 +2325,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 //                        sepRequest.setNoRujukan(checkup.getNoRujukan());
 //                        sepRequest.setPpkRujukan(checkup.getNoPpkRujukan());
 
-                        sepRequest.setAsalRujukan("0");//
+                        sepRequest.setAsalRujukan("2");//
                         sepRequest.setTglRujukan("");
                         sepRequest.setNoRujukan("");
                         sepRequest.setPpkRujukan("");

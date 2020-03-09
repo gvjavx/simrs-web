@@ -515,7 +515,6 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         List<Object[]> result = new ArrayList<>();
         result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("branchId", branch)
-                .setParameter("poliId", pelayanan)
                 .list();
 
         if (!result.isEmpty()) {
