@@ -200,7 +200,7 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
                 detail.setLastUpdate(bean.getCreatedDate());
                 detail.setLastUpdateWho(bean.getCreatedWho());
                 detail.setFlagRacik(detailObat.getFlagRacik());
-                if (detail.getHariKronis() != null){
+                if (detailObat.getHariKronis() != null){
                     detail.setHariKronis(detailObat.getHariKronis());
                 }
                 saveObatResep(detail);
