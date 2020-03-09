@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="newReportMutasi" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8e506c74-d8ab-4e72-b68c-624eb5e52f8b">
 	<property name="ireport.zoom" value="1.610510000000001"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="576"/>
 	<parameter name="reportParams.branchName" class="java.lang.String"/>
 	<parameter name="reportParams.titleReport" class="java.lang.String"/>
 	<parameter name="reportParams.urlLogo" class="java.lang.String"/>
@@ -16,6 +16,7 @@
 	<parameter name="reportParams.jabatanBaru" class="java.lang.String"/>
 	<parameter name="reportParams.levelBaru" class="java.lang.String"/>
 	<parameter name="reportParams.noSurat" class="java.lang.String"/>
+	<parameter name="reportParams.gajiBaru" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select * from it_hris_mutasi_jabatan limit 1]]>
 	</queryString>
@@ -355,6 +356,13 @@ new com.google.zxing.qrcode.QRCodeWriter().encode($F{nip},com.google.zxing.Barco
 					<font size="12" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.noSurat}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="148" y="432" width="177" height="17" uuid="6d1c1702-fea0-4641-b056-fb44e0f8bc3d"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.gajiBaru}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

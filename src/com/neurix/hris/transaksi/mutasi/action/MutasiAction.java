@@ -27,6 +27,7 @@ import org.springframework.web.context.ContextLoader;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.*;
@@ -438,6 +439,8 @@ public class MutasiAction extends BaseMasterAction{
             MutasiBo mutasiBo = (MutasiBo) ctx.getBean("mutasiBoProxy");
             searchMutasi = mutasiBo.getDataReportMutasi(id);
             Branch branch = new Branch();
+            BigDecimal gajiPegawai = mutasiBo.getGajiPokok(searchMutasi.getLevelBaru());
+            String stGajiPegawai = CommonUtil.numbericFormat(gajiPegawai,"###,###");
             try{
                 BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
                 branch = branchBo.getBranchById("KP","Y");
@@ -458,6 +461,7 @@ public class MutasiAction extends BaseMasterAction{
             reportParams.put("jabatanBaru", searchMutasi.getPositionBaruName());
             reportParams.put("unitBaru", searchMutasi.getBranchBaruName());
             reportParams.put("levelBaru", searchMutasi.getLevelBaruName());
+            reportParams.put("gajiBaru","Rp. "+ stGajiPegawai);
 
             try {
                 preDownload();

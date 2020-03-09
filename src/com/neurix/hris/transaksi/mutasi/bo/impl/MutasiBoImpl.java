@@ -14,6 +14,8 @@ import com.neurix.hris.master.biodata.model.PelatihanJabatanUser;
 import com.neurix.hris.master.kualifikasiCalonPejabat.dao.KualifikasiCalonPejabatDao;
 import com.neurix.hris.master.kualifikasiCalonPejabat.model.ImHrisKualifikasiCalonPejabatEntity;
 import com.neurix.hris.master.kualifikasiCalonPejabat.model.KualifikasiCalonPejabat;
+import com.neurix.hris.master.payrollSkalaGaji.dao.PayrollSkalaGajiDao;
+import com.neurix.hris.master.payrollSkalaGaji.model.ImPayrollSkalaGajiEntity;
 import com.neurix.hris.master.pelatihanJabatan.model.PelatihanJabatan;
 import com.neurix.hris.master.sertifikat.dao.SertifikatDao;
 import com.neurix.hris.master.sertifikat.model.ImSertifikatEntity;
@@ -77,6 +79,15 @@ public class MutasiBoImpl implements MutasiBo {
     private SertifikatDao sertifikatDao;
     private HistoryJabatanPegawaiDao historyJabatanPegawaiDao;
     private SmkHistoryGolonganDao historyGolonganDao;
+    private PayrollSkalaGajiDao skalaGajiDao;
+
+    public PayrollSkalaGajiDao getSkalaGajiDao() {
+        return skalaGajiDao;
+    }
+
+    public void setSkalaGajiDao(PayrollSkalaGajiDao skalaGajiDao) {
+        this.skalaGajiDao = skalaGajiDao;
+    }
 
     private PelatihanJabatanUserDao pelatihanJabatanUserDao;
 
@@ -1175,6 +1186,7 @@ public class MutasiBoImpl implements MutasiBo {
                 resultMutasi.setBranchBaruName(mutasi.getBranchBaruName());
                 resultMutasi.setPositionBaruName(mutasi.getPositionBaruName());
                 resultMutasi.setLevelBaruName(mutasi.getLevelBaruName());
+                resultMutasi.setLevelBaru(mutasi.getLevelBaru());
                 resultMutasi.setStTanggalEfektif(mutasi.getStTanggalEfektif());
             }
         }
@@ -1281,5 +1293,17 @@ public class MutasiBoImpl implements MutasiBo {
             hasil = false;
         }
         return hasil;
+    }
+
+    public BigDecimal getGajiPokok(String golonganId){
+        BigDecimal nilai=new BigDecimal(0);
+        List<ImPayrollSkalaGajiEntity> gaji = new ArrayList<>();
+        gaji = skalaGajiDao.getDataSkalaGajiSimRs(golonganId);
+        if (gaji!=null){
+            for (ImPayrollSkalaGajiEntity gajiEntity: gaji){
+                nilai = gajiEntity.getNilai();
+            }
+        }
+        return  nilai;
     }
 }

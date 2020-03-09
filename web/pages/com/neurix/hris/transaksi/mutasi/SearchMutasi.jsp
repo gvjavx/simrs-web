@@ -411,7 +411,7 @@ To change this template use File | Settings | File Templates.
             dwr.engine.setAsync(false);
             if(noSurat!=''){
                 if (confirm(msg)) {
-                    var addr = "simrs/mutasi/printReportMutasi_mutasi.action?idSurat="+idMutasi+"&noSurat="+noSurat;
+                    var addr = "simrs/mutasi/printReportMutasi_mutasi.action?idMutasi="+idMutasi+"&noSurat="+noSurat;
                     var currentLoc = window.location.href;
                     var newAdd = currentLoc.split('simrs/')[0] + addr;
                     window.location.href = newAdd;
