@@ -94,5 +94,11 @@
         <property name="flagRacik">
             <column name="flag_racik" sql-type="varchar" length="1" not-null="false"/>
         </property>
+        <property name="hariKronis">
+            <column name="hari_kronis" sql-type="int" not-null="false"/>
+        </property>
+        <property name="flagKronisDiambil">
+            <column name="flag_kronis_diambil" sql-type="varchar" length="1" not-null="false"/>
+        </property>
     </class>
 </hibernate-mapping>
