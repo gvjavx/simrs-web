@@ -32,6 +32,7 @@ public class ImSimrsObatEntity implements Serializable{
     private String idPabrik;
     private String merk;
     private String idBarang;
+    private String flagKronis;
 
     public String getIdBarang() {
         return idBarang;
@@ -243,5 +244,13 @@ public class ImSimrsObatEntity implements Serializable{
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    public String getFlagKronis() {
+        return flagKronis;
+    }
+
+    public void setFlagKronis(String flagKronis) {
+        this.flagKronis = flagKronis;
     }
 }

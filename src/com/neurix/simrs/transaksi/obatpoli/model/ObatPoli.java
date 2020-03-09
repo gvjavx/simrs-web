@@ -30,6 +30,9 @@ public class ObatPoli {
     private BigInteger bijiPerLembar;
     private String idBarang;
     private String exp;
+    private String idPabrik;
+    private Date expiredDate;
+    private String flagKronis;
 
     public String getExp() {
         return exp;
@@ -46,9 +49,6 @@ public class ObatPoli {
     public void setIdBarang(String idBarang) {
         this.idBarang = idBarang;
     }
-
-    private String idPabrik;
-    private Date expiredDate;
 
     public String getIdPabrik() {
         return idPabrik;
@@ -202,5 +202,13 @@ public class ObatPoli {
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    public String getFlagKronis() {
+        return flagKronis;
+    }
+
+    public void setFlagKronis(String flagKronis) {
+        this.flagKronis = flagKronis;
     }
 }

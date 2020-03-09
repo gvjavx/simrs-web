@@ -259,9 +259,10 @@
                 if(response.length > 0){
                     $.each(response, function (i, item) {
                         tableApotek += '<tr>' +
-                            '<td>'+item.namaPelayanan.toUpperCase()+'</td>'+
+                            '<td><i class="fa fa-hospital-o "></i> '+item.namaPelayanan.toUpperCase()+'</td>'+
+                            '<td><i class="fa fa-file "></i> '+item.idPermintaanResep+'</td>'+
                             '<td><i class="fa fa-user"></i> '+item.nama.toUpperCase()+'</td>'+
-                            '<td style="vertical-align: middle"><label class="label label-success"> Antrian Obat</label></td>' +
+                            '<td style="vertical-align: middle"><label class="label label-success" style="margin: 10px"> Antrian Obat</label>'+ isRacik(item.ketRacik) +'</td>' +
                             '</tr>';
                     });
                     $('#body_antrian_apotek').html(tableApotek);
@@ -270,6 +271,14 @@
                 }
             });
         },1000);
+    }
+
+    function isRacik(racik) {
+        if(racik != null){
+            return '<label class="label label-warning" style="margin: 10px">'+racik+'</label>';
+        } else {
+            return '';
+        }
     }
 
     function detailBranch(branch) {
