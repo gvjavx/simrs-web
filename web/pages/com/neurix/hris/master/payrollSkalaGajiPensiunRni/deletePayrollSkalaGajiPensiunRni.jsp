@@ -17,7 +17,7 @@
 
         $.subscribe('beforeProcessSave', function (event, data) {
             var idDepartment = document.getElementById("skalaGajiId1").value;
-            var nameDepartment    = document.getElementById("golonganId1").value;
+            var nameDepartment    = document.getElementById("golonganId12").value;
 
 
 
@@ -89,7 +89,7 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="formEdit" method="post" theme="simple" namespace="/payrollSkalaGajiPensiun" action="saveDelete_payrollSkalaGajiPensiun" cssClass="well form-horizontal">
+            <s:form id="formEdit" method="post" theme="simple" namespace="/payrollSkalaGajiPensiunRni" action="saveDelete_payrollSkalaGajiPensiunRni" cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
@@ -129,6 +129,7 @@
                                 <s:select list="#initComboTipe.listComboGolongan" id="golonganId1" name="payrollSkalaGajiPensiunRni.golonganId" disabled="true"
                                           listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
                                     <s:textfield  id="golonganId1" name="payrollSkalaGajiPensiunRni.golonganName" readonly="true" required="true"  cssClass="form-control"/>
+                                    <s:textfield cssStyle="display: none"  id="golonganId12" name="payrollSkalaGajiPensiunRni.golonganId" readonly="true" required="true"  cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>

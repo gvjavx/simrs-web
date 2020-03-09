@@ -160,7 +160,7 @@
 
                                         <s:set name="listComboPayrollSkalaGajiPensiun" value="#session.listOfResult" scope="request" />
                                         <display:table name="listComboPayrollSkalaGajiPensiun" class="table table-condensed table-striped table-hover"
-                                                       requestURI="/paging_payrollSkalaGajiPensiunDplk.action" export="true" id="row" pagesize="14" style="font-size:10">
+                                                       requestURI="paging_payrollSkalaGajiPensiunDplk.action" export="true" id="row" pagesize="14" style="font-size:10">
                                             <display:column media="html" title="Edit">
                                                 <s:if test="#attr.row.flagYes">
                                                     <s:url var="urlEdit" namespace="/payrollSkalaGajiPensiunDplk" action="edit_payrollSkalaGajiPensiunDplk" escapeAmp="false">

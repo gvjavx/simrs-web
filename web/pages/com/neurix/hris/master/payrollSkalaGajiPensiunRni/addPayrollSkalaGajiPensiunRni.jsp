@@ -33,7 +33,7 @@
                     event.originalEvent.options.submit = false;
                     var msg = "";
                     if (isNaN(point)) {
-                        msg += 'Field <strong>point</strong> Harus angka tanpa koma.' + '<br/>';
+                        msg += 'Field <strong>Masa Kerja</strong> Harus angka tanpa koma.' + '<br/>';
                     }
 
                     if (isNaN(nilai)) {
@@ -127,7 +127,7 @@
 
                     <tr>
                         <td>
-                            <label class="control-label"><small>Point :</small></label>
+                            <label class="control-label"><small>Masa Kerja :</small></label>
                         </td>
                         <td>
                             <table>

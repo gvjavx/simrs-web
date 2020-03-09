@@ -129,9 +129,10 @@ public class PayrollSkalaGajiPkwtBoImpl implements PayrollSkalaGajiPkwtBo {
                 imPayrollSkalaGajiPkwtHistoryEntity.setCreatedWho(imPayrollSkalaGajiPkwtEntity.getLastUpdateWho());
                 imPayrollSkalaGajiPkwtHistoryEntity.setCreatedDate(imPayrollSkalaGajiPkwtEntity.getLastUpdate());*/
 
-                imPayrollSkalaGajiPkwtEntity.setSkalaGajiPkwtId(bean.getSkalaGajiPkwtId());
-                imPayrollSkalaGajiPkwtEntity.setGolonganPkwtId(bean.getGolonganPkwtId());
+                /*imPayrollSkalaGajiPkwtEntity.setSkalaGajiPkwtId(bean.getSkalaGajiPkwtId());
+                imPayrollSkalaGajiPkwtEntity.setGolonganPkwtId(bean.getGolonganPkwtId());*/
                 imPayrollSkalaGajiPkwtEntity.setGajiPokok(bean.getGajiPokokNilai());
+                imPayrollSkalaGajiPkwtEntity.setSantunanKhusus(bean.getSantunanKhususNilai());
                 imPayrollSkalaGajiPkwtEntity.setTunjFunsional(bean.getTunjFunsionalNilai());
                 imPayrollSkalaGajiPkwtEntity.setTunjtambahan(bean.getTunjtambahanNilai());
                 imPayrollSkalaGajiPkwtEntity.setFlag(bean.getFlag());
@@ -179,6 +180,7 @@ public class PayrollSkalaGajiPkwtBoImpl implements PayrollSkalaGajiPkwtBo {
             imPayrollSkalaGajiPkwtEntity.setSkalaGajiPkwtId(payrollSkalaGajiPkwtId);
             imPayrollSkalaGajiPkwtEntity.setGolonganPkwtId(bean.getGolonganPkwtId());
             imPayrollSkalaGajiPkwtEntity.setGajiPokok(bean.getGajiPokokNilai());
+            imPayrollSkalaGajiPkwtEntity.setSantunanKhusus(bean.getSantunanKhususNilai());
             imPayrollSkalaGajiPkwtEntity.setTunjFunsional(bean.getTunjFunsionalNilai());
             imPayrollSkalaGajiPkwtEntity.setTunjtambahan(bean.getTunjtambahanNilai());
             imPayrollSkalaGajiPkwtEntity.setFlag(bean.getFlag());

@@ -18,9 +18,12 @@
         $.subscribe('beforeProcessSave', function (event, data) {
             var golonganId = document.getElementById("golonganId1").value;
             var nilai = document.getElementById("nilai1").value;
+            var sankhus = document.getElementById("sankhus1").value;
+            var tunjFungsional = document.getElementById("tunjFungsional1").value;
+            var tunjTambahan = document.getElementById("tunjTambahan1").value;
 
             if (golonganId != ''&& nilai != '' ) {
-                if(isNaN(point) ==  false && isNaN(nilai) == false){
+                if(isNaN(sankhus) ==  false && isNaN(nilai) == false && isNaN(sankhus) == false&& isNaN(tunjFungsional) == false&& isNaN(tunjTambahan) == false){
                     if (confirm('Do you want to save this record?')) {
                         event.originalEvent.options.submit = true;
                         $.publish('showDialog');
@@ -33,6 +36,15 @@
                     var msg = "";
                     if (isNaN(nilai)) {
                         msg += 'Field <strong>nilai</strong> Harus angka tanpa koma.' + '<br/>';
+                    }
+                    if (isNaN(sankhus)) {
+                        msg += 'Field <strong>sankhus</strong> Harus angka tanpa koma.' + '<br/>';
+                    }
+                    if (isNaN(tunjFungsional)) {
+                        msg += 'Field <strong>tunjFungsional</strong> Harus angka tanpa koma.' + '<br/>';
+                    }
+                    if (isNaN(tunjTambahan)) {
+                        msg += 'Field <strong>tunjTambahan</strong> Harus angka tanpa koma.' + '<br/>';
                     }
 
                     document.getElementById('errorValidationMessage').innerHTML = msg;
@@ -104,23 +116,18 @@
                 <table >
                     <tr>
                         <td>
-                            <label class="control-label"><small>Id Payroll Pkwt :  </small></label>
-                        </td>
-                        <td>
                             <table>
-                                <s:textfield  id="skalaGajiId1" readonly="true" name="payrollSkalaGajiPkwt.skalaGajiPkwtId" required="true"  cssClass="form-control"/>
+                                <s:textfield cssStyle="display: none"  id="skalaGajiId1" readonly="true" name="payrollSkalaGajiPkwt.skalaGajiPkwtId" required="true"  cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Golongan :</small></label>
-                        </td>
-                        <td>
                             <table>
-                                <s:action id="initComboTipe" namespace="/golongan" name="initComboGolonganPkwt_golongan"/>
+                                <%--<s:action id="initComboTipe" namespace="/golongan" name="initComboGolonganPkwt_golongan"/>
                                 <s:select list="#initComboTipe.listComboGolonganPkwt" id="golonganId1" name="payrollSkalaGajiPkwt.golonganPkwtId"
-                                          listKey="golonganPkwtId" listValue="golonganPkwtName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                          listKey="golonganPkwtId" listValue="golonganPkwtName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
+                                    <s:textfield cssStyle="display: none" id="golonganId1" name="payrollSkalaGajiPkwt.golonganPkwtId" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
