@@ -1,6 +1,8 @@
 package com.neurix.akuntansi.transaksi.laporanAkuntansi.action;
 
 //import com.neurix.authorization.company.bo.AreaBo;
+import com.neurix.akuntansi.master.settingReportUser.bo.SettingReportUserBo;
+import com.neurix.akuntansi.master.settingReportUser.model.SettingReportUser;
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.akuntansi.transaksi.jurnal.model.Jurnal;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.bo.LaporanAkuntansiBo;
@@ -37,10 +39,19 @@ import java.util.*;
 public class LaporanAkuntansiAction extends BaseMasterAction{
     protected static transient Logger logger = Logger.getLogger(LaporanAkuntansiAction.class);
     private LaporanAkuntansiBo laporanAkuntansiBoProxy;
+    private SettingReportUserBo settingReportUserBoProxy;
     private LaporanAkuntansi laporanAkuntansi;
     private String tipeLaporan;
     private JRBeanCollectionDataSource dataPrint;
     List<Aging> myList = new ArrayList<>() ;
+
+    public SettingReportUserBo getSettingReportUserBoProxy() {
+        return settingReportUserBoProxy;
+    }
+
+    public void setSettingReportUserBoProxy(SettingReportUserBo settingReportUserBoProxy) {
+        this.settingReportUserBoProxy = settingReportUserBoProxy;
+    }
 
     public List<Aging> getMyList() {
         return myList;
@@ -324,12 +335,18 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
 
     public String searchLaporanAkuntansi() {
         logger.info("[LaporanAkuntansiAction.search] start process >>>");
+        List<LaporanAkuntansi> finalList = new ArrayList();
 
         LaporanAkuntansi searchLaporanAkuntansi = new LaporanAkuntansi();
         searchLaporanAkuntansi.setFlag("Y");
+        SettingReportUser searchSettingReportUser = new SettingReportUser();
+        searchSettingReportUser.setFlag("Y");
+        searchSettingReportUser.setUserId(CommonUtil.userIdLogin());
         List<LaporanAkuntansi> listOfSearchLaporanAkuntansi = new ArrayList();
+        List<SettingReportUser> settingReportUserList = new ArrayList<>();
         try {
             listOfSearchLaporanAkuntansi = laporanAkuntansiBoProxy.getByCriteria(searchLaporanAkuntansi);
+            settingReportUserList = settingReportUserBoProxy.getByCriteria(searchSettingReportUser);
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
@@ -342,6 +359,37 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
             return "failure";
         }
 
+        for (LaporanAkuntansi laporanAkuntansi : listOfSearchLaporanAkuntansi){
+            for (SettingReportUser settingReportUser : settingReportUserList){
+                if (laporanAkuntansi.getLaporanAkuntansiId().equalsIgnoreCase(settingReportUser.getReportId())){
+                    finalList.add(laporanAkuntansi);
+                    break;
+                }
+            }
+        }
+        listComboLaporanAkuntansi.addAll(finalList);
+        return SUCCESS;
+    }
+
+    public String searchSelectReport() {
+        logger.info("[LaporanAkuntansiAction.searchSelectReport] start process >>>");
+
+        LaporanAkuntansi searchLaporanAkuntansi = new LaporanAkuntansi();
+        searchLaporanAkuntansi.setFlag("Y");
+        List<LaporanAkuntansi> listOfSearchLaporanAkuntansi = new ArrayList();
+        try {
+            listOfSearchLaporanAkuntansi = laporanAkuntansiBoProxy.getByCriteria(searchLaporanAkuntansi);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = laporanAkuntansiBoProxy.saveErrorMessage(e.getMessage(), "laporanAkuntansiBO.getByCriteria");
+            } catch (GeneralBOException e1) {
+                logger.error("[PositionAction.searchSelectReport] Error when saving error,", e1);
+            }
+            logger.error("[LaporanAkuntansiAction.searchSelectReport] Error when searching position by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            return "failure";
+        }
         listComboLaporanAkuntansi.addAll(listOfSearchLaporanAkuntansi);
         return SUCCESS;
     }

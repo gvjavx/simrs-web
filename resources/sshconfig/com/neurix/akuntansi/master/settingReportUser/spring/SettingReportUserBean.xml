@@ -5,20 +5,17 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
-    <bean id="laporanAkuntansiAction" class="com.neurix.akuntansi.transaksi.laporanAkuntansi.action.LaporanAkuntansiAction"
-          p:laporanAkuntansiBoProxy-ref="laporanAkuntansiBoProxy"
-          p:settingReportUserBoProxy-ref="settingReportUserBoProxy"
-    />
+    <bean id="settingReportUserAction" class="com.neurix.akuntansi.master.settingReportUser.action.SettingReportUserAction"
+          p:settingReportUserBoProxy-ref="settingReportUserBoProxy" />
 
-    <bean id="laporanAkuntansiBo" class="com.neurix.akuntansi.transaksi.laporanAkuntansi.bo.impl.LaporanAkuntansiBoImpl"
+    <bean id="settingReportUserBo" class="com.neurix.akuntansi.master.settingReportUser.bo.impl.SettingReportUserBoImpl"
+          p:settingReportUserDao-ref="settingReportUserDao"
           p:laporanAkuntansiDao-ref="laporanAkuntansiDao"
-          p:personilPositionDao-ref="personilPositionDao"
-          p:biodataDao-ref="biodataDao"
-          p:kodeRekeningDao-ref="kodeRekeningDao"
+          p:userDao-ref="userDao"
     />
 
-    <bean id="laporanAkuntansiBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
-          p:target-ref="laporanAkuntansiBo">
+    <bean id="settingReportUserBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="settingReportUserBo">
         <property name="interceptorNames">
             <list>
                 <value>transactionUserInterceptor</value>
@@ -33,12 +30,11 @@
         <property name="transactionAttributes">
             <props>
                 <prop key="getByCriteria">readOnly</prop>
-                <prop key="saveAdd">PROPAGATION_REQUIRED</prop>
             </props>
         </property>
     </bean>
 
-    <bean id="laporanAkuntansiDao" class="com.neurix.akuntansi.transaksi.laporanAkuntansi.dao.LaporanAkuntansiDao"
+    <bean id="settingReportUserDao" class="com.neurix.akuntansi.master.settingReportUser.dao.SettingReportUserDao"
           p:sessionFactory-ref="sessionFactory" />
 
 </beans>

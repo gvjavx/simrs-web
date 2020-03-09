@@ -394,6 +394,7 @@
                 <value>sshconfig/com/neurix/akuntansi/master/reportDetail/hibernate/ImReportDetailEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/master/mappingJurnal/hibernate/ImMappingJurnalEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/master/masterVendor/hibernate/ImMasterVendorEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/master/settingReportUser/hibernate/ImSettingReportUserEntity.hbm.xml</value>
             </list>
         </property>
     </bean>

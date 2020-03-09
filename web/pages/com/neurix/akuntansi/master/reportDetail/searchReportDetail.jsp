@@ -87,7 +87,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Report ID</label>
                                     <div class="col-sm-4">
-                                        <s:action id="comboLaporan" namespace="/laporanAkuntansi" name="searchLaporanAkuntansi_laporanAkuntansi"/>
+                                        <s:action id="comboLaporan" namespace="/laporanAkuntansi" name="searchSelectReport_laporanAkuntansi"/>
                                         <s:select list="#comboLaporan.listComboLaporanAkuntansi" id="report_id"
                                                   listKey="laporanAkuntansiId" listValue="laporanAkuntansiName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                     </div>
