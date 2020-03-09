@@ -328,7 +328,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
     public List<HeaderCheckup> getListAntrianPasien(String branchId, String poli) {
 
         String branch = "%";
-        String pelayanan = "%";
+        String pelayanan = "";
 
         List<HeaderCheckup> listOfResult = new ArrayList<>();
 
@@ -413,7 +413,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
     public List<HeaderCheckup> getListPeriksaPasien(String branchId, String poli) {
 
         String branch = "%";
-        String pelayanan = "%";
+        String pelayanan = "";
 
         List<HeaderCheckup> listOfResult = new ArrayList<>();
 
@@ -464,7 +464,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
     public List<HeaderCheckup> getListAntrianObat(String branchId, String poli) {
 
         String branch = "%";
-        String pelayanan = "%";
+        String pelayanan = "";
 
         List<HeaderCheckup> listOfResult = new ArrayList<>();
 
@@ -473,7 +473,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         }
 
         if (poli != null && !"".equalsIgnoreCase(poli)) {
-            pelayanan = poli;
+            pelayanan = "\n AND b.id_pelayanan IN ("+poli+") \n";
         }
 
         String SQL = "SELECT a.id_pasien, a.nama, a.desa_id, d.desa_name, b.id_pelayanan,\n" +
@@ -507,8 +507,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "WHERE b.status_periksa = '1'\n" +
                 "AND pr.status IS NOT NULL\n" +
                 "AND pr.flag = 'Y'\n" +
-                "AND a.branch_id LIKE :branchId \n" +
-                "AND b.id_pelayanan LIKE :poliId AND pl.tipe_pelayanan = 'rawat_jalan' OR  pl.tipe_pelayanan = 'igd' \n" +
+                "AND a.branch_id LIKE :branchId \n" + pelayanan+
+                "AND pl.tipe_pelayanan = 'rawat_jalan' OR  pl.tipe_pelayanan = 'igd' \n" +
                 "AND CAST(a.created_date AS date) = current_date\n" +
                 "ORDER BY c.nama_pelayanan, pr.tgl_antrian ASC";
 

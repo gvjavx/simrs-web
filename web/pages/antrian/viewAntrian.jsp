@@ -205,83 +205,84 @@
 
         if(poli != 'null'){
             poliId = poli;
+
         }
 
         console.log(poliId);
 
         detailBranch(branchId);
 
-        setInterval(function () {
-            var tableAntrian = "";
-            var poli = "";
-
-            CheckupAction.getListAntriaPasien(branchId, poliId, function (response) {
-                if(response.length > 0){
-                    var pol = "";
-                    $.each(response, function (i, item) {
-
-                        if(i == 0){
-
-                            pol = item.namaPelayanan;
-
-                        }else{
-                            var tes = item.namaPelayanan;
-                            var tes2 = response[i - 1]["namaPelayanan"];
-
-                            if(tes == tes2){
-                                pol = "";
-                            }else{
-                                pol = item.namaPelayanan;
-                            }
-                        }
-
-                        tableAntrian += '<tr>' +
-                            '<td>'+pol.toUpperCase()+'</td>'+
-                            '<td><i class="fa fa-user"></i> '+item.nama.toUpperCase()+'</td>'+
-                            '<td>'+item.namaDesa.toUpperCase()+'</td>'+
-                            '<td style="vertical-align: middle"><label class="label label-warning"> Selanjutnya</label></td>' +
-                            '</tr>';
-                    });
-
-
-                    $('#body_antrian').html(tableAntrian);
-                }else{
-                    $('#body_antrian').html("");
-                }
-            });
-
-            var tablePeriksa = "";
-            CheckupAction.getListPeriksaPasien(branchId, poliId, function (response) {
-                if(response.length > 0){
-                    $.each(response, function (i, item) {
-                        tablePeriksa += '<tr>' +
-                            '<td>'+item.namaPelayanan.toUpperCase()+'</td>'+
-                            '<td><i class="fa fa-user"></i> '+item.nama.toUpperCase()+'</td>'+
-                            '<td style="vertical-align: middle"><label class="label label-success"> Periksa</label></td>' +
-                            '</tr>';
-                    });
-                    $('#body_periksa').html(tablePeriksa);
-                }else{
-                    $('#body_periksa').html("");
-                }
-            });
-            var tableApotek = "";
-            CheckupAction.getListAntrianApotikPeriksa(branchId, poliId, function (response) {
-                if(response.length > 0){
-                    $.each(response, function (i, item) {
-                        tableApotek += '<tr>' +
-                            '<td><i class="fa fa-hospital-o "></i> '+item.namaPelayanan.toUpperCase()+'</td>'+
-                            '<td><i class="fa fa-file "></i> '+item.idPermintaanResep+'</td>'+
-                            '<td><i class="fa fa-user"></i> '+item.nama.toUpperCase()+'</td>'+
-                            '<td style="vertical-align: middle"><label class="label label-success" style="margin: 10px"> Antrian Obat</label>'+ isRacik(item.ketRacik) +'</td>' +
-                            '</tr>';
-                    });
-                    $('#body_antrian_apotek').html(tableApotek);
-                }else{
-                    $('#body_antrian_apotek').html("");
-                }
-            });
-        },1000);
+        // setInterval(function () {
+        //     var tableAntrian = "";
+        //     var poli = "";
+        //
+        //     CheckupAction.getListAntriaPasien(branchId, poliId, function (response) {
+        //         if(response.length > 0){
+        //             var pol = "";
+        //             $.each(response, function (i, item) {
+        //
+        //                 if(i == 0){
+        //
+        //                     pol = item.namaPelayanan;
+        //
+        //                 }else{
+        //                     var tes = item.namaPelayanan;
+        //                     var tes2 = response[i - 1]["namaPelayanan"];
+        //
+        //                     if(tes == tes2){
+        //                         pol = "";
+        //                     }else{
+        //                         pol = item.namaPelayanan;
+        //                     }
+        //                 }
+        //
+        //                 tableAntrian += '<tr>' +
+        //                     '<td>'+pol.toUpperCase()+'</td>'+
+        //                     '<td><i class="fa fa-user"></i> '+item.nama.toUpperCase()+'</td>'+
+        //                     '<td>'+item.namaDesa.toUpperCase()+'</td>'+
+        //                     '<td style="vertical-align: middle"><label class="label label-warning"> Selanjutnya</label></td>' +
+        //                     '</tr>';
+        //             });
+        //
+        //
+        //             $('#body_antrian').html(tableAntrian);
+        //         }else{
+        //             $('#body_antrian').html("");
+        //         }
+        //     });
+        //
+        //     var tablePeriksa = "";
+        //     CheckupAction.getListPeriksaPasien(branchId, poliId, function (response) {
+        //         if(response.length > 0){
+        //             $.each(response, function (i, item) {
+        //                 tablePeriksa += '<tr>' +
+        //                     '<td>'+item.namaPelayanan.toUpperCase()+'</td>'+
+        //                     '<td><i class="fa fa-user"></i> '+item.nama.toUpperCase()+'</td>'+
+        //                     '<td style="vertical-align: middle"><label class="label label-success"> Periksa</label></td>' +
+        //                     '</tr>';
+        //             });
+        //             $('#body_periksa').html(tablePeriksa);
+        //         }else{
+        //             $('#body_periksa').html("");
+        //         }
+        //     });
+        //     var tableApotek = "";
+        //     CheckupAction.getListAntrianApotikPeriksa(branchId, poliId, function (response) {
+        //         if(response.length > 0){
+        //             $.each(response, function (i, item) {
+        //                 tableApotek += '<tr>' +
+        //                     '<td><i class="fa fa-hospital-o "></i> '+item.namaPelayanan.toUpperCase()+'</td>'+
+        //                     '<td><i class="fa fa-file "></i> '+item.idPermintaanResep+'</td>'+
+        //                     '<td><i class="fa fa-user"></i> '+item.nama.toUpperCase()+'</td>'+
+        //                     '<td style="vertical-align: middle"><label class="label label-success" style="margin: 10px"> Antrian Obat</label>'+ isRacik(item.ketRacik) +'</td>' +
+        //                     '</tr>';
+        //             });
+        //             $('#body_antrian_apotek').html(tableApotek);
+        //         }else{
+        //             $('#body_antrian_apotek').html("");
+        //         }
+        //     });
+        // },1000);
     }
 
     function isRacik(racik) {
