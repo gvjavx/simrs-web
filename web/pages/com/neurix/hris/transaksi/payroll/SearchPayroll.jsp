@@ -366,16 +366,16 @@
                                             <display:column media="html" title="Cuti Tahunan">
                                                 <img border="0" src="<s:property value="#attr.row.flagCutiTahunan"/>" >
                                             </display:column>
-                                            <display:column media="html" title="Jasprod">
+                                            <display:column media="html" title="Jasop">
                                                 <img border="0" src="<s:property value="#attr.row.flagJasprod"/>" >
                                             </display:column>
-                                            <display:column media="html" title="Jubileum">
+                                            <display:column media="html" title="PMP">
                                                 <img border="0" src="<s:property value="#attr.row.flagJubileum"/>" >
                                             </display:column>
                                             <display:column media="html" title="Cuti Panjang">
                                                 <img border="0" src="<s:property value="#attr.row.flagCutiPanjang"/>" >
                                             </display:column>
-                                            <display:column media="html" title="Pensiun">
+                                            <display:column media="html" title="SHT">
                                                 <img border="0" src="<s:property value="#attr.row.flagPensiun"/>" >
                                             </display:column>
 

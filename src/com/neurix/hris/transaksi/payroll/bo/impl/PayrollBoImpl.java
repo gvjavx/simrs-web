@@ -2008,14 +2008,14 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                         if (bean.getBulan().equalsIgnoreCase("12")){
                             BigDecimal totalLain = new BigDecimal(0);
                             BigDecimal pttLain = new BigDecimal(0);
-                            totalLain = payrollDao.totalLain(bean.getTahun());
-                            pttLain = payrollDao.pttSelainPayroll(bean.getTahun());
+                            totalLain = payrollDao.totalLain(bean.getTahun(), payrollEntity.getNip());
+                            pttLain = payrollDao.pttSelainPayroll(bean.getTahun(), payrollEntity.getNip());
                             totalLain11Bulan = totalLain.add(pttLain);
                             pphSeharusnya = pph21SimRs(payrollEntity.getNip(),bean.getBulan(), bean.getTahun(), payrollEntity.getBranchId(),
                                     gaji, santunanKhusus, tunjJabatanStruktural, tunjStruktural, tunjStrategis, tunjPeralihan,tunjLain, tunjTambahan, pemondokan, komunikasi,
                                     totalRlab, lembur, iuranDapenPensiunPersh, iuranBpjsTkPers, iuranBpjsKsPers, totalLain11Bulan,
                                     iuranDapenPensiunPeg, iuranBpjsTkKary, iuranBpjsKsKary, payrollEntity.getStatusKeluarga(), payrollEntity.getJumlahAnak());
-                            pph11Bulan = payrollDao.pph11Bulan(bean.getTahun());
+                            pph11Bulan = payrollDao.pph11Bulan(bean.getTahun(), payrollEntity.getNip());
                             selisihPph = pphSeharusnya.subtract(pph11Bulan);
 
                             payrollPph.setPphGajiNilai(selisihPph);

@@ -178,67 +178,71 @@ public class PayrollBpjsBoImpl implements PayrollBpjsBo {
         logger.info("[PayrollBpjsBoImpl.saveAdd] start process >>>");
 
         if (bean!=null) {
+            String status = cekStatus(bean.getBranchId());
+            if (!status.equalsIgnoreCase("Exist")){
+                String payrollBpjsId;
+                try {
+                    // Generating ID, get from postgre sequence
+                    payrollBpjsId = payrollBpjsDao.getNextBpjs();
+                } catch (HibernateException e) {
+                    logger.error("[PayrollBpjsBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when getting sequence payrollBpjsId id, please info to your admin..." + e.getMessage());
+                }
 
-            String payrollBpjsId;
-            try {
-                // Generating ID, get from postgre sequence
-                payrollBpjsId = payrollBpjsDao.getNextBpjs();
-            } catch (HibernateException e) {
-                logger.error("[PayrollBpjsBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when getting sequence payrollBpjsId id, please info to your admin..." + e.getMessage());
-            }
+                // creating object entity serializable
+                ImPayrollBpjsEntity imPayrollBpjsEntity = new ImPayrollBpjsEntity();
 
-            // creating object entity serializable
-            ImPayrollBpjsEntity imPayrollBpjsEntity = new ImPayrollBpjsEntity();
+                imPayrollBpjsEntity.setBpjsId(payrollBpjsId);
+                ImBranches imBranches = null;
+                ImBranchesPK primaryKey = new ImBranchesPK();
+                primaryKey.setId(bean.getBranchId());
 
-            imPayrollBpjsEntity.setBpjsId(payrollBpjsId);
-            ImBranches imBranches = null;
-            ImBranchesPK primaryKey = new ImBranchesPK();
-            primaryKey.setId(bean.getBranchId());
+                try {
+                    imBranches = branchDao.getById(primaryKey,"Y");
+                } catch (HibernateException e) {
+                    logger.error("[BranchBoImpl.getBranchById] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when retrieving Branch based on id and flag, please info to your admin..." + e.getMessage());
+                }
+                if (imBranches!=null){
+                    imPayrollBpjsEntity.setBranchName(imBranches.getBranchName());
+                }else{
+                    imPayrollBpjsEntity.setBranchName("-");
+                }
+                imPayrollBpjsEntity.setBranchId(bean.getBranchId());
+                imPayrollBpjsEntity.setMaxBpjsKs(bean.getMaxBpjsKs());
+                imPayrollBpjsEntity.setMinBpjsKs(bean.getMinBpjsKs());
+                imPayrollBpjsEntity.setMaxBpjsTk(bean.getMaxBpjsTk());
+                imPayrollBpjsEntity.setMinBpjsTk(bean.getMinBpjsTk());
 
-            try {
-                imBranches = branchDao.getById(primaryKey,"Y");
-            } catch (HibernateException e) {
-                logger.error("[BranchBoImpl.getBranchById] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when retrieving Branch based on id and flag, please info to your admin..." + e.getMessage());
-            }
-            if (imBranches!=null){
-                imPayrollBpjsEntity.setBranchName(imBranches.getBranchName());
-            }else{
-                imPayrollBpjsEntity.setBranchName("-");
-            }
-            imPayrollBpjsEntity.setBranchId(bean.getBranchId());
-            imPayrollBpjsEntity.setMaxBpjsKs(bean.getMaxBpjsKs());
-            imPayrollBpjsEntity.setMinBpjsKs(bean.getMinBpjsKs());
-            imPayrollBpjsEntity.setMaxBpjsTk(bean.getMaxBpjsTk());
-            imPayrollBpjsEntity.setMinBpjsTk(bean.getMinBpjsTk());
+                imPayrollBpjsEntity.setIuranKary(bean.getIuranKary());
+                imPayrollBpjsEntity.setJpkKary(bean.getJpkKary());
 
-            imPayrollBpjsEntity.setIuranKary(bean.getIuranKary());
-            imPayrollBpjsEntity.setJpkKary(bean.getJpkKary());
+                imPayrollBpjsEntity.setJkkPers(bean.getJkkPers());
+                imPayrollBpjsEntity.setJhtPers(bean.getJhtPers());
+                imPayrollBpjsEntity.setJkmPers(bean.getJkmPers());
+                imPayrollBpjsEntity.setIuranPers(bean.getIuranPers());
+                imPayrollBpjsEntity.setJpkPers(bean.getJpkPers());
 
-            imPayrollBpjsEntity.setJkkPers(bean.getJkkPers());
-            imPayrollBpjsEntity.setJhtPers(bean.getJhtPers());
-            imPayrollBpjsEntity.setJkmPers(bean.getJkmPers());
-            imPayrollBpjsEntity.setIuranPers(bean.getIuranPers());
-            imPayrollBpjsEntity.setJpkPers(bean.getJpkPers());
+                imPayrollBpjsEntity.setIuranBpjsKsKaryPersen(bean.getIuranBpjsKsKaryPersen());
+                imPayrollBpjsEntity.setIuranBpjsKsPersPersen(bean.getIuranBpjsKsPersPersen());
+                imPayrollBpjsEntity.setIuranBpjsTkKaryPersen(bean.getIuranBpjsTkKaryPersen());
+                imPayrollBpjsEntity.setIuranBpjsTkPersPersen(bean.getIuranBpjsTkPersPersen());
+                imPayrollBpjsEntity.setFlag(bean.getFlag());
+                imPayrollBpjsEntity.setAction(bean.getAction());
+                imPayrollBpjsEntity.setCreatedWho(bean.getCreatedWho());
+                imPayrollBpjsEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                imPayrollBpjsEntity.setCreatedDate(bean.getCreatedDate());
+                imPayrollBpjsEntity.setLastUpdate(bean.getLastUpdate());
 
-            imPayrollBpjsEntity.setIuranBpjsKsKaryPersen(bean.getIuranBpjsKsKaryPersen());
-            imPayrollBpjsEntity.setIuranBpjsKsPersPersen(bean.getIuranBpjsKsPersPersen());
-            imPayrollBpjsEntity.setIuranBpjsTkKaryPersen(bean.getIuranBpjsTkKaryPersen());
-            imPayrollBpjsEntity.setIuranBpjsTkPersPersen(bean.getIuranBpjsTkPersPersen());
-            imPayrollBpjsEntity.setFlag(bean.getFlag());
-            imPayrollBpjsEntity.setAction(bean.getAction());
-            imPayrollBpjsEntity.setCreatedWho(bean.getCreatedWho());
-            imPayrollBpjsEntity.setLastUpdateWho(bean.getLastUpdateWho());
-            imPayrollBpjsEntity.setCreatedDate(bean.getCreatedDate());
-            imPayrollBpjsEntity.setLastUpdate(bean.getLastUpdate());
-
-            try {
-                // insert into database
-                payrollBpjsDao.addAndSave(imPayrollBpjsEntity);
-            } catch (HibernateException e) {
-                logger.error("[PayrollBpjsBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when saving new data PayrollBpjs, please info to your admin..." + e.getMessage());
+                try {
+                    // insert into database
+                    payrollBpjsDao.addAndSave(imPayrollBpjsEntity);
+                } catch (HibernateException e) {
+                    logger.error("[PayrollBpjsBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data PayrollBpjs, please info to your admin..." + e.getMessage());
+                }
+            }else {
+                throw new GeneralBOException("Maaf Data Dengan Unit Tersebut Sudah ada");
             }
         }
 
@@ -338,5 +342,21 @@ public class PayrollBpjsBoImpl implements PayrollBpjsBo {
 
     public List<PayrollBpjs> getComboPayrollBpjsWithCriteria(String query) throws GeneralBOException {
         return null;
+    }
+    public String cekStatus(String golonganId)throws GeneralBOException{
+        String status ="";
+        ImPayrollBpjsEntity skalaGajiEntity = new ImPayrollBpjsEntity();
+        try {
+            skalaGajiEntity = payrollBpjsDao.getById("branchId",golonganId);
+        } catch (HibernateException e) {
+            logger.error("[PayrollSkalaGajiBoImpl.getSearchPayrollSkalaGajiByCriteria] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        if (skalaGajiEntity!=null){
+            status = "exist";
+        }else{
+            status="notExits";
+        }
+        return status;
     }
 }

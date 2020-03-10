@@ -16,12 +16,13 @@
         };
 
         $.subscribe('beforeProcessSave', function (event, data) {
-            var golonganId = document.getElementById("golonganId1").value;
-            var point = document.getElementById("point1").value;
-            var nilai = document.getElementById("nilai1").value;
+            var id = document.getElementById("tunjJabatanStruktural1").value;
+            var tunjJab = document.getElementById("tunjJabatan1").value;
+            var tunjStruk = document.getElementById("tunjStruktural1").value;
 
-            if (golonganId != '' && point != '' && nilai != '' ) {
-                if(isNaN(point) ==  false && isNaN(nilai) == false){
+
+            if (id != '' && tunjJab != '' && tunjStruk !='' ) {
+                if(isNaN(tunjJab.replace('.','')) == false && isNaN(tunjStruk.replace('.','')) == false){
                     if (confirm('Do you want to save this record?')) {
                         event.originalEvent.options.submit = true;
                         $.publish('showDialog');
@@ -32,12 +33,12 @@
                 }else{
                     event.originalEvent.options.submit = false;
                     var msg = "";
-                    if (isNaN(point)) {
-                        msg += 'Field <strong>point</strong> Harus angka tanpa koma.' + '<br/>';
-                    }
 
-                    if (isNaN(nilai)) {
-                        msg += 'Field <strong>nilai</strong> Harus angka tanpa koma.' + '<br/>';
+                    if (isNaN(tunjJab.replace('.',''))) {
+                        msg += 'Field <strong>Tunj. Jabatan</strong> Harus angka' + '<br/>';
+                    }
+                    if (isNaN(tunjStruk.replace('.',''))) {
+                        msg += 'Field <strong>Tunj. Struktural</strong> Harus angka' + '<br/>';
                     }
 
                     document.getElementById('errorValidationMessage').innerHTML = msg;
@@ -47,16 +48,16 @@
             } else {
                 event.originalEvent.options.submit = false;
                 var msg = "";
-                if (golonganId == '') {
-                    msg += 'Field <strong>Golongan </strong> is required.' + '<br/>';
+                if (tunjJab == '') {
+                    msg += 'Field <strong>Tunj. Jabatan</strong> is required.' + '<br/>';
                 }
 
-                if (point == '') {
-                    msg += 'Field <strong>Point</strong> is required.' + '<br/>';
+                if (id == '') {
+                    msg += 'Field <strong> Tunj. Jab. Id </strong> is required.' + '<br/>';
                 }
 
-                if (nilai == '') {
-                    msg += 'Field <strong>Nilai</strong> is required.' + '<br/>';
+                if (tunjStruk == '') {
+                    msg += 'Field <strong>Tunj. Struktural</strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
@@ -64,6 +65,7 @@
                 $.publish('showErrorValidationDialog');
             }
         });
+
 
         $.subscribe('successDialog', function (event, data) {
             if (event.originalEvent.request.status == 200) {
@@ -93,14 +95,14 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="formEdit" method="post" theme="simple" namespace="/payrollSkalaGajiPensiunRni" action="saveEdit_payrollSkalaGajiPensiunRni" cssClass="well form-horizontal">
+            <s:form id="formEdit" method="post" theme="simple" namespace="/payrollTunjanganJabatanStruktural" action="saveEdit_payrollTunjanganJabatanStruktural" cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
 
 
 
-                <legend align="left">Edit Dana Pensiun</legend>
+                <legend align="left">Edit Tunjangan Jabatan Struktural</legend>
 
 
                 <table>
@@ -114,48 +116,41 @@
                 <table >
                     <tr>
                         <td>
-                            <label class="control-label"><small>Id :</small></label>
+                            <label class="control-label"><small>Tunj. Jab. Id: </small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="skalaGajiId1" readonly="true" name="payrollSkalaGajiPensiunRni.skalaGajiPensiunId1" required="true"  cssClass="form-control"/>
+                                <s:textfield  id="tunjJabatanStruktural1" readonly="true" name="payrollTunjanganJabatanStruktural.tunjJabStrukturId" required="true"  cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
-
                     <tr>
                         <td>
-                            <label class="control-label"><small>Golongan :</small></label>
+                            <label class="control-label"><small>Kelompok Jabatan: </small></label>
                         </td>
                         <td>
                             <table>
-                                <%--<s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>
-                                <s:select list="#initComboTipe.listComboGolongan" id="golonganId1" name="payrollSkalaGajiPensiunRni.golonganId" disabled="true"
-                                          listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
-                                <s:textfield  id="golonganId1" name="payrollSkalaGajiPensiunRni.golonganName" readonly="true" required="true"  cssClass="form-control"/>
-
+                                <s:textfield  id="kelompokId1" readonly="true" name="payrollTunjanganJabatanStruktural.kelompokName" required="true"  cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
-
                     <tr>
                         <td>
-                            <label class="control-label"><small>Masa Kerja :</small></label>
+                            <label class="control-label"><small>Tunj. Jabatan: </small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="point1" name="payrollSkalaGajiPensiunRni.poin" required="true"  cssClass="form-control"/>
+                                <s:textfield  id="tunjJabatan1" name="payrollTunjanganJabatanStruktural.tunjJabatan" required="true"  cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
-
                     <tr>
                         <td>
-                            <label class="control-label"><small>Nilai :</small></label>
+                            <label class="control-label"><small>Tunj. STruktural: </small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="nilai1" name="payrollSkalaGajiPensiunRni.nilai" required="true" cssClass="form-control"/>
+                                <s:textfield  id="tunjStruktural1" name="payrollTunjanganJabatanStruktural.tunjStruktural" required="true"  cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>

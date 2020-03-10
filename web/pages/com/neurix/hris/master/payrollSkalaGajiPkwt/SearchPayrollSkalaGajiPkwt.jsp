@@ -93,7 +93,7 @@
                                 <td>
                                     <table>
                                         <s:action id="initComboTipe" namespace="/golongan" name="initComboGolonganPkwt_golongan"/>
-                                        <s:select list="#initComboTipe.listComboGolonganPkwt" id="golongan1" name="payrollSkalaGajiPkwt.golonganId"
+                                        <s:select list="#initComboTipe.listComboGolonganPkwt" id="golongan1" name="payrollSkalaGajiPkwt.golonganPkwtId"
                                                   listKey="golonganPkwtId" listValue="golonganPkwtName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                     </table>
                                 </td>

@@ -4050,9 +4050,9 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
         return listOfResult;
     }
 
-    public BigDecimal totalLain(String tahun){
+    public BigDecimal totalLain(String tahun, String nip){
         BigDecimal total = new BigDecimal(0);
-        String query="select sum(lain_lain) as totalLain from it_hris_payroll where tahun ='"+tahun+"'";
+        String query="select sum(lain_lain) as totalLain from it_hris_payroll where tahun ='"+tahun+"'AND nip ='"+nip+"'";
         Object results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query).uniqueResult();
         if (results!=null){
@@ -4062,9 +4062,9 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
         }
         return total;
     }
-    public BigDecimal pttSelainPayroll(String tahun){
+    public BigDecimal pttSelainPayroll(String tahun,String nip){
         BigDecimal total = new BigDecimal(0);
-        String query="select sum(gaji_kotor) as totalLain from it_hris_payroll where flag_payroll ='N'"+"and tahun ='"+tahun+"'";
+        String query="select sum(tambahan_lain) as totalLain from it_hris_payroll where flag_payroll ='N'"+"and tahun ='"+tahun+"'AND nip ='"+nip+"'";
         Object results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query).uniqueResult();
         if (results!=null){
@@ -4075,9 +4075,9 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
         return total;
     }
 
-    public BigDecimal pph11Bulan(String tahun){
+    public BigDecimal pph11Bulan(String tahun,String nip){
         BigDecimal total = new BigDecimal(0);
-        String query="select sum(pph_gaji) as totalLain from it_hris_payroll where tahun ='"+tahun+"'";
+        String query="select sum(pph_gaji) as totalLain from it_hris_payroll where tahun ='"+tahun+"'AND nip ='"+nip+"'";
         Object results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query).uniqueResult();
         if (results!=null){

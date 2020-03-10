@@ -206,7 +206,7 @@ public class PayrollSkalaGajiBoImpl implements PayrollSkalaGajiBo {
                     throw new GeneralBOException("Found problem when saving new data PayrollSkalaGaji, please info to your admin..." + e.getMessage());
                 }
             }else{
-                throw new GeneralBOException("Maaf Data Telah Ada");
+                throw new GeneralBOException("Maaf Data dengan Level Tersebut Sudah Ada");
             }
         }
 

@@ -178,35 +178,40 @@ public class PayrollTunjanganJabatanStrukturalBoImpl implements PayrollTunjangan
     public PayrollTunjanganJabatanStruktural saveAdd(PayrollTunjanganJabatanStruktural bean) throws GeneralBOException {
         logger.info("[PayrollTunjanganJabatanStrukturalBoImpl.saveAdd] start process >>>");
         if (bean!=null) {
-            String payrollTunjanganJabatanStruktural;
-            try {
-                // Generating ID, get from postgre sequence
-                payrollTunjanganJabatanStruktural = payrollTunjanganJabatanStrukturalDao.getNextTunjanganJabatanStruktural();
-            } catch (HibernateException e) {
-                logger.error("[PayrollTunjanganJabatanStrukturalBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when getting sequence payrollTunjanganJabatanStruktural id, please info to your admin..." + e.getMessage());
-            }
+            String status = cekStatus(bean.getKelompokId());
+            if (!status.equalsIgnoreCase("exist")){
+                String payrollTunjanganJabatanStruktural;
+                try {
+                    // Generating ID, get from postgre sequence
+                    payrollTunjanganJabatanStruktural = payrollTunjanganJabatanStrukturalDao.getNextTunjanganJabatanStruktural();
+                } catch (HibernateException e) {
+                    logger.error("[PayrollTunjanganJabatanStrukturalBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when getting sequence payrollTunjanganJabatanStruktural id, please info to your admin..." + e.getMessage());
+                }
 
-            // creating object entity serializable
-            ImPayrollTunjanganJabatanStrukturalEntity imPayrollTunjanganJabatanStrukturalEntity = new ImPayrollTunjanganJabatanStrukturalEntity();
+                // creating object entity serializable
+                ImPayrollTunjanganJabatanStrukturalEntity imPayrollTunjanganJabatanStrukturalEntity = new ImPayrollTunjanganJabatanStrukturalEntity();
 
-            imPayrollTunjanganJabatanStrukturalEntity.setTunjJabStrukturId(payrollTunjanganJabatanStruktural);
-            imPayrollTunjanganJabatanStrukturalEntity.setKelompokId(bean.getKelompokId());
-            imPayrollTunjanganJabatanStrukturalEntity.setTunjJabatan(bean.getTunjJabatan());
-            imPayrollTunjanganJabatanStrukturalEntity.setTunjStruktural(bean.getTunjStruktural());
-            imPayrollTunjanganJabatanStrukturalEntity.setFlag(bean.getFlag());
-            imPayrollTunjanganJabatanStrukturalEntity.setAction(bean.getAction());
-            imPayrollTunjanganJabatanStrukturalEntity.setCreatedWho(bean.getCreatedWho());
-            imPayrollTunjanganJabatanStrukturalEntity.setLastUpdateWho(bean.getLastUpdateWho());
-            imPayrollTunjanganJabatanStrukturalEntity.setCreatedDate(bean.getCreatedDate());
-            imPayrollTunjanganJabatanStrukturalEntity.setLastUpdate(bean.getLastUpdate());
+                imPayrollTunjanganJabatanStrukturalEntity.setTunjJabStrukturId(payrollTunjanganJabatanStruktural);
+                imPayrollTunjanganJabatanStrukturalEntity.setKelompokId(bean.getKelompokId());
+                imPayrollTunjanganJabatanStrukturalEntity.setTunjJabatan(bean.getTunjJabatan());
+                imPayrollTunjanganJabatanStrukturalEntity.setTunjStruktural(bean.getTunjStruktural());
+                imPayrollTunjanganJabatanStrukturalEntity.setFlag(bean.getFlag());
+                imPayrollTunjanganJabatanStrukturalEntity.setAction(bean.getAction());
+                imPayrollTunjanganJabatanStrukturalEntity.setCreatedWho(bean.getCreatedWho());
+                imPayrollTunjanganJabatanStrukturalEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                imPayrollTunjanganJabatanStrukturalEntity.setCreatedDate(bean.getCreatedDate());
+                imPayrollTunjanganJabatanStrukturalEntity.setLastUpdate(bean.getLastUpdate());
 
-            try {
-                // insert into database
-                payrollTunjanganJabatanStrukturalDao.addAndSave(imPayrollTunjanganJabatanStrukturalEntity);
-            } catch (HibernateException e) {
-                logger.error("[PayrollTunjanganJabatanStrukturalBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when saving new data PayrollTunjanganJabatanStruktural, please info to your admin..." + e.getMessage());
+                try {
+                    // insert into database
+                    payrollTunjanganJabatanStrukturalDao.addAndSave(imPayrollTunjanganJabatanStrukturalEntity);
+                } catch (HibernateException e) {
+                    logger.error("[PayrollTunjanganJabatanStrukturalBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data PayrollTunjanganJabatanStruktural, please info to your admin..." + e.getMessage());
+                }
+            }else{
+                throw new GeneralBOException("Maaf Data dengan Kelompok Jabatan Tersebut Sudah Ada");
             }
         }
 
@@ -228,7 +233,7 @@ public class PayrollTunjanganJabatanStrukturalBoImpl implements PayrollTunjangan
                 hsCriteria.put("tunjJabStrukturId", searchBean.getTunjJabStrukturId());
             }
             if (searchBean.getKelompokId() != null && !"".equalsIgnoreCase(searchBean.getKelompokId())) {
-                hsCriteria.put("kelompokId", searchBean.getPositionId());
+                hsCriteria.put("kelompokId", searchBean.getKelompokId());
             }
 
 
@@ -298,5 +303,21 @@ public class PayrollTunjanganJabatanStrukturalBoImpl implements PayrollTunjangan
     @Override
     public Long saveErrorMessage(String message, String moduleMethod) throws GeneralBOException {
         return null;
+    }
+    public String cekStatus(String golonganId)throws GeneralBOException{
+        String status ="";
+        ImPayrollTunjanganJabatanStrukturalEntity skalaGajiEntity = new ImPayrollTunjanganJabatanStrukturalEntity();
+        try {
+            skalaGajiEntity = payrollTunjanganJabatanStrukturalDao.getById("kelompokId", golonganId);
+        } catch (HibernateException e) {
+            logger.error("[PayrollSkalaGajiBoImpl.getSearchPayrollSkalaGajiByCriteria] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        if (skalaGajiEntity!=null){
+            status = "exist";
+        }else{
+            status="notExits";
+        }
+        return status;
     }
 }

@@ -623,7 +623,7 @@
                                 <h4>C. Potongan</h4>
                             </div>
                             <div class="col-sm-3" align="center">
-                                <h4>D. PTT</h4>
+                                <h4 id="headerPtt">D. PTT</h4>
                             </div>
                         </div>
 
@@ -642,7 +642,7 @@
                             <div class="col-sm-2">
                                 <input readonly style="text-align: right"  type="text" class="form-control nip" id="iuranDapenPeg" name="nip">
                             </div>
-                            <label class="control-label col-sm-1" for="tipePttId1">Tipe Ptt:</label>
+                            <label class="control-label col-sm-1" for="tipePttId1" id="labelTipePtt">Tipe Ptt:</label>
                             <div class="col-sm-2">
                                 <select class="form-control" id="tipePttId1">
                                     <option value="0">[Select One]</option>
@@ -668,7 +668,7 @@
                             <div class="col-sm-2">
                                 <input style="text-align: right" readonly type="text" class="form-control nip" id="iuranDapenPersh" name="nip">
                             </div>
-                            <label class="control-label col-sm-1" >Nilai Ptt</label>
+                            <label class="control-label col-sm-1" id="labelNilaiPtt" >Nilai Ptt</label>
                             <div class="col-sm-2">
                                 <input style="text-align: right" type="text" class="form-control nip" id="nilaiPtt" name="nip" onfocusout="updateNilai(this.id, this.value)">
                             </div>
@@ -4217,6 +4217,12 @@
                 }
 
                 if(listdata.flagPayroll == "Y"){
+                    $("#nilaiPtt").show();
+                    $("#tipePttId1").show();
+                    $("#labelNilaiPtt").show();
+                    $("#labelTipePtt").show();
+                    $("#headerPtt").show();
+
                     if(listdata.bulan =='12'){
                         $("#headerPph12").show();
                         $("#labelTotalPtt").show();
@@ -4227,6 +4233,7 @@
                         $("#pph11Bulan").show();
                         $("#pphSeharusnya").show();
                         $("#selisihPph").show();
+
                     }else{
                         $("#headerPph12").hide();
                         $("#labelTotalPtt").hide();
@@ -4237,8 +4244,24 @@
                         $("#pph11Bulan").hide();
                         $("#pphSeharusnya").hide();
                         $("#selisihPph").hide();
+
                     }
                 }else{
+                    $("#headerPph12").hide();
+                    $("#labelTotalPtt").hide();
+                    $("#labelPph11Bulan").hide();
+                    $("#labelPphSeharusnya").hide();
+                    $("#labelSelisih").hide();
+                    $("#totalPtt").hide();
+                    $("#pph11Bulan").hide();
+                    $("#pphSeharusnya").hide();
+                    $("#selisihPph").hide();
+                    $("#nilaiPtt").hide();
+                    $("#tipePttId1").hide();
+                    $("#labelNilaiPtt").hide();
+                    $("#labelTipePtt").hide();
+                    $("#headerPtt").hide();
+
                     $('#tunjLain').attr('readonly', true);
                     $('#tunjPeralihan').attr('readonly', true);
                     $('#pemondokan').attr('readonly', true);

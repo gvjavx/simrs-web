@@ -32,7 +32,7 @@
     <script type='text/javascript'>
 
         function link(){
-            window.location.href="<s:url action='initForm_cuti'/>";
+            window.location.href="<s:url action='initForm_payrollTunjanganJabatanStruktural'/>";
         }
 
     </script>
@@ -49,13 +49,9 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Cuti
+            Payroll Tunjangan Jabatan Struktural
             <small>e-HEALTH</small>
         </h1>
-        <%--<ol class="breadcrumb">--%>
-        <%--<li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>--%>
-        <%--<li class="active">Here</li>--%>
-        <%--</ol>--%>
     </section>
 
 
@@ -65,12 +61,10 @@
         <table width="100%" align="center">
             <tr>
                 <td align="center">
-                    <s:form id="cutiForm" method="post"  theme="simple" namespace="/cuti" action="search_cuti.action" cssClass="well form-horizontal">
+                    <s:form id="payrollTunjanganJabatanStrukturalForm" method="post"  theme="simple" namespace="/payrollTunjanganJabatanStruktural" action="search_payrollTunjanganJabatanStruktural.action" cssClass="well form-horizontal">
 
                         <s:hidden name="addOrEdit"/>
                         <s:hidden name="delete"/>
-
-
 
                         <table>
                             <tr>
@@ -83,64 +77,40 @@
                         <table >
                             <tr>
                                 <td>
-                                    <label class="control-label"><small>Cuti Id :</small></label>
+                                    <label class="control-label"><small>T. Jab Struktural Id :</small></label>
                                 </td>
                                 <td>
                                     <table>
-                                        <s:textfield  id="cutiId" name="cuti.cutiId" required="false" readonly="false" cssClass="form-control"/>
+                                        <s:textfield  id="tunjJabatanStrukturalId" name="payrollTunjanganJabatanStruktural.tunjJabatanStrukturalId" required="false" readonly="false" cssClass="form-control"/>
                                     </table>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td>
-                                    <label class="control-label"><small>Cuti Name :</small></label>
+                                    <label class="control-label"><small>Kelompok Jabatan :</small></label>
                                 </td>
                                 <td>
                                     <table>
-                                        <s:textfield  id="cutiName" name="cuti.cutiName" required="false" readonly="false" cssClass="form-control"/>
+                                        <s:action id="comboPosition" namespace="/kelompokPosition" name="searchKelompok_kelompokPosition"/>
+                                        <s:select list="#comboPosition.comboListOfKelompokPosition" id="kelompokId" name="payrollTunjanganJabatanStruktural.kelompokId"
+                                                  listKey="kelompokId" listValue="kelompokName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                     </table>
                                 </td>
                             </tr>
 
-                            <tr>
+                            <%--<tr>
                                 <td>
-                                    <label class="control-label"><small>Tipe Hari :</small></label>
+                                    <label class="control-label"><small>Branch :</small></label>
                                 </td>
                                 <td>
                                     <table>
-                                        <s:select list="#{'kerja':'kerja','kalender':'kalender'}" id="tipeHari" name="cuti.tipeHari"
-                                                  headerKey="" headerValue="[Select one]" cssClass="form-control" />
+                                        <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
+                                        <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="branchId" name="payrollTunjanganJabatanStruktural.branchId" required="true"
+                                                  listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" />
                                     </table>
                                 </td>
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    <label class="control-label"><small>Level :</small></label>
-                                </td>
-                                <td>
-                                    <table>
-                                        <s:action id="comboGolongan" namespace="/golongan" name="initComboGolongan_golongan"/>
-                                        <s:select list="#comboGolongan.listComboGolongan" id="golongan" name="cuti.golonganId"
-                                                  listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control" />
-                                    </table>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    <label class="control-label"><small>Unit :</small></label>
-                                </td>
-                                <td>
-                                    <table>
-                                        <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                                        <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="cuti.branchId"
-                                                  listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                                    </table>
-                                </td>
-                            </tr>
-
+                            </tr>--%>
 
                             <tr>
                                 <td>
@@ -148,7 +118,7 @@
                                 </td>
                                 <td>
                                     <table>
-                                        <s:select list="#{'N':'Non-Active'}" id="flag" name="cuti.flag"
+                                        <s:select list="#{'N':'Non-Active'}" id="flag" name="payrollTunjanganJabatanStruktural.flag"
                                                   headerKey="Y" headerValue="Active" cssClass="form-control" />
                                     </table>
 
@@ -165,22 +135,22 @@
                             <table align="center">
                                 <tr>
                                     <td>
-                                        <sj:submit type="button" cssClass="btn btn-primary" formIds="cutiForm" id="search" name="search"
+                                        <sj:submit type="button" cssClass="btn btn-primary" formIds="payrollTunjanganJabatanStrukturalForm" id="search" name="search"
                                                    onClickTopics="showDialog" onCompleteTopics="closeDialog" >
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
                                     </td>
                                     <td>
-                                        <s:url var="urlAdd" namespace="/cuti" action="add_cuti" escapeAmp="false">
+                                        <s:url var="urlAdd" namespace="/payrollTunjanganJabatanStruktural" action="add_payrollTunjanganJabatanStruktural" escapeAmp="false">
                                         </s:url>
                                         <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">
                                             <i class="fa fa-plus"></i>
-                                            Add cuti
+                                            Add Tunjangan jabatan Struktural
                                         </sj:a>
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_cuti"/>'">
+                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_payrollTunjanganJabatanStruktural"/>'">
                                             <i class="fa fa-refresh"></i> Reset
                                         </button>
                                     </td>
@@ -191,22 +161,22 @@
                         <br>
                         <br>
                         <center>
-                            <table id="showdata" width="40%">
+                            <table id="showdata" width="80%">
                                 <tr>
                                     <td align="center">
                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
-                                                   height="500" width="900" autoOpen="false"
-                                                   title="cuti ">
+                                                   height="400" width="550" autoOpen="false"
+                                                   title="Payroll Tunjangan Jabatan Struktural ">
                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                         </sj:dialog>
 
-                                        <s:set name="listOfcuti" value="#session.listOfResult" scope="request" />
-                                        <display:table name="listOfcuti" class="table table-condensed table-striped table-hover"
-                                                       requestURI="paging_displaytag_cuti.action" export="true" id="row" pagesize="14" style="font-size:10">
+                                        <s:set name="listOfPayrollSkalaGaji" value="#session.listOfResult" scope="request" />
+                                        <display:table name="listOfPayrollSkalaGaji" class="table table-condensed table-striped table-hover"
+                                                       requestURI="paging_displaytag_payrollTunjanganJabatanStruktural.action" export="true" id="row" pagesize="14" style="font-size:10">
                                             <display:column media="html" title="Edit">
                                                 <s:if test="#attr.row.flagYes">
-                                                    <s:url var="urlEdit" namespace="/cuti" action="edit_cuti" escapeAmp="false">
-                                                        <s:param name="id"><s:property value="#attr.row.cutiId"/></s:param>
+                                                    <s:url var="urlEdit" namespace="/payrollTunjanganJabatanStruktural" action="edit_payrollTunjanganJabatanStruktural" escapeAmp="false">
+                                                        <s:param name="id"><s:property value="#attr.row.tunjJabStrukturId"/></s:param>
                                                         <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
                                                     </s:url>
                                                     <sj:a onClickTopics="showDialogMenu" href="%{urlEdit}">
@@ -216,8 +186,8 @@
                                             </display:column>
 
                                             <display:column media="html" title="Delete" style="text-align:center;font-size:9">
-                                                <s:url var="urlViewDelete" namespace="/cuti" action="delete_cuti" escapeAmp="false">
-                                                    <s:param name="id"><s:property value="#attr.row.cutiId" /></s:param>
+                                                <s:url var="urlViewDelete" namespace="/payrollTunjanganJabatanStruktural" action="delete_payrollTunjanganJabatanStruktural" escapeAmp="false">
+                                                    <s:param name="id"><s:property value="#attr.row.tunjJabStrukturId" /></s:param>
                                                     <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
                                                 </s:url>
                                                 <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
@@ -225,16 +195,10 @@
                                                 </sj:a>
 
                                             </display:column>
-                                            <display:column property="cutiId" sortable="true" title="cuti ID" />
-                                            <display:column property="cutiName" sortable="true" title="Name"  />
-                                            <display:column property="jumlahCuti" sortable="true" title="Jumlah Hari"  />
-                                            <display:column property="tipeHari" sortable="true" title="Tipe Hari"  />
-                                            <%--<display:column property="golonganName" sortable="true" title="Golongan"  />
-                                            <display:column property="branchName" sortable="true" title="Branch"  />--%>
-
-                                            <display:column property="flag" sortable="true" title="Flag" />
-                                            <display:column property="createdWho" sortable="true" title="CreatedWho"/>
-
+                                            <display:column property="tunjJabStrukturId" sortable="true" title="T. Jab. Struktural ID" />
+                                            <display:column property="kelompokName" sortable="true" title="Kelompok Jabatan"  />
+                                            <display:column property="tunjJabatan" sortable="true" title="Tunj. Jabatan"  />
+                                            <display:column property="tunjStruktural" sortable="true" title="Tunj. Struktural"  />
                                         </display:table>
                                     </td>
                                 </tr>
