@@ -11,13 +11,29 @@ import com.neurix.common.model.BaseModel;
  */
 public class Master extends BaseModel {
     private MasterPK primaryKey;
-    private String akunMasterId;
     private String nama;
     private String alamat;
     private String npwp;
-    private String branchId;
+    private String email;
+    private String noTelp;
 
     private String nomorVendor;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getNoTelp() {
+        return noTelp;
+    }
+
+    public void setNoTelp(String noTelp) {
+        this.noTelp = noTelp;
+    }
 
     public String getNomorVendor() {
         return nomorVendor;
@@ -33,14 +49,6 @@ public class Master extends BaseModel {
 
     public void setPrimaryKey(MasterPK primaryKey) {
         this.primaryKey = primaryKey;
-    }
-
-    public String getAkunMasterId() {
-        return akunMasterId;
-    }
-
-    public void setAkunMasterId(String akunMasterId) {
-        this.akunMasterId = akunMasterId;
     }
 
     public String getNama() {
@@ -67,11 +75,4 @@ public class Master extends BaseModel {
         this.npwp = npwp;
     }
 
-    public String getBranchId() {
-        return branchId;
-    }
-
-    public void setBranchId(String branchId) {
-        this.branchId = branchId;
-    }
 }

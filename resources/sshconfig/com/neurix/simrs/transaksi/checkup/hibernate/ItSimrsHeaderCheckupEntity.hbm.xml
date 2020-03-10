@@ -143,6 +143,13 @@
             <column name="gangguan_lain" sql-type="varchar" length="100"/>
         </property>
 
+        <property name="kelasPasien">
+            <column name="kelas_pasien" sql-type="varchar" length="30"/>
+        </property>
+        <property name="idPelayananBpjs">
+            <column name="id_pelayanan_bpjs" sql-type="varchar" length="30"/>
+        </property>
+
 
     </class>
 </hibernate-mapping>

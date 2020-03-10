@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.checkup.bo.impl;
 
+import com.neurix.akuntansi.master.trans.model.Trans;
 import com.neurix.authorization.company.dao.BranchDao;
 import com.neurix.authorization.company.model.ImBranches;
 import com.neurix.common.constant.CommonConstant;
@@ -40,6 +41,9 @@ import com.neurix.simrs.transaksi.pemeriksaanfisik.dao.PemeriksaanFisikDao;
 import com.neurix.simrs.transaksi.pemeriksaanfisik.model.ItSimrsPemeriksaanFisikEntity;
 import com.neurix.simrs.transaksi.pemeriksaanfisik.model.PemeriksaanFisik;
 import com.neurix.simrs.transaksi.pengkajian.model.RingkasanKeluarMasukRs;
+import com.neurix.simrs.transaksi.permintaanresep.dao.PermintaanResepDao;
+import com.neurix.simrs.transaksi.permintaanresep.model.ObatKronis;
+import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.psikososial.dao.PsikososialDao;
 import com.neurix.simrs.transaksi.psikososial.model.ItSimrsDataPsikososialEntity;
 import com.neurix.simrs.transaksi.rekonsiliasiobat.dao.RekonsiliasiObatDao;
@@ -65,11 +69,13 @@ import com.neurix.simrs.transaksi.teamdokter.model.ItSimrsDokterTeamEntity;
 import com.neurix.simrs.transaksi.tindakanrawat.dao.TindakanRawatDao;
 import com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity;
 import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
+import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import com.neurix.simrs.transaksi.transaksitindakanbpjs.dao.TransaksiTindakanBpjsDao;
 import com.neurix.simrs.transaksi.transfusi.dao.TranfusiDao;
 import com.neurix.simrs.transaksi.transfusi.model.ItSimrsTranfusiEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
+import org.joda.time.Days;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -82,6 +88,7 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Toshiba on 08/11/2019.
@@ -119,6 +126,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
     private AntrianOnlineDao antrianOnlineDao;
     private AsesmenDao asesmenDao;
     private TransaksiTindakanBpjsDao transaksiTindakanBpjsDao;
+    private PermintaanResepDao permintaanResepDao;
 
     @Override
     public List<HeaderCheckup> getByCriteria(HeaderCheckup bean) throws GeneralBOException {
@@ -188,6 +196,39 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
         }
         logger.info("[CheckupBoImpl.getByCriteria] End <<<<<<<");
         return new ArrayList<>();
+    }
+
+    @Override
+    public List<ItSimrsHeaderChekupEntity> getListEntityHeaderCheckup(HeaderCheckup bean) throws GeneralBOException {
+
+        Map hsCriteria = new HashMap();
+
+        //sodiq, 17 Nov 2019, penambahan no_checkup
+        if (bean.getNoCheckup() != null && !"".equalsIgnoreCase(bean.getNoCheckup())) {
+            hsCriteria.put("no_checkup", bean.getNoCheckup());
+        }
+
+        if (bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())) {
+            hsCriteria.put("id_pasien", bean.getIdPasien());
+        }
+        if (bean.getNoKtp() != null && !"".equalsIgnoreCase(bean.getNoKtp())) {
+            hsCriteria.put("no_ktp", bean.getNoKtp());
+        }
+        if (bean.getNama() != null && !"".equalsIgnoreCase(bean.getNama())) {
+            hsCriteria.put("nama", bean.getNama());
+        }
+        if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())) {
+            hsCriteria.put("branch_id", bean.getBranchId());
+        }
+
+        List<ItSimrsHeaderChekupEntity> headerChekupEntities = new ArrayList<>();
+        try {
+            headerChekupEntities = headerCheckupDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e) {
+            logger.error("[CheckupBoImpl.getListEntityHeaderCheckup] ERROR " + e.getMessage());
+        }
+
+        return headerChekupEntities;
     }
 
     @Override
@@ -349,6 +390,9 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             headerEntity.setGangguanLain(bean.getGangguanLain());
             headerEntity.setNoRujukan(bean.getNoRujukan());
             headerEntity.setNoPpkRujukan(bean.getNoPpkRujukan());
+
+            headerEntity.setKelasPasien(bean.getKelasPasien());
+            headerEntity.setIdPelayananBpjs(bean.getIdPelayananBpjs());
 
             if (bean.getTglRujukan() != null && !"".equalsIgnoreCase(bean.getTglRujukan())) {
                 headerEntity.setTglRujukan(Date.valueOf(bean.getTglRujukan()));
@@ -1825,6 +1869,89 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
         return rekamMedicLamas;
     }
 
+    public List<ObatKronis> findRiwayatKronis(String idPasien) throws GeneralBOException {
+
+        List<ObatKronis> obatKronisList = new ArrayList<>();
+        try {
+            obatKronisList = permintaanResepDao.getLastObatKronis(idPasien, "");
+        } catch (HibernateException e) {
+            logger.error("[CheckupBoImpl.findRiwayatKronis] Error ", e);
+            throw new GeneralBOException("[CheckupBoImpl.findRiwayatKronis] Error " + e.getMessage());
+        }
+
+        Date datenow = new Date(System.currentTimeMillis());
+
+        // jika ada riwayat kronis yang belum diambil
+        if (obatKronisList.size() > 0) {
+            for (ObatKronis obatDetail : obatKronisList) {
+                Long longDate = obatDetail.getCreatedDate().getTime();
+
+                Date tglPengambilan = new Date(longDate + TimeUnit.DAYS.toMillis(obatDetail.getIntervalHariKronis()));
+
+                // jika datenow lebih besar atau sama dari tgl pengambilan
+                if (datenow.compareTo(tglPengambilan) == 1 || datenow.compareTo(tglPengambilan) == 0) {
+                    obatDetail.setFlagPengambilan("Y");
+                    return obatKronisList;
+                } else {
+                    // jika kurang dari tgl pengambilan maka kirim alert
+                    obatDetail.setFlagPengambilan("N");
+                    obatDetail.setMsg("Belum waktunya mengambil obat kronis");
+                    obatDetail.setTglPengambilan(tglPengambilan);
+                    return obatKronisList;
+                }
+            }
+        } else {
+            // jika tidak ada maka cari yang sudah diambil
+
+            obatKronisList = new ArrayList<>();
+
+            try {
+                obatKronisList = permintaanResepDao.getLastObatKronis(idPasien, "Y");
+            } catch (HibernateException e) {
+                logger.error("[CheckupBoImpl.findRiwayatKronis] Error ", e);
+                throw new GeneralBOException("[CheckupBoImpl.findRiwayatKronis] Error " + e.getMessage());
+            }
+
+            if (obatKronisList.size() > 0) {
+                for (ObatKronis obatDetailDiambil : obatKronisList) {
+
+                    Long longDate = obatDetailDiambil.getCreatedDate().getTime();
+                    Date tglPengambilan = new Date(longDate + TimeUnit.DAYS.toMillis(30));
+
+                    // jika datenow lebih kecil tgl pengambilan maka kirim alert
+                    if (datenow.compareTo(tglPengambilan) == -1) {
+                        obatDetailDiambil.setFlagKronisDiambil("N");
+                        obatDetailDiambil.setMsg("Masih dalam waktu obat kronis. selama 30 hari.");
+                        obatDetailDiambil.setTglPengambilan(tglPengambilan);
+                        return obatKronisList;
+                    }
+                }
+            }
+        }
+        return new ArrayList<>();
+    }
+
+    @Override
+    public List<TransaksiObatDetail> getListObatKronis(String idDetailCheckup, String idApproval) throws GeneralBOException {
+
+        List<TransaksiObatDetail> transaksiObatDetails = new ArrayList<>();
+
+        if (idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup) && idApproval != null && !"".equalsIgnoreCase(idApproval)) {
+
+            try {
+                transaksiObatDetails = headerCheckupDao.getListObatkronis(idDetailCheckup, idApproval);
+            } catch (HibernateException e) {
+                logger.error("Found Error when search obat kronis " + e.getMessage());
+            }
+        }
+
+        return transaksiObatDetails;
+    }
+
+    public CrudResponse savePendaftaranPengambilanObatKronis(){
+        return null;
+    }
+
     private String getNextIdAlergi() {
         String id = "";
         try {
@@ -2066,5 +2193,9 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
 
     public void setAsesmenDao(AsesmenDao asesmenDao) {
         this.asesmenDao = asesmenDao;
+    }
+
+    public void setPermintaanResepDao(PermintaanResepDao permintaanResepDao) {
+        this.permintaanResepDao = permintaanResepDao;
     }
 }

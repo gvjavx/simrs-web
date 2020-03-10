@@ -63,6 +63,12 @@ public class TransaksiObatDetail extends BaseModel {
 
     private String flagVerifikasi;
     private String noJurnal;
+    private String flagRacik;
+    private Integer hariKronis;
+    private String flagKronisDiambil;
+
+    private String idPasien;
+    private String idDetailCheckup;
 
     public String getNoJurnal() {
         return noJurnal;
@@ -406,5 +412,45 @@ public class TransaksiObatDetail extends BaseModel {
 
     public void setAverageHargaBiji(BigDecimal averageHargaBiji) {
         this.averageHargaBiji = averageHargaBiji;
+    }
+
+    public String getFlagRacik() {
+        return flagRacik;
+    }
+
+    public void setFlagRacik(String flagRacik) {
+        this.flagRacik = flagRacik;
+    }
+
+    public Integer getHariKronis() {
+        return hariKronis;
+    }
+
+    public void setHariKronis(Integer hariKronis) {
+        this.hariKronis = hariKronis;
+    }
+
+    public String getFlagKronisDiambil() {
+        return flagKronisDiambil;
+    }
+
+    public void setFlagKronisDiambil(String flagKronisDiambil) {
+        this.flagKronisDiambil = flagKronisDiambil;
+    }
+
+    public String getIdPasien() {
+        return idPasien;
+    }
+
+    public void setIdPasien(String idPasien) {
+        this.idPasien = idPasien;
+    }
+
+    public String getIdDetailCheckup() {
+        return idDetailCheckup;
+    }
+
+    public void setIdDetailCheckup(String idDetailCheckup) {
+        this.idDetailCheckup = idDetailCheckup;
     }
 }

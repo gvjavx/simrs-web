@@ -105,6 +105,8 @@ public class HeaderCheckup {
     private String kelasRawat;
 
     private String kodeCbg;
+    private String ketRacik;
+    private String idPermintaanResep;
 
     public List<Asesmen> getAsesmenList() {
         return asesmenList;
@@ -818,5 +820,21 @@ public class HeaderCheckup {
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    public String getKetRacik() {
+        return ketRacik;
+    }
+
+    public void setKetRacik(String ketRacik) {
+        this.ketRacik = ketRacik;
+    }
+
+    public String getIdPermintaanResep() {
+        return idPermintaanResep;
+    }
+
+    public void setIdPermintaanResep(String idPermintaanResep) {
+        this.idPermintaanResep = idPermintaanResep;
     }
 }

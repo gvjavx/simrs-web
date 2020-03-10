@@ -51,6 +51,26 @@ public class Obat extends BaseModel {
     private BigDecimal hargaNet;
     private BigDecimal diskon;
 
+    private BigInteger minStok;
+
+    private String isMinStok;
+
+    public String getIsMinStok() {
+        return isMinStok;
+    }
+
+    public void setIsMinStok(String isMinStok) {
+        this.isMinStok = isMinStok;
+    }
+
+    public BigInteger getMinStok() {
+        return minStok;
+    }
+
+    public void setMinStok(BigInteger minStok) {
+        this.minStok = minStok;
+    }
+
     public BigDecimal getHargaJual() {
         return hargaJual;
     }

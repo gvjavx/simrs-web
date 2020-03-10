@@ -199,6 +199,10 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
                 detail.setCreatedWho(bean.getCreatedWho());
                 detail.setLastUpdate(bean.getCreatedDate());
                 detail.setLastUpdateWho(bean.getCreatedWho());
+                detail.setFlagRacik(detailObat.getFlagRacik());
+                if (detailObat.getHariKronis() != null){
+                    detail.setHariKronis(detailObat.getHariKronis());
+                }
                 saveObatResep(detail);
             }
         }
@@ -244,6 +248,10 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
         obatDetailEntity.setLastUpdate(bean.getCreatedDate());
         obatDetailEntity.setLastUpdateWho(bean.getCreatedWho());
         obatDetailEntity.setKeterangan(bean.getKeterangan());
+        obatDetailEntity.setFlagRacik(bean.getFlagRacik());
+        if (bean.getHariKronis() != null && bean.getHariKronis().compareTo(0) == 1){
+            obatDetailEntity.setHariKronis(bean.getHariKronis());
+        }
 
         try {
             transaksiObatDetailDao.addAndSave(obatDetailEntity);

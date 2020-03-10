@@ -104,7 +104,7 @@
                                             <label class="col-md-4" style="margin-top: 7px">Unit</label>
                                             <div class="col-md-8">
                                                 <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
-                                                <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="branch_id" name="pembayaranUtangPiutang.branchId" required="true"
+                                                <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="branch_id"  onchange="isiKeteterangan()" name="pembayaranUtangPiutang.branchId" required="true"
                                                           listKey="branchId" listValue="branchName" headerKey="" headerValue="" />
                                             </div>
                                         </div>
@@ -113,8 +113,8 @@
                                             <div class="col-md-8">
                                                 <s:action id="comboTrans" namespace="/trans" name="initComboTransPembayaran_trans"/>
                                                 <s:select list="#comboTrans.listOfComboTrans" id="tipe_transaksi" name="pembayaranUtangPiutang.tipeTransaksi"
-                                                          cssStyle="margin-top: 7px" onchange="$(this).css('border','')"
-                                                          listKey="transId" listValue="transName" headerKey="" headerValue="[ Select One ]" cssClass="form-control" />
+                                                          cssStyle="margin-top: 7px" onchange="isiKeteterangan()"
+                                                          listKey="transId" listValue="transName" headerKey="" headerValue="" cssClass="form-control" />
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -143,8 +143,8 @@
                                             <label class="col-md-4" style="margin-top: 7px">Metode Bayar</label>
                                             <div class="col-md-8" style="margin-top: 7px" >
                                                 <div class="col-md-4">
-                                                    <select id="metode_bayar" class="form-control" onchange="pilihMetode(this.value)"  name="pembayaranUtangPiutang.metodePembayaran">
-                                                        <option value="" >[Select One]</option>
+                                                    <select id="metode_bayar" class="form-control" onchange="pilihMetode(this.value),isiKeteterangan()"  name="pembayaranUtangPiutang.metodePembayaran">
+                                                        <option value="" ></option>
                                                         <option value="tunai">Tunai</option>
                                                         <option value="transfer">Transfer</option>
                                                     </select>
@@ -154,8 +154,8 @@
                                                         <div class="form-group">
                                                             <label class="col-md-2" style="margin-top: 7px">Bank</label>
                                                             <div class="col-md-10">
-                                                                <select class="form-control" id="bank"  name="pembayaranUtangPiutang.bank">
-                                                                    <option value="" >[Select One]</option>
+                                                                <select class="form-control" id="bank"  name="pembayaranUtangPiutang.bank" onchange="isiKeteterangan()">
+                                                                    <option value="" ></option>
                                                                     <option value="bri">BRI</option>
                                                                     <option value="bni">BNI</option>
                                                                     <option value="bca">BCA</option>
@@ -182,8 +182,8 @@
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Bayar</label>
                                             <div class="col-md-8">
-                                                <s:textfield id="bayar" name="pembayaranUtangPiutang.stBayar" onkeypress="$(this).css('border','')"
-                                                             cssClass="form-control" cssStyle="margin-top: 7px" onkeyup="formatRupiah2(this)" />
+                                                <s:textfield id="bayar" name="pembayaranUtangPiutang.stBayar"
+                                                             cssClass="form-control" cssStyle="margin-top: 7px" readonly="true" />
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -196,7 +196,7 @@
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">No. Slip Bank</label>
                                             <div class="col-md-8">
-                                                <s:textfield id="no_slip_bank" name="pembayaranUtangPiutang.noSlipBank" onkeypress="$(this).css('border','')"
+                                                <s:textfield id="no_slip_bank" name="pembayaranUtangPiutang.noSlipBank" onkeypress="$(this).css('border','')" onchange="isiKeteterangan()"
                                                              cssClass="form-control" cssStyle="margin-top: 7px" />
                                             </div>
                                         </div>
@@ -406,6 +406,8 @@
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-success" id="btnAddCheckedNota" data-dismiss="modal"><i class="fa fa-arrow-right"></i> Add Checked
+                </button>
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
             </div>
@@ -427,6 +429,7 @@
                 PembayaranUtangPiutangAction.searchNotaPembayaran(masterId,transaksiId,branchId,function (listdata) {
                     tmp_table = "<thead style='font-size: 14px' ><tr class='active'>" +
                         "<th style='text-align: center; color: #fff; background-color:  #30d196 '>No</th>" +
+                        "<th style='text-align: center; color: #fff; background-color:  #30d196'><input type='checkbox' id='checkAll'></th>"+
                         "<th style='text-align: center; color: #fff; background-color:  #30d196 '>Kode Vendor</th>" +
                         "<th style='text-align: center; color: #fff; background-color:  #30d196 ''>Rekening ID</th>" +
                         "<th style='text-align: center; color: #fff; background-color:  #30d196 ''>No. Nota</th>" +
@@ -435,8 +438,10 @@
                         "</tr></thead>";
                     var i = i;
                     $.each(listdata, function (i, item) {
+                        var combo = '<input type="checkbox" checked id="check_'+i+'">';
                         tmp_table += '<tr style="font-size: 12px;" ">' +
                             '<td align="center">' + (i + 1) + '</td>' +
+                            '<td align="center">' + combo + '</td>' +
                             '<td align="center">' + item.masterId + '</td>' +
                             '<td align="center">' + item.rekeningId + '</td>' +
                             '<td align="center">' + item.noNota + '</td>' +
@@ -449,7 +454,10 @@
                             "</tr>";
                     });
                     $('#tabelDaftarNota').append(tmp_table);
-                })
+                    $("#checkAll").change(function(){
+                        $('input:checkbox').not(this).prop('checked', this.checked);
+                    });
+                });
                 $("#modal-search-nota").modal('show');
             } else{
                 var msg="";
@@ -472,9 +480,61 @@
             $('#no_nota').val(noNota);
             $('#jumlah_pembayaran').val(bayar);
             $('#rekening_id').val(rekeningId);
+
             $("#modal-search-nota").modal('hide');
 
         });
+
+        $('#btnAddCheckedNota').click(function () {
+            var data = $('#tabelDaftarNota').tableToJSON();
+            var kodeVendor=$('#kode_vendor').val();
+            var namaVendor=$('#nama_vendor').val();
+            var error="";
+            $.each(data, function (i, item) {
+                var noNota = data[i]["No. Nota"];
+                var bayar = data[i]["Debit"];
+                var rekeningId = data[i]["Rekening ID"];
+                if ($('#check_' + i).prop("checked") == true) {
+                    if (kodeVendor!=''&&noNota!=''&&namaVendor!=''){
+                        PembayaranUtangPiutangAction.saveDetailPembayaran(kodeVendor,namaVendor,noNota,bayar,rekeningId,function (result) {
+                            if (result==""){
+                                loadDetailPembayaran();
+                                //dihitung totalbayarnya
+                                var totalBayar = $('#bayar').val();
+                                totalBayar=totalBayar.replace(".","");
+                                var strBayar=bayar.replace(".","");
+                                var intTotalBayar=0;
+                                if (totalBayar!=''){
+                                    intTotalBayar = parseInt(totalBayar);
+                                }
+                                var intBayar = parseInt(strBayar);
+                                totalBayar = intTotalBayar+intBayar;
+                                var strTotalBayar = String(totalBayar);
+                                $('#bayar').val(formatRupiahAngka(strTotalBayar));
+                            } else{
+                                error=result;
+                            }
+                        });
+                    } else{
+                        var msg="";
+                        if (kodeVendor==""){
+                            msg+="Kode vendor tidak boleh kosong \n";
+                        }if (noNota==""){
+                            msg+="No nota tidak boleh kosong \n";
+                        }if (jumlahPembayaran==""){
+                            msg+="Jumlah pembayaran tidak boleh kosong \n";
+                        }if (namaVendor==""){
+                            msg+="Nama vendor tidak ditemukan, coba lagi \n";
+                        }
+                        error=msg;
+                    }
+                }
+            });
+            if (error!=""){
+                alert(error);
+            }
+        });
+
         $('#btnSaveDetailPembayaran').click(function () {
             var kodeVendor=$('#kode_vendor').val();
             var namaVendor=$('#nama_vendor').val();
@@ -485,6 +545,19 @@
                 PembayaranUtangPiutangAction.saveDetailPembayaran(kodeVendor,namaVendor,noNota,jumlahPembayaran,rekeningId,function (result) {
                     if (result==""){
                         loadDetailPembayaran();
+
+                        //dihitung totalbayarnya
+                        var totalBayar = $('#bayar').val();
+                        totalBayar=totalBayar.replace(".","");
+                        var strBayar=jumlahPembayaran.replace(".","");
+                        var intTotalBayar=0;
+                        if (totalBayar!=''){
+                            intTotalBayar = parseInt(totalBayar);
+                        }
+                        var intBayar = parseInt(strBayar);
+                        totalBayar = intTotalBayar+intBayar;
+                        var strTotalBayar = String(totalBayar);
+                        $('#bayar').val(formatRupiahAngka(strTotalBayar));
                     } else{
                         alert(result);
                     }
@@ -505,10 +578,22 @@
         });
         $('.detailPembayaranTable').on('click', '.item-delete-data', function () {
             var id = $(this).attr('data');
+            var biaya = $(this).attr('biaya');
             if (id!=''){
                 PembayaranUtangPiutangAction.deleteDetailPembayaran(id,function (result) {
-                    alert("data berhasil dihapus")
+                    alert("data berhasil dihapus");
                     loadDetailPembayaran();
+                    var totalBayar = $('#bayar').val();
+                    totalBayar=totalBayar.replace(".","");
+                    var strBayar=biaya.replace(".","");
+                    var intTotalBayar=0;
+                    if (totalBayar!=''){
+                        intTotalBayar = parseInt(totalBayar);
+                    }
+                    var intBayar = parseInt(strBayar);
+                    totalBayar = intTotalBayar-intBayar;
+                    var strTotalBayar = String(totalBayar);
+                    $('#bayar').val(formatRupiahAngka(strTotalBayar));
                 });
             } else{
                 var msg="";
@@ -543,7 +628,7 @@
                         '<td align="center">' + item.noNota + '</td>' +
                         '<td align="center">' + item.stJumlahPembayaran+ '</td>' +
                         '<td align="center">' +
-                        "<a href='javascript:;' class ='item-delete-data' data ='" + item.masterId + "' >" +
+                        "<a href='javascript:;' class ='item-delete-data' data ='" + item.noNota + "' biaya ='" + item.stJumlahPembayaran + "'>" +
                         "<img border='0' src='<s:url value='/pages/images/delete_task.png'/>' name='icon_delete'>" +
                         '</a>' +
                         '</td>' +
@@ -552,152 +637,45 @@
                 $('.detailPembayaranTable').append(tmp_table);
             });
         };
-
-        $('#pendaftaran').addClass('active');
-
-        $(document).on('change', '.btn-file :file', function () {
-            var input = $(this),
-                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-            input.trigger('fileselect', [label]);
-        });
-
-        $('.btn-file :file').on('fileselect', function (event, label) {
-
-            var input = $(this).parents('.input-group').find(':text'),
-                log = label;
-
-            if (input.length) {
-                input.val(log);
-            } else {
-                if (log) alert(log);
-            }
-
-        });
-        function readURL(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-
-                reader.onload = function (e) {
-                    $('#img-upload').attr('src', e.target.result);
-                }
-
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        $("#imgInp").change(function () {
-            readURL(this);
-        });
     });
 
-    function listDokter(idPelayanan){
-        var idx = idPelayanan.selectedIndex;
-        var idPoli = idPelayanan.options[idx].value;
-        var option = "";
-        PembayaranUtangPiutangAction.listOfDokter(idPoli, function(response){
-            option = "<option value=''>[Select One]</option>";
-            if (response != null){
-                $.each(response, function (i, item) {
-                    option += "<option value='"+item.idDokter+"'>" +item.namaDokter+ "</option>";
-                });
-            }else{
-                option = option;
+    function isiKeteterangan() {
+        var tipeTransaksi = $('#tipe_transaksi option:selected').text();
+        var metodeBayar = $('#metode_bayar option:selected').text();
+        var branchName = $('#branch_id option:selected').text();
+        var bank = $('#bank option:selected').text();
+        var noSlipBank = $('#no_slip_bank').val();
+
+        var keterangan ="";
+        if (metodeBayar!=""){
+            metodeBayar = "dengan metode bayar "+metodeBayar;
+            if (bank!=""){
+                bank="pada bank "+bank;
             }
-        });
-        $('#dokter').html(option);
-    }
-
-    function alertPasien(noPasien) {
-
-        var namapembayaran  = "";
-        var diagnosa    = "";
-        var tglperiksa  = "";
-        var alergi      = "";
-
-//        alert(noPasien);
-        PembayaranUtangPiutangAction.initAlertPasien(noPasien, function(response){
-            if(response != null && response.namaPasien != null){
-
-                namapembayaran  = "<h4><i class=\"fa fa-user\"></i> "+ response.namaPasien +"</h4>";
-                diagnosa    = response.diagnosa;
-                tglperiksa  = "Pemeriksaan terakhir pembayaran pada : <strong>"+ response.stTgl +"</strong>";
-
-                if (response.listOfAlergi != null){
-                    $.each(response.listOfAlergi, function (i, item) {
-                        if(alergi != ""){
-                            alergi = alergi + ", "+ item
-                        }  else {
-                            alergi = item
-                        }
-                    });
-                }
-
-                $("#tgl-periksa").html(tglperiksa);
-                $("#nama-pembayaran").html(namapembayaran);
-                $("#alergi").html(alergi);
-                $("#diagnosa").html(diagnosa);
-                $("#alert-pembayaran").removeAttr("style");
-                $("#btn-rm").removeAttr("style");
-            } else {
-                closeAlert();
-            }
-        });
-    }
-
-    function initRekamMedic() {
-        var idPasien    = $("#id_pembayaran").val();
-        var table       = "";
-
-        PembayaranUtangPiutangAction.listRekamMedic(idPasien, function(response){
-            $.each(response, function (i, item) {
-                table += "<tr>" +
-                    "<td>"+item.noPembayaranUtangPiutang+"</td>" +
-                    "<td>"+item.namaPasien+"</td>" +
-                    "<td>"+item.diagnosa+"</td>" +
-                    "<td>"+item.stTgl+"</td>" +
-                    "</tr>";
-            });
-
-            $("#modal-rekam-medic").modal('show');
-            $("#body-rekam-medic").html(table);
-        });
-    }
-
-    function closeAlert() {
-        $("#alert-pembayaran").attr("style","display:none");
-        $("#btn-rm").attr("style","display:none");
-    }
-
-    var functions, mapped;
-    $('#provinsi').typeahead({
-        minLength: 1,
-        source: function (query, process) {
-            functions = [];
-            mapped = {};
-
-            var data = [];
-            dwr.engine.setAsync(false);
-            ProvinsiAction.initComboProvinsi(query, function (listdata) {
-                data = listdata;
-            });
-
-            $.each(data, function (i, item) {
-                var labelItem = item.provinsiName;
-                mapped[labelItem] = {id: item.provinsiId, label: labelItem};
-                functions.push(labelItem);
-            });
-
-            process(functions);
-        },
-        updater: function (item) {
-            var selectedObj = mapped[item];
-            var namaAlat = selectedObj.label;
-            document.getElementById("provinsi11").value = selectedObj.id;
-            prov = selectedObj.id;
-            return namaAlat;
         }
-    });
+        if (noSlipBank!=""){
+            noSlipBank="dengan no slip bank "+noSlipBank;
+        }
 
+        keterangan= tipeTransaksi +" "+branchName+" "+metodeBayar+" "+bank+" "+noSlipBank;
+
+        $('#keterangan').val(keterangan);
+    }
+    function formatRupiahAngka(angka) {
+        var number_string = angka.replace(/[^,\d]/g, '').toString(),
+            split = number_string.split(','),
+            sisa = split[0].length % 3,
+            rupiah = split[0].substr(0, sisa),
+            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+        if (ribuan) {
+            separator = sisa ? '.' : '';
+            rupiah += separator + ribuan.join('.');
+        }
+
+        rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+        return rupiah;
+    }
 
 </script>
 <%@ include file="/pages/common/footer.jsp" %>

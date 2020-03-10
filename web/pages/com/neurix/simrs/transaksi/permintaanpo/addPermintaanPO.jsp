@@ -52,11 +52,13 @@
 
                 if (input.length) {
                     input.val(log);
+                    $('#saveProfil').click();
                 } else {
                     if (log) alert(log);
                 }
 
             });
+
             function readURL(input) {
                 if (input.files && input.files[0]) {
                     var reader = new FileReader();
@@ -359,17 +361,27 @@
                     <div class="box-header with-border"></div>
                     <div class="box-body">
                         <div class="row">
-                            <%--<div class="col-md-4">--%>
-                                <%--<div class="input-group" id="img_file">--%>
-                                                    <%--<span class="input-group-btn">--%>
-                                                        <%--<span class="btn btn-default btn-file">--%>
-                                                            <%--Browse… <s:file id="imgInp" accept=".jpg" name="fileUpload"--%>
-                                                                            <%--onchange="$('#img_file').css('border','')"></s:file>--%>
-                                                        <%--</span>--%>
-                                                    <%--</span>--%>
-                                    <%--<input type="text" class="form-control" readonly placeholder="Upload Dokumen PO">--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
+                            <s:form id="uploadForm" enctype="multipart/form-data" method="post" namespace="/permintaanpo" action="uploadImage_permintaanpo.action" theme="simple">
+                            <div class="col-md-4">
+                                <div class="input-group" id="img_file">
+                                                    <span class="input-group-btn">
+                                                        <span class="btn btn-default btn-file">
+                                                            Browse… <s:file id="imgInp" accept=".jpg" name="fileUpload"
+                                                                            onchange="$('#img_file').css('border','')" disabled="true" cssStyle="cursor: no-drop"></s:file>
+                                                        </span>
+                                                    </span>
+                                    <input type="text" class="form-control" readonly placeholder="Upload Dokumen PO">
+                                </div>
+                            </div>
+                                <s:hidden name="permintaanVendor.idVendor" id="id_vendor"></s:hidden>
+                                <div style="display: none">
+                                <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="uploadForm"
+                                           id="saveProfil" name="save" onCompleteTopics="loadfoto" onSuccessTopics="loadfoto">
+                                    <i class="fa fa-save"></i>
+                                </sj:submit>
+                                </div>
+                            </s:form>
+
                             <div class="col-md-4">
                                 <a type="button" class="btn btn-warning" href="initForm_permintaanpo.action"><i
                                         class="fa fa-arrow-left"></i>
@@ -474,6 +486,8 @@
                 $('#warning_po').show().fadeOut(5000);
                 $('#msg_po').text('Data sudah tersedia dalam list...!');
             } else {
+                $('#imgInp').attr('disabled',false).removeAttr('style');
+                $('#id_vendor').val(vendor);
                 var row = '<tr id=' + idObat + '>' +
                         '<td>' + idObat + '</td>' +
                         '<td>' + namaObat + '</td>' +

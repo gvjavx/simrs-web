@@ -37,7 +37,7 @@ public class MasterBoImpl implements MasterBo {
             ImMasterEntity masterEntity= null;
             try {
                 // Get data from database by ID
-                masterEntity = masterDao.getById("akunMasterId", bean.getAkunMasterId());
+//                masterEntity = masterDao.getById("akunMasterId", bean.getAkunMasterId());
             } catch (HibernateException e) {
                 logger.error("[MasterBoImpl.saveEdit] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when searching data, please inform to your admin...," + e.getMessage());
@@ -173,7 +173,7 @@ public class MasterBoImpl implements MasterBo {
             // Looping from dao to object and save in collection
             for(ImMasterEntity masterEntity : imMasterEntityList){
                 returnMaster = new Master();
-                returnMaster.setAkunMasterId(masterEntity.getAkunMasterId());
+//                returnMaster.setAkunMasterId(masterEntity.getAkunMasterId());
                 returnMaster.setNomorVendor(masterEntity.getPrimaryKey().getNomorMaster());
                 returnMaster.setNama(masterEntity.getNama());
                 listOfResult.add(returnMaster);

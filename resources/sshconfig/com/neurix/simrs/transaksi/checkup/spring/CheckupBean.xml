@@ -61,6 +61,7 @@
           p:antrianOnlineDao-ref="antrianOnlineDao"
           p:asesmenDao-ref="asesmenDao"
           p:transaksiTindakanBpjsDao-ref="transaksiTindakanBpjsDao"
+          p:permintaanResepDao-ref="permintaanResepDao"
 
     />
 

@@ -69,7 +69,7 @@
             <s:form id="modifyRolefuncForm" method="post" theme="simple" namespace="/trans" action="saveAdd_trans" cssClass="well form-horizontal">
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
-                <legend align="left">Add Transaksi Billing</legend>
+                <legend align="left">Add Tipe Transaksi</legend>
                 <table>
                     <tr>
                         <td width="10%" align="center">

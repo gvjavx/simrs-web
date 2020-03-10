@@ -27,6 +27,9 @@ public class VendorDao extends GenericDao<ImSimrsVendorEntity, String> {
         if (mapCriteria.get("id_vendor") != null){
             criteria.add(Restrictions.eq("idVendor", mapCriteria.get("id_vendor").toString()));
         }
+        if (mapCriteria.get("npwp") != null){
+            criteria.add(Restrictions.eq("npwp", mapCriteria.get("npwp").toString()));
+        }
         if (mapCriteria.get("flag") != null) {
             criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
         }

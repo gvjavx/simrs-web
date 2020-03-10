@@ -32,11 +32,11 @@
                 event.originalEvent.options.submit = false;
                 var msg = "";
                 if (transId == '') {
-                    msg += 'Field <strong>Trans ID</strong> not found.' + '<br/>';
+                    msg += 'Field <strong>Transaksi ID</strong> not found.' + '<br/>';
                 }
 
                 if (transName == '') {
-                    msg += 'Field <strong>Nama Trans</strong> is required.' + '<br/>';
+                    msg += 'Field <strong>Nama Transaksi</strong> is required.' + '<br/>';
                 }
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
@@ -72,7 +72,7 @@
             <s:form id="modifyRolefuncForm" method="post" theme="simple" namespace="/trans" action="saveEdit_trans" cssClass="well form-horizontal">
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
-                <legend align="left">Edit Trans</legend>
+                <legend align="left">Edit Transaksi</legend>
                 <table>
                     <tr>
                         <td width="10%" align="center">
@@ -84,7 +84,7 @@
                 <table >
                     <tr>
                         <td>
-                            <label class="control-label"><small>Trans Id :</small></label>
+                            <label class="control-label"><small>Transaksi Id :</small></label>
                         </td>
                         <td>
                             <table>
@@ -94,7 +94,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Nama Trans :</small></label>
+                            <label class="control-label"><small>Nama Transaksi :</small></label>
                         </td>
                         <td>
                             <table>

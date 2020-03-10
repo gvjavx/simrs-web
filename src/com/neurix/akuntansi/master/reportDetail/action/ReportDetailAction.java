@@ -3,6 +3,8 @@ import com.neurix.akuntansi.master.kodeRekening.bo.KodeRekeningBo;
 import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.master.reportDetail.bo.ReportDetailBo;
 import com.neurix.akuntansi.master.reportDetail.model.ReportDetail;
+import com.neurix.akuntansi.transaksi.laporanAkuntansi.bo.LaporanAkuntansiBo;
+import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.LaporanAkuntansi;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
@@ -239,11 +241,14 @@ public class ReportDetailAction extends BaseMasterAction {
 
         List<ReportDetail> listOfsearchReportDetail = new ArrayList();
         List<KodeRekening> listOfsearchKodeRekening = new ArrayList();
+        String levelKodeRekening = null;
+        String arrLevel[]=null;
         List<KodeRekening> listOfFinal = new ArrayList();
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         ReportDetailBo reportDetailBo= (ReportDetailBo) ctx.getBean("reportDetailBoProxy");
         KodeRekeningBo kodeRekeningBo= (KodeRekeningBo) ctx.getBean("kodeRekeningBoProxy");
+        LaporanAkuntansiBo laporanAkuntansiBo= (LaporanAkuntansiBo) ctx.getBean("laporanAkuntansiBoProxy");
 
         ReportDetail searchReportDetail = new ReportDetail();
         searchReportDetail.setFlag("Y");
@@ -254,6 +259,10 @@ public class ReportDetailAction extends BaseMasterAction {
         try {
             listOfsearchKodeRekening = kodeRekeningBo.getByCriteria(search);
             listOfsearchReportDetail = reportDetailBo.getByCriteria(searchReportDetail);
+            levelKodeRekening=laporanAkuntansiBo.levelKodeRekening(reportId);
+            if (levelKodeRekening!=null){
+                arrLevel=levelKodeRekening.split(",");
+            }
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
@@ -269,6 +278,15 @@ public class ReportDetailAction extends BaseMasterAction {
                 if (reportDetail.getRekeningId().equalsIgnoreCase(kodeRekening.getRekeningId())){
                     kodeRekening.setAdaRekeningReport(true);
                     break;
+                }
+            }
+            if (arrLevel!=null){
+                for (int i=0;i<arrLevel.length;i++){
+                    Long level = Long.valueOf(arrLevel[i]);
+                    if (level.equals(kodeRekening.getLevel())){
+                        kodeRekening.setBisaCek(true);
+                        break;
+                    }
                 }
             }
             listOfFinal.add(kodeRekening);
