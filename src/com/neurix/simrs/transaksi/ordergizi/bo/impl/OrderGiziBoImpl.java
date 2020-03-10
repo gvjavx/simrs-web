@@ -111,12 +111,6 @@ public class OrderGiziBoImpl implements OrderGiziBo {
 
             if (bean != null) {
 
-                orderGiziEntity.setDietPagi(bean.getDietPagi());
-                orderGiziEntity.setBentukMakanPagi(bean.getBentukMakanPagi());
-                orderGiziEntity.setDietSiang(bean.getDietSiang());
-                orderGiziEntity.setBentukMakanSiang(bean.getBentukMakanSiang());
-                orderGiziEntity.setDietMalam(bean.getDietMalam());
-                orderGiziEntity.setBentukMakanMalam(bean.getBentukMakanMalam());
                 orderGiziEntity.setAction(bean.getAction());
                 orderGiziEntity.setLastUpdate(bean.getLastUpdate());
                 orderGiziEntity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -171,6 +165,48 @@ public class OrderGiziBoImpl implements OrderGiziBo {
                     response.setMessage("Found Error when update order gizi "+e.getMessage());
                     logger.error("[OrderGiziBoImpl.updateDiterimaFLag] Error when insert obat inap ", e);
                     throw new GeneralBOException("[TindakanRawatBoImpl.updateDiterimaFLag] Error when edit order gizi " + e.getMessage());
+                }
+            }
+        }
+        logger.info("[OrderGiziBoImpl.updateDiterimaFLag] End <<<<<<");
+        return response;
+    }
+
+    @Override
+    public CheckResponse cancelOrderGizi(OrderGizi bean) throws GeneralBOException {
+        logger.info("[OrderGiziBoImpl.cancelOrderGizi] Start >>>>>>>");
+        CheckResponse response = new CheckResponse();
+        if (bean != null){
+
+            ItSimrsOrderGiziEntity orderGiziEntity = new ItSimrsOrderGiziEntity();
+
+            try {
+                orderGiziEntity = orderGiziDao.getById("idOrderGizi", bean.getIdOrderGizi());
+                response.setStatus("success");
+                response.setMessage("Berhasil mencari pesanan gizi...!");
+            } catch (HibernateException e){
+                response.setStatus("error");
+                response.setMessage("Found Error when search order gizi "+e.getMessage());
+                logger.error("[OrderGiziBoImpl.updateDiterimaFLag] Error when getById order gizi ",e);
+                throw new GeneralBOException("[OrderGiziBoImpl.updateDiterimaFLag] Error when save edit order gizi "+e.getMessage());
+            }
+
+            if (bean != null) {
+
+                orderGiziEntity.setDiterimaFlag("R");
+                orderGiziEntity.setLastUpdate(bean.getLastUpdate());
+                orderGiziEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                orderGiziEntity.setKeterangan(bean.getKeterangan());
+
+                try {
+                    orderGiziDao.updateAndSave(orderGiziEntity);
+                    response.setStatus("success");
+                    response.setMessage("Berhasil membatalkan pesanan gizi...!");
+                } catch (HibernateException e) {
+                    response.setStatus("error");
+                    response.setMessage("Found Error when update order gizi "+e.getMessage());
+                    logger.error("[OrderGiziBoImpl.cancelOrderGizi] Error when insert obat inap ", e);
+                    throw new GeneralBOException("[OrderGiziBoImpl.cancelOrderGizi] Error when edit order gizi " + e.getMessage());
                 }
             }
         }

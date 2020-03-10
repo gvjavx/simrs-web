@@ -13,4 +13,5 @@ public interface OrderGiziBo {
     public CheckResponse saveAdd(OrderGizi bean)throws GeneralBOException;
     public CheckResponse saveEdit(OrderGizi bean)throws GeneralBOException;
     public CheckResponse updateDiterimaFLag(OrderGizi bean) throws GeneralBOException;
+    public CheckResponse cancelOrderGizi(OrderGizi bean) throws GeneralBOException;
 }
