@@ -199,6 +199,39 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
     }
 
     @Override
+    public List<ItSimrsHeaderChekupEntity> getListEntityHeaderCheckup(HeaderCheckup bean) throws GeneralBOException {
+
+        Map hsCriteria = new HashMap();
+
+        //sodiq, 17 Nov 2019, penambahan no_checkup
+        if (bean.getNoCheckup() != null && !"".equalsIgnoreCase(bean.getNoCheckup())) {
+            hsCriteria.put("no_checkup", bean.getNoCheckup());
+        }
+
+        if (bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())) {
+            hsCriteria.put("id_pasien", bean.getIdPasien());
+        }
+        if (bean.getNoKtp() != null && !"".equalsIgnoreCase(bean.getNoKtp())) {
+            hsCriteria.put("no_ktp", bean.getNoKtp());
+        }
+        if (bean.getNama() != null && !"".equalsIgnoreCase(bean.getNama())) {
+            hsCriteria.put("nama", bean.getNama());
+        }
+        if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())) {
+            hsCriteria.put("branch_id", bean.getBranchId());
+        }
+
+        List<ItSimrsHeaderChekupEntity> headerChekupEntities = new ArrayList<>();
+        try {
+            headerChekupEntities = headerCheckupDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e) {
+            logger.error("[CheckupBoImpl.getListEntityHeaderCheckup] ERROR " + e.getMessage());
+        }
+
+        return headerChekupEntities;
+    }
+
+    @Override
     public Long saveErrorMessage(String message, String s) {
         return null;
     }
@@ -1903,16 +1936,20 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
 
         List<TransaksiObatDetail> transaksiObatDetails = new ArrayList<>();
 
-        if(idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup) && idApproval != null && !"".equalsIgnoreCase(idApproval)){
+        if (idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup) && idApproval != null && !"".equalsIgnoreCase(idApproval)) {
 
             try {
                 headerCheckupDao.getListObatkronis(idDetailCheckup, idApproval);
-            }catch (HibernateException e){
-                logger.error("Found Error when search obat kronis "+e.getMessage());
+            } catch (HibernateException e) {
+                logger.error("Found Error when search obat kronis " + e.getMessage());
             }
         }
 
         return transaksiObatDetails;
+    }
+
+    public CrudResponse savePendaftaranPengambilanObatKronis(){
+        return null;
     }
 
     private String getNextIdAlergi() {
