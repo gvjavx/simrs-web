@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+s<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib prefix="sj" uri="/struts-jquery-tags" %>
 <%@ taglib prefix="sb" uri="/struts-bootstrap-tags" %>
@@ -1927,6 +1927,43 @@
     }
 
     function alertPasien(noPasien) {
+
+        var namapasien = "";
+        var diagnosa = "";
+        var tglperiksa = "";
+        var alergi = "";
+
+//        alert(noPasien);
+        CheckupAction.initAlertPasien(noPasien, function (response) {
+            if (response != null && response.namaPasien != null) {
+
+                namapasien = "<h4><i class=\"fa fa-user\"></i> " + response.namaPasien + "</h4>";
+                diagnosa = response.diagnosa;
+                tglperiksa = "Pemeriksaan terakhir pasien pada : <strong>" +  $.datepicker.formatDate('dd-mm-yy', new Date(response.stTglKeluar)) + "</strong>";
+
+                if (response.listOfAlergi != null) {
+                    $.each(response.listOfAlergi, function (i, item) {
+                        if (alergi != "") {
+                            alergi = alergi + ", " + item
+                        } else {
+                            alergi = item
+                        }
+                    });
+                }
+
+                $("#tgl-periksa").html(tglperiksa);
+                $("#nama-pasien").html(namapasien);
+                $("#alergi").html(alergi);
+                $("#diagnosa").html(diagnosa);
+                $("#alert-pasien").removeAttr("style");
+                $("#btn-rm").removeAttr("style");
+            } else {
+                closeAlert();
+            }
+        });
+    }
+
+    function alertObatKronis(noPasien) {
 
         var namapasien = "";
         var diagnosa = "";

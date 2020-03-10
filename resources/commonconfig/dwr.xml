@@ -501,7 +501,7 @@
           <param name="class" value="com.neurix.akuntansi.master.mappingJurnal.action.MappingJurnalAction"/>
       </create>
       <convert converter="bean" match="com.neurix.akuntansi.master.mappingJurnal.model.MappingJurnal"/>
-
+      <convert converter="bean" match="com.neurix.simrs.transaksi.permintaanresep.model.ObatKronis"/>
   </allow>
 
 </dwr>
