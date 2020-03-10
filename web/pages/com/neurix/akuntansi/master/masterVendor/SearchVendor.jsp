@@ -203,6 +203,7 @@
                                                             <display:column property="npwp" sortable="true" title="NPWP"  />
                                                             <display:column property="email" sortable="true" title="email"  />
                                                             <display:column property="noTelp" sortable="true" title="No. Telp."  />
+                                                            <display:column property="vendorObat" sortable="true" title="Vendor Obat"  />
                                                             <display:column property="flag" sortable="true" title="Flag" />
                                                             <display:column property="createdWho" sortable="true" title="Created Who"/>
                                                             <display:column property="lastUpdate" sortable="true" title="Last Update"/>

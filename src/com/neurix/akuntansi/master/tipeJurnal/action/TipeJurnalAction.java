@@ -297,11 +297,11 @@ public class TipeJurnalAction extends BaseMasterAction {
                 logId = tipeJurnalBoProxy.saveErrorMessage(e.getMessage(), "TipeJurnalBO.saveEdit");
             } catch (GeneralBOException e1) {
                 logger.error("[TipeJurnalAction.saveEdit] Error when saving error,", e1);
-                throw new GeneralBOException(e1);
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[TipeJurnalAction.saveEdit] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-            throw new GeneralBOException(e);
+            throw new GeneralBOException(e.getMessage());
         }
 
         logger.info("[TipeJurnalAction.saveEdit] end process <<<");
@@ -328,11 +328,11 @@ public class TipeJurnalAction extends BaseMasterAction {
                 logId = tipeJurnalBoProxy.saveErrorMessage(e.getMessage(), "TipeJurnalBO.saveDelete");
             } catch (GeneralBOException e1) {
                 logger.error("[TipeJurnalAction.saveDelete] Error when saving error,", e1);
-                throw new GeneralBOException(e);
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[TipeJurnalAction.saveDelete] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-            throw new GeneralBOException(e);
+            throw new GeneralBOException(e.getMessage());
         }
 
         logger.info("[TipeJurnalAction.saveDelete] end process <<<");
@@ -362,11 +362,11 @@ public class TipeJurnalAction extends BaseMasterAction {
                 logId = tipeJurnalBoProxy.saveErrorMessage(e.getMessage(), "TipeJurnalAction.saveAdd");
             } catch (GeneralBOException e1) {
                 logger.error("[TipeJurnalAction.saveAdd] Error when saving error,", e1);
-                throw new GeneralBOException(e1);
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[TipeJurnalAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            throw new GeneralBOException(e);
+            throw new GeneralBOException(e.getMessage());
         }
 
 

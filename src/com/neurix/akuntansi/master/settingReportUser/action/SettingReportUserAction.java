@@ -283,11 +283,11 @@ public class SettingReportUserAction extends BaseMasterAction {
                 logId = settingReportUserBoProxy.saveErrorMessage(e.getMessage(), "SettingReportUserBO.saveEdit");
             } catch (GeneralBOException e1) {
                 logger.error("[SettingReportUserAction.saveEdit] Error when saving error,", e1);
-                throw new GeneralBOException(e1);
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[SettingReportUserAction.saveEdit] Error when editing," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-            throw new GeneralBOException(e);
+            throw new GeneralBOException(e.getMessage());
         }
 
         logger.info("[SettingReportUserAction.saveEdit] end process <<<");
@@ -348,11 +348,11 @@ public class SettingReportUserAction extends BaseMasterAction {
                 logId = settingReportUserBoProxy.saveErrorMessage(e.getMessage(), "SettingReportUserAction.saveAdd");
             } catch (GeneralBOException e1) {
                 logger.error("[SettingReportUserAction.saveAdd] Error when saving error,", e1);
-                throw new GeneralBOException(e1);
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[SettingReportUserAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            throw new GeneralBOException(e);
+            throw new GeneralBOException(e.getMessage());
         }
 
 
