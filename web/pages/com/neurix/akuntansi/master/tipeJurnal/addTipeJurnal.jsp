@@ -16,9 +16,9 @@
 
         $.subscribe('beforeProcessSave', function (event, data) {
             var nameTipeJurnal = document.getElementById("tipeJurnalNameAdd").value;
-            var statusSave="";
+            var idTipeJurnal = document.getElementById("tipeJurnalIdAdd").value;
             dwr.engine.setAsync(false);
-            if (nameTipeJurnal != '') {
+            if (nameTipeJurnal != ''&&idTipeJurnal!='') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -32,6 +32,9 @@
                 var msg = "";
                 if (nameTipeJurnal == '') {
                     msg += 'Field <strong>Nama Tipe Jurnal</strong> is required.' + '<br/>';
+                }
+                if (idTipeJurnal == '') {
+                    msg += 'Field <strong>Id Tipe Jurnal</strong> is required.' + '<br/>';
                 }
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
@@ -77,6 +80,16 @@
                 <table >
                     <tr>
                         <td>
+                            <label class="control-label"><small>Id Tipe Jurnal :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield id="tipeJurnalIdAdd" name="tipeJurnal.tipeJurnalId" required="true" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
                             <label class="control-label"><small>Nama Tipe Jurnal :</small></label>
                         </td>
                         <td>
@@ -102,70 +115,60 @@
                     </div>
                 </div>
 
-                <div id="actions" class="form-actions">
-                    <table>
-                        <tr>
-                            <div id="crud">
-                                <td>
-                                    <table>
-                                        <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"
-                                                   resizable="false"
-                                                   height="350" width="600" autoOpen="false" title="Saving ...">
-                                            Please don't close this window, server is processing your request ...
-                                            </br>
-                                            </br>
-                                            </br>
-                                            <center>
-                                                <img border="0" src="<s:url value="/pages/images/indicator-write.gif"/>" name="image_indicator_write">
-                                            </center>
-                                        </sj:dialog>
+                <table>
+                    <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"
+                               resizable="false"
+                               height="350" width="600" autoOpen="false" title="Saving ...">
+                        Please don't close this window, server is processing your request ...
+                        </br>
+                        </br>
+                        </br>
+                        <center>
+                            <img border="0" src="<s:url value="/pages/images/indicator-write.gif"/>" name="image_indicator_write">
+                        </center>
+                    </sj:dialog>
 
-                                        <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false"
-                                                   height="200" width="400" autoOpen="false" title="Infomation Dialog"
-                                                   buttons="{
+                    <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false"
+                               height="200" width="400" autoOpen="false" title="Infomation Dialog"
+                               buttons="{
                                                               'OK':function() {
                                                                       callSearch2();
                                                                       link();
                                                                    }
                                                             }"
-                                        >
-                                            <img border="0" src="<s:url value="/pages/images/icon_success.png"/>" name="icon_success">
-                                            Record has been saved successfully.
-                                        </sj:dialog>
+                    >
+                        <img border="0" src="<s:url value="/pages/images/icon_success.png"/>" name="icon_success">
+                        Record has been saved successfully.
+                    </sj:dialog>
 
-                                        <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
-                                                   height="250" width="600" autoOpen="false" title="Error Dialog"
-                                                   buttons="{
+                    <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
+                               height="250" width="600" autoOpen="false" title="Error Dialog"
+                               buttons="{
                                                                         'OK':function() { $('#error_dialog').dialog('close'); }
                                                                     }"
-                                        >
-                                            <div class="alert alert-error fade in">
-                                                <label class="control-label" align="left">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessage"></p>
-                                                </label>
-                                            </div>
-                                        </sj:dialog>
+                    >
+                        <div class="alert alert-error fade in">
+                            <label class="control-label" align="left">
+                                <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessage"></p>
+                            </label>
+                        </div>
+                    </sj:dialog>
 
-                                        <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog" modal="true" resizable="false"
-                                                   height="280" width="500" autoOpen="false" title="Warning"
-                                                   buttons="{
+                    <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog" modal="true" resizable="false"
+                               height="280" width="500" autoOpen="false" title="Warning"
+                               buttons="{
                                                                         'OK':function() { $('#error_validation_dialog').dialog('close'); }
                                                                     }"
-                                        >
-                                            <div class="alert alert-error fade in">
-                                                <label class="control-label" align="left">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> Please check this field :
-                                                    <br/>
-                                                    <center><div id="errorValidationMessage"></div></center>
-                                                </label>
-                                            </div>
-                                        </sj:dialog>
-                                    </table>
-                                </td>
-                            </div>
-                        </tr>
-                    </table>
-                </div>
+                    >
+                        <div class="alert alert-error fade in">
+                            <label class="control-label" align="left">
+                                <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> Please check this field :
+                                <br/>
+                                <center><div id="errorValidationMessage"></div></center>
+                            </label>
+                        </div>
+                    </sj:dialog>
+                </table>
             </s:form>
         </td>
     </tr>

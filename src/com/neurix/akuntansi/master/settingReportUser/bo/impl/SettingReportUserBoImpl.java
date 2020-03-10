@@ -113,9 +113,25 @@ public class SettingReportUserBoImpl implements SettingReportUserBo {
         logger.info("[SettingReportUserBoImpl.saveEdit] start process >>>");
 
         if (bean!=null) {
+            //validasi user
+            ImUsers imUsers;
+            ImUsersPK usersPK = new ImUsersPK();
+            try {
+                usersPK.setId(bean.getUserId());
+                imUsers = userDao.getById(usersPK, "Y");
+            } catch (HibernateException e) {
+                logger.error("[SettingReportUserBoImpl.saveEdit] Error, " + e.getMessage());
+                throw new GeneralBOException("Error , please info to your admin..." + e.getMessage());
+            }
+            if (imUsers==null){
+                String status="Error : user tidak ditemukan";
+                logger.error("[SettingReportUserBoImpl.saveAdd] "+status);
+                throw new GeneralBOException(status);
+            }
+
+            //validasi data duplikate
             List<ImSettingReportUserEntity> settingReportUserList = new ArrayList<>();
             try {
-                // Generating ID, get from postgre sequence
                 settingReportUserList = settingReportUserDao.getListByReportIdNUserId(bean.getReportId(),bean.getUserId());
             } catch (HibernateException e) {
                 logger.error("[SettingReportUserBoImpl.saveAdd] Error, " + e.getMessage());
@@ -123,8 +139,10 @@ public class SettingReportUserBoImpl implements SettingReportUserBo {
             }
             if (settingReportUserList.size()>0){
                 logger.error("[SettingReportUserBoImpl.saveAdd] Error, duplicate data");
-                throw new GeneralBOException("Error : Duplicate data, please info to your admin...");
+                throw new GeneralBOException("Error : Data sudah ada, please info to your admin...");
             }
+
+
 
             ImSettingReportUserEntity imSettingReportUserEntity = null;
             try {
@@ -160,6 +178,23 @@ public class SettingReportUserBoImpl implements SettingReportUserBo {
     public SettingReportUser saveAdd(SettingReportUser bean) throws GeneralBOException {
         logger.info("[SettingReportUserBoImpl.saveAdd] start process >>>");
         if (bean!=null) {
+            //validasi user
+            ImUsers imUsers;
+            ImUsersPK usersPK = new ImUsersPK();
+            try {
+                usersPK.setId(bean.getUserId());
+                imUsers = userDao.getById(usersPK, "Y");
+            } catch (HibernateException e) {
+                logger.error("[SettingReportUserBoImpl.saveAdd] Error, " + e.getMessage());
+                throw new GeneralBOException("Error , please info to your admin..." + e.getMessage());
+            }
+            if (imUsers==null){
+                String status="Error : user tidak ditemukan";
+                logger.error("[SettingReportUserBoImpl.saveAdd] "+status);
+                throw new GeneralBOException(status);
+            }
+
+            //validasi duplikat
             List<ImSettingReportUserEntity> settingReportUserList = new ArrayList<>();
             try {
                 // Generating ID, get from postgre sequence

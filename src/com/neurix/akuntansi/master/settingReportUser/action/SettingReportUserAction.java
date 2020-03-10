@@ -283,11 +283,11 @@ public class SettingReportUserAction extends BaseMasterAction {
                 logId = settingReportUserBoProxy.saveErrorMessage(e.getMessage(), "SettingReportUserBO.saveEdit");
             } catch (GeneralBOException e1) {
                 logger.error("[SettingReportUserAction.saveEdit] Error when saving error,", e1);
-                return ERROR;
+                throw new GeneralBOException(e1);
             }
-            logger.error("[SettingReportUserAction.saveEdit] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+            logger.error("[SettingReportUserAction.saveEdit] Error when editing," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            throw new GeneralBOException(e);
         }
 
         logger.info("[SettingReportUserAction.saveEdit] end process <<<");
@@ -326,7 +326,7 @@ public class SettingReportUserAction extends BaseMasterAction {
         return "success_save_delete";
     }
 
-    public String saveAdd(){
+    public String saveAdd() throws GeneralBOException{
         logger.info("[SettingReportUserAction.saveAdd] start process >>>");
 
         try {
@@ -345,14 +345,14 @@ public class SettingReportUserAction extends BaseMasterAction {
         }catch (GeneralBOException e) {
             Long logId = null;
             try {
-                logId = settingReportUserBoProxy.saveErrorMessage(e.getMessage(), "liburBO.saveAdd");
+                logId = settingReportUserBoProxy.saveErrorMessage(e.getMessage(), "SettingReportUserAction.saveAdd");
             } catch (GeneralBOException e1) {
-                logger.error("[liburAction.saveAdd] Error when saving error,", e1);
-                return ERROR;
+                logger.error("[SettingReportUserAction.saveAdd] Error when saving error,", e1);
+                throw new GeneralBOException(e1);
             }
-            logger.error("[liburAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            logger.error("[SettingReportUserAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            throw new GeneralBOException(e);
         }
 
 

@@ -60,6 +60,7 @@
         </global-results>
 
         <global-exception-mappings>
+            <exception-mapping exception="com.neurix.common.exception.GeneralBOException" result="global_error" />
             <exception-mapping exception="java.lang.Exception" result="global_error" />
             <exception-mapping exception="java.lang.Error" result="global_error" />
             <exception-mapping exception="java.lang.RuntimeException" result="global_error" />
