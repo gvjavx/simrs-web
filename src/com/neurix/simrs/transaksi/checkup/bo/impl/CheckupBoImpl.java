@@ -1939,7 +1939,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
         if (idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup) && idApproval != null && !"".equalsIgnoreCase(idApproval)) {
 
             try {
-                headerCheckupDao.getListObatkronis(idDetailCheckup, idApproval);
+                transaksiObatDetails = headerCheckupDao.getListObatkronis(idDetailCheckup, idApproval);
             } catch (HibernateException e) {
                 logger.error("Found Error when search obat kronis " + e.getMessage());
             }

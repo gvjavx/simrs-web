@@ -1148,13 +1148,17 @@
                                 <h4><i class="icon fa fa-warning"></i> Warning!</h4>
                                 <p id="msg_kronis"></p>
                             </div>
+                            <div class="alert alert-success alert-dismissible" id="success_kronis" style="display: none">
+                                <h4><i class="icon fa fa-info"></i> Info!</h4>
+                                <p id="msg_kronis2"></p>
+                            </div>
                             <div class="box-header with-border"></div>
                             <div class="box-body">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group" style="display: inline;">
                                             <div class="col-md-offset-3 col-md-7" style="margin-top: 7px">
-                                                <button type="button" class="btn btn-success" onclick="confirm()"><i
+                                                <button type="button" id="btn-save" class="btn btn-success" onclick="confirm()"><i
                                                         class="fa fa-arrow-right"></i> Save
                                                 </button>
                                                 <button type="button" class="btn btn-danger"
@@ -1485,45 +1489,53 @@
                         <button onclick="carouselSwipe('carousel-arrow-prev')" type="button" id="carousel-arrow-prev" class="carousel-arrow carousel-arrow-prev" arial-label="Image précédente"></button>
                         <button onclick="carouselSwipe('carousel-arrow-next')" type="button" id="carousel-arrow-next" class="carousel-arrow carousel-arrow-next" arial-label="Image suivante"></button>
                         <div id="body-img-rm"></div>
-                        <%--<img id="carousel-1" class="carousel-img carousel-img-noDisplay" src="http://res.cloudinary.com/dnqehhgmu/image/upload/v1509718497/sea_ej0zoc.jpg" alt="Sea" />--%>
-                        <%--<img id="carousel-2" class="carousel-img carousel-img-noDisplay" src="http://res.cloudinary.com/dnqehhgmu/image/upload/v1509718497/night_pw1bpm.jpg" alt="Night" />--%>
-                        <%--<img id="carousel-3" class="carousel-img carousel-img-noDisplay" src="http://res.cloudinary.com/dnqehhgmu/image/upload/v1509718497/mountain_dekhfd.jpg" alt="Moutain" />--%>
-                        <%--<img id="carousel-4" class="carousel-img carousel-img-noDisplay" src="http://res.cloudinary.com/dnqehhgmu/image/upload/v1509718497/desert_zy3uth.jpg" alt="Desert" />--%>
                     </div>
                 </div>
-
-                <%--<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">--%>
-                    <%--<ol class="carousel-indicators" id="indicator-img">--%>
-                        <%--<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>--%>
-                        <%--<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>--%>
-                        <%--<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>--%>
-                    <%--</ol>--%>
-                    <%--<div class="carousel-inner" id="body-img-rm">--%>
-                        <%--<div class="carousel-item active">--%>
-                            <%--<img class="d-block w-100" src="/simrs/images/rekam_medic/RS01_P0000020_00000007_picture.jpg" alt="First slide">--%>
-                        <%--</div>--%>
-                        <%--<div class="carousel-item">--%>
-                            <%--<img class="d-block w-100" src="/simrs/images/rekam_medic/RS01_P0000020_00000007_picture.jpg" alt="Second slide">--%>
-                        <%--</div>--%>
-                        <%--<div class="carousel-item">--%>
-                            <%--<img class="d-block w-100" src="/simrs/images/rekam_medic/RS01_P0000020_00000007_picture.jpg" alt="Third slide">--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
-                    <%--<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">--%>
-                        <%--<span class="carousel-control-prev-icon" aria-hidden="true"></span>--%>
-                        <%--<span class="sr-only">Previous</span>--%>
-                    <%--</a>--%>
-                    <%--<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">--%>
-                        <%--<span class="carousel-control-next-icon" aria-hidden="true"></span>--%>
-                        <%--<span class="sr-only">Next</span>--%>
-                    <%--</a>--%>
-                <%--</div>--%>
-                <%--<div id="body-img-rm">--%>
-
-                <%--</div>--%>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-obat-kronis">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Obat Kronis</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_list_kronis">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_list_kronis"></p>
+                </div>
+                <table class="table table-bordered table-striped" id="tabel-kronis">
+                    <thead>
+                    <td>ID Obat</td>
+                    <td>Nama Obat</td>
+                    <td>Stok Obat</td>
+                    <td>Jenis Satuan</td>
+                    <td>Qty</td>
+                    </thead>
+                    <tbody id="body_kronis">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_kronis"><i
+                        class="fa fa-arrow-check"></i> Save
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_kronis"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
             </div>
         </div>
@@ -1966,19 +1978,109 @@
             if(response.idDetailCheckup != null){
                 console.log(response);
 
+                if(response.flagPengambilan == "Y"){
+                    $('#btn-save').hide();
+                    $('#btn-kronis').show();
+                    $('#success_kronis').show();
+                    $('#msg_kronis2').text("Pengambilan Obat Kronis, Silahkan tekan tombol Obat Kronis untuk melanjutkan");
+                    $('#btn-kronis').attr('onclick','showObatKronis(\''+response.idDetailCheckup+'\',\''+response.idApprovalObat+'\')');
+                }else{
+                    $('#btn-kronis').removeAttr('onclick');
+                    $('#btn-kronis').hide();
+                    $('#warning_kronis').show();
+                    $('#msg_kronis').text(response.msg);
+                }
                 $('html, body').animate({
                     scrollTop: $('#pos_kronis').offset().top
                 }, 2000);
 
-                $('#btn-kronis').show();
-                $('#warning_kronis').show();
-                $('#msg_kronis').text(response.msg);
-
             }else{
+                $('#btn-kronis').removeAttr('onclick');
+                $('#btn-save').show();
                 $('#btn-kronis').hide();
+                $('#success_kronis').hide();
                 $('#warning_kronis').hide();
             }
         });
+    }
+
+    function showObatKronis(idDetailCheckup, idApproval){
+        if(idDetailCheckup != '' && idApproval != ''){
+            $('#modal-obat-kronis').modal({show:true, backdrop:'static'});
+            var table = "";
+            CheckupAction.getListObatKronis(idDetailCheckup, idApproval, function (response) {
+                if(response.length > 0){
+
+                    var qtyTotal = 0;
+                    $.each(response, function (i, item) {
+                        var qtyBox = 0;
+                        var qtyLembar = 0;
+                        var qtyBiji = 0;
+
+                        if(item.qtyBox != null){
+                            qtyBox = item.qtyBox;
+                        }
+
+                        if(item.qtyLembar != null){
+                            qtyLembar = item.qtyLembar;
+                        }
+
+                        if(item.qtyBiji != null){
+                            qtyBiji = item.qtyBiji;
+                        }
+
+                        if(item.lembarPerBox != null && item.bijiPerlembar != null){
+                            qtyTotal = parseInt(qtyBiji) + ((parseInt(item.lembarPerBox * parseInt(qtyBox))) * parseInt(item.bijiPerLembar));
+                        }
+
+                        table += '<tr>' +
+                            '<td>'+item.idObat+'</td>' +
+                            '<td>'+item.namaObat+'</td>' +
+                            '<td>'+qtyTotal+'</td>' +
+                            '<td>biji</td>' +
+                            '<td width="20%">'+'<input class="form-control" id="qty'+i+'">'+'</td>' +
+                            '</tr>'
+                    });
+
+                    $('#body_kronis').html(table);
+                    $('#save_kronis').attr('onclick','savePengambilanObatKronis(\''+idDetailCheckup+'\')');
+                }else{
+
+                }
+            })
+        }
+    }
+
+    function savePengambilanObatKronis(idDetailCheckup){
+        if(idDetailCheckup != ''){
+            var data = $('#tabel-kronis').tableToJSON();
+            var result = [];
+
+            $.each(data, function (i, item) {
+                var idObat = data[i]["ID Obat"];
+                var qty = $('#qty'+i).val();
+                result.push({'id_obat':idObat, 'jenis_satuan':'biji', 'qty':qty});
+
+            });
+            console.log(result);
+            var jsonString = JSON.stringify(result);
+            $('#save_kronis').hide();
+            $('#load_kronis').show();
+            dwr.engine.setAsync(true);
+            CheckupAction.savePengambilanObatKronis(idDetailCheckup, jsonString, {callback: function (response) {
+                if(response.status == "success"){
+                    $('#modal-obat-kronis').modal('hide');
+                    $('#info_dialog').dialog('open');
+                    $('#save_kronis').show();
+                    $('#load_kronis').hide();
+                }else{
+                    $('#save_kronis').show();
+                    $('#load_kronis').hide();
+                    $('#warning_list_kronis').show().fadeOut(10000);
+                    $('#msg_list_kronis').text(response.msg);
+                }
+            }} );
+        }
     }
 
     function closeAlert() {
