@@ -755,7 +755,7 @@ public class CheckupAction extends BaseMasterAction {
                         sepRequest.setJnsPelayanan("2");//jenis rawat inap apa jalan
                         sepRequest.setKlsRawat(checkup.getKelasPasien());//kelas rawat dari bpjs
                         sepRequest.setNoMr(checkup.getIdPasien());//id pasien
-                        sepRequest.setAsalRujukan("1");//
+                        sepRequest.setAsalRujukan(checkup.getRujuk());//
                         sepRequest.setTglRujukan(checkup.getTglRujukan());
                         sepRequest.setNoRujukan(checkup.getNoRujukan());
                         sepRequest.setPpkRujukan(checkup.getNoPpkRujukan());
@@ -775,7 +775,7 @@ public class CheckupAction extends BaseMasterAction {
                         sepRequest.setKdKecamatanLakaLantas("");
                         sepRequest.setKdKabupatenLakaLantas("");
                         sepRequest.setNoSuratSkdp(getBranch.getSuratSkdp());
-                        sepRequest.setKodeDpjp("31661");
+                        sepRequest.setKodeDpjp(checkup.getIdDokter());
                         sepRequest.setNoTelp(getPasien.getNoTelp());
                         sepRequest.setUserPembuatSep(userLogin);
 
@@ -809,16 +809,15 @@ public class CheckupAction extends BaseMasterAction {
                             } else {
                                 jk = "2";
                             }
+
                             klaimRequest.setGender(jk);
 
                             KlaimResponse responseNewClaim = new KlaimResponse();
                             try {
                                 responseNewClaim = eklaimBoProxy.insertNewClaimEklaim(klaimRequest, userArea);
                             } catch (GeneralBOException e) {
-                                Long logId = null;
-                                logger.error("[CheckupAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-                                addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-                                return ERROR;
+                                logger.error("[CheckupAction.saveAdd] Error when new claim ," + "[" + e + "] Found problem when saving add data, please inform to your admin.");
+                                throw new GeneralBOException("Error when new claim", e);
                             }
 
                             List<Tindakan> tindakanList = new ArrayList<>();
@@ -2433,18 +2432,26 @@ public class CheckupAction extends BaseMasterAction {
         return null;
     }
 
-    public List<ObatKronis> findRiwayatObatKronis(String idPasien){
+    public ObatKronis findRiwayatObatKronis(String idPasien){
         logger.info("[CheckupAction.findRiwayatObatKronis] Start >>>");
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
 
         List<ObatKronis> obatKronisList = new ArrayList<>();
+        ObatKronis obatKronis = new ObatKronis();
+
         try {
             obatKronisList = checkupBo.findRiwayatKronis(idPasien);
         } catch (GeneralBOException e){
             logger.error("Error " + e.getMessage());
         }
+
         logger.info("[CheckupAction.findRiwayatObatKronis] End <<<");
-        return obatKronisList;
+
+        if(obatKronisList.size() > 0){
+            obatKronis = obatKronisList.get(0);
+        }
+
+        return obatKronis;
     }
 }
