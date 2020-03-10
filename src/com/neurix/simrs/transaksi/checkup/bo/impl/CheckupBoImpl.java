@@ -391,6 +391,9 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             headerEntity.setNoRujukan(bean.getNoRujukan());
             headerEntity.setNoPpkRujukan(bean.getNoPpkRujukan());
 
+            headerEntity.setKelasPasien(bean.getKelasPasien());
+            headerEntity.setIdPelayananBpjs(bean.getIdPelayananBpjs());
+
             if (bean.getTglRujukan() != null && !"".equalsIgnoreCase(bean.getTglRujukan())) {
                 headerEntity.setTglRujukan(Date.valueOf(bean.getTglRujukan()));
             }

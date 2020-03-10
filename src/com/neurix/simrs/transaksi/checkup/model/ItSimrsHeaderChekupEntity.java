@@ -52,6 +52,25 @@ public class ItSimrsHeaderChekupEntity implements Serializable {
     private String alatBantu;
     private String gangguanLain;
 
+    private String kelasPasien;
+    private String idPelayananBpjs;
+
+    public String getKelasPasien() {
+        return kelasPasien;
+    }
+
+    public void setKelasPasien(String kelasPasien) {
+        this.kelasPasien = kelasPasien;
+    }
+
+    public String getIdPelayananBpjs() {
+        return idPelayananBpjs;
+    }
+
+    public void setIdPelayananBpjs(String idPelayananBpjs) {
+        this.idPelayananBpjs = idPelayananBpjs;
+    }
+
     public String getGangguanLain() {
         return gangguanLain;
     }

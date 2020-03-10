@@ -637,7 +637,7 @@
                         </table>
                     </div>
                 </div>
-                <table class="table table-striped table-bordered">
+                <table class="table table-bordered">
                     <thead>
                         <td>ID Barang</td>
                         <td>Expired Date</td>
@@ -648,6 +648,13 @@
                     <tbody id="body_detail">
                     </tbody>
                 </table>
+                <div class="row">
+                <div class="form-group">
+                    <div class="col-md-4"><i class="fa fa-square" style="color: #eea236"></i> Expired Date Kurang dari 30 hari</div>
+                    <div class="col-md-4"><i class="fa fa-square" style="color: #dd4b39"></i> Expired Date Kurang dari 10 hari</div>
+                    <div class="col-md-4"><i class="fa fa-square" style="color: #ccc"></i> Expired Date Telah Habis</div>
+                </div>
+                </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
@@ -848,12 +855,46 @@
             $('#det_biji_obat').text(bijiPerLembar);
             $('#det_min_stok_obat').text(minStok +" Box");
 
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+            today = mm + '-' + dd + '-' + yyyy;
+
             var table = "";
             ObatAction.getListObatDetail(idObat, function (response) {
                 if(response.length > 0){
                     $.each(response, function (i, item) {
 
-                        table += '<tr>' +
+                        var dateExp = $.datepicker.formatDate('mm-dd-yy', new Date(item.expiredDate));
+
+                        const date1 = new Date(today);
+                        const date2 = new Date(dateExp);
+                        const diffTime = Math.abs(date2 - date1);
+                        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                        var warna = "";
+                        var color = "";
+                        var disabled = "";
+
+                        if(Math.abs(date1) > Math.abs(date2)){
+                            warna = '#ccc';
+                            color = '#fff';
+                            disabled = 'disabled';
+
+                        } else if (diffDays < 10) {
+                            warna = '#dd4b39';
+                            color = '#fff';
+
+                        } else if (diffDays < 30) {
+                            warna = '#eea236';
+                            color = '#fff';
+                        } else {
+                            warna = '#fff';
+                            color = '#333';
+                        }
+
+                        table += '<tr bgcolor=' + warna + ' style="color: ' + color + '">' +
                                 '<td>'+item.idBarang+'</td>'+
                                 '<td>'+formaterDate(item.expiredDate)+'</td>'+
                                 '<td>'+item.qtyBox+'</td>'+

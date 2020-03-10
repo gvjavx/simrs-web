@@ -442,10 +442,14 @@ public class EklaimBoImpl extends BpjsService implements EklaimBo {
                     finalResponse.setTarifAltResponseList(tarifAltResponseList);
 
                 } else {
+                    finalResponse.setStatus("201");
+                    finalResponse.setMessage(metaData.getString("message"));
                     String errorNo = metaData.getString("error_no");
                     logger.error("[EklaimBoImpl.groupingStage1Eklaim] : " + errorNo + " : " + metaData.getString("message"));
                 }
             } catch (IOException | JSONException e) {
+                finalResponse.setStatus("201");
+                finalResponse.setMessage("Found Error "+e);
                 e.printStackTrace();
                 throw new GeneralBOException("[EklaimBoImpl.groupingStage1Eklaim] ERROR " + e.getMessage());
             }

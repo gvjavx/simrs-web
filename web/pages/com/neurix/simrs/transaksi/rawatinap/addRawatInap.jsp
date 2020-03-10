@@ -2671,6 +2671,48 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-cancel-diet">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Cancel Order Gizi </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_cancel">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_cancel"></p>
+                </div>
+                <div class="row">
+                <div class="form-group">
+                    <label class="col-md-2">Keterangan</label>
+                        <div class="col-md-8">
+                            <textarea oninput="var warn =$('#war_keterangan_cancel').is(':visible'); if (warn){$('#cor_keterangan_cancel').show().fadeOut(3000);$('#war_keterangan_cancel').hide()}" class="form-control" id="keterangan_cancel" rows="3"></textarea>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_keterangan_cancel"><i
+                                    class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_keterangan_cancel">
+                                <i class="fa fa-check"></i> correct</p>
+                        </div>
+                </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_cancel_diet"><i class="fa fa-arrow-right"></i> Save
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_cancel_diet"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div class="modal fade" id="modal-confirm-dialog">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -3775,27 +3817,32 @@
                     var label = "";
                     var btn = "";
 
-                    if(item.approveFlag == "Y"){
-                        btn = '<div class="input-group">' +
-                            '<input class="form-control" onchange="cekBarcode(this.value, \''+item.idOrderGizi+'\')">' +
-                            '<div class="input-group-addon">' +
-                            '<span id="status'+item.idOrderGizi+'"></span>' +
-                            '</div>' +
-                            '</div>';
-                        label = '<label class="label label-info"> telah dikonfirmasi</label>';
+                    if(item.diterimaFlag == "R"){
+                        label = '<label class="label label-danger"> dibatalakan</label>';
                     }else{
-                        btn = '<img border="0" class="hvr-grow" onclick="editDiet(\'' + item.idOrderGizi + '\',\'' + item.idDietGizi + '\',\'' + item.keterangan + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">';
-                        label = '<label class="label label-warning"> menunggu konfirmasi</label>'
-                    }
+                        if(item.approveFlag == "Y"){
+                            btn = '<div class="input-group">' +
+                                '<input class="form-control" onchange="cekBarcode(this.value, \''+item.idOrderGizi+'\')">' +
+                                '<div class="input-group-addon">' +
+                                '<span id="status'+item.idOrderGizi+'"></span>' +
+                                '</div>' +
+                                '</div>';
+                            label = '<label class="label label-info"> telah dikonfirmasi</label>';
+                        }else{
+                            btn = '<img border="0" class="hvr-grow" onclick="editDiet(\'' + item.idOrderGizi + '\',\'' + item.idDietGizi + '\',\'' + item.keterangan + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' +
+                                '<img border="0" class="hvr-grow" onclick="cancelDiet(\'' + item.idOrderGizi + '\')" src="<s:url value="/pages/images/icons8-cancel-25.png"/>" style="cursor: pointer;">';
+                            label = '<label class="label label-warning"> menunggu konfirmasi</label>'
+                        }
 
-                    if(item.diterimaFlag == "Y"){
-                        btn = '<div class="input-group">' +
-                            '<input class="form-control" value="'+item.idOrderGizi+'" disabled>' +
-                            '<div class="input-group-addon">' +
-                            '<img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">'+
-                            '</div>' +
-                            '</div>';
-                        label = '<label class="label label-success"> telah diterima</label>';
+                        if(item.diterimaFlag == "Y"){
+                            btn = '<div class="input-group">' +
+                                '<input class="form-control" value="'+item.idOrderGizi+'" disabled>' +
+                                '<div class="input-group-addon">' +
+                                '<img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">'+
+                                '</div>' +
+                                '</div>';
+                            label = '<label class="label label-success"> telah diterima</label>';
+                        }
                     }
 
                     table += "<tr>" +
@@ -5471,6 +5518,42 @@
 
         $("#resep_qty").val(nilai);
 
+    }
+
+    function cancelDiet(id){
+        $('#modal-cancel-diet').modal({show:true, backdrop:'static'});
+        $('#save_cancel_diet').attr('onclick','saveCancelDiet(\''+id+'\')');
+    }
+
+    function saveCancelDiet(id){
+
+        var ket = $('#keterangan_cancel').val();
+        if(ket != ''){
+            $('#save_cancel_diet').hide();
+            $('#load_cancel_diet').show();
+            dwr.engine.setAsync(true);
+            OrderGiziAction.cancelOrderGizi(id, ket, {callback:  function (response) {
+                if(response.status == "success"){
+                    dwr.engine.setAsync(false);
+                    listDiet();
+                    $('#modal-cancel-diet').modal('hide');
+                    $('#info_dialog').dialog('open');
+                    $('#close_pos').val(5);
+                    $('#save_cancel_diet').show();
+                    $('#load_cancel_diet').hide();
+                }else{
+                    $('#save_cancel_diet').show();
+                    $('#load_cancel_diet').hide();
+                    $('#warning_cancel').show().fadeOut(5000);
+                    $('#msg_cancel').text(response.message);
+                }
+                }
+            });
+        }else{
+            $('#warning_cancel').show().fadeOut(5000);
+            $('#msg_cancel').text('Silahkan cek kembali data inputan...!');
+            $('#war_keterangan_cancel').show();
+        }
     }
 
 </script>

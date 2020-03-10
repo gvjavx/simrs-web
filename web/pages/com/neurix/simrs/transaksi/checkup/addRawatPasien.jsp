@@ -600,6 +600,7 @@
                                                         var selectedObj = mapped[item];
 
                                                         alertPasien(selectedObj.id);
+                                                        alertObatKronis(selectedObj.id);
                                                         $('#no_bpjs').val(selectedObj.noBpjs);
                                                         $('#no_ktp').val(selectedObj.ktp);
                                                         $('#nama_pasien').val(selectedObj.nama);
@@ -1007,7 +1008,7 @@
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Perujuk/Asal</label>
                                             <div class="col-md-8">
-                                                <s:select list="#{'puskesmas':'PPK 1 - Puskesmas','rs':'PPK 2 - RS Lain'}"
+                                                <s:select list="#{'1':'PPK 1 - Puskesmas','2':'PPK 2 - RS Lain'}"
                                                         cssStyle="margin-top: 7px"
                                                         name="headerCheckup.rujuk"
                                                         onchange="changePlaceHolder(this)"
@@ -1142,6 +1143,11 @@
                                 </div>
                             </div>
                             </s:if>
+                            <div class="box-header with-border" id="pos_kronis"></div>
+                            <div class="alert alert-warning alert-dismissible" id="warning_kronis" style="display: none">
+                                <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                                <p id="msg_kronis"></p>
+                            </div>
                             <div class="box-header with-border"></div>
                             <div class="box-body">
                                 <div class="row">
@@ -1163,6 +1169,13 @@
                                                    onclick="initRekamMedic()">
                                                     <i class="fa fa-search"></i> View Rekam Medik
                                                 </a>
+
+                                                <a type="button" id="btn-kronis" style="display:none;"
+                                                   class="btn btn-info"
+                                                   onclick="initKronis()">
+                                                    <i class="fa fa-medkit"></i> Obat Kronis
+                                                </a>
+
                                             </div>
                                         </div>
                                     </div>
@@ -1644,17 +1657,6 @@
 
     function setFormAdmisi() {
         $('#modal-admisi').modal({show: true, backdrop: 'static'});
-        // var dataAdmisi = $('#data_admisi').val();
-        // if (json != null) {
-        //     var json = JSON.parse(dataAdmisi);
-        //     $.each
-        //     $('#pre_keyakinan').val(json.keyakinan);
-        //     $('#pre_penerjemah').val(json.penerjemah);
-        //     $('#pre_indra').val(json.indra);
-        //     $('#pre_kontak').val(json.kontak);
-        //     $('#pre_alat_bantu').val(json.alatBantu);
-        //     $('#pre_alergi').val(json.alergi);
-        // }
     }
 
     function saveFormAdmisi() {
@@ -1691,16 +1693,6 @@
         data.push({'parameter':'Apakah kontak yang diisi sudah benar ?', 'jawaban':check4, 'keterangan':kontak});
         data.push({'parameter':'Apakah anda membutuhkan alat bantu khusus ?', 'jawaban':check5, 'keterangan':alatBantu});
         data.push({'parameter':'Apakah anda mempunyai riwayat alergi ?', 'jawaban':check6, 'keterangan':hslAlergi});
-
-        // data = {
-        //     'keyakinan': keyakinan,
-        //     'penerjemah': penerjemah,
-        //     'indra': indra,
-        //     'kontak': kontak,
-        //     'alatBantu': alatBantu,
-        //     'alergi': alergi
-        // };
-
         console.log(data);
         var stringJson = JSON.stringify(data);
         $('#data_admisi').val(stringJson);
@@ -1721,9 +1713,9 @@
         var jenisRujukan = "";
 
         if (noRujukan != '' && perujuk != '') {
-            if (perujuk == 'puskesmas') {
+            if (perujuk == '1') {
                 jenisRujukan = "P";
-            }else if (perujuk == 'rs') {
+            }else if (perujuk == '2') {
                 jenisRujukan = "R";
             }
 
@@ -1963,39 +1955,28 @@
         });
     }
 
-    function alertObatKronis(noPasien) {
+    function alertObatKronis(idPasien) {
 
         var namapasien = "";
         var diagnosa = "";
         var tglperiksa = "";
         var alergi = "";
 
-//        alert(noPasien);
-        CheckupAction.initAlertPasien(noPasien, function (response) {
-            if (response != null && response.namaPasien != null) {
+        CheckupAction.findRiwayatObatKronis(idPasien, function (response) {
+            if(response.idDetailCheckup != null){
+                console.log(response);
 
-                namapasien = "<h4><i class=\"fa fa-user\"></i> " + response.namaPasien + "</h4>";
-                diagnosa = response.diagnosa;
-                tglperiksa = "Pemeriksaan terakhir pasien pada : <strong>" +  $.datepicker.formatDate('dd-mm-yy', new Date(response.stTglKeluar)) + "</strong>";
+                $('html, body').animate({
+                    scrollTop: $('#pos_kronis').offset().top
+                }, 2000);
 
-                if (response.listOfAlergi != null) {
-                    $.each(response.listOfAlergi, function (i, item) {
-                        if (alergi != "") {
-                            alergi = alergi + ", " + item
-                        } else {
-                            alergi = item
-                        }
-                    });
-                }
+                $('#btn-kronis').show();
+                $('#warning_kronis').show();
+                $('#msg_kronis').text(response.msg);
 
-                $("#tgl-periksa").html(tglperiksa);
-                $("#nama-pasien").html(namapasien);
-                $("#alergi").html(alergi);
-                $("#diagnosa").html(diagnosa);
-                $("#alert-pasien").removeAttr("style");
-                $("#btn-rm").removeAttr("style");
-            } else {
-                closeAlert();
+            }else{
+                $('#btn-kronis').hide();
+                $('#warning_kronis').hide();
             }
         });
     }
@@ -2043,10 +2024,10 @@
         if (perujuk == "dokter"){
             $("#intansi_perujuk").attr("placeholder","nama dokter");
         }
-        if (perujuk == "puskesmas"){
+        if (perujuk == "1"){
             $("#intansi_perujuk").attr("placeholder","nama puskesmas");
         }
-        if (perujuk == "rs"){
+        if (perujuk == "2"){
             $("#intansi_perujuk").attr("placeholder","nama rumah sakit");
         }
         if (perujuk == "bidan"){
