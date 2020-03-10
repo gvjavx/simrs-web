@@ -51,7 +51,7 @@
                 if (tipeJurnalId!=""&&transId!="") {
                     var status ="";
                     dwr.engine.setAsync(false);
-                    MappingJurnalAction.cekBeforeAdd(tipeJurnalId,transId,function (listData) {
+                    MappingJurnalAction.cekBeforeSave(tipeJurnalId,transId,"add",function (listData) {
                         status=listData;
                     });
                     if (status==""){
@@ -179,7 +179,7 @@
                             <table align="center">
                                 <tr>
                                     <td>
-                                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="mappingJurnalForm" id="save" name="save"
+                                        <sj:submit targets="o" type="button" cssClass="btn btn-primary" formIds="mappingJurnalForm" id="save" name="save"
                                                    onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
                                                    onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
                                             <i class="fa fa-check"></i>
@@ -282,7 +282,7 @@
                 <form class="form-horizontal" id="myForm">
                     <div class="form-group">
                         <div class="row">
-                            <div class="col-sm-offset-3 col-sm-2">
+                            <div class="col-sm-offset-2 col-sm-3">
                                 <label class="control-label">Kode Rekening</label>
                             </div>
                             <div class="col-sm-4">
@@ -314,6 +314,7 @@
                                             },
                                             updater: function (item) {
                                                 var selectedObj = mapped[item];
+                                                $('#modeKodeRekeningName').val(selectedObj.nama);
                                                 return selectedObj.id;
                                             }
                                         });
@@ -322,7 +323,16 @@
                             </div>
                         </div>
                         <div class="row" style="margin-top: 7px">
-                            <div class="col-sm-offset-3 col-sm-2">
+                            <div class="col-sm-offset-2 col-sm-3">
+                                <label class="control-label">Nama Kode Rekening</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <s:textfield id="modeKodeRekeningName" cssClass="form-control" readonly="true"
+                                />
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top: 7px">
+                            <div class="col-sm-offset-2 col-sm-3">
                                 <label class="control-label">Posisi</label>
                             </div>
                             <div class="col-sm-4">
@@ -331,7 +341,7 @@
                             </div>
                         </div>
                         <div class="row" style="margin-top: 7px">
-                            <div class="col-sm-offset-3 col-sm-2">
+                            <div class="col-sm-offset-2 col-sm-3">
                                 <label class="control-label">Master</label>
                             </div>
                             <div class="col-sm-4">
@@ -340,7 +350,7 @@
                             </div>
                         </div>
                         <div class="row" style="margin-top: 7px">
-                            <div class="col-sm-offset-3 col-sm-2">
+                            <div class="col-sm-offset-2 col-sm-3">
                                 <label class="control-label">Bukti</label>
                             </div>
                             <div class="col-sm-4">
@@ -349,7 +359,7 @@
                             </div>
                         </div>
                         <div class="row" style="margin-top: 7px">
-                            <div class="col-sm-offset-3 col-sm-2">
+                            <div class="col-sm-offset-2 col-sm-3">
                                 <label class="control-label">Kode Barang</label>
                             </div>
                             <div class="col-sm-4">
@@ -358,7 +368,7 @@
                             </div>
                         </div>
                         <div class="row" style="margin-top: 7px">
-                            <div class="col-sm-offset-3 col-sm-2">
+                            <div class="col-sm-offset-2 col-sm-3">
                                 <label class="control-label">List Kirim</label>
                             </div>
                             <div class="col-sm-4">
@@ -367,7 +377,7 @@
                             </div>
                         </div>
                         <div class="row" style="margin-top: 7px">
-                            <div class="col-sm-offset-3 col-sm-2">
+                            <div class="col-sm-offset-2 col-sm-3">
                                 <label class="control-label">Parameter</label>
                             </div>
                             <div class="col-sm-4">
@@ -396,24 +406,32 @@
                 tmp_table = "<thead><tr class='active'>"+
                     "<th style='text-align: center; background-color:  #90ee90'>No</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Kode Rekening</th>"+
+                    "<th style='text-align: center; background-color:  #90ee90'>Nama Kode Rekening</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Posisi</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Master</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Bukti</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Kode Barang</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>List Kirim</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Parameter</th>"+
+                    "<th style='text-align: center; background-color:  #90ee90'>Delete</th>"+
                     "</tr></thead>";
                 var i = i;
                 $.each(listdata, function (i, item) {
                     tmp_table += '<tr style="font-size: 12px;" ">' +
                         '<td align="center">' + (i + 1) + '</td>' +
                         '<td align="center">' + item.kodeRekening + '</td>' +
+                        '<td align="center">' + item.kodeRekeningName + '</td>' +
                         '<td align="center">' + item.posisi + '</td>' +
                         '<td align="center">' + item.masterId+ '</td>' +
                         '<td align="center">' + item.bukti + '</td>' +
                         '<td align="center">' + item.kodeBarang + '</td>' +
                         '<td align="center">' + item.kirimList + '</td>' +
                         '<td align="center">' + item.keterangan + '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-delete-data' data ='" + item.kodeRekening + "'>" +
+                        "<img border='0' src='<s:url value='/pages/images/delete_task.png'/>' name='icon_delete'>" +
+                        '</a>' +
+                        '</td>' +
                         "</tr>";
                 });
                 $('.kodeRekeningTable').append(tmp_table);
@@ -431,6 +449,7 @@
         });
         $('#modBtnSave').click(function () {
             var kodeRekening = $('#modKodeRekening').val();
+            var kodeRekeningname = $('#modeKodeRekeningName').val();
             var posisi = $('#modPosisi').val();
             var master =$('#modMasterId').val();
             var bukti = $('#modBukti').val();
@@ -438,8 +457,8 @@
             var listKirim = $('#modListKirim').val();
             var keterangan = $('#modKeterangan').val();
             dwr.engine.setAsync(false);
-            if(kodeRekening!=''&&posisi!=''&&master!=''&&bukti!=''&&kodeBarang!=''&&listKirim!=''&&keterangan!=''){
-                MappingJurnalAction.saveKodeRekeningSession(kodeRekening,posisi,master,bukti,kodeBarang,listKirim,keterangan,function() {
+            if(kodeRekening!=''&&posisi!=''&&master!=''&&bukti!=''&&kodeBarang!=''&&listKirim!=''&&keterangan!=''&&kodeRekeningname!=''){
+                MappingJurnalAction.saveKodeRekeningSession(kodeRekening,posisi,master,bukti,kodeBarang,listKirim,keterangan,kodeRekeningname,function() {
                     listResult();
                 });
                 $('#modal-edit').modal('hide');
@@ -447,6 +466,9 @@
                 var msg="";
                 if (kodeRekening==""){
                     msg+="Kode Rekening masih kosong \n";
+                }
+                if (kodeRekeningname==""){
+                    msg+="Kode Rekening tidak ditemukan\n";
                 }
                 if (posisi==""){
                     msg+="Posisi masih kosong \n";
@@ -469,5 +491,20 @@
                 alert(msg);
             }
         })
+        $('.kodeRekeningTable').on('click', '.item-delete-data', function () {
+            var id = $(this).attr('data');
+            if (id!=''){
+                MappingJurnalAction.deleteSessionKodeRekening(id,function (result) {
+                    alert("data berhasil dihapus");
+                    listResult();
+                });
+            } else{
+                var msg="";
+                if (id==""){
+                    msg+="Kode rekening tidak ditemukan \n";
+                }
+                alert(msg);
+            }
+        });
     })
 </script>

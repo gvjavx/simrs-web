@@ -25,6 +25,15 @@ public class KodeRekening extends BaseModel {
     //for view only
     private String tipeRekeningName;
     private boolean adaRekeningReport=false;
+    private boolean bisaCek=false;
+
+    public boolean isBisaCek() {
+        return bisaCek;
+    }
+
+    public void setBisaCek(boolean bisaCek) {
+        this.bisaCek = bisaCek;
+    }
 
     public boolean isAdaRekeningReport() {
         return adaRekeningReport;

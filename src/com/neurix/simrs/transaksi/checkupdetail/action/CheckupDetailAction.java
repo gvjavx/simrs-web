@@ -10,7 +10,6 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.bpjs.eklaim.bo.EklaimBo;
 import com.neurix.simrs.bpjs.eklaim.model.*;
 import com.neurix.simrs.bpjs.vclaim.bo.BpjsBo;
-import com.neurix.simrs.bpjs.vclaim.model.PesertaResponse;
 import com.neurix.simrs.bpjs.vclaim.model.SepRequest;
 import com.neurix.simrs.bpjs.vclaim.model.SepResponse;
 import com.neurix.simrs.master.diagnosa.bo.DiagnosaBo;
@@ -31,7 +30,6 @@ import com.neurix.simrs.master.lab.model.Lab;
 import com.neurix.simrs.master.pasien.bo.PasienBo;
 import com.neurix.simrs.master.pasien.model.Pasien;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
-import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.ruangan.bo.RuanganBo;
 import com.neurix.simrs.master.ruangan.model.Ruangan;
@@ -45,7 +43,6 @@ import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 
-import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsUangMukaPendaftaranEntity;
 import com.neurix.simrs.transaksi.diagnosarawat.bo.DiagnosaRawatBo;
 import com.neurix.simrs.transaksi.diagnosarawat.model.DiagnosaRawat;
 import com.neurix.simrs.transaksi.ordergizi.bo.OrderGiziBo;
@@ -66,11 +63,8 @@ import com.neurix.simrs.transaksi.transaksiobat.bo.TransaksiObatBo;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
-import org.apache.poi.hssf.record.formula.functions.Or;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
@@ -79,15 +73,11 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 public class CheckupDetailAction extends BaseMasterAction {
@@ -2330,13 +2320,18 @@ public class CheckupDetailAction extends BaseMasterAction {
                         sepRequest.setJnsPelayanan("2");//jenis rawat inap apa jalan
                         sepRequest.setKlsRawat(checkup.getKelasPasien());//kelas rawat dari bpjs
                         sepRequest.setNoMr(checkup.getIdPasien());//id pasien
-                        sepRequest.setAsalRujukan("1");//
-                        sepRequest.setTglRujukan(checkup.getTglRujukan());
-                        sepRequest.setNoRujukan(checkup.getNoRujukan());
-                        sepRequest.setPpkRujukan(checkup.getNoPpkRujukan());
+//                        sepRequest.setAsalRujukan("1");//
+//                        sepRequest.setTglRujukan(checkup.getTglRujukan());
+//                        sepRequest.setNoRujukan(checkup.getNoRujukan());
+//                        sepRequest.setPpkRujukan(checkup.getNoPpkRujukan());
+
+                        sepRequest.setAsalRujukan("2");//
+                        sepRequest.setTglRujukan("");
+                        sepRequest.setNoRujukan("");
+                        sepRequest.setPpkRujukan("");
                         sepRequest.setCatatan("");
                         sepRequest.setDiagAwal(checkup.getDiagnosa());
-                        sepRequest.setPoliTujuan(checkup.getIdPelayananBpjs());
+                        sepRequest.setPoliTujuan("IGD");
                         sepRequest.setPoliEksekutif("0");
                         sepRequest.setCob("0");
                         sepRequest.setKatarak("0");
@@ -2686,7 +2681,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         session.removeAttribute("listOfResult");
 
         logger.info("[CheckupDetailAction.saveAdd] end process >>>");
-        return "search";
+        return "init_add";
 
     }
 

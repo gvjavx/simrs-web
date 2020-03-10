@@ -24,6 +24,15 @@ public class MappingJurnal extends BaseModel {
     private String kirimList;
 
     private String kodeRekeningName;
+    private boolean transBaru=false;
+
+    public boolean isTransBaru() {
+        return transBaru;
+    }
+
+    public void setTransBaru(boolean transBaru) {
+        this.transBaru = transBaru;
+    }
 
     public String getKodeRekeningName() {
         return kodeRekeningName;

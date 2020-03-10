@@ -6,6 +6,9 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.obat.dao.ObatDao;
 import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
 import com.neurix.simrs.master.obat.model.Obat;
+import com.neurix.simrs.master.vendor.dao.VendorDao;
+import com.neurix.simrs.master.vendor.model.ImSimrsVendorEntity;
+import com.neurix.simrs.master.vendor.model.Vendor;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.obatpoli.model.MtSimrsObatPoliEntity;
 import com.neurix.simrs.transaksi.permintaanvendor.bo.PermintaanVendorBo;
@@ -50,6 +53,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
     private ObatDao obatDao;
     private TempObatGejalaDao tempObatGejalaDao;
     private TransaksiObatDetailBatchDao transaksiObatDetailBatchDao;
+    private VendorDao vendorDao;
 
 
     @Override
@@ -69,6 +73,11 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                     permintaanVendor.setIdVendor(permintaanVendorEntity.getIdVendor());
                     permintaanVendor.setFlag(permintaanVendorEntity.getFlag());
                     permintaanVendor.setAction(permintaanVendorEntity.getAction());
+
+                    Vendor vendor = new Vendor();
+                    vendor.setIdVendor(permintaanVendorEntity.getIdVendor());
+                    ImSimrsVendorEntity vendorEntity = getListEntityVendorObat(vendor);
+                    permintaanVendor.setNamaVendor(vendorEntity.getNamaVendor());
 
                     String formatDate = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(permintaanVendorEntity.getCreatedDate());
 
@@ -105,6 +114,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                         if ("R".equalsIgnoreCase(bean.getNotFlagR())) {
                             transaksiObatDetail.setFlagDiterima("R");
                         }
+
                         // transaksi obat detail
                         List<ImtSimrsTransaksiObatDetailEntity> transaksiObatDetailEntities = getListEntityTransObatDetail(transaksiObatDetail);
                         if (transaksiObatDetailEntities.size() > 0) {
@@ -329,6 +339,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
             permintaanVendorEntity.setCreatedWho(bean.getCreatedWho());
             permintaanVendorEntity.setLastUpdate(bean.getLastUpdate());
             permintaanVendorEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            permintaanVendorEntity.setUrlDocPo(bean.getUrlDocPo());
 
             try {
                 permintaanVendorDao.addAndSave(permintaanVendorEntity);
@@ -760,6 +771,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         newObatEntity.setLembarPerBox(obatEntity.getLembarPerBox());
         newObatEntity.setBijiPerLembar(obatEntity.getBijiPerLembar());
         newObatEntity.setMerk(obatEntity.getMerk());
+        newObatEntity.setMinStok(obatEntity.getMinStok());
 
         BigInteger qtyBox = new BigInteger(String.valueOf(0));
         BigInteger qtyLembar = new BigInteger(String.valueOf(0));
@@ -1453,6 +1465,45 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 
     }
 
+    private ImSimrsVendorEntity getListEntityVendorObat(Vendor bean) throws GeneralBOException{
+        logger.info("[PermintaanVendorBoImpl.getListEntityVendorObat] START >>>");
+
+        List<ImSimrsVendorEntity> vendorEntityList = new ArrayList<>();
+        Map hsCriteria = new HashMap();
+
+        if (bean.getIdVendor() != null && !"".equalsIgnoreCase(bean.getIdVendor())){
+            hsCriteria.put("id_vendor", bean.getIdVendor());
+        }
+        if (bean.getNamaVendor() != null && !"".equalsIgnoreCase(bean.getNamaVendor())){
+            hsCriteria.put("nama_vendor", bean.getNamaVendor());
+        }
+        if (bean.getNpwp() != null && !"".equalsIgnoreCase(bean.getNpwp())){
+            hsCriteria.put("npwp", bean.getNpwp());
+        }
+
+        hsCriteria.put("flag","Y");
+
+        try {
+            vendorEntityList = vendorDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[PermintaanVendorBoImpl.getListEntityVendorObat] ERROR.", e);
+            throw new GeneralBOException("[PermintaanVendorBoImpl.getListEntityVendorObat] ERROR." + e.getMessage());
+        }
+
+        ImSimrsVendorEntity vendor = new ImSimrsVendorEntity();
+
+        if(vendorEntityList.size() > 0 ){
+            vendor = vendorEntityList.get(0);
+
+            if(vendor != null){
+                return vendor;
+            }
+        }
+
+        logger.info("[PermintaanVendorBoImpl.getListEntityVendorObat] END <<<");
+        return vendor;
+    }
+
     // for get sequence id
 
     private String nextIdPermintanVendor() {
@@ -1568,5 +1619,9 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 
     public void setTransaksiObatDetailBatchDao(TransaksiObatDetailBatchDao transaksiObatDetailBatchDao) {
         this.transaksiObatDetailBatchDao = transaksiObatDetailBatchDao;
+    }
+
+    public void setVendorDao(VendorDao vendorDao) {
+        this.vendorDao = vendorDao;
     }
 }

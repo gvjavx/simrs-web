@@ -168,7 +168,7 @@
                                         <div class="form-group">
                                             <label class="col-md-3" style="margin-top: 10px">Pelayanan</label>
                                             <div class="col-md-9">
-                                                <select class="form-control select2" id="poli"></select>
+                                                <select class="form-control select2" multiple id="poli"></select>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -258,7 +258,7 @@
     }
 
     function optionPoli(branchId){
-        var option = '<option value="">[Select One]</option>';
+        var option = '';
         CheckupAction.getListComboPelayanan(branchId, function (response) {
             if(response.length > 0){
                 $.each(response, function (i, item) {
@@ -275,11 +275,15 @@
     function startAntrian(){
         var branchId = $('#branch').val();
         var poli = $('#poli').val();
+        console.log(poli);
 
-        if(branchId != ''){
-            window.location.href = 'viewAntrian.jsp?branch='+branchId+'&poli='+poli;
+        if(branchId != '' && branchId != null){
+            setLocalStorege("branchId", branchId);
+            setLocalStorege("poli", poli);
+            // window.location.href = 'viewAntrian.jsp?branch='+branchId+'&poli='+poli;
+            window.location.href = 'viewAntrian.jsp';
         }else{
-            alert('kosong');
+            alert('Silahkan pilih RS unit dan pelayanan terlebih dahulu...!');
         }
     }
 

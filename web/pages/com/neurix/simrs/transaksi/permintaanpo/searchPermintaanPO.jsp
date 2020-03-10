@@ -63,7 +63,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">ID Permintaan Vendor</label>
                                     <div class="col-sm-4">
-                                        <s:textfield id="id_obat" cssStyle="margin-top: 7px"
+                                        <s:textfield id="id_permintaan" cssStyle="margin-top: 7px"
                                                      name="permintaanVendor.idPermintaanVendor" required="false"
                                                      readonly="false" cssClass="form-control"/>
                                     </div>
@@ -167,6 +167,7 @@
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>ID PO</td>
+                                <td>Nama Vendor</td>
                                 <td>Tanggal Permintaan</td>
                                 <td>Status</td>
                                 <td align="center">Action</td>
@@ -176,6 +177,7 @@
                             <s:iterator value="#session.listOfResult" var="row">
                                 <tr>
                                     <td><s:property value="idPermintaanVendor"/></td>
+                                    <td><s:property value="namaVendor"/></td>
                                     <td><s:property value="stCreatedDate"/></td>
                                     <td><s:if test='#row.keterangan == "Telah Dikonfirmasi"'>
                                         <label class="label label-success"><s:property value="keterangan"/></label>
@@ -184,12 +186,6 @@
                                     </s:else></td>
                                     <td align="center">
 
-                                        <s:url var="verify_po" namespace="/permintaanpo" action="edit_permintaanpo" escapeAmp="false">
-                                            <s:param name="id"><s:property value="idPermintaanVendor"/></s:param>
-                                        </s:url>
-                                        <s:a href="%{verify_po}">
-                                            <img class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
-                                        </s:a>
                                         <s:if test='#row.keterangan == "Telah Dikonfirmasi"'>
                                             <s:url var="print_po" namespace="/permintaanpo" action="printPermintaanPO_permintaanpo" escapeAmp="false">
                                                 <s:param name="id"><s:property value="idPermintaanVendor"/></s:param>
@@ -197,8 +193,22 @@
                                             <s:a href="%{print_po}" target="_blink">
                                                 <img class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">
                                             </s:a>
-                                            <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-test-passed-25-2.png"/>" onclick="showDetailListObat('<s:property value="idPermintaanVendor"/>')">
+
+                                            <s:if test='#row.flag == "N"'>
+                                                <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-test-passed-25-orange.png"/>" onclick="showDetailListObat('<s:property value="idPermintaanVendor"/>','<s:property value="flag"/>')">
+                                            </s:if>
+                                            <s:else>
+                                                <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-test-passed-25-2.png"/>" onclick="showDetailListObat('<s:property value="idPermintaanVendor"/>','<s:property value="flag"/>')">
+                                            </s:else>
                                         </s:if>
+                                        <s:else>
+                                            <s:url var="verify_po" namespace="/permintaanpo" action="edit_permintaanpo" escapeAmp="false">
+                                                <s:param name="id"><s:property value="idPermintaanVendor"/></s:param>
+                                            </s:url>
+                                            <s:a href="%{verify_po}">
+                                                <img class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
+                                            </s:a>
+                                        </s:else>
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -468,7 +478,7 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Detail list obat <span id="detail_batch"></span>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Tutup Purchase Order Obat <span id="detail_batch"></span>
                 </h4>
             </div>
             <div class="modal-body">
@@ -532,9 +542,10 @@
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
 
-    function showDetailListObat(idpermintaanPo){
+    function showDetailListObat(idpermintaanPo, flag){
         $('#modal-detail').modal({show:true, backdrop:'static'});
         $('#loading_detail').show();
+        $('#save_detail').show();
         $('#id_permintaan_vendor').val(idpermintaanPo);
         dwr.engine.setAsync(true);
         var table = "";
@@ -560,6 +571,12 @@
                 $('#body_detail').html(table);
             }
         });
+
+        if(flag == "Y"){
+            $('#save_detail').show();
+        }else{
+            $('#save_detail').hide();
+        }
     }
 
     function confirmSaveTutup(){
@@ -579,6 +596,10 @@
                     $('#info_dialog').dialog('open');
                     $('#save_detail').show();
                     $('#load_detail').hide();
+                    // $('#id_permintaan').val(idPermintaan);
+                    // $('#flag').val("N");
+                    // document.permintaanPOForm.action = 'search_permintaanpo.action';
+                    // document.permintaanPOForm.submit();
                 } else {
                     $('#save_detail').show();
                     $('#load_detail').hide();

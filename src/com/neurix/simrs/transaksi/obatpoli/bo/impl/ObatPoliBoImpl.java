@@ -2021,6 +2021,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                         obatPoli.setNamaObat(obatEntity.getNamaObat());
                         obatPoli.setLembarPerBox(obatEntity.getLembarPerBox());
                         obatPoli.setBijiPerLembar(obatEntity.getBijiPerLembar());
+                        obatPoli.setFlagKronis(obatEntity.getFlagKronis());
                     }
                 }
 

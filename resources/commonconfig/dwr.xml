@@ -409,6 +409,11 @@
           <param name="class" value="com.neurix.simrs.transaksi.kasirrawatinap.action.KasirRawatInapAction"/>
       </create>
 
+      <!--Vendor-->
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.master.vendor.action.VendorAction"/>
+      </create>
+
       <convert converter="bean" match="com.neurix.simrs.bpjs.eklaim.model.KlaimDataCenterResponse"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkup.model.CheckResponse"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup"/>
@@ -463,6 +468,7 @@
       <convert converter="bean" match="com.neurix.simrs.master.pasien.model.RekamMedicLama"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkupdetail.model.UangMuka"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.permintaanvendor.model.MtSimrsPermintaanVendorEntity"/>
+      <convert converter="bean" match="com.neurix.simrs.master.vendor.model.Vendor"/>
 
       <!--bpjs-->
       <convert converter="bean" match="com.neurix.simrs.bpjs.vclaim.model.DiagnosaResponse"/>
