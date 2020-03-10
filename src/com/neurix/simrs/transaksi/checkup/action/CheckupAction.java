@@ -56,6 +56,7 @@ import com.neurix.simrs.transaksi.tindakanrawat.bo.TindakanRawatBo;
 
 import com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity;
 import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
+import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import com.neurix.simrs.transaksi.transfusi.model.ItSimrsTranfusiEntity;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
@@ -2453,5 +2454,20 @@ public class CheckupAction extends BaseMasterAction {
         }
 
         return obatKronis;
+    }
+
+    public List<TransaksiObatDetail> getListObatKronis(String idDetailCheckup, String idApproval){
+        List<TransaksiObatDetail> transaksiObatDetails = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+
+        if(idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup) && idApproval != null && !"".equalsIgnoreCase(idApproval)){
+          try {
+              transaksiObatDetails = checkupBo.getListObatKronis(idDetailCheckup, idApproval);
+          }catch (GeneralBOException e){
+              logger.error("found error when search list obat kronis "+e.getMessage());
+          }
+        }
+        return transaksiObatDetails;
     }
 }

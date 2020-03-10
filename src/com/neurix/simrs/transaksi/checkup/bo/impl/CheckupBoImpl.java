@@ -1898,6 +1898,23 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
         return new ArrayList<>();
     }
 
+    @Override
+    public List<TransaksiObatDetail> getListObatKronis(String idDetailCheckup, String idApproval) throws GeneralBOException {
+
+        List<TransaksiObatDetail> transaksiObatDetails = new ArrayList<>();
+
+        if(idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup) && idApproval != null && !"".equalsIgnoreCase(idApproval)){
+
+            try {
+                headerCheckupDao.getListObatkronis(idDetailCheckup, idApproval);
+            }catch (HibernateException e){
+                logger.error("Found Error when search obat kronis "+e.getMessage());
+            }
+        }
+
+        return transaksiObatDetails;
+    }
+
     private String getNextIdAlergi() {
         String id = "";
         try {

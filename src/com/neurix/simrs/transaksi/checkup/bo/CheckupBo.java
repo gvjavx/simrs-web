@@ -20,6 +20,7 @@ import com.neurix.simrs.transaksi.rencanarawat.model.ItSimrsRencanaRawatEntity;
 import com.neurix.simrs.transaksi.resikojatuh.model.*;
 import com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity;
 import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
+import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import com.neurix.simrs.transaksi.transfusi.model.ItSimrsTranfusiEntity;
 
 import java.util.List;
@@ -71,4 +72,6 @@ public interface CheckupBo {
 
     public HeaderCheckup getDataDetailPasien(String idDetailCheckup) throws GeneralBOException;
     public List<ObatKronis> findRiwayatKronis(String idPasien) throws GeneralBOException;
+
+    public List<TransaksiObatDetail> getListObatKronis(String idDetailCheckup, String idApproval) throws GeneralBOException;
 }
