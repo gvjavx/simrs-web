@@ -3,10 +3,7 @@ package com.neurix.simrs.transaksi.checkup.bo;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.pasien.model.RekamMedicLama;
 import com.neurix.simrs.transaksi.CrudResponse;
-import com.neurix.simrs.transaksi.checkup.model.AlertPasien;
-import com.neurix.simrs.transaksi.checkup.model.CheckupAlergi;
-import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
-import com.neurix.simrs.transaksi.checkup.model.ItSImrsCheckupAlergiEntity;
+import com.neurix.simrs.transaksi.checkup.model.*;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
 import com.neurix.simrs.transaksi.patrus.model.ItSImrsPatrusEntity;
@@ -29,6 +26,7 @@ import java.util.List;
  */
 public interface CheckupBo {
     public List<HeaderCheckup> getByCriteria(HeaderCheckup bean)throws GeneralBOException;
+    public List<ItSimrsHeaderChekupEntity> getListEntityHeaderCheckup(HeaderCheckup bean) throws GeneralBOException;
     public void saveAdd(HeaderCheckup bean)throws GeneralBOException;
     public void saveEdit(HeaderCheckup bean)throws GeneralBOException;
     public void updatePenunjang(HeaderCheckup bean) throws GeneralBOException;
