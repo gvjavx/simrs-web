@@ -43,6 +43,7 @@ import com.neurix.simrs.transaksi.pemeriksaanfisik.model.PemeriksaanFisik;
 import com.neurix.simrs.transaksi.diagnosarawat.bo.DiagnosaRawatBo;
 import com.neurix.simrs.transaksi.diagnosarawat.model.DiagnosaRawat;
 import com.neurix.simrs.transaksi.pengkajian.model.RingkasanKeluarMasukRs;
+import com.neurix.simrs.transaksi.permintaanresep.model.ObatKronis;
 import com.neurix.simrs.transaksi.psikososial.model.ItSimrsDataPsikososialEntity;
 
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
@@ -2428,5 +2429,20 @@ public class CheckupAction extends BaseMasterAction {
         CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
 
         return null;
+    }
+
+    public List<ObatKronis> findRiwayatObatKronis(String idPasien){
+        logger.info("[CheckupAction.findRiwayatObatKronis] Start >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+
+        List<ObatKronis> obatKronisList = new ArrayList<>();
+        try {
+            obatKronisList = checkupBo.findRiwayatKronis(idPasien);
+        } catch (GeneralBOException e){
+            logger.error("Error " + e.getMessage());
+        }
+        logger.info("[CheckupAction.findRiwayatObatKronis] End <<<");
+        return obatKronisList;
     }
 }
