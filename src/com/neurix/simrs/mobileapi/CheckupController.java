@@ -1,5 +1,6 @@
 package com.neurix.simrs.mobileapi;
 
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.mobileapi.model.CheckupMobile;
@@ -10,11 +11,13 @@ import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.opensymphony.xwork2.ModelDriven;
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.rest.DefaultHttpHeaders;
 import org.apache.struts2.rest.HttpHeaders;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -240,6 +243,7 @@ public class CheckupController implements ModelDriven<Object> {
                headerDetailCheckupMobile.setNamaPelayanan(result.getNamaPelayanan());
                headerDetailCheckupMobile.setNoSep(result.getNoSep());
                headerDetailCheckupMobile.setTglLahir(result.getStTglLahir());
+               headerDetailCheckupMobile.setUrlTtd(result.getUrlTtd());
 
                listOfHeaderCheckup.add(headerDetailCheckupMobile);
             }
@@ -259,8 +263,25 @@ public class CheckupController implements ModelDriven<Object> {
 
             if (result != null && result.size() > 0){
                 if (fileUploadTtd != null) {
-                    //TODO
+                    if(fileUploadTtd.length() > 0 && fileUploadTtd.length() <= 15728640) {
+                        Random random = new Random( System.currentTimeMillis() );
+                        String fileNamePhoto = "TTD_" +idDetailCheckup + CommonConstant.IMAGE_TYPE;
+                        result.get(0).setUrlTtd(fileNamePhoto);
+                        File fileCreate = new File(CommonConstant.RESOURCE_IMAGE_TTD, fileNamePhoto);
+                        try {
+                            FileUtils.copyFile(fileUploadTtd, fileCreate);
+                        }catch (IOException e){
+                            e.printStackTrace();
+                        }
+                    }
+                    try {
+                        checkupDetailBoProxy.saveTtd(result.get(0));
+                        model.setMessage("Success");
+                    } catch (GeneralBOException e){
+                        logger.error("CheckupController.create] Error when save edit",e);
+                    }
                 }
+
             }
 
         }

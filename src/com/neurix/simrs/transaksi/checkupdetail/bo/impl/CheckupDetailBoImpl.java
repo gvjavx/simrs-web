@@ -223,6 +223,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             entity.setPendamping(bean.getPendamping());
             entity.setTempatTujuan(bean.getTempatTujuan());
             entity.setInvoice(bean.getInvoice());
+            entity.setUrlTtd(bean.getUrlTtd());
 //            entity.setMetodePembayaran(bean.getMetodePembayaran());
 
             try {
@@ -1175,6 +1176,30 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             throw new GeneralBOException("[CheckupDetailBoImpl.getNextRawatInapId] Error When Error get next seq id");
         }
         return id;
+    }
+
+    @Override
+    public void saveTtd(HeaderDetailCheckup bean) throws GeneralBOException {
+        logger.info("[CheckupDetailBoImpl.saveTtd] Start >>>>>>>");
+        List<ItSimrsHeaderDetailCheckupEntity> detailCheckupEntityList = null;
+
+        HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+        detailCheckup.setIdDetailCheckup(bean.getIdDetailCheckup());
+
+        detailCheckupEntityList = getListEntityByCriteria(detailCheckup);
+        if (!detailCheckupEntityList.isEmpty()) {
+            ItSimrsHeaderDetailCheckupEntity entity = detailCheckupEntityList.get(0);
+            entity.setUrlTtd(bean.getUrlTtd());
+
+            try {
+                checkupDetailDao.updateAndSave(entity);
+            } catch (HibernateException e) {
+                logger.error("[CheckupDetailBoImpl.saveEdit] Error when update detail checkup ", e);
+                throw new GeneralBOException("[CheckupDetailBoImpl.saveEdit] Error when update detail checkup " + e.getMessage());
+            }
+            logger.info("[CheckupDetailBoImpl.saveTtd] End >>>>>>>");
+
+        }
     }
 
     public void setCheckupDetailDao(CheckupDetailDao checkupDetailDao) {

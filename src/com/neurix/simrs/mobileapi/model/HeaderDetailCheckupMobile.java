@@ -89,6 +89,16 @@ public class HeaderDetailCheckupMobile {
     private String metodePembayaran;
     private String tipePelayanan;
 
+    private String urlTtd;
+
+    public String getUrlTtd() {
+        return urlTtd;
+    }
+
+    public void setUrlTtd(String urlTtd) {
+        this.urlTtd = urlTtd;
+    }
+
     public String getIdDetailCheckup() {
         return idDetailCheckup;
     }

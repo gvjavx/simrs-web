@@ -106,6 +106,16 @@ public class HeaderCheckup {
 
     private String kodeCbg;
 
+    private String urlTtd;
+
+    public String getUrlTtd() {
+        return urlTtd;
+    }
+
+    public void setUrlTtd(String urlTtd) {
+        this.urlTtd = urlTtd;
+    }
+
     public List<Asesmen> getAsesmenList() {
         return asesmenList;
     }

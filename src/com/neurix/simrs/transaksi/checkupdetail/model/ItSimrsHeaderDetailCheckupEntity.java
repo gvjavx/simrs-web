@@ -45,6 +45,16 @@ public class ItSimrsHeaderDetailCheckupEntity implements Serializable{
 
     private String kodeCbg;
 
+    private String urlTtd;
+
+    public String getUrlTtd() {
+        return urlTtd;
+    }
+
+    public void setUrlTtd(String urlTtd) {
+        this.urlTtd = urlTtd;
+    }
+
     public String getKodeCbg() {
         return kodeCbg;
     }

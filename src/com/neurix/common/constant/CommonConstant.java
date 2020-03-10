@@ -199,7 +199,8 @@ public class CommonConstant {
     public final static String RESOURCE_PATH_JRXML_QRCODE_ALAT = "/opt/tomcat/webapps/pmsapb/pages/report/com/neurix/apbpln/printQRCode.jrxml/";
     public final static String RESOURCE_DOCUMENT_APB = "/opt/tomcat/webapps/mnt/documents/simrs/";
     public final static String RESOURCE_IMAGE_APB = "/opt/tomcat/webapps/mnt/images/simrs/";
-    public final static String IMAGE_TYPE = ".jpg";
+    public static final String RESOURCE_IMAGE_TTD = "/opt/tomcat/webapps/mnt/images/";
+    public final static String IMAGE_TYPE = ".png";
     public final static String DOC_TYPE = ".pdf";
 
     public final static String URL_IMG = "/images/";
