@@ -908,10 +908,8 @@ public class CheckupAction extends BaseMasterAction {
                                 try {
                                     claimEklaimResponse = eklaimBoProxy.updateDataClaimEklaim(klaimDetailRequest, userArea);
                                 } catch (GeneralBOException e) {
-                                    Long logId = null;
-                                    logger.error("[CheckupAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-                                    addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-                                    return ERROR;
+                                    logger.error("[CheckupAction.saveAdd] Error when update claim ," + "[" + e + "] Found problem when saving add data, please inform to your admin.");
+                                    throw new GeneralBOException("Error when update claim, [" + claimEklaimResponse.getMessage() + "]", e);
                                 }
 
                                 if ("200".equalsIgnoreCase(claimEklaimResponse.getStatus())) {
@@ -921,10 +919,8 @@ public class CheckupAction extends BaseMasterAction {
                                     try {
                                         grouping1Response = eklaimBoProxy.groupingStage1Eklaim(genNoSep, userArea);
                                     } catch (GeneralBOException e) {
-                                        Long logId = null;
-                                        logger.error("[CheckupAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-                                        addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-                                        return ERROR;
+                                        logger.error("[CheckupAction.saveAdd] Error when adding item ," + "[" + e + "] Found problem when saving add data, please inform to your admin.");
+                                        throw new GeneralBOException("Error when get cover biaya BPJS, [" + grouping1Response.getMessage() + "]", e);
                                     }
 
                                     // jika mendapatkan cbgCode dan tarif cbg maka update ke table checkup untuk mengisi total tarif
@@ -933,18 +929,25 @@ public class CheckupAction extends BaseMasterAction {
                                         BigDecimal tarifCbg = new BigDecimal(0);
                                         if (!"".equalsIgnoreCase(grouping1Response.getCbgTarif()) && grouping1Response.getCbgTarif() != null) {
                                             if (!"0".equalsIgnoreCase(grouping1Response.getCbgTarif())) {
+
                                                 tarifCbg = new BigDecimal(grouping1Response.getCbgTarif());
 
                                                 //=====kode CBG INA=======
                                                 checkup.setKodeCbg(grouping1Response.getCbgCode());
+
+                                                //======START SET TARIF BPJS=========
+
+                                                checkup.setTarifBpjs(tarifCbg);
+
+                                                //======END SET TARIF BPJS=========
+                                            }else{
+                                                logger.error("[CheckupAction.saveAdd] Error when get cover biaya BPJS " + grouping1Response.getMessage());
+                                                throw new GeneralBOException("Error Error when get cover biaya BPJS, ["+grouping1Response.getMessage()+"]");
                                             }
+                                        }else{
+                                            logger.error("[CheckupAction.saveAdd] Error when get cover biaya BPJS " + grouping1Response.getMessage());
+                                            throw new GeneralBOException("Error when get cover biaya BPJS, ["+grouping1Response.getMessage()+"]");
                                         }
-
-                                        //======START SET TARIF BPJS=========
-
-                                        checkup.setTarifBpjs(tarifCbg);
-
-                                        //======END SET TARIF BPJS=========
 
 
                                         // jika ada special cmg maka proses grouping stage 2
@@ -967,20 +970,19 @@ public class CheckupAction extends BaseMasterAction {
 
                                 } else {
                                     logger.error("[CheckupAction.saveAdd] Error when adding item ,update claim not success " + claimEklaimResponse.getMessage());
-                                    addActionError("Error, " + " Found problem when saving add data, please inform to your admin. update claim not success. \n" + claimEklaimResponse.getMessage());
-                                    return ERROR;
+                                    throw new GeneralBOException("Error when adding item ,update claim not success, ["+claimEklaimResponse.getMessage()+"]");
                                 }
                             }
                         }else{
-                            addActionError("Error, " + "Insert SEP failed");
-                            return ERROR;
+                            logger.error("[CheckupAction.saveAdd] Error when generate SEP, " + response.getMessage());
+                            throw new GeneralBOException("Error when generate SEP, ["+response.getMessage()+"]");
                         }
 
                     }
 
                 } else {
-                    addActionError("Error, " + "PPK Pelayanan Tidak Ada");
-                    return ERROR;
+                    logger.error("[CheckupAction.saveAdd] Error when search PPK pelayanan");
+                    throw new GeneralBOException("Error when search PPK pelayanan");
                 }
             }
         }
@@ -1077,6 +1079,7 @@ public class CheckupAction extends BaseMasterAction {
                             checkup.setUrlDocRujuk(newFileName);
                         } catch (IOException e) {
                             logger.error("[CheckupAction.uploadImages] error, " + e.getMessage());
+                            throw new GeneralBOException("Found Error when upload images rujukan "+e.getMessage());
                         }
                     }
                 }
@@ -1085,10 +1088,9 @@ public class CheckupAction extends BaseMasterAction {
             checkupBoProxy.saveAdd(checkup);
 
         } catch (GeneralBOException e) {
-            Long logId = null;
-            logger.error("[CheckupAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+
+            logger.error("[CheckupAction.saveAdd] Error when adding item ," + "[" + e + "] Found problem when saving add data, please inform to your admin.");
+            throw new GeneralBOException("Found Error when adding item "+e.getMessage());
         }
 
 

@@ -427,7 +427,7 @@
                                 <div class="row">
                                     <div class="col-md-offset-2 col-md-8">
                                         <h5>
-                                            Cover Biaya Bpjs
+                                            Cover Biaya Bpjs dengan kode CBG <b id="kode_cbg"></b>
                                             <small class="pull-right" style="margin-top: 7px">Rp. <span id="b_bpjs"></span>
                                             </small>
                                         </h5>
@@ -2216,6 +2216,7 @@
 
                     var coverBiaya = response.tarifBpjs;
                     var biayaTindakan = response.tarifTindakan;
+                    $('#kode_cbg').text(response.kodeCbg);
 
                     var persen = "";
                     if (coverBiaya != '' && biayaTindakan) {
