@@ -232,7 +232,7 @@ public class ObatAction extends BaseMasterAction {
 
     }
 
-    public CheckObatResponse saveObat(String namaObat, List <String> jenisObat, String merek, String pabrik, BigInteger box, BigInteger lembarBox, BigInteger lembar, BigInteger bijiLembar, BigInteger biji, BigDecimal hargaBox, BigDecimal hargaLembar, BigDecimal hargaBiji){
+    public CheckObatResponse saveObat(String namaObat, List <String> jenisObat, String merek, String pabrik, BigInteger box, BigInteger lembarBox, BigInteger lembar, BigInteger bijiLembar, BigInteger biji, BigDecimal hargaBox, BigDecimal hargaLembar, BigDecimal hargaBiji, BigInteger minStok){
         logger.info("[ObatAction.saveObatInap] start process >>>");
 
         CheckObatResponse checkObatResponse = new CheckObatResponse();
@@ -261,6 +261,7 @@ public class ObatAction extends BaseMasterAction {
         obat.setBranchId(userArea);
         obat.setFlag("Y");
         obat.setAction("C");
+        obat.setMinStok(minStok);
 
         try {
             checkObatResponse = obatBo.checkFisikObatByIdPabrik(obat);
@@ -284,7 +285,7 @@ public class ObatAction extends BaseMasterAction {
         return checkObatResponse;
     }
 
-    public CheckObatResponse editObat(String idObat, String namaObat, List<String> jenisObat, String merek, String pabrik, BigInteger lembarBox,BigInteger bijiLembar){
+    public CheckObatResponse editObat(String idObat, String namaObat, List<String> jenisObat, String merek, String pabrik, BigInteger lembarBox,BigInteger bijiLembar, BigInteger minStok){
         logger.info("[ObatAction.saveObatInap] start process >>>");
         CheckObatResponse response = new CheckObatResponse();
         try {
@@ -306,6 +307,7 @@ public class ObatAction extends BaseMasterAction {
             obat.setLastUpdateWho(userLogin);
             obat.setBranchId(userArea);
             obat.setAction("U");
+            obat.setMinStok(minStok);
 
             response = obatBo.saveEdit(obat, jenisObat);
 

@@ -1336,7 +1336,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Keterangan</label>
+                        <label class="col-md-3" style="margin-top: 7px">Waktu Minum</label>
                         <div class="col-md-7">
                                 <div class="form-check" style="margin-top: 7px;">
                                     <input type="checkbox" name="cek_waktu" id="pagi">

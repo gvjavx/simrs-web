@@ -29,7 +29,7 @@
                 event.originalEvent.options.submit = false;
                 var msg = "";
                 if (idTrans == '') {
-                    msg += 'Field <strong>Trans ID</strong> not found.' + '<br/>';
+                    msg += 'Field <strong>Transaksi ID</strong> not found.' + '<br/>';
                 }
                 document.getElementById('errorValidationMessage').innerHTML = msg;
                 $.publish('showErrorValidationDialog');
@@ -66,7 +66,7 @@
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
-                <legend align="left">Delete Trans</legend>
+                <legend align="left">Delete Transaksi</legend>
                 <table>
                     <tr>
                         <td width="10%" align="center">
@@ -78,7 +78,7 @@
                 <table >
                     <tr>
                         <td>
-                            <label class="control-label"><small>Trans Id :</small></label>
+                            <label class="control-label"><small>Transaksi Id :</small></label>
                         </td>
                         <td>
                             <table>
@@ -88,7 +88,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Nama Trans :</small></label>
+                            <label class="control-label"><small>Nama Transaksi :</small></label>
                         </td>
                         <td>
                             <table>

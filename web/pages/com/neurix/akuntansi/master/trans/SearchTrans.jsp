@@ -49,7 +49,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Transaksi Billing
+            Tipe Transaksi
             <small>e-HEALTH</small>
         </h1>
     </section>
@@ -59,7 +59,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Transaksi Billing</h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Tipe Transaksi</h3>
                     </div>
                     <div class="box-body">
                         <table width="100%" align="center">
@@ -77,7 +77,7 @@
                                         <table >
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Trans Id :</small></label>
+                                                    <label class="control-label"><small>Transaksi Id :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -87,7 +87,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Nama Trans :</small></label>
+                                                    <label class="control-label"><small>Nama Transaksi :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -124,7 +124,7 @@
                                                         </s:url>
                                                         <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">
                                                             <i class="fa fa-plus"></i>
-                                                            Add Transaksi Billing
+                                                            Add Tipe Transaksi
                                                         </sj:a>
                                                     </td>
                                                     <td>
@@ -144,7 +144,7 @@
                                                     <td align="center">
                                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
                                                                    height="300" width="550" autoOpen="false"
-                                                                   title="Transaksi Billing">
+                                                                   title="Tipe Transaksi">
                                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                                         </sj:dialog>
 
@@ -178,8 +178,8 @@
                                                                     <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
                                                                 </sj:a>
                                                             </display:column>
-                                                            <display:column property="transId" sortable="true" title="Trans ID" />
-                                                            <display:column property="transName" sortable="true" title="Nama Trans"  />
+                                                            <display:column property="transId" sortable="true" title="Transaksi ID" />
+                                                            <display:column property="transName" sortable="true" title="Nama Transaksi"  />
                                                             <display:column property="flag" sortable="true" title="Flag" />
                                                             <display:column property="createdWho" sortable="true" title="Created Who"/>
                                                             <display:column property="lastUpdate" sortable="true" title="Last Update"/>

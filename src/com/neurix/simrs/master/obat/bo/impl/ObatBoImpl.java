@@ -20,7 +20,7 @@ import com.neurix.simrs.transaksi.transaksiobat.dao.TransaksiObatDetailBatchDao;
 import com.neurix.simrs.transaksi.transaksiobat.model.MtSimrsTransaksiObatDetailBatchEntity;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatBatch;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
-import javafx.collections.ObservableList;
+//import javafx.collections.ObservableList;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -315,6 +315,7 @@ public class ObatBoImpl implements ObatBo {
         obatEntity.setAverageHargaBiji(bean.getAverageHargaBiji());
         obatEntity.setIdPabrik(bean.getIdPabrik());
         obatEntity.setMerk(bean.getMerk());
+        obatEntity.setMinStok(bean.getMinStok());
 
         try {
             obatDao.addAndSave(obatEntity);
@@ -373,6 +374,7 @@ public class ObatBoImpl implements ObatBo {
                     obatEntity.setIdPabrik(bean.getIdPabrik());
                     obatEntity.setMerk(bean.getMerk());
                     obatEntity.setAction(bean.getAction());
+                    obatEntity.setMinStok(bean.getMinStok());
 
                     try {
                         obatDao.updateAndSave(obatEntity);

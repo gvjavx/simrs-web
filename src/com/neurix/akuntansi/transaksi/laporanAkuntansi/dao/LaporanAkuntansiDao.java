@@ -5,12 +5,16 @@ import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.Aging;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.ItLaporanAkuntansiEntity;
 import com.neurix.common.dao.GenericDao;
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -34,6 +38,13 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
 
         // Get Collection and sorting
         if (mapCriteria!=null) {
+            if (mapCriteria.get("laporan_akuntansi_id")!=null) {
+                criteria.add(Restrictions.eq("laporanAkuntansiId", (String) mapCriteria.get("laporan_akuntansi_id")));
+            }
+            if (mapCriteria.get("laporan_akuntansi_name")!=null) {
+                criteria.add(Restrictions.ilike("laporanAkuntansiName", "%" + (String)mapCriteria.get("laporan_akuntansi_name") + "%"));
+            }
+
             if (mapCriteria.get("flag")!=null) {
                 criteria.add(Restrictions.eq("flag", (String) mapCriteria.get("flag")));
             }
@@ -226,5 +237,27 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
             listOfResult.add(data);
         }
         return listOfResult;
+    }
+
+    public String getLevelKodeRekening(String reportId){
+        String result="";
+        String query = "select level_kode_rekening from im_akun_report where report_id='"+reportId+"' limit 1";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            result = results.toString();
+        }else {
+            result=null;
+        }
+        return result;
+    }
+
+    // Generate surrogate id from postgre
+    public String getNextLaporanAkuntansiId() throws HibernateException {
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_laporan_akuntansi')");
+        Iterator<BigInteger> iter=query.list().iterator();
+        String sId = String.format("%02d", iter.next());
+
+        return "RPT"+sId;
     }
 }

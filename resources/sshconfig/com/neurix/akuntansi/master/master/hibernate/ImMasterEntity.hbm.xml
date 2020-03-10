@@ -7,30 +7,26 @@
            table="im_akun_master" select-before-update="true" schema="public">
 
         <composite-id  name="primaryKey" class="com.neurix.akuntansi.master.master.model.MasterPK">
-            <key-property name="masterId">
-                <column name="master_id" sql-type="varchar" length="1" not-null="true" />
-            </key-property>
             <key-property name="nomorMaster">
                 <column name="nomor_master" sql-type="varchar" length="5" not-null="true"/>
             </key-property>
         </composite-id>
 
-        <property name="akunMasterId">
-            <column name="akun_master_id" sql-type="varchar" length="15" not-null="true" />
-        </property>
         <property name="nama">
             <column name="nama" sql-type="varchar" length="100" not-null="false" />
         </property>
         <property name="alamat">
-            <column name="alamat1" sql-type="varchar" length="100" not-null="false" />
+            <column name="alamat" sql-type="varchar" length="100" not-null="false" />
         </property>
         <property name="npwp">
             <column name="npwp" sql-type="varchar" length="30" not-null="false" />
         </property>
-        <property name="branchId">
-            <column name="branch_id" sql-type="varchar" length="5" not-null="false" />
+        <property name="email">
+            <column name="email" sql-type="varchar" length="50" not-null="false" />
         </property>
-
+        <property name="noTelp">
+            <column name="no_telp" sql-type="varchar" length="50" not-null="false" />
+        </property>
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />
         </property>
