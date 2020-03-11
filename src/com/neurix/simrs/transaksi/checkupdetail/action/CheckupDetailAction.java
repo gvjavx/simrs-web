@@ -2021,6 +2021,11 @@ public class CheckupDetailAction extends BaseMasterAction {
                                                         logger.error("[CheckupAction.saveAdd] Error when adding item ,update claim not success " + claimEklaimResponse.getMessage());
                                                         return finalResponse;
                                                     }
+                                                }else{
+                                                    finalResponse.setStatus("error");
+                                                    finalResponse.setMsg("Failed To getPastien from Eklaim "+responseNewClaim.getMsg());
+                                                    logger.error("[CheckupAction.saveAdd] Failed To getPastien from Eklaim  " + responseNewClaim.getMsg());
+                                                    return finalResponse;
                                                 }
                                             }else{
                                                 finalResponse.setStatus("error");
@@ -2579,6 +2584,9 @@ public class CheckupDetailAction extends BaseMasterAction {
                                     logger.error("[CheckupAction.saveAdd] Error when adding item ,update claim not success " + claimEklaimResponse.getMessage());
                                     throw new GeneralBOException("Error when adding item ,update claim not success, [" + claimEklaimResponse.getMessage() + "]");
                                 }
+                            }else{
+                                logger.error("[CheckupAction.saveAdd] Error when get pastien Eklaim, " + responseNewClaim.getMsg());
+                                throw new GeneralBOException("Error when get pastien Eklaim, [" + responseNewClaim.getMsg() + "]");
                             }
                         } else {
                             logger.error("[CheckupAction.saveAdd] Error when generate SEP, " + response.getMessage());
