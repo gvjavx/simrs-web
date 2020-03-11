@@ -295,9 +295,10 @@ public class CheckupController implements ModelDriven<Object> {
             bean.setIdPasien(idPasien);
             bean.setNamaPasien(nama);
             bean.setIdPelayanan(idPoli);
-            bean.setStatusPeriksa(idStatusPasien);
-            bean.setTglCekup(CommonUtil.convertStringToDate(tglMasuk));
+            bean.setStDateFrom(tglMasuk);
+            bean.setStDateTo(tglMasuk);
             bean.setBranchId(branchId);
+            bean.setStatusPeriksa(idStatusPasien);
             bean.setFlag("Y");
 
             try {
@@ -319,11 +320,7 @@ public class CheckupController implements ModelDriven<Object> {
                     checkupMobile.setStatusPeriksa(item.getStatusPeriksa());
                     checkupMobile.setStatusBayar(item.getStatusBayar());
 
-
-
                     listOfCheckup.add(checkupMobile);
-
-
                 }
             }
         } else if (action.equalsIgnoreCase("dataPasien")){

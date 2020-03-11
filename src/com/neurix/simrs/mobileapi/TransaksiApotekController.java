@@ -465,6 +465,7 @@ public class TransaksiApotekController implements ModelDriven<Object> {
             beanObatPoli.setIdPabrik(idPabrik);
             beanObatPoli.setIdPelayanan(idPelayanan);
             beanObatPoli.setBranchId(branchId);
+            beanObatPoli.setExp("exp");
 
             try {
                result = obatPoliBoProxy.getObatPoliByCriteria(beanObatPoli);
