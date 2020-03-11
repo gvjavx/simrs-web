@@ -2499,7 +2499,7 @@ public class CheckupAction extends BaseMasterAction {
         DiagnosaRawatBo diagnosaRawatBo = (DiagnosaRawatBo) ctx.getBean("diagnosaRawatBoProxy");
         PermintaanResepBo permintaanResepBo = (PermintaanResepBo) ctx.getBean("permintaanResepBoProxy");
         TeamDokterBo teamDokterBo = (TeamDokterBo) ctx.getBean("teamDokterBoProxy");
-        ObatBo obatBo = (ObatBo) ctx.getBean("ObatBoProxy");
+        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
 
         String userLogin = CommonUtil.userLogin();
         Timestamp time = new Timestamp(System.currentTimeMillis());
@@ -2577,8 +2577,6 @@ public class CheckupAction extends BaseMasterAction {
 
             if (resepEntities.size() > 0){
                 permintaanResepEntity = resepEntities.get(0);
-                for (ImSimrsPermintaanResepEntity resepEntity : resepEntities){
-                }
             }
 
             DokterTeam dokterTeam = new DokterTeam();
@@ -2599,6 +2597,7 @@ public class CheckupAction extends BaseMasterAction {
                 obatDetail.setIdObat(obj.getString("id_obat"));
                 obatDetail.setJenisSatuan(obj.getString("jenis_satuan"));
                 obatDetail.setQty(new BigInteger(obj.getString("qty")));
+                obatDetail.setHariKronis(new Integer(obj.getString("hari_selanjutnya")));
 
                 if (!"".equalsIgnoreCase(obatDetail.getIdObat()) && obatDetail.getIdObat() != null){
 

@@ -2086,8 +2086,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                 }
             }
         }
-
-        return null;
+        return response;
     }
 
     private String getNextIdAlergi() {

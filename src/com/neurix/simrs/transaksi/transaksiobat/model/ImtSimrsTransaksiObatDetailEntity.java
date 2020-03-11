@@ -41,6 +41,15 @@ public class ImtSimrsTransaksiObatDetailEntity implements Serializable{
     private String flagRacik;
     private Integer hariKronis;
     private String flagKronisDiambil;
+    private String idPelayanan;
+
+    public String getIdPelayanan() {
+        return idPelayanan;
+    }
+
+    public void setIdPelayanan(String idPelayanan) {
+        this.idPelayanan = idPelayanan;
+    }
 
     public String getFlagVerifikasi() {
         return flagVerifikasi;
