@@ -291,6 +291,8 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             headerCheckup.setNoRujukan(headerList.getNoRujukan());
             headerCheckup.setNoPpkRujukan(headerList.getNoPpkRujukan());
             headerCheckup.setTglRujukan(headerList.getNoRujukan());
+            headerCheckup.setKelasPasien(headerList.getKelasPasien());
+            headerCheckup.setIdPelayananBpjs(headerList.getIdPelayananBpjs());
 
             HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
 

@@ -349,6 +349,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         detailCheckupEntity.setNoSep(bean.getNoSep());
         detailCheckupEntity.setTarifBpjs(bean.getTarifBpjs());
         detailCheckupEntity.setMetodePembayaran(bean.getMetodePembayaran());
+        detailCheckupEntity.setKodeCbg(bean.getKodeCbg());
 
         try {
             checkupDetailDao.addAndSave(detailCheckupEntity);

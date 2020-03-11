@@ -988,6 +988,9 @@ public class CheckupAction extends BaseMasterAction {
                                     logger.error("[CheckupAction.saveAdd] Error when adding item ,update claim not success " + claimEklaimResponse.getMessage());
                                     throw new GeneralBOException("Error when adding item ,update claim not success, [" + claimEklaimResponse.getMessage() + "]");
                                 }
+                            }else{
+                                logger.error("[CheckupAction.saveAdd] Error when get Patien ID, " + responseNewClaim.getMsg());
+                                throw new GeneralBOException("Error when get Patien ID, [" + responseNewClaim.getMsg() + "]");
                             }
                         } else {
                             logger.error("[CheckupAction.saveAdd] Error when generate SEP, " + response.getMessage());
