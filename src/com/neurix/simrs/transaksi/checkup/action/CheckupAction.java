@@ -68,6 +68,7 @@ import com.neurix.simrs.transaksi.tindakanrawat.bo.TindakanRawatBo;
 
 import com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity;
 import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
+import com.neurix.simrs.transaksi.transaksiobat.bo.TransaksiObatBo;
 import com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsTransaksiObatDetailEntity;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import com.neurix.simrs.transaksi.transfusi.model.ItSimrsTranfusiEntity;
@@ -2497,9 +2498,9 @@ public class CheckupAction extends BaseMasterAction {
         CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
         CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
         DiagnosaRawatBo diagnosaRawatBo = (DiagnosaRawatBo) ctx.getBean("diagnosaRawatBoProxy");
-        PermintaanResepBo permintaanResepBo = (PermintaanResepBo) ctx.getBean("permintaanResepBoProxy");
         TeamDokterBo teamDokterBo = (TeamDokterBo) ctx.getBean("teamDokterBoProxy");
         ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+        TransaksiObatBo transaksiObatBo = (TransaksiObatBo) ctx.getBean("transaksiObatBoProxy");
 
         String userLogin = CommonUtil.userLogin();
         Timestamp time = new Timestamp(System.currentTimeMillis());
@@ -2589,6 +2590,18 @@ public class CheckupAction extends BaseMasterAction {
                 obatDetail.setJenisSatuan(obj.getString("jenis_satuan"));
                 obatDetail.setQty(new BigInteger(obj.getString("qty")));
                 obatDetail.setHariKronis(new Integer(obj.getString("hari_selanjutnya")));
+                obatDetail.setIdTransaksiObatDetail(obj.getString("trans_id"));
+
+                if (!"".equalsIgnoreCase(obatDetail.getIdTransaksiObatDetail())){
+                    try {
+                        transaksiObatBo.saveEditFlagPengambilan(obatDetail.getIdTransaksiObatDetail());
+                    } catch (GeneralBOException e){
+                        logger.error("[CheckupAction.savePengambilanObatKronis] ERROR ", e);
+                        response.setStatus("error");
+                        response.setMsg("[CheckupAction.savePengambilanObatKronis] ERROR "+ e);
+                        return response;
+                    }
+                }
 
                 if (!"".equalsIgnoreCase(obatDetail.getIdObat()) && obatDetail.getIdObat() != null){
 
