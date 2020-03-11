@@ -2070,7 +2070,7 @@
                         table += '<tr>' +
                             '<td>'+item.idObat+'</td>' +
                             '<td>'+item.namaObat+'</td>' +
-                            '<td>'+qtyTotal+'</td>' +
+                            '<td>'+qtyTotal+'<input type="hidden" id="hari_kronis'+i+'" value="'+item.hariKronis+'">'+'</td>' +
                             '<td>biji</td>' +
                             '<td width="20%">'+'<input type="number" onchange="validasiInput(\''+qtyTotal+'\',\''+i+'\')" class="form-control" id="qty'+i+'">'+'</td>' +
                             '</tr>'
@@ -2096,9 +2096,11 @@
                 var idObat = data[i]["ID Obat"];
                 var qty = $('#qty'+i).val();
                 var qtyTotal = data[i]["Stok Obat"];
+                var hariKronis = $('#hari_kronis'+i).val();
+                var hariNext = parseInt(30) - parseInt(hariKronis);
 
                 if(qty != ""){
-                    result.push({'id_obat':idObat, 'jenis_satuan':'biji', 'qty':qty});
+                    result.push({'id_obat':idObat, 'jenis_satuan':'biji', 'qty':qty, 'hari_kronis':hariKronis, 'hari_selanjutnya':hariNext});
                     cekQty = true;
                 }
 

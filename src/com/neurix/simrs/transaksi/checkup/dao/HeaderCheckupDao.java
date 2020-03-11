@@ -440,6 +440,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "AND c.tipe_pelayanan = 'rawat_jalan' \n" +
                 "AND CAST(a.created_date AS date) = current_date\n" +
                 "AND pr.id_detail_checkup IS NULL \n" +
+                "AND b.is_kronis IS NULL \n" +
                 "ORDER BY c.nama_pelayanan, b.tgl_antrian ASC";
 
         List<Object[]> result = new ArrayList<>();
@@ -753,21 +754,25 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
 
         if (idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup) && idApproval != null && !"".equalsIgnoreCase(idApproval)) {
 
-            String SQL = "SELECT \n" +
-                    "a.id_permintaan_resep, \n" +
-                    "b.id_obat, \n" +
-                    "c.nama_obat, \n" +
-                    "c.box, \n" +
-                    "c.lembar, \n" +
-                    "c.biji, \n" +
-                    "c.lembar_per_box, \n" +
-                    "c.biji_per_lembar \n" +
+            String SQL = "SELECT\n" +
+                    "a.id_permintaan_resep,\n" +
+                    "b.id_obat,\n" +
+                    "d.nama_obat,\n" +
+                    "c.box,\n" +
+                    "c.lembar,\n" +
+                    "c.biji,\n" +
+                    "d.lembar_per_box,\n" +
+                    "d.biji_per_lembar,\n" +
+                    "b.hari_kronis,\n" +
+                    "c.id_pelayanan\n" +
                     "FROM mt_simrs_permintaan_resep a\n" +
                     "INNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat\n" +
-                    "INNER JOIN (SELECT id_obat, nama_obat, SUM(qty_box) as box, SUM(qty_lembar) as lembar, SUM(qty_biji) as biji, lembar_per_box, biji_per_lembar \n" +
-                    "FROM im_simrs_obat WHERE flag_kronis = 'Y' AND flag = 'Y' GROUP BY id_obat, nama_obat, lembar_per_box, biji_per_lembar) c ON b.id_obat = c.id_obat\n" +
-                    "WHERE a.id_detail_checkup = :idDetail \n" +
-                    "AND a.id_approval_obat = :idApproval";
+                    "INNER JOIN (SELECT id_pelayanan, id_obat, SUM(qty_box) box, SUM(qty_lembar) lembar, SUM(qty_biji) biji\n" +
+                    "FROM mt_simrs_obat_poli GROUP BY id_pelayanan, id_obat) c ON a.tujuan_pelayanan = c.id_pelayanan\n" +
+                    "INNER JOIN (SELECT id_obat, nama_obat, lembar_per_box, biji_per_lembar\n" +
+                    "FROM im_simrs_obat WHERE flag_kronis = 'Y' AND flag = 'Y' GROUP BY id_obat, nama_obat, lembar_per_box, biji_per_lembar) d ON c.id_obat = d.id_obat\n" +
+                    "WHERE a.id_detail_checkup = :idDetail\n" +
+                    "AND a.id_approval_obat = :idApproval\n";
 
             List<Object[]> results = new ArrayList<>();
 
@@ -787,6 +792,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     detail.setQtyBiji(obj[5] == null ? new BigInteger(String.valueOf("0")) : new BigInteger(String.valueOf(obj[5].toString())));
                     detail.setLembarPerBox(obj[6] == null ? new BigInteger(String.valueOf("0")) : new BigInteger(String.valueOf(obj[6].toString())));
                     detail.setBijiPerLembar(obj[7] == null ? new BigInteger(String.valueOf("0")) : new BigInteger(String.valueOf(obj[7].toString())));
+                    detail.setHariKronis(obj[8] == null ? 0 : (Integer) obj[8]);
+                    detail.setIdPelayanan(obj[9] == null ? "" : obj[9].toString());
                     transaksiObatDetailList.add(detail);
                 }
 
