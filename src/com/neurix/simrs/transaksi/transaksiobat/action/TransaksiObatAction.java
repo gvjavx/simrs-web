@@ -242,6 +242,7 @@ public class TransaksiObatAction extends BaseMasterAction {
             resep.setJenisPeriksaPasien(checkup.getIdJenisPeriksaPasien());
             resep.setUrlKtp(checkup.getUrlKtp());
             resep.setJenisPeriksaPasien(checkup.getStatusPeriksaName());
+            resep.setIdPermintaanResep(idPermintaan);
             setPermintaanResep(resep);
 
         } else {
