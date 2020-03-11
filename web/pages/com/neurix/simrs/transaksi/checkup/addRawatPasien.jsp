@@ -2075,7 +2075,7 @@
                         hariKronis = parseInt(30) - parseInt(item.hariKronis);
 
                         table += '<tr>' +
-                            '<td>'+item.idObat+'</td>' +
+                            '<td>'+item.idObat+'<input type="hidden" id="trans_id'+i+'" value="'+item.idTransaksiObatDetail+'">'+'</td>' +
                             '<td>'+item.namaObat+'</td>' +
                             '<td>'+qtyTotal+'</td>' +
                             '<td>biji</td>' +
@@ -2107,9 +2107,10 @@
                 var qty = $('#qty'+i).val();
                 var qtyTotal = data[i]["Stok Obat"];
                 var hariKronis = data[i]["Hari Kronis"];
+                var transId = $('#trans_id'+i).val();
 
                 if(qty != ""){
-                    result.push({'id_obat':idObat, 'jenis_satuan':'biji', 'qty':qty, 'hari_selanjutnya':hariKronis});
+                    result.push({'id_obat':idObat, 'jenis_satuan':'biji', 'qty':qty, 'hari_selanjutnya':hariKronis, 'trans_id':transId});
                     cekQty = true;
                 }
 
