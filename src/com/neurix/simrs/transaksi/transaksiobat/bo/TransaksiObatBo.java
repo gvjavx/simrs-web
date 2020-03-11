@@ -37,4 +37,7 @@ public interface TransaksiObatBo {
     public List<MtSimrsRiwayatPembelianObat> getRiwayatPembelianObat(String idApprove) throws GeneralBOException;
     public List<TransaksiObatDetail> getListPermintaanBatch(String idApproval, String flagDiterima) throws GeneralBOException;
 
+    public Boolean cekObatKronis(String idApproval) throws GeneralBOException;
+    public TransaksiObatDetail getTarifApproveResep(String idApproval) throws GeneralBOException;
+
 }

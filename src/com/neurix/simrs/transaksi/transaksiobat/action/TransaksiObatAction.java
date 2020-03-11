@@ -28,6 +28,8 @@ import com.neurix.simrs.transaksi.obatpoli.model.PermintaanObatPoli;
 import com.neurix.simrs.transaksi.permintaanresep.bo.PermintaanResepBo;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
+import com.neurix.simrs.transaksi.riwayattindakan.bo.RiwayatTindakanBo;
+import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
 import com.neurix.simrs.transaksi.transaksiobat.bo.TransaksiObatBo;
 import com.neurix.simrs.transaksi.transaksiobat.model.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -754,6 +756,8 @@ public class TransaksiObatAction extends BaseMasterAction {
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         TransaksiObatBo transaksiObatBo = (TransaksiObatBo) ctx.getBean("transaksiObatBoProxy");
+        RiwayatTindakanBo riwayatTindakanBo = (RiwayatTindakanBo) ctx.getBean("riwayatTindakanBoProxy");
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
 
         Timestamp time = new Timestamp(System.currentTimeMillis());
         String userLogin = CommonUtil.userLogin();
@@ -779,13 +783,85 @@ public class TransaksiObatAction extends BaseMasterAction {
 
             response.setStatus(SUCCESS);
             response.setMessage("SUCCESS");
+
+            Boolean obatKronis = false;
+
+            try {
+                obatKronis = transaksiObatBo.cekObatKronis(idApproval);
+            }catch (GeneralBOException e){
+                logger.error("found Error when search obat kronis ");
+            }
+
+            TransaksiObatDetail tarifResep = new TransaksiObatDetail();
+
+            try {
+                tarifResep = transaksiObatBo.getTarifApproveResep(idApproval);
+            }catch (GeneralBOException e){
+                logger.error("found error when search tarif resep");
+            }
+
+            if(tarifResep.getTotalHarga() != null){
+
+                if(obatKronis){
+
+                    RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
+                    riwayatTindakan.setIdTindakan(tarifResep.getIdPermintaanResep());
+                    riwayatTindakan.setIdDetailCheckup(tarifResep.getIdDetailCheckup());
+                    riwayatTindakan.setNamaTindakan("Tarif Resep dengan No. Resep " + tarifResep.getIdPermintaanResep());
+                    riwayatTindakan.setTotalTarif(new BigDecimal(tarifResep.getTotalHarga()));
+                    riwayatTindakan.setKeterangan("tindakan");
+//                    riwayatTindakan.setJenisPasien(jenisPasien);
+                    riwayatTindakan.setAction("C");
+                    riwayatTindakan.setFlag("Y");
+                    riwayatTindakan.setCreatedWho(userLogin);
+                    riwayatTindakan.setCreatedDate(time);
+                    riwayatTindakan.setLastUpdate(time);
+                    riwayatTindakan.setLastUpdateWho(userLogin);
+                    riwayatTindakan.setTanggalTindakan(time);
+
+                    try {
+
+                        riwayatTindakanBo.saveAdd(riwayatTindakan);
+
+                        HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+                        detailCheckup.setIdDetailCheckup(tarifResep.getIdDetailCheckup());
+                        detailCheckup.setStatusPeriksa("3");
+                        detailCheckup.setKeteranganSelesai("Sembuh");
+                        detailCheckup.setStatus("selesai");
+                        detailCheckup.setLastUpdate(time);
+                        detailCheckup.setLastUpdateWho(userLogin);
+
+                        try {
+                            checkupDetailBo.saveEdit(detailCheckup);
+                        }catch (GeneralBOException e){
+                            logger.error("Found Error "+e);
+                        }
+
+                    } catch (GeneralBOException e) {
+                        logger.error("[CheckupDetailAction.saveAddToRiwayatTindakan] Found error when insert riwayat tindakan :" + e.getMessage());
+                    }
+
+                }else{
+
+                    RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
+                    riwayatTindakan.setIdDetailCheckup(tarifResep.getIdDetailCheckup());
+                    riwayatTindakan.setIdTindakan(tarifResep.getIdPermintaanResep());
+                    riwayatTindakan.setTotalTarif(new BigDecimal(tarifResep.getTotalHarga()));
+                    riwayatTindakan.setLastUpdateWho(userLogin);
+                    riwayatTindakan.setLastUpdate(time);
+
+                    try {
+                        riwayatTindakanBo.saveEdit(riwayatTindakan);
+                    }catch (GeneralBOException e){
+                        logger.error("found error "+e);
+                    }
+                }
+            }
         } catch (GeneralBOException e) {
 
             response.setStatus(ERROR);
             response.setMessage("[TransaksiObatAction.saveVerifikasiResep] ERROR when save list obat, " + e.getMessage());
-
-//            logger.error("[TransaksiObatAction.saveApproveResepObatPoli] ERROR when save list obat, ", e);
-//            addActionError("[TransaksiObatAction.saveApproveResepObatPoli] ERROR when save list obat, " + e.getMessage());
+            logger.error("[TransaksiObatAction.saveApproveResepObatPoli] ERROR when save list obat, ", e);
             return response;
         }
 

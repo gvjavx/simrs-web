@@ -1849,6 +1849,34 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
         return transaksiObatDetailDao.getListOfObatBatchPermintaan(idApproval, flagDiterima);
     }
 
+    @Override
+    public Boolean cekObatKronis(String idApproval) throws GeneralBOException {
+        Boolean response = false;
+        if(idApproval != null && !"".equalsIgnoreCase(idApproval)){
+            try {
+                response = transaksiObatDetailDao.cekObatKronis(idApproval);
+            }catch (HibernateException e){
+                logger.error("Found Error when cek obat kronis");
+            }
+        }
+        return response;
+    }
+
+    @Override
+    public TransaksiObatDetail getTarifApproveResep(String idApproval) throws GeneralBOException {
+
+        TransaksiObatDetail response = new TransaksiObatDetail();
+        if(idApproval != null && !"".equalsIgnoreCase(idApproval)){
+            try {
+                response = transaksiObatDetailDao.getTarifResepApprove(idApproval);
+            }catch (HibernateException e){
+                logger.error("Found Error when cek obat kronis");
+            }
+        }
+
+        return response;
+    }
+
     public void setApprovalTransaksiObatDao(ApprovalTransaksiObatDao approvalTransaksiObatDao) {
         this.approvalTransaksiObatDao = approvalTransaksiObatDao;
     }

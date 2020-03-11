@@ -354,6 +354,75 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
         return trans;
     }
 
+    public Boolean cekObatKronis(String idApproval){
+
+        Boolean response = false;
+
+        if (!"".equalsIgnoreCase(idApproval) && idApproval != null){
+
+            String SQL = "SELECT \n" +
+                    "a.id_permintaan_resep, \n" +
+                    "b.id_transaksi_obat_detail, \n" +
+                    "b.hari_kronis  FROM mt_simrs_permintaan_resep a\n" +
+                    "INNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat\n" +
+                    "WHERE a.id_approval_obat = :idApp\n" +
+                    "AND b.hari_kronis IS NOT NULL";
+
+            List<Object[]> results = new ArrayList<>();
+            results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("idApp", idApproval)
+                    .list();
+
+            if (results.size() > 0){
+                response = true;
+            }
+        }
+
+        return response;
+    }
+
+    public TransaksiObatDetail getTarifResepApprove(String idApproval){
+
+        TransaksiObatDetail transaksiObatDetail = new TransaksiObatDetail();
+
+        if (!"".equalsIgnoreCase(idApproval) && idApproval != null){
+
+            String SQL = "SELECT a.id_permintaan_resep, a.id_detail_checkup, SUM(total) as tarif FROM(\n" +
+                    "SELECT \n" +
+                    "a.id_permintaan_resep, \n" +
+                    "a.id_detail_checkup,\n" +
+                    "b.id_transaksi_obat_detail,\n" +
+                    "b.id_obat,\n" +
+                    "b.jenis_satuan,\n" +
+                    "c.qty,\n" +
+                    "d.harga_jual,\n" +
+                    "(d.harga_jual * c.qty) as total \n" +
+                    "FROM mt_simrs_permintaan_resep a\n" +
+                    "INNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat\n" +
+                    "INNER JOIN (SELECT id_transaksi_obat_detail, SUM(qty_approve) as qty FROM mt_simrs_transaksi_obat_detail_batch GROUP BY id_transaksi_obat_detail)c ON b.id_transaksi_obat_detail = c.id_transaksi_obat_detail\n" +
+                    "INNER JOIN mt_simrs_harga_obat d ON b.id_obat = d.id_obat\n" +
+                    "WHERE a.id_approval_obat = :idApp\n" +
+                    ")a\n" +
+                    "GROUP BY a.id_detail_checkup, a.id_permintaan_resep";
+
+            List<Object[]> results = new ArrayList<>();
+            results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("idApp", idApproval)
+                    .list();
+
+            if (results.size() > 0){
+
+                Object[] objects = results.get(0);
+                transaksiObatDetail.setIdPermintaanResep(objects[0] == null ? "" : objects[0].toString());
+                transaksiObatDetail.setIdDetailCheckup(objects[0] == null ? "" : objects[0].toString());
+                transaksiObatDetail.setTotalHarga(objects[0] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(objects[0].toString()));
+
+            }
+        }
+
+        return transaksiObatDetail;
+    }
+
     public String getNextId(){
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_transaksi_obat_detail')");
         Iterator<BigInteger> iter=query.list().iterator();
