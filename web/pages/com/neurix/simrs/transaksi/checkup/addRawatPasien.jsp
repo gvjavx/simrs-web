@@ -1547,6 +1547,7 @@
                     <td>Nama Obat</td>
                     <td>Stok Obat</td>
                     <td>Jenis Satuan</td>
+                    <td>Hari Kronis</td>
                     <td>Qty</td>
                     </thead>
                     <tbody id="body_kronis">
@@ -1560,7 +1561,7 @@
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button type="button" class="btn btn-success" id="save_kronis"><i
-                        class="fa fa-arrow-check"></i> Save
+                        class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_kronis"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -2044,12 +2045,16 @@
             CheckupAction.getListObatKronis(idDetailCheckup, idApproval, function (response) {
                 if(response.length > 0){
 
+                    console.log(response);
+                    var idPelayanan = "";
+
                     $.each(response, function (i, item) {
 
                         var qtyTotal = 0;
                         var qtyBox = 0;
                         var qtyLembar = 0;
                         var qtyBiji = 0;
+                        var hariKronis = 0;
 
                         if(item.qtyBox != null){
                             qtyBox = item.qtyBox;
@@ -2067,17 +2072,22 @@
                             qtyTotal = parseInt(qtyBiji) + ((parseInt(item.lembarPerBox * parseInt(qtyBox))) * parseInt(item.bijiPerLembar));
                         }
 
+                        hariKronis = parseInt(30) - parseInt(item.hariKronis);
+
                         table += '<tr>' +
                             '<td>'+item.idObat+'</td>' +
                             '<td>'+item.namaObat+'</td>' +
-                            '<td>'+qtyTotal+'<input type="hidden" id="hari_kronis'+i+'" value="'+item.hariKronis+'">'+'</td>' +
+                            '<td>'+qtyTotal+'</td>' +
                             '<td>biji</td>' +
+                            '<td>'+hariKronis+'</td>' +
                             '<td width="20%">'+'<input type="number" onchange="validasiInput(\''+qtyTotal+'\',\''+i+'\')" class="form-control" id="qty'+i+'">'+'</td>' +
-                            '</tr>'
+                            '</tr>';
+                        idPelayanan = item.idPelayanan;
                     });
 
                     $('#body_kronis').html(table);
-                    $('#save_kronis').attr('onclick','savePengambilanObatKronis(\''+idDetailCheckup+'\')');
+                    $('#save_kronis').attr('onclick','savePengambilanObatKronis(\''+idDetailCheckup+'\',\''+idPelayanan+'\')');
+
                 }else{
 
                 }
@@ -2085,8 +2095,8 @@
         }
     }
 
-    function savePengambilanObatKronis(idDetailCheckup){
-        if(idDetailCheckup != ''){
+    function savePengambilanObatKronis(idDetailCheckup, idPelayanan){
+        if(idDetailCheckup != '' && idPelayanan != ''){
             var data = $('#tabel-kronis').tableToJSON();
             var result = [];
             var cek = false;
@@ -2096,11 +2106,10 @@
                 var idObat = data[i]["ID Obat"];
                 var qty = $('#qty'+i).val();
                 var qtyTotal = data[i]["Stok Obat"];
-                var hariKronis = $('#hari_kronis'+i).val();
-                var hariNext = parseInt(30) - parseInt(hariKronis);
+                var hariKronis = data[i]["Hari Kronis"];
 
                 if(qty != ""){
-                    result.push({'id_obat':idObat, 'jenis_satuan':'biji', 'qty':qty, 'hari_kronis':hariKronis, 'hari_selanjutnya':hariNext});
+                    result.push({'id_obat':idObat, 'jenis_satuan':'biji', 'qty':qty, 'hari_selanjutnya':hariKronis});
                     cekQty = true;
                 }
 
@@ -2109,6 +2118,7 @@
                 }
             });
 
+            console.log(idPelayanan);
             console.log(result);
             var jsonString = JSON.stringify(result);
 
@@ -2121,7 +2131,7 @@
                     $('#save_kronis').hide();
                     $('#load_kronis').show();
                     dwr.engine.setAsync(true);
-                    CheckupAction.savePengambilanObatKronis(idDetailCheckup, jsonString, {callback: function (response) {
+                    CheckupAction.savePengambilanObatKronis(idDetailCheckup, jsonString, idPelayanan, {callback: function (response) {
                             if(response.status == "success"){
                                 $('#modal-obat-kronis').modal('hide');
                                 $('#info_dialog').dialog('open');
