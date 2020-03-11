@@ -30,6 +30,7 @@ import org.hibernate.HibernateException;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -1842,6 +1843,41 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
             }
         }
         logger.info("[ObatPoliBoImpl.updateAddStockObatPoli] END <<<<<<<<<<");
+    }
+
+    @Override
+    public void saveEditFlagPengambilan(String idTrans) throws GeneralBOException {
+
+        String userLogin = CommonUtil.userLogin();
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_transaksi_obat_detail", idTrans);
+
+        List<ImtSimrsTransaksiObatDetailEntity> obatDetailEntities = new ArrayList<>();
+        try {
+            obatDetailEntities = transaksiObatDetailDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[ObatPoliBoImpl.saveEditFlagPengambilan] ERROR. ", e);
+            throw new GeneralBOException("[ObatPoliBoImpl.saveEditFlagPengambilan] ERROR. ", e);
+        }
+
+        if (obatDetailEntities.size() > 0){
+            ImtSimrsTransaksiObatDetailEntity transaksiObatDetailEntity = obatDetailEntities.get(0);
+            transaksiObatDetailEntity.setFlagKronisDiambil("Y");
+            transaksiObatDetailEntity.setAction("U");
+            transaksiObatDetailEntity.setCreatedDate(time);
+            transaksiObatDetailEntity.setCreatedWho(userLogin);
+            transaksiObatDetailEntity.setLastUpdate(time);
+            transaksiObatDetailEntity.setLastUpdateWho(userLogin);
+
+            try {
+                transaksiObatDetailDao.updateAndSave(transaksiObatDetailEntity);
+            } catch (HibernateException e){
+                logger.error("[ObatPoliBoImpl.saveEditFlagPengambilan] ERROR. ", e);
+                throw new GeneralBOException("[ObatPoliBoImpl.saveEditFlagPengambilan] ERROR. ", e);
+            }
+        }
     }
 
     @Override

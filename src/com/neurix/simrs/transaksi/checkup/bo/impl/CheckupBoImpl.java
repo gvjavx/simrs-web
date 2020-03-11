@@ -1979,8 +1979,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
 
         if (detailCheckupEntity != null){
             detailCheckupEntity.setIdDetailCheckup("DCM"+getNextDetailCheckupId());
-            detailCheckupEntity.setNoSep(bean.getNoSep());
-            detailCheckupEntity.setTarifBpjs(bean.getTarifBpjs());
+            detailCheckupEntity.setTarifBpjs(new BigDecimal(0));
             detailCheckupEntity.setKodeCbg(bean.getKodeCbg());
             detailCheckupEntity.setNoCheckup(headerChekupEntity.getNoCheckup());
             detailCheckupEntity.setFlag(bean.getFlag());
@@ -1989,6 +1988,8 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             detailCheckupEntity.setCreatedWho(bean.getCreatedWho());
             detailCheckupEntity.setLastUpdate(bean.getLastUpdate());
             detailCheckupEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            detailCheckupEntity.setStatusPeriksa("1");
+            detailCheckupEntity.setIsKronis("Y");
 
             try {
                 checkupDetailDao.addAndSave(detailCheckupEntity);
@@ -2087,8 +2088,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                 }
             }
         }
-
-        return null;
+        return response;
     }
 
     private String getNextIdAlergi() {
