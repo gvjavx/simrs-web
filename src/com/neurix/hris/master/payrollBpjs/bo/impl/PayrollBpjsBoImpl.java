@@ -345,14 +345,14 @@ public class PayrollBpjsBoImpl implements PayrollBpjsBo {
     }
     public String cekStatus(String golonganId)throws GeneralBOException{
         String status ="";
-        ImPayrollBpjsEntity skalaGajiEntity = new ImPayrollBpjsEntity();
+        List<ImPayrollBpjsEntity> skalaGajiEntity = new ArrayList<>();
         try {
-            skalaGajiEntity = payrollBpjsDao.getById("branchId",golonganId);
+            skalaGajiEntity = payrollBpjsDao.getBpjsFilter(golonganId);
         } catch (HibernateException e) {
             logger.error("[PayrollSkalaGajiBoImpl.getSearchPayrollSkalaGajiByCriteria] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
         }
-        if (skalaGajiEntity!=null){
+        if (skalaGajiEntity.size()>0){
             status = "exist";
         }else{
             status="notExits";

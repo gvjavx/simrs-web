@@ -75,16 +75,16 @@
                         </table>
 
                         <table >
-                            <tr>
+                            <%--<tr>
                                 <td>
                                     <label class="control-label"><small>T. Jab Struktural Id :</small></label>
                                 </td>
                                 <td>
                                     <table>
-                                        <s:textfield  id="tunjJabatanStrukturalId" name="payrollTunjanganJabatanStruktural.tunjJabatanStrukturalId" required="false" readonly="false" cssClass="form-control"/>
+                                        <s:textfield  id="tunjJabatanStrukturalId" name="payrollTunjanganJabatanStruktural.tunjJabStrukturId" required="false" readonly="false" cssClass="form-control"/>
                                     </table>
                                 </td>
-                            </tr>
+                            </tr>--%>
 
                             <tr>
                                 <td>

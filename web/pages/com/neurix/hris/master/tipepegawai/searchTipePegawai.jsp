@@ -185,8 +185,8 @@
                                     <tr>
                                         <td align="center">
                                             <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
-                                                       height="350" width="700" autoOpen="false"
-                                                       title="Tipe Libur">
+                                                       height="500" width="950" autoOpen="false"
+                                                       title="Tipe Pegawai">
                                                 <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                             </sj:dialog>
 

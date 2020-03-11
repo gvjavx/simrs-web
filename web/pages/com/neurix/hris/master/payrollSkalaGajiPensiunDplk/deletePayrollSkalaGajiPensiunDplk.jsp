@@ -16,36 +16,55 @@
         };
 
         $.subscribe('beforeProcessSave', function (event, data) {
-            var idDepartment = document.getElementById("skalaGajiId1").value;
-            var nameDepartment    = document.getElementById("golonganId1").value;
+            var golonganId = document.getElementById("golonganId1").value;
+            var point = document.getElementById("point1").value;
+            var nilai = document.getElementById("nilai1").value;
 
-
-
-            if (nameDepartment != '' ) {
-                if (confirm('Do you want to save this record?')) {
-                    event.originalEvent.options.submit = true;
-                    $.publish('showDialog');
-
-                } else {
-                    // Cancel Submit comes with 1.8.0
+            if (golonganId != '' && point != '' && nilai != '' ) {
+                if(isNaN(point) ==  false && isNaN(nilai) == false){
+                    if (confirm('Do you want to save this record?')) {
+                        event.originalEvent.options.submit = true;
+                        $.publish('showDialog');
+                    } else {
+                        // Cancel Submit comes with 1.8.0
+                        event.originalEvent.options.submit = false;
+                    }
+                }else{
                     event.originalEvent.options.submit = false;
+                    var msg = "";
+                    if (golonganId == '') {
+                        msg += 'Field <strong>Golongan </strong> is required.' + '<br/>';
+                    }
+                    if (isNaN(point)) {
+                        msg += 'Field <strong>Masa Golongan</strong> Harus angka tanpa koma.' + '<br/>';
+                    }
+
+                    if (isNaN(nilai)) {
+                        msg += 'Field <strong>nilai</strong> Harus angka tanpa koma.' + '<br/>';
+                    }
+
+                    document.getElementById('errorValidationMessage').innerHTML = msg;
+
+                    $.publish('showErrorValidationDialog');
+                }
+            } else {
+                event.originalEvent.options.submit = false;
+                var msg = "";
+                if (golonganId == '') {
+                    msg += 'Field <strong>Golongan </strong> is required.' + '<br/>';
                 }
 
+                if (point == '') {
+                    msg += 'Field <strong>Point</strong> is required.' + '<br/>';
+                }
 
-            } else {
-
-                event.originalEvent.options.submit = false;
-
-                var msg = "";
-
-                if (nameDepartment == '') {
-                    msg += 'Field <strong>Department Name</strong> is required.' + '<br/>';
+                if (nilai == '') {
+                    msg += 'Field <strong>Nilai</strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
                 $.publish('showErrorValidationDialog');
-
             }
         });
 

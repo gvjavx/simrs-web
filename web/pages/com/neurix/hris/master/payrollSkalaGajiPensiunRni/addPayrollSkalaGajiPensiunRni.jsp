@@ -32,6 +32,9 @@
                 }else{
                     event.originalEvent.options.submit = false;
                     var msg = "";
+                    if (golonganId == '') {
+                        msg += 'Field <strong>Golongan </strong> is required.' + '<br/>';
+                    }
                     if (isNaN(point)) {
                         msg += 'Field <strong>Masa Kerja</strong> Harus angka tanpa koma.' + '<br/>';
                     }

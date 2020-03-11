@@ -208,7 +208,6 @@
                                                 <display:column property="shiftName" sortable="true" title="Nama Shift"  />
                                                 <display:column property="branchName" sortable="true" title="Unit"  />
                                                 <display:column property="profesiName" sortable="true" title="Grup"  />
-                                                <display:column property="shiftName" sortable="true" title="Nama Shift"  />
                                                 <display:column property="jamAwal" sortable="true" title="Jam Awal"  />
                                                 <display:column property="jamAkhir" sortable="true" title="Jam Akhir"  />
                                                 <display:column property="flag" sortable="true" title="Flag" />

@@ -52,7 +52,7 @@
                 }
 
                 if (point == '') {
-                    msg += 'Field <strong>Point</strong> is required.' + '<br/>';
+                    msg += 'Field <strong>Masa Golongan</strong> is required.' + '<br/>';
                 }
 
                 if (nilai == '') {

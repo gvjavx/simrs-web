@@ -18,8 +18,13 @@
         $.subscribe('beforeProcessSave', function (event, data) {
             var golonganId = document.getElementById("golonganId1").value;
             var nilai = document.getElementById("nilai1").value;
+            var santunanKhusus = document.getElementById("santunanKhusus1").value;
+            var rumah = document.getElementById("rumah1").value;
+            var listrik = document.getElementById("listrik1").value;
+            var air = document.getElementById("air1").value;
+            var bbm = document.getElementById("bbm1").value;
 
-            if (golonganId != ''&& nilai != '' ) {
+            if (golonganId != ''&& nilai != '' && santunanKhusus != '' && rumah != '' && listrik != '' && air != '' && bbm != '' ) {
                 if(isNaN(nilai) == false){
                     /*PayrollSkalaGajiAction.cekIfExistDwr(golonganId, function(data){
                         if(data != 'exist'){*/
@@ -41,6 +46,21 @@
                     var msg = "";
                     if (isNaN(nilai)) {
                         msg += 'Field <strong>Gaji Level</strong> Harus angka tanpa koma.' + '<br/>';
+                    }
+                    if (isNaN(santunanKhusus)) {
+                        msg += 'Field <strong>santunan Khusus</strong> Harus angka tanpa koma.' + '<br/>';
+                    }
+                    if (isNaN(rumah)) {
+                        msg += 'Field <strong>Tunj rumah</strong> Harus angka tanpa koma.' + '<br/>';
+                    }
+                    if (isNaN(listrik)) {
+                        msg += 'Field <strong>Tunj listrik</strong> Harus angka tanpa koma.' + '<br/>';
+                    }
+                    if (isNaN(air)) {
+                        msg += 'Field <strong>Tunj air</strong> Harus angka tanpa koma.' + '<br/>';
+                    }
+                    if (isNaN(bbm)) {
+                        msg += 'Field <strong>Tunj bbm</strong> Harus angka tanpa koma.' + '<br/>';
                     }
 
                     document.getElementById('errorValidationMessage').innerHTML = msg;

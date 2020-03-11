@@ -33,8 +33,8 @@ public class PayrollTunjanganJabatanStrukturalDao extends GenericDao<ImPayrollTu
 
         // Get Collection and sorting
         if (mapCriteria!=null) {
-            if (mapCriteria.get("tunjJabatanStrukturalId")!=null) {
-                criteria.add(Restrictions.eq("tunjJabatanStrukturalId", (String) mapCriteria.get("tunjJabatanStrukturalId")));
+            if (mapCriteria.get("tunjJabStrukturId")!=null) {
+                criteria.add(Restrictions.eq("tunjJabStrukturId", (String) mapCriteria.get("tunjJabStrukturId")));
             }
 
             if (mapCriteria.get("kelompokId")!=null) {

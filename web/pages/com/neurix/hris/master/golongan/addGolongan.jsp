@@ -136,7 +136,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield type="number" min="0" id="level1" name="golongan.stLevel" required="true" disabled="false" cssClass="form-control"/>
+                                <s:textfield type="number" min="0" id="level1" name="golongan.level" required="true" disabled="false" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>

@@ -75,7 +75,7 @@
                         </table>
 
                         <table >
-                            <tr>
+                            <%--<tr>
                                 <td>
                                     <label class="control-label"><small>Skala Gaji Id :</small></label>
                                 </td>
@@ -84,7 +84,7 @@
                                         <s:textfield  id="skalaGajiId" name="payrollSkalaGajiPkwt.skalaGajiPkwtId" required="false" readonly="false" cssClass="form-control"/>
                                     </table>
                                 </td>
-                            </tr>
+                            </tr>--%>
 
                             <tr>
                                 <td>

@@ -189,45 +189,52 @@ public class StrukturJabatanBoImpl implements StrukturJabatanBo {
         logger.info("[StrukturJabatanBoImpl.saveAdd] start process >>>");
 
         if (bean!=null) {
+            String status = cekStatus(bean.getBranchId(),bean.getPositionId());
+            if (!status.equalsIgnoreCase("Exist")){
+                String strukturJabatanId;
+                try {
+                    // Generating ID, get from postgre sequence
+                    strukturJabatanId = strukturJabatanDao.getNextStrukturJabatanId();
+                } catch (HibernateException e) {
+                    logger.error("[StrukturJabatanBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when getting sequence strukturJabatanId id, please info to your admin..." + e.getMessage());
+                }
 
-            String strukturJabatanId;
-            try {
-                // Generating ID, get from postgre sequence
-                strukturJabatanId = strukturJabatanDao.getNextStrukturJabatanId();
-            } catch (HibernateException e) {
-                logger.error("[StrukturJabatanBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when getting sequence strukturJabatanId id, please info to your admin..." + e.getMessage());
-            }
+                // creating object entity serializable
+                ImStrukturJabatanEntity imStrukturJabatanEntity = new ImStrukturJabatanEntity();
 
-            // creating object entity serializable
-            ImStrukturJabatanEntity imStrukturJabatanEntity = new ImStrukturJabatanEntity();
+                imStrukturJabatanEntity.setStrukturJabatanId(strukturJabatanId);
+                imStrukturJabatanEntity.setPositionId(bean.getPositionId());
+                imStrukturJabatanEntity.setBranchId(bean.getBranchId());
+                if (bean.getParentId()!=null){
+                    String strParent[] = bean.getParentId().split("-");
+                    if(bean.getParentId() == null){
+                        imStrukturJabatanEntity.setParentId(strukturJabatanId);
+                        imStrukturJabatanEntity.setLevel(Long.parseLong("1"));
+                    }else{
+                        imStrukturJabatanEntity.setLevel(bean.getLevel() + 1);
+                        imStrukturJabatanEntity.setParentId(strParent[0]);
+                    }
+                }else{
+                    imStrukturJabatanEntity.setParentId("-");
+                    imStrukturJabatanEntity.setLevel(Long.valueOf(0));
+                }
+                imStrukturJabatanEntity.setFlag(bean.getFlag());
+                imStrukturJabatanEntity.setAction(bean.getAction());
+                imStrukturJabatanEntity.setCreatedWho(bean.getCreatedWho());
+                imStrukturJabatanEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                imStrukturJabatanEntity.setCreatedDate(bean.getCreatedDate());
+                imStrukturJabatanEntity.setLastUpdate(bean.getLastUpdate());
 
-            imStrukturJabatanEntity.setStrukturJabatanId(strukturJabatanId);
-            imStrukturJabatanEntity.setPositionId(bean.getPositionId());
-            imStrukturJabatanEntity.setBranchId(bean.getBranchId());
-
-            String strParent[] = bean.getParentId().split("-");
-            if(bean.getParentId() == null){
-                imStrukturJabatanEntity.setParentId(strukturJabatanId);
-                imStrukturJabatanEntity.setLevel(Long.parseLong("1"));
+                try {
+                    // insert into database
+                    strukturJabatanDao.addAndSave(imStrukturJabatanEntity);
+                } catch (HibernateException e) {
+                    logger.error("[StrukturJabatanBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data StrukturJabatan, please info to your admin..." + e.getMessage());
+                }
             }else{
-                imStrukturJabatanEntity.setLevel(bean.getLevel() + 1);
-                imStrukturJabatanEntity.setParentId(strParent[0]);
-            }
-
-            imStrukturJabatanEntity.setFlag(bean.getFlag());
-            imStrukturJabatanEntity.setAction(bean.getAction());
-            imStrukturJabatanEntity.setCreatedWho(bean.getCreatedWho());
-            imStrukturJabatanEntity.setLastUpdateWho(bean.getLastUpdateWho());
-            imStrukturJabatanEntity.setCreatedDate(bean.getCreatedDate());
-            imStrukturJabatanEntity.setLastUpdate(bean.getLastUpdate());
-
-            try {
-                // insert into database
-                strukturJabatanDao.addAndSave(imStrukturJabatanEntity);
-            } catch (HibernateException e) {
-                logger.error("[StrukturJabatanBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when saving new data StrukturJabatan, please info to your admin..." + e.getMessage());
+                throw new GeneralBOException("Maaf Posisi Tersebut Sudah Ada");
             }
         }
 
@@ -659,5 +666,21 @@ public class StrukturJabatanBoImpl implements StrukturJabatanBo {
             }
         }
         return strukturJabatanFinal;
+    }
+    public String cekStatus(String branchId, String golonganId)throws GeneralBOException{
+        String status ="";
+        List<ImStrukturJabatanEntity> skalaGajiEntity = new ArrayList<>();
+        try {
+            skalaGajiEntity = strukturJabatanDao.getListStruktur(branchId,golonganId);
+        } catch (HibernateException e) {
+            logger.error("[PayrollSkalaGajiBoImpl.getSearchPayrollSkalaGajiByCriteria] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        if (skalaGajiEntity.size()>0){
+            status = "exist";
+        }else{
+            status="notExits";
+        }
+        return status;
     }
 }

@@ -70,6 +70,13 @@ public class PayrollBpjsDao extends GenericDao<ImPayrollBpjsEntity, String> {
                 .list();
         return results;
     }
+    public List<ImPayrollBpjsEntity> getBpjsFilter(String branchId) throws HibernateException {
+        List<ImPayrollBpjsEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImPayrollBpjsEntity.class)
+                .add(Restrictions.eq("branchId", branchId))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+        return results;
+    }
     public String getNextBpjs() throws HibernateException {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_payroll_bpjs')");
         Iterator<BigInteger> iter=query.list().iterator();

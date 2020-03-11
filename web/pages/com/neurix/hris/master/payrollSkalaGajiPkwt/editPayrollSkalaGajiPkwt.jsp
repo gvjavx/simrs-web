@@ -22,7 +22,7 @@
             var tunjFungsional = document.getElementById("tunjFungsional1").value;
             var tunjTambahan = document.getElementById("tunjTambahan1").value;
 
-            if (golonganId != ''&& nilai != '' ) {
+            if (golonganId != ''&& nilai != '' && sankhus != '' && tunjFungsional != '' && tunjTambahan != '' ) {
                 if(isNaN(sankhus) ==  false && isNaN(nilai) == false && isNaN(sankhus) == false&& isNaN(tunjFungsional) == false&& isNaN(tunjTambahan) == false){
                     if (confirm('Do you want to save this record?')) {
                         event.originalEvent.options.submit = true;

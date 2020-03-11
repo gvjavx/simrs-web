@@ -306,14 +306,14 @@ public class PayrollTunjanganJabatanStrukturalBoImpl implements PayrollTunjangan
     }
     public String cekStatus(String golonganId)throws GeneralBOException{
         String status ="";
-        ImPayrollTunjanganJabatanStrukturalEntity skalaGajiEntity = new ImPayrollTunjanganJabatanStrukturalEntity();
+        List<ImPayrollTunjanganJabatanStrukturalEntity> skalaGajiEntity = new ArrayList<>();
         try {
-            skalaGajiEntity = payrollTunjanganJabatanStrukturalDao.getById("kelompokId", golonganId);
+            skalaGajiEntity = payrollTunjanganJabatanStrukturalDao.getData2(golonganId);
         } catch (HibernateException e) {
             logger.error("[PayrollSkalaGajiBoImpl.getSearchPayrollSkalaGajiByCriteria] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
         }
-        if (skalaGajiEntity!=null){
+        if (skalaGajiEntity.size()>0){
             status = "exist";
         }else{
             status="notExits";

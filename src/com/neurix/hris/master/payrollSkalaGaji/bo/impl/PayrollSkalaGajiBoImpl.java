@@ -299,14 +299,14 @@ public class PayrollSkalaGajiBoImpl implements PayrollSkalaGajiBo {
     }
     public String cekStatus(String golonganId)throws GeneralBOException{
         String status ="";
-        ImPayrollSkalaGajiEntity skalaGajiEntity = new ImPayrollSkalaGajiEntity();
+        List<ImPayrollSkalaGajiEntity> skalaGajiEntity = new ArrayList<>();
         try {
-            skalaGajiEntity = payrollSkalaGajiDao.getById("golonganId", golonganId);
+            skalaGajiEntity = payrollSkalaGajiDao.getDataSkalaGajiSimRs(golonganId);
         } catch (HibernateException e) {
             logger.error("[PayrollSkalaGajiBoImpl.getSearchPayrollSkalaGajiByCriteria] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
         }
-        if (skalaGajiEntity!=null){
+        if (skalaGajiEntity.size()>0){
             status = "exist";
         }else{
             status="notExits";
