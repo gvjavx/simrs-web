@@ -72,6 +72,18 @@
                             </table>
                         </td>
                     </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Tipe Laporan :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:select list="#{'Y':'Y'}" id="tipeLaporanEdit" name="laporanAkuntansi.adaTipeLaporan" disabled="true"
+                                          headerKey="N" headerValue="N" cssClass="form-control" />
+                                <s:hidden name="laporanAkuntansi.adaTipeLaporan" />
+                            </table>
+                        </td>
+                    </tr>
                 </table>
                 <br>
                 <br>

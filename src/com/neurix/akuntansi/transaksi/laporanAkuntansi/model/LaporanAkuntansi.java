@@ -16,6 +16,7 @@ public class LaporanAkuntansi extends BaseModel {
     private String laporanAkuntansiId;
     private String url;
     private String laporanAkuntansiName;
+    private String adaTipeLaporan;
 
     //UNTUK REPORT
     private String unit;
@@ -38,6 +39,14 @@ public class LaporanAkuntansi extends BaseModel {
     private String nip;
 
     private String levelKodeRekening;
+
+    public String getAdaTipeLaporan() {
+        return adaTipeLaporan;
+    }
+
+    public void setAdaTipeLaporan(String adaTipeLaporan) {
+        this.adaTipeLaporan = adaTipeLaporan;
+    }
 
     public String getNip() {
         return nip;

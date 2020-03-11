@@ -43,6 +43,16 @@ public class ItSimrsHeaderDetailCheckupEntity implements Serializable{
     private String invoice;
     private String noJurnal;
 
+    private String kodeCbg;
+
+    public String getKodeCbg() {
+        return kodeCbg;
+    }
+
+    public void setKodeCbg(String kodeCbg) {
+        this.kodeCbg = kodeCbg;
+    }
+
     public String getNoJurnal() {
         return noJurnal;
     }

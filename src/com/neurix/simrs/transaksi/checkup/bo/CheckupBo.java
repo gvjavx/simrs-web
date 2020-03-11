@@ -13,6 +13,7 @@ import com.neurix.simrs.transaksi.patrus.model.ItSImrsPatrusEntity;
 import com.neurix.simrs.transaksi.pemeriksaanfisik.model.ItSimrsPemeriksaanFisikEntity;
 import com.neurix.simrs.transaksi.pemeriksaanfisik.model.PemeriksaanFisik;
 import com.neurix.simrs.transaksi.pengkajian.model.RingkasanKeluarMasukRs;
+import com.neurix.simrs.transaksi.permintaanresep.model.ObatKronis;
 import com.neurix.simrs.transaksi.psikososial.model.ItSimrsDataPsikososialEntity;
 import com.neurix.simrs.transaksi.rekonsiliasiobat.model.ItSimrsRekonsiliasiObatEntity;
 import com.neurix.simrs.transaksi.rencanarawat.model.ItSimrsRencanaRawatEntity;
@@ -69,4 +70,5 @@ public interface CheckupBo {
     public List<HeaderCheckup> getListAntrianApotikPeriksa(String branch, String poli) throws GeneralBOException;
 
     public HeaderCheckup getDataDetailPasien(String idDetailCheckup) throws GeneralBOException;
+    public List<ObatKronis> findRiwayatKronis(String idPasien) throws GeneralBOException;
 }

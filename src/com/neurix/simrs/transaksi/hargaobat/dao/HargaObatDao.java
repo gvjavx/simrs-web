@@ -83,10 +83,10 @@ public class HargaObatDao extends GenericDao<MtSimrsHargaObatEntity, String> {
                 obat.setAverageHargaBiji((BigDecimal) obj[4]);
                 obat.setLembarPerBox((BigInteger) obj[5]);
                 obat.setBijiPerLembar((BigInteger) obj[6]);
-                obat.setMerk(obj[7].toString());
+                obat.setMerk(obj[7] == null ? "" : obj[7].toString());
                 obat.setHargaJual(obj[8] == null ? new BigDecimal(0) : (BigDecimal) obj[8]);
                 obat.setHargaNet(obj[9] == null ? new BigDecimal(0) : (BigDecimal) obj[9]);
-                obat.setHargaJual(obj[10] == null ? new BigDecimal(0) : (BigDecimal) obj[10]);
+                obat.setDiskon(obj[10] == null ? new BigDecimal(0) : (BigDecimal) obj[10]);
                 obat.setIdBarang(obj[11].toString());
                 obats.add(obat);
 

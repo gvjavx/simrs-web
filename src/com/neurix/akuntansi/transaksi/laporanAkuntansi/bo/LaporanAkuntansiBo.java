@@ -13,6 +13,8 @@ public interface LaporanAkuntansiBo extends BaseMasterBo<LaporanAkuntansi>{
 
     List<Aging> getAging(String branch, String periode, String masterId, String tipeAging, String reportId) throws GeneralBOException;
 
+    LaporanAkuntansi getById(String reportId);
+
     String levelKodeRekening(String reportId) throws GeneralBOException;
 
     String getKodeRekeningkas() throws GeneralBOException;

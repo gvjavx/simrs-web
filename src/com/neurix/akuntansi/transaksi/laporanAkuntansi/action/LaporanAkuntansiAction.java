@@ -19,6 +19,7 @@ import com.neurix.hris.master.biodata.model.Biodata;
 import com.neurix.hris.transaksi.jadwalShiftKerja.bo.JadwalShiftKerjaBo;
 import com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalShiftKerja;
 import com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalShiftKerjaDetail;
+import com.neurix.hris.transaksi.laporan.model.Laporan;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -1320,18 +1321,18 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         logger.info("[LaporanAkuntansiAction.saveAdd] start process >>>");
 
         try {
-            LaporanAkuntansi vendor = getLaporanAkuntansi();
+            LaporanAkuntansi laporanAkuntansi = getLaporanAkuntansi();
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
-            vendor.setCreatedWho(userLogin);
-            vendor.setLastUpdate(updateTime);
-            vendor.setCreatedDate(updateTime);
-            vendor.setLastUpdateWho(userLogin);
-            vendor.setAction("C");
-            vendor.setFlag("Y");
+            laporanAkuntansi.setCreatedWho(userLogin);
+            laporanAkuntansi.setLastUpdate(updateTime);
+            laporanAkuntansi.setCreatedDate(updateTime);
+            laporanAkuntansi.setLastUpdateWho(userLogin);
+            laporanAkuntansi.setAction("C");
+            laporanAkuntansi.setFlag("Y");
 
-            laporanAkuntansiBoProxy.saveAdd(vendor);
+            laporanAkuntansiBoProxy.saveAdd(laporanAkuntansi);
         }catch (GeneralBOException e) {
             Long logId = null;
             try {
@@ -1403,11 +1404,11 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
                 logId = laporanAkuntansiBoProxy.saveErrorMessage(e.getMessage(), "LaporanAkuntansiBO.saveDelete");
             } catch (GeneralBOException e1) {
                 logger.error("[LaporanAkuntansiAction.saveDelete] Error when saving error,", e1);
-                return ERROR;
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[LaporanAkuntansiAction.saveDelete] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            throw new GeneralBOException(e.getMessage());
         }
 
         logger.info("[LaporanAkuntansiAction.saveDelete] end process <<<");
@@ -1439,6 +1440,44 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         logger.info("[LaporanAkuntansiAction.listKasirByBranch] end process <<<");
 
         return detailList;
+    }
+    public String getAdaTipeLaporan ( String reportId ){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        LaporanAkuntansiBo laporanAkuntansiBo = (LaporanAkuntansiBo) ctx.getBean("laporanAkuntansiBoProxy");
+
+        LaporanAkuntansi laporanAkuntansi = laporanAkuntansiBo.getById(reportId);
+
+        return laporanAkuntansi.getAdaTipeLaporan();
+    }
+
+    public List<LaporanAkuntansi> searchTipeLaporan(){
+        List<LaporanAkuntansi> laporanAkuntansiList = new ArrayList<>();
+        LaporanAkuntansi laporanAkuntansi = new LaporanAkuntansi();
+        laporanAkuntansi.setTipeLaporan("hutang_usaha");
+        laporanAkuntansi.setTipeLaporanName("Hutang Usaha");
+        laporanAkuntansiList.add(laporanAkuntansi);
+
+        laporanAkuntansi = new LaporanAkuntansi();
+        laporanAkuntansi.setTipeLaporan("piutang_usaha");
+        laporanAkuntansi.setTipeLaporanName("Piutang Usaha");
+        laporanAkuntansiList.add(laporanAkuntansi);
+
+        laporanAkuntansi = new LaporanAkuntansi();
+        laporanAkuntansi.setTipeLaporan("uang_muka");
+        laporanAkuntansi.setTipeLaporanName("Uang Muka");
+        laporanAkuntansiList.add(laporanAkuntansi);
+
+        laporanAkuntansi = new LaporanAkuntansi();
+        laporanAkuntansi.setTipeLaporan("piutang_pasien");
+        laporanAkuntansi.setTipeLaporanName("Piutang Pasien");
+        laporanAkuntansiList.add(laporanAkuntansi);
+
+        laporanAkuntansi = new LaporanAkuntansi();
+        laporanAkuntansi.setTipeLaporan("uang_muka_p");
+        laporanAkuntansi.setTipeLaporanName("Uang Muka Pasien");
+        laporanAkuntansiList.add(laporanAkuntansi);
+
+        return laporanAkuntansiList;
     }
 
     private String getMataUangKurs(String mataUangId) {

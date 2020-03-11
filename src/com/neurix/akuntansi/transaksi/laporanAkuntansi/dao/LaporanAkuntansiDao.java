@@ -260,4 +260,25 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
 
         return "RPT"+sId;
     }
+
+    public Integer searchReportIdExisting(String reportId){
+        Integer result=0;
+        String[] tabel = {"im_akun_report_detail","im_akun_setting_report_user"};
+
+        for (int i=0 ; i<2 ; i++){
+            String query = "SELECT\n" +
+                    "\tCOUNT(report_id)\n" +
+                    "FROM\n" +
+                    "\t"+tabel[i]+"\n" +
+                    "WHERE\n" +
+                    "\tflag='Y' AND\n" +
+                    "\treport_id='"+reportId+"'";
+            Object results = this.sessionFactory.getCurrentSession()
+                    .createSQLQuery(query).uniqueResult();
+            if (results!=null){
+                result = result+Integer.parseInt(results.toString());
+            }
+        }
+        return result;
+    }
 }

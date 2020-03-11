@@ -16,6 +16,7 @@ public class ItLaporanAkuntansiEntity implements Serializable {
     private String url;
     private String laporanAkuntansiName;
     private String levelKodeRekening;
+    private String adaTipeLaporan;
 
     private String flag;
     private String action;
@@ -23,6 +24,14 @@ public class ItLaporanAkuntansiEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+    public String getAdaTipeLaporan() {
+        return adaTipeLaporan;
+    }
+
+    public void setAdaTipeLaporan(String adaTipeLaporan) {
+        this.adaTipeLaporan = adaTipeLaporan;
+    }
 
     public String getLevelKodeRekening() {
         return levelKodeRekening;

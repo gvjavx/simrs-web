@@ -43,6 +43,7 @@ import com.neurix.simrs.transaksi.pemeriksaanfisik.model.PemeriksaanFisik;
 import com.neurix.simrs.transaksi.diagnosarawat.bo.DiagnosaRawatBo;
 import com.neurix.simrs.transaksi.diagnosarawat.model.DiagnosaRawat;
 import com.neurix.simrs.transaksi.pengkajian.model.RingkasanKeluarMasukRs;
+import com.neurix.simrs.transaksi.permintaanresep.model.ObatKronis;
 import com.neurix.simrs.transaksi.psikososial.model.ItSimrsDataPsikososialEntity;
 
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
@@ -754,7 +755,7 @@ public class CheckupAction extends BaseMasterAction {
                         sepRequest.setJnsPelayanan("2");//jenis rawat inap apa jalan
                         sepRequest.setKlsRawat(checkup.getKelasPasien());//kelas rawat dari bpjs
                         sepRequest.setNoMr(checkup.getIdPasien());//id pasien
-                        sepRequest.setAsalRujukan("1");//
+                        sepRequest.setAsalRujukan(checkup.getRujuk());//
                         sepRequest.setTglRujukan(checkup.getTglRujukan());
                         sepRequest.setNoRujukan(checkup.getNoRujukan());
                         sepRequest.setPpkRujukan(checkup.getNoPpkRujukan());
@@ -774,7 +775,7 @@ public class CheckupAction extends BaseMasterAction {
                         sepRequest.setKdKecamatanLakaLantas("");
                         sepRequest.setKdKabupatenLakaLantas("");
                         sepRequest.setNoSuratSkdp(getBranch.getSuratSkdp());
-                        sepRequest.setKodeDpjp("31661");
+                        sepRequest.setKodeDpjp(checkup.getIdDokter());
                         sepRequest.setNoTelp(getPasien.getNoTelp());
                         sepRequest.setUserPembuatSep(userLogin);
 
@@ -808,16 +809,15 @@ public class CheckupAction extends BaseMasterAction {
                             } else {
                                 jk = "2";
                             }
+
                             klaimRequest.setGender(jk);
 
                             KlaimResponse responseNewClaim = new KlaimResponse();
                             try {
                                 responseNewClaim = eklaimBoProxy.insertNewClaimEklaim(klaimRequest, userArea);
                             } catch (GeneralBOException e) {
-                                Long logId = null;
-                                logger.error("[CheckupAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-                                addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-                                return ERROR;
+                                logger.error("[CheckupAction.saveAdd] Error when new claim ," + "[" + e + "] Found problem when saving add data, please inform to your admin.");
+                                throw new GeneralBOException("Error when new claim", e);
                             }
 
                             List<Tindakan> tindakanList = new ArrayList<>();
@@ -908,10 +908,8 @@ public class CheckupAction extends BaseMasterAction {
                                 try {
                                     claimEklaimResponse = eklaimBoProxy.updateDataClaimEklaim(klaimDetailRequest, userArea);
                                 } catch (GeneralBOException e) {
-                                    Long logId = null;
-                                    logger.error("[CheckupAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-                                    addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-                                    return ERROR;
+                                    logger.error("[CheckupAction.saveAdd] Error when update claim ," + "[" + e + "] Found problem when saving add data, please inform to your admin.");
+                                    throw new GeneralBOException("Error when update claim, [" + claimEklaimResponse.getMessage() + "]", e);
                                 }
 
                                 if ("200".equalsIgnoreCase(claimEklaimResponse.getStatus())) {
@@ -921,10 +919,8 @@ public class CheckupAction extends BaseMasterAction {
                                     try {
                                         grouping1Response = eklaimBoProxy.groupingStage1Eklaim(genNoSep, userArea);
                                     } catch (GeneralBOException e) {
-                                        Long logId = null;
-                                        logger.error("[CheckupAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-                                        addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-                                        return ERROR;
+                                        logger.error("[CheckupAction.saveAdd] Error when adding item ," + "[" + e + "] Found problem when saving add data, please inform to your admin.");
+                                        throw new GeneralBOException("Error when get cover biaya BPJS, [" + grouping1Response.getMessage() + "]", e);
                                     }
 
                                     // jika mendapatkan cbgCode dan tarif cbg maka update ke table checkup untuk mengisi total tarif
@@ -933,15 +929,25 @@ public class CheckupAction extends BaseMasterAction {
                                         BigDecimal tarifCbg = new BigDecimal(0);
                                         if (!"".equalsIgnoreCase(grouping1Response.getCbgTarif()) && grouping1Response.getCbgTarif() != null) {
                                             if (!"0".equalsIgnoreCase(grouping1Response.getCbgTarif())) {
+
                                                 tarifCbg = new BigDecimal(grouping1Response.getCbgTarif());
+
+                                                //=====kode CBG INA=======
+                                                checkup.setKodeCbg(grouping1Response.getCbgCode());
+
+                                                //======START SET TARIF BPJS=========
+
+                                                checkup.setTarifBpjs(tarifCbg);
+
+                                                //======END SET TARIF BPJS=========
+                                            }else{
+                                                logger.error("[CheckupAction.saveAdd] Error when get cover biaya BPJS " + grouping1Response.getMessage());
+                                                throw new GeneralBOException("Error Error when get cover biaya BPJS, ["+grouping1Response.getMessage()+"]");
                                             }
+                                        }else{
+                                            logger.error("[CheckupAction.saveAdd] Error when get cover biaya BPJS " + grouping1Response.getMessage());
+                                            throw new GeneralBOException("Error when get cover biaya BPJS, ["+grouping1Response.getMessage()+"]");
                                         }
-
-                                        //======START SET TARIF BPJS=========
-
-                                        checkup.setTarifBpjs(tarifCbg);
-
-                                        //======END SET TARIF BPJS=========
 
 
                                         // jika ada special cmg maka proses grouping stage 2
@@ -964,20 +970,19 @@ public class CheckupAction extends BaseMasterAction {
 
                                 } else {
                                     logger.error("[CheckupAction.saveAdd] Error when adding item ,update claim not success " + claimEklaimResponse.getMessage());
-                                    addActionError("Error, " + " Found problem when saving add data, please inform to your admin. update claim not success. \n" + claimEklaimResponse.getMessage());
-                                    return ERROR;
+                                    throw new GeneralBOException("Error when adding item ,update claim not success, ["+claimEklaimResponse.getMessage()+"]");
                                 }
                             }
                         }else{
-                            addActionError("Error, " + "Insert SEP failed");
-                            return ERROR;
+                            logger.error("[CheckupAction.saveAdd] Error when generate SEP, " + response.getMessage());
+                            throw new GeneralBOException("Error when generate SEP, ["+response.getMessage()+"]");
                         }
 
                     }
 
                 } else {
-                    addActionError("Error, " + "PPK Pelayanan Tidak Ada");
-                    return ERROR;
+                    logger.error("[CheckupAction.saveAdd] Error when search PPK pelayanan");
+                    throw new GeneralBOException("Error when search PPK pelayanan");
                 }
             }
         }
@@ -1006,11 +1011,19 @@ public class CheckupAction extends BaseMasterAction {
         try {
 
             try {
-                JSONObject obj = new JSONObject(checkup.getAdmisi());
-                checkup.setKetKeyakinan(obj.getString("keyakinan"));
-                checkup.setBahasa(obj.getString("penerjemah"));
-                checkup.setAlatBantu(obj.getString("alatBantu"));
-                checkup.setAlergi(obj.getString("alergi"));
+                List<Asesmen> asesmenList = new ArrayList<>();
+                if(checkup.getAdmisi() != null && !"".equalsIgnoreCase(checkup.getAdmisi())){
+                    JSONArray json = new JSONArray(checkup.getAdmisi());
+                    for (int i=0; i < json.length(); i++){
+                        JSONObject obj = json.getJSONObject(i);
+                        Asesmen asesmen = new Asesmen();
+                        asesmen.setParameter(obj.getString("parameter"));
+                        asesmen.setJawaban(obj.getString("jawaban"));
+                        asesmen.setKeterangan(obj.getString("keterangan"));
+                        asesmenList.add(asesmen);
+                    }
+                }
+                checkup.setAsesmenList(asesmenList);
             } catch (JSONException e) {
                 logger.error("[CheckupAction.saveAdd] Error Convert json to data admisi.", e);
             }
@@ -1044,12 +1057,6 @@ public class CheckupAction extends BaseMasterAction {
             checkup.setNoSep(genNoSep);
             checkup.setTindakanList(tindakans);
 
-            // if uang muka is null or uang muka is 0 then generate invoice
-//            if (checkup.getUangMuka() == null || checkup.getUangMuka().compareTo(new BigInteger(String.valueOf(0))) == 0){
-//                checkup.setNoNota(createJurnalUangMuka(checkup.getIdPasien(), "0"));
-//            }
-//                checkup.setUrlKtp(checkup.getUrlKtp());
-
             if (this.fileUploadDoc != null) {
                 if ("image/jpeg".equalsIgnoreCase(this.fileUploadDocContentType)) {
                     if (this.fileUploadDoc.length() <= 5242880 && this.fileUploadDoc.length() > 0) {
@@ -1072,6 +1079,7 @@ public class CheckupAction extends BaseMasterAction {
                             checkup.setUrlDocRujuk(newFileName);
                         } catch (IOException e) {
                             logger.error("[CheckupAction.uploadImages] error, " + e.getMessage());
+                            throw new GeneralBOException("Found Error when upload images rujukan "+e.getMessage());
                         }
                     }
                 }
@@ -1080,10 +1088,9 @@ public class CheckupAction extends BaseMasterAction {
             checkupBoProxy.saveAdd(checkup);
 
         } catch (GeneralBOException e) {
-            Long logId = null;
-            logger.error("[CheckupAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+
+            logger.error("[CheckupAction.saveAdd] Error when adding item ," + "[" + e + "] Found problem when saving add data, please inform to your admin.");
+            throw new GeneralBOException("Found Error when adding item "+e.getMessage());
         }
 
 
@@ -2128,7 +2135,7 @@ public class CheckupAction extends BaseMasterAction {
         try {
             result = checkupBo.getListAntrian(branch, poli);
         } catch (GeneralBOException e) {
-            logger.error("Foun Error" + e);
+            logger.error("Found Error" + e);
         }
 
         return result;
@@ -2142,7 +2149,7 @@ public class CheckupAction extends BaseMasterAction {
         try {
             result = checkupBo.getListPeriksa(branch, poli);
         } catch (GeneralBOException e) {
-            logger.error("Foun Error" + e);
+            logger.error("Found Error" + e);
         }
 
         return result;
@@ -2156,7 +2163,7 @@ public class CheckupAction extends BaseMasterAction {
         try {
             result = checkupBo.getListAntrianApotikPeriksa(branch, poli);
         } catch (GeneralBOException e) {
-            logger.error("Foun Error" + e);
+            logger.error("Found Error" + e);
         }
         return result;
     }
@@ -2408,5 +2415,43 @@ public class CheckupAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
         return checkupBo.getListUploadRekamMedicLama(headId);
+    }
+
+    public List getListTindakanBpjs(String namaTindakan) {
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BpjsBo bpjsBo = (BpjsBo) ctx.getBean("bpjsBoProxy");
+        String branchId = CommonUtil.userBranchLogin();
+        return bpjsBo.GetTindakanByAPIBpjs(namaTindakan, branchId);
+    }
+
+    public List getListTindakanBpjsByIdDetailCheckup(String idDetailCheckup) {
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+
+        return null;
+    }
+
+    public ObatKronis findRiwayatObatKronis(String idPasien){
+        logger.info("[CheckupAction.findRiwayatObatKronis] Start >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+
+        List<ObatKronis> obatKronisList = new ArrayList<>();
+        ObatKronis obatKronis = new ObatKronis();
+
+        try {
+            obatKronisList = checkupBo.findRiwayatKronis(idPasien);
+        } catch (GeneralBOException e){
+            logger.error("Error " + e.getMessage());
+        }
+
+        logger.info("[CheckupAction.findRiwayatObatKronis] End <<<");
+
+        if(obatKronisList.size() > 0){
+            obatKronis = obatKronisList.get(0);
+        }
+
+        return obatKronis;
     }
 }

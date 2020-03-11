@@ -42,6 +42,8 @@ import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -398,6 +400,9 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
         logger.info("[PermintaanVendorAction.savePermintaanPO] START >>>>>>>");
 
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        PermintaanVendor permintaan = (PermintaanVendor) session.getAttribute("poupload");
+
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PermintaanVendorBo permintaanVendorBo = (PermintaanVendorBo) ctx.getBean("permintaanVendorBoProxy");
         String userLogin = CommonUtil.userLogin();
@@ -415,6 +420,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
         permintaanVendor.setIdVendor(idVendor);
         permintaanVendor.setBranchId(userBranch);
         permintaanVendor.setIdPelayanan(idPelayanan);
+        permintaanVendor.setUrlDocPo(permintaan.getUrlDocPo());
 
         List<TransaksiObatDetail> obatDetailList = new ArrayList<>();
         TransaksiObatDetail obatDetail;
@@ -558,7 +564,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
         }
 
         logger.info("[PermintaanVendorAction.saveNewPabrik] end process >>>");
-        return SUCCESS;
+        return "search";
 
     }
 
@@ -1075,6 +1081,61 @@ public class PermintaanVendorAction extends BaseMasterAction {
         return permintaanVendorBo.getListPermintaanVendorDoc(idPermintaanVendor);
 
     }
+
+    public String uploadImage(){
+
+        List<PermintaanVendor> permintaanVendorList = new ArrayList<PermintaanVendor>();
+        PermintaanVendor permintaan = new PermintaanVendor();
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("poupload");
+
+        try {
+
+            PermintaanVendor permintaanVendor = getPermintaanVendor();
+
+            if (this.fileUpload != null) {
+                if ("image/jpeg".equalsIgnoreCase(this.fileUploadContentType)) {
+                    if (this.fileUpload.length() <= 5242880 && this.fileUpload.length() > 0) {
+
+                        // file name
+                        String fileName = this.fileUploadFileName;
+                        String fileNameReplace = fileName.replace(" ", "_");
+                        String newFileName = permintaanVendor.getIdVendor() + "-"+dateFormater("MM")+dateFormater("yy")+"-"+fileNameReplace;
+                        // deklarasi path file
+                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_DOC_PO;
+                        logger.info("[CheckupAction.uploadImages] FILEPATH :" + filePath);
+
+                        // persiapan pemindahan file
+                        File fileToCreate = new File(filePath, newFileName);
+
+                        try {
+                            // pemindahan file
+                            FileUtils.copyFile(this.fileUpload, fileToCreate);
+                            logger.info("[CheckupAction.uploadImages] SUCCES PINDAH");
+                            permintaan.setUrlDocPo(newFileName);
+                            permintaan.setIdVendor(permintaanVendor.getIdVendor());
+
+                        } catch (IOException e) {
+                            logger.error("[CheckupAction.uploadImages] error, " + e.getMessage());
+                        }
+                    }
+                }
+            }
+        }catch (GeneralBOException e) {
+            logger.error("[PermintaanPoAction.AddDoc] Error when adding item ," + "[] Found problem when add data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=] Found problem when add data, please inform to your admin.\n" + e.getMessage());
+        }
+
+        session.setAttribute("poupload", permintaan);
+        return "search";
+    }
+
+    private String dateFormater(String type){
+        java.sql.Date date = new java.sql.Date(new java.util.Date().getTime());
+        DateFormat df = new SimpleDateFormat(type);
+        return df.format(date);
+    }
+
 
     @Override
     public String downloadPdf() {

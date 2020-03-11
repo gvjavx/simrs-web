@@ -129,6 +129,17 @@
                             </table>
                         </td>
                     </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Tipe Laporan :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:select list="#{'Y':'Y'}" id="tipeLaporanEdit" name="laporanAkuntansi.adaTipeLaporan"
+                                          headerKey="N" headerValue="N" cssClass="form-control" />
+                            </table>
+                        </td>
+                    </tr>
                 </table>
                 <br>
                 <br>

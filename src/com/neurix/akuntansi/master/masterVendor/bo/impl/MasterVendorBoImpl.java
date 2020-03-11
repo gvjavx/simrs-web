@@ -193,6 +193,7 @@ public class MasterVendorBoImpl implements MasterVendorBo {
                 vendorEntity.setEmail(bean.getEmail());
                 vendorEntity.setNoTelp(bean.getNoTelp());
                 vendorEntity.setFlag(bean.getFlag());
+                vendorEntity.setNpwp(bean.getNpwp());
                 vendorEntity.setAction(bean.getAction());
                 vendorEntity.setLastUpdate(bean.getLastUpdate());
                 vendorEntity.setLastUpdateWho(bean.getLastUpdateWho());

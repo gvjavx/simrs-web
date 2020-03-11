@@ -38,6 +38,9 @@ public class ReportDetailDao extends GenericDao<ImReportDetailEntity, String> {
             if (mapCriteria.get("report_id")!=null) {
                 criteria.add(Restrictions.eq("reportId", (String) mapCriteria.get("report_id")));
             }
+            if (mapCriteria.get("tipe_laporan")!=null) {
+                criteria.add(Restrictions.eq("tipeLaporan", (String) mapCriteria.get("tipe_laporan")));
+            }
         }
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
 
@@ -70,6 +73,14 @@ public class ReportDetailDao extends GenericDao<ImReportDetailEntity, String> {
         Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ImReportDetailEntity.class);
         criteria.add(Restrictions.eq("reportId", reportId));
         // Order by
+        criteria.addOrder(Order.asc("reportDetailId"));
+        List<ImReportDetailEntity> results = criteria.list();
+        return results;
+    }
+    public List<ImReportDetailEntity> getReportDetailByReportIdAndTipeLaporan(String reportId,String tipeLaporan) {
+        Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ImReportDetailEntity.class);
+        criteria.add(Restrictions.eq("reportId", reportId));
+        criteria.add(Restrictions.eq("tipeLaporan", tipeLaporan));
         criteria.addOrder(Order.asc("reportDetailId"));
         List<ImReportDetailEntity> results = criteria.list();
         return results;

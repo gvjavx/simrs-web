@@ -283,7 +283,7 @@
                                         <div class="form-group">
                                             <label class="col-md-4">No Telp</label>
                                             <div class="col-md-8">
-                                                <s:textfield id="no_telp" name="pasien.noTelp"
+                                                <s:textfield id="no_telp" name="pasien.noTelp" type="number"
                                                              onkeypress="$(this).css('border','')"
                                                              cssClass="form-control" cssStyle="margin-top: 7px"/>
                                             </div>
@@ -678,6 +678,36 @@
             return namaAlat;
         }
     });
+
+    $('#tempat_lahir').typeahead({
+        minLength: 3,
+        source: function (query, process) {
+            functions = [];
+            mapped = {};
+
+            var data = [];
+            dwr.engine.setAsync(false);
+            ProvinsiAction.initComboKota(query, "", function (listdata) {
+                data = listdata;
+            });
+            //alert(prov);
+            $.each(data, function (i, item) {
+                //alert(item.kotaName);
+                var labelItem = item.kotaName;
+                mapped[labelItem] = {id: item.kotaId, label: labelItem};
+                functions.push(labelItem);
+            });
+
+            process(functions);
+        },
+        updater: function (item) {
+            var selectedObj = mapped[item];
+            var namaAlat = selectedObj.label;
+            kab = selectedObj.id;
+            return namaAlat;
+        }
+    });
+
 </script>
 
 <%@ include file="/pages/common/footer.jsp" %>

@@ -59,6 +59,10 @@
           p:uploadRekamMedicLamaDao-ref="uploadRekamMedicLamaDao"
           p:uangMukaDao-ref="uangMukaDao"
           p:antrianOnlineDao-ref="antrianOnlineDao"
+          p:asesmenDao-ref="asesmenDao"
+          p:transaksiTindakanBpjsDao-ref="transaksiTindakanBpjsDao"
+          p:permintaanResepDao-ref="permintaanResepDao"
+
     />
 
     <bean id="checkupBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -114,5 +118,10 @@
     <bean id="uangMukaDao" class="com.neurix.simrs.transaksi.checkupdetail.dao.UangMukaDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="fpkDao" class="com.neurix.simrs.transaksi.checkup.dao.FpkDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+    <bean id="asesmenDao" class="com.neurix.simrs.transaksi.checkup.dao.AsesmenDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="transaksiTindakanBpjsDao" class="com.neurix.simrs.transaksi.transaksitindakanbpjs.dao.TransaksiTindakanBpjsDao"
           p:sessionFactory-ref="sessionFactory" />
 </beans>

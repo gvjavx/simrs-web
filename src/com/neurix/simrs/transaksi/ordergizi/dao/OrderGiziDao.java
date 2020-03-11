@@ -2,6 +2,7 @@ package com.neurix.simrs.transaksi.ordergizi.dao;
 
 import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.transaksi.ordergizi.model.ItSimrsOrderGiziEntity;
+import com.neurix.simrs.transaksi.ordergizi.model.OrderGizi;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -27,91 +28,94 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
     @Override
     public List<ItSimrsOrderGiziEntity> getByCriteria(Map mapCriteria) {
         Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ItSimrsOrderGiziEntity.class);
-        if (mapCriteria != null)
-            if (mapCriteria.get("id_order_gizi") != null){
+        if (mapCriteria != null) {
+            if (mapCriteria.get("id_order_gizi") != null) {
                 criteria.add(Restrictions.eq("idOrderGizi", mapCriteria.get("id_order_gizi").toString()));
             }
-            if (mapCriteria.get("id_rawat_inap") != null){
+            if (mapCriteria.get("id_rawat_inap") != null) {
                 criteria.add(Restrictions.eq("idRawatInap", mapCriteria.get("id_rawat_inap").toString()));
             }
-            if(mapCriteria.get("flag") != null){
+            if (mapCriteria.get("flag") != null) {
                 criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
             }
-
+            if (mapCriteria.get("diterima_flag") != null) {
+                criteria.add(Restrictions.eq("diterimaFlag", mapCriteria.get("diterima_flag").toString()));
+            }
+        }
         criteria.addOrder(Order.asc("idOrderGizi"));
         List<ItSimrsOrderGiziEntity> resilt = criteria.list();
         return resilt;
     }
 
-    public String getNextId(){
+    public String getNextId() {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_order_gizi')");
-        Iterator<BigInteger> iter=query.list().iterator();
+        Iterator<BigInteger> iter = query.list().iterator();
         String sId = String.format("%08d", iter.next());
         return sId;
     }
 
-    public List<RawatInap> getSearchOrderGizi(RawatInap bean){
+    public List<RawatInap> getSearchOrderGizi(RawatInap bean) {
         List<RawatInap> rawatInapList = new ArrayList<>();
-        if (bean != null){
+        if (bean != null) {
 
-            String idPasien     = "%";
-            String nama         = "%";
-            String idPelayanan  = "%";
-            String statusPeriksa= "%";
+            String idPasien = "%";
+            String nama = "%";
+            String idPelayanan = "%";
+            String statusPeriksa = "%";
             String jenisKelamin = "%";
-            String idKelas      = "%";
-            String idRuang      = "%";
+            String idKelas = "%";
+            String idRuang = "%";
             String idDetailCheckup = "%";
-            String dateFrom     = "";
-            String dateTo       = "";
+            String dateFrom = "";
+            String dateTo = "";
             String branchId = "%";
             String jenisPeriksa = "%";
 
-            if (bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())){
+            if (bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())) {
                 idPasien = bean.getIdPasien();
             }
 
-            if (bean.getNamaPasien() != null && !"".equalsIgnoreCase(bean.getNamaPasien())){
-                nama = "%"+bean.getNamaPasien()+"%";
+            if (bean.getNamaPasien() != null && !"".equalsIgnoreCase(bean.getNamaPasien())) {
+                nama = "%" + bean.getNamaPasien() + "%";
             }
 
-            if (bean.getIdPelayanan() != null && !"".equalsIgnoreCase(bean.getIdPasien())){
+            if (bean.getIdPelayanan() != null && !"".equalsIgnoreCase(bean.getIdPasien())) {
                 idPelayanan = bean.getIdPelayanan();
             }
 
-            if (bean.getStatusPeriksa() != null && !"".equalsIgnoreCase(bean.getStatusPeriksa())){
+            if (bean.getStatusPeriksa() != null && !"".equalsIgnoreCase(bean.getStatusPeriksa())) {
                 statusPeriksa = bean.getStatusPeriksa();
             }
 
-            if (bean.getJenisKelamin() != null && !"".equalsIgnoreCase(bean.getJenisKelamin())){
+            if (bean.getJenisKelamin() != null && !"".equalsIgnoreCase(bean.getJenisKelamin())) {
                 jenisKelamin = bean.getJenisKelamin();
             }
 
-            if (bean.getIdKelas() != null && !"".equalsIgnoreCase(bean.getIdKelas())){
+            if (bean.getIdKelas() != null && !"".equalsIgnoreCase(bean.getIdKelas())) {
                 idKelas = bean.getIdKelas();
             }
 
-            if (bean.getIdRuang() != null && !"".equalsIgnoreCase(bean.getIdRuang())){
+            if (bean.getIdRuang() != null && !"".equalsIgnoreCase(bean.getIdRuang())) {
                 idRuang = bean.getIdRuang();
             }
 
-            if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())){
+            if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())) {
                 idDetailCheckup = bean.getIdDetailCheckup();
             }
 
-            if (bean.getStTglFrom() != null && !"".equalsIgnoreCase(bean.getStTglFrom())){
+            if (bean.getStTglFrom() != null && !"".equalsIgnoreCase(bean.getStTglFrom())) {
                 dateFrom = bean.getStTglFrom();
             }
 
-            if (bean.getStTglTo() != null && !"".equalsIgnoreCase(bean.getStTglTo())){
+            if (bean.getStTglTo() != null && !"".equalsIgnoreCase(bean.getStTglTo())) {
                 dateTo = bean.getStTglTo();
             }
 
-            if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
+            if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())) {
                 branchId = bean.getBranchId();
             }
 
-            if (bean.getIdJenisPeriksa() != null && !"".equalsIgnoreCase(bean.getIdJenisPeriksa())){
+            if (bean.getIdJenisPeriksa() != null && !"".equalsIgnoreCase(bean.getIdJenisPeriksa())) {
                 jenisPeriksa = bean.getIdJenisPeriksa();
             }
 
@@ -160,7 +164,7 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
 
             List<Object[]> results = new ArrayList<>();
 
-            if (!"".equalsIgnoreCase(dateFrom) && !"".equalsIgnoreCase(dateTo)){
+            if (!"".equalsIgnoreCase(dateFrom) && !"".equalsIgnoreCase(dateTo)) {
 
                 SQL = SQL + "AND CAST(a.created_date AS date) >= to_date(:dateFrom, 'dd-MM-yyyy') AND CAST(a.created_date AS date) <= to_date(:dateTo, 'dd-MM-yyyy') \n";
 
@@ -181,7 +185,7 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
 
             } else {
 
-                if(!"".equalsIgnoreCase(bean.getStTglFrom())){
+                if (!"".equalsIgnoreCase(bean.getStTglFrom())) {
 
                     SQL = SQL + "AND CAST(a.created_date AS date) >= to_date(:dateFrom, 'dd-MM-yyyy') \n";
 
@@ -198,7 +202,7 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
                             .setParameter("branchId", branchId)
                             .setParameter("jenisPeriksa", jenisPeriksa)
                             .list();
-                }else if (!"".equalsIgnoreCase(bean.getStTglTo())){
+                } else if (!"".equalsIgnoreCase(bean.getStTglTo())) {
 
                     SQL = SQL + "AND CAST(a.created_date AS date) <= to_date(:dateTo, 'dd-MM-yyyy') \n";
 
@@ -215,7 +219,7 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
                             .setParameter("branchId", branchId)
                             .setParameter("jenisPeriksa", jenisPeriksa)
                             .list();
-                }else{
+                } else {
 
                     SQL = SQL;
 
@@ -234,9 +238,9 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
                 }
             }
 
-            if (!results.isEmpty()){
+            if (!results.isEmpty()) {
                 RawatInap rawatInap;
-                for (Object[] obj : results){
+                for (Object[] obj : results) {
                     rawatInap = new RawatInap();
                     rawatInap.setIdDetailCheckup(obj[0].toString());
                     rawatInap.setNoCheckup(obj[1].toString());
@@ -259,18 +263,18 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
                     rawatInap.setNoSep(obj[16] == null ? "" : obj[16].toString());
                     rawatInap.setIdRawatInap(obj[17].toString());
 
-                    if (!"".equalsIgnoreCase(rawatInap.getDesaId())){
+                    if (!"".equalsIgnoreCase(rawatInap.getDesaId())) {
                         List<Object[]> objDesaList = getListAlamatByDesaId(rawatInap.getDesaId());
-                        if (!objDesaList.isEmpty()){
-                            for (Object[] objDesa : objDesaList){
+                        if (!objDesaList.isEmpty()) {
+                            for (Object[] objDesa : objDesaList) {
 
                                 String alamatLengkap =
-                                        "Desa. "+ objDesa[0].toString() +
+                                        "Desa. " + objDesa[0].toString() +
                                                 " Kec. " + objDesa[1].toString() +
                                                 " " + objDesa[2].toString() +
                                                 " Prov. " + objDesa[3].toString();
 
-                                if (!"".equalsIgnoreCase(jalan)){
+                                if (!"".equalsIgnoreCase(jalan)) {
                                     jalan = jalan + ", " + alamatLengkap;
                                 } else {
                                     jalan = alamatLengkap;
@@ -318,16 +322,44 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
                 .setParameter("id", idRawatInap)
                 .list();
 
-        if(results != null){
-            for (Object[] obj: results){
-                if(obj[0] == null || "".equalsIgnoreCase(obj[0].toString())){
+        if (results != null) {
+            for (Object[] obj : results) {
+                if (obj[0] == null || "".equalsIgnoreCase(obj[0].toString())) {
                     cek = true;
                 }
             }
-        }else{
-           cek = null;
+        } else {
+            cek = null;
         }
 
         return cek;
+    }
+
+    public List<OrderGizi> cekOrderGiziToday(String idRawatInap, String keterangan) {
+
+        List<OrderGizi> orderGizis = new ArrayList<>();
+
+        String SQL = "SELECT id_order_gizi, id_rawat_inap, keterangan FROM it_simrs_order_gizi\n" +
+                "WHERE keterangan LIKE :ket\n" +
+                "AND id_rawat_inap LIKE :idRawat";
+
+        List<Object[]> results = new ArrayList<>();
+        results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("idRawat", idRawatInap)
+                .setParameter("ket", keterangan)
+                .list();
+
+        if (results != null) {
+
+            for (Object[] obj : results) {
+                OrderGizi orderGizi = new OrderGizi();
+                orderGizi.setIdOrderGizi(obj[0] == null ? "" : obj[0].toString());
+                orderGizi.setIdRawatInap(obj[1] == null ? "" : obj[1].toString());
+                orderGizi.setKeterangan(obj[2] == null ? "" : obj[2].toString());
+                orderGizis.add(orderGizi);
+            }
+        }
+
+        return orderGizis;
     }
 }

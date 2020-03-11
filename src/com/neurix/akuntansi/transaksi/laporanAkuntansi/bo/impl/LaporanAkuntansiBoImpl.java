@@ -11,6 +11,7 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.hris.master.biodata.dao.BiodataDao;
 import com.neurix.hris.master.biodata.model.ImBiodataEntity;
 import com.neurix.hris.master.strukturJabatan.dao.StrukturJabatanDao;
+import com.neurix.hris.transaksi.laporan.model.Laporan;
 import com.neurix.hris.transaksi.personilPosition.dao.HistoryJabatanPegawaiDao;
 import com.neurix.hris.transaksi.personilPosition.dao.PersonilPositionDao;
 import com.neurix.hris.transaksi.personilPosition.model.ItPersonilPositionEntity;
@@ -77,25 +78,41 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
     public void saveDelete(LaporanAkuntansi bean) throws GeneralBOException {
         logger.info("[LaporanAkuntansiBoImpl.saveDelete] start process >>>");
         if (bean!=null) {
-            ItLaporanAkuntansiEntity imVendorEntity = new ItLaporanAkuntansiEntity();
+            //untuk delete
+            //validasi cek report id di setting user report dan report detail
+            Integer jumlahData = 0;
+            try {
+                jumlahData= laporanAkuntansiDao.searchReportIdExisting(bean.getLaporanAkuntansiId());
+            } catch (HibernateException e) {
+                logger.error("[KodeRekeningBoImpl.saveEdit] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when saving update data, please info to your admin..." + e.getMessage());
+            }
+            if (jumlahData>0){
+                String status = "Report masih digunakan di report detail";
+                logger.error("[KodeRekeningBoImpl.saveEdit] Error, " +status);
+                throw new GeneralBOException("ERROR :" +status);
+            }
+
+            //save
+            ItLaporanAkuntansiEntity itLaporanAkuntansiEntity = new ItLaporanAkuntansiEntity();
             try {
                 // Get data from database by ID
-                imVendorEntity = laporanAkuntansiDao.getById("laporanAkuntansiId", bean.getLaporanAkuntansiId());
+                itLaporanAkuntansiEntity = laporanAkuntansiDao.getById("laporanAkuntansiId", bean.getLaporanAkuntansiId());
             } catch (HibernateException e) {
                 logger.error("[LaporanAkuntansiBoImpl.saveDelete] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when searching data, please inform to your admin...," + e.getMessage());
             }
 
-            if (imVendorEntity != null) {
+            if (itLaporanAkuntansiEntity != null) {
                 // Modify from bean to entity serializable
-                imVendorEntity.setFlag(bean.getFlag());
-                imVendorEntity.setAction(bean.getAction());
-                imVendorEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                imVendorEntity.setLastUpdate(bean.getLastUpdate());
+                itLaporanAkuntansiEntity.setFlag(bean.getFlag());
+                itLaporanAkuntansiEntity.setAction(bean.getAction());
+                itLaporanAkuntansiEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                itLaporanAkuntansiEntity.setLastUpdate(bean.getLastUpdate());
 
                 try {
                     // Delete (Edit) into database
-                    laporanAkuntansiDao.updateAndSave(imVendorEntity);
+                    laporanAkuntansiDao.updateAndSave(itLaporanAkuntansiEntity);
                 } catch (HibernateException e) {
                     logger.error("[LaporanAkuntansiBoImpl.saveDelete] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when saving update data Vendor, please info to your admin..." + e.getMessage());
@@ -113,25 +130,27 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
     public void saveEdit(LaporanAkuntansi bean) throws GeneralBOException {
         logger.info("[LaporanAkuntansiBoImpl.saveEdit] start process >>>");
         if (bean!=null) {
-            ItLaporanAkuntansiEntity imVendorEntity = null;
+            ItLaporanAkuntansiEntity itLaporanAkuntansiEntity = null;
             try {
                 // Get data from database by ID
-                imVendorEntity = laporanAkuntansiDao.getById("laporanAkuntansiId", bean.getLaporanAkuntansiId());
+                itLaporanAkuntansiEntity = laporanAkuntansiDao.getById("laporanAkuntansiId", bean.getLaporanAkuntansiId());
             } catch (HibernateException e) {
                 logger.error("[LaporanAkuntansiBoImpl.saveEdit] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when searching data Vendor by Kode Vendor, please inform to your admin...," + e.getMessage());
             }
-            if (imVendorEntity != null) {
-                imVendorEntity.setLaporanAkuntansiName(bean.getLaporanAkuntansiName());
-                imVendorEntity.setUrl(bean.getUrl());
-                imVendorEntity.setLevelKodeRekening(bean.getLevelKodeRekening());
-                imVendorEntity.setFlag(bean.getFlag());
-                imVendorEntity.setAction(bean.getAction());
-                imVendorEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                imVendorEntity.setLastUpdate(bean.getLastUpdate());
+            if (itLaporanAkuntansiEntity != null) {
+                itLaporanAkuntansiEntity.setLaporanAkuntansiName(bean.getLaporanAkuntansiName());
+                itLaporanAkuntansiEntity.setUrl(bean.getUrl());
+                itLaporanAkuntansiEntity.setLevelKodeRekening(bean.getLevelKodeRekening());
+                itLaporanAkuntansiEntity.setAdaTipeLaporan(bean.getAdaTipeLaporan());
+
+                itLaporanAkuntansiEntity.setFlag(bean.getFlag());
+                itLaporanAkuntansiEntity.setAction(bean.getAction());
+                itLaporanAkuntansiEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                itLaporanAkuntansiEntity.setLastUpdate(bean.getLastUpdate());
                 try {
                     // Update into database
-                    laporanAkuntansiDao.updateAndSave(imVendorEntity);
+                    laporanAkuntansiDao.updateAndSave(itLaporanAkuntansiEntity);
                 } catch (HibernateException e) {
                     logger.error("[LaporanAkuntansiBoImpl.saveEdit] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when saving update data Vendor, please info to your admin..." + e.getMessage());
@@ -158,22 +177,23 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
             }
 
             // creating object entity serializable
-            ItLaporanAkuntansiEntity imVendorEntity = new ItLaporanAkuntansiEntity();
+            ItLaporanAkuntansiEntity itLaporanAkuntansiEntity = new ItLaporanAkuntansiEntity();
 
-            imVendorEntity.setLaporanAkuntansiId(reportId);
-            imVendorEntity.setLaporanAkuntansiName(bean.getLaporanAkuntansiName());
-            imVendorEntity.setUrl(bean.getUrl());
-            imVendorEntity.setLevelKodeRekening(bean.getLevelKodeRekening());
-            imVendorEntity.setFlag(bean.getFlag());
-            imVendorEntity.setAction(bean.getAction());
-            imVendorEntity.setCreatedWho(bean.getCreatedWho());
-            imVendorEntity.setLastUpdateWho(bean.getLastUpdateWho());
-            imVendorEntity.setCreatedDate(bean.getCreatedDate());
-            imVendorEntity.setLastUpdate(bean.getLastUpdate());
+            itLaporanAkuntansiEntity.setLaporanAkuntansiId(reportId);
+            itLaporanAkuntansiEntity.setLaporanAkuntansiName(bean.getLaporanAkuntansiName());
+            itLaporanAkuntansiEntity.setUrl(bean.getUrl());
+            itLaporanAkuntansiEntity.setLevelKodeRekening(bean.getLevelKodeRekening());
+            itLaporanAkuntansiEntity.setAdaTipeLaporan(bean.getAdaTipeLaporan());
+            itLaporanAkuntansiEntity.setFlag(bean.getFlag());
+            itLaporanAkuntansiEntity.setAction(bean.getAction());
+            itLaporanAkuntansiEntity.setCreatedWho(bean.getCreatedWho());
+            itLaporanAkuntansiEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            itLaporanAkuntansiEntity.setCreatedDate(bean.getCreatedDate());
+            itLaporanAkuntansiEntity.setLastUpdate(bean.getLastUpdate());
 
             try {
                 // insert into database
-                laporanAkuntansiDao.addAndSave(imVendorEntity);
+                laporanAkuntansiDao.addAndSave(itLaporanAkuntansiEntity);
             } catch (HibernateException e) {
                 logger.error("[LaporanAkuntansiBoImpl.saveAdd] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when saving new data Vendor, please info to your admin..." + e.getMessage());
@@ -227,6 +247,7 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
                     returnLaporanAkuntansi.setLaporanAkuntansiName(itLaporanAkuntansiEntity.getLaporanAkuntansiName());
                     returnLaporanAkuntansi.setUrl(itLaporanAkuntansiEntity.getUrl());
                     returnLaporanAkuntansi.setLevelKodeRekening(itLaporanAkuntansiEntity.getLevelKodeRekening());
+                    returnLaporanAkuntansi.setAdaTipeLaporan(itLaporanAkuntansiEntity.getAdaTipeLaporan());
                     returnLaporanAkuntansi.setCreatedWho(itLaporanAkuntansiEntity.getCreatedWho());
                     returnLaporanAkuntansi.setCreatedDate(itLaporanAkuntansiEntity.getCreatedDate());
                     returnLaporanAkuntansi.setLastUpdate(itLaporanAkuntansiEntity.getLastUpdate());
@@ -283,6 +304,21 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
         }
         return agingList;
     }
+    @Override
+    public LaporanAkuntansi getById(String reportId){
+        LaporanAkuntansi result;
+        ItLaporanAkuntansiEntity laporanAkuntansiEntity;
+        try {
+            laporanAkuntansiEntity = laporanAkuntansiDao.getById("laporanAkuntansiId",reportId);
+        } catch (HibernateException e) {
+            logger.error("[LaporanAkuntansiBoImpl.getSearchLaporanAkuntansiByCriteria] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        result = convertEntity(laporanAkuntansiEntity);
+
+        return result;
+    }
+
 
     @Override
     public String levelKodeRekening(String reportId) throws GeneralBOException {
@@ -306,6 +342,15 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
         }
         return kodeRekeningKas;
+    }
+
+    private LaporanAkuntansi convertEntity (ItLaporanAkuntansiEntity laporanAkuntansiEntity){
+        LaporanAkuntansi result = new LaporanAkuntansi();
+        result.setLaporanAkuntansiId(laporanAkuntansiEntity.getLaporanAkuntansiId());
+        result.setLaporanAkuntansiName(laporanAkuntansiEntity.getLaporanAkuntansiName());
+        result.setAdaTipeLaporan(laporanAkuntansiEntity.getAdaTipeLaporan());
+
+        return result;
     }
 
     @Override

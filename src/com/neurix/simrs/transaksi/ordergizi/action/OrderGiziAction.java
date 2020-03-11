@@ -83,7 +83,7 @@ public class OrderGiziAction extends BaseMasterAction {
         return null;
     }
 
-    public CheckResponse saveOrderGizi(String idRawatInap, String jsonString) throws JSONException {
+    public CheckResponse saveOrderGizi(String idRawatInap, String bentukDiet, String keterangan) throws JSONException {
         logger.info("[OrderGiziAction.saveOrderGizi] start process >>>");
         CheckResponse response = new CheckResponse();
         try {
@@ -101,69 +101,38 @@ public class OrderGiziAction extends BaseMasterAction {
             OrderGizi orderGizi = new OrderGizi();
 
             List<OrderGizi> orderGiziList = new ArrayList<>();
+            orderGizi.setIdRawatInap(idRawatInap);
+            orderGizi.setCreatedWho(userLogin);
+            orderGizi.setTglOrder(Date.valueOf(tglToday));
+            orderGizi.setLastUpdate(updateTime);
+            orderGizi.setCreatedDate(updateTime);
+            orderGizi.setLastUpdateWho(userLogin);
+            orderGizi.setAction("C");
+            orderGizi.setFlag("Y");
 
-            if (jsonString != null && !"".equalsIgnoreCase(jsonString)) {
-                OrderGizi order;
-                JSONArray json = new JSONArray(jsonString);
-                for (int i = 0; i < json.length(); i++) {
+            List<DietGizi> giziList = new ArrayList<>();
+            DietGizi dietGizi = new DietGizi();
+            dietGizi.setIdDietGizi(bentukDiet);
+            dietGizi.setFlag("Y");
 
-                    JSONObject obj = json.getJSONObject(i);
-                    order = new OrderGizi();
-                    if (obj.has("pagi")) {
-                        if (obj.getString("pagi") != "") {
-                            order.setIdDietGizi(obj.getString("pagi"));
-                            order.setKeterangan("pagi");
-                        }
-                    }
-                    if (obj.has("siang")) {
-                        if (obj.getString("siang") != "") {
-                            order.setIdDietGizi(obj.getString("siang"));
-                            order.setKeterangan("siang");
-                        }
-                    }
-                    if (obj.has("malam")) {
-                        if (obj.getString("malam") != "") {
-                            order.setIdDietGizi(obj.getString("malam"));
-                            order.setKeterangan("malam");
-                        }
-                    }
-                    orderGiziList.add(order);
-                }
+            try {
+                giziList = dietGiziBo.getByCriteria(dietGizi);
+            } catch (GeneralBOException e) {
+                logger.error("[OrderGiziAction] Found Error, " + e);
             }
 
-            for (OrderGizi gizi : orderGiziList) {
+            if (giziList.size() > 0) {
+                dietGizi = giziList.get(0);
+                orderGizi.setIdDietGizi(dietGizi.getIdDietGizi());
+                orderGizi.setKeterangan(keterangan);
+                orderGizi.setBentukDiet(dietGizi.getNamaDietGizi());
+                orderGizi.setTarifTotal(dietGizi.getTarif());
 
-                if(!"".equalsIgnoreCase(gizi.getIdDietGizi())) {
-                    DietGizi dietGizi = new DietGizi();
-                    dietGizi.setIdDietGizi(gizi.getIdDietGizi());
+                response = orderGiziBo.saveAdd(orderGizi);
 
-                    List<DietGizi> giziList = new ArrayList<>();
-                    try {
-                        giziList = dietGiziBo.getByCriteria(dietGizi);
-                    } catch (GeneralBOException e) {
-                        logger.error("[OrderGiziAction] Found Error, " + e);
-                    }
-
-                    if (giziList.size() > 0) {
-
-                        dietGizi = giziList.get(0);
-
-                        orderGizi.setIdRawatInap(idRawatInap);
-                        orderGizi.setCreatedWho(userLogin);
-                        orderGizi.setTglOrder(Date.valueOf(tglToday));
-                        orderGizi.setLastUpdate(updateTime);
-                        orderGizi.setCreatedDate(updateTime);
-                        orderGizi.setLastUpdateWho(userLogin);
-                        orderGizi.setAction("C");
-                        orderGizi.setFlag("Y");
-                        orderGizi.setIdDietGizi(dietGizi.getIdDietGizi());
-                        orderGizi.setKeterangan(gizi.getKeterangan());
-                        orderGizi.setBentukDiet(dietGizi.getNamaDietGizi());
-                        orderGizi.setTarifTotal(dietGizi.getTarif());
-                    }
-
-                    response = orderGiziBo.saveAdd(orderGizi);
-                }
+            }else{
+                response.setStatus("error");
+                response.setMessage("Tidak dapat menemukan id diet gizi, Please Infor to your admin...!");
             }
 
         } catch (GeneralBOException e) {
@@ -243,6 +212,9 @@ public class OrderGiziAction extends BaseMasterAction {
 
                 response = orderGiziBo.saveEdit(orderGizi);
 
+            }else{
+                response.setStatus("error");
+                response.setMessage("Tidak dapat menemukan id diet gizi, Please Infor to your admin...!");
             }
 
         } catch (GeneralBOException e) {
@@ -273,6 +245,33 @@ public class OrderGiziAction extends BaseMasterAction {
                 response = orderGiziBo.updateDiterimaFLag(orderGizi);
             } catch (GeneralBOException e) {
                 logger.error("[Found Error] " + e);
+            }
+        }
+        return response;
+    }
+
+    public CheckResponse cancelOrderGizi(String idOrderGizi, String keterangan) {
+
+        CheckResponse response = new CheckResponse();
+        String userLogin = CommonUtil.userLogin();
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        OrderGiziBo orderGiziBo = (OrderGiziBo) ctx.getBean("orderGiziBoProxy");
+
+        if (idOrderGizi != null && !"".equalsIgnoreCase(idOrderGizi)) {
+
+            OrderGizi orderGizi = new OrderGizi();
+            orderGizi.setIdOrderGizi(idOrderGizi);
+            orderGizi.setLastUpdateWho(userLogin);
+            orderGizi.setLastUpdate(updateTime);
+            orderGizi.setKeterangan(keterangan);
+
+            try {
+                response = orderGiziBo.cancelOrderGizi(orderGizi);
+            } catch (GeneralBOException e) {
+                logger.error("[Found Error] " + e);
+                response.setStatus("error");
+                response.setMessage("Found Error "+e.getMessage());
             }
         }
         return response;

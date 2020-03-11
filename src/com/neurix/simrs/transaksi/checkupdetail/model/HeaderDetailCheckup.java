@@ -98,6 +98,16 @@ public class HeaderDetailCheckup extends BaseModel{
     private String idFpk;
     private String statusFPK;
 
+    private String kodeCbg;
+
+    public String getKodeCbg() {
+        return kodeCbg;
+    }
+
+    public void setKodeCbg(String kodeCbg) {
+        this.kodeCbg = kodeCbg;
+    }
+
     public String getStatusFPK() {
         return statusFPK;
     }
