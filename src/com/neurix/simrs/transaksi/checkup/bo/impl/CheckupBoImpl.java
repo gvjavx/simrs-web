@@ -42,6 +42,7 @@ import com.neurix.simrs.transaksi.pemeriksaanfisik.model.ItSimrsPemeriksaanFisik
 import com.neurix.simrs.transaksi.pemeriksaanfisik.model.PemeriksaanFisik;
 import com.neurix.simrs.transaksi.pengkajian.model.RingkasanKeluarMasukRs;
 import com.neurix.simrs.transaksi.permintaanresep.dao.PermintaanResepDao;
+import com.neurix.simrs.transaksi.permintaanresep.model.ImSimrsPermintaanResepEntity;
 import com.neurix.simrs.transaksi.permintaanresep.model.ObatKronis;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.psikososial.dao.PsikososialDao;
@@ -69,6 +70,7 @@ import com.neurix.simrs.transaksi.teamdokter.model.ItSimrsDokterTeamEntity;
 import com.neurix.simrs.transaksi.tindakanrawat.dao.TindakanRawatDao;
 import com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity;
 import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
+import com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsTransaksiObatDetailEntity;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import com.neurix.simrs.transaksi.transaksitindakanbpjs.dao.TransaksiTindakanBpjsDao;
 import com.neurix.simrs.transaksi.transfusi.dao.TranfusiDao;
@@ -1948,7 +1950,9 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
         return transaksiObatDetails;
     }
 
-    public CrudResponse savePendaftaranPengambilanObatKronis(){
+    @Override
+    public CrudResponse savePengambilanObatKronis(HeaderCheckup bean, ItSimrsHeaderChekupEntity headerChekupEntity, ItSimrsHeaderDetailCheckupEntity detailCheckupEntity, ItSimrsDiagnosaRawatEntity diagnosaRawatEntity, ImSimrsPermintaanResepEntity resepEntity, List<ItSimrsDokterTeamEntity> dokterTeamEntities, List<ImtSimrsTransaksiObatDetailEntity> obatDetailEntities) throws GeneralBOException {
+
         return null;
     }
 
