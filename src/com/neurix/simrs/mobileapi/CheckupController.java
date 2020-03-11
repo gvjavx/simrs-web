@@ -372,7 +372,7 @@ public class CheckupController implements ModelDriven<Object> {
                 if (fileUploadTtd != null) {
                     if(fileUploadTtd.length() > 0 && fileUploadTtd.length() <= 15728640) {
                         Random random = new Random( System.currentTimeMillis() );
-                        String fileNamePhoto = "TTD_" +idDetailCheckup + CommonConstant.IMAGE_TYPE;
+                        String fileNamePhoto = "TTD_" + random.nextInt(999) + "_" + idDetailCheckup + CommonConstant.IMAGE_TYPE;
                         result.get(0).setUrlTtd(fileNamePhoto);
                         File fileCreate = new File(CommonConstant.RESOURCE_IMAGE_TTD, fileNamePhoto);
                         try {
