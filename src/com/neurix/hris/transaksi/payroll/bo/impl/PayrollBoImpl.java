@@ -2185,6 +2185,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                     PayrollCuti payrollCuti = new PayrollCuti();
                     if (bean.getFlagCutiPanjang().equalsIgnoreCase("Y")|| bean.getFlagCutiTahunan().equalsIgnoreCase("Y")){
                         if (payrollEntity.getTipePegawai().equalsIgnoreCase("TP01")){
+                            bulanBerjalan = cekBulanPayrollSimRs(payrollEntity.getNip(),bean.getBulan(),bean.getTahun());
                             thp = BigDecimal.valueOf(0);
                             thp = getTotalThp(bulanBerjalan,
                                     payrollEntity.getGolonganId(),payrollEntity.getTipePegawai(),
