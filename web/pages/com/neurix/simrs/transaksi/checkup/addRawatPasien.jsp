@@ -397,6 +397,7 @@
                                 <button type="button" class="close" onclick="closeAlert()" aria-hidden="true">×</button>
                                 <div id="nama-pasien"></div>
                                 <div id="tgl-periksa"></div>
+                                <input type="hidden" id="date-periksa">
                                 <hr>
                                 <table style="color: #fff;">
                                     <tr>
@@ -1513,6 +1514,33 @@
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                     <p id="msg_list_kronis"></p>
                 </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-striped">
+                            <tr>
+                                <td><b>NO RM</b></td>
+                                <td><span id="kron_no_rm"></span></td>
+                            </tr>
+                            <tr>
+                                <td><b>Nama</b></td>
+                                <td><span id="kron_nama"></span></td>
+                            </tr>
+                            <tr>
+                                <td><b>Terakhir Periksa</b></td>
+                                <td><span id="kron_tgl_periksa"></span></td>
+                            </tr>
+                            <tr>
+                                <td><b>Diagnosa Terakhir</b></td>
+                                <td><span id="kron_diagnosa_terakhir"></span></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <%--<div class="col-md-6">--%>
+                        <%--<table class="table table-striped">--%>
+                           <%----%>
+                        <%--</table>--%>
+                    <%--</div>--%>
+                </div>
                 <table class="table table-bordered table-striped" id="tabel-kronis">
                     <thead>
                     <td>ID Obat</td>
@@ -1956,6 +1984,7 @@
                 }
 
                 $("#tgl-periksa").html(tglperiksa);
+                $('#date-periksa').val(formatDate(response.stTglKeluar));
                 $("#nama-pasien").html(namapasien);
                 $("#alergi").html(alergi);
                 $("#diagnosa").html(diagnosa);
@@ -1988,7 +2017,7 @@
                     $('#btn-kronis').removeAttr('onclick');
                     $('#btn-kronis').hide();
                     $('#warning_kronis').show();
-                    $('#msg_kronis').text(response.msg);
+                    $('#msg_kronis').text(response.msg+", Tanggal Pemgambilan "+formatDate(response.tglPengambilan));
                 }
                 $('html, body').animate({
                     scrollTop: $('#pos_kronis').offset().top
@@ -2006,13 +2035,18 @@
 
     function showObatKronis(idDetailCheckup, idApproval){
         if(idDetailCheckup != '' && idApproval != ''){
+            $('#kron_no_rm').html($('#id_pasien').val());
+            $('#kron_nama').html($('#nama_pasien').val());
+            $('#kron_tgl_periksa').html($('#date-periksa').val());
+            $('#kron_diagnosa_terakhir').html($('#diagnosa').text());
             $('#modal-obat-kronis').modal({show:true, backdrop:'static'});
             var table = "";
             CheckupAction.getListObatKronis(idDetailCheckup, idApproval, function (response) {
                 if(response.length > 0){
 
-                    var qtyTotal = 0;
                     $.each(response, function (i, item) {
+
+                        var qtyTotal = 0;
                         var qtyBox = 0;
                         var qtyLembar = 0;
                         var qtyBiji = 0;
@@ -2029,7 +2063,7 @@
                             qtyBiji = item.qtyBiji;
                         }
 
-                        if(item.lembarPerBox != null && item.bijiPerlembar != null){
+                        if(item.lembarPerBox != null && item.bijiPerLembar != null){
                             qtyTotal = parseInt(qtyBiji) + ((parseInt(item.lembarPerBox * parseInt(qtyBox))) * parseInt(item.bijiPerLembar));
                         }
 
@@ -2038,7 +2072,7 @@
                             '<td>'+item.namaObat+'</td>' +
                             '<td>'+qtyTotal+'</td>' +
                             '<td>biji</td>' +
-                            '<td width="20%">'+'<input class="form-control" id="qty'+i+'">'+'</td>' +
+                            '<td width="20%">'+'<input type="number" onchange="validasiInput(\''+qtyTotal+'\',\''+i+'\')" class="form-control" id="qty'+i+'">'+'</td>' +
                             '</tr>'
                     });
 
@@ -2055,32 +2089,77 @@
         if(idDetailCheckup != ''){
             var data = $('#tabel-kronis').tableToJSON();
             var result = [];
+            var cek = false;
+            var cekQty = false;
 
             $.each(data, function (i, item) {
                 var idObat = data[i]["ID Obat"];
                 var qty = $('#qty'+i).val();
-                result.push({'id_obat':idObat, 'jenis_satuan':'biji', 'qty':qty});
+                var qtyTotal = data[i]["Stok Obat"];
 
+                if(qty != ""){
+                    result.push({'id_obat':idObat, 'jenis_satuan':'biji', 'qty':qty});
+                    cekQty = true;
+                }
+
+                if(parseInt(qty) > parseInt(qtyTotal)){
+                    cek = true;
+                }
             });
+
             console.log(result);
             var jsonString = JSON.stringify(result);
-            $('#save_kronis').hide();
-            $('#load_kronis').show();
-            dwr.engine.setAsync(true);
-            CheckupAction.savePengambilanObatKronis(idDetailCheckup, jsonString, {callback: function (response) {
-                if(response.status == "success"){
-                    $('#modal-obat-kronis').modal('hide');
-                    $('#info_dialog').dialog('open');
-                    $('#save_kronis').show();
-                    $('#load_kronis').hide();
+
+            if(cekQty){
+
+                if(cek){
+                    $('#warning_list_kronis').show().fadeOut(5000);
+                    $('#msg_list_kronis').text("Qty request tidak boleh melebihi qty stok obat...!");
                 }else{
-                    $('#save_kronis').show();
-                    $('#load_kronis').hide();
-                    $('#warning_list_kronis').show().fadeOut(10000);
-                    $('#msg_list_kronis').text(response.msg);
+                    $('#save_kronis').hide();
+                    $('#load_kronis').show();
+                    dwr.engine.setAsync(true);
+                    CheckupAction.savePengambilanObatKronis(idDetailCheckup, jsonString, {callback: function (response) {
+                            if(response.status == "success"){
+                                $('#modal-obat-kronis').modal('hide');
+                                $('#info_dialog').dialog('open');
+                                $('#save_kronis').show();
+                                $('#load_kronis').hide();
+                            }else{
+                                $('#save_kronis').show();
+                                $('#load_kronis').hide();
+                                $('#warning_list_kronis').show().fadeOut(5000);
+                                $('#msg_list_kronis').text(response.msg);
+                            }
+                        }} );
                 }
-            }} );
+
+            }else{
+                $('#warning_list_kronis').show().fadeOut(5000);
+                $('#msg_list_kronis').text("Silahkan masukkan qty obat...!");
+            }
         }
+    }
+
+    function validasiInput(stok, i){
+        console.log(stok);
+        console.log(i);
+        if(stok != ''){
+            var qty = $('#qty'+i).val();
+
+            if(parseInt(qty) > parseInt(stok)){
+                $('#warning_list_kronis').show().fadeOut(10000);
+                $('#msg_list_kronis').text("Qty request tidak boleh melebihi qty stok obat..!");
+            }
+        }
+    }
+
+    function formatDate(tanggal){
+        var tgl = "";
+        if(tanggal != null && tanggal != ''){
+            tgl = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
+        }
+        return tgl;
     }
 
     function closeAlert() {
