@@ -1977,8 +1977,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
 
         if (detailCheckupEntity != null){
             detailCheckupEntity.setIdDetailCheckup("DCM"+getNextDetailCheckupId());
-            detailCheckupEntity.setNoSep(bean.getNoSep());
-            detailCheckupEntity.setTarifBpjs(bean.getTarifBpjs());
+            detailCheckupEntity.setTarifBpjs(new BigDecimal(0));
             detailCheckupEntity.setKodeCbg(bean.getKodeCbg());
             detailCheckupEntity.setNoCheckup(headerChekupEntity.getNoCheckup());
             detailCheckupEntity.setFlag(bean.getFlag());

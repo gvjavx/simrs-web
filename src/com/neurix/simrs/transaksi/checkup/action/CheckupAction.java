@@ -2627,30 +2627,36 @@ public class CheckupAction extends BaseMasterAction {
         headerCheckup.setDiagnosa(kodeDiagnosa);
         headerCheckup.setTotalBiaya(stTotalBiayaObat);
 
-        HeaderCheckup createBpjs =  createSepAndClaimForPengambilan(headerChekupEntity, headerCheckup);
-        if (createBpjs.getNoSep() != null && createBpjs.getTarifBpjs().compareTo(new BigDecimal(0)) == 1){
+        HeaderCheckup createBpjs = new HeaderCheckup();
 
-            headerDetailCheckupEntity.setNoSep(createBpjs.getNoSep());
-            headerDetailCheckupEntity.setTarifBpjs(createBpjs.getTarifBpjs());
+        createBpjs.setFlag("Y");
+        createBpjs.setAction("C");
+        createBpjs.setCreatedDate(time);
+        createBpjs.setCreatedWho(userLogin);
+        createBpjs.setLastUpdate(time);
+        createBpjs.setLastUpdateWho(userLogin);
 
-            createBpjs.setFlag("Y");
-            createBpjs.setAction("C");
-            createBpjs.setCreatedDate(time);
-            createBpjs.setCreatedWho(userLogin);
-            createBpjs.setLastUpdate(time);
-            createBpjs.setLastUpdateWho(userLogin);
-
-            try {
-                checkupBo.savePengambilanObatKronis(createBpjs, headerChekupEntity, headerDetailCheckupEntity, diagnosaRawatEntity, permintaanResepEntity, dokterTeamEntityList, obatDetailEntities);
-            } catch (GeneralBOException e){
-                logger.error("[CheckupAction.savePengambilanObatKronis] ERROR ", e);
-            }
-
+        try {
+            checkupBo.savePengambilanObatKronis(createBpjs, headerChekupEntity, headerDetailCheckupEntity, diagnosaRawatEntity, permintaanResepEntity, dokterTeamEntityList, obatDetailEntities);
             response.setStatus("success");
-        } else {
+        } catch (GeneralBOException e){
+            logger.error("[CheckupAction.savePengambilanObatKronis] ERROR ", e);
             response.setStatus("error");
-            response.setMsg("Gagal Membuat No SEP atau Mendapatkan Cover BPJS");
+            response.setMsg("[CheckupAction.savePengambilanObatKronis] ERROR "+ e);
         }
+
+
+//        HeaderCheckup createBpjs =  createSepAndClaimForPengambilan(headerChekupEntity, headerCheckup);
+//        if (createBpjs.getNoSep() != null && createBpjs.getTarifBpjs().compareTo(new BigDecimal(0)) == 1){
+//
+//            headerDetailCheckupEntity.setNoSep(createBpjs.getNoSep());
+//            headerDetailCheckupEntity.setTarifBpjs(createBpjs.getTarifBpjs());
+//
+//            response.setStatus("success");
+//        } else {
+//            response.setStatus("error");
+//            response.setMsg("Gagal Membuat No SEP atau Mendapatkan Cover BPJS");
+//        }
 
         return response;
     }
