@@ -142,6 +142,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "AND hd.nama LIKE :nama \n" +
                     "AND dt.id_pelayanan LIKE :idPelayanan \n" +
                     "AND hd.id_jenis_periksa_pasien LIKE :jenisPasien \n" +
+                    "AND dt.is_kronis IS NULL \n" +
                     "AND dt.status_periksa LIKE :status " + statusBayar;
 
 

@@ -45,6 +45,16 @@ public class ItSimrsHeaderDetailCheckupEntity implements Serializable{
 
     private String kodeCbg;
 
+    private String isKronis;
+
+    public String getIsKronis() {
+        return isKronis;
+    }
+
+    public void setIsKronis(String isKronis) {
+        this.isKronis = isKronis;
+    }
+
     public String getKodeCbg() {
         return kodeCbg;
     }

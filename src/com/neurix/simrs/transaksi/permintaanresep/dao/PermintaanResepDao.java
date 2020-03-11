@@ -62,7 +62,7 @@ public class PermintaanResepDao extends GenericDao<ImSimrsPermintaanResepEntity,
     public List<ObatKronis> getLastObatKronis(String idPasien, String flagDiambil){
 
         String sqlDiambil = "is null";
-        if ("".equalsIgnoreCase(flagDiambil)){
+        if ("Y".equalsIgnoreCase(flagDiambil)){
             sqlDiambil = "is not null";
         }
 

@@ -3,23 +3,25 @@ package com.neurix.simrs.transaksi.checkup.bo;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.pasien.model.RekamMedicLama;
 import com.neurix.simrs.transaksi.CrudResponse;
-import com.neurix.simrs.transaksi.checkup.model.AlertPasien;
-import com.neurix.simrs.transaksi.checkup.model.CheckupAlergi;
-import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
-import com.neurix.simrs.transaksi.checkup.model.ItSImrsCheckupAlergiEntity;
+import com.neurix.simrs.transaksi.checkup.model.*;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
+import com.neurix.simrs.transaksi.diagnosarawat.model.ItSimrsDiagnosaRawatEntity;
 import com.neurix.simrs.transaksi.patrus.model.ItSImrsPatrusEntity;
 import com.neurix.simrs.transaksi.pemeriksaanfisik.model.ItSimrsPemeriksaanFisikEntity;
 import com.neurix.simrs.transaksi.pemeriksaanfisik.model.PemeriksaanFisik;
 import com.neurix.simrs.transaksi.pengkajian.model.RingkasanKeluarMasukRs;
+import com.neurix.simrs.transaksi.permintaanresep.model.ImSimrsPermintaanResepEntity;
 import com.neurix.simrs.transaksi.permintaanresep.model.ObatKronis;
 import com.neurix.simrs.transaksi.psikososial.model.ItSimrsDataPsikososialEntity;
 import com.neurix.simrs.transaksi.rekonsiliasiobat.model.ItSimrsRekonsiliasiObatEntity;
 import com.neurix.simrs.transaksi.rencanarawat.model.ItSimrsRencanaRawatEntity;
 import com.neurix.simrs.transaksi.resikojatuh.model.*;
+import com.neurix.simrs.transaksi.teamdokter.model.ItSimrsDokterTeamEntity;
 import com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity;
 import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
+import com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsTransaksiObatDetailEntity;
+import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import com.neurix.simrs.transaksi.transfusi.model.ItSimrsTranfusiEntity;
 
 import java.util.List;
@@ -29,6 +31,7 @@ import java.util.List;
  */
 public interface CheckupBo {
     public List<HeaderCheckup> getByCriteria(HeaderCheckup bean)throws GeneralBOException;
+    public List<ItSimrsHeaderChekupEntity> getListEntityHeaderCheckup(HeaderCheckup bean) throws GeneralBOException;
     public void saveAdd(HeaderCheckup bean)throws GeneralBOException;
     public void saveEdit(HeaderCheckup bean)throws GeneralBOException;
     public void updatePenunjang(HeaderCheckup bean) throws GeneralBOException;
@@ -71,4 +74,13 @@ public interface CheckupBo {
 
     public HeaderCheckup getDataDetailPasien(String idDetailCheckup) throws GeneralBOException;
     public List<ObatKronis> findRiwayatKronis(String idPasien) throws GeneralBOException;
+
+    public List<TransaksiObatDetail> getListObatKronis(String idDetailCheckup, String idApproval) throws GeneralBOException;
+    public CrudResponse savePengambilanObatKronis(HeaderCheckup bean,
+                                                  ItSimrsHeaderChekupEntity headerChekupEntity,
+                                                  ItSimrsHeaderDetailCheckupEntity detailCheckupEntity,
+                                                  ItSimrsDiagnosaRawatEntity diagnosaRawatEntity,
+                                                  ImSimrsPermintaanResepEntity resepEntity,
+                                                  List<ItSimrsDokterTeamEntity> dokterTeamEntities,
+                                                  List<ImtSimrsTransaksiObatDetailEntity> obatDetailEntities ) throws GeneralBOException;
 }

@@ -306,6 +306,37 @@
                                     Record has been saved successfully.
                                 </sj:dialog>
 
+                                <sj:dialog id="waiting_dialog" openTopics="showDialogLoading"
+                                           closeTopics="closeDialog" modal="true"
+                                           resizable="false"
+                                           height="250" width="600" autoOpen="false"
+                                           title="Searching ...">
+                                    Please don't close this window, server is processing your request ...
+                                    <br>
+                                    <center>
+                                        <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                             src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                             name="image_indicator_write">
+                                        <br>
+                                        <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                             src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                             name="image_indicator_write">
+                                    </center>
+                                </sj:dialog>
+
+                                <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
+                                           height="250" width="600" autoOpen="false" title="Error Dialog"
+                                           buttons="{
+                                                                                'OK':function() { $('#error_dialog').dialog('close'); }
+                                                                            }"
+                                >
+                                    <div class="alert alert-danger alert-dismissible">
+                                        <label class="control-label" align="left">
+                                            <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessage"></p>
+                                        </label>
+                                    </div>
+                                </sj:dialog>
+
                             </div>
                             <!-- /.col -->
                         </div>
@@ -2473,7 +2504,7 @@
             $('#load_ket').show();
             dwr.engine.setAsync(true);
             CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, jenisPasien, "", "", "", idPasien, metodeBayar, uangMuka, jenisBayar, function (response) {
-                if(response == "success"){
+                if(response.status == "success"){
                     $('#info_dialog').dialog('open');
                     $('#close_pos').val(6);
                     $('#save_ket').show();
@@ -2487,12 +2518,23 @@
         if(idKtg == "rujuk"){
             $('#save_ket').hide();
             $('#load_ket').show();
+            $('#waiting_dialog').dialog('open');
             dwr.engine.setAsync(true);
             CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, jenisPasien, "", "", "", idPasien, metodeBayar, uangMuka, jenisBayar, function (response) {
-                $('#info_dialog').dialog('open');
-                $('#close_pos').val(6);
-                $('#save_ket').show();
-                $('#load_ket').hide();
+                if(response.status == "success"){
+                    $('#waiting_dialog').dialog('close');
+                    $('#info_dialog').dialog('open');
+                    $('#close_pos').val(6);
+                    $('#save_ket').show();
+                    $('#load_ket').hide();
+                }else{
+                    $('#waiting_dialog').dialog('close');
+                    $('#error_dialog').dialog('open');
+                    $('#errorMessage').text(response.msg);
+                    $('#close_pos').val(6);
+                    $('#save_ket').show();
+                    $('#load_ket').hide();
+                }
             });
         }
         if(idKtg == "selesai"){
@@ -2758,6 +2800,7 @@
                         if (response == "success") {
                             dwr.engine.setAsync(false);
                             listTindakan();
+                            hitungStatusBiaya();
                             $('#modal-tindakan').modal('hide');
                             $('#info_dialog').dialog('open');
                             $('#close_pos').val(2);

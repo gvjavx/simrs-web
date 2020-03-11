@@ -166,6 +166,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     "AND f.id_kelas_ruangan LIKE :idKelas\n" +
                     "AND e.id_ruangan LIKE :idRuang\n" +
                     "AND b.id_detail_checkup LIKE :idDetailCheckup\n" +
+                    "AND b.is_kronis IS NULL\n" +
                     "AND a.branch_id LIKE :branchId\n" +
                     "AND a.id_jenis_periksa_pasien LIKE :jenisPeriksa\n" +
                     "AND a.flag = 'Y'\n " +statusBayar;

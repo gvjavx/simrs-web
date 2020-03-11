@@ -54,7 +54,7 @@
 				<textElement verticalAlignment="Middle">
 					<font size="6"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.desa}+", "+$P{reportParams.prov}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{reportParams.desa}+", "+$P{reportParams.kec}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="5" y="100" width="148" height="13" uuid="4f1702b8-7be4-474e-875c-ee2e814072f8"/>

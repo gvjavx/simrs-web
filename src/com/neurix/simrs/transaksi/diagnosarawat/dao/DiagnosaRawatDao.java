@@ -45,7 +45,11 @@ public class DiagnosaRawatDao extends GenericDao<ItSimrsDiagnosaRawatEntity, Str
         criteria.add(Restrictions.eq("flag", "Y"));
 
         // Order by
-        criteria.addOrder(Order.asc("idDiagnosa"));
+        if (mapCriteria.get("order_last") != null){
+            criteria.addOrder(Order.desc("lastUpdate"));
+        } else {
+            criteria.addOrder(Order.desc("idDiagnosa"));
+        }
 
         List<ItSimrsDiagnosaRawatEntity> results = criteria.list();
         return results;

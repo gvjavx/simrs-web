@@ -107,6 +107,15 @@ public class HeaderCheckup {
     private String kodeCbg;
     private String ketRacik;
     private String idPermintaanResep;
+    private String totalBiaya;
+
+    public String getTotalBiaya() {
+        return totalBiaya;
+    }
+
+    public void setTotalBiaya(String totalBiaya) {
+        this.totalBiaya = totalBiaya;
+    }
 
     public List<Asesmen> getAsesmenList() {
         return asesmenList;

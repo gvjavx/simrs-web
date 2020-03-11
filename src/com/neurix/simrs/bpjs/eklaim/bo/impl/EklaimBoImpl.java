@@ -94,10 +94,14 @@ public class EklaimBoImpl extends BpjsService implements EklaimBo {
                     finalResponse.setAdmissionId(admissionId);
                     finalResponse.setHospitalAdmissionId(hospitalId);
                 } else {
+                    finalResponse.setStatus("201");
+                    finalResponse.setMsg(metaData.getString("message"));
                     String errorNo = metaData.getString("error_no");
                     logger.error("[EklaimBoImpl.insertNewClaimEklaim] : " + errorNo + " : " + metaData.getString("message"));
                 }
             } catch (IOException | JSONException e) {
+                finalResponse.setStatus("201");
+                finalResponse.setMsg(e.getMessage());
                 e.printStackTrace();
             }
         }

@@ -18,6 +18,15 @@ public class DiagnosaRawat extends BaseModel{
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String orderLastUpdate;
+
+    public String getOrderLastUpdate() {
+        return orderLastUpdate;
+    }
+
+    public void setOrderLastUpdate(String orderLastUpdate) {
+        this.orderLastUpdate = orderLastUpdate;
+    }
 
     public String getIdDiagnosaRawat() {
         return idDiagnosaRawat;

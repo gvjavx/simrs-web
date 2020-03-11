@@ -120,7 +120,8 @@ public class DiagnosaRawatBoImpl implements DiagnosaRawatBo {
         logger.info("[DiagnosaRawatBoImpl.saveEdit] End <<<<<<<<<");
     }
 
-    protected List<ItSimrsDiagnosaRawatEntity> getListEntityDiagnosaRawat(DiagnosaRawat bean) throws GeneralBOException{
+    @Override
+    public List<ItSimrsDiagnosaRawatEntity> getListEntityDiagnosaRawat(DiagnosaRawat bean) throws GeneralBOException{
         logger.info("[DiagnosaRawatBoImpl.getListEntityDiagnosaRawat] Start >>>>>>>>>");
 
         Map hsCriteria = new HashMap();
@@ -129,7 +130,9 @@ public class DiagnosaRawatBoImpl implements DiagnosaRawatBo {
         }
         if (bean.getIdDiagnosaRawat() != null && !"".equalsIgnoreCase(bean.getIdDiagnosaRawat())){
             hsCriteria.put("id_diagnosa_rawat", bean.getIdDiagnosaRawat());
-
+        }
+        if (bean.getOrderLastUpdate() != null && !"".equalsIgnoreCase(bean.getOrderLastUpdate())){
+            hsCriteria.put("order_last", bean.getOrderLastUpdate());
         }
 
         List<ItSimrsDiagnosaRawatEntity> entities = new ArrayList<>();
