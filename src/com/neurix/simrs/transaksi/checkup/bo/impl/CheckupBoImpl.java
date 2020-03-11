@@ -1988,6 +1988,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             detailCheckupEntity.setCreatedWho(bean.getCreatedWho());
             detailCheckupEntity.setLastUpdate(bean.getLastUpdate());
             detailCheckupEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            detailCheckupEntity.setStatusPeriksa("1");
 
             try {
                 checkupDetailDao.addAndSave(detailCheckupEntity);

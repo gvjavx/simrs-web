@@ -2489,7 +2489,7 @@ public class CheckupAction extends BaseMasterAction {
         return transaksiObatDetails;
     }
 
-    public CrudResponse savePengambilanObatKronis(String idDetailCheckup, String jsonString) throws JSONException {
+    public CrudResponse savePengambilanObatKronis(String idDetailCheckup, String jsonString, String pelayananTujuan) throws JSONException {
 
         CrudResponse response = new CrudResponse();
 
@@ -2565,19 +2565,10 @@ public class CheckupAction extends BaseMasterAction {
                 diagnosaRawatEntity = diagnosaRawatEntities.get(0);
             }
 
-            PermintaanResep permintaanResep = new PermintaanResep();
-            permintaanResep.setIdDetailCheckup(idDetailCheckup);
-
-            List<ImSimrsPermintaanResepEntity> resepEntities = new ArrayList<>();
-            try {
-                resepEntities = permintaanResepBo.getListEntityResep(permintaanResep);
-            } catch (GeneralBOException e){
-                logger.error("[CheckupAction.savePengambilanObatKronis] ERROR ", e);
-            }
-
-            if (resepEntities.size() > 0){
-                permintaanResepEntity = resepEntities.get(0);
-            }
+            // permintaan resep
+            permintaanResepEntity.setTujuanPelayanan(pelayananTujuan);
+            permintaanResepEntity.setIdPasien(headerChekupEntity.getIdPasien());
+            permintaanResepEntity.setBranchId(headerChekupEntity.getBranchId());
 
             DokterTeam dokterTeam = new DokterTeam();
             dokterTeam.setIdDetailCheckup(idDetailCheckup);
