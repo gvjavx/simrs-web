@@ -811,7 +811,7 @@ public class TransaksiObatAction extends BaseMasterAction {
                     riwayatTindakan.setNamaTindakan("Tarif Resep dengan No. Resep " + tarifResep.getIdPermintaanResep());
                     riwayatTindakan.setTotalTarif(new BigDecimal(tarifResep.getTotalHarga()));
                     riwayatTindakan.setKeterangan("resep");
-//                    riwayatTindakan.setJenisPasien(jenisPasien);
+                    riwayatTindakan.setJenisPasien(tarifResep.getJenisPeriksaPasien());
                     riwayatTindakan.setAction("C");
                     riwayatTindakan.setFlag("Y");
                     riwayatTindakan.setCreatedWho(userLogin);
@@ -825,7 +825,7 @@ public class TransaksiObatAction extends BaseMasterAction {
                         riwayatTindakanBo.saveAdd(riwayatTindakan);
 
                         String invoice = "";
-                        JurnalResponse jurnalClosingResponse = closingJurnalNonTunai("","", "");
+                        JurnalResponse jurnalClosingResponse = closingJurnalNonTunai(tarifResep.getIdDetailCheckup(),tarifResep.getIdPelayanan(), tarifResep.getIdPasien());
                         if ("error".equalsIgnoreCase(jurnalClosingResponse.getStatus())) {
                             response.setMessage(jurnalClosingResponse.getMsg());
                             return response;
@@ -841,6 +841,8 @@ public class TransaksiObatAction extends BaseMasterAction {
                         detailCheckup.setLastUpdate(time);
                         detailCheckup.setLastUpdateWho(userLogin);
                         detailCheckup.setInvoice(invoice);
+                        detailCheckup.setFlag("Y");
+                        detailCheckup.setAction("U");
 
                         try {
                             checkupDetailBo.saveEdit(detailCheckup);

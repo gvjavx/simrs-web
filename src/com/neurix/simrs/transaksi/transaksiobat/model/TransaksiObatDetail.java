@@ -70,6 +70,25 @@ public class TransaksiObatDetail extends BaseModel {
     private String idPasien;
     private String idDetailCheckup;
 
+    private String jenisPeriksaPasien;
+    private String noCheckup;
+
+    public String getNoCheckup() {
+        return noCheckup;
+    }
+
+    public void setNoCheckup(String noCheckup) {
+        this.noCheckup = noCheckup;
+    }
+
+    public String getJenisPeriksaPasien() {
+        return jenisPeriksaPasien;
+    }
+
+    public void setJenisPeriksaPasien(String jenisPeriksaPasien) {
+        this.jenisPeriksaPasien = jenisPeriksaPasien;
+    }
+
     public String getNoJurnal() {
         return noJurnal;
     }
