@@ -9,6 +9,10 @@
           p:permintaanResepBoProxy-ref="permintaanResepBo"
     />
 
+    <bean id="checkupController" class="com.neurix.simrs.mobileapi.CheckupController"
+          p:permintaanResepBoProxy-ref="permintaanResepBo"
+    />
+
     <bean id="permintaanResepBo" class="com.neurix.simrs.transaksi.permintaanresep.bo.impl.PermintaanResepBoImpl"
           p:permintaanResepDao-ref="permintaanResepDao"
           p:pasienDao-ref="pasienDao"

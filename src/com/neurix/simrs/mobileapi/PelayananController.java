@@ -285,6 +285,25 @@ public class PelayananController implements ModelDriven<Object> {
             }
         }
 
+        if  (action.equalsIgnoreCase("getListApotek")) {
+
+            List<Pelayanan> result = new ArrayList<>();
+
+            try {
+                result = pelayananBoProxy.getListApotek();
+            } catch (GeneralBOException e) {
+                logger.error("Pelayanan.create] Error when get list apotek",e);
+            }
+
+            for (Pelayanan item: result){
+                PelayananMobile pelayananMobile = new PelayananMobile();
+                pelayananMobile.setNamaPelayanan(item.getNamaPelayanan());
+                pelayananMobile.setIdPelayanan(item.getIdPelayanan());
+
+                listOfPelayanan.add(pelayananMobile);
+            }
+        }
+
         if  (action.equalsIgnoreCase(("notif"))) {
 
             List<String> somePushTokens = Arrays.asList("ExponentPushToken[a5ZnTeN_kK0DmkQT4ibUlP]");

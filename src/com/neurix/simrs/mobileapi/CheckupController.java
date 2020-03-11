@@ -1,16 +1,24 @@
 package com.neurix.simrs.mobileapi;
 
+import com.google.gson.Gson;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
-import com.neurix.simrs.mobileapi.model.CheckupMobile;
-import com.neurix.simrs.mobileapi.model.HeaderCheckupMobile;
-import com.neurix.simrs.mobileapi.model.HeaderDetailCheckupMobile;
+import com.neurix.simrs.mobileapi.model.*;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
+import com.neurix.simrs.transaksi.obatpoli.bo.ObatPoliBo;
+import com.neurix.simrs.transaksi.obatpoli.model.ObatPoli;
+import com.neurix.simrs.transaksi.permintaanresep.bo.PermintaanResepBo;
+import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
+import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import com.opensymphony.xwork2.ModelDriven;
+import net.sf.json.JSON;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONException;
+import net.sf.json.JSONSerializer;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.rest.DefaultHttpHeaders;
@@ -18,6 +26,8 @@ import org.apache.struts2.rest.HttpHeaders;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigInteger;
+import java.sql.Timestamp;
 import java.util.*;
 
 /**
@@ -30,9 +40,12 @@ public class CheckupController implements ModelDriven<Object> {
     private CheckupMobile model = new CheckupMobile();
     private Collection<CheckupMobile> listOfCheckup = new ArrayList<>();
     private Collection<HeaderDetailCheckupMobile> listOfHeaderCheckup = new ArrayList<>();
+    private Collection<ObatPoliMobile> listOfObatPoli = new ArrayList<>();
+    private Collection<PermintaanResepMobile> listOfPermintaanResep = new ArrayList<>();
     private CheckupDetailBo checkupDetailBoProxy;
     private CheckupBo checkupBoProxy;
-
+    private ObatPoliBo obatPoliBoProxy;
+    private PermintaanResepBo permintaanResepBoProxy;
 
     private String idDetailCheckup;
     private String idPasien;
@@ -45,6 +58,91 @@ public class CheckupController implements ModelDriven<Object> {
 
     private File fileUploadTtd;
     private String fileNameTtd;
+
+    private String idPelayanan;
+    private String idObat;
+
+    private String jsonResep;
+
+    private String tujuanPelayanan;
+    private String idDokter;
+
+    private String username;
+
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public PermintaanResepBo getPermintaanResepBoProxy() {
+        return permintaanResepBoProxy;
+    }
+
+    public void setPermintaanResepBoProxy(PermintaanResepBo permintaanResepBoProxy) {
+        this.permintaanResepBoProxy = permintaanResepBoProxy;
+    }
+
+    public String getIdDokter() {
+        return idDokter;
+    }
+
+    public void setIdDokter(String idDokter) {
+        this.idDokter = idDokter;
+    }
+
+    public String getTujuanPelayanan() {
+        return tujuanPelayanan;
+    }
+
+    public void setTujuanPelayanan(String tujuanPelayanan) {
+        this.tujuanPelayanan = tujuanPelayanan;
+    }
+
+    public String getJsonResep() {
+        return jsonResep;
+    }
+
+
+
+    public void setJsonResep(String jsonResep) {
+        this.jsonResep = jsonResep;
+    }
+
+    public String getIdObat() {
+        return idObat;
+    }
+
+    public void setIdObat(String idObat) {
+        this.idObat = idObat;
+    }
+
+    public String getIdPelayanan() {
+        return idPelayanan;
+    }
+
+    public void setIdPelayanan(String idPelayanan) {
+        this.idPelayanan = idPelayanan;
+    }
+
+    public Collection<ObatPoliMobile> getListOfObatPoli() {
+        return listOfObatPoli;
+    }
+
+    public void setListOfObatPoli(Collection<ObatPoliMobile> listOfObatPoli) {
+        this.listOfObatPoli = listOfObatPoli;
+    }
+
+    public ObatPoliBo getObatPoliBoProxy() {
+        return obatPoliBoProxy;
+    }
+
+    public void setObatPoliBoProxy(ObatPoliBo obatPoliBoProxy) {
+        this.obatPoliBoProxy = obatPoliBoProxy;
+    }
 
     public String getFileNameTtd() {
         return fileNameTtd;
@@ -173,6 +271,12 @@ public class CheckupController implements ModelDriven<Object> {
                 return listOfCheckup;
             case "dataPasien":
                 return listOfHeaderCheckup;
+            case "getObatPoli":
+                return listOfObatPoli;
+            case "getObatPoliGroup":
+                return listOfObatPoli;
+            case "getPermintaanResep":
+                return listOfPermintaanResep;
             default:
                 return model;
         }
@@ -180,6 +284,9 @@ public class CheckupController implements ModelDriven<Object> {
 
     public HttpHeaders create() {
         logger.info("[CheckupController.create] start process POST / <<<");
+
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+
 
         if (action.equalsIgnoreCase("search")) {
             List<HeaderDetailCheckup> result = new ArrayList<>();
@@ -244,6 +351,9 @@ public class CheckupController implements ModelDriven<Object> {
                headerDetailCheckupMobile.setNoSep(result.getNoSep());
                headerDetailCheckupMobile.setTglLahir(result.getStTglLahir());
                headerDetailCheckupMobile.setUrlTtd(result.getUrlTtd());
+               headerDetailCheckupMobile.setIdDokter(result.getIdDokter());
+               headerDetailCheckupMobile.setIdPelayanan(result.getIdPelayanan());
+
 
                listOfHeaderCheckup.add(headerDetailCheckupMobile);
             }
@@ -283,6 +393,147 @@ public class CheckupController implements ModelDriven<Object> {
                 }
 
             }
+
+        } else if (action.equalsIgnoreCase("getObatPoli")) {
+            List<ObatPoli> result = new ArrayList<>();
+
+            ObatPoli bean = new ObatPoli();
+            bean.setIdObat(idObat);
+            bean.setIdPelayanan(idPelayanan);
+            bean.setBranchId(branchId);
+
+            try {
+                result = obatPoliBoProxy.getObatPoliByCriteria(bean);
+            } catch (GeneralBOException e){
+                logger.error("CheckupController.create] Error when get obat poli",e);
+            }
+
+            if (result != null && result.size() > 0){
+                for (ObatPoli item : result){
+                    ObatPoliMobile obatPoliMobile  = new ObatPoliMobile();
+                    obatPoliMobile.setIdObat(item.getIdObat());
+                    obatPoliMobile.setIdPelayanan(item.getIdPelayanan());
+                    obatPoliMobile.setFlag(item.getFlag());
+                    obatPoliMobile.setQtyBox(item.getQtyBox() != null ? item.getQtyBox().toString() : "0");
+                    obatPoliMobile.setQtyLembar(item.getQtyLembar() != null ? item.getQtyLembar().toString() : "0");
+                    obatPoliMobile.setQtyBiji(item.getQtyBiji() != null ? item.getQtyBiji().toString(): "0");
+                    obatPoliMobile.setQty(item.getQty() != null ? item.getQty().toString() : "0");
+                    obatPoliMobile.setAction(item.getAction());
+                    obatPoliMobile.setCreatedDate(item.getCreatedDate() != null ? item.getCreatedDate().toLocaleString() : "");
+                    obatPoliMobile.setCreatedWho(item.getCreatedWho());
+                    obatPoliMobile.setLastUpdate(item.getLastUpdate() != null ? item.getLastUpdate().toLocaleString() : "");
+                    obatPoliMobile.setLastUpdateWho(item.getLastUpdateWho());
+                    obatPoliMobile.setBranchId(item.getBranchId());
+                    obatPoliMobile.setIdPabrik(item.getIdPabrik());
+                    obatPoliMobile.setExpiredDate(item.getExpiredDate() != null ? item.getExpiredDate().toLocaleString() : "");
+                    obatPoliMobile.setIdBarang(item.getIdBarang());
+                    obatPoliMobile.setNamaObat(item.getNamaObat());
+                    obatPoliMobile.setLembarPerBox(item.getLembarPerBox() != null ? item.getLembarPerBox().toString() : "0");
+                    obatPoliMobile.setBijiPerLembar(item.getBijiPerLembar() != null ? item.getBijiPerLembar().toString() : "0");
+                    obatPoliMobile.setFlagKronis(item.getFlagKronis());
+
+                    listOfObatPoli.add(obatPoliMobile);
+                }
+            }
+        } else if (action.equalsIgnoreCase("getObatPoliGroup")){
+            List<ObatPoli> result = new ArrayList<>();
+
+            try{
+               result = obatPoliBoProxy.getListObatPoliGroup(idPelayanan, branchId);
+            } catch (GeneralBOException e){
+                logger.error("CheckupController.create] Error when get obat poli group",e);
+            }
+
+            if (result != null && result.size() > 0) {
+                for (ObatPoli item : result){
+                    ObatPoliMobile obatPoliMobile = new ObatPoliMobile();
+                    obatPoliMobile.setIdObat(item.getIdObat());
+                    obatPoliMobile.setNamaObat(item.getNamaObat());
+                    obatPoliMobile.setLembarPerBox(item.getLembarPerBox() != null ? item.getLembarPerBox().toString() : "");
+                    obatPoliMobile.setBijiPerLembar(item.getBijiPerLembar() != null ? item.getBijiPerLembar().toString() : "");
+                    obatPoliMobile.setFlagKronis(item.getFlagKronis());
+                    obatPoliMobile.setQtyBox(item.getQtyBox() != null ? item.getQtyBox().toString() : "");
+                    obatPoliMobile.setQtyLembar(item.getQtyLembar() != null ? item.getQtyLembar().toString() : "");
+                    obatPoliMobile.setQtyBiji(item.getQtyBiji() != null ? item.getQtyLembar().toString() : "");
+
+                    listOfObatPoli.add(obatPoliMobile);
+                }
+            }
+
+        } else if (action.equalsIgnoreCase("saveAddResep")){
+            PermintaanResep bean = new PermintaanResep();
+            bean.setIdPelayanan(idPelayanan);
+            bean.setBranchId(branchId);
+            bean.setTujuanPelayanan(tujuanPelayanan);
+            bean.setIdDetailCheckup(idDetailCheckup);
+            bean.setIdPasien(idPasien);
+            bean.setIdDokter(idDokter);
+            bean.setCreatedDate(now);
+            bean.setCreatedWho(username);
+            bean.setLastUpdateWho(username);
+            bean.setLastUpdate(now);
+
+            List<TransaksiObatDetail> list = new ArrayList<>();
+            JSONArray jsonArray;
+
+            if (jsonResep != null && !jsonResep.equalsIgnoreCase("")){
+                try{
+                  jsonArray = (net.sf.json.JSONArray) JSONSerializer.toJSON(jsonResep);
+                  for (int i = 0; i < jsonArray.size(); i++){
+                      TransaksiObatDetail transaksiObatDetail = new TransaksiObatDetail();
+                      transaksiObatDetail.setIdObat(jsonArray.getJSONObject(i).getString("idObat"));
+                      transaksiObatDetail.setQty(BigInteger.valueOf(Long.valueOf(jsonArray.getJSONObject(i).getString("qty"))));
+                      transaksiObatDetail.setQtyApprove(BigInteger.valueOf(Long.valueOf(jsonArray.getJSONObject(i).getString("qty"))));
+                      transaksiObatDetail.setJenisSatuan(jsonArray.getJSONObject(i).getString("jenisSatuan"));
+                      transaksiObatDetail.setKeterangan(jsonArray.getJSONObject(i).getString("keterangan"));
+                      transaksiObatDetail.setFlagRacik(jsonArray.getJSONObject(i).getString("flagRacik"));
+                      transaksiObatDetail.setHariKronis(!jsonArray.getJSONObject(i).getString("hariKronis").equalsIgnoreCase("") ? Integer.valueOf(jsonArray.getJSONObject(i).getString("hariKronis")) : null);
+
+
+                      list.add(transaksiObatDetail);
+                  }
+
+                } catch (JSONException e) {
+                    logger.error("[CheckupController.create] Error, get json resep " + e.getMessage());
+                }
+            }
+
+            try {
+                permintaanResepBoProxy.saveAdd(bean, list);
+                model.setMessage("Success");
+            } catch (GeneralBOException e){
+                logger.error("CheckupController.create] Error when get obat poli group",e);
+            }
+        } else if (action.equalsIgnoreCase("getPermintaanResep")){
+            List<PermintaanResep> result = new ArrayList<>();
+
+            PermintaanResep bean = new PermintaanResep();
+            bean.setIdDetailCheckup(idDetailCheckup);
+
+            try{
+                result = permintaanResepBoProxy.getByCriteria(bean);
+            } catch (GeneralBOException e ){
+                logger.error("CheckupController.create] Error when get permintaan resep",e);
+
+            }
+
+            if (result.size() > 0 && result != null){
+                for (PermintaanResep item : result){
+                    PermintaanResepMobile permintaanResepMobile = new PermintaanResepMobile();
+                    permintaanResepMobile.setIdPermintaanResep(item.getIdPermintaanResep());
+                    permintaanResepMobile.setIdPasien(item.getIdPasien());
+                    permintaanResepMobile.setIdDetailCheckup(item.getIdDetailCheckup());
+                    permintaanResepMobile.setIdApprovalObat(item.getIdApprovalObat());
+                    permintaanResepMobile.setKeterangan(item.getKeterangan());
+                    permintaanResepMobile.setIdDokter(item.getIdDokter());
+                    permintaanResepMobile.setTujuanPelayanan(item.getTujuanPelayanan());
+                    permintaanResepMobile.setCreatedDate(CommonUtil.convertDateToString(item.getCreatedDate()));
+                    permintaanResepMobile.setLastUpdate(CommonUtil.convertDateToString(item.getLastUpdate()));
+
+                    listOfPermintaanResep.add(permintaanResepMobile);
+                }
+            }
+
 
         }
 
