@@ -2596,6 +2596,7 @@ public class CheckupAction extends BaseMasterAction {
 
                     Obat obat = new Obat();
                     obat.setIdObat(obatDetail.getIdObat());
+                    obat.setBranchId(headerChekupEntity.getBranchId());
 
                     try {
                         hargaObats = obatBo.getListHargaObat(obat);
