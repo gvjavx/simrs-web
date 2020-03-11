@@ -171,7 +171,7 @@
                         <td>
                             <table>
                                 <s:select list="#{'L':'Laki - laki', 'P' : 'Perempuan'}" id="ijinGender1" name="ijin.gender"
-                                          headerKey="" headerValue="[Select one]" cssClass="form-control" />
+                                          headerKey="L/P" headerValue="[Select one]" cssClass="form-control" />
                             </table>
                         </td>
                     </tr>

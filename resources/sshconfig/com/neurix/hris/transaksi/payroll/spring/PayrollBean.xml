@@ -74,6 +74,8 @@
           p:tunjLainPegawaiDao-ref="tunjLainPegawaiDao"
           p:payrollCutiDao-ref="payrollCutiDao"
           p:historyJabatanPegawaiDao-ref="historyJabatanPegawaiDao"
+          p:payrollSkalaGajiPensiunDplkDao-ref="payrollSkalaGajiPensiunDplkDao"
+          p:profesiDao-ref="profesiDao"
     />
 
     <bean id="payrollBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -101,6 +103,8 @@
     <bean id="skalaGajiDao" class="com.neurix.hris.master.payrollSkalaGaji.dao.PayrollSkalaGajiDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="payrollSkalaGajiPensiunRniDao" class="com.neurix.hris.master.payrollSkalaGajiPensiunRni.dao.PayrollSkalaGajiPensiunRniDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="payrollSkalaGajiPensiunDplkDao" class="com.neurix.hris.master.payrollSkalaGajiPensiunDplk.dao.PayrollSkalaGajiPensiunDplkDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="tunjanganJabatanStrukturalDao" class="com.neurix.hris.transaksi.payroll.dao.PayrollTunjanganJabatanStrukturalDao"
           p:sessionFactory-ref="sessionFactory" />
@@ -181,5 +185,7 @@
     <bean id="payrollCutiDao" class="com.neurix.hris.transaksi.payroll.dao.PayrollCutiDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="historyJabatanPegawaiDao" class="com.neurix.hris.transaksi.personilPosition.dao.HistoryJabatanPegawaiDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="profesiDao" class="com.neurix.hris.master.profesi.dao.ProfesiDao"
           p:sessionFactory-ref="sessionFactory" />
 </beans>

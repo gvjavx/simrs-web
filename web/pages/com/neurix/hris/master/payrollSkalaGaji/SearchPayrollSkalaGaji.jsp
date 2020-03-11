@@ -88,18 +88,18 @@
 
                             <tr>
                                 <td>
-                                    <label class="control-label"><small>Golongan :</small></label>
+                                    <label class="control-label"><small>Level :</small></label>
                                 </td>
                                 <td>
                                     <table>
                                         <s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>
                                         <s:select list="#initComboTipe.listComboGolongan" id="golongan1" name="payrollSkalaGaji.golonganId"
-                                                  listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                  listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                     </table>
                                 </td>
                             </tr>
 
-                            <tr>
+                            <%--<tr>
                                 <td>
                                     <label class="control-label"><small>Tahun :</small></label>
                                 </td>
@@ -109,7 +109,7 @@
                                                   headerKey="" headerValue="[Select one]" cssClass="form-control" />
                                     </table>
                                 </td>
-                            </tr>
+                            </tr>--%>
 
 
                             <tr>
@@ -165,7 +165,7 @@
                                 <tr>
                                     <td align="center">
                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
-                                                   height="400" width="550" autoOpen="false"
+                                                   height="500" width="550" autoOpen="false"
                                                    title="Payroll Skala Gaji ">
                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                         </sj:dialog>
@@ -196,9 +196,13 @@
 
                                             </display:column>
                                             <display:column property="skalaGajiId" sortable="true" title="Skala Gaji ID" />
-                                            <display:column property="golonganName" sortable="true" title="Golongan"  />
-                                            <display:column property="point" sortable="true" title="Poin"  />
-                                            <display:column property="nilai" sortable="true" title="Nilai"  />
+                                            <display:column property="stLevel" sortable="true" title="Level"  />
+                                            <display:column property="stNilai" sortable="true" title="Gaji Level"  />
+                                            <display:column property="stSantunanKhusus" sortable="true" title="Santunan Khusus"  />
+                                            <display:column property="stRumah" sortable="true" title="Tunj. Rumah"  />
+                                            <display:column property="stListrik" sortable="true" title="Tunj. Listrik"  />
+                                            <display:column property="stAir" sortable="true" title="Tunj. Air"  />
+                                            <display:column property="stBbm" sortable="true" title="Tunj. Bbm"  />
                                         </display:table>
                                     </td>
                                 </tr>

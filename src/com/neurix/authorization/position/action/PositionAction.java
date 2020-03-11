@@ -300,12 +300,12 @@ public class PositionAction extends BaseMasterAction {
                     try {
                         logId = positionBoProxy.saveErrorMessage(e.getMessage(), "PositionBO.saveAdd");
                     } catch (GeneralBOException e1) {
-                        logger.error("[PositionAction.save] Error when saving error,", e1);
+                        throw new GeneralBOException(e1.getMessage());
                     }
                     logger.error("[PositionAction.save] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
                     addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
 
-                    return ERROR;
+                    throw new GeneralBOException(e.getMessage());
                 }
 
             }

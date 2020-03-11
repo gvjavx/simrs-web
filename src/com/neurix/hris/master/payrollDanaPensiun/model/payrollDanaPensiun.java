@@ -15,6 +15,42 @@ public class payrollDanaPensiun extends BaseModel {
     private String danaPensiunId;
     private String danaPensiun;
     private BigDecimal persentase;
+    private BigDecimal persentaseKary;
+    private BigDecimal persentasePers;
+    private String stPersentaseKary;
+    private String stPersentasePers;
+
+    public String getStPersentaseKary() {
+        return stPersentaseKary;
+    }
+
+    public void setStPersentaseKary(String stPersentaseKary) {
+        this.stPersentaseKary = stPersentaseKary;
+    }
+
+    public String getStPersentasePers() {
+        return stPersentasePers;
+    }
+
+    public void setStPersentasePers(String stPersentasePers) {
+        this.stPersentasePers = stPersentasePers;
+    }
+
+    public BigDecimal getPersentaseKary() {
+        return persentaseKary;
+    }
+
+    public void setPersentaseKary(BigDecimal persentaseKary) {
+        this.persentaseKary = persentaseKary;
+    }
+
+    public BigDecimal getPersentasePers() {
+        return persentasePers;
+    }
+
+    public void setPersentasePers(BigDecimal persentasePers) {
+        this.persentasePers = persentasePers;
+    }
 
     public String getDanaPensiun() {
         return danaPensiun;

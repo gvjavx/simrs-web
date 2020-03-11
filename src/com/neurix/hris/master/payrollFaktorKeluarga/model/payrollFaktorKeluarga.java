@@ -14,9 +14,22 @@ import java.math.BigDecimal;
 public class payrollFaktorKeluarga extends BaseModel {
     private String faktorKeluargaId;
     private String statusKeluarga;
+    private String statusKeluargaName;
     private int jumlahAnak;
     private BigDecimal nilai;
     private BigDecimal ptkp;
+
+    public void setJumlahAnak(int jumlahAnak) {
+        this.jumlahAnak = jumlahAnak;
+    }
+
+    public String getStatusKeluargaName() {
+        return statusKeluargaName;
+    }
+
+    public void setStatusKeluargaName(String statusKeluargaName) {
+        this.statusKeluargaName = statusKeluargaName;
+    }
 
     public BigDecimal getPtkp() {
         return ptkp;

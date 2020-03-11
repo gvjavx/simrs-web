@@ -69,21 +69,22 @@
             <exception-mapping exception="java.lang.RuntimeException" result="global_error" />
         </global-exception-mappings>
 
-        <action name="*_payrollSkalaGajiPensiun"
+        <action name="*_payrollSkalaGajiPensiunRni"
                 class="com.neurix.hris.master.payrollSkalaGajiPensiunRni.action.PayrollSkalaGajiPensiunRniAction" method="{1}">
             <interceptor-ref name="ivelinStack" />
-            <result name="input">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunRni/SearchPayrollSkalaGajiPensiun.jsp</result>
-            <result name="success">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunRni/SearchPayrollSkalaGajiPensiun.jsp</result>
+            <result name="input">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunRni/SearchPayrollSkalaGajiPensiunRni.jsp</result>
+            <result name="input_dplk">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunDplk/SearchPayrollSkalaGajiPensiunDplk.jsp</result>
+            <result name="success">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunRni/SearchPayrollSkalaGajiPensiunRni.jsp</result>
 
-            <result name="error">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunRni/addPayrollSkalaGajiPensiun.jsp</result>
-            <result name="init_add">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunRni/addPayrollSkalaGajiPensiun.jsp</result>
-            <result name="success_save_add">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunRni/addPayrollSkalaGajiPensiun.jsp</result>
+            <result name="error">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunRni/addPayrollSkalaGajiPensiunRni.jsp</result>
+            <result name="init_add">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunRni/addPayrollSkalaGajiPensiunRni.jsp</result>
+            <result name="success_save_add">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunRni/addPayrollSkalaGajiPensiunRni.jsp</result>
 
-            <result name="success_save_delete">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunRni/deletePayrollSkalaGajiPensiun.jsp</result>
-            <result name="init_delete">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunRni/deletePayrollSkalaGajiPensiun.jsp</result>
-            <result name="init_edit">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunRni/editPayrollSkalaGajiPensiun.jsp</result>
-            <result name="success_save_edit">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunRni/editPayrollSkalaGajiPensiun.jsp</result>
-            <result name="failure">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunRni/editPayrollSkalaGajiPensiun.jsp</result>
+            <result name="success_save_delete">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunRni/deletePayrollSkalaGajiPensiunRni.jsp</result>
+            <result name="init_delete">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunRni/deletePayrollSkalaGajiPensiunRni.jsp</result>
+            <result name="init_edit">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunRni/editPayrollSkalaGajiPensiunRni.jsp</result>
+            <result name="success_save_edit">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunRni/editPayrollSkalaGajiPensiunRni.jsp</result>
+            <result name="failure">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunRni/editPayrollSkalaGajiPensiunRni.jsp</result>
 
 
 
@@ -96,10 +97,10 @@
         </action>
 
 
-        <action name="paging_displaytag_payrollSkalaGajiPensiun"
-                class="com.neurix.hris.master.payrollSkalaGajiPensiunRni.action.PayrollSkalaGajiPensiunAction" method="paging">
+        <action name="paging_payrollSkalaGajiPensiunRni"
+                class="com.neurix.hris.master.payrollSkalaGajiPensiunRni.action.PayrollSkalaGajiPensiunRniAction" method="paging">
             <interceptor-ref name="defaultStack"/>
-            <result name="success">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunRni/SearchPayrollSkalaGajiPensiun.jsp</result>
+            <result name="success">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunRni/SearchPayrollSkalaGajiPensiunRni.jsp</result>
         </action>
 
     </package>

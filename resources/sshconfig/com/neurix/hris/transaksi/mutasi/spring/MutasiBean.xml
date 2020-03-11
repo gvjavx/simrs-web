@@ -20,6 +20,7 @@
           p:sertifikatDao-ref="sertifikatDao"
           p:biodataDao-ref="biodataDao"
           p:historyGolonganDao-ref="smkHistoryGolonganDao"
+          p:skalaGajiDao-ref="skalaGajiDao"
     />
 
     <bean id="mutasiBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -52,6 +53,8 @@
     <bean id="personilPositionDao2" class="com.neurix.hris.transaksi.personilPosition.dao.PersonilPositionDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="historyJabatanPegawaiDao" class="com.neurix.hris.transaksi.personilPosition.dao.HistoryJabatanPegawaiDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="skalaGajiDao" class="com.neurix.hris.master.payrollSkalaGaji.dao.PayrollSkalaGajiDao"
           p:sessionFactory-ref="sessionFactory" />
 
 

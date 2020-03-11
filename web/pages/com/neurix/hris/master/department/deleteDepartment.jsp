@@ -96,7 +96,7 @@
 
 
 
-                <legend align="left">Edit Department</legend>
+                <legend align="left">Edit Bidang / Divisi</legend>
 
 
                 <table>

@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 public class payrollSkalaGajiPkwt extends BaseModel {
     private String skalaGajiPkwtId;
     private String golonganPkwtId;
+    private String golonganPkwtName;
     private BigDecimal gajiPokokNilai;
     private BigDecimal santunanKhususNilai;
     private BigDecimal tunjFunsionalNilai;
@@ -23,6 +24,14 @@ public class payrollSkalaGajiPkwt extends BaseModel {
     private String santunanKhusus;
     private String tunjFunsional;
     private String tunjtambahan;
+
+    public String getGolonganPkwtName() {
+        return golonganPkwtName;
+    }
+
+    public void setGolonganPkwtName(String golonganPkwtName) {
+        this.golonganPkwtName = golonganPkwtName;
+    }
 
     public String getGajiPokok() {
         return gajiPokok;

@@ -91,7 +91,7 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
                 "  posisi.position_id,\n" +
                 "  position.position_name,\n" +
                 "  pegawai.golongan_id,\n" +
-                "  golongan.golongan_name,\n" +
+                "  golongan.grade_level,\n" +
                 "  position.kelompok_id,\n" +
                 "  pegawai.point,\n" +
                 "  pegawai.status_keluarga,\n" +
@@ -118,7 +118,8 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
                 "  branch.umr, \n" +
                 "pegawai.golongan_dapen_id, \n"+
                 "pegawai.masa_kerja_gol, \n"+
-                "pegawai.tgl_akhir_kontrak \n"+
+                "pegawai.tgl_akhir_kontrak, \n"+
+                "posisi.profesi_id \n"+
                 "   FROM im_hris_pegawai pegawai\n" +
                 "LEFT JOIN it_hris_pegawai_position posisi\n" +
                 "  ON posisi.nip = pegawai.nip\n" +
@@ -137,7 +138,8 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
                 "WHERE pegawai.flag = 'Y'\n" +
                 "AND posisi.flag = 'Y'\n" +
                 "AND posisi.branch_id = '"+branchId+"'\n" +
-                strWhere;
+                strWhere+"\n" +
+                "ORDER BY position.kelompok_id";
 
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
@@ -155,7 +157,8 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
             result.setPositionId((String) row[6]);
             result.setPositionName((String) row[7]);
             result.setGolonganId((String) row[8]);
-            result.setGolonganName((String) row[9]);
+            Integer level = (Integer) row[9];
+            result.setGolonganName(String.valueOf(level));
             result.setKelompokId((String) row[10]);
             result.setPoint(Integer.parseInt(row[11].toString()));
             result.setStatusKeluarga((String) row[12]);
@@ -190,6 +193,9 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
             result.setMasaKerjaGol((Integer)row[35]);
             if (row[36]!=null){
                 result.setTanggalAkhirKontrak((Date)row[36]);
+            }
+            if (row[37]!=null){
+                result.setProfesiId((String) row[37]);
             }
             listOfResult.add(result);
         }
@@ -4042,5 +4048,43 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
             listOfResult.add(result);
         }
         return listOfResult;
+    }
+
+    public BigDecimal totalLain(String tahun, String nip){
+        BigDecimal total = new BigDecimal(0);
+        String query="select sum(lain_lain) as totalLain from it_hris_payroll where tahun ='"+tahun+"'AND nip ='"+nip+"'";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            total = BigDecimal.valueOf(Double.parseDouble(results.toString()));
+        }else{
+            total = BigDecimal.valueOf(0);
+        }
+        return total;
+    }
+    public BigDecimal pttSelainPayroll(String tahun,String nip){
+        BigDecimal total = new BigDecimal(0);
+        String query="select sum(tambahan_lain) as totalLain from it_hris_payroll where flag_payroll ='N'"+"and tahun ='"+tahun+"'AND nip ='"+nip+"'";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            total = BigDecimal.valueOf(Double.parseDouble(results.toString()));
+        }else{
+            total = BigDecimal.valueOf(0);
+        }
+        return total;
+    }
+
+    public BigDecimal pph11Bulan(String tahun,String nip){
+        BigDecimal total = new BigDecimal(0);
+        String query="select sum(pph_gaji) as totalLain from it_hris_payroll where tahun ='"+tahun+"'AND nip ='"+nip+"'";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            total = BigDecimal.valueOf(Double.parseDouble(results.toString()));
+        }else{
+            total = BigDecimal.valueOf(0);
+        }
+        return total;
     }
 }

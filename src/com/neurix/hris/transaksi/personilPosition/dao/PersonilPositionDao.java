@@ -106,6 +106,14 @@ public class PersonilPositionDao extends GenericDao<ItPersonilPositionEntity, St
                 .list();
         return results;
     }
+    public List<ItPersonilPositionEntity> getAllPegawaiOnSamePosisi(String position) throws HibernateException {
+        List<ItPersonilPositionEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItPersonilPositionEntity.class)
+                .add(Restrictions.eq("flag", "Y"))
+                .add(Restrictions.eq("positionId", position))
+                .addOrder(Order.asc("personilPositionId"))
+                .list();
+        return results;
+    }
 
     public List<ItPersonilPositionEntity> getDataPersonil(String branchId, String nip){
         List<ItPersonilPositionEntity> listOfResult = new ArrayList<ItPersonilPositionEntity>();

@@ -114,7 +114,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Add Mutasi
+            Add Mutasi / Rotasi
             <small>e-HEALTH</small>
         </h1>
     </section>
@@ -341,6 +341,15 @@
                             </select>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Tipe:</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" id="tipeMutasi">
+                                <option value="MT">Mutasi</option>
+                                <option value="RT">Rotasi</option>
+                            </select>
+                        </div>
+                    </div>
 
                     <div class="form-group">
                         <label class="control-label col-sm-4" >Nama : </label>
@@ -369,7 +378,7 @@
                                         var labelItem =item.namaPegawai;
                                         var labelNip = item.nip;
                                         mapped[labelItem] = {pegawai:item.namaPegawai, id: item.nip, label: labelItem, branchId : item.branch,
-                                            divisiId: item.divisi, positionId : item.positionId, pjs : item.pjs };
+                                            divisiId: item.divisi, positionId : item.positionId, pjs : item.pjs, golongan:item.golongan };
                                         functions.push(labelItem);
                                     });
                                     process(functions);
@@ -381,6 +390,7 @@
                                     $('#positionLamaId1').val(selectedObj.positionId).change();
                                     $('#branchLamaId1').val(selectedObj.branchId).change();
                                     $('#divisiLamaId1').val(selectedObj.divisiId).change();
+                                    $('#golonganLamaId1').val(selectedObj.golongan).change();
                                     if(selectedObj.pjs == 'Y'){
                                         document.getElementById("pjsLama").checked = true;
                                         $("#txtPjsLama").val('Y');
@@ -405,7 +415,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-sm-4" for="divisiLamaId1">Bagian Lama:</label>
+                        <label class="control-label col-sm-4" for="divisiLamaId1">Divisi/Bidang Lama:</label>
                         <div class="col-sm-8">
                             <s:action id="comboDivisi" namespace="/department" name="searchDepartment_department"/>
                             <s:select list="#comboDivisi.listComboDepartment" id="divisiLamaId1" name="mutasi.divisiLamaId" disabled="true"
@@ -421,6 +431,16 @@
                                       listKey="positionId" listValue="positionName" headerKey="" headerValue="" cssClass="form-control"/>
                         </div>
                     </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" for="positionLamaId1">Level Lama:</label>
+                        <div class="col-sm-8">
+                            <s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>
+                            <s:select list="#initComboTipe.listComboGolongan" id="golonganLamaId1" name="mutasi.levelLama" disabled="true"
+                                      listKey="golonganId" listValue="stLevel" headerKey="" headerValue="" cssClass="form-control"/>
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         <label class="control-label col-sm-4" >PJS Lama:</label>
                         <div class="col-sm-8">
@@ -439,7 +459,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-sm-4" for="divisiBaruId2">Bagian Baru:</label>
+                        <label class="control-label col-sm-4" for="divisiBaruId2">Divisi/Bidang Baru:</label>
                         <div class="col-sm-8">
                             <%--<s:action id="comboDivisi" namespace="/department" name="searchDepartment2_department"/>--%>
                             <%--<s:select list="#comboDivisi.listComboDepartment" id="divisiBaruId2" name="mutasi.divisiBaruId" onchange="listPosisi()"--%>
@@ -461,6 +481,15 @@
                             <s:action id="comboPosition" namespace="/admin/position" name="searchPosition_position"/>
                             <s:select list="#comboPosition" id="positionBaruId1" name="mutasi.positionBaruId" onchange="cekJabatan()"
                                       listKey="positionId" listValue="positionName" headerKey="" headerValue="" cssClass="form-control"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" for="positionLamaId1">Level Baru:</label>
+                        <div class="col-sm-8">
+                            <s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>
+                            <s:select list="#initComboTipe.listComboGolongan" id="golonganBaruId1" name="mutasi.levelBaru"
+                                      listKey="golonganId" listValue="stLevel" headerKey="" headerValue="" cssClass="form-control"/>
                         </div>
                     </div>
 
@@ -524,14 +553,17 @@
                     "<th style='text-align: center; background-color:  #3c8dbc'>Unit Lama</th>"+
                     "<th style='text-align: center; background-color:  #3c8dbc'>Bagian Lama</th>"+
                     "<th style='text-align: center; background-color:  #3c8dbc'>Jabatan Lama</th>"+
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Level Lama</th>"+
                     "<th style='text-align: center; background-color:  #3c8dbc'>PJS Lama</th>"+
                     "<th style='text-align: center; background-color:  #3c8dbc'>Menggantikan (NIP)</th>"+
                     "<th style='text-align: center; background-color:  #3c8dbc'>Menggantikan (Nama)</th>"+
                     "<th style='text-align: center; background-color:  #3c8dbc'>Unit Baru</th>"+
                     "<th style='text-align: center; background-color:  #3c8dbc'>Bagian Baru</th>"+
                     "<th style='text-align: center; background-color:  #3c8dbc'>Jabatan Baru</th>"+
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Level Baru</th>"+
                     "<th style='text-align: center; background-color:  #3c8dbc'>PJS Baru</th>"+
                     "<th style='text-align: center; background-color:  #3c8dbc'>Status</th>"+
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Tipe</th>"+
                     "</tr></thead>";
             var i = i ;
             $.each(listdata, function (i, item) {
@@ -552,6 +584,7 @@
                         '<td align="center">' + item.branchLamaName+ '</td>' +
                         '<td align="center">' + item.divisiLamaName+ '</td>' +
                         '<td align="center">' + item.positionLamaName+ '</td>' +
+                        '<td align="center">' + item.levelLamaName+ '</td>' +
                         '<td align="center">' + item.pjsLama+ '</td>' +
 
                         '<td align="center">' + item.penggantiNip+ '</td>' +
@@ -559,8 +592,10 @@
                         '<td align="center">' + item.branchBaruName+ '</td>' +
                         '<td align="center">' + item.divisiBaruName+ '</td>' +
                         '<td align="center">' + item.positionBaruName+ '</td>' +
+                        '<td align="center">' + item.levelBaruName+ '</td>' +
                         '<td align="center">' + item.pjs+ '</td>' +
                         '<td align="center">' + item.statusName+ '</td>' +
+                        '<td align="center">' + item.tipeMutasiName+ '</td>' +
                         "</tr>";
             });
             $('.sppdPersonTable').append(tmp_table);
@@ -579,11 +614,14 @@
 
 
         $('#btnAddMutasi').click(function(){
+
+
             $('#positionBaruId').empty();
             $('#positionBaruId1').empty();
             $('#penggantiId').empty();
             $("#nip2").prop("readonly", false);
             $("#statusMutasi").prop("disabled", false);
+            $("#tipeMutasi").prop("disabled", false);
             cekStatusMutasi();
             $("#branchBaruId1").prop("readonly", false);
             $("#positionBaruId1").prop("readonly", false);
@@ -734,23 +772,28 @@
         var branchLamaId  = document.getElementById("branchLamaId1").value;
         var divisiLamaId    = document.getElementById("divisiLamaId1").value;
         var positionLamaId = document.getElementById("positionLamaId1").value;
+        var levelLamaId = document.getElementById("golonganLamaId1").value;
         var txtPjsLama = document.getElementById("txtPjsLama").value;
 
         var branchLamaName      = $('#branchLamaId1 option:selected').text();
         var divisiLamaName      = $('#divisiLamaId1 option:selected').text();
         var positionLamaName    = $('#positionLamaId1 option:selected').text();
+        var levelLamaName    = $('#golonganLamaId1 option:selected').text();
 
         var menggantikanId      = document.getElementById("penggantiId").value;
         var menggantikanNama    = $('#penggantiId option:selected').text();
         var branchBaruId        = document.getElementById("branchBaruId1").value;
         var divisiBaruId        = document.getElementById("divisiBaruId2").value;
         var positionBaruId      = document.getElementById("positionBaruId1").value;
+        var levelBaruId      = document.getElementById("golonganBaruId1").value;
         var txtPjsBaru          = document.getElementById("txtPjsBaru").value;
-        var status = document.getElementById("statusMutasi").value;
+        var status              = document.getElementById("statusMutasi").value;
+        var tipe              = document.getElementById("tipeMutasi").value;
 
         var branchBaruName      = $('#branchBaruId1 option:selected').text();
         var divisiBaruName      = $('#divisiBaruId2 option:selected').text();
         var positionBaruName    = $('#positionBaruId1 option:selected').text();
+        var levelBaruName    = $('#golonganBaruId1 option:selected').text();
 
         if(url == 'addPerson'){
             if(nip != ''){
@@ -758,7 +801,8 @@
                     if (confirm('Are you sure you want to save this Record?')) {
                         dwr.engine.setAsync(false);
                         MutasiAction.saveAnggotaAdd(nip, personName, branchLamaId, branchLamaName, divisiLamaId, divisiLamaName, positionLamaId, positionLamaName, txtPjsLama,
-                                menggantikanId, menggantikanNama, branchBaruId, branchBaruName, divisiBaruId, divisiBaruName, positionBaruId, positionBaruName, txtPjsBaru,  status ,function(listdata) {
+                                menggantikanId, menggantikanNama, branchBaruId, branchBaruName, divisiBaruId, divisiBaruName, positionBaruId, positionBaruName, txtPjsBaru,  status ,
+                                tipe,levelLamaId,levelBaruId,levelLamaName,levelBaruName, function(listdata) {
 
                                     if(listdata){
                                         alert('Data Successfully Added');
@@ -774,7 +818,7 @@
                     if (confirm('Are you sure you want to save this Record?')) {
                         dwr.engine.setAsync(false);
                         MutasiAction.saveAnggotaAdd(nip, personName, branchLamaId, branchLamaName, divisiLamaId, divisiLamaName, positionLamaId, positionLamaName, txtPjsLama,
-                                '', '', '', '', '', '', '', '', '',  status ,function(listdata) {
+                                '', '', '', '', '', '', '', '', '',  status ,'','','','','', function(listdata) {
 
                                     if(listdata){
                                         alert('Data Successfully Added');
@@ -907,12 +951,16 @@
             $( "#positionBaruId1" ).prop( "disabled", true );
             $( "#pjsBaru" ).prop( "disabled", true );
             $("#penggantiId").prop("disabled", true);
+            $("#tipeMutasi").prop("disabled", true);
+            $("#golonganBaruId1").prop("disabled", true);
         }else{
             $( "#branchBaruId1" ).prop( "disabled", false);
             $( "#divisiBaruId2" ).prop( "disabled", false);
             $( "#positionBaruId1" ).prop( "disabled",false);
+            $( "#golonganBaruId1" ).prop( "disabled",false);
             $( "#pjsBaru" ).prop( "disabled",false);
             $("#penggantiId").prop("disabled", false);
+            $("#tipeMutasi").prop("disabled", false);
         }
     }
 

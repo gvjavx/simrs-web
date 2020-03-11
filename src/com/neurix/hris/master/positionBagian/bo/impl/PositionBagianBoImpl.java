@@ -150,35 +150,40 @@ public class PositionBagianBoImpl implements PositionBagianBo {
         logger.info("[PositionBagianBoImpl.saveAdd] start process >>>");
 
         if (bean!=null) {
+            String status = cekStatus(bean.getBagianName());
+            if (!status.equalsIgnoreCase("Exist")){
+                String kelompokPositionId = "";
+                try {
+                    // Generating ID, get from postgre sequence
+                    kelompokPositionId = positionBagianDao.getNextPositioBagianId();
+                } catch (HibernateException e) {
+                    logger.error("[PositionBagianBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when getting sequence kelompokPositionId id, please info to your admin..." + e.getMessage());
+                }
 
-            String kelompokPositionId = "";
-            try {
-                // Generating ID, get from postgre sequence
-                kelompokPositionId = positionBagianDao.getNextPositioBagianId();
-            } catch (HibernateException e) {
-                logger.error("[PositionBagianBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when getting sequence kelompokPositionId id, please info to your admin..." + e.getMessage());
+                // creating object entity serializable
+                ImPositionBagianEntity imPositionBagianEntity = new ImPositionBagianEntity();
+
+                imPositionBagianEntity.setBagianId(kelompokPositionId);
+                imPositionBagianEntity.setBagianName(bean.getBagianName());
+                imPositionBagianEntity.setFlag(bean.getFlag());
+                imPositionBagianEntity.setAction(bean.getAction());
+                imPositionBagianEntity.setCreatedWho(bean.getCreatedWho());
+                imPositionBagianEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                imPositionBagianEntity.setCreatedDate(bean.getCreatedDate());
+                imPositionBagianEntity.setLastUpdate(bean.getLastUpdate());
+
+                try {
+                    // insert into database
+                    positionBagianDao.addAndSave(imPositionBagianEntity);
+                } catch (HibernateException e) {
+                    logger.error("[PositionBagianBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data PositionBagian, please info to your admin..." + e.getMessage());
+                }
+            }else{
+                throw new GeneralBOException("Maaf Data Tersebut Sudah Ada");
             }
 
-            // creating object entity serializable
-            ImPositionBagianEntity imPositionBagianEntity = new ImPositionBagianEntity();
-
-            imPositionBagianEntity.setBagianId(kelompokPositionId);
-            imPositionBagianEntity.setBagianName(bean.getBagianName());
-            imPositionBagianEntity.setFlag(bean.getFlag());
-            imPositionBagianEntity.setAction(bean.getAction());
-            imPositionBagianEntity.setCreatedWho(bean.getCreatedWho());
-            imPositionBagianEntity.setLastUpdateWho(bean.getLastUpdateWho());
-            imPositionBagianEntity.setCreatedDate(bean.getCreatedDate());
-            imPositionBagianEntity.setLastUpdate(bean.getLastUpdate());
-
-            try {
-                // insert into database
-                positionBagianDao.addAndSave(imPositionBagianEntity);
-            } catch (HibernateException e) {
-                logger.error("[PositionBagianBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when saving new data PositionBagian, please info to your admin..." + e.getMessage());
-            }
         }
 
         logger.info("[PositionBagianBoImpl.saveAdd] end process <<<");
@@ -314,5 +319,21 @@ public class PositionBagianBoImpl implements PositionBagianBo {
         result.setBagianName(positionBagianEntity.getBagianName());
 
         return result;
+    }
+    public String cekStatus(String golonganId)throws GeneralBOException{
+        String status ="";
+        List<ImPositionBagianEntity> skalaGajiEntity = new ArrayList<>();
+        try {
+            skalaGajiEntity = positionBagianDao.getListPositionBagian(golonganId);
+        } catch (HibernateException e) {
+            logger.error("[PayrollSkalaGajiBoImpl.getSearchPayrollSkalaGajiByCriteria] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        if (skalaGajiEntity.size()>0){
+            status = "exist";
+        }else{
+            status="notExits";
+        }
+        return status;
     }
 }

@@ -41,22 +41,17 @@ public class PayrollBpjsDao extends GenericDao<ImPayrollBpjsEntity, String> {
                 criteria.add(Restrictions.eq("bpjsId", (String) mapCriteria.get("bpjs_id")));
             }
 
-            if (mapCriteria.get("bpjs_kesehatan_persen")!=null) {
-                criteria.add(Restrictions.eq("bpjsKesehatanPersen", (String) mapCriteria.get("bpjs_kesehatan_persen")));
+            if (mapCriteria.get("branch_id")!=null) {
+                criteria.add(Restrictions.eq("branchId", (String) mapCriteria.get("branch_id")));
             }
-            
-            if (mapCriteria.get("bpjs_pensiun_persen")!=null) {
-                criteria.add(Restrictions.eq("bpjsKesehatanPersen", (String) mapCriteria.get("bpjs_kesehatan_persen")));
-            }
-            
-            if (mapCriteria.get("bpjs_jht_persen")!=null) {
-                criteria.add(Restrictions.eq("bpjsKesehatanPersen", (String) mapCriteria.get("bpjs_kesehatan_persen")));
+            if (mapCriteria.get("flag")!=null) {
+                criteria.add(Restrictions.eq("flag", (String) mapCriteria.get("flag")));
             }
             
         }
 
         // Order by
-        criteria.addOrder(Order.desc("bpjs_id"));
+        criteria.addOrder(Order.desc("branchId"));
 
         List<ImPayrollBpjsEntity> results = criteria.list();
 
@@ -74,6 +69,19 @@ public class PayrollBpjsDao extends GenericDao<ImPayrollBpjsEntity, String> {
                 .add(Restrictions.eq("bpjsId", bpjsId))
                 .list();
         return results;
+    }
+    public List<ImPayrollBpjsEntity> getBpjsFilter(String branchId) throws HibernateException {
+        List<ImPayrollBpjsEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImPayrollBpjsEntity.class)
+                .add(Restrictions.eq("branchId", branchId))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+        return results;
+    }
+    public String getNextBpjs() throws HibernateException {
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_payroll_bpjs')");
+        Iterator<BigInteger> iter=query.list().iterator();
+        String sId = String.format("%05d", iter.next());
+        return "BPJS"+sId;
     }
     
 }

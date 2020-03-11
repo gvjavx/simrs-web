@@ -142,36 +142,41 @@ public class PengaliFaktorLemburBoImpl implements PengaliFaktorLemburBo {
         logger.info("[PengaliFaktorLemburBoImpl.saveAdd] start process >>>");
 
         if (bean!=null) {
+            String status = cekStatus(bean.getTipePegawaiId());
+            if (!status.equalsIgnoreCase("Exist")){
+                String alatId;
+                try {
+                    // Generating ID, get from postgre sequence
+                    alatId = pengaliFaktorLemburDao.getNextPengaliFaktorId();
+                } catch (HibernateException e) {
+                    logger.error("[AlatBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when getting sequence alat id, please info to your admin..." + e.getMessage());
+                }
 
-            String alatId;
-            try {
-                // Generating ID, get from postgre sequence
-                alatId = pengaliFaktorLemburDao.getNextPengaliFaktorId();
-            } catch (HibernateException e) {
-                logger.error("[AlatBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when getting sequence alat id, please info to your admin..." + e.getMessage());
+                // creating object entity serializable
+                PengaliFaktorLemburEntity pengaliFaktorLemburEntity = new PengaliFaktorLemburEntity();
+
+                pengaliFaktorLemburEntity.setPengaliFaktorId(alatId);
+                pengaliFaktorLemburEntity.setTipePegawaiId(bean.getTipePegawaiId());
+                pengaliFaktorLemburEntity.setFaktor(bean.getFaktor());
+
+                pengaliFaktorLemburEntity.setFlag(bean.getFlag());
+                pengaliFaktorLemburEntity.setAction(bean.getAction());
+                pengaliFaktorLemburEntity.setCreatedWho(bean.getCreatedWho());
+                pengaliFaktorLemburEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                pengaliFaktorLemburEntity.setCreatedDate(bean.getCreatedDate());
+                pengaliFaktorLemburEntity.setLastUpdate(bean.getLastUpdate());
+
+                try {
+                    // insert into database
+                    pengaliFaktorLemburDao.addAndSave(pengaliFaktorLemburEntity);
+                } catch (HibernateException e) {
+                    logger.error("[AlatBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data alat, please info to your admin..." + e.getMessage());
+                }
             }
-
-            // creating object entity serializable
-            PengaliFaktorLemburEntity pengaliFaktorLemburEntity = new PengaliFaktorLemburEntity();
-
-            pengaliFaktorLemburEntity.setPengaliFaktorId(alatId);
-            pengaliFaktorLemburEntity.setTipePegawaiId(bean.getTipePegawaiId());
-            pengaliFaktorLemburEntity.setFaktor(bean.getFaktor());
-
-            pengaliFaktorLemburEntity.setFlag(bean.getFlag());
-            pengaliFaktorLemburEntity.setAction(bean.getAction());
-            pengaliFaktorLemburEntity.setCreatedWho(bean.getCreatedWho());
-            pengaliFaktorLemburEntity.setLastUpdateWho(bean.getLastUpdateWho());
-            pengaliFaktorLemburEntity.setCreatedDate(bean.getCreatedDate());
-            pengaliFaktorLemburEntity.setLastUpdate(bean.getLastUpdate());
-
-            try {
-                // insert into database
-                pengaliFaktorLemburDao.addAndSave(pengaliFaktorLemburEntity);
-            } catch (HibernateException e) {
-                logger.error("[AlatBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when saving new data alat, please info to your admin..." + e.getMessage());
+            else {
+                throw new GeneralBOException("Maaf, Data dengan Status Pegawai Tersebut Sudah ada");
             }
         }
 
@@ -275,5 +280,21 @@ public class PengaliFaktorLemburBoImpl implements PengaliFaktorLemburBo {
         }
         logger.info("[UserBoImpl.getComboUserWithCriteria] end process <<<");
         return listComboPengaliFaktorLembur;
+    }
+    public String cekStatus(String golonganId)throws GeneralBOException{
+        String status ="";
+        List<PengaliFaktorLemburEntity> skalaGajiEntity = new ArrayList<>();
+        try {
+            skalaGajiEntity = pengaliFaktorLemburDao.getPengali(golonganId);
+        } catch (HibernateException e) {
+            logger.error("[PayrollSkalaGajiBoImpl.getSearchPayrollSkalaGajiByCriteria] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        if (skalaGajiEntity.size()>0){
+            status = "exist";
+        }else{
+            status="notExits";
+        }
+        return status;
     }
 }

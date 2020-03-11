@@ -504,7 +504,7 @@ public class PayrollAction extends BaseMasterAction{
                                     String tunjPeralihan,String pemondokan,String komunikasi, //komponen A
                                     String kopkar, String iuranSp, String iuranPiikb, String bankBri, String bankMandiri, // Komponen rincian C
                                     String infaq, String perkesDanObat, String listrik, String iuranProfesi, String potonganLain, // Komponen rincian C
-                                    String flagJubileum, String flagPensiun){
+                                    String flagJubileum, String flagPensiun, String nilaiPtt, String idPtt){
         Payroll newPayroll = new Payroll();
         newPayroll.setNip(nip);
 //        newPayroll.setTipePegawai(tipePegawai);
@@ -538,6 +538,11 @@ public class PayrollAction extends BaseMasterAction{
         newPayroll.setPotonganLain(potonganLain);
         newPayroll.setPotonganLainNilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(potonganLain))));
 
+        //Komponen D
+        newPayroll.setLainLain(nilaiPtt);
+        newPayroll.setIdLainLain(idPtt);
+        newPayroll.setLainLainNilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(nilaiPtt))));
+
         newPayroll.setCentangJubileum(flagJubileum);
         newPayroll.setFlagJubileum(flagJubileum);
         newPayroll.setCentangPensiun(flagPensiun);
@@ -555,7 +560,7 @@ public class PayrollAction extends BaseMasterAction{
                                                   String tunjPeralihan,String pemondokan,String komunikasi, //komponen A
                                                   String kopkar, String iuranSp, String iuranPiikb, String bankBri, String bankMandiri, // Komponen rincian C
                                                   String infaq, String perkesDanObat, String listrik, String iuranProfesi, String potonganLain, // Komponen rincian C
-                                                  String flagJubileum, String flagPensiun){
+                                                  String flagJubileum, String flagPensiun, String nilaiPtt, String idPtt){
         Payroll newPayroll = new Payroll();
         newPayroll.setPayrollId(payrollId);
 //        newPayroll.setTipePegawai(tipePegawai);
@@ -589,6 +594,11 @@ public class PayrollAction extends BaseMasterAction{
         newPayroll.setIuranProfesiNilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(iuranProfesi))));
         newPayroll.setPotonganLain(potonganLain);
         newPayroll.setPotonganLainNilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(potonganLain))));
+
+        //Komponen D
+        newPayroll.setIdLainLain(idPtt);
+        newPayroll.setLainLain(nilaiPtt);
+        newPayroll.setLainLainNilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(nilaiPtt))));
 
         newPayroll.setCentangJubileum(flagJubileum);
         newPayroll.setFlagJubileum(flagJubileum);
@@ -918,6 +928,7 @@ public class PayrollAction extends BaseMasterAction{
                         payrollPerson.setStMasaKerjaGol(payroll.getStMasaKerjaGol());
                         payrollPerson.setMasaKerjaGol(payroll.getMasaKerjaGol());
                         payrollPerson.setGolonganDapenId(payroll.getGolonganDapenId());
+                        payrollPerson.setGolonganDapenName(payroll.getGolonganDapenName());
                         payrollPerson.setGajiPensiunNilai(payroll.getGajiPensiunNilai());
                         payrollPerson.setGajiPensiun(payroll.getGajiPensiun());
 
@@ -928,6 +939,8 @@ public class PayrollAction extends BaseMasterAction{
                         payrollPerson.setFlagJasprod(payroll.getFlagJasprod());
                         payrollPerson.setFlagInsentif(payroll.getFlagInsentif());
                         payrollPerson.setFlagPensiun(payroll.getFlagPensiun());
+                        payrollPerson.setFlagCutiTahunan(payroll.getFlagCutiTahunan());
+                        payrollPerson.setFlagCutiPanjang(payroll.getFlagCutiPanjang());
 
                         payrollPerson.setFaktorKeluargaId(payroll.getFaktorKeluargaId());
 
@@ -1010,6 +1023,22 @@ public class PayrollAction extends BaseMasterAction{
                         payrollPerson.setTotalPotonganLainNilai(payroll.getTotalPotonganLainNilai());
                         payrollPerson.setIuranYpks(payroll.getIuranYpks());
                         payrollPerson.setIuranYpksNilai(payroll.getIuranYpksNilai());
+
+                        //pph bulan 12
+                        payrollPerson.setPphSeharusnyaNilai(payroll.getPphSeharusnyaNilai());
+                        payrollPerson.setPph11BulanNilai(payroll.getPph11BulanNilai());
+                        payrollPerson.setSelisihPphNilai(payroll.getSelisihPphNilai());
+                        payrollPerson.setTotalLain11BulanNilai(payroll.getTotalLain11BulanNilai());
+
+                        payrollPerson.setPphSeharusnya(payroll.getPphSeharusnya());
+                        payrollPerson.setPph11Bulan(payroll.getPph11Bulan());
+                        payrollPerson.setSelisihPph(payroll.getSelisihPph());
+                        payrollPerson.setTotalLain11Bulan(payroll.getTotalLain11Bulan());
+
+                        //Komponen D
+                        payrollPerson.setLainLainNilai(payroll.getLainLainNilai());
+                        payrollPerson.setLainLain(payroll.getLainLain());
+                        payrollPerson.setIdLainLain(payroll.getIdLainLain());
 
 
                         //Rincian Potongan lain - lain
@@ -1211,6 +1240,10 @@ public class PayrollAction extends BaseMasterAction{
                 payrollPerson.setFlagPjs(payroll.getFlagPjs());
                 payrollPerson.setGajiPensiun(payroll.getGajiPensiun());
                 payrollPerson.setGajiPensiunNilai(payroll.getGajiPensiunNilai());
+                payrollPerson.setGolonganDapenId(payroll.getGolonganDapenId());
+                payrollPerson.setGolonganDapenName(payroll.getGolonganDapenName());
+                payrollPerson.setMasaKerjaGol(payroll.getMasaKerjaGol());
+                payrollPerson.setStMasaKerjaGol(payroll.getStMasaKerjaGol());
 
 
                 payrollPerson.setFlagPayroll(payroll.getFlagPayroll());
@@ -1219,6 +1252,8 @@ public class PayrollAction extends BaseMasterAction{
                 payrollPerson.setFlagJubileum(payroll.getFlagJubileum());
                 payrollPerson.setFlagJasprod(payroll.getFlagJasprod());
                 payrollPerson.setFlagPensiun(payroll.getFlagPensiun());
+                payrollPerson.setFlagCutiTahunan(payroll.getFlagCutiTahunan());
+                payrollPerson.setFlagCutiPanjang(payroll.getFlagCutiPanjang());
 
                 payrollPerson.setFaktorKeluargaId(payroll.getFaktorKeluargaId());
 
@@ -1262,6 +1297,8 @@ public class PayrollAction extends BaseMasterAction{
                 payrollPerson.setKomunikasiNilai(payroll.getKomunikasiNilai());
                 payrollPerson.setTunjanganLembur(payroll.getTunjanganLembur());
                 payrollPerson.setTunjanganLemburNilai(payroll.getTunjanganLemburNilai());
+                payrollPerson.setTambahanLain(payroll.getTambahanLain());
+                payrollPerson.setTambahanLainNilai(payroll.getTambahanLainNilai());
                 payrollPerson.setTotalA(payroll.getTotalA());
                 payrollPerson.setTotalANilai(payroll.getTotalANilai()); //Nilai Total A
 
@@ -1314,6 +1351,11 @@ public class PayrollAction extends BaseMasterAction{
                 payrollPerson.setTotalPotonganLainNilai(payroll.getTotalPotonganLainNilai());
                 payrollPerson.setIuranYpks(payroll.getIuranYpks());
                 payrollPerson.setIuranYpksNilai(payroll.getIuranYpksNilai());
+
+                //Komponen D
+                payrollPerson.setLainLain(payroll.getLainLain());
+                payrollPerson.setIdLainLain(payroll.getIdLainLain());
+                payrollPerson.setLainLainNilai(payroll.getLainLainNilai());
 
 
                 //Rincian Potongan lain - lain
@@ -1417,17 +1459,6 @@ public class PayrollAction extends BaseMasterAction{
 
                 payrollPerson.setFaktorKeluargaId(payroll.getFaktorKeluargaId());
 
-                        /*
-
-                        payrollPerson.setFlagPensiunOn(payroll.isFlagPensiunOn());
-                        payrollPerson.setStTanggalPensiun(payroll.getStTanggalPensiun());
-                        payrollPerson.setLabelPensiun(payroll.getLabelPensiun());
-                        payrollPerson.setCentangPensiun(payroll.getCentangPensiun());
-                        payrollPerson.setTanggalJubileum(payroll.getTanggalJubileum());
-                        payrollPerson.setFlagJubileumOn(payroll.isFlagJubileumOn());
-                        payrollPerson.setCentangJubileum(payroll.getCentangJubileum());
-                        payrollPerson.setFlagJubileum(payroll.getFlagJubileum());
-                        payrollPerson.setLabelJubileum(payroll.getLabelJubileum());*/
 
                 //Komponen A
                 payrollPerson.setGajiGolongan(payroll.getGajiGolongan()); //Gaji
@@ -1504,6 +1535,11 @@ public class PayrollAction extends BaseMasterAction{
                 payrollPerson.setTotalPotonganLainNilai(payroll.getTotalPotonganLainNilai());
                 payrollPerson.setIuranYpks(payroll.getIuranYpks());
                 payrollPerson.setIuranYpksNilai(payroll.getIuranYpksNilai());
+
+                //Komponen D
+                payrollPerson.setIdLainLain(payroll.getIdLainLain());
+                payrollPerson.setLainLain(payroll.getLainLain());
+                payrollPerson.setLainLainNilai(payroll.getLainLainNilai());
 
 
                 //Rincian Potongan lain - lain
@@ -1689,6 +1725,10 @@ public class PayrollAction extends BaseMasterAction{
         payrollPerson.setTotalPotonganLainNilai(payrolls.getTotalPotonganLainNilai());
         payrollPerson.setIuranYpks(payrolls.getIuranYpks());
         payrollPerson.setIuranYpksNilai(payrolls.getIuranYpksNilai());
+
+        payrollPerson.setIdLainLain(payrolls.getIdLainLain());
+        payrollPerson.setLainLain(payrolls.getLainLain());
+        payrollPerson.setLainLainNilai(payrolls.getLainLainNilai());
 
 
         //Rincian Potongan lain - lain
@@ -2607,7 +2647,7 @@ public class PayrollAction extends BaseMasterAction{
                              String tunjPeralihan,String pemondokan,String komunikasi, //komponen A
                              String kopkar, String iuranSp, String iuranPiikb, String bankBri, String bankMandiri, // Komponen rincian C
                              String infaq, String perkesDanObat, String listrik, String iuranProfesi, String potonganLain, // Komponen rincian C
-                             String flagJubileum, String flagPensiun, String tunjPph, String pphGaji){
+                             String flagJubileum, String flagPensiun, String tunjPph, String pphGaji, String nilaiPtt, String idPtt){
         Payroll newPayroll = new Payroll();
         newPayroll.setNip(nip);
 //        newPayroll.setTipePegawai(tipePegawai);
@@ -2648,6 +2688,11 @@ public class PayrollAction extends BaseMasterAction{
         newPayroll.setIuranProfesiNilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(iuranProfesi))));
         newPayroll.setPotonganLain(potonganLain);
         newPayroll.setPotonganLainNilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(potonganLain))));
+
+        //Komponen D
+        newPayroll.setIdLainLain(idPtt);
+        newPayroll.setLainLain(nilaiPtt);
+        newPayroll.setLainLainNilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(nilaiPtt))));
 
         newPayroll.setCentangJubileum(flagJubileum);
         newPayroll.setFlagJubileum(flagJubileum);

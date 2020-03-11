@@ -44,6 +44,21 @@
         <property name="tipeMutasi">
             <column name="tipe" sql-type="varchar" length="10" not-null="false" />
         </property>
+        <property name="status">
+            <column name="status" sql-type="varchar" length="10" not-null="false" />
+        </property>
+        <property name="levelLama">
+            <column name="level_lama" sql-type="varchar" length="10" not-null="false" />
+        </property>
+        <property name="levelBaru">
+            <column name="level_baru" sql-type="varchar" length="10" not-null="false" />
+        </property>
+        <property name="levelLamaName">
+            <column name="level_lama_name" sql-type="varchar" length="10" not-null="false" />
+        </property>
+        <property name="levelBaruName">
+            <column name="level_baru_name" sql-type="varchar" length="10" not-null="false" />
+        </property>
 
 
         <property name="flag">
