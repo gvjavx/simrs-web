@@ -17,6 +17,7 @@
           p:antrianOnlineBoProxy-ref="antrianOnlineBoProxy"
           p:branchBoProxy-ref="branchBoProxy"
           p:billingSystemBoProxy-ref="billingSystemBoProxy"
+          p:permintaanResepBoProxy-ref="permintaanResepBoProxy"
 
     />
     <bean id="rawatInapController" class="com.neurix.simrs.mobileapi.RawatInapController"

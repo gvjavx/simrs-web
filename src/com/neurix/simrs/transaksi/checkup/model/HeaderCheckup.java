@@ -109,6 +109,16 @@ public class HeaderCheckup {
     private String idPermintaanResep;
     private String totalBiaya;
 
+    private String isKronis;
+
+    public String getIsKronis() {
+        return isKronis;
+    }
+
+    public void setIsKronis(String isKronis) {
+        this.isKronis = isKronis;
+    }
+
     public String getTotalBiaya() {
         return totalBiaya;
     }

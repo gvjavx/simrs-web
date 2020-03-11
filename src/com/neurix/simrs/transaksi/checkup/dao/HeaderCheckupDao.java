@@ -74,7 +74,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "pel.nama_pelayanan,\n" +
                     "ranap.nama_ruangan,\n" +
                     "ranap.no_ruangan,\n" +
-                    "detail.id_detail_checkup, detail.no_sep, detail.tarif_bpjs\n" +
+                    "detail.id_detail_checkup, detail.no_sep, detail.tarif_bpjs, detail.is_kronis\n" +
                     "FROM \n" +
                     "it_simrs_header_detail_checkup detail\n" +
                     "INNER JOIN im_simrs_status_pasien status ON status.id_status_pasien = detail.status_periksa\n" +
@@ -109,6 +109,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 if (obj[9] != null) {
                     headerDetailCheckup.setTarifBpjs(new BigDecimal(obj[9].toString()));
                 }
+                headerDetailCheckup.setIsKronis(obj[10] == null ? "" : obj[10].toString());
                 return headerDetailCheckup;
             }
         }

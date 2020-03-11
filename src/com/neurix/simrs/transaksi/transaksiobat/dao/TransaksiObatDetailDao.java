@@ -362,11 +362,12 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
 
             String SQL = "SELECT \n" +
                     "a.id_permintaan_resep, \n" +
-                    "b.id_transaksi_obat_detail, \n" +
-                    "b.hari_kronis  FROM mt_simrs_permintaan_resep a\n" +
-                    "INNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat\n" +
+                    "b.id_detail_checkup,\n" +
+                    "b.is_kronis\n" +
+                    "FROM mt_simrs_permintaan_resep a\n" +
+                    "INNER JOIN it_simrs_header_detail_checkup b ON a.id_detail_checkup = b.id_detail_checkup\n" +
                     "WHERE a.id_approval_obat = :idApp\n" +
-                    "AND b.hari_kronis IS NOT NULL";
+                    "AND b.is_kronis = 'Y'";
 
             List<Object[]> results = new ArrayList<>();
             results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -414,8 +415,8 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
 
                 Object[] objects = results.get(0);
                 transaksiObatDetail.setIdPermintaanResep(objects[0] == null ? "" : objects[0].toString());
-                transaksiObatDetail.setIdDetailCheckup(objects[0] == null ? "" : objects[0].toString());
-                transaksiObatDetail.setTotalHarga(objects[0] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(objects[0].toString()));
+                transaksiObatDetail.setIdDetailCheckup(objects[1] == null ? "" : objects[1].toString());
+                transaksiObatDetail.setTotalHarga(objects[2] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(objects[2].toString()));
 
             }
         }

@@ -240,7 +240,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <s:iterator value="#session.listOfResult" status="listOfUsers">
+                            <s:iterator value="#session.listOfResult" var="row">
                                 <tr>
                                     <td><s:property value="noCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
@@ -252,13 +252,11 @@
                                         <img border="0" class="hvr-grow" id="v_<s:property value="noCheckup"/>"
                                              src="<s:url value="/pages/images/icons8-search-25.png"/>"
                                              style="cursor: pointer;" onclick="detail_pasien('<s:property value="noCheckup"/>','<s:property value="idDetailCheckup"/>')">
-                                        <%--<s:url var="edit" namespace="/checkup" action="edit_checkup" escapeAmp="false">--%>
-                                            <%--<s:param name="id"><s:property value="noCheckup"/></s:param>--%>
-                                        <%--</s:url>--%>
-                                        <%--<s:a href="%{edit}">--%>
-                                            <%--<img border="0" class="hvr-grow" src="<s:url value="/pages/images/edit-flat-new.png"/>"--%>
-                                                 <%--style="cursor: pointer; width: 25px; height: 25px">--%>
-                                        <%--</s:a>--%>
+                                        <s:if test='#row.isKronis == "Y"'>
+                                            <a target="_blank" href="printResepKronis_checkup.action?id=<s:property value="idDetailCheckup"/>">
+                                                <img src="<s:url value="/pages/images/icons8-print-25.png"/>">
+                                            </a>
+                                        </s:if>
                                     </td>
                                 </tr>
                             </s:iterator>

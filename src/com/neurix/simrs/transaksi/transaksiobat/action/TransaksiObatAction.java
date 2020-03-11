@@ -809,7 +809,7 @@ public class TransaksiObatAction extends BaseMasterAction {
                     riwayatTindakan.setIdDetailCheckup(tarifResep.getIdDetailCheckup());
                     riwayatTindakan.setNamaTindakan("Tarif Resep dengan No. Resep " + tarifResep.getIdPermintaanResep());
                     riwayatTindakan.setTotalTarif(new BigDecimal(tarifResep.getTotalHarga()));
-                    riwayatTindakan.setKeterangan("tindakan");
+                    riwayatTindakan.setKeterangan("resep");
 //                    riwayatTindakan.setJenisPasien(jenisPasien);
                     riwayatTindakan.setAction("C");
                     riwayatTindakan.setFlag("Y");
