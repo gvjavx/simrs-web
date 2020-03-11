@@ -937,7 +937,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         LaporanAkuntansi dataAtasan = laporanAkuntansiBo.getNipDanNamaManagerKeuanganDanGeneralManager(data.getUnit());
         Branch branch = branchBo.getBranchById(data.getUnit(),"Y");
         String titleReport="";
-        String reportId="";
+        String reportId="RPT04";
         String report="";
         String unit = "";
         if (("KP").equalsIgnoreCase(data.getUnit())){
@@ -959,27 +959,22 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         switch (data.getTipeLaporan()){
             case ("hutang_usaha"):
                 titleReport="IKHTISAR HUTANG USAHA";
-                reportId="RPT04";
                 report="print_report_akuntansi_ikhitisar_sub_buku_besar";
                 break;
             case("piutang_usaha"):
                 titleReport="IKHTISAR PIUTANG USAHA";
-                reportId="RPT05";
                 report="print_report_akuntansi_ikhitisar_sub_buku_besar";
                 break;
             case ("uang_muka"):
                 titleReport="IKHTISAR UANG MUKA";
-                reportId="RPT06";
                 report="print_report_akuntansi_ikhitisar_sub_buku_besar";
                 break;
             case ("uang_muka_p"):
                 titleReport="IKHTISAR UANG MUKA PASIEN";
-                reportId="RPT15";
                 report="print_report_akuntansi_ikhitisar_sub_buku_besar_pasien";
                 break;
             case ("piutang_pasien"):
                 titleReport="IKHTISAR PIUTANG PASIEN";
-                reportId="RPT13";
                 report="print_report_akuntansi_ikhitisar_sub_buku_besar_pasien";
                 break;
                 default:
@@ -1000,6 +995,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         reportParams.put("periode", data.getBulan()+"-"+data.getTahun());
         reportParams.put("kota",branch.getBranchName());
         reportParams.put("alamatSurat",branch.getAlamatSurat());
+        reportParams.put("tipeLaporan",data.getTipeLaporan());
         reportParams.put("areaId",CommonUtil.userAreaName());
         try {
             preDownload();
@@ -1085,7 +1081,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         Branch branch = branchBo.getBranchById(dataLaporan.getUnit(),"Y");
         String periode =dataLaporan.getBulan()+"-"+dataLaporan.getTahun();
         String titleReport="";
-        String reportId="";
+        String reportId="RPT07";
         String tipeAging ="";
         String unit = "";
         if (("KP").equalsIgnoreCase(dataLaporan.getUnit())){
@@ -1107,32 +1103,27 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         switch (dataLaporan.getTipeLaporan()){
             case("hutang_usaha") :
                 titleReport="AGING HUTANG USAHA";
-                reportId="RPT07";
                 tipeAging ="usaha";
                 break;
             case ("piutang_usaha"):
                 titleReport="AGING PIUTANG USAHA";
-                reportId="RPT08";
                 tipeAging ="usaha";
                 break;
             case ("uang_muka"):
                 titleReport="AGING UANG MUKA";
-                reportId="RPT09";
                 tipeAging ="usaha";
                 break;
             case ("uang_muka_p"):
                 titleReport="AGING UANG MUKA PASIEN";
-                reportId="RPT16";
                 tipeAging ="pasien";
                 break;
             case ("piutang_pasien"):
                 titleReport="AGING PIUTANG PASIEN";
-                reportId="RPT14";
                 tipeAging ="pasien";
                 break;
         }
 
-        List<Aging> agingList = laporanAkuntansiBo.getAging(unit,periode,dataLaporan.getMasterId(),tipeAging,reportId);
+        List<Aging> agingList = laporanAkuntansiBo.getAging(unit,periode,dataLaporan.getMasterId(),tipeAging,reportId,dataLaporan.getTipeLaporan());
         List<Aging> listOfAgingTemp = new ArrayList<>();
         if (agingList.size()==0){
             return "print_report_akuntansi_aging";
@@ -1419,11 +1410,12 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
     public List<JadwalShiftKerjaDetail> listKasirByBranch(String branchId, String stTglFrom ,String stTglTo){
         logger.info("[LaporanAkuntansiAction.listKasirByBranch] start process >>>");
         List<JadwalShiftKerjaDetail> detailList= new ArrayList<>();
+        List<JadwalShiftKerjaDetail> resultFinal= new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         JadwalShiftKerjaBo jadwalShiftKerjaBo = (JadwalShiftKerjaBo) ctx.getBean("jadwalShiftKerjaBoProxy");
         java.sql.Date tglFrom = CommonUtil.convertStringToDate(stTglFrom);
         java.sql.Date tglTo = CommonUtil.convertStringToDate(stTglTo);
-        String profesiId="PR117";
+        String profesiId="PR018";
         try {
             detailList=jadwalShiftKerjaBo.getJadwalShiftKerjaByUnitAndProfesiAndTanggal(branchId,tglFrom,tglTo,profesiId);
         } catch (GeneralBOException e) {
@@ -1437,9 +1429,26 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
         }
 
+        Comparator<JadwalShiftKerjaDetail> comparator = new Comparator<JadwalShiftKerjaDetail>() {
+            @Override
+            public int compare(JadwalShiftKerjaDetail left, JadwalShiftKerjaDetail right) {
+                Long angka1 = Long.parseLong(left.getNip());
+                Long angka2 = Long.parseLong(right.getNip());
+                return (int) (angka1-angka2);
+            }
+        };
+
+        detailList.sort(comparator);
+        String nama="";
+        for (JadwalShiftKerjaDetail jadwalShiftKerjaDetail : detailList){
+            if (!nama.equalsIgnoreCase(jadwalShiftKerjaDetail.getNamaPegawai())){
+                nama=jadwalShiftKerjaDetail.getNamaPegawai();
+                resultFinal.add(jadwalShiftKerjaDetail);
+            }
+        }
         logger.info("[LaporanAkuntansiAction.listKasirByBranch] end process <<<");
 
-        return detailList;
+        return resultFinal;
     }
     public String getAdaTipeLaporan ( String reportId ){
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();

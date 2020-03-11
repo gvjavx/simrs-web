@@ -142,7 +142,16 @@
                                                                 <i class="fa fa-calendar"></i>
                                                             </div>
                                                             <s:textfield id="tglFrom" cssClass="form-control pull-right" onchange="listKasir();"
-                                                                         required="false" size="7"  cssStyle=""/>
+                                                                         required="false" size="7"  cssStyle="background-color: white" readonly="true"/>
+                                                            <script>
+                                                                var today = new Date();
+                                                                var dd = String(today.getDate()).padStart(2, '0');
+                                                                var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                                                                var yyyy = today.getFullYear();
+
+                                                                today = dd + '-' + mm + '-' + yyyy;
+                                                                $('#tglFrom').val(today);
+                                                            </script>
                                                             <div class="input-group-addon">
                                                                 s/d
                                                             </div>
@@ -150,7 +159,16 @@
                                                                 <i class="fa fa-calendar"></i>
                                                             </div>
                                                             <s:textfield id="tglTo" cssClass="form-control pull-right" onchange="listKasir();"
-                                                                         required="false" size="7"  cssStyle=""/>
+                                                                         required="false" size="7" cssStyle="background-color: white" readonly="true"/>
+                                                            <script>
+                                                                var today = new Date();
+                                                                var dd = String(today.getDate()).padStart(2, '0');
+                                                                var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                                                                var yyyy = today.getFullYear();
+
+                                                                today = dd + '-' + mm + '-' + yyyy;
+                                                                $('#tglTo').val(today);
+                                                            </script>
                                                         </div>
                                                         <script>
                                                             $('#tglFrom').datepicker({
@@ -284,4 +302,7 @@
             $('#kasir').html(option);
         }
     }
+    $(document).ready(function () {
+        listKasir();
+    })
 </script>

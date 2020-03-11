@@ -56,7 +56,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
         return results;
     }
 
-    public List<Aging> getAging(String branchId, String periode,String masterId,String reportId){
+    public List<Aging> getAging(String branchId, String periode,String masterId,String reportId,String tipeLaporan){
         List<Aging> listOfResult = new ArrayList<>();
         String tipeWhere = "";
         if (!"".equalsIgnoreCase(masterId)){
@@ -119,6 +119,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "                    im_akun_report_detail\n" +
                 "                where\n" +
                 "                    report_id='"+reportId+"'\n" +
+                "                       and tipe_laporan='"+tipeLaporan+"'" +
                 "                       and flag='Y'"+
                 "            )\n" +
                 tipeWhere +
@@ -148,7 +149,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
         return listOfResult;
     }
 
-    public List<Aging> getAgingPasien(String branchId, String periode,String masterId,String reportId){
+    public List<Aging> getAgingPasien(String branchId, String periode,String masterId,String reportId,String tipeLaporan){
         List<Aging> listOfResult = new ArrayList<>();
         String tipeWhere = "";
         if (!"".equalsIgnoreCase(masterId)){
@@ -211,6 +212,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "      im_akun_report_detail \n" +
                 "    where \n" +
                 "      report_id = '"+reportId+"'\n" +
+                "       and tipe_laporan='"+tipeLaporan+"' \n" +
                 "      and flag='Y'"+
                 "  ) \n" +
                 "  "+tipeWhere+" \n" +

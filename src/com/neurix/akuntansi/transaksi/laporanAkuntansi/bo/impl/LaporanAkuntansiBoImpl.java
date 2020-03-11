@@ -289,13 +289,13 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
     }
 
     @Override
-    public List<Aging> getAging(String branch, String periode, String masterId,String tipeAging,String reportId) throws GeneralBOException {
+    public List<Aging> getAging(String branch, String periode, String masterId,String tipeAging,String reportId,String tipeLaporan) throws GeneralBOException {
         List<Aging> agingList = new ArrayList<>();
         try {
             if (("usaha").equalsIgnoreCase(tipeAging)){
-                agingList = laporanAkuntansiDao.getAging(branch,periode,masterId,reportId);
+                agingList = laporanAkuntansiDao.getAging(branch,periode,masterId,reportId,tipeLaporan);
             }else if (("pasien").equalsIgnoreCase(tipeAging)){
-                agingList = laporanAkuntansiDao.getAgingPasien(branch,periode,masterId,reportId);
+                agingList = laporanAkuntansiDao.getAgingPasien(branch,periode,masterId,reportId,tipeLaporan);
 
             }
         } catch (HibernateException e) {
