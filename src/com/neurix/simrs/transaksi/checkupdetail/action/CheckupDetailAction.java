@@ -1055,7 +1055,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         if ("pindah".equalsIgnoreCase(idKtg)) {
             pindahPoli(noCheckup, idDetailCheckup, poli, idDokter);
         } else if ("rujuk".equalsIgnoreCase(idKtg)) {
-            rujukRawatInap(noCheckup, idDetailCheckup, kelas, kamar, metodeBayar, uangMuka);
+            response = rujukRawatInap(noCheckup, idDetailCheckup, kelas, kamar, metodeBayar, uangMuka);
         } else {
         }
 
@@ -1662,8 +1662,10 @@ public class CheckupDetailAction extends BaseMasterAction {
         logger.info("[CheckupDetailAction.pindahPoli] end process >>>");
     }
 
-    private void rujukRawatInap(String noCheckup, String idDetailCheckup, String kelas, String kamar, String metodeBayar, String uangMuka) {
+    private CrudResponse rujukRawatInap(String noCheckup, String idDetailCheckup, String kelas, String kamar, String metodeBayar, String uangMuka) {
         logger.info("[CheckupDetailAction.rujukRawatInap] start process >>>");
+
+        CrudResponse finalResponse = new CrudResponse();
 
         Timestamp now = new Timestamp(System.currentTimeMillis());
         String user = CommonUtil.userLogin();
@@ -1781,20 +1783,54 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                                         if (getPasien != null) {
 
+                                            String namaDokter = "";
+                                            String idDokter = "";
+
+                                            List<DokterTeam> dokterList = new ArrayList<>();
+                                            DokterTeam dokterTeam = new DokterTeam();
+                                            dokterTeam.setIdDetailCheckup(detailCheckup.getIdDetailCheckup());
+
+                                            try {
+                                                dokterList = teamDokterBo.getByCriteria(dokterTeam);
+                                            } catch (GeneralBOException e) {
+                                                logger.error("[CheckupAction.saveAdd] Error when adding item ," + "[" + e + "] Found problem when saving add data, please inform to your admin.", e);
+                                            }
+
+                                            if (dokterList.size() > 0) {
+                                                dokterTeam = dokterList.get(0);
+
+                                                List<Dokter> dokterArrayList = new ArrayList<>();
+                                                Dokter dokter = new Dokter();
+                                                dokter.setIdDokter(dokterTeam.getIdDokter());
+                                                dokter.setFlag("Y");
+
+                                                try {
+                                                    dokterArrayList = dokterBo.getByCriteria(dokter);
+                                                } catch (GeneralBOException e) {
+                                                    logger.error("[CheckupAction.saveAdd] Error when adding item ," + "[" + e + "] Found problem when saving add data, please inform to your admin.", e);
+                                                }
+
+                                                if (dokterArrayList.size() > 0) {
+                                                    namaDokter = dokterArrayList.get(0).getNamaDokter();
+                                                    idDokter = dokterArrayList.get(0).getIdDokter();
+                                                }
+
+                                            }
+
                                             SepRequest sepRequest = new SepRequest();
                                             sepRequest.setNoKartu(getPasien.getNoBpjs());
                                             sepRequest.setTglSep(now.toString());
                                             sepRequest.setPpkPelayanan(getBranch.getPpkPelayanan());//cons id rumah sakit
                                             sepRequest.setJnsPelayanan("2");//jenis rawat inap, apa jalan 2 rawat jalan, 1 rawat inap
-                                            sepRequest.setKlsRawat("3");//kelas rawat dari bpjs
+                                            sepRequest.setKlsRawat(checkup.getKelasPasien());//kelas rawat dari bpjs
                                             sepRequest.setNoMr(getPasien.getIdPasien());//id pasien
-                                            sepRequest.setAsalRujukan("1");//
+                                            sepRequest.setAsalRujukan(checkup.getRujuk());//
                                             sepRequest.setTglRujukan(checkup.getTglRujukan());
                                             sepRequest.setNoRujukan(checkup.getNoRujukan());
                                             sepRequest.setPpkRujukan(checkup.getNoPpkRujukan());
                                             sepRequest.setCatatan("");
                                             sepRequest.setDiagAwal(diagnosaRawat.getIdDiagnosa());
-                                            sepRequest.setPoliTujuan("IGD");
+                                            sepRequest.setPoliTujuan(checkup.getIdPelayananBpjs());
                                             sepRequest.setPoliEksekutif("0");
                                             sepRequest.setCob("0");
                                             sepRequest.setKatarak("0");
@@ -1808,7 +1844,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                                             sepRequest.setKdKecamatanLakaLantas("");
                                             sepRequest.setKdKabupatenLakaLantas("");
                                             sepRequest.setNoSuratSkdp(getBranch.getSuratSkdp());
-                                            sepRequest.setKodeDpjp("31661");
+                                            sepRequest.setKodeDpjp(idDokter);
                                             sepRequest.setNoTelp(getPasien.getNoTelp());
                                             sepRequest.setUserPembuatSep(user);
 
@@ -1902,38 +1938,6 @@ public class CheckupDetailAction extends BaseMasterAction {
                                                     klaimDetailRequest.setTarifRsBmhp("");
                                                     klaimDetailRequest.setTarifRsSewaAlat("");
 
-                                                    List<DokterTeam> dokterList = new ArrayList<>();
-                                                    DokterTeam dokterTeam = new DokterTeam();
-                                                    dokterTeam.setIdDetailCheckup(detailCheckup.getIdDetailCheckup());
-
-                                                    try {
-                                                        dokterList = teamDokterBo.getByCriteria(dokterTeam);
-                                                    } catch (GeneralBOException e) {
-                                                        logger.error("[CheckupAction.saveAdd] Error when adding item ," + "[" + e + "] Found problem when saving add data, please inform to your admin.", e);
-                                                    }
-
-                                                    String namaDokter = "";
-
-                                                    if (dokterList.size() > 0) {
-                                                        dokterTeam = dokterList.get(0);
-
-                                                        List<Dokter> dokterArrayList = new ArrayList<>();
-                                                        Dokter dokter = new Dokter();
-                                                        dokter.setIdDokter(dokterTeam.getIdDokter());
-                                                        dokter.setFlag("Y");
-
-                                                        try {
-                                                            dokterArrayList = dokterBo.getByCriteria(dokter);
-                                                        } catch (GeneralBOException e) {
-                                                            logger.error("[CheckupAction.saveAdd] Error when adding item ," + "[" + e + "] Found problem when saving add data, please inform to your admin.", e);
-                                                        }
-
-                                                        if (dokterArrayList.size() > 0) {
-                                                            namaDokter = dokterArrayList.get(0).getNamaDokter();
-                                                        }
-
-                                                    }
-
                                                     klaimDetailRequest.setTarifPoliEks("");
                                                     klaimDetailRequest.setNamaDokter(namaDokter);
                                                     klaimDetailRequest.setKodeTarif(getBranch.getKodeTarif());
@@ -1966,14 +1970,29 @@ public class CheckupDetailAction extends BaseMasterAction {
                                                             if (!"".equalsIgnoreCase(grouping1Response.getCbgTarif()) && grouping1Response.getCbgTarif() != null) {
                                                                 if (!"0".equalsIgnoreCase(grouping1Response.getCbgTarif())) {
                                                                     tarifCbg = new BigDecimal(grouping1Response.getCbgTarif());
+
+                                                                    //=====START SET TARIF BPJS DARI E-KLAIM====
+
+                                                                    headerDetailCheckup.setTarifBpjs(tarifCbg);
+
+                                                                    headerDetailCheckup.setKodeCbg(grouping1Response.getCbgCode());
+                                                                    finalResponse.setStatus("success");
+
+                                                                    //=====END SET TARIF BPJS DARI E-KLAIM=====
+                                                                }
+                                                                else {
+                                                                    finalResponse.setStatus("error");
+                                                                    finalResponse.setMsg("Failed To Get Cover Biaya BPJS "+grouping1Response.getMessage());
+                                                                    logger.error("[CheckupAction.saveAdd] Failed To Get Cover Biaya BPJS " + grouping1Response.getMessage());
+                                                                    return finalResponse;
                                                                 }
                                                             }
-
-                                                            //=====START SET TARIF BPJS DARI E-KLAIM====
-
-                                                            headerDetailCheckup.setTarifBpjs(tarifCbg);
-
-                                                            //=====END SET TARIF BPJS DARI E-KLAIM=====
+                                                            else {
+                                                                finalResponse.setStatus("error");
+                                                                finalResponse.setMsg("Failed To Get Cover Biaya BPJS "+grouping1Response.getMessage());
+                                                                logger.error("[CheckupAction.saveAdd] Failed To Get Cover Biaya BPJS " + grouping1Response.getMessage());
+                                                                return finalResponse;
+                                                            }
 
                                                             // jika ada special cmg maka proses grouping stage 2
                                                             if (grouping1Response.getSpecialCmgResponseList().size() > 0) {
@@ -1989,17 +2008,33 @@ public class CheckupDetailAction extends BaseMasterAction {
                                                                     }
                                                                 }
                                                             }
+                                                        }else {
+                                                            finalResponse.setStatus("error");
+                                                            finalResponse.setMsg("Failed To Get Cover Biaya BPJS "+grouping1Response.getMessage());
+                                                            logger.error("[CheckupAction.saveAdd] Failed To Get Cover Biaya BPJS " + grouping1Response.getMessage());
+                                                            return finalResponse;
                                                         }
 
                                                     } else {
+                                                        finalResponse.setStatus("error");
+                                                        finalResponse.setMsg("Tidak dapat menemukan PPK pelayanan Unit, "+claimEklaimResponse.getMessage());
                                                         logger.error("[CheckupAction.saveAdd] Error when adding item ,update claim not success " + claimEklaimResponse.getMessage());
+                                                        return finalResponse;
                                                     }
                                                 }
+                                            }else{
+                                                finalResponse.setStatus("error");
+                                                finalResponse.setMsg("Failed To Generate SEP "+response.getMessage());
+                                                logger.error("[CheckupAction.saveAdd] Failed To Generate SEP " + response.getMessage());
+                                                return finalResponse;
                                             }
                                         }
                                     }
                                 } else {
+                                    finalResponse.setStatus("error");
+                                    finalResponse.setMsg("Tidak dapat menemukan PPK pelayanan Unit");
                                     logger.error("Found Error when search branch id");
+                                    return finalResponse;
                                 }
                             }
                         }
@@ -2039,7 +2074,9 @@ public class CheckupDetailAction extends BaseMasterAction {
                 }
             }
         }
+
         logger.info("[CheckupDetailAction.rujukRawatInap] end process >>>");
+        return finalResponse;
 
     }
 
@@ -2316,7 +2353,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                         sepRequest.setNoKartu(getPasien.getNoBpjs());
                         sepRequest.setTglSep(dateToday);
                         sepRequest.setPpkPelayanan(getBranch.getPpkPelayanan());//cons id rumah sakit
-                        sepRequest.setJnsPelayanan("1");//jenis rawat inap apa jalan
+                        sepRequest.setJnsPelayanan("2");//jenis rawat inap apa jalan
                         sepRequest.setKlsRawat(checkup.getKelasPasien());//kelas rawat dari bpjs
                         sepRequest.setNoMr(checkup.getIdPasien());//id pasien
 //                        sepRequest.setAsalRujukan("1");//
@@ -2324,7 +2361,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 //                        sepRequest.setNoRujukan(checkup.getNoRujukan());
 //                        sepRequest.setPpkRujukan(checkup.getNoPpkRujukan());
 
-                        sepRequest.setAsalRujukan("1");
+                        sepRequest.setAsalRujukan(checkup.getRujuk());
                         sepRequest.setTglRujukan("");
                         sepRequest.setNoRujukan("");
                         sepRequest.setPpkRujukan("");
@@ -2344,7 +2381,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                         sepRequest.setKdKecamatanLakaLantas("");
                         sepRequest.setKdKabupatenLakaLantas("");
                         sepRequest.setNoSuratSkdp(getBranch.getSuratSkdp());
-                        sepRequest.setKodeDpjp("31661");
+                        sepRequest.setKodeDpjp(checkup.getIdDokter());
                         sepRequest.setNoTelp(getPasien.getNoTelp());
                         sepRequest.setUserPembuatSep(userLogin);
 
