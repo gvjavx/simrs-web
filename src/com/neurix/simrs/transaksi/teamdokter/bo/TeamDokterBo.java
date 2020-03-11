@@ -2,6 +2,7 @@ package com.neurix.simrs.transaksi.teamdokter.bo;
 
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
+import com.neurix.simrs.transaksi.teamdokter.model.ItSimrsDokterTeamEntity;
 
 import java.util.List;
 
@@ -10,6 +11,7 @@ import java.util.List;
  */
 public interface TeamDokterBo {
     public List<DokterTeam> getByCriteria(DokterTeam bean) throws GeneralBOException;
+    public List<ItSimrsDokterTeamEntity> getListEntityTeamDokter(DokterTeam bean) throws GeneralBOException;
     public void savaAdd(DokterTeam bean) throws GeneralBOException;
     public void saveEdit(DokterTeam bean) throws GeneralBOException;
 }

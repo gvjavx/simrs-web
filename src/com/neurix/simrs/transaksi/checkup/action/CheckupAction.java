@@ -20,6 +20,9 @@ import com.neurix.simrs.master.dokter.bo.DokterBo;
 import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
 import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
+import com.neurix.simrs.master.obat.action.ObatAction;
+import com.neurix.simrs.master.obat.bo.ObatBo;
+import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.master.pasien.bo.PasienBo;
 import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
 import com.neurix.simrs.master.pasien.model.Pasien;
@@ -37,13 +40,18 @@ import com.neurix.simrs.transaksi.checkup.model.*;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 
+import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
+import com.neurix.simrs.transaksi.diagnosarawat.model.ItSimrsDiagnosaRawatEntity;
 import com.neurix.simrs.transaksi.patrus.model.ItSImrsPatrusEntity;
 import com.neurix.simrs.transaksi.pemeriksaanfisik.model.ItSimrsPemeriksaanFisikEntity;
 import com.neurix.simrs.transaksi.pemeriksaanfisik.model.PemeriksaanFisik;
 import com.neurix.simrs.transaksi.diagnosarawat.bo.DiagnosaRawatBo;
 import com.neurix.simrs.transaksi.diagnosarawat.model.DiagnosaRawat;
 import com.neurix.simrs.transaksi.pengkajian.model.RingkasanKeluarMasukRs;
+import com.neurix.simrs.transaksi.permintaanresep.bo.PermintaanResepBo;
+import com.neurix.simrs.transaksi.permintaanresep.model.ImSimrsPermintaanResepEntity;
 import com.neurix.simrs.transaksi.permintaanresep.model.ObatKronis;
+import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.psikososial.model.ItSimrsDataPsikososialEntity;
 
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
@@ -52,10 +60,14 @@ import com.neurix.simrs.transaksi.rencanarawat.model.ItSimrsRencanaRawatEntity;
 import com.neurix.simrs.transaksi.resikojatuh.model.*;
 import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
 import com.neurix.simrs.transaksi.skorrawatinap.model.ImSimrsKategoriSkorRanapEntity;
+import com.neurix.simrs.transaksi.teamdokter.bo.TeamDokterBo;
+import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
+import com.neurix.simrs.transaksi.teamdokter.model.ItSimrsDokterTeamEntity;
 import com.neurix.simrs.transaksi.tindakanrawat.bo.TindakanRawatBo;
 
 import com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity;
 import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
+import com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsTransaksiObatDetailEntity;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import com.neurix.simrs.transaksi.transfusi.model.ItSimrsTranfusiEntity;
 import org.apache.commons.io.FileUtils;
@@ -2475,12 +2487,113 @@ public class CheckupAction extends BaseMasterAction {
 
     public CrudResponse savePengambilanObatKronis(String idDetailCheckup, String jsonString) throws JSONException {
 
-        CrudResponse crudResponse = new CrudResponse();
+        CrudResponse response = new CrudResponse();
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+        DiagnosaRawatBo diagnosaRawatBo = (DiagnosaRawatBo) ctx.getBean("diagnosaRawatBoProxy");
+        PermintaanResepBo permintaanResepBo = (PermintaanResepBo) ctx.getBean("permintaanResepBoProxy");
+        TeamDokterBo teamDokterBo = (TeamDokterBo) ctx.getBean("teamDokterBoProxy");
 
-        return crudResponse;
+        String noCheckup = "";
+        String kodeDiagnosa = "";
+        ItSimrsHeaderDetailCheckupEntity headerDetailCheckupEntity = new ItSimrsHeaderDetailCheckupEntity();
+        ItSimrsHeaderChekupEntity headerChekupEntity = new ItSimrsHeaderChekupEntity();
+        ItSimrsDiagnosaRawatEntity diagnosaRawatEntity = new ItSimrsDiagnosaRawatEntity();
+        ImSimrsPermintaanResepEntity permintaanResepEntity = new ImSimrsPermintaanResepEntity();
+        List<ItSimrsDokterTeamEntity> dokterTeamEntityList = new ArrayList<>();
+        List<ImtSimrsTransaksiObatDetailEntity> obatDetailEntities = new ArrayList<>();
+
+        if (!"".equalsIgnoreCase(idDetailCheckup)){
+            HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+            detailCheckup.setIdDetailCheckup(idDetailCheckup);
+
+            List<ItSimrsHeaderDetailCheckupEntity> headerDetailCheckupEntities = new ArrayList<>();
+            try {
+                headerDetailCheckupEntities = checkupDetailBo.getListEntityByCriteria(detailCheckup);
+            } catch (GeneralBOException e){
+                logger.error("[CheckupAction.savePengambilanObatKronis] ERROR ", e);
+            }
+
+
+            if (headerDetailCheckupEntities.size() > 0){
+                for (ItSimrsHeaderDetailCheckupEntity detailCheckupEntity : headerDetailCheckupEntities){
+                    noCheckup = detailCheckupEntity.getNoCheckup();
+                    headerDetailCheckupEntity = detailCheckupEntity;
+                }
+            }
+
+            if (!"".equalsIgnoreCase(noCheckup)){
+                List<ItSimrsHeaderChekupEntity> checkupEntities = new ArrayList<>();
+                HeaderCheckup headerCheckup = new HeaderCheckup();
+                headerCheckup.setNoCheckup(noCheckup);
+
+                try {
+                    checkupEntities = checkupBo.getListEntityHeaderCheckup(headerCheckup);
+                } catch (GeneralBOException e){
+                    logger.error("[CheckupAction.savePengambilanObatKronis] ERROR ", e);
+                }
+
+                if (checkupEntities.size() > 0){
+                    headerChekupEntity = checkupEntities.get(0);
+                }
+            }
+
+            DiagnosaRawat diagnosaRawat = new DiagnosaRawat();
+            diagnosaRawat.setIdDetailCheckup(idDetailCheckup);
+            diagnosaRawat.setOrderLastUpdate("Y");
+
+            List<ItSimrsDiagnosaRawatEntity> diagnosaRawatEntities = new ArrayList<>();
+
+            try {
+                diagnosaRawatEntities = diagnosaRawatBo.getListEntityDiagnosaRawat(diagnosaRawat);
+            } catch (GeneralBOException e){
+                logger.error("[CheckupAction.savePengambilanObatKronis] ERROR ", e);
+            }
+
+            if (diagnosaRawatEntities.size() > 0){
+                diagnosaRawatEntity = diagnosaRawatEntities.get(0);
+            }
+
+            PermintaanResep permintaanResep = new PermintaanResep();
+            permintaanResep.setIdDetailCheckup(idDetailCheckup);
+
+            List<ImSimrsPermintaanResepEntity> resepEntities = new ArrayList<>();
+            try {
+                resepEntities = permintaanResepBo.getListEntityResep(permintaanResep);
+            } catch (GeneralBOException e){
+                logger.error("[CheckupAction.savePengambilanObatKronis] ERROR ", e);
+            }
+
+            if (resepEntities.size() > 0){
+                permintaanResepEntity = resepEntities.get(0);
+                for (ImSimrsPermintaanResepEntity resepEntity : resepEntities){
+                }
+            }
+
+            DokterTeam dokterTeam = new DokterTeam();
+            dokterTeam.setIdDetailCheckup(idDetailCheckup);
+
+            try {
+                dokterTeamEntityList = teamDokterBo.getListEntityTeamDokter(dokterTeam);
+            } catch (GeneralBOException e){
+                logger.error("[CheckupAction.savePengambilanObatKronis] ERROR ", e);
+            }
+
+            JSONArray json = new JSONArray(jsonString);
+            ImtSimrsTransaksiObatDetailEntity obatDetail;
+            for (int i = 0; i < json.length(); i++) {
+                JSONObject obj = json.getJSONObject(i);
+                obatDetail = new ImtSimrsTransaksiObatDetailEntity();
+                obatDetail.setIdObat(obj.getString("id_obat"));
+                obatDetail.setJenisSatuan(obj.getString("jenis_satuan"));
+                obatDetail.setQty(new BigInteger(obj.getString("qty")));
+                obatDetailEntities.add(obatDetail);
+            }
+        }
+
+        return response;
     }
 
     private HeaderCheckup createSepAndClaimForPengambilan(HeaderCheckup checkup) {

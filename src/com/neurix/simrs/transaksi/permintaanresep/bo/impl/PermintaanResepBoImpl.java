@@ -98,7 +98,8 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
         return null;
     }
 
-    private List<ImSimrsPermintaanResepEntity> getListEntityResep(PermintaanResep bean) throws GeneralBOException {
+    @Override
+    public List<ImSimrsPermintaanResepEntity> getListEntityResep(PermintaanResep bean) throws GeneralBOException {
         logger.info("[PermintaanResepBoImpl.getListEntityResep] START >>>>>>>");
 
         List<ImSimrsPermintaanResepEntity> permintaanResepEntityList = new ArrayList<>();
