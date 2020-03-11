@@ -76,7 +76,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "      (b.jumlah_debit - b.jumlah_kredit) as total, \n" +
                 "      b.master_id as masterId, \n" +
                 "      d.nama as namaMaster, \n" +
-                "      d.master_id as masterGrp, \n" +
+                "      -- d.master_id as masterGrp, \n" +
                 "      f.nilai_kurs as kurs\n" +
                 "    from \n" +
                 "      (\n" +
@@ -124,7 +124,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "            )\n" +
                 tipeWhere +
                 "order by \n" +
-                "  mastergrp, \n" +
+                "  -- mastergrp, \n" +
                 "  masterId, \n" +
                 "  tglJurnal, \n" +
                 "  masterId asc";

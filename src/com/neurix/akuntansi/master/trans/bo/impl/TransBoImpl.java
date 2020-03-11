@@ -120,6 +120,7 @@ public class TransBoImpl implements TransBo {
             }
             if (imTransEntity != null) {
                 imTransEntity.setTransName(bean.getTransName());
+                imTransEntity.setFlagSumberBaru(bean.getFlagSumberBaru());
                 imTransEntity.setFlag(bean.getFlag());
                 imTransEntity.setAction(bean.getAction());
                 imTransEntity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -157,6 +158,7 @@ public class TransBoImpl implements TransBo {
 
             imTransEntity.setTransId(transId);
             imTransEntity.setTransName(bean.getTransName());
+            imTransEntity.setFlagSumberBaru(bean.getFlagSumberBaru());
             imTransEntity.setFlag(bean.getFlag());
             imTransEntity.setAction(bean.getAction());
             imTransEntity.setCreatedWho(bean.getCreatedWho());
@@ -222,6 +224,8 @@ public class TransBoImpl implements TransBo {
                     returnTrans = new Trans();
                     returnTrans.setTransId(transEntity.getTransId());
                     returnTrans.setTransName(transEntity.getTransName());
+                    returnTrans.setFlagSumberBaru(transEntity.getFlagSumberBaru());
+                    returnTrans.setTipePembayaran(transEntity.getTipePembayaran());
 
                     returnTrans.setCreatedWho(transEntity.getCreatedWho());
                     returnTrans.setCreatedDate(transEntity.getCreatedDate());
