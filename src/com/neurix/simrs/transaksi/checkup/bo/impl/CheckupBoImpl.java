@@ -42,6 +42,7 @@ import com.neurix.simrs.transaksi.pemeriksaanfisik.model.ItSimrsPemeriksaanFisik
 import com.neurix.simrs.transaksi.pemeriksaanfisik.model.PemeriksaanFisik;
 import com.neurix.simrs.transaksi.pengkajian.model.RingkasanKeluarMasukRs;
 import com.neurix.simrs.transaksi.permintaanresep.dao.PermintaanResepDao;
+import com.neurix.simrs.transaksi.permintaanresep.model.ImSimrsPermintaanResepEntity;
 import com.neurix.simrs.transaksi.permintaanresep.model.ObatKronis;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.psikososial.dao.PsikososialDao;
@@ -69,6 +70,10 @@ import com.neurix.simrs.transaksi.teamdokter.model.ItSimrsDokterTeamEntity;
 import com.neurix.simrs.transaksi.tindakanrawat.dao.TindakanRawatDao;
 import com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity;
 import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
+import com.neurix.simrs.transaksi.transaksiobat.dao.ApprovalTransaksiObatDao;
+import com.neurix.simrs.transaksi.transaksiobat.dao.TransaksiObatDetailDao;
+import com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsApprovalTransaksiObatEntity;
+import com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsTransaksiObatDetailEntity;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import com.neurix.simrs.transaksi.transaksitindakanbpjs.dao.TransaksiTindakanBpjsDao;
 import com.neurix.simrs.transaksi.transfusi.dao.TranfusiDao;
@@ -127,6 +132,8 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
     private AsesmenDao asesmenDao;
     private TransaksiTindakanBpjsDao transaksiTindakanBpjsDao;
     private PermintaanResepDao permintaanResepDao;
+    private ApprovalTransaksiObatDao approvalTransaksiObatDao;
+    private TransaksiObatDetailDao transaksiObatDetailDao;
 
     @Override
     public List<HeaderCheckup> getByCriteria(HeaderCheckup bean) throws GeneralBOException {
@@ -1950,7 +1957,137 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
         return transaksiObatDetails;
     }
 
-    public CrudResponse savePendaftaranPengambilanObatKronis(){
+    @Override
+    public CrudResponse savePengambilanObatKronis(HeaderCheckup bean, ItSimrsHeaderChekupEntity headerChekupEntity, ItSimrsHeaderDetailCheckupEntity detailCheckupEntity, ItSimrsDiagnosaRawatEntity diagnosaRawatEntity, ImSimrsPermintaanResepEntity resepEntity, List<ItSimrsDokterTeamEntity> dokterTeamEntities, List<ImtSimrsTransaksiObatDetailEntity> obatDetailEntities) throws GeneralBOException {
+
+        CrudResponse response = new CrudResponse();
+        if (headerChekupEntity != null){
+            headerChekupEntity.setNoCheckup("CKP"+getNextHeaderId());
+            headerChekupEntity.setFlag(bean.getFlag());
+            headerChekupEntity.setAction(bean.getAction());
+            headerChekupEntity.setCreatedDate(bean.getCreatedDate());
+            headerChekupEntity.setCreatedWho(bean.getCreatedWho());
+            headerChekupEntity.setLastUpdate(bean.getLastUpdate());
+            headerChekupEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+            try {
+                headerCheckupDao.addAndSave(headerChekupEntity);
+            } catch (HibernateException e){
+                logger.error("[CheckupAction.savePengambilanObatKronis] ERROR " + e.getMessage());
+            }
+        }
+
+        if (detailCheckupEntity != null){
+            detailCheckupEntity.setIdDetailCheckup("DCM"+getNextDetailCheckupId());
+            detailCheckupEntity.setNoSep(bean.getNoSep());
+            detailCheckupEntity.setTarifBpjs(bean.getTarifBpjs());
+            detailCheckupEntity.setKodeCbg(bean.getKodeCbg());
+            detailCheckupEntity.setNoCheckup(headerChekupEntity.getNoCheckup());
+            detailCheckupEntity.setFlag(bean.getFlag());
+            detailCheckupEntity.setAction(bean.getAction());
+            detailCheckupEntity.setCreatedDate(bean.getCreatedDate());
+            detailCheckupEntity.setCreatedWho(bean.getCreatedWho());
+            detailCheckupEntity.setLastUpdate(bean.getLastUpdate());
+            detailCheckupEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+            try {
+                checkupDetailDao.addAndSave(detailCheckupEntity);
+            } catch (HibernateException e){
+                logger.error("[CheckupAction.savePengambilanObatKronis] ERROR " + e.getMessage());
+            }
+        }
+
+        if (diagnosaRawatEntity != null){
+            diagnosaRawatEntity.setIdDiagnosaRawat("DGR"+getNextIdDiagnosa());
+            diagnosaRawatEntity.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
+            diagnosaRawatEntity.setFlag(bean.getFlag());
+            diagnosaRawatEntity.setAction(bean.getAction());
+            diagnosaRawatEntity.setCreatedDate(bean.getCreatedDate());
+            diagnosaRawatEntity.setCreatedWho(bean.getCreatedWho());
+            diagnosaRawatEntity.setLastUpdate(bean.getLastUpdate());
+            diagnosaRawatEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+            try {
+                checkupDetailDao.addAndSave(detailCheckupEntity);
+            } catch (HibernateException e){
+                logger.error("[CheckupAction.savePengambilanObatKronis] ERROR " + e.getMessage());
+            }
+        }
+
+        if (dokterTeamEntities.size() > 0){
+            for (ItSimrsDokterTeamEntity dokterTeamEntity : dokterTeamEntities){
+                dokterTeamEntity.setIdTeamDokter("TDT"+getNextTeamDokterId());
+                dokterTeamEntity.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
+                dokterTeamEntity.setFlag(bean.getFlag());
+                dokterTeamEntity.setAction(bean.getAction());
+                dokterTeamEntity.setCreatedDate(bean.getCreatedDate());
+                dokterTeamEntity.setCreatedWho(bean.getCreatedWho());
+                dokterTeamEntity.setLastUpdate(bean.getLastUpdate());
+                dokterTeamEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                try {
+                    dokterTeamDao.addAndSave(dokterTeamEntity);
+                } catch (HibernateException e){
+                    logger.error("[CheckupAction.savePengambilanObatKronis] ERROR " + e.getMessage());
+                }
+            }
+        }
+
+        if (resepEntity != null){
+            resepEntity.setIdPermintaanResep("RSP"+getNextIdPermintaanResep());
+            resepEntity.setIdApprovalObat("INV"+getNextIdApprovalObat());
+            resepEntity.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
+            resepEntity.setFlag(bean.getFlag());
+            resepEntity.setAction(bean.getAction());
+            resepEntity.setCreatedDate(bean.getCreatedDate());
+            resepEntity.setCreatedWho(bean.getCreatedWho());
+            resepEntity.setLastUpdate(bean.getLastUpdate());
+            resepEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+            try {
+                permintaanResepDao.addAndSave(resepEntity);
+            } catch (HibernateException e){
+                logger.error("[CheckupAction.savePengambilanObatKronis] ERROR " + e.getMessage());
+            }
+
+            ImtSimrsApprovalTransaksiObatEntity approvalObat = new ImtSimrsApprovalTransaksiObatEntity();
+            approvalObat.setIdApprovalObat(resepEntity.getIdApprovalObat());
+            approvalObat.setTipePermintaan("001");
+            approvalObat.setIdPelayanan(detailCheckupEntity.getIdPelayanan());
+            approvalObat.setFlag(bean.getFlag());
+            approvalObat.setAction(bean.getAction());
+            approvalObat.setCreatedDate(bean.getCreatedDate());
+            approvalObat.setCreatedWho(bean.getCreatedWho());
+            approvalObat.setLastUpdate(bean.getLastUpdate());
+            approvalObat.setLastUpdateWho(bean.getLastUpdateWho());
+            approvalObat.setBranchId(headerChekupEntity.getBranchId());
+
+            try {
+                approvalTransaksiObatDao.addAndSave(approvalObat);
+            } catch (HibernateException e){
+                logger.error("[CheckupAction.savePengambilanObatKronis] ERROR " + e.getMessage());
+            }
+
+            if (obatDetailEntities.size() > 0){
+                for (ImtSimrsTransaksiObatDetailEntity trans : obatDetailEntities){
+                    trans.setIdTransaksiObatDetail("ODT"+getNextIdTransObatDetail());
+                    trans.setIdApprovalObat(approvalObat.getIdApprovalObat());
+                    trans.setFlag(bean.getFlag());
+                    trans.setAction(bean.getAction());
+                    trans.setCreatedDate(bean.getCreatedDate());
+                    trans.setCreatedWho(bean.getCreatedWho());
+                    trans.setLastUpdate(bean.getLastUpdate());
+                    trans.setLastUpdateWho(bean.getLastUpdateWho());
+
+                    try {
+                        transaksiObatDetailDao.addAndSave(trans);
+                    } catch (HibernateException e){
+                        logger.error("[CheckupAction.savePengambilanObatKronis] ERROR " + e.getMessage());
+                    }
+                }
+            }
+        }
+
         return null;
     }
 
@@ -2070,6 +2207,35 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             id = asesmenDao.getNextSeq();
         } catch (HibernateException e) {
             logger.error("[RiwayatTindakanBoImpl.getNextIdRiwayatTindakan] ERROR When create sequences", e);
+        }
+        return id;
+    }
+
+    private String getNextIdPermintaanResep() {
+        String id = "";
+        try {
+            id = permintaanResepDao.getNextId();
+        } catch (HibernateException e) {
+            logger.error("[RiwayatTindakanBoImpl.getNextIdPermintaanResep] ERROR When create sequences", e);
+        }
+        return id;
+    }
+
+    private String getNextIdApprovalObat() {
+        String id = "";
+        try {
+            id = approvalTransaksiObatDao.getNextId();
+        } catch (HibernateException e) {
+            logger.error("[RiwayatTindakanBoImpl.getNextIdApprovalObat] ERROR When create sequences", e);
+        }
+        return id;
+    }
+    private String getNextIdTransObatDetail() {
+        String id = "";
+        try {
+            id = transaksiObatDetailDao.getNextId();
+        } catch (HibernateException e) {
+            logger.error("[RiwayatTindakanBoImpl.getNextIdTransObatDetail] ERROR When create sequences", e);
         }
         return id;
     }
@@ -2199,5 +2365,13 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
 
     public void setPermintaanResepDao(PermintaanResepDao permintaanResepDao) {
         this.permintaanResepDao = permintaanResepDao;
+    }
+
+    public void setApprovalTransaksiObatDao(ApprovalTransaksiObatDao approvalTransaksiObatDao) {
+        this.approvalTransaksiObatDao = approvalTransaksiObatDao;
+    }
+
+    public void setTransaksiObatDetailDao(TransaksiObatDetailDao transaksiObatDetailDao) {
+        this.transaksiObatDetailDao = transaksiObatDetailDao;
     }
 }

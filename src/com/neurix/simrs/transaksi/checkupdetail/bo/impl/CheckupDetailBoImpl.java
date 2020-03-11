@@ -108,7 +108,8 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         return results;
     }
 
-    protected List<ItSimrsHeaderDetailCheckupEntity> getListEntityByCriteria(HeaderDetailCheckup bean) throws GeneralBOException {
+    @Override
+    public List<ItSimrsHeaderDetailCheckupEntity> getListEntityByCriteria(HeaderDetailCheckup bean) throws GeneralBOException {
         logger.info("[CheckupDetailBoImpl.getListEntityByCriteria] Start >>>>>>>");
         List<ItSimrsHeaderDetailCheckupEntity> entityList = new ArrayList<>();
 
