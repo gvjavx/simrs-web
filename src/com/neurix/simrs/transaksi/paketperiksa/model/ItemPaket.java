@@ -1,24 +1,32 @@
 package com.neurix.simrs.transaksi.paketperiksa.model;
 
-import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
  * Created by reza on 12/03/20.
  */
-public class MtSimrsPaketEntity implements Serializable {
-
+public class ItemPaket {
+    private String idItemPaket;
     private String idPaket;
-    private String namaPaket;
-    private String idKelasPaket;
-    private String idPerusahaan;
+    private String idItem;
+    private String namaItem;
+    private String idKategoriItem;
+    private String namaKategoriItem;
+    private String jenisItem;
     private String flag;
     private String action;
     private Timestamp createdDate;
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
-    private String branchId;
+
+    public String getIdItemPaket() {
+        return idItemPaket;
+    }
+
+    public void setIdItemPaket(String idItemPaket) {
+        this.idItemPaket = idItemPaket;
+    }
 
     public String getIdPaket() {
         return idPaket;
@@ -28,28 +36,44 @@ public class MtSimrsPaketEntity implements Serializable {
         this.idPaket = idPaket;
     }
 
-    public String getNamaPaket() {
-        return namaPaket;
+    public String getIdItem() {
+        return idItem;
     }
 
-    public void setNamaPaket(String namaPaket) {
-        this.namaPaket = namaPaket;
+    public void setIdItem(String idItem) {
+        this.idItem = idItem;
     }
 
-    public String getIdKelasPaket() {
-        return idKelasPaket;
+    public String getNamaItem() {
+        return namaItem;
     }
 
-    public void setIdKelasPaket(String idKelasPaket) {
-        this.idKelasPaket = idKelasPaket;
+    public void setNamaItem(String namaItem) {
+        this.namaItem = namaItem;
     }
 
-    public String getIdPerusahaan() {
-        return idPerusahaan;
+    public String getIdKategoriItem() {
+        return idKategoriItem;
     }
 
-    public void setIdPerusahaan(String idPerusahaan) {
-        this.idPerusahaan = idPerusahaan;
+    public void setIdKategoriItem(String idKategoriItem) {
+        this.idKategoriItem = idKategoriItem;
+    }
+
+    public String getNamaKategoriItem() {
+        return namaKategoriItem;
+    }
+
+    public void setNamaKategoriItem(String namaKategoriItem) {
+        this.namaKategoriItem = namaKategoriItem;
+    }
+
+    public String getJenisItem() {
+        return jenisItem;
+    }
+
+    public void setJenisItem(String jenisItem) {
+        this.jenisItem = jenisItem;
     }
 
     public String getFlag() {
@@ -98,13 +122,5 @@ public class MtSimrsPaketEntity implements Serializable {
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
-    }
-
-    public String getBranchId() {
-        return branchId;
-    }
-
-    public void setBranchId(String branchId) {
-        this.branchId = branchId;
     }
 }

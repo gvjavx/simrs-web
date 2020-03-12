@@ -1,24 +1,24 @@
 package com.neurix.simrs.transaksi.paketperiksa.model;
 
-import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
  * Created by reza on 12/03/20.
  */
-public class MtSimrsPaketEntity implements Serializable {
+public class PaketPeriksa {
 
     private String idPaket;
     private String namaPaket;
     private String idKelasPaket;
+    private String namaKelasPaket;
     private String idPerusahaan;
+    private String namaPerusahaan;
     private String flag;
     private String action;
     private Timestamp createdDate;
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
-    private String branchId;
 
     public String getIdPaket() {
         return idPaket;
@@ -44,12 +44,28 @@ public class MtSimrsPaketEntity implements Serializable {
         this.idKelasPaket = idKelasPaket;
     }
 
+    public String getNamaKelasPaket() {
+        return namaKelasPaket;
+    }
+
+    public void setNamaKelasPaket(String namaKelasPaket) {
+        this.namaKelasPaket = namaKelasPaket;
+    }
+
     public String getIdPerusahaan() {
         return idPerusahaan;
     }
 
     public void setIdPerusahaan(String idPerusahaan) {
         this.idPerusahaan = idPerusahaan;
+    }
+
+    public String getNamaPerusahaan() {
+        return namaPerusahaan;
+    }
+
+    public void setNamaPerusahaan(String namaPerusahaan) {
+        this.namaPerusahaan = namaPerusahaan;
     }
 
     public String getFlag() {
@@ -98,13 +114,5 @@ public class MtSimrsPaketEntity implements Serializable {
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
-    }
-
-    public String getBranchId() {
-        return branchId;
-    }
-
-    public void setBranchId(String branchId) {
-        this.branchId = branchId;
     }
 }

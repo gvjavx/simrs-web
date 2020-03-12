@@ -1,24 +1,47 @@
 package com.neurix.simrs.transaksi.paketperiksa.model;
 
-import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
  * Created by reza on 12/03/20.
  */
-public class MtSimrsPaketEntity implements Serializable {
+public class PaketPasien {
 
+    private String id;
+    private String idPasien;
+    private String namaPasien;
     private String idPaket;
     private String namaPaket;
-    private String idKelasPaket;
-    private String idPerusahaan;
     private String flag;
     private String action;
     private Timestamp createdDate;
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
-    private String branchId;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getIdPasien() {
+        return idPasien;
+    }
+
+    public void setIdPasien(String idPasien) {
+        this.idPasien = idPasien;
+    }
+
+    public String getNamaPasien() {
+        return namaPasien;
+    }
+
+    public void setNamaPasien(String namaPasien) {
+        this.namaPasien = namaPasien;
+    }
 
     public String getIdPaket() {
         return idPaket;
@@ -34,22 +57,6 @@ public class MtSimrsPaketEntity implements Serializable {
 
     public void setNamaPaket(String namaPaket) {
         this.namaPaket = namaPaket;
-    }
-
-    public String getIdKelasPaket() {
-        return idKelasPaket;
-    }
-
-    public void setIdKelasPaket(String idKelasPaket) {
-        this.idKelasPaket = idKelasPaket;
-    }
-
-    public String getIdPerusahaan() {
-        return idPerusahaan;
-    }
-
-    public void setIdPerusahaan(String idPerusahaan) {
-        this.idPerusahaan = idPerusahaan;
     }
 
     public String getFlag() {
@@ -98,13 +105,5 @@ public class MtSimrsPaketEntity implements Serializable {
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
-    }
-
-    public String getBranchId() {
-        return branchId;
-    }
-
-    public void setBranchId(String branchId) {
-        this.branchId = branchId;
     }
 }
