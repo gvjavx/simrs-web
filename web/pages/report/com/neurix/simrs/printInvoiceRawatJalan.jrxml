@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printInvoiceRawatJalan" language="groovy" pageWidth="421" pageHeight="595" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
-	<property name="ireport.zoom" value="1.7715610000000053"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="69"/>
+	<property name="ireport.zoom" value="1.771561000000008"/>
+	<property name="ireport.x" value="6"/>
+	<property name="ireport.y" value="663"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -95,6 +95,7 @@
 	<parameter name="reportParams.invoice" class="java.lang.String"/>
 	<parameter name="reportParams.title" class="java.lang.String"/>
 	<parameter name="reportParams.idPasien" class="java.lang.String"/>
+	<parameter name="reportParams.petugas" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT * FROM im_simrs_pasien LIMIT 1]]>
 	</queryString>
@@ -929,8 +930,30 @@
 			</textField>
 		</band>
 	</detail>
+	<columnFooter>
+		<band height="50"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="50"/>
+	</pageFooter>
 	<lastPageFooter>
-		<band height="18"/>
+		<band height="47">
+			<staticText>
+				<reportElement x="263" y="0" width="118" height="11" uuid="f797e7e9-4b48-42cf-a5a0-d3321865a92e"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[TTD]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="263" y="32" width="118" height="15" uuid="e62478fb-92d7-4c3c-9944-95cfc84f18c3"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.petugas} == null ? "" : $P{reportParams.petugas}]]></textFieldExpression>
+			</textField>
+		</band>
 	</lastPageFooter>
 	<summary>
 		<band height="17" splitType="Stretch"/>

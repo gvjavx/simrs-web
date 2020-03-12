@@ -108,7 +108,8 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         return results;
     }
 
-    protected List<ItSimrsHeaderDetailCheckupEntity> getListEntityByCriteria(HeaderDetailCheckup bean) throws GeneralBOException {
+    @Override
+    public List<ItSimrsHeaderDetailCheckupEntity> getListEntityByCriteria(HeaderDetailCheckup bean) throws GeneralBOException {
         logger.info("[CheckupDetailBoImpl.getListEntityByCriteria] Start >>>>>>>");
         List<ItSimrsHeaderDetailCheckupEntity> entityList = new ArrayList<>();
 
@@ -225,6 +226,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             entity.setInvoice(bean.getInvoice());
             entity.setUrlTtd(bean.getUrlTtd());
 //            entity.setMetodePembayaran(bean.getMetodePembayaran());
+
 
             try {
                 checkupDetailDao.updateAndSave(entity);
@@ -349,6 +351,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         detailCheckupEntity.setNoSep(bean.getNoSep());
         detailCheckupEntity.setTarifBpjs(bean.getTarifBpjs());
         detailCheckupEntity.setMetodePembayaran(bean.getMetodePembayaran());
+        detailCheckupEntity.setKodeCbg(bean.getKodeCbg());
 
         try {
             checkupDetailDao.addAndSave(detailCheckupEntity);

@@ -67,6 +67,28 @@ public class TransaksiObatDetail extends BaseModel {
     private Integer hariKronis;
     private String flagKronisDiambil;
 
+    private String idPasien;
+    private String idDetailCheckup;
+
+    private String jenisPeriksaPasien;
+    private String noCheckup;
+
+    public String getNoCheckup() {
+        return noCheckup;
+    }
+
+    public void setNoCheckup(String noCheckup) {
+        this.noCheckup = noCheckup;
+    }
+
+    public String getJenisPeriksaPasien() {
+        return jenisPeriksaPasien;
+    }
+
+    public void setJenisPeriksaPasien(String jenisPeriksaPasien) {
+        this.jenisPeriksaPasien = jenisPeriksaPasien;
+    }
+
     public String getNoJurnal() {
         return noJurnal;
     }
@@ -433,5 +455,21 @@ public class TransaksiObatDetail extends BaseModel {
 
     public void setFlagKronisDiambil(String flagKronisDiambil) {
         this.flagKronisDiambil = flagKronisDiambil;
+    }
+
+    public String getIdPasien() {
+        return idPasien;
+    }
+
+    public void setIdPasien(String idPasien) {
+        this.idPasien = idPasien;
+    }
+
+    public String getIdDetailCheckup() {
+        return idDetailCheckup;
+    }
+
+    public void setIdDetailCheckup(String idDetailCheckup) {
+        this.idDetailCheckup = idDetailCheckup;
     }
 }

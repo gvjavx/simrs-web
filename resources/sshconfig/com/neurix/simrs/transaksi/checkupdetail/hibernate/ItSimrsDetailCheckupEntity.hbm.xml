@@ -95,8 +95,14 @@
         <property name="kodeCbg">
             <column name="kode_cbg" sql-type="varchar" length="50" not-null="false" />
         </property>
+<<<<<<< HEAD
         <property name="urlTtd">
             <column name="url_ttd" sql-type="varchar" length="100" not-null="false" />
+=======
+
+        <property name="isKronis">
+            <column name="is_kronis" sql-type="varchar" length="1" not-null="false" />
+>>>>>>> review
         </property>
     </class>
 </hibernate-mapping>

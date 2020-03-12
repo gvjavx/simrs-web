@@ -89,6 +89,33 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
     }
 
     @Override
+    public void saveEdit(RiwayatTindakan bean) throws GeneralBOException {
+        logger.info("[RiwayatTindakanBoImpl.saveAdd] Start >>>>>>>>");
+        if(bean != null){
+            List<ItSimrsRiwayatTindakanEntity> entityList = getListEntityRiwayatTindakan(bean);
+
+            if(entityList.size() > 0){
+
+                ItSimrsRiwayatTindakanEntity entity  = new ItSimrsRiwayatTindakanEntity();
+                entity = entityList.get(0);
+
+                entity.setTotalTarif(bean.getTotalTarif());
+                entity.setLastUpdate(bean.getLastUpdate());
+                entity.setLastUpdateWho(bean.getLastUpdateWho());
+                entity.setAction("U");
+
+                try {
+                    riwayatTindakanDao.updateAndSave(entity);
+                }catch (HibernateException e){
+                    logger.error("[RiwayatTindakanBoImpl.saveAdd] error when insert riwayat tindakan, Found error :["+e.getMessage()+"]");
+                }
+            }
+        }
+
+        logger.info("[RiwayatTindakanBoImpl.saveAdd] Start >>>>>>>>");
+    }
+
+    @Override
     public List<RiwayatTindakan> cekTodayTarifKamar(String idDetail) throws GeneralBOException {
         logger.info("[RiwayatTindakanBoImpl.cekTodayTarifKamar] START >>>>>>>>");
         List<RiwayatTindakan> riwayatTindakanList = new ArrayList<>();

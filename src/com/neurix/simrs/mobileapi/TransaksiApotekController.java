@@ -75,6 +75,16 @@ public class TransaksiApotekController implements ModelDriven<Object> {
 
     private String action;
 
+    private String jenisPasien;
+
+    public String getJenisPasien() {
+        return jenisPasien;
+    }
+
+    public void setJenisPasien(String jenisPasien) {
+        this.jenisPasien = jenisPasien;
+    }
+
     public String getUsername() {
         return username;
     }

@@ -107,6 +107,25 @@ public class HeaderCheckup {
     private String kodeCbg;
     private String ketRacik;
     private String idPermintaanResep;
+    private String totalBiaya;
+
+    private String isKronis;
+
+    public String getIsKronis() {
+        return isKronis;
+    }
+
+    public void setIsKronis(String isKronis) {
+        this.isKronis = isKronis;
+    }
+
+    public String getTotalBiaya() {
+        return totalBiaya;
+    }
+
+    public void setTotalBiaya(String totalBiaya) {
+        this.totalBiaya = totalBiaya;
+    }
 
     private String urlTtd;
 

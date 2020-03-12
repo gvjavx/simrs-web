@@ -118,7 +118,8 @@ public class TeamDokterBoImpl extends DokterBoImpl implements TeamDokterBo{
         logger.info("[TeamDokterBoImpl.saveEdit] End <<<<<<<<");
     }
 
-    protected List<ItSimrsDokterTeamEntity> getListEntityTeamDokter(DokterTeam bean) throws GeneralBOException{
+    @Override
+    public List<ItSimrsDokterTeamEntity> getListEntityTeamDokter(DokterTeam bean) throws GeneralBOException{
         logger.info("[TeamDokterBoImpl.getListEntityTeamDokter] Start >>>>>>>>");
         List<ItSimrsDokterTeamEntity> entities = new ArrayList<>();
         Map hsCriteria = new HashMap();

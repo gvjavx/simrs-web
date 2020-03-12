@@ -951,8 +951,7 @@
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Perujuk/Asal</label>
                                             <div class="col-md-8">
-                                                <s:select
-                                                        list="#{'sendiri':'Sendiri','dokter':'Dokter','puskesmas':'Puskesmas','rs':'RS Lain','bidan':'Bidan','polis':'Polisi'}"
+                                                <s:select list="#{'1':'PPK 1 - Puskesmas','2':'PPK 2 - RS Lain'}"
                                                         cssStyle="margin-top: 7px"
                                                         name="headerCheckup.rujuk"
                                                         onchange="changePlaceHolder(this)"
@@ -1534,9 +1533,9 @@
         var jenisRujukan = "";
 
         if (noRujukan != '' && perujuk != '') {
-            if (perujuk == 'puskesmas') {
+            if (perujuk == '1') {
                 jenisRujukan = "P";
-            }else if (perujuk == 'rs') {
+            }else if (perujuk == '2') {
                 jenisRujukan = "R";
             }
 
@@ -1969,10 +1968,10 @@
         if (perujuk == "dokter") {
             $("#intansi_perujuk").attr("placeholder", "nama dokter");
         }
-        if (perujuk == "puskesmas") {
+        if (perujuk == "1") {
             $("#intansi_perujuk").attr("placeholder", "nama puskesmas");
         }
-        if (perujuk == "rs") {
+        if (perujuk == "2") {
             $("#intansi_perujuk").attr("placeholder", "nama rumah sakit");
         }
         if (perujuk == "bidan") {
