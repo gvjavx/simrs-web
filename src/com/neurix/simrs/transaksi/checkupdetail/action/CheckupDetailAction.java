@@ -1722,6 +1722,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                         headerDetailCheckup.setLastUpdateWho(user);
                         headerDetailCheckup.setIdDokter(idDokter);
                         headerDetailCheckup.setNoSep(genNoSep);
+                        headerDetailCheckup.setIdJenisPeriksaPasien(checkup.getIdJenisPeriksaPasien());
 
                         try {
                             checkupDetailBo.saveAdd(headerDetailCheckup);

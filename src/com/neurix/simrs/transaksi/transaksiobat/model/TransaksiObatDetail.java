@@ -73,6 +73,16 @@ public class TransaksiObatDetail extends BaseModel {
     private String jenisPeriksaPasien;
     private String noCheckup;
 
+    private String tipeObat;
+
+    public String getTipeObat() {
+        return tipeObat;
+    }
+
+    public void setTipeObat(String tipeObat) {
+        this.tipeObat = tipeObat;
+    }
+
     public String getNoCheckup() {
         return noCheckup;
     }

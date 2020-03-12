@@ -200,7 +200,7 @@
                                                    closeTopics="closeDialog" modal="true"
                                                    resizable="false"
                                                    height="250" width="600" autoOpen="false"
-                                                   title="Searching ...">
+                                                   title="Saving ...">
                                             Please don't close this window, server is processing your request ...
                                             <br>
                                             <center>
@@ -243,6 +243,20 @@
                                                 </a>
                                             </div>
                                         </sj:dialog>
+
+                                        <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
+                                                   height="250" width="600" autoOpen="false" title="Error Dialog"
+                                                   buttons="{
+                                                                                'OK':function() { $('#error_dialog').dialog('close'); }
+                                                                            }"
+                                        >
+                                            <div class="alert alert-danger alert-dismissible">
+                                                <label class="control-label" align="left">
+                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessage"></p>
+                                                </label>
+                                            </div>
+                                        </sj:dialog>
+
                                     </div>
                                 </div>
                             </div>
@@ -562,32 +576,42 @@
 
         $.each(data, function (i, item) {
 
-            var tipe = data[i]["tipe"];
+            var tipe = data[i]["Tipe"];
+            console.log(tipe);
+            var tipeObat = "";
+
+            if(tipe == "bpjs"){
+                tipeObat = "Y";
+            }else{
+                tipeObat = "N";
+            }
+
+            var harga = data[i]["Harga (Rp.)"].replace(/[.]/g, '');
+
             result.push({
                 'id_obat':data[i]["ID"],
                 'nama_obat':data[i]["Obat"],
-                'nama_obat':data[i]["Jumlah"],
-                'nama_obat':data[i]["Jenis Satuan"],
-                'nama_obat':data[i]["Jml Lembar/Box"],
-                'nama_obat':data[i]["Jml Biji/Lembar"],
-                'nama_obat':data[i]["Harga (Rp.)"],
-                'nama_obat':data[i]["Harga (Rp.)"],
+                'qty':data[i]["Jumlah"],
+                'jenis_satuan':data[i]["Jenis Satuan"],
+                'lembar_per_box':data[i]["Jml Lembar/Box"],
+                'biji_per_lembar':data[i]["Jml Biji/Lembar"],
+                'harga':harga,
+                'tipe_obat':tipeObat
             });
         });
 
-        var stringData = JSON.stringify(data);
+        var stringData = JSON.stringify(result);
         var vendor = $('#nama_vendor').val();
         $('#waiting_dialog').dialog('open');
         dwr.engine.setAsync(true);
         PermintaanVendorAction.savePermintaanPO(vendor, stringData, {
             callback: function (response) {
-                if (response == "success") {
-                    dwr.engine.setAsync(false);
+                if (response.status == "success") {
                     $('#waiting_dialog').dialog('close');
                     $('#info_dialog').dialog('open');
                 } else {
-                    $('#warning_po').show().fadeOut(5000);
-                    $('#msg_po').text('Terjadi kesalahan saat penyimpanan data...!');
+                    $('#error_dialog').dialog('open');
+                    $('#errorMessage').text(response.message);
                 }
             }
         });

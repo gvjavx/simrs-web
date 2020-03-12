@@ -246,7 +246,7 @@
 </div>
 
 <div class="modal fade" id="modal-approve">
-    <div class="modal-dialog modal-flat" style="width: 50%">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -269,7 +269,7 @@
                         <td align="center">Qty Request</td>
                         <td align="center">Qty Total Approve</td>
                         <td>Jenis Satuan</td>
-                        <td align="center">Harga</td>
+                        <td align="center">Harga (Rp.)</td>
                         </thead>
                         <tbody id="body_approve">
                         </tbody>
@@ -292,7 +292,7 @@
 </div>
 
 <div class="modal fade" id="modal-detail">
-    <div class="modal-dialog modal-flat" style="width: 60%">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -441,7 +441,7 @@
     }
 
     function confirmBatch(noBatch){
-        $('#modal-approve').modal('show');
+        $('#modal-approve').modal({show:true, backdrop:'static'});
         var table = [];
         $('#body_approve').html('');
         $('#app_no_batch').val('');
@@ -449,7 +449,7 @@
         $('#load'+noBatch).show();
         $('#loading_data').show();
         dwr.engine.setAsync(true);
-        PermintaanVendorAction.initApproval(idpermintaanPo, "Y", "N", noBatch, {
+        PermintaanVendorAction.initApproval(idpermintaanPo, noBatch, {
             callback: function (response) {
                 if (response != null) {
                     $('#app_no_batch').val(noBatch);
@@ -458,7 +458,7 @@
                                 "<td>" + item.idObat + "</td>" +
                                 "<td>" + item.namaObat + "</td>" +
                                 "<td align='center'>" + item.qty + "</td>" +
-                                "<td align='center'>" + item.sumQtyApprove + "</td>" +
+                                "<td align='center'>" + item.qtyApprove + "</td>" +
                                 "<td>" + item.jenisSatuan + "</td>" +
                                 "<td align='right'>" + formatRupiah(item.hargaPo) + "</td>" +
                                 "</tr>";

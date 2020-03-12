@@ -989,6 +989,9 @@ public class CheckupAction extends BaseMasterAction {
                                                 }
                                             }
                                         }
+                                    }else{
+                                        logger.error("[CheckupAction.saveAdd] Error when get biaya cover BPJS, dengan kode diagnosa " + grouping1Response.getMessage());
+                                        throw new GeneralBOException("Error when get biaya cover BPJS, dengan kode diagnosa "+checkup.getDiagnosa()+" [" + grouping1Response.getMessage() + "]");
                                     }
 
                                 } else {

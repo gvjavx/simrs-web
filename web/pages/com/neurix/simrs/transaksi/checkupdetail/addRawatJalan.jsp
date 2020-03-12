@@ -282,6 +282,25 @@
                                     Record has been saved successfully.
                                 </sj:dialog>
 
+                                <sj:dialog id="waiting_dialog" openTopics="showDialogLoading"
+                                           closeTopics="closeDialog" modal="true"
+                                           resizable="false"
+                                           height="250" width="600" autoOpen="false"
+                                           title="Saving ...">
+                                    Please don't close this window, server is processing your request ...
+                                    <br>
+                                    <center>
+                                        <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                             src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                             name="image_indicator_write">
+                                        <br>
+                                        <img class="spin" border="0"
+                                             style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                             src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                             name="image_indicator_write">
+                                    </center>
+                                </sj:dialog>
+
                                 <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true"
                                            resizable="false"
                                            height="250" width="600" autoOpen="false" title="Error Dialog"
@@ -966,7 +985,7 @@
                                      cssClass="form-control" required="false"/>
                         <script>
                             var menus, mapped;
-                            $('#diagnosa_awal').typeahead({
+                            $('#nosa_id_diagnosa_bpjs').typeahead({
                                 minLength: 3,
                                 source: function (query, process) {
                                     menus = [];
@@ -993,7 +1012,7 @@
                                 updater: function (item) {
                                     var selectedObj = mapped[item];
                                     // insert to textarea diagnosa_ket
-                                    $("#diagnosa_ket").val(selectedObj.name);
+                                    $("#nosa_ket_diagnosa").val(selectedObj.name);
                                     return selectedObj.id;
                                 }
                             });
@@ -1928,14 +1947,17 @@
         if(idKtg == "pindah"){
             $('#save_ket').hide();
             $('#load_ket').show();
+            $('#waiting_dialog').dialog('open');
             dwr.engine.setAsync(true);
             CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, jenisPasien, "", "", "", idPasien, metodeBayar, uangMuka, jenisBayar, function (response) {
                 if(response.status == "success"){
+                    $('#waiting_dialog').dialog('close');
                     $('#info_dialog').dialog('open');
                     $('#close_pos').val(6);
                     $('#save_ket').show();
                     $('#load_ket').hide();
                 }else{
+                    $('#waiting_dialog').dialog('close');
                     $('#error_dialog').dialog('open');
                     $('#errorMessage').text(response.msg);
                     $('#save_ket').show();
@@ -1946,14 +1968,17 @@
         if(idKtg == "rujuk"){
             $('#save_ket').hide();
             $('#load_ket').show();
+            $('#waiting_dialog').dialog('open');
             dwr.engine.setAsync(true);
             CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, jenisPasien, "", "", "", idPasien, metodeBayar, uangMuka, jenisBayar, function (response) {
                 if(response.status == "success"){
+                    $('#waiting_dialog').dialog('close');
                     $('#info_dialog').dialog('open');
                     $('#close_pos').val(6);
                     $('#save_ket').show();
                     $('#load_ket').hide();
                 }else{
+                    $('#waiting_dialog').dialog('close');
                     $('#error_dialog').dialog('open');
                     $('#errorMessage').text(response.msg);
                     $('#save_ket').show();
@@ -1964,14 +1989,17 @@
         if(idKtg == "selesai"){
             $('#save_ket').hide();
             $('#load_ket').show();
+            $('#waiting_dialog').dialog('open');
             dwr.engine.setAsync(true);
             CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, jenisPasien, "", "", "", idPasien, metodeBayar, uangMuka, jenisBayar, function (response) {
                 if(response.status == "success"){
+                    $('#waiting_dialog').dialog('close');
                     $('#info_dialog').dialog('open');
                     $('#close_pos').val(6);
                     $('#save_ket').show();
                     $('#load_ket').hide();
                 }else{
+                    $('#waiting_dialog').dialog('close');
                     $('#error_dialog').dialog('open');
                     $('#errorMessage').text(response.msg);
                     $('#save_ket').show();

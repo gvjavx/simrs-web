@@ -2,6 +2,7 @@ package com.neurix.simrs.transaksi.permintaanvendor.bo;
 
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.transaksi.CrudResponse;
+import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.permintaanvendor.model.BatchPermintaanObat;
 import com.neurix.simrs.transaksi.permintaanvendor.model.PermintaanVendor;
 import com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsTransaksiObatDetailEntity;
@@ -17,7 +18,7 @@ import java.util.List;
  */
 public interface PermintaanVendorBo {
     public List<PermintaanVendor> getByCriteria(PermintaanVendor bean) throws GeneralBOException;
-    public void saveListObatPo(PermintaanVendor bean) throws GeneralBOException;
+    public CheckResponse saveListObatPo(PermintaanVendor bean) throws GeneralBOException;
     public void saveNewPabrik(TransaksiObatDetail bean, List<String> idJenisObats) throws GeneralBOException;
     public void saveUpdateTransObatDetail(TransaksiObatDetail bean) throws GeneralBOException;
     public void saveConfirm(PermintaanVendor bean, List<TransaksiObatDetail> listObat, List<TransaksiObatDetail> listObatNew) throws GeneralBOException;
@@ -31,4 +32,6 @@ public interface PermintaanVendorBo {
     public CrudResponse tutupPurchaseOrder(String idPermintaanVendor, String noJurnal) throws GeneralBOException;
     public List getListPermintaanVendorDoc(String idPermintaanVendor) throws GeneralBOException;
     public void saveUpoadDocPermintaanVendor(PermintaanVendor bean) throws GeneralBOException;
+
+    public List<TransaksiObatDetail> getListObatByBatch(String idPermintaan, Integer noBatch) throws GeneralBOException;
 }
