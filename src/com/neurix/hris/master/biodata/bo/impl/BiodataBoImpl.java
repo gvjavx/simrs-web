@@ -612,7 +612,6 @@ public class BiodataBoImpl implements BiodataBo {
                 imBiodataEntity.setFotoUpload(bean.getFotoUpload());
                 imBiodataEntity.setStatusCaption(bean.getStatusCaption());
                 imBiodataEntity.setKeterangan(bean.getKeterangan());
-                imBiodataEntity.setTanggalAktif(bean.getTanggalAktif());
                 imBiodataEntity.setTanggalMasuk(CommonUtil.convertStringToDate(bean.getStTanggalMasuk()));
                 imBiodataEntity.setStatusPegawai(bean.getStatusPegawai());
                 imBiodataEntity.setStatusKeluarga(bean.getStatusKeluarga());
