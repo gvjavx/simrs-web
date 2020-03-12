@@ -3080,7 +3080,7 @@ public class BiodataBoImpl implements BiodataBo {
             ImtHrisHistoryJabatanPegawaiEntity imPengalamanKerjaEntity = null;
             try {
                 // Get data from database by ID
-                imPengalamanKerjaEntity = historyJabatanPegawaiDao.getById("historyJabatanPegawaiId", PengalamanKerjaId);
+                imPengalamanKerjaEntity = historyJabatanPegawaiDao.getById("historyJabatanId", PengalamanKerjaId);
             } catch (HibernateException e) {
                 logger.error("[PengalamanKerjaBoImpl.saveDelete] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when searching data Pengalaman by Kode Pengalaman, please inform to your admin...," + e.getMessage());
