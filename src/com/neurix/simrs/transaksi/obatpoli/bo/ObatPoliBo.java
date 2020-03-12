@@ -40,4 +40,6 @@ public interface ObatPoliBo {
     public void updateDiterimaFlagBatch(TransaksiObatBatch bean) throws GeneralBOException;
 
     public List<ObatPoli> getListObatPoliGroup(String idPelayanan, String branchId) throws GeneralBOException;
+
+    public List<ObatPoli> getListObatGroupPoli(String idPelayanan, String branchId, String flagBpjs) throws GeneralBOException;
 }

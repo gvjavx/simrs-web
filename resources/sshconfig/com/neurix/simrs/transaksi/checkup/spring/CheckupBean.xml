@@ -17,6 +17,7 @@
           p:antrianOnlineBoProxy-ref="antrianOnlineBoProxy"
           p:branchBoProxy-ref="branchBoProxy"
           p:billingSystemBoProxy-ref="billingSystemBoProxy"
+          p:permintaanResepBoProxy-ref="permintaanResepBoProxy"
 
     />
     <bean id="rawatInapController" class="com.neurix.simrs.mobileapi.RawatInapController"
@@ -65,6 +66,9 @@
           p:antrianOnlineDao-ref="antrianOnlineDao"
           p:asesmenDao-ref="asesmenDao"
           p:transaksiTindakanBpjsDao-ref="transaksiTindakanBpjsDao"
+          p:permintaanResepDao-ref="permintaanResepDao"
+          p:transaksiObatDetailDao-ref="transaksiObatDetailDao"
+          p:approvalTransaksiObatDao-ref="approvalTransaksiObatDao"
 
     />
 
@@ -85,6 +89,7 @@
             <props>
                 <prop key="getByCriteria">readOnly</prop>
                 <prop key="saveAdd">PROPAGATION_REQUIRED</prop>
+                <prop key="savePengambilanObatKronis">PROPAGATION_REQUIRED</prop>
             </props>
         </property>
     </bean>

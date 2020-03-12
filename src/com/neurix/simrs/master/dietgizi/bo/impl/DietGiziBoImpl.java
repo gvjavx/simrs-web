@@ -63,7 +63,7 @@ public class DietGiziBoImpl implements DietGiziBo {
                 hsCriteria.put("branch_id", bean.getIdDietGizi());
             }
             if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
-                hsCriteria.put("flag", "Y");
+                hsCriteria.put("flag", bean.getFlag());
             }
 
             try {

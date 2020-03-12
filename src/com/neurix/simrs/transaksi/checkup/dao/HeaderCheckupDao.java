@@ -7,6 +7,7 @@ import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.pengkajian.model.RingkasanKeluarMasukRs;
+import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
@@ -73,7 +74,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "pel.nama_pelayanan,\n" +
                     "ranap.nama_ruangan,\n" +
                     "ranap.no_ruangan,\n" +
-                    "detail.id_detail_checkup, detail.no_sep, detail.tarif_bpjs\n" +
+                    "detail.id_detail_checkup, detail.no_sep, detail.tarif_bpjs, detail.is_kronis\n" +
                     "FROM \n" +
                     "it_simrs_header_detail_checkup detail\n" +
                     "INNER JOIN im_simrs_status_pasien status ON status.id_status_pasien = detail.status_periksa\n" +
@@ -108,6 +109,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 if (obj[9] != null) {
                     headerDetailCheckup.setTarifBpjs(new BigDecimal(obj[9].toString()));
                 }
+                headerDetailCheckup.setIsKronis(obj[10] == null ? "" : obj[10].toString());
                 return headerDetailCheckup;
             }
         }
@@ -200,7 +202,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     .setParameter("dateTo", dateTo)
                     .list();
 
-        }else{
+        } else {
 
             SQL = SQL + order;
 
@@ -337,7 +339,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         }
 
         if (poli != null && !"".equalsIgnoreCase(poli)) {
-            pelayanan = "\n AND b.id_pelayanan IN ("+poli+") \n";
+            pelayanan = "\n AND b.id_pelayanan IN (" + poli + ") \n";
         }
 
         String SQL = "SELECT \n" +
@@ -422,7 +424,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         }
 
         if (poli != null && !"".equalsIgnoreCase(poli)) {
-            pelayanan = "\n AND b.id_pelayanan IN ("+poli+") \n";;
+            pelayanan = "\n AND b.id_pelayanan IN (" + poli + ") \n";
+            ;
         }
 
         String SQL = "SELECT a.id_pasien, a.nama, a.desa_id, d.desa_name, b.id_pelayanan,\n" +
@@ -438,6 +441,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "AND c.tipe_pelayanan = 'rawat_jalan' \n" +
                 "AND CAST(a.created_date AS date) = current_date\n" +
                 "AND pr.id_detail_checkup IS NULL \n" +
+                "AND b.is_kronis IS NULL \n" +
                 "ORDER BY c.nama_pelayanan, b.tgl_antrian ASC";
 
         List<Object[]> result = new ArrayList<>();
@@ -473,7 +477,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         }
 
         if (poli != null && !"".equalsIgnoreCase(poli)) {
-            pelayanan = "\n AND b.id_pelayanan IN ("+poli+") \n";
+            pelayanan = "\n AND b.id_pelayanan IN (" + poli + ") \n";
         }
 
         String SQL = "SELECT a.id_pasien, a.nama, a.desa_id, d.desa_name, b.id_pelayanan,\n" +
@@ -507,7 +511,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "WHERE b.status_periksa = '1'\n" +
                 "AND pr.status IS NOT NULL\n" +
                 "AND pr.flag = 'Y'\n" +
-                "AND a.branch_id LIKE :branchId \n" + pelayanan+
+                "AND a.branch_id LIKE :branchId \n" + pelayanan +
                 "AND pl.tipe_pelayanan = 'rawat_jalan' OR  pl.tipe_pelayanan = 'igd' \n" +
                 "AND CAST(a.created_date AS date) = current_date\n" +
                 "ORDER BY c.nama_pelayanan, pr.tgl_antrian ASC";
@@ -527,7 +531,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 checkup.setNamaPelayanan(obj[5].toString());
                 checkup.setNamaKecamatan(obj[7].toString());
                 checkup.setTglAntian((Timestamp) obj[8]);
-                if (obj[9] != null && "Y".equalsIgnoreCase(obj[9].toString())){
+                if (obj[9] != null && "Y".equalsIgnoreCase(obj[9].toString())) {
                     checkup.setKetRacik("Obat Racik, Harap Menunggu");
                 }
                 checkup.setIdPermintaanResep(obj[10].toString());
@@ -688,7 +692,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "INNER JOIN im_hris_kecamatan f ON e.kecamatan_id = f.kecamatan_id\n" +
                     "INNER JOIN im_hris_kota g ON f.kota_id = g.kota_id\n" +
                     "INNER JOIN im_hris_provinsi h ON g.provinsi_id = h.provinsi_id\n" +
-                    "INNER JOIN im_simrs_pasien j ON a.id_pasien = j.id_pasien\n"+
+                    "INNER JOIN im_simrs_pasien j ON a.id_pasien = j.id_pasien\n" +
                     "LEFT JOIN it_simrs_rawat_inap i ON b.id_detail_checkup = i.id_detail_checkup\n" +
                     "WHERE b.id_detail_checkup = :id";
 
@@ -717,7 +721,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     checkup.setProfesi(obj[10] == null ? "" : obj[10].toString());
                     checkup.setNoTelp(obj[11] == null ? "" : obj[11].toString());
                     checkup.setAgama(obj[12] == null ? "" : obj[12].toString());
-                    checkup.setUrlKtp(obj[13] == null ? "" : CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_KTP_PASIEN+obj[13].toString());
+                    checkup.setUrlKtp(obj[13] == null ? "" : CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_KTP_PASIEN + obj[13].toString());
                     checkup.setIdJenisPeriksaPasien(obj[14] == null ? "" : obj[14].toString());
                     checkup.setIdDetailCheckup(obj[15] == null ? "" : obj[15].toString());
                     checkup.setIdPelayanan(obj[16] == null ? "" : obj[16].toString());
@@ -736,13 +740,70 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     checkup.setNamaRuangan(obj[27] == null ? "" : obj[27].toString());
                     checkup.setMetodePembayaran(obj[28] == null ? "" : obj[28].toString());
                     checkup.setInvoice(obj[29] == null ? "" : obj[29].toString());
-                    checkup.setUrlDocRujuk(obj[30] == null ? "" : CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_DOC_RUJUK_PASIEN+obj[30].toString());
+                    checkup.setUrlDocRujuk(obj[30] == null ? "" : CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_DOC_RUJUK_PASIEN + obj[30].toString());
 
                 }
             }
         }
 
         return checkup;
+    }
+
+    public List<TransaksiObatDetail> getListObatkronis(String idDetailCheckup, String idApproval) {
+
+        List<TransaksiObatDetail> transaksiObatDetailList = new ArrayList<>();
+
+        if (idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup) && idApproval != null && !"".equalsIgnoreCase(idApproval)) {
+
+            String SQL = "SELECT\n" +
+                    "a.id_permintaan_resep,\n" +
+                    "b.id_obat,\n" +
+                    "d.nama_obat,\n" +
+                    "c.box,\n" +
+                    "c.lembar,\n" +
+                    "c.biji,\n" +
+                    "d.lembar_per_box,\n" +
+                    "d.biji_per_lembar,\n" +
+                    "b.hari_kronis,\n" +
+                    "c.id_pelayanan,\n" +
+                    "b.id_transaksi_obat_detail\n" +
+                    "FROM mt_simrs_permintaan_resep a\n" +
+                    "INNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat\n" +
+                    "INNER JOIN (SELECT id_pelayanan, id_obat, SUM(qty_box) box, SUM(qty_lembar) lembar, SUM(qty_biji) biji\n" +
+                    "FROM mt_simrs_obat_poli GROUP BY id_pelayanan, id_obat) c ON a.tujuan_pelayanan = c.id_pelayanan\n" +
+                    "INNER JOIN (SELECT id_obat, nama_obat, lembar_per_box, biji_per_lembar\n" +
+                    "FROM im_simrs_obat WHERE flag_kronis = 'Y' AND flag = 'Y' GROUP BY id_obat, nama_obat, lembar_per_box, biji_per_lembar) d ON c.id_obat = d.id_obat\n" +
+                    "WHERE a.id_detail_checkup = :idDetail\n" +
+                    "AND a.id_approval_obat = :idApproval\n";
+
+            List<Object[]> results = new ArrayList<>();
+
+            results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("idDetail", idDetailCheckup)
+                    .setParameter("idApproval", idApproval)
+                    .list();
+
+            if (results.size() > 0) {
+                for (Object[] obj : results) {
+                    TransaksiObatDetail detail = new TransaksiObatDetail();
+                    detail.setIdPermintaanResep(obj[0] == null ? "" : obj[0].toString());
+                    detail.setIdObat(obj[1] == null ? "" : obj[1].toString());
+                    detail.setNamaObat(obj[2] == null ? "" : obj[2].toString());
+                    detail.setQtyBox(obj[3] == null ? new BigInteger(String.valueOf("0")) : new BigInteger(String.valueOf(obj[3].toString())));
+                    detail.setQtyLembar(obj[4] == null ? new BigInteger(String.valueOf("0")) : new BigInteger(String.valueOf(obj[4].toString())));
+                    detail.setQtyBiji(obj[5] == null ? new BigInteger(String.valueOf("0")) : new BigInteger(String.valueOf(obj[5].toString())));
+                    detail.setLembarPerBox(obj[6] == null ? new BigInteger(String.valueOf("0")) : new BigInteger(String.valueOf(obj[6].toString())));
+                    detail.setBijiPerLembar(obj[7] == null ? new BigInteger(String.valueOf("0")) : new BigInteger(String.valueOf(obj[7].toString())));
+                    detail.setHariKronis(obj[8] == null ? 0 : (Integer) obj[8]);
+                    detail.setIdPelayanan(obj[9] == null ? "" : obj[9].toString());
+                    detail.setIdTransaksiObatDetail(obj[10] == null ? "" : obj[10].toString());
+                    transaksiObatDetailList.add(detail);
+                }
+
+            }
+        }
+
+        return transaksiObatDetailList;
     }
 
     public String getNextSeq() {

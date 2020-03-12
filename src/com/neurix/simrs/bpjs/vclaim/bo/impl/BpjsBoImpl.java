@@ -1032,6 +1032,7 @@ public class BpjsBoImpl extends BpjsService implements BpjsBo {
                 if (myResponseCheck.isNull("response")) {
                     JSONObject response = myResponseCheck.getJSONObject("metaData");
                     logger.error("[BPJSBoImpl.insertSepBpjs] : " + response.getString("message"));
+                    sepResponse.setMessage(response.getString("message"));
                 } else {
                     JSONObject response = myResponseCheck.getJSONObject("response");
                     JSONObject sep = response.getJSONObject("sep");
@@ -1070,6 +1071,7 @@ public class BpjsBoImpl extends BpjsService implements BpjsBo {
                 }
             } catch (IOException | JSONException | GeneralSecurityException e) {
                 e.printStackTrace();
+                sepResponse.setMessage("Found Error "+e);
             }
         }
 

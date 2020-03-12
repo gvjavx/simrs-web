@@ -2047,6 +2047,24 @@ public class ObatPoliBoImpl implements ObatPoliBo {
         return obatPoliList;
     }
 
+    @Override
+    public List<ObatPoli> getListObatGroupPoli(String idPelayanan, String branchId, String flagBpjs) throws GeneralBOException {
+
+        List<ObatPoli> obatPoliList = new ArrayList<>();
+
+        if(idPelayanan != null && !"".equalsIgnoreCase(idPelayanan) && branchId != null && !"".equalsIgnoreCase(branchId)){
+
+            try {
+                obatPoliList = obatPoliDao.getIdObatGroupPoli(idPelayanan, branchId, flagBpjs);
+            }catch (HibernateException e){
+                logger.error("found error when search obat poli "+e.getMessage());
+            }
+        }
+
+        return obatPoliList;
+
+    }
+
     // list method seq
 
     private String getNextPermintaanObatId() throws GeneralBOException {

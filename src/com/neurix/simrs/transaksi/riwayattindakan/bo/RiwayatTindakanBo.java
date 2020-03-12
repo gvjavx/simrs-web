@@ -9,6 +9,7 @@ public interface RiwayatTindakanBo {
 
     public List<RiwayatTindakan> getByCriteria(RiwayatTindakan bean) throws GeneralBOException;
     public void saveAdd(RiwayatTindakan bean) throws GeneralBOException;
+    public void saveEdit(RiwayatTindakan bean) throws GeneralBOException;
     public List<RiwayatTindakan> cekTodayTarifKamar(String idDetail) throws GeneralBOException;
 
 }

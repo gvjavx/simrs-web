@@ -960,11 +960,10 @@
                         <div class="form-group">
                         <label class="col-md-3">Diagnosa</label>
                         <div class="col-md-7">
-                        <s:textfield id="diagnosa_awal" style="margin-top: 7px"
+                        <s:textfield id="nosa_id_diagnosa_bpjs" style="margin-top: 7px"
                                      name="headerCheckup.diagnosa"
-                                     onkeypress="$(this).css('border','')"
+                                     onkeypress="var warn =$('#war_diagnosa_bpjs').is(':visible'); if (warn){$('#cor_diagnosa_bpjs').show().fadeOut(3000);$('#war_diagnosa_bpjs').hide()}"
                                      cssClass="form-control" required="false"/>
-                        <s:hidden name="headerCheckup.jenisTransaksi"/>
                         <script>
                             var menus, mapped;
                             $('#diagnosa_awal').typeahead({
@@ -1000,8 +999,16 @@
                             });
                         </script>
                         </div>
+                            <div class="col-md-2">
+                                <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                                   id="war_diagnosa_bpjs"><i class="fa fa-times"></i> required</p>
+                                <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                                   id="cor_diagnosa_bpjs"><i class="fa fa-check"></i> correct</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
                         <div class="col-md-offset-3 col-md-7">
-                        <s:textarea rows="4" id="diagnosa_ket"
+                        <s:textarea rows="4" id="nosa_ket_diagnosa"
                                     cssStyle="margin-top: 7px" readonly="true"
                                     name="headerCheckup.namaDiagnosa"
                                     cssClass="form-control"></s:textarea>
@@ -2318,16 +2325,26 @@
     function saveDiagnosa(id) {
 
         var idDiagnosa = $('#nosa_id_diagnosa').val();
+        var idDiagnosaBpjs = $('#nosa_id_diagnosa_bpjs').val();
+        var ketDiagnosa = $('#nosa_ket_diagnosa').val();
         var jenisDiagnosa = $('#nosa_jenis_diagnosa').val();
+        var jenisPasien = $('#jenis_pasien').val();
+        var idDiag = "";
 
-        if (idDetailCheckup != '' && idDiagnosa != '' && jenisDiagnosa != '') {
+        if(jenisPasien == "bpjs"){
+            idDiag = idDiagnosaBpjs;
+        }else{
+            idDiag = idDiagnosa;
+        }
+
+        if (idDetailCheckup != '' && idDiag != '' && jenisDiagnosa != '') {
 
             $('#save_diagnosa').hide();
             $('#load_diagnosa').show();
 
             if (id != '') {
                 dwr.engine.setAsync(true);
-                DiagnosaRawatAction.editDiagnosa(id, idDiagnosa, jenisDiagnosa, {
+                DiagnosaRawatAction.editDiagnosa(id, idDiag, jenisDiagnosa, ketDiagnosa, jenisPasien, {
                     callback: function (response) {
                         if (response == "success") {
                             dwr.engine.setAsync(false);
@@ -2342,7 +2359,7 @@
                 })
             } else {
                 dwr.engine.setAsync(true);
-                DiagnosaRawatAction.saveDiagnosa(idDetailCheckup, idDiagnosa, jenisDiagnosa, {
+                DiagnosaRawatAction.saveDiagnosa(idDetailCheckup, idDiag, jenisDiagnosa, ketDiagnosa, jenisPasien, {
                     callback: function (response) {
                         if (response == "success") {
                             dwr.engine.setAsync(false);
@@ -3307,19 +3324,20 @@
         var idPel = poli.split('|')[0];
         var namePel = poli.split('|')[1];
         var option = "<option value=''>[Select One]</option>";
+        var jenisPasien = $('#jenis_pasien').val();
 
         if (poli != '') {
-            ObatPoliAction.getSelectOptionObatByPoli(idPel, function (response) {
+            ObatPoliAction.getSelectOptionObatByPoli(idPel, jenisPasien, function (response) {
                 if (response != null) {
                     $.each(response, function (i, item) {
                         option += "<option value='" + item.idObat + "|" + item.namaObat + "|" + item.qtyBox + "|" + item.qtyLembar + "|" + item.qtyBiji + "|" + item.lembarPerBox + "|" + item.bijiPerLembar + "|" + item.flagKronis + "'>" + item.namaObat + "</option>";
                     });
+                    $('#resep_nama_obat').html(option);
                 }
             });
         } else {
             option = "";
         }
-        $('#resep_nama_obat').html(option);
     }
 
     function labelKronis(flag){

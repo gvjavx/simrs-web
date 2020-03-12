@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printInvoiceRawatJalan" language="groovy" pageWidth="421" pageHeight="595" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
-	<property name="ireport.zoom" value="2.1435888100000056"/>
-	<property name="ireport.x" value="1"/>
-	<property name="ireport.y" value="155"/>
+	<property name="ireport.zoom" value="1.4641000000000037"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="181"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -47,6 +47,7 @@
 	<parameter name="reportParams.itemDataSource" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource" isForPrompting="false"/>
 	<parameter name="reportParams.area" class="java.lang.String"/>
 	<parameter name="reportParams.idPasien" class="java.lang.String"/>
+	<parameter name="reportParams.petugas" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT * FROM im_simrs_pasien LIMIT 1]]>
 	</queryString>
@@ -397,6 +398,24 @@
 	<pageFooter>
 		<band height="24" splitType="Stretch"/>
 	</pageFooter>
+	<lastPageFooter>
+		<band height="59">
+			<staticText>
+				<reportElement x="253" y="0" width="128" height="16" uuid="6ea40376-3aa2-4162-b61c-4e7d5012d7e1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[TTD]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="253" y="39" width="128" height="20" uuid="ec7be05f-156c-4070-b64c-0ef16450baa3"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.petugas} == null ? "" : $P{reportParams.petugas}]]></textFieldExpression>
+			</textField>
+		</band>
+	</lastPageFooter>
 	<summary>
 		<band height="22" splitType="Stretch"/>
 	</summary>

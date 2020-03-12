@@ -109,32 +109,44 @@ public class DiagnosaRawatAction extends BaseMasterAction {
         return null;
     }
 
-    public String saveDiagnosa(String idDetailCheckup, String idDiagnosa, String jenisDiagnosa){
+    public String saveDiagnosa(String idDetailCheckup, String idDiagnosa, String jenisDiagnosa, String ketDiagnosa, String jenisPasien){
         logger.info("[DiagnosaRawatAction.saveDiagnosa] start process >>>");
         try {
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-            DiagnosaRawat diagnosaRawat = new DiagnosaRawat();
-            List<Diagnosa> diagnosaList = new ArrayList<>();
-            Diagnosa diagnosa = new Diagnosa();
-            diagnosa.setIdDiagnosa(idDiagnosa);
-            Diagnosa diagnosaResult = new Diagnosa();
 
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            DiagnosaRawatBo diagnosaRawatBo = (DiagnosaRawatBo) ctx.getBean("diagnosaRawatBoProxy");
             DiagnosaBo diagnosaBo = (DiagnosaBo) ctx.getBean("diagnosaBoProxy");
 
-            try {
-                diagnosaList = diagnosaBo.getByCriteria(diagnosa);
-            }catch (GeneralBOException e){
-                logger.error("[DiagnosaRawatAction.saveDiagnosa] Error when search dec diagnosa by id ," + "Found problem when saving add data, please inform to your admin.", e);
-            }
-            if (!diagnosaList.isEmpty()){
-                diagnosaResult = diagnosaList.get(0);
+            DiagnosaRawat diagnosaRawat = new DiagnosaRawat();
+            String id = "";
+            String ket = "";
+
+            if("bpjs".equalsIgnoreCase(jenisPasien)){
+                id = idDiagnosa;
+                ket = ketDiagnosa;
+            }else{
+                List<Diagnosa> diagnosaList = new ArrayList<>();
+                Diagnosa diagnosa = new Diagnosa();
+                diagnosa.setIdDiagnosa(idDiagnosa);
+                Diagnosa diagnosaResult = new Diagnosa();
+
+                try {
+                    diagnosaList = diagnosaBo.getByCriteria(diagnosa);
+                }catch (GeneralBOException e){
+                    logger.error("[DiagnosaRawatAction.saveDiagnosa] Error when search dec diagnosa by id ," + "Found problem when saving add data, please inform to your admin.", e);
+                }
+                if (!diagnosaList.isEmpty()){
+                    diagnosaResult = diagnosaList.get(0);
+                    id = diagnosaResult.getIdDiagnosa();
+                    ket = diagnosaResult.getDescOfDiagnosa();
+                }
             }
 
             diagnosaRawat.setIdDetailCheckup(idDetailCheckup);
-            diagnosaRawat.setIdDiagnosa(idDiagnosa);
-            diagnosaRawat.setKeteranganDiagnosa(diagnosaResult.getDescOfDiagnosa());
+            diagnosaRawat.setIdDiagnosa(id);
+            diagnosaRawat.setKeteranganDiagnosa(ket);
             diagnosaRawat.setJenisDiagnosa(jenisDiagnosa);
             diagnosaRawat.setCreatedWho(userLogin);
             diagnosaRawat.setLastUpdate(updateTime);
@@ -142,8 +154,6 @@ public class DiagnosaRawatAction extends BaseMasterAction {
             diagnosaRawat.setLastUpdateWho(userLogin);
             diagnosaRawat.setAction("C");
             diagnosaRawat.setFlag("Y");
-
-            DiagnosaRawatBo diagnosaRawatBo = (DiagnosaRawatBo) ctx.getBean("diagnosaRawatBoProxy");
 
             diagnosaRawatBo.saveAdd(diagnosaRawat);
 
@@ -201,39 +211,47 @@ public class DiagnosaRawatAction extends BaseMasterAction {
         return SUCCESS;
     }
 
-    public String editDiagnosa(String idRawatDiagnosa, String idDiagnosa, String jenisDiagnosa){
+    public String editDiagnosa(String idRawatDiagnosa, String idDiagnosa, String jenisDiagnosa, String ketDiagnosa, String jenisPasien){
         logger.info("[DiagnosaRawatAction.editDiagnosa] start process >>>");
         try {
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-
-            DiagnosaRawat diagnosaRawat = new DiagnosaRawat();
-            List<Diagnosa> diagnosaList = new ArrayList<>();
-            Diagnosa diagnosa = new Diagnosa();
-            diagnosa.setIdDiagnosa(idDiagnosa);
-            Diagnosa diagnosaResult = new Diagnosa();
-
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             DiagnosaBo diagnosaBo = (DiagnosaBo) ctx.getBean("diagnosaBoProxy");
+            DiagnosaRawatBo diagnosaRawatBo = (DiagnosaRawatBo) ctx.getBean("diagnosaRawatBoProxy");
 
-            try {
-                diagnosaList = diagnosaBo.getByCriteria(diagnosa);
-            }catch (GeneralBOException e){
-                logger.error("[DiagnosaRawatAction.editDiagnosa] Error when search dec diagnosa by id ," + "Found problem when saving add data, please inform to your admin.", e);
-            }
-            if (!diagnosaList.isEmpty()){
-                diagnosaResult = diagnosaList.get(0);
+            DiagnosaRawat diagnosaRawat = new DiagnosaRawat();
+            String id = "";
+            String ket = "";
+
+            if("bpjs".equalsIgnoreCase(jenisPasien)){
+                id = idDiagnosa;
+                ket = ketDiagnosa;
+            }else{
+                List<Diagnosa> diagnosaList = new ArrayList<>();
+                Diagnosa diagnosa = new Diagnosa();
+                diagnosa.setIdDiagnosa(idDiagnosa);
+                Diagnosa diagnosaResult = new Diagnosa();
+
+                try {
+                    diagnosaList = diagnosaBo.getByCriteria(diagnosa);
+                }catch (GeneralBOException e){
+                    logger.error("[DiagnosaRawatAction.editDiagnosa] Error when search dec diagnosa by id ," + "Found problem when saving add data, please inform to your admin.", e);
+                }
+                if (!diagnosaList.isEmpty()){
+                    diagnosaResult = diagnosaList.get(0);
+                    id = diagnosaResult.getIdDiagnosa();
+                    ket = diagnosaResult.getDescOfDiagnosa();
+                }
             }
 
             diagnosaRawat.setIdDiagnosaRawat(idRawatDiagnosa);
-            diagnosaRawat.setIdDiagnosa(idDiagnosa);
-            diagnosaRawat.setKeteranganDiagnosa(diagnosaResult.getDescOfDiagnosa());
+            diagnosaRawat.setIdDiagnosa(id);
+            diagnosaRawat.setKeteranganDiagnosa(ket);
             diagnosaRawat.setJenisDiagnosa(jenisDiagnosa);
             diagnosaRawat.setLastUpdate(updateTime);
             diagnosaRawat.setLastUpdateWho(userLogin);
             diagnosaRawat.setAction("U");
-
-            DiagnosaRawatBo diagnosaRawatBo = (DiagnosaRawatBo) ctx.getBean("diagnosaRawatBoProxy");
 
             diagnosaRawatBo.saveEdit(diagnosaRawat);
 

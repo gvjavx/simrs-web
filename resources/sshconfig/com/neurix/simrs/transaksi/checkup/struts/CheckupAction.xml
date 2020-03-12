@@ -78,6 +78,15 @@
             <result name="success_add">/pages/com/neurix/simrs/transaksi/checkup/addRawatPasien.jsp</result>
             <result name="init_edit">/pages/com/neurix/simrs/transaksi/checkup/editRawatPasien.jsp</result>
 
+            <result name="print_resep_kronis" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/printResepPasien.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+
         </action>
+
+
     </package>
 </struts>

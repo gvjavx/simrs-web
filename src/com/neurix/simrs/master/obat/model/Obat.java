@@ -55,6 +55,16 @@ public class Obat extends BaseModel {
 
     private String isMinStok;
 
+    private String flagBpjs;
+
+    public String getFlagBpjs() {
+        return flagBpjs;
+    }
+
+    public void setFlagBpjs(String flagBpjs) {
+        this.flagBpjs = flagBpjs;
+    }
+
     public String getIsMinStok() {
         return isMinStok;
     }
