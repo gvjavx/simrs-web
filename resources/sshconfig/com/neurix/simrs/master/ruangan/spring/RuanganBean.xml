@@ -10,6 +10,8 @@
     <bean id="ruanganController" class="com.neurix.simrs.mobileapi.RuanganController"
     p:ruanganBoProxy-ref="ruanganBoProxy" />
 
+    <bean id="checkupController" class="com.neurix.simrs.mobileapi.CheckupController"
+          p:ruanganBoProxy-ref="ruanganBoProxy" />
 
     <bean id="ruanganBo" class="com.neurix.simrs.master.ruangan.bo.impl.RuanganBoImpl"
           p:ruanganDao-ref="ruanganDao"

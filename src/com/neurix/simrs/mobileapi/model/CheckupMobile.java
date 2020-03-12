@@ -61,6 +61,16 @@ public class CheckupMobile {
 
     private String message;
 
+    private String createdDate;
+
+    public String getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
+    }
+
     public String getMessage() {
         return message;
     }

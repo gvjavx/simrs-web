@@ -500,7 +500,9 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         if(!"bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
             // save uang muka
             ItSimrsUangMukaPendaftaranEntity uangMukaPendaftaranEntity = new ItSimrsUangMukaPendaftaranEntity();
-            uangMukaPendaftaranEntity.setId("UM"+CommonUtil.userBranchLogin()+dateFormater("MM")+dateFormater("yy")+uangMukaDao.getNextId());
+            if  (bean.getBranchId() != null && !bean.getBranchId().equalsIgnoreCase("")){
+                uangMukaPendaftaranEntity.setId("UM"+bean.getBranchId()+dateFormater("MM")+dateFormater("yy")+uangMukaDao.getNextId());
+            } else uangMukaPendaftaranEntity.setId("UM"+CommonUtil.userBranchLogin()+dateFormater("MM")+dateFormater("yy")+uangMukaDao.getNextId());
             uangMukaPendaftaranEntity.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
             uangMukaPendaftaranEntity.setFlag("Y");
             uangMukaPendaftaranEntity.setAction("C");
