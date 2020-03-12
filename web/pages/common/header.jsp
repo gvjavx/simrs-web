@@ -3,7 +3,7 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
 
 
-<TITLE>GO-HEALTH NMU</TITLE>
+<TITLE>GO-MEDSYS NMU</TITLE>
 <link rel="shortcut icon" href="<s:url value="/pages/images/logo-nmu.webp"/>"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->

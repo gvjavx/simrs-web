@@ -1913,6 +1913,20 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
         return response;
     }
 
+    @Override
+    public TransaksiObatDetail getTotalHargaResep(String idPermintaan) throws GeneralBOException {
+        TransaksiObatDetail response = new TransaksiObatDetail();
+        if(idPermintaan != null && !"".equalsIgnoreCase(idPermintaan)){
+            try {
+                response = transaksiObatDetailDao.getTotalHargaResepApprove(idPermintaan);
+            }catch (HibernateException e){
+                logger.error("Found Error when cek obat kronis");
+            }
+        }
+
+        return response;
+    }
+
     public void setApprovalTransaksiObatDao(ApprovalTransaksiObatDao approvalTransaksiObatDao) {
         this.approvalTransaksiObatDao = approvalTransaksiObatDao;
     }

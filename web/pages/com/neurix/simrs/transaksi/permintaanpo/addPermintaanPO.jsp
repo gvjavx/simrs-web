@@ -158,6 +158,21 @@
                                            id="cor_po_obat"><i class="fa fa-check"></i> correct</p>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label class="col-md-4" style="margin-top: 7px">Tipe Obat</label>
+                                    <div class="col-md-8">
+                                        <s:select list="#{'bpjs':'BPJS','N':'umum'}"
+                                                  cssStyle="margin-top: 7px; width: 100%"
+                                                  onchange="var warn =$('#war_po_tipe').is(':visible'); if (warn){$('#cor_po_tipe').show().fadeOut(3000);$('#war_po_tipe').hide()};"
+                                                  id="tipe_obat"
+                                                  headerKey="" headerValue="[Select one]"
+                                                  cssClass="form-control select2"/>
+                                        <p style="color: red; display: none;"
+                                           id="war_po_tipe"><i class="fa fa-times"></i> required</p>
+                                        <p style="color: green; display: none;"
+                                           id="cor_po_tipe"><i class="fa fa-check"></i> correct</p>
+                                    </div>
+                                </div>
                                 <div class="form-group" style="display: none">
                                     <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true"
                                                resizable="false"
@@ -350,7 +365,8 @@
                                 <td align="center">Jml Lembar/Box</td>
                                 <td align="center">Jml Biji/Lembar</td>
                                 <td align="center">Harga (Rp.)</td>
-                                <td align="center">Action</td>
+                                <td align="center">Tipe</td>
+                                <td align="center" width="10%">Action</td>
                             </tr>
                             </thead>
                             <tbody id="body_po">
@@ -461,13 +477,14 @@
         var data = $('#tabel_po').tableToJSON();
         var lembarPerBox = $('#lembar_perbox').val();
         var bijiPerLembar = $('#biji_perlembar').val();
+        var tipe = $('#tipe_obat').val();
 
         var idObat = "";
         var namaObat = "";
 
         var cek = false;
 
-        if (obat != '' && vendor != '' && jenis != '' && parseInt(jumlah) > 0 && harga != '' && lembarPerBox != '' && bijiPerLembar != '') {
+        if (obat != '' && vendor != '' && jenis != '' && parseInt(jumlah) > 0 && harga != '' && lembarPerBox != '' && bijiPerLembar != '' && tipe != '') {
 
             if (obat.split('|')[0] != 'null' && obat.split('|')[0] != '') {
                 idObat = obat.split('|')[0];
@@ -496,6 +513,7 @@
                         '<td align="center">' + lembarPerBox + '</td>' +
                         '<td align="center">' + bijiPerLembar + '</td>' +
                         '<td align="right">' + harga + '</td>' +
+                        '<td align="center">' + tipe + '</td>' +
                         '<td align="center"><img border="0" onclick="delRowObat(\'' + idObat + '\')" class="hvr-grow" src="<s:url value="/pages/images/icons8-trash-can-25.png"/>" style="cursor: pointer;"></td>' +
                         '</tr>';
 
@@ -524,6 +542,10 @@
             if (bijiPerLembar == '') {
                 $('#war_po_biji_perlembar').show();
             }
+            if (tipe == '') {
+                $('#war_po_tipe').show();
+            }
+
             $('#warning_po').show().fadeOut(5000);
             $('#msg_po').text('Silahkan cek kembali data inputan...!');
         }
@@ -536,6 +558,23 @@
     function savePermintaanPO() {
         $('#confirm_dialog').dialog('close');
         var data = $('#tabel_po').tableToJSON();
+        var result = [];
+
+        $.each(data, function (i, item) {
+
+            var tipe = data[i]["tipe"];
+            result.push({
+                'id_obat':data[i]["ID"],
+                'nama_obat':data[i]["Obat"],
+                'nama_obat':data[i]["Jumlah"],
+                'nama_obat':data[i]["Jenis Satuan"],
+                'nama_obat':data[i]["Jml Lembar/Box"],
+                'nama_obat':data[i]["Jml Biji/Lembar"],
+                'nama_obat':data[i]["Harga (Rp.)"],
+                'nama_obat':data[i]["Harga (Rp.)"],
+            });
+        });
+
         var stringData = JSON.stringify(data);
         var vendor = $('#nama_vendor').val();
         $('#waiting_dialog').dialog('open');

@@ -40,5 +40,6 @@ public interface TransaksiObatBo {
 
     public Boolean cekObatKronis(String idApproval) throws GeneralBOException;
     public TransaksiObatDetail getTarifApproveResep(String idApproval) throws GeneralBOException;
+    public TransaksiObatDetail getTotalHargaResep(String idPermintaan) throws GeneralBOException;
 
 }

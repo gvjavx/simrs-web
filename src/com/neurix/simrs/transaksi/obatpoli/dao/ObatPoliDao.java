@@ -5,6 +5,7 @@ import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.transaksi.obatpoli.model.MtSimrsObatPoliEntity;
 import com.neurix.simrs.transaksi.obatpoli.model.ObatPoli;
 import com.neurix.simrs.transaksi.obatpoli.model.PermintaanObatPoli;
+import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
@@ -163,6 +164,67 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
             }
         }
         return stringList;
+    }
+
+    public List<ObatPoli> getIdObatGroupPoli(String idPelayanan, String branchId, String flagBpjs){
+
+        List<ObatPoli> obatPoliList = new ArrayList<>();
+
+        if(idPelayanan != null && !"".equalsIgnoreCase(idPelayanan) && branchId != null && !"".equalsIgnoreCase(branchId)){
+
+            String flag = "N";
+
+            if("bpjs".equalsIgnoreCase(flagBpjs)){
+                flag = "%";
+            }
+
+            String SQL = "SELECT\n" +
+                    "a.id_pelayanan,\n" +
+                    "b.id_obat,  \n" +
+                    "b.nama_obat,\n" +
+                    "SUM(a.qty_box) as box,\n" +
+                    "SUM(a.qty_lembar) as lembar,\n" +
+                    "SUM(a.qty_biji) as biji,\n" +
+                    "b.lembar_per_box,\n" +
+                    "b.biji_per_lembar,\n" +
+                    "b.flag_kronis\n" +
+                    "FROM mt_simrs_obat_poli a\n" +
+                    "INNER JOIN (\n" +
+                    "\tSELECT id_obat, nama_obat, lembar_per_box, biji_per_lembar, flag_kronis\n" +
+                    "\tFROM im_simrs_obat WHERE flag_bpjs LIKE :flag GROUP BY id_obat, nama_obat, lembar_per_box, biji_per_lembar, flag_kronis\n" +
+                    ") b ON a.id_obat = b.id_obat\n" +
+                    "WHERE a.id_pelayanan = :idPelayanan \n" +
+                    "AND a.branch_id = :branchId \n" +
+                    "GROUP BY a.id_pelayanan,\n" +
+                    "b.id_obat,\n" +
+                    "b.nama_obat,\n" +
+                    "b.lembar_per_box,\n" +
+                    "b.biji_per_lembar,\n" +
+                    "b.flag_kronis";
+
+            List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("idPelayanan", idPelayanan)
+                    .setParameter("branchId", branchId)
+                    .setParameter("flag", flag)
+                    .list();
+
+            if (results.size() > 0){
+                for (Object[] obj : results){
+                    ObatPoli obatPoli = new ObatPoli();
+                    obatPoli.setIdPelayanan(obj[0] == null ? "" : obj[0].toString());
+                    obatPoli.setIdObat(obj[1] == null ? "" : obj[1].toString());
+                    obatPoli.setNamaObat(obj[2] == null ? "" : obj[2].toString());
+                    obatPoli.setQtyBox(obj[3] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[3].toString()));
+                    obatPoli.setQtyLembar(obj[4] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[4].toString()));
+                    obatPoli.setQtyBiji(obj[5] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[5].toString()));
+                    obatPoli.setLembarPerBox(obj[6] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[6].toString()));
+                    obatPoli.setBijiPerLembar(obj[7] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[7].toString()));
+                    obatPoli.setFlagKronis(obj[8] == null ? "" : obj[8].toString());
+                    obatPoliList.add(obatPoli);
+                }
+            }
+        }
+        return obatPoliList;
     }
 
     public ObatPoli getSumStockObatPoliById(String id, String idPelayanan){

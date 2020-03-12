@@ -36,6 +36,16 @@ public class ImSimrsObatEntity implements Serializable{
 
     private BigInteger minStok;
 
+    private String flagBpjs;
+
+    public String getFlagBpjs() {
+        return flagBpjs;
+    }
+
+    public void setFlagBpjs(String flagBpjs) {
+        this.flagBpjs = flagBpjs;
+    }
+
     public BigInteger getMinStok() {
         return minStok;
     }
