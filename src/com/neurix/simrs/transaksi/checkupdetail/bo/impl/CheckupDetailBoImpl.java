@@ -26,6 +26,9 @@ import com.neurix.simrs.transaksi.checkupdetail.dao.UangMukaDao;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsUangMukaPendaftaranEntity;
+import com.neurix.simrs.transaksi.diagnosarawat.dao.DiagnosaRawatDao;
+import com.neurix.simrs.transaksi.diagnosarawat.model.DiagnosaRawat;
+import com.neurix.simrs.transaksi.diagnosarawat.model.ItSimrsDiagnosaRawatEntity;
 import com.neurix.simrs.transaksi.ordergizi.dao.OrderGiziDao;
 import com.neurix.simrs.transaksi.ordergizi.model.ItSimrsOrderGiziEntity;
 import com.neurix.simrs.transaksi.ordergizi.model.OrderGizi;
@@ -75,6 +78,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     private AntrianOnlineDao antrianOnlineDao;
     private UangMukaDao uangMukaDao;
     private DokterDao dokterDao;
+    private DiagnosaRawatDao diagnosaRawatDao;
 
     @Override
     public List<HeaderDetailCheckup> getByCriteria(HeaderDetailCheckup bean) throws GeneralBOException {
@@ -528,6 +532,16 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             }
         }
 
+        //saving diagnosa
+        if (bean.getDiagnosa() != null && !"".equalsIgnoreCase(bean.getDiagnosa()) && detailCheckupEntity.getIdDetailCheckup() != null && !"".equalsIgnoreCase(detailCheckupEntity.getIdDetailCheckup())) {
+            DiagnosaRawat diagnosaRawat = new DiagnosaRawat();
+            diagnosaRawat.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
+            diagnosaRawat.setIdDiagnosa(bean.getDiagnosa());
+            diagnosaRawat.setKeteranganDiagnosa(bean.getNamaDiagnosa());
+            diagnosaRawat.setJenisDiagnosa("0");
+            saveDiagnosa(diagnosaRawat);
+        }
+
         logger.info("[CheckupDetailBoImpl.saveEdit] End <<<<<<<<");
     }
 
@@ -555,6 +569,37 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         }
 
         logger.info("[CheckupDetailBoImpl.savaAdd] End <<<<<<<<");
+    }
+
+    public void saveDiagnosa(DiagnosaRawat bean) throws GeneralBOException {
+        logger.info("[DiagnosaRawatBoImpl.saveAdd] Start >>>>>>>>>");
+
+        if (bean != null && bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())) {
+            ItSimrsDiagnosaRawatEntity entity = new ItSimrsDiagnosaRawatEntity();
+
+            String id = getNextIdDiagnosa();
+            entity.setIdDiagnosaRawat("DGR" + id);
+            entity.setIdDiagnosa(bean.getIdDiagnosa());
+            entity.setIdDetailCheckup(bean.getIdDetailCheckup());
+            entity.setKeteranganDiagnosa(bean.getKeteranganDiagnosa());
+            entity.setJenisDiagnosa(bean.getJenisDiagnosa());
+            entity.setTipe(bean.getTipe());
+            entity.setFlag("Y");
+            entity.setAction("U");
+            entity.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+            entity.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+            entity.setCreatedWho(CommonUtil.userLogin());
+            entity.setLastUpdateWho(CommonUtil.userLogin());
+
+            try {
+                diagnosaRawatDao.addAndSave(entity);
+            } catch (HibernateException e) {
+                logger.error("[DiagnosaRawatBoImpl.saveAdd] Error when saving diagnosa ", e);
+                throw new GeneralBOException("Error when saving diagnosa " + e.getMessage());
+            }
+        }
+
+        logger.info("[DiagnosaRawatBoImpl.saveAdd] End <<<<<<<<<");
     }
 
     private void saveRawatInap(RawatInap bean) {
@@ -1124,6 +1169,16 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         return dokterList;
     }
 
+    private String getNextIdDiagnosa() {
+        String id = "";
+        try {
+            id = diagnosaRawatDao.getNextSeq();
+        } catch (HibernateException e) {
+            logger.error("[DiagnosaRawatBoImpl.getNextId] Error when get next diagnosa rawat id ", e);
+        }
+        return id;
+    }
+
     private String getNextDetailCheckupId() {
         String id = "";
         try {
@@ -1228,5 +1283,9 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
 
     public void setDokterDao(DokterDao dokterDao) {
         this.dokterDao = dokterDao;
+    }
+
+    public void setDiagnosaRawatDao(DiagnosaRawatDao diagnosaRawatDao) {
+        this.diagnosaRawatDao = diagnosaRawatDao;
     }
 }

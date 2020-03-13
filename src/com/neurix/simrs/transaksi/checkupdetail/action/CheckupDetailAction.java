@@ -1807,6 +1807,9 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                         if (diagnosaRawatList.size() > 0) {
                             diagnosaRawat = diagnosaRawatList.get(0);
+
+                            headerDetailCheckup.setDiagnosa(diagnosaRawat.getIdDiagnosa());
+                            headerDetailCheckup.setNamaDiagnosa(diagnosaRawat.getKeteranganDiagnosa());
                         }
 
                         List<Pelayanan> pelayananList = new ArrayList<>();
@@ -1905,9 +1908,9 @@ public class CheckupDetailAction extends BaseMasterAction {
                                             sepRequest.setJnsPelayanan("1");//jenis rawat inap, apa jalan 2 rawat jalan, 1 rawat inap
                                             sepRequest.setKlsRawat(checkup.getKelasPasien());//kelas rawat dari bpjs
                                             sepRequest.setNoMr(getPasien.getIdPasien());//id pasien
-                                            sepRequest.setAsalRujukan(checkup.getRujuk());//
+                                            sepRequest.setAsalRujukan("2");//
                                             sepRequest.setTglRujukan(now.toString());
-                                            sepRequest.setNoRujukan(checkup.getNoRujukan());
+                                            sepRequest.setNoRujukan(checkup.getNoSep());
                                             sepRequest.setPpkRujukan(noPPK);
                                             sepRequest.setCatatan("");
                                             sepRequest.setDiagAwal(diagnosaRawat.getIdDiagnosa());
