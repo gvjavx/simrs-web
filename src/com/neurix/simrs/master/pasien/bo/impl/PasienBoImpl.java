@@ -276,6 +276,7 @@ public class PasienBoImpl implements PasienBo {
                 pasienEntity.setProfesi(pasien.getProfesi());
                 pasienEntity.setNoTelp(pasien.getNoTelp());
                 pasienEntity.setUrlKtp(pasien.getNoKtp());
+                pasienEntity.setPassword(pasien.getPassword());
                 pasienEntity.setFlag(pasien.getFlag());
                 pasienEntity.setAction("U");
                 pasienEntity.setLastUpdate(pasien.getLastUpdate());

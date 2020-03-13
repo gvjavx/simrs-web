@@ -228,6 +228,9 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             entity.setPendamping(bean.getPendamping());
             entity.setTempatTujuan(bean.getTempatTujuan());
             entity.setInvoice(bean.getInvoice());
+            entity.setUrlTtd(bean.getUrlTtd());
+//            entity.setMetodePembayaran(bean.getMetodePembayaran());
+
 
             try {
                 checkupDetailDao.updateAndSave(entity);
@@ -504,7 +507,9 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         if(!"bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
             // save uang muka
             ItSimrsUangMukaPendaftaranEntity uangMukaPendaftaranEntity = new ItSimrsUangMukaPendaftaranEntity();
-            uangMukaPendaftaranEntity.setId("UM"+CommonUtil.userBranchLogin()+dateFormater("MM")+dateFormater("yy")+uangMukaDao.getNextId());
+            if  (bean.getBranchId() != null && !bean.getBranchId().equalsIgnoreCase("")){
+                uangMukaPendaftaranEntity.setId("UM"+bean.getBranchId()+dateFormater("MM")+dateFormater("yy")+uangMukaDao.getNextId());
+            } else uangMukaPendaftaranEntity.setId("UM"+CommonUtil.userBranchLogin()+dateFormater("MM")+dateFormater("yy")+uangMukaDao.getNextId());
             uangMukaPendaftaranEntity.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
             uangMukaPendaftaranEntity.setFlag("Y");
             uangMukaPendaftaranEntity.setAction("C");
@@ -1231,6 +1236,30 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             throw new GeneralBOException("[CheckupDetailBoImpl.getNextRawatInapId] Error When Error get next seq id");
         }
         return id;
+    }
+
+    @Override
+    public void saveTtd(HeaderDetailCheckup bean) throws GeneralBOException {
+        logger.info("[CheckupDetailBoImpl.saveTtd] Start >>>>>>>");
+        List<ItSimrsHeaderDetailCheckupEntity> detailCheckupEntityList = null;
+
+        HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+        detailCheckup.setIdDetailCheckup(bean.getIdDetailCheckup());
+
+        detailCheckupEntityList = getListEntityByCriteria(detailCheckup);
+        if (!detailCheckupEntityList.isEmpty()) {
+            ItSimrsHeaderDetailCheckupEntity entity = detailCheckupEntityList.get(0);
+            entity.setUrlTtd(bean.getUrlTtd());
+
+            try {
+                checkupDetailDao.updateAndSave(entity);
+            } catch (HibernateException e) {
+                logger.error("[CheckupDetailBoImpl.saveEdit] Error when update detail checkup ", e);
+                throw new GeneralBOException("[CheckupDetailBoImpl.saveEdit] Error when update detail checkup " + e.getMessage());
+            }
+            logger.info("[CheckupDetailBoImpl.saveTtd] End >>>>>>>");
+
+        }
     }
 
     public void setCheckupDetailDao(CheckupDetailDao checkupDetailDao) {

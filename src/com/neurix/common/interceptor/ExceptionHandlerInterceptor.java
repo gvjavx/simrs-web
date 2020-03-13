@@ -134,6 +134,8 @@ public class ExceptionHandlerInterceptor extends MethodFilterInterceptor {
                 logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
             } else if ("/mobileapi/historycuti".equalsIgnoreCase(namespace)) {
                 logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
+            } else if ("/mobileapi/checkup".equalsIgnoreCase(namespace)) {
+                logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
             }
             else {
 

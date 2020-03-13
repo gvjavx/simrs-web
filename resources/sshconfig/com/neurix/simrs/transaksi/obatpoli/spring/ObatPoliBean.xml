@@ -18,6 +18,10 @@
           p:obatPoliBoProxy-ref="obatPoliBo"
     />
 
+    <bean id="checkupController" class="com.neurix.simrs.mobileapi.CheckupController"
+          p:obatPoliBoProxy-ref="obatPoliBo"
+    />
+
     <bean id="transaksiApotekController" class="com.neurix.simrs.mobileapi.TransaksiApotekController"
           p:obatPoliBoProxy-ref="obatPoliBo"
     />

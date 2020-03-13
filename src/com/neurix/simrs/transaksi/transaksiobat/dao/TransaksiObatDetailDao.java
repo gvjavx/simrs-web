@@ -191,7 +191,7 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
             flag = bean.getFlag();
         }
 
-        String SQL = "SELECT a.id_permintaan_resep, a.id_detail_checkup, c.nama, d.keterangan, a.id_approval_obat FROM mt_simrs_permintaan_resep a\n" +
+        String SQL = "SELECT a.id_permintaan_resep, a.id_detail_checkup, c.nama, d.keterangan, a.id_approval_obat, c.id_jenis_periksa_pasien FROM mt_simrs_permintaan_resep a\n" +
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.id_detail_checkup = b.id_detail_checkup\n" +
                 "INNER JOIN it_simrs_header_checkup c ON b.no_checkup = c.no_checkup\n" +
                 "INNER JOIN im_simrs_status_pasien d ON a.status = d.id_status_pasien\n" +
@@ -240,6 +240,7 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                 permintaanResep.setStatus(statusName);
                 permintaanResep.setFlag(flag);
                 permintaanResep.setIdApprovalObat(obj[4].toString());
+                permintaanResep.setIdJenisPeriksa(obj[5].toString());
                 permintaanResepList.add(permintaanResep);
             }
         }

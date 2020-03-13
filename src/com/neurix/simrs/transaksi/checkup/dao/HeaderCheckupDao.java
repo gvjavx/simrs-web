@@ -683,7 +683,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "i.nama_ruangan,\n" +
                     "b.metode_pembayaran,\n" +
                     "b.no_jurnal,\n" +
-                    "a.url_doc_rujuk\n" +
+                    "a.url_doc_rujuk,\n" +
+                    "b.url_ttd\n" +
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
@@ -740,7 +741,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     checkup.setNamaRuangan(obj[27] == null ? "" : obj[27].toString());
                     checkup.setMetodePembayaran(obj[28] == null ? "" : obj[28].toString());
                     checkup.setInvoice(obj[29] == null ? "" : obj[29].toString());
-                    checkup.setUrlDocRujuk(obj[30] == null ? "" : CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_DOC_RUJUK_PASIEN + obj[30].toString());
+                    checkup.setUrlDocRujuk(obj[30] == null ? "" : CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_DOC_RUJUK_PASIEN+obj[30].toString());
+                    checkup.setUrlTtd(obj[31] == null ? "" : obj[31].toString());
 
                 }
             }

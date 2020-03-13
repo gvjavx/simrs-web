@@ -41,6 +41,15 @@ public class PelayananController implements ModelDriven<Object> {
     private String action;
     private String nip;
     private String channelId;
+    private String tipePelayanan;
+
+    public String getTipePelayanan() {
+        return tipePelayanan;
+    }
+
+    public void setTipePelayanan(String tipePelayanan) {
+        this.tipePelayanan = tipePelayanan;
+    }
 
     public AntrianOnlineBo getAntrianOnlineBoProxy() {
         return antrianOnlineBoProxy;
@@ -256,27 +265,39 @@ public class PelayananController implements ModelDriven<Object> {
         }
 
         if  (action.equalsIgnoreCase("getListPelayanan")){
-            List<Pelayanan> resultPelayanan = new ArrayList<>();
-            List<Pelayanan> resultApotek = new ArrayList<>();
             List<Pelayanan> result = new ArrayList<>();
 
+            Pelayanan bean = new Pelayanan();
+            bean.setTipePelayanan(tipePelayanan);
+            bean.setBranchId(branchId);
+
             try {
-                resultPelayanan = pelayananBoProxy.getListAllPelayanan();
+                result = pelayananBoProxy.getByCriteria(bean);
 
             } catch (GeneralBOException e) {
                 logger.error("Pelayanan.create] Error when get list pelayanan",e);
             }
 
+            for (Pelayanan item : result){
+                PelayananMobile pelayananMobile = new PelayananMobile();
+                pelayananMobile.setNamaPelayanan(item.getNamaPelayanan());
+                pelayananMobile.setIdPelayanan(item.getIdPelayanan());
+
+                listOfPelayanan.add(pelayananMobile);
+            }
+        }
+
+        if  (action.equalsIgnoreCase("getListApotek")) {
+
+            List<Pelayanan> result = new ArrayList<>();
+
             try {
-                resultApotek = pelayananBoProxy.getListApotek();
+                result = pelayananBoProxy.getListApotek();
             } catch (GeneralBOException e) {
                 logger.error("Pelayanan.create] Error when get list apotek",e);
             }
 
-            result.addAll(resultPelayanan);
-            result.addAll(resultApotek);
-
-            for (Pelayanan item : result){
+            for (Pelayanan item: result){
                 PelayananMobile pelayananMobile = new PelayananMobile();
                 pelayananMobile.setNamaPelayanan(item.getNamaPelayanan());
                 pelayananMobile.setIdPelayanan(item.getIdPelayanan());
