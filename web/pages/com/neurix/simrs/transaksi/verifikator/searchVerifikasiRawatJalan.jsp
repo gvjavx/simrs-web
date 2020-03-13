@@ -707,29 +707,41 @@
                         var btn         = "<s:url value="/pages/images/icons8-edit-25.png"/>";
                         var onclick     = 'onclick="updateApproveFlag(\''+item.idRiwayatTindakan+'\',\''+i+'\')"';
 
+                        var tindakanina = "";
+                        VerifikatorAction.getListKategoriTindakanBpjs(function (restindakanina) {
+                           $.each(restindakanina, function (i, itemTindakan) {
+                               if (item.kategoriTindakanBpjs == itemTindakan.kategoriInaBpjs){
+                                   tindakanina += "<option value=\""+itemTindakan.id+"\" selected>"+itemTindakan.nama+"</option>";
+                               } else {
+                                   tindakanina += "<option value=\""+itemTindakan.id+"\">"+itemTindakan.nama+"</option>";
+                               }
+                           })
+                        });
+
                         var kategori =
                                 '<select class="form-control" id="kategori'+i+'">' +
                                 '<option value="">[Select One]</option>'+
-                                '<option value="prosedur_non_bedah">Prosedur Non Bedah</option>'+
-                                '<option value="tenaga_ahli">Tenaga Ahli</option>'+
-                                '<option value="radiologi">Radiologi</option>'+
-                                '<option value="rehabilitasi">Rehabilitasi</option>'+
-                                '<option value="obat">Obat</option>'+
-                                '<option value="alkes">Alkes</option>'+
-
-                                '<option value="prosedur_bedah">Prosedur Bedah</option>'+
-                                '<option value="keperawatan">Keperawatan</option>'+
-                                '<option value="laboratorium">Laboratorium</option>'+
-                                '<option value="kamar_akomodasi">Kamar / Akomodasi</option>'+
-                                '<option value="obat_kronis">Obat Kronis</option>'+
-                                '<option value="bmhp">BMHP</option>'+
-
-                                '<option value="konsultasi">Konsultasi</option>'+
-                                '<option value="penunjang">Penunjang</option>'+
-                                '<option value="pelayanan_darah">Pelayanan Darah</option>'+
-                                '<option value="rawat_intensif">Rawat Intensif</option>'+
-                                '<option value="obat_kemoterapi">Obat Kemoterapi</option>'+
-                                '<option value="sewa_alat">Sewa Alat</option>'+
+                                tindakanina +
+//                                '<option value="prosedur_non_bedah">Prosedur Non Bedah</option>'+
+//                                '<option value="tenaga_ahli">Tenaga Ahli</option>'+
+//                                '<option value="radiologi">Radiologi</option>'+
+//                                '<option value="rehabilitasi">Rehabilitasi</option>'+
+//                                '<option value="obat">Obat</option>'+
+//                                '<option value="alkes">Alkes</option>'+
+//
+//                                '<option value="prosedur_bedah">Prosedur Bedah</option>'+
+//                                '<option value="keperawatan">Keperawatan</option>'+
+//                                '<option value="laboratorium">Laboratorium</option>'+
+//                                '<option value="kamar_akomodasi">Kamar / Akomodasi</option>'+
+//                                '<option value="obat_kronis">Obat Kronis</option>'+
+//                                '<option value="bmhp">BMHP</option>'+
+//
+//                                '<option value="konsultasi">Konsultasi</option>'+
+//                                '<option value="penunjang">Penunjang</option>'+
+//                                '<option value="pelayanan_darah">Pelayanan Darah</option>'+
+//                                '<option value="rawat_intensif">Rawat Intensif</option>'+
+//                                '<option value="obat_kemoterapi">Obat Kemoterapi</option>'+
+//                                '<option value="sewa_alat">Sewa Alat</option>'+
                                 '</select>';
 
                         if (item.namaTindakan != null && item.namaTindakan !=  '') {

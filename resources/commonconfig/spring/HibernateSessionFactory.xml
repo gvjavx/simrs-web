@@ -320,6 +320,7 @@
                 <value>sshconfig/com/neurix/simrs/master/pasien/hibernate/imSimrsFingerDataEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/fingerPrint/hibernate/imSimrsFingerPrintEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/dietgizi/hibernate/ImSimrsDietGiziEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/kategoritindakanina/hibernate/ImSimrsKategoriTindakanInaEntity.hbm.xml</value>
 
 
                 <value>sshconfig/com/neurix/simrs/transaksi/resikojatuh/hibernate/ImSimrsKategoriResikoJatuhEntity.hbm.xml</value>

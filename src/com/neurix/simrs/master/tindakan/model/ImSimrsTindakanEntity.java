@@ -19,6 +19,7 @@ public class ImSimrsTindakanEntity implements Serializable{
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String kategoriInaBpjs;
 
     public String getIdTindakan() {
         return idTindakan;
@@ -108,6 +109,14 @@ public class ImSimrsTindakanEntity implements Serializable{
         this.lastUpdateWho = lastUpdateWho;
     }
 
+    public String getKategoriInaBpjs() {
+        return kategoriInaBpjs;
+    }
+
+    public void setKategoriInaBpjs(String kategoriInaBpjs) {
+        this.kategoriInaBpjs = kategoriInaBpjs;
+    }
+
     @Override
     public String toString() {
         return "ImSimrsTindakanEntity{" +
@@ -122,6 +131,7 @@ public class ImSimrsTindakanEntity implements Serializable{
                 ", createdWho='" + createdWho + '\'' +
                 ", lastUpdate=" + lastUpdate +
                 ", lastUpdateWho='" + lastUpdateWho + '\'' +
+                ", kategoriInaBpjs='" + kategoriInaBpjs + '\'' +
                 '}';
     }
 }

@@ -18,6 +18,7 @@
           p:checkupDetailDao-ref="checkupDetailDao"
           p:riwayatTindakanDao-ref="riwayatTindakanDao"
           p:rawatInapDao-ref="rawatInapDao"
+          p:kategoriTindakanInaDao-ref="kategoriTindakanInaDao"
     />
 
     <bean id="verifikatorBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -44,5 +45,8 @@
             </props>
         </property>
     </bean>
+
+    <bean id="kategoriTindakanInaDao" class="com.neurix.simrs.master.kategoritindakanina.dao.KategoriTindakanInaDao"
+          p:sessionFactory-ref="sessionFactory" />
 
 </beans>

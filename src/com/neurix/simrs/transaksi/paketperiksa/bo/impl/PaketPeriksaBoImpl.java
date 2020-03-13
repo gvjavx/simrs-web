@@ -28,6 +28,9 @@ public class PaketPeriksaBoImpl implements PaketPeriksaBo {
 
     @Override
     public List<PaketPeriksa> getListPaketPeriksa(PaketPeriksa bean) throws GeneralBOException {
+
+
+
         return null;
     }
 
