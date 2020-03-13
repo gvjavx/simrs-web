@@ -103,7 +103,9 @@ public class PositionBoImpl implements PositionBo {
             if (searchPosition.getStPositionId() != null && !"".equalsIgnoreCase(searchPosition.getStPositionId())) {
                 hsCriteria.put("position_id", searchPosition.getStPositionId());
             }
-
+            if (searchPosition.getPositionId() != null && !"".equalsIgnoreCase(searchPosition.getPositionId())) {
+                hsCriteria.put("position_id", searchPosition.getPositionId());
+            }
             if (searchPosition.getPositionName() != null && !"".equalsIgnoreCase(searchPosition.getPositionName())) {
                 hsCriteria.put("position_name", searchPosition.getPositionName());
             }
@@ -166,7 +168,7 @@ public class PositionBoImpl implements PositionBo {
                         resultPosition.setBagianName("-");
                     }
                     resultPosition.setBagianId(imPosition.getBagianId());
-
+                    resultPosition.setFlagDijabatSatuOrang(imPosition.getFlagDijabatSatuOrang());
                     resultPosition.setAction(imPosition.getAction());
                     resultPosition.setCreatedDate(imPosition.getCreatedDate());
                     resultPosition.setCreatedWho(imPosition.getCreatedWho());

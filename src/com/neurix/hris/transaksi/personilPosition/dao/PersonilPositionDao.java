@@ -147,11 +147,13 @@ public class PersonilPositionDao extends GenericDao<ItPersonilPositionEntity, St
 
         List<Object[]> results = new ArrayList<Object[]>();
         String query = "select \n" +
-                "\tstruktur.* \n" +
-                "from \n" +
-                "\tstruktur_jabatan struktur \n" +
-                "where\n" +
-                "\tnip = '"+nip+"'";
+                "\tpp.position_id,\n" +
+                "\tp.position_name\n" +
+                "from\n" +
+                "\tit_hris_pegawai_position pp \n" +
+                "\tINNER JOIN im_position p ON p.position_id = pp.position_id \n" +
+                "where \n" +
+                "\tnip='"+nip+"'";
 
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
@@ -159,8 +161,8 @@ public class PersonilPositionDao extends GenericDao<ItPersonilPositionEntity, St
 
         for (Object[] row : results) {
             ItPersonilPositionEntity result  = new ItPersonilPositionEntity();
-            result.setPositionId((String)(row[5]));
-            result.setPositionName((String)(row[6]));
+            result.setPositionId((String)(row[0]));
+            result.setPositionName((String)(row[1]));
             listOfResult.add(result);
         }
         return listOfResult;

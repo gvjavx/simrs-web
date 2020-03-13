@@ -536,11 +536,11 @@ public class CutiPegawaiAction extends BaseMasterAction {
                 logId = cutiPegawaiBoProxy.saveErrorMessage(e.getMessage(), "cutiPegawaiBO.saveAdd");
             } catch (GeneralBOException e1) {
                 logger.error("[cutiPegawaiAction.saveAdd] Error when saving error,", e1);
-                return ERROR;
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[cutiPegawaiAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            throw new GeneralBOException(e.getMessage());
         }
 
 

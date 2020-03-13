@@ -14,6 +14,8 @@ import com.neurix.hris.master.groupShift.dao.GroupShiftDao;
 import com.neurix.hris.master.groupShift.model.GroupShift;
 import com.neurix.hris.master.groupShift.model.ImHrisGroupShift;
 import com.neurix.hris.master.kelompokPosition.model.ImKelompokPositionEntity;
+import com.neurix.hris.master.profesi.dao.ProfesiDao;
+import com.neurix.hris.master.profesi.model.ImProfesiEntity;
 import com.neurix.hris.master.shift.dao.ShiftDao;
 import com.neurix.hris.master.shift.model.ImHrisShiftEntity;
 import com.neurix.hris.transaksi.jadwalShiftKerja.bo.JadwalShiftKerjaBo;
@@ -49,6 +51,15 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
     private GroupDao groupDao;
     private PositionDao positionDao;
     private PersonilPositionDao personilPositionDao;
+    private ProfesiDao profesiDao;
+
+    public ProfesiDao getProfesiDao() {
+        return profesiDao;
+    }
+
+    public void setProfesiDao(ProfesiDao profesiDao) {
+        this.profesiDao = profesiDao;
+    }
 
     public PositionDao getPositionDao() {
         return positionDao;
@@ -186,13 +197,13 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
             itJadwalShiftKerjaDetailEntity.setNamaPegawai(jadwalShiftKerjaDetail.getNamaPegawai());
             itJadwalShiftKerjaDetailEntity.setPositionName(jadwalShiftKerjaDetail.getPositionName());
             itJadwalShiftKerjaDetailEntity.setShiftId(jadwalShiftKerjaDetail.getShiftId());
+            itJadwalShiftKerjaDetailEntity.setProfesiId(jadwalShiftKerjaDetail.getProfesiid());
+            itJadwalShiftKerjaDetailEntity.setProfesiName(jadwalShiftKerjaDetail.getProfesiName());
 
             itJadwalShiftKerjaDetailEntity.setFlag(bean.getFlag());
             itJadwalShiftKerjaDetailEntity.setAction(bean.getAction());
             itJadwalShiftKerjaDetailEntity.setCreatedWho(bean.getCreatedWho());
             itJadwalShiftKerjaDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
-            itJadwalShiftKerjaDetailEntity.setCreatedDate(bean.getCreatedDate());
-            itJadwalShiftKerjaDetailEntity.setLastUpdate(bean.getLastUpdate());
             try {
                 // insert into database
                 jadwalShiftKerjaDetailDao.addAndSave(itJadwalShiftKerjaDetailEntity);
@@ -405,6 +416,10 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
 
                     ImHrisShiftEntity shiftEntity = shiftDao.getById("shiftId",jadwalShiftKerjaDetailEntity.getShiftId());
 
+                    ImProfesiEntity profesiEntity = profesiDao.getById("profesiId",jadwalShiftKerjaDetailEntity.getProfesiId());
+
+                    returnJadwalShiftKerjaDetail.setProfesiid(jadwalShiftKerjaDetailEntity.getProfesiId());
+                    returnJadwalShiftKerjaDetail.setProfesiName(profesiEntity.getProfesiName());
                     returnJadwalShiftKerjaDetail.setShiftName(shiftEntity.getShiftName());
                     returnJadwalShiftKerjaDetail.setAction(jadwalShiftKerjaDetailEntity.getAction());
                     returnJadwalShiftKerjaDetail.setFlag(jadwalShiftKerjaDetailEntity.getFlag());

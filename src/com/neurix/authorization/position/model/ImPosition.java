@@ -26,6 +26,7 @@ public class ImPosition implements Serializable {
     private String kelompokName;
     private String strataName;
     private String bagianId;
+    private String flagDijabatSatuOrang;
     private ImDepartmentEntity imDepartmentEntity;
     private ImKelompokPositionEntity imKelompokPositionEntity;
     private ImPositionBagianEntity imPositionBagianEntity;
@@ -36,6 +37,14 @@ public class ImPosition implements Serializable {
 
     public void setImPositionBagianEntity(ImPositionBagianEntity imPositionBagianEntity) {
         this.imPositionBagianEntity = imPositionBagianEntity;
+    }
+
+    public String getFlagDijabatSatuOrang() {
+        return flagDijabatSatuOrang;
+    }
+
+    public void setFlagDijabatSatuOrang(String flagDijabatSatuOrang) {
+        this.flagDijabatSatuOrang = flagDijabatSatuOrang;
     }
 
     public String getBagianId() {
