@@ -2,6 +2,7 @@ package com.neurix.hris.mobileapi;
 
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.common.constant.CommonConstant;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.mobileapi.model.FingerPrintResponse;
 import com.neurix.hris.mobileapi.model.simrs.Poli;
 import com.neurix.simrs.bpjs.eklaim.bo.EklaimBo;
@@ -204,11 +205,32 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
             case "create-jurnal-bpjs-6":
                 createJurnalBillingCase6();
                 break;
+            case "delete-sep":
+                deleteSep(keyword);
+                break;
             default:
                 logger.info("==========NO ONE CARE============");
         }
         return result;
     }
+
+    public void deleteSep(String key){
+        SepResponse poliResponseList = new SepResponse();
+        SepRequest request = new SepRequest();
+        request.setNoSep(key);
+        request.setUserPembuatSep(CommonUtil.userLogin());
+        try {
+            poliResponseList= bpjsBoProxy.deleteSepBpjs(request,"RS01");
+        }catch (Exception e){
+            logger.error("[BpjsController.listPoli] Error : " + "[" + e + "]");
+        }
+        logger.info(poliResponseList.getMessage());
+//        for (SepResponse poliResponse : poliResponseList){
+//            logger.info(poliResponse.getMessage());
+//            logger.info(poliResponse.getMessage());
+//        }
+    }
+
     public void listPoli(String key){
         List<PoliResponse> poliResponseList = new ArrayList<>();
         try {

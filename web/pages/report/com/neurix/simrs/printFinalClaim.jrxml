@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printStrukResepPasien" language="groovy" pageWidth="421" pageHeight="595" whenNoDataType="AllSectionsNoDetail" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
 	<property name="ireport.zoom" value="1.610510000000005"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="144"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -24,11 +24,15 @@
 		</box>
 	</style>
 	<subDataset name="dataSet" uuid="eed1fe6b-44ac-495b-9bef-d74ce81fa8dd">
+		<parameter name="ppnObat" class="java.lang.Integer"/>
 		<field name="stTglTindakan" class="java.lang.String"/>
 		<field name="namaTindakan" class="java.lang.String"/>
 		<field name="totalTarif" class="java.lang.Integer"/>
 		<variable name="totalBiaya" class="java.lang.Integer" calculation="Sum">
 			<variableExpression><![CDATA[$F{totalTarif} == null ? '' : $F{totalTarif}]]></variableExpression>
+		</variable>
+		<variable name="totalJasa" class="java.lang.Integer">
+			<variableExpression><![CDATA[$V{totalBiaya} + $P{ppnObat}]]></variableExpression>
 		</variable>
 	</subDataset>
 	<parameter name="reportParams.idDetailCheckup" class="java.lang.String"/>
@@ -54,6 +58,7 @@
 	<parameter name="reportParams.ttdPasien" class="java.lang.String"/>
 	<parameter name="reportParams.petugas" class="java.lang.String"/>
 	<parameter name="reportParams.sep" class="java.lang.String"/>
+	<parameter name="reportParams.ppnObat" class="java.lang.Integer"/>
 	<queryString>
 		<![CDATA[SELECT * FROM it_simrs_riwayat_tindakan LIMIT 1]]>
 	</queryString>
@@ -311,7 +316,10 @@
 			<componentElement>
 				<reportElement x="0" y="0" width="381" height="92" uuid="fb1d146d-7334-465e-a56d-79bc85816191"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<datasetRun subDataset="dataSet" uuid="3824735b-2b77-498b-8f1a-43e6c12de5c1">
+					<datasetRun subDataset="dataSet" uuid="2e3bf72a-cf8f-46f5-aaea-f7495b1523b8">
+						<datasetParameter name="ppnObat">
+							<datasetParameterExpression><![CDATA[$P{reportParams.ppnObat}]]></datasetParameterExpression>
+						</datasetParameter>
 						<dataSourceExpression><![CDATA[$P{reportParams.itemDataSource}]]></dataSourceExpression>
 					</datasetRun>
 					<jr:column width="109" uuid="d20c28c2-e6f2-4af1-9c22-01a22b349d1b">
@@ -328,7 +336,7 @@
 								<text><![CDATA[Tanggal]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:columnFooter height="20" rowSpan="1">
+						<jr:columnFooter height="40" rowSpan="1">
 							<staticText>
 								<reportElement x="0" y="0" width="109" height="20" uuid="7a4f53b5-3d24-4b46-b0b6-5aa43a1009bb"/>
 								<box>
@@ -338,7 +346,18 @@
 								<textElement verticalAlignment="Middle">
 									<font size="8" isBold="false"/>
 								</textElement>
-								<text><![CDATA[Total Biaya]]></text>
+								<text><![CDATA[PPN Obat]]></text>
+							</staticText>
+							<staticText>
+								<reportElement x="0" y="20" width="109" height="20" uuid="2926c0eb-c492-49d7-8e5b-e6b620914a00"/>
+								<box>
+									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+								</box>
+								<textElement verticalAlignment="Middle">
+									<font size="8" isBold="false"/>
+								</textElement>
+								<text><![CDATA[Total Jasa]]></text>
 							</staticText>
 						</jr:columnFooter>
 						<jr:detailCell height="20" rowSpan="1">
@@ -369,9 +388,20 @@
 								<text><![CDATA[Nama Tindakan]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:columnFooter height="20" rowSpan="1">
+						<jr:columnFooter height="40" rowSpan="1">
 							<staticText>
 								<reportElement x="0" y="0" width="168" height="20" uuid="c4794ecb-e203-470b-80d6-6ed23def93c6"/>
+								<box>
+									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+								</box>
+								<textElement verticalAlignment="Middle">
+									<font size="8" isBold="false"/>
+								</textElement>
+								<text><![CDATA[]]></text>
+							</staticText>
+							<staticText>
+								<reportElement x="0" y="20" width="168" height="20" uuid="0d2aaba5-a4db-4046-8aa7-0529051b6544"/>
 								<box>
 									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
 									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -410,7 +440,7 @@
 								<text><![CDATA[Total Harga (Rp.)]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:columnFooter height="20" rowSpan="1">
+						<jr:columnFooter height="40" rowSpan="1">
 							<textField pattern="#,##0">
 								<reportElement x="0" y="0" width="102" height="20" uuid="db108e95-fcc2-405c-9b02-d7a58e302d8a"/>
 								<box>
@@ -420,7 +450,18 @@
 								<textElement textAlignment="Right" verticalAlignment="Middle">
 									<font size="8" isBold="false"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$V{totalBiaya}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$P{ppnObat}]]></textFieldExpression>
+							</textField>
+							<textField pattern="#,##0">
+								<reportElement x="0" y="20" width="102" height="20" uuid="d51d8730-1b99-4e37-aece-bbb86471e816"/>
+								<box>
+									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+								</box>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font size="8" isBold="false"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{totalJasa}]]></textFieldExpression>
 							</textField>
 						</jr:columnFooter>
 						<jr:detailCell height="20" rowSpan="1">

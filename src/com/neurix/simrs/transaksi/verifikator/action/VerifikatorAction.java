@@ -484,77 +484,85 @@ public class VerifikatorAction extends BaseMasterAction {
 
                                 for (RiwayatTindakan tindakan : tindakanRawatList) {
 
+                                    BigDecimal ppnObat = new BigDecimal(String.valueOf(0));
+                                    BigDecimal tarifTotal = tindakan.getTotalTarif();
+
+                                    if("resep".equalsIgnoreCase(tindakan.getKeterangan())){
+                                        ppnObat = (tindakan.getTotalTarif().multiply(new BigDecimal(0.1))).setScale(2, BigDecimal.ROUND_HALF_UP);
+                                        tarifTotal = ppnObat.add(tarifTotal);
+                                    }
+
                                     if ("Y".equalsIgnoreCase(tindakan.getApproveBpjsFlag()) && tindakan.getTotalTarif() != null && !"Y".equalsIgnoreCase(tindakan.getFlagUpdateKlaim())) {
 
                                         if ("prosedur_non_bedah".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-                                            tarifRsProsedurNonBedah = tarifRsProsedurNonBedah.add(new BigInteger(String.valueOf(tindakan.getTotalTarif())));
+                                            tarifRsProsedurNonBedah = tarifRsProsedurNonBedah.add(new BigInteger(tarifTotal.toString()));
                                         }
                                         if ("tenaga_ahli".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-                                            tarifRsTenagaAhli = tarifRsTenagaAhli.add(new BigInteger(String.valueOf(tindakan.getTotalTarif())));
+                                            tarifRsTenagaAhli = tarifRsTenagaAhli.add(new BigInteger(tarifTotal.toString()));
                                         }
                                         if ("radiologi".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-                                            tarifRsRadiologi = tarifRsRadiologi.add(new BigInteger(String.valueOf(tindakan.getTotalTarif())));
+                                            tarifRsRadiologi = tarifRsRadiologi.add(new BigInteger(tarifTotal.toString()));
                                         }
                                         if ("rehabilitasi".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-                                            tarifRsRehabilitasi = tarifRsRehabilitasi.add(new BigInteger(String.valueOf(tindakan.getTotalTarif())));
+                                            tarifRsRehabilitasi = tarifRsRehabilitasi.add(new BigInteger(tarifTotal.toString()));
                                         }
                                         if ("obat".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-                                            tarifRsObat = tarifRsObat.add(new BigInteger(String.valueOf(tindakan.getTotalTarif())));
+                                            tarifRsObat = tarifRsObat.add(new BigInteger(tarifTotal.toString()));
                                         }
                                         if ("alkes".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-                                            tarifRsAlkes = tarifRsAlkes.add(new BigInteger(String.valueOf(tindakan.getTotalTarif())));
+                                            tarifRsAlkes = tarifRsAlkes.add(new BigInteger(tarifTotal.toString()));
 
                                         }
 
                                         //--------------
                                         if ("prosedur_bedah".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-                                            tarifRsProsedurBedah = tarifRsProsedurBedah.add(new BigInteger(String.valueOf(tindakan.getTotalTarif())));
+                                            tarifRsProsedurBedah = tarifRsProsedurBedah.add(new BigInteger(tarifTotal.toString()));
 
                                         }
                                         if ("keperawatan".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-                                            tarifRsKeperawatan = tarifRsKeperawatan.add(new BigInteger(String.valueOf(tindakan.getTotalTarif())));
+                                            tarifRsKeperawatan = tarifRsKeperawatan.add(new BigInteger(tarifTotal.toString()));
 
                                         }
                                         if ("laboratorium".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-                                            tarifRsLaboratorium = tarifRsLaboratorium.add(new BigInteger(String.valueOf(tindakan.getTotalTarif())));
+                                            tarifRsLaboratorium = tarifRsLaboratorium.add(new BigInteger(tarifTotal.toString()));
 
                                         }
                                         if ("kamar_akomodasi".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-                                            tarifRsKamar = tarifRsKamar.add(new BigInteger(String.valueOf(tindakan.getTotalTarif())));
+                                            tarifRsKamar = tarifRsKamar.add(new BigInteger(tarifTotal.toString()));
 
                                         }
                                         if ("obat_kronis".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-                                            tarifRsObatKronis = tarifRsObatKronis.add(new BigInteger(String.valueOf(tindakan.getTotalTarif())));
+                                            tarifRsObatKronis = tarifRsObatKronis.add(new BigInteger(tarifTotal.toString()));
 
                                         }
                                         if ("bmhp".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-                                            tarifRsBmhp = tarifRsBmhp.add(new BigInteger(String.valueOf(tindakan.getTotalTarif())));
+                                            tarifRsBmhp = tarifRsBmhp.add(new BigInteger(tarifTotal.toString()));
 
                                         }
 
                                         //--------------
                                         if ("konsultasi".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-                                            tarifRsKonsultasi = tarifRsKonsultasi.add(new BigInteger(String.valueOf(tindakan.getTotalTarif())));
+                                            tarifRsKonsultasi = tarifRsKonsultasi.add(new BigInteger(tarifTotal.toString()));
 
                                         }
                                         if ("penunjang".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-                                            tarifRsPenunjang = tarifRsPenunjang.add(new BigInteger(String.valueOf(tindakan.getTotalTarif())));
+                                            tarifRsPenunjang = tarifRsPenunjang.add(new BigInteger(tarifTotal.toString()));
 
                                         }
                                         if ("pelayanan_darah".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-                                            tarifRsPelayananDarah = tarifRsPelayananDarah.add(new BigInteger(String.valueOf(tindakan.getTotalTarif())));
+                                            tarifRsPelayananDarah = tarifRsPelayananDarah.add(new BigInteger(tarifTotal.toString()));
 
                                         }
                                         if ("rawat_intensif".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-                                            tarifRsRawatIntensif = tarifRsRawatIntensif.add(new BigInteger(String.valueOf(tindakan.getTotalTarif())));
+                                            tarifRsRawatIntensif = tarifRsRawatIntensif.add(new BigInteger(tarifTotal.toString()));
 
                                         }
                                         if ("obat_kemoterapi".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-                                            tarifRsObatKemoterapi = tarifRsObatKemoterapi.add(new BigInteger(String.valueOf(tindakan.getTotalTarif())));
+                                            tarifRsObatKemoterapi = tarifRsObatKemoterapi.add(new BigInteger(tarifTotal.toString()));
 
                                         }
                                         if ("sewa_alat".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-                                            tarifRsSewaAlat = tarifRsSewaAlat.add(new BigInteger(String.valueOf(tindakan.getTotalTarif())));
+                                            tarifRsSewaAlat = tarifRsSewaAlat.add(new BigInteger(tarifTotal.toString()));
 
                                         }
 
@@ -957,6 +965,7 @@ public class VerifikatorAction extends BaseMasterAction {
 
         String id = getId();
         String jk = "";
+        BigDecimal ppnObat = new BigDecimal(String.valueOf(0));
 
         List<RiwayatTindakan> riwayatTindakanList = new ArrayList<>();
         HeaderCheckup checkup = new HeaderCheckup();
@@ -976,6 +985,15 @@ public class VerifikatorAction extends BaseMasterAction {
                 } catch (GeneralBOException e) {
                     logger.error("[TransaksiObatAction.pembelianObat] ERROR when search list obat, ", e);
                     addActionError("[TransaksiObatAction.pembelianObat] ERROR when search list obat, " + e.getMessage());
+                }
+
+                if(riwayatTindakanList.size()>0){
+                    for (RiwayatTindakan riwayatTindakan: riwayatTindakanList){
+                        if("resep".equalsIgnoreCase(riwayatTindakan.getKeterangan())){
+                            BigDecimal ppn = (riwayatTindakan.getTotalTarif().multiply(new BigDecimal(0.1))).setScale(2, BigDecimal.ROUND_HALF_UP);
+                            ppnObat = ppnObat.add(ppn);
+                        }
+                    }
                 }
 
                 JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(riwayatTindakanList);
@@ -1003,6 +1021,7 @@ public class VerifikatorAction extends BaseMasterAction {
             }
 
             reportParams.put("idDetailCheckup", id);
+            reportParams.put("ppnObat", ppnObat);
             reportParams.put("sep", checkup.getNoSep());
             reportParams.put("petugas", CommonUtil.userLogin());
             reportParams.put("idPasien", checkup.getIdPasien());

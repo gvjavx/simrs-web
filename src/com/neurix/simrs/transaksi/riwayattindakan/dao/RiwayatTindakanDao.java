@@ -160,7 +160,8 @@ public class RiwayatTindakanDao extends GenericDao<ItSimrsRiwayatTindakanEntity,
             String SQL = "SELECT \n" +
                     "a.tanggal_tindakan, \n" +
                     "a.nama_tindakan,  \n" +
-                    "a.total_tarif \n" +
+                    "a.total_tarif, \n" +
+                    "a.keterangan \n" +
                     "FROM it_simrs_riwayat_tindakan a\n" +
                     "WHERE a.id_detail_checkup = :idDet\n" +
                     "AND flag_update_klaim = 'Y'\n" +
@@ -192,6 +193,8 @@ public class RiwayatTindakanDao extends GenericDao<ItSimrsRiwayatTindakanEntity,
                     }else{
                         tindakan.setTotalTarif(new BigDecimal(String.valueOf(0)));
                     }
+
+                    tindakan.setKeterangan(obj[3] == null ? "" : obj[3].toString());
 
                     riwayatTindakanList.add(tindakan);
                 }

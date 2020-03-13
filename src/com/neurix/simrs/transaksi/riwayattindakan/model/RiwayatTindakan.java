@@ -36,6 +36,16 @@ public class RiwayatTindakan extends BaseModel {
     private String stTglTindakan;
     private String kategoriInaBpjs;
 
+    private BigDecimal ppnObat;
+
+    public BigDecimal getPpnObat() {
+        return ppnObat;
+    }
+
+    public void setPpnObat(BigDecimal ppnObat) {
+        this.ppnObat = ppnObat;
+    }
+
     public String getTglTo() {
         return tglTo;
     }

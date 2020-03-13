@@ -2818,6 +2818,7 @@
                         if (response == "success") {
                             dwr.engine.setAsync(false);
                             listTindakan();
+                            hitungStatusBiaya();
                             $('#modal-tindakan').modal('hide');
                             $('#info_dialog').dialog('open');
                             $('#close_pos').val(2);
