@@ -782,6 +782,9 @@ public class CheckupController implements ModelDriven<Object> {
             }
             if ("pindah".equalsIgnoreCase(idKtg)){
                 headerDetailCheckup.setKeteranganSelesai("Pindah ke Poli Lain");
+                if  (jenisPasien.equalsIgnoreCase("umum")){
+                    headerDetailCheckup.setJumlahUangMuka(new BigInteger(uangMuka));
+                }
             }
             if ("rujuk".equalsIgnoreCase(idKtg)){
                 headerDetailCheckup.setIdJenisPeriksaPasien(jenisPasien);
@@ -884,6 +887,7 @@ public class CheckupController implements ModelDriven<Object> {
         if (!"".equalsIgnoreCase(noCheckup) && !"".equalsIgnoreCase(idPoli) && !"".equalsIgnoreCase(idDokter)) {
 
             HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
+            headerDetailCheckup.setIdJenisPeriksaPasien(jenisPasien);
             String genNoSep = "";
 
 
@@ -1157,6 +1161,9 @@ public class CheckupController implements ModelDriven<Object> {
                 headerDetailCheckup.setNoSep(genNoSep);
                 headerDetailCheckup.setBranchId(branchId);
 //                headerDetailCheckup.setNoNota(createJurnalUangMuka(checkup.getIdPasien(), "0"));
+                if (jenisPasien.equalsIgnoreCase("umum")){
+                    headerDetailCheckup.setJumlahUangMuka(new BigInteger(uangMuka));
+                }
 
                 try {
                     checkupDetailBo.saveAdd(headerDetailCheckup);
