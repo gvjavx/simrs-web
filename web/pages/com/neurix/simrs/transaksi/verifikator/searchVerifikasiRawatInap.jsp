@@ -705,8 +705,8 @@
                         });
 
                         var kategori =
-                            '<select class="form-control" id="kategori'+i+'">' + tindakanina +
-//                            '<option value="">[Select One]</option>'+
+                            '<select class="form-control" id="kategori'+i+'">' +
+                            '<option value="">[Select One]</option>'+ tindakanina +
 //                            '<option value="prosedur_non_bedah">Prosedur Non Bedah</option>'+
 //                            '<option value="tenaga_ahli">Tenaga Ahli</option>'+
 //                            '<option value="radiologi">Radiologi</option>'+
