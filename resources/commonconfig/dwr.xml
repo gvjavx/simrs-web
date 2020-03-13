@@ -502,6 +502,7 @@
       </create>
       <convert converter="bean" match="com.neurix.akuntansi.master.mappingJurnal.model.MappingJurnal"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.permintaanresep.model.ObatKronis"/>
+      <convert converter="bean" match="com.neurix.simrs.master.kategoritindakanina.model.ImSimrsKategoriTindakanInaEntity"/>
   </allow>
 
 </dwr>

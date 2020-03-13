@@ -34,6 +34,31 @@ public class RiwayatTindakan extends BaseModel {
     private Timestamp tanggalTindakan;
 
     private String stTglTindakan;
+    private String kategoriInaBpjs;
+
+    public String getTglTo() {
+        return tglTo;
+    }
+
+    public void setTglTo(String tglTo) {
+        this.tglTo = tglTo;
+    }
+
+    public String getTglForm() {
+        return tglForm;
+    }
+
+    public void setTglForm(String tglForm) {
+        this.tglForm = tglForm;
+    }
+
+    public String getKategoriInaBpjs() {
+        return kategoriInaBpjs;
+    }
+
+    public void setKategoriInaBpjs(String kategoriInaBpjs) {
+        this.kategoriInaBpjs = kategoriInaBpjs;
+    }
 
     public String getStTglTindakan() {
         return stTglTindakan;
