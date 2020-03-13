@@ -73,4 +73,14 @@ public class PengaliFaktorLemburDao extends GenericDao<PengaliFaktorLemburEntity
 
         return results;
     }
+    public List<PengaliFaktorLemburEntity> getPengali(String tipePegawaiId) throws HibernateException {
+
+        List<PengaliFaktorLemburEntity> results = this.sessionFactory.getCurrentSession().createCriteria(PengaliFaktorLemburEntity.class)
+                .add(Restrictions.ilike("tipePegawaiId",tipePegawaiId))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("pengaliFaktorId"))
+                .list();
+
+        return results;
+    }
 }

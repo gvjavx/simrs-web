@@ -96,7 +96,7 @@
 
 
 
-                <legend align="left">Add KelompokPosition</legend>
+                <legend align="left">Add Kelompok Jabatan</legend>
 
 
                 <table>

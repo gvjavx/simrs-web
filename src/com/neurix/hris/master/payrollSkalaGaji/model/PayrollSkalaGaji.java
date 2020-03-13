@@ -15,6 +15,7 @@ public class PayrollSkalaGaji extends BaseModel {
     private String skalaGajiId;
     private String golonganId;
     private String golonganName;
+    private String stLevel;
     private String tahun;
     private int point;
     private BigDecimal nilai ;
@@ -24,6 +25,77 @@ public class PayrollSkalaGaji extends BaseModel {
     private BigDecimal air;
     private BigDecimal bbm;
     private BigDecimal total;
+    private String stNilai ;
+    private String stSantunanKhusus;
+    private String stRumah;
+    private String stListrik;
+    private String stAir;
+    private String stBbm;
+    private String stTotal;
+
+    public String getStLevel() {
+        return stLevel;
+    }
+
+    public void setStLevel(String stLevel) {
+        this.stLevel = stLevel;
+    }
+
+    public String getStAir() {
+        return stAir;
+    }
+
+    public void setStAir(String stAir) {
+        this.stAir = stAir;
+    }
+
+    public String getStBbm() {
+        return stBbm;
+    }
+
+    public void setStBbm(String stBbm) {
+        this.stBbm = stBbm;
+    }
+
+    public String getStListrik() {
+        return stListrik;
+    }
+
+    public void setStListrik(String stListrik) {
+        this.stListrik = stListrik;
+    }
+
+    public String getStNilai() {
+        return stNilai;
+    }
+
+    public void setStNilai(String stNilai) {
+        this.stNilai = stNilai;
+    }
+
+    public String getStRumah() {
+        return stRumah;
+    }
+
+    public void setStRumah(String stRumah) {
+        this.stRumah = stRumah;
+    }
+
+    public String getStSantunanKhusus() {
+        return stSantunanKhusus;
+    }
+
+    public void setStSantunanKhusus(String stSantunanKhusus) {
+        this.stSantunanKhusus = stSantunanKhusus;
+    }
+
+    public String getStTotal() {
+        return stTotal;
+    }
+
+    public void setStTotal(String stTotal) {
+        this.stTotal = stTotal;
+    }
 
     public BigDecimal getAir() {
         return air;

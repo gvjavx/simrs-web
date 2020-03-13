@@ -120,7 +120,8 @@ public class PayrollDanaPensiunBoImpl implements PayrollDanaPensiunBo {
                 imPayrollDanaPensiunEntity.setDanaPensiunId(bean.getDanaPensiunId());
                 imPayrollDanaPensiunEntity.setDanaPensiun(bean.getDanaPensiun());
 
-                imPayrollDanaPensiunEntity.setPersentase(bean.getPersentase());
+                imPayrollDanaPensiunEntity.setPersentaseKary(bean.getPersentaseKary());
+                imPayrollDanaPensiunEntity.setPersentasePers(bean.getPersentasePers());
                 imPayrollDanaPensiunEntity.setFlag(bean.getFlag());
                 imPayrollDanaPensiunEntity.setAction(bean.getAction());
                 imPayrollDanaPensiunEntity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -166,7 +167,8 @@ public class PayrollDanaPensiunBoImpl implements PayrollDanaPensiunBo {
             imPayrollDanaPensiunEntity.setDanaPensiunId(payrollDanaPensiunId);
             imPayrollDanaPensiunEntity.setDanaPensiun(bean.getDanaPensiun());
 
-            imPayrollDanaPensiunEntity.setPersentase(bean.getPersentase());
+            imPayrollDanaPensiunEntity.setPersentaseKary(bean.getPersentaseKary());
+            imPayrollDanaPensiunEntity.setPersentasePers(bean.getPersentasePers());
             imPayrollDanaPensiunEntity.setFlag(bean.getFlag());
             imPayrollDanaPensiunEntity.setAction(bean.getAction());
             imPayrollDanaPensiunEntity.setCreatedWho(bean.getCreatedWho());
@@ -231,7 +233,10 @@ public class PayrollDanaPensiunBoImpl implements PayrollDanaPensiunBo {
                     returnPayrollDanaPensiun = new payrollDanaPensiun();
                     returnPayrollDanaPensiun.setDanaPensiunId(payrollDanaPensiunEntity.getDanaPensiunId());
                     returnPayrollDanaPensiun.setDanaPensiun(payrollDanaPensiunEntity.getDanaPensiun());
-                    returnPayrollDanaPensiun.setPersentase(payrollDanaPensiunEntity.getPersentase());
+                    returnPayrollDanaPensiun.setPersentaseKary(payrollDanaPensiunEntity.getPersentaseKary());
+                    returnPayrollDanaPensiun.setStPersentaseKary(payrollDanaPensiunEntity.getPersentaseKary().toString());
+                    returnPayrollDanaPensiun.setPersentasePers(payrollDanaPensiunEntity.getPersentasePers());
+                    returnPayrollDanaPensiun.setStPersentasePers(payrollDanaPensiunEntity.getPersentasePers().toString());
                     returnPayrollDanaPensiun.setCreatedWho(payrollDanaPensiunEntity.getCreatedWho());
                     returnPayrollDanaPensiun.setCreatedDate(payrollDanaPensiunEntity.getCreatedDate());
                     returnPayrollDanaPensiun.setLastUpdate(payrollDanaPensiunEntity.getLastUpdate());

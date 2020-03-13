@@ -100,6 +100,26 @@ public class StrukturJabatanDao extends GenericDao<ImStrukturJabatanEntity, Stri
         return results;
     }
 
+    public List<ImStrukturJabatanEntity> getPegawaiLevel(String positionId, String branchId) throws HibernateException {
+        List<ImStrukturJabatanEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImStrukturJabatanEntity.class)
+                .add(Restrictions.eq("positionId", positionId))
+                .add(Restrictions.eq("branchId", branchId))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.desc("createdDate"))
+                .list();
+        return results;
+    }
+
+    public List<ImStrukturJabatanEntity> get2UpLevel(Long level, String branchId) throws HibernateException {
+        List<ImStrukturJabatanEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImStrukturJabatanEntity.class)
+                .add(Restrictions.eq("level", level))
+                .add(Restrictions.eq("branchId", branchId))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.desc("createdDate"))
+                .list();
+        return results;
+    }
+
     // Generate surrogate id from postgre
     public String getNextStrukturJabatanId() throws HibernateException {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_struktur_jabatan')");
@@ -170,7 +190,7 @@ public class StrukturJabatanDao extends GenericDao<ImStrukturJabatanEntity, Stri
         }
         return result;
     }
-    public StrukturJabatan searchKabidByBagian(String bagian) throws HibernateException{
+    /*public StrukturJabatan searchKabidByBagian(String bagian) throws HibernateException{
 
         String query = "SELECT pegawai.nip,pegawai.nama_pegawai\n" +
                 "\tFROM \n" +
@@ -196,7 +216,7 @@ public class StrukturJabatanDao extends GenericDao<ImStrukturJabatanEntity, Stri
             result.setNip((String) row[0]);
         }
         return result;
-    }
+    }*/
     public List<StrukturJabatan> searchStrukturRelation2(String id,String branchId) throws HibernateException{
         List<StrukturJabatan> strukturJabatanList = new ArrayList<>();
         String strukturId = id;
@@ -739,18 +759,22 @@ public class StrukturJabatanDao extends GenericDao<ImStrukturJabatanEntity, Stri
         }
 
         query = "SELECT \n" +
-                "                nip, kelompok_id, parent_id, position_id\n" +
-                "                FROM \n" +
-                "                struktur_jabatan \n" +
-                "                WHERE  \n" +
-                "                struktur_jabatan_id=:strukturId AND \n" +
-                "                branch_id=:branchId";
+                "posisi.nip,kelompok.kelompok_id, struktur_jabatan.parent_id, struktur_jabatan.position_id\n" +
+                "FROM \n" +
+                "im_hris_struktur_jabatan struktur_jabatan, \n" +
+                "it_hris_pegawai_position posisi,\n" +
+                "im_position imposisi,\n" +
+                "im_hris_kelompok_position kelompok\n" +
+                "WHERE  \n" +
+                "struktur_jabatan_id='"+strukturId+"' AND \n" +
+                "posisi.branch_id='"+unit+"'\n" +
+                "and posisi.position_id = struktur_jabatan.position_id\n" +
+                "and posisi.position_id = imposisi.position_id\n" +
+                "and kelompok.kelompok_id = imposisi.kelompok_id";
 
         List<Object[]> results = new ArrayList<Object[]>();
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
-                .setParameter("strukturId", strukturId)
-                .setParameter("branchId",unit)
                 .list();
 
 

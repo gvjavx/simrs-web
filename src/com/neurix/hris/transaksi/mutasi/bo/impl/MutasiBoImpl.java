@@ -14,6 +14,8 @@ import com.neurix.hris.master.biodata.model.PelatihanJabatanUser;
 import com.neurix.hris.master.kualifikasiCalonPejabat.dao.KualifikasiCalonPejabatDao;
 import com.neurix.hris.master.kualifikasiCalonPejabat.model.ImHrisKualifikasiCalonPejabatEntity;
 import com.neurix.hris.master.kualifikasiCalonPejabat.model.KualifikasiCalonPejabat;
+import com.neurix.hris.master.payrollSkalaGaji.dao.PayrollSkalaGajiDao;
+import com.neurix.hris.master.payrollSkalaGaji.model.ImPayrollSkalaGajiEntity;
 import com.neurix.hris.master.pelatihanJabatan.model.PelatihanJabatan;
 import com.neurix.hris.master.sertifikat.dao.SertifikatDao;
 import com.neurix.hris.master.sertifikat.model.ImSertifikatEntity;
@@ -77,6 +79,15 @@ public class MutasiBoImpl implements MutasiBo {
     private SertifikatDao sertifikatDao;
     private HistoryJabatanPegawaiDao historyJabatanPegawaiDao;
     private SmkHistoryGolonganDao historyGolonganDao;
+    private PayrollSkalaGajiDao skalaGajiDao;
+
+    public PayrollSkalaGajiDao getSkalaGajiDao() {
+        return skalaGajiDao;
+    }
+
+    public void setSkalaGajiDao(PayrollSkalaGajiDao skalaGajiDao) {
+        this.skalaGajiDao = skalaGajiDao;
+    }
 
     private PelatihanJabatanUserDao pelatihanJabatanUserDao;
 
@@ -273,12 +284,17 @@ public class MutasiBoImpl implements MutasiBo {
                     }
                     itMutasiEntity.setPositionLamaId(mutasi.getPositionLamaId());
                     itMutasiEntity.setMenggantikanNip(mutasi.getPenggantiNip());
-                    itMutasiEntity.setTipeMutasi(mutasi.getStatus());
+                    itMutasiEntity.setStatus(mutasi.getStatus());
+                    itMutasiEntity.setTipeMutasi(mutasi.getTipeMutasi());
+                    itMutasiEntity.setLevelLama(mutasi.getLevelLama());
+                    itMutasiEntity.setLevelLamaName(mutasi.getLevelLamaName());
 
                     if(mutasi.getStatus().equalsIgnoreCase("M")){
                         itMutasiEntity.setBranchBaruId(mutasi.getBranchBaruId());
                         itMutasiEntity.setDivisiBaruId(mutasi.getDivisiBaruId());
                         itMutasiEntity.setPositionBaruId(mutasi.getPositionBaruId());
+                        itMutasiEntity.setLevelBaru(mutasi.getLevelBaru());
+                        itMutasiEntity.setLevelBaruName(mutasi.getLevelBaruName());
                     }
                     itMutasiEntity.setPjs(mutasi.getPjs());
 
@@ -608,18 +624,26 @@ public class MutasiBoImpl implements MutasiBo {
                     returnMutasi.setAction(itMutasiEntity.getAction());
                     returnMutasi.setFlag(itMutasiEntity.getFlag());
 
-                    if (itMutasiEntity.getTipeMutasi()!= null){
-                        if ("M".equalsIgnoreCase(itMutasiEntity.getTipeMutasi())){
+                    if (itMutasiEntity.getStatus()!= null){
+                        if ("M".equalsIgnoreCase(itMutasiEntity.getStatus())){
                             returnMutasi.setStatusName("Move");
                         }
-                        else if ("P".equalsIgnoreCase(itMutasiEntity.getTipeMutasi())){
+                        else if ("P".equalsIgnoreCase(itMutasiEntity.getStatus())){
                             returnMutasi.setStatusName("Pensiun");
                         }
-                        else if ("R".equalsIgnoreCase(itMutasiEntity.getTipeMutasi())){
+                        else if ("R".equalsIgnoreCase(itMutasiEntity.getStatus())){
                             returnMutasi.setStatusName("Resign");
                         }
                         else{
                             returnMutasi.setStatusName("Move Holding");
+                        }
+                    }
+                    returnMutasi.setTipeMutasi(itMutasiEntity.getTipeMutasi());
+                    if (itMutasiEntity.getTipeMutasi()!= null) {
+                        if ("MT".equalsIgnoreCase(itMutasiEntity.getTipeMutasi())) {
+                            returnMutasi.setTipeMutasiName("Mutasi");
+                        } else {
+                            returnMutasi.setTipeMutasiName("Rotasi");
                         }
                     }
                     listOfResult.add(returnMutasi);
@@ -1154,48 +1178,16 @@ public class MutasiBoImpl implements MutasiBo {
         SimpleDateFormat dt1 = new SimpleDateFormat("dd-MM-yyyy");
         String stDate = dt1.format(dataDate);
         String[]tahun = stDate.split("-");
-        label1 = "KEPUTUSAN DIREKSI PT NUSANTARA MEDICA UTAMA\n" +
-                "NOMOR : SK.07/NMU.01/I/"+tahun[2]+"\n" +
-                "\n" +
-                "TENTANG\n" ;
-
         if(mutasiList != null){
             for(Mutasi mutasi : mutasiList){
-                biodata = biodataDao.getById("nip", mutasi.getNip());
-                String gender = "";
-                resultMutasi.setBranchLamaId(mutasi.getBranchLamaId());
-                if(biodata.getGender().equalsIgnoreCase("L")){
-                    gender = "Saudara ";
-                }else{
-                    gender = "Saudari ";
-                }
-                resultMutasi.setLabel1(label1);
-                label2 = "MUTASI "+ gender.toUpperCase() +mutasi.getNama()+" SEBAGAI \n" +
-                        ""+mutasi.getPositionBaruName()+"  PT NUSANTARA MEDICA UTAMA - "+mutasi.getBranchBaruName()+"\n";
-                resultMutasi.setLabel2(label2);
-
-                label3 = "Bahwa dalam rangka mengisi formasi dan menjalankan fungsi organisasi di "+mutasi.getDivisiBaruName()+" PT PG Rajawali I "+mutasi.getBranchBaruName()+", " +
-                        "diperlukan seorang Karyawan untuk ditunjuk sebagai "+mutasi.getPositionBaruName()+".";
-                resultMutasi.setLabel3(label3);
-
-                label4 = "Bahwa "+ gender + mutasi.getNama()+" diputuskan untuk ditetapkan sebagai "
-                        +mutasi.getPositionBaruName()+" PT NUSANTARA MEDICA UTAMA – "+mutasi.getBranchBaruName()+"." ;
-                resultMutasi.setLabel4(label4);
-
-                label5 = "KEPUTUSAN DIREKSI PT NUSANTARA MEDICA UTAMA TENTANG MUTASI "+ gender.toUpperCase() +mutasi.getNama()+" SEBAGAI "+mutasi.getPositionBaruName()+
-                        " PT NUSANTARA MEDICA UTAMA - "+mutasi.getBranchBaruName()+".";
-                resultMutasi.setLabel5(label5);
-
-                label6 = "Membebaskan "+ gender + mutasi.getNama()+" dari tugas dan tanggung jawabnya sebagai "+mutasi.getPositionLamaName()+" "+mutasi.getBranchLamaName()+" PT NUSANTARA MEDICA UTAMA\n" +
-                        "Memutasi "+gender +mutasi.getNama()+" sebagai " +
-                        "" +
-                        ""+mutasi.getPositionBaruName()+" "+mutasi.getBranchBaruName()+" PT NUSANTARA MEDICA UTAMA.";
-                resultMutasi.setLabel6(label6);
-
-                label7 = "Keputusan ini berlaku surut terhitung sejak tanggal "+mutasi.getStTanggalEfektif()+" dengan " +
-                        "ketentuan apabila di kemudian hari terdapat kekeliruan dalam Surat Keputusan ini " +
-                        "maka akan diadakan perbaikan seperlunya.";
-                resultMutasi.setLabel7(label7);
+                resultMutasi.setNama(mutasi.getNama());
+                resultMutasi.setPositionLamaName(mutasi.getPositionLamaName());
+                resultMutasi.setBranchLamaName(mutasi.getBranchLamaName());
+                resultMutasi.setBranchBaruName(mutasi.getBranchBaruName());
+                resultMutasi.setPositionBaruName(mutasi.getPositionBaruName());
+                resultMutasi.setLevelBaruName(mutasi.getLevelBaruName());
+                resultMutasi.setLevelBaru(mutasi.getLevelBaru());
+                resultMutasi.setStTanggalEfektif(mutasi.getStTanggalEfektif());
             }
         }
 
@@ -1301,5 +1293,17 @@ public class MutasiBoImpl implements MutasiBo {
             hasil = false;
         }
         return hasil;
+    }
+
+    public BigDecimal getGajiPokok(String golonganId){
+        BigDecimal nilai=new BigDecimal(0);
+        List<ImPayrollSkalaGajiEntity> gaji = new ArrayList<>();
+        gaji = skalaGajiDao.getDataSkalaGajiSimRs(golonganId);
+        if (gaji!=null){
+            for (ImPayrollSkalaGajiEntity gajiEntity: gaji){
+                nilai = gajiEntity.getNilai();
+            }
+        }
+        return  nilai;
     }
 }

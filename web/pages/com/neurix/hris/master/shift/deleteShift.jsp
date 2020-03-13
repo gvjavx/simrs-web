@@ -118,9 +118,9 @@
     <div class="form-group">
         <label class="control-label col-sm-2">Grup :</label>
         <div class="col-sm-8" align="left">
-            <s:action id="comboKelompok" namespace="/kelompokPosition" name="initComboKelompokPosition_kelompokPosition"/>
-            <s:select cssClass="form-control" list="#comboKelompok.listOfComboKelompokPosition" id="kelompokPositionId" name="shift.kelompokPositionId"
-                      required="true" listKey="kelompokId" listValue="kelompokName" headerKey="" headerValue="[Pilih Satu]" disabled="true"/>
+            <s:action id="comboProfesi" namespace="/profesi" name="searchProfesi_profesi"/>
+            <s:select list="#comboProfesi.listComboProfesi" id="kelompokPositionId" name="shift.profesiId"
+                      listKey="profesiId" listValue="profesiName" headerKey="" headerValue="[Select one]" cssClass="form-control" disabled="true" />
             <s:hidden id="groupId" name="shift.kelompokPositionId" />
         </div>
     </div>

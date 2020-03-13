@@ -183,7 +183,8 @@
                                             </display:column>
                                             <display:column property="danaPensiunId" sortable="true" title="Id" />
                                             <display:column property="danaPensiun" sortable="true" title="Nama Dapen"  />
-                                            <display:column property="persentase" sortable="true" title="Nilai"  />
+                                            <display:column property="stPersentaseKary" sortable="true" title="Persentase Karyawan"  />
+                                            <display:column property="stPersentasePers" sortable="true" title="Persentase Perusahaan"  />
                                         </display:table>
                                     </td>
                                 </tr>

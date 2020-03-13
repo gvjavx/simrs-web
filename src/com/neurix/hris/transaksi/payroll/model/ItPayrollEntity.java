@@ -95,7 +95,7 @@ public class ItPayrollEntity implements Serializable {
     private BigDecimal bapor;
     private BigDecimal zakat;
     private BigDecimal umr;
-    private BigDecimal lainLain;
+
     private String ApprovalFlag;
     private String flagPayroll;
     private String danaPensiun;
@@ -177,7 +177,8 @@ public class ItPayrollEntity implements Serializable {
     private int masaKerjaGol;
     private String golonganDapenId;
     private String golonganDapenName;
-
+    private String profesiId;
+    private String profesiName;
     //tunjangan - tunjangan
     private BigDecimal tambahanLain;
     private BigDecimal tunjanganLain;
@@ -225,10 +226,74 @@ public class ItPayrollEntity implements Serializable {
     private BigDecimal listrik;
     private BigDecimal iuranProfesi;
     private BigDecimal potonganLain;
+    private BigDecimal lainLain;
+    private String idLainLain;
+
+    //pph bulan 12
+    private BigDecimal pphSeharusnya;
+    private BigDecimal pph11Bulan;
+    private BigDecimal selisihPph;
+    private BigDecimal totalLain11Bulan;
+
+    public BigDecimal getPph11Bulan() {
+        return pph11Bulan;
+    }
+
+    public void setPph11Bulan(BigDecimal pph11Bulan) {
+        this.pph11Bulan = pph11Bulan;
+    }
+
+    public BigDecimal getPphSeharusnya() {
+        return pphSeharusnya;
+    }
+
+    public void setPphSeharusnya(BigDecimal pphSeharusnya) {
+        this.pphSeharusnya = pphSeharusnya;
+    }
+
+    public BigDecimal getSelisihPph() {
+        return selisihPph;
+    }
+
+    public void setSelisihPph(BigDecimal selisihPph) {
+        this.selisihPph = selisihPph;
+    }
+
+    public BigDecimal getTotalLain11Bulan() {
+        return totalLain11Bulan;
+    }
+
+    public void setTotalLain11Bulan(BigDecimal totalLain11Bulan) {
+        this.totalLain11Bulan = totalLain11Bulan;
+    }
 
     //flag baru
     private String flagCutiTahunan;
     private String flagCutiPanjang;
+
+    public String getIdLainLain() {
+        return idLainLain;
+    }
+
+    public void setIdLainLain(String idLainLain) {
+        this.idLainLain = idLainLain;
+    }
+
+    public String getProfesiId() {
+        return profesiId;
+    }
+
+    public void setProfesiId(String profesiId) {
+        this.profesiId = profesiId;
+    }
+
+    public String getProfesiName() {
+        return profesiName;
+    }
+
+    public void setProfesiName(String profesiName) {
+        this.profesiName = profesiName;
+    }
 
     public String getFlagCutiPanjang() {
         return flagCutiPanjang;

@@ -302,7 +302,7 @@
                                                 </s:else>
                                             </display:column>
 
-                                            <display:column media="html" title="Print Draft">
+                                            <%--<display:column media="html" title="Print Draft">
                                                 <s:if test="#attr.row.flagEdit">
                                                     <a href="javascript:;" draftBulan="<s:property value="%{#attr.row.bulan}"/>"
                                                        draftTahun="<s:property value="%{#attr.row.tahun}"/>"
@@ -313,7 +313,7 @@
                                                         <img border="0" src="<s:url value="/pages/images/icon_printer_new.ico"/>" name="icon_edit">
                                                     </a>
                                                 </s:if>
-                                            </display:column>
+                                            </display:column>--%>
 
                                             <display:column media="html" title="Print Slip">
                                                 <s:if test="#attr.row.flagEdit">
@@ -366,16 +366,16 @@
                                             <display:column media="html" title="Cuti Tahunan">
                                                 <img border="0" src="<s:property value="#attr.row.flagCutiTahunan"/>" >
                                             </display:column>
-                                            <display:column media="html" title="Jasprod">
+                                            <display:column media="html" title="Jasop">
                                                 <img border="0" src="<s:property value="#attr.row.flagJasprod"/>" >
                                             </display:column>
-                                            <display:column media="html" title="Jubileum">
+                                            <display:column media="html" title="PMP">
                                                 <img border="0" src="<s:property value="#attr.row.flagJubileum"/>" >
                                             </display:column>
                                             <display:column media="html" title="Cuti Panjang">
                                                 <img border="0" src="<s:property value="#attr.row.flagCutiPanjang"/>" >
                                             </display:column>
-                                            <display:column media="html" title="Pensiun">
+                                            <display:column media="html" title="SHT">
                                                 <img border="0" src="<s:property value="#attr.row.flagPensiun"/>" >
                                             </display:column>
 

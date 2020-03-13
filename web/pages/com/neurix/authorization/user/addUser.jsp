@@ -208,7 +208,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-sm-5" for="users.divisiId">Bagian :</label>
+                                        <label class="control-label col-sm-5" for="users.divisiId">Bidang :</label>
                                         <div class="col-sm-3">
                                             <s:action id="comboDivisi" namespace="/department" name="searchDepartment_department"/>
                                             <s:select list="#comboDivisi.listComboDepartment" id="users.divisiId" name="users.divisiId" onchange="listPosisi()"
@@ -373,7 +373,7 @@
         var divisi = document.getElementById("users.divisiId").value;
 
         $('#positionId').empty();
-        PositionAction.searchPosition2(branch, divisi, function(listdata){
+        PositionAction.searchPositionBiodata(divisi, function(listdata){
             $.each(listdata, function (i, item) {
                 $('#positionId').append($("<option></option>")
                         .attr("value",item.positionId)

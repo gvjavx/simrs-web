@@ -2,7 +2,7 @@ package com.neurix.hris.master.payrollTunjanganJabatanStruktural.bo;
 
 import com.neurix.common.bo.BaseMasterBo;
 import com.neurix.common.exception.GeneralBOException;
-import com.neurix.hris.master.payrollTunjanganJabatanStruktural.model.PayrollTunjanganJabatanStruktural;
+import com.neurix.hris.transaksi.payroll.model.PayrollTunjanganJabatanStruktural;
 
 /**
  * Created by IntelliJ IDEA.

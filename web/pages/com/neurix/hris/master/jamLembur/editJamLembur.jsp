@@ -16,9 +16,9 @@
         };
 
         $.subscribe('beforeProcessSave', function (event, data) {
-            var tipeHariAdd = document.getElementById("tipeHariEdit").value;
-            var jamLemburAdd    = document.getElementById("jamLemburEdit").value;
-            var pengaliJamLemburAdd    = document.getElementById("pengaliJamLemburEdit").value;
+            var tipeHariAdd = document.getElementById("tipeHariEdit1").value;
+            var jamLemburAdd    = document.getElementById("jamLemburEdit1").value;
+            var pengaliJamLemburAdd    = document.getElementById("pengaliJamLemburEdit1").value;
             if (tipeHariAdd!=""&&jamLemburAdd!=""&&pengaliJamLemburAdd!=""){
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
@@ -113,7 +113,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="jamLemburIdEdit" name="jamLembur.jamLemburId" required="true" readonly="true" cssClass="form-control"/>
+                                <s:textfield  id="jamLemburIdEdit1" name="jamLembur.jamLemburId" required="true" readonly="true" cssClass="form-control"/>
 
                             </table>
                         </td>
@@ -124,7 +124,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:select list="#{'hari_kerja':'Hari Kerja','hari_libur':'Hari Libur'}" id="tipeHariEdit" name="jamLembur.tipeHari"
+                                <s:select list="#{'hari_kerja':'Hari Kerja','hari_libur':'Hari Libur'}" id="tipeHariEdit1" name="jamLembur.tipeHari"
                                           headerKey="Y" headerValue="Active" cssClass="form-control" />
                             </table>
 
@@ -136,7 +136,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield type="number" min="0" id="jamLemburEdit" name="jamLembur.jamLembur" required="true" disabled="false" cssClass="form-control"/>
+                                <s:textfield type="number" min="0" id="jamLemburEdit1" name="jamLembur.jamLembur" required="true" disabled="false" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -146,7 +146,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield type="number" min="0" id="pengaliJamLemburEdit" name="jamLembur.jamLembur" required="true" disabled="false" cssClass="form-control"/>
+                                <s:textfield type="number" min="0" id="pengaliJamLemburEdit1" name="jamLembur.jamLembur" required="true" disabled="false" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>

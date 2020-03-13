@@ -2,6 +2,8 @@ package com.neurix.hris.transaksi.payroll.model;
 
 import com.neurix.common.model.BaseModel;
 
+import java.math.BigDecimal;
+
 /**
  * Created by IntelliJ IDEA.
  * User: gondok
@@ -14,6 +16,42 @@ public class PayrollTunjanganJabatanStruktural extends BaseModel {
     private String tunjJabStrukturId ;
     private String positionId ;
     private double nilai ;
+    private String kelompokId;
+    private String kelompokName;
+    private BigDecimal tunjJabatan;
+    private BigDecimal tunjStruktural;
+
+    public String getKelompokName() {
+        return kelompokName;
+    }
+
+    public void setKelompokName(String kelompokName) {
+        this.kelompokName = kelompokName;
+    }
+
+    public String getKelompokId() {
+        return kelompokId;
+    }
+
+    public void setKelompokId(String kelompokId) {
+        this.kelompokId = kelompokId;
+    }
+
+    public BigDecimal getTunjJabatan() {
+        return tunjJabatan;
+    }
+
+    public void setTunjJabatan(BigDecimal tunjJabatan) {
+        this.tunjJabatan = tunjJabatan;
+    }
+
+    public BigDecimal getTunjStruktural() {
+        return tunjStruktural;
+    }
+
+    public void setTunjStruktural(BigDecimal tunjStruktural) {
+        this.tunjStruktural = tunjStruktural;
+    }
 
     public double getNilai() {
         return nilai;

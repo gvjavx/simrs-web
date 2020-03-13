@@ -33,17 +33,17 @@ public class PayrollSkalaGajiPensiunRniDao extends GenericDao<ImPayrollSkalaGaji
 
         // Get Collection and sorting
         if (mapCriteria!=null) {
-            if (mapCriteria.get("skala_gaji_pensiun_rni_id")!=null) {
-                criteria.add(Restrictions.eq("skalaGajiPensiunRniId", (String) mapCriteria.get("skala_gaji_pensiun_rni_id")));
+            if (mapCriteria.get("skalaGajiPensiunId")!=null) {
+                criteria.add(Restrictions.eq("skalaGajiPensiunId", (String) mapCriteria.get("skalaGajiPensiunId")));
             }
-            if (mapCriteria.get("golongan_id")!=null) {
-                criteria.add(Restrictions.eq("golonganId", (String) mapCriteria.get("golongan_id")));
+            if (mapCriteria.get("golonganId")!=null) {
+                criteria.add(Restrictions.eq("golonganId", (String) mapCriteria.get("golonganId")));
             }
 
             criteria.add(Restrictions.eq("flag", "Y"));
         }
         // Order by
-        criteria.addOrder(Order.desc("skalaGajiPensiunRniId"));
+        criteria.addOrder(Order.desc("skalaGajiPensiunId"));
 
         List<ImPayrollSkalaGajiPensiunRniEntity> results = criteria.list();
 

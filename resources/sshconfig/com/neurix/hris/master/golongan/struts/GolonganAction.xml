@@ -73,26 +73,35 @@
                 class="com.neurix.hris.master.golongan.action.GolonganAction" method="{1}">
             <interceptor-ref name="ivelinStack" />
             <result name="input">/pages/com/neurix/hris/master/golongan/SearchGolongan.jsp</result>
+            <result name="input_pkwt">/pages/com/neurix/hris/master/golonganPkwt/SearchGolonganPkwt.jsp</result>
+
+
             <result name="success">/pages/com/neurix/hris/master/golongan/SearchGolongan.jsp</result>
+            <result name="success_pkwt">/pages/com/neurix/hris/master/golonganPkwt/SearchGolonganPkwt.jsp</result>
 
             <result name="error">/pages/com/neurix/hris/master/golongan/addGolongan.jsp</result>
+            <result name="error_pkwt">/pages/com/neurix/hris/master/golonganPkwt/addGolonganPkwt.jsp</result>
+
             <result name="init_add">/pages/com/neurix/hris/master/golongan/addGolongan.jsp</result>
+            <result name="init_add_pkwt">/pages/com/neurix/hris/master/golonganPkwt/addGolonganPkwt.jsp</result>
+
             <result name="success_save_add">/pages/com/neurix/hris/master/golongan/addGolongan.jsp</result>
+            <result name="success_save_add_pkwt">/pages/com/neurix/hris/master/golonganPkwt/addGolonganPkwt.jsp</result>
 
             <result name="success_save_delete">/pages/com/neurix/hris/master/golongan/deleteGolongan.jsp</result>
+            <result name="success_save_delete_pkwt">/pages/com/neurix/hris/master/golonganPkwt/deleteGolonganPkwt.jsp</result>
+
             <result name="init_delete">/pages/com/neurix/hris/master/golongan/deleteGolongan.jsp</result>
+            <result name="init_delete_pkwt">/pages/com/neurix/hris/master/golonganPkwt/deleteGolonganPkwt.jsp</result>
+
             <result name="init_edit">/pages/com/neurix/hris/master/golongan/editGolongan.jsp</result>
+            <result name="init_edit_pkwt">/pages/com/neurix/hris/master/golonganPkwt/editGolonganPkwt.jsp</result>
+
             <result name="success_save_edit">/pages/com/neurix/hris/master/golongan/editGolongan.jsp</result>
+            <result name="success_save_edit_pkwt">/pages/com/neurix/hris/master/golonganPkwt/editGolonganPkwt.jsp</result>
+
             <result name="failure">/pages/com/neurix/hris/master/golongan/editGolongan.jsp</result>
-
-
-
-
-
-            <!--<result name="error" type="httpheader">-->
-            <!--<param name="status">504</param>-->
-            <!--<param name="headers.message">${actionErrors}</param>-->
-            <!--</result>-->
+            <result name="failure_pkwt">/pages/com/neurix/hris/master/golonganPkwt/editGolonganPkwt.jsp</result>
         </action>
 
 
@@ -100,6 +109,12 @@
                 class="com.neurix.hris.master.golongan.action.GolonganAction" method="paging">
             <interceptor-ref name="defaultStack"/>
             <result name="success">/pages/com/neurix/hris/master/golongan/SearchGolongan.jsp</result>
+        </action>
+
+        <action name="paging_displaytag_pkwt"
+                class="com.neurix.hris.master.golongan.action.GolonganAction" method="paging">
+            <interceptor-ref name="defaultStack"/>
+            <result name="success">/pages/com/neurix/hris/master/golongan/SearchGolonganPkwt.jsp</result>
         </action>
 
     </package>

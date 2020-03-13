@@ -112,76 +112,75 @@
                             <s:hidden id="erVerif" name="jamKerja.erVerif"/>
                             <div id="errorAlert" style="display: none" class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><center><s:property value="jamKerja.erVerif"/></center></div>
                             <div id="succesAlert" style="display: none" class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><center><s:property value="jamKerja.verif"/></center></div>
+                            <table align="center" width="100%">
+                                <tr>
+                                    <td align="center">
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <label>Jam Kerja Id : </label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:textfield id="jamKerjaId" name="jamKerja.jamKerjaId" cssClass="form-control" />
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label>Status Giling : </label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:select cssClass="form-control" list="#{'DMG':'DMG', 'LMG':'LMG'}" id="statusGiling" name="jamKerja.statusGiling"
+                                                                  headerKey="" headerValue="[Select one]" />
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label>Flag : </label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:select list="#{'N':'Non-Active'}" id="flag" name="jamKerja.flag"
+                                                                  headerKey="Y" headerValue="Active" cssClass="form-control"/>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <br><br>
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <sj:submit type="button" cssClass="btn btn-primary" formIds="searchForm" id="search" name="search"
+                                                               onClickTopics="showDialog" onCompleteTopics="closeDialog" onclick="showLoadingDialog();">
+                                                        <i class="fa fa-search"></i>
+                                                        Search
+                                                    </sj:submit>
+                                                </td>
+                                                <td>
+                                                    <s:url var="urlAdd" namespace="/jamkerja" action="add_jamkerja" escapeAmp="false">
+                                                    </s:url>
+                                                    <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">
+                                                        <i class="fa fa-plus"></i>
+                                                        Add Jam Kerja
+                                                    </sj:a>
 
-                            <div class="form-group">
-                                <table align="center">
-                                    <tr>
-                                        <td>
-                                            <label>Jam Kerja Id : </label>
-                                        </td>
-                                        <td>
-                                            <table>
-                                                <s:textfield id="jamKerjaId" name="jamKerja.jamKerjaId" cssClass="form-control" />
-                                            </table>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label>Status Giling : </label>
-                                        </td>
-                                        <td>
-                                            <table>
-                                                <s:select cssClass="form-control" list="#{'DMG':'DMG', 'LMG':'LMG'}" id="statusGiling" name="jamKerja.statusGiling"
-                                                          headerKey="" headerValue="[Select one]" />
-                                            </table>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label>Flag : </label>
-                                        </td>
-                                        <td>
-                                            <table>
-                                                <s:select list="#{'N':'Non-Active'}" id="flag" name="jamKerja.flag"
-                                                          headerKey="Y" headerValue="Active" cssClass="form-control"/>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                </table>
-                                <br>
+                                                </td>
+                                                <td>
 
-                            </div>
-                            <div class="box-footer">
-                                <table align="center">
-                                    <tr>
-                                        <td>
-                                            <sj:submit type="button" cssClass="btn btn-primary" formIds="searchForm" id="search" name="search"
-                                                       onClickTopics="showDialog" onCompleteTopics="closeDialog" onclick="showLoadingDialog();">
-                                                <i class="fa fa-search"></i>
-                                                Search
-                                            </sj:submit>
-                                        </td>
-                                        <td>
-                                            <s:url var="urlAdd" namespace="/jamkerja" action="add_jamkerja" escapeAmp="false">
-                                            </s:url>
-                                            <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">
-                                                <i class="fa fa-plus"></i>
-                                                Add Jam Kerja
-                                            </sj:a>
+                                                    <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_jamkerja"/>'">
+                                                        <i class="fa fa-repeat"></i> Reset
+                                                    </button>
+                                                </td>
 
-                                        </td>
-                                        <td>
-
-                                            <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_jamkerja"/>'">
-                                                <i class="fa fa-repeat"></i> Reset
-                                            </button>
-                                        </td>
-
-                                    </tr>
-                                </table>
-                            </div>
-
-
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                            <br><br>
                             <center>
                                 <table id="showdata" width="40%">
                                     <tr>
