@@ -257,13 +257,13 @@
 
                 //alert(result.length);
                 tmp_table = "<thead style='font-size: 14px; color: white' ><tr class='active'>"+
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Struktur Id</th>"+
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Nama Jabatan</th>"+
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Level</th>"+
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Nip </th>"+
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Nama </th>"+
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>"+
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>"+
+                        "<th style='text-align: center; background-color:  #30d196'>Struktur Id</th>"+
+                        "<th style='text-align: center; background-color:  #30d196''>Nama Jabatan</th>"+
+                        "<th style='text-align: center; background-color:  #30d196''>Level</th>"+
+                        "<th style='text-align: center; background-color:  #30d196''>Nip </th>"+
+                        "<th style='text-align: center; background-color:  #30d196''>Nama </th>"+
+                        "<th style='text-align: center; background-color:  #30d196'>Edit</th>"+
+                        "<th style='text-align: center; background-color:  #30d196'>Delete</th>"+
                         "</tr></thead>";
                 for(i = 0 ; i < data2.length ; i++){
                     //data2.push([item.funcId, item.funcName, item.url, item.menu, item.parent, item.funcLevel, 'Y']);
@@ -381,7 +381,7 @@
 
                             <tr>
                                 <td>
-                                    <label class="control-label"><small>Position :</small></label>
+                                    <label class="control-label"><small>Posisi :</small></label>
                                 </td>
                                 <td>
                                     <table>
@@ -391,23 +391,29 @@
                                     </table>
                                 </td>
                             </tr>
-
-
+                            <tr>
+                                <td>
+                                    <label class="control-label"><small>NIP :</small></label>
+                                </td>
+                                <td>
+                                    <table>
+                                        <s:textfield id="nip1" cssClass="form-control"></s:textfield>
+                                    </table>
+                                </td>
+                            </tr>
                             <tr>
                                 <td>
                                     <label class="control-label"><small>Nama :</small></label>
                                 </td>
                                 <td>
                                     <table>
-                                        <s:textfield id="nip" cssClass="form-control"></s:textfield>
-                                        <s:textfield id="nipNama" cssStyle="display: none"></s:textfield>
-                                        <s:textfield id="nip1" cssStyle="display: none"></s:textfield>
+                                        <s:textfield id="nipNama" cssClass="form-control" readonly="true"></s:textfield>
                                     </table>
                                 </td>
                                 <script type='text/javascript'>
                                     var functions, mapped;
                                     // var prov = document.getElementById("provinsi1").value;
-                                    $('#nip').typeahead({
+                                    $('#nip1').typeahead({
                                         minLength: 1,
                                         source: function (query, process) {
                                             functions = [];
@@ -432,8 +438,7 @@
 
                                         updater: function (item) {
                                             var selectedObj = mapped[item];
-                                            var namaAlat = selectedObj.label;
-                                            document.getElementById("nip1").value = selectedObj.id;
+                                            var namaAlat = selectedObj.id;
                                             document.getElementById("nipNama").value = selectedObj.pegawai;
 
                                             $('#positionId1').val(selectedObj.positionId).change();
@@ -623,7 +628,7 @@
                             <label class="control-label col-sm-4" for="strukturJabatan.branchId">Unit Id :</label>
                             <div class="col-sm-6">
                                 <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                                <s:select list="#initComboBranch.listOfComboBranch" id="branchIdEdit" name="strukturJabatan.branchId" onchange="selectParent(this.value, 'Edit')"
+                                <s:select disabled="true" list="#initComboBranch.listOfComboBranch" id="branchIdEdit" name="strukturJabatan.branchId" onchange="selectParent(this.value, 'Edit')"
                                           listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                             </div>
                         </div>
@@ -640,7 +645,7 @@
                             <label class="control-label col-sm-4" for="StrukturJabatan.positionId">Position Id :</label>
                             <div class="col-sm-6">
                                 <s:action id="comboPosition" namespace="/admin/position" name="searchPosition_position"/>
-                                <s:select list="#comboPosition.listOfComboPosition" id="positionIdEdit" name="StrukturJabatan.positionId"
+                                <s:select disabled="true" list="#comboPosition.listOfComboPosition" id="positionIdEdit" name="StrukturJabatan.positionId"
                                           listKey="positionId" listValue="positionName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                             </div>
                         </div>

@@ -118,7 +118,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="skalaGajiId1" readonly="true" name="payrollSkalaGajiPensiunRni.skalaGajiPensiunId1" required="true"  cssClass="form-control"/>
+                                <s:textfield  id="skalaGajiId1" readonly="true" name="payrollSkalaGajiPensiunRni.skalaGajiPensiunId" required="true"  cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>

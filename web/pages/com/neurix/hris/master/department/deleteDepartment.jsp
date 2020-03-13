@@ -96,7 +96,7 @@
 
 
 
-                <legend align="left">Edit Bidang / Divisi</legend>
+                <legend align="left">Delete Bidang / Divisi</legend>
 
 
                 <table>

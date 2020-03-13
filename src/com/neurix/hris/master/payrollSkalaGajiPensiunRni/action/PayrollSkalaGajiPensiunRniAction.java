@@ -119,8 +119,8 @@ public class PayrollSkalaGajiPensiunRniAction extends BaseMasterAction{
         setAddOrEdit(true);
         setAdd(true);
 
-        HttpSession session = ServletActionContext.getRequest().getSession();
-        session.removeAttribute("listOfResult");
+//        HttpSession session = ServletActionContext.getRequest().getSession();
+//        session.removeAttribute("listOfResult");
 
         logger.info("[PayrollSkalaGajiPensiunAction.add] stop process >>>");
         return "init_add";
@@ -319,7 +319,6 @@ public class PayrollSkalaGajiPensiunRniAction extends BaseMasterAction{
             throw new GeneralBOException(e.getMessage());
         }
 
-
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
 
@@ -350,7 +349,6 @@ public class PayrollSkalaGajiPensiunRniAction extends BaseMasterAction{
         }
 
         HttpSession session = ServletActionContext.getRequest().getSession();
-
         session.removeAttribute("listOfResult");
         session.setAttribute("listOfResult", listOfsearchPayrollSkalaGajiPensiun);
 
@@ -362,8 +360,7 @@ public class PayrollSkalaGajiPensiunRniAction extends BaseMasterAction{
     public String searchPayrollSkalaGajiPensiun() {
         logger.info("[PayrollSkalaGajiPensiunAction.search] start process >>>");
 
-        payrollSkalaGajiPensiunRni searchPayrollSkalaGajiPensiun = new payrollSkalaGajiPensiunRni();
-        searchPayrollSkalaGajiPensiun.setFlag("Y");
+        payrollSkalaGajiPensiunRni searchPayrollSkalaGajiPensiun = getPayrollSkalaGajiPensiunRni();
         List<payrollSkalaGajiPensiunRni> listOfsearchPayrollSkalaGajiPensiun = new ArrayList();
 
         try {

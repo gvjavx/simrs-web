@@ -76,7 +76,7 @@
         });
 
         $.subscribe('errorDialog', function (event, data) {
-
+            console.log(event);
 //            alert(event.originalEvent.request.getResponseHeader('message'));
             document.getElementById('errorMessage').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
             $.publish('showErrorDialog');

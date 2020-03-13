@@ -49,7 +49,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Golongan Pkwt
+            Golongan PKWT
             <small>e-HEALTH</small>
         </h1>
         <%--<ol class="breadcrumb">--%>

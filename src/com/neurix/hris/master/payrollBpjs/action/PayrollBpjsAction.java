@@ -99,8 +99,8 @@ public class PayrollBpjsAction extends BaseMasterAction{
         setAddOrEdit(true);
         setAdd(true);
 
-        HttpSession session = ServletActionContext.getRequest().getSession();
-        session.removeAttribute("listOfResult");
+//        HttpSession session = ServletActionContext.getRequest().getSession();
+//        session.removeAttribute("listOfResult");
 
         logger.info("[PayrollBpjsAction.add] stop process >>>");
         return "init_add";
@@ -312,7 +312,6 @@ public class PayrollBpjsAction extends BaseMasterAction{
         logger.info("[PayrollBpjsAction.search] start process >>>");
 
         PayrollBpjs searchPayrollBpjs = getPayrollBpjs();
-        searchPayrollBpjs.setFlag("Y");
         List<PayrollBpjs> listOfsearchPayrollBpjs = new ArrayList();
 
         try {
@@ -343,8 +342,7 @@ public class PayrollBpjsAction extends BaseMasterAction{
     public String searchPayrollBpjs() {
         logger.info("[PayrollBpjsAction.search] start process >>>");
 
-        PayrollBpjs searchPayrollBpjs = new PayrollBpjs();
-        searchPayrollBpjs.setFlag("Y");
+        PayrollBpjs searchPayrollBpjs = getPayrollBpjs();
         List<PayrollBpjs> listOfsearchPayrollBpjs = new ArrayList();
 
         try {

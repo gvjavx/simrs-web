@@ -49,7 +49,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Payroll Dana Pensiun Dplk
+            Payroll Dana Pensiun DPLK
             <small>e-HEALTH</small>
         </h1>
     </section>

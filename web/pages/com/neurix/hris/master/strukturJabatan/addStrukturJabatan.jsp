@@ -150,7 +150,7 @@
 
                     <tr>
                         <td>
-                            <label class="control-label"><small>Branch :</small></label>
+                            <label class="control-label"><small>Unit :</small></label>
                         </td>
                         <td>
                             <table>
@@ -187,13 +187,13 @@
 
                     <tr>
                         <td>
-                            <label class="control-label"><small>Position :</small></label>
+                            <label class="control-label"><small>Posisi :</small></label>
                         </td>
                         <td>
                             <table>
                                 <s:action id="comboPosition" namespace="/admin/position" name="searchPosition_position"/>
                                 <s:select list="#comboPosition.listOfComboPosition" id="positionIdAdd" name="strukturJabatan.positionId"
-                                          listKey="positionId" listValue="positionName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                          listKey="positionId" listValue="positionName" headerKey="" headerValue="[Select one]" cssClass="form-control select2"/>
                             </table>
                         </td>
                     </tr>

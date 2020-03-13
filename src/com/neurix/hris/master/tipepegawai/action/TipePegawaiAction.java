@@ -82,8 +82,8 @@ public class TipePegawaiAction extends BaseMasterAction {
         setAddOrEdit(true);
         setAdd(true);
 
-        HttpSession session = ServletActionContext.getRequest().getSession();
-        session.removeAttribute("listOfResult");
+//        HttpSession session = ServletActionContext.getRequest().getSession();
+//        session.removeAttribute("listOfResult");
 
         logger.info("[TipePegawaiAction.add] stop process >>>");
         return "init_add";

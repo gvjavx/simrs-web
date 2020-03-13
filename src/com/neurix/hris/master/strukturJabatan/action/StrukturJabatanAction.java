@@ -455,7 +455,6 @@ public class StrukturJabatanAction extends BaseMasterAction{
         if(position != null){
             searchStrukturJabatan.setPositionId(position.toString());
         }
-
         if(branch != null){
             searchStrukturJabatan.setBranchId(branch);
         }

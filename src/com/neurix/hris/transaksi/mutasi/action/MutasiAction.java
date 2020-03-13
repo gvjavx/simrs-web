@@ -450,7 +450,7 @@ public class MutasiAction extends BaseMasterAction{
             String stTanggal = CommonUtil.convertDateToString( new java.util.Date());
             reportParams.put("alamatUni", branch.getAlamatSurat()+","+stTanggal);
             reportParams.put("branchName", branch.getBranchName());
-            reportParams.put("titleReport", "Surat Keterangan");
+            reportParams.put("titleReport", "Surat Mutasi");
             reportParams.put("noSurat", noSurat);
             reportParams.put("tanggalSk", searchMutasi.getStTanggalEfektif());
 

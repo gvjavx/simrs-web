@@ -49,7 +49,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Payroll Gaji Pkwt
+            Payroll Gaji PKWT
             <small>e-HEALTH</small>
         </h1>
     </section>

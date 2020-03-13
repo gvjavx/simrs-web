@@ -110,17 +110,6 @@
                 <table >
                     <tr>
                         <td>
-                            <label class="control-label"><small>Department Id :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield  id="departmentId" name="department.departmentId" required="true" readonly="true" cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
                             <label class="control-label"><small>Department Name :</small></label>
                         </td>
                         <td>
