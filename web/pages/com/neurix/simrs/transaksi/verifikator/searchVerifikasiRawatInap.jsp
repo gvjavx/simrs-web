@@ -199,6 +199,9 @@
                                     <td><s:property value="keteranganSelesai"/></td>
                                     <td align="center">
                                         <s:if test='#row.klaimBpjsFlag == "Y"'>
+                                            <a target="_blank" href="printFinalClaim_verifrawatinap.action?id=<s:property value="idDetailCheckup"/>">
+                                                <img class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">
+                                            </a>
                                         </s:if>
                                         <s:else>
                                             <s:if test='#row.cekApprove == false'>

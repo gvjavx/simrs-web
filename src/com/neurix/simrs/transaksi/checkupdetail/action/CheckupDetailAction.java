@@ -1861,6 +1861,12 @@ public class CheckupDetailAction extends BaseMasterAction {
                                             String namaDokter = "";
                                             String idDokter = "";
 
+                                            String noSkdpVal = detailCheckup.getNoSep();
+                                            String noSkdp = noSkdpVal.substring(noSkdpVal.length() - 6);
+                                            logger.info("NO SKDP : "+noSkdp);
+
+                                            String noPPK = noSkdpVal.substring(0, 8);
+
                                             List<DokterTeam> dokterList = new ArrayList<>();
                                             DokterTeam dokterTeam = new DokterTeam();
                                             dokterTeam.setIdDetailCheckup(detailCheckup.getIdDetailCheckup());
@@ -1896,13 +1902,13 @@ public class CheckupDetailAction extends BaseMasterAction {
                                             sepRequest.setNoKartu(getPasien.getNoBpjs());
                                             sepRequest.setTglSep(now.toString());
                                             sepRequest.setPpkPelayanan(getBranch.getPpkPelayanan());//cons id rumah sakit
-                                            sepRequest.setJnsPelayanan("2");//jenis rawat inap, apa jalan 2 rawat jalan, 1 rawat inap
+                                            sepRequest.setJnsPelayanan("1");//jenis rawat inap, apa jalan 2 rawat jalan, 1 rawat inap
                                             sepRequest.setKlsRawat(checkup.getKelasPasien());//kelas rawat dari bpjs
                                             sepRequest.setNoMr(getPasien.getIdPasien());//id pasien
                                             sepRequest.setAsalRujukan(checkup.getRujuk());//
-                                            sepRequest.setTglRujukan(checkup.getTglRujukan());
+                                            sepRequest.setTglRujukan(now.toString());
                                             sepRequest.setNoRujukan(checkup.getNoRujukan());
-                                            sepRequest.setPpkRujukan(checkup.getNoPpkRujukan());
+                                            sepRequest.setPpkRujukan(noPPK);
                                             sepRequest.setCatatan("");
                                             sepRequest.setDiagAwal(diagnosaRawat.getIdDiagnosa());
                                             sepRequest.setPoliTujuan(checkup.getIdPelayananBpjs());
@@ -1918,7 +1924,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                                             sepRequest.setKdProvinsiLakaLantas("");
                                             sepRequest.setKdKecamatanLakaLantas("");
                                             sepRequest.setKdKabupatenLakaLantas("");
-                                            sepRequest.setNoSuratSkdp(getBranch.getSuratSkdp());
+                                            sepRequest.setNoSuratSkdp(noSkdp);
                                             sepRequest.setKodeDpjp(idDokter);
                                             sepRequest.setNoTelp(getPasien.getNoTelp());
                                             sepRequest.setUserPembuatSep(user);
@@ -2434,18 +2440,39 @@ public class CheckupDetailAction extends BaseMasterAction {
                         sepRequest.setJnsPelayanan("2");//jenis rawat inap apa jalan
                         sepRequest.setKlsRawat(checkup.getKelasPasien());//kelas rawat dari bpjs
                         sepRequest.setNoMr(checkup.getIdPasien());//id pasien
-//                        sepRequest.setAsalRujukan("1");//
-//                        sepRequest.setTglRujukan(checkup.getTglRujukan());
-//                        sepRequest.setNoRujukan(checkup.getNoRujukan());
-//                        sepRequest.setPpkRujukan(checkup.getNoPpkRujukan());
 
-                        sepRequest.setAsalRujukan(checkup.getRujuk());
-                        sepRequest.setTglRujukan("");
-                        sepRequest.setNoRujukan("");
-                        sepRequest.setPpkRujukan("");
+                        if (checkup.getRujuk() != null && !"".equalsIgnoreCase(checkup.getRujuk())) {
+                            sepRequest.setAsalRujukan(checkup.getRujuk());
+                        }else{
+                            sepRequest.setAsalRujukan("2");
+                        }
+
+                        if(checkup.getTglRujukan() != null && !"".equalsIgnoreCase(checkup.getTglRujukan())){
+                            sepRequest.setTglRujukan(checkup.getTglRujukan());
+                        }else{
+                            sepRequest.setTglRujukan("");
+                        }
+
+                        if(checkup.getNoRujukan() != null && !"".equalsIgnoreCase(checkup.getNoRujukan())){
+                            sepRequest.setNoRujukan(checkup.getNoRujukan());
+                        }else{
+                            sepRequest.setNoRujukan("");
+                        }
+
+                        if(checkup.getIdPelayananBpjs() != null && !"".equalsIgnoreCase(checkup.getIdPelayananBpjs())){
+                            sepRequest.setPoliTujuan(checkup.getIdPelayananBpjs());
+                        }else{
+                            sepRequest.setPoliTujuan("IGD");
+                        }
+
+                        if(checkup.getNoPpkRujukan() != null && !"".equalsIgnoreCase(checkup.getNoPpkRujukan())){
+                            sepRequest.setPpkRujukan(checkup.getNoPpkRujukan());
+                        }else{
+                            sepRequest.setPpkRujukan("");
+                        }
+
                         sepRequest.setCatatan("");
                         sepRequest.setDiagAwal(checkup.getDiagnosa());
-                        sepRequest.setPoliTujuan("IGD");
                         sepRequest.setPoliEksekutif("0");
                         sepRequest.setCob("0");
                         sepRequest.setKatarak("0");

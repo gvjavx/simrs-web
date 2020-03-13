@@ -393,6 +393,13 @@
                 <value>sshconfig/com/neurix/akuntansi/master/reportDetail/hibernate/ImReportDetailEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/master/mappingJurnal/hibernate/ImMappingJurnalEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/master/masterVendor/hibernate/ImMasterVendorEntity.hbm.xml</value>
+
+                <!--Hibernate Config For PAKET SIMRS-->
+                <value>sshconfig/com/neurix/simrs/transaksi/paketperiksa/hiberanate/ImSimrsKelasPaketEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/paketperiksa/hiberanate/MtSimrsItemPaketEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/paketperiksa/hiberanate/MtSimrsPaketEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/paketperiksa/hiberanate/ItSimrsPaketPasienEntity.hbm.xml</value>
+
             </list>
         </property>
     </bean>

@@ -149,6 +149,56 @@ public class RiwayatTindakanDao extends GenericDao<ItSimrsRiwayatTindakanEntity,
 
     }
 
+    public List<RiwayatTindakan> getListTindakanApprove(String idDetail) {
+
+        List<RiwayatTindakan> riwayatTindakanList = new ArrayList<>();
+
+        if(idDetail != null && !"".equalsIgnoreCase(idDetail)){
+
+            String SQL = "SELECT \n" +
+                    "a.tanggal_tindakan, \n" +
+                    "a.nama_tindakan,  \n" +
+                    "a.total_tarif \n" +
+                    "FROM it_simrs_riwayat_tindakan a\n" +
+                    "WHERE a.id_detail_checkup = :idDet\n" +
+                    "AND flag_update_klaim = 'Y'\n" +
+                    "ORDER BY a.keterangan, a.tanggal_tindakan ASC";
+
+            List<Object[]> result = new ArrayList<>();
+
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("idDet", idDetail)
+                    .list();
+
+            RiwayatTindakan tindakan;
+            if (!result.isEmpty()) {
+                for (Object[] obj : result) {
+                    tindakan = new RiwayatTindakan();
+
+                    if(obj[0] != null){
+                        String formatDate = new SimpleDateFormat("dd-MM-yyyy HH:mm").format((Timestamp)obj[0]);
+                        tindakan.setTanggalTindakan((Timestamp) obj[0]);
+                        tindakan.setStTglTindakan(formatDate);
+                    }else{
+                        tindakan.setStTglTindakan("");
+                    }
+
+                    tindakan.setNamaTindakan(obj[1] == null ? "" : obj[1].toString());
+
+                    if(obj[2] != null){
+                        tindakan.setTotalTarif(new BigDecimal(String.valueOf(obj[2].toString())));
+                    }else{
+                        tindakan.setTotalTarif(new BigDecimal(String.valueOf(0)));
+                    }
+
+                    riwayatTindakanList.add(tindakan);
+                }
+            }
+        }
+        return riwayatTindakanList;
+
+    }
+
     public String getNextSeq() {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_riwayat_tindakan')");
         Iterator<BigInteger> iter = query.list().iterator();

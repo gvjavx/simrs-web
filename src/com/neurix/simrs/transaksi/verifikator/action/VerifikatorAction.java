@@ -32,6 +32,7 @@ import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
 import com.neurix.simrs.transaksi.tindakanrawat.bo.TindakanRawatBo;
 import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
 import com.neurix.simrs.transaksi.verifikator.bo.VerifikatorBo;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
@@ -41,6 +42,7 @@ import org.springframework.web.context.ContextLoader;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -64,6 +66,24 @@ public class VerifikatorAction extends BaseMasterAction {
     private EklaimBo eklaimBoProxy;
     private RawatInapBo rawatInapBoProxy;
     private RawatInap rawatInap;
+    private BranchBo branchBoProxy;
+
+    private String id;
+
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setBranchBoProxy(BranchBo branchBoProxy) {
+        this.branchBoProxy = branchBoProxy;
+    }
 
     public void setVerifikatorBoProxy(VerifikatorBo verifikatorBoProxy) {
         this.verifikatorBoProxy = verifikatorBoProxy;
@@ -935,6 +955,91 @@ public class VerifikatorAction extends BaseMasterAction {
 
         logger.info("[VerifikatorAction.sendClaimOnline] END process <<<");
         return dataCenterResponse;
+    }
+
+    public String printFinalClaim() {
+
+        String id = getId();
+        String jk = "";
+
+        List<RiwayatTindakan> riwayatTindakanList = new ArrayList<>();
+        HeaderCheckup checkup = new HeaderCheckup();
+
+        if (!"".equalsIgnoreCase(id) && id != null) {
+
+            try {
+                checkup = checkupBoProxy.getDataDetailPasien(id);
+            } catch (GeneralBOException e) {
+                logger.error("Found Error when search data detail pasien " + e.getMessage());
+            }
+
+            if (checkup != null) {
+
+                try {
+                    riwayatTindakanList = verifikatorBoProxy.getListTindakanApprove(id);
+                } catch (GeneralBOException e) {
+                    logger.error("[TransaksiObatAction.pembelianObat] ERROR when search list obat, ", e);
+                    addActionError("[TransaksiObatAction.pembelianObat] ERROR when search list obat, " + e.getMessage());
+                }
+
+                JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(riwayatTindakanList);
+
+                String branch = CommonUtil.userBranchLogin();
+                Branch branches = new Branch();
+
+                try {
+                    branches = branchBoProxy.getBranchById(branch, "Y");
+                } catch (GeneralBOException e) {
+                    logger.error("Found Error when searhc branch logo");
+                }
+
+                String logo = "";
+
+                if (branches != null) {
+                    logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.RESOURCE_PATH_IMAGES + branches.getLogoName();
+                }
+
+                reportParams.put("logo", logo);
+                reportParams.put("unit", CommonUtil.userBranchNameLogin());
+                reportParams.put("area", CommonUtil.userAreaName());
+                reportParams.put("itemDataSource", itemData);
+
+            }
+
+            reportParams.put("idDetailCheckup", id);
+            reportParams.put("sep", checkup.getNoSep());
+            reportParams.put("petugas", CommonUtil.userLogin());
+            reportParams.put("idPasien", checkup.getIdPasien());
+            reportParams.put("nik", checkup.getNoKtp());
+            reportParams.put("nama", checkup.getNama());
+            String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
+            reportParams.put("tglLahir", checkup.getTempatLahir() + ", " + formatDate);
+
+            if ("L".equalsIgnoreCase(checkup.getJenisKelamin())) {
+                jk = "Laki-Laki";
+            } else {
+                jk = "Perempuan";
+            }
+
+            reportParams.put("jenisKelamin", jk);
+            reportParams.put("jenisPasien", checkup.getStatusPeriksaName());
+            reportParams.put("poli", checkup.getNamaPelayanan());
+            reportParams.put("provinsi", checkup.getNamaProvinsi());
+            reportParams.put("kabupaten", checkup.getNamaKota());
+            reportParams.put("kecamatan", checkup.getNamaKecamatan());
+            reportParams.put("desa", checkup.getNamaDesa());
+
+        }
+
+        try {
+            preDownload();
+        } catch (SQLException e) {
+            logger.error("[ReportAction.printCard] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
+            return "search";
+        }
+
+        return "print_final_claim";
     }
 
     @Override

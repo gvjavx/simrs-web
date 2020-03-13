@@ -1,7 +1,7 @@
 package com.neurix.simrs.transaksi.paketperiksa.dao;
 
 import com.neurix.common.dao.GenericDao;
-import com.neurix.simrs.transaksi.paketperiksa.model.ItSImrsPaketPasienEntity;
+import com.neurix.simrs.transaksi.paketperiksa.model.ItSimrsPaketPasienEntity;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 
@@ -11,16 +11,16 @@ import java.util.Map;
 /**
  * Created by reza on 12/03/20.
  */
-public class PaketPasienDao extends GenericDao<ItSImrsPaketPasienEntity, String> {
+public class PaketPasienDao extends GenericDao<ItSimrsPaketPasienEntity, String> {
     @Override
-    protected Class<ItSImrsPaketPasienEntity> getEntityClass() {
-        return ItSImrsPaketPasienEntity.class;
+    protected Class<ItSimrsPaketPasienEntity> getEntityClass() {
+        return ItSimrsPaketPasienEntity.class;
     }
 
     @Override
-    public List<ItSImrsPaketPasienEntity> getByCriteria(Map mapCriteria) {
+    public List<ItSimrsPaketPasienEntity> getByCriteria(Map mapCriteria) {
 
-        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ItSImrsPaketPasienEntity.class);
+        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ItSimrsPaketPasienEntity.class);
 
         if (mapCriteria.get("id") != null)
             criteria.add(Restrictions.eq("id", mapCriteria.get("id").toString()));

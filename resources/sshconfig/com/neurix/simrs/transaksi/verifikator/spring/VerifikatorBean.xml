@@ -10,6 +10,7 @@
           p:checkupBoProxy-ref="checkupBoProxy"
           p:rawatInapBoProxy-ref="rawatInapBoProxy"
           p:verifikatorBoProxy-ref="verifikatorBoProxy"
+          p:branchBoProxy-ref="branchBoProxy"
     />
 
     <bean id="verifikatorBo" class="com.neurix.simrs.transaksi.verifikator.bo.impl.VerifikatorBoImpl"

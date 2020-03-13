@@ -6,7 +6,7 @@ import java.sql.Timestamp;
 /**
  * Created by reza on 12/03/20.
  */
-public class ItSImrsPaketPasienEntity implements Serializable {
+public class ItSimrsPaketPasienEntity implements Serializable {
 
     private String id;
     private String idPasien;

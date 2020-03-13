@@ -17,4 +17,6 @@ public interface VerifikatorBo {
     public List<RiwayatTindakan> getListAllTindakan(RiwayatTindakan bean) throws GeneralBOException;
     public CheckResponse updateFlagKlaim(RiwayatTindakan bean) throws GeneralBOException;
     public List<RawatInap> getListVerifikasiRawatInap(RawatInap bean) throws GeneralBOException;
+
+    public List<RiwayatTindakan> getListTindakanApprove(String idDetail) throws GeneralBOException;
 }

@@ -211,4 +211,19 @@ public class VerifikatorBoImpl implements VerifikatorBo {
         logger.info("[VerifikatorBoImpl.getListVerifikasiRawatInap] END process <<<");
         return result;
     }
+
+    @Override
+    public List<RiwayatTindakan> getListTindakanApprove(String idDetail) throws GeneralBOException {
+        List<RiwayatTindakan> riwayatTindakanList = new ArrayList<>();
+
+        if(idDetail != null && !"".equalsIgnoreCase(idDetail)){
+            try {
+                riwayatTindakanList = riwayatTindakanDao.getListTindakanApprove(idDetail);
+            }catch (HibernateException e){
+                logger.error("found error when search tindakan "+e.getMessage());
+            }
+        }
+
+        return riwayatTindakanList;
+    }
 }
