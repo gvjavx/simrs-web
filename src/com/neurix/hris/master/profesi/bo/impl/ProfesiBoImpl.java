@@ -138,34 +138,38 @@ public class ProfesiBoImpl implements ProfesiBo {
         logger.info("[ProfesiBoImpl.saveAdd] start process >>>");
 
         if (bean!=null) {
+            String status = cekStatus(bean.getProfesiName());
+            if (!status.equalsIgnoreCase("Exist")){
+                String profesiId;
+                try {
+                    // Generating ID, get from postgre sequence
+                    profesiId = profesiDao.getNextProfesiId();
+                } catch (HibernateException e) {
+                    logger.error("[ProfesiBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when getting sequence profesiId id, please info to your admin..." + e.getMessage());
+                }
 
-            String profesiId;
-            try {
-                // Generating ID, get from postgre sequence
-                profesiId = profesiDao.getNextProfesiId();
-            } catch (HibernateException e) {
-                logger.error("[ProfesiBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when getting sequence profesiId id, please info to your admin..." + e.getMessage());
-            }
+                // creating object entity serializable
+                ImProfesiEntity imProfesiEntity = new ImProfesiEntity();
 
-            // creating object entity serializable
-            ImProfesiEntity imProfesiEntity = new ImProfesiEntity();
+                imProfesiEntity.setProfesiId(profesiId);
+                imProfesiEntity.setProfesiName(bean.getProfesiName());
+                imProfesiEntity.setFlag(bean.getFlag());
+                imProfesiEntity.setAction(bean.getAction());
+                imProfesiEntity.setCreatedWho(bean.getCreatedWho());
+                imProfesiEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                imProfesiEntity.setCreatedDate(bean.getCreatedDate());
+                imProfesiEntity.setLastUpdate(bean.getLastUpdate());
 
-            imProfesiEntity.setProfesiId(profesiId);
-            imProfesiEntity.setProfesiName(bean.getProfesiName());
-            imProfesiEntity.setFlag(bean.getFlag());
-            imProfesiEntity.setAction(bean.getAction());
-            imProfesiEntity.setCreatedWho(bean.getCreatedWho());
-            imProfesiEntity.setLastUpdateWho(bean.getLastUpdateWho());
-            imProfesiEntity.setCreatedDate(bean.getCreatedDate());
-            imProfesiEntity.setLastUpdate(bean.getLastUpdate());
-
-            try {
-                // insert into database
-                profesiDao.addAndSave(imProfesiEntity);
-            } catch (HibernateException e) {
-                logger.error("[ProfesiBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when saving new data Profesi, please info to your admin..." + e.getMessage());
+                try {
+                    // insert into database
+                    profesiDao.addAndSave(imProfesiEntity);
+                } catch (HibernateException e) {
+                    logger.error("[ProfesiBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data Profesi, please info to your admin..." + e.getMessage());
+                }
+            }else{
+                throw new GeneralBOException("Maaf Data Tersebut Sudah Ada");
             }
         }
 
@@ -267,5 +271,21 @@ public class ProfesiBoImpl implements ProfesiBo {
         }
         logger.info("[UserBoImpl.getComboUserWithCriteria] end process <<<");
         return listComboProfesi;
+    }
+    public String cekStatus(String golonganId)throws GeneralBOException{
+        String status ="";
+        List<ImProfesiEntity> skalaGajiEntity = new ArrayList<>();
+        try {
+            skalaGajiEntity = profesiDao.getListProfesi(golonganId);
+        } catch (HibernateException e) {
+            logger.error("[PayrollSkalaGajiBoImpl.getSearchPayrollSkalaGajiByCriteria] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        if (skalaGajiEntity.size()>0){
+            status = "exist";
+        }else{
+            status="notExits";
+        }
+        return status;
     }
 }

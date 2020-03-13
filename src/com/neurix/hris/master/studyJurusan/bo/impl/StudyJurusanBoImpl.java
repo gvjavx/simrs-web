@@ -137,35 +137,40 @@ public class StudyJurusanBoImpl implements StudyJurusanBo {
         logger.info("[StudyJurusanBoImpl.saveAdd] start process >>>");
 
         if (bean!=null) {
+            String status = cekStatus(bean.getJurusanName());
+            if (!status.equalsIgnoreCase("Exist")){
+                String studyJurusanId;
+                try {
+                    // Generating ID, get from postgre sequence
+                    studyJurusanId = studyJurusanDao.getNextStudyJurusanId();
+                } catch (HibernateException e) {
+                    logger.error("[StudyJurusanBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when getting sequence studyJurusanId id, please info to your admin..." + e.getMessage());
+                }
 
-            String studyJurusanId;
-            try {
-                // Generating ID, get from postgre sequence
-                studyJurusanId = studyJurusanDao.getNextStudyJurusanId();
-            } catch (HibernateException e) {
-                logger.error("[StudyJurusanBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when getting sequence studyJurusanId id, please info to your admin..." + e.getMessage());
+                // creating object entity serializable
+                ImStudyJurusanEntity imStudyJurusanEntity = new ImStudyJurusanEntity();
+
+                imStudyJurusanEntity.setJurusanId(studyJurusanId);
+                imStudyJurusanEntity.setJurusanName(bean.getJurusanName());
+                imStudyJurusanEntity.setFlag(bean.getFlag());
+                imStudyJurusanEntity.setAction(bean.getAction());
+                imStudyJurusanEntity.setCreatedWho(bean.getCreatedWho());
+                imStudyJurusanEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                imStudyJurusanEntity.setCreatedDate(bean.getCreatedDate());
+                imStudyJurusanEntity.setLastUpdate(bean.getLastUpdate());
+
+                try {
+                    // insert into database
+                    studyJurusanDao.addAndSave(imStudyJurusanEntity);
+                } catch (HibernateException e) {
+                    logger.error("[StudyJurusanBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data StudyJurusan, please info to your admin..." + e.getMessage());
+                }
+            }else{
+                throw new GeneralBOException("Maaf Data Tersebut Sudah Ada");
             }
 
-            // creating object entity serializable
-            ImStudyJurusanEntity imStudyJurusanEntity = new ImStudyJurusanEntity();
-
-            imStudyJurusanEntity.setJurusanId(studyJurusanId);
-            imStudyJurusanEntity.setJurusanName(bean.getJurusanName());
-            imStudyJurusanEntity.setFlag(bean.getFlag());
-            imStudyJurusanEntity.setAction(bean.getAction());
-            imStudyJurusanEntity.setCreatedWho(bean.getCreatedWho());
-            imStudyJurusanEntity.setLastUpdateWho(bean.getLastUpdateWho());
-            imStudyJurusanEntity.setCreatedDate(bean.getCreatedDate());
-            imStudyJurusanEntity.setLastUpdate(bean.getLastUpdate());
-
-            try {
-                // insert into database
-                studyJurusanDao.addAndSave(imStudyJurusanEntity);
-            } catch (HibernateException e) {
-                logger.error("[StudyJurusanBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when saving new data StudyJurusan, please info to your admin..." + e.getMessage());
-            }
         }
 
         logger.info("[StudyJurusanBoImpl.saveAdd] end process <<<");
@@ -266,5 +271,21 @@ public class StudyJurusanBoImpl implements StudyJurusanBo {
         }
         logger.info("[UserBoImpl.getComboUserWithCriteria] end process <<<");
         return listComboStudyJurusan;
+    }
+    public String cekStatus(String golonganId)throws GeneralBOException{
+        String status ="";
+        List<ImStudyJurusanEntity> skalaGajiEntity = new ArrayList<>();
+        try {
+            skalaGajiEntity = studyJurusanDao.getListStudyJurusan(golonganId);
+        } catch (HibernateException e) {
+            logger.error("[PayrollSkalaGajiBoImpl.getSearchPayrollSkalaGajiByCriteria] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        if (skalaGajiEntity.size()>0){
+            status = "exist";
+        }else{
+            status="notExits";
+        }
+        return status;
     }
 }

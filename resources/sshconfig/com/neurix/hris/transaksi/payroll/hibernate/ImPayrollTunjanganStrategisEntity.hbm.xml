@@ -11,24 +11,20 @@
             <column name="bpjs_id" sql-type="varchar" length="10" not-null="true" />
         </id>
 
-        <property name="bpjsKesehatanPersen">
-            <column name="bpjs_kesehatan_persen" sql-type="numeric" length="5" not-null="true" />
+        <property name="branchId">
+            <column name="branch_id" sql-type="varchar" length="20" not-null="false" />
         </property>
-        <property name="bpjsPensiunPersen">
-            <column name="bpjs_pensiun_persen" sql-type="numeric" length="5" not-null="true" />
+        <property name="branchName">
+            <column name="branch_name" sql-type="varchar" length="20" not-null="false" />
         </property>
-        <property name="bpjsJhtPersen">
-            <column name="bpjs_jht_persen" sql-type="numeric" length="5" not-null="true" />
-        </property>
-
 
         <!--//tambahanirfan
         //bpjs Kesehatan-->
         <property name="iuranBpjsKsKaryPersen">
-            <column name="iuran_bpjs_ks_kary_persen" sql-type="numeric" length="10" not-null="true" />
+            <column name="percent_ks_kary" sql-type="numeric" length="10" not-null="true" />
         </property>
         <property name="iuranBpjsKsPersPersen">
-            <column name="iuran_bpjs_ks_pers_persen" sql-type="numeric" length="10" not-null="true" />
+            <column name="percent_ks_pers" sql-type="numeric" length="10" not-null="true" />
         </property>
         <property name="minBpjsKs">
             <column name="min_bpjs_ks" sql-type="numeric" length="10" not-null="true" />
@@ -39,10 +35,10 @@
 
         <!--//bpjs tenaga kerja-->
         <property name="iuranBpjsTkKaryPersen">
-            <column name="iuran_bpjs_tk_kary_persen" sql-type="numeric" length="10" not-null="true" />
+            <column name="percent_tk_kary" sql-type="numeric" length="10" not-null="true" />
         </property>
         <property name="iuranBpjsTkPersPersen">
-            <column name="iuran_bpjs_tk_pers_persen" sql-type="numeric" length="10" not-null="true" />
+            <column name="percent_tk_pers" sql-type="numeric" length="10" not-null="true" />
         </property>
         <property name="minBpjsTk">
             <column name="min_bpjs_tk" sql-type="numeric" length="10" not-null="true" />
@@ -50,6 +46,29 @@
         <property name="maxBpjsTk">
             <column name="max_bpjs_tk" sql-type="numeric" length="10" not-null="true" />
         </property>
+
+        <property name="iuranKary">
+            <column name="iur_peg" sql-type="numeric" length="10" not-null="true" />
+        </property>
+        <property name="iuranPers">
+            <column name="iur_pers" sql-type="numeric" length="10" not-null="true" />
+        </property>
+        <property name="jpkKary">
+            <column name="jpk_kary" sql-type="numeric" length="10" not-null="true" />
+        </property>
+        <property name="jpkPers">
+            <column name="jpk_pers" sql-type="numeric" length="10" not-null="true" />
+        </property>
+        <property name="jkkPers">
+            <column name="jkk" sql-type="numeric" length="10" not-null="true" />
+        </property>
+        <property name="jhtPers">
+            <column name="jht" sql-type="numeric" length="10" not-null="true" />
+        </property>
+        <property name="jkmPers">
+            <column name="jkm" sql-type="numeric" length="10" not-null="true" />
+        </property>
+
 
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />

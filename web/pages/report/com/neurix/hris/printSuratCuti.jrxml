@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printSuratCuti" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="cbea96cd-ecc7-4290-ba68-3a506cc60cbd">
 	<property name="ireport.zoom" value="1.7715610000000124"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="624"/>
 	<parameter name="reportParams.urlLogo" class="java.lang.String"/>
 	<parameter name="reportParams.cutiPegawaiId" class="java.lang.String"/>
 	<parameter name="reportParams.nama" class="java.lang.String"/>
@@ -104,7 +104,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Jabatan		:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="41" y="124" width="132" height="20" uuid="6ee5cd77-ff28-4094-8310-0d43ab2342cf"/>
+				<reportElement x="41" y="105" width="132" height="20" uuid="6ee5cd77-ff28-4094-8310-0d43ab2342cf"/>
 				<textElement verticalAlignment="Middle">
 					<font size="12"/>
 				</textElement>
@@ -125,7 +125,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[$P{reportParams.jabatan}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="187" y="124" width="354" height="21" uuid="32ee2aae-5dea-4d75-b219-1d46b363b54a"/>
+				<reportElement x="187" y="105" width="354" height="21" uuid="32ee2aae-5dea-4d75-b219-1d46b363b54a"/>
 				<textElement verticalAlignment="Middle">
 					<font size="12"/>
 				</textElement>
@@ -146,161 +146,147 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[$P{reportParams.nama}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="187" y="144" width="354" height="20" uuid="fd586433-54fd-4e53-afea-8f55e6672ac0"/>
+				<reportElement x="187" y="125" width="354" height="20" uuid="fd586433-54fd-4e53-afea-8f55e6672ac0"/>
 				<textElement verticalAlignment="Middle">
 					<font size="12" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.cuti}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="223" y="185" width="43" height="20" uuid="e1256af9-09ba-4a17-ad29-743c48e10325"/>
+				<reportElement x="223" y="166" width="43" height="20" uuid="e1256af9-09ba-4a17-ad29-743c48e10325"/>
 				<textElement verticalAlignment="Middle" markup="none">
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[Hari]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="187" y="185" width="35" height="20" uuid="5b5c4a1d-b542-4fd1-9a5b-d7641801f137"/>
+				<reportElement x="187" y="166" width="35" height="20" uuid="5b5c4a1d-b542-4fd1-9a5b-d7641801f137"/>
 				<textElement verticalAlignment="Middle">
 					<font size="12" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.lama}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="187" y="165" width="81" height="20" uuid="c2d4910c-18fc-4a52-98a1-2bd50883112c"/>
+				<reportElement x="187" y="146" width="81" height="20" uuid="c2d4910c-18fc-4a52-98a1-2bd50883112c"/>
 				<textElement verticalAlignment="Middle">
 					<font size="12" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.tanggalDari}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="260" y="165" width="30" height="20" uuid="f73f79fe-dc42-4f74-a49b-6d3b29085fb1"/>
+				<reportElement x="260" y="146" width="30" height="20" uuid="f73f79fe-dc42-4f74-a49b-6d3b29085fb1"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[s/d]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="298" y="165" width="100" height="20" uuid="0e59b0d5-4b07-448d-bd27-e03cefeb3e4e"/>
+				<reportElement x="298" y="146" width="100" height="20" uuid="0e59b0d5-4b07-448d-bd27-e03cefeb3e4e"/>
 				<textElement verticalAlignment="Middle">
 					<font size="12" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.tanggalSelesai}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="41" y="84" width="132" height="21" uuid="f5a92180-e2a9-462e-a5dd-a4c8562a51b8"/>
-				<textElement verticalAlignment="Middle">
-					<font size="12"/>
-				</textElement>
-				<text><![CDATA[Bagian			:]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="187" y="85" width="354" height="20" uuid="19ff10d5-fa7f-4ad9-8dd8-4440b86ed89f"/>
-				<textElement verticalAlignment="Middle">
-					<font size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.bagian}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="41" y="144" width="132" height="20" uuid="dccbdfb7-934c-43e7-8f30-c18385f873e3"/>
+				<reportElement x="41" y="125" width="132" height="20" uuid="dccbdfb7-934c-43e7-8f30-c18385f873e3"/>
 				<textElement verticalAlignment="Middle" markup="none">
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[Nama Cuti		:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="41" y="185" width="132" height="20" uuid="f4a9d239-30d2-4bd9-947a-4ab29435e00c"/>
+				<reportElement x="41" y="166" width="132" height="20" uuid="f4a9d239-30d2-4bd9-947a-4ab29435e00c"/>
 				<textElement verticalAlignment="Middle" markup="none">
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[Lama Cuti		:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="41" y="164" width="132" height="20" uuid="08c6c33f-2939-4fbd-9ec3-7f33b2327f16"/>
+				<reportElement x="41" y="145" width="132" height="20" uuid="08c6c33f-2939-4fbd-9ec3-7f33b2327f16"/>
 				<textElement verticalAlignment="Middle" markup="none">
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[Tanggal Cuti		:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="187" y="104" width="354" height="21" uuid="dd1a65d7-66dd-4d31-be13-1feb5f823b45"/>
+				<reportElement x="187" y="85" width="354" height="21" uuid="dd1a65d7-66dd-4d31-be13-1feb5f823b45"/>
 				<textElement verticalAlignment="Middle">
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.divisi}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="41" y="104" width="132" height="20" uuid="d6d6c2e1-9f58-495f-ac77-fd836ea454a3"/>
+				<reportElement x="41" y="85" width="132" height="20" uuid="d6d6c2e1-9f58-495f-ac77-fd836ea454a3"/>
 				<textElement verticalAlignment="Middle">
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[Bidang			:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="223" y="205" width="43" height="20" uuid="8ace7187-be16-4d4c-8a8b-585a8ec58fba"/>
+				<reportElement x="223" y="186" width="43" height="20" uuid="8ace7187-be16-4d4c-8a8b-585a8ec58fba"/>
 				<textElement verticalAlignment="Middle" markup="none">
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[Hari]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="41" y="205" width="132" height="20" uuid="de4d82d9-269c-4929-9ebb-eefc551b22a7"/>
+				<reportElement x="41" y="186" width="132" height="20" uuid="de4d82d9-269c-4929-9ebb-eefc551b22a7"/>
 				<textElement verticalAlignment="Middle" markup="none">
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[Sisa Cuti Tahunan	:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="187" y="205" width="35" height="20" uuid="e7023854-bf18-4976-895c-9029eecccdbf"/>
+				<reportElement x="187" y="186" width="35" height="20" uuid="e7023854-bf18-4976-895c-9029eecccdbf"/>
 				<textElement verticalAlignment="Middle">
 					<font size="12" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.sisaCutiTahunan}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="187" y="226" width="35" height="20" uuid="ab026b79-73d8-47ac-a142-b075e5c7196f"/>
+				<reportElement x="187" y="207" width="35" height="20" uuid="ab026b79-73d8-47ac-a142-b075e5c7196f"/>
 				<textElement verticalAlignment="Middle">
 					<font size="12" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.sisaCutiPanjang}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="41" y="226" width="132" height="20" uuid="257a23be-8742-493b-b3bb-8e18798e820c"/>
+				<reportElement x="41" y="207" width="132" height="20" uuid="257a23be-8742-493b-b3bb-8e18798e820c"/>
 				<textElement verticalAlignment="Middle" markup="none">
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[Sisa Cuti Panjang	:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="223" y="226" width="43" height="20" uuid="b5cff454-e626-44ce-9a6c-f2a6c090c8e3"/>
+				<reportElement x="223" y="207" width="43" height="20" uuid="b5cff454-e626-44ce-9a6c-f2a6c090c8e3"/>
 				<textElement verticalAlignment="Middle" markup="none">
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[Hari]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="187" y="246" width="354" height="20" uuid="4dd51bcb-d9a3-4d16-a25b-a89e8cce4818"/>
+				<reportElement x="187" y="227" width="354" height="20" uuid="4dd51bcb-d9a3-4d16-a25b-a89e8cce4818"/>
 				<textElement verticalAlignment="Middle">
 					<font size="12" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.alamatCuti}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="41" y="246" width="132" height="20" uuid="e94e04c3-36fd-498b-8eb7-55c8a4ad89e4"/>
+				<reportElement x="41" y="227" width="132" height="20" uuid="e94e04c3-36fd-498b-8eb7-55c8a4ad89e4"/>
 				<textElement verticalAlignment="Middle" markup="none">
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[Alamat Cuti		:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="41" y="265" width="132" height="20" uuid="50ac2b8f-8271-4cb3-9f38-bb1af7f43c48"/>
+				<reportElement x="41" y="246" width="132" height="20" uuid="50ac2b8f-8271-4cb3-9f38-bb1af7f43c48"/>
 				<textElement verticalAlignment="Middle" markup="none">
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[Keterangan		:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="187" y="265" width="354" height="20" uuid="97311877-6179-419a-af56-b0815d2306e2"/>
+				<reportElement x="187" y="246" width="354" height="20" uuid="97311877-6179-419a-af56-b0815d2306e2"/>
 				<textElement verticalAlignment="Middle">
 					<font size="12" isBold="false"/>
 				</textElement>

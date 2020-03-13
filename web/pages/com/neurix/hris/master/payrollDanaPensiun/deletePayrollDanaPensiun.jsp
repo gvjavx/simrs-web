@@ -18,9 +18,10 @@
         $.subscribe('beforeProcessSave', function (event, data) {
             var dapen = document.getElementById("danaPensiun1").value;
             var nilai = document.getElementById("nilai1").value;
+            var nilai1 = document.getElementById("nilai11").value;
 
-            if (dapen != '' && nilai != '' ) {
-                if(isNaN(nilai) == false){
+            if (dapen != '' && nilai != ''&& nilai1 != '' ) {
+                if(isNaN(nilai.replace('.','')) == false && isNaN(nilai1.replace('.','')) == false){
                     if (confirm('Do you want to save this record?')) {
                         event.originalEvent.options.submit = true;
                         $.publish('showDialog');
@@ -31,7 +32,10 @@
                 }else{
                     event.originalEvent.options.submit = false;
                     var msg = "";
-                    if (isNaN(nilai)) {
+                    if (isNaN(nilai.replace('.',''))) {
+                        msg += 'Field <strong>Persentase Karyawan</strong> Harus angka tanpa koma.' + '<br/>';
+                    }
+                    if (isNaN(nilai1.replace('.',''))) {
                         msg += 'Field <strong>nilai</strong> Harus angka tanpa koma.' + '<br/>';
                     }
 
@@ -128,11 +132,21 @@
 
                     <tr>
                         <td>
-                            <label class="control-label"><small>Nilai :</small></label>
+                            <label class="control-label"><small>Persentase Karyawan :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield readonly="true" id="nilai1" name="payrollDanaPensiun.persentase" required="true" cssClass="form-control"/>
+                                <s:textfield id="nilai1" name="payrollDanaPensiun.stPersentaseKary" required="true" cssClass="form-control" readonly="true"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Persentase Perusahaan :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield id="nilai11" name="payrollDanaPensiun.stPersentasePers" required="true" cssClass="form-control" readonly="true"/>
                             </table>
                         </td>
                     </tr>

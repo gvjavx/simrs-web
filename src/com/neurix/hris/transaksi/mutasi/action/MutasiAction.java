@@ -27,6 +27,7 @@ import org.springframework.web.context.ContextLoader;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.*;
@@ -48,6 +49,24 @@ public class MutasiAction extends BaseMasterAction{
 
     private String fileUploadContentType;
     private String fileUploadFileName;
+    private String idMutasi;
+    private String noSurat;
+
+    public String getIdMutasi() {
+        return idMutasi;
+    }
+
+    public void setIdMutasi(String idMutasi) {
+        this.idMutasi = idMutasi;
+    }
+
+    public String getNoSurat() {
+        return noSurat;
+    }
+
+    public void setNoSurat(String noSurat) {
+        this.noSurat = noSurat;
+    }
 
     public MutasiDoc getMutasiDoc() {
         return mutasiDoc;
@@ -410,7 +429,8 @@ public class MutasiAction extends BaseMasterAction{
 
     public String printReportMutasi() {
         logger.info("[ReportAction.printReportMutasi] start process >>>");
-        String id = getId();
+        String id = getIdMutasi();
+        String noSurat = getNoSurat();
         if (id != null) {
             Mutasi searchMutasi = new Mutasi();
 
@@ -418,37 +438,32 @@ public class MutasiAction extends BaseMasterAction{
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             MutasiBo mutasiBo = (MutasiBo) ctx.getBean("mutasiBoProxy");
             searchMutasi = mutasiBo.getDataReportMutasi(id);
-
-            String namaDirektur = mutasiBoProxy.getDirektur();
             Branch branch = new Branch();
+            BigDecimal gajiPegawai = mutasiBo.getGajiPokok(searchMutasi.getLevelBaru());
+            String stGajiPegawai = CommonUtil.numbericFormat(gajiPegawai,"###,###");
             try{
                 BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
-                branch = branchBo.getBranchById(searchMutasi.getBranchLamaId(),"Y");
+                branch = branchBo.getBranchById("KP","Y");
             }catch( HibernateException e){
             }
-            if (searchMutasi.getBranchLamaId().equalsIgnoreCase("RS01")){
-                reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS01);
-            }else if (searchMutasi.getBranchLamaId().equalsIgnoreCase("RS02")){
-                reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS02);
-            }else if (searchMutasi.getBranchLamaId().equalsIgnoreCase("RS03")){
-                reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS03);
-            }else{
-                reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU);
-            }
+            reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU);
             String stTanggal = CommonUtil.convertDateToString( new java.util.Date());
             reportParams.put("alamatUni", branch.getAlamatSurat()+","+stTanggal);
             reportParams.put("branchName", branch.getBranchName());
-            reportParams.put("titleReport", "Report Mutasi Jabatan");
-            reportParams.put("direktur", namaDirektur);
-            reportParams.put("noMutasi", "No. Mutasi: "+id);
-            reportParams.put("strLabel1", searchMutasi.getLabel1());
-            reportParams.put("strLabel2", searchMutasi.getLabel2());
-            reportParams.put("strLabel3", searchMutasi.getLabel3());
-            reportParams.put("strLabel4", searchMutasi.getLabel4());
-            reportParams.put("strLabel5", searchMutasi.getLabel5());
-            reportParams.put("strLabel6", searchMutasi.getLabel6());
-            reportParams.put("strLabel7", searchMutasi.getLabel7());
+            reportParams.put("titleReport", "Surat Keterangan");
+            reportParams.put("noSurat", noSurat);
+            reportParams.put("tanggalSk", searchMutasi.getStTanggalEfektif());
 
+
+            reportParams.put("namaPegawai", searchMutasi.getNama());
+            reportParams.put("jabatanLama", searchMutasi.getPositionLamaName());
+            reportParams.put("unitLama", searchMutasi.getBranchLamaName());
+            reportParams.put("jabatanBaru", searchMutasi.getPositionBaruName());
+            reportParams.put("unitBaru", searchMutasi.getBranchBaruName());
+            reportParams.put("levelBaru", searchMutasi.getLevelBaruName());
+            reportParams.put("gajiBaru","Rp. "+ stGajiPegawai);
+            stTanggal = CommonUtil.convertDateToString( new java.util.Date());
+            reportParams.put("date", stTanggal);
             try {
                 preDownload();
             } catch (SQLException e) {
@@ -654,7 +669,8 @@ public class MutasiAction extends BaseMasterAction{
 
     public boolean saveAnggotaAdd(String nip, String personName, String branchLamaId, String branchLamaName, String divisiLamaId, String divisiLamaName,
                                String positionLamaId, String positionLamaName, String pjsLama, String menggantikanId, String menggantikanNama, String branchBaruId, String branchBaruName,
-                               String divisiBaruId, String divisiBaruName, String positionBaruId, String positionBaruName, String pjsBaru, String status){
+                               String divisiBaruId, String divisiBaruName, String positionBaruId, String positionBaruName, String pjsBaru, String status, String tipe, String levelLama,
+                                  String levelBaru, String levelLamaName, String levelBaruName){
         logger.info("[SppdAction.saveAdd] start process >>>");
         List<Mutasi> mutasiList = null;
         HttpSession session = ServletActionContext.getRequest().getSession();
@@ -673,6 +689,8 @@ public class MutasiAction extends BaseMasterAction{
                 mutasi.setDivisiLamaName(divisiLamaName);
                 mutasi.setPositionLamaId(positionLamaId);
                 mutasi.setPositionLamaName(positionLamaName);
+                mutasi.setLevelLama(levelLama);
+                mutasi.setLevelLamaName(levelLamaName);
                 mutasi.setPjsLama(pjsLama);
 
                 if (menggantikanId!=null){
@@ -693,6 +711,8 @@ public class MutasiAction extends BaseMasterAction{
                 mutasi.setDivisiBaruName(divisiBaruName);
                 mutasi.setPositionBaruId(positionBaruId);
                 mutasi.setPositionBaruName(positionBaruName);
+                mutasi.setLevelBaru(levelBaru);
+                mutasi.setLevelBaruName(levelBaruName);
                 mutasi.setPjs(pjsBaru);
 
                 mutasi.setStatus(status);
@@ -709,6 +729,14 @@ public class MutasiAction extends BaseMasterAction{
                     }
                     else{
                         mutasi.setStatusName("Move Holding");
+                    }
+                }
+                mutasi.setTipeMutasi(tipe);
+                if (tipe!=""){
+                    if ("MT".equalsIgnoreCase(tipe)){
+                        mutasi.setTipeMutasiName("Mutasi");
+                    }else if ("RT".equalsIgnoreCase(tipe)){
+                        mutasi.setTipeMutasiName("Rotasi");
                     }
                 }
 

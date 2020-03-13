@@ -34,12 +34,12 @@ public class PayrollTunjanganStrategisDao extends GenericDao<ImPayrollTunjanganS
 
         // Get Collection and sorting
         if (mapCriteria!=null) {
-            if (mapCriteria.get("tunj_strategis_id")!=null) {
-                criteria.add(Restrictions.eq("tunjStrategisId", (String) mapCriteria.get("tunj_strategis_id")));
+            if (mapCriteria.get("tunjStrategisId")!=null) {
+                criteria.add(Restrictions.eq("tunjStrategisId", (String) mapCriteria.get("tunjStrategisId")));
             }
 
-            if (mapCriteria.get("position_id")!=null) {
-                criteria.add(Restrictions.eq("positionId", (String) mapCriteria.get("position_id")));
+            if (mapCriteria.get("positionId")!=null) {
+                criteria.add(Restrictions.eq("positionId", (String) mapCriteria.get("positionId")));
             }
 
             if (mapCriteria.get("nilai")!=null) {

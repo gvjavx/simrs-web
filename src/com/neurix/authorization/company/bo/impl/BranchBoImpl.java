@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -113,21 +114,74 @@ public class BranchBoImpl implements BranchBo {
                     resultBranch.setBranchId(imBranches.getPrimaryKey().getId());
                     resultBranch.setBranchName(imBranches.getBranchName());
                     resultBranch.setBranchAddress(imBranches.getBranchAddress());
-                    resultBranch.setMultifikator(imBranches.getMultifikator());
-                    resultBranch.setMaxJamIjinKeluar(imBranches.getMaxJamIjinKeluar());
-                    resultBranch.setFaktorJasprod(imBranches.getFaktorJasprod());
-                    resultBranch.setFaktorJubileum(imBranches.getFaktorJubileum());
-                    resultBranch.setUmr(imBranches.getUmr());
-                    resultBranch.setStatusPabrik(imBranches.getStatusPabrik());
-                    resultBranch.setUangMakan(imBranches.getUangMakan());
-                    resultBranch.setBiayaJasprod(imBranches.getBiayaJasprod());
-                    if (imBranches.getBiayaJasprod()!=null){
-                        resultBranch.setStrBiayaJasprod(CommonUtil.numbericFormat(imBranches.getBiayaJasprod(), "###,###"));
-                    }
-                    resultBranch.setPeriodeGajiAktif(imBranches.getPeriodeGajiAktif());
-                    resultBranch.setLemburGajiAwal(imBranches.getLemburGajiAwal());
-                    resultBranch.setLemburGajiAkhir(imBranches.getLemburGajiAkhir());
 
+                    if (imBranches.getUmr()!=null){
+                        resultBranch.setUmr(imBranches.getUmr());
+                        resultBranch.setStUmr(CommonUtil.numbericFormat(imBranches.getUmr(),"###,###"));
+                    }
+                    else {
+                        resultBranch.setUmr(BigDecimal.valueOf(0));
+                        resultBranch.setStUmr(CommonUtil.numbericFormat(BigDecimal.valueOf(0),"###,###"));
+                    }
+
+                    if (imBranches.getMinBpjsKs()!=null){
+                        resultBranch.setMinBpjsKs(imBranches.getMinBpjsKs());
+                        resultBranch.setStMinBpjsKs(CommonUtil.numbericFormat(imBranches.getMinBpjsKs(),"###,###"));
+                    }else{
+                        resultBranch.setMinBpjsKs(BigDecimal.valueOf(0));
+                        resultBranch.setStMinBpjsKs(CommonUtil.numbericFormat(BigDecimal.valueOf(0),"###,###"));
+                    }
+
+                    if (imBranches.getMaxBpjsKs()!=null){
+                        resultBranch.setMaxBpjsKs(imBranches.getMaxBpjsKs());
+                        resultBranch.setStMaxBpjsKs(CommonUtil.numbericFormat(imBranches.getMaxBpjsKs(),"###,###"));
+                    }else{
+                        resultBranch.setMaxBpjsKs(BigDecimal.valueOf(0));
+                        resultBranch.setStMaxBpjsKs(CommonUtil.numbericFormat(BigDecimal.valueOf(0),"###,###"));
+                    }
+
+                    if (imBranches.getMinBpjsTk()!=null){
+                        resultBranch.setMinBpjsTk(imBranches.getMinBpjsTk());
+                        resultBranch.setStMinBpjsTk(CommonUtil.numbericFormat(imBranches.getMinBpjsTk(),"###,###"));
+                    }else{
+                        resultBranch.setMinBpjsTk(BigDecimal.valueOf(0));
+                        resultBranch.setStMinBpjsTk(CommonUtil.numbericFormat(BigDecimal.valueOf(0),"###,###"));
+                    }
+                    if (imBranches.getMaxBpjsTk()!=null){
+                        resultBranch.setMaxBpjsTk(imBranches.getMaxBpjsTk());
+                        resultBranch.setStMaxBpjsTk(CommonUtil.numbericFormat(imBranches.getMaxBpjsTk(),"###,###"));
+                    }else{
+                        resultBranch.setMaxBpjsTk(BigDecimal.valueOf(0));
+                        resultBranch.setStMaxBpjsTk(CommonUtil.numbericFormat(BigDecimal.valueOf(0),"###,###"));
+                    }
+                    if (imBranches.getPercentKsKary()!=null){
+                        resultBranch.setPercentKsKary(imBranches.getPercentKsKary());
+                        resultBranch.setStPercentKsKary(CommonUtil.numbericFormat(imBranches.getPercentKsKary(),"###,###"));
+                    }else{
+                        resultBranch.setPercentKsKary(BigDecimal.valueOf(0));
+                        resultBranch.setStPercentKsKary(CommonUtil.numbericFormat(BigDecimal.valueOf(0),"###,###"));
+                    }
+                    if (imBranches.getPercentKsPers()!=null){
+                        resultBranch.setPercentKsPers(imBranches.getPercentKsPers());
+                        resultBranch.setStPercentKsPers(CommonUtil.numbericFormat(imBranches.getPercentKsPers(),"###,###"));
+                    }else{
+                        resultBranch.setPercentKsPers(BigDecimal.valueOf(0));
+                        resultBranch.setStPercentKsPers(CommonUtil.numbericFormat(BigDecimal.valueOf(0),"###,###"));
+                    }
+                    if (imBranches.getPercentTkKary()!=null){
+                        resultBranch.setPercentTkKary(imBranches.getPercentTkKary());
+                        resultBranch.setStPercentTkKary(CommonUtil.numbericFormat(imBranches.getPercentTkKary(),"###,###"));
+                    }else{
+                        resultBranch.setPercentTkKary(BigDecimal.valueOf(0));
+                        resultBranch.setStPercentTkKary(CommonUtil.numbericFormat(BigDecimal.valueOf(0),"###,###"));
+                    }
+                    if (imBranches.getPercentTkPers()!=null){
+                        resultBranch.setPercentTkPers(imBranches.getPercentTkPers());
+                        resultBranch.setStPercentTkPers(CommonUtil.numbericFormat(imBranches.getPercentTkPers(),"###,###"));
+                    }else{
+                        resultBranch.setPercentTkPers(BigDecimal.valueOf(0));
+                        resultBranch.setStPercentTkPers(CommonUtil.numbericFormat(BigDecimal.valueOf(0),"###,###"));
+                    }
                     resultBranch.setCreatedWho(imBranches.getCreatedWho());
                     resultBranch.setCreatedDate(imBranches.getCreatedDate());
                     resultBranch.setLastUpdateWho(imBranches.getLastUpdateWho());
@@ -170,15 +224,25 @@ public class BranchBoImpl implements BranchBo {
             imBranches.setPrimaryKey(primaryKey);
             imBranches.setBranchName(branch.getBranchName());
             imBranches.setBranchAddress(branch.getBranchAddress());
-            imBranches.setMultifikator(branch.getMultifikator());
+            imBranches.setUmr(branch.getUmr());
+            imBranches.setMinBpjsKs(branch.getMinBpjsKs());
+            imBranches.setMaxBpjsKs(branch.getMaxBpjsKs());
+            imBranches.setMinBpjsTk(branch.getMinBpjsTk());
+            imBranches.setMaxBpjsTk(branch.getMaxBpjsTk());
+
+            imBranches.setPercentKsKary(branch.getPercentKsKary());
+            imBranches.setPercentKsPers(branch.getPercentKsPers());
+            imBranches.setPercentTkKary(branch.getPercentTkKary());
+            imBranches.setPercentTkPers(branch.getPercentTkPers());
+
+            /*imBranches.setMultifikator(branch.getMultifikator());
             imBranches.setMaxJamIjinKeluar(branch.getMaxJamIjinKeluar());
             imBranches.setFaktorJasprod(branch.getFaktorJasprod());
             imBranches.setFaktorJubileum(branch.getFaktorJubileum());
-            imBranches.setUmr(branch.getUmr());
             imBranches.setUangMakan(branch.getUangMakan());
             imBranches.setAlamatSurat(branch.getAlamatSurat());
             imBranches.setBiayaJasprod(branch.getBiayaJasprod());
-            imBranches.setStatusPabrik(branch.getStatusPabrik());
+            imBranches.setStatusPabrik(branch.getStatusPabrik());*/
             imBranches.setCreatedWho(branch.getCreatedWho());
             imBranches.setCreatedDate(branch.getCreatedDate());
             imBranches.setLastUpdateWho(branch.getLastUpdateWho());
@@ -266,20 +330,30 @@ public class BranchBoImpl implements BranchBo {
                 imBranchesOld.setPrimaryKey(primaryKey);
                 imBranchesOld.setBranchName(branchNew.getBranchName());
                 imBranchesOld.setBranchAddress(branchNew.getBranchAddress());
-                imBranchesOld.setStatusPabrik(branchNew.getStatusPabrik());
+                imBranchesOld.setUmr(branchNew.getUmr());
+
+                imBranchesOld.setMinBpjsKs(branchNew.getMinBpjsKs());
+                imBranchesOld.setMaxBpjsKs(branchNew.getMaxBpjsKs());
+                imBranchesOld.setMinBpjsTk(branchNew.getMinBpjsTk());
+                imBranchesOld.setMaxBpjsTk(branchNew.getMaxBpjsTk());
+
+                imBranchesOld.setPercentKsKary(branchNew.getPercentKsKary());
+                imBranchesOld.setPercentKsPers(branchNew.getPercentKsPers());
+                imBranchesOld.setPercentTkKary(branchNew.getPercentTkKary());
+                imBranchesOld.setPercentTkPers(branchNew.getPercentTkPers());
+                /*imBranchesOld.setStatusPabrik(branchNew.getStatusPabrik());
                 imBranchesOld.setMultifikator(branchNew.getMultifikator());
                 imBranchesOld.setMaxJamIjinKeluar(branchNew.getMaxJamIjinKeluar());
                 imBranchesOld.setFaktorJasprod(branchNew.getFaktorJasprod());
                 imBranchesOld.setFaktorJubileum(branchNew.getFaktorJubileum());
-                imBranchesOld.setUmr(branchNew.getUmr());
                 imBranchesOld.setUangMakan(branchNew.getUangMakan());
-                imBranchesOld.setBiayaJasprod(branchNew.getBiayaJasprod());
+                imBranchesOld.setBiayaJasprod(branchNew.getBiayaJasprod());*/
                 imBranchesOld.setLastUpdate(branchNew.getLastUpdate());
                 imBranchesOld.setLastUpdateWho(branchNew.getLastUpdateWho());
                 imBranchesOld.setFlag(imBranchesOld.getFlag());
-                imBranchesOld.setPeriodeGajiAktif(branchNew.getPeriodeGajiAktif());
+                /*imBranchesOld.setPeriodeGajiAktif(branchNew.getPeriodeGajiAktif());
                 imBranchesOld.setLemburGajiAwal(branchNew.getLemburGajiAwal());
-                imBranchesOld.setLemburGajiAkhir(branchNew.getLemburGajiAkhir());
+                imBranchesOld.setLemburGajiAkhir(branchNew.getLemburGajiAkhir());*/
 
                 try {
                     branchDao.updateAndSave(imBranchesOld);
@@ -392,17 +466,27 @@ public class BranchBoImpl implements BranchBo {
             resultBranch.setBranchName(imBranches.getBranchName());
             resultBranch.setAlamatSurat(imBranches.getAlamatSurat());
             resultBranch.setBranchAddress(imBranches.getBranchAddress());
-            resultBranch.setStatusPabrik(imBranches.getStatusPabrik());
+            resultBranch.setMinBpjsKs(imBranches.getMinBpjsKs());
+            resultBranch.setMaxBpjsKs(imBranches.getMaxBpjsKs());
+            resultBranch.setMinBpjsTk(imBranches.getMinBpjsTk());
+            resultBranch.setMaxBpjsTk(imBranches.getMaxBpjsTk());
+
+            resultBranch.setPercentKsKary(imBranches.getPercentKsKary());
+            resultBranch.setPercentKsPers(imBranches.getPercentKsPers());
+            resultBranch.setPercentTkKary(imBranches.getPercentTkKary());
+            resultBranch.setPercentTkPers(imBranches.getPercentTkPers());
+            resultBranch.setUmr(imBranches.getUmr());
+
+            /*resultBranch.setStatusPabrik(imBranches.getStatusPabrik());
             resultBranch.setMultifikator(imBranches.getMultifikator());
             resultBranch.setMaxJamIjinKeluar(imBranches.getMaxJamIjinKeluar());
             resultBranch.setFaktorJasprod(imBranches.getFaktorJasprod());
             resultBranch.setFaktorJubileum(imBranches.getFaktorJubileum());
-            resultBranch.setUmr(imBranches.getUmr());
             resultBranch.setBiayaJasprod(imBranches.getBiayaJasprod());
             resultBranch.setPeriodeGajiAktif(imBranches.getPeriodeGajiAktif());
             resultBranch.setUangMakan(imBranches.getUangMakan());
             resultBranch.setLemburGajiAwal(imBranches.getLemburGajiAwal());
-            resultBranch.setLemburGajiAkhir(imBranches.getLemburGajiAkhir());
+            resultBranch.setLemburGajiAkhir(imBranches.getLemburGajiAkhir());*/
 
             resultBranch.setCreatedWho(imBranches.getCreatedWho());
             resultBranch.setCreatedDate(imBranches.getCreatedDate());

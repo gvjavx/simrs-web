@@ -44,6 +44,7 @@
                 <!--<prop key="hibernate.connection.password">postgres</prop>-->
 
 
+
             </props>
         </property>
         <property name="mappingResources">
@@ -186,6 +187,7 @@
                 <value>sshconfig/com/neurix/hris/master/payrollSkalaGaji/hibernate/ImPayrollSkalaGajiEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/payrollSkalaGajiPkwt/hibernate/ImPayrollSkalaGajiPkwtEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/payrollSkalaGajiPensiunRni/hibernate/ImPayrollSkalaGajiPensiunRniEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/payrollSkalaGajiPensiunDplk/hibernate/ImPayrollSkalaGajiPensiunDplkEntity.hbm.xml</value>
 
                 <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ImPayrollTunjanganJabatanStrukturalEntity.hbm.xml</value>
 

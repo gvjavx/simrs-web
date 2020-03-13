@@ -502,6 +502,12 @@
       </create>
       <convert converter="bean" match="com.neurix.akuntansi.master.mappingJurnal.model.MappingJurnal"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.permintaanresep.model.ObatKronis"/>
+      <!--Master Hcm-->
+      <create creator="new">
+          <param name="class" value="com.neurix.hris.master.payrollSkalaGaji.action.PayrollSkalaGajiAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.hris.master.payrollSkalaGaji.model.PayrollSkalaGaji"/>
+
   </allow>
 
 </dwr>

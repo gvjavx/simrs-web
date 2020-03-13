@@ -102,73 +102,74 @@
                             <s:hidden id="erVerif" name="alat.erVerif"/>
                             <div id="errorAlert" style="display: none" class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><center><s:property value="alat.erVerif"/></center></div>
                             <div id="succesAlert" style="display: none" class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><center><s:property value="alat.verif"/></center></div>
+                            <table width="100%" align="center">
+                                <tr>
+                                    <td align="center">
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <label>Shift Id </label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <s:textfield id="shiftId1" name="shift.shiftId" cssClass="form-control" cssStyle="margin-top: -30px; margin-left: 20px" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label>Shift Name </label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <s:textfield id="shiftName1" name="shift.shiftName" cssClass="form-control" cssStyle="margin-top: -30px; margin-left: 20px" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label>Flag </label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <s:select list="#{'N':'Non-Active'}" id="flag1" name="shift.flag"
+                                                              headerKey="Y" headerValue="Active" cssClass="form-control" cssStyle="margin-top: -30px; margin-left: 20px"/>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <br><br>
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <sj:submit type="button" cssClass="btn btn-primary" formIds="searchForm" id="search" name="search"
+                                                               onClickTopics="showDialog" onCompleteTopics="closeDialog" onclick="showLoadingDialog();">
+                                                        <i class="fa fa-search"></i>
+                                                        Search
+                                                    </sj:submit>
+                                                </td>
+                                                <td>
+                                                    <s:url var="urlAdd" namespace="/shift" action="add_shift" escapeAmp="false">
+                                                    </s:url>
+                                                    <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">
+                                                        <i class="fa fa-plus"></i>
+                                                        Add Shift
+                                                    </sj:a>
 
-                            <div class="form-group">
-                                <table align="center">
-                                    <tr>
-                                        <td>
-                                            <label>Shift Id </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <s:textfield id="shiftId1" name="shift.shiftId" cssClass="form-control" cssStyle="margin-top: -30px; margin-left: 20px" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label>Shift Name </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <s:textfield id="shiftName1" name="shift.shiftName" cssClass="form-control" cssStyle="margin-top: -30px; margin-left: 20px" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label>Flag </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <s:select list="#{'N':'Non-Active'}" id="flag1" name="shift.flag"
-                                                      headerKey="Y" headerValue="Active" cssClass="form-control" cssStyle="margin-top: -30px; margin-left: 20px"/>
-                                        </td>
-                                    </tr>
-                                </table>
-                                <br>
+                                                </td>
+                                                <td>
 
-                            </div>
-                            <div class="box-footer">
-                                <table align="center">
-                                    <tr>
-                                        <td>
-                                            <sj:submit type="button" cssClass="btn btn-primary" formIds="searchForm" id="search" name="search"
-                                                       onClickTopics="showDialog" onCompleteTopics="closeDialog" onclick="showLoadingDialog();">
-                                                <i class="fa fa-search"></i>
-                                                Search
-                                            </sj:submit>
-                                        </td>
-                                        <td>
-                                            <s:url var="urlAdd" namespace="/shift" action="add_shift" escapeAmp="false">
-                                            </s:url>
-                                            <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">
-                                                <i class="fa fa-plus"></i>
-                                                Add Shift
-                                            </sj:a>
+                                                    <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_shift"/>'">
+                                                        <i class="fa fa-repeat"></i> Reset
+                                                    </button>
+                                                </td>
 
-                                        </td>
-                                        <td>
-
-                                            <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_shift"/>'">
-                                                <i class="fa fa-repeat"></i> Reset
-                                            </button>
-                                        </td>
-
-                                    </tr>
-                                </table>
-                            </div>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                            <br><br>
                             <center>
                                 <table id="showdata" width="80%">
                                     <tr>
@@ -207,7 +208,6 @@
                                                 <display:column property="shiftName" sortable="true" title="Nama Shift"  />
                                                 <display:column property="branchName" sortable="true" title="Unit"  />
                                                 <display:column property="profesiName" sortable="true" title="Grup"  />
-                                                <display:column property="shiftName" sortable="true" title="Nama Shift"  />
                                                 <display:column property="jamAwal" sortable="true" title="Jam Awal"  />
                                                 <display:column property="jamAkhir" sortable="true" title="Jam Akhir"  />
                                                 <display:column property="flag" sortable="true" title="Flag" />

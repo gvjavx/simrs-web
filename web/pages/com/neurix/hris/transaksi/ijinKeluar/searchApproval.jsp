@@ -115,56 +115,54 @@
                             <s:hidden id="erVerif" name="alat.erVerif"/>
                             <div id="errorAlert" style="display: none" class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><center><s:property value="alat.erVerif"/></center></div>
                             <div id="succesAlert" style="display: none" class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><center><s:property value="alat.verif"/></center></div>
+                            <table width="100%" align="center">
+                                <tr>
+                                    <td align="center">
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <label>Dispensasi Id </label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <s:textfield id="ijinKeluarId" name="ijinKeluar.ijinKeluarId" cssClass="form-control" cssStyle="margin-top: -25px; margin-left: 20px" />
+                                                    <s:hidden name="ijinKeluarPerson.approvalId"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label>NIP </label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <s:textfield id="personId" name="ijinKeluar.nip" cssClass="form-control" cssStyle="margin-top: -25px; margin-left: 20px" />
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <br><br>
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <sj:submit type="button" cssClass="btn btn-primary" formIds="searchForm" id="search" name="search"
+                                                               onClickTopics="showDialog" onCompleteTopics="closeDialog" onclick="showLoadingDialog();">
+                                                        <i class="fa fa-search"></i>
+                                                        Search
+                                                    </sj:submit>
+                                                </td>
+                                                <td>
 
-                            <div class="form-group">
-                                <table align="center">
-                                    <tr>
-                                        <td>
-                                            <label>Dispensasi Id </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <s:textfield id="ijinKeluarId" name="ijinKeluar.ijinKeluarId" cssClass="form-control" cssStyle="margin-top: -25px; margin-left: 20px" />
-                                            <s:hidden name="ijinKeluarPerson.approvalId"/>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label>NIP </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <s:textfield id="personId" name="ijinKeluar.nip" cssClass="form-control" cssStyle="margin-top: -25px; margin-left: 20px" />
-                                        </td>
-                                    </tr>
-                                </table>
-                                <br>
-
-                            </div>
-                            <div class="box-footer">
-                                <table align="center">
-                                    <tr>
-                                        <td>
-                                            <sj:submit type="button" cssClass="btn btn-primary" formIds="searchForm" id="search" name="search"
-                                                       onClickTopics="showDialog" onCompleteTopics="closeDialog" onclick="showLoadingDialog();">
-                                                <i class="fa fa-search"></i>
-                                                Search
-                                            </sj:submit>
-                                        </td>
-                                        <td>
-
-                                            <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="viewNotifikasi_notifikasi.action?tipeNotif=TN55"/>'">
-                                                <i class="fa fa-repeat"></i> Reset
-                                            </button>
-                                        </td>
-
-                                    </tr>
-                                </table>
-                            </div>
-
-
+                                                    <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="viewNotifikasi_notifikasi.action?tipeNotif=TN55"/>'">
+                                                        <i class="fa fa-repeat"></i> Reset
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                            <br><br>
                             <center>
                                 <table id="showdata" width="80%">
                                     <tr>
@@ -174,17 +172,9 @@
                                                        title="Medical Record">
                                                 <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                             </sj:dialog>
-
                                             <s:set name="listOfResultIK" value="#session.listOfResultIjinKeluar" scope="request" />
                                             <display:table name="listOfResultIK" class="tableIjinKeluar table table-condensed table-striped table-hover"
                                                            requestURI="paging_displaytag_ijinTidakMasuk.action" id="row" pagesize="20" style="font-size:10">
-                                                <display:column property="ijinKeluarId" sortable="true" title="Ijin Tidak Masuk Id" />
-                                                <display:column property="namaPegawai" sortable="true" title="Person Name"  />
-                                                <display:column property="ijinId" sortable="true" title="Ijin Id"  />
-                                                <display:column property="ijinName" sortable="true" title="Ijin Tidak Masuk Name"  />
-                                                <display:column property="stTanggalAwal" sortable="true" title="Ijin Tidak Masuk Start Date"  />
-                                                <display:column property="stTanggalAkhir" sortable="true" title="Ijin Tidak Masuk End Date"  />
-                                                <display:column property="lamaIjin" sortable="true" title="Lama Ijin"  />
                                                 <display:column media="html" title="Approve">
                                                     <s:if test="#attr.row.ijinKeluarApprove">
                                                         <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_edit">
@@ -198,6 +188,13 @@
                                                         </a>
                                                     </s:else>
                                                 </display:column>
+                                                <display:column property="ijinKeluarId" sortable="true" title="Ijin Tidak Masuk Id" />
+                                                <display:column property="namaPegawai" sortable="true" title="Person Name"  />
+                                                <display:column property="ijinId" sortable="true" title="Ijin Id"  />
+                                                <display:column property="ijinName" sortable="true" title="Ijin Tidak Masuk Name"  />
+                                                <display:column property="stTanggalAwal" sortable="true" title="Ijin Tidak Masuk Start Date"  />
+                                                <display:column property="stTanggalAkhir" sortable="true" title="Ijin Tidak Masuk End Date"  />
+                                                <display:column property="lamaIjin" sortable="true" title="Lama Ijin"  />
                                             </display:table>
                                         </td>
                                     </tr>

@@ -248,6 +248,27 @@ public class GolonganAction extends BaseMasterAction{
         }
         return getGolongan();
     }
+    public GolonganPkwt initPkwt(String kode, String flag){
+        logger.info("[GolonganAction.init] start process >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<GolonganPkwt> listOfResult = (List<GolonganPkwt>) session.getAttribute("listOfResult");
+
+        if(kode != null && !"".equalsIgnoreCase(kode)){
+            if(listOfResult != null){
+                for (GolonganPkwt golongan: listOfResult) {
+                    if(kode.equalsIgnoreCase(golongan.getGolonganPkwtId()) && flag.equalsIgnoreCase(golongan.getFlag())){
+                        setGolonganPkwt(golongan);
+                        break;
+                    }
+                }
+            } else {
+                setGolongan(new Golongan());
+            }
+
+            logger.info("[AlatAction.init] end process >>>");
+        }
+        return getGolonganPkwt();
+    }
 
     @Override
     public String add() {
@@ -262,6 +283,19 @@ public class GolonganAction extends BaseMasterAction{
 
         logger.info("[GolonganAction.add] stop process >>>");
         return "init_add";
+    }
+    public String addPkwt() {
+        logger.info("[GolonganAction.add] start process >>>");
+        Golongan addGolongan = new Golongan();
+        setGolongan(addGolongan);
+        setAddOrEdit(true);
+        setAdd(true);
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfResult");
+
+        logger.info("[GolonganAction.add] stop process >>>");
+        return "init_add_pkwt";
     }
 
     @Override
@@ -307,6 +341,49 @@ public class GolonganAction extends BaseMasterAction{
         setAddOrEdit(true);
         logger.info("[GolonganAction.edit] end process >>>");
         return "init_edit";
+    }
+    public String editPkwt() {
+        logger.info("[GolonganAction.edit] start process >>>");
+        String itemId = getId();
+        String itemFlag = getFlag();
+
+        GolonganPkwt editGolongan = new GolonganPkwt();
+
+        if(itemFlag != null){
+            try {
+                editGolongan = initPkwt(itemId, itemFlag);
+            } catch (GeneralBOException e) {
+                Long logId = null;
+                try {
+                    logId = golonganBoProxy.saveErrorMessage(e.getMessage(), "GolonganBO.getGolonganByCriteria");
+                } catch (GeneralBOException e1) {
+                    logger.error("[GolonganAction.edit] Error when retrieving edit data,", e1);
+                }
+                logger.error("[GolonganAction.edit] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
+                addActionError("Error, " + "[code=" + logId + "] Found problem when retrieving data for edit, please inform to your admin.");
+                return "failure";
+            }
+
+            if(editGolongan != null) {
+                setGolonganPkwt(editGolongan);
+            } else {
+                editGolongan.setFlag(itemFlag);
+                editGolongan.setGolonganPkwtId(itemId);
+                setGolonganPkwt(editGolongan);
+                addActionError("Error, Unable to find data with id = " + itemId);
+                return "failure";
+            }
+        } else {
+            editGolongan.setGolonganPkwtId(itemId);
+            editGolongan.setFlag(getFlag());
+            setGolonganPkwt(editGolongan);
+            addActionError("Error, Unable to edit again with flag = N.");
+            return "failure_pkwt";
+        }
+
+        setAddOrEdit(true);
+        logger.info("[GolonganAction.edit] end process >>>");
+        return "init_edit_pkwt";
     }
 
     @Override
@@ -355,6 +432,51 @@ public class GolonganAction extends BaseMasterAction{
 
         return "init_delete";
     }
+    public String deletePkwt() {
+        logger.info("[GolonganAction.delete] start process >>>");
+
+        String itemId = getId();
+        String itemFlag = getFlag();
+        GolonganPkwt deleteGolongan = new GolonganPkwt();
+
+        if (itemFlag != null ) {
+
+            try {
+                deleteGolongan = initPkwt(itemId, itemFlag);
+            } catch (GeneralBOException e) {
+                Long logId = null;
+                try {
+                    logId = golonganBoProxy.saveErrorMessage(e.getMessage(), "GolonganBO.getAlatById");
+                } catch (GeneralBOException e1) {
+                    logger.error("[GolonganAction.delete] Error when retrieving delete data,", e1);
+                }
+                logger.error("[GolonganAction.delete] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
+                addActionError("Error, " + "[code=" + logId + "] Found problem when retrieving data for delete, please inform to your admin.");
+                return "failure";
+            }
+
+            if (deleteGolongan != null) {
+                setGolonganPkwt(deleteGolongan);
+
+            } else {
+                deleteGolongan.setGolonganPkwtId(itemId);
+                deleteGolongan.setFlag(itemFlag);
+                setGolonganPkwt(deleteGolongan);
+                addActionError("Error, Unable to find data with id = " + itemId);
+                return "failure";
+            }
+        } else {
+            deleteGolongan.setGolonganPkwtId(itemId);
+            deleteGolongan.setFlag(itemFlag);
+            setGolonganPkwt(deleteGolongan);
+            addActionError("Error, Unable to delete again with flag = N.");
+            return "failure";
+        }
+
+        logger.info("[AlatAction.delete] end process <<<");
+
+        return "init_delete_pkwt";
+    }
 
     @Override
     public String view() {
@@ -398,6 +520,38 @@ public class GolonganAction extends BaseMasterAction{
 
         return "success_save_edit";
     }
+    public String saveEditPkwt(){
+        logger.info("[GolonganAction.saveEdit] start process >>>");
+        try {
+
+            GolonganPkwt editGolongan = getGolonganPkwt();
+
+            String userLogin = CommonUtil.userLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+            editGolongan.setLastUpdateWho(userLogin);
+            editGolongan.setLastUpdate(updateTime);
+            editGolongan.setAction("U");
+            editGolongan.setFlag("Y");
+
+            golonganPkwtBoProxy.saveEdit(editGolongan);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = golonganBoProxy.saveErrorMessage(e.getMessage(), "GolonganBO.saveEdit");
+            } catch (GeneralBOException e1) {
+                logger.error("[GolonganAction.saveEdit] Error when saving error,", e1);
+                return ERROR;
+            }
+            logger.error("[GolonganAction.saveEdit] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
+            return ERROR;
+        }
+
+        logger.info("[GolonganAction.saveEdit] end process <<<");
+
+        return "success_save_edit_pkwt";
+    }
 
     public String saveDelete(){
         logger.info("[GolonganAction.saveDelete] start process >>>");
@@ -431,6 +585,38 @@ public class GolonganAction extends BaseMasterAction{
 
         return "success_save_delete";
     }
+    public String saveDeletePkwt(){
+        logger.info("[GolonganAction.saveDelete] start process >>>");
+        try {
+
+            GolonganPkwt deleteGolongan = getGolonganPkwt();
+
+            String userLogin = CommonUtil.userLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+            deleteGolongan.setLastUpdate(updateTime);
+            deleteGolongan.setLastUpdateWho(userLogin);
+            deleteGolongan.setAction("U");
+            deleteGolongan.setFlag("N");
+
+            golonganPkwtBoProxy.saveDelete(deleteGolongan);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = golonganBoProxy.saveErrorMessage(e.getMessage(), "LiburBO.saveDelete");
+            } catch (GeneralBOException e1) {
+                logger.error("[AlatAction.saveDelete] Error when saving error,", e1);
+                return ERROR;
+            }
+            logger.error("[AlatAction.saveDelete] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
+            return ERROR;
+        }
+
+        logger.info("[AlatAction.saveDelete] end process <<<");
+
+        return "success_save_delete_pkwt";
+    }
 
     public String saveAdd(){
         logger.info("[AlatAction.saveAdd] start process >>>");
@@ -454,6 +640,42 @@ public class GolonganAction extends BaseMasterAction{
             try {
                 logId = golonganBoProxy.saveErrorMessage(e.getMessage(), "liburBO.saveAdd");
             } catch (GeneralBOException e1) {
+                throw new GeneralBOException(e1.getMessage());
+            }
+            logger.error("[liburAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+            throw new GeneralBOException(e.getMessage());
+        }
+
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfResult");
+
+        logger.info("[liburAction.saveAdd] end process >>>");
+        return "success_save_add";
+    }
+    public String saveAddPkwt(){
+        logger.info("[AlatAction.saveAdd] start process >>>");
+
+        try {
+            GolonganPkwt golongan = getGolonganPkwt();
+            String userLogin = CommonUtil.userLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+
+            golongan.setCreatedWho(userLogin);
+            golongan.setLastUpdate(updateTime);
+            golongan.setCreatedDate(updateTime);
+            golongan.setLastUpdateWho(userLogin);
+            golongan.setAction("C");
+            golongan.setFlag("Y");
+
+            golonganPkwtBoProxy.saveAdd(golongan);
+        }catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = golonganBoProxy.saveErrorMessage(e.getMessage(), "liburBO.saveAdd");
+            } catch (GeneralBOException e1) {
                 logger.error("[liburAction.saveAdd] Error when saving error,", e1);
                 return ERROR;
             }
@@ -467,7 +689,7 @@ public class GolonganAction extends BaseMasterAction{
         session.removeAttribute("listOfResult");
 
         logger.info("[liburAction.saveAdd] end process >>>");
-        return "success_save_add";
+        return "success_save_add_pkwt";
     }
 
     @Override
@@ -501,6 +723,36 @@ public class GolonganAction extends BaseMasterAction{
 
         return SUCCESS;
     }
+    public String searchPkwt() {
+        logger.info("[GolonganAction.search] start process >>>");
+
+        GolonganPkwt searchGolongan = getGolonganPkwt();
+        List<GolonganPkwt> listOfsearchGolongan = new ArrayList();
+
+        try {
+            listOfsearchGolongan = golonganPkwtBoProxy.getByCriteria(searchGolongan);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = golonganBoProxy.saveErrorMessage(e.getMessage(), "GolonganBO.getByCriteria");
+            } catch (GeneralBOException e1) {
+                logger.error("[GolonganAction.search] Error when saving error,", e1);
+                return ERROR;
+            }
+            logger.error("[GolonganAction.save] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            return ERROR;
+        }
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+
+        session.removeAttribute("listOfResult");
+        session.setAttribute("listOfResult", listOfsearchGolongan);
+
+        logger.info("[AlatAction.search] end process <<<");
+
+        return "success_pkwt";
+    }
 
     @Override
     public String initForm() {
@@ -510,6 +762,14 @@ public class GolonganAction extends BaseMasterAction{
         session.removeAttribute("listOfResult");
         logger.info("[GolonganAction.initForm] end process >>>");
         return INPUT;
+    }
+    public String initFormPkwt() {
+        logger.info("[GolonganAction.initForm] start process >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+
+        session.removeAttribute("listOfResult");
+        logger.info("[GolonganAction.initForm] end process >>>");
+        return "input_pkwt";
     }
 
 

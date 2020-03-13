@@ -1101,12 +1101,13 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                 listComboSisaCutiPegawai.add(itemComboCutiPegawai);
             }
         }
+        //ada kesalahan disini
         else if (listSisaCutiPegawai.size()==0){
                 CutiPegawai itemComboCutiPegawai = new CutiPegawai();
                 List<ImCutiEntity> cutiList = new ArrayList<>();
                 List<ImCutiPanjangEntity> cutiPanjangEntityList = new ArrayList<>();
                 ImBiodataEntity biodataEntity = new ImBiodataEntity();
-            if (cutiId.equalsIgnoreCase("CT006")){
+            /*if (cutiId.equalsIgnoreCase("CT006")){
                 biodataEntity=biodataDao.getById("nip",query,"Y");
                 cutiPanjangEntityList=cutiPanjangDao.getListCutiPanjangBygolonganAndBranch(biodataEntity.getGolongan(),branchId);
                 for (ImCutiPanjangEntity cutiPanjangEntity:cutiPanjangEntityList){
@@ -1123,7 +1124,8 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                 if (listCutiPanjang.size()!=0){
                     itemComboCutiPegawai.setSisaCutiHari(BigInteger.ZERO);
                 }
-            }
+            }*/
+                itemComboCutiPegawai.setSisaCutiHari(BigInteger.ZERO);
                 listComboSisaCutiPegawai.add(itemComboCutiPegawai);
             }
         logger.info("[UserBoImpl.getComboUserWithCriteria] end process <<<");
@@ -1436,6 +1438,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                 if(bean.getTmpApprove().equals("atasan")) {
                     if (bean.getApprovalFlag().equals("Y")) {
                         itCutiPegawaiEntity.setApprovalFlag("Y");
+                        itCutiPegawaiEntity.setPegawaiPenggantiSementara(bean.getPegawaiPenggantiSementara());
                     } else {
                         itCutiPegawaiEntity.setNoteApproval(bean.getNoteApproval());
                         itCutiPegawaiEntity.setApprovalFlag("N");
@@ -1550,10 +1553,11 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                         notifikasiList.add(notifKabag);
                     }*/
 
-                    if (!"".equalsIgnoreCase(itCutiPegawaiEntity.getPegawaiPenggantiSementara())){
+                    if (!"".equalsIgnoreCase(bean.getPegawaiPenggantiSementara())){
                         //Send notif ke orang yang mengajukan
                         Notifikasi notifElse= new Notifikasi();
-                        notifElse.setNip(itCutiPegawaiEntity.getPegawaiPenggantiSementara());
+
+                        notifElse.setNip(bean.getPegawaiPenggantiSementara());
                         notifElse.setNoRequest(bean.getCutiPegawaiId());
                         notifElse.setTipeNotifId("umum");
                         notifElse.setTipeNotifName(("Cuti Pegawai"));
@@ -1656,6 +1660,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                 }else{
                     returnCutiPegawai.setPosisiId("");
                 }
+                returnCutiPegawai.setProfesiId(itPersonilPositionEntity.getProfesiId());
                 if (returnCutiPegawai.getPosisiId()!=null){
                     if (!"".equalsIgnoreCase(returnCutiPegawai.getPosisiId())){
                         ImPosition imPosition = positionDao.getById("positionId",returnCutiPegawai.getPosisiId());

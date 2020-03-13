@@ -13,8 +13,11 @@
         <property name="danaPensiun">
             <column name="dana_pensiun" sql-type="varchar" length="10" not-null="true" />
         </property>
-        <property name="persentase">
-            <column name="persentase" sql-type="double" length="5" precision="2" not-null="true" />
+        <property name="persentaseKary">
+            <column name="persentase_kary" sql-type="double" length="5" precision="2" not-null="true" />
+        </property>
+        <property name="persentasePers">
+            <column name="persentase_pers" sql-type="double" length="5" precision="2" not-null="true" />
         </property>
 
         <property name="flag">

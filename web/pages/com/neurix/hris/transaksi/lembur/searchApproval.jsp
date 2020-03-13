@@ -102,83 +102,83 @@
                             <s:hidden id="erVerif" name="alat.erVerif"/>
                             <div id="errorAlert" style="display: none" class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><center><s:property value="alat.erVerif"/></center></div>
                             <div id="succesAlert" style="display: none" class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><center><s:property value="alat.verif"/></center></div>
-
-                            <div class="form-group">
-                                <table align="center">
-                                    <tr>
-                                        <td>
-                                            <label>Lembur Id </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <s:textfield id="lemburId" name="lembur.lemburId" cssClass="form-control" cssStyle="margin-top: -25px; margin-left: 20px" />
-                                            <s:hidden name="lemburPerson.approvalId"/>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label>NIP </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <s:textfield id="personId" name="lembur.nip" cssClass="form-control" cssStyle="margin-top: -25px; margin-left: 20px" />
-                                            <script type='text/javascript'>
-                                                var functions, mapped;
-                                                $('#personId').typeahead({
-                                                    minLength: 1,
-                                                    source: function (query, process) {
-                                                        functions = [];
-                                                        mapped = {};
-                                                        var data = [];
-                                                        dwr.engine.setAsync(false);
-                                                        MedicalRecordAction.initComboPersonil(query,'', function (listdata) {
-                                                            data = listdata;
+                            <table width="100%" align="center">
+                                <tr>
+                                    <td align="center">
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <label>Lembur Id </label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <s:textfield id="lemburId" name="lembur.lemburId" cssClass="form-control" cssStyle="margin-top: -25px; margin-left: 20px" />
+                                                    <s:hidden name="lemburPerson.approvalId"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label>NIP </label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <s:textfield id="personId" name="lembur.nip" cssClass="form-control" cssStyle="margin-top: -25px; margin-left: 20px" />
+                                                    <script type='text/javascript'>
+                                                        var functions, mapped;
+                                                        $('#personId').typeahead({
+                                                            minLength: 1,
+                                                            source: function (query, process) {
+                                                                functions = [];
+                                                                mapped = {};
+                                                                var data = [];
+                                                                dwr.engine.setAsync(false);
+                                                                MedicalRecordAction.initComboPersonil(query,'', function (listdata) {
+                                                                    data = listdata;
+                                                                });
+                                                                $.each(data, function (i, item) {
+                                                                    var labelItem =item.nip+ " || "+ item.namaPegawai;
+                                                                    var labelNip = item.nip;
+                                                                    mapped[labelItem] = {pegawai:item.namaPegawai, id: item.nip, label: labelItem, branchId : item.branch, divisiId: item.divisi, positionId : item.positionId };
+                                                                    functions.push(labelItem);
+                                                                });
+                                                                process(functions);
+                                                            },
+                                                            updater: function (item) {
+                                                                var selectedObj = mapped[item];
+                                                                var namaAlat = selectedObj.id;
+                                                                document.getElementById("personId").value = selectedObj.id;
+                                                                return namaAlat;
+                                                            }
                                                         });
-                                                        $.each(data, function (i, item) {
-                                                            var labelItem =item.nip+ " || "+ item.namaPegawai;
-                                                            var labelNip = item.nip;
-                                                            mapped[labelItem] = {pegawai:item.namaPegawai, id: item.nip, label: labelItem, branchId : item.branch, divisiId: item.divisi, positionId : item.positionId };
-                                                            functions.push(labelItem);
-                                                        });
-                                                        process(functions);
-                                                    },
-                                                    updater: function (item) {
-                                                        var selectedObj = mapped[item];
-                                                        var namaAlat = selectedObj.id;
-                                                        document.getElementById("personId").value = selectedObj.id;
-                                                        return namaAlat;
-                                                    }
-                                                });
-                                            </script>
-                                        </td>
-                                    </tr>
-                                </table>
-                                <br>
+                                                    </script>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <br><br>
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <sj:submit type="button" cssClass="btn btn-primary" formIds="searchForm" id="search" name="search"
+                                                               onClickTopics="showDialog" onCompleteTopics="closeDialog" onclick="showLoadingDialog();">
+                                                        <i class="fa fa-search"></i>
+                                                        Search
+                                                    </sj:submit>
+                                                </td>
+                                                <td>
 
-                            </div>
-                            <div class="box-footer">
-                                <table align="center">
-                                    <tr>
-                                        <td>
-                                            <sj:submit type="button" cssClass="btn btn-primary" formIds="searchForm" id="search" name="search"
-                                                       onClickTopics="showDialog" onCompleteTopics="closeDialog" onclick="showLoadingDialog();">
-                                                <i class="fa fa-search"></i>
-                                                Search
-                                            </sj:submit>
-                                        </td>
-                                        <td>
+                                                    <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="viewNotifikasi_notifikasi.action?tipeNotif=TN77"/>'">
+                                                        <i class="fa fa-repeat"></i> Reset
+                                                    </button>
+                                                </td>
 
-                                            <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="viewNotifikasi_notifikasi.action?tipeNotif=TN77"/>'">
-                                                <i class="fa fa-repeat"></i> Reset
-                                            </button>
-                                        </td>
-
-                                    </tr>
-                                </table>
-                            </div>
-
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                            <br><br>
 
                             <center>
                                 <table id="showdata" width="80%">
@@ -193,15 +193,6 @@
                                             <s:set name="listOfLembur" value="#session.listOfResultLembur" scope="request" />
                                             <display:table name="listOfLembur" class="tableLembur table table-condensed table-striped table-hover"
                                                            requestURI="paging_displaytag_lembur.action" id="row" pagesize="90" style="font-size:10">
-                                                <display:column property="lemburId" sortable="true" title="Lembur Id" />
-                                                <display:column property="tipeLembur" sortable="true" title="Tipe Lembur"  />
-                                                <display:column property="nip" sortable="true" title="NIP"  />
-                                                <display:column property="pegawaiName" sortable="true" title="Nama"  />
-                                                <display:column property="positionName" sortable="true" title="Jabatan"  />
-                                                <display:column property="stTanggalAwal" sortable="true" title="Tanggal"  />
-                                                <display:column property="jamAwal" sortable="true" title="<center>Jam Awal</center>" style="text-align:center" />
-                                                <display:column property="jamAkhir" sortable="true" title="<center>Jam Akhir</center>" style="text-align:center" />
-                                                <display:column property="lamaJam" sortable="true" title="<center>Lama</center>" style="text-align:center" />
                                                 <display:column media="html" title="<center>Approve Atasan</center>" style="text-align:center">
                                                     <s:if test="#attr.row.notApprove">
                                                         <img border="0" src="<s:url value="/pages/images/icon_failure.ico"/>" name="icon_edit">
@@ -215,6 +206,15 @@
                                                         </a>
                                                     </s:else>
                                                 </display:column>
+                                                <display:column property="lemburId" sortable="true" title="Lembur Id" />
+                                                <display:column property="tipeLembur" sortable="true" title="Tipe Lembur"  />
+                                                <display:column property="nip" sortable="true" title="NIP"  />
+                                                <display:column property="pegawaiName" sortable="true" title="Nama"  />
+                                                <display:column property="positionName" sortable="true" title="Jabatan"  />
+                                                <display:column property="stTanggalAwal" sortable="true" title="Tanggal"  />
+                                                <display:column property="jamAwal" sortable="true" title="<center>Jam Awal</center>" style="text-align:center" />
+                                                <display:column property="jamAkhir" sortable="true" title="<center>Jam Akhir</center>" style="text-align:center" />
+                                                <display:column property="lamaJam" sortable="true" title="<center>Lama</center>" style="text-align:center" />
                                             </display:table>
                                         </td>
                                     </tr>

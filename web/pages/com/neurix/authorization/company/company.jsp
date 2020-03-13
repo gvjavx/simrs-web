@@ -275,7 +275,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group">
+                                    <%--<div class="form-group">
                                         <label class="control-label col-sm-3" for="company.defaultEmailSender">Persentase Biaya Jabatan:</label>
                                         <div class="col-sm-8">
                                             <s:textfield id="biayaJabatanPersentase" name="company.biayaJabatanPersentase" cssClass="form-control" required="true"/>
@@ -351,7 +351,7 @@
                                         <div class="col-sm-8">
                                             <s:textfield id="maxBpjsKesehatan" name="company.maxBpjsKesehatan" cssClass="form-control" required="true"/>
                                         </div>
-                                    </div>
+                                    </div>--%>
 
                                     <script>onLoadPage()</script>
 
