@@ -323,64 +323,98 @@
                     </div>
 
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-user"></i> Tinggi & Berat Badan</h3>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="box-title"><i class="fa fa-user"></i> Tinggi & Berat Badan</h3>
+                            </div>
+                            <div class="col-md-6">
+                                <h3 class="box-title"><i class="fa fa-heartbeat"></i> Hasil BMI (Body Mass Index)</h3>
+                            </div>
+                        </div>
                     </div>
                     <div class="box-body">
-                        <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_penunjang">
-                            <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                            Silahkan cek kembali data inputan!
-                        </div>
-                        <div class="alert alert-success alert-dismissible" style="display: none" id="success_penunjang">
-                            <h4><i class="icon fa fa-info"></i> Info!</h4>
-                            Data berhasil disimpan!
-                        </div>
                         <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>Tinggi</label>
-                                    <div class="input-group date">
-                                        <s:textfield id="tinggi" name="headerDetailCheckup.tinggi"
-                                                     cssClass="form-control" type="number"/>
-                                        <div class="input-group-addon btn btn-success">
-                                            cm
+                            <div class="col-md-6">
+                                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_penunjang">
+                                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                                    Silahkan cek kembali data inputan!
+                                </div>
+                                <div class="alert alert-success alert-dismissible" style="display: none" id="success_penunjang">
+                                    <h4><i class="icon fa fa-info"></i> Info!</h4>
+                                    Data berhasil disimpan!
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Tinggi</label>
+                                            <div class="input-group date">
+                                                <s:textfield id="tinggi" name="headerDetailCheckup.tinggi"
+                                                             cssClass="form-control" type="number"/>
+                                                <div class="input-group-addon">
+                                                    cm
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Berat</label>
+                                            <div class="input-group date">
+                                                <s:textfield id="berat" name="headerDetailCheckup.berat"
+                                                             cssClass="form-control" type="number"/>
+                                                <div class="input-group-addon">
+                                                    Kg
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label>&nbsp</label>
+                                            <div>
+                                                <button id="save_penunjang" onclick="savePenunjangPasien()"
+                                                        class="btn btn-success"><i
+                                                        class="fa fa-check"></i>
+                                                    Save
+                                                </button>
+                                                <button style="display: none; cursor: no-drop" type="button"
+                                                        class="btn btn-success"
+                                                        id="load_penunjang">
+                                                    <i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>Berat</label>
-                                    <div class="input-group date">
-                                        <s:textfield id="berat" name="headerDetailCheckup.berat"
-                                                     cssClass="form-control" type="number"/>
-                                        <div class="input-group-addon btn btn-success">
-                                            Kg
-                                        </div>
+                            <div class="col-md-6">
+                                <div style="padding-top: 15px">
+                                    <div class="progress">
+                                        <div id="bar_bmi"></div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>&nbsp</label>
-                                    <div>
-                                        <button style="width: 150px" id="save_penunjang" onclick="savePenunjangPasien()"
-                                                class="btn btn-success"><i
-                                                class="fa fa-check"></i>
-                                            Save
-                                        </button>
-                                        <button style="display: none; cursor: no-drop" type="button"
-                                                class="btn btn-success"
-                                                id="load_penunjang">
-                                            <i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
-                                        </button>
-                                    </div>
-                                </div>
+                                <%--<small>--%>
+                                    <%--<ul style="list-style-type: none;">--%>
+                                        <%--<li style="float: left"><i class="fa fa-square" style="color: #5bc0de"></i> Kurus berat--%>
+                                        <%--</li>--%>
+                                        <%--<li style="float: left; padding-left: 10px"><i class="fa fa-square" style="color: #337ab7"></i> Kurus ringan--%>
+                                        <%--</li>--%>
+                                        <%--<li style="float: left; padding-left: 10px"><i class="fa fa-square" style="color: #5cb85c"></i> Normal </li>--%>
+                                        <%--<li style="float: left; padding-left: 10px"><i class="fa fa-square" style="color: #f0ad4e"></i> Gemuk ringan  </li>--%>
+                                        <%--<li style="float: left; padding-left: 10px"><i class="fa fa-square" style="color: #d9534f"></i> Gemuk berat    </li>--%>
+                                    <%--</ul>--%>
+                                <%--</small>--%>
+                                <small>
+                                    <ul style="list-style-type: none;">
+                                        <li style="float: left; padding-left: 10px"><i class="fa fa-square" style="color: #337ab7"></i> Berat badan kurang
+                                        </li>
+                                        <li style="float: left; padding-left: 10px"><i class="fa fa-square" style="color: #5cb85c"></i> Berat badan normal </li>
+                                        <li style="float: left; padding-left: 10px"><i class="fa fa-square" style="color: #f0ad4e"></i> Berat badan berlebih  </li>
+                                        <li style="float: left; padding-left: 10px"><i class="fa fa-square" style="color: #d9534f"></i> Obesitas  </li>
+                                    </ul>
+                                </small>
                             </div>
                         </div>
-                        <%--<div class="form-group">--%>
-                        <%--<br>--%>
-
-                        <%--</div>--%>
                     </div>
 
                     <div class="box-header with-border"></div>
@@ -564,31 +598,31 @@
                         </table>
                     </div>
 
-                    <div class="box-header with-border" id="pos_obat">
-                    </div>
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-plus-square"></i> Obat Penunjang</h3>
-                    </div>
-                    <div class="box-body">
-                        <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
-                                onclick="showModal(5)"><i class="fa fa-plus"></i> Obat Penunjang
-                        </button>
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                            <tr bgcolor="#90ee90">
-                                <td>Tanggal</td>
-                                <td>ID Obat</td>
-                                <td>Obat</td>
-                                <td align="center">Qty</td>
-                                <td>Jenis Satuan</td>
-                                <td align="center">Action</td>
-                            </tr>
-                            </thead>
-                            <tbody id="body_obat">
+                    <%--<div class="box-header with-border" id="pos_obat">--%>
+                    <%--</div>--%>
+                    <%--<div class="box-header with-border">--%>
+                        <%--<h3 class="box-title"><i class="fa fa-plus-square"></i> Obat Penunjang</h3>--%>
+                    <%--</div>--%>
+                    <%--<div class="box-body">--%>
+                        <%--<button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"--%>
+                                <%--onclick="showModal(5)"><i class="fa fa-plus"></i> Obat Penunjang--%>
+                        <%--</button>--%>
+                        <%--<table class="table table-bordered table-striped">--%>
+                            <%--<thead>--%>
+                            <%--<tr bgcolor="#90ee90">--%>
+                                <%--<td>Tanggal</td>--%>
+                                <%--<td>ID Obat</td>--%>
+                                <%--<td>Obat</td>--%>
+                                <%--<td align="center">Qty</td>--%>
+                                <%--<td>Jenis Satuan</td>--%>
+                                <%--<td align="center">Action</td>--%>
+                            <%--</tr>--%>
+                            <%--</thead>--%>
+                            <%--<tbody id="body_obat">--%>
 
-                            </tbody>
-                        </table>
-                    </div>
+                            <%--</tbody>--%>
+                        <%--</table>--%>
+                    <%--</div>--%>
 
                     <div class="box-header with-border" id="pos_rssep">
                     </div>
@@ -1634,6 +1668,8 @@
         listObat();
         listResepPasien();
         listAlergi();
+        hitungStatusBiaya();
+        hitungBmi();
 
         $('#img_ktp').on('click', function (e) {
             e.preventDefault();
@@ -1655,8 +1691,6 @@
 
         });
 
-        hitungStatusBiaya();
-
         var nominal = document.getElementById('uang_muka');
         nominal.addEventListener('keyup', function (e) {
             nominal.value = formatRupiah2(this.value);
@@ -1670,6 +1704,61 @@
         });
 
     });
+
+    function hitungBmi(){
+
+        var berat = $('#berat').val();
+        var tinggi = $('#tinggi').val();
+        var persen = "";
+        var bmi = "";
+        var barClass = "";
+        var barLabel = "";
+
+        if (berat != '' && tinggi != '') {
+            var tom = (parseInt(tinggi) * 0.01);
+            console.log(tom);
+            var tes = (parseFloat(tom)) *  parseFloat(tom);
+            console.log(berat);
+            console.log(tes);
+            bmi = (parseInt(berat) / (tom *  tom)).toFixed(2);
+            console.log(bmi);
+        }
+
+        // if (parseInt(bmi) < 17.0) {
+        //     barClass = 'progress-bar-info';
+        //     persen = 20;
+        // } else if (parseInt(bmi) <= 17.0 && parseInt(bmi) <= 18.4) {
+        //     barClass = 'progress-bar-primary';
+        //     persen = 40;
+        // } else if (parseInt(bmi) <= 18.5 && parseInt(bmi) <= 25.0) {
+        //     barClass = 'progress-bar-success';
+        //     persen = 60;
+        // } else if (parseInt(bmi) <= 25.1 && parseInt(bmi) <= 27.0) {
+        //     barClass = 'progress-bar-warning';
+        //     persen = 80;
+        // } else if (parseInt(bmi) > 27) {
+        //     barClass = 'progress-bar-danger';
+        //     persen = 100;
+        // }
+
+        if (parseInt(bmi) < 18.5) {
+            barClass = 'progress-bar-primary';
+            persen = 25;
+        } else if (parseInt(bmi) >= 18.5 && parseInt(bmi) <= 22.9) {
+            barClass = 'progress-bar-success';
+            persen = 50;
+        } else if (parseInt(bmi) >= 23 && parseInt(bmi) <= 29.9) {
+            barClass = 'progress-bar-warning';
+            persen = 75;
+        } else if (parseInt(bmi) > 30) {
+            barClass = 'progress-bar-danger';
+            persen = 100;
+        }
+
+        var barBmi = '<div class="progress-bar ' + barClass + '" style="width: ' + persen + '%" role="progressbar" aria-valuenow="' + persen + '" aria-valuemin="0" aria-valuemax="100">' + bmi +'</div>';
+
+        $('#bar_bmi').html(barBmi);
+    }
 
     function printGelangPasien() {
         window.open('printGelangPasien_checkupdetail.action?id=' + noCheckup, '_blank');
@@ -2116,6 +2205,7 @@
             $('#body_detail').html('');
             $('#modal-resep-head').modal('show');
         } else if (select == 8) {
+            $('#alergi').val('');
             $('#load_alergi').hide();
             $('#save_alergi').attr('onclick', 'saveAlergi(\'' + id + '\')').show();
             $('#modal-alergi').modal('show');
@@ -3326,6 +3416,7 @@
                     $('#success_penunjang').show().fadeOut(5000);
                     $('#save_penunjang').show();
                     $('#load_penunjang').hide();
+                    hitungBmi();
                 } else {
                     $('#save_penunjang').show();
                     $('#load_penunjang').hide();

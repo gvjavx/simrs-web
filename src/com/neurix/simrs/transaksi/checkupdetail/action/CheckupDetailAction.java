@@ -1014,6 +1014,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             headerDetailCheckup.setStatus(idKtg);
             cekRawatInap(idDetailCheckup);
         }
+
         if ("pindah".equalsIgnoreCase(idKtg)) {
             headerDetailCheckup.setKeteranganSelesai("Pindah ke Poli Lain");
         }
@@ -1036,27 +1037,29 @@ public class CheckupDetailAction extends BaseMasterAction {
             }
         }
 
-        headerDetailCheckup.setLastUpdate(new Timestamp(System.currentTimeMillis()));
-        headerDetailCheckup.setLastUpdateWho(CommonUtil.userLogin());
-
         CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
 
+        if ("pindah".equalsIgnoreCase(idKtg)) {
+            response = pindahPoli(noCheckup, idDetailCheckup, poli, idDokter);
+        }
+
+        if ("rujuk".equalsIgnoreCase(idKtg)) {
+            response = rujukRawatInap(noCheckup, idDetailCheckup, kelas, kamar, metodeBayar, uangMuka);
+        }
+
         try {
-            checkupDetailBo.saveEdit(headerDetailCheckup);
-            response.setStatus("success");
-            response.setMsg("Berhasil Menyimpan transaksi");
+
+            if("success".equalsIgnoreCase(response.getStatus()) || "selesai".equalsIgnoreCase(idKtg)){
+                headerDetailCheckup.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+                headerDetailCheckup.setLastUpdateWho(CommonUtil.userLogin());
+                response = checkupDetailBo.saveEdit(headerDetailCheckup);
+            }
+
         } catch (GeneralBOException e) {
             logger.error("[CheckupDetailAction.saveKeterangan] Error when saving data detail checkup, ", e);
             response.setStatus("error");
             response.setMsg("[CheckupDetailAction.saveKeterangan] Error when saving data detail checkup, " + e);
             return response;
-        }
-
-        if ("pindah".equalsIgnoreCase(idKtg)) {
-            response = pindahPoli(noCheckup, idDetailCheckup, poli, idDokter);
-        } else if ("rujuk".equalsIgnoreCase(idKtg)) {
-            response = rujukRawatInap(noCheckup, idDetailCheckup, kelas, kamar, metodeBayar, uangMuka);
-        } else {
         }
 
         updateFlagPeriksaAntrianOnline(idDetailCheckup);
@@ -1534,7 +1537,9 @@ public class CheckupDetailAction extends BaseMasterAction {
                                                 } else {
                                                     jk = "2";
                                                 }
+
                                                 klaimRequest.setGender(jk);
+                                                klaimRequest.setCoderNik(getBranch.getCoderNik());
 
                                                 KlaimResponse responseNewClaim = new KlaimResponse();
                                                 try {
@@ -1725,8 +1730,10 @@ public class CheckupDetailAction extends BaseMasterAction {
                         headerDetailCheckup.setIdJenisPeriksaPasien(checkup.getIdJenisPeriksaPasien());
 
                         try {
-                            checkupDetailBo.saveAdd(headerDetailCheckup);
+                            finalResponse = checkupDetailBo.saveAdd(headerDetailCheckup);
                         } catch (GeneralBOException e) {
+                            finalResponse.setStatus("error");
+                            finalResponse.setMsg("Error when saving add new detail poli "+e.getMessage());
                             logger.error("[CheckupDetailAction.rujukRawatInap] Error when saving add new detail poli, ", e);
                         }
                     }
@@ -1958,7 +1965,9 @@ public class CheckupDetailAction extends BaseMasterAction {
                                                 } else {
                                                     jk = "2";
                                                 }
+
                                                 klaimRequest.setGender(jk);
+                                                klaimRequest.setCoderNik(getBranch.getCoderNik());
 
                                                 KlaimResponse responseNewClaim = new KlaimResponse();
                                                 try {
@@ -2153,8 +2162,10 @@ public class CheckupDetailAction extends BaseMasterAction {
                         headerDetailCheckup.setMetodePembayaran(metodeBayar);
 
                         try {
-                            checkupDetailBo.saveAdd(headerDetailCheckup);
+                            finalResponse = checkupDetailBo.saveAdd(headerDetailCheckup);
                         } catch (GeneralBOException e) {
+                            finalResponse.setStatus("error");
+                            finalResponse.setMsg("Error when saving add new rawat inap "+e.getMessage());
                             logger.error("[CheckupDetailAction.rujukRawatInap] Error when saving add new detail poli, ", e);
                         }
                     }
@@ -2166,33 +2177,6 @@ public class CheckupDetailAction extends BaseMasterAction {
         return finalResponse;
 
     }
-
-//    private String createJurnalUangMuka(String idPasien, String jumlah){
-//        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-//        BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
-//
-//        String transId = "01";
-//
-//        String noNota = "";
-//        try {
-//            noNota = billingSystemBo.createInvoiceNumber(transId);
-//        } catch (GeneralBOException e){
-//            logger.error("[CheckupDetailAction.createJurnalUangMuka] Error create uang muka, ", e);
-//        }
-//
-//        Map hsCriteria = new HashMap();
-//        hsCriteria.put("master_id", idPasien);
-//        hsCriteria.put("no_nota", noNota);
-//        hsCriteria.put("uang_muka", new BigDecimal(jumlah));
-//
-//        try {
-//            billingSystemBo.createJurnal(transId, hsCriteria, CommonUtil.userBranchLogin(), "Uang Muka "+idPasien, "Y", "");
-//        } catch (GeneralBOException e){
-//            logger.error("[CheckupDetailAction.createJurnalUangMuka] Error create uang muka, ", e);
-//        }
-//
-//        return noNota;
-//    }
 
     private void cekRawatInap(String idDetailCheckup) {
 

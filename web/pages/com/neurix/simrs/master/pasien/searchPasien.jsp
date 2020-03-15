@@ -171,7 +171,7 @@
                                 <td>Nama</td>
                                 <td>Jenis Kelamin</td>
                                 <td>Tempat, Tgl Lahir</td>
-                                <td>Password</td>
+                                <%--<td>Password</td>--%>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
@@ -189,7 +189,7 @@
                                         </s:else>
                                     </td>
                                     <td><s:property value="tempatLahir"/>, <s:property value="tglLahir"/></td>
-                                    <td><s:property value="password"/></td>
+                                    <%--<td><s:property value="password"/></td>--%>
                                     <td align="center">
                                         <img id="t<s:property value="idPasien"/>" class="hvr-grow" onclick="detail('<s:property value="idPasien"/>')" style="cursor: pointer" src="<s:url value="/pages/images/icons8-view-25.png"/>">
                                         <s:if test='#row.password == null || #row.password == ""'>
@@ -204,7 +204,12 @@
                                         <s:a href="%{print_card}" target="_blank">
                                             <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-print-25.png"/>">
                                         </s:a>
-                                            <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/finger.png"/>" onclick="registrasiFinger('<s:property value="idPasien"/>')">
+                                        <s:if test='#row.disabledFingerData == true'>
+                                            <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-fingerprint-accepted-25.png"/>" onclick="registrasiFinger('<s:property value="idPasien"/>')">
+                                        </s:if>
+                                        <s:else>
+                                            <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-fingerprint-scan-25.png"/>" onclick="registrasiFinger('<s:property value="idPasien"/>')">
+                                        </s:else>
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -355,8 +360,13 @@
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Password</label>
                         <div class="col-md-7">
-                            <input class="form-control" id="set_password" style="margin-top: 7px"
-                                   oninput="var warn =$('#war_set_password').is(':visible'); if (warn){$('#cor_set_password').show().fadeOut(3000);$('#war_set_password').hide()}">
+                            <div class="input-group" style="margin-top: 7px">
+                                <input type="password" class="form-control" id="set_password"
+                                       oninput="var warn =$('#war_set_password').is(':visible'); if (warn){$('#cor_set_password').show().fadeOut(3000);$('#war_set_password').hide()}">
+                                <div class="input-group-btn" onclick="seePassword()">
+                                    <a class="btn btn-success" id="btn_see"><i id="fa_see" class="fa fa-eye"></i>&nbsp;</a>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_set_password">
@@ -606,6 +616,21 @@
             });
 
             $('#save_password').attr('onclick','savePassword(\''+idPasien+'\')');
+        }
+    }
+
+    function seePassword(){
+        var type = $('#set_password').attr('type');
+        if(type == 'password'){
+            $('#set_password').removeAttr('type');
+            $('#set_password').attr('type','text');
+            $('#btn_see').removeClass('btn btn-success').addClass('btn btn-warning');
+            $('#fa_see').removeClass('fa fa-eye').addClass('fa fa-eye-slash');
+        }else{
+            $('#set_password').removeAttr('type');
+            $('#set_password').attr('type','password');
+            $('#btn_see').removeClass('btn btn-warning').addClass('btn btn-success');
+            $('#fa_see').removeClass('fa fa-eye-slash').addClass('fa fa-eye');
         }
     }
 

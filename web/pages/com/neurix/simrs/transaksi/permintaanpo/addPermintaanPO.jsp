@@ -161,7 +161,7 @@
                                 <div class="form-group">
                                     <label class="col-md-4" style="margin-top: 7px">Tipe Obat</label>
                                     <div class="col-md-8">
-                                        <s:select list="#{'bpjs':'BPJS','N':'umum'}"
+                                        <s:select list="#{'bpjs':'BPJS','umum':'UMUM'}"
                                                   cssStyle="margin-top: 7px; width: 100%"
                                                   onchange="var warn =$('#war_po_tipe').is(':visible'); if (warn){$('#cor_po_tipe').show().fadeOut(3000);$('#war_po_tipe').hide()};"
                                                   id="tipe_obat"

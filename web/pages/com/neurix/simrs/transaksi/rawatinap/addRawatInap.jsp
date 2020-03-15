@@ -557,31 +557,31 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="box-header with-border" id="pos_obat">
-                    </div>
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-plus-square"></i> Obat Penunjang</h3>
-                    </div>
-                    <div class="box-body">
-                        <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
-                                onclick="showModal(6)"><i class="fa fa-plus"></i> Obat Penunjang
-                        </button>
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                            <tr bgcolor="#90ee90">
-                                <td>Tanggal</td>
-                                <td>ID Obat</td>
-                                <td>Obat</td>
-                                <td align="center">Qty</td>
-                                <td>Jenis Satuan</td>
-                                <td align="center">Action</td>
-                            </tr>
-                            </thead>
-                            <tbody id="body_obat">
+                    <%--<div class="box-header with-border" id="pos_obat">--%>
+                    <%--</div>--%>
+                    <%--<div class="box-header with-border">--%>
+                        <%--<h3 class="box-title"><i class="fa fa-plus-square"></i> Obat Penunjang</h3>--%>
+                    <%--</div>--%>
+                    <%--<div class="box-body">--%>
+                        <%--<button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"--%>
+                                <%--onclick="showModal(6)"><i class="fa fa-plus"></i> Obat Penunjang--%>
+                        <%--</button>--%>
+                        <%--<table class="table table-bordered table-striped">--%>
+                            <%--<thead>--%>
+                            <%--<tr bgcolor="#90ee90">--%>
+                                <%--<td>Tanggal</td>--%>
+                                <%--<td>ID Obat</td>--%>
+                                <%--<td>Obat</td>--%>
+                                <%--<td align="center">Qty</td>--%>
+                                <%--<td>Jenis Satuan</td>--%>
+                                <%--<td align="center">Action</td>--%>
+                            <%--</tr>--%>
+                            <%--</thead>--%>
+                            <%--<tbody id="body_obat">--%>
 
-                            </tbody>
-                        </table>
-                    </div>
+                            <%--</tbody>--%>
+                        <%--</table>--%>
+                    <%--</div>--%>
 
                     <div class="box-header with-border" id="pos_ruangan">
                     </div>

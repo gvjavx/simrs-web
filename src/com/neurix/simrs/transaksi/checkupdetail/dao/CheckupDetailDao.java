@@ -191,7 +191,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     detailCheckup.setIdJenisPeriksaPasien(obj[13] == null ? "" : obj[13].toString());
                     detailCheckup.setStatusBayar(obj[12] == null ? "" : obj[12].toString());
 
-                    if ("0".equalsIgnoreCase(detailCheckup.getStatusPeriksa())) {
+                    if ("0".equalsIgnoreCase(detailCheckup.getStatusPeriksa()) || "1".equalsIgnoreCase(detailCheckup.getStatusPeriksa())) {
                         if ("bpjs".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien())) {
 
                             HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
@@ -458,6 +458,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "AND hd.id_pasien LIKE :idPasien \n" +
                     "AND hd.nama LIKE :nama \n" +
                     "AND dt.id_pelayanan LIKE :idPelayanan \n" +
+                    "AND dt.is_kronis IS NULL \n" +
                     "AND hd.id_jenis_periksa_pasien LIKE :jenisPasien \n" +
                     "AND dt.status_periksa LIKE :status";
 
