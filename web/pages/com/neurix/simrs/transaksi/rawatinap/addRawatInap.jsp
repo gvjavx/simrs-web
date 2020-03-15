@@ -291,6 +291,40 @@
                                     Record has been saved successfully.
                                 </sj:dialog>
 
+                                <sj:dialog id="waiting_dialog" openTopics="showDialogLoading"
+                                           closeTopics="closeDialog" modal="true"
+                                           resizable="false"
+                                           height="250" width="600" autoOpen="false"
+                                           title="Saving ...">
+                                    Please don't close this window, server is processing your request ...
+                                    <br>
+                                    <center>
+                                        <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                             src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                             name="image_indicator_write">
+                                        <br>
+                                        <img class="spin" border="0"
+                                             style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                             src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                             name="image_indicator_write">
+                                    </center>
+                                </sj:dialog>
+
+                                <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true"
+                                           resizable="false"
+                                           height="250" width="600" autoOpen="false" title="Error Dialog"
+                                           buttons="{
+                                                                                'OK':function() { $('#error_dialog').dialog('close'); }
+                                                                            }"
+                                >
+                                    <div class="alert alert-danger alert-dismissible">
+                                        <label class="control-label" align="left">
+                                            <img border="0" src="<s:url value="/pages/images/icon_error.png"/>"
+                                                 name="icon_error"> System Found : <p id="errorMessage"></p>
+                                        </label>
+                                    </div>
+                                </sj:dialog>
+
                             </div>
                         </div>
                     </div>
@@ -442,7 +476,7 @@
                             <div class="row">
                                 <div class="col-md-offset-2 col-md-8">
                                     <h5>
-                                        Cover Biaya Bpjs
+                                        Cover Biaya Bpjs dengan kode CBG <b id="kode_cbg"></b>
                                         <small class="pull-right" style="margin-top: 7px">Rp. <span id="b_bpjs"></span>
                                         </small>
                                     </h5>
@@ -2782,6 +2816,8 @@
         listRuanganInap();
         listResepPasien();
 
+        hitungStatusBiaya();
+
         $('#img_ktp').on('click', function(e){
             e.preventDefault();
             var src = $('#img_ktp').attr('src');
@@ -2801,8 +2837,6 @@
 
             }
         });
-
-        hitungStatusBiaya();
     });
 
     function hitungStatusBiaya() {
@@ -2812,8 +2846,10 @@
                 $('#status_bpjs').show();
                 if (response.tarifBpjs != null && response.tarifTindakan != null) {
 
+                    console.log(response);
                     var coverBiaya = response.tarifBpjs;
                     var biayaTindakan = response.tarifTindakan;
+                    $('#kode_cbg').text(response.kodeCbg);
 
                     var persen = "";
                     if (coverBiaya != '' && biayaTindakan) {
@@ -2918,12 +2954,22 @@
         var jenisPasien = $('#id_jenis_pasien').val();
         $('#save_ket').hide();
         $('#load_ket').show();
+        $('#waiting_dialog').dialog('open');
         dwr.engine.setAsync(true);
         CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, jenisPasien, cara, pendamping, tujuan, function (response) {
-            $('#info_dialog').dialog('open');
-            $('#close_pos').val(8);
-            $('#save_ket').show();
-            $('#load_ket').hide();
+            if(response.status == "success"){
+                $('#waiting_dialog').dialog('close');
+                $('#info_dialog').dialog('open');
+                $('#close_pos').val(8);
+                $('#save_ket').show();
+                $('#load_ket').hide();
+            }else{
+                $('#waiting_dialog').dialog('close');
+                $('#error_dialog').dialog('open');
+                $('#errorMessage').text(response.msg);
+                $('#save_ket').show();
+                $('#load_ket').hide();
+            }
         });
     }
 
@@ -3005,6 +3051,7 @@
             $('#save_lab').attr('onclick', 'saveLab(\'' + id + '\')').show();
             $('#modal-lab').modal({show:true,backdrop:'static'});
         } else if (select == 5) {
+            $('#bentuk_diet, #keterangan_diet').val('');
             $('#bentuk_diet, #keterangan_diet').val('').removeAttr('disabled');
             $('#save_diet').attr('onclick', 'saveDiet(\'' + id + '\')').show();
             $('#load_diet, #warning_diet, #war_bentuk_diet, #war_keterangan_diet').hide();
@@ -3365,46 +3412,45 @@
 
     function listSelectLab(select) {
         var idx = select.selectedIndex;
-        var idKategori = select.options[idx].value;
 
         var option = "<option value=''>[Select One]</option>";
-        if (idKategori != '') {
+        if (idx > 0) {
+            var idKategori = select.options[idx].value;
             LabAction.listLab(idKategori, function (response) {
                 if (response != null) {
                     $.each(response, function (i, item) {
                         option += "<option value='" + item.idLab + "'>" + item.namaLab + "</option>";
                     });
+                    $('#lab_lab').html(option);
                 } else {
-                    option = option;
+                    $('#lab_lab').html('');
                 }
             });
-        } else {
-            option = option;
+        }else{
+            $('#lab_lab').html('');
         }
-
-        $('#lab_lab').html(option);
     }
 
     function listSelectParameter(select) {
         var idx = select.selectedIndex;
-        var idLab = select.options[idx].value;
-
         var option = "";
-        if (idLab != '') {
+        if (idx > 0) {
+            var idLab = select.options[idx].value;
             LabDetailAction.listLabDetail(idLab, function (response) {
                 if (response != null) {
                     $.each(response, function (i, item) {
                         option += "<option value='" + item.idLabDetail + "'>" + item.namaDetailPeriksa + "</option>";
                     });
+                    $('#lab_parameter').html(option);
                 } else {
-                    option = option;
+                    $('#lab_parameter').html('');
                 }
             });
         } else {
-            option = option;
+            $('#lab_parameter').html('');
         }
 
-        $('#lab_parameter').html(option);
+
     }
 
     function saveLab(id) {
@@ -4273,7 +4319,8 @@
                     table += "<tr>" +
                         "<td>" + dateFormat + "</td>" +
                         "<td>" + idResep + "</td>" +
-                        "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="detailResep(\'' + item.idApprovalObat + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' +
+                        "<td align='center'>" +
+                        <%--'<img border="0" class="hvr-grow" onclick="detailResep(\'' + item.idApprovalObat + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' +--%>
                         ' <img onclick="printResep(\'' + idResep + '\')" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">' +
                         "</td>" +
                         "</tr>"

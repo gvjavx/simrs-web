@@ -313,6 +313,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                 headerCheckup.setNoSep(headerDetailCheckup.getNoSep());
                 headerCheckup.setTarifBpjs(headerDetailCheckup.getTarifBpjs());
                 headerCheckup.setIsKronis(headerDetailCheckup.getIsKronis());
+                headerCheckup.setKodeCbg(headerDetailCheckup.getKodeCbg());
 
                 DokterTeam dokterTeam = new DokterTeam();
                 dokterTeam.setIdDetailCheckup(headerDetailCheckup.getIdDetailCheckup());

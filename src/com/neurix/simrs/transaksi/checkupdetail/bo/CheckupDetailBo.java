@@ -47,4 +47,6 @@ public interface CheckupDetailBo {
     public void saveTtd(HeaderDetailCheckup bean) throws GeneralBOException;
     public List<ItSimrsHeaderDetailCheckupEntity> getListEntityByCriteria(HeaderDetailCheckup bean) throws GeneralBOException;
 
+    public HeaderDetailCheckup getBiayaTindakan(String idDetailCheckup) throws GeneralBOException;
+
 }

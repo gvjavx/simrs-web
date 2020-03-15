@@ -423,8 +423,10 @@ public class PermintaanVendorAction extends BaseMasterAction {
         permintaanVendor.setBranchId(userBranch);
         permintaanVendor.setIdPelayanan(idPelayanan);
 
-        if(permintaan.getUrlDocPo() != null){
-            permintaanVendor.setUrlDocPo(permintaan.getUrlDocPo());
+        if(permintaan != null){
+            if(permintaan.getUrlDocPo() != null){
+                permintaanVendor.setUrlDocPo(permintaan.getUrlDocPo());
+            }
         }
 
         List<TransaksiObatDetail> obatDetailList = new ArrayList<>();

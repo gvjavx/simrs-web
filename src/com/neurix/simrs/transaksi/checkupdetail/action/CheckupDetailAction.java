@@ -572,6 +572,13 @@ public class CheckupDetailAction extends BaseMasterAction {
             }
         }
 
+        if("RJ".equalsIgnoreCase(jenis)){
+            HeaderDetailCheckup biayaTindakanJalan = getListBiayaForRawatJalan(idDetailCheckup);
+            if(biayaTindakanJalan.getTarifTindakan() != null && biayaTindakanJalan.getTarifTindakan().compareTo(new BigDecimal(0)) == 1){
+                return biayaTindakanJalan;
+            }
+        }
+
         List<HeaderDetailCheckup> detailCheckupList = new ArrayList<>();
 
         try {
@@ -788,6 +795,22 @@ public class CheckupDetailAction extends BaseMasterAction {
             }
         }
 
+        return detailCheckup;
+    }
+
+    public HeaderDetailCheckup getListBiayaForRawatJalan(String idDetailCheckup){
+
+        HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+
+        if(idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)){
+            try {
+                detailCheckup = checkupDetailBo.getBiayaTindakan(idDetailCheckup);
+            }catch (GeneralBOException e){
+                logger.error("Found Error when serah rawat jalan tindakan "+e.getMessage());
+            }
+        }
         return detailCheckup;
     }
 

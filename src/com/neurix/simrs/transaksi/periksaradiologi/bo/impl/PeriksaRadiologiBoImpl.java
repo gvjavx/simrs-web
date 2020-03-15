@@ -5,6 +5,8 @@ import com.neurix.simrs.master.dokter.dao.DokterDao;
 import com.neurix.simrs.master.dokter.model.ImSimrsDokterEntity;
 import com.neurix.simrs.master.statuspasien.dao.StatusPasienDao;
 import com.neurix.simrs.master.statuspasien.model.ImSimrsStatusPasienEntity;
+import com.neurix.simrs.transaksi.periksalab.dao.PeriksaLabDao;
+import com.neurix.simrs.transaksi.periksalab.model.ItSimrsPeriksaLabEntity;
 import com.neurix.simrs.transaksi.periksaradiologi.bo.PeriksaRadiologiBo;
 import com.neurix.simrs.transaksi.periksaradiologi.dao.PeriksaRadiologiDao;
 import com.neurix.simrs.transaksi.periksaradiologi.model.ItSimrsPeriksaRadiologiEntity;
@@ -25,6 +27,7 @@ public class PeriksaRadiologiBoImpl implements PeriksaRadiologiBo{
     private PeriksaRadiologiDao periksaRadiologiDao;
     private DokterDao dokterDao;
     private StatusPasienDao statusPasienDao;
+    private PeriksaLabDao periksaLabDao;
 
     @Override
     public List<PeriksaRadiologi> getListPeriksaRadioLogiByCriteria(PeriksaRadiologi bean) throws GeneralBOException {
@@ -175,7 +178,34 @@ public class PeriksaRadiologiBoImpl implements PeriksaRadiologiBo{
             entity.setLastUpdateWho(bean.getLastUpdateWho());
 
             try {
+
                 periksaRadiologiDao.updateAndSave(entity);
+
+                ItSimrsPeriksaLabEntity periksaLabEntity = null;
+
+                try {
+                    periksaLabEntity = periksaLabDao.getById("idPeriksaLab", entity.getIdPeriksaLab());
+                } catch (HibernateException e){
+                    logger.error("[PeriksaLabBoImpl.saveDokterLab] Error when getById periksa lab ",e);
+                    throw new GeneralBOException("[PeriksaLabBoImpl.saveDokterLab] Error when save edit periksa lab "+e.getMessage());
+                }
+
+                if(entity != null){
+
+                    periksaLabEntity.setIdDokter(bean.getIdDokterRadiologi());
+                    periksaLabEntity.setAction(bean.getAction());
+                    periksaLabEntity.setLastUpdate(bean.getLastUpdate());
+                    periksaLabEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    periksaLabEntity.setStatusPeriksa("3");
+                    periksaLabEntity.setApproveFlag("Y");
+                }
+
+                try {
+                    periksaLabDao.updateAndSave(periksaLabEntity);
+                } catch (HibernateException e){
+                    logger.error("[PeriksaLabBoImpl.saveDokterLab] Error when periksa lab ", e);
+                    throw new GeneralBOException("Error when edit diagnosa " + e.getMessage());
+                }
             } catch (HibernateException e){
                 logger.error("[PeriksaRadiologiBoImpl.saveEdit] ERROR when updating Radiologi, ", e.getCause());
                 throw new GeneralBOException("[PeriksaRadiologiBoImpl.getListEntityRadiologi] ERROR when updating Radiologi, ", e.getCause());
@@ -255,4 +285,7 @@ public class PeriksaRadiologiBoImpl implements PeriksaRadiologiBo{
         this.statusPasienDao = statusPasienDao;
     }
 
+    public void setPeriksaLabDao(PeriksaLabDao periksaLabDao) {
+        this.periksaLabDao = periksaLabDao;
+    }
 }

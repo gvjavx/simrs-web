@@ -137,6 +137,20 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         return entityList;
     }
 
+    @Override
+    public HeaderDetailCheckup getBiayaTindakan(String idDetailCheckup) throws GeneralBOException {
+        HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
+
+        if(idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)){
+            try {
+                headerDetailCheckup = checkupDetailDao.getBiayaTindakan(idDetailCheckup);
+            }catch (HibernateException e){
+                logger.error("Found Error when search tindaksan "+e.getMessage());
+            }
+        }
+        return headerDetailCheckup;
+    }
+
     protected List<HeaderDetailCheckup> setToDetailCheckupTemplate(List<ItSimrsHeaderDetailCheckupEntity> entityList) throws GeneralBOException {
         logger.info("[CheckupDetailBoImpl.setToDetailCheckupTemplate] Start >>>>>>>");
         List<HeaderDetailCheckup> results = new ArrayList<>();

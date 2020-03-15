@@ -3583,7 +3583,8 @@
                     table += "<tr>" +
                         "<td>" + dateFormat + "</td>" +
                         "<td>" + idResep + "</td>" +
-                        "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="detailResep(\'' + item.idApprovalObat + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">'+
+                        "<td align='center'>" +
+                        <%--'<img border="0" class="hvr-grow" onclick="detailResep(\'' + item.idApprovalObat + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">'+--%>
                         ' <img onclick="printResep(\'' + idResep + '\')" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">' +
                         "</td>" +
                         "</tr>"

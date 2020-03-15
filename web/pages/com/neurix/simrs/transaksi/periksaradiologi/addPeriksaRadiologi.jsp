@@ -178,7 +178,7 @@
                                            buttons="{
                                                                                 'OK':function() {
                                                                                          $('#info_dialog').dialog('close');
-                                                                                         toContent();
+                                                                                         window.location.href = 'initForm_radiologi.action';
                                                                                      }
                                                                             }"
                                 >
@@ -245,10 +245,10 @@
                                         class="btn btn-success" id="load_ket"><i class="fa fa-spinner fa-spin"></i>
                                     Sedang Menyimpan...
                                 </button>
-                                <button class="btn btn-primary" onclick=""
-                                        style="margin-top: 15px;" id="print_ket"><i
-                                        class="fa fa-print"></i> Print
-                                </button>
+                                <%--<button class="btn btn-primary" onclick=""--%>
+                                        <%--style="margin-top: 15px;" id="print_ket"><i--%>
+                                        <%--class="fa fa-print"></i> Print--%>
+                                <%--</button>--%>
                                 <a href="initForm_radiologi.action" class="btn btn-warning" onclick=""
                                         style="margin-top: 15px;" id="back_ket"><i
                                         class="fa fa-arrow-left"></i> Back
@@ -330,6 +330,7 @@
                         $('#info_radiologi').show().fadeOut(5000);
                         $('#save_ket').show();
                         $('#load_ket').hide();
+                        $('#info_dialog').dialog('open');
                     } else {
                         $('#warning_radiologi').show().fadeOut(5000);
                         $('#isi_eror').text('Terjadi kesalahan!');

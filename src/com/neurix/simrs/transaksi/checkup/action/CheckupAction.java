@@ -3003,6 +3003,7 @@ public class CheckupAction extends BaseMasterAction {
 
                 reportParams.put("idPasien", checkup.getIdPasien());
                 reportParams.put("unit", unit);
+                reportParams.put("isKronis", "Y");
                 reportParams.put("area", area);
                 reportParams.put("resepId", idResep);
                 reportParams.put("idDetailCheckup", checkup.getIdDetailCheckup());

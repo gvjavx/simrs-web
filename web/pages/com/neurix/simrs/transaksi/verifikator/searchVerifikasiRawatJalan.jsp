@@ -576,18 +576,20 @@
 <script type='text/javascript'>
 
     function formatRupiah(angka) {
-        if(angka != ""){
+        if(angka != "" && angka > 0){
             var reverse = angka.toString().split('').reverse().join(''),
                 ribuan = reverse.match(/\d{1,3}/g);
             ribuan = ribuan.join('.').split('').reverse().join('');
             return ribuan;
+        }else{
+            return 0;
         }
 
     }
 
     function hitungStatusBiaya(idDetailCheckup) {
         CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, "RJ",  function (response) {
-            if (response.idJenisPeriksaPasien == "bpjs") {
+            // if (response.idJenisPeriksaPasien == "bpjs") {
                 if (response.tarifBpjs != null && response.tarifTindakan != null) {
 
                     var coverBiaya = response.tarifBpjs;
@@ -629,8 +631,6 @@
                         $('#fin_b_tindakan').html(formatRupiah(biayaTindakan) + " (" + persen + "%)");
                     }
                 }
-            } else {
-            }
         });
     }
 
