@@ -2239,7 +2239,7 @@
     });
 
     function hitungStatusBiaya() {
-        CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, "RJ", function (response) {
+        CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, "", function (response) {
             console.log(response);
             if (response.idJenisPeriksaPasien == "bpjs") {
                 $('#status_bpjs').show();
@@ -2531,7 +2531,6 @@
                     $('#waiting_dialog').dialog('close');
                     $('#error_dialog').dialog('open');
                     $('#errorMessage').text(response.msg);
-                    $('#close_pos').val(6);
                     $('#save_ket').show();
                     $('#load_ket').hide();
                 }
@@ -2540,12 +2539,22 @@
         if(idKtg == "selesai"){
             $('#save_ket').hide();
             $('#load_ket').show();
+            $('#waiting_dialog').dialog('open');
             dwr.engine.setAsync(true);
             CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, jenisPasien, "", "", "", idPasien, metodeBayar, uangMuka, jenisBayar, function (response) {
-                $('#info_dialog').dialog('open');
-                $('#close_pos').val(6);
-                $('#save_ket').show();
-                $('#load_ket').hide();
+                if(response.status == "success"){
+                    $('#waiting_dialog').dialog('close');
+                    $('#info_dialog').dialog('open');
+                    $('#close_pos').val(6);
+                    $('#save_ket').show();
+                    $('#load_ket').hide();
+                }else{
+                    $('#waiting_dialog').dialog('close');
+                    $('#error_dialog').dialog('open');
+                    $('#errorMessage').text(response.msg);
+                    $('#save_ket').show();
+                    $('#load_ket').hide();
+                }
             });
         }
     }
