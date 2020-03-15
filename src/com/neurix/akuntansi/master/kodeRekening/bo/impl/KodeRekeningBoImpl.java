@@ -78,8 +78,22 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
                         }
                     }
                     kodeRekeningEntity.setLevel((long) coa.length);
+                }else{
+                    //untuk delete
+                    //validasi delete jika data sudah ada di jurnal atau di jurnal akhir
+                    Integer jumlahData = 0;
+                    try {
+                        jumlahData= kodeRekeningDao.searchKodeRekeningInJurnal(bean.getRekeningId());
+                    } catch (HibernateException e) {
+                        logger.error("[KodeRekeningBoImpl.saveEdit] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving update data, please info to your admin..." + e.getMessage());
+                    }
+                    if (jumlahData>0){
+                        String status = "Sudah ada jurnal pada kode rekening ini";
+                        logger.error("[KodeRekeningBoImpl.saveEdit] Error, " +status);
+                        throw new GeneralBOException("ERROR :" +status);
+                    }
                 }
-
                 kodeRekeningEntity.setFlag(bean.getFlag());
                 kodeRekeningEntity.setAction(bean.getAction());
                 kodeRekeningEntity.setLastUpdateWho(bean.getLastUpdateWho());

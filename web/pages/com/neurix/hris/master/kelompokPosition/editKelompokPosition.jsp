@@ -96,7 +96,7 @@
 
 
 
-                <legend align="left">Edit Kelompok</legend>
+                <legend align="left">Edit Kelompok Jabatan</legend>
 
 
                 <table>

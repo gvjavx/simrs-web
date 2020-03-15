@@ -290,7 +290,7 @@
                         <label class="control-label col-sm-4" >Tipe Rekening :</label>
                         <div class="col-sm-6">
                             <s:action id="initComboTipeRekening" namespace="/tipeRekening" name="initComboTipeRekening_tipeRekening"/>
-                            <s:select list="#initComboTipeRekening.listOfComboTipeRekening" id="tipeRekeningIdEdit" name="kodeRekening.tipeRekeningId"
+                            <s:select list="#initComboTipeRekening.listOfComboTipeRekening" id="tipeRekeningIdEdit" name="kodeRekening.tipeRekeningId" disabled="true"
                                       listKey="tipeRekeningId" listValue="tipeRekeningName"  headerKey="" headerValue="[Select one]" cssClass="form-control" cssStyle="margin-top: 7px"/>
                         </div>
                     </div>
@@ -311,13 +311,16 @@
             var id      = $('#rekeningIdEdit').val();
             var kodeRekeningName  = $('#kodeRekeningNameEdit').val();
             var kodeRekening= $('#kodeRekeningEdit').val();
-            var tipeRekeningId  = $('#tipeRekeningIdEdit').val();
             var result = '';
-            if(id != ''&&kodeRekeningName != ''&&kodeRekening != ''&&tipeRekeningId != ''){
+            if(id != ''&&kodeRekeningName != ''&&kodeRekening != ''){
                 if (confirm('Are you sure you want to save this Record?')) {
-                    KodeRekeningAction.saveEdit(id, kodeRekeningName, kodeRekening, tipeRekeningId,"edit",function(listdata) {
-                        alert('Record has been saved successfully.');
-                        location.reload();
+                    KodeRekeningAction.saveEdit(id, kodeRekeningName, kodeRekening,"edit",function(result) {
+                        if (result==""){
+                            alert('Record has been saved successfully.');
+                            location.reload();
+                        } else{
+                            alert(result);
+                        }
                     });
                 }
             }else{
@@ -330,9 +333,6 @@
                 if (kodeRekening==""){
                     result+="COA masih Kosong \n";
                 }
-                if (tipeRekeningId==""){
-                    result+="Tipe Rekening ID masih kosong \n";
-                }
                 alert(result);
             }
         });
@@ -342,7 +342,7 @@
             var result = '';
             if(id != ''){
                 if (confirm('Are you sure you want to save this Record?')) {
-                    KodeRekeningAction.saveEdit(id, "", "", "","delete",function(listdata) {
+                    KodeRekeningAction.saveEdit(id, "", "","delete",function(listdata) {
                         if (listdata==""){
                             alert('Record has been delete successfully.');
                             location.reload();

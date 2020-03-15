@@ -99,22 +99,6 @@
                 </table>
                 <br>
                 <br>
-                <div id="kodeRekeningList">
-                    <br>
-                    <center>
-                        <table id="showdata" width="80%">
-                            <tr>
-                                <td align="center">
-                                    <table style="width: 100%;"
-                                           class="kodeRekeningTable table table-bordered">
-                                    </table>
-                                </td>
-                            </tr>
-                        </table>
-                    </center>
-                    <br>
-                </div>
-                <br>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                         <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="modifyRolefuncForm" id="save" name="save"

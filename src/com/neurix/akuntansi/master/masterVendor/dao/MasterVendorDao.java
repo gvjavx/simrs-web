@@ -58,4 +58,21 @@ public class MasterVendorDao extends GenericDao<ImMasterVendorEntity, String> {
 
         return "VN"+sId;
     }
+
+    public Integer cekExistingJurnalDetail(String nomorVendor){
+        Integer result=0;
+        String query = "SELECT\n" +
+                "\tCOUNT(master_id)\n" +
+                "FROM\n" +
+                "\tit_akun_jurnal_detail\n" +
+                "WHERE\n" +
+                "\tflag='Y' AND\n" +
+                "\tmaster_id='"+nomorVendor+"'";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            result =Integer.parseInt(results.toString());
+        }
+        return result;
+    }
 }

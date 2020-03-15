@@ -184,6 +184,7 @@ public class CommonConstant {
     public final static String LOGO_RS01 = "/pages/images/RS01.png";
     public final static String LOGO_RS02 = "/pages/images/RS02.png";
     public final static String LOGO_RS03 = "/pages/images/RS03.png";
+    public final static String LOGO_KP = "/pages/images/KP.png";
     public final static String LOGO_NMU = "/pages/images/logo-nmu-copy.png";
 
     public final static String LOGO_REPORT_PAYROLL = "C:\\tomcat-7-64x\\webapps\\simrs\\pages\\images\\logo-nmu-copy.png";

@@ -181,4 +181,24 @@ public class KodeRekeningDao extends GenericDao<ImKodeRekeningEntity, String> {
         }
         return result;
     }
+    public Integer searchKodeRekeningInJurnal(String rekeningId){
+        Integer result=0;
+        String[] tabel = {"it_akun_jurnal_detail","it_akun_saldo_akhir","it_akun_jurnal_detail_akhir_tahun"};
+
+        for (int i=0 ; i<3 ; i++){
+            String query = "SELECT\n" +
+                    "\tCOUNT(rekening_id)\n" +
+                    "FROM\n" +
+                    "\t"+tabel[i]+"\n" +
+                    "WHERE\n" +
+                    "\tflag='Y' AND\n" +
+                    "\trekening_id='"+rekeningId+"'";
+            Object results = this.sessionFactory.getCurrentSession()
+                    .createSQLQuery(query).uniqueResult();
+            if (results!=null){
+                result = result+Integer.parseInt(results.toString());
+            }
+        }
+        return result;
+    }
 }

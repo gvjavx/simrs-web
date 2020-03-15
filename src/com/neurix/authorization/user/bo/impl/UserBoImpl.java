@@ -538,10 +538,30 @@ public class UserBoImpl implements UserBo {
                         menuNameString = "<li id=\"bayar_rawat_jalan\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
                     }else if (menuName.equalsIgnoreCase("Uang Muka")) {
                         menuNameString = "<li id=\"pembayaran_uang_muka\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
+                    }else if (menuName.equalsIgnoreCase("Kode Rekening")) {
+                        menuNameString = "<li id=\"kode_rekening1\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
                     }else if (menuName.equalsIgnoreCase("Rawat Inap")) {
                         menuNameString = "<li id=\"bayar_rawat_inap\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
                     }else if (menuName.equalsIgnoreCase("FPK")) {
                         menuNameString = "<li id=\"fpk\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
+                    }else if (menuName.equalsIgnoreCase("Tipe Jurnal")) {
+                        menuNameString = "<li id=\"tipe_jurnal1\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
+                    }else if (menuName.equalsIgnoreCase("Tipe Rekening")) {
+                        menuNameString = "<li id=\"tipe_rekening1\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
+                    }else if (menuName.equalsIgnoreCase("Tipe Transaksi")) {
+                        menuNameString = "<li id=\"tipe_transaksi1\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
+                    }else if (menuName.equalsIgnoreCase("Mapping Jurnal ")) {
+                        menuNameString = "<li id=\"mapping_jurnal1\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
+                    }else if (menuName.equalsIgnoreCase("Vendor")) {
+                        menuNameString = "<li id=\"vendor1\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
+                    }else if (menuName.equalsIgnoreCase("Setting Report Akuntansi")) {
+                        menuNameString = "<li id=\"setting_report_akuntansi\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-cog\"></i><span> " + menuName + "</span></a></li>";
+                    }else if (menuName.equalsIgnoreCase("Setting User Report")) {
+                        menuNameString = "<li id=\"setting_user_report1\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-cog\"></i><span> " + menuName + "</span></a></li>";
+                    }else if (menuName.equalsIgnoreCase("Laporan Akuntansi")) {
+                        menuNameString = "<li id=\"laporan_akuntansi1\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-tasks\"></i><span> " + menuName + "</span></a></li>";
+                    }else if (menuName.equalsIgnoreCase("Pembayaran Hutang Piutang")) {
+                        menuNameString = "<li id=\"pembayaran_hutang_piutang1\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-money\"></i><span> " + menuName + "</span></a></li>";
                     }else {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-files-o\"></i><span> " + menuName + "</span></a></li>";
                     }

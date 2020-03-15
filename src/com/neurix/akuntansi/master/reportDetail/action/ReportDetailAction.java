@@ -78,7 +78,7 @@ public class ReportDetailAction extends BaseMasterAction {
         return "success_save_add";
     }
 
-    public String addReportDetail(String reportId,String rekeningId){
+    public String addReportDetail(String reportId,String rekeningId,String tipeLaporan){
         logger.info("[ReportDetailAction.addReportDetail] start process >>>");
         String status="";
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -90,6 +90,9 @@ public class ReportDetailAction extends BaseMasterAction {
 
             reportDetail.setReportId(reportId);
             reportDetail.setRekeningId(rekeningId);
+            if (!("").equalsIgnoreCase(tipeLaporan)){
+                reportDetail.setTipeLaporan(tipeLaporan);
+            }
             reportDetail.setCreatedWho(userLogin);
             reportDetail.setLastUpdate(updateTime);
             reportDetail.setCreatedDate(updateTime);
@@ -115,7 +118,7 @@ public class ReportDetailAction extends BaseMasterAction {
         return status;
     }
 
-    public String deleteReportDetail(String reportId){
+    public String deleteReportDetail(String reportId,String tipeLaporan){
         logger.info("[ReportDetailAction.deleteReportDetail] start process >>>");
         String status="";
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -126,6 +129,9 @@ public class ReportDetailAction extends BaseMasterAction {
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
             reportDetail.setReportId(reportId);
+            if (!("").equalsIgnoreCase(tipeLaporan)){
+                reportDetail.setTipeLaporan(tipeLaporan);
+            }
             reportDetail.setLastUpdate(updateTime);
             reportDetail.setLastUpdateWho(userLogin);
             reportDetail.setAction("U");
@@ -236,7 +242,7 @@ public class ReportDetailAction extends BaseMasterAction {
         return reportDetailList;
     }
 
-    public List<KodeRekening> initReportDetailSearch(String reportId) {
+    public List<KodeRekening> initReportDetailSearch(String reportId,String tipeLaporan) {
         logger.info("[ReportDetailAction.initReportDetailSearch] start process >>>");
 
         List<ReportDetail> listOfsearchReportDetail = new ArrayList();
@@ -253,7 +259,7 @@ public class ReportDetailAction extends BaseMasterAction {
         ReportDetail searchReportDetail = new ReportDetail();
         searchReportDetail.setFlag("Y");
         searchReportDetail.setReportId(reportId);
-
+        searchReportDetail.setTipeLaporan(tipeLaporan);
         KodeRekening search = new KodeRekening();
         search.setFlag("Y");
         try {

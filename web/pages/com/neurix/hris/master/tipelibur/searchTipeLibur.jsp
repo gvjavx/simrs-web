@@ -113,71 +113,74 @@
                             <div id="errorAlert" style="display: none" class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><center><s:property value="alat.erVerif"/></center></div>
                             <div id="succesAlert" style="display: none" class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><center><s:property value="alat.verif"/></center></div>
 
-                            <div class="form-group">
-                                <table align="center">
-                                    <tr>
-                                        <td>
-                                            <label>Tipe Libur Id </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <s:textfield id="tipeLiburId" name="tipeLibur.tipeLiburId" cssClass="form-control" cssStyle="margin-top: -30px; margin-left: 20px" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label>Tipe Libur Name </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <s:textfield id="tipeLiburName" name="tipeLibur.tipeLiburName" cssClass="form-control" cssStyle="margin-top: -30px; margin-left: 20px" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label>Flag </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <s:select list="#{'N':'Non-Active'}" id="flag" name="tipeLibur.flag"
-                                                      headerKey="Y" headerValue="Active" cssClass="form-control" cssStyle="margin-top: -30px; margin-left: 20px"/>
-                                        </td>
-                                    </tr>
-                                </table>
-                                <br>
+                            <table align="center" width="100%">
+                                <tr>
+                                    <td align="center">
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <label>Tipe Libur Id </label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <s:textfield id="tipeLiburId" name="tipeLibur.tipeLiburId" cssClass="form-control" cssStyle="margin-top: -30px; margin-left: 20px" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label>Tipe Libur Name </label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <s:textfield id="tipeLiburName" name="tipeLibur.tipeLiburName" cssClass="form-control" cssStyle="margin-top: -30px; margin-left: 20px" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label>Flag </label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <s:select list="#{'N':'Non-Active'}" id="flag" name="tipeLibur.flag"
+                                                              headerKey="Y" headerValue="Active" cssClass="form-control" cssStyle="margin-top: -30px; margin-left: 20px"/>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <br><br>
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <sj:submit type="button" cssClass="btn btn-primary" formIds="tipeliburForm" id="search" name="search"
+                                                               onClickTopics="showDialog" onCompleteTopics="closeDialog" onclick="showLoadingDialog();">
+                                                        <i class="fa fa-search"></i>
+                                                        Search
+                                                    </sj:submit>
+                                                </td>
+                                                <td>
+                                                    <s:url var="urlAdd" namespace="/tipelibur" action="add_tipelibur" escapeAmp="false">
+                                                    </s:url>
+                                                    <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}"
+                                                    >
+                                                        <%--<img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">--%>
+                                                        <i class="fa fa-plus"></i>
+                                                        Add Tipe Libur
+                                                    </sj:a>
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-default" onclick="window.location.href='<s:url action="initForm_tipelibur"/>'">
+                                                        <i class="fa fa-repeat"></i> Reset
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                            <br><br>
 
-                            </div>
-                            <div class="box-footer">
-                                <table align="center">
-                                    <tr>
-                                        <td>
-                                            <sj:submit type="button" cssClass="btn btn-primary" formIds="tipeliburForm" id="search" name="search"
-                                                       onClickTopics="showDialog" onCompleteTopics="closeDialog" onclick="showLoadingDialog();">
-                                                <i class="fa fa-search"></i>
-                                                Search
-                                            </sj:submit>
-                                        </td>
-                                        <td>
-                                            <s:url var="urlAdd" namespace="/tipelibur" action="add_tipelibur" escapeAmp="false">
-                                            </s:url>
-                                            <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}"
-                                                  >
-                                                <%--<img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">--%>
-                                                <i class="fa fa-plus"></i>
-                                                Add Tipe Libur
-                                            </sj:a>
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-default" onclick="window.location.href='<s:url action="initForm_tipelibur"/>'">
-                                                <i class="fa fa-repeat"></i> Reset
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
 
 
                             <center>

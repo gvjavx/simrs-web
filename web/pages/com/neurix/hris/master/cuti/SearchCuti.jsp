@@ -117,20 +117,20 @@
 
                             <tr>
                                 <td>
-                                    <label class="control-label"><small>Golongan :</small></label>
+                                    <label class="control-label"><small>Level :</small></label>
                                 </td>
                                 <td>
                                     <table>
                                         <s:action id="comboGolongan" namespace="/golongan" name="initComboGolongan_golongan"/>
                                         <s:select list="#comboGolongan.listComboGolongan" id="golongan" name="cuti.golonganId"
-                                                  listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
+                                                  listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control" />
                                     </table>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td>
-                                    <label class="control-label"><small>Branch :</small></label>
+                                    <label class="control-label"><small>Unit :</small></label>
                                 </td>
                                 <td>
                                     <table>
@@ -229,8 +229,8 @@
                                             <display:column property="cutiName" sortable="true" title="Name"  />
                                             <display:column property="jumlahCuti" sortable="true" title="Jumlah Hari"  />
                                             <display:column property="tipeHari" sortable="true" title="Tipe Hari"  />
-                                            <display:column property="golonganName" sortable="true" title="Golongan"  />
-                                            <display:column property="branchName" sortable="true" title="Branch"  />
+                                            <%--<display:column property="golonganName" sortable="true" title="Golongan"  />
+                                            <display:column property="branchName" sortable="true" title="Branch"  />--%>
 
                                             <display:column property="flag" sortable="true" title="Flag" />
                                             <display:column property="createdWho" sortable="true" title="CreatedWho"/>

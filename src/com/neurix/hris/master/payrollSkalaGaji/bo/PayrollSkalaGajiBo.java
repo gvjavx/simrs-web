@@ -15,4 +15,5 @@ import java.util.List;
  */
 public interface PayrollSkalaGajiBo extends BaseMasterBo<PayrollSkalaGaji>{
     public void saveDelete(PayrollSkalaGaji bean) throws GeneralBOException;
+    public String cekStatus(String golonganId)throws GeneralBOException;
 }

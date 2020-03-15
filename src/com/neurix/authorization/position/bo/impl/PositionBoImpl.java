@@ -103,7 +103,9 @@ public class PositionBoImpl implements PositionBo {
             if (searchPosition.getStPositionId() != null && !"".equalsIgnoreCase(searchPosition.getStPositionId())) {
                 hsCriteria.put("position_id", searchPosition.getStPositionId());
             }
-
+            if (searchPosition.getPositionId() != null && !"".equalsIgnoreCase(searchPosition.getPositionId())) {
+                hsCriteria.put("position_id", searchPosition.getPositionId());
+            }
             if (searchPosition.getPositionName() != null && !"".equalsIgnoreCase(searchPosition.getPositionName())) {
                 hsCriteria.put("position_name", searchPosition.getPositionName());
             }
@@ -166,7 +168,7 @@ public class PositionBoImpl implements PositionBo {
                         resultPosition.setBagianName("-");
                     }
                     resultPosition.setBagianId(imPosition.getBagianId());
-
+                    resultPosition.setFlagDijabatSatuOrang(imPosition.getFlagDijabatSatuOrang());
                     resultPosition.setAction(imPosition.getAction());
                     resultPosition.setCreatedDate(imPosition.getCreatedDate());
                     resultPosition.setCreatedWho(imPosition.getCreatedWho());
@@ -190,26 +192,32 @@ public class PositionBoImpl implements PositionBo {
         logger.info("[PositionBoImpl.saveAdd] start process >>>");
 
         if (position != null) {
-            ImPosition imPosition = new ImPosition();
+            String status = cekStatus(position.getPositionName());
+            if (!status.equalsIgnoreCase("Exist")){
+                ImPosition imPosition = new ImPosition();
 
-            imPosition.setFlag("Y");
-            imPosition.setPositionId(positionDao.getNextPosition() + "");
-            imPosition.setPositionName(position.getPositionName());
-            imPosition.setDepartmentId(position.getDepartmentId());
-            imPosition.setKelompokId(position.getKelompokId());
-            imPosition.setBagianId(position.getBagianId());
+                imPosition.setFlag("Y");
+                imPosition.setPositionId(positionDao.getNextPosition() + "");
+                imPosition.setPositionName(position.getPositionName());
+                imPosition.setDepartmentId(position.getDepartmentId());
+                imPosition.setKelompokId(position.getKelompokId());
+                imPosition.setBagianId(position.getBagianId());
 
-            imPosition.setCreatedDate(position.getCreatedDate());
-            imPosition.setLastUpdate(position.getLastUpdate());
-            imPosition.setLastUpdateWho(position.getLastUpdateWho());
-            imPosition.setCreatedWho(position.getCreatedWho());
-            imPosition.setAction(position.getAction());
-            try {
-                positionDao.addAndSave(imPosition);
-            } catch (HibernateException e) {
-                logger.error("[PositionBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when saving new data position, please info to your admin..." + e.getMessage());
+                imPosition.setCreatedDate(position.getCreatedDate());
+                imPosition.setLastUpdate(position.getLastUpdate());
+                imPosition.setLastUpdateWho(position.getLastUpdateWho());
+                imPosition.setCreatedWho(position.getCreatedWho());
+                imPosition.setAction(position.getAction());
+                try {
+                    positionDao.addAndSave(imPosition);
+                } catch (HibernateException e) {
+                    logger.error("[PositionBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data position, please info to your admin..." + e.getMessage());
+                }
+            }else{
+                throw new GeneralBOException("Maaf Posisi Tersebut Sudah Ada");
             }
+
 
         }
 
@@ -542,5 +550,21 @@ public class PositionBoImpl implements PositionBo {
             }
         }
         return positions;
+    }
+    public String cekStatus(String golonganId)throws GeneralBOException{
+        String status ="";
+        List<ImPosition> skalaGajiEntity = new ArrayList<>();
+        try {
+            skalaGajiEntity = positionDao.getListPosition(golonganId);
+        } catch (HibernateException e) {
+            logger.error("[PayrollSkalaGajiBoImpl.getSearchPayrollSkalaGajiByCriteria] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        if (skalaGajiEntity.size()>0){
+            status = "exist";
+        }else{
+            status="notExits";
+        }
+        return status;
     }
 }

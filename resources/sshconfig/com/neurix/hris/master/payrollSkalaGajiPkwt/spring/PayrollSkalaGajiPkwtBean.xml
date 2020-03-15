@@ -9,7 +9,9 @@
           p:payrollSkalaGajiPkwtBoProxy-ref="payrollSkalaGajiPkwtBoProxy" />
 
     <bean id="payrollSkalaGajiPkwtBo" class="com.neurix.hris.master.payrollSkalaGajiPkwt.bo.impl.PayrollSkalaGajiPkwtBoImpl"
-          p:payrollSkalaGajiPkwtDao-ref="payrollSkalaGajiPkwtDao" />
+          p:payrollSkalaGajiPkwtDao-ref="payrollSkalaGajiPkwtDao"
+          p:golonganPkwtDao-ref="golonganPkwtDao"
+    />
 
     <bean id="payrollSkalaGajiPkwtBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="payrollSkalaGajiPkwtBo">
@@ -32,6 +34,8 @@
     </bean>
 
     <bean id="payrollSkalaGajiPkwtDao" class="com.neurix.hris.master.payrollSkalaGajiPkwt.dao.PayrollSkalaGajiPkwtDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="golonganPkwtDao" class="com.neurix.hris.master.golonganPkwt.dao.GolonganPkwtDao"
           p:sessionFactory-ref="sessionFactory" />
 
 </beans>

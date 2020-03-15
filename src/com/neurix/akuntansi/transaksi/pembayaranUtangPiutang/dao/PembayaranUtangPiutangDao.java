@@ -41,6 +41,9 @@ public class PembayaranUtangPiutangDao extends GenericDao<ImPembayaranUtangPiuta
             if (mapCriteria.get("no_jurnal")!=null) {
                 criteria.add(Restrictions.eq("noJurnal", (String) mapCriteria.get("no_jurnal")));
             }
+            if (mapCriteria.get("branch_id")!=null) {
+                criteria.add(Restrictions.eq("branchId", (String) mapCriteria.get("branch_id")));
+            }
             if (mapCriteria.get("tipe_transaksi")!=null) {
                 criteria.add(Restrictions.eq("tipeTransaksi", (String) mapCriteria.get("tipe_transaksi")));
             }

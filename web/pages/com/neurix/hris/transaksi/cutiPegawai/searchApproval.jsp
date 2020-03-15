@@ -108,55 +108,53 @@
                             <s:hidden id="erVerif" name="alat.erVerif"/>
                             <div id="errorAlert" style="display: none" class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><center><s:property value="alat.erVerif"/></center></div>
                             <div id="succesAlert" style="display: none" class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><center><s:property value="alat.verif"/></center></div>
+                            <table width="100%" align="center">
+                                <tr>
+                                    <td align="center">
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <label>Cuti Pegawai Id </label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <s:textfield id="cutiPegawaiId" name="cutiPegawai.cutiPegawaiId" cssClass="form-control" cssStyle="margin-top: -25px; margin-left: 20px" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label>NIP </label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <s:textfield id="personId" name="cutiPegawai.nip" cssClass="form-control" cssStyle="margin-top: -25px; margin-left: 20px" />
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <br><br>
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <sj:submit type="button" cssClass="btn btn-primary" formIds="searchForm" id="search" name="search"
+                                                               onClickTopics="showDialog" onCompleteTopics="closeDialog" onclick="showLoadingDialog();">
+                                                        <i class="fa fa-search"></i>
+                                                        Search
+                                                    </sj:submit>
+                                                </td>
+                                                <td>
 
-                            <div class="form-group">
-                                <table align="center">
-                                    <tr>
-                                        <td>
-                                            <label>Cuti Pegawai Id </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <s:textfield id="cutiPegawaiId" name="cutiPegawai.cutiPegawaiId" cssClass="form-control" cssStyle="margin-top: -25px; margin-left: 20px" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label>NIP </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <s:textfield id="personId" name="cutiPegawai.nip" cssClass="form-control" cssStyle="margin-top: -25px; margin-left: 20px" />
-                                        </td>
-                                    </tr>
-                                </table>
-                                <br>
+                                                    <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_cutiPegawai"/>'">
+                                                        <i class="fa fa-repeat"></i> Reset
+                                                    </button>
+                                                </td>
 
-                            </div>
-                            <div class="box-footer">
-                                <table align="center">
-                                    <tr>
-                                        <td>
-                                            <sj:submit type="button" cssClass="btn btn-primary" formIds="searchForm" id="search" name="search"
-                                                       onClickTopics="showDialog" onCompleteTopics="closeDialog" onclick="showLoadingDialog();">
-                                                <i class="fa fa-search"></i>
-                                                Search
-                                            </sj:submit>
-                                        </td>
-                                        <td>
-
-                                            <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_cutiPegawai"/>'">
-                                                <i class="fa fa-repeat"></i> Reset
-                                            </button>
-                                        </td>
-
-                                    </tr>
-                                </table>
-                            </div>
-
-
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
                             <center>
                                 <table id="showdata" width="90%">
                                     <tr>
@@ -443,9 +441,11 @@
         var who = $('#myForm').attr('action');
         var nip = document.getElementById("CutiPegawaiId1").value;
         var nipid=document.getElementById("Nip1").value;
+        var pejabatanSementara1=document.getElementById("PejabatSementara1").value;
+        var pejabatanSementara12=document.getElementById("PejabatSementara12").value;
         if (confirm('Are you sure you want to save this Record?')) {
             dwr.engine.setAsync(false);
-            CutiPegawaiAction.saveApprove(nip, "Y",who,nipid, function(listdata) {
+            CutiPegawaiAction.saveApprove(nip, "Y",who,nipid,pejabatanSementara1,pejabatanSementara12, function(listdata) {
                 alert('Data Successfully Updated');
                 $('#modal-edit').modal('hide');
                 $('#myForm')[0].reset();

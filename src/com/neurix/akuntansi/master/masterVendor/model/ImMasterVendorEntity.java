@@ -18,6 +18,7 @@ public class ImMasterVendorEntity implements Serializable {
     private String npwp;
     private String email;
     private String noTelp;
+    private String vendorObat;
 
     private String flag;
     private String action;
@@ -25,6 +26,14 @@ public class ImMasterVendorEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+    public String getVendorObat() {
+        return vendorObat;
+    }
+
+    public void setVendorObat(String vendorObat) {
+        this.vendorObat = vendorObat;
+    }
 
     public String getNomorMaster() {
         return nomorMaster;

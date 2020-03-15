@@ -36,6 +36,89 @@ public class ImPayrollBpjsEntity implements Serializable {
     private BigDecimal minBpjsTk;
     private BigDecimal MaxBpjsTk;
 
+    private Double iuranKary;
+    private Double jpkKary;
+    private Double jkkPers;
+    private Double jhtPers;
+    private Double jkmPers;
+    private Double iuranPers;
+    private Double jpkPers;
+
+    public Double getIuranKary() {
+        return iuranKary;
+    }
+
+    public void setIuranKary(Double iuranKary) {
+        this.iuranKary = iuranKary;
+    }
+
+    public Double getIuranPers() {
+        return iuranPers;
+    }
+
+    public void setIuranPers(Double iuranPers) {
+        this.iuranPers = iuranPers;
+    }
+
+    public Double getJhtPers() {
+        return jhtPers;
+    }
+
+    public void setJhtPers(Double jhtPers) {
+        this.jhtPers = jhtPers;
+    }
+
+    public Double getJkkPers() {
+        return jkkPers;
+    }
+
+    public void setJkkPers(Double jkkPers) {
+        this.jkkPers = jkkPers;
+    }
+
+    public Double getJkmPers() {
+        return jkmPers;
+    }
+
+    public void setJkmPers(Double jkmPers) {
+        this.jkmPers = jkmPers;
+    }
+
+    public Double getJpkKary() {
+        return jpkKary;
+    }
+
+    public void setJpkKary(Double jpkKary) {
+        this.jpkKary = jpkKary;
+    }
+
+    public Double getJpkPers() {
+        return jpkPers;
+    }
+
+    public void setJpkPers(Double jpkPers) {
+        this.jpkPers = jpkPers;
+    }
+
+    private String branchId;
+    private String branchName;
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
+    public String getBranchName() {
+        return branchName;
+    }
+
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
+    }
+
     public Double getIuranBpjsKsKaryPersen() {
         return iuranBpjsKsKaryPersen;
     }

@@ -92,6 +92,17 @@
                             </table>
                         </td>
                     </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Vendor Obat :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:select list="#{'N':'N'}" id="vendorObatView" name="masterVendor.vendorObat" disabled="true"
+                                          headerKey="Y" headerValue="Y" cssClass="form-control" />
+                            </table>
+                        </td>
+                    </tr>
                 </table>
                 <br>
                 <br>

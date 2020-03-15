@@ -10,6 +10,7 @@
 
     <bean id="transBo" class="com.neurix.akuntansi.master.trans.bo.impl.TransBoImpl"
           p:transDao-ref="transDao"
+          p:mappingJurnalDao-ref="mappingJurnalDao"
     />
 
     <bean id="transBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

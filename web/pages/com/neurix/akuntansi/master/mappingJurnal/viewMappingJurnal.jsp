@@ -113,76 +113,86 @@
     </section>
     <!-- Main content -->
     <section class="content">
-
-        <table width="100%" align="center">
-            <tr>
-                <td align="center">
-                    <s:form id="mappingJurnalForm" method="post"  theme="simple" namespace="/mappingJurnal" action="saveAdd_mappingJurnal.action" cssClass="well form-horizontal">
-                        <s:hidden name="addOrEdit"/>
-                        <s:hidden name="delete"/>
-                        <table>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-search"></i> View Mapping Jurnal</h3>
+                    </div>
+                    <div class="box-body">
+                        <table width="100%" align="center">
                             <tr>
-                                <td width="10%" align="center">
-                                    <%@ include file="/pages/common/message.jsp" %>
-                                </td>
-                            </tr>
-                        </table>
-
-                        <table >
-                            <tr>
-                                <td>
-                                    <label class="control-label"><small>Tipe Jurnal :</small></label>
-                                </td>
-                                <td>
-                                    <table>
-                                        <s:action id="initComboTipeJurnal" namespace="/tipeJurnal" name="initComboTipeJurnal_tipeJurnal"/>
-                                        <s:select list="#initComboTipeJurnal.listOfComboTipeJurnal" id="tipeJurnalId" name="mappingJurnal.tipeJurnalId" disabled="true"
-                                                  listKey="tipeJurnalId" listValue="tipeJurnalName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                                    </table>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label class="control-label"><small>Transaksi Billing :</small></label>
-                                </td>
-                                <td>
-                                    <table>
-                                        <s:action id="comboTrans" namespace="/trans" name="initComboTrans_trans"/>
-                                        <s:select list="#comboTrans.listOfComboTrans" id="transId" name="mappingJurnal.transId" disabled="true"
-                                                  onchange="$(this).css('border','')"
-                                                  listKey="transId" listValue="transName" headerKey="" headerValue="[ Select One ]" cssClass="form-control" />
-                                    </table>
-                                </td>
-                            </tr>
-                        </table>
-                        <br>
-                        <br>
-                        <center>
-                            <table id="showdata" width="100%">
-                                <tr>
-                                    <td align="center">
-                                        <table style="width: 100%;" class="kodeRekeningTable table table-bordered" id="kodeRekeningTable">
+                                <td align="center">
+                                    <s:form id="mappingJurnalForm" method="post"  theme="simple" namespace="/mappingJurnal" action="saveAdd_mappingJurnal.action" cssClass="form-horizontal">
+                                        <s:hidden name="addOrEdit"/>
+                                        <s:hidden name="delete"/>
+                                        <table>
+                                            <tr>
+                                                <td width="10%" align="center">
+                                                    <%@ include file="/pages/common/message.jsp" %>
+                                                </td>
+                                            </tr>
                                         </table>
-                                    </td>
-                                </tr>
-                            </table>
-                        </center>
-                        <br>
-                        <div id="actions" class="form-actions">
-                            <table align="center">
-                                <tr>
-                                    <td>
-                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="search_mappingJurnal.action"/>'">
-                                            <i class="fa fa-arrow-left"></i> Back
-                                        </button>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                    </s:form>
-                </td>
-            </tr>
-        </table>
+
+                                        <table >
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label"><small>Tipe Jurnal :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:action id="initComboTipeJurnal" namespace="/tipeJurnal" name="initComboTipeJurnal_tipeJurnal"/>
+                                                        <s:select list="#initComboTipeJurnal.listOfComboTipeJurnal" id="tipeJurnalId" name="mappingJurnal.tipeJurnalId" disabled="true"
+                                                                  listKey="tipeJurnalId" listValue="tipeJurnalName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label"><small>Transaksi Billing :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:action id="comboTrans" namespace="/trans" name="initComboTrans_trans"/>
+                                                        <s:select list="#comboTrans.listOfComboTrans" id="transId" name="mappingJurnal.transId" disabled="true"
+                                                                  onchange="$(this).css('border','')"
+                                                                  listKey="transId" listValue="transName" headerKey="" headerValue="[ Select One ]" cssClass="form-control" />
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <br>
+                                        <br>
+                                        <center>
+                                            <table id="showdata" width="100%">
+                                                <tr>
+                                                    <td align="center">
+                                                        <table style="width: 100%;" class="kodeRekeningTable table table-bordered" id="kodeRekeningTable">
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </center>
+                                        <br>
+                                        <div id="actions" class="form-actions">
+                                            <table align="center">
+                                                <tr>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="search_mappingJurnal.action"/>'">
+                                                            <i class="fa fa-arrow-left"></i> Back
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </s:form>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Your Page Content Here -->
     </section>
     <!-- /.content -->

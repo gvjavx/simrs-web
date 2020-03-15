@@ -42,6 +42,9 @@ public class GolonganDao extends GenericDao<ImGolonganEntity, String> {
             if (mapCriteria.get("golongan_name")!=null) {
                 criteria.add(Restrictions.ilike("golonganName", "%" + (String)mapCriteria.get("golongan_name") + "%"));
             }
+            if (mapCriteria.get("grade_level")!=null) {
+                criteria.add(Restrictions.eq("level", (Integer) mapCriteria.get("grade_level")));
+            }
 
 
         }
@@ -84,6 +87,16 @@ public class GolonganDao extends GenericDao<ImGolonganEntity, String> {
 
         return results;
     }
+    public List<ImGolonganEntity> cekGolongan(Integer term) throws HibernateException {
+
+        List<ImGolonganEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImGolonganEntity.class)
+                .add(Restrictions.ilike("level",term))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("golonganId"))
+                .list();
+
+        return results;
+    }
     public void addAndSaveHistory(ImGolonganHistoryEntity entity) throws HibernateException {
         this.sessionFactory.getCurrentSession().save(entity);
 
@@ -117,6 +130,20 @@ public class GolonganDao extends GenericDao<ImGolonganEntity, String> {
             listOfResult.add(golongan);
         }
         return listOfResult;
+    }
+
+    public String getStatus(Integer level){
+        String status ="";
+        String query = "select golongan_name from im_hris_golongan where grade_level ='"+level+"' and flag ='Y'";
+        Object results ;
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            status = "Exist";
+        }else{
+            status="NotExist";
+        }
+        return status;
     }
 
 }

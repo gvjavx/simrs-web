@@ -96,7 +96,7 @@
 
 
 
-                <legend align="left">Edit KelompokPosition</legend>
+                <legend align="left">Delete Kelompok Jabatan</legend>
 
 
                 <table>

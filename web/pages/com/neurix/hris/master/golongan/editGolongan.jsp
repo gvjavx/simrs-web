@@ -18,10 +18,10 @@
         $.subscribe('beforeProcessSave', function (event, data) {
             var idGolongan = document.getElementById("golonganId").value;
             var nameGolongan    = document.getElementById("golonganName1").value;
+            var level    = document.getElementById("level1").value;
 
 
-
-            if (nameGolongan != '' ) {
+            if (nameGolongan != ''&& level!='' ) {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -126,6 +126,16 @@
                         <td>
                             <table>
                                 <s:textfield id="golonganName1" name="golongan.golonganName" required="true" disabled="false" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Grade Level :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield id="level1" type="number" min="0" name="golongan.stLevel" required="true" disabled="false" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>

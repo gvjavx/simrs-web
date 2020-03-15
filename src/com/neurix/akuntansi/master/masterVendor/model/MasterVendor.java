@@ -16,6 +16,24 @@ public class MasterVendor extends BaseModel {
     private String npwp;
     private String email;
     private String noTelp;
+    private String vendorObat;
+    private Boolean obat;
+
+    public Boolean getObat() {
+        return obat;
+    }
+
+    public void setObat(Boolean obat) {
+        this.obat = obat;
+    }
+
+    public String getVendorObat() {
+        return vendorObat;
+    }
+
+    public void setVendorObat(String vendorObat) {
+        this.vendorObat = vendorObat;
+    }
 
     public String getNomorMaster() {
         return nomorMaster;

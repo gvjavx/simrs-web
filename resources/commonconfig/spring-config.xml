@@ -88,13 +88,17 @@
     <import resource="sshconfig/com/neurix/hris/transaksi/indisipliner/spring/IndisiplinerBean.xml"/>
 
     <!-- for Payroll -->
+    <import resource="sshconfig/com/neurix/hris/master/payrollTunjanganStrategis/spring/PayrollTunjanganStrategisBean.xml"/>
 
     <import resource="sshconfig/com/neurix/hris/master/payrollTunjanganJabatanStruktural/spring/PayrollTunjanganJabatanStrukturalBean.xml"/>
     <import resource="sshconfig/com/neurix/hris/transaksi/payroll/spring/PayrollBean.xml"/>
+    <import resource="sshconfig/com/neurix/hris/master/payrollBpjs/spring/PayrollBpjsBean.xml"/>
     <import resource="sshconfig/com/neurix/hris/master/branchTunjangan/spring/BranchTunjanganBean.xml"/>
     <import resource="sshconfig/com/neurix/hris/master/payrollSkalaGaji/spring/PayrollSkalaGajiBean.xml"/>
     <import resource="sshconfig/com/neurix/hris/master/payrollSkalaGajiPkwt/spring/PayrollSkalaGajiPkwtBean.xml"/>
     <import resource="sshconfig/com/neurix/hris/master/payrollSkalaGajiPensiun/spring/PayrollskalaGajiPensiunBean.xml"/>
+    <import resource="sshconfig/com/neurix/hris/master/payrollSkalaGajiPensiunDplk/spring/PayrollskalaGajiPensiunDplkBean.xml"/>
+    <import resource="sshconfig/com/neurix/hris/master/payrollSkalaGajiPensiunRni/spring/PayrollskalaGajiPensiunRniBean.xml"/>
     <import resource="sshconfig/com/neurix/hris/master/payrollBajuDinas/spring/PayrollBajuDinasBean.xml"/>
     <import resource="sshconfig/com/neurix/hris/master/payrollAirListrik/spring/PayrollAirListrikBean.xml"/>
     <import resource="sshconfig/com/neurix/hris/master/payrollTunjanganUmk/spring/PayrollTunjanganUmkBean.xml"/>
@@ -200,5 +204,6 @@
     <import resource="sshconfig/com/neurix/akuntansi/master/reportDetail/spring/ReportDetailBean.xml"/>
     <import resource="sshconfig/com/neurix/akuntansi/master/mappingJurnal/spring/MappingJurnalBean.xml"/>
     <import resource="sshconfig/com/neurix/akuntansi/master/masterVendor/spring/MasterVendorBean.xml"/>
+    <import resource="sshconfig/com/neurix/akuntansi/master/settingReportUser/spring/SettingReportUserBean.xml"/>
 
 </beans>

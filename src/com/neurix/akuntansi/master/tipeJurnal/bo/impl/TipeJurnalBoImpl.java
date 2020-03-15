@@ -77,6 +77,20 @@ public class TipeJurnalBoImpl implements TipeJurnalBo {
     public void saveDelete(TipeJurnal bean) throws GeneralBOException {
         logger.info("[saveDelete.saveDelete] start process >>>");
         if (bean!=null) {
+            //Validasi jurnal pada mapping jurnal
+            List<ImMappingJurnalEntity> mappingJurnalEntityList = new ArrayList<>();
+            try {
+                mappingJurnalEntityList = mappingJurnalDao.getListMappingJurnalByTipeJurnalId(bean.getTipeJurnalId());
+            } catch (HibernateException e) {
+                logger.error("[TipeJurnalBoImpl.saveDelete] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data alat by Kode alat, please inform to your admin...," + e.getMessage());
+            }
+            if (mappingJurnalEntityList.size()>0){
+                String status = "ERROR : Tipe jurnal sudah ada pada Mapping";
+                logger.error("[TipeJurnalBoImpl.saveDelete] "+status);
+                throw new GeneralBOException(status);
+            }
+
             ImTipeJurnalEntity imTipeJurnalEntity = new ImTipeJurnalEntity();
             try {
                 // Get data from database by ID
@@ -112,10 +126,9 @@ public class TipeJurnalBoImpl implements TipeJurnalBo {
     @Override
     public void saveEdit(TipeJurnal bean) throws GeneralBOException {
         logger.info("[TipeJurnalBoImpl.saveEdit] start process >>>");
-        HttpSession session = ServletActionContext.getRequest().getSession();
-        List<KodeRekening> kodeRekeningList = (List<KodeRekening>) session.getAttribute("listOfResultKodeRekening");
 
         if (bean!=null) {
+
             ImTipeJurnalEntity imTipeJurnalEntity = null;
             try {
                 // Get data from database by ID
@@ -148,23 +161,24 @@ public class TipeJurnalBoImpl implements TipeJurnalBo {
     @Override
     public TipeJurnal saveAdd(TipeJurnal bean) throws GeneralBOException {
         logger.info("[TipeJurnalBoImpl.saveAdd] start process >>>");
-        HttpSession session = ServletActionContext.getRequest().getSession();
-        List<KodeRekening> kodeRekeningList = (List<KodeRekening>) session.getAttribute("listOfResultKodeRekening");
         if (bean!=null) {
-
-            String tipeJurnalId;
+            ImTipeJurnalEntity jurnalEntity = null;
             try {
-                // Generating ID, get from postgre sequence
-                tipeJurnalId = tipeJurnalDao.getNextTipeJurnalId();
+                jurnalEntity = tipeJurnalDao.getById("tipeJurnalId",bean.getTipeJurnalId());
             } catch (HibernateException e) {
-                logger.error("[TipeJurnalBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when getting sequence tipeJurnalId id, please info to your admin..." + e.getMessage());
+                logger.error("[SettingReportUserBoImpl.saveEdit] Error, " + e.getMessage());
+                throw new GeneralBOException("Error , please info to your admin..." + e.getMessage());
+            }
+            if (jurnalEntity!=null){
+                String status ="ERROR : tipe jurnal ID sudah ada";
+                logger.error("[SettingReportUserBoImpl.saveEdit] "+status);
+                throw new GeneralBOException(status);
             }
 
             // creating object entity serializable
             ImTipeJurnalEntity imTipeJurnalEntity = new ImTipeJurnalEntity();
 
-            imTipeJurnalEntity.setTipeJurnalId(tipeJurnalId);
+            imTipeJurnalEntity.setTipeJurnalId(bean.getTipeJurnalId());
             imTipeJurnalEntity.setTipeJurnalName(bean.getTipeJurnalName());
             imTipeJurnalEntity.setFlag(bean.getFlag());
             imTipeJurnalEntity.setAction(bean.getAction());

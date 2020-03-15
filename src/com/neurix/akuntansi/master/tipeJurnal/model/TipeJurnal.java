@@ -12,15 +12,6 @@ import com.neurix.common.model.BaseModel;
 public class TipeJurnal extends BaseModel {
     private String tipeJurnalId;
     private String tipeJurnalName;
-    private String flagSumberBaru;
-
-    public String getFlagSumberBaru() {
-        return flagSumberBaru;
-    }
-
-    public void setFlagSumberBaru(String flagSumberBaru) {
-        this.flagSumberBaru = flagSumberBaru;
-    }
 
     public String getTipeJurnalId() {
         return tipeJurnalId;

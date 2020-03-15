@@ -343,7 +343,8 @@ public class PayrollSkalaGajiPensiunAction extends BaseMasterAction{
     public String searchPayrollSkalaGajiPensiun() {
         logger.info("[PayrollSkalaGajiPensiunAction.search] start process >>>");
 
-        payrollSkalaGajiPensiun searchPayrollSkalaGajiPensiun = new payrollSkalaGajiPensiun();
+        payrollSkalaGajiPensiun searchPayrollSkalaGajiPensiun = getPayrollSkalaGajiPensiun();
+
         searchPayrollSkalaGajiPensiun.setFlag("Y");
         List<payrollSkalaGajiPensiun> listOfsearchPayrollSkalaGajiPensiun = new ArrayList();
 

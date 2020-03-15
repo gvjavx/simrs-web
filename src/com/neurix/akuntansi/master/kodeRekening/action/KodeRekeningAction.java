@@ -278,7 +278,7 @@ public class KodeRekeningAction extends BaseMasterAction {
         return listOfsearchKodeRekening;
     }
 
-    public String saveEdit(String id, String kodeRekeningName,String coa, String tipeRekeningId,String tipeEdit){
+    public String saveEdit(String id, String kodeRekeningName,String coa,String tipeEdit){
         logger.info("[KodeRekeningAction.saveEdit] start process >>>");
         String status="";
         String userLogin = CommonUtil.userLogin();
@@ -287,7 +287,6 @@ public class KodeRekeningAction extends BaseMasterAction {
         edit.setRekeningId(id);
         edit.setKodeRekening(coa);
         edit.setNamaKodeRekening(kodeRekeningName);
-        edit.setTipeRekeningId(tipeRekeningId);
         edit.setLastUpdateWho(userLogin);
         edit.setLastUpdate(updateTime);
         edit.setAction("U");
@@ -307,10 +306,12 @@ public class KodeRekeningAction extends BaseMasterAction {
                 logId = kodeRekeningBo.saveErrorMessage(e.getMessage(), "kodeRekeningBoProxy.saveEdit");
             } catch (GeneralBOException e1) {
                 logger.error("[KodeRekeningAction.saveEdit] Error when saving error,", e1);
+                status="Gagal melakukan edit , Error : "+e1.getMessage();
                 return status;
             }
             logger.error("[KodeRekeningAction.saveEdit] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
+            status="Gagal melakukan edit , Error : "+e.getMessage();
             return status;
         }
         logger.info("[KodeRekeningAction.saveEdit] end process <<<");

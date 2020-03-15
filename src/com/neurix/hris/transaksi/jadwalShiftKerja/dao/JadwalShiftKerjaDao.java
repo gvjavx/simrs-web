@@ -229,4 +229,35 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
 
         return results;
     }
+    public List<JadwalShiftKerjaDetail> getJadwalShiftKerjaByUnitAndProfesiAndTanggal (String branchId, Date tglFrom, Date tglTo, String profesiId){
+        List<JadwalShiftKerjaDetail> listOfResult = new ArrayList<JadwalShiftKerjaDetail>();
+        List<Object[]> results = new ArrayList<Object[]>();
+        String query = "SELECT\n" +
+                "\tjd.nip,\n" +
+                "\tjd.nama_pegawai,\n" +
+                "\ts.shift_name\n" +
+                "FROM\n" +
+                "\tit_hris_jadwal_shift_kerja_detail jd INNER JOIN\n" +
+                "\tit_hris_jadwal_shift_kerja jk ON jd.jadwal_shift_kerja_id=jk.jadwal_shift_kerja_id INNER JOIN\n" +
+                "\tim_hris_shift s ON s.shift_id=jd.shift_id " +
+                "WHERE\n" +
+                "\tjd.flag='Y'\n" +
+                "\tAND jk.flag='Y'\n" +
+                "\tAND jd.profesi_id='"+profesiId+"'\n" +
+                "\tAND jk.branch_id='"+branchId+"'\n" +
+                "\tAND jk.tanggal >= '"+tglFrom+"' AND jk.tanggal <='"+tglTo+"'";
+
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        for (Object[] row : results) {
+            JadwalShiftKerjaDetail result  = new JadwalShiftKerjaDetail();
+            result.setNip((String) row[0]);
+            result.setNamaPegawai((String) row[1]);
+            result.setShiftName((String) row[2]);
+            listOfResult.add(result);
+        }
+        return listOfResult;
+    }
 }

@@ -50,7 +50,7 @@ To change this template use File | Settings | File Templates.
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Mutasi
+            Mutasi / Rotasi
             <small>e-HEALTH</small>
         </h1>
     </section>
@@ -58,287 +58,216 @@ To change this template use File | Settings | File Templates.
 
     <!-- Main content -->
     <section class="content">
-
-        <table width="100%" align="center">
-            <tr>
-                <td align="center">
-                    <s:form id="mutasiForm" method="post"  theme="simple" namespace="/mutasi" action="search_mutasi.action" cssClass="well form-horizontal">
-
-                        <s:hidden name="addOrEdit"/>
-                        <s:hidden name="delete"/>
-
-                        <table>
-                            <tr>
-                                <td width="10%" align="center">
-                                    <%@ include file="/pages/common/message.jsp" %>
-                                </td>
-                            </tr>
-                        </table>
-
-                        <table >
-                            <tr>
-                                <td>
-                                    <label class="control-label"><small>Mutasi Id :</small></label>
-                                </td>
-                                <td>
-                                    <table>
-                                        <s:textfield  id="mutasiId" name="mutasi.mutasiId" required="false" readonly="false" cssClass="form-control"/>
-                                    </table>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    <label class="control-label"><small>Nama :</small></label>
-                                </td>
-                                <td>
-                                    <table>
-                                        <s:textfield cssStyle="display: none" id="personName1" name="mutasi.nip" required="false" readonly="false" cssClass="form-control"/>
-                                        <s:textfield  id="personName" name="sppdPerson.personName" required="false" readonly="false" cssClass="form-control"/>
-                                    </table>
-                                </td>
-                                <script type='text/javascript'>
-                                    var functions, mapped;
-                                    // var prov = document.getElementById("provinsi1").value;
-                                    $('#personName').typeahead({
-                                        minLength: 1,
-                                        source: function (query, process) {
-                                            functions = [];
-                                            mapped = {};
-
-                                            var data = [];
-                                            dwr.engine.setAsync(false);
-                                            MedicalRecordAction.initComboPersonil(query,'', function (listdata) {
-                                                data = listdata;
-                                                //alert('aa');
-                                            });
-                                            //alert(prov);
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Mutasi</h3>
+                    </div>
+                    <div class="box-body">
+                        <s:form id="mutasiForm" method="post"  theme="simple" namespace="/mutasi" action="search_mutasi.action" cssClass="form-horizontal">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">ID Mutasi</label>
+                                <div class="col-sm-4">
+                                    <s:textfield id="mutasiId" cssStyle="margin-top: 7px"
+                                                 name="mutasi.mutasiId" required="false"
+                                                 readonly="false" cssClass="form-control"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Unit</label>
+                                <div class="col-sm-4">
+                                    <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                    <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="mutasi.branchLamaId" cssStyle="margin-top: 7px"
+                                              listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Bidang / Divisi</label>
+                                <div class="col-sm-4">
+                                    <s:action id="comboDivisi" namespace="/department" name="searchDepartment_department"/>
+                                    <s:select list="#comboDivisi.listComboDepartment" id="divisiId" name="mutasi.divisiLamaId" cssStyle="margin-top: 7px ; width: 100%"
+                                              listKey="departmentId" listValue="departmentName" headerKey="" headerValue="[Select one]" cssClass="form-control  select2" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Posisi</label>
+                                <div class="col-sm-4">
+                                    <s:action id="comboPosition" namespace="/admin/position" name="searchPosition_position"/>
+                                    <s:select list="#comboPosition.listOfComboPosition" id="positionId" name="mutasi.positionLamaId" cssStyle="margin-top: 7px ; width: 100%"
+                                              listKey="positionId" listValue="positionName" headerKey="" headerValue="[Select one]" cssClass="form-control  select2"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Nama</label>
+                                <div class="col-sm-4">
+                                    <s:textfield id="personName" name="mutasi.nama" cssClass="form-control" cssStyle="margin-top: 7px"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">NIP</label>
+                                <div class="col-sm-4">
+                                    <s:textfield id="nip" name="mutasi.nip" cssClass="form-control" readonly="true" cssStyle="margin-top: 7px"/>
+                                </div>
+                            </div>
+                            <script type='text/javascript'>
+                            var functions, mapped;
+                            $('#personName').typeahead({
+                                minLength: 1,
+                                source: function (query, process) {
+                                    var branch = $('#branchId').val();
+                                    if (branch!=""){
+                                        functions = [];
+                                        mapped = {};
+                                        var data = [];
+                                        dwr.engine.setAsync(false);
+                                        MedicalRecordAction.initComboPersonil(query,branch, function (listdata) {
+                                            data = listdata;
+                                        });
+                                        if (data.length==0){
+                                            alert("Nama tidak ditemukan");
+                                            $('#personName').val("");
+                                        } else{
                                             $.each(data, function (i, item) {
                                                 var labelItem =item.nip+ " || "+ item.namaPegawai;
-                                                var labelNip = item.nip;
-                                                mapped[labelItem] = {pegawai:item.namaPegawai, id: item.nip, label: labelItem,
-                                                    branchId : item.branch, divisiId: item.divisi, positionId : item.positionId,
-                                                    golonganId : item.golonganId, point : item.point, tipePegawaiId : item.tipePegawai,
-                                                    statusPegawaiId: item.statusPegawai};
+                                                mapped[labelItem] = {pegawai:item.namaPegawai, id: item.nip};
                                                 functions.push(labelItem);
                                             });
-
-
                                             process(functions);
-                                        },
-
-                                        updater: function (item) {
-                                            var selectedObj = mapped[item];
-                                            var namaAlat = selectedObj.id;
-                                            document.getElementById("personName1").value = selectedObj.id;
-                                            document.getElementById("personName").value = selectedObj.pegawai;
-
-                                            $('#branchId').val(selectedObj.branchId).change();
-                                            $('#divisiId').val(selectedObj.divisiId).change();
-                                            $('#golonganId').val(selectedObj.golonganId).change();
-                                            $('#point').val(selectedObj.point).change();
-                                            $('#positionId').val(selectedObj.positionId).change();
-                                            $('#tipePegawai1').val(selectedObj.tipePegawaiId).change();
-                                            $('#statusPegawai1').val(selectedObj.statusPegawaiId).change();
-                                            branc = selectedObj.branchId;
-                                            dev = selectedObj.divisiId ;
-                                            return namaAlat;
                                         }
-                                    });
-                                </script>
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    <label class="control-label"><small>Unit :</small></label>
-                                </td>
-                                <td>
-                                    <table>
-                                        <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                                        <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="mutasi.branchLamaId"
-                                                  listKey="branchId" listValue="branchName" headerKey="" headerValue="" cssClass="form-control"/>
-                                    </table>
-
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    <label class="control-label"><small>Tipe :</small></label>
-                                </td>
-                                <td>
-                                    <table>
-                                        <s:select list="#{'M':'Mutasi', 'R':'Resign', 'P':'Pensiun'}" id="flag" name="mutasi.tipeMutasi"
-                                                  headerKey="" headerValue="" cssClass="form-control"/>
-                                    </table>
-
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    <label class="control-label"><small>Divisi :</small></label>
-                                </td>
-                                <td>
-                                    <table>
-                                        <s:action id="comboDivisi" namespace="/department" name="searchDepartment_department"/>
-                                        <s:select list="#comboDivisi.listComboDepartment" id="divisiId" name="mutasi.divisiLamaId"
-                                                  listKey="departmentId" listValue="departmentName" headerKey="" headerValue="" cssClass="form-control" />
-                                    </table>
-                                </td>
-                            </tr>
-
-
-                            <tr>
-                                <td>
-                                    <label class="control-label"><small>Posisi :</small></label>
-                                </td>
-                                <td>
-                                    <table>
-                                        <s:action id="comboPosition" namespace="/admin/position" name="searchPosition_position"/>
-                                        <s:select list="#comboPosition.listOfComboPosition" id="positionId" name="mutasi.positionLamaId"
-                                                  listKey="positionId" listValue="positionName" headerKey="" headerValue="" cssClass="form-control"/>
-                                    </table>
-
-                                </td>
-                            </tr>
-
-
-                            <tr>
-                                <td>
-                                    <label class="control-label"><small>Tanggal Efektif : </small></label>
-                                </td>
-                                <td>
-                                    <table>
-                                        <div class="input-group date">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
-                                            </div>
-                                            <s:textfield id="tanggalEfektif" name="mutasi.stTanggalEfektif" cssClass="form-control pull-right"
-                                                         required="false"  cssStyle=""/>
-                                        </div>
-                                    </table>
-                                </td>
-                            </tr>
-                            <script>
-                                $('#tanggalEfektif').datepicker({
-                                    dateFormat: 'dd-mm-yy',
-                                    changeMonth: true,
-                                    changeYear: true,
-//            minDate: 0,
-                                });
+                                    } else{
+                                        alert("Unit belum dipilih");
+                                        $('#personName').val("");
+                                    }
+                                },
+                                updater: function (item) {
+                                    var selectedObj = mapped[item];
+                                    var nama = selectedObj.pegawai;
+                                    $('#nip').val(selectedObj.id);
+                                    return nama;
+                                }
+                            });
                             </script>
-
-
-                        </table>
-
-
-                        <br>
-
-                        <div id="actions" class="form-actions">
-                            <table align="center">
-                                <tr>
-                                    <td>
-                                        <sj:submit type="button" cssClass="btn btn-primary" formIds="mutasiForm" id="search" name="search"
-                                                   onClickTopics="showDialog" onCompleteTopics="closeDialog" >
-                                            <i class="fa fa-search"></i>
-                                            Search
-                                        </sj:submit>
-                                    </td>
-                                    <td>
-                                        <a href="add_mutasi.action" class="btn btn-success" ><i class="fa fa-plus"></i> Add Mutasi</a>
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_mutasi"/>'">
-                                            <i class="fa fa-refresh"></i> Reset
-                                        </button>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-
-                        <br>
-                        <br>
-                        <center>
-                            <table id="showdata" width="100%">
-                                <tr>
-                                    <td align="center">
-                                        <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
-                                                   height="500" width="700" autoOpen="false"
-                                                   title="Mutasi">
-                                            <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
-                                        </sj:dialog>
-
-                                        <s:set name="listOfSppd" value="#session.listOfResult" scope="request" />
-                                        <display:table name="listOfSppd" class=" tableSppd table table-condensed table-striped table-hover"
-                                                       requestURI="paging_displaytag_mutasi.action" id="row" pagesize="14" style="font-size:10">
-
-                                            <%--<display:column  title="Print">
-                                                <s:url var="urlPrint" namespace="/mutasi" action="printReportMutasi_mutasi" escapeAmp="false">
-                                                    <s:param name="id"><s:property value="#attr.row.mutasiId"/></s:param>
-                                                    <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
-                                                </s:url>
-                                                <s:a href="%{urlPrint}">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Tipe</label>
+                                <div class="col-sm-4">
+                                    <s:select list="#{'MT':'Mutasi', 'RT':'Rotasi'}" id="tipe" name="mutasi.tipeMutasi" cssStyle="margin-top: 7px"
+                                              headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Status</label>
+                                <div class="col-sm-4">
+                                    <s:select list="#{'M':'Mutasi', 'R':'Resign', 'P':'Pensiun'}" id="status" name="mutasi.status" cssStyle="margin-top: 7px"
+                                              headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Tanggal Efektif</label>
+                                <div class="col-sm-4">
+                                    <div class="input-group date" style="margin-top: 7px">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <s:textfield id="tanggalEfektif" name="mutasi.stTanggalEfektif" cssClass="form-control pull-right"
+                                                     required="false"/>
+                                        <script>
+                                            $('#tanggalEfektif').datepicker({
+                                                dateFormat: 'dd-mm-yy',
+                                                changeMonth: true,
+                                                changeYear: true
+                                            });
+                                        </script>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <div class="col-sm-offset-4 col-sm-6" style="margin-top: 7px">
+                                    <sj:submit type="button" cssClass="btn btn-primary" formIds="mutasiForm" id="search" name="search"
+                                               onClickTopics="showDialogLoading" onCompleteTopics="closeDialogLoading" >
+                                        <i class="fa fa-search"></i>
+                                        Search
+                                    </sj:submit>
+                                    <a href="add_mutasi.action" class="btn btn-success" ><i class="fa fa-plus"></i> Add Mutasi / Rotasi</a>
+                                    <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_mutasi"/>'">
+                                        <i class="fa fa-refresh"></i> Reset
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5"></label>
+                                <div class="col-sm-5" style="display: none">
+                                    <sj:dialog id="waiting_dialog" openTopics="showDialogLoading"
+                                               closeTopics="closeDialog" modal="true"
+                                               resizable="false"
+                                               height="250" width="600" autoOpen="false"
+                                               title="Searching ...">
+                                        Please don't close this window, server is processing your request ...
+                                        <br>
+                                        <center>
+                                            <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                 src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                 name="image_indicator_write">
+                                            <br>
+                                            <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                 src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                 name="image_indicator_write">
+                                        </center>
+                                    </sj:dialog>
+                                    <sj:dialog id="view_dialog_user" openTopics="showDialogUser" modal="true" resizable="false" cssStyle="text-align:left;"
+                                               height="650" width="900" autoOpen="false" title="View Detail">
+                                        <center><img border="0" src="<s:url value="/pages/images/spinner.gif"/>" alt="Loading..."/></center>
+                                    </sj:dialog>
+                                </div>
+                            </div>
+                            <div class="box-header with-border"></div>
+                            <div class="box-header with-border">
+                                <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Mutasi</h3>
+                            </div>
+                            <div class="box-body">
+                                <table id="myTable" class="table table-bordered table-striped" style="font-size: 12px">
+                                    <thead >
+                                    <tr bgcolor="#90ee90">
+                                        <td>ID Mutasi</td>
+                                        <td>NIP</td>
+                                        <td>Nama Pegawai</td>
+                                        <td>Tipe</td>
+                                        <td>Status</td>
+                                        <td>Unit Lama</td>
+                                        <td>Posisi Lama</td>
+                                        <td>Unit Baru</td>
+                                        <td>Posisi Baru</td>
+                                        <td>Tanggal Efektif</td>
+                                        <td align="center">Action</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <s:iterator value="#session.listOfResult" status="listOfMutasi" id="listOfMutasi" var="row">
+                                        <tr>
+                                            <td><s:property value="mutasiId"/></td>
+                                            <td><s:property value="nip"/></td>
+                                            <td><s:property value="nama"/></td>
+                                            <td><s:property value="tipeMutasiName"/></td>
+                                            <td><s:property value="statusName"/></td>
+                                            <td><s:property value="branchLamaName"/></td>
+                                            <td><s:property value="positionLamaName"/></td>
+                                            <td><s:property value="branchBaruName"/></td>
+                                            <td><s:property value="positionBaruName"/></td>
+                                            <td><s:property value="stTanggalEfektif"/></td>
+                                            <td align="center">
+                                                <a href="javascript:;" data="<s:property value="%{#row.mutasiId}"/>" class="item-print" id="<s:property value="%{#row.mutasiId}"/>">
                                                     <img border="0" src="<s:url value="/pages/images/icon_printer_new.ico"/>" name="icon_edit">
-                                                </s:a>
-                                            </display:column>--%>
-
-                                            <%--<display:column media="html" title="Download SK" style="align= center">
-                                                <s:if test="#attr.row.SK1">
-                                                    &lt;%&ndash;<a href="<s:property value="%{#attr.row.filePath}"/>">
-                                                        <i class="fa fa-download" style="font-size:20px"></i>
-                                                    </a>&ndash;%&gt;
-                                                    <s:url var="urlViewDoc" namespace="/mutasi" action="viewDoc_mutasi" escapeAmp="false">
-                                                        <s:param name="id"><s:property value="#attr.row.mutasiId" /></s:param>
-                                                        <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
-                                                    </s:url>
-                                                    <sj:a onClickTopics="showDialogMenu" href="%{urlViewDoc}">
-                                                        <i class='fa fa-download' style='font-size:20px'></i>
-                                                    </sj:a>
-                                                </s:if>
-                                            </display:column>
-
-                                            <display:column media="html" title="Upload SK">
-                                                <s:url var="urlEdit" namespace="/mutasi" action="edit_mutasi" escapeAmp="false">
-                                                    <s:param name="id"><s:property value="#attr.row.mutasiId"/></s:param>
-                                                    <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
-                                                </s:url>
-                                                <sj:a onClickTopics="showDialogMenu" href="%{urlEdit}">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">
-                                                </sj:a>
-                                            </display:column>--%>
-
-                                            <display:column property="mutasiId" sortable="true" title="Mutasi ID"  />
-                                            <display:column property="nip" sortable="true" title="NIP"  />
-                                            <display:column property="nama" sortable="true" title="Nama Pegawai"  />
-                                            <display:column property="branchLamaName" sortable="true" title="Unit Lama"  />
-                                            <display:column property="divisiLamaName" sortable="true" title="Divisi Lama"  />
-                                            <display:column property="positionLamaName" sortable="true" title="Posisi Lama"  />
-                                            <display:column property="branchBaruName" sortable="true" title="Unit Baru"  />
-                                            <display:column property="divisiBaruName" sortable="true" title="Divisi Baru"  />
-                                            <display:column property="positionBaruName" sortable="true" title="Posisi Baru"  />
-                                            <display:column property="stTanggalEfektif" sortable="true" title="Tanggal Efektif"  />
-                                            <display:column property="statusName" sortable="true" title="Status"  />
-
-                                        </display:table>
-                                    </td>
-                                </tr>
-                            </table>
-                        </center>
-                    </s:form>
-                </td>
-            </tr>
-        </table>
-
-        <!-- Your Page Content Here -->
-        <div class="row">
-            <div class="col-md-12">
-
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </s:iterator>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </s:form>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -354,4 +283,70 @@ To change this template use File | Settings | File Templates.
 </body>
 
 </html>
+<div id="modal-edit" class="modal fade" role="dialog">
+    <div class="modal-dialog" style="width: 500px">
 
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Add Nomor Surat</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="myForm">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Mutasi Id : </label>
+                        <div class="col-sm-8">
+                            <input readonly type="text"  class="form-control nip" id="idMutasi" name="nip">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >No. Sk Mutasi : </label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control nip" id="noSurat" name="nip">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="btnSave" type="button" class="btn btn-default btn-success">Cetak Surat</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    /*function printSk(){
+        $('#modal-edit').modal('show');
+    }*/
+    $(document).ready(function(){
+        $('#myTable').on('click', '.item-print', function(){
+            var id = $(this).attr('id');
+            $('#idMutasi').val(id);
+            $('#modal-edit').modal('show');
+        });
+
+        $('#btnSave').click(function(){
+            var idMutasi = document.getElementById("idMutasi").value;
+            var noSurat = document.getElementById("noSurat").value;
+            var msg='Apakah Anda ingin Surat Keterangan ?';
+            var msg2="Field:\n";
+            dwr.engine.setAsync(false);
+            if(noSurat!=''){
+                if (confirm(msg)) {
+                    var addr = "simrs/mutasi/printReportMutasi_mutasi.action?idMutasi="+idMutasi+"&noSurat="+noSurat;
+                    var currentLoc = window.location.href;
+                    var newAdd = currentLoc.split('simrs/')[0] + addr;
+                    window.location.href = newAdd;
+                }
+            }else{
+                msg2 += "-No Surat\n";
+                alert(msg2+"Masih Kosong");
+            }
+
+        });
+
+
+
+    });
+</script>

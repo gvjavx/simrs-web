@@ -6,12 +6,15 @@
 	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
     <bean id="laporanAkuntansiAction" class="com.neurix.akuntansi.transaksi.laporanAkuntansi.action.LaporanAkuntansiAction"
-          p:laporanAkuntansiBoProxy-ref="laporanAkuntansiBoProxy" />
+          p:laporanAkuntansiBoProxy-ref="laporanAkuntansiBoProxy"
+          p:settingReportUserBoProxy-ref="settingReportUserBoProxy"
+    />
 
     <bean id="laporanAkuntansiBo" class="com.neurix.akuntansi.transaksi.laporanAkuntansi.bo.impl.LaporanAkuntansiBoImpl"
           p:laporanAkuntansiDao-ref="laporanAkuntansiDao"
           p:personilPositionDao-ref="personilPositionDao"
           p:biodataDao-ref="biodataDao"
+          p:kodeRekeningDao-ref="kodeRekeningDao"
     />
 
     <bean id="laporanAkuntansiBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

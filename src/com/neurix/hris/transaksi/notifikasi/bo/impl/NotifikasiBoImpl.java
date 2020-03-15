@@ -969,7 +969,7 @@ public class NotifikasiBoImpl implements NotifikasiBo {
         addNotif.setRead("Y");
         addNotif.setFlag("Y");
         addNotif.setAction("C");
-        addNotif.setNip(pengganti);
+        addNotif.setNip(nip);
         addNotif.setNote(note);
         addNotif.setFromPerson(createdWho);
         addNotif.setNoRequest(id);
@@ -1071,45 +1071,75 @@ public class NotifikasiBoImpl implements NotifikasiBo {
     @Override
     public void SendNotifKeKabid(String nip, String id, String tipeNotifId, String tipeNotifName, String note, String createdWho, String os){
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-        String nipKabid = getKabid(nip);
-        if (!nipKabid.equalsIgnoreCase("")){
+        List<String> posisiStrukturJabatan = getKabid(nip);
+        String nipKabid = "";
+        if (posisiStrukturJabatan.size()>0){
             // Send Notification
-            ImNotifikasiEntity addNotif = new ImNotifikasiEntity();
-            String idNotif = notifikasiDao.getNextNotifikasiId();
-            addNotif.setNotifId(idNotif);
-            addNotif.setNote(note);
-            addNotif.setTipeNotifId(tipeNotifId);
-            addNotif.setTipeNotifName(tipeNotifName);
-            addNotif.setRead("Y");
-            addNotif.setFlag("Y");
-            addNotif.setAction("C");
-            addNotif.setNip(nipKabid);
-            addNotif.setFromPerson(nip);
-            addNotif.setNoRequest(id);
-            addNotif.setCreatedDate(updateTime);
-            addNotif.setCreatedWho(createdWho);
-            addNotif.setLastUpdate(updateTime);
-            addNotif.setLastUpdateWho(createdWho);
-            try {
-                notifikasiDao.addAndSave(addNotif);
-            } catch (HibernateException e) {
-                logger.error("[NotifikasiBoimpl.SendNotifKeKabid] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
-            }
+            for (String posisiIdLoop: posisiStrukturJabatan){
+                List<ItPersonilPositionEntity> personilEntity = new ArrayList<>();
+                personilEntity = personilPositionDao.getAllPegawaiOnSamePosisi(posisiIdLoop);
+                if (personilEntity.size()>0){
+                    for (ItPersonilPositionEntity personilLoop: personilEntity){
+                        ImNotifikasiEntity addNotif = new ImNotifikasiEntity();
+                        String idNotif = notifikasiDao.getNextNotifikasiId();
+                        addNotif.setNotifId(idNotif);
+                        addNotif.setNote(note);
+                        addNotif.setTipeNotifId(tipeNotifId);
+                        addNotif.setTipeNotifName(tipeNotifName);
+                        addNotif.setRead("Y");
+                        addNotif.setFlag("Y");
+                        addNotif.setAction("C");
+                        addNotif.setNip(personilLoop.getNip());
+                        addNotif.setFromPerson(nip);
+                        addNotif.setNoRequest(id);
+                        addNotif.setCreatedDate(updateTime);
+                        addNotif.setCreatedWho(createdWho);
+                        addNotif.setLastUpdate(updateTime);
+                        addNotif.setLastUpdateWho(createdWho);
+                        try {
+                            notifikasiDao.addAndSave(addNotif);
+                        } catch (HibernateException e) {
+                            logger.error("[NotifikasiBoimpl.SendNotifKeKabid] Error, " + e.getMessage());
+                            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                        }
+                        List<ItNotifikasiFcmEntity> notifikasiFcm = null;
+                        try {
+                            notifikasiFcm = notifikasiFcmDao.getAll();
+                        } catch (HibernateException e) {
+                            logger.error("[NotifikasiBoimpl.SendNotifKeKabid] Error, " + e.getMessage());
+                            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                        }
 
-            List<ItNotifikasiFcmEntity> notifikasiFcm = null;
-            try {
-                notifikasiFcm = notifikasiFcmDao.getAll();
-            } catch (HibernateException e) {
-                logger.error("[NotifikasiBoimpl.SendNotifKeKabid] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
-            }
-
-            for (ItNotifikasiFcmEntity entity : notifikasiFcm){
-
-                if(entity.getUserId().equals(nipKabid)){
-                    ExpoPushNotif.sendNotificationExpo(entity.getTokenExpo(), addNotif.getTipeNotifName(), note, entity.getOs());
-                    break;
+                        for (ItNotifikasiFcmEntity entity : notifikasiFcm){
+                            if(entity.getUserId().equals(nipKabid)){
+                                FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), note, CLICK_IJIN);
+                                break;
+                            }
+                        }
+                    }
+                }else{
+                    ImNotifikasiEntity addNotif = new ImNotifikasiEntity();
+                    String idNotif = notifikasiDao.getNextNotifikasiId();
+                    addNotif.setNotifId(idNotif);
+                    addNotif.setNote(note);
+                    addNotif.setTipeNotifId(tipeNotifId);
+                    addNotif.setTipeNotifName(tipeNotifName);
+                    addNotif.setRead("Y");
+                    addNotif.setFlag("Y");
+                    addNotif.setAction("C");
+                    addNotif.setNip("0001");
+                    addNotif.setFromPerson(nip);
+                    addNotif.setNoRequest(id);
+                    addNotif.setCreatedDate(updateTime);
+                    addNotif.setCreatedWho(createdWho);
+                    addNotif.setLastUpdate(updateTime);
+                    addNotif.setLastUpdateWho(createdWho);
+                    try {
+                        notifikasiDao.addAndSave(addNotif);
+                    } catch (HibernateException e) {
+                        logger.error("[NotifikasiBoimpl.SendNotifKeKabid] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                    }
                 }
             }
         }else {
@@ -2501,11 +2531,35 @@ public class NotifikasiBoImpl implements NotifikasiBo {
         return listOfResult;
     }
 
-    public String getKabid(String nip){
-        String results;
+    public List<String> getKabid(String nip){
+        List<String> results= new ArrayList<>();
+        String result="";
+        Long level= Long.valueOf(0);
             try{
-                String bagianId = personilPositionDao.getBagianId(nip);
-                results = personilPositionDao.getNipKabid(bagianId);
+                //mengambil posisi pegawai berdasarkan nip
+                ItPersonilPositionEntity posisiPegawai = new ItPersonilPositionEntity();
+                posisiPegawai = personilPositionDao.getById("nip",nip);
+
+                //mengambil level pegawai dari struktur jabatan berdasarkan posisi dan branch pegawai
+                List<ImStrukturJabatanEntity> levelJabatanPegawai = new ArrayList<>();
+                levelJabatanPegawai = strukturJabatanDao.getPegawaiLevel(posisiPegawai.getPositionId(),posisiPegawai.getBranchId());
+                if (levelJabatanPegawai.size()>0){
+                    for (ImStrukturJabatanEntity strukturJabatanLoop: levelJabatanPegawai){
+                        level = strukturJabatanLoop.getLevel();
+                    }
+                }
+
+                //mengambil jabatan berdasarkan level
+                List<ImStrukturJabatanEntity> atasan = new ArrayList<>();
+                atasan = strukturJabatanDao.get2UpLevel(level-2,posisiPegawai.getBranchId());
+                if (atasan.size()>0){
+                    for (ImStrukturJabatanEntity strukturJabatanLoop: atasan){
+                        result = strukturJabatanLoop.getPositionId();
+                        results.add(result);
+                    }
+                }
+
+
             }catch (GeneralBOException e) {
                 logger.error("[NotifikasiBoImpl.daftarKabid] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());

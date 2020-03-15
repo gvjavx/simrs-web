@@ -79,7 +79,7 @@
             }
             else{
                 CutiPegawaiAction.cekStatusTanggal(tanggalAwal, function(data){
-                    if (data=='boleh'){
+                    if (data=='Boleh'){
                         if ( nipid != ''&& cutiid != ''&& tanggalAkhir != '' && tanggalAwal != ''&&ket==""&&unitid!=""&&cek=="") {
                             if (confirm('Do you want to save this record?')) {
                                 event.originalEvent.options.submit = true;
@@ -489,6 +489,7 @@
                 $('#cutiId').val(item.cutiId).change();
                 $('#cutiId15').val(item.cutiId);
                 $('#sisaCuti').val(item.sisaCutiHari);
+
             });
             jeniscuti();
         }else{

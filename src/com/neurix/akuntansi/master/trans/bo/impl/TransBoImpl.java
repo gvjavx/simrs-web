@@ -1,5 +1,7 @@
 package com.neurix.akuntansi.master.trans.bo.impl;
 
+import com.neurix.akuntansi.master.mappingJurnal.dao.MappingJurnalDao;
+import com.neurix.akuntansi.master.mappingJurnal.model.ImMappingJurnalEntity;
 import com.neurix.akuntansi.master.trans.bo.TransBo;
 import com.neurix.akuntansi.master.trans.dao.TransDao;
 import com.neurix.akuntansi.master.trans.model.ImTransEntity;
@@ -24,6 +26,15 @@ public class TransBoImpl implements TransBo {
 
     protected static transient Logger logger = Logger.getLogger(TransBoImpl.class);
     private TransDao transDao;
+    private MappingJurnalDao mappingJurnalDao;
+
+    public MappingJurnalDao getMappingJurnalDao() {
+        return mappingJurnalDao;
+    }
+
+    public void setMappingJurnalDao(MappingJurnalDao mappingJurnalDao) {
+        this.mappingJurnalDao = mappingJurnalDao;
+    }
 
     public static Logger getLogger() {
         return logger;
@@ -45,6 +56,22 @@ public class TransBoImpl implements TransBo {
     public void saveDelete(Trans bean) throws GeneralBOException {
         logger.info("[saveDelete.saveDelete] start process >>>");
         if (bean!=null) {
+            //validasi jika masih ada di mapping
+            List<ImMappingJurnalEntity> mappingJurnalEntityList = new ArrayList<>();
+            try {
+                mappingJurnalEntityList = mappingJurnalDao.getMappingByTransId(bean.getTransId());
+            } catch (HibernateException e) {
+                logger.error("[TransBoImpl.saveDelete] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem , please inform to your admin...," + e.getMessage());
+            }
+            if (mappingJurnalEntityList.size()>0){
+                String status="ERROR : Tipe transaksi masih ada pada mapping jurnal";
+                logger.error("[TransBoImpl.saveDelete] "+status);
+                throw new GeneralBOException(status);
+            }
+
+
+            //save
             ImTransEntity imTransEntity = new ImTransEntity();
             try {
                 // Get data from database by ID
@@ -93,6 +120,7 @@ public class TransBoImpl implements TransBo {
             }
             if (imTransEntity != null) {
                 imTransEntity.setTransName(bean.getTransName());
+                imTransEntity.setFlagSumberBaru(bean.getFlagSumberBaru());
                 imTransEntity.setFlag(bean.getFlag());
                 imTransEntity.setAction(bean.getAction());
                 imTransEntity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -130,6 +158,7 @@ public class TransBoImpl implements TransBo {
 
             imTransEntity.setTransId(transId);
             imTransEntity.setTransName(bean.getTransName());
+            imTransEntity.setFlagSumberBaru(bean.getFlagSumberBaru());
             imTransEntity.setFlag(bean.getFlag());
             imTransEntity.setAction(bean.getAction());
             imTransEntity.setCreatedWho(bean.getCreatedWho());
@@ -195,6 +224,8 @@ public class TransBoImpl implements TransBo {
                     returnTrans = new Trans();
                     returnTrans.setTransId(transEntity.getTransId());
                     returnTrans.setTransName(transEntity.getTransName());
+                    returnTrans.setFlagSumberBaru(transEntity.getFlagSumberBaru());
+                    returnTrans.setTipePembayaran(transEntity.getTipePembayaran());
 
                     returnTrans.setCreatedWho(transEntity.getCreatedWho());
                     returnTrans.setCreatedDate(transEntity.getCreatedDate());

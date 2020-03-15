@@ -13,6 +13,15 @@ public class Trans extends BaseModel {
     private String transId;
     private String transName;
     private String tipePembayaran;
+    private String flagSumberBaru;
+
+    public String getFlagSumberBaru() {
+        return flagSumberBaru;
+    }
+
+    public void setFlagSumberBaru(String flagSumberBaru) {
+        this.flagSumberBaru = flagSumberBaru;
+    }
 
     public String getTipePembayaran() {
         return tipePembayaran;
