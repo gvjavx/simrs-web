@@ -508,12 +508,9 @@
       <convert converter="bean" match="com.neurix.akuntansi.transaksi.laporanAkuntansi.model.LaporanAkuntansi"/>
 
       <convert converter="bean" match="com.neurix.simrs.transaksi.permintaanresep.model.ObatKronis"/>
-<<<<<<< HEAD
-=======
 
       <convert converter="bean" match="com.neurix.simrs.master.kategoritindakanina.model.ImSimrsKategoriTindakanInaEntity"/>
 
->>>>>>> sodiq/editor
       <!--Master Hcm-->
       <create creator="new">
           <param name="class" value="com.neurix.hris.master.payrollSkalaGaji.action.PayrollSkalaGajiAction"/>

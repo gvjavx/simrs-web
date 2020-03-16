@@ -1556,10 +1556,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                     if (!"".equalsIgnoreCase(bean.getPegawaiPenggantiSementara())){
                         //Send notif ke orang yang mengajukan
                         Notifikasi notifElse= new Notifikasi();
-<<<<<<< HEAD
 
-=======
->>>>>>> sodiq/editor
                         notifElse.setNip(bean.getPegawaiPenggantiSementara());
                         notifElse.setNoRequest(bean.getCutiPegawaiId());
                         notifElse.setTipeNotifId("umum");
