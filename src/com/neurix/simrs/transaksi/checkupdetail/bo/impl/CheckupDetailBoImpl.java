@@ -14,6 +14,7 @@ import com.neurix.simrs.master.statuspasien.model.StatusPasien;
 import com.neurix.simrs.master.tindakan.dao.TindakanDao;
 import com.neurix.simrs.master.tindakan.model.ImSimrsTindakanEntity;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
+import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.antrianonline.dao.AntrianOnlineDao;
 import com.neurix.simrs.transaksi.antrianonline.model.ItSimrsAntianOnlineEntity;
 import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao;
@@ -26,6 +27,9 @@ import com.neurix.simrs.transaksi.checkupdetail.dao.UangMukaDao;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsUangMukaPendaftaranEntity;
+import com.neurix.simrs.transaksi.diagnosarawat.dao.DiagnosaRawatDao;
+import com.neurix.simrs.transaksi.diagnosarawat.model.DiagnosaRawat;
+import com.neurix.simrs.transaksi.diagnosarawat.model.ItSimrsDiagnosaRawatEntity;
 import com.neurix.simrs.transaksi.ordergizi.dao.OrderGiziDao;
 import com.neurix.simrs.transaksi.ordergizi.model.ItSimrsOrderGiziEntity;
 import com.neurix.simrs.transaksi.ordergizi.model.OrderGizi;
@@ -75,6 +79,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     private AntrianOnlineDao antrianOnlineDao;
     private UangMukaDao uangMukaDao;
     private DokterDao dokterDao;
+    private DiagnosaRawatDao diagnosaRawatDao;
 
     @Override
     public List<HeaderDetailCheckup> getByCriteria(HeaderDetailCheckup bean) throws GeneralBOException {
@@ -130,6 +135,20 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
 
         logger.info("[CheckupDetailBoImpl.getListEntityByCriteria] End <<<<<<<<");
         return entityList;
+    }
+
+    @Override
+    public HeaderDetailCheckup getBiayaTindakan(String idDetailCheckup) throws GeneralBOException {
+        HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
+
+        if(idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)){
+            try {
+                headerDetailCheckup = checkupDetailDao.getBiayaTindakan(idDetailCheckup);
+            }catch (HibernateException e){
+                logger.error("Found Error when search tindaksan "+e.getMessage());
+            }
+        }
+        return headerDetailCheckup;
     }
 
     protected List<HeaderDetailCheckup> setToDetailCheckupTemplate(List<ItSimrsHeaderDetailCheckupEntity> entityList) throws GeneralBOException {
@@ -201,10 +220,11 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     }
 
     @Override
-    public void saveEdit(HeaderDetailCheckup bean) throws GeneralBOException {
+    public CrudResponse saveEdit(HeaderDetailCheckup bean) throws GeneralBOException {
         logger.info("[CheckupDetailBoImpl.saveEdit] Start >>>>>>>");
-        List<ItSimrsHeaderDetailCheckupEntity> detailCheckupEntityList = null;
+        CrudResponse response = new CrudResponse();
 
+        List<ItSimrsHeaderDetailCheckupEntity> detailCheckupEntityList = null;
         HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
         detailCheckup.setIdDetailCheckup(bean.getIdDetailCheckup());
 
@@ -225,12 +245,14 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             entity.setTempatTujuan(bean.getTempatTujuan());
             entity.setInvoice(bean.getInvoice());
             entity.setUrlTtd(bean.getUrlTtd());
-//            entity.setMetodePembayaran(bean.getMetodePembayaran());
-
 
             try {
                 checkupDetailDao.updateAndSave(entity);
+                response.setStatus("success");
+                response.setMsg("Berhasil");
             } catch (HibernateException e) {
+                response.setStatus("error");
+                response.setMsg("Error when update detail checkup "+e.getMessage());
                 logger.error("[CheckupDetailBoImpl.saveEdit] Error when update detail checkup ", e);
                 throw new GeneralBOException("[CheckupDetailBoImpl.saveEdit] Error when update detail checkup " + e.getMessage());
             }
@@ -249,7 +271,11 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
 
                     try {
                         headerCheckupDao.updateAndSave(headerChekupEntity);
+                        response.setStatus("success");
+                        response.setMsg("Berhasil");
                     } catch (HibernateException e) {
+                        response.setStatus("error");
+                        response.setMsg("Error when update checkup "+e.getMessage());
                         logger.error("[CheckupDetailBoImpl.saveEdit] Error when update checkup ", e);
                         throw new GeneralBOException("[CheckupDetailBoImpl.saveEdit] Error when update checkup " + e.getMessage());
                     }
@@ -272,7 +298,11 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                 rawatInapEntity.setLastUpdateWho(CommonUtil.userLogin());
                 try {
                     rawatInapDao.updateAndSave(rawatInapEntity);
+                    response.setStatus("success");
+                    response.setMsg("Berhasil");
                 } catch (HibernateException e) {
+                    response.setStatus("error");
+                    response.setMsg("Error when Update data transaksi inap "+e.getMessage());
                     logger.error("[CheckupDetailBoImpl.saveEdit] Error when Update data transaksi inap ", e);
                     throw new GeneralBOException("[CheckupDetailBoImpl.saveEdit] Error when Update data transaksi inap " + e.getMessage());
                 }
@@ -292,7 +322,11 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
 
                             try {
                                 ruanganDao.updateAndSave(ruanganEntity);
+                                response.setStatus("success");
+                                response.setMsg("Berhasil");
                             } catch (HibernateException e) {
+                                response.setStatus("error");
+                                response.setMsg("Error when Update status master ruangan "+e.getMessage());
                                 logger.error("[CheckupDetailBoImpl.saveEdit] Error when Update status master ruangan ", e);
                                 throw new GeneralBOException("[CheckupDetailBoImpl.saveEdit] Error when Update status master ruangan " + e.getMessage());
                             }
@@ -302,6 +336,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             }
         }
         logger.info("[CheckupDetailBoImpl.saveEdit] End <<<<<<<<");
+        return response;
     }
 
     private String dateFormater(String type){
@@ -329,8 +364,9 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     }
 
     @Override
-    public void saveAdd(HeaderDetailCheckup bean) throws GeneralBOException {
+    public CrudResponse saveAdd(HeaderDetailCheckup bean) throws GeneralBOException {
         logger.info("[CheckupDetailBoImpl.saveEdit] Start >>>>>>>");
+        CrudResponse response = new CrudResponse();
 
         // create new detail
         String id = "";
@@ -355,32 +391,14 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
 
         try {
             checkupDetailDao.addAndSave(detailCheckupEntity);
+            response.setStatus("success");
+            response.setMsg("Berhasil");
         } catch (HibernateException e) {
+            response.setStatus("error");
+            response.setMsg("Error When Saving data detail checkup "+e.getMessage());
             logger.error("[CheckupDetailBoImpl.saveAdd] Error When Saving data detail checkup" + e.getMessage());
             throw new GeneralBOException("[CheckupDetailBoImpl.saveAdd] Error When Saving data detail checkup");
         }
-
-        // insert into uang muka
-//        if (bean.getNoNota() != null && !"".equalsIgnoreCase(bean.getNoNota())){
-//            ItSimrsUangMukaPendaftaranEntity uangMuka = new ItSimrsUangMukaPendaftaranEntity();
-//            uangMuka.setId("UMK"+uangMukaDao.getNextId());
-//            uangMuka.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
-//            uangMuka.setJumlah(new BigInteger(String.valueOf(0)));
-//            uangMuka.setNoNota(bean.getNoNota());
-//            uangMuka.setStatusBayar("Y");
-//            uangMuka.setFlag("Y");
-//            uangMuka.setAction("C");
-//            uangMuka.setCreatedDate(bean.getCreatedDate());
-//            uangMuka.setCreatedWho(bean.getCreatedWho());
-//            uangMuka.setLastUpdate(bean.getLastUpdate());
-//            uangMuka.setLastUpdateWho(bean.getLastUpdateWho());
-//            try {
-//                uangMukaDao.addAndSave(uangMuka);
-//            } catch (HibernateException e){
-//                logger.error("[CheckupDetailBoImpl.saveAdd] Error When Saving uang muka" + e.getMessage());
-//                throw new GeneralBOException("[CheckupDetailBoImpl.saveAdd] Error When Saving uang muka");
-//            }
-//        }
 
         // saving dokter
         if (bean.getIdDokter() != null && !"".equalsIgnoreCase(bean.getIdDokter()) && detailCheckupEntity.getIdDetailCheckup() != null && !"".equalsIgnoreCase(detailCheckupEntity.getIdDetailCheckup())) {
@@ -389,7 +407,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             dokterTeam.setIdDokter(bean.getIdDokter());
             dokterTeam.setCreatedWho(bean.getCreatedWho());
             dokterTeam.setLastUpdateWho(bean.getLastUpdateWho());
-            saveTeamDokter(dokterTeam);
+            response = saveTeamDokter(dokterTeam);
         }
 
         // for rawat Inap
@@ -401,7 +419,11 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
 
             try {
                 dokterEntities = dokterTeamDao.getByCriteria(hsCriteria);
+                response.setStatus("success");
+                response.setMsg("Berhasil");
             } catch (HibernateException e) {
+                response.setStatus("error");
+                response.setMsg("Errro when search dokter team "+e.getMessage());
                 logger.error("[CheckupDetailBoImpl.saveAdd] Error When getting data dokter team" + e.getMessage());
                 throw new GeneralBOException("[CheckupDetailBoImpl.saveAdd] Error When getting data dokter team");
             }
@@ -417,7 +439,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                 dokterTeam.setIdDokter(dokTeam.getIdDokter());
                 dokterTeam.setCreatedWho(bean.getCreatedWho());
                 dokterTeam.setLastUpdateWho(bean.getLastUpdateWho());
-                saveTeamDokter(dokterTeam);
+                response = saveTeamDokter(dokterTeam);
             }
 
             // save to table rawat inap
@@ -427,7 +449,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             rawatInap.setNoCheckup(bean.getNoCheckup());
             rawatInap.setCreatedDate(bean.getCreatedDate());
             rawatInap.setCreatedWho(bean.getCreatedWho());
-            saveRawatInap(rawatInap);
+            response = saveRawatInap(rawatInap);
 
             if (bean.getTindakanList() != null && bean.getTindakanList().size() > 0) {
                 for (Tindakan tindakan : bean.getTindakanList()) {
@@ -484,13 +506,19 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
 
                                 try {
                                     riwayatTindakanDao.addAndSave(riwayatTindakan);
+                                    response.setStatus("success");
+                                    response.setMsg("Berhasil");
                                 } catch (HibernateException e) {
+                                    response.setStatus("error");
+                                    response.setMsg("Error when saving tindakan rawat "+e.getMessage());
                                     logger.error("[CheckupBoImpl FOunf error]" + e.getMessage());
                                 }
 
                             }
 
                         } catch (HibernateException e) {
+                            response.setStatus("error");
+                            response.setMsg("Error when saving tindakan rawat "+e.getMessage());
                             logger.error("[CheckupBoImpl.saveAdd] Error When Saving tindakan rawat" + e.getMessage());
                             throw new GeneralBOException("[CheckupBoImpl.saveAdd] Error When Saving tindakan rawat" + e.getMessage());
                         }
@@ -527,17 +555,33 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
 
             try {
                 uangMukaDao.addAndSave(uangMukaPendaftaranEntity);
+                response.setStatus("success");
+                response.setMsg("Berhasil");
             } catch (HibernateException e){
+                response.setStatus("error");
+                response.setMsg("Error When Saving uang muka "+e.getMessage());
                 logger.error("[CheckupBoImpl.saveAdd] Error When Saving" +e.getMessage());
                 throw new GeneralBOException("[CheckupBoImpl.saveAdd] Error When Saving"+ e.getMessage());
             }
         }
 
+        //saving diagnosa
+        if (bean.getDiagnosa() != null && !"".equalsIgnoreCase(bean.getDiagnosa()) && detailCheckupEntity.getIdDetailCheckup() != null && !"".equalsIgnoreCase(detailCheckupEntity.getIdDetailCheckup())) {
+            DiagnosaRawat diagnosaRawat = new DiagnosaRawat();
+            diagnosaRawat.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
+            diagnosaRawat.setIdDiagnosa(bean.getDiagnosa());
+            diagnosaRawat.setKeteranganDiagnosa(bean.getNamaDiagnosa());
+            diagnosaRawat.setJenisDiagnosa("0");
+            response = saveDiagnosa(diagnosaRawat);
+        }
+
         logger.info("[CheckupDetailBoImpl.saveEdit] End <<<<<<<<");
+        return response;
     }
 
-    private void saveTeamDokter(DokterTeam bean) {
+    private CrudResponse saveTeamDokter(DokterTeam bean) {
         logger.info("[CheckupDetailBoImpl.saveTeamDokter] Start >>>>>>>>");
+        CrudResponse response = new CrudResponse();
 
         ItSimrsDokterTeamEntity entity = new ItSimrsDokterTeamEntity();
         String id = getNextTeamDokterId();
@@ -554,16 +598,60 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
 
         try {
             dokterTeamDao.addAndSave(entity);
+            response.setStatus("success");
+            response.setMsg("Berhasil");
         } catch (HibernateException e) {
+            response.setStatus("error");
+            response.setMsg("Error when save add dokter team "+e.getMessage());
             logger.error("[CheckupDetailBoImpl.saveTeamDokter] Error when save add dokter team ", e);
             throw new GeneralBOException("[CheckupDetailBoImpl.saveTeamDokter] Error when save add dokter team " + e.getMessage());
         }
 
         logger.info("[CheckupDetailBoImpl.savaAdd] End <<<<<<<<");
+        return response;
     }
 
-    private void saveRawatInap(RawatInap bean) {
+    public CrudResponse saveDiagnosa(DiagnosaRawat bean) throws GeneralBOException {
+        logger.info("[DiagnosaRawatBoImpl.saveAdd] Start >>>>>>>>>");
+        CrudResponse response = new CrudResponse();
+
+        if (bean != null && bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())) {
+            ItSimrsDiagnosaRawatEntity entity = new ItSimrsDiagnosaRawatEntity();
+
+            String id = getNextIdDiagnosa();
+            entity.setIdDiagnosaRawat("DGR" + id);
+            entity.setIdDiagnosa(bean.getIdDiagnosa());
+            entity.setIdDetailCheckup(bean.getIdDetailCheckup());
+            entity.setKeteranganDiagnosa(bean.getKeteranganDiagnosa());
+            entity.setJenisDiagnosa(bean.getJenisDiagnosa());
+            entity.setTipe(bean.getTipe());
+            entity.setFlag("Y");
+            entity.setAction("U");
+            entity.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+            entity.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+            entity.setCreatedWho(CommonUtil.userLogin());
+            entity.setLastUpdateWho(CommonUtil.userLogin());
+
+            try {
+                diagnosaRawatDao.addAndSave(entity);
+                response.setStatus("success");
+                response.setMsg("Bewrhasil");
+            } catch (HibernateException e) {
+                response.setStatus("error");
+                response.setMsg("Error when saveing diagnosa "+e.getMessage());
+                logger.error("[DiagnosaRawatBoImpl.saveAdd] Error when saving diagnosa ", e);
+                throw new GeneralBOException("Error when saving diagnosa " + e.getMessage());
+            }
+        }
+
+        logger.info("[DiagnosaRawatBoImpl.saveAdd] End <<<<<<<<<");
+        return response;
+    }
+
+    private CrudResponse saveRawatInap(RawatInap bean) {
         logger.info("[CheckupDetailBoImpl.saveRawatInap] Start >>>>>>>>");
+        CrudResponse response = new CrudResponse();
+
         if (bean.getNoCheckup() != null && !"".equalsIgnoreCase(bean.getNoCheckup()) &&
                 bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())) {
             ItSimrsRawatInapEntity entity = new ItSimrsRawatInapEntity();
@@ -605,7 +693,11 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
 
             try {
                 rawatInapDao.addAndSave(entity);
+                response.setStatus("success");
+                response.setMsg("berhasil");
             } catch (HibernateException e) {
+                response.setStatus("error");
+                response.setMsg(" Error when save add Rawat Inap "+e.getMessage());
                 logger.error("[CheckupDetailBoImpl.saveRawatInap] Error when save add Rawat Inap ", e);
                 throw new GeneralBOException("[CheckupDetailBoImpl.saveRawatInap] Error when save add  Rawat Inap " + e.getMessage());
             }
@@ -624,7 +716,11 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
 
                 try {
                     ruanganDao.updateAndSave(ruanganEntity);
+                    response.setStatus("success");
+                    response.setMsg("berhasil");
                 } catch (HibernateException e) {
+                    response.setStatus("error");
+                    response.setMsg("Error When Saving data detail checkup "+e.getMessage());
                     logger.error("[CheckupDetailBoImpl.saveRawatInap] Error when Update data ruangan ", e);
                     throw new GeneralBOException("[CheckupDetailBoImpl.saveRawatInap] Error when Update data ruangan " + e.getMessage());
                 }
@@ -632,6 +728,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         }
 
         logger.info("[CheckupDetailBoImpl.saveRawatInap] End <<<<<<<<");
+        return response;
     }
 
     @Override
@@ -1129,6 +1226,16 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         return dokterList;
     }
 
+    private String getNextIdDiagnosa() {
+        String id = "";
+        try {
+            id = diagnosaRawatDao.getNextSeq();
+        } catch (HibernateException e) {
+            logger.error("[DiagnosaRawatBoImpl.getNextId] Error when get next diagnosa rawat id ", e);
+        }
+        return id;
+    }
+
     private String getNextDetailCheckupId() {
         String id = "";
         try {
@@ -1257,5 +1364,9 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
 
     public void setDokterDao(DokterDao dokterDao) {
         this.dokterDao = dokterDao;
+    }
+
+    public void setDiagnosaRawatDao(DiagnosaRawatDao diagnosaRawatDao) {
+        this.diagnosaRawatDao = diagnosaRawatDao;
     }
 }

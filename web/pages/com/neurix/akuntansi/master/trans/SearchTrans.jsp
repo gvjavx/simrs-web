@@ -143,7 +143,7 @@
                                                 <tr>
                                                     <td align="center">
                                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
-                                                                   height="300" width="550" autoOpen="false"
+                                                                   height="400" width="550" autoOpen="false"
                                                                    title="Tipe Transaksi">
                                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                                         </sj:dialog>
@@ -180,6 +180,7 @@
                                                             </display:column>
                                                             <display:column property="transId" sortable="true" title="Transaksi ID" />
                                                             <display:column property="transName" sortable="true" title="Nama Transaksi"  />
+                                                            <display:column property="flagSumberBaru" sortable="true" title="Sumber Baru ?"  />
                                                             <display:column property="flag" sortable="true" title="Flag" />
                                                             <display:column property="createdWho" sortable="true" title="Created Who"/>
                                                             <display:column property="lastUpdate" sortable="true" title="Last Update"/>

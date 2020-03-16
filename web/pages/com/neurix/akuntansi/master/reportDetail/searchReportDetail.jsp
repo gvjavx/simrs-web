@@ -56,7 +56,7 @@
     <script src="<s:url value="/pages/plugins/tree/jquery.treegrid.bootstrap3.js"/>"></script>
     <script src="<s:url value="/pages/plugins/tree/jquery.treegrid.js"/>"></script>
     <script src="<s:url value="/pages/plugins/tree/lodash.js"/>"></script>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/ReportDetailAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/LaporanAkuntansiAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/pages/dist/js/akuntansi.js"/>'></script>
 </head>
 <body class="hold-transition skin-blue sidebar-mini" >
@@ -87,12 +87,19 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Report ID</label>
                                     <div class="col-sm-4">
-                                        <s:action id="comboLaporan" namespace="/laporanAkuntansi" name="searchLaporanAkuntansi_laporanAkuntansi"/>
-                                        <s:select list="#comboLaporan.listComboLaporanAkuntansi" id="report_id"
+                                        <s:action id="comboLaporan" namespace="/laporanAkuntansi" name="searchSelectReport_laporanAkuntansi"/>
+                                        <s:select list="#comboLaporan.listComboLaporanAkuntansi" id="report_id" onchange="listTipeLaporan()"
                                                   listKey="laporanAkuntansiId" listValue="laporanAkuntansiName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                     </div>
                                 </div>
-
+                                <div id="grup-tipe-laporan" class="form-group">
+                                    <label class="control-label col-sm-4">Tipe Laporan</label>
+                                    <div class="col-sm-4">
+                                        <s:select list="#{'hutang_usaha':'Hutang Usaha', 'piutang_usaha' : 'Piutang Usaha', 'uang_muka':'Uang Muka','piutang_pasien':'Piutang Pasien','uang_muka_p':'Uang Muka Pasien'}"
+                                                  id="tipeLaporan" name="laporanAkuntansi.tipeLaporanId"
+                                                  headerKey="" headerValue="[Select One]" cssClass="form-control" />
+                                    </div>
+                                </div>
                                 <br>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4"></label>
@@ -164,17 +171,43 @@
 </body>
 </html>
 <script>
+    window.listTipeLaporan = function(){
+        var reportId = document.getElementById("report_id").value;
+        LaporanAkuntansiAction.getAdaTipeLaporan(reportId,function (status) {
+            console.log(status);
+           if (status=="Y"){
+               $('#tipeLaporan').empty();
+               LaporanAkuntansiAction.searchTipeLaporan(function(listdata){
+                   $.each(listdata, function (i, item) {
+                       $('#tipeLaporan').append($("<option></option>")
+                           .attr("value",item.tipeLaporan)
+                           .text(item.tipeLaporanName));
+                   });
+               });
+               $('#grup-tipe-laporan').show();
+           } else{
+               $('#tipeLaporan').empty();
+               $('#tipeLaporan').append($("<option></option>")
+                   .attr("value","")
+                   .text(""));
+               $('#grup-tipe-laporan').hide();
+           }
+        });
+    };
+
     $(document).ready(function () {
+        $('#grup-tipe-laporan').hide();
         $("#btnSaveDetailReport").hide();
         $("#btnSaveDetailReport").click(function () {
             if (confirm("Apakah anda ingin menyimpan perubahan COA pada report ini ?")){
                 var data = $('.tree').tableToJSON();
                 var reportId = $('#report_id').val();
-                ReportDetailAction.deleteReportDetail(reportId,function (listData) {});
+                var tipeLaporan = $('#tipeLaporan').val();
+                ReportDetailAction.deleteReportDetail(reportId,tipeLaporan,function (listData) {});
                 $.each(data, function (i, item) {
                     var rekId = data[i]["Rekening Id"];
                     if ($('#check_' + i).prop("checked") == true) {
-                        ReportDetailAction.addReportDetail(reportId,rekId,function (listData) {
+                        ReportDetailAction.addReportDetail(reportId,rekId,tipeLaporan,function (listData) {
                         })
                     }
                 });
@@ -226,6 +259,7 @@
 
     function f1() {
         var reportId = document.getElementById("report_id").value;
+        var tipeLaporan = document.getElementById("tipeLaporan").value;
         if (reportId==""){
             alert("Report belum dipilih");
         } else{
@@ -233,7 +267,7 @@
             var data = [];
             var data2 = [];
             dwr.engine.setAsync(false);
-            ReportDetailAction.initReportDetailSearch(reportId, function(listdata){
+            ReportDetailAction.initReportDetailSearch(reportId,tipeLaporan, function(listdata){
                 data = listdata;
                 data2 = new Array();
                 data2_hasil = new Array();

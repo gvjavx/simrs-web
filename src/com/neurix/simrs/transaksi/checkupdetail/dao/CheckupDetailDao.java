@@ -191,7 +191,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     detailCheckup.setIdJenisPeriksaPasien(obj[13] == null ? "" : obj[13].toString());
                     detailCheckup.setStatusBayar(obj[12] == null ? "" : obj[12].toString());
 
-                    if ("0".equalsIgnoreCase(detailCheckup.getStatusPeriksa())) {
+                    if ("0".equalsIgnoreCase(detailCheckup.getStatusPeriksa()) || "1".equalsIgnoreCase(detailCheckup.getStatusPeriksa())) {
                         if ("bpjs".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien())) {
 
                             HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
@@ -458,6 +458,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "AND hd.id_pasien LIKE :idPasien \n" +
                     "AND hd.nama LIKE :nama \n" +
                     "AND dt.id_pelayanan LIKE :idPelayanan \n" +
+                    "AND dt.is_kronis IS NULL \n" +
                     "AND hd.id_jenis_periksa_pasien LIKE :jenisPasien \n" +
                     "AND dt.status_periksa LIKE :status";
 
@@ -929,6 +930,51 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
             }
         }
         return id;
+    }
+
+    public HeaderDetailCheckup getBiayaTindakan(String idDetail) {
+
+        HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+
+        if(idDetail != null && !"".equalsIgnoreCase(idDetail)){
+
+            String SQL = "SELECT \n" +
+                    "a.id_detail_checkup, \n" +
+                    "SUM(a.total_tarif) as total,\n" +
+                    "b.tarif_bpjs,\n" +
+                    "b.kode_cbg,\n" +
+                    "c.id_pasien,\n" +
+                    "c.id_jenis_periksa_pasien\n" +
+                    "FROM it_simrs_riwayat_tindakan a\n" +
+                    "INNER JOIN it_simrs_header_detail_checkup b ON a.id_detail_checkup = b.id_detail_checkup\n" +
+                    "INNER JOIN it_simrs_header_checkup c ON b.no_checkup = c.no_checkup\n" +
+                    "WHERE a.id_detail_checkup = :idDetail\n" +
+                    "GROUP BY \n" +
+                    "a.id_detail_checkup, \n" +
+                    "b.tarif_bpjs, \n" +
+                    "b.kode_cbg,\n" +
+                    "c.id_pasien,\n" +
+                    "c.id_jenis_periksa_pasien";
+
+            List<Object[]> results = new ArrayList<>();
+            results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("idDetail", idDetail)
+                    .list();
+
+            if (results.size() > 0) {
+
+                Object[] objects = results.get(0);
+                detailCheckup.setIdDetailCheckup(objects[0] == null ? "" : objects[0].toString());
+                detailCheckup.setTarifTindakan(objects[1] == null ? new BigDecimal(String.valueOf(0)) : new BigDecimal(objects[1].toString()));
+                detailCheckup.setTarifBpjs(objects[2] == null ? new BigDecimal(String.valueOf(0)) : new BigDecimal(objects[2].toString()));
+                detailCheckup.setKodeCbg(objects[3] == null ? "" : objects[3].toString());
+                detailCheckup.setIdPasien(objects[4] == null ? "" : objects[4].toString());
+                detailCheckup.setIdJenisPeriksaPasien(objects[5] == null ? "" : objects[5].toString());
+            }
+
+        }
+
+        return detailCheckup;
     }
 
     public String getNextId() {

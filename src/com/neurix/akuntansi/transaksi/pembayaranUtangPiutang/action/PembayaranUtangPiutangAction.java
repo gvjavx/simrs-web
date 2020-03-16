@@ -144,6 +144,12 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
     public String add() {
         logger.info("[PembayaranUtangPiutangAction.add] start process >>>");
         PembayaranUtangPiutang addPembayaranUtangPiutang = new PembayaranUtangPiutang();
+        String branchId = CommonUtil.userBranchLogin();
+        if (branchId!=null){
+            addPembayaranUtangPiutang.setBranchId(branchId);
+        }else{
+            addPembayaranUtangPiutang.setBranchId("");
+        }
         setPembayaranUtangPiutang(addPembayaranUtangPiutang);
         setAddOrEdit(true);
         setAdd(true);
@@ -424,11 +430,11 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
                 logId = pembayaranUtangPiutangBoProxy.saveErrorMessage(e.getMessage(), "PembayaranUtangPiutangAction.saveAdd");
             } catch (GeneralBOException e1) {
                 logger.error("[PembayaranUtangPiutangAction.saveAdd] Error when saving error,", e1);
-                return ERROR;
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[PembayaranUtangPiutangAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            throw new GeneralBOException(e.getMessage());
         }
 
         session.removeAttribute("listOfResult");
@@ -465,6 +471,13 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         session.removeAttribute("listPembayaranDetailModal");
         session.setAttribute("listOfResult", listOfsearchPembayaranUtangPiutang);
 
+        String branchId = CommonUtil.userBranchLogin();
+        if (branchId!=null){
+            searchPembayaranUtangPiutang.setBranchId(branchId);
+        }else{
+            searchPembayaranUtangPiutang.setBranchId("");
+        }
+        setPembayaranUtangPiutang(searchPembayaranUtangPiutang);
         logger.info("[PembayaranUtangPiutangAction.search] end process <<<");
 
         return SUCCESS;
@@ -474,7 +487,14 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
     public String initForm() {
         logger.info("[PembayaranUtangPiutangAction.initForm] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
-
+        String branchId = CommonUtil.userBranchLogin();
+        PembayaranUtangPiutang data = new PembayaranUtangPiutang();
+        if (branchId!=null){
+            data.setBranchId(branchId);
+        }else{
+            data.setBranchId("");
+        }
+        setPembayaranUtangPiutang(data);
         session.removeAttribute("listOfResult");
         session.removeAttribute("listOfResultPembayaranDetail");
         logger.info("[PembayaranUtangPiutangAction.initForm] end process >>>");

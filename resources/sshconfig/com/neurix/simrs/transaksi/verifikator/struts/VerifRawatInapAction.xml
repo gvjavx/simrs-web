@@ -75,12 +75,12 @@
 
             <result name="search">/pages/com/neurix/simrs/transaksi/verifikator/searchVerifikasiRawatInap.jsp</result>
 
-            <!--<result name="print_struk_resep_pasien" type="jasper">-->
-                <!--<param name="location">/pages/report/com/neurix/simrs/printStrukResepPasien.jasper</param>-->
-                <!--<param name="connection">connection</param>-->
-                <!--<param name="format">PDF</param>-->
-                <!--<param name="reportParameters">reportParams</param>-->
-            <!--</result>-->
+            <result name="print_final_claim" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/printFinalClaim.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
 
         </action>
 

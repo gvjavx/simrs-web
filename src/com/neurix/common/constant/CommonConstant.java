@@ -42,6 +42,7 @@ public class CommonConstant {
     public final static String RESOURCE_PATH_KTP_PASIEN = "/upload/ktp_pasien/";
     public final static String RESOURCE_PATH_DOC_RUJUK_PASIEN = "/upload/surat_rujuk/";
     public final static String RESOURCE_PATH_DOC_PO = "/upload/surat_po/";
+    public final static String RESOURCE_PATH_TTD_PASIEN = "/upload/ttd_pasien/";
 
     public final static String RESOURCE_PATH_USER_UPLOAD_PAYMENT_BANK = "/pages/upload/";
     public final static String RESOURCE_PATH_USER_UPLOAD = "/pages/upload/image/profile/";
@@ -112,8 +113,11 @@ public class CommonConstant {
 //    public final static String URL_IMAGE_LOGO_REPORT = "C:\\tomcat-7-64x\\webapps\\simrs\\pages\\images\\LOGO-RW.png";
 //    public final static String URL_LOGO_REPORT = "C:\\tomcat-7-64x\\webapps\\simrs\\pages\\images\\";
 
-    public final static String URL_IMAGE_LOGO_REPORT = "/opt/tomcat/webapps/simrs/pages/images/LOGO-RW.png";
-    public final static String URL_LOGO_REPORT = "/opt/tomcat/webapps/simrs/pages/images/";
+    public final static String URL_IMAGE_LOGO_REPORT = "C:\\apache-tomcat-8.5.40\\webapps\\simrs\\pages\\images\\LOGO-RW.png";
+    public final static String URL_LOGO_REPORT = "C:\\apache-tomcat-8.5.40\\webapps\\simrs\\pages\\images\\";
+
+//    public final static String URL_IMAGE_LOGO_REPORT = "/opt/tomcat/webapps/simrs/pages/images/LOGO-RW.png";
+//    public final static String URL_LOGO_REPORT = "/opt/tomcat/webapps/simrs/pages/images/";
 
     public final static String RESOURCE_DOCUMENT_PAYROLL = "/opt/tomcat/webapps/mnt/documents/";
 
@@ -180,6 +184,7 @@ public class CommonConstant {
     public final static String LOGO_RS01 = "/pages/images/RS01.png";
     public final static String LOGO_RS02 = "/pages/images/RS02.png";
     public final static String LOGO_RS03 = "/pages/images/RS03.png";
+    public final static String LOGO_KP = "/pages/images/KP.png";
     public final static String LOGO_NMU = "/pages/images/logo-nmu-copy.png";
 
     public final static String LOGO_REPORT_PAYROLL = "C:\\tomcat-7-64x\\webapps\\simrs\\pages\\images\\logo-nmu-copy.png";

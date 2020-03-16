@@ -34,7 +34,7 @@
             var periodeBulan = document.getElementById("periodeBulan").value;
             var tipeLaporan = document.getElementById("tipeLaporanId").value;
 
-            if ( unit != '' && periodeTahun != ''&& periodeBulan != '') {
+            if ( unit != '' && periodeTahun != ''&& periodeBulan != ''&&tipeLaporan!='') {
                 event.originalEvent.options.submit = false;
                 var url = "printReportIkhtisarSubBukuBesar_laporanAkuntansi.action?laporanAkuntansi.tipeLaporan="+tipeLaporan+"&laporanAkuntansi.unit="+unit+"&laporanAkuntansi.tahun="+periodeTahun+"&laporanAkuntansi.bulan="+periodeBulan;
                 window.open(url,'_blank');
@@ -49,6 +49,9 @@
                 }
                 if ( periodeBulan == '') {
                     msg += 'Field <strong>Bulan </strong> masih belum dipilih' + '<br/>';
+                }
+                if ( tipeLaporan == '') {
+                    msg += 'Field <strong>Tipe Laporan </strong> masih belum dipilih' + '<br/>';
                 }
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
@@ -98,7 +101,6 @@
                             <tr>
                                 <td align="center">
                                     <s:form id="laporanAkuntansiForm" method="post"  theme="simple" namespace="/laporanAkuntansi" action="printReportNeracaMutasi_laporanAkuntansi.action" cssClass="form-horizontal">
-                                        <s:hidden name="laporanAkuntansi.tipeLaporan" id="tipeLaporanId"/>
                                         <table>
                                             <tr>
                                                 <td width="10%" align="center">
@@ -109,22 +111,32 @@
                                         <table>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Tipe Laporan :</small></label>
-                                                </td>
-                                                <td>
-                                                    <s:textfield  id="tipeLaporanName" name="laporanAkuntansi.tipeLaporanName" readonly="true" cssClass="form-control"/>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
                                                     <label class="control-label"><small>Unit :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                                                        <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="laporanAkuntansi.unit"
-                                                                  listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                        <s:if test='#laporanAkuntansi.unit == "KP"'>
+                                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                                            <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="laporanAkuntansi.unit"
+                                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                        </s:if>
+                                                        <s:else>
+                                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                                            <s:select list="#initComboBranch.listOfComboBranch" id="branchIdView" name="laporanAkuntansi.unit" disabled="true"
+                                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                            <s:hidden id="branchId" name="laporanAkuntansi.unit" />
+                                                        </s:else>
                                                     </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label"><small>Tipe Laporan :</small></label>
+                                                </td>
+                                                <td>
+                                                    <s:select list="#{'hutang_usaha':'Hutang Usaha', 'piutang_usaha' : 'Piutang Usaha', 'uang_muka':'Uang Muka','piutang_pasien':'Piutang Pasien','uang_muka_p':'Uang Muka Pasien'}"
+                                                              id="tipeLaporanId" name="laporanAkuntansi.tipeLaporanId"
+                                                              headerKey="" headerValue="[Select One]" cssClass="form-control" />
                                                 </td>
                                             </tr>
                                             <tr>

@@ -26,6 +26,16 @@ public class TransaksiObatBatch {
     private String idBarang;
     private String diterimaFlag;
 
+    private String flagObatBpjs;
+
+    public String getFlagObatBpjs() {
+        return flagObatBpjs;
+    }
+
+    public void setFlagObatBpjs(String flagObatBpjs) {
+        this.flagObatBpjs = flagObatBpjs;
+    }
+
     public String getDiterimaFlag() {
         return diterimaFlag;
     }

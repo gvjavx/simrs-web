@@ -16,6 +16,9 @@
         <property name="tipePembayaran">
             <column name="tipe_pembayaran" sql-type="varchar" length="5" not-null="false" />
         </property>
+        <property name="flagSumberBaru">
+            <column name="flag_sumber_baru" sql-type="varchar" length="1" not-null="false" />
+        </property>
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />
         </property>

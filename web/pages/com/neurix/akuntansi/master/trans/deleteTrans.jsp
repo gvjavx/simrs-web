@@ -96,6 +96,18 @@
                             </table>
                         </td>
                     </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Sumber Baru ?</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:select list="#{'N':'Tidak'}" id="flagSumberBaruDelete" name="trans.flagSumberBaru"
+                                          headerKey="Y" headerValue="Iya" cssClass="form-control" disabled="true" />
+                                <s:hidden name="trans.flagSumberBaru" />
+                            </table>
+                        </td>
+                    </tr>
                 </table>
                 <br>
                 <div class="form-group">

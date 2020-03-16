@@ -102,6 +102,25 @@ public class HeaderDetailCheckup extends BaseModel{
 
     private String isKronis;
 
+    private String diagnosa;
+    private String namaDiagnosa;
+
+    public String getDiagnosa() {
+        return diagnosa;
+    }
+
+    public void setDiagnosa(String diagnosa) {
+        this.diagnosa = diagnosa;
+    }
+
+    public String getNamaDiagnosa() {
+        return namaDiagnosa;
+    }
+
+    public void setNamaDiagnosa(String namaDiagnosa) {
+        this.namaDiagnosa = namaDiagnosa;
+    }
+
     public String getIsKronis() {
         return isKronis;
     }

@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.3579476910000023"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="144"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -28,6 +28,7 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="reportParams.areaId" class="java.lang.String"/>
+	<parameter name="reportParams.tipeLaporan" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
   a.kode_rekening as koderekening,
@@ -129,6 +130,7 @@ FROM
           im_akun_report_detail
         WHERE
           report_id = $P{reportParams.reportId}
+	and tipe_laporan = $P{reportParams.tipeLaporan}
 	and flag='Y'
       )
     group by

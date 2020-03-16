@@ -174,7 +174,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
                 "\tposition_name\n" +
                 "from\n" +
                 "\tim_position\n" +
-                "where\n" + bagian + "\n" +
+                "where\n" + bagian + " and flag='Y'\n" +
                 "\torder by position_name";
 
         results = this.sessionFactory.getCurrentSession()
@@ -205,7 +205,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
                 "\tdepartment_id,\n" +
                 "\tdepartment_name\n" +
                 "from\n" +
-                "\tim_hris_department\n" +
+                "\tim_hris_department where flag='Y'\n" +
                 "order by department_name";
 
         results = this.sessionFactory.getCurrentSession()

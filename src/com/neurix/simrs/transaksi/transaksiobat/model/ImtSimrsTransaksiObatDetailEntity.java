@@ -43,6 +43,16 @@ public class ImtSimrsTransaksiObatDetailEntity implements Serializable{
     private String flagKronisDiambil;
     private String idPelayanan;
 
+    private String flagObatBpjs;
+
+    public String getFlagObatBpjs() {
+        return flagObatBpjs;
+    }
+
+    public void setFlagObatBpjs(String flagObatBpjs) {
+        this.flagObatBpjs = flagObatBpjs;
+    }
+
     public String getIdPelayanan() {
         return idPelayanan;
     }

@@ -295,11 +295,11 @@ public class TransAction extends BaseMasterAction {
                 logId = transBoProxy.saveErrorMessage(e.getMessage(), "TransBO.saveDelete");
             } catch (GeneralBOException e1) {
                 logger.error("[TransAction.saveDelete] Error when saving error,", e1);
-                return ERROR;
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[TransAction.saveDelete] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            throw new GeneralBOException(e.getMessage());
         }
 
         logger.info("[TransAction.saveDelete] end process <<<");

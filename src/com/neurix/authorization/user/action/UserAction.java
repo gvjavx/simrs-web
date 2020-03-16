@@ -904,6 +904,8 @@ public class UserAction extends BaseMasterAction {
             user.setLogoBranch(ServletActionContext.getRequest().getContextPath() +CommonConstant.LOGO_RS02);
         }else if("RS03".equalsIgnoreCase(branchId)){
             user.setLogoBranch(ServletActionContext.getRequest().getContextPath() +CommonConstant.LOGO_RS03);
+        }else if("KP".equalsIgnoreCase(branchId)){
+            user.setLogoBranch(ServletActionContext.getRequest().getContextPath() +CommonConstant.LOGO_KP);
         }
 
         logger.info("[UserAction.getUserData] PATH LOGO : "+user.getLogoBranch());

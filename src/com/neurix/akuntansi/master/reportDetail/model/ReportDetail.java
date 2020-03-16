@@ -13,6 +13,15 @@ public class ReportDetail extends BaseModel {
     private String reportDetailId;
     private String reportId;
     private String rekeningId;
+    private String tipeLaporan;
+
+    public String getTipeLaporan() {
+        return tipeLaporan;
+    }
+
+    public void setTipeLaporan(String tipeLaporan) {
+        this.tipeLaporan = tipeLaporan;
+    }
 
     public String getReportDetailId() {
         return reportDetailId;

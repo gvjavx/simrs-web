@@ -11,6 +11,7 @@
           p:mappingJurnalDao-ref="mappingJurnalDao"
           p:kodeRekeningDao-ref="kodeRekeningDao"
           p:tipeJurnalDao-ref="tipeJurnalDao"
+          p:transDao-ref="transDao"
     />
 
     <bean id="billingSystemBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

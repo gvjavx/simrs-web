@@ -41,7 +41,8 @@
         <property name="lastUpdateWho">
             <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
         </property>
-
-
+        <property name="kategoriInaBpjs">
+            <column name="kategori_ina_bpjs" sql-type="varchar" length="100" not-null="false" />
+        </property>
     </class>
 </hibernate-mapping>

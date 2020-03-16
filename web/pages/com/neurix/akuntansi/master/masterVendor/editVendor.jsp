@@ -156,6 +156,18 @@
                             </table>
                         </td>
                     </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Vendor Obat :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:select list="#{'N':'N'}" id="vendorObatEdit" name="masterVendor.vendorObat" disabled="true"
+                                          headerKey="Y" headerValue="Y" cssClass="form-control" />
+                                <s:hidden name="masterVendor.vendorObat"/>
+                            </table>
+                        </td>
+                    </tr>
                 </table>
                 <br>
                 <br>

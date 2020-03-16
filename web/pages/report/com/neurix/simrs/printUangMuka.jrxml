@@ -396,20 +396,20 @@
 		<band height="25" splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="24" splitType="Stretch"/>
+		<band height="17" splitType="Stretch"/>
 	</pageFooter>
 	<lastPageFooter>
-		<band height="59">
+		<band height="67">
 			<staticText>
-				<reportElement x="253" y="0" width="128" height="16" uuid="6ea40376-3aa2-4162-b61c-4e7d5012d7e1"/>
-				<textElement verticalAlignment="Middle">
+				<reportElement x="233" y="0" width="128" height="16" uuid="6ea40376-3aa2-4162-b61c-4e7d5012d7e1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[TTD]]></text>
+				<text><![CDATA[Kasir]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="253" y="39" width="128" height="20" uuid="ec7be05f-156c-4070-b64c-0ef16450baa3"/>
-				<textElement verticalAlignment="Middle">
+				<reportElement x="233" y="47" width="128" height="20" uuid="ec7be05f-156c-4070-b64c-0ef16450baa3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.petugas} == null ? "" : $P{reportParams.petugas}]]></textFieldExpression>

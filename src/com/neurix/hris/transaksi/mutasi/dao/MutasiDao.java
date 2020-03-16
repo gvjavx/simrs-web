@@ -51,7 +51,9 @@ public class MutasiDao extends GenericDao<ItMutasiEntity, String> {
             if (mapCriteria.get("tipe_mutasi")!=null) {
                 criteria.add(Restrictions.eq("tipeMutasi", (String) mapCriteria.get("tipe_mutasi")));
             }
-
+            if (mapCriteria.get("status")!=null) {
+                criteria.add(Restrictions.eq("status", (String) mapCriteria.get("status")));
+            }
             if (mapCriteria.get("branch_lama_id")!=null) {
                 criteria.add(Restrictions.eq("branchLamaId", (String) mapCriteria.get("branch_lama_id")));
             }
@@ -69,7 +71,6 @@ public class MutasiDao extends GenericDao<ItMutasiEntity, String> {
             if (mapCriteria.get("tanggal_efektif")!=null) {
                 criteria.add(Restrictions.eq("tanggalEfektif", mapCriteria.get("tanggal_efektif")));
             }
-
         }
 
         // Order by

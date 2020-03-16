@@ -74,7 +74,11 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "pel.nama_pelayanan,\n" +
                     "ranap.nama_ruangan,\n" +
                     "ranap.no_ruangan,\n" +
-                    "detail.id_detail_checkup, detail.no_sep, detail.tarif_bpjs, detail.is_kronis\n" +
+                    "detail.id_detail_checkup, \n" +
+                    "detail.no_sep, \n" +
+                    "detail.tarif_bpjs, \n" +
+                    "detail.is_kronis, \n" +
+                    "detail.kode_cbg\n" +
                     "FROM \n" +
                     "it_simrs_header_detail_checkup detail\n" +
                     "INNER JOIN im_simrs_status_pasien status ON status.id_status_pasien = detail.status_periksa\n" +
@@ -110,6 +114,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     headerDetailCheckup.setTarifBpjs(new BigDecimal(obj[9].toString()));
                 }
                 headerDetailCheckup.setIsKronis(obj[10] == null ? "" : obj[10].toString());
+                headerDetailCheckup.setKodeCbg(obj[11] == null ? "" : obj[11].toString());
                 return headerDetailCheckup;
             }
         }
@@ -684,7 +689,9 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "b.metode_pembayaran,\n" +
                     "b.no_jurnal,\n" +
                     "a.url_doc_rujuk,\n" +
-                    "b.url_ttd\n" +
+                    "b.url_ttd, \n" +
+                    "a.tinggi, \n" +
+                    "a.berat_badan \n" +
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
@@ -743,6 +750,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     checkup.setInvoice(obj[29] == null ? "" : obj[29].toString());
                     checkup.setUrlDocRujuk(obj[30] == null ? "" : CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_DOC_RUJUK_PASIEN+obj[30].toString());
                     checkup.setUrlTtd(obj[31] == null ? "" : obj[31].toString());
+                    checkup.setTinggi(obj[32] == null ? "" : obj[32].toString());
+                    checkup.setBerat(obj[33] == null ? "" : obj[33].toString());
 
                 }
             }

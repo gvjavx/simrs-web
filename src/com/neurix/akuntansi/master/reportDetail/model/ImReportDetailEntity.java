@@ -11,10 +11,10 @@ import java.sql.Timestamp;
  * To change this template use File | Settings | File Templates.
  */
 public class ImReportDetailEntity implements Serializable {
-
     private String reportDetailId;
     private String reportId;
     private String rekeningId;
+    private String tipeLaporan;
 
     private String flag;
     private String action;
@@ -22,6 +22,14 @@ public class ImReportDetailEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+    public String getTipeLaporan() {
+        return tipeLaporan;
+    }
+
+    public void setTipeLaporan(String tipeLaporan) {
+        this.tipeLaporan = tipeLaporan;
+    }
 
     public String getFlag() {
         return flag;

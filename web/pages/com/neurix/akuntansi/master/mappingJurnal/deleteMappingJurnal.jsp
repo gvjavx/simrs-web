@@ -113,149 +113,147 @@
     </section>
     <!-- Main content -->
     <section class="content">
-
-        <table width="100%" align="center">
-            <tr>
-                <td align="center">
-                    <s:form id="mappingJurnalForm" method="post"  theme="simple" namespace="/mappingJurnal" action="saveDelete_mappingJurnal.action" cssClass="well form-horizontal">
-                        <s:hidden name="addOrEdit"/>
-                        <s:hidden name="delete"/>
-                        <table>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-trash"></i> Delete Mapping Jurnal</h3>
+                    </div>
+                    <div class="box-body">
+                        <table width="100%" align="center">
                             <tr>
-                                <td width="10%" align="center">
-                                    <%@ include file="/pages/common/message.jsp" %>
-                                </td>
-                            </tr>
-                        </table>
-
-                        <table >
-                            <tr>
-                                <td>
-                                    <label class="control-label"><small>Tipe Jurnal :</small></label>
-                                </td>
-                                <td>
-                                    <table>
-                                        <s:action id="initComboTipeJurnal" namespace="/tipeJurnal" name="initComboTipeJurnal_tipeJurnal"/>
-                                        <s:select list="#initComboTipeJurnal.listOfComboTipeJurnal" id="tipeJurnalId" name="mappingJurnal.tipeJurnalId" disabled="true"
-                                                  listKey="tipeJurnalId" listValue="tipeJurnalName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                                        <s:hidden name="mappingJurnal.tipeJurnalId"/>
-                                    </table>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label class="control-label"><small>Transaksi Billing :</small></label>
-                                </td>
-                                <td>
-                                    <table>
-                                        <s:action id="comboTrans" namespace="/trans" name="initComboTrans_trans"/>
-                                        <s:select list="#comboTrans.listOfComboTrans" id="transId" name="mappingJurnal.transId"
-                                                  onchange="$(this).css('border','')" disabled="true"
-                                                  listKey="transId" listValue="transName" headerKey="" headerValue="[ Select One ]" cssClass="form-control" />
-                                        <s:hidden name="mappingJurnal.transId"/>
-                                    </table>
-                                </td>
-                            </tr>
-                        </table>
-                        <br>
-                        <br>
-                        <center>
-                            <table id="showdata" width="100%">
-                                <tr>
-                                    <td align="center">
-                                        <table style="width: 100%;" class="kodeRekeningTable table table-bordered" id="kodeRekeningTable">
+                                <td align="center">
+                                    <s:form id="mappingJurnalForm" method="post"  theme="simple" namespace="/mappingJurnal" action="saveDelete_mappingJurnal.action" cssClass="form-horizontal">
+                                        <s:hidden name="addOrEdit"/>
+                                        <s:hidden name="delete"/>
+                                        <table>
+                                            <tr>
+                                                <td width="10%" align="center">
+                                                    <%@ include file="/pages/common/message.jsp" %>
+                                                </td>
+                                            </tr>
                                         </table>
-                                    </td>
-                                </tr>
-                            </table>
-                        </center>
-                        <br>
-                        <div id="actions" class="form-actions">
-                            <table align="center">
-                                <tr>
-                                    <td>
-                                        <sj:submit targets="o" type="button" cssClass="btn btn-primary" formIds="mappingJurnalForm" id="save" name="save"
-                                                   onBeforeTopics="beforeProcessDelete" onCompleteTopics="closeDialog,successDialog"
-                                                   onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
-                                            <i class="fa fa-trash"></i>
-                                            Delete
-                                        </sj:submit>
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="add_mappingJurnal.action"/>'">
-                                            <i class="fa fa-refresh"></i> Reset
-                                        </button>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div id="actions" class="form-actions">
-                            <table>
-                                <tr>
-                                    <div id="crud">
-                                        <td>
-                                            <table>
-                                                <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"
-                                                           resizable="false"
-                                                           height="350" width="600" autoOpen="false" title="Saving ...">
-                                                    Please don't close this window, server is processing your request ...
-                                                    </br>
-                                                    </br>
-                                                    </br>
-                                                    <center>
-                                                        <img border="0" src="<s:url value="/pages/images/indicator-write.gif"/>" name="image_indicator_write">
-                                                    </center>
-                                                </sj:dialog>
 
-                                                <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false"
-                                                           height="200" width="400" autoOpen="false" title="Infomation Dialog"
-                                                           buttons="{
+                                        <table >
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label"><small>Tipe Jurnal :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:action id="initComboTipeJurnal" namespace="/tipeJurnal" name="initComboTipeJurnal_tipeJurnal"/>
+                                                        <s:select list="#initComboTipeJurnal.listOfComboTipeJurnal" id="tipeJurnalId" name="mappingJurnal.tipeJurnalId" disabled="true"
+                                                                  listKey="tipeJurnalId" listValue="tipeJurnalName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                        <s:hidden name="mappingJurnal.tipeJurnalId"/>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label"><small>Transaksi Billing :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:action id="comboTrans" namespace="/trans" name="initComboTrans_trans"/>
+                                                        <s:select list="#comboTrans.listOfComboTrans" id="transId" name="mappingJurnal.transId"
+                                                                  onchange="$(this).css('border','')" disabled="true"
+                                                                  listKey="transId" listValue="transName" headerKey="" headerValue="[ Select One ]" cssClass="form-control" />
+                                                        <s:hidden name="mappingJurnal.transId"/>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <br>
+                                        <br>
+                                        <center>
+                                            <table id="showdata" width="100%">
+                                                <tr>
+                                                    <td align="center">
+                                                        <table style="width: 100%;" class="kodeRekeningTable table table-bordered" id="kodeRekeningTable">
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </center>
+                                        <br>
+                                        <div id="actions" class="form-actions">
+                                            <table align="center">
+                                                <tr>
+                                                    <td>
+                                                        <sj:submit targets="o" type="button" cssClass="btn btn-primary" formIds="mappingJurnalForm" id="save" name="save"
+                                                                   onBeforeTopics="beforeProcessDelete" onCompleteTopics="closeDialog,successDialog"
+                                                                   onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
+                                                            <i class="fa fa-trash"></i>
+                                                            Delete
+                                                        </sj:submit>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="search_mappingJurnal.action"/>'">
+                                                            <i class="fa fa-arrow-left"></i> Back
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"
+                                                   resizable="false"
+                                                   height="350" width="600" autoOpen="false" title="Saving ...">
+                                            Please don't close this window, server is processing your request ...
+                                            </br>
+                                            </br>
+                                            </br>
+                                            <center>
+                                                <img border="0" src="<s:url value="/pages/images/indicator-write.gif"/>" name="image_indicator_write">
+                                            </center>
+                                        </sj:dialog>
+
+                                        <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false"
+                                                   height="200" width="400" autoOpen="false" title="Infomation Dialog"
+                                                   buttons="{
                                                               'OK':function() {
                                                                       close();
                                                                    }
                                                             }"
-                                                >
-                                                    <img border="0" src="<s:url value="/pages/images/icon_success.png"/>" name="icon_success">
-                                                    Record has been saved successfully.
-                                                </sj:dialog>
+                                        >
+                                            <img border="0" src="<s:url value="/pages/images/icon_success.png"/>" name="icon_success">
+                                            Record has been saved successfully.
+                                        </sj:dialog>
 
-                                                <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
-                                                           height="250" width="600" autoOpen="false" title="Error Dialog"
-                                                           buttons="{
+                                        <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
+                                                   height="250" width="600" autoOpen="false" title="Error Dialog"
+                                                   buttons="{
                                                                         'OK':function() { $('#error_dialog').dialog('close'); }
                                                                     }"
-                                                >
-                                                    <div class="alert alert-error fade in">
-                                                        <label class="control-label" align="left">
-                                                            <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessage"></p>
-                                                        </label>
-                                                    </div>
-                                                </sj:dialog>
+                                        >
+                                            <div class="alert alert-error fade in">
+                                                <label class="control-label" align="left">
+                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessage"></p>
+                                                </label>
+                                            </div>
+                                        </sj:dialog>
 
-                                                <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog" modal="true" resizable="false"
-                                                           height="280" width="500" autoOpen="false" title="Warning"
-                                                           buttons="{
+                                        <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog" modal="true" resizable="false"
+                                                   height="280" width="500" autoOpen="false" title="Warning"
+                                                   buttons="{
                                                                         'OK':function() { $('#error_validation_dialog').dialog('close'); }
                                                                     }"
-                                                >
-                                                    <div class="alert alert-error fade in">
-                                                        <label class="control-label" align="left">
-                                                            <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> Please check this field :
-                                                            <br/>
-                                                            <center><div id="errorValidationMessage"></div></center>
-                                                        </label>
-                                                    </div>
-                                                </sj:dialog>
-                                            </table>
-                                        </td>
-                                    </div>
-                                </tr>
-                            </table>
-                        </div>
-                    </s:form>
-                </td>
-            </tr>
-        </table>
+                                        >
+                                            <div class="alert alert-error fade in">
+                                                <label class="control-label" align="left">
+                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> Please check this field :
+                                                    <br/>
+                                                    <center><div id="errorValidationMessage"></div></center>
+                                                </label>
+                                            </div>
+                                        </sj:dialog>
+                                    </s:form>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Your Page Content Here -->
     </section>
     <!-- /.content -->

@@ -19,6 +19,15 @@ public class Position extends BaseModel implements Serializable, Comparable<Posi
     private String bagianId;
     private String kelompokName;
     private String bagianName;
+    private String flagDijabatSatuOrang;
+
+    public String getFlagDijabatSatuOrang() {
+        return flagDijabatSatuOrang;
+    }
+
+    public void setFlagDijabatSatuOrang(String flagDijabatSatuOrang) {
+        this.flagDijabatSatuOrang = flagDijabatSatuOrang;
+    }
 
     public String getBagianId() {
         return bagianId;

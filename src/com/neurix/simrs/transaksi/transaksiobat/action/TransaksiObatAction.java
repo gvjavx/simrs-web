@@ -17,6 +17,7 @@ import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.JurnalResponse;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
+import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
@@ -43,17 +44,26 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import javax.imageio.ImageIO;
+import sun.misc.BASE64Decoder;
+
 
 public class TransaksiObatAction extends BaseMasterAction {
 
@@ -1426,13 +1436,14 @@ public class TransaksiObatAction extends BaseMasterAction {
             if (checkup != null) {
 
                 try {
-                    pembelianObatList = transaksiObatBoProxy.getListRiwayatPembelianObat(idApprove);
+                    pembelianObatList = transaksiObatBoProxy.listObatResepApprove(idApprove);
                 } catch (GeneralBOException e) {
                     logger.error("[TransaksiObatAction.pembelianObat] ERROR when search list obat, ", e);
                     addActionError("[TransaksiObatAction.pembelianObat] ERROR when search list obat, " + e.getMessage());
                 }
 
                 List<MtSimrsRiwayatPembelianObat> pembelianObats = new ArrayList<>();
+
                 try {
                     pembelianObats = transaksiObatBoProxy.getRiwayatPembelianObat(idApprove);
                 } catch (HibernateException e) {
@@ -1478,6 +1489,8 @@ public class TransaksiObatAction extends BaseMasterAction {
             }
 
             reportParams.put("resepId", idResep);
+            reportParams.put("petugas", CommonUtil.userLogin());
+            reportParams.put("ttdPasien", CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_TTD_PASIEN);
             reportParams.put("idPasien", checkup.getIdPasien());
             reportParams.put("nik", checkup.getNoKtp());
             reportParams.put("nama", checkup.getNama());
@@ -1509,6 +1522,42 @@ public class TransaksiObatAction extends BaseMasterAction {
         }
 
         return "print_struk_resep_pasien";
+    }
+
+    public CheckResponse saveTtdPasien(String base64String, String idResep) throws IOException {
+        logger.info("base64 "+base64String);
+        CheckResponse response = new CheckResponse();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        TransaksiObatBo transaksiObatBo = (TransaksiObatBo) ctx.getBean("transaksiObatBoProxy");
+        BASE64Decoder decoder = new BASE64Decoder();
+        byte[] decodedBytes = decoder.decodeBuffer(base64String);
+        logger.info("Decoded upload data : " + decodedBytes.length);
+        String fileName = idResep+"-"+dateFormater("MM")+dateFormater("yy")+".png";
+        String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_TTD_PASIEN+fileName;
+        logger.info("File save path : " + uploadFile);
+        BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+
+        if (image == null) {
+            logger.error("Buffered Image is null");
+            response.setStatus("error");
+            return response;
+        }else{
+            File f = new File(uploadFile);
+            // write the image
+            ImageIO.write(image, "png", f);
+            response.setStatus("success");
+
+            response = transaksiObatBo.setTtdPasien(idResep, fileName);
+        }
+
+        return response;
+    }
+
+    private String dateFormater(String type) {
+        java.sql.Date date = new java.sql.Date(new java.util.Date().getTime());
+        DateFormat df = new SimpleDateFormat(type);
+        return df.format(date);
     }
 
 

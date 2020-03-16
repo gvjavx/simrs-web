@@ -158,9 +158,17 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                                                        <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="laporanAkuntansi.unit"
-                                                                  listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                        <s:if test='#laporanAkuntansi.unit == "KP"'>
+                                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                                            <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="laporanAkuntansi.unit"
+                                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                        </s:if>
+                                                        <s:else>
+                                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                                            <s:select list="#initComboBranch.listOfComboBranch" id="branchIdView" name="laporanAkuntansi.unit" disabled="true"
+                                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                            <s:hidden id="branchId" name="laporanAkuntansi.unit" />
+                                                        </s:else>
                                                     </table>
                                                 </td>
                                             </tr>
@@ -236,52 +244,6 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Kode Vendor :</small></label>
-                                                </td>
-                                                <td>
-                                                    <table>
-                                                        <s:textfield  id="masterId" name="laporanAkuntansi.masterId" required="true" cssClass="form-control" maxLength="10"/>
-                                                    </table>
-                                                    <script>
-                                                        $(document).ready(function() {
-                                                            var functions, mapped;
-                                                            $('#masterId').typeahead({
-                                                                minLength: 1,
-                                                                source: function (query, process) {
-                                                                    functions = [];
-                                                                    mapped = {};
-                                                                    var data = [];
-                                                                    dwr.engine.setAsync(false);
-                                                                    MasterAction.initTypeaheadMaster(query,function (listdata) {
-                                                                        data = listdata;
-                                                                    });
-                                                                    $.each(data, function (i, item) {
-                                                                        var labelItem = item.nomorVendor + " | " + item.nama;
-                                                                        mapped[labelItem] = {
-                                                                            id: item.nomorVendor,
-                                                                            nama: item.nama
-                                                                        };
-                                                                        functions.push(labelItem);
-                                                                    });
-                                                                    process(functions);
-                                                                },
-                                                                updater: function (item) {
-                                                                    var selectedObj = mapped[item];
-                                                                    $('#masterName').val(selectedObj.nama);
-                                                                    return selectedObj.id;
-                                                                }
-                                                            });
-                                                        });
-                                                    </script>
-                                                </td>
-                                                <td>
-                                                    <table>
-                                                        <s:textfield  id="masterName" name="laporanAkuntansi.masterName" required="true" readonly="true" cssClass="form-control"/>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
                                                     <label class="control-label"><small>Kode Rekening :</small></label>
                                                 </td>
                                                 <td>
@@ -327,6 +289,52 @@
                                                     <table>
                                                         <s:textfield  id="nama_kode_rekening" name="laporanAkuntansi.namaKodeRekening" required="true" readonly="true" cssClass="form-control"/>
                                                         <s:hidden  id="rekening_id" />
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label"><small>Kode Vendor :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:textfield  id="masterId" name="laporanAkuntansi.masterId" required="true" cssClass="form-control" maxLength="10"/>
+                                                    </table>
+                                                    <script>
+                                                        $(document).ready(function() {
+                                                            var functions, mapped;
+                                                            $('#masterId').typeahead({
+                                                                minLength: 1,
+                                                                source: function (query, process) {
+                                                                    functions = [];
+                                                                    mapped = {};
+                                                                    var data = [];
+                                                                    dwr.engine.setAsync(false);
+                                                                    MasterAction.initTypeaheadMaster(query,function (listdata) {
+                                                                        data = listdata;
+                                                                    });
+                                                                    $.each(data, function (i, item) {
+                                                                        var labelItem = item.nomorVendor + " | " + item.nama;
+                                                                        mapped[labelItem] = {
+                                                                            id: item.nomorVendor,
+                                                                            nama: item.nama
+                                                                        };
+                                                                        functions.push(labelItem);
+                                                                    });
+                                                                    process(functions);
+                                                                },
+                                                                updater: function (item) {
+                                                                    var selectedObj = mapped[item];
+                                                                    $('#masterName').val(selectedObj.nama);
+                                                                    return selectedObj.id;
+                                                                }
+                                                            });
+                                                        });
+                                                    </script>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:textfield  id="masterName" name="laporanAkuntansi.masterName" required="true" readonly="true" cssClass="form-control"/>
                                                     </table>
                                                 </td>
                                             </tr>
