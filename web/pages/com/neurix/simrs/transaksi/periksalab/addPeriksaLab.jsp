@@ -249,10 +249,10 @@
                                                 class="btn btn-success" id="load_ket"><i class="fa fa-spinner fa-spin"></i>
                                             Sedang Menyimpan...
                                         </button>
-                                        <button class="btn btn-primary" onclick="printPeriksaLab()"
-                                                style="margin-top: 15px;"><i
-                                                class="fa fa-print"></i> Print
-                                        </button>
+                                        <%--<button class="btn btn-primary" onclick="printPeriksaLab()"--%>
+                                                <%--style="margin-top: 15px;"><i--%>
+                                                <%--class="fa fa-print"></i> Print--%>
+                                        <%--</button>--%>
                                         <a href="initForm_periksalab.action" class="btn btn-warning" onclick=""
                                            style="margin-top: 15px;" id="back_ket"><i
                                                 class="fa fa-arrow-left"></i> Back
@@ -465,8 +465,11 @@
                         $('#success_dok').show().fadeOut(5000);
                         $('#save_ket').show();
                         $('#load_ket').hide();
+                        $('#info_dialog').dialog('open');
+                        $('#close_pos').val(2);
                     } else {
-
+                        $('#save_ket').show();
+                        $('#load_ket').hide();
                     }
                 }
             })
@@ -485,7 +488,7 @@
         if (back == 1) {
             desti = "#pos_lab";
         } else if (back == 2) {
-            window.location.href = 'search_checkupdetail.action';
+            window.location.href = 'initForm_periksalab.action';
         }
 
         $('html, body').animate({

@@ -10,6 +10,7 @@
 
     <bean id="masterVendorBo" class="com.neurix.akuntansi.master.masterVendor.bo.impl.MasterVendorBoImpl"
           p:masterVendorDao-ref="masterVendorDao"
+          p:vendorDao-ref="vendorDao"
     />
 
     <bean id="masterVendorBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

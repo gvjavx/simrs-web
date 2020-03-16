@@ -201,6 +201,7 @@
                                                             <display:column property="laporanAkuntansiName" sortable="true" title="Nama Laporan Akuntansi"  />
                                                             <display:column property="url" sortable="true" title="URL Laporan Akuntansi"  />
                                                             <display:column property="levelKodeRekening" sortable="true" title="Level Kode Rekening"  />
+                                                            <display:column property="adaTipeLaporan" title="Tipe Laporan"  />
                                                             <display:column property="flag" sortable="true" title="Flag" />
                                                             <display:column property="createdWho" sortable="true" title="Created Who"/>
                                                             <display:column property="lastUpdate" sortable="true" title="Last Update"/>

@@ -250,6 +250,9 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
             if (searchBean.getNoJurnal() != null && !"".equalsIgnoreCase(searchBean.getNoJurnal())) {
                 hsCriteria.put("no_jurnal", searchBean.getNoJurnal());
             }
+            if (searchBean.getBranchId() != null && !"".equalsIgnoreCase(searchBean.getBranchId())) {
+                hsCriteria.put("branch_id", searchBean.getBranchId());
+            }
             if (searchBean.getTanggal() != null) {
                 hsCriteria.put("tanggal", searchBean.getTanggal());
             }

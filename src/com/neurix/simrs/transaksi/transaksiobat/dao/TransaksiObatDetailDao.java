@@ -191,7 +191,7 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
             flag = bean.getFlag();
         }
 
-        String SQL = "SELECT a.id_permintaan_resep, a.id_detail_checkup, c.nama, d.keterangan, a.id_approval_obat FROM mt_simrs_permintaan_resep a\n" +
+        String SQL = "SELECT a.id_permintaan_resep, a.id_detail_checkup, c.nama, d.keterangan, a.id_approval_obat, c.id_jenis_periksa_pasien FROM mt_simrs_permintaan_resep a\n" +
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.id_detail_checkup = b.id_detail_checkup\n" +
                 "INNER JOIN it_simrs_header_checkup c ON b.no_checkup = c.no_checkup\n" +
                 "INNER JOIN im_simrs_status_pasien d ON a.status = d.id_status_pasien\n" +
@@ -240,6 +240,7 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                 permintaanResep.setStatus(statusName);
                 permintaanResep.setFlag(flag);
                 permintaanResep.setIdApprovalObat(obj[4].toString());
+                permintaanResep.setIdJenisPeriksa(obj[5].toString());
                 permintaanResepList.add(permintaanResep);
             }
         }
@@ -510,6 +511,66 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
         }
 
         return transaksiObatDetail;
+    }
+
+    public List<TransaksiObatDetail> getListObatResepApprove(String idApprove){
+
+        List<TransaksiObatDetail> transaksiObatDetailList = new ArrayList<>();
+
+        if (!"".equalsIgnoreCase(idApprove) && idApprove != null){
+
+            String SQL = "SELECT\n" +
+                    "a.id_permintaan_resep,\n" +
+                    "a.id_detail_checkup,\n" +
+                    "b.id_transaksi_obat_detail,\n" +
+                    "b.id_obat,\n" +
+                    "g.nama_obat,\n" +
+                    "b.jenis_satuan,\n" +
+                    "c.qty,\n" +
+                    "d.harga_jual,\n" +
+                    "(d.harga_jual * c.qty) as total,\n" +
+                    "e.id_pelayanan,\n" +
+                    "f.no_checkup,\n" +
+                    "f.id_pasien,\n" +
+                    "f.id_jenis_periksa_pasien\n" +
+                    "FROM mt_simrs_permintaan_resep a\n" +
+                    "INNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat\n" +
+                    "INNER JOIN (SELECT id_transaksi_obat_detail, SUM(qty_approve) as qty FROM mt_simrs_transaksi_obat_detail_batch WHERE approve_flag = 'Y'  GROUP BY id_transaksi_obat_detail)c ON b.id_transaksi_obat_detail = c.id_transaksi_obat_detail\n" +
+                    "INNER JOIN mt_simrs_harga_obat d ON b.id_obat = d.id_obat\n" +
+                    "INNER JOIN it_simrs_header_detail_checkup e ON a.id_detail_checkup = e.id_detail_checkup\n" +
+                    "INNER JOIN it_simrs_header_checkup f ON e.no_checkup = f.no_checkup\n" +
+                    "INNER JOIN (SELECT id_obat, nama_obat FROM im_simrs_obat GROUP BY id_obat, nama_obat) g ON b.id_obat = g.id_obat\n" +
+                    "WHERE a.id_approval_obat = :idApp \n";
+
+            List<Object[]> results = new ArrayList<>();
+            results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("idApp", idApprove)
+                    .list();
+
+            if (results.size() > 0){
+
+                for (Object[] objects: results){
+                    TransaksiObatDetail transaksiObatDetail = new TransaksiObatDetail();
+                    transaksiObatDetail.setIdPermintaanResep(objects[0] == null ? "" : objects[0].toString());
+                    transaksiObatDetail.setIdDetailCheckup(objects[1] == null ? "" : objects[1].toString());
+                    transaksiObatDetail.setIdTransaksiObatDetail(objects[2] == null ? "" : objects[2].toString());
+                    transaksiObatDetail.setIdObat(objects[3] == null ? "" : objects[3].toString());
+                    transaksiObatDetail.setNamaObat(objects[4] == null ? "" : objects[4].toString());
+                    transaksiObatDetail.setJenisSatuan(objects[5] == null ? "" : objects[5].toString());
+                    transaksiObatDetail.setQty(objects[6] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(objects[6].toString()));
+                    transaksiObatDetail.setHarga(objects[7] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(objects[7].toString()));
+                    transaksiObatDetail.setTotalHarga(objects[8] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(objects[8].toString()));
+                    transaksiObatDetail.setIdPelayanan(objects[9] == null ? "" : objects[9].toString());
+                    transaksiObatDetail.setNoCheckup(objects[10] == null ? "" : objects[10].toString());
+                    transaksiObatDetail.setIdPasien(objects[11] == null ? "" : objects[11].toString());
+                    transaksiObatDetail.setJenisPeriksaPasien(objects[12] == null ? "" : objects[12].toString());
+                    transaksiObatDetailList.add(transaksiObatDetail);
+                }
+
+            }
+        }
+
+        return transaksiObatDetailList;
     }
 
     public String getNextId(){

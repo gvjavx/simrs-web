@@ -15,6 +15,7 @@
           p:groupShiftDao-ref="groupShiftDao"
           p:shiftDao-ref="shiftDao"
           p:groupDao-ref="groupDao"
+          p:profesiDao-ref="profesiDao"
           p:personilPositionDao-ref="personilPositionDao"
           p:positionDao-ref="positionDao"
     />

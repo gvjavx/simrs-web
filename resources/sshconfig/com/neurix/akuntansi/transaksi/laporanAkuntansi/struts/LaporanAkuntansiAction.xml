@@ -67,6 +67,7 @@
             <exception-mapping exception="java.lang.Exception" result="global_error" />
             <exception-mapping exception="java.lang.Error" result="global_error" />
             <exception-mapping exception="java.lang.RuntimeException" result="global_error" />
+            <exception-mapping exception="com.neurix.common.exception.GeneralBOException" result="global_error" />
         </global-exception-mappings>
 
         <action name="*_laporanAkuntansi"
@@ -96,6 +97,7 @@
             <result name="search_laporan_ikhtisar_pendapatan">/pages/com/neurix/akuntansi/transaksi/laporanAkuntansi/report/searchIkhitisarPendapatanLaporanAkuntansi.jsp</result>
             <result name="search_laporan_aging">/pages/com/neurix/akuntansi/transaksi/laporanAkuntansi/report/searchAgingLaporanAkuntansi.jsp</result>
             <result name="search_laporan_mutasi_jurnal">/pages/com/neurix/akuntansi/transaksi/laporanAkuntansi/report/searchMutasiJurnalLaporanAkuntansi.jsp</result>
+            <result name="search_closing_kasir">/pages/com/neurix/akuntansi/transaksi/laporanAkuntansi/report/searchClosingKasir.jsp</result>
 
             <!-- HASIL LAPORAN -->
             <result name="print_report_akuntansi_neraca_saldo" type="jasper">
@@ -160,6 +162,12 @@
             </result>
             <result name="print_report_akuntansi_ikhitisar_pendapatan" type="jasper">
                 <param name="location">/pages/report/com/neurix/akuntansi/IkhtisarPendapatan.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+            <result name="print_report_closing_kasir" type="jasper">
+                <param name="location">/pages/report/com/neurix/akuntansi/ClosingKasir.jasper</param>
                 <param name="connection">connection</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>

@@ -29,6 +29,9 @@
         <property name="strataId">
             <column name="carrer_path_strata_id" sql-type="varchar" length="10"/>
         </property>
+        <property name="flagDijabatSatuOrang">
+            <column name="flag_dijabat_satu" sql-type="varchar" length="1"/>
+        </property>
         <property name="createdDate">
             <column name="created_date" sql-type="timestamp" length="29" precision="6"/>
         </property>

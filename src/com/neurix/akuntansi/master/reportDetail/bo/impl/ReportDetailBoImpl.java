@@ -37,7 +37,11 @@ public class ReportDetailBoImpl implements ReportDetailBo {
             List<ImReportDetailEntity> reportDetailEntityList= null;
             try {
                 // Get data from database by ID
-                reportDetailEntityList = reportDetailDao.getReportDetailByReportId(bean.getReportId());
+                if (bean.getTipeLaporan()==null){
+                    reportDetailEntityList = reportDetailDao.getReportDetailByReportId(bean.getReportId());
+                }else{
+                    reportDetailEntityList = reportDetailDao.getReportDetailByReportIdAndTipeLaporan(bean.getReportId(),bean.getTipeLaporan());
+                }
             } catch (HibernateException e) {
                 logger.error("[ReportDetailBoImpl.deleteReportDetail] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when searching data, please inform to your admin...," + e.getMessage());
@@ -84,6 +88,7 @@ public class ReportDetailBoImpl implements ReportDetailBo {
                     reportDetailEntity.setReportDetailId(bean.getReportDetailId());
                     reportDetailEntity.setReportId(bean.getReportId());
                     reportDetailEntity.setRekeningId(bean.getRekeningId());
+                    reportDetailEntity.setTipeLaporan(bean.getTipeLaporan());
 
                     reportDetailEntity.setFlag(bean.getFlag());
                     reportDetailEntity.setAction(bean.getAction());
@@ -122,6 +127,9 @@ public class ReportDetailBoImpl implements ReportDetailBo {
             if (searchBean.getReportId() != null && !"".equalsIgnoreCase(searchBean.getReportId())) {
                 hsCriteria.put("report_id", searchBean.getReportId());
             }
+            if (searchBean.getTipeLaporan() != null && !"".equalsIgnoreCase(searchBean.getTipeLaporan() )) {
+                hsCriteria.put("tipe_laporan", searchBean.getTipeLaporan());
+            }
             if (searchBean.getFlag() != null && !"".equalsIgnoreCase(searchBean.getFlag())) {
                 if ("N".equalsIgnoreCase(searchBean.getFlag())) {
                     hsCriteria.put("flag", "N");
@@ -150,6 +158,7 @@ public class ReportDetailBoImpl implements ReportDetailBo {
                     returnReportDetail.setReportDetailId(reportDetailEntity.getReportDetailId());
                     returnReportDetail.setReportId(reportDetailEntity.getReportId());
                     returnReportDetail.setRekeningId(reportDetailEntity.getRekeningId());
+                    returnReportDetail.setTipeLaporan(reportDetailEntity.getTipeLaporan());
 
                     returnReportDetail.setCreatedWho(reportDetailEntity.getCreatedWho());
                     returnReportDetail.setCreatedDate(reportDetailEntity.getCreatedDate());
@@ -184,6 +193,7 @@ public class ReportDetailBoImpl implements ReportDetailBo {
             imReportDetailEntity.setReportDetailId(reportDetailId);
             imReportDetailEntity.setReportId(bean.getReportId());
             imReportDetailEntity.setRekeningId(bean.getRekeningId());
+            imReportDetailEntity.setTipeLaporan(bean.getTipeLaporan());
 
             imReportDetailEntity.setFlag(bean.getFlag());
             imReportDetailEntity.setAction(bean.getAction());

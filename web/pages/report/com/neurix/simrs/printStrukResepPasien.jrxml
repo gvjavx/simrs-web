@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printStrukResepPasien" language="groovy" pageWidth="421" pageHeight="595" whenNoDataType="AllSectionsNoDetail" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
-	<property name="ireport.zoom" value="1.3310000000000022"/>
+	<property name="ireport.zoom" value="1.6105100000000039"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="65"/>
+	<property name="ireport.y" value="248"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -31,11 +31,15 @@
 		<field name="harga" class="java.lang.Integer"/>
 		<field name="totalHarga" class="java.lang.Integer"/>
 		<field name="jenisSatuan" class="java.lang.String"/>
+		<field name="qty" class="java.lang.String"/>
 		<variable name="totalObat" class="java.lang.Integer" calculation="Sum">
 			<variableExpression><![CDATA[$F{totalHarga} == null ? '' : $F{totalHarga}]]></variableExpression>
 		</variable>
 		<variable name="ppnObat" class="java.lang.Integer">
-			<variableExpression><![CDATA[$V{totalObat} == null ? '' : ($V{totalObat}*0.1)]]></variableExpression>
+			<variableExpression><![CDATA[$V{totalObat} == null ? 0 : ($V{totalObat}*0.1)]]></variableExpression>
+		</variable>
+		<variable name="totalbayar" class="java.lang.Integer">
+			<variableExpression><![CDATA[$V{totalObat} + $V{ppnObat}]]></variableExpression>
 		</variable>
 	</subDataset>
 	<parameter name="reportParams.resepId" class="java.lang.String"/>
@@ -58,35 +62,12 @@
 	<parameter name="reportParams.unit" class="java.lang.String"/>
 	<parameter name="reportParams.area" class="java.lang.String"/>
 	<parameter name="reportParams.idPasien" class="java.lang.String"/>
+	<parameter name="reportParams.ttdPasien" class="java.lang.String"/>
+	<parameter name="reportParams.petugas" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[SELECT * FROM im_simrs_obat LIMIT 1]]>
+		<![CDATA[SELECT ttd_pasien FROM mt_simrs_permintaan_resep WHERE id_permintaan_resep = $P{reportParams.resepId}]]>
 	</queryString>
-	<field name="id_obat" class="java.lang.String"/>
-	<field name="nama_obat" class="java.lang.String"/>
-	<field name="id_jenis_obat" class="java.lang.String"/>
-	<field name="harga" class="java.lang.Long"/>
-	<field name="flag" class="java.lang.String"/>
-	<field name="action" class="java.lang.String"/>
-	<field name="created_date" class="java.sql.Timestamp"/>
-	<field name="created_who" class="java.lang.String"/>
-	<field name="last_update" class="java.sql.Timestamp"/>
-	<field name="last_update_who" class="java.lang.String"/>
-	<field name="qty" class="java.lang.Long"/>
-	<field name="branch_id" class="java.lang.String"/>
-	<field name="id_pabrik" class="java.lang.String"/>
-	<field name="merk" class="java.lang.String"/>
-	<field name="qty_box" class="java.lang.Long"/>
-	<field name="lembar_per_box" class="java.lang.Long"/>
-	<field name="qty_lembar" class="java.lang.Long"/>
-	<field name="biji_per_lembar" class="java.lang.Long"/>
-	<field name="qty_biji" class="java.lang.Long"/>
-	<field name="average_harga_box" class="java.math.BigDecimal"/>
-	<field name="average_harga_lembar" class="java.math.BigDecimal"/>
-	<field name="average_harga_biji" class="java.math.BigDecimal"/>
-	<field name="harga_terakhir" class="java.math.BigDecimal"/>
-	<field name="id_seq_obat" class="java.lang.String"/>
-	<field name="expired_date" class="java.sql.Date"/>
-	<field name="id_barang" class="java.lang.String"/>
+	<field name="ttd_pasien" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -328,7 +309,7 @@
 								<textElement verticalAlignment="Middle">
 									<font size="8"/>
 								</textElement>
-								<text><![CDATA[Total Harga Obat]]></text>
+								<text><![CDATA[PPN Obat]]></text>
 							</staticText>
 							<staticText>
 								<reportElement x="0" y="20" width="80" height="20" uuid="c008b2bd-ee6b-40d1-a5bc-f6a545168b5b"/>
@@ -339,7 +320,7 @@
 								<textElement verticalAlignment="Middle">
 									<font size="8"/>
 								</textElement>
-								<text><![CDATA[PPN Obat]]></text>
+								<text><![CDATA[Total Harga Obat]]></text>
 							</staticText>
 						</jr:columnFooter>
 						<jr:detailCell height="20" rowSpan="1">
@@ -352,7 +333,7 @@
 								<textElement verticalAlignment="Middle">
 									<font size="8"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{idBarang}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{idObat}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -452,7 +433,7 @@
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="8"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{qtyApprove}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{qty}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -584,7 +565,7 @@
 								<textElement textAlignment="Right" verticalAlignment="Middle">
 									<font size="8"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$V{totalObat}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$V{ppnObat}]]></textFieldExpression>
 							</textField>
 							<textField pattern="#,##0">
 								<reportElement x="0" y="20" width="73" height="20" uuid="0c6da306-bacb-4f54-8ad3-257010e0a02a"/>
@@ -595,7 +576,7 @@
 								<textElement textAlignment="Right" verticalAlignment="Middle">
 									<font size="8"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$V{ppnObat}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$V{totalbayar}]]></textFieldExpression>
 							</textField>
 						</jr:columnFooter>
 						<jr:detailCell height="20" rowSpan="1">
@@ -616,6 +597,56 @@
 			</componentElement>
 		</band>
 	</detail>
+	<columnFooter>
+		<band height="50"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="50"/>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="83">
+			<staticText>
+				<reportElement x="0" y="0" width="115" height="14" uuid="a3e5cfc8-7658-4f4b-88d5-2eef79136045"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Pasien]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="266" y="0" width="115" height="14" uuid="213018be-dcbf-4466-a25e-25940f34998d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Apoteker]]></text>
+			</staticText>
+			<image onErrorType="Blank">
+				<reportElement x="11" y="14" width="94" height="50" uuid="b7b67a8d-416c-4c31-981f-e0f74f971f4c"/>
+				<imageExpression><![CDATA[$P{reportParams.ttdPasien}+$F{ttd_pasien}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="0" y="64" width="115" height="15" uuid="4f60337f-5ec1-4b92-9a74-4b1822a26ca4"/>
+				<box leftPadding="1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.nama} == null ? "" : $P{reportParams.nama}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="266" y="64" width="115" height="15" uuid="836afd73-8a7e-4c23-a9b5-09c6f342d6eb"/>
+				<box leftPadding="1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.petugas} == null ? "" : $P{reportParams.petugas}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="78" width="115" height="1" uuid="853638bc-c744-4e75-bfc0-cd68d3a3da9a"/>
+			</line>
+			<line>
+				<reportElement x="268" y="79" width="110" height="1" uuid="8b9d08bc-a15f-45be-be18-f9d84766d5e2"/>
+			</line>
+		</band>
+	</lastPageFooter>
 	<summary>
 		<band height="46" splitType="Stretch"/>
 	</summary>

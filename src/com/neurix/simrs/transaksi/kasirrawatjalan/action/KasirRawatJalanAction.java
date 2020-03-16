@@ -341,6 +341,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
                 reportParams.put("invoice", checkup.getInvoice());
                 reportParams.put("idPasien", checkup.getIdPasien());
+                reportParams.put("petugas", CommonUtil.userLogin());
                 reportParams.put("title", "Invoice Rawat Jalan Pasien");
                 reportParams.put("itemDataSource", itemData);
                 reportParams.put("listObatDetail", itemDataObat);
@@ -518,6 +519,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(uangMukaList);
 
                 reportParams.put("itemDataSource", itemData);
+                reportParams.put("petugas", CommonUtil.userLogin());
                 reportParams.put("idPasien", checkup.getIdPasien());
                 reportParams.put("unit", unit);
                 reportParams.put("area", area);

@@ -51,6 +51,16 @@ public class PermintaanResep{
 
     private String urlKtp;
 
+    private String ttdPasien;
+
+    public String getTtdPasien() {
+        return ttdPasien;
+    }
+
+    public void setTtdPasien(String ttdPasien) {
+        this.ttdPasien = ttdPasien;
+    }
+
     public String getNoCheckup() {
         return noCheckup;
     }

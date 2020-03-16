@@ -1173,7 +1173,7 @@ public class BpjsBoImpl extends BpjsService implements BpjsBo {
     @Override
     public SepResponse deleteSepBpjs(SepRequest sepRequest, String unitId) throws GeneralBOException {
         logger.info("[BPJSBoImpl.deleteSepBpjs] Start >>>>>>>");
-        String feature = CommonConstant.BPJS_BASE_URL + CommonConstant.BPJS_SERVICE_VKLAIM + "/SEP/Delete";
+        String feature = CommonConstant.BPJS_BASE_URL + CommonConstant.BPJS_SERVICE_VKLAIM + "SEP/Delete";
         JSONObject request = null;
         String jsonData="{\n" +
                 "       \"request\": {\n" +

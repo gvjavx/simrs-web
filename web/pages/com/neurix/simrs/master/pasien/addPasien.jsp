@@ -205,6 +205,7 @@
                                             <div class="col-md-8">
                                                 <s:textfield id="nama_pasien" name="pasien.nama"
                                                              onkeypress="$(this).css('border','')"
+                                                             onchange="changeNamaPasien()"
                                                              cssClass="form-control" cssStyle="margin-top: 7px"/>
                                             </div>
                                         </div>
@@ -511,6 +512,25 @@
 
     });
 
+    function convertSentenceCase(myString){
+        if(myString != null && myString != ''){
+            var rg = /(^\w{1}|\ \s*\w{1})/gi;
+            myString = myString.replace(rg, function(toReplace) {
+                return toReplace.toUpperCase();
+            });
+            console.log(myString);
+            return myString;
+        }else{
+            return "";
+        }
+    }
+
+    function changeNamaPasien(){
+        var nama = $('#nama_pasien').val();
+        var convertName = convertSentenceCase(nama.toLowerCase());
+        $('#nama_pasien').val(convertName);
+    }
+
     function checkBpjs(){
         var noBpjs = $('#no_bpjs').val();
         $('#btn-cek').html('<i class="fa fa-spinner fa-spin"></i> Loading...');
@@ -521,12 +541,14 @@
                     if(response.statusBpjs == "AKTIF"){
                         if (response.nama != null) {
                             $('#btn-cek').html('<i class="fa fa-search"></i> Search');
-                            $('#no_ktp').val(response.noKtp);
-                            $('#nama_pasien').val(response.nama);
+                            $('#no_ktp').val(response.noKtp).attr('readonly','true');
+                            var nama = convertSentenceCase(response.nama.toLowerCase());
+                            $('#nama_pasien').val(nama).attr('readonly','true');
                             $('#jenis_kelamin').val(response.jenisKelamin);
                             var tgl = $.datepicker.formatDate("yy-mm-dd", new Date(response.tglLahir))
                             $('#tanggal_lahir').val(tgl);
-                            $('#profesi').val(response.profesi);
+                            var profesi = convertSentenceCase(response.profesi.toLowerCase());
+                            $('#profesi').val(profesi);
                             $('#no_telp').val(response.noTelp);
                             // $("#no_bpjs").prop("readonly", true);
                             $('#success_pasien').show().fadeOut(5000);
@@ -536,11 +558,13 @@
                         if (response.nama != null) {
                             $('#btn-cek').html('<i class="fa fa-search"></i> Search');
                             $('#no_ktp').val(response.noKtp);
-                            $('#nama_pasien').val(response.nama);
+                            var nama = convertSentenceCase(response.nama.toLowerCase());
+                            $('#nama_pasien').val(nama);
                             $('#jenis_kelamin').val(response.jenisKelamin);
                             var tgl = $.datepicker.formatDate("yy-mm-dd", new Date(response.tglLahir))
                             $('#tanggal_lahir').val(tgl);
-                            $('#profesi').val(response.profesi);
+                            var profesi = convertSentenceCase(response.profesi.toLowerCase());
+                            $('#profesi').val(profesi);
                             $('#no_telp').val(response.noTelp);
                             // $("#no_bpjs").prop("readonly", true);
                             $('#warning_pasien').show().fadeOut(5000);
@@ -548,6 +572,12 @@
                         }
                     }else{
                         $('#btn-cek').html('<i class="fa fa-search"></i> Search');
+                        $('#no_ktp').val('').removeAttr('readonly');
+                        $('#nama_pasien').val('').removeAttr('readonly');
+                        $('#jenis_kelamin').val('');
+                        $('#tanggal_lahir').val('');
+                        $('#profesi').val('');
+                        $('#no_telp').val('');
                         $('#warning_pasien').show().fadeOut(5000);
                         $('#msg_pasien_war').text("No BPJS Tidak ditemukan...!");
                     }

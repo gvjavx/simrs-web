@@ -71,9 +71,9 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Status</label>
                                     <div class="col-sm-4">
-                                        <s:select list="#{'2':'Rujuk','3':'Selesai'}" cssStyle="margin-top: 7px"
+                                        <s:select list="#{'1':'Periksa', '2':'Rujuk'}" cssStyle="margin-top: 7px"
                                                   id="status" name="rawatInap.statusPeriksa"
-                                                  headerKey="1" headerValue="Periksa"
+                                                  headerKey="3" headerValue="Selesai"
                                                   cssClass="form-control select2"/>
                                     </div>
                                 </div>
@@ -199,6 +199,9 @@
                                     <td><s:property value="keteranganSelesai"/></td>
                                     <td align="center">
                                         <s:if test='#row.klaimBpjsFlag == "Y"'>
+                                            <a target="_blank" href="printFinalClaim_verifrawatinap.action?id=<s:property value="idDetailCheckup"/>">
+                                                <img class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">
+                                            </a>
                                         </s:if>
                                         <s:else>
                                             <s:if test='#row.cekApprove == false'>
@@ -561,11 +564,13 @@
 <script type='text/javascript'>
 
     function formatRupiah(angka) {
-        if(angka != ""){
+        if(angka != "" && angka > 0){
             var reverse = angka.toString().split('').reverse().join(''),
                 ribuan = reverse.match(/\d{1,3}/g);
             ribuan = ribuan.join('.').split('').reverse().join('');
             return ribuan;
+        }else{
+            return 0;
         }
 
     }
@@ -693,29 +698,40 @@
                         var btn         = "<s:url value="/pages/images/icons8-edit-25.png"/>";
                         var onclick     = 'onclick="updateApproveFlag(\''+item.idRiwayatTindakan+'\',\''+i+'\')"';
 
+                        var tindakanina = "";
+                        VerifikatorAction.getListKategoriTindakanBpjs(function (restindakanina) {
+                            $.each(restindakanina, function (i, itemTindakan) {
+                                if (item.kategoriTindakanBpjs == itemTindakan.kategoriInaBpjs){
+                                    tindakanina += "<option value=\""+itemTindakan.id+"\" selected>"+itemTindakan.nama+"</option>";
+                                } else {
+                                    tindakanina += "<option value=\""+itemTindakan.id+"\">"+itemTindakan.nama+"</option>";
+                                }
+                            })
+                        });
+
                         var kategori =
                             '<select class="form-control" id="kategori'+i+'">' +
-                            '<option value="">[Select One]</option>'+
-                            '<option value="prosedur_non_bedah">Prosedur Non Bedah</option>'+
-                            '<option value="tenaga_ahli">Tenaga Ahli</option>'+
-                            '<option value="radiologi">Radiologi</option>'+
-                            '<option value="rehabilitasi">Rehabilitasi</option>'+
-                            '<option value="obat">Obat</option>'+
-                            '<option value="alkes">Alkes</option>'+
-
-                            '<option value="prosedur_bedah">Prosedur Bedah</option>'+
-                            '<option value="keperawatan">Keperawatan</option>'+
-                            '<option value="laboratorium">Laboratorium</option>'+
-                            '<option value="kamar_akomodasi">Kamar / Akomodasi</option>'+
-                            '<option value="obat_kronis">Obat Kronis</option>'+
-                            '<option value="bmhp">BMHP</option>'+
-
-                            '<option value="konsultasi">Konsultasi</option>'+
-                            '<option value="penunjang">Penunjang</option>'+
-                            '<option value="pelayanan_darah">Pelayanan Darah</option>'+
-                            '<option value="rawat_intensif">Rawat Intensif</option>'+
-                            '<option value="obat_kemoterapi">Obat Kemoterapi</option>'+
-                            '<option value="sewa_alat">Sewa Alat</option>'+
+                            '<option value="">[Select One]</option>'+ tindakanina +
+//                            '<option value="prosedur_non_bedah">Prosedur Non Bedah</option>'+
+//                            '<option value="tenaga_ahli">Tenaga Ahli</option>'+
+//                            '<option value="radiologi">Radiologi</option>'+
+//                            '<option value="rehabilitasi">Rehabilitasi</option>'+
+//                            '<option value="obat">Obat</option>'+
+//                            '<option value="alkes">Alkes</option>'+
+//
+//                            '<option value="prosedur_bedah">Prosedur Bedah</option>'+
+//                            '<option value="keperawatan">Keperawatan</option>'+
+//                            '<option value="laboratorium">Laboratorium</option>'+
+//                            '<option value="kamar_akomodasi">Kamar / Akomodasi</option>'+
+//                            '<option value="obat_kronis">Obat Kronis</option>'+
+//                            '<option value="bmhp">BMHP</option>'+
+//
+//                            '<option value="konsultasi">Konsultasi</option>'+
+//                            '<option value="penunjang">Penunjang</option>'+
+//                            '<option value="pelayanan_darah">Pelayanan Darah</option>'+
+//                            '<option value="rawat_intensif">Rawat Intensif</option>'+
+//                            '<option value="obat_kemoterapi">Obat Kemoterapi</option>'+
+//                            '<option value="sewa_alat">Sewa Alat</option>'+
                             '</select>';
 
                         if (item.namaTindakan != null && item.namaTindakan !=  '') {
@@ -929,6 +945,7 @@
 
             VerifikatorAction.getListTindakanRawat(idCheckup, idDetailCheckup, function (response) {
                 dataTindakan = response;
+                var ppnObat = 0;
                 if (dataTindakan != null) {
                     $.each(dataTindakan, function (i, item) {
                         var tindakan = "";
@@ -954,6 +971,10 @@
                             tgl = item.stTglTindakan;
                         }
 
+                        if(item.keterangan == "resep"){
+                            ppnObat = parseInt(ppnObat) + parseInt(item.totalTarif * 0.1);
+                        }
+
                         table += "<tr>" +
                             "<td>" + tgl + "</td>" +
                             "<td>" + tindakan + "</td>" +
@@ -962,7 +983,8 @@
                             "</tr>";
                     });
 
-                    table = table + '<tr><td colspan="3">Total</td><td align="right">'+formatRupiah(total)+'</td></tr>';
+                    table = table +'<tr><td colspan="3">PPN Obat</td><td align="right">'+formatRupiah(ppnObat)+'</td></tr>'+
+                        '<tr><td colspan="3">Total Jasa</td><td align="right">'+formatRupiah(total + ppnObat)+'</td></tr>';
                 }
             });
 

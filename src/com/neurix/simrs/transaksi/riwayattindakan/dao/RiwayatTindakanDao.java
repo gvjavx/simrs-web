@@ -104,9 +104,10 @@ public class RiwayatTindakanDao extends GenericDao<ItSimrsRiwayatTindakanEntity,
 
             String SQL = "SELECT a.no_checkup, b.id_detail_checkup, c.id_riwayat_tindakan, \n" +
                     "c.id_tindakan, c.nama_tindakan, c.keterangan, c.jenis_pasien, c.total_tarif, c.kategori_tindakan_bpjs, \n" +
-                    "c.approve_bpjs_flag, c.tanggal_tindakan FROM it_simrs_header_checkup a\n" +
+                    "c.approve_bpjs_flag, c.tanggal_tindakan, d.kategori_ina_bpjs FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN it_simrs_riwayat_tindakan c ON b.id_detail_checkup = c.id_detail_checkup\n" +
+                    "LEFT JOIN im_simrs_tindakan d ON d.id_tindakan = c.id_tindakan\n" +
                     "WHERE a.branch_id LIKE :branchId AND a.no_checkup LIKE :noCheckup AND b.id_detail_checkup LIKE :idDetail ORDER BY c.keterangan\n";
 
             List<Object[]> result = new ArrayList<>();
@@ -139,11 +140,65 @@ public class RiwayatTindakanDao extends GenericDao<ItSimrsRiwayatTindakanEntity,
                         tindakan.setTanggalTindakan((Timestamp) obj[10]);
                         tindakan.setStTglTindakan(formatDate);
                     }
+                    tindakan.setKategoriInaBpjs(obj[11] == null ? "" : obj[11].toString());
 
                     riwayatTindakanList.add(tindakan);
                 }
             }
 
+        }
+        return riwayatTindakanList;
+
+    }
+
+    public List<RiwayatTindakan> getListTindakanApprove(String idDetail) {
+
+        List<RiwayatTindakan> riwayatTindakanList = new ArrayList<>();
+
+        if(idDetail != null && !"".equalsIgnoreCase(idDetail)){
+
+            String SQL = "SELECT \n" +
+                    "a.tanggal_tindakan, \n" +
+                    "a.nama_tindakan,  \n" +
+                    "a.total_tarif, \n" +
+                    "a.keterangan \n" +
+                    "FROM it_simrs_riwayat_tindakan a\n" +
+                    "WHERE a.id_detail_checkup = :idDet\n" +
+                    "AND flag_update_klaim = 'Y'\n" +
+                    "ORDER BY a.keterangan, a.tanggal_tindakan ASC";
+
+            List<Object[]> result = new ArrayList<>();
+
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("idDet", idDetail)
+                    .list();
+
+            RiwayatTindakan tindakan;
+            if (!result.isEmpty()) {
+                for (Object[] obj : result) {
+                    tindakan = new RiwayatTindakan();
+
+                    if(obj[0] != null){
+                        String formatDate = new SimpleDateFormat("dd-MM-yyyy HH:mm").format((Timestamp)obj[0]);
+                        tindakan.setTanggalTindakan((Timestamp) obj[0]);
+                        tindakan.setStTglTindakan(formatDate);
+                    }else{
+                        tindakan.setStTglTindakan("");
+                    }
+
+                    tindakan.setNamaTindakan(obj[1] == null ? "" : obj[1].toString());
+
+                    if(obj[2] != null){
+                        tindakan.setTotalTarif(new BigDecimal(String.valueOf(obj[2].toString())));
+                    }else{
+                        tindakan.setTotalTarif(new BigDecimal(String.valueOf(0)));
+                    }
+
+                    tindakan.setKeterangan(obj[3] == null ? "" : obj[3].toString());
+
+                    riwayatTindakanList.add(tindakan);
+                }
+            }
         }
         return riwayatTindakanList;
 

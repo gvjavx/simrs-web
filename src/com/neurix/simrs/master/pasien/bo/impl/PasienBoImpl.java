@@ -175,6 +175,10 @@ public class PasienBoImpl implements PasienBo {
                 if (cekKunjungan.size() > 0) {
                     pasien.setIsPasienLama(true);
                 }
+
+                //cek finger data
+                pasien.setDisabledFingerData(cekFingerData(pasien.getIdPasien()));
+
             }
 
             list.add(pasien);
@@ -276,6 +280,7 @@ public class PasienBoImpl implements PasienBo {
                 pasienEntity.setProfesi(pasien.getProfesi());
                 pasienEntity.setNoTelp(pasien.getNoTelp());
                 pasienEntity.setUrlKtp(pasien.getNoKtp());
+                pasienEntity.setPassword(pasien.getPassword());
                 pasienEntity.setFlag(pasien.getFlag());
                 pasienEntity.setAction("U");
                 pasienEntity.setLastUpdate(pasien.getLastUpdate());
@@ -709,6 +714,18 @@ public class PasienBoImpl implements PasienBo {
         java.sql.Date date = new java.sql.Date(new java.util.Date().getTime());
         DateFormat df = new SimpleDateFormat(type);
         return df.format(date);
+    }
+
+    private Boolean cekFingerData(String idPasien){
+        Boolean response = false;
+
+        try {
+            response = fingerDataDao.cekFingerData(idPasien);
+        }catch (HibernateException e){
+            logger.error("Found Error when cek finger data "+e.getMessage());
+        }
+
+        return response;
     }
 
     @Override

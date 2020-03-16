@@ -428,6 +428,7 @@ public class TransaksiApotekController implements ModelDriven<Object> {
                     permintaanResepMobile.setStatus(item.getStatus());
                     permintaanResepMobile.setIdApprovalObat(item.getIdApprovalObat());
                     permintaanResepMobile.setFlag(item.getFlag());
+                    permintaanResepMobile.setIdJenisPeriksa(item.getIdJenisPeriksa());
 
                     listOfPermintaanResep.add(permintaanResepMobile);
                 }
@@ -475,6 +476,7 @@ public class TransaksiApotekController implements ModelDriven<Object> {
             beanObatPoli.setIdPabrik(idPabrik);
             beanObatPoli.setIdPelayanan(idPelayanan);
             beanObatPoli.setBranchId(branchId);
+            beanObatPoli.setExp("exp");
 
             try {
                result = obatPoliBoProxy.getObatPoliByCriteria(beanObatPoli);
@@ -507,7 +509,7 @@ public class TransaksiApotekController implements ModelDriven<Object> {
             List<ObatPoli> result = new ArrayList<>();
 
             try {
-                result = obatPoliBoProxy.getListObatPoliGroup(idPelayanan, branchId);
+                result = obatPoliBoProxy.getListObatGroupPoli(idPelayanan, branchId, jenisPasien);
             } catch (GeneralBOException e){
                 logger.error("[TransaksiApotekController.create] Error, get list obat by jenis obat " + e.getMessage());
             }

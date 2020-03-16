@@ -767,7 +767,7 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
         }
         return finalResult;
     }
-    public void savePegawaiShift(String nip , String nama,String posisi,String grup, String shift,String shiftId) {
+    public void savePegawaiShift(String nip , String nama,String posisi,String grup,String grupId, String shift,String shiftId) {
         logger.info("[JadwalShiftKerjaAction.savePegawaiShift] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<JadwalShiftKerjaDetail> listOfResult = (List<JadwalShiftKerjaDetail>) session.getAttribute("listOfResultPegawaiShift");
@@ -779,6 +779,7 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
         result.setNamaPegawai(nama);
         result.setPositionName(posisi);
         result.setProfesiName(grup);
+        result.setProfesiid(grupId);
         result.setShiftName(shift);
         result.setShiftId(shiftId);
         listOfResult.add(result);

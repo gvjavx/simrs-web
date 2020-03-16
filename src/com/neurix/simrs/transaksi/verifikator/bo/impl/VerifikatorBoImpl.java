@@ -2,6 +2,8 @@ package com.neurix.simrs.transaksi.verifikator.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.kategoritindakanina.dao.KategoriTindakanInaDao;
+import com.neurix.simrs.master.kategoritindakanina.model.ImSimrsKategoriTindakanInaEntity;
 import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
@@ -24,6 +26,7 @@ import org.hibernate.HibernateException;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class VerifikatorBoImpl implements VerifikatorBo {
@@ -34,6 +37,7 @@ public class VerifikatorBoImpl implements VerifikatorBo {
     private CheckupDetailDao checkupDetailDao;
     private RiwayatTindakanDao riwayatTindakanDao;
     private RawatInapDao rawatInapDao;
+    private KategoriTindakanInaDao kategoriTindakanInaDao;
 
     public void setRawatInapDao(RawatInapDao rawatInapDao) {
         this.rawatInapDao = rawatInapDao;
@@ -57,6 +61,10 @@ public class VerifikatorBoImpl implements VerifikatorBo {
 
     public void setTindakanRawatDao(TindakanRawatDao tindakanRawatDao) {
         this.tindakanRawatDao = tindakanRawatDao;
+    }
+
+    public void setKategoriTindakanInaDao(KategoriTindakanInaDao kategoriTindakanInaDao) {
+        this.kategoriTindakanInaDao = kategoriTindakanInaDao;
     }
 
     @Override
@@ -205,10 +213,30 @@ public class VerifikatorBoImpl implements VerifikatorBo {
             try {
                 result = rawatInapDao.getSearchVerifikasiRawatInap(bean);
             }catch (HibernateException e){
+
                 logger.error("[VerifikatorBoImpl.getListVerifikasiRawatInap] Error when save update data flag approve tindakan rawat ", e);
             }
         }
         logger.info("[VerifikatorBoImpl.getListVerifikasiRawatInap] END process <<<");
         return result;
+    }
+
+    @Override
+    public List<RiwayatTindakan> getListTindakanApprove(String idDetail) throws GeneralBOException {
+        List<RiwayatTindakan> riwayatTindakanList = new ArrayList<>();
+
+        if (idDetail != null && !"".equalsIgnoreCase(idDetail)) {
+            try {
+                riwayatTindakanList = riwayatTindakanDao.getListTindakanApprove(idDetail);
+            } catch (HibernateException e) {
+                logger.error("found error when search tindakan " + e.getMessage());
+            }
+        }
+
+        return riwayatTindakanList;
+    }
+
+    public List<ImSimrsKategoriTindakanInaEntity> getAllKatTindakanInaList() throws GeneralBOException {
+        return kategoriTindakanInaDao.getByCriteria(new HashMap());
     }
 }

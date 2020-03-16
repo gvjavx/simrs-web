@@ -10,6 +10,7 @@ import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
 import com.neurix.simrs.master.pelayanan.dao.PelayananDao;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.vendor.dao.VendorDao;
+import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.hargaobat.dao.HargaObatDao;
 import com.neurix.simrs.transaksi.hargaobat.model.HargaObat;
 import com.neurix.simrs.transaksi.hargaobat.model.MtSimrsHargaObatEntity;
@@ -1925,6 +1926,60 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
         }
 
         return response;
+    }
+
+    @Override
+    public CheckResponse setTtdPasien(String idPermintaan, String ttdPasien) throws GeneralBOException {
+        CheckResponse response = new CheckResponse();
+
+        if(idPermintaan != null && !"".equalsIgnoreCase(idPermintaan)){
+            try {
+
+                ImSimrsPermintaanResepEntity entity = new ImSimrsPermintaanResepEntity();
+
+                try {
+                    entity = permintaanResepDao.getById("idPermintaanResep", idPermintaan);
+                }catch (HibernateException e){
+                    response.setStatus("error");
+                    response.setMessage("Found Error"+e.getMessage());
+                }
+
+                if(entity != null){
+
+                    entity.setTtdPasien(ttdPasien);
+                    entity.setAction("U");
+
+                    try {
+                        permintaanResepDao.updateAndSave(entity);
+                        response.setStatus("success");
+                    }catch (HibernateException e){
+                        response.setStatus("error");
+                        response.setMessage("Found Error"+e.getMessage());
+                    }
+                }
+
+            }catch (HibernateException e){
+                response.setStatus("error");
+                response.setMessage("Found Error"+e.getMessage());
+            }
+        }
+        return response;
+    }
+
+    @Override
+    public List<TransaksiObatDetail> listObatResepApprove(String idApprove) throws GeneralBOException {
+        List<TransaksiObatDetail> list = new ArrayList<>();
+
+        if(idApprove != null && !"".equalsIgnoreCase(idApprove)){
+
+            try {
+                list = transaksiObatDetailDao.getListObatResepApprove(idApprove);
+            }catch (HibernateException e){
+                logger.error("Found Error "+e.getMessage());
+            }
+        }
+
+        return list;
     }
 
     public void setApprovalTransaksiObatDao(ApprovalTransaksiObatDao approvalTransaksiObatDao) {

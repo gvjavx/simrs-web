@@ -3811,6 +3811,26 @@ public class BiodataBoImpl implements BiodataBo {
         logger.info("[UserBoImpl.getComboUserWithCriteria] end process <<<");
         return listComboBiodata;
     }
+    @Override
+    public Biodata getBiodataByNip(String nip) {
+        ImBiodataEntity biodataEntity = new ImBiodataEntity();
+        try {
+            biodataEntity = biodataDao.getById("nip",nip,"Y");
+        } catch (HibernateException e) {
+            logger.error("[BiodataBoImpl.getListOfPersonilOnlyName] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when retieving list user with criteria, please info to your admin..." + e.getMessage());
+        }
+        return convertEntityToModel(biodataEntity);
+    }
+
+    private Biodata convertEntityToModel (ImBiodataEntity biodataEntity) {
+        logger.info("[BiodataBoImpl.convertEntityToModel] start process >>>");
+        Biodata result = new Biodata();
+        result.setNip(biodataEntity.getNip());
+        result.setNamaPegawai(biodataEntity.getNamaPegawai());
+        logger.info("[BiodataBoImpl.convertEntityToModel] start process >>>");
+        return result;
+    }
     public String cekStatus(String golonganId, String noKtp)throws GeneralBOException{
         String status ="";
         ImBiodataEntity skalaGajiEntity = new ImBiodataEntity();

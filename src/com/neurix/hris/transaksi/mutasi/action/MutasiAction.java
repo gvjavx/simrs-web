@@ -3,6 +3,8 @@ package com.neurix.hris.transaksi.mutasi.action;
 //import com.neurix.authorization.company.bo.AreaBo;
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Branch;
+import com.neurix.authorization.position.bo.PositionBo;
+import com.neurix.authorization.position.model.Position;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.displaytag.LongDateWrapper;
@@ -201,6 +203,7 @@ public class MutasiAction extends BaseMasterAction{
 
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
+        session.removeAttribute("listOfMutasi");
 
         logger.info("[MutasiAction.add] stop process >>>");
         return "init_add";
@@ -324,6 +327,9 @@ public class MutasiAction extends BaseMasterAction{
         logger.info("[MutasiAction.saveAdd] start process >>>");
         try {
             Mutasi mutasi = getMutasi();
+            HttpSession session = ServletActionContext.getRequest().getSession();
+            List<Mutasi> mutasiList = (List<Mutasi>) session.getAttribute("listOfMutasi");
+
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
@@ -338,26 +344,22 @@ public class MutasiAction extends BaseMasterAction{
             mutasi.setAction("C");
             mutasi.setFlag("Y");
 
-            mutasiBoProxy.saveMutasi(mutasi);
+            mutasiBoProxy.saveMutasi(mutasi,mutasiList);
         }catch (GeneralBOException e) {
             Long logId = null;
             try {
                 logId = mutasiBoProxy.saveErrorMessage(e.getMessage(), "liburBO.saveAdd");
             } catch (GeneralBOException e1) {
                 logger.error("[mutasiAction.saveAdd] Error when saving error,", e1);
-                return ERROR;
+                throw new GeneralBOException(e1.getMessage());
             }
-            //logger.error("[mutasiAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-            //addActionError("Error, mohon periksa inputan anda kembali");
-            mutasi.setErrorMessage("Error, " + "[code=" + logId + "] Found problem when saving delete data, please inform to your admin.\n" + e.getMessage());
-            //addActionMessage("Error, mohon periksa inputan anda kembali");
-            return "input";
+            logger.error("[mutasiAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+//            mutasi.setErrorMessage("Error, " + "[code=" + logId + "] Found problem when saving delete data, please inform to your admin.\n" + e.getMessage());
+            addActionMessage("Error, mohon periksa inputan anda kembali");
+            throw new GeneralBOException(e.getMessage());
         }
-
-
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfMutasi");
-
         return INPUT;
     }
 
@@ -392,6 +394,7 @@ public class MutasiAction extends BaseMasterAction{
         HttpSession session = ServletActionContext.getRequest().getSession();
 
         session.removeAttribute("listOfResult");
+        session.removeAttribute("listOfMutasi");
         session.setAttribute("listOfResult", listOfsearchMutasi);
 
         logger.info("[MutasiAction.search] end process <<<");
@@ -567,6 +570,7 @@ public class MutasiAction extends BaseMasterAction{
         HttpSession session = ServletActionContext.getRequest().getSession();
 
         session.removeAttribute("listOfResult");
+        session.removeAttribute("listOfMutasi");
         logger.info("[MutasiAction.initForm] end process >>>");
         return INPUT;
     }
@@ -667,20 +671,17 @@ public class MutasiAction extends BaseMasterAction{
         return listHasil;
     }
 
-    public boolean saveAnggotaAdd(String nip, String personName, String branchLamaId, String branchLamaName, String divisiLamaId, String divisiLamaName,
+    public String saveAnggotaAdd(String nip, String personName, String branchLamaId, String branchLamaName, String divisiLamaId, String divisiLamaName,
                                String positionLamaId, String positionLamaName, String pjsLama, String menggantikanId, String menggantikanNama, String branchBaruId, String branchBaruName,
                                String divisiBaruId, String divisiBaruName, String positionBaruId, String positionBaruName, String pjsBaru, String status, String tipe, String levelLama,
                                   String levelBaru, String levelLamaName, String levelBaruName){
         logger.info("[SppdAction.saveAdd] start process >>>");
+        String statusSave="";
         List<Mutasi> mutasiList = null;
         HttpSession session = ServletActionContext.getRequest().getSession();
-
-        boolean hasil = true;
-
         if(cekNip(nip)){
             try {
                 Mutasi mutasi = new Mutasi();
-
                 mutasi.setNip(nip);
                 mutasi.setNama(personName);
                 mutasi.setBranchLamaId(branchLamaId);
@@ -702,9 +703,10 @@ public class MutasiAction extends BaseMasterAction{
                     }
                 }else{
                     mutasi.setPenggantiNip("-");
-
                 }
+
                 mutasi.setPenggantiNama(menggantikanNama);
+
                 mutasi.setBranchBaruId(branchBaruId);
                 mutasi.setBranchBaruName(branchBaruName);
                 mutasi.setDivisiBaruId(divisiBaruId);
@@ -717,7 +719,7 @@ public class MutasiAction extends BaseMasterAction{
 
                 mutasi.setStatus(status);
 
-                if (status!=""){
+                if (!("").equalsIgnoreCase(status)){
                     if ("M".equalsIgnoreCase(status)){
                         mutasi.setStatusName("Move");
                     }
@@ -732,7 +734,7 @@ public class MutasiAction extends BaseMasterAction{
                     }
                 }
                 mutasi.setTipeMutasi(tipe);
-                if (tipe!=""){
+                if (!("").equalsIgnoreCase(tipe)){
                     if ("MT".equalsIgnoreCase(tipe)){
                         mutasi.setTipeMutasiName("Mutasi");
                     }else if ("RT".equalsIgnoreCase(tipe)){
@@ -740,15 +742,17 @@ public class MutasiAction extends BaseMasterAction{
                     }
                 }
 
-                //HttpSession session = ServletActionContext.getRequest().getSession();
-                mutasiList = (List<Mutasi>) session.getAttribute("listOfMutasi");
-                if(mutasiList != null){
-                    mutasiList.add(mutasi);
-                }else{
-                    mutasiList = new ArrayList();
-                    mutasiList.add(mutasi);
+
+                //save to session
+                if (!("").equalsIgnoreCase(status)){
+                    mutasiList = (List<Mutasi>) session.getAttribute("listOfMutasi");
+                    if(mutasiList != null){
+                        mutasiList.add(mutasi);
+                    }else{
+                        mutasiList = new ArrayList();
+                        mutasiList.add(mutasi);
+                    }
                 }
-                hasil = true;
             }catch (GeneralBOException e) {
                 Long logId = null;
                 try {
@@ -762,10 +766,10 @@ public class MutasiAction extends BaseMasterAction{
 
             session.setAttribute("listOfMutasi", mutasiList);
         }else{
-            hasil = false;
+            statusSave="Pegawai sudah ditambahkan";
         }
 
-        return hasil;
+        return statusSave;
     }
 
     private boolean cekNip(String nip){
@@ -1029,5 +1033,36 @@ public class MutasiAction extends BaseMasterAction{
         logger.info("[MedicalRecordAction.initComboPersonil] end process <<<");
 
         return listOfUser;
+    }
+
+    public String getButuhPengganti(String position) {
+        String status ="N";
+        logger.info("[MutasiAction.getButuhPengganti] start process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        List<Position> positionList = new ArrayList<>();
+        Position search = new Position();
+        search.setPositionId(position);
+        search.setFlag("Y");
+        try {
+            PositionBo positionBo= (PositionBo) ctx.getBean("positionBoProxy");
+            positionList=positionBo.getByCriteria(search);
+
+            for (Position data : positionList){
+                if (("Y").equalsIgnoreCase(data.getFlagDijabatSatuOrang())){
+                    status="Y";
+                }
+            }
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = mutasiBoProxy.saveErrorMessage(e.getMessage(), "positionBo.getByCriteria");
+            } catch (GeneralBOException e1) {
+                logger.error("[MutasiAction.getButuhPengganti] Error when saving error,", e1);
+            }
+            logger.error("[MutasiAction.getButuhPengganti] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+        }
+
+        return status;
     }
 }

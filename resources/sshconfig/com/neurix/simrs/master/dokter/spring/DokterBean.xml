@@ -18,6 +18,10 @@
         p:dokterBoProxy-ref="dokterBoProxy"
     />
 
+    <bean id="checkupController" class="com.neurix.simrs.mobileapi.CheckupController"
+          p:checkupBoProxy-ref="checkupBoProxy"
+    />
+
     <bean id="dokterBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="dokterBo">
         <property name="interceptorNames">

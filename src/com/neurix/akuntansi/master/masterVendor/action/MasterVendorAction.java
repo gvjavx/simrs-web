@@ -301,7 +301,7 @@ public class MasterVendorAction extends BaseMasterAction {
 
             deleteVendor.setLastUpdate(updateTime);
             deleteVendor.setLastUpdateWho(userLogin);
-            deleteVendor.setAction("U");
+            deleteVendor.setAction("D");
             deleteVendor.setFlag("N");
 
             masterVendorBoProxy.saveDelete(deleteVendor);
@@ -311,11 +311,11 @@ public class MasterVendorAction extends BaseMasterAction {
                 logId = masterVendorBoProxy.saveErrorMessage(e.getMessage(), "VendorBO.saveDelete");
             } catch (GeneralBOException e1) {
                 logger.error("[VendorAction.saveDelete] Error when saving error,", e1);
-                return ERROR;
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[VendorAction.saveDelete] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            throw new GeneralBOException(e.getMessage());
         }
 
         logger.info("[VendorAction.saveDelete] end process <<<");
@@ -328,6 +328,11 @@ public class MasterVendorAction extends BaseMasterAction {
 
         try {
             MasterVendor vendor = getMasterVendor();
+            if (!("").equalsIgnoreCase(vendor.getVendorObat())){
+                vendor.setObat(Boolean.parseBoolean(vendor.getVendorObat()));
+            }else{
+                vendor.setObat(false);
+            }
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 

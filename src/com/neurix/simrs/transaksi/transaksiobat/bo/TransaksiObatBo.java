@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.transaksiobat.bo;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.hargaobat.model.HargaObat;
 import com.neurix.simrs.transaksi.hargaobat.model.MtSimrsHargaObatEntity;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
@@ -41,5 +42,9 @@ public interface TransaksiObatBo {
     public Boolean cekObatKronis(String idApproval) throws GeneralBOException;
     public TransaksiObatDetail getTarifApproveResep(String idApproval) throws GeneralBOException;
     public TransaksiObatDetail getTotalHargaResep(String idPermintaan) throws GeneralBOException;
+
+    public CheckResponse setTtdPasien(String idPermintaan, String ttdPasien) throws GeneralBOException;
+
+    public List<TransaksiObatDetail> listObatResepApprove(String idApprove) throws GeneralBOException;
 
 }

@@ -9,6 +9,20 @@
 <head>
     <%@ include file="/pages/common/header.jsp" %>
     <style>
+        #sketch-container {
+            background: #EAEAEA;
+            width: 100%;
+            height: 350px;
+        }
+        .paint-canvas {
+            border: 1px black solid;
+            display: block;
+            margin: 1rem;
+        }
+
+        .color-picker {
+            margin: 1rem 1rem 0 1rem;
+        }
     </style>
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/ObatPoliAction.js"/>'></script>
@@ -43,11 +57,91 @@
             return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
         }
 
+        function uploadCanvas() {
+            var idResep = $('#id_resep').val();
+            var canvas = document.getElementById('ttd_canvas');
+            var dataURL = canvas.toDataURL("image/png"),
+                dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+
+            $('#waiting_dialog').dialog('open');
+            dwr.engine.setAsync(true);
+            TransaksiObatAction.saveTtdPasien(dataURL, idResep, {callback: function (response) {
+                if(response.status == "success"){
+                    $('#waiting_dialog').dialog('close');
+                    $('#info_dialog').dialog('open');
+                    $('#ref').val(1);
+                    $('#modal-ttd').modal('hide');
+                }else{
+                    $('#waiting_dialog').dialog('close');
+                    $('#error_dialog').dialog('open');
+                    $('#errorMessage').text(response.message);
+                    $('#modal-ttd').modal('hide');
+                }
+            }});
+        }
+
+        function clearConvas(){
+            var canvas = document.getElementById('ttd_canvas');
+            const context = canvas.getContext('2d');
+            context.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
         $(document).ready(function () {
 
             $('#resep_poli').addClass('active');
 
             cekListObat();
+
+            const paintCanvas = document.querySelector(".js-paint");
+            const context = paintCanvas.getContext("2d");
+            context.lineCap = "round";
+
+            const colorPicker = document.querySelector(".js-color-picker");
+
+            colorPicker.addEventListener("change", function (evt) {
+                context.strokeStyle = evt.target.value;
+            });
+
+            const lineWidthRange = document.querySelector(".js-line-range");
+            const lineWidthLabel = document.querySelector(".js-range-value");
+
+            lineWidthRange.addEventListener("input", function (evt) {
+                const width = evt.target.value;
+                lineWidthLabel.innerHTML = width+" px";
+                context.lineWidth = width;
+            });
+
+            let x = 0,
+                y = 0;
+            let isMouseDown = false;
+
+            const stopDrawing = function () {
+                isMouseDown = false;
+            };
+
+            const startDrawing = function (evt) {
+                isMouseDown = true;
+                [x, y] = [evt.offsetX, evt.offsetY];
+            };
+
+            const drawLine = function (evt) {
+                if (isMouseDown) {
+                    const newX = evt.offsetX;
+                    const newY = evt.offsetY;
+                    context.beginPath();
+                    context.moveTo(x, y);
+                    context.lineTo(newX, newY);
+                    context.stroke();
+                    x = newX;
+                    y = newY;
+                }
+            };
+
+            paintCanvas.addEventListener("mousedown", startDrawing);
+            paintCanvas.addEventListener("mousemove", drawLine);
+            paintCanvas.addEventListener("mouseup", stopDrawing);
+            paintCanvas.addEventListener("mouseout", stopDrawing);
+
         });
 
         $.subscribe('beforeProcessSave', function (event, data) {
@@ -114,6 +208,13 @@
                                         <td>
                                             <table>
                                                 <s:label name="permintaanResep.idPasien"></s:label></table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="45%"><b>No Resep</b></td>
+                                        <td>
+                                            <table>
+                                                <s:label name="permintaanResep.idPermintaanResep"></s:label></table>
                                         </td>
                                     </tr>
                                     <tr>
@@ -429,6 +530,40 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-ttd">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-pencil"></i> Tanda Tangan Pasien
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group" style="padding-top: 10px; padding-bottom: 10px">
+                    <div class="col-md-1">
+                        <input type="color" style="margin-left: -6px; margin-top: -8px" class="js-color-picker  color-picker pull-left">
+                    </div>
+                    <div class="col-md-9">
+                        <input type="range" style="margin-top: -8px" class="js-line-range" min="1" max="72" value="1">
+                    </div>
+                    <div class="col-md-2">
+                        <div style="margin-top: -8px;" class="js-range-value">1 px</div>
+                    </div>
+                </div>
+                    <canvas class="js-paint  paint-canvas" id="ttd_canvas" width="550" height="300"></canvas>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-danger" onclick="clearConvas()"><i class="fa fa-pencil"></i> Clear
+                </button>
+                <button class="btn btn-success pull-right" onclick="uploadCanvas()"><i class="fa fa-check"></i> Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="modal-confirm-dialog">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -479,6 +614,9 @@
     var idCheckup = $('#no_checkup').val();
     var idDetailCheckup = $('#no_detail_checkup').val();
 
+    function drawTtd() {
+        $('#modal-ttd').modal({show:true, backdrop:'static'});
+    }
     function printStrukResep(){
         window.open('printStrukResepPasien_reseppoli.action?id='+idDetailCheckup+'&idResep='+idResep+'&idApprove='+id_approve, "_blank");
     }
@@ -506,6 +644,8 @@
         var ref = $('#ref').val();
         if(ref == 1){
             window.location.href = 'initForm_reseppoli.action';
+        }else if(ref == 2){
+            $('#modal-ttd').modal({show:true, backdrop:'static'});
         }
     }
 
@@ -824,7 +964,7 @@
         TransaksiObatAction.saveApproveResepObatPoli(id_approve, {
             callback: function (response) {
                 if (response.status == "success") {
-                    $('#ref').val(1);
+                    $('#ref').val(2);
                     $('#info_dialog').dialog('open');
                     $('#waiting_dialog').dialog('close');
                 } else {

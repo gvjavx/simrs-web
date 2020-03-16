@@ -6,6 +6,8 @@ import com.neurix.akuntansi.master.mappingJurnal.dao.MappingJurnalDao;
 import com.neurix.akuntansi.master.tipeJurnal.dao.TipeJurnalDao;
 import com.neurix.akuntansi.master.mappingJurnal.model.ImMappingJurnalEntity;
 import com.neurix.akuntansi.master.tipeJurnal.model.ImTipeJurnalEntity;
+import com.neurix.akuntansi.master.trans.dao.TransDao;
+import com.neurix.akuntansi.master.trans.model.ImTransEntity;
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDao;
 import com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDetailDao;
@@ -32,6 +34,15 @@ public class BillingSystemBoImpl implements BillingSystemBo {
     private String userLogin;
     private Timestamp updateTime;
     private TipeJurnalDao tipeJurnalDao;
+    private TransDao transDao;
+
+    public TransDao getTransDao() {
+        return transDao;
+    }
+
+    public void setTransDao(TransDao transDao) {
+        this.transDao = transDao;
+    }
 
     public TipeJurnalDao getTipeJurnalDao() {
         return tipeJurnalDao;
@@ -100,7 +111,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
         logger.info("[PembayaranUtangPiutangBoImpl.createJurnal] start process >>>");
         String noJurnal;
         String status;
-        userLogin = CommonUtil.userLogin();
+        userLogin = CommonUtil.userIdLogin();
         updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
         String tipeJurnalId;
         String sumber = null;
@@ -114,9 +125,9 @@ public class BillingSystemBoImpl implements BillingSystemBo {
         }
 
         //Pencarian di tipe jurnal apakah jurnal ini perlu membuat sumber baru
-        ImTipeJurnalEntity tipeJurnalEntity;
+        ImTransEntity transEntity;
         try {
-            tipeJurnalEntity = tipeJurnalDao.getById("tipeJurnalId",tipeJurnalId);
+            transEntity = transDao.getById("transId",transId);
         } catch (HibernateException e) {
             logger.error("[PembayaranUtangPiutangBoImpl.createJurnal] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
@@ -128,7 +139,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                 noJurnal=jurnalDao.getNextJurnalId();
 
                 // MEMBUAT JURNAL DETAIL TERLEBIH DAHULU UNTUK MENGAMBIL NOMOR INVOICE DARI PEMBAYARAN
-                if (("Y").equalsIgnoreCase(tipeJurnalEntity.getFlagSumberBaru())){
+                if (("Y").equalsIgnoreCase(transEntity.getFlagSumberBaru())){
                     createJurnalDetail(data,noJurnal,tipeJurnalId,transId);
                     sumber = createInvoiceNumber(tipeJurnalId,branchId);
                 }else{

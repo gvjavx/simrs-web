@@ -20,9 +20,9 @@ public class HeaderDetailCheckupMobile {
     private String branchId;
     private String flag;
     private String action;
-    private Timestamp createdDate;
+    private String createdDate;
     private String createdWho;
-    private Timestamp lastUpdate;
+    private String lastUpdate;
     private String lastUpdateWho;
 
     private String statusPeriksaName;
@@ -88,6 +88,24 @@ public class HeaderDetailCheckupMobile {
     private String noCheckupOnline;
     private String metodePembayaran;
     private String tipePelayanan;
+
+    private String urlTtd;
+
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public void setLastUpdate(String lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
+
+    public String getUrlTtd() {
+        return urlTtd;
+    }
+
+    public void setUrlTtd(String urlTtd) {
+        this.urlTtd = urlTtd;
+    }
 
     public String getIdDetailCheckup() {
         return idDetailCheckup;
@@ -177,13 +195,6 @@ public class HeaderDetailCheckupMobile {
         this.action = action;
     }
 
-    public Timestamp getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Timestamp createdDate) {
-        this.createdDate = createdDate;
-    }
 
     public String getCreatedWho() {
         return createdWho;
@@ -191,14 +202,6 @@ public class HeaderDetailCheckupMobile {
 
     public void setCreatedWho(String createdWho) {
         this.createdWho = createdWho;
-    }
-
-    public Timestamp getLastUpdate() {
-        return lastUpdate;
-    }
-
-    public void setLastUpdate(Timestamp lastUpdate) {
-        this.lastUpdate = lastUpdate;
     }
 
     public String getLastUpdateWho() {

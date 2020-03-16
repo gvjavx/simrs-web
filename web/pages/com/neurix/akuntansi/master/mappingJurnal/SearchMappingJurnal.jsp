@@ -38,10 +38,8 @@
     </script>
 </head>
 
-<body class="hold-mappingJurnalition skin-blue sidebar-mini" >
-
+<body class="hold-transition skin-blue sidebar-mini" >
 <%@ include file="/pages/common/headerNav.jsp" %>
-
 <ivelincloud:mainMenu/>
 
 <!-- Content Wrapper. Contains page content -->
@@ -83,7 +81,7 @@
                                                     <table>
                                                         <s:action id="initComboTipeJurnal" namespace="/tipeJurnal" name="initComboTipeJurnal_tipeJurnal"/>
                                                         <s:select list="#initComboTipeJurnal.listOfComboTipeJurnal" id="tipeJurnalId" name="mappingJurnal.tipeJurnalId"
-                                                                  listKey="tipeJurnalId" listValue="tipeJurnalName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                                  listKey="tipeJurnalId" listValue="tipeJurnalName" headerKey="" headerValue="[ Select One ]" cssClass="form-control"/>
                                                     </table>
                                                 </td>
                                             </tr>

@@ -26,6 +26,17 @@ public class ImSimrsPermintaanResepEntity implements Serializable {
     private Timestamp tglAntrian;
     private String tujuanPelayanan;
 
+    private String ttdPasien;
+
+
+    public String getTtdPasien() {
+        return ttdPasien;
+    }
+
+    public void setTtdPasien(String ttdPasien) {
+        this.ttdPasien = ttdPasien;
+    }
+
     public String getTujuanPelayanan() {
         return tujuanPelayanan;
     }

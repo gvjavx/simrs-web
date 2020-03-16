@@ -590,7 +590,7 @@ public class PositionAction extends BaseMasterAction {
         logger.info("[PositionAction.searchDivisi] start process >>>");
 
         Position searchPosition = new Position();
-        if (branchId!="0"){
+        if (!"0".equalsIgnoreCase(branchId)){
             searchPosition.setBranchId(branchId);
         }
         List<Position> listOfSearchPosition = new ArrayList();
@@ -599,10 +599,6 @@ public class PositionAction extends BaseMasterAction {
             PositionBo positionBo = (PositionBo) ctx.getBean("positionBoProxy");
 
             listOfSearchPosition = positionBo.searchDivisi(searchPosition);
-            Position position = new Position();
-            position.setDepartmentId("0");
-            position.setDepartmentName("Bidang Lain");
-            listOfSearchPosition.add(position);
 
         } catch (GeneralBOException e) {
             Long logId = null;
