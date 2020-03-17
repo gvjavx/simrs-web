@@ -1577,12 +1577,17 @@
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Jenis Satuan</label>
                         <div class="col-md-7">
-                            <s:select list="#{'lembar':'Lembar','box':'Box'}"
-                                      cssStyle="margin-top: 7px; width: 100%"
-                                      onchange="var warn = $('#war_rep_jenis_satuan').is(':visible'); if (warn){$('#cor_rep_jenis_satuan').show().fadeOut(3000);$('#war_rep_jenis_satuan').hide()};defaultValByJenisSatuan(this.value)"
-                                      id="resep_jenis_satuan"
-                                      headerKey="biji" headerValue="Biji"
-                                      cssClass="form-control select2"/>
+                            <%--<s:select list="#{'lembar':'Lembar','box':'Box'}"--%>
+                                      <%--cssStyle="margin-top: 7px; width: 100%"--%>
+                                      <%--onchange="var warn = $('#war_rep_jenis_satuan').is(':visible'); if (warn){$('#cor_rep_jenis_satuan').show().fadeOut(3000);$('#war_rep_jenis_satuan').hide()};defaultValByJenisSatuan(this.value)"--%>
+                                      <%--id="resep_jenis_satuan"--%>
+                                      <%--headerKey="biji" headerValue="Biji"--%>
+                                      <%--cssClass="form-control select2"/>--%>
+                            <select class="form-control" style="width: 100%; margin-top: 7px" onchange="var warn = $('#war_rep_jenis_satuan').is(':visible'); if (warn){$('#cor_rep_jenis_satuan').show().fadeOut(3000);$('#war_rep_jenis_satuan').hide()};defaultValByJenisSatuan(this.value)">
+                                <option value="biji" selected>Biji</option>
+                                <option value="lembar">Lembar</option>
+                                <option value="box">Box</option>
+                            </select>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
@@ -4975,9 +4980,12 @@
                 //$('#resep_stok_lembar').val(qtyLembar);
                 $('#resep_stok_biji').val(total);
                 $("#h-qty-default").val(bijiPerLembar);
+                $('#resep_qty').val(parseInt(bijiPerLembar));
+
+                console.log(bijiPerLembar);
 
                 $('#resep_keterangan').val('');
-                $('#resep_qty').val('');
+                // $('#resep_qty').val('');
                 $('#resep_jenis_satuan').val('').trigger('change');
             }
         }
