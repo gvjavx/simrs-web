@@ -3,8 +3,11 @@ package com.neurix.simrs.transaksi.paketperiksa.dao;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.transaksi.paketperiksa.model.MtSimrsPaketEntity;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 
+import java.math.BigInteger;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -31,5 +34,12 @@ public class PaketDao extends GenericDao<MtSimrsPaketEntity, String> {
             criteria.add(Restrictions.eq("idKelasPaket", mapCriteria.get("id_kelas_paket").toString()));
 
         return criteria.list();
+    }
+
+    public String getNextSeq() {
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('sq_paket_priksa')");
+        Iterator<BigInteger> iter = query.list().iterator();
+        String sId = String.format("%08d", iter.next());
+        return sId;
     }
 }
