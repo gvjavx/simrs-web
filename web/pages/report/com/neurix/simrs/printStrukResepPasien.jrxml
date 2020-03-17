@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printStrukResepPasien" language="groovy" pageWidth="421" pageHeight="595" whenNoDataType="AllSectionsNoDetail" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
-	<property name="ireport.zoom" value="2.593742460100007"/>
-	<property name="ireport.x" value="368"/>
-	<property name="ireport.y" value="898"/>
+	<property name="ireport.zoom" value="1.6105100000000039"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="248"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -36,7 +36,10 @@
 			<variableExpression><![CDATA[$F{totalHarga} == null ? '' : $F{totalHarga}]]></variableExpression>
 		</variable>
 		<variable name="ppnObat" class="java.lang.Integer">
-			<variableExpression><![CDATA[$V{totalObat} == null ? '' : ($V{totalObat}*0.1)]]></variableExpression>
+			<variableExpression><![CDATA[$V{totalObat} == null ? 0 : ($V{totalObat}*0.1)]]></variableExpression>
+		</variable>
+		<variable name="totalbayar" class="java.lang.Integer">
+			<variableExpression><![CDATA[$V{totalObat} + $V{ppnObat}]]></variableExpression>
 		</variable>
 	</subDataset>
 	<parameter name="reportParams.resepId" class="java.lang.String"/>
@@ -306,7 +309,7 @@
 								<textElement verticalAlignment="Middle">
 									<font size="8"/>
 								</textElement>
-								<text><![CDATA[Total Harga Obat]]></text>
+								<text><![CDATA[PPN Obat]]></text>
 							</staticText>
 							<staticText>
 								<reportElement x="0" y="20" width="80" height="20" uuid="c008b2bd-ee6b-40d1-a5bc-f6a545168b5b"/>
@@ -317,7 +320,7 @@
 								<textElement verticalAlignment="Middle">
 									<font size="8"/>
 								</textElement>
-								<text><![CDATA[PPN Obat]]></text>
+								<text><![CDATA[Total Harga Obat]]></text>
 							</staticText>
 						</jr:columnFooter>
 						<jr:detailCell height="20" rowSpan="1">
@@ -562,7 +565,7 @@
 								<textElement textAlignment="Right" verticalAlignment="Middle">
 									<font size="8"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$V{totalObat}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$V{ppnObat}]]></textFieldExpression>
 							</textField>
 							<textField pattern="#,##0">
 								<reportElement x="0" y="20" width="73" height="20" uuid="0c6da306-bacb-4f54-8ad3-257010e0a02a"/>
@@ -573,7 +576,7 @@
 								<textElement textAlignment="Right" verticalAlignment="Middle">
 									<font size="8"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$V{ppnObat}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$V{totalbayar}]]></textFieldExpression>
 							</textField>
 						</jr:columnFooter>
 						<jr:detailCell height="20" rowSpan="1">

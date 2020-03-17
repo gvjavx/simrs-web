@@ -3,8 +3,8 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.5937424601000023"/>
-	<property name="ireport.x" value="433"/>
-	<property name="ireport.y" value="246"/>
+	<property name="ireport.x" value="559"/>
+	<property name="ireport.y" value="299"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -18,7 +18,7 @@
 		<defaultValueExpression><![CDATA["40023"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String">
-		<defaultValueExpression><![CDATA["C:\\tomcat-7-64x\\webapps\\simrs\\pages\\report\\com\\neurix\\akuntansi\\"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["C:\\apache-tomcat-8.5.40\\webapps\\simrs\\pages\\report\\com\\neurix\\akuntansi\\"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="kota" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="periodeTitle" class="java.lang.String" isForPrompting="false"/>
@@ -71,8 +71,7 @@ where
 	<field name="jumlahdebit" class="java.math.BigDecimal"/>
 	<field name="jumlahkredit" class="java.math.BigDecimal"/>
 	<field name="periode" class="java.lang.String">
-		<fieldDescription><![CDATA[
-]]></fieldDescription>
+		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<variable name="SUM_jumlahDebit_1" class="java.math.BigDecimal" resetType="Group" resetGroup="rekening" calculation="Sum">
 		<variableExpression><![CDATA[$F{jumlahdebit}]]></variableExpression>
@@ -87,6 +86,9 @@ where
 	<variable name="kredit_awal" class="java.math.BigDecimal" calculation="System"/>
 	<variable name="kredit_akhir" class="java.math.BigDecimal">
 		<variableExpression><![CDATA[$V{kredit_awal}.add($V{SUM_jumlahKredit_1})]]></variableExpression>
+	</variable>
+	<variable name="saldo" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$V{debit_akhir}.subtract($V{kredit_akhir})]]></variableExpression>
 	</variable>
 	<group name="rekening" isReprintHeaderOnEachPage="true">
 		<groupExpression><![CDATA[]]></groupExpression>
@@ -179,7 +181,7 @@ where
 					<text><![CDATA[Saldo Akhir : ]]></text>
 				</staticText>
 				<textField pattern="#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField-8" x="383" y="21" width="92" height="18" uuid="499326fb-b4ae-4c3c-8248-191af58e500d"/>
+					<reportElement key="textField-9" x="383" y="21" width="184" height="18" uuid="c956feb6-ad3c-40fe-b374-e3ca98ed2410"/>
 					<box rightPadding="2">
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -189,20 +191,7 @@ where
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{debit_akhir}]]></textFieldExpression>
-				</textField>
-				<textField pattern="#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField-9" x="475" y="21" width="92" height="18" uuid="c956feb6-ad3c-40fe-b374-e3ca98ed2410"/>
-					<box rightPadding="2">
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$V{kredit_akhir}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{saldo}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
@@ -586,8 +575,8 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</textElement>
 				<textFieldExpression><![CDATA[( $F{jumlahkredit} == null ? BigDecimal.valueOf(0.0) : $F{jumlahkredit} )]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement key="textField" x="214" y="0" width="168" height="15" uuid="5ada4f00-6ef4-45ef-bed2-b0add8540f62"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField" stretchType="RelativeToTallestObject" x="214" y="0" width="168" height="15" isPrintWhenDetailOverflows="true" uuid="5ada4f00-6ef4-45ef-bed2-b0add8540f62"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>

@@ -8,6 +8,8 @@ import com.neurix.hris.master.payrollSkalaGaji.bo.PayrollSkalaGajiBo;
 import com.neurix.hris.master.payrollSkalaGaji.model.PayrollSkalaGaji;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
@@ -208,6 +210,15 @@ public class PayrollSkalaGajiAction extends BaseMasterAction{
         return null;
     }
 
+    public String cekIfExistDwr(String golonganId){
+        String status = "";
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PayrollSkalaGajiBo skalaGajiBo = (PayrollSkalaGajiBo) ctx.getBean("payrollSkalaGajiBo");
+        status = skalaGajiBo.cekStatus(golonganId);
+        return status;
+
+    }
+
     public String saveEdit(){
         logger.info("[PayrollSkalaGajiAction.saveEdit] start process >>>");
         try {
@@ -297,11 +308,11 @@ public class PayrollSkalaGajiAction extends BaseMasterAction{
                 logId = payrollSkalaGajiBoProxy.saveErrorMessage(e.getMessage(), "payrollSkalaGajiBO.saveAdd");
             } catch (GeneralBOException e1) {
                 logger.error("[payrollSkalaGajiAction.saveAdd] Error when saving error,", e1);
-                return ERROR;
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[payrollSkalaGajiAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            throw new GeneralBOException(e.getMessage());
         }
 
 

@@ -122,7 +122,7 @@
 
         <br>
         <p>
-            <img width="80%" height="10%" border="0" src="<s:url value="/pages/images/logo-nmu.png"/>" name="image_cloud">
+            <img  style="margin-left: -30px" width="80%" height="10%" border="0" src="<s:url value="/pages/images/logo-nmu.png"/>" name="image_cloud">
             <%--<img width="40%" height="10%" border="0" src="<s:url value="/pages/images/logo-nmu.png"/>" name="image_cloud">--%>
         </p>
 

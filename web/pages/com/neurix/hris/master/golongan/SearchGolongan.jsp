@@ -49,7 +49,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Golongan
+            Level / Golongan
             <small>e-HEALTH</small>
         </h1>
         <%--<ol class="breadcrumb">--%>
@@ -99,6 +99,16 @@
                                 <td>
                                     <table>
                                         <s:textfield  id="golonganName" name="golongan.golonganName" required="false" readonly="false" cssClass="form-control"/>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="control-label"><small>Grade Level :</small></label>
+                                </td>
+                                <td>
+                                    <table>
+                                        <s:textfield type="number" min="0"  id="gradeLevel" name="golongan.stLevel" required="false" readonly="false" cssClass="form-control"/>
                                     </table>
                                 </td>
                             </tr>
@@ -187,11 +197,12 @@
                                                 </sj:a>
 
                                             </display:column>
-                                            <display:column property="golonganId" sortable="true" title="Golongan ID" />
+                                            <%--<display:column property="golonganId" sortable="true" title="Golongan ID" />--%>
                                             <display:column property="golonganName" sortable="true" title="Nama"  />
+                                            <display:column property="stLevel" sortable="true" title="Grade Level"  />
 
-                                            <display:column property="flag" sortable="true" title="Flag" />
-                                            <display:column property="createdWho" sortable="true" title="CreatedWho"/>
+                                            <%--<display:column property="flag" sortable="true" title="Flag" />
+                                            <display:column property="createdWho" sortable="true" title="CreatedWho"/>--%>
 
                                         </display:table>
                                     </td>

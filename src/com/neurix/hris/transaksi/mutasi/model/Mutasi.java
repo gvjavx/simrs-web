@@ -36,9 +36,12 @@ public class Mutasi extends BaseModel {
     private String pjs;
     private String pjsLama;
     private String level;
+    private String levelLama;
+    private String levelBaru;
     private String penggantiNip;
     private String penggantiNama;
     private String tipeMutasi;
+    private String tipeMutasiName;
 
     private String label1;
     private String label2;
@@ -55,6 +58,48 @@ public class Mutasi extends BaseModel {
 
     private String statusPromosi;
     private String tanggalAktif;
+    private String levelLamaName;
+    private String levelBaruName;
+
+    public String getLevelBaruName() {
+        return levelBaruName;
+    }
+
+    public void setLevelBaruName(String levelBaruName) {
+        this.levelBaruName = levelBaruName;
+    }
+
+    public String getLevelLamaName() {
+        return levelLamaName;
+    }
+
+    public void setLevelLamaName(String levelLamaName) {
+        this.levelLamaName = levelLamaName;
+    }
+
+    public String getLevelBaru() {
+        return levelBaru;
+    }
+
+    public void setLevelBaru(String levelBaru) {
+        this.levelBaru = levelBaru;
+    }
+
+    public String getLevelLama() {
+        return levelLama;
+    }
+
+    public void setLevelLama(String levelLama) {
+        this.levelLama = levelLama;
+    }
+
+    public String getTipeMutasiName() {
+        return tipeMutasiName;
+    }
+
+    public void setTipeMutasiName(String tipeMutasiName) {
+        this.tipeMutasiName = tipeMutasiName;
+    }
 
     public String getTanggalAktif() {
         return tanggalAktif;

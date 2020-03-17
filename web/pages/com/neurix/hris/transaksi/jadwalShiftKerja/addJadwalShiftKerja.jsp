@@ -508,9 +508,10 @@
         var grup = $('#profesiId').find('option:selected').text();
         var shift = $('#ShiftId').find('option:selected').text();
         var shiftId = $('#ShiftId').find('option:selected').val();
+        var grupId = $('#profesiId').find('option:selected').val();
         dwr.engine.setAsync(false);
 
-        JadwalShiftKerjaAction.savePegawaiShift(nip,nama,posisi,grup,shift,shiftId,function() {
+        JadwalShiftKerjaAction.savePegawaiShift(nip,nama,posisi,grup,grupId,shift,shiftId,function() {
             resultPerson();
             listPerson();
         });

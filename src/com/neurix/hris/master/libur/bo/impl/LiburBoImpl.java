@@ -163,7 +163,6 @@ public class LiburBoImpl implements LiburBo {
             imLiburEntity.setLiburTahun(bean.getLiburTahun());
             imLiburEntity.setTipeLiburId(bean.getTipeLiburId());
             imLiburEntity.setTanggal(bean.getTanggal());
-            imLiburEntity.setTanggal(bean.getTanggal());
             imLiburEntity.setLiburKeterangan(bean.getLiburKeterangan());
 
             imLiburEntity.setFlag(bean.getFlag());

@@ -75,31 +75,31 @@
                         </table>
 
                         <table >
-                            <tr>
+                            <%--<tr>
                                 <td>
                                     <label class="control-label"><small>T. Jab Struktural Id :</small></label>
                                 </td>
                                 <td>
                                     <table>
-                                        <s:textfield  id="tunjJabatanStrukturalId" name="payrollTunjanganJabatanStruktural.tunjJabatanStrukturalId" required="false" readonly="false" cssClass="form-control"/>
+                                        <s:textfield  id="tunjJabatanStrukturalId" name="payrollTunjanganJabatanStruktural.tunjJabStrukturId" required="false" readonly="false" cssClass="form-control"/>
                                     </table>
                                 </td>
-                            </tr>
+                            </tr>--%>
 
                             <tr>
                                 <td>
-                                    <label class="control-label"><small>Position :</small></label>
+                                    <label class="control-label"><small>Kelompok Jabatan :</small></label>
                                 </td>
                                 <td>
                                     <table>
-                                        <s:action id="comboPosition" namespace="/admin/position" name="searchPosition_position"/>
-                                        <s:select list="#comboPosition.listOfComboPosition" id="position" name="payrollTunjanganJabatanStruktural.positionId"
-                                                  listKey="positionId" listValue="positionName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                        <s:action id="comboPosition" namespace="/kelompokPosition" name="searchKelompok_kelompokPosition"/>
+                                        <s:select list="#comboPosition.comboListOfKelompokPosition" id="kelompokId" name="payrollTunjanganJabatanStruktural.kelompokId"
+                                                  listKey="kelompokId" listValue="kelompokName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                     </table>
                                 </td>
                             </tr>
 
-                            <tr>
+                            <%--<tr>
                                 <td>
                                     <label class="control-label"><small>Branch :</small></label>
                                 </td>
@@ -110,7 +110,7 @@
                                                   listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" />
                                     </table>
                                 </td>
-                            </tr>
+                            </tr>--%>
 
                             <tr>
                                 <td>
@@ -176,7 +176,7 @@
                                             <display:column media="html" title="Edit">
                                                 <s:if test="#attr.row.flagYes">
                                                     <s:url var="urlEdit" namespace="/payrollTunjanganJabatanStruktural" action="edit_payrollTunjanganJabatanStruktural" escapeAmp="false">
-                                                        <s:param name="id"><s:property value="#attr.row.tunjJabatanStrukturalId"/></s:param>
+                                                        <s:param name="id"><s:property value="#attr.row.tunjJabStrukturId"/></s:param>
                                                         <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
                                                     </s:url>
                                                     <sj:a onClickTopics="showDialogMenu" href="%{urlEdit}">
@@ -187,7 +187,7 @@
 
                                             <display:column media="html" title="Delete" style="text-align:center;font-size:9">
                                                 <s:url var="urlViewDelete" namespace="/payrollTunjanganJabatanStruktural" action="delete_payrollTunjanganJabatanStruktural" escapeAmp="false">
-                                                    <s:param name="id"><s:property value="#attr.row.tunjJabatanStrukturalId" /></s:param>
+                                                    <s:param name="id"><s:property value="#attr.row.tunjJabStrukturId" /></s:param>
                                                     <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
                                                 </s:url>
                                                 <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
@@ -195,10 +195,10 @@
                                                 </sj:a>
 
                                             </display:column>
-                                            <display:column property="tunjJabatanStrukturalId" sortable="true" title="T. Jab. Struktural ID" />
-                                            <display:column property="positionName" sortable="true" title="Position"  />
-                                            <display:column property="branchName" sortable="true" title="Branch"  />
-                                            <display:column property="nilai" sortable="true" title="Nilai"  />
+                                            <display:column property="tunjJabStrukturId" sortable="true" title="T. Jab. Struktural ID" />
+                                            <display:column property="kelompokName" sortable="true" title="Kelompok Jabatan"  />
+                                            <display:column property="tunjJabatan" sortable="true" title="Tunj. Jabatan"  />
+                                            <display:column property="tunjStruktural" sortable="true" title="Tunj. Struktural"  />
                                         </display:table>
                                     </td>
                                 </tr>

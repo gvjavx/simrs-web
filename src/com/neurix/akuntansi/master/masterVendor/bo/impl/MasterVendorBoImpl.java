@@ -6,6 +6,8 @@ import com.neurix.akuntansi.master.masterVendor.dao.MasterVendorDao;
 import com.neurix.akuntansi.master.masterVendor.model.ImMasterVendorEntity;
 import com.neurix.akuntansi.master.masterVendor.model.MasterVendor;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.master.vendor.dao.VendorDao;
+import com.neurix.simrs.master.vendor.model.ImSimrsVendorEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -25,8 +27,15 @@ public class MasterVendorBoImpl implements MasterVendorBo {
 
     protected static transient Logger logger = Logger.getLogger(MasterVendorBoImpl.class);
     private MasterVendorDao masterVendorDao;
+    private VendorDao vendorDao;
 
+    public VendorDao getVendorDao() {
+        return vendorDao;
+    }
 
+    public void setVendorDao(VendorDao vendorDao) {
+        this.vendorDao = vendorDao;
+    }
 
     public static Logger getLogger() {
         return logger;
@@ -48,6 +57,22 @@ public class MasterVendorBoImpl implements MasterVendorBo {
     public void saveDelete(MasterVendor bean) throws GeneralBOException {
         logger.info("[VendorBoImpl.saveDelete] start process >>>");
         if (bean!=null) {
+
+            //validasi apakah vendor sudah ada di jurnal
+            Integer jumlah = 0;
+            try {
+                jumlah = masterVendorDao.cekExistingJurnalDetail(bean.getNomorMaster());
+            } catch (HibernateException e) {
+                logger.error("[VendorBoImpl.saveDelete] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem , please inform to your admin...," + e.getMessage());
+            }
+            if (jumlah>0){
+                String status="ERROR : Kode vendor sudah ada pada jurnal";
+                logger.error("[VendorBoImpl.saveDelete] "+status);
+                throw new GeneralBOException(status);
+            }
+
+            //save
             ImMasterVendorEntity imVendorEntity = new ImMasterVendorEntity();
             try {
                 // Get data from database by ID
@@ -146,12 +171,41 @@ public class MasterVendorBoImpl implements MasterVendorBo {
             imVendorEntity.setCreatedDate(bean.getCreatedDate());
             imVendorEntity.setLastUpdate(bean.getLastUpdate());
 
+            if (bean.getObat()){
+                imVendorEntity.setVendorObat("Y");
+            }else{
+                imVendorEntity.setVendorObat("N");
+            }
+
             try {
                 // insert into database
                 masterVendorDao.addAndSave(imVendorEntity);
             } catch (HibernateException e) {
                 logger.error("[VendorBoImpl.saveAdd] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when saving new data Vendor, please info to your admin..." + e.getMessage());
+            }
+
+            if (bean.getObat()){
+                ImSimrsVendorEntity vendorEntity = new ImSimrsVendorEntity();
+                vendorEntity.setIdVendor(vendorId);
+                vendorEntity.setNamaVendor(bean.getNama());
+                vendorEntity.setAlamat(bean.getAlamat());
+                vendorEntity.setEmail(bean.getEmail());
+                vendorEntity.setNoTelp(bean.getNoTelp());
+                vendorEntity.setFlag(bean.getFlag());
+                vendorEntity.setNpwp(bean.getNpwp());
+                vendorEntity.setAction(bean.getAction());
+                vendorEntity.setLastUpdate(bean.getLastUpdate());
+                vendorEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                vendorEntity.setCreatedWho(bean.getCreatedWho());
+                vendorEntity.setCreatedDate(bean.getCreatedDate());
+                try {
+                    // insert into database
+                    vendorDao.addAndSave(vendorEntity);
+                } catch (HibernateException e) {
+                    logger.error("[VendorBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data Vendor, please info to your admin..." + e.getMessage());
+                }
             }
         }
 
@@ -206,6 +260,7 @@ public class MasterVendorBoImpl implements MasterVendorBo {
                     returnVendor.setNpwp(vendorEntity.getNpwp());
                     returnVendor.setEmail(vendorEntity.getEmail());
                     returnVendor.setNoTelp(vendorEntity.getNoTelp());
+                    returnVendor.setVendorObat(vendorEntity.getVendorObat());
 
                     returnVendor.setCreatedWho(vendorEntity.getCreatedWho());
                     returnVendor.setCreatedDate(vendorEntity.getCreatedDate());

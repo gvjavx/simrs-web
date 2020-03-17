@@ -101,13 +101,13 @@
             </td>
         </tr>
     </table>
-    <div class="form-group">
+    <%--<div class="form-group">
         <label class="control-label col-sm-3">Status Giling:</label>
         <div class="col-sm-7">
             <s:select cssClass="form-control" list="#{'DMG':'DMG', 'LMG':'LMG'}" id="statusGiling" name="jamKerja.statusGiling"
                       headerKey="" headerValue="[Select one]"/>
         </div>
-    </div>
+    </div>--%>
     <div class="form-group">
         <label class="control-label col-sm-3">Tipe Pegawai :</label>
         <div class="col-sm-7">

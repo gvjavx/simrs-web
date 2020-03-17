@@ -79,10 +79,10 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Poli</label>
                                     <div class="col-sm-4">
-                                        <s:action id="initComboPoli" namespace="/checkup"
-                                                  name="getComboPelayanan_checkup"/>
+                                        <s:action id="initApotek" namespace="/checkup"
+                                                  name="getComboApotek_checkup"/>
                                         <s:select cssStyle="border-radius: 4px; width: 100%"
-                                                  list="#initComboPoli.listOfPelayanan" id="poli"
+                                                  list="#initApotek.listOfApotek" id="poli"
                                                   name="permintaanObatPoli.idPelayanan" listKey="idPelayanan"
                                                   listValue="namaPelayanan"
                                                   headerKey="" headerValue="[Select one]"

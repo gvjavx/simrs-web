@@ -5,7 +5,7 @@ import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.payrollTunjanganJabatanStruktural.bo.PayrollTunjanganJabatanStrukturalBo;
-import com.neurix.hris.master.payrollTunjanganJabatanStruktural.model.PayrollTunjanganJabatanStruktural;
+import com.neurix.hris.transaksi.payroll.model.PayrollTunjanganJabatanStruktural;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 
@@ -78,7 +78,7 @@ public class PayrollTunjanganJabatanStrukturalAction extends BaseMasterAction{
         if(kode != null && !"".equalsIgnoreCase(kode)){
             if(listOfResult != null){
                 for (PayrollTunjanganJabatanStruktural payrollTunjanganJabatanStruktural: listOfResult) {
-                    if(kode.equalsIgnoreCase(payrollTunjanganJabatanStruktural.getTunjJabatanStrukturalId()) && flag.equalsIgnoreCase(payrollTunjanganJabatanStruktural.getFlag())){
+                    if(kode.equalsIgnoreCase(payrollTunjanganJabatanStruktural.getTunjJabStrukturId()) && flag.equalsIgnoreCase(payrollTunjanganJabatanStruktural.getFlag())){
                         setPayrollTunjanganJabatanStruktural(payrollTunjanganJabatanStruktural);
                         break;
                     }
@@ -298,11 +298,11 @@ public class PayrollTunjanganJabatanStrukturalAction extends BaseMasterAction{
                 logId = payrollTunjanganJabatanStrukturalBoProxy.saveErrorMessage(e.getMessage(), "payrollTunjanganJabatanStrukturalBO.saveAdd");
             } catch (GeneralBOException e1) {
                 logger.error("[payrollTunjanganJabatanStrukturalAction.saveAdd] Error when saving error,", e1);
-                return ERROR;
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[payrollTunjanganJabatanStrukturalAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            throw new GeneralBOException(e.getMessage());
         }
 
 

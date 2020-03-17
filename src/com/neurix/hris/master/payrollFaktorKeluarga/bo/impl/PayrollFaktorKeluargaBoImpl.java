@@ -236,6 +236,12 @@ public class PayrollFaktorKeluargaBoImpl implements PayrollFaktorKeluargaBo {
                     returnPayrollFaktorKeluarga = new payrollFaktorKeluarga();
                     returnPayrollFaktorKeluarga.setFaktorKeluargaId(payrollFaktorKeluargaEntity.getFaktorKeluargaId());
                     returnPayrollFaktorKeluarga.setStatusKeluarga(payrollFaktorKeluargaEntity.getStatusKeluarga());
+                    if ("B".equalsIgnoreCase(payrollFaktorKeluargaEntity.getStatusKeluarga())){
+                        returnPayrollFaktorKeluarga.setStatusKeluargaName("Belum");
+                    }
+                    if ("K".equalsIgnoreCase(payrollFaktorKeluargaEntity.getStatusKeluarga())){
+                        returnPayrollFaktorKeluarga.setStatusKeluargaName("Menikah");
+                    }
                     returnPayrollFaktorKeluarga.setJumlahAnak(payrollFaktorKeluargaEntity.getJumlahAnak());
                     returnPayrollFaktorKeluarga.setPtkp(payrollFaktorKeluargaEntity.getPtkp());
 

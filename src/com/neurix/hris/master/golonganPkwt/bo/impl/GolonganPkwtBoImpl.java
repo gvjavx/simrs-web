@@ -167,35 +167,40 @@ public class GolonganPkwtBoImpl implements GolonganPkwtBo {
         logger.info("[GolonganPkwtBoImpl.saveAdd] start process >>>");
 
         if (bean!=null) {
+            String status = cekStatus(bean.getGolonganPkwtName());
+            if (!status.equalsIgnoreCase("Exist")){
+                String golonganPkwtId;
+                try {
+                    // Generating ID, get from postgre sequence
+                    golonganPkwtId = golonganPkwtDao.getNextGolonganPkwtId();
+                } catch (HibernateException e) {
+                    logger.error("[GolonganPkwtBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when getting sequence golonganPkwtId id, please info to your admin..." + e.getMessage());
+                }
 
-            String golonganPkwtId;
-            try {
-                // Generating ID, get from postgre sequence
-                golonganPkwtId = golonganPkwtDao.getNextGolonganPkwtId();
-            } catch (HibernateException e) {
-                logger.error("[GolonganPkwtBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when getting sequence golonganPkwtId id, please info to your admin..." + e.getMessage());
+                // creating object entity serializable
+                ImGolonganPkwtEntity imGolonganPkwtEntity = new ImGolonganPkwtEntity();
+
+                imGolonganPkwtEntity.setGolonganPkwtId(golonganPkwtId);
+                imGolonganPkwtEntity.setGolonganPkwtName(bean.getGolonganPkwtName());
+                imGolonganPkwtEntity.setFlag(bean.getFlag());
+                imGolonganPkwtEntity.setAction(bean.getAction());
+                imGolonganPkwtEntity.setCreatedWho(bean.getCreatedWho());
+                imGolonganPkwtEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                imGolonganPkwtEntity.setCreatedDate(bean.getCreatedDate());
+                imGolonganPkwtEntity.setLastUpdate(bean.getLastUpdate());
+
+                try {
+                    // insert into database
+                    golonganPkwtDao.addAndSave(imGolonganPkwtEntity);
+                } catch (HibernateException e) {
+                    logger.error("[GolonganPkwtBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data GolonganPkwt, please info to your admin..." + e.getMessage());
+                }
+            }else{
+                throw new GeneralBOException("Maaf Data Tersebut Sudah Ada");
             }
 
-            // creating object entity serializable
-            ImGolonganPkwtEntity imGolonganPkwtEntity = new ImGolonganPkwtEntity();
-
-            imGolonganPkwtEntity.setGolonganPkwtId(golonganPkwtId);
-            imGolonganPkwtEntity.setGolonganPkwtName(bean.getGolonganPkwtName());
-            imGolonganPkwtEntity.setFlag(bean.getFlag());
-            imGolonganPkwtEntity.setAction(bean.getAction());
-            imGolonganPkwtEntity.setCreatedWho(bean.getCreatedWho());
-            imGolonganPkwtEntity.setLastUpdateWho(bean.getLastUpdateWho());
-            imGolonganPkwtEntity.setCreatedDate(bean.getCreatedDate());
-            imGolonganPkwtEntity.setLastUpdate(bean.getLastUpdate());
-
-            try {
-                // insert into database
-                golonganPkwtDao.addAndSave(imGolonganPkwtEntity);
-            } catch (HibernateException e) {
-                logger.error("[GolonganPkwtBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when saving new data GolonganPkwt, please info to your admin..." + e.getMessage());
-            }
         }
 
         logger.info("[GolonganPkwtBoImpl.saveAdd] end process <<<");
@@ -270,6 +275,22 @@ public class GolonganPkwtBoImpl implements GolonganPkwtBo {
     @Override
     public Long saveErrorMessage(String message, String moduleMethod) throws GeneralBOException {
         return null;
+    }
+    public String cekStatus(String golonganId)throws GeneralBOException{
+        String status ="";
+        List<ImGolonganPkwtEntity> skalaGajiEntity = new ArrayList<>();
+        try {
+            skalaGajiEntity = golonganPkwtDao.getListGolongan(golonganId);
+        } catch (HibernateException e) {
+            logger.error("[PayrollSkalaGajiBoImpl.getSearchPayrollSkalaGajiByCriteria] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        if (skalaGajiEntity.size()>0){
+            status = "exist";
+        }else{
+            status="notExits";
+        }
+        return status;
     }
 
 }

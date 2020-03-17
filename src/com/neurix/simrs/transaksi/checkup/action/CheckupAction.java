@@ -771,13 +771,13 @@ public class CheckupAction extends BaseMasterAction {
 
                         SepRequest sepRequest = new SepRequest();
                         sepRequest.setNoKartu(getPasien.getNoBpjs());
-                        sepRequest.setTglSep(dateToday);
+                        sepRequest.setTglSep(updateTime.toString());
                         sepRequest.setPpkPelayanan(getBranch.getPpkPelayanan());//cons id rumah sakit // branch
                         sepRequest.setJnsPelayanan("2");//jenis rawat inap apa jalan
 
                         sepRequest.setKlsRawat(checkup.getKelasPasien());//kelas rawat dari bpjs // checkup
                         sepRequest.setNoMr(checkup.getIdPasien());//id pasien // checkup
-                        sepRequest.setAsalRujukan("1");//
+                        sepRequest.setAsalRujukan(checkup.getRujuk());//
                         sepRequest.setTglRujukan(checkup.getTglRujukan()); // checkup
                         sepRequest.setNoRujukan(checkup.getNoRujukan()); // checkup
                         sepRequest.setPpkRujukan(checkup.getNoPpkRujukan()); // checkup
@@ -798,7 +798,7 @@ public class CheckupAction extends BaseMasterAction {
                         sepRequest.setKdKecamatanLakaLantas("");
                         sepRequest.setKdKabupatenLakaLantas("");
                         sepRequest.setNoSuratSkdp(getBranch.getSuratSkdp()); // branch
-                        sepRequest.setKodeDpjp("31661");
+                        sepRequest.setKodeDpjp(checkup.getIdDokter());
                         sepRequest.setNoTelp(getPasien.getNoTelp()); // pasien
                         sepRequest.setUserPembuatSep(userLogin);
 
@@ -834,6 +834,7 @@ public class CheckupAction extends BaseMasterAction {
                             }
 
                             klaimRequest.setGender(jk);
+                            klaimRequest.setCoderNik(getBranch.getCoderNik());
 
                             KlaimResponse responseNewClaim = new KlaimResponse();
                             try {
@@ -1442,9 +1443,11 @@ public class CheckupAction extends BaseMasterAction {
         }
 
         logger.info("[CheckupAction.completeBpjs] end process >>>");
+
         if (result != null) {
             return result;
         } else {
+            result = new HeaderCheckup();
             result.setStatusBpjs("error");
             return result;
         }
@@ -3000,6 +3003,7 @@ public class CheckupAction extends BaseMasterAction {
 
                 reportParams.put("idPasien", checkup.getIdPasien());
                 reportParams.put("unit", unit);
+                reportParams.put("isKronis", "Y");
                 reportParams.put("area", area);
                 reportParams.put("resepId", idResep);
                 reportParams.put("idDetailCheckup", checkup.getIdDetailCheckup());

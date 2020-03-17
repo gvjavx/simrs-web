@@ -9,6 +9,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -49,5 +50,23 @@ public class FingerDataDao extends GenericDao<ImSimrsFingerDataEntity,String> {
                 .addOrder(Order.desc("createdDate"))
                 .list();
         return results;
+    }
+
+    public Boolean cekFingerData(String idPasien){
+        Boolean response = false;
+        if(idPasien != null && !"".equalsIgnoreCase(idPasien)){
+            String SQL = "SELECT id_finger_data, id_pasien \n" +
+                    "FROM im_simrs_finger_data\n" +
+                    "WHERE id_pasien = :id";
+
+            List<Object[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("id", idPasien)
+                    .list();
+            if(result.size() > 0){
+                response = true;
+            }
+        }
+        return response;
     }
 }

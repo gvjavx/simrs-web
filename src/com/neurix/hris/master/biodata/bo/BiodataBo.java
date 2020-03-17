@@ -105,4 +105,6 @@ public interface BiodataBo extends BaseMasterBo<Biodata>{
     List<HistoryJabatanPegawai> listRiwayatPekerjaan(String nip);
     List<Study> listStudy(String nip);
     public List<Biodata> getAllListOfPersonil(String query, String branchId) throws GeneralBOException;
+
+    Biodata getBiodataByNip(String nip);
 }

@@ -550,31 +550,31 @@
                             </table>
                         </div>
 
-                        <div class="box-header with-border" id="pos_obat">
-                        </div>
-                        <div class="box-header with-border">
-                            <h3 class="box-title"><i class="fa fa-plus-square"></i> Order Obat</h3>
-                        </div>
-                        <div class="box-body">
-                            <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
-                                    onclick="showModal(5)"><i class="fa fa-plus"></i> Order Obat
-                            </button>
-                            <table class="table table-bordered table-striped">
-                                <thead>
-                                <tr bgcolor="#90ee90">
-                                    <td>Tanggal</td>
-                                    <td>ID Obat</td>
-                                    <td>Obat</td>
-                                    <%--<td>Jenis Obat</td>--%>
-                                    <td>Qty</td>
-                                    <td align="center">Action</td>
-                                </tr>
-                                </thead>
-                                <tbody id="body_obat">
+                        <%--<div class="box-header with-border" id="pos_obat">--%>
+                        <%--</div>--%>
+                        <%--<div class="box-header with-border">--%>
+                            <%--<h3 class="box-title"><i class="fa fa-plus-square"></i> Order Obat</h3>--%>
+                        <%--</div>--%>
+                        <%--<div class="box-body">--%>
+                            <%--<button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"--%>
+                                    <%--onclick="showModal(5)"><i class="fa fa-plus"></i> Order Obat--%>
+                            <%--</button>--%>
+                            <%--<table class="table table-bordered table-striped">--%>
+                                <%--<thead>--%>
+                                <%--<tr bgcolor="#90ee90">--%>
+                                    <%--<td>Tanggal</td>--%>
+                                    <%--<td>ID Obat</td>--%>
+                                    <%--<td>Obat</td>--%>
+                                    <%--&lt;%&ndash;<td>Jenis Obat</td>&ndash;%&gt;--%>
+                                    <%--<td>Qty</td>--%>
+                                    <%--<td align="center">Action</td>--%>
+                                <%--</tr>--%>
+                                <%--</thead>--%>
+                                <%--<tbody id="body_obat">--%>
 
-                                </tbody>
-                            </table>
-                        </div>
+                                <%--</tbody>--%>
+                            <%--</table>--%>
+                        <%--</div>--%>
 
                         <div class="box-header with-border" id="pos_rssep">
                         </div>
@@ -2239,7 +2239,7 @@
     });
 
     function hitungStatusBiaya() {
-        CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, "RJ", function (response) {
+        CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, "", function (response) {
             console.log(response);
             if (response.idJenisPeriksaPasien == "bpjs") {
                 $('#status_bpjs').show();
@@ -2531,7 +2531,6 @@
                     $('#waiting_dialog').dialog('close');
                     $('#error_dialog').dialog('open');
                     $('#errorMessage').text(response.msg);
-                    $('#close_pos').val(6);
                     $('#save_ket').show();
                     $('#load_ket').hide();
                 }
@@ -2540,12 +2539,22 @@
         if(idKtg == "selesai"){
             $('#save_ket').hide();
             $('#load_ket').show();
+            $('#waiting_dialog').dialog('open');
             dwr.engine.setAsync(true);
             CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, jenisPasien, "", "", "", idPasien, metodeBayar, uangMuka, jenisBayar, function (response) {
-                $('#info_dialog').dialog('open');
-                $('#close_pos').val(6);
-                $('#save_ket').show();
-                $('#load_ket').hide();
+                if(response.status == "success"){
+                    $('#waiting_dialog').dialog('close');
+                    $('#info_dialog').dialog('open');
+                    $('#close_pos').val(6);
+                    $('#save_ket').show();
+                    $('#load_ket').hide();
+                }else{
+                    $('#waiting_dialog').dialog('close');
+                    $('#error_dialog').dialog('open');
+                    $('#errorMessage').text(response.msg);
+                    $('#save_ket').show();
+                    $('#load_ket').hide();
+                }
             });
         }
     }
@@ -3583,7 +3592,8 @@
                     table += "<tr>" +
                         "<td>" + dateFormat + "</td>" +
                         "<td>" + idResep + "</td>" +
-                        "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="detailResep(\'' + item.idApprovalObat + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">'+
+                        "<td align='center'>" +
+                        <%--'<img border="0" class="hvr-grow" onclick="detailResep(\'' + item.idApprovalObat + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">'+--%>
                         ' <img onclick="printResep(\'' + idResep + '\')" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">' +
                         "</td>" +
                         "</tr>"

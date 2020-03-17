@@ -250,6 +250,9 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
             if (searchBean.getNoJurnal() != null && !"".equalsIgnoreCase(searchBean.getNoJurnal())) {
                 hsCriteria.put("no_jurnal", searchBean.getNoJurnal());
             }
+            if (searchBean.getBranchId() != null && !"".equalsIgnoreCase(searchBean.getBranchId())) {
+                hsCriteria.put("branch_id", searchBean.getBranchId());
+            }
             if (searchBean.getTanggal() != null) {
                 hsCriteria.put("tanggal", searchBean.getTanggal());
             }
@@ -585,6 +588,20 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
         try {
             // Update into database
             rekeningKas= kodeRekeningDao.getKodeRekeningKasForJurnal(noJurnal);
+        } catch (HibernateException e) {
+            logger.error("[PembayaranUtangPiutangBoImpl.postingJurnal] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when saving update data PembayaranUtangPiutang, please info to your admin..." + e.getMessage());
+        }
+        logger.info("[PembayaranUtangPiutangBoImpl.postingJurnal] end process <<<");
+        return rekeningKas;
+    }
+    @Override
+    public String getNamaRekeningKasJurnal(String noJurnal) throws GeneralBOException {
+        logger.info("[PembayaranUtangPiutangBoImpl.postingJurnal] start process >>>");
+        String rekeningKas="";
+        try {
+            // Update into database
+            rekeningKas= kodeRekeningDao.getNamaRekeningKasForJurnal(noJurnal);
         } catch (HibernateException e) {
             logger.error("[PembayaranUtangPiutangBoImpl.postingJurnal] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when saving update data PembayaranUtangPiutang, please info to your admin..." + e.getMessage());

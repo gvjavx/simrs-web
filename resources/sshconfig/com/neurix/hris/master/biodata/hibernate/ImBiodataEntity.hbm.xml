@@ -75,12 +75,6 @@
         <!--<property name="divisi">-->
             <!--<column name="divisi" sql-type="varchar" length="4" not-null="false" />-->
         <!--</property>-->
-        <!--<property name="branch">-->
-            <!--<column name="branch" sql-type="varchar" length="5" not-null="false" />-->
-        <!--</property>-->
-        <!--<property name="positionId">-->
-            <!--<column name="position_id" sql-type="varchar" length="3"/>-->
-        <!--</property>-->
 
         <property name="statusPegawai">
             <column name="status_pegawai" sql-type="varchar" length="20"/>
@@ -203,7 +197,12 @@
         <property name="tanggalAkhirKontrak">
             <column name="tgl_akhir_kontrak" sql-type="timestamp" not-null="false" />
         </property>
-
+        <property name="branchIdTerakhir">
+        <column name="branch_id_terakhir" sql-type="varchar" length="10" not-null="false" />
+        </property>
+        <property name="positionIdTerakhir">
+            <column name="position_id_terakhir" sql-type="varchar" length="10" not-null="false" />
+        </property>
 
         <many-to-one name="imProvinsiEntity" class="com.neurix.hris.master.provinsi.model.ImProvinsiEntity"
                      insert="false" update="false" fetch="select" cascade="all">

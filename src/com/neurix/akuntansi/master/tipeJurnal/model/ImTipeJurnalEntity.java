@@ -14,7 +14,6 @@ public class ImTipeJurnalEntity implements Serializable {
 
     private String tipeJurnalId;
     private String tipeJurnalName;
-    private String flagSumberBaru;
 
     private String flag;
     private String action;
@@ -23,13 +22,6 @@ public class ImTipeJurnalEntity implements Serializable {
     private String createdWho;
     private String lastUpdateWho;
 
-    public String getFlagSumberBaru() {
-        return flagSumberBaru;
-    }
-
-    public void setFlagSumberBaru(String flagSumberBaru) {
-        this.flagSumberBaru = flagSumberBaru;
-    }
 
     public String getTipeJurnalId() {
         return tipeJurnalId;

@@ -16,6 +16,7 @@
           p:periksaRadiologiDao-ref="periksaRadiologiDao"
           p:statusPasienDao-ref="statusPasienDao"
           p:dokterDao-ref="dokterDao"
+          p:periksaLabDao-ref="periksaLabDao"
     />
 
     <bean id="periksaRadiologiBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

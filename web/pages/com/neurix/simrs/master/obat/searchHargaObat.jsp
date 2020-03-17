@@ -17,6 +17,17 @@
             $('#harga_obat').addClass('active');
         });
 
+        function formatRupiah(angka) {
+            if(angka != null && angka != '' && angka > 0){
+                var reverse = angka.toString().split('').reverse().join(''),
+                    ribuan = reverse.match(/\d{1,3}/g);
+                ribuan = ribuan.join('.').split('').reverse().join('');
+                return ribuan;
+            }else{
+                return 0;
+            }
+        }
+
     </script>
 </head>
 
@@ -165,7 +176,7 @@
                                 <td>Nama Obat</td>
                                 <td>Merk</td>
                                 <td>Harga Rata-rata (Bijian)</td>
-                                <td>Harga Net</td>
+                                <td>Harga</td>
                                 <td>Diskon</td>
                                 <td>Harga Jual</td>
                                 <td align="center">Action</td>
@@ -177,10 +188,10 @@
                                     <td><s:property value="idObat"/></td>
                                     <td><s:property value="namaObat"/></td>
                                     <td><s:property value="merk"/></td>
-                                    <td><s:property value="averageHargaBiji"/></td>
-                                    <td><s:property value="hargaNet"/></td>
+                                    <td align="right"><script>document.write(formatRupiah('<s:property value="averageHargaBiji"/>'))</script></td>
+                                    <td align="right"><script>document.write(formatRupiah('<s:property value="hargaNet"/>'))</script></td>
                                     <td><s:property value="diskon"/>%</td>
-                                    <td><s:property value="hargaJual"/></td>
+                                    <td align="right"><script>document.write(formatRupiah('<s:property value="hargaJual"/>'))</script></td>
                                     <td align="center">
                                         <img onclick="editObat('<s:property value="idObat"/>','<s:property value="idBarang"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
 
@@ -258,7 +269,7 @@
                 </div>
                 <div class="row" style="margin-top: 7px">
                     <div class="form-group">
-                        <label class="col-md-5" style="margin-top: 7px">Harga Net</label>
+                        <label class="col-md-5" style="margin-top: 7px">Harga</label>
                         <div class="col-md-7">
                             <input type="number" id="mod-harga-net" onchange="hitungDiskon()" class="form-control">
                         </div>

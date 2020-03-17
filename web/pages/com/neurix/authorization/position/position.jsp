@@ -107,7 +107,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Position Information
+            Posisi
             <small>e-HEALTH</small>
         </h1>
     </section>
@@ -144,7 +144,7 @@
                                     <s:hidden name="delete"/>
 
                                     <div class="form-group">
-                                        <label class="control-label col-sm-5" for="position.stPositionId">Position Id :</label>
+                                        <label class="control-label col-sm-5" for="position.stPositionId">Posisi Id :</label>
                                         <s:if test="isAddOrEdit()">
                                             <div class="col-sm-3">
                                                 <s:textfield id="positionId" name="position.stPositionId"
@@ -164,7 +164,7 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="control-label col-sm-5" for="position.positionName">Position Name :</label>
+                                        <label class="control-label col-sm-5" for="position.positionName">Nama Posisi :</label>
                                         <s:if test="isAddOrEdit()">
                                             <div class="col-sm-3">
                                                 <s:textfield id="positionName" name="position.positionName"
@@ -184,7 +184,7 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="control-label col-sm-5" for="position.positionName">Department :</label>
+                                        <label class="control-label col-sm-5" for="position.positionName">Bidang/Divisi :</label>
                                         <s:if test="isAddOrEdit()">
                                             <div class="col-sm-3">
                                                 <s:action id="comboMasaTanam" namespace="/department" name="initDepartment_department"/>
@@ -237,7 +237,7 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="control-label col-sm-5" for="position.positionName">Kelompok :</label>
+                                        <label class="control-label col-sm-5" for="position.positionName">Kelompok Jabatan :</label>
                                         <s:if test="isAddOrEdit()">
                                             <div class="col-sm-3">
                                                 <s:action id="comboKelompok" namespace="/kelompokPosition" name="searchKelompok_kelompokPosition"/>
@@ -418,7 +418,7 @@
                                                             <s:url id="urlAdd" namespace="/admin/position" action="add_position" escapeAmp="false"/>
                                                             <button class="btn btn-success dropdown-toggle" data-toggle="dropdown">
                                                                 <i class="fa fa-edit"></i>
-                                                                Position
+                                                                Posisi
                                                                 <span class="caret"></span>
                                                             </button>
                                                             <ul class="dropdown-menu">
@@ -472,10 +472,10 @@
                                                             </display:column>
 
                                                             <display:column property="positionId" sortable="true" title="Id"/>
-                                                            <display:column property="positionName" sortable="true" title="Position.Name"/>
-                                                            <display:column property="departmentName" sortable="true" title="Department Name"/>
+                                                            <display:column property="positionName" sortable="true" title="Nama Posisi"/>
+                                                            <display:column property="departmentName" sortable="true" title="Bidang/Divisi"/>
                                                             <display:column property="bagianName" sortable="true" title="Bagian"/>
-                                                            <display:column property="kelompokName" sortable="true" title="Kelompok"/>
+                                                            <display:column property="kelompokName" sortable="true" title="Kelompok Jabatan"/>
                                                             <%--<display:column property="createdDate" sortable="true" title="CreatedDate"
                                                                             decorator="com.neurix.common.displaytag.LongDateWrapper"/>
                                                             <display:column property="createdWho" sortable="true" title="CreatedWho"/>

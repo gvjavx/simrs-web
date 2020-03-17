@@ -102,35 +102,40 @@ public class TipePegawaiBoImpl implements TipePegawaiBo{
         logger.info("[TipePegawaiBoImpl.saveAdd] start process >>>");
 
         if (bean!=null) {
+            String status = cekStatus(bean.getTipePegawaiName());
+            if (!status.equalsIgnoreCase("Exist")){
+                String liburId;
+                try {
+                    // Generating ID, get from postgre sequence
+                    liburId = tipePegawaiDao.getTipePegawaiId();
+                } catch (HibernateException e) {
+                    logger.error("[TipePegawaiBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when getting sequence alat id, please info to your admin..." + e.getMessage());
+                }
 
-            String liburId;
-            try {
-                // Generating ID, get from postgre sequence
-                liburId = tipePegawaiDao.getTipePegawaiId();
-            } catch (HibernateException e) {
-                logger.error("[TipePegawaiBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when getting sequence alat id, please info to your admin..." + e.getMessage());
+                // creating object entity serializable
+                ImHrisTipePegawai entityData = new ImHrisTipePegawai();
+
+                entityData.setTipePegawaiId("TP"+liburId);
+                entityData.setTipePegawaiName(bean.getTipePegawaiName());
+                entityData.setFlag(bean.getFlag());
+                entityData.setAction(bean.getAction());
+                entityData.setCreateDateWho(bean.getCreatedWho());
+                entityData.setLastUpdateWho(bean.getLastUpdateWho());
+                entityData.setCreatedDate(bean.getCreatedDate());
+                entityData.setLastUpdate(bean.getLastUpdate());
+
+                try {
+                    // insert into database
+                    tipePegawaiDao.addAndSave(entityData);
+                } catch (HibernateException e) {
+                    logger.error("[TipePegawaiBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data alat, please info to your admin..." + e.getMessage());
+                }
+            }else {
+                throw new GeneralBOException("Maaf Data Tersebut Sudah Ada");
             }
 
-            // creating object entity serializable
-            ImHrisTipePegawai entityData = new ImHrisTipePegawai();
-
-            entityData.setTipePegawaiId("TP"+liburId);
-            entityData.setTipePegawaiName(bean.getTipePegawaiName());
-            entityData.setFlag(bean.getFlag());
-            entityData.setAction(bean.getAction());
-            entityData.setCreateDateWho(bean.getCreatedWho());
-            entityData.setLastUpdateWho(bean.getLastUpdateWho());
-            entityData.setCreatedDate(bean.getCreatedDate());
-            entityData.setLastUpdate(bean.getLastUpdate());
-
-            try {
-                // insert into database
-                tipePegawaiDao.addAndSave(entityData);
-            } catch (HibernateException e) {
-                logger.error("[TipePegawaiBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when saving new data alat, please info to your admin..." + e.getMessage());
-            }
         }
 
         logger.info("[TipePegawaiBoImpl.saveAdd] end process <<<");
@@ -222,5 +227,21 @@ public class TipePegawaiBoImpl implements TipePegawaiBo{
             }
         }
         return tipePegawais;
+    }
+    public String cekStatus(String golonganId)throws GeneralBOException{
+        String status ="";
+        List<ImHrisTipePegawai> skalaGajiEntity = new ArrayList<>();
+        try {
+            skalaGajiEntity = tipePegawaiDao.getTipePegawaiByName(golonganId);
+        } catch (HibernateException e) {
+            logger.error("[PayrollSkalaGajiBoImpl.getSearchPayrollSkalaGajiByCriteria] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        if (skalaGajiEntity.size()>0){
+            status = "exist";
+        }else{
+            status="notExits";
+        }
+        return status;
     }
 }

@@ -84,4 +84,13 @@ public class TipePegawaiDao extends GenericDao<ImHrisTipePegawai, String> {
     public void addAndSaveHistory(ImHrisTipePegawaiHistory entity) throws HibernateException {
         this.sessionFactory.getCurrentSession().save(entity);
     }
+    public List<ImHrisTipePegawai> getTipePegawaiByName(String tipePegawaiName) {
+        Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ImHrisTipePegawai.class);
+        criteria.add(Restrictions.eq("flag","Y"));
+        criteria.add(Restrictions.eq("tipePegawaiName",tipePegawaiName));
+        criteria.addOrder(Order.asc("tipePegawaiId"));
+        List<ImHrisTipePegawai> results = criteria.list();
+
+        return results;
+    }
 }

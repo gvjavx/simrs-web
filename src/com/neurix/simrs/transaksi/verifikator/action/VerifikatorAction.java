@@ -485,11 +485,11 @@ public class VerifikatorAction extends BaseMasterAction {
                                 for (RiwayatTindakan tindakan : tindakanRawatList) {
 
                                     BigDecimal ppnObat = new BigDecimal(String.valueOf(0));
-                                    BigDecimal tarifTotal = tindakan.getTotalTarif();
+                                    BigInteger tarifTotal = tindakan.getTotalTarif().toBigInteger();
 
                                     if("resep".equalsIgnoreCase(tindakan.getKeterangan())){
                                         ppnObat = (tindakan.getTotalTarif().multiply(new BigDecimal(0.1))).setScale(2, BigDecimal.ROUND_HALF_UP);
-                                        tarifTotal = ppnObat.add(tarifTotal);
+                                        tarifTotal = ppnObat.toBigInteger().add(tarifTotal);
                                     }
 
                                     if ("Y".equalsIgnoreCase(tindakan.getApproveBpjsFlag()) && tindakan.getTotalTarif() != null && !"Y".equalsIgnoreCase(tindakan.getFlagUpdateKlaim())) {

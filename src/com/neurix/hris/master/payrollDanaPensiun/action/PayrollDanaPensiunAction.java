@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -212,7 +213,8 @@ public class PayrollDanaPensiunAction extends BaseMasterAction{
 
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-
+            editPayrollDanaPensiun.setPersentaseKary(new BigDecimal(editPayrollDanaPensiun.getStPersentaseKary()));
+            editPayrollDanaPensiun.setPersentasePers(new BigDecimal(editPayrollDanaPensiun.getStPersentasePers()));
             editPayrollDanaPensiun.setLastUpdateWho(userLogin);
             editPayrollDanaPensiun.setLastUpdate(updateTime);
             editPayrollDanaPensiun.setAction("U");
@@ -279,6 +281,8 @@ public class PayrollDanaPensiunAction extends BaseMasterAction{
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
 
+            payrollDanaPensiun.setPersentaseKary(new BigDecimal(payrollDanaPensiun.getStPersentaseKary()));
+            payrollDanaPensiun.setPersentasePers(new BigDecimal(payrollDanaPensiun.getStPersentasePers()));
             payrollDanaPensiun.setCreatedWho(userLogin);
             payrollDanaPensiun.setLastUpdate(updateTime);
             payrollDanaPensiun.setCreatedDate(updateTime);

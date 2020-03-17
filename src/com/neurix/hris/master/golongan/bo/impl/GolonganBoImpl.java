@@ -116,6 +116,7 @@ public class GolonganBoImpl implements GolonganBo {
                 imGolonganHistoryEntity.setId(historyId);
                 imGolonganHistoryEntity.setGolonganId(imGolonganEntity.getGolonganId());
                 imGolonganHistoryEntity.setGolonganName(imGolonganEntity.getGolonganName());
+                imGolonganHistoryEntity.setGolonganName(imGolonganEntity.getGolonganName());
                 imGolonganHistoryEntity.setFlag(imGolonganEntity.getFlag());
                 imGolonganHistoryEntity.setAction(imGolonganEntity.getAction());
                 imGolonganHistoryEntity.setLastUpdateWho(imGolonganEntity.getLastUpdateWho());
@@ -125,6 +126,7 @@ public class GolonganBoImpl implements GolonganBo {
 
                 imGolonganEntity.setGolonganId(bean.getGolonganId());
                 imGolonganEntity.setGolonganName(bean.getGolonganName());
+                imGolonganEntity.setLevel(Integer.parseInt(bean.getStLevel()));
                 imGolonganEntity.setFlag(bean.getFlag());
                 imGolonganEntity.setAction(bean.getAction());
                 imGolonganEntity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -154,7 +156,12 @@ public class GolonganBoImpl implements GolonganBo {
         logger.info("[GolonganBoImpl.saveAdd] start process >>>");
 
         if (bean!=null) {
+            String status = cekStatus(bean.getLevel());
+            if (!status.equalsIgnoreCase("Exist")){
 
+            }else{
+                throw new GeneralBOException("Maaf Data Dengan Level Tersebut Sudah Ada");
+            }
             String golonganId;
             try {
                 // Generating ID, get from postgre sequence
@@ -169,6 +176,7 @@ public class GolonganBoImpl implements GolonganBo {
 
             imGolonganEntity.setGolonganId(golonganId);
             imGolonganEntity.setGolonganName(bean.getGolonganName());
+            imGolonganEntity.setLevel(bean.getLevel());
             imGolonganEntity.setFlag(bean.getFlag());
             imGolonganEntity.setAction(bean.getAction());
             imGolonganEntity.setCreatedWho(bean.getCreatedWho());
@@ -204,6 +212,9 @@ public class GolonganBoImpl implements GolonganBo {
             }
             if (searchBean.getGolonganName() != null && !"".equalsIgnoreCase(searchBean.getGolonganName())) {
                 hsCriteria.put("golongan_name", searchBean.getGolonganName());
+            }
+            if (searchBean.getStLevel() != null && !"".equalsIgnoreCase(searchBean.getStLevel())) {
+                hsCriteria.put("grade_level", Integer.parseInt(searchBean.getStLevel()));
             }
 
             if (searchBean.getFlag() != null && !"".equalsIgnoreCase(searchBean.getFlag())) {
@@ -285,5 +296,10 @@ public class GolonganBoImpl implements GolonganBo {
         }
         logger.info("[UserBoImpl.getComboUserWithCriteria] end process <<<");
         return listComboGolongan;
+    }
+    public String cekStatus(Integer golonganId)throws GeneralBOException{
+        String status ="";
+        status = golonganDao.getStatus(golonganId);
+        return status;
     }
 }

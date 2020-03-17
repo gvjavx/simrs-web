@@ -38,7 +38,7 @@
             var tipeLaporan = document.getElementById("tipeLaporan").value;
             var master = document.getElementById("masterId").value;
 
-            if ( unit != '' && periodeTahun != ''&& periodeBulan != '') {
+            if ( unit != '' && periodeTahun != ''&& periodeBulan != ''&&tipeLaporan!='') {
                 event.originalEvent.options.submit = false;
                 var url = "printReportAging_laporanAkuntansi.action?laporanAkuntansi.tipeLaporan="+tipeLaporan+"&laporanAkuntansi.unit="+unit+"&laporanAkuntansi.tahun="+periodeTahun+"&laporanAkuntansi.bulan="+periodeBulan+"&laporanAkuntansi.masterId="+master;
                 window.open(url,'_self');
@@ -53,6 +53,9 @@
                 }
                 if ( periodeBulan == '') {
                     msg += 'Field <strong>Bulan </strong> masih belum dipilih' + '<br/>';
+                }
+                if ( tipeLaporan == '') {
+                    msg += 'Field <strong>Tipe Laporan </strong> masih belum dipilih' + '<br/>';
                 }
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
@@ -102,7 +105,6 @@
                             <tr>
                                 <td align="center">
                                     <s:form id="laporanAkuntansiForm" method="post"  theme="simple" namespace="/laporanAkuntansi" action="printReport_laporanAkuntansi.action" cssClass="form-horizontal">
-                                        <s:hidden id="tipeLaporan" name="laporanAkuntansi.tipeLaporan"/>
                                         <table>
                                             <tr>
                                                 <td width="10%" align="center">
@@ -113,23 +115,32 @@
                                         <table>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Tipe Laporan :</small></label>
-                                                </td>
-                                                <td>
-                                                    <s:textfield  id="tipeLaporanName" name="laporanAkuntansi.tipeLaporanName" readonly="true" cssClass="form-control"/>
-                                                    <s:hidden id="tipeAging" name="laporanAkuntansi.tipePerson"/>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
                                                     <label class="control-label"><small>Unit :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                                                        <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="laporanAkuntansi.unit"
-                                                                  listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                        <s:if test='#laporanAkuntansi.unit == "KP"'>
+                                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                                            <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="laporanAkuntansi.unit"
+                                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                        </s:if>
+                                                        <s:else>
+                                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                                            <s:select list="#initComboBranch.listOfComboBranch" id="branchIdView" name="laporanAkuntansi.unit" disabled="true"
+                                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                            <s:hidden id="branchId" name="laporanAkuntansi.unit" />
+                                                        </s:else>
                                                     </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label"><small>Tipe Laporan :</small></label>
+                                                </td>
+                                                <td>
+                                                    <s:select list="#{'hutang_usaha':'Hutang Usaha', 'piutang_usaha' : 'Piutang Usaha', 'uang_muka':'Uang Muka','piutang_pasien':'Piutang Pasien','uang_muka_p':'Uang Muka Pasien'}"
+                                                              id="tipeLaporan" name="laporanAkuntansi.tipeLaporanId"
+                                                              headerKey="" headerValue="[Select One]" cssClass="form-control" />
                                                 </td>
                                             </tr>
                                             <tr>
@@ -168,67 +179,69 @@
                                                     </table>
                                                     <script>
                                                         $(document).ready(function() {
-                                                            var tipePerson = $('#tipeAging').val();
+                                                            var tipePerson = $('#tipeLaporan').val();
                                                             var functions, mapped;
-                                                            if (tipePerson=='usaha'){
-                                                                $('#masterId').typeahead({
-                                                                    minLength: 1,
-                                                                    source: function (query, process) {
-                                                                        functions = [];
-                                                                        mapped = {};
-                                                                        var data = [];
-                                                                        dwr.engine.setAsync(false);
-                                                                        MasterAction.initTypeaheadMaster(query,function (listdata) {
-                                                                            data = listdata;
-                                                                        });
-                                                                        $.each(data, function (i, item) {
-                                                                            var labelItem = item.nomorVendor + " | " + item.nama;
-                                                                            mapped[labelItem] = {
-                                                                                id: item.nomorVendor,
-                                                                                nama: item.nama
-                                                                            };
-                                                                            functions.push(labelItem);
-                                                                        });
-                                                                        process(functions);
-                                                                    },
-                                                                    updater: function (item) {
-                                                                        var selectedObj = mapped[item];
-                                                                        $('#masterName').val(selectedObj.nama);
-                                                                        return selectedObj.id;
-                                                                    }
-                                                                });
-                                                            }else if (tipePerson=='pasien') {
-                                                                $('#masterId').typeahead({
-                                                                    minLength: 1,
-                                                                    source: function (query, process) {
-                                                                        functions = [];
-                                                                        mapped = {};
-
-                                                                        var data = [];
-                                                                        dwr.engine.setAsync(false);
-
-                                                                        PasienAction.getListComboPasien(query, function (listdata) {
-                                                                            data = listdata;
-                                                                        });
-
-                                                                        $.each(data, function (i, item) {
-                                                                            var labelItem = item.idPasien+" | "+item.nama;
-                                                                            mapped[labelItem] = {
-                                                                                id: item.idPasien,
-                                                                                nama:item.nama
-                                                                            };
-                                                                            functions.push(labelItem);
-                                                                        });
-                                                                        process(functions);
-
-                                                                    },
-                                                                    updater: function (item) {
-                                                                        var selectedObj = mapped[item];
-                                                                        $('#masterName').val(selectedObj.nama);
-                                                                        return selectedObj.id;
-                                                                    }
-                                                                });
-                                                            }
+                                                            console.log(tipePerson);
+                                                            $('#masterId').typeahead({
+                                                                minLength: 1,
+                                                                source: function (query, process) {
+                                                                    functions = [];
+                                                                    mapped = {};
+                                                                    var data = [];
+                                                                    dwr.engine.setAsync(false);
+                                                                    MasterAction.initTypeaheadMaster(query,function (listdata) {
+                                                                        data = listdata;
+                                                                    });
+                                                                    $.each(data, function (i, item) {
+                                                                        var labelItem = item.nomorVendor + " | " + item.nama;
+                                                                        mapped[labelItem] = {
+                                                                            id: item.nomorVendor,
+                                                                            nama: item.nama
+                                                                        };
+                                                                        functions.push(labelItem);
+                                                                    });
+                                                                    process(functions);
+                                                                },
+                                                                updater: function (item) {
+                                                                    var selectedObj = mapped[item];
+                                                                    $('#masterName').val(selectedObj.nama);
+                                                                    return selectedObj.id;
+                                                                }
+                                                            });
+                                                            // if (tipePerson=='hutang_usaha'||tipePerson=='piutang_usaha'||tipePerson=='uang_muka'){
+                                                            //
+                                                            // }else if (tipePerson=='piutang_pasien'||tipePerson=='uang_muka_p') {
+                                                            //     $('#masterId').typeahead({
+                                                            //         minLength: 1,
+                                                            //         source: function (query, process) {
+                                                            //             functions = [];
+                                                            //             mapped = {};
+                                                            //
+                                                            //             var data = [];
+                                                            //             dwr.engine.setAsync(false);
+                                                            //
+                                                            //             PasienAction.getListComboPasien(query, function (listdata) {
+                                                            //                 data = listdata;
+                                                            //             });
+                                                            //
+                                                            //             $.each(data, function (i, item) {
+                                                            //                 var labelItem = item.idPasien+" | "+item.nama;
+                                                            //                 mapped[labelItem] = {
+                                                            //                     id: item.idPasien,
+                                                            //                     nama:item.nama
+                                                            //                 };
+                                                            //                 functions.push(labelItem);
+                                                            //             });
+                                                            //             process(functions);
+                                                            //
+                                                            //         },
+                                                            //         updater: function (item) {
+                                                            //             var selectedObj = mapped[item];
+                                                            //             $('#masterName').val(selectedObj.nama);
+                                                            //             return selectedObj.id;
+                                                            //         }
+                                                            //     });
+                                                            // }
                                                         });
                                                     </script>
                                                 </td>

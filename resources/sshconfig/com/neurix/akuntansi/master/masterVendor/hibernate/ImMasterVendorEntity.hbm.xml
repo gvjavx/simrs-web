@@ -25,6 +25,9 @@
         <property name="noTelp">
             <column name="no_telp" sql-type="varchar" length="50" not-null="false" />
         </property>
+        <property name="vendorObat">
+            <column name="vendor_obat" sql-type="varchar" length="1" not-null="false" />
+        </property>
 
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />

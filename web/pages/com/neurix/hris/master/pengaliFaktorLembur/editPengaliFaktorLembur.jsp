@@ -108,7 +108,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="pengaliFaktorLemburId" name="pengaliFaktorLembur.pengaliFaktorLemburId" required="true" readonly="true" cssClass="form-control"/>
+                                <s:textfield  id="pengaliFaktorLemburId1" name="pengaliFaktorLembur.pengaliFaktorId" required="true" readonly="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>

@@ -433,6 +433,8 @@ public class KasirRawatInapAction extends BaseMasterAction {
                 reportParams.put("listObatDetail", itemDataObat);
                 reportParams.put("listUangMuka", itemDataUangMuka);
                 reportParams.put("totalJasa", totalJasa);
+                reportParams.put("idPasien", checkup.getIdPasien());
+                reportParams.put("petugas", CommonUtil.userLogin());
                 reportParams.put("terbilang", terbilang);
                 reportParams.put("unit", unit);
                 reportParams.put("area", area);

@@ -576,18 +576,20 @@
 <script type='text/javascript'>
 
     function formatRupiah(angka) {
-        if(angka != ""){
+        if(angka != "" && angka > 0){
             var reverse = angka.toString().split('').reverse().join(''),
                 ribuan = reverse.match(/\d{1,3}/g);
             ribuan = ribuan.join('.').split('').reverse().join('');
             return ribuan;
+        }else{
+            return 0;
         }
 
     }
 
     function hitungStatusBiaya(idDetailCheckup) {
         CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, "RJ",  function (response) {
-            if (response.idJenisPeriksaPasien == "bpjs") {
+            // if (response.idJenisPeriksaPasien == "bpjs") {
                 if (response.tarifBpjs != null && response.tarifTindakan != null) {
 
                     var coverBiaya = response.tarifBpjs;
@@ -629,8 +631,6 @@
                         $('#fin_b_tindakan').html(formatRupiah(biayaTindakan) + " (" + persen + "%)");
                     }
                 }
-            } else {
-            }
         });
     }
 
@@ -958,6 +958,8 @@
 
             VerifikatorAction.getListTindakanRawat(idCheckup, idDetailCheckup, function (response) {
                 dataTindakan = response;
+                var ppnObat = 0;
+
                 if (dataTindakan != null) {
                     $.each(dataTindakan, function (i, item) {
                         var tindakan = "";
@@ -983,6 +985,10 @@
                             tgl = item.stTglTindakan;
                         }
 
+                        if(item.keterangan == "resep"){
+                            ppnObat = parseInt(ppnObat) + parseInt(item.totalTarif * 0.1);
+                        }
+
                         table += "<tr>" +
                             "<td>" + tgl + "</td>" +
                             "<td>" + tindakan + "</td>" +
@@ -991,7 +997,8 @@
                             "</tr>";
                     });
 
-                    table = table + '<tr><td colspan="3">Total</td><td align="right">'+formatRupiah(total)+'</td></tr>';
+                    table = table +'<tr><td colspan="3">PPN Obat</td><td align="right">'+formatRupiah(ppnObat)+'</td></tr>'+
+                        '<tr><td colspan="3">Total Jasa</td><td align="right">'+formatRupiah(total + ppnObat)+'</td></tr>';
                 }
             });
 

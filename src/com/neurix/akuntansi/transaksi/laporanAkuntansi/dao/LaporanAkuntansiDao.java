@@ -56,7 +56,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
         return results;
     }
 
-    public List<Aging> getAging(String branchId, String periode,String masterId,String reportId){
+    public List<Aging> getAging(String branchId, String periode,String masterId,String reportId,String tipeLaporan){
         List<Aging> listOfResult = new ArrayList<>();
         String tipeWhere = "";
         if (!"".equalsIgnoreCase(masterId)){
@@ -76,7 +76,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "      (b.jumlah_debit - b.jumlah_kredit) as total, \n" +
                 "      b.master_id as masterId, \n" +
                 "      d.nama as namaMaster, \n" +
-                "      d.master_id as masterGrp, \n" +
+                "      -- d.master_id as masterGrp, \n" +
                 "      f.nilai_kurs as kurs\n" +
                 "    from \n" +
                 "      (\n" +
@@ -119,11 +119,12 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "                    im_akun_report_detail\n" +
                 "                where\n" +
                 "                    report_id='"+reportId+"'\n" +
+                "                       and tipe_laporan='"+tipeLaporan+"'" +
                 "                       and flag='Y'"+
                 "            )\n" +
                 tipeWhere +
                 "order by \n" +
-                "  mastergrp, \n" +
+                "  -- mastergrp, \n" +
                 "  masterId, \n" +
                 "  tglJurnal, \n" +
                 "  masterId asc";
@@ -141,14 +142,14 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
             data.setTotal(BigDecimal.valueOf(Double.parseDouble(row[5].toString())));
             data.setMasterId((String) row[6]);
             data.setNamaMaster((String) row[7]);
-            data.setMasterGrp(row[8].toString());
-            data.setKurs(BigDecimal.valueOf(Double.parseDouble(row[9].toString())));
+//            data.setMasterGrp(row[8].toString());
+            data.setKurs(BigDecimal.valueOf(Double.parseDouble(row[8].toString())));
             listOfResult.add(data);
         }
         return listOfResult;
     }
 
-    public List<Aging> getAgingPasien(String branchId, String periode,String masterId,String reportId){
+    public List<Aging> getAgingPasien(String branchId, String periode,String masterId,String reportId,String tipeLaporan){
         List<Aging> listOfResult = new ArrayList<>();
         String tipeWhere = "";
         if (!"".equalsIgnoreCase(masterId)){
@@ -211,6 +212,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "      im_akun_report_detail \n" +
                 "    where \n" +
                 "      report_id = '"+reportId+"'\n" +
+                "       and tipe_laporan='"+tipeLaporan+"' \n" +
                 "      and flag='Y'"+
                 "  ) \n" +
                 "  "+tipeWhere+" \n" +
@@ -259,5 +261,26 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
         String sId = String.format("%02d", iter.next());
 
         return "RPT"+sId;
+    }
+
+    public Integer searchReportIdExisting(String reportId){
+        Integer result=0;
+        String[] tabel = {"im_akun_report_detail","im_akun_setting_report_user"};
+
+        for (int i=0 ; i<2 ; i++){
+            String query = "SELECT\n" +
+                    "\tCOUNT(report_id)\n" +
+                    "FROM\n" +
+                    "\t"+tabel[i]+"\n" +
+                    "WHERE\n" +
+                    "\tflag='Y' AND\n" +
+                    "\treport_id='"+reportId+"'";
+            Object results = this.sessionFactory.getCurrentSession()
+                    .createSQLQuery(query).uniqueResult();
+            if (results!=null){
+                result = result+Integer.parseInt(results.toString());
+            }
+        }
+        return result;
     }
 }

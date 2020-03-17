@@ -7,6 +7,7 @@ import com.neurix.hris.transaksi.mutasi.model.Mutasi;
 import com.neurix.hris.transaksi.mutasi.model.MutasiDoc;
 import com.neurix.hris.transaksi.personilPosition.model.PersonilPosition;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -18,7 +19,7 @@ import java.util.List;
  */
 public interface MutasiBo extends BaseMasterBo<Mutasi>{
     public void saveDelete(Mutasi bean) throws GeneralBOException;
-    public void saveMutasi(Mutasi bean) throws GeneralBOException;
+    public void saveMutasi(Mutasi bean, List<Mutasi> mutasiList) throws GeneralBOException;
 //    public List<Mutasi> getKualifikasi(Mutasi bean) throws GeneralBOException;
     public List<Mutasi> getComboMutasi(String nip) throws GeneralBOException;
     public Mutasi getDataReportMutasi(String mutasiId) throws GeneralBOException;
@@ -27,4 +28,5 @@ public interface MutasiBo extends BaseMasterBo<Mutasi>{
     public MutasiDoc addMutasiDoc(MutasiDoc bean) throws GeneralBOException ;
     public String cekDataMutasiSys() throws GeneralBOException ;
     public String getDirektur() throws GeneralBOException;
+    public BigDecimal getGajiPokok(String golonganId);
 }

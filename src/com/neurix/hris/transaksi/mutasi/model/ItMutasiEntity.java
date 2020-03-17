@@ -38,7 +38,43 @@ public class ItMutasiEntity implements Serializable {
     private String pjs;
     private String menggantikanNip;
     private String tipeMutasi;
+    private String levelLama;
+    private String levelBaru;
     private Timestamp tanggalAktif;
+    private String levelLamaName;
+    private String levelBaruName;
+
+    public String getLevelBaruName() {
+        return levelBaruName;
+    }
+
+    public void setLevelBaruName(String levelBaruName) {
+        this.levelBaruName = levelBaruName;
+    }
+
+    public String getLevelLamaName() {
+        return levelLamaName;
+    }
+
+    public void setLevelLamaName(String levelLamaName) {
+        this.levelLamaName = levelLamaName;
+    }
+
+    public String getLevelBaru() {
+        return levelBaru;
+    }
+
+    public void setLevelBaru(String levelBaru) {
+        this.levelBaru = levelBaru;
+    }
+
+    public String getLevelLama() {
+        return levelLama;
+    }
+
+    public void setLevelLama(String levelLama) {
+        this.levelLama = levelLama;
+    }
 
     public Timestamp getTanggalAktif() {
         return tanggalAktif;

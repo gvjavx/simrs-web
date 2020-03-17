@@ -86,11 +86,12 @@ public class EklaimBoImpl extends BpjsService implements EklaimBo {
                 JSONObject metaData = myResponseCheck.getJSONObject("metadata");
                 if (200 == metaData.getInt("code")) {
                     JSONObject response = myResponseCheck.getJSONObject("response");
-                    finalResponse.setPatientId(response.getString("patient_id"));
 
+                    String patientId = String.valueOf(response.getInt("patient_id"));
                     String admissionId = String.valueOf(response.getInt("admission_id"));
                     String hospitalId = String.valueOf(response.getInt("hospital_admission_id"));
 
+                    finalResponse.setPatientId(patientId);
                     finalResponse.setAdmissionId(admissionId);
                     finalResponse.setHospitalAdmissionId(hospitalId);
                 } else {

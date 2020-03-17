@@ -299,9 +299,9 @@
                                 <label class="control-label">Grup</label>
                             </div>
                             <div class="col-sm-4">
-                                <s:action id="comboKelompok" namespace="/kelompokPosition" name="initComboKelompokPosition_kelompokPosition"/>
-                                <s:select cssClass="form-control" list="#comboKelompok.listOfComboKelompokPosition" id="kelompokPositionId" name=""
-                                          required="true" listKey="kelompokId" listValue="kelompokName" headerKey="" headerValue="[Select one]" onchange="listShift();listPerson()" />
+                                <s:action id="comboProfesi" namespace="/profesi" name="searchProfesi_profesi"/>
+                                <s:select list="#comboProfesi.listComboProfesi" id="profesiId"
+                                          listKey="profesiId" listValue="profesiName" headerKey="" headerValue="[Select one]" cssClass="form-control" onchange="listShift();listPerson()" />
                             </div>
                         </div>
                         <div class="row">
@@ -395,7 +395,7 @@
     };
     window.listPerson= function () {
         $('.groupShiftTable').empty();
-        var grup = $('#kelompokPositionId').val();
+        var grup = $('#profesiId').val();
         var unit = $('#branchid').val();
         if (grup!=''&& unit!=''){
             dwr.engine.setAsync(false);
@@ -406,6 +406,7 @@
                     "<th style='text-align: center; background-color:  #90ee90'>NIP</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Nama Pegawai</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Posisi</th>"+
+                    "<th style='text-align: center; background-color:  #90ee90'>Profesi</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Tambahkan</th>"+
                     "</tr></thead>";
                 var i = i;
@@ -415,6 +416,7 @@
                         '<td align="center">' + item.nip + '</td>' +
                         '<td align="center">' + item.namaPegawai + '</td>' +
                         '<td align="center">' + item.positionName + '</td>' +
+                        '<td align="center">' + item.profesiName + '</td>' +
                         '<td align="center">' +
                         "<a href='javascript:;' class ='item-add-shift' data ='"+item.nip+"' nama ='"+item.namaPegawai+"' posisi ='"+item.positionName+"' >" +
                         "<img border='0' src='<s:url value='/pages/images/add_task1.png'/>'>"+
@@ -451,7 +453,7 @@
                     '<td align="center">' + item.nip + '</td>' +
                     '<td align="center">' + item.namaPegawai + '</td>' +
                     '<td align="center">' + item.positionName + '</td>' +
-                    '<td align="center">' + item.kelompokName + '</td>' +
+                    '<td align="center">' + item.profesiName + '</td>' +
                     '<td align="center">' + item.shiftName + '</td>' +
                     '<td align="center">' +
                     "<a href='javascript:;' class ='item-delete-shift' data ='"+item.nip+"' nama ='"+item.namaPegawai+"' posisi ='"+item.positionName+"' >" +
@@ -471,21 +473,24 @@
         var nip = $(this).attr('data');
         var nama = $(this).attr('nama');
         var posisi = $(this).attr('posisi');
-        var grup = $('#kelompokPositionId').find('option:selected').text();
+        var grup = $('#profesiId').find('option:selected').text();
         var shift = $('#ShiftId').find('option:selected').text();
         var shiftId = $('#ShiftId').find('option:selected').val();
+        var grupId = $('#profesiId').find('option:selected').val();
         dwr.engine.setAsync(false);
 
-        JadwalShiftKerjaAction.savePegawaiShift(nip,nama,posisi,grup,shift,shiftId,function() {
+        JadwalShiftKerjaAction.savePegawaiShift(nip,nama,posisi,grup,grupId,shift,shiftId,function() {
             resultPerson();
             listPerson();
         });
     });
     $('.shiftTable').on('click', '.item-delete-shift', function () {
-        var nip = $(this).attr('data');
-        dwr.engine.setAsync(false);
-        JadwalShiftKerjaAction.deletePegawaiShift(nip,function() {
-            resultPerson();
-        });
+        if (confirm("Apakah data ini ingin dihapus ?")){
+            var nip = $(this).attr('data');
+            dwr.engine.setAsync(false);
+            JadwalShiftKerjaAction.deletePegawaiShift(nip,function() {
+                resultPerson();
+            });
+        }
     });
 </script>

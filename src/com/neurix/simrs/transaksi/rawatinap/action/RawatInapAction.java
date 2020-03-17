@@ -509,6 +509,9 @@ public class RawatInapAction extends BaseMasterAction {
 
         HeaderCheckup headerCheckup = getHeaderCheckup(id);
         JenisPriksaPasien jenisPriksaPasien = getListJenisPeriksaPasien(headerCheckup.getIdJenisPeriksaPasien());
+        reportParams.put("unit", CommonUtil.userBranchNameLogin());
+        reportParams.put("petugas", CommonUtil.userLogin());
+        reportParams.put("area", CommonUtil.userAreaName());
         reportParams.put("resepId", idResep);
         reportParams.put("logo", logo);
         reportParams.put("nik", headerCheckup.getNoKtp());

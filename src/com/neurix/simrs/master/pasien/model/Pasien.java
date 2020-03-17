@@ -44,6 +44,16 @@ public class Pasien {
     private boolean isPasienLama = false;
     private String imgKtp;
 
+    private Boolean disabledFingerData;
+
+    public Boolean getDisabledFingerData() {
+        return disabledFingerData;
+    }
+
+    public void setDisabledFingerData(Boolean disabledFingerData) {
+        this.disabledFingerData = disabledFingerData;
+    }
+
     public String getImgKtp() {
         return imgKtp;
     }

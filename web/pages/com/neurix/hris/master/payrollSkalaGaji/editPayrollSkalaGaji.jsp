@@ -17,11 +17,17 @@
 
         $.subscribe('beforeProcessSave', function (event, data) {
             var golonganId = document.getElementById("golonganId1").value;
-            var point = document.getElementById("point1").value;
             var nilai = document.getElementById("nilai1").value;
+            var santunanKhusus = document.getElementById("santunanKhusus1").value;
+            var rumah = document.getElementById("rumah1").value;
+            var listrik = document.getElementById("listrik1").value;
+            var air = document.getElementById("air1").value;
+            var bbm = document.getElementById("bbm1").value;
 
-            if (golonganId != '' && point != '' && nilai != '' ) {
-                if(isNaN(point) ==  false && isNaN(nilai) == false){
+            if (golonganId != ''&& nilai != '' && santunanKhusus != '' && rumah != '' && listrik != '' && air != '' && bbm != '' ) {
+                if(isNaN(nilai) == false){
+                    /*PayrollSkalaGajiAction.cekIfExistDwr(golonganId, function(data){
+                     if(data != 'exist'){*/
                     if (confirm('Do you want to save this record?')) {
                         event.originalEvent.options.submit = true;
                         $.publish('showDialog');
@@ -29,15 +35,32 @@
                         // Cancel Submit comes with 1.8.0
                         event.originalEvent.options.submit = false;
                     }
+                    /*}else{
+                     document.getElementById('errorValidationMessage').innerHTML = 'Data Sudah Ada';
+                     $.publish('showErrorValidationDialog');
+                     event.originalEvent.options.submit = false;
+                     }
+                     });*/
                 }else{
                     event.originalEvent.options.submit = false;
                     var msg = "";
-                    if (isNaN(point)) {
-                        msg += 'Field <strong>point</strong> Harus angka tanpa koma.' + '<br/>';
-                    }
-
                     if (isNaN(nilai)) {
-                        msg += 'Field <strong>nilai</strong> Harus angka tanpa koma.' + '<br/>';
+                        msg += 'Field <strong>Gaji Level</strong> Harus angka tanpa koma.' + '<br/>';
+                    }
+                    if (isNaN(santunanKhusus)) {
+                        msg += 'Field <strong>santunan Khusus</strong> Harus angka tanpa koma.' + '<br/>';
+                    }
+                    if (isNaN(rumah)) {
+                        msg += 'Field <strong>Tunj rumah</strong> Harus angka tanpa koma.' + '<br/>';
+                    }
+                    if (isNaN(listrik)) {
+                        msg += 'Field <strong>Tunj listrik</strong> Harus angka tanpa koma.' + '<br/>';
+                    }
+                    if (isNaN(air)) {
+                        msg += 'Field <strong>Tunj air</strong> Harus angka tanpa koma.' + '<br/>';
+                    }
+                    if (isNaN(bbm)) {
+                        msg += 'Field <strong>Tunj bbm</strong> Harus angka tanpa koma.' + '<br/>';
                     }
 
                     document.getElementById('errorValidationMessage').innerHTML = msg;
@@ -48,15 +71,11 @@
                 event.originalEvent.options.submit = false;
                 var msg = "";
                 if (golonganId == '') {
-                    msg += 'Field <strong>Golongan </strong> is required.' + '<br/>';
-                }
-
-                if (point == '') {
-                    msg += 'Field <strong>Point</strong> is required.' + '<br/>';
+                    msg += 'Field <strong>Level </strong> is required.' + '<br/>';
                 }
 
                 if (nilai == '') {
-                    msg += 'Field <strong>Nilai</strong> is required.' + '<br/>';
+                    msg += 'Field <strong>Gaji Level</strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
@@ -126,18 +145,23 @@
 
                     <tr>
                         <td>
-                            <label class="control-label"><small>Golongan :</small></label>
+                            <label class="control-label"><small>Level :</small></label>
                         </td>
                         <td>
                             <table>
                                 <s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>
-                                <s:select list="#initComboTipe.listComboGolongan" id="golonganId1" name="payrollSkalaGaji.golonganId"
-                                          listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                <s:select list="#initComboTipe.listComboGolongan" id="golonganId1" name="payrollSkalaGaji.golonganId" disabled="true"
+                                          listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                <%--<s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>--%>
+                                <%--<s:select list="#initComboTipe.listComboGolongan" id="golonganId1" name="payrollSkalaGaji.golonganId"--%>
+                                          <%--listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
+                                <s:textfield type="number" min="0" id="golonganId12" name="payrollSkalaGaji.golonganId" required="true" cssClass="form-control" cssStyle="display: none"/>
+
                             </table>
                         </td>
                     </tr>
 
-                    <tr>
+                    <%--<tr>
                         <td>
                             <label class="control-label"><small>Tahun :</small></label>
                         </td>
@@ -158,15 +182,65 @@
                                 <s:textfield type="number" min="0" id="point1" name="payrollSkalaGaji.point" required="true"  cssClass="form-control"/>
                             </table>
                         </td>
-                    </tr>
+                    </tr>--%>
 
                     <tr>
                         <td>
-                            <label class="control-label"><small>Nilai :</small></label>
+                            <label class="control-label"><small>Gaji Level :</small></label>
                         </td>
                         <td>
                             <table>
                                 <s:textfield type="number" min="0" id="nilai1" name="payrollSkalaGaji.nilai" required="true" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Santunan Khusus :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield type="number" min="0" id="santunanKhusus1" name="payrollSkalaGaji.santunanKhusus" required="true" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Tunj. Rumah :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield type="number" min="0" id="rumah1" name="payrollSkalaGaji.rumah" required="true" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Tunj. Listrik :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield type="number" min="0" id="listrik1" name="payrollSkalaGaji.listrik" required="true" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Tunj. Air :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield type="number" min="0" id="air1" name="payrollSkalaGaji.air" required="true" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Tunj. Bbm :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield type="number" min="0" id="bbm1" name="payrollSkalaGaji.bbm" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>

@@ -300,12 +300,12 @@ public class PositionAction extends BaseMasterAction {
                     try {
                         logId = positionBoProxy.saveErrorMessage(e.getMessage(), "PositionBO.saveAdd");
                     } catch (GeneralBOException e1) {
-                        logger.error("[PositionAction.save] Error when saving error,", e1);
+                        throw new GeneralBOException(e1.getMessage());
                     }
                     logger.error("[PositionAction.save] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
                     addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
 
-                    return ERROR;
+                    throw new GeneralBOException(e.getMessage());
                 }
 
             }
@@ -590,7 +590,7 @@ public class PositionAction extends BaseMasterAction {
         logger.info("[PositionAction.searchDivisi] start process >>>");
 
         Position searchPosition = new Position();
-        if (branchId!="0"){
+        if (!"0".equalsIgnoreCase(branchId)){
             searchPosition.setBranchId(branchId);
         }
         List<Position> listOfSearchPosition = new ArrayList();
@@ -599,10 +599,6 @@ public class PositionAction extends BaseMasterAction {
             PositionBo positionBo = (PositionBo) ctx.getBean("positionBoProxy");
 
             listOfSearchPosition = positionBo.searchDivisi(searchPosition);
-            Position position = new Position();
-            position.setDepartmentId("0");
-            position.setDepartmentName("Bidang Lain");
-            listOfSearchPosition.add(position);
 
         } catch (GeneralBOException e) {
             Long logId = null;
