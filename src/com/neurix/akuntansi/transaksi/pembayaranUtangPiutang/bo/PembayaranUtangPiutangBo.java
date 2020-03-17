@@ -29,4 +29,6 @@ public interface PembayaranUtangPiutangBo extends BaseMasterBo<PembayaranUtangPi
     List<PembayaranUtangPiutangDetail> getDetailPembayaran(String pembayaranId) throws GeneralBOException;
 
     String getKodeRekeningKasJurnal(String noJurnal) throws GeneralBOException;
+
+    String getNamaRekeningKasJurnal(String noJurnal) throws GeneralBOException;
 }

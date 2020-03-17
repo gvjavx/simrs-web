@@ -57,7 +57,7 @@ public class CommonConstant {
 //    public final static String RESOURCE_PATH_IMG_ASSET = "C:\\tomcat-7-64x\\webapps";
 
 
-//    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY="C:\\Users\\Toshiba\\Pictures";
+    //    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY="C:\\Users\\Toshiba\\Pictures";
 //    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = "/mnt/image";
     public final static String EXTERNAL_IMG_URI = "/simrs/images";
 
@@ -128,14 +128,14 @@ public class CommonConstant {
     public final static String NOTAPPROVE_CREDIT_NOTE = "NCN";
 
 
-    public final static String REPORT_PAYROLL= "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayroll.jrxml";
-    public final static String REPORT_PAYROLL_THR= "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayrollthr.jrxml";
-    public final static String REPORT_PAYROLL_JASPROD= "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayrollJasopr.jrxml";
-    public final static String REPORT_PAYROLL_PENSIUN= "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayrollPensiun.jrxml";
-    public final static String REPORT_PAYROLL_PMP= "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayrollJubileum.jrxml";
-    public final static String REPORT_PAYROLL_INSENTIF= "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayrollInsentif.jrxml";
-    public final static String REPORT_PAYROLL_CUTI_PANJANG= "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayrollCutiPanjang.jrxml";
-    public final static String REPORT_PAYROLL_CUTI_TAHUNAN= "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayrollCutiTahunan.jrxml";
+    public final static String REPORT_PAYROLL = "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayroll.jrxml";
+    public final static String REPORT_PAYROLL_THR = "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayrollthr.jrxml";
+    public final static String REPORT_PAYROLL_JASPROD = "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayrollJasopr.jrxml";
+    public final static String REPORT_PAYROLL_PENSIUN = "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayrollPensiun.jrxml";
+    public final static String REPORT_PAYROLL_PMP = "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayrollJubileum.jrxml";
+    public final static String REPORT_PAYROLL_INSENTIF = "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayrollInsentif.jrxml";
+    public final static String REPORT_PAYROLL_CUTI_PANJANG = "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayrollCutiPanjang.jrxml";
+    public final static String REPORT_PAYROLL_CUTI_TAHUNAN = "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayrollCutiTahunan.jrxml";
 
 
     //ptpnx e-farming
@@ -173,7 +173,7 @@ public class CommonConstant {
     public final static String EKLAIM_SERVICE_DEBUG = "/E-Klaim/ws.php?mode=debug";
 
     //FINGER
-    public final static String baseUrl = "http://localhost:8080/simrs/";
+    public final static String baseUrl = "http://192.168.43.222:8080/simrs/";
     public final static String timeLimitReg = "15";
     public final static String timeLimitVer = "10";
     public final static String verAddress = baseUrl + "prosesLoginFinger.action";
@@ -190,7 +190,7 @@ public class CommonConstant {
     public final static String LOGO_REPORT_PAYROLL = "C:\\tomcat-7-64x\\webapps\\simrs\\pages\\images\\logo-nmu-copy.png";
 //    public final static String LOGO_REPORT_PAYROLL = "/opt/tomcat/webapps/simrs/pages/images/logo-nmu-copy.png";
 
-    public final static String IMAGE_CARD  = "/pages/images/card.png";
+    public final static String IMAGE_CARD = "/pages/images/card.png";
 
 
     public final static String BRANCH_RS01 = "RS01";
@@ -204,7 +204,8 @@ public class CommonConstant {
     public final static String RESOURCE_PATH_JRXML_QRCODE_ALAT = "/opt/tomcat/webapps/pmsapb/pages/report/com/neurix/apbpln/printQRCode.jrxml/";
     public final static String RESOURCE_DOCUMENT_APB = "/opt/tomcat/webapps/mnt/documents/simrs/";
     public final static String RESOURCE_IMAGE_APB = "/opt/tomcat/webapps/mnt/images/simrs/";
-    public static final String RESOURCE_IMAGE_TTD = "/opt/tomcat/webapps/mnt/images/";
+    //    public static final String RESOURCE_IMAGE_TTD = "/opt/tomcat/webapps/mnt/images/";
+    public static final String RESOURCE_IMAGE_TTD = "C:/Users/pc001/Pictures/";
     public final static String IMAGE_TYPE = ".png";
     public final static String DOC_TYPE = ".pdf";
 

@@ -181,6 +181,27 @@ public class KodeRekeningDao extends GenericDao<ImKodeRekeningEntity, String> {
         }
         return result;
     }
+    //untuk mendapat kode rekening kas dari jurnal
+    public String getNamaRekeningKasForJurnal(String noJurnal){
+        String result="";
+        String kodeRekeningKas=getKodeRekeningKas();
+        String query = "select \n" +
+                "  nama_kode_rekening\n" +
+                "from \n" +
+                "  it_akun_jurnal_detail jd INNER JOIN \n" +
+                "  im_akun_kode_rekening kr ON jd.rekening_id=kr.rekening_id\n" +
+                "where \n" +
+                "  no_jurnal='"+noJurnal+"'\n" +
+                "  and kode_rekening ilike '"+kodeRekeningKas+"%'\n";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            result = results.toString();
+        }else {
+            result=null;
+        }
+        return result;
+    }
     public Integer searchKodeRekeningInJurnal(String rekeningId){
         Integer result=0;
         String[] tabel = {"it_akun_jurnal_detail","it_akun_saldo_akhir","it_akun_jurnal_detail_akhir_tahun"};
