@@ -11,7 +11,6 @@ public class MtSimrsPaketEntity implements Serializable {
     private String idPaket;
     private String namaPaket;
     private String idKelasPaket;
-    private String idPerusahaan;
     private String flag;
     private String action;
     private Timestamp createdDate;
@@ -44,13 +43,6 @@ public class MtSimrsPaketEntity implements Serializable {
         this.idKelasPaket = idKelasPaket;
     }
 
-    public String getIdPerusahaan() {
-        return idPerusahaan;
-    }
-
-    public void setIdPerusahaan(String idPerusahaan) {
-        this.idPerusahaan = idPerusahaan;
-    }
 
     public String getFlag() {
         return flag;
