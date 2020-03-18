@@ -525,7 +525,10 @@
       </create>
       <convert converter="bean" match="com.neurix.simrs.transaksi.paketperiksa.model.ImSimrsKelasPaketEntity"/>
 
-
+      <!--Setting Batas Tutup Period-->
+      <create creator="new">
+          <param name="class" value="com.neurix.akuntansi.transaksi.tutupperiod.action.SettingTutupPeriodAction"/>
+      </create>
   </allow>
 
 </dwr>

@@ -15,6 +15,7 @@
 
     <bean id="tutupPeriodBo" class="com.neurix.akuntansi.transaksi.tutupperiod.bo.impl.TutupPeriodBoImpl"
           p:riwayatTindakanDao-ref="riwayatTindakanDao"
+          p:batasTutupPeriodDao-ref="batasTutupPeriodDao"
     />
 
     <bean id="tutupPeriodBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -33,9 +34,12 @@
         <property name="transactionAttributes">
             <props>
                 <prop key="getByCriteria">readOnly</prop>
+                <prop key="saveSettingPeriod">PROPAGATION_REQUIRED</prop>
             </props>
         </property>
     </bean>
 
+    <bean id="batasTutupPeriodDao" class="com.neurix.akuntansi.transaksi.tutupperiod.dao.BatasTutupPeriodDao"
+          p:sessionFactory-ref="sessionFactory" />
 
 </beans>
