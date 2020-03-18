@@ -924,7 +924,6 @@ public class BiodataAction extends BaseMasterAction{
             biodata.setCreatedWho(userLogin);
             biodata.setLastUpdate(updateTime);
             biodata.setCreatedDate(updateTime);
-            biodata.setTanggalAktif(CommonUtil.convertTimestampToDate(updateTime));
             biodata.setLastUpdateWho(userLogin);
             biodata.setAction("C");
             biodata.setStatusCaption("Online");

@@ -16,7 +16,7 @@
         };
 
         $.subscribe('beforeProcessSave', function (event, data) {
-            var id = document.getElementById("tunjJabatanStruktural1").value;
+            var id = document.getElementById("tunjStrategis1").value;
             var tunjJab = document.getElementById("tunjJabatan1").value;
             var tunjStruk = document.getElementById("tunjStruktural1").value;
 
@@ -95,7 +95,7 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="formEdit" method="post" theme="simple" namespace="/payrollTunjanganJabatanStruktural" action="saveDelete_payrollTunjanganJabatanStruktural" cssClass="well form-horizontal">
+            <s:form id="formEdit" method="post" theme="simple" namespace="/payrollTunjanganStrategis" action="saveDelete_payrollTunjanganStrategis" cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
@@ -120,7 +120,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="tunjJabatanStruktural1" readonly="true" name="payrollTunjanganJabatanStruktural.tunjJabStrukturId" required="true"  cssClass="form-control"/>
+                                <s:textfield  id="tunjStrategis1" readonly="true" name="payrollTunjanganStrategis.tunjJabStrukturId" required="true"  cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -130,7 +130,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="kelompokId1" readonly="true" name="payrollTunjanganJabatanStruktural.kelompokName" required="true"  cssClass="form-control"/>
+                                <s:textfield  id="kelompokId1" readonly="true" name="payrollTunjanganStrategis.kelompokName" required="true"  cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -140,7 +140,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="tunjJabatan1" readonly="true" name="payrollTunjanganJabatanStruktural.tunjJabatan" required="true"  cssClass="form-control"/>
+                                <s:textfield  id="tunjJabatan1" readonly="true" name="payrollTunjanganStrategis.tunjJabatan" required="true"  cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -150,7 +150,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="tunjStruktural1" readonly="true" name="payrollTunjanganJabatanStruktural.tunjStruktural" required="true"  cssClass="form-control"/>
+                                <s:textfield  id="tunjStruktural1" readonly="true" name="payrollTunjanganStrategis.tunjStruktural" required="true"  cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>

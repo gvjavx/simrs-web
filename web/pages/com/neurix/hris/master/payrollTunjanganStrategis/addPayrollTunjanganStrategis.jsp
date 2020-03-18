@@ -94,7 +94,7 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="addPayrollSkalaGajiForm" method="post" theme="simple" namespace="/payrollTunjanganJabatanStruktural" action="saveAdd_payrollTunjanganJabatanStruktural" cssClass="well form-horizontal">
+            <s:form id="addPayrollSkalaGajiForm" method="post" theme="simple" namespace="/payrollTunjanganStrategis" action="saveAdd_payrollTunjanganStrategis" cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
@@ -120,7 +120,7 @@
                         <td>
                             <table>
                                 <s:action id="comboPosition" namespace="/kelompokPosition" name="searchKelompok_kelompokPosition"/>
-                                <s:select list="#comboPosition.comboListOfKelompokPosition" id="kelompokId1" name="payrollTunjanganJabatanStruktural.kelompokId"
+                                <s:select list="#comboPosition.comboListOfKelompokPosition" id="kelompokId1" name="payrollTunjanganStrategis.kelompokId"
                                           listKey="kelompokId" listValue="kelompokName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                             </table>
                         </td>
@@ -132,7 +132,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="tunjJabatan1" name="payrollTunjanganJabatanStruktural.tunjJabatan" required="true"  cssClass="form-control"/>
+                                <s:textfield  id="tunjJabatan1" name="payrollTunjanganStrategis.tunjJabatan" required="true"  cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -142,7 +142,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="tunjStruktural1" name="payrollTunjanganJabatanStruktural.tunjStruktural" required="true"  cssClass="form-control"/>
+                                <s:textfield  id="tunjStruktural1" name="payrollTunjanganStrategis.tunjStruktural" required="true"  cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
