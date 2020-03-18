@@ -36,6 +36,8 @@ public class ItemPaketDao extends GenericDao<MtSimrsItemPaketEntity, String> {
             criteria.add(Restrictions.eq("idKategoriItem", mapCriteria.get("id_kategori_item").toString()));
         if (mapCriteria.get("jenis_item") != null)
             criteria.add(Restrictions.eq("jenisItem", mapCriteria.get("jenis_item").toString()));
+//        if (mapCriteria.get("branch_id") != null)
+//            criteria.add(Restrictions.eq("branchId", mapCriteria.get("branch_id").toString()));
 
         return criteria.list();
     }
