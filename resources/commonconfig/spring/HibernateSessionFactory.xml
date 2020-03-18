@@ -280,6 +280,7 @@
 
                 <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ItPayrollRapelDetailEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/payrollMasterInsentif/hibernate/ImPayrollMasterInsentifEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/payrollSkalaGajiBod/hibernate/ImPayrollSkalaGajiBodEntity.hbm.xml</value>
 
                 <!--Hibernate Config For SIMRS is HERE-->
                 <value>sshconfig/com/neurix/simrs/master/jenisobat/hibernate/ImSimrsJenisObatEntity.hbm.xml</value>

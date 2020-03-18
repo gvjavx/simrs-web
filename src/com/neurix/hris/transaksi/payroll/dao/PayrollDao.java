@@ -116,10 +116,11 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
                 "  pegawai.golongan_dapen_nusindo,  \n" +
                 "  pegawai.poin_lebih," +
                 "  branch.umr, \n" +
-                "pegawai.golongan_dapen_id, \n"+
-                "pegawai.masa_kerja_gol, \n"+
-                "pegawai.tgl_akhir_kontrak, \n"+
-                "posisi.profesi_id \n"+
+                "  pegawai.golongan_dapen_id, \n"+
+                "  pegawai.masa_kerja_gol, \n"+
+                "  pegawai.tgl_akhir_kontrak, \n"+
+                "  posisi.profesi_id,\n" +
+                "  pegawai.gaji\n"+
                 "   FROM im_hris_pegawai pegawai\n" +
                 "LEFT JOIN it_hris_pegawai_position posisi\n" +
                 "  ON posisi.nip = pegawai.nip\n" +
@@ -197,6 +198,7 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
             if (row[37]!=null){
                 result.setProfesiId((String) row[37]);
             }
+            result.setBiodataGaji(BigDecimal.valueOf(Double.parseDouble(row[38].toString())));
             listOfResult.add(result);
         }
         return listOfResult;

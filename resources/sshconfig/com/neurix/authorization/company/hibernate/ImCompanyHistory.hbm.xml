@@ -42,5 +42,8 @@
         <property name="action">
             <column name="action" sql-type="varchar" length="1"/>
         </property>
+        <property name="periodeGaji">
+            <column name="periode_gaji" sql-type="varchar" length="4"/>
+        </property>
     </class>
 </hibernate-mapping>

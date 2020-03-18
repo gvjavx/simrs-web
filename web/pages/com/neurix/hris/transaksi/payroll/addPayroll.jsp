@@ -80,53 +80,55 @@
                 var insentifTipe = document.getElementById("flagInsentif").value;
                 var thrTipe = 'y';
                 var hasil = cekApprove(branch, bulan, tahun, thrTipe);
-                //alert(hasil);
-                if (bulanPayroll>=currentMonth+1){
-                    if (branch != '' && bulan != '0' && tahun != '0') {
-                        if(thr == 'Y'){
+
+                if (branch != '' && bulan != '0' && tahun != '0') {
+                    if(thr == 'Y'){
+                        event.originalEvent.options.submit = true;
+                        $.publish('showDialog');
+                        if(thrTipe != ''){
                             event.originalEvent.options.submit = true;
                             $.publish('showDialog');
-                            if(thrTipe != ''){
-                                event.originalEvent.options.submit = true;
-                                $.publish('showDialog');
-                            }else{
-                                event.originalEvent.options.submit = false;
-                                var msg = "";
-                                msg += 'Tipe THR harus dipilih.' + '<br/>';
-                                document.getElementById('errorValidationMessage').innerHTML = msg;
-
-                                $.publish('showErrorValidationDialog');
-                            }
                         }else{
-                            event.originalEvent.options.submit = true;
-                            $.publish('showDialog');
+                            event.originalEvent.options.submit = false;
+                            var msg = "";
+                            msg += 'Tipe THR harus dipilih.' + '<br/>';
+                            document.getElementById('errorValidationMessage').innerHTML = msg;
+
+                            $.publish('showErrorValidationDialog');
                         }
-
-                    } else {
-                        event.originalEvent.options.submit = false;
-                        var msg = "";
-                        if (branch == '') {
-                            msg += 'Field <strong>Branch</strong> is required.' + '<br/>';
-                        }
-
-                        if (bulan == '0') {
-                            msg += 'Field <strong>Bulan</strong> is required.' + '<br/>';
-                        }
-
-                        if (tahun == '0') {
-                            msg += 'Field <strong>Tahun</strong> is required.' + '<br/>';
-                        }
-
-                        document.getElementById('errorValidationMessage').innerHTML = msg;
-
-                        $.publish('showErrorValidationDialog');
-
+                    }else{
+                        event.originalEvent.options.submit = true;
+                        $.publish('showDialog');
                     }
-                }else{
+
+                } else {
                     event.originalEvent.options.submit = false;
-                    document.getElementById('errorValidationMessage').innerHTML = "Payroll Bulan Sebelumnya Tidak Bisa Diproses";
+                    var msg = "";
+                    if (branch == '') {
+                        msg += 'Field <strong>Branch</strong> is required.' + '<br/>';
+                    }
+
+                    if (bulan == '0') {
+                        msg += 'Field <strong>Bulan</strong> is required.' + '<br/>';
+                    }
+
+                    if (tahun == '0') {
+                        msg += 'Field <strong>Tahun</strong> is required.' + '<br/>';
+                    }
+
+                    document.getElementById('errorValidationMessage').innerHTML = msg;
+
                     $.publish('showErrorValidationDialog');
+
                 }
+                // //alert(hasil);
+                // if (bulanPayroll>=currentMonth+1){
+                //
+                // }else{
+                //     event.originalEvent.options.submit = false;
+                //     document.getElementById('errorValidationMessage').innerHTML = "Payroll Bulan Sebelumnya Tidak Bisa Diproses";
+                //     $.publish('showErrorValidationDialog');
+                // }
             });
 
             $.subscribe('errorDialogSearch', function (event, data) {
@@ -464,12 +466,6 @@
                                                 <i class="fa fa-search"></i>
                                                 Search
                                             </sj:submit>
-                                            <%--<sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="killUserSessionForm" id="save" name="save"
-                                                       onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialogDelete,successDialogDelete"
-                                                       onSuccessTopics="successDialogDelete" onErrorTopics="errorDialogDelete" >
-                                                <i class="icon-ok-sign icon-white"></i>
-                                                Kill Session
-                                            </sj:submit>--%>
                                         </td>
                                         <td>
                                             <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="add_payroll.action"/>'">

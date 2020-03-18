@@ -100,6 +100,9 @@
         <property name="maxBpjsKesehatan">
             <column name="max_bpjs_kesehatan" sql-type="numeric" precision="10" scale="3" />
         </property>
+        <property name="periodeGaji">
+            <column name="periode_gaji" sql-type="varchar" length="4"/>
+        </property>
 
     </class>
 </hibernate-mapping>

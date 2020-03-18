@@ -909,7 +909,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             mapJurnal.put("bank", bank);
 
             String noJurnal = "";
-            String catatan = "Pembayaran Piutang BPJS Bank "+bank+" No. FPK "+fpkId+" No. Slip "+noSlip;
+            String catatan = "Pembayaran Piutang BPJS Bank "+bank+" No. FPK "+fpkId+" No. Referensi "+noSlip;
             try {
 
                 noJurnal = billingSystemBo.createJurnal("10", mapJurnal, branchId, catatan, "Y");

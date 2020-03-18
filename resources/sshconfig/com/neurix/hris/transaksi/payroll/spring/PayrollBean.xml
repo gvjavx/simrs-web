@@ -76,6 +76,7 @@
           p:historyJabatanPegawaiDao-ref="historyJabatanPegawaiDao"
           p:payrollSkalaGajiPensiunDplkDao-ref="payrollSkalaGajiPensiunDplkDao"
           p:profesiDao-ref="profesiDao"
+          p:payrollSkalaGajiBodDao-ref="payrollSkalaGajiBodDao"
     />
 
     <bean id="payrollBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

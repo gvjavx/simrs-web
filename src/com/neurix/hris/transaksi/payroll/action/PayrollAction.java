@@ -2608,19 +2608,15 @@ public class PayrollAction extends BaseMasterAction{
     @Override
     public String save() {
         logger.info("[PayrollAction.saveAdd] start process >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        Payroll payroll = getPayroll();
+        List<Payroll> listDataPayroll = new ArrayList();
+        List<Payroll> listDataPayrollBackup = new ArrayList();
+
         try {
-            Payroll payroll = getPayroll();
-            List<Payroll> listDataPayroll = new ArrayList();
-            List<Payroll> listDataPayrollBackup = new ArrayList();
-
             listDataPayroll = payrollBoProxy.dataAddPayroll(payroll);
+            listDataPayrollBackup = payrollBoProxy.copyDataPayroll(listDataPayroll);
 
-            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-            PayrollBo payrollBo = (PayrollBo) ctx.getBean("payrollBoProxy");
-
-            listDataPayrollBackup = payrollBo.copyDataPayroll(listDataPayroll);
-
-            HttpSession session = ServletActionContext.getRequest().getSession();
             session.setAttribute("dataPayroll", payroll);
             session.setAttribute("listDataPayroll", listDataPayroll);
             session.setAttribute("listDataPayrollSearch", listDataPayroll);
@@ -2632,11 +2628,10 @@ public class PayrollAction extends BaseMasterAction{
                 logId = payrollBoProxy.saveErrorMessage(e.getMessage(), "payrollBO.saveAdd");
             } catch (GeneralBOException e1) {
                 logger.error("[payrollAction.saveAdd] Error when saving error,", e1);
-                return ERROR;
+                throw new GeneralBOException(e.getMessage());
             }
             logger.error("[payrollAction.saveAdd] Error when adding item ," + "[" + e + "] Found problem when saving add data, please inform to your admin.", e);
-            addActionError("Error, " + "[ "+ e + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            throw new GeneralBOException(e.getMessage());
         }
 
         logger.info("[payrollAction.saveAdd] end process >>>");
@@ -10669,30 +10664,11 @@ public class PayrollAction extends BaseMasterAction{
     @Override
     public String search() {
         logger.info("[PayrollAction.search] start process >>>");
-        String hasil = SUCCESS;
-
         Payroll searchPayroll = getPayroll();
-
-        int a = 0;
-        a += 2 ;
         try {
             HttpSession session = ServletActionContext.getRequest().getSession();
             session.removeAttribute("listOfResult");
-
-            // insentif lama
-            /*if(searchPayroll.getTipe().equalsIgnoreCase("IN")){
-                hasil = "success_insentif";
-                List<PayrollInsentif> listOfsearchPayroll = new ArrayList();
-                listOfsearchPayroll = payrollBoProxy.getSearchInsentif(searchPayroll);
-                session.setAttribute("listOfResult", listOfsearchPayroll);
-            }else{
-                List<Payroll> listOfsearchPayroll = new ArrayList();
-                listOfsearchPayroll = payrollBoProxy.getSearchHome(searchPayroll);
-                session.setAttribute("listOfResult", listOfsearchPayroll);
-            }*/
-
-            List<Payroll> listOfsearchPayroll = new ArrayList();
-            listOfsearchPayroll = payrollBoProxy.getSearchHome(searchPayroll);
+            List<Payroll> listOfsearchPayroll= payrollBoProxy.getSearchHome(searchPayroll);
             session.setAttribute("listOfResult", listOfsearchPayroll);
 
         } catch (GeneralBOException e) {
@@ -10710,7 +10686,7 @@ public class PayrollAction extends BaseMasterAction{
 
         logger.info("[PayrollAction.search] end process <<<");
 
-        return hasil;
+        return SUCCESS;
     }
 
     public String searchSession(String nip) {

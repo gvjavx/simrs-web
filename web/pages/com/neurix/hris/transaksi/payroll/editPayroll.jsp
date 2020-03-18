@@ -238,295 +238,304 @@
     <section class="content-header">
         <h1>
             Edit Payroll
-            <small>e-HEALTH</small>
+            <small>GO-MEDSYS</small>
         </h1>
     </section>
-
-
     <!-- Main content -->
     <section class="content">
-        <table width="100%" align="center">
-            <tr>
-                <td align="center">
-                    <s:form id="sppdForm" method="post"  theme="simple" namespace="/payroll" action="edit_payroll.action" cssClass="well form-horizontal">
-
-                        <s:hidden name="addOrEdit"/>
-                        <s:hidden name="delete"/>
-
-                        <table>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-edit"></i> Edit Payroll</h3>
+                    </div>
+                    <div class="box-body">
+                        <table width="100%" align="center">
                             <tr>
-                                <td width="10%" align="center">
-                                    <%@ include file="/pages/common/message.jsp" %>
-                                </td>
-                            </tr>
-                        </table>
+                                <td align="center">
+                                    <s:form id="sppdForm" method="post"  theme="simple" namespace="/payroll" action="edit_payroll.action" cssClass="form-horizontal">
+                                        <s:hidden name="addOrEdit"/>
+                                        <s:hidden name="delete"/>
+                                        <table>
+                                            <tr>
+                                                <td width="10%" align="center">
+                                                    <%@ include file="/pages/common/message.jsp" %>
+                                                </td>
+                                            </tr>
+                                        </table>
 
-                        <table >
-                            <tr>
-                                <td>
-                                    <label class="control-label"><small>Unit :</small></label>
-                                </td>
-                                <td>
-                                    <table>
-                                        <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                                        <s:select list="#initComboBranch.listOfComboBranch" value="KD01" id="branchId" name=""
-                                                  listKey="branchId" listValue="branchName" headerKey="" disabled="true"
-                                                  headerValue="[Select one]" cssClass="form-control"/>
-                                    </table>
-                                </td>
-                            </tr>
+                                        <table >
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label"><small>Unit :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                                        <s:select list="#initComboBranch.listOfComboBranch" value="KD01" id="branchId" name=""
+                                                                  listKey="branchId" listValue="branchName" headerKey="" disabled="true"
+                                                                  headerValue="[Select one]" cssClass="form-control"/>
+                                                    </table>
+                                                </td>
+                                            </tr>
 
-                            <tr>
-                                <td>
-                                    <label class="control-label"><small>Periode :</small></label>
-                                </td>
-                                <td>
-                                    <table>
-                                        <s:select list="#{'01':'Januari', '02' : 'Februari', '03':'Maret', '04':'April', '05':'Mei', '06':'Juni', '07':'Juli',
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label"><small>Periode :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:select list="#{'01':'Januari', '02' : 'Februari', '03':'Maret', '04':'April', '05':'Mei', '06':'Juni', '07':'Juli',
                                 '08': 'Agustus', '09' : 'September', '10' : 'Oktober', '11' : 'November', '12' : 'Desember'}"
-                                                  id="bulanPayroll" name="" disabled="true" value="01"
-                                                  headerKey="0" headerValue="Bulan" cssClass="form-control" />
-                                    </table>
-                                </td>
-                                <td>
-                                    <table>
-                                        <s:select list="#{'2017':'2017', '2018' : '2018', '2019':'2019', '2020':'2020', '2021':'2021', '2022':'2022', '2023':'2023'}"
-                                                  id="tahunPayroll" name="tahun" disabled="true"
-                                                  headerKey="0" headerValue="Tahun" cssClass="form-control" />
-                                    </table>
-                                </td>
-                            </tr>
+                                                                  id="bulanPayroll" name="" disabled="true" value="01"
+                                                                  headerKey="0" headerValue="Bulan" cssClass="form-control" />
+                                                    </table>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:action id="comboPeriode" namespace="/rekruitmen" name="initComboPeriodeTahunSekarang10_rekruitmen"/>
+                                                        <s:select cssClass="form-control" list="#comboPeriode.listOfComboPeriode" id="tahunPayroll"
+                                                                  name="tahun" required="true" headerKey=""
+                                                                  headerValue="[Select one]"/>
+                                                    </table>
+                                                </td>
+                                            </tr>
 
-                            <tr>
-                                <td>
-                                    <label class="control-label"><small>Tipe :</small></label>
-                                </td>
-                                <td>
-                                    <table>
-                                        <s:select list="#{'PR':'Payroll', 'T':'THR', 'PD':'Pendidikan', 'R':'Rapel', 'IN':'Insentif',
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label"><small>Tipe :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:select list="#{'PR':'Payroll', 'T':'THR', 'PD':'Pendidikan', 'R':'Rapel', 'IN':'Insentif',
                                         'JP':'Jasprod', 'JB':'Jubileum', 'PN':'Pensiun'}" id="tipe" name="payroll.tipe"
-                                                  cssClass="form-control" disabled="true" />
-                                    </table>
+                                                                  cssClass="form-control" disabled="true" />
+                                                    </table>
 
-                                </td>
-                            </tr>
+                                                </td>
+                                            </tr>
 
-                            <tr>
-                                <td>
-                                    <label class="control-label"><small>Nama :</small></label>
-                                </td>
-                                <td>
-                                    <table>
-                                        <s:textfield cssStyle="display: none" id="txtTipeId" name="payroll.tipe" required="false" readonly="false" cssClass="form-control"/>
-                                        <s:textfield cssStyle="display: none" id="txtBranchId" name="payroll.branchId" required="false" readonly="false" cssClass="form-control"/>
-                                        <s:textfield cssStyle="display: none" id="txtBulanPayroll" name="payroll.bulan" required="false" readonly="false" cssClass="form-control"/>
-                                        <s:textfield cssStyle="display: none" id="txtTahunPayroll" name="payroll.tahun" required="false" readonly="false" cssClass="form-control"/>
-                                        <s:textfield cssStyle="display: none" id="personName1" name="payroll.nip" required="false" readonly="false" cssClass="form-control"/>
-                                        <s:textfield id="personName2" name="payroll.nama" required="false" readonly="false" cssClass="form-control"/>
-                                        <s:textfield cssStyle="display: none" id="personName" name="payroll.name" required="false" readonly="false" cssClass="form-control"/>
-                                    </table>
-                                </td>
-                                <script type='text/javascript'>
-                                    var functions, mapped;
-                                    // var prov = document.getElementById("provinsi1").value;
-                                    $('#personName2').typeahead({
-                                        minLength: 1,
-                                        source: function (query, process) {
-                                            functions = [];
-                                            mapped = {};
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label"><small>Nama :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:textfield cssStyle="display: none" id="txtTipeId" name="payroll.tipe" required="false" readonly="false" cssClass="form-control"/>
+                                                        <s:textfield cssStyle="display: none" id="txtBranchId" name="payroll.branchId" required="false" readonly="false" cssClass="form-control"/>
+                                                        <s:textfield cssStyle="display: none" id="txtBulanPayroll" name="payroll.bulan" required="false" readonly="false" cssClass="form-control"/>
+                                                        <s:textfield cssStyle="display: none" id="txtTahunPayroll" name="payroll.tahun" required="false" readonly="false" cssClass="form-control"/>
+                                                        <s:textfield cssStyle="display: none" id="personName1" name="payroll.nip" required="false" readonly="false" cssClass="form-control"/>
+                                                        <s:textfield id="personName2" name="payroll.nama" required="false" readonly="false" cssClass="form-control"/>
+                                                        <s:textfield cssStyle="display: none" id="personName" name="payroll.name" required="false" readonly="false" cssClass="form-control"/>
+                                                    </table>
+                                                </td>
+                                                <script type='text/javascript'>
+                                                    var functions, mapped;
+                                                    // var prov = document.getElementById("provinsi1").value;
+                                                    $('#personName2').typeahead({
+                                                        minLength: 1,
+                                                        source: function (query, process) {
+                                                            functions = [];
+                                                            mapped = {};
 
-                                            var data = [];
-                                            dwr.engine.setAsync(false);
-                                            MedicalRecordAction.initComboPersonil(query,'', function (listdata) {
-                                                data = listdata;
-                                                //alert('aa');
-                                            });
-                                            //alert(prov);
-                                            $.each(data, function (i, item) {
-                                                var labelItem =item.nip+ " || "+ item.namaPegawai;
-                                                var labelNip = item.nip;
-                                                mapped[labelItem] = {pegawai:item.namaPegawai, id: item.nip, label: labelItem, branchId : item.branch, divisiId: item.divisi, positionId : item.positionId };
-                                                functions.push(labelItem);
-                                            });
-
-
-                                            process(functions);
-                                        },
-
-                                        updater: function (item) {
-                                            var selectedObj = mapped[item];
-                                            var namaAlat = selectedObj.label;
-                                            document.getElementById("personName1").value = selectedObj.id;
-                                            document.getElementById("personName").value = selectedObj.pegawai;
-
-                                            branc = selectedObj.branchId;
-                                            dev = selectedObj.divisiId ;
-                                            return namaAlat;
-                                        }
-                                    });
-
-                                </script>
-                            </tr>
-
-                        </table>
+                                                            var data = [];
+                                                            dwr.engine.setAsync(false);
+                                                            MedicalRecordAction.initComboPersonil(query,'', function (listdata) {
+                                                                data = listdata;
+                                                                //alert('aa');
+                                                            });
+                                                            //alert(prov);
+                                                            $.each(data, function (i, item) {
+                                                                var labelItem =item.nip+ " || "+ item.namaPegawai;
+                                                                var labelNip = item.nip;
+                                                                mapped[labelItem] = {pegawai:item.namaPegawai, id: item.nip, label: labelItem, branchId : item.branch, divisiId: item.divisi, positionId : item.positionId };
+                                                                functions.push(labelItem);
+                                                            });
 
 
+                                                            process(functions);
+                                                        },
 
-                        <br>
+                                                        updater: function (item) {
+                                                            var selectedObj = mapped[item];
+                                                            var namaAlat = selectedObj.label;
+                                                            document.getElementById("personName1").value = selectedObj.id;
+                                                            document.getElementById("personName").value = selectedObj.pegawai;
 
-                        <div id="actions" class="form-actions">
-                            <table align="center">
-                                <tr>
-                                    <td>
-                                        <sj:submit type="button" cssClass="btn btn-primary" formIds="sppdForm" id="save" name="search"
-                                                   onClickTopics="showDialog" onCompleteTopics="closeDialog" >
-                                            <i class="fa fa-search"></i>
-                                            Search
-                                        </sj:submit>
+                                                            branc = selectedObj.branchId;
+                                                            dev = selectedObj.divisiId ;
+                                                            return namaAlat;
+                                                        }
+                                                    });
 
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-danger" onclick="menujuLink('cancelPage_payroll.action', 'Payroll');">
-                                            <i class="fa fa-close"></i> Cancel
-                                        </button>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
+                                                </script>
+                                            </tr>
 
-                        <br>
-
-                        <center>
-                            <table id="showdata" width="100%">
-                                <tr>
-                                    <td align="center">
-                                        <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
-                                                   height="500" width="500" autoOpen="false"
-                                                   title="Payroll ">
-                                            <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
-                                        </sj:dialog>
-
-                                        <s:set name="listDataPayroll" value="#session.listDataPayroll" scope="request" />
-                                        <display:table name="listDataPayroll" class="tablePayroll table table-condensed table-striped table-hover"
-                                                       requestURI="paging_displaytag_edit_payroll.action" export="true" id="row" pagesize="1000" style="font-size:10">
-
-                                            <display:column media="html" title="Edit">
-                                                <a href="javascript:;" data="<s:property value="%{#attr.row.payrollId}"/>" class="item-edit">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">
-                                                </a>
-                                            </display:column>
-
-                                            <display:column property="nip" sortable="true" title="NIP"  />
-                                            <display:column property="nama" sortable="true" title="Nama" />
-                                            <display:column property="departmentName" sortable="true" title="Bidang" />
-                                            <display:column property="positionName" sortable="true" title="Jabatan" />
-                                            <display:column property="golonganName" sortable="true" title="Golongan" />
-                                            <display:column style="text-align:right;" property="totalA" sortable="true" title="Gaji Kotor" />
-                                            <display:column style="text-align:right;" property="totalB" sortable="true" title="Potongan" />
-                                            <display:column style="text-align:right;" property="pphGaji" sortable="true" title="PPh" />
-                                            <display:column style="text-align:right;" property="totalGajiBersih" sortable="true" title="Gaji Bersih" />
-                                            <display:column style="text-align:right;" property="totalRapel" sortable="true" title="Rapel" />
-                                            <display:column style="text-align:right;" property="totalThr" sortable="true" title="Thr" />
-                                            <display:column style="text-align:right;" property="totalPendidikan" sortable="true" title="Pendidikan" />
-                                            <display:column style="text-align:right;" property="totalJasProd" sortable="true" title="Jasprod" />
-                                            <display:column style="color: #00cc00;" property="tanggalJubileum" sortable="true" title="Jubileum" />
-                                            <display:column style="color: red;" property="stTanggalPensiun" sortable="true" title="Pensiun" />
-                                            <%--<display:column media="html" title="Reproses">
-                                                <a href="javascript:;"
-                                                   nip="<s:property value="%{#attr.row.nip}"/>"
-                                                   branchId="<s:property value="%{#attr.row.branchId}"/>"
-                                                   bulan="<s:property value="%{#attr.row.bulan}"/>"
-                                                   tahun="<s:property value="%{#attr.row.tahun}"/>"
-                                                   nama="<s:property value="%{#attr.row.nama}"/>"
-                                                   payrollId="<s:property value="%{#attr.row.payrollId}"/>"
-                                                   class="item-reproses">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_reset.png"/>" name="icon_reset">
-                                                </a>
-                                            </display:column>--%>
-                                            <%--<display:column style="text-align:center;" media="html" title="Promosi">
-                                                <s:if test="#attr.row.flagPromosiOn">
-                                                    <a href="javascript:;" payrollId="<s:property value="%{#attr.row.payrollId}"/>"
-                                                       nip="<s:property value="%{#attr.row.nip}"/>" class="item-promosi">
-                                                        <span style="font-size: 17px" class="glyphicon glyphicon-user"></span>
-                                                    </a>
-                                                </s:if>
-                                            </display:column>--%>
+                                        </table>
 
 
 
-                                        </display:table>
-                                    </td>
-                                </tr>
-                            </table>
-                        </center>
+                                        <br>
 
-                        <div id="actions" class="form-actions">
-                            <table>
-                                <tr>
-                                    <div id="crud">
-                                        <td>
+                                        <div id="actions" class="form-actions">
+                                            <table align="center">
+                                                <tr>
+                                                    <td>
+                                                        <sj:submit type="button" cssClass="btn btn-primary" formIds="sppdForm" id="save" name="search"
+                                                                   onClickTopics="showDialog" onCompleteTopics="closeDialog" >
+                                                            <i class="fa fa-search"></i>
+                                                            Search
+                                                        </sj:submit>
+
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger" onclick="menujuLink('cancelPage_payroll.action', 'Payroll');">
+                                                            <i class="fa fa-close"></i> Cancel
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+
+                                        <br>
+
+                                        <center>
+                                            <table id="showdata" width="100%">
+                                                <tr>
+                                                    <td align="center">
+                                                        <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
+                                                                   height="500" width="500" autoOpen="false"
+                                                                   title="Payroll ">
+                                                            <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
+                                                        </sj:dialog>
+
+                                                        <s:set name="listDataPayroll" value="#session.listDataPayroll" scope="request" />
+                                                        <display:table name="listDataPayroll" class="tablePayroll table table-condensed table-striped table-hover"
+                                                                       requestURI="paging_displaytag_edit_payroll.action" export="true" id="row" pagesize="1000" style="font-size:10">
+
+                                                            <display:column media="html" title="Edit">
+                                                                <a href="javascript:;" data="<s:property value="%{#attr.row.payrollId}"/>" class="item-edit">
+                                                                    <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">
+                                                                </a>
+                                                            </display:column>
+
+                                                            <display:column property="nip" sortable="true" title="NIP"  />
+                                                            <display:column property="nama" sortable="true" title="Nama" />
+                                                            <display:column property="departmentName" sortable="true" title="Bidang" />
+                                                            <display:column property="positionName" sortable="true" title="Jabatan" />
+                                                            <display:column property="golonganName" sortable="true" title="Golongan" />
+                                                            <display:column style="text-align:right;" property="totalA" sortable="true" title="Gaji Kotor" />
+                                                            <display:column style="text-align:right;" property="totalB" sortable="true" title="RLAB & Sansos" />
+                                                            <display:column style="text-align:right;" property="totalC" sortable="true" title="Pot. Tnp. PPh" />
+                                                            <display:column style="text-align:right;" property="pphGaji" sortable="true" title="PPh" />
+                                                            <display:column style="text-align:right;" property="totalGajiBersih" sortable="true" title="Gaji Bersih" />
+                                                            <display:column style="text-align:right;" property="totalRapel" sortable="true" title="Rapel" />
+                                                            <display:column style="text-align:right;" property="totalThr" sortable="true" title="Thr" />
+                                                            <display:column style="text-align:right;" property="totalPendidikan" sortable="true" title="Pendidikan" />
+                                                            <display:column style="text-align:right;" property="totalJasProd" sortable="true" title="Jasprod" />
+                                                            <display:column style="color: #00cc00;" property="tanggalJubileum" sortable="true" title="Jubileum" />
+                                                            <display:column style="color: red;" property="stTanggalPensiun" sortable="true" title="Pensiun" />
+                                                            <%--<display:column media="html" title="Reproses">
+                                                                <a href="javascript:;"
+                                                                   nip="<s:property value="%{#attr.row.nip}"/>"
+                                                                   branchId="<s:property value="%{#attr.row.branchId}"/>"
+                                                                   bulan="<s:property value="%{#attr.row.bulan}"/>"
+                                                                   tahun="<s:property value="%{#attr.row.tahun}"/>"
+                                                                   nama="<s:property value="%{#attr.row.nama}"/>"
+                                                                   payrollId="<s:property value="%{#attr.row.payrollId}"/>"
+                                                                   class="item-reproses">
+                                                                    <img border="0" src="<s:url value="/pages/images/icon_reset.png"/>" name="icon_reset">
+                                                                </a>
+                                                            </display:column>--%>
+                                                            <%--<display:column style="text-align:center;" media="html" title="Promosi">
+                                                                <s:if test="#attr.row.flagPromosiOn">
+                                                                    <a href="javascript:;" payrollId="<s:property value="%{#attr.row.payrollId}"/>"
+                                                                       nip="<s:property value="%{#attr.row.nip}"/>" class="item-promosi">
+                                                                        <span style="font-size: 17px" class="glyphicon glyphicon-user"></span>
+                                                                    </a>
+                                                                </s:if>
+                                                            </display:column>--%>
+
+
+
+                                                        </display:table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </center>
+
+                                        <div id="actions" class="form-actions">
                                             <table>
-                                                <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"
-                                                           resizable="false"
-                                                           height="350" width="600" autoOpen="false" title="Searching ...">
-                                                    Please don't close this window, server is processing your request ...
-                                                    </br>
-                                                    </br>
-                                                    </br>
-                                                    <center>
-                                                        <img border="0" src="<s:url value="/pages/images/indicator-read.gif"/>" name="image_indicator_write">
-                                                    </center>
-                                                </sj:dialog>
+                                                <tr>
+                                                    <div id="crud">
+                                                        <td>
+                                                            <table>
+                                                                <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"
+                                                                           resizable="false"
+                                                                           height="350" width="600" autoOpen="false" title="Searching ...">
+                                                                    Please don't close this window, server is processing your request ...
+                                                                    </br>
+                                                                    </br>
+                                                                    </br>
+                                                                    <center>
+                                                                        <img border="0" src="<s:url value="/pages/images/indicator-read.gif"/>" name="image_indicator_write">
+                                                                    </center>
+                                                                </sj:dialog>
 
-                                                <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false"
-                                                           height="200" width="400" autoOpen="false" title="Infomation Dialog"
-                                                           buttons="{
+                                                                <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false"
+                                                                           height="200" width="400" autoOpen="false" title="Infomation Dialog"
+                                                                           buttons="{
                                                               'OK':function() {
                                                                       clos();
                                                                    }
                                                             }"
-                                                >
-                                                    <img border="0" src="<s:url value="/pages/images/icon_success.png"/>" name="icon_success">
-                                                    Record has been saved successfully.
-                                                </sj:dialog>
+                                                                >
+                                                                    <img border="0" src="<s:url value="/pages/images/icon_success.png"/>" name="icon_success">
+                                                                    Record has been saved successfully.
+                                                                </sj:dialog>
 
-                                                <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
-                                                           height="250" width="600" autoOpen="false" title="Error Dialog"
-                                                           buttons="{
+                                                                <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
+                                                                           height="250" width="600" autoOpen="false" title="Error Dialog"
+                                                                           buttons="{
                                                                         'OK':function() { $('#error_dialog').dialog('close'); }
                                                                     }"
-                                                >
-                                                    <div class="alert alert-error fade in">
-                                                        <label class="control-label" align="left">
-                                                            <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessage"></p>
-                                                        </label>
-                                                    </div>
-                                                </sj:dialog>
+                                                                >
+                                                                    <div class="alert alert-error fade in">
+                                                                        <label class="control-label" align="left">
+                                                                            <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessage"></p>
+                                                                        </label>
+                                                                    </div>
+                                                                </sj:dialog>
 
-                                                <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog" modal="true" resizable="false"
-                                                           height="280" width="500" autoOpen="false" title="Warning"
-                                                           buttons="{
+                                                                <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog" modal="true" resizable="false"
+                                                                           height="280" width="500" autoOpen="false" title="Warning"
+                                                                           buttons="{
                                                                         'OK':function() { $('#error_validation_dialog').dialog('close'); }
                                                                     }"
-                                                >
-                                                    <div class="alert alert-error fade in">
-                                                        <label class="control-label" align="left">
-                                                            <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> Please check this field :
-                                                            <br/>
-                                                            <center><div id="errorValidationMessage"></div></center>
-                                                        </label>
+                                                                >
+                                                                    <div class="alert alert-error fade in">
+                                                                        <label class="control-label" align="left">
+                                                                            <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> Please check this field :
+                                                                            <br/>
+                                                                            <center><div id="errorValidationMessage"></div></center>
+                                                                        </label>
+                                                                    </div>
+                                                                </sj:dialog>
+                                                            </table>
+                                                        </td>
                                                     </div>
-                                                </sj:dialog>
+                                                </tr>
                                             </table>
-                                        </td>
-                                    </div>
-                                </tr>
-                            </table>
-                        </div>
-                    </s:form>
-                </td>
-            </tr>
-        </table>
+                                        </div>
+                                    </s:form>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
     <!-- /.content -->
 </div>
@@ -548,442 +557,456 @@
             </div>
             <div class="modal-body" align="left">
                 <form class="form-horizontal" id="formEdit">
-                    <div class="form-group">
-                        <div class="col-sm-3">
-                            <input style="display: none" readonly type="text" class="form-control nip" id="payrollId2" name="nip">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-1" >Bulan / Tahun </label>
-                        <div class="col-sm-1">
-                            <input readonly type="text" class="form-control nip" id="bulan" name="nip">
-                        </div>
-                        <div class="col-sm-1">
-                            <input readonly type="text" class="form-control nip" id="tahun" name="nip">
-                        </div>
-                    </div>
+                    <div id="biodataMod" class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <input style="display: none" readonly type="text" class="form-control nip" id="payrollId2" name="nip">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Bulan / Tahun </label>
+                                <div class="col-sm-3">
+                                    <input readonly type="text" class="form-control nip" id="bulan" name="nip">
+                                </div>
+                                <div class="col-sm-4">
+                                    <input readonly type="text" class="form-control nip" id="tahun" name="nip">
+                                </div>
+                            </div>
 
-                    <div class="form-group">
-                        <label class="control-label col-sm-1" >NIP</label>
-                        <div class="col-sm-3">
-                            <input readonly type="text" class="form-control nip" id="nip" name="nip">
-                        </div>
-                        <div class="col-sm-3">
-                            <input style="display: none" readonly type="text" class="form-control nip" id="branchId2" name="nip">
-                        </div>
-                    </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >NIP</label>
+                                <div class="col-sm-7">
+                                    <input readonly type="text" class="form-control nip" id="nip" name="nip">
+                                </div>
+                                <div class="col-sm-3">
+                                    <input style="display: none" readonly type="text" class="form-control nip" id="branchId2" name="nip">
+                                </div>
+                            </div>
 
-                    <div class="form-group">
-                        <label class="control-label col-sm-1" >NPWP</label>
-                        <div class="col-sm-3">
-                            <input readonly type="text" class="form-control nip" id="npwp" name="nip">
-                        </div>
-                    </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >NPWP</label>
+                                <div class="col-sm-7">
+                                    <input readonly type="text" class="form-control nip" id="npwp" name="nip">
+                                </div>
+                            </div>
 
-                    <div class="form-group" style="display: none;">
-                        <label class="control-label col-sm-1" >Tipe Pegawai</label>
-                        <div class="col-sm-3">
-                            <input readonly type="text" class="form-control nip" id="tipePegawai" name="nip">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-1" >Tipe Pegawai</label>
-                        <div class="col-sm-3">
-                            <input readonly type="text" class="form-control nip" id="tipePegawaiName" name="nip">
-                        </div>
-                    </div>
+                            <div class="form-group" style="display: none;">
+                                <label class="control-label col-sm-5" >Tipe Pegawai</label>
+                                <div class="col-sm-7">
+                                    <input readonly type="text" class="form-control nip" id="tipePegawai" name="nip">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Tipe Pegawai</label>
+                                <div class="col-sm-7">
+                                    <input readonly type="text" class="form-control nip" id="tipePegawaiName" name="nip">
+                                </div>
+                            </div>
 
-                    <div class="form-group">
-                        <label class="control-label col-sm-1" >Nama</label>
-                        <div class="col-sm-3">
-                            <input readonly type="text" class="form-control nip" id="nama" name="nip">
-                        </div>
-                    </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Nama</label>
+                                <div class="col-sm-7">
+                                    <input readonly type="text" class="form-control nip" id="nama" name="nip">
+                                </div>
+                            </div>
 
-                    <div class="form-group">
-                        <label class="control-label col-sm-1" >Bidang</label>
-                        <div class="col-sm-3">
-                            <input readonly type="text" class="form-control nip" id="divisi" name="nip">
-                        </div>
-                    </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Bidang</label>
+                                <div class="col-sm-7">
+                                    <input readonly type="text" class="form-control nip" id="divisi" name="nip">
+                                </div>
+                            </div>
 
-                    <div class="form-group">
-                        <label class="control-label col-sm-1" >Level</label>
-                        <div class="col-sm-1">
-                            <input readonly style="padding-left: 8px; padding-right: 0px" type="text" class="form-control nip" id="golongan" name="nip">
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Level</label>
+                                <div class="col-sm-7">
+                                    <input readonly style="padding-left: 8px; padding-right: 0px" type="text" class="form-control nip" id="golongan" name="nip">
+                                </div>
+
+                                <%--<div class="col-sm-1">
+                                    <input readonly type="text" class="form-control nip" id="point" name="nip">
+                                </div>--%>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Jabatan</label>
+                                <div class="col-sm-7">
+                                    <input readonly type="text" class="form-control nip" id="jabatan" name="nip">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >S.Keluarga/Anak</label>
+                                <div class="col-sm-4">
+                                    <input readonly type="text" class="form-control nip" id="statusKeluarga" name="nip">
+                                </div>
+                                <div class="col-sm-3">
+                                    <input readonly type="text" class="form-control nip" id="jumlahAnak" name="nip">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label style="padding-left: 0px; padding-right: 0px" class="control-label col-sm-5" >Tipe Dana Pensiun</label>
+                                <div class="col-sm-7">
+                                    <input style="text-align: left" readonly type="text" class="form-control nip" id="tipeDanaPensiun" name="nip">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Gol.Dapen/Masa Gol.</label>
+                                <div class="col-sm-5">
+                                    <input readonly style="padding-left: 8px; padding-right: 0px" type="text" class="form-control nip" id="golonganDapenId" name="nip">
+                                </div>
+
+                                <div class="col-sm-2">
+                                    <input readonly type="text" class="form-control nip" id="masaGolDapen" name="nip">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-3">
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Gaji Pensiun*</label>
+                                <div class="col-sm-7">
+                                    <input style="text-align: right" readonly type="text" class="form-control nip" id="gajiPensiun" name="nip">
+                                </div>
+                            </div>
+
+                            <%--<div class="form-group">
+                                <label class="control-label col-sm-1" >Multifikator</label>
+                                <div class="col-sm-2">
+                                    <input style="text-align: right" readonly type="text" class="form-control nip" id="multifikator" name="nip">
+                                </div>
+                            </div>--%>
+
+                            <%--<div class="form-group">
+                                <label class="control-label col-sm-1" >Gaji Bpjs **</label>
+                                <div class="col-sm-2">
+                                    <input style="text-align: right" readonly type="text" class="form-control nip" id="gajiBpjs" name="nip">
+                                </div>
+                            </div>--%>
+                        </div>
+                    </div>
+                    <div class="row" id="totalAMod">
+                        <div class="col-sm-4" id="komponenA">
+                            <div align="center">
+                                <h4>A. Gaji </h4>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Gaji</label>
+                                <div class="col-sm-7">
+                                    <input style="text-align: right" readonly type="text" class="form-control nip" id="gaji" name="nip">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Sankhus</label>
+                                <div class="col-sm-7">
+                                    <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjUmk" name="nip">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Tunj. Jabatan</label>
+                                <div class="col-sm-7">
+                                    <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjJabStruktural" name="nip">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Tunj. Struktural</label>
+                                <div class="col-sm-7">
+                                    <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjStruktural" name="nip">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Tunj. Fungs</label>
+                                <div class="col-sm-7">
+                                    <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjStrategis" name="nip">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Tunj. Peralihan</label>
+                                <div class="col-sm-7">
+                                    <input style="text-align: right" type="text" class="form-control nip" id="tunjPeralihan" onfocusout="updateNilai(this.id, this.value)" name="nip">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Tunj. Lain</label>
+                                <div class="col-sm-7">
+                                    <input readonly style="text-align: right" readonly type="text" class="form-control nip" id="tunjLain" name="nip">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Tunj. Tambahan(PKWT)</label>
+                                <div class="col-sm-7">
+                                    <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjTambahan" name="nip">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Tunj. Lembur</label>
+                                <div class="col-sm-7">
+                                    <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjLembur"name="nip">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Pemondokan</label>
+                                <div class="col-sm-7">
+                                    <input style="text-align: right" type="text" class="form-control nip" id="pemondokan" onfocusout="updateNilai(this.id, this.value)" name="nip">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Komunikasi</label>
+                                <div class="col-sm-7">
+                                    <input style="text-align: right" type="text" class="form-control nip" id="komunikasi" onfocusout="updateNilai(this.id, this.value)" name="nip">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Tambahan Lain</label>
+                                <div class="col-sm-7">
+                                    <input style="text-align: right" readonly type="text" class="form-control nip" id="tambahanLain" name="nip">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Total A</label>
+                                <div class="col-sm-7">
+                                    <input style="text-align: right" readonly type="text" class="form-control nip" id="totalA" name="nip">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" ><b>Gaji Bersih (A+B)- C</b></label>
+                                <div class="col-sm-7">
+                                    <input style="text-align: right" align="right" readonly type="text" class="form-control nip" id="gajiBersih" name="nip">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div align="center">
+                                <h4>B. Tunjangan RLAB dan SANSOS</h4>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Tunj. Rumah </label>
+                                <div class="col-sm-7">
+                                    <input readonly style="text-align: right"  type="text" class="form-control nip" id="tunjRumah" name="nip">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Tunj. Listrik</label>
+                                <div class="col-sm-7">
+                                    <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjListrik" name="nip">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Tunj. Air</label>
+                                <div class="col-sm-7">
+                                    <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjAir" name="nip">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Tunj. BBM</label>
+                                <div class="col-sm-7">
+                                    <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjBbm" name="nip">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5"><b>Total. RLAB</b></label>
+                                <div class="col-sm-7">
+                                    <input style="text-align: right" readonly type="text" class="form-control nip" id="totalRlab" name="nip">
+                                </div>
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Tunj. Dapen</label>
+                                <div class="col-sm-7">
+                                    <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjDapen" name="nip">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Tunj. Bpjs Ks</label>
+                                <div class="col-sm-7">
+                                    <input readonly style="text-align: right" readonly type="text" class="form-control nip" id="tunjBpjsKs" name="nip">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Tunj. Bpjs Tk</label>
+                                <div class="col-sm-7">
+                                    <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjBpjsTk" name="nip">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Tunj. Pph</label>
+                                <div class="col-sm-7">
+                                    <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjPph" name="nip">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Total B</label>
+                                <div class="col-sm-7">
+                                    <input style="text-align: right" readonly type="text" class="form-control nip" id="totalB" name="nip">
+                                </div>
+                            </div>
+
+                            <br>
+                            <br>
+                            <div align="center">
+                                <h4>D. PTT</h4>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" for="tipePttId1">Tipe Ptt:</label>
+                                <div class="col-sm-7">
+                                    <select class="form-control" id="tipePttId1">
+                                        <option value="0">[Select One]</option>
+                                        <option value="t">Tantiem</option>
+                                        <option value="R">Rekreasi</option>
+                                        <option value="tk">Tunjangan Khusus</option>
+                                        <option value="bPer">Biaya Pernikahan</option>
+                                        <option value="bPin">Biaya Pindah</option>
+                                        <option value="bPis">Biaya Pisah</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Nilai PTT</label>
+                                <div class="col-sm-7">
+                                    <input style="text-align: right" type="text" class="form-control nip" id="nilaiPtt" name="nip" onfocusout="updateNilai(this.id, this.value)">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div align="center">
+                                <h4>C. Potongan</h4>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Iur. Dp. Peg</label>
+                                <div class="col-sm-6">
+                                    <input readonly style="text-align: right"  type="text" class="form-control nip" id="iuranDapenPeg" name="nip">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Iur. Dp. Pers</label>
+                                <div class="col-sm-6">
+                                    <input style="text-align: right" readonly type="text" class="form-control nip" id="iuranDapenPersh" name="nip">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Iur. Bpjs Tk Pegawai</label>
+                                <div class="col-sm-6">
+                                    <input style="text-align: right" readonly type="text" class="form-control nip" id="iuranBpjsTkPeg" name="nip">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Iur. Bpjs Tk Persh. </label>
+                                <div class="col-sm-6">
+                                    <input style="text-align: right" readonly type="text" class="form-control nip" id="iuranBpjsTkPers" name="nip">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Iur. Bpjs Ks Peg. </label>
+                                <div class="col-sm-6">
+                                    <input style="text-align: right" readonly type="text" class="form-control nip" id="iuranBpjsKsPeg" name="nip">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Iur. Bpjs Ks Pers. </label>
+                                <div class="col-sm-6">
+                                    <input style="text-align: right" readonly type="text" class="form-control nip" id="iuranBpjsKsPers" name="nip">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Pot. Pph</label>
+                                <div class="col-sm-6">
+                                    <input readonly style="text-align: right" readonly type="text" class="form-control nip" id="pphGaji1" name="nip">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Pot. Lain-lain</label>
+                                <div class="col-sm-6">
+                                    <input style="text-align: right" readonly type="text" class="form-control nip" id="totalPotonganLain" name="nip">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Total C</label>
+                                <div class="col-sm-6">
+                                    <input style="text-align: right" readonly type="text" class="form-control nip" id="totalC" name="nip">
+                                </div>
+                            </div>
+                            <br>
+                            <br>
+                            <div align="center">
+                                <h4>C. Rincian Potongan</h4>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Kopkar</label>
+                                <div class="col-sm-6">
+                                    <input style="text-align: right"  type="text" class="form-control nip" id="kopkar" name="nip" onfocusout="updateNilai(this.id, this.value)">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Iuran Sp</label>
+                                <div class="col-sm-6">
+                                    <input style="text-align: right"  type="text" class="form-control nip" id="iuranSp" name="nip" onfocusout="updateNilai(this.id, this.value)">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Iuran PIIKB</label>
+                                <div class="col-sm-6">
+                                    <input style="text-align: right"  type="text" class="form-control nip" id="iuranPiiKb" name="nip" onfocusout="updateNilai(this.id, this.value)">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Bank BRI</label>
+                                <div class="col-sm-6">
+                                    <input style="text-align: right"  type="text" class="form-control nip" id="bankBri" name="nip" onfocusout="updateNilai(this.id, this.value)">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Bank Mandiri</label>
+                                <div class="col-sm-6">
+                                    <input style="text-align: right"  type="text" class="form-control nip" id="bankMandiri" name="nip" onfocusout="updateNilai(this.id, this.value)">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Infaq</label>
+                                <div class="col-sm-6">
+                                    <input style="text-align: right"  type="text" class="form-control nip" id="infaq" name="nip" onfocusout="updateNilai(this.id, this.value)">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Perkes dan Obat</label>
+                                <div class="col-sm-6">
+                                    <input style="text-align: right"  type="text" class="form-control nip" id="perkesDanObat" name="nip" onfocusout="updateNilai(this.id, this.value)">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Listrik</label>
+                                <div class="col-sm-6">
+                                    <input style="text-align: right"  type="text" class="form-control nip" id="listrik" name="nip" onfocusout="updateNilai(this.id, this.value)">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Iuran Profesi</label>
+                                <div class="col-sm-6">
+                                    <input style="text-align: right"  type="text" class="form-control nip" id="iuranProfesi" name="nip" onfocusout="updateNilai(this.id, this.value)">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Potongan Lain</label>
+                                <div class="col-sm-6">
+                                    <input style="text-align: right"  type="text" class="form-control nip" id="potonganLain" name="nip" onfocusout="updateNilai(this.id, this.value)">
+                                </div>
+                            </div>
                         </div>
 
-                        <%--<div class="col-sm-1">
-                            <input readonly type="text" class="form-control nip" id="point" name="nip">
-                        </div>--%>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-sm-1" >Jabatan</label>
-                        <div class="col-sm-3">
-                            <input readonly type="text" class="form-control nip" id="jabatan" name="nip">
+                        <div class="form-group">
+                            <div class="col-sm-1" align="left">
+                                <a href="javascript:;" class="detailTunjlain" style="display: inline">
+                                    <span style="font-size: 25px" class="glyphicon glyphicon-zoom-in"></span>
+                                </a>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-sm-1" >S.Keluarga/Anak</label>
-                        <div class="col-sm-1">
-                            <input readonly type="text" class="form-control nip" id="statusKeluarga" name="nip">
-                        </div>
-                        <div class="col-sm-1">
-                            <input readonly type="text" class="form-control nip" id="jumlahAnak" name="nip">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label style="padding-left: 0px; padding-right: 0px" class="control-label col-sm-1" >Tipe Dana Pensiun</label>
-                        <div class="col-sm-3">
-                            <input style="text-align: left" readonly type="text" class="form-control nip" id="tipeDanaPensiun" name="nip">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-sm-1" >Gol.Dapen/Masa Gol.</label>
-                        <div class="col-sm-1">
-                            <input readonly style="padding-left: 8px; padding-right: 0px" type="text" class="form-control nip" id="golonganDapenId" name="nip">
-                        </div>
-
-                        <div class="col-sm-1">
-                            <input readonly type="text" class="form-control nip" id="masaGolDapen" name="nip">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="col-sm-3">
-
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-sm-1" >Gaji Pensiun*</label>
-                        <div class="col-sm-3">
-                            <input style="text-align: right" readonly type="text" class="form-control nip" id="gajiPensiun" name="nip">
-                        </div>
-                    </div>
-
-                    <%--<div class="form-group">
-                        <label class="control-label col-sm-1" >Multifikator</label>
-                        <div class="col-sm-2">
-                            <input style="text-align: right" readonly type="text" class="form-control nip" id="multifikator" name="nip">
-                        </div>
-                    </div>--%>
-
-                    <%--<div class="form-group">
-                        <label class="control-label col-sm-1" >Gaji Bpjs **</label>
-                        <div class="col-sm-2">
-                            <input style="text-align: right" readonly type="text" class="form-control nip" id="gajiBpjs" name="nip">
-                        </div>
-                    </div>--%>
-
-                    <br>
-                    <div class="form-group">
-                        <div class="col-sm-3" align="center">
-                            <h4>A. Gaji </h4>
-                        </div>
-
-                        <div class="col-sm-3" align="center">
-                            <h4>B. Tunjangan RLAB dan SANSOS</h4>
-                        </div>
-
-                        <div class="col-sm-3" align="center">
-                            <h4>C. Potongan</h4>
-                        </div>
-                        <div class="col-sm-3" align="center">
-                            <h4>D. PTT</h4>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-sm-1" >Gaji</label>
-                        <div class="col-sm-2">
-                            <input style="text-align: right" readonly type="text" class="form-control nip" id="gaji" name="nip">
-                        </div>
-
-                        <label class="control-label col-sm-1" >Tunj. Rumah </label>
-                        <div class="col-sm-2">
-                            <input readonly style="text-align: right"  type="text" class="form-control nip" id="tunjRumah" name="nip">
-                        </div>
-
-                        <label class="control-label col-sm-1" >Iur. Dapen Peg</label>
-                        <div class="col-sm-2">
-                            <input readonly style="text-align: right"  type="text" class="form-control nip" id="iuranDapenPeg" name="nip">
-                        </div>
-                        <label class="control-label col-sm-1" for="tipePttId1">Tipe Ptt:</label>
-                        <div class="col-sm-2">
-                            <select class="form-control" id="tipePttId1">
-                                <option value="0">[Select One]</option>
-                                <option value="t">Tantiem</option>
-                                <option value="R">Rekreasi</option>
-                                <option value="tk">Tunjangan Khusus</option>
-                                <option value="bPer">Biaya Pernikahan</option>
-                                <option value="bPin">Biaya Pindah</option>
-                                <option value="bPis">Biaya Pisah</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-1" >Sankhus</label>
-                        <div class="col-sm-2">
-                            <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjUmk" name="nip">
-                        </div>
-                        <label class="control-label col-sm-1" >Tunj. Listrik</label>
-                        <div class="col-sm-2">
-                            <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjListrik" name="nip">
-                        </div>
-                        <label class="control-label col-sm-1" >Iur. Dapen Persh</label>
-                        <div class="col-sm-2">
-                            <input style="text-align: right" readonly type="text" class="form-control nip" id="iuranDapenPersh" name="nip">
-                        </div>
-                        <label class="control-label col-sm-1" >Nilai Ptt</label>
-                        <div class="col-sm-2">
-                            <input style="text-align: right" type="text" class="form-control nip" id="nilaiPtt" name="nip" onfocusout="updateNilai(this.id, this.value)">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-1" >Tunj. Jabatan</label>
-                        <div class="col-sm-2">
-                            <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjJabStruktural" name="nip">
-                        </div>
-                        <label class="control-label col-sm-1" >Tunj. Air</label>
-                        <div class="col-sm-2">
-                            <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjAir" name="nip">
-                        </div>
-                        <label class="control-label col-sm-1" >Iur. Bpjs Tk Pegawai</label>
-                        <div class="col-sm-2">
-                            <input style="text-align: right" readonly type="text" class="form-control nip" id="iuranBpjsTkPeg" name="nip">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-1" >Tunj. Struktural</label>
-                        <div class="col-sm-2">
-                            <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjStruktural" name="nip">
-                        </div>
-
-                        <label class="control-label col-sm-1" >Tunj. BBM</label>
-                        <div class="col-sm-2">
-                            <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjBbm" name="nip">
-                        </div>
-
-                        <label class="control-label col-sm-1" >Iur. Bpjs Tk Persh. </label>
-                        <div class="col-sm-2">
-                            <input style="text-align: right" readonly type="text" class="form-control nip" id="iuranBpjsTkPers" name="nip">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-1" >Tunj. Fungs</label>
-                        <div class="col-sm-2">
-                            <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjStrategis" name="nip">
-                        </div>
-                        <label class="control-label col-sm-1"><b>Total. RLAB</b></label>
-                        <div class="col-sm-2">
-                            <input style="text-align: right" readonly type="text" class="form-control nip" id="totalRlab" name="nip">
-                        </div>
-                        <label class="control-label col-sm-1" >Iur. Bpjs Ks Peg. </label>
-                        <div class="col-sm-2">
-                            <input style="text-align: right" readonly type="text" class="form-control nip" id="iuranBpjsKsPeg" name="nip">
-                        </div>
-                    </div>
-                    <br>
-                    <div class="form-group">
-                        <label class="control-label col-sm-1" >Tunj. Peralihan</label>
-                        <div class="col-sm-2">
-                            <input style="text-align: right" type="text" class="form-control nip" id="tunjPeralihan" onfocusout="updateNilai(this.id, this.value)" name="nip">
-                        </div>
-                        <label class="control-label col-sm-1" >Tunj. Dapen</label>
-                        <div class="col-sm-2">
-                            <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjDapen" name="nip">
-                        </div>
-                        <label class="control-label col-sm-1" >Iur. Bpjs Ks Pers. </label>
-                        <div class="col-sm-2">
-                            <input style="text-align: right" readonly type="text" class="form-control nip" id="iuranBpjsKsPers" name="nip">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-3"></div>
-                        <label class="control-label col-sm-1" >Tunj. Bpjs Ks</label>
-                        <div class="col-sm-2">
-                            <input readonly style="text-align: right" readonly type="text" class="form-control nip" id="tunjBpjsKs" name="nip">
-                        </div>
-                        <label class="control-label col-sm-1" >Pot. Pph</label>
-                        <div class="col-sm-2">
-                            <input readonly style="text-align: right" readonly type="text" class="form-control nip" id="pphGaji1" name="nip">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-1" >Tunj. Lain</label>
-                        <div class="col-sm-2">
-                            <input readonly style="text-align: right" readonly type="text" class="form-control nip" id="tunjLain" name="nip">
-                        </div>
-                        <div class="col-sm-1" align="left">
-                            <a href="javascript:;" class="detailTunjlain" style="display: inline">
-                                <span style="font-size: 25px" class="glyphicon glyphicon-zoom-in"></span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-1" >Tunj. Tambahan(PKWT)</label>
-                        <div class="col-sm-2">
-                            <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjTambahan" name="nip">
-                        </div>
-                        <label class="control-label col-sm-1" >Tunj. Bpjs Tk</label>
-                        <div class="col-sm-2">
-                            <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjBpjsTk" name="nip">
-                        </div>
-                        <label class="control-label col-sm-1" >Pot. Lain-lain</label>
-                        <div class="col-sm-2">
-                            <input style="text-align: right" readonly type="text" class="form-control nip" id="totalPotonganLain" name="nip">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-1" >Tunj. Lembur</label>
-                        <div class="col-sm-2">
-                            <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjLembur"name="nip">
-                        </div>
-                        <label class="control-label col-sm-1" >Tunj. Pph</label>
-                        <div class="col-sm-2">
-                            <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjPph" name="nip">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-1" >Pemondokan</label>
-                        <div class="col-sm-2">
-                            <input style="text-align: right" type="text" class="form-control nip" id="pemondokan" onfocusout="updateNilai(this.id, this.value)" name="nip">
-                        </div>
-                        <label class="control-label col-sm-1" >Total B</label>
-                        <div class="col-sm-2">
-                            <input style="text-align: right" readonly type="text" class="form-control nip" id="totalB" name="nip">
-                        </div>
-                        <label class="control-label col-sm-1" >Total C</label>
-                        <div class="col-sm-2">
-                            <input style="text-align: right" readonly type="text" class="form-control nip" id="totalC" name="nip">
-                        </div>
-
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-1" >Komunikasi</label>
-                        <div class="col-sm-2">
-                            <input style="text-align: right" type="text" class="form-control nip" id="komunikasi" onfocusout="updateNilai(this.id, this.value)" name="nip">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-1" >Tambahan Lain</label>
-                        <div class="col-sm-2">
-                            <input style="text-align: right" readonly type="text" class="form-control nip" id="tambahanLain" name="nip">
-                        </div>
-                        <div class="col-sm-3">
-                        </div>
-                        <div class="col-sm-3" align="center">
-                            <h4>C. Rincian Potongan</h4>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-1" >Total A</label>
-                        <div class="col-sm-2">
-                            <input style="text-align: right" readonly type="text" class="form-control nip" id="totalA" name="nip">
-                        </div>
-                        <div class="col-sm-3"></div>
-                        <label class="control-label col-sm-1" >Kopkar</label>
-                        <div class="col-sm-2">
-                            <input style="text-align: right"  type="text" class="form-control nip" id="kopkar" name="nip" onfocusout="updateNilai(this.id, this.value)">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-1" ><b>Gaji Bersih (A+B)- C</b></label>
-                        <div class="col-sm-2">
-                            <input style="text-align: right" align="right" readonly type="text" class="form-control nip" id="gajiBersih" name="nip">
-                        </div>
-                        <div class="col-sm-3"></div>
-                        <label class="control-label col-sm-1" >Iuran Sp</label>
-                        <div class="col-sm-2">
-                            <input style="text-align: right"  type="text" class="form-control nip" id="iuranSp" name="nip" onfocusout="updateNilai(this.id, this.value)">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-6"></div>
-
-                        <label class="control-label col-sm-1" >Iuran PIIKB</label>
-                        <div class="col-sm-2">
-                            <input style="text-align: right"  type="text" class="form-control nip" id="iuranPiiKb" name="nip" onfocusout="updateNilai(this.id, this.value)">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-6"></div>
-
-                        <label class="control-label col-sm-1" >Bank BRI</label>
-                        <div class="col-sm-2">
-                            <input style="text-align: right"  type="text" class="form-control nip" id="bankBri" name="nip" onfocusout="updateNilai(this.id, this.value)">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-6"></div>
-
-                        <label class="control-label col-sm-1" >Bank Mandiri</label>
-                        <div class="col-sm-2">
-                            <input style="text-align: right"  type="text" class="form-control nip" id="bankMandiri" name="nip" onfocusout="updateNilai(this.id, this.value)">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-6"></div>
-
-                        <label class="control-label col-sm-1" >Infaq</label>
-                        <div class="col-sm-2">
-                            <input style="text-align: right"  type="text" class="form-control nip" id="infaq" name="nip" onfocusout="updateNilai(this.id, this.value)">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-6"></div>
-
-                        <label class="control-label col-sm-1" >Perkes dan Obat</label>
-                        <div class="col-sm-2">
-                            <input style="text-align: right"  type="text" class="form-control nip" id="perkesDanObat" name="nip" onfocusout="updateNilai(this.id, this.value)">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-6"></div>
-
-                        <label class="control-label col-sm-1" >Listrik</label>
-                        <div class="col-sm-2">
-                            <input style="text-align: right"  type="text" class="form-control nip" id="listrik" name="nip" onfocusout="updateNilai(this.id, this.value)">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-6"></div>
-
-                        <label class="control-label col-sm-1" >Iuran Profesi</label>
-                        <div class="col-sm-2">
-                            <input style="text-align: right"  type="text" class="form-control nip" id="iuranProfesi" name="nip" onfocusout="updateNilai(this.id, this.value)">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-6"></div>
-
-                        <label class="control-label col-sm-1" >Potongan Lain</label>
-                        <div class="col-sm-2">
-                            <input style="text-align: right"  type="text" class="form-control nip" id="potonganLain" name="nip" onfocusout="updateNilai(this.id, this.value)">
-                        </div>
-                    </div>
-                    <br>
-                    <br>
-                    <div class="form-group">
-
-                    </div>
-                    <div class="form-group">
-
-                    </div>
-                    <div class="form-group">
-                    </div>
-
-                    <div class="form-group">
-                    </div>
-
-                    <div class="form-group">
-                    </div>
-
                 </form>
 
             </div>
