@@ -48,7 +48,7 @@ public class PayrollSkalaGajiDao extends GenericDao<ImPayrollSkalaGajiEntity, St
                 criteria.add(Restrictions.eq("point",mapCriteria.get("point")));
             }
 
-            criteria.add(Restrictions.eq("flag", "Y"));
+            criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
         }
         // Order by
         criteria.addOrder(Order.desc("skalaGajiId"));

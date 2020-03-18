@@ -199,6 +199,12 @@
                                             <display:column property="kelompokName" sortable="true" title="Kelompok Jabatan"  />
                                             <display:column property="tunjJabatan" sortable="true" title="Tunj. Jabatan"  />
                                             <display:column property="tunjStruktural" sortable="true" title="Tunj. Struktural"  />
+                                            <display:column property="createdWho" sortable="true" title="Created who"  />
+                                            <display:column property="lastUpdateWho" sortable="true" title="Last update who"  />
+                                            <display:column property="flag" sortable="true" title="flag"  />
+                                            <display:column property="action" sortable="true" title="action"  />
+                                            <display:column property="createdDate" sortable="true" title="Created date"  />
+                                            <display:column property="lastUpdate" sortable="true" title="Last update"  />
                                         </display:table>
                                     </td>
                                 </tr>

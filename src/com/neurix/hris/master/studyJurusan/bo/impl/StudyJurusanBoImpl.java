@@ -225,6 +225,7 @@ public class StudyJurusanBoImpl implements StudyJurusanBo {
                     returnStudyJurusan.setCreatedWho(studyJurusanEntity.getCreatedWho());
                     returnStudyJurusan.setCreatedDate(studyJurusanEntity.getCreatedDate());
                     returnStudyJurusan.setLastUpdate(studyJurusanEntity.getLastUpdate());
+                    returnStudyJurusan.setLastUpdateWho(studyJurusanEntity.getLastUpdateWho());
 
                     returnStudyJurusan.setAction(studyJurusanEntity.getAction());
                     returnStudyJurusan.setFlag(studyJurusanEntity.getFlag());

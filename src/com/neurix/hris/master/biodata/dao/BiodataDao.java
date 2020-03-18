@@ -608,6 +608,9 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             result.setPin((String) row[41]);
             result.setPoint((int) row[42]);
             result.setZakatProfesi((String) row[43]);
+            result.setLastUpdate((Timestamp)row[44]);
+            result.setCreatedDate((Timestamp) row[45]);
+
             result.setTanggalPensiun((Date) row[46]);
             result.setDanaPensiun((String) row[47]);
             result.setStrukturGaji((String) row[48]);

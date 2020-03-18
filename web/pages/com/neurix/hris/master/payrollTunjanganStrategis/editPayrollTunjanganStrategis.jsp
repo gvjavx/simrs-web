@@ -8,7 +8,7 @@
 <head>
     <script type="text/javascript">
 
-        function callSearch() {
+        function callSearch2() {
             //$('#waiting_dialog').dialog('close');
             $('#view_dialog_menu').dialog('close');
             $('#info_dialog').dialog('close');
@@ -16,13 +16,13 @@
         };
 
         $.subscribe('beforeProcessSave', function (event, data) {
-            var id = document.getElementById("tunjJabatanStruktural1").value;
-            var tunjJab = document.getElementById("tunjJabatan1").value;
-            var tunjStruk = document.getElementById("tunjStruktural1").value;
+            var id = document.getElementById("tunjStrategisId2").value;
+            var jabatan = document.getElementById("positionId2").value;
+            var nilai = document.getElementById("nilai2").value;
+            var golongan = document.getElementById("golonganId2").value;
 
-
-            if (id != '' && tunjJab != '' && tunjStruk !='' ) {
-                if(isNaN(tunjJab.replace('.','')) == false && isNaN(tunjStruk.replace('.','')) == false){
+            if (jabatan != '' && nilai !='' && golongan !='') {
+                if(isNaN(nilai) == false){
                     if (confirm('Do you want to save this record?')) {
                         event.originalEvent.options.submit = true;
                         $.publish('showDialog');
@@ -34,11 +34,8 @@
                     event.originalEvent.options.submit = false;
                     var msg = "";
 
-                    if (isNaN(tunjJab.replace('.',''))) {
-                        msg += 'Field <strong>Tunj. Jabatan</strong> Harus angka' + '<br/>';
-                    }
-                    if (isNaN(tunjStruk.replace('.',''))) {
-                        msg += 'Field <strong>Tunj. Struktural</strong> Harus angka' + '<br/>';
+                    if (isNaN(nilai)) {
+                        msg += 'Field <strong>Nilai </strong> Harus angka tanpa koma.' + '<br/>';
                     }
 
                     document.getElementById('errorValidationMessage').innerHTML = msg;
@@ -48,16 +45,16 @@
             } else {
                 event.originalEvent.options.submit = false;
                 var msg = "";
-                if (tunjJab == '') {
-                    msg += 'Field <strong>Tunj. Jabatan</strong> is required.' + '<br/>';
+                if (jabatan == '') {
+                    msg += 'Field <strong>Jabatan</strong> is required.' + '<br/>';
                 }
 
-                if (id == '') {
-                    msg += 'Field <strong> Tunj. Jab. Id </strong> is required.' + '<br/>';
+                if (nilai == '') {
+                    msg += 'Field <strong>Nilai</strong> is required.' + '<br/>';
                 }
 
-                if (tunjStruk == '') {
-                    msg += 'Field <strong>Tunj. Struktural</strong> is required.' + '<br/>';
+                if (golongan == '') {
+                    msg += 'Field <strong>Golongan</strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
@@ -65,7 +62,6 @@
                 $.publish('showErrorValidationDialog');
             }
         });
-
 
         $.subscribe('successDialog', function (event, data) {
             if (event.originalEvent.request.status == 200) {
@@ -95,7 +91,7 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="formEdit" method="post" theme="simple" namespace="/payrollTunjanganJabatanStruktural" action="saveEdit_payrollTunjanganJabatanStruktural" cssClass="well form-horizontal">
+            <s:form id="formEdit" method="post" theme="simple" namespace="/payrollTunjanganStrategis" action="saveEdit_payrollTunjanganStrategis" cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
@@ -114,50 +110,58 @@
                 </table>
 
                 <table >
+
                     <tr>
                         <td>
-                            <label class="control-label"><small>Tunj. Jab. Id: </small></label>
+                            <label class="control-label"><small>T. Jab Strategis Id :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="tunjJabatanStruktural1" readonly="true" name="payrollTunjanganJabatanStruktural.tunjJabStrukturId" required="true"  cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Kelompok Jabatan: </small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield  id="kelompokId1" readonly="true" name="payrollTunjanganJabatanStruktural.kelompokName" required="true"  cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Tunj. Jabatan: </small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield  id="tunjJabatan1" name="payrollTunjanganJabatanStruktural.tunjJabatan" required="true"  cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Tunj. STruktural: </small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield  id="tunjStruktural1" name="payrollTunjanganJabatanStruktural.tunjStruktural" required="true"  cssClass="form-control"/>
+                                <s:textfield  id="tunjStrategisId2" name="payrollTunjanganStrategis.tunjStrategisId" required="true" readonly="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
 
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Jabatan :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:action id="comboPosition" namespace="/admin/position"
+                                          name="searchPosition_position"/>
+                                <s:select list="#comboPosition.listOfComboPosition" id="positionId2"
+                                          name="payrollTunjanganStrategis.positionId"
+                                          listKey="positionId" listValue="positionName" headerKey=""
+                                          headerValue="[Select one]" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Nilai :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield type="number" min="0" id="nilai2" name="payrollTunjanganStrategis.nilai" required="true" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Golongan :</small></label>
+                        </td>
+                        <td id="golongan1Group">
+                            <table>
+                                <s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>
+                                <s:select list="#initComboTipe.listComboGolongan" id="golonganId2" name="payrollTunjanganStrategis.golonganId"
+                                          listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
                 </table>
-
-
 
                 <br>
                 <div class="form-group">
@@ -199,7 +203,7 @@
                                                    buttons="{
                                                               'OK':function() {
                                                                     //$(this).dialog('close');
-                                                                      callSearch();
+                                                                      callSearch2();
                                                                    }
                                                             }"
                                         >

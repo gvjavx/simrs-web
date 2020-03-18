@@ -40,7 +40,7 @@ public class PayrollSkalaGajiPensiunDplkDao extends GenericDao<ImPayrollSkalaGaj
                 criteria.add(Restrictions.eq("golonganId", (String) mapCriteria.get("golonganId")));
             }
 
-            criteria.add(Restrictions.eq("flag", "Y"));
+            criteria.add(Restrictions.eq("flag", (String) mapCriteria.get("flag")));
         }
         // Order by
         criteria.addOrder(Order.desc("skalaGajiPensiunId"));

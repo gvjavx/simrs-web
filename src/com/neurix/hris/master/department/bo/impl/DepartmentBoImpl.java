@@ -239,6 +239,7 @@ public class DepartmentBoImpl implements DepartmentBo {
                     returnDepartment.setCreatedWho(departmentEntity.getCreatedWho());
                     returnDepartment.setCreatedDate(departmentEntity.getCreatedDate());
                     returnDepartment.setLastUpdate(departmentEntity.getLastUpdate());
+                    returnDepartment.setLastUpdateWho(departmentEntity.getLastUpdateWho());
 
                     returnDepartment.setAction(departmentEntity.getAction());
                     returnDepartment.setFlag(departmentEntity.getFlag());

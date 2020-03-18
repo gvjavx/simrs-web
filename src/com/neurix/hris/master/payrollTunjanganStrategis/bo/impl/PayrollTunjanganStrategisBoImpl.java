@@ -2,7 +2,10 @@ package com.neurix.hris.master.payrollTunjanganStrategis.bo.impl;
 
 import com.neurix.authorization.company.dao.BranchDao;
 import com.neurix.authorization.position.dao.PositionDao;
+import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.hris.master.golongan.dao.GolonganDao;
+import com.neurix.hris.master.golongan.model.ImGolonganEntity;
 import com.neurix.hris.master.kelompokPosition.dao.KelompokPositionDao;
 import com.neurix.hris.master.kelompokPosition.model.ImKelompokPositionEntity;
 import com.neurix.hris.transaksi.payroll.dao.PayrollTunjanganStrategisDao;
@@ -34,6 +37,15 @@ public class PayrollTunjanganStrategisBoImpl implements PayrollTunjanganStrategi
     private PositionDao positionDao;
     private KelompokPositionDao kelompokPositionDao;
     private BranchDao branchDao;
+    private GolonganDao golonganDao;
+
+    public GolonganDao getGolonganDao() {
+        return golonganDao;
+    }
+
+    public void setGolonganDao(GolonganDao golonganDao) {
+        this.golonganDao = golonganDao;
+    }
 
     public KelompokPositionDao getKelompokPositionDao() {
         return kelompokPositionDao;
@@ -131,7 +143,7 @@ public class PayrollTunjanganStrategisBoImpl implements PayrollTunjanganStrategi
 //            ImPayrollTunjanganStrategisHistoryEntity imPayrollTunjanganStrategisHistoryEntity = new ImPayrollTunjanganStrategisHistoryEntity();
             try {
                 // Get data from database by ID
-                imPayrollTunjanganStrategisEntity = payrollTunjanganStrategisDao.getById("tunjJabStrukturId", payrollTunjanganStrategis);
+                imPayrollTunjanganStrategisEntity = payrollTunjanganStrategisDao.getById("tunjStrategisId", payrollTunjanganStrategis);
                 //historyId = payrollTunjanganStrategisDao.getNextSkalaGaji();
             } catch (HibernateException e) {
                 logger.error("[PayrollTunjanganStrategisBoImpl.saveEdit] Error, " + e.getMessage());
@@ -150,7 +162,16 @@ public class PayrollTunjanganStrategisBoImpl implements PayrollTunjanganStrategi
                 imPayrollTunjanganStrategisHistoryEntity.setCreatedDate(imPayrollTunjanganStrategisEntity.getLastUpdate());*/
 
 //                imPayrollTunjanganStrategisEntity.setNilai();
-
+                imPayrollTunjanganStrategisEntity.setTunjStrategisId(payrollTunjanganStrategis);
+                imPayrollTunjanganStrategisEntity.setPositionId(bean.getPositionId());
+                if (bean.getNilai() != null){
+                    imPayrollTunjanganStrategisEntity.setNilai(bean.getNilai());
+                }else {
+                    imPayrollTunjanganStrategisEntity.setNilai(BigDecimal.valueOf(0));
+                }
+                imPayrollTunjanganStrategisEntity.setGolonganId(bean.getGolonganId());
+                imPayrollTunjanganStrategisEntity.setCreatedWho(bean.getCreatedWho());
+                imPayrollTunjanganStrategisEntity.setCreatedDate(bean.getCreatedDate());
                 imPayrollTunjanganStrategisEntity.setFlag(bean.getFlag());
                 imPayrollTunjanganStrategisEntity.setAction(bean.getAction());
                 imPayrollTunjanganStrategisEntity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -177,33 +198,44 @@ public class PayrollTunjanganStrategisBoImpl implements PayrollTunjanganStrategi
     public PayrollTunjanganStrategis saveAdd(PayrollTunjanganStrategis bean) throws GeneralBOException {
         logger.info("[PayrollTunjanganStrategisBoImpl.saveAdd] start process >>>");
         if (bean!=null) {
-            String payrollTunjanganStrategis;
-            try {
-                // Generating ID, get from postgre sequence
-                payrollTunjanganStrategis = payrollTunjanganStrategisDao.getNextTunjStrategis();
-            } catch (HibernateException e) {
-                logger.error("[PayrollTunjanganStrategisBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when getting sequence payrollTunjanganStrategis id, please info to your admin..." + e.getMessage());
-            }
+            String status = cekStatus(bean.getPositionId());
+            if (!status.equalsIgnoreCase("Exist")){
+                String payrollTunjanganStrategis;
+                try {
+                    // Generating ID, get from postgre sequence
+                    payrollTunjanganStrategis = payrollTunjanganStrategisDao.getNextTunjStrategis();
+                } catch (HibernateException e) {
+                    logger.error("[PayrollTunjanganStrategisBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when getting sequence payrollTunjanganStrategis id, please info to your admin..." + e.getMessage());
+                }
 
-            // creating object entity serializable
-            ImPayrollTunjanganStrategisEntity imPayrollTunjanganStrategisEntity = new ImPayrollTunjanganStrategisEntity();
+                // creating object entity serializable
+                ImPayrollTunjanganStrategisEntity imPayrollTunjanganStrategisEntity = new ImPayrollTunjanganStrategisEntity();
 
-            imPayrollTunjanganStrategisEntity.setTunjStrategisId(payrollTunjanganStrategis);
-            imPayrollTunjanganStrategisEntity.setPositionId(bean.getPositionId());
-            imPayrollTunjanganStrategisEntity.setFlag(bean.getFlag());
-            imPayrollTunjanganStrategisEntity.setAction(bean.getAction());
-            imPayrollTunjanganStrategisEntity.setCreatedWho(bean.getCreatedWho());
-            imPayrollTunjanganStrategisEntity.setLastUpdateWho(bean.getLastUpdateWho());
-            imPayrollTunjanganStrategisEntity.setCreatedDate(bean.getCreatedDate());
-            imPayrollTunjanganStrategisEntity.setLastUpdate(bean.getLastUpdate());
+                imPayrollTunjanganStrategisEntity.setTunjStrategisId(payrollTunjanganStrategis);
+                imPayrollTunjanganStrategisEntity.setPositionId(bean.getPositionId());
+                if (bean.getNilai() != null){
+                    imPayrollTunjanganStrategisEntity.setNilai(bean.getNilai());
+                }else {
+                    imPayrollTunjanganStrategisEntity.setNilai(BigDecimal.valueOf(0));
+                }
+                imPayrollTunjanganStrategisEntity.setGolonganId(bean.getGolonganId());
+                imPayrollTunjanganStrategisEntity.setFlag(bean.getFlag());
+                imPayrollTunjanganStrategisEntity.setAction(bean.getAction());
+                imPayrollTunjanganStrategisEntity.setCreatedWho(bean.getCreatedWho());
+                imPayrollTunjanganStrategisEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                imPayrollTunjanganStrategisEntity.setCreatedDate(bean.getCreatedDate());
+                imPayrollTunjanganStrategisEntity.setLastUpdate(bean.getLastUpdate());
 
-            try {
-                // insert into database
-                payrollTunjanganStrategisDao.addAndSave(imPayrollTunjanganStrategisEntity);
-            } catch (HibernateException e) {
-                logger.error("[PayrollTunjanganStrategisBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when saving new data PayrollTunjanganStrategis, please info to your admin..." + e.getMessage());
+                try {
+                    // insert into database
+                    payrollTunjanganStrategisDao.addAndSave(imPayrollTunjanganStrategisEntity);
+                } catch (HibernateException e) {
+                    logger.error("[PayrollTunjanganStrategisBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data PayrollTunjanganStrategis, please info to your admin..." + e.getMessage());
+                }
+            }else {
+                throw new GeneralBOException("Maaf Jabatan tersebut sudah ada");
             }
         }
 
@@ -222,14 +254,12 @@ public class PayrollTunjanganStrategisBoImpl implements PayrollTunjanganStrategi
             Map hsCriteria = new HashMap();
 
             if (searchBean.getTunjStrategisId() != null && !"".equalsIgnoreCase(searchBean.getTunjStrategisId())) {
-                hsCriteria.put("tunjJabStrukturId", searchBean.getTunjStrategisId());
+                hsCriteria.put("tunj_strategis_id", searchBean.getTunjStrategisId());
+            }if (searchBean.getPositionId() != null && !"".equalsIgnoreCase(searchBean.getPositionId())) {
+                hsCriteria.put("position_id", searchBean.getPositionId());
+            }if (searchBean.getGolonganId() != null && !"".equalsIgnoreCase(searchBean.getGolonganId())){
+                hsCriteria.put("golongan_id", searchBean.getGolonganId());
             }
-            if (searchBean.getPositionId() != null && !"".equalsIgnoreCase(searchBean.getPositionId())) {
-                hsCriteria.put("kelompokId", searchBean.getPositionId());
-            }
-
-
-
             if (searchBean.getFlag() != null && !"".equalsIgnoreCase(searchBean.getFlag())) {
                 if ("N".equalsIgnoreCase(searchBean.getFlag())) {
                     hsCriteria.put("flag", "N");
@@ -239,7 +269,6 @@ public class PayrollTunjanganStrategisBoImpl implements PayrollTunjanganStrategi
             } else {
                 hsCriteria.put("flag", "Y");
             }
-
 
             List<ImPayrollTunjanganStrategisEntity> imPayrollTunjanganStrategisEntity = null;
             try {
@@ -256,8 +285,21 @@ public class PayrollTunjanganStrategisBoImpl implements PayrollTunjanganStrategi
                     returnPayrollTunjanganStrategis = new PayrollTunjanganStrategis();
                     returnPayrollTunjanganStrategis.setTunjStrategisId(payrollTunjanganStrategisEntity.getTunjStrategisId());
                     returnPayrollTunjanganStrategis.setGolonganId(payrollTunjanganStrategisEntity.getGolonganId());
+                    returnPayrollTunjanganStrategis.setNilai(payrollTunjanganStrategisEntity.getNilai());
+                    returnPayrollTunjanganStrategis.setPositionId(payrollTunjanganStrategisEntity.getPositionId());
 
-
+                    if (payrollTunjanganStrategisEntity.getPositionId()!=null){
+                        ImPosition position = positionDao.getById("positionId",payrollTunjanganStrategisEntity.getPositionId());
+                        if (position!=null){
+                            returnPayrollTunjanganStrategis.setPositionName(position.getPositionName());
+                        }
+                    }
+                    if (payrollTunjanganStrategisEntity.getGolonganId() != null){
+                        ImGolonganEntity golonganEntity = golonganDao.getById("golonganId",payrollTunjanganStrategisEntity.getGolonganId());
+                        if (golonganEntity != null){
+                            returnPayrollTunjanganStrategis.setGolonganName(golonganEntity.getGolonganName());
+                        }
+                    }
                     /*if(returnPayrollTunjanganStrategis.getGolonganId() != null){
                         try {
                             ImKelompokPositionEntity position = kelompokPositionDao.getById("kelompokId",payrollTunjanganStrategisEntity.getKelompokId());
@@ -273,6 +315,7 @@ public class PayrollTunjanganStrategisBoImpl implements PayrollTunjanganStrategi
                     returnPayrollTunjanganStrategis.setCreatedWho(payrollTunjanganStrategisEntity.getCreatedWho());
                     returnPayrollTunjanganStrategis.setCreatedDate(payrollTunjanganStrategisEntity.getCreatedDate());
                     returnPayrollTunjanganStrategis.setLastUpdate(payrollTunjanganStrategisEntity.getLastUpdate());
+                    returnPayrollTunjanganStrategis.setLastUpdateWho(payrollTunjanganStrategisEntity.getLastUpdateWho());
 
                     returnPayrollTunjanganStrategis.setAction(payrollTunjanganStrategisEntity.getAction());
                     returnPayrollTunjanganStrategis.setFlag(payrollTunjanganStrategisEntity.getFlag());
@@ -293,5 +336,22 @@ public class PayrollTunjanganStrategisBoImpl implements PayrollTunjanganStrategi
     @Override
     public Long saveErrorMessage(String message, String moduleMethod) throws GeneralBOException {
         return null;
+    }
+
+    public String cekStatus(String jabatanId)throws GeneralBOException{
+        String status ="";
+        List<ImPayrollTunjanganStrategisEntity> skalaGajiEntity = new ArrayList<>();
+        try {
+            skalaGajiEntity = payrollTunjanganStrategisDao.getListPosition(jabatanId);
+        } catch (HibernateException e) {
+            logger.error("[PayrollSkalaGajiBoImpl.getSearchPayrollSkalaGajiByCriteria] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        if (skalaGajiEntity.size()>0){
+            status = "exist";
+        }else{
+            status="notExits";
+        }
+        return status;
     }
 }

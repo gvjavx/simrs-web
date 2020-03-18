@@ -264,6 +264,7 @@ public class IjinBoImpl implements IjinBo {
                     returnIjin.setCreatedWho(ijinEntity.getCreatedWho());
                     returnIjin.setCreatedDate(ijinEntity.getCreatedDate());
                     returnIjin.setLastUpdate(ijinEntity.getLastUpdate());
+                    returnIjin.setLastUpdateWho(ijinEntity.getLastUpdateWho());
 
                     returnIjin.setAction(ijinEntity.getAction());
                     returnIjin.setFlag(ijinEntity.getFlag());

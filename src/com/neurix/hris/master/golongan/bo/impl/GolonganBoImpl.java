@@ -250,6 +250,7 @@ public class GolonganBoImpl implements GolonganBo {
                     returnGolongan.setCreatedWho(golonganEntity.getCreatedWho());
                     returnGolongan.setCreatedDate(golonganEntity.getCreatedDate());
                     returnGolongan.setLastUpdate(golonganEntity.getLastUpdate());
+                    returnGolongan.setLastUpdateWho(golonganEntity.getLastUpdateWho());
 
                     returnGolongan.setAction(golonganEntity.getAction());
                     returnGolongan.setFlag(golonganEntity.getFlag());

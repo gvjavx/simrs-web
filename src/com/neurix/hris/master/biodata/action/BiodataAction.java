@@ -289,7 +289,7 @@ public class BiodataAction extends BaseMasterAction{
         setAdd(true);
 
         HttpSession session = ServletActionContext.getRequest().getSession();
-        session.removeAttribute("listOfResult");
+//        session.removeAttribute("listOfResult");
 
         session.removeAttribute("historyJabatanForSmk");
         session.removeAttribute("branchForSmk");

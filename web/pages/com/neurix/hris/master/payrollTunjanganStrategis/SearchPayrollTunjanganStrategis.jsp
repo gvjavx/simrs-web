@@ -32,7 +32,7 @@
     <script type='text/javascript'>
 
         function link(){
-            window.location.href="<s:url action='initForm_payrollTunjanganJabatanStruktural'/>";
+            window.location.href="<s:url action='initForm_payrollTunjanganStrategis'/>";
         }
 
     </script>
@@ -49,165 +49,185 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Payroll Tunjangan Jabatan Struktural
-            <small>e-HEALTH</small>
+            Payroll Tunjangan Strategis
+            <small>GO-MEDSYS</small>
         </h1>
     </section>
 
 
     <!-- Main content -->
     <section class="content">
-
-        <table width="100%" align="center">
-            <tr>
-                <td align="center">
-                    <s:form id="payrollTunjanganJabatanStrukturalForm" method="post"  theme="simple" namespace="/payrollTunjanganJabatanStruktural" action="search_payrollTunjanganJabatanStruktural.action" cssClass="well form-horizontal">
-
-                        <s:hidden name="addOrEdit"/>
-                        <s:hidden name="delete"/>
-
-                        <table>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Tunjangan Strategis </h3>
+                    </div>
+                    <div class="box-body">
+                        <table width="100%" align="center">
                             <tr>
-                                <td width="10%" align="center">
-                                    <%@ include file="/pages/common/message.jsp" %>
+                                <td align="center">
+                                    <s:form id="payrollTunjanganStrategisForm" method="post"  theme="simple" namespace="/payrollTunjanganStrategis" action="search_payrollTunjanganStrategis.action" cssClass="form-horizontal">
+
+                                        <s:hidden name="addOrEdit"/>
+                                        <s:hidden name="delete"/>
+
+                                        <table>
+                                            <tr>
+                                                <td width="10%" align="center">
+                                                    <%@ include file="/pages/common/message.jsp" %>
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                        <table >
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label"><small>T. Jab Strategis Id :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:textfield  id="tunjStrategisId" name="payrollTunjanganStrategis.tunjStrategisId" required="false" readonly="false" cssClass="form-control"/>
+                                                    </table>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label"><small>Jabatan :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:action id="comboPosition" namespace="/admin/position"
+                                                                  name="searchPosition_position"/>
+                                                        <s:select list="#comboPosition.listOfComboPosition" id="positionId"
+                                                                  name="payrollTunjanganStrategis.positionId"
+                                                                  listKey="positionId" listValue="positionName" headerKey=""
+                                                                  headerValue="[Select one]" cssClass="form-control"/>
+                                                    </table>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label"><small>Golongan :</small></label>
+                                                </td>
+                                                <td id="golongan1Group">
+                                                    <table>
+                                                        <s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>
+                                                        <s:select list="#initComboTipe.listComboGolongan" id="golonganId" name="payrollTunjanganStrategis.golonganId"
+                                                                  listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                    </table>
+                                                </td>
+                                            </tr>
+
+                                                <%--<tr>
+                                                    <td>
+                                                        <label class="control-label"><small>Branch :</small></label>
+                                                    </td>
+                                                    <td>
+                                                        <table>
+                                                            <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
+                                                            <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="branchId" name="payrollTunjanganJabatanStruktural.branchId" required="true"
+                                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" />
+                                                        </table>
+                                                    </td>
+                                                </tr>--%>
+
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label"><small>Flag :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:select list="#{'N':'Non-Active'}" id="flag" name="payrollTunjanganStrategis.flag"
+                                                                  headerKey="Y" headerValue="Active" cssClass="form-control" />
+                                                    </table>
+
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                        <br>
+
+                                        <div id="actions" class="form-actions">
+                                            <table align="center">
+                                                <tr>
+                                                    <td>
+                                                        <sj:submit type="button" cssClass="btn btn-primary" formIds="payrollTunjanganStrategisForm" id="search" name="search"
+                                                                   onClickTopics="showDialog" onCompleteTopics="closeDialog" >
+                                                            <i class="fa fa-search"></i>
+                                                            Search
+                                                        </sj:submit>
+                                                    </td>
+                                                    <td>
+                                                        <s:url var="urlAdd" namespace="/payrollTunjanganStrategis" action="add_payrollTunjanganStrategis" escapeAmp="false">
+                                                        </s:url>
+                                                        <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">
+                                                            <i class="fa fa-plus"></i>
+                                                            Add Tunjangan Jabatan Strategis
+                                                        </sj:a>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_payrollTunjanganStrategis"/>'">
+                                                            <i class="fa fa-refresh"></i> Reset
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+
+                                        <br>
+                                        <br>
+                                        <center>
+                                            <table id="showdata" width="80%">
+                                                <tr>
+                                                    <td align="center">
+                                                        <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
+                                                                   height="400" width="550" autoOpen="false"
+                                                                   title="Payroll Tunjangan Strategis">
+                                                            <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
+                                                        </sj:dialog>
+
+                                                        <s:set name="listOfPayrollSkalaGaji" value="#session.listOfResult" scope="request" />
+                                                        <display:table name="listOfPayrollSkalaGaji" class="table table-condensed table-striped table-hover"
+                                                                       requestURI="paging_displaytag_payrollTunjanganJabatanStruktural.action" export="true" id="row" pagesize="14" style="font-size:10">
+                                                            <display:column media="html" title="Edit">
+                                                                <s:if test="#attr.row.flagYes">
+                                                                    <s:url var="urlEdit" namespace="/payrollTunjanganStrategis" action="edit_payrollTunjanganStrategis" escapeAmp="false">
+                                                                        <s:param name="id"><s:property value="#attr.row.tunjStrategisId"/></s:param>
+                                                                        <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
+                                                                    </s:url>
+                                                                    <sj:a onClickTopics="showDialogMenu" href="%{urlEdit}">
+                                                                        <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">
+                                                                    </sj:a>
+                                                                </s:if>
+                                                            </display:column>
+
+                                                            <display:column media="html" title="Delete" style="text-align:center;font-size:9">
+                                                                <s:url var="urlViewDelete" namespace="/payrollTunjanganStrategis" action="delete_payrollTunjanganStrategis" escapeAmp="false">
+                                                                    <s:param name="id"><s:property value="#attr.row.tunjStrategisId" /></s:param>
+                                                                    <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
+                                                                </s:url>
+                                                                <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
+                                                                    <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
+                                                                </sj:a>
+
+                                                            </display:column>
+                                                            <display:column property="tunjStrategisId" sortable="true" title="T. Jab. Struktural ID" />
+                                                            <display:column property="positionName" sortable="true" title="Jabatan"  />
+                                                            <display:column property="nilai" sortable="true" title="Nilai"  />
+                                                            <display:column property="golonganName" sortable="true" title="Golongan"  />
+                                                        </display:table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </center>
+                                    </s:form>
                                 </td>
                             </tr>
                         </table>
-
-                        <table >
-                            <tr>
-                                <td>
-                                    <label class="control-label"><small>T. Jab Struktural Id :</small></label>
-                                </td>
-                                <td>
-                                    <table>
-                                        <s:textfield  id="tunjJabatanStrukturalId" name="payrollTunjanganJabatanStruktural.tunjJabatanStrukturalId" required="false" readonly="false" cssClass="form-control"/>
-                                    </table>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    <label class="control-label"><small>Kelompok Jabatan :</small></label>
-                                </td>
-                                <td>
-                                    <table>
-                                        <s:action id="comboPosition" namespace="/kelompokPosition" name="searchKelompok_kelompokPosition"/>
-                                        <s:select list="#comboPosition.comboListOfKelompokPosition" id="kelompokId" name="payrollTunjanganJabatanStruktural.kelompokId"
-                                                  listKey="kelompokId" listValue="kelompokName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                                    </table>
-                                </td>
-                            </tr>
-
-                            <%--<tr>
-                                <td>
-                                    <label class="control-label"><small>Branch :</small></label>
-                                </td>
-                                <td>
-                                    <table>
-                                        <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
-                                        <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="branchId" name="payrollTunjanganJabatanStruktural.branchId" required="true"
-                                                  listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" />
-                                    </table>
-                                </td>
-                            </tr>--%>
-
-                            <tr>
-                                <td>
-                                    <label class="control-label"><small>Flag :</small></label>
-                                </td>
-                                <td>
-                                    <table>
-                                        <s:select list="#{'N':'Non-Active'}" id="flag" name="payrollTunjanganJabatanStruktural.flag"
-                                                  headerKey="Y" headerValue="Active" cssClass="form-control" />
-                                    </table>
-
-                                </td>
-                            </tr>
-
-                        </table>
-
-
-
-                        <br>
-
-                        <div id="actions" class="form-actions">
-                            <table align="center">
-                                <tr>
-                                    <td>
-                                        <sj:submit type="button" cssClass="btn btn-primary" formIds="payrollTunjanganJabatanStrukturalForm" id="search" name="search"
-                                                   onClickTopics="showDialog" onCompleteTopics="closeDialog" >
-                                            <i class="fa fa-search"></i>
-                                            Search
-                                        </sj:submit>
-                                    </td>
-                                    <td>
-                                        <s:url var="urlAdd" namespace="/payrollTunjanganJabatanStruktural" action="add_payrollTunjanganJabatanStruktural" escapeAmp="false">
-                                        </s:url>
-                                        <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">
-                                            <i class="fa fa-plus"></i>
-                                            Add Tunjangan jabatan Struktural
-                                        </sj:a>
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_payrollTunjanganJabatanStruktural"/>'">
-                                            <i class="fa fa-refresh"></i> Reset
-                                        </button>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-
-                        <br>
-                        <br>
-                        <center>
-                            <table id="showdata" width="80%">
-                                <tr>
-                                    <td align="center">
-                                        <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
-                                                   height="400" width="550" autoOpen="false"
-                                                   title="Payroll Tunjangan Jabatan Struktural ">
-                                            <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
-                                        </sj:dialog>
-
-                                        <s:set name="listOfPayrollSkalaGaji" value="#session.listOfResult" scope="request" />
-                                        <display:table name="listOfPayrollSkalaGaji" class="table table-condensed table-striped table-hover"
-                                                       requestURI="paging_displaytag_payrollTunjanganJabatanStruktural.action" export="true" id="row" pagesize="14" style="font-size:10">
-                                            <display:column media="html" title="Edit">
-                                                <s:if test="#attr.row.flagYes">
-                                                    <s:url var="urlEdit" namespace="/payrollTunjanganJabatanStruktural" action="edit_payrollTunjanganJabatanStruktural" escapeAmp="false">
-                                                        <s:param name="id"><s:property value="#attr.row.tunjJabStrukturId"/></s:param>
-                                                        <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
-                                                    </s:url>
-                                                    <sj:a onClickTopics="showDialogMenu" href="%{urlEdit}">
-                                                        <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">
-                                                    </sj:a>
-                                                </s:if>
-                                            </display:column>
-
-                                            <display:column media="html" title="Delete" style="text-align:center;font-size:9">
-                                                <s:url var="urlViewDelete" namespace="/payrollTunjanganJabatanStruktural" action="delete_payrollTunjanganJabatanStruktural" escapeAmp="false">
-                                                    <s:param name="id"><s:property value="#attr.row.tunjJabStrukturId" /></s:param>
-                                                    <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
-                                                </s:url>
-                                                <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
-                                                </sj:a>
-
-                                            </display:column>
-                                            <display:column property="tunjJabStrukturId" sortable="true" title="T. Jab. Struktural ID" />
-                                            <display:column property="kelompokName" sortable="true" title="Kelompok Jabatan"  />
-                                            <display:column property="tunjJabatan" sortable="true" title="Tunj. Jabatan"  />
-                                            <display:column property="tunjStruktural" sortable="true" title="Tunj. Struktural"  />
-                                        </display:table>
-                                    </td>
-                                </tr>
-                            </table>
-                        </center>
-                    </s:form>
-                </td>
-            </tr>
-        </table>
+                    </div>
 
         <!-- Your Page Content Here -->
         <div class="row">

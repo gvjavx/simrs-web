@@ -197,9 +197,15 @@
                                                 </sj:a>
 
                                             </display:column>
-                                            <%--<display:column property="golonganId" sortable="true" title="Golongan ID" />--%>
+                                            <display:column property="golonganId" sortable="true" title="Golongan ID" />
                                             <display:column property="golonganName" sortable="true" title="Nama"  />
                                             <display:column property="stLevel" sortable="true" title="Grade Level"  />
+                                            <display:column property="createdWho" sortable="true" title="Created who"  />
+                                            <display:column property="lastUpdateWho" sortable="true" title="Last update who"  />
+                                            <display:column property="flag" sortable="true" title="flag"  />
+                                            <display:column property="action" sortable="true" title="action"  />
+                                            <display:column property="createdDate" sortable="true" title="Created date"  />
+                                            <display:column property="lastUpdate" sortable="true" title="Last update"  />
 
                                             <%--<display:column property="flag" sortable="true" title="Flag" />
                                             <display:column property="createdWho" sortable="true" title="CreatedWho"/>--%>

@@ -197,9 +197,10 @@ public class GolonganPkwtBoImpl implements GolonganPkwtBo {
                     logger.error("[GolonganPkwtBoImpl.saveAdd] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when saving new data GolonganPkwt, please info to your admin..." + e.getMessage());
                 }
-            }else{
-                throw new GeneralBOException("Maaf Data Tersebut Sudah Ada");
             }
+//            else{
+//                throw new GeneralBOException("Maaf Data Tersebut Sudah Ada");
+//            }
 
         }
 
@@ -255,6 +256,7 @@ public class GolonganPkwtBoImpl implements GolonganPkwtBo {
                     returnGolonganPkwt.setCreatedWho(golonganPkwtEntity.getCreatedWho());
                     returnGolonganPkwt.setCreatedDate(golonganPkwtEntity.getCreatedDate());
                     returnGolonganPkwt.setLastUpdate(golonganPkwtEntity.getLastUpdate());
+                    returnGolonganPkwt.setLastUpdateWho(golonganPkwtEntity.getLastUpdateWho());
 
                     returnGolonganPkwt.setAction(golonganPkwtEntity.getAction());
                     returnGolonganPkwt.setFlag(golonganPkwtEntity.getFlag());

@@ -34,24 +34,20 @@ public class PayrollTunjanganStrategisDao extends GenericDao<ImPayrollTunjanganS
 
         // Get Collection and sorting
         if (mapCriteria!=null) {
-            if (mapCriteria.get("tunj_strategis_id")!=null) {
+            if (mapCriteria.get("tunj_strategis_id") != null) {
                 criteria.add(Restrictions.eq("tunjStrategisId", (String) mapCriteria.get("tunj_strategis_id")));
             }
-
-            if (mapCriteria.get("position_id")!=null) {
+            if (mapCriteria.get("position_id") != null) {
                 criteria.add(Restrictions.eq("positionId", (String) mapCriteria.get("position_id")));
             }
-
-            if (mapCriteria.get("nilai")!=null) {
-                criteria.add(Restrictions.eq("nilai", (String) mapCriteria.get("nilai")));
+            if (mapCriteria.get("golongan_id") != null){
+                criteria.add(Restrictions.eq("golonganId", (String) mapCriteria.get("golongan_id")));
             }
-            criteria.add(Restrictions.eq("flag", "Y"));
-
-
+            criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
         }
 
         // Order by
-        criteria.addOrder(Order.desc("tunj_strategis_id"));
+        criteria.addOrder(Order.desc("tunjStrategisId"));
 
         List<ImPayrollTunjanganStrategisEntity> results = criteria.list();
 
@@ -83,4 +79,14 @@ public class PayrollTunjanganStrategisDao extends GenericDao<ImPayrollTunjanganS
         return results;
     }
 
+    public List<ImPayrollTunjanganStrategisEntity> getListPosition(String term) throws HibernateException {
+
+        List<ImPayrollTunjanganStrategisEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImPayrollTunjanganStrategisEntity.class)
+                .add(Restrictions.ilike("positionId",term))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("positionId"))
+                .list();
+
+        return results;
+    }
 }

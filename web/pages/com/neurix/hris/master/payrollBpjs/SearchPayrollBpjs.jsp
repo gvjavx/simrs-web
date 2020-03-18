@@ -189,6 +189,12 @@
                                             <display:column property="numMaxBpjsKs" sortable="true" title="Max Bpjs Ks" />
                                             <display:column property="numMinBpjsTk" sortable="true" title="Min Bpjs Tk" />
                                             <display:column property="numMaxBpjsTk" sortable="true" title="Max Bpjs Tk" />
+                                            <display:column property="createdWho" sortable="true" title="Created who"  />
+                                            <display:column property="lastUpdateWho" sortable="true" title="Last update who"  />
+                                            <display:column property="flag" sortable="true" title="flag"  />
+                                            <display:column property="action" sortable="true" title="action"  />
+                                            <display:column property="createdDate" sortable="true" title="Created date"  />
+                                            <display:column property="lastUpdate" sortable="true" title="Last update"  />
                                         </display:table>
                                     </td>
                                 </tr>

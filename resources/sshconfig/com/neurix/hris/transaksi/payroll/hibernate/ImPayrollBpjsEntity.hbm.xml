@@ -3,24 +3,72 @@
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.neurix.hris.transaksi.payroll.model.ImPayrollTunjanganStrategisEntity" dynamic-update="true"
-           table="im_hris_payroll_tunjangan_strategis" select-before-update="true" schema="public">
+    <class name="com.neurix.hris.transaksi.payroll.model.ImPayrollBpjsEntity" dynamic-update="true"
+           table="im_hris_payroll_bpjs" select-before-update="true" schema="public">
 
 
-        <id name="tunjStrategisId">
-            <column name="tunj_strategis_id" sql-type="varchar" length="10" not-null="true" />
+        <id name="bpjsId">
+            <column name="bpjs_id" sql-type="varchar" length="10" not-null="true" />
         </id>
 
-        <property name="positionId">
-            <column name="position_id" sql-type="varchar" length="5" not-null="true" />
+        <property name="branchId">
+            <column name="branch_id" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="branchName">
+            <column name="branch_name" sql-type="varchar" length="20" not-null="false" />
         </property>
 
-        <property name="golonganId">
-            <column name="golongan_id" sql-type="varchar" length="15" not-null="true" />
+        <!--//tambahanirfan
+        //bpjs Kesehatan-->
+        <property name="iuranBpjsKsKaryPersen">
+            <column name="percent_ks_kary" sql-type="numeric" length="10" not-null="true" />
         </property>
-        <property name="nilai">
-            <column name="nilai" sql-type="numeric" length="10" precision="2" not-null="true" />
+        <property name="iuranBpjsKsPersPersen">
+            <column name="percent_ks_pers" sql-type="numeric" length="10" not-null="true" />
         </property>
+        <property name="minBpjsKs">
+            <column name="min_bpjs_ks" sql-type="numeric" length="10" not-null="true" />
+        </property>
+        <property name="maxBpjsKs">
+            <column name="max_bpjs_ks" sql-type="numeric" length="10" not-null="true" />
+        </property>
+
+        <!--//bpjs tenaga kerja-->
+        <property name="iuranBpjsTkKaryPersen">
+            <column name="percent_tk_kary" sql-type="numeric" length="10" not-null="true" />
+        </property>
+        <property name="iuranBpjsTkPersPersen">
+            <column name="percent_tk_pers" sql-type="numeric" length="10" not-null="true" />
+        </property>
+        <property name="minBpjsTk">
+            <column name="min_bpjs_tk" sql-type="numeric" length="10" not-null="true" />
+        </property>
+        <property name="maxBpjsTk">
+            <column name="max_bpjs_tk" sql-type="numeric" length="10" not-null="true" />
+        </property>
+
+        <property name="iuranKary">
+            <column name="iur_peg" sql-type="numeric" length="10" not-null="true" />
+        </property>
+        <property name="iuranPers">
+            <column name="iur_pers" sql-type="numeric" length="10" not-null="true" />
+        </property>
+        <property name="jpkKary">
+            <column name="jpk_kary" sql-type="numeric" length="10" not-null="true" />
+        </property>
+        <property name="jpkPers">
+            <column name="jpk_pers" sql-type="numeric" length="10" not-null="true" />
+        </property>
+        <property name="jkkPers">
+            <column name="jkk" sql-type="numeric" length="10" not-null="true" />
+        </property>
+        <property name="jhtPers">
+            <column name="jht" sql-type="numeric" length="10" not-null="true" />
+        </property>
+        <property name="jkmPers">
+            <column name="jkm" sql-type="numeric" length="10" not-null="true" />
+        </property>
+
 
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />

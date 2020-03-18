@@ -238,7 +238,7 @@ public class PositionBagianBoImpl implements PositionBagianBo {
                     returnPositionBagian.setCreatedWho(kelompokPositionEntity.getCreatedWho());
                     returnPositionBagian.setCreatedDate(kelompokPositionEntity.getCreatedDate());
                     returnPositionBagian.setLastUpdate(kelompokPositionEntity.getLastUpdate());
-
+                    returnPositionBagian.setLastUpdateWho(kelompokPositionEntity.getLastUpdateWho());
                     returnPositionBagian.setAction(kelompokPositionEntity.getAction());
                     returnPositionBagian.setFlag(kelompokPositionEntity.getFlag());
                     listOfResult.add(returnPositionBagian);

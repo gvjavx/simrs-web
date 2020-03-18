@@ -119,7 +119,20 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Search Form</h3>
+                        <s:if test="isAddOrEdit() || isDelete()">
+                            <s:if test="isAdd()">
+                                <h3 class="box-title">Add Form</h3>
+                            </s:if>
+                            <s:elseif test="isDelete()">
+                                <h3 class="box-title">Delete Form</h3>
+                            </s:elseif>
+                            <s:else>
+                                <h3 class="box-title">Edit Form</h3>
+                            </s:else>
+                        </s:if>
+                        <s:else>
+                            <h3 class="box-title">Search Form</h3>
+                        </s:else>
                     </div>
 
                     <s:if test="isAddOrEdit() || isDelete()">
@@ -415,15 +428,21 @@
                                                         </sj:submit>
 
                                                         <div class="btn-group">
-                                                            <s:url id="urlAdd" namespace="/admin/position" action="add_position" escapeAmp="false"/>
-                                                            <button class="btn btn-success dropdown-toggle" data-toggle="dropdown">
-                                                                <i class="fa fa-edit"></i>
-                                                                Posisi
-                                                                <span class="caret"></span>
-                                                            </button>
-                                                            <ul class="dropdown-menu">
-                                                                <li><s:a href="%{urlAdd}"><i class="fa fa-plus"></i> Add</s:a></li>
-                                                            </ul>
+                                                            <s:url var="urlAdd" namespace="/admin/position" action="add_position" escapeAmp="false">
+                                                            </s:url>
+                                                            <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">
+                                                                <i class="fa fa-plus"></i>
+                                                                Add Posisi
+                                                            </sj:a>
+                                                            <%--<s:url id="urlAdd" namespace="/admin/position" action="add_position" escapeAmp="false"/>--%>
+                                                            <%--<button class="btn btn-success dropdown-toggle" data-toggle="dropdown">--%>
+                                                                <%--<i class="fa fa-edit"></i>--%>
+                                                                <%--Posisi--%>
+                                                                <%--<span class="caret"></span>--%>
+                                                            <%--</button>--%>
+                                                            <%--<ul class="dropdown-menu">--%>
+                                                                <%--<li><s:a href="%{urlAdd}"><i class="fa fa-plus"></i> Add</s:a></li>--%>
+                                                            <%--</ul>--%>
                                                         </div>
 
                                                         <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_position"/>'">
@@ -442,6 +461,11 @@
                                             <table>
                                                 <tr>
                                                     <td align="center">
+                                                        <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
+                                                                   height="500" width="900" autoOpen="false"
+                                                                   title="Posisi">
+                                                            <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
+                                                        </sj:dialog>
 
                                                         <s:set name="listOfPosition" value="#session.listOfResult" scope="request"/>
                                                         <display:table name="listOfPosition" class="table table-condensed table-striped table-hover"

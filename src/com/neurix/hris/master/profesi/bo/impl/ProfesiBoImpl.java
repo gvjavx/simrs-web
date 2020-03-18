@@ -225,6 +225,7 @@ public class ProfesiBoImpl implements ProfesiBo {
                     returnProfesi.setCreatedWho(profesiEntity.getCreatedWho());
                     returnProfesi.setCreatedDate(profesiEntity.getCreatedDate());
                     returnProfesi.setLastUpdate(profesiEntity.getLastUpdate());
+                    returnProfesi.setLastUpdateWho(profesiEntity.getLastUpdateWho());
 
                     returnProfesi.setAction(profesiEntity.getAction());
                     returnProfesi.setFlag(profesiEntity.getFlag());

@@ -16,11 +16,18 @@
         };
 
         $.subscribe('beforeProcessSave', function (event, data) {
-            var idGolonganPkwt = document.getElementById("golonganPkwtId").value;
-            var nameGolonganPkwt    = document.getElementById("golonganPkwtName1").value;
+            var idPosition = document.getElementById("positionId2").value;
+            var namePosition = document.getElementById("positionName2").value;
+            var department = document.getElementById("departmentId2").value;
+            var bagian = document.getElementById("bagianId2").value;
+            var kelompok = document.getElementById("kelompokId2").value;
 
+            console.log(namePosition);
+            console.log(department);
+            console.log(bagian);
+            console.log(kelompok);
 
-            if (nameGolonganPkwt != '') {
+            if (namePosition != '' && department!='' && bagian!='' && kelompok!='') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -37,8 +44,17 @@
 
                 var msg = "";
 
-                if (nameGolonganPkwt == '') {
-                    msg += 'Field <strong>GolonganPkwt Name</strong> is required.' + '<br/>';
+                if (namePosition == '') {
+                    msg += 'Field <strong>Nama Posisi</strong> is required.' + '<br/>';
+                }
+                if (department == '') {
+                    msg += 'Field <strong>Bidang/Devisi</strong> is required.' + '<br/>';
+                }
+                if (bagian == '') {
+                    msg += 'Field <strong>Bagian</strong> is required.' + '<br/>';
+                }
+                if (kelompok == '') {
+                    msg += 'Field <strong>Kelompok Jabatan</strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
@@ -88,15 +104,12 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="modifyRolefuncForm" method="post" theme="simple" namespace="/golongan" action="saveEditPkwt_golongan" cssClass="well form-horizontal">
+            <s:form id="editForm" method="post" theme="simple" namespace="/admin/position" action="saveEdit_position" cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
 
-
-
-                <legend align="left">Edit Golongan Pkwt</legend>
-
+                <legend align="left">Edit Posisi</legend>
 
                 <table>
                     <tr>
@@ -109,22 +122,58 @@
                 <table >
                     <tr>
                         <td>
-                            <label class="control-label"><small>GolonganPkwt Id :</small></label>
+                            <label class="control-label"><small>Posisi Id :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="golonganPkwtId" name="golonganPkwt.golonganPkwtId" required="true" readonly="true" cssClass="form-control"/>
+                                <s:textfield  id="positionId2" name="position.positionId" required="true" readonly="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
-
                     <tr>
                         <td>
-                            <label class="control-label"><small>GolonganPkwt Name :</small></label>
+                            <label class="control-label"><small>Nama Posisi :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="golonganPkwtName1" name="golonganPkwt.golonganPkwtName" required="true" disabled="false" cssClass="form-control"/>
+                                <s:textfield id="positionName2" name="position.positionName" required="false" readonly="false" cssClass="form-control" />
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Bidang/Devisi :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:action id="comboMasaTanam1" namespace="/department" name="initDepartment_department"/>
+                                <s:select list="#session.listOfResultDepartment" id="departmentId2" name="position.departmentId"
+                                          listKey="departmentId" listValue="departmentName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Bagian :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:action id="comboBagian" namespace="/positionBagian" name="searchPositionBagian_positionBagian"/>
+                                <s:select list="#comboBagian.comboListOfPositionBagian" id="bagianId2" name="position.bagianId"
+                                          listKey="bagianId" listValue="bagianName" headerKey="" headerValue="[Select one]"
+                                          cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Kelompok Jabatan :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:action id="comboKelompok" namespace="/kelompokPosition" name="searchKelompok_kelompokPosition"/>
+                                <s:select list="#comboKelompok.comboListOfKelompokPosition" id="kelompokId2" name="position.kelompokId"
+                                          listKey="kelompokId" listValue="kelompokName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -137,7 +186,7 @@
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                             <%--<button type="submit" class="btn btn-default">Submit</button>--%>
-                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="modifyRolefuncForm" id="save" name="save"
+                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="editForm" id="save" name="save"
                                    onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
                                    onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
                             <i class="fa fa-check"></i>
@@ -160,7 +209,7 @@
                                                    closeTopics="closeDialog" modal="true"
                                                    resizable="false"
                                                    height="250" width="600" autoOpen="false"
-                                                   title="Save Data ...">
+                                                   title="Searching ...">
                                             Please don't close this window, server is processing your request ...
                                             <br>
                                             <center>

@@ -238,6 +238,7 @@ public class KelompokPositionBoImpl implements KelompokPositionBo {
                     returnKelompokPosition.setCreatedWho(kelompokPositionEntity.getCreatedWho());
                     returnKelompokPosition.setCreatedDate(kelompokPositionEntity.getCreatedDate());
                     returnKelompokPosition.setLastUpdate(kelompokPositionEntity.getLastUpdate());
+                    returnKelompokPosition.setLastUpdateWho(kelompokPositionEntity.getLastUpdateWho());
 
                     returnKelompokPosition.setAction(kelompokPositionEntity.getAction());
                     returnKelompokPosition.setFlag(kelompokPositionEntity.getFlag());

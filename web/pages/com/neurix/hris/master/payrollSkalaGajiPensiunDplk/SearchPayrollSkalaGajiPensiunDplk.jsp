@@ -187,6 +187,12 @@
                                             <display:column property="golonganName" sortable="true" title="Golongan"  />
                                             <display:column property="poin" sortable="true" title="Masa Golongan"  />
                                             <display:column property="nilai" sortable="true" title="Nilai"  />
+                                            <display:column property="createdWho" sortable="true" title="Created who"  />
+                                            <display:column property="lastUpdateWho" sortable="true" title="Last update who"  />
+                                            <display:column property="flag" sortable="true" title="flag"  />
+                                            <display:column property="action" sortable="true" title="action"  />
+                                            <display:column property="createdDate" sortable="true" title="Created date"  />
+                                            <display:column property="lastUpdate" sortable="true" title="Last update"  />
                                         </display:table>
                                     </td>
                                 </tr>
