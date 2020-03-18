@@ -109,7 +109,21 @@ public class PaketPeriksaAction extends BaseTransactionAction {
 
     @Override
     public String search() {
-        return null;
+
+        PaketPeriksa paketPeriksa = getPaketPeriksa();
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<ImSimrsKelasPaketEntity> list = new ArrayList<>();
+
+        try {
+            list = paketPeriksaBoProxy.getListEntityKelasPaket(paketPeriksa);
+        }catch (GeneralBOException e){
+            logger.error("Found Error when search paket "+e.getMessage());
+        }
+
+        session.removeAttribute("listOfResult");
+        session.setAttribute("listOfResult",list);
+        return "search";
+
     }
 
     @Override

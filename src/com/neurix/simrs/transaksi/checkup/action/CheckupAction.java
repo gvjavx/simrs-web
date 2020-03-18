@@ -3019,6 +3019,7 @@ public class CheckupAction extends BaseMasterAction {
                 } else {
                     jk = "Perempuan";
                 }
+
                 reportParams.put("jenisKelamin", jk);
                 reportParams.put("jenisPasien", checkup.getStatusPeriksaName());
                 reportParams.put("poli", checkup.getNamaPelayanan());

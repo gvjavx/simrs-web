@@ -17,6 +17,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/LabAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/LabDetailAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PeriksaLabAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/PaketPeriksaAction.js"/>'></script>
 
     <style>
         .form-check {
@@ -217,11 +218,11 @@
                                     </div>
                                 </div>
 
-                                <table class="table table-bordered table-striped" style="margin-top: 20px">
+                                <table class="table table-bordered table-striped" style="margin-top: 20px" id="table_tindakan">
                                     <thead>
                                     <tr bgcolor="#90ee90">
                                         <td>Tindakan</td>
-                                        <td align="center">Qty</td>
+                                        <td align="center" width="15%">Qty</td>
                                         <td align="center" width="10%">Action</td>
                                     </tr>
                                     </thead>
@@ -246,7 +247,7 @@
                                             <s:select cssStyle="margin-top: 7px; width: 100%"
                                                       onchange="var warn =$('#war_kategori_lab').is(':visible'); if (warn){$('#cor_kategori_lab').show().fadeOut(3000);$('#war_kategori_lab').hide()}; listSelectLab(this)"
                                                       list="#comboLab.listOfKategoriLab" id="lab_kategori"
-                                                      listKey="idKategoriLab"
+                                                      listKey="idKategoriLab + '|' + namaKategori"
                                                       listValue="namaKategori"
                                                       headerKey="" headerValue="[Select one]"
                                                       cssClass="form-control select2"/>
@@ -301,7 +302,7 @@
                                     </div>
                                 </div>
 
-                                <table class="table table-bordered table-striped" style="margin-top: 20px">
+                                <table class="table table-bordered table-striped" style="margin-top: 20px" id="table_lab">
                                     <thead>
                                     <tr bgcolor="#90ee90">
                                         <td>Pemeriksaan</td>
@@ -332,18 +333,14 @@
                                     </div>
                                     <div class="col-md-4">
                                         <label>Paket</label>
-                                        <select class="form-control">
-                                            <option value="">[Select One]</option>
-                                            <option value="1">Hemat</option>
-                                            <option value="2">Super Hemat</option>
-                                        </select>
+                                        <input class="form-control">
                                     </div>
                                     <div class="col-md-4">
                                         <div style="margin-top: 23px">
                                             <a class="btn btn-warning" href="initForm_checkupdetail.action"><i
                                                     class="fa fa-arrow-left"></i> Back</a>
                                             <a class="btn btn-success" id="save_ket"
-                                               onclick="confirmSaveKeterangan()"><i class="fa fa-check"></i> Save</a>
+                                               onclick="savePaket()"><i class="fa fa-check"></i> Save</a>
                                             <button style="display: none; cursor: no-drop;" type="button"
                                                     class="btn btn-success" id="load_ket"><i
                                                     class="fa fa-spinner fa-spin"></i>
@@ -361,162 +358,6 @@
     </section>
     <!-- /.content -->
 </div>
-
-<%--<div class="modal fade" id="modal-tindakan">--%>
-<%--<div class="modal-dialog modal-flat">--%>
-<%--<div class="modal-content">--%>
-<%--<div class="modal-header" style="background-color: #00a65a">--%>
-<%--<button type="button" class="close" data-dismiss="modal" aria-label="Close">--%>
-<%--<span aria-hidden="true">&times;</span></button>--%>
-<%--<h4 class="modal-title" style="color: white"><i class="fa fa-medkit"></i> Tambah Tindakan</h4>--%>
-<%--</div>--%>
-<%--<div class="modal-body">--%>
-<%--<div class="alert alert-danger alert-dismissible" style="display: none" id="warning_tindakan">--%>
-<%--<h4><i class="icon fa fa-ban"></i> Warning!</h4>--%>
-<%--Silahkan cek kembali data inputan dan jumlah harus lebih dari 0--%>
-<%--</div>--%>
-<%--<div class="row">--%>
-<%--<div class="form-group">--%>
-<%--<label class="col-md-3" style="margin-top: 7px">Kategori Tindakan</label>--%>
-<%--<div class="col-md-7">--%>
-<%--<s:action id="initComboKategoriTindakan" namespace="/checkupdetail"--%>
-<%--name="getListComboKategoriTindakan_checkupdetail"/>--%>
-<%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
-<%--onchange="listSelectTindakan(this); var warn =$('#war_kategori').is(':visible'); if (warn){$('#cor_kategori').show().fadeOut(3000);$('#war_kategori').hide()}"--%>
-<%--list="#initComboKategoriTindakan.listOfKategoriTindakan"--%>
-<%--id="tin_id_ketgori_tindakan"--%>
-<%--listKey="idKategoriTindakan"--%>
-<%--listValue="kategoriTindakan"--%>
-<%--headerKey="" headerValue="[Select one]"--%>
-<%--cssClass="form-control select2"/>--%>
-<%--</div>--%>
-<%--<div class="col-md-2">--%>
-<%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px"--%>
-<%--id="war_kategori"><i class="fa fa-times"></i> required</p>--%>
-<%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px"--%>
-<%--id="cor_kategori"><i class="fa fa-check"></i> correct</p>--%>
-<%--</div>--%>
-
-<%--</div>--%>
-<%--<div class="form-group">--%>
-<%--<label class="col-md-3" style="margin-top: 7px">Nama Tindakan</label>--%>
-<%--&lt;%&ndash;<label style="margin-top: 7px"><s:property value="headerDetailCheckup.idJenisPeriksaPasien"/> </label>&ndash;%&gt;--%>
-<%--<div class="col-md-7">--%>
-<%--<select class="form-control select2" style="margin-top: 7px; width: 100%"--%>
-<%--id="tin_id_tindakan"--%>
-<%--onchange="var warn =$('#war_tindakan').is(':visible'); if (warn){$('#cor_tindakan').show().fadeOut(3000);$('#war_tindakan').hide()}">--%>
-<%--<option value=''>[Select One]</option>--%>
-<%--</select>--%>
-<%--</div>--%>
-<%--<div class="col-md-2">--%>
-<%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px"--%>
-<%--id="war_tindakan"><i class="fa fa-times"></i> required</p>--%>
-<%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px"--%>
-<%--id="cor_tindakan"><i class="fa fa-check"></i> correct</p>--%>
-<%--</div>--%>
-<%--</div>--%>
-<%--<div class="form-group">--%>
-<%--<label class="col-md-3" style="margin-top: 7px">Jumlah</label>--%>
-<%--<div class="col-md-7">--%>
-<%--<input type="number" min="1" class="form-control" style="margin-top: 7px" id="tin_qty"--%>
-<%--oninput="$(this).css('border','')" onchange="$(this).css('border','')" value="1">--%>
-<%--</div>--%>
-<%--</div>--%>
-<%--</div>--%>
-<%--</div>--%>
-<%--<div class="modal-footer" style="background-color: #cacaca">--%>
-<%--<button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close--%>
-<%--</button>--%>
-<%--<button type="button" class="btn btn-success" id="save_tindakan"><i--%>
-<%--class="fa fa-arrow-right"></i> Save--%>
-<%--</button>--%>
-<%--<button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_tindakan">--%>
-<%--<i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...--%>
-<%--</button>--%>
-<%--</div>--%>
-<%--</div>--%>
-<%--</div>--%>
-<%--</div>--%>
-
-<%--<div class="modal fade" id="modal-lab">--%>
-<%--<div class="modal-dialog modal-flat">--%>
-<%--<div class="modal-content">--%>
-<%--<div class="modal-header" style="background-color: #00a65a">--%>
-<%--<button type="button" class="close" data-dismiss="modal" aria-label="Close">--%>
-<%--<span aria-hidden="true">&times;</span></button>--%>
-<%--<h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Penunjang Medis</h4>--%>
-<%--</div>--%>
-<%--<div class="modal-body">--%>
-<%--<div class="alert alert-danger alert-dismissible" style="display: none" id="warning_lab">--%>
-<%--<h4><i class="icon fa fa-ban"></i> Warning!</h4>--%>
-<%--Silahkan cek kembali data inputan!--%>
-<%--</div>--%>
-<%--<div class="row">--%>
-<%--<div class="form-group">--%>
-<%--<label class="col-md-3" style="margin-top: 7px">Kategori Lab</label>--%>
-<%--<div class="col-md-7">--%>
-<%--<s:action id="comboLab" namespace="/kategorilab"--%>
-<%--name="getListKategoriLab_kategorilab"/>--%>
-<%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
-<%--onchange="var warn =$('#war_kategori_lab').is(':visible'); if (warn){$('#cor_kategori_lab').show().fadeOut(3000);$('#war_kategori_lab').hide()}; listSelectLab(this)"--%>
-<%--list="#comboLab.listOfKategoriLab" id="lab_kategori"--%>
-<%--listKey="idKategoriLab"--%>
-<%--listValue="namaKategori"--%>
-<%--headerKey="" headerValue="[Select one]"--%>
-<%--cssClass="form-control select2"/>--%>
-<%--</div>--%>
-<%--<div class="col-md-2">--%>
-<%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px"--%>
-<%--id="war_kategori_lab"><i class="fa fa-times"></i> required</p>--%>
-<%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px"--%>
-<%--id="cor_kategori_lab"><i class="fa fa-check"></i> correct</p>--%>
-<%--</div>--%>
-<%--</div>--%>
-<%--<div class="form-group">--%>
-<%--<label class="col-md-3" style="margin-top: 7px">Lab</label>--%>
-<%--<div class="col-md-7">--%>
-<%--<select class="form-control select2" style="margin-top: 7px; width: 100%" id="lab_lab"--%>
-<%--onchange="var warn =$('#war_lab').is(':visible'); if (warn){$('#cor_lab').show().fadeOut(3000);$('#war_lab').hide()}; listSelectParameter(this);">--%>
-<%--<option value=''>[Select One]</option>--%>
-<%--</select>--%>
-<%--</div>--%>
-<%--<div class="col-md-2">--%>
-<%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_lab"><i--%>
-<%--class="fa fa-times"></i> required</p>--%>
-<%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_lab"><i--%>
-<%--class="fa fa-check"></i> correct</p>--%>
-<%--</div>--%>
-<%--</div>--%>
-<%--<div class="form-group">--%>
-<%--<label class="col-md-3" style="margin-top: 7px">Parameter</label>--%>
-<%--<div class="col-md-7">--%>
-<%--<select class="form-control select2" multiple style="margin-top: 7px; width: 100%"--%>
-<%--id="lab_parameter"--%>
-<%--onchange="var warn =$('#war_parameter').is(':visible'); if (warn){$('#cor_parameter').show().fadeOut(3000);$('#war_parameter').hide()}">--%>
-<%--<option value=''>[Select One]</option>--%>
-<%--</select>--%>
-<%--</div>--%>
-<%--<div class="col-md-2">--%>
-<%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px"--%>
-<%--id="war_parameter"><i class="fa fa-times"></i> required</p>--%>
-<%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px"--%>
-<%--id="cor_parameter"><i class="fa fa-check"></i> correct</p>--%>
-<%--</div>--%>
-<%--</div>--%>
-<%--</div>--%>
-<%--</div>--%>
-<%--<div class="modal-footer" style="background-color: #cacaca">--%>
-<%--<button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close--%>
-<%--</button>--%>
-<%--<button type="button" class="btn btn-success" id="save_lab"><i class="fa fa-arrow-right"></i> Save--%>
-<%--</button>--%>
-<%--<button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_lab">--%>
-<%--<i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...--%>
-<%--</button>--%>
-<%--</div>--%>
-<%--</div>--%>
-<%--</div>--%>
-<%--</div>--%>
 
 <div class="modal fade" id="modal-confirm-dialog">
     <div class="modal-dialog modal-sm">
@@ -548,8 +389,6 @@
 
     $(document).ready(function () {
         $('#paket_periksa').addClass('active');
-        listTindakan();
-        listLab();
 
     });
 
@@ -562,7 +401,7 @@
                 if (response != null) {
                     console.log(response);
                     $.each(response, function (i, item) {
-                        option += "<option value='" + item.idTindakan + "|" + item.namaTindakan + "'>" + item.tindakan + "</option>";
+                        option += "<option value='" + item.idTindakan + "|" + item.tindakan + "'>" + item.tindakan + "</option>";
                     });
                     $('#tin_id_tindakan').html(option);
                 } else {
@@ -609,15 +448,32 @@
         var idKategori = $('#tin_id_ketgori_tindakan').val();
         var idTindakan = $('#tin_id_tindakan').val();
         var qty = $('#tin_qty').val();
+        var cek = false;
+        var data = $('#table_tindakan').tableToJSON();
 
         if (idTindakan != '' && qty > 0 && idKategori != '') {
 
-                var table = "";
-                table = '<tr>' +
-                    '<td>' + idTindakan + '</td>' +
-                    '<td>' + qty + '</td>' +
-                    '<td align="center">' + '<img border="0" class="hvr-grow" onclick="editTindakan()" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' + '</td>'
-                '</tr>';
+
+            var id = "";
+            var tin = "";
+
+            var tindakan = idTindakan.split("|");
+            if(tindakan[0] != 'null' && tindakan[0] != ''){
+                id = tindakan[0];
+            }
+
+            if(tindakan[1] != 'null' && tindakan[1] != ''){
+                tin = tindakan[1];
+            }
+
+            var data = $('#table_tindakan').tableToJSON();
+            var row = data.length;
+
+            var table = '<tr id="row'+id+'">' +
+                    '<td>' + tin + '<input type="hidden" value="'+id+'" id="tindakan_id'+row+'">' + '</td>' +
+                    '<td align="center">' + qty + '<input type="hidden" value="'+idKategori+'" id="kategori_id'+row+'">' +'</td>' +
+                    '<td align="center">' + '<img border="0" class="hvr-grow" onclick="delRow(\''+id+'\')" src="<s:url value="/pages/images/icons8-cancel-25.png"/>" style="cursor: pointer;">' + '</td>'
+                    '</tr>';
 
                 $('#body_tindakan').append(table);
                 $('#modal-tindakan').modal('hide');
@@ -639,103 +495,69 @@
         }
     }
 
-    function listTindakan() {
-
-        var table = "";
-        var data = [];
-        var trfTtl = 0;
-        TindakanRawatAction.listTindakanRawat(idDetailCheckup, function (response) {
-            data = response;
-            if (data != null) {
-                $.each(data, function (i, item) {
-
-                    var tanggal = item.createdDate;
-                    var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
-                    var tarif = "-";
-                    var tarifTotal = "-";
-                    var trfTotal = 0;
-                    var qtyTotal = 0;
-                    var perawat = "";
-
-                    if (item.tarif != null) {
-                        tarif = formatRupiah(item.tarif);
-                        trfTotal += item.tarif;
-                    }
-                    if (item.tarifTotal != null) {
-                        tarifTotal = formatRupiah(item.tarifTotal);
-                        trfTtl += item.tarifTotal;
-                    }
-                    if (item.qty != null) {
-                        qtyTotal += item.qty;
-                    }
-                    if (item.idPerawat != null) {
-                        perawat = item.idPerawat;
-                    }
-
-                    table += "<tr>" +
-                        "<td>" + dateFormat + "</td>" +
-                        "<td>" + item.namaTindakan + "</td>" +
-                        "<td align='right'>" + tarif + "</td>" +
-                        "<td align='center'>" + item.qty + "</td>" +
-                        "<td align='right'>" + tarifTotal + "</td>" +
-                        "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editTindakan(\'' + item.idTindakanRawat + '\',\'' + item.idTindakan + '\',\'' + item.idKategoriTindakan + '\',\'' + item.idPerawat + '\',\'' + item.qty + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' + "</td>" +
-                        "</tr>";
-
-                });
-                table = table + "<tr>" +
-                    "<td colspan='4'>Total</td>" +
-                    "<td align='right'>" + formatRupiah(trfTtl) + "</td>" +
-                    "<td></td>" +
-                    "</tr>";
-            }
-        });
-
-        $('#body_tindakan').html(table);
-
+    function delRow(id){
+        $('#row'+id).remove();
     }
 
     function listSelectLab(select) {
         var idx = select.selectedIndex;
-        var idKategori = select.options[idx].value;
+        if (idx > 0) {
+            var idKategori = select.options[idx].value;
+            var kat = idKategori.split("|");
+            var id = "";
+            var ktr = "";
 
-        var option = "<option value=''>[Select One]</option>";
-        if (idKategori != '') {
-            LabAction.listLab(idKategori, function (response) {
+            if(kat[0] != 'null' && kat[0] != ''){
+                id = kat[0];
+            }
+
+            if(kat[1] != 'null' && kat[1] != ''){
+                ktr = kat[1];
+            }
+
+            console.log(idKategori);
+            console.log(id);
+            console.log(ktr);
+
+            var option = "<option value=''>[Select One]</option>";
+            LabAction.listLab(id, function (response) {
                 if (response != null) {
                     $.each(response, function (i, item) {
-                        option += "<option value='" + item.idLab + "'>" + item.namaLab + "</option>";
+                        option += "<option value='" + item.idLab +'|'+item.namaLab+ "'>" + item.namaLab + "</option>";
                     });
+                    $('#lab_lab').html(option);
                 } else {
-                    option = option;
+                    $('#lab_lab').html('');
                 }
             });
         } else {
-            option = option;
+            $('#lab_lab').html('');
         }
-
-        $('#lab_lab').html(option);
     }
 
     function listSelectParameter(select) {
         var idx = select.selectedIndex;
-        var idLab = select.options[idx].value;
-
-        var option = "";
-        if (idLab != '') {
-            LabDetailAction.listLabDetail(idLab, function (response) {
-                if (response != null) {
-                    $.each(response, function (i, item) {
-                        option += "<option value='" + item.idLabDetail + "'>" + item.namaDetailPeriksa + "</option>";
+        if (idx > 0) {
+            var idLab = select.options[idx].value;
+            var option = "";
+            if(idLab != ''){
+                var labId = idLab.split("|");
+                if(labId[0] != 'null' && labId[0] != ''){
+                    LabDetailAction.listLabDetail(labId[0], function (response) {
+                        if (response != null) {
+                            $.each(response, function (i, item) {
+                                option += "<option value='" + item.idLabDetail + "'>" + item.namaDetailPeriksa + "</option>";
+                            });
+                            $('#lab_parameter').html(option);
+                        } else {
+                            $('#lab_parameter').html('');
+                        }
                     });
-                } else {
-                    option = option;
                 }
-            });
+            }
         } else {
-            option = option;
+            $('#lab_parameter').html('');
         }
-
-        $('#lab_parameter').html(option);
     }
 
     function saveLab() {
@@ -745,6 +567,22 @@
         var idParameter = $('#lab_parameter').val();
 
         if (idKategori != '' && idLab != '') {
+
+            var idk = idKategori.split("|")[0];
+            var idl = idLab.split("|")[0];
+
+            var data = $('#table_lab').tableToJSON();
+            var row = data.length;
+
+            var table = '<tr id="row'+idl+'">' +
+                        '<td>'+idLab.split("|")[1]+'<input type="hidden" id="kategori_lab'+row+'" value="'+idk+'">'+'</td>' +
+                        '<td>'+idKategori.split("|")[1]+
+                        '<input type="hidden" id="lab_id'+row+'" value="'+idl+'">'+
+                        '<input type="hidden" id="parameter_id'+row+'" value="'+idParameter+'">'+
+                        '</td>' +
+                        '<td align="center">' + '<img border="0" class="hvr-grow" onclick="delRow(\''+idl+'\')" src="<s:url value="/pages/images/icons8-cancel-25.png"/>" style="cursor: pointer;">' + '</td>'+
+                        '</tr>';
+            $('#body_lab').append(table);
 
         } else {
             $('#warning_lab').show().fadeOut(5000);
@@ -758,44 +596,6 @@
                 $('#war_parameter').show();
             }
         }
-    }
-
-    function listLab() {
-
-        var table = "";
-        var data = [];
-
-        PeriksaLabAction.listOrderLab(idDetailCheckup, function (response) {
-            data = response;
-            if (data != null) {
-                $.each(data, function (i, item) {
-                    var pemeriksaan = "-";
-                    var status = "-";
-                    var lab = "-";
-                    var tanggal = item.createdDate;
-                    var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
-
-                    if (item.idLab != null) {
-                        pemeriksaan = item.idLab;
-                    }
-                    if (item.statusPeriksaName != null) {
-                        status = item.statusPeriksaName;
-                    }
-                    if (item.labName != null) {
-                        lab = item.labName;
-                    }
-                    table += "<tr>" +
-                        "<td>" + dateFormat + "</td>" +
-                        "<td>" + lab + "</td>" +
-                        "<td>" + status + "</td>" +
-                        "<td>" + item.kategoriLabName + "</td>" +
-                        "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editLab(\'' + item.idPeriksaLab + '\',\'' + item.idLab + '\',\'' + item.idKategoriLab + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' + "</td>" +
-                        "</tr>"
-                });
-            }
-        });
-
-        $('#body_lab').html(table);
     }
 
     function editTindakan(id, idTindakan, idKategori, idPerawat, qty) {
@@ -814,7 +614,7 @@
         $('#lab_kategori').val(idKategoriLab).trigger('change');
         var idParameter = [];
         PeriksaLabAction.listParameterPemeriksaan(id, function (response) {
-            data = response;
+            var data = response;
             if (data != null) {
                 $.each(data, function (i, item) {
                     idParameter.push(item.idLabDetail);
@@ -824,6 +624,43 @@
         $('#lab_lab').val(idLab).trigger('change');
         $('#lab_parameter').val(idParameter).trigger('change');
         $('#modal-lab').modal('show');
+    }
+
+    function savePaket(){
+        var kelasPaket = "kelas 1";
+        var namaPaket = "Hemat";
+
+        var tindakan = $('#table_tindakan').tableToJSON();
+        var lab = $('#table_lab').tableToJSON();
+        var result = [];
+        $.each(tindakan, function (i, item) {
+            var idTindakan = $('#tindakan_id'+i).val();
+            var idKategori = $('#kategori_id'+i).val();
+            result.push({'kategori_item':idKategori, 'id_item':idTindakan, 'jenis_item':'tindakan'});
+        });
+
+        $.each(lab, function (i, item) {
+            var idKategori = $('#kategori_lab'+i).val();
+            var idLab = $('#lab_id'+i).val();
+            var idParameter = $('#parameter_id'+i).val();
+            var jenisLab = lab[i]["Jenis Lab"];
+            console.log(jenisLab);
+            if(idParameter != '' && idParameter != 'null'){
+                var params = idParameter.split(",");
+                for(i = 0; i < params.length; i++){
+                    result.push({'kategori_item':idLab, 'id_item':params[i], 'jenis_item':jenisLab.toLowerCase()});
+                }
+            }else{
+                result.push({'kategori_item':idLab, 'id_item':'', 'jenis_item':jenisLab.toLowerCase()});
+            }
+        });
+
+        console.log(result);
+
+        var jsonStinng = JSON.stringify(result);
+        PaketPeriksaAction.savePaket(kelasPaket, namaPaket, jsonStinng, function (response) {
+            console.log(response);
+        });
     }
 
 
