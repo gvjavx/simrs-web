@@ -35,6 +35,17 @@ public class KategoriTindakanBoImpl implements KategoriTindakanBo {
         return results;
     }
 
+    @Override
+    public List<KategoriTindakan> getListKategoriTindakan(String idPelayanan) throws GeneralBOException {
+        List<KategoriTindakan> list = new ArrayList<>();
+        try {
+            list = kategoriTindakanDao.getListKategoriTindakan(idPelayanan);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return list;
+    }
+
     protected List<ImSimrsKategoriTindakanEntity> getListEntityKategoriTindakan(KategoriTindakan bean) throws GeneralBOException {
         logger.info("[KategoriTindakanBoImpl.getListEntityKategoriTindakan] Start >>>>>>>");
         List<ImSimrsKategoriTindakanEntity> results = new ArrayList<>();

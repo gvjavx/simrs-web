@@ -1,6 +1,8 @@
 package com.neurix.simrs.transaksi.paketperiksa.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.transaksi.CrudResponse;
+import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.paketperiksa.bo.PaketPeriksaBo;
 import com.neurix.simrs.transaksi.paketperiksa.dao.ItemPaketDao;
 import com.neurix.simrs.transaksi.paketperiksa.dao.KelasPaketDao;
@@ -159,15 +161,19 @@ public class PaketPeriksaBoImpl implements PaketPeriksaBo {
     }
 
     @Override
-    public void savePaketPeriksa(MtSimrsPaketEntity bean, List<MtSimrsItemPaketEntity> listItem) throws GeneralBOException {
+    public CrudResponse savePaketPeriksa(MtSimrsPaketEntity bean, List<MtSimrsItemPaketEntity> listItem) throws GeneralBOException {
 
         logger.info("[PaketPeriksaBoImpl.savePaketPeriksa] START >>>");
+        CrudResponse response = new CrudResponse();
 
         if (bean != null){
             bean.setIdPaket(getNextItemPaketId());
             try {
                 paketDao.addAndSave(bean);
+                response.setStatus("success");
             } catch (HibernateException e){
+                response.setStatus("error");
+                response.setMsg(e.getMessage());
                 logger.error("[PaketPeriksaBoImpl.savePaketPeriksa] ERROR. ", e);
                 new GeneralBOException("[PaketPeriksaBoImpl.savePaketPeriksa] ERROR. "+e);
             }
@@ -186,7 +192,10 @@ public class PaketPeriksaBoImpl implements PaketPeriksaBo {
 
                     try {
                         itemPaketDao.addAndSave(itemPaketEntity);
+                        response.setStatus("success");
                     } catch (HibernateException e){
+                        response.setStatus("error");
+                        response.setMsg(e.getMessage());
                         logger.error("[PaketPeriksaBoImpl.savePaketPeriksa] ERROR. ", e);
                         new GeneralBOException("[PaketPeriksaBoImpl.savePaketPeriksa] ERROR. "+e);
                     }
@@ -196,11 +205,40 @@ public class PaketPeriksaBoImpl implements PaketPeriksaBo {
         }
 
         logger.info("[PaketPeriksaBoImpl.savePaketPeriksa] END <<<");
+        return response;
     }
 
     @Override
-    public void savePaketPasien(PaketPasien bean) throws GeneralBOException {
+    public CheckResponse savePaketPasien(PaketPasien bean) throws GeneralBOException {
+        CheckResponse response = new CheckResponse();
 
+        if(bean != null){
+
+            ItSimrsPaketPasienEntity entity = new ItSimrsPaketPasienEntity();
+
+            entity.setId(getNextIdPaketPasien());
+            entity.setIdPasien(bean.getIdPasien());
+            entity.setIdPaket(bean.getIdPaket());
+            entity.setIdPerusahaan(bean.getIdPerusahaan());
+            entity.setFlag("Y");
+            entity.setAction("C");
+            entity.setCreatedDate(bean.getCreatedDate());
+            entity.setCreatedWho(bean.getCreatedWho());
+            entity.setLastUpdate(bean.getLastUpdate());
+            entity.setLastUpdateWho(bean.getLastUpdateWho());
+
+            try {
+                paketPasienDao.addAndSave(entity);
+                response.setStatus("success");
+                response.setMessage("Berhasil");
+            }catch (HibernateException e){
+                response.setStatus("error");
+                response.setMessage("Found Error "+e.getMessage());
+                logger.error("Found Error "+e.getMessage());
+            }
+        }
+
+        return response;
     }
 
     @Override
@@ -256,6 +294,20 @@ public class PaketPeriksaBoImpl implements PaketPeriksaBo {
 
         if (!"".equalsIgnoreCase(id)){
             id = "ITP"+id;
+        }
+        return id;
+    }
+
+    private String getNextIdPaketPasien(){
+        String id = "";
+        try {
+            id = paketPasienDao.getNextSeq();
+        } catch (HibernateException e){
+            logger.error("[PaketPeriksaBoImpl.getNextItemPaketId] ERROR. ", e);
+        }
+
+        if (!"".equalsIgnoreCase(id)){
+            id = "PKP"+id;
         }
         return id;
     }

@@ -206,6 +206,7 @@
     <include file="sshconfig/com/neurix/simrs/transaksi/kasirrawatjalan/struts/CreateFpkAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/master/vendor/struts/VendorAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/paketperiksa/struts/PaketPeriksaAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/paketperiksa/struts/DaftarPaketPeriksaAction.xml"/>
 
     <!--AKUNTANSI-->
     <!--MASTER -->

@@ -5,19 +5,23 @@ import com.neurix.akuntansi.master.masterVendor.model.MasterVendor;
 import com.neurix.common.action.BaseTransactionAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.kategoritindakan.bo.KategoriTindakanBo;
+import com.neurix.simrs.master.kategoritindakan.model.KategoriTindakan;
+import com.neurix.simrs.master.pasien.bo.PasienBo;
+import com.neurix.simrs.master.pasien.model.Pasien;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
+import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.paketperiksa.bo.PaketPeriksaBo;
-import com.neurix.simrs.transaksi.paketperiksa.model.PaketPeriksa;
+import com.neurix.simrs.transaksi.paketperiksa.model.*;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 
 import javax.servlet.http.HttpSession;
-import com.neurix.simrs.transaksi.paketperiksa.model.ImSimrsKelasPaketEntity;
-import com.neurix.simrs.transaksi.paketperiksa.model.MtSimrsItemPaketEntity;
-import com.neurix.simrs.transaksi.paketperiksa.model.MtSimrsPaketEntity;
+
 import com.neurix.simrs.transaksi.paketperiksa.model.PaketPeriksa;
 import org.apache.log4j.Logger;
+import org.hibernate.HibernateException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -61,7 +65,24 @@ public class PaketPeriksaAction extends BaseTransactionAction {
         return masterVendorBo.getByCriteria(masterVendor);
     }
 
-    public CrudResponse savePaket(String kelasPaket, String namaPaket, String jsonString) throws JSONException{
+    public List<PaketPeriksa> getListPaketPeriksa(){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PaketPeriksaBo paketPeriksaBo = (PaketPeriksaBo) ctx.getBean("paketPeriksaBoProxy");
+
+        List<PaketPeriksa> list = new ArrayList<>();
+        PaketPeriksa periksa = new PaketPeriksa();
+        periksa.setFlag("Y");
+
+        try {
+            list = paketPeriksaBo.getListPaketPeriksa(periksa);
+        }catch (GeneralBOException e){
+            logger.error("Found Error "+e.getMessage());
+        }
+
+        return list;
+    }
+
+    public CrudResponse savePaket(String idPelayanan, String namaPaket, String jsonString) throws JSONException{
 
         String userLogin = CommonUtil.userLogin();
         Timestamp time = new Timestamp(System.currentTimeMillis());
@@ -82,7 +103,6 @@ public class PaketPeriksaAction extends BaseTransactionAction {
 
         MtSimrsPaketEntity paketPeriksa = new MtSimrsPaketEntity();
         paketPeriksa.setNamaPaket(namaPaket);
-        paketPeriksa.setIdKelasPaket(kelasPaket);
         paketPeriksa.setFlag("Y");
         paketPeriksa.setAction("C");
         paketPeriksa.setBranchId(CommonUtil.userBranchLogin());
@@ -90,12 +110,13 @@ public class PaketPeriksaAction extends BaseTransactionAction {
         paketPeriksa.setCreatedWho(userLogin);
         paketPeriksa.setLastUpdate(time);
         paketPeriksa.setLastUpdateWho(userLogin);
+        paketPeriksa.setIdPelayanan(idPelayanan);
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PaketPeriksaBo paketPeriksaBo = (PaketPeriksaBo) ctx.getBean("paketPeriksaBoProxy");
 
         try {
-            paketPeriksaBo.savePaketPeriksa(paketPeriksa, itemPaketEntities);
+            response = paketPeriksaBo.savePaketPeriksa(paketPeriksa, itemPaketEntities);
         } catch (GeneralBOException e){
 
         }
@@ -142,6 +163,124 @@ public class PaketPeriksaAction extends BaseTransactionAction {
         session.removeAttribute("listOfResult");
         return "init_add";
     }
+
+    public List<KategoriTindakan> getListKategoriTindakan(String idPelayanan){
+        List<KategoriTindakan> tindakanList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        KategoriTindakanBo kategoriTindakanBo = (KategoriTindakanBo) ctx.getBean("kategoriTindakanBoProxy");
+
+        if(idPelayanan != null && !"".equalsIgnoreCase(idPelayanan)){
+            try {
+                tindakanList = kategoriTindakanBo.getListKategoriTindakan(idPelayanan);
+            }catch (GeneralBOException e){
+               logger.error("Found error "+e.getMessage());
+            }
+        }
+        return tindakanList;
+    }
+
+    public Pasien cekRMPasien(String nik, String nama, String jenisKelamin){
+
+        Pasien pasien = new Pasien();
+
+        if(nik != null && !"".equalsIgnoreCase(nik)){
+
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            PasienBo pasienBo = (PasienBo) ctx.getBean("pasienBoProxy");
+            List<Pasien> list = new ArrayList<>();
+            Pasien dataPasien = new Pasien();
+            dataPasien.setNoKtp(nik);
+
+            try {
+               list = pasienBo.getByCriteria(dataPasien);
+            }catch (GeneralBOException e){
+                logger.error("Found Error "+e.getMessage());
+            }
+
+            if(list.size() > 0){
+                pasien = list.get(0);
+            }else{
+                pasien = new Pasien();
+            }
+        }
+        return pasien;
+    }
+
+    public CheckResponse savePaketPasien(String jsonString) throws JSONException{
+
+        String userLogin = CommonUtil.userLogin();
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PaketPeriksaBo paketPeriksaBo = (PaketPeriksaBo) ctx.getBean("paketPeriksaBoProxy");
+
+        CheckResponse response = new CheckResponse();
+
+        JSONArray json = new JSONArray(jsonString);
+
+        for (int i = 0; i < json.length(); i++) {
+
+            JSONObject obj = json.getJSONObject(i);
+            PaketPasien paketPasien = new PaketPasien();
+            paketPasien.setIdPasien(obj.getString("id_pasien"));
+            paketPasien.setIdPaket(obj.getString("id_paket"));
+            paketPasien.setIdPerusahaan(obj.getString("id_perusahaan"));
+            paketPasien.setCreatedDate(time);
+            paketPasien.setCreatedWho(userLogin);
+            paketPasien.setLastUpdate(time);
+            paketPasien.setLastUpdateWho(userLogin);
+
+            try {
+                response = paketPeriksaBo.savePaketPasien(paketPasien);
+            } catch (GeneralBOException e){
+                response.setStatus("Error");
+                response.setMessage("Found Error "+e.getMessage()+" "+response.getMessage());
+                return response;
+            }
+        }
+
+        return response;
+    }
+
+    public Pasien saveNewPasien(String jsonString) throws JSONException{
+
+        Pasien pasien = new Pasien();
+        String userLogin = CommonUtil.userLogin();
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PasienBo pasienBo = (PasienBo) ctx.getBean("pasienBoProxy");
+
+        JSONObject obj = new JSONObject(jsonString);
+
+        if (obj != null){
+
+            Pasien dataPasien = new Pasien();
+            dataPasien.setNoKtp(obj.getString("nik"));
+            dataPasien.setNama(obj.getString("nama"));
+            dataPasien.setJenisKelamin(obj.getString("jk"));
+            dataPasien.setTempatLahir(obj.getString("tempat_lahir"));
+            dataPasien.setTglLahir(obj.getString("tanggal_lahir"));
+            dataPasien.setAgama(obj.getString("agama"));
+            dataPasien.setProfesi(obj.getString("profesi"));
+            dataPasien.setSuku(obj.getString("suku"));
+            dataPasien.setAlamat(obj.getString("alamat"));
+            dataPasien.setDesaId(obj.getString("desa_id"));
+            dataPasien.setCreatedDate(time);
+            dataPasien.setCreatedWho(userLogin);
+            dataPasien.setLastUpdate(time);
+            dataPasien.setLastUpdateWho(userLogin);
+
+            try {
+                pasien = pasienBo.saveAddWithResponse(dataPasien);
+            }catch (GeneralBOException e){
+                pasien.setStatus("error");
+                pasien.setMsg("Error "+e.getMessage());
+                logger.error("Found Error "+e.getMessage());
+            }
+        }
+
+        return pasien;
+    }
+
 
     public void setPaketPeriksaBoProxy(PaketPeriksaBo paketPeriksaBoProxy) {
         this.paketPeriksaBoProxy = paketPeriksaBoProxy;

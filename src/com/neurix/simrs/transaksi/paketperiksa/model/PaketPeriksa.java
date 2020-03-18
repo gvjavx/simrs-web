@@ -20,6 +20,12 @@ public class PaketPeriksa {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
 
+    private String idPelayanan;
+
+    public String getIdPelayanan() {
+        return idPelayanan;
+    }
+
     public String getIdPaket() {
         return idPaket;
     }

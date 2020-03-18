@@ -13,7 +13,7 @@
     <script type='text/javascript'>
 
         $( document ).ready(function() {
-            $('#paket_periksa').addClass('active');
+            $('#daftar_paket').addClass('active');
         });
 
     </script>
@@ -30,8 +30,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Paket Periksa
-            <small>e-HEALTH</small>
+            Pendaftaran Paket Periksa Pasien
         </h1>
     </section>
 
@@ -46,7 +45,7 @@
                     </div>
                     <div class="box-body">
                         <div class="form-group">
-                            <s:form id="paketperiksaForm" method="post" namespace="/paketperiksa" action="search_paketperiksa.action" theme="simple" cssClass="form-horizontal">
+                            <s:form id="daftarpaketperiksaForm" method="post" namespace="/paketperiksa" action="search_paketperiksa.action" theme="simple" cssClass="form-horizontal">
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">ID Detail Checkup</label>
                                     <div class="col-sm-4">
@@ -68,7 +67,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4"></label>
                                     <div class="col-sm-4" style="margin-top: 7px">
-                                        <sj:submit type="button" cssClass="btn btn-success" formIds="paketperiksaForm" id="search" name="search"
+                                        <sj:submit type="button" cssClass="btn btn-success" formIds="daftarpaketperiksaForm" id="search" name="search"
                                                    onClickTopics="showDialogLoading" onCompleteTopics="closeDialogLoading" >
                                             <i class="fa fa-search"></i>
                                             Search
@@ -76,7 +75,7 @@
                                         <a type="button" class="btn btn-danger" href="initForm_paketperiksa.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
-                                        <a type="button" class="btn btn-primary" href="add_paketperiksa.action">
+                                        <a type="button" class="btn btn-primary" href="add_daftarpaket.action">
                                             <i class="fa fa-plus"></i> Tambah Paket
                                         </a>
                                     </div>

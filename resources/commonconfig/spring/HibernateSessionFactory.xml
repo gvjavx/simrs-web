@@ -394,6 +394,8 @@
 
                 <value>sshconfig/com/neurix/akuntansi/master/settingReportUser/hibernate/ImSettingReportUserEntity.hbm.xml</value>
 
+                <value>sshconfig/com/neurix/simrs/master/tindakan/hibernate/ImSimrsKategoriTindakanPelayananEntity.hbm.xml</value>
+
             </list>
         </property>
     </bean>

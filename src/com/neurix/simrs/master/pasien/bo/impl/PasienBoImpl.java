@@ -15,7 +15,10 @@ import com.neurix.simrs.master.pasien.dao.RekamMedicLamaDao;
 import com.neurix.simrs.master.pasien.dao.UploadRekamMedicLamaDao;
 import com.neurix.simrs.master.pasien.model.*;
 import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao;
+import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
+import com.neurix.simrs.transaksi.paketperiksa.model.ItSimrsPaketPasienEntity;
+import com.neurix.simrs.transaksi.paketperiksa.model.PaketPasien;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -731,6 +734,69 @@ public class PasienBoImpl implements PasienBo {
     @Override
     public String getNextIdImg() {
         return uploadRekamMedicLamaDao.getNextSeq();
+    }
+
+    @Override
+    public Pasien saveAddWithResponse(Pasien pasien) throws GeneralBOException {
+        logger.info("[PasienBoImpl.saveAdd] Start >>>>>>>");
+        Pasien response = new Pasien();
+
+        if (pasien != null) {
+            ImSimrsPasienEntity pasienEntity = new ImSimrsPasienEntity();
+            String id = getIdPasien();
+
+            pasienEntity.setIdPasien(CommonUtil.userBranchLogin()+dateFormater("MM")+dateFormater("yy")+id);
+            pasienEntity.setNama(pasien.getNama());
+            pasienEntity.setJenisKelamin(pasien.getJenisKelamin());
+            pasienEntity.setNoKtp(pasien.getNoKtp());
+            pasienEntity.setNoBpjs(pasien.getNoBpjs());
+            pasienEntity.setTempatLahir(pasien.getTempatLahir());
+
+            pasienEntity.setNoTelp(pasien.getNoTelp());
+
+            if(pasien.getTglLahir() != null && !"".equalsIgnoreCase(pasien.getTglLahir())){
+                pasienEntity.setTglLahir(java.sql.Date.valueOf(pasien.getTglLahir()));
+            }
+
+            BigInteger bigInteger = new BigInteger(pasien.getDesaId());
+            pasienEntity.setDesaId(bigInteger);
+            pasienEntity.setJalan(pasien.getJalan());
+
+            pasienEntity.setSuku(pasien.getSuku());
+            pasienEntity.setAgama(pasien.getAgama());
+            pasienEntity.setProfesi(pasien.getProfesi());
+            pasienEntity.setNoTelp(pasien.getNoTelp());
+            pasienEntity.setUrlKtp(pasien.getUrlKtp());
+            pasienEntity.setFlag("Y");
+            pasienEntity.setAction("C");
+            pasienEntity.setCreatedDate(pasien.getCreatedDate());
+            pasienEntity.setLastUpdate(pasien.getLastUpdate());
+            pasienEntity.setCreatedWho(pasien.getCreatedWho());
+            pasienEntity.setLastUpdateWho(pasien.getLastUpdateWho());
+
+            try {
+
+                pasienDao.addAndSave(pasienEntity);
+
+                response.setIdPasien(pasienEntity.getIdPasien());
+                response.setNoKtp(pasienEntity.getNoKtp());
+                response.setStatus("success");
+                response.setMsg("Berhasil");
+
+            } catch (HibernateException e) {
+                response.setStatus("error");
+                response.setMsg("Error "+e.getMessage());
+                logger.error("[PasienBoImpl.saveAdd] Error when saving data pasien", e);
+                throw new GeneralBOException(" Error when saving data pasien " + e.getMessage());
+            }
+        } else {
+            response.setStatus("error");
+            logger.error("[PasienBoImpl.saveAdd] Error when saving data pasien data is null");
+            throw new GeneralBOException(" Error when saving data pasien data is null");
+        }
+
+        logger.info("[PasienBoImpl.saveAdd] End <<<<<<<");
+        return response;
     }
 
     public void setPasienDao(PasienDao pasienDao) {

@@ -524,6 +524,8 @@
           <param name="class" value="com.neurix.simrs.transaksi.paketperiksa.action.PaketPeriksaAction"/>
       </create>
       <convert converter="bean" match="com.neurix.simrs.transaksi.paketperiksa.model.ImSimrsKelasPaketEntity"/>
+      <convert converter="bean" match="com.neurix.simrs.master.kategoritindakan.model.KategoriTindakan"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.paketperiksa.model.PaketPeriksa"/>
 
 
   </allow>

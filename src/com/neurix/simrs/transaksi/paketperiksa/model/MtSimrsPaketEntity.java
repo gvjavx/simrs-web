@@ -19,6 +19,16 @@ public class MtSimrsPaketEntity implements Serializable {
     private String lastUpdateWho;
     private String branchId;
 
+    private String idPelayanan;
+
+    public String getIdPelayanan() {
+        return idPelayanan;
+    }
+
+    public void setIdPelayanan(String idPelayanan) {
+        this.idPelayanan = idPelayanan;
+    }
+
     public String getIdPaket() {
         return idPaket;
     }

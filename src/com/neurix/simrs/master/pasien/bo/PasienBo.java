@@ -4,6 +4,8 @@ import com.neurix.common.bo.GeneralBo;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.hris.master.belajar.model.Belajar;
 import com.neurix.simrs.master.pasien.model.*;
+import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
+import com.neurix.simrs.transaksi.paketperiksa.model.PaketPasien;
 
 import java.util.List;
 
@@ -37,4 +39,6 @@ public interface PasienBo extends GeneralBo {
 
     public void saveUploadRekamMedicLama(ImSImrsRekamMedicLamaEntity rekamMedicLama, List<ImSimrsUploadRekamMedicLamaEntity> uploads) throws GeneralBOException;
     public String getNextIdImg();
+
+    public Pasien saveAddWithResponse(Pasien pasien) throws GeneralBOException;
 }
