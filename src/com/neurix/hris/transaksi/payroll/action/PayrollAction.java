@@ -596,7 +596,6 @@ public class PayrollAction extends BaseMasterAction{
         newPayroll.setPotonganLainNilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(potonganLain))));
 
         //Komponen D
-        newPayroll.setIdLainLain(idPtt);
         newPayroll.setLainLain(nilaiPtt);
         newPayroll.setLainLainNilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(nilaiPtt))));
 
@@ -1884,6 +1883,7 @@ public class PayrollAction extends BaseMasterAction{
         session.removeAttribute("listDataPayrollPphPengobatanPerson");
         session.removeAttribute("listDataPayrollJubileum");
         session.removeAttribute("listDataPayrollTunjanganLain");
+        session.removeAttribute("detailPtt");
         session.setAttribute("listDataPayrollPerson", payrollPerson);
         session.setAttribute("listDataPayrollPphPerson", payrollPphPerson);
         session.setAttribute("listDataPayrollTunjanganLain", listOfResultPayrollTunjanganLain);
@@ -2685,7 +2685,6 @@ public class PayrollAction extends BaseMasterAction{
         newPayroll.setPotonganLainNilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(potonganLain))));
 
         //Komponen D
-        newPayroll.setIdLainLain(idPtt);
         newPayroll.setLainLain(nilaiPtt);
         newPayroll.setLainLainNilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(nilaiPtt))));
 
@@ -2708,6 +2707,12 @@ public class PayrollAction extends BaseMasterAction{
 
         //payrollBo.editDataSys(newPayroll);
         payrollBo.saveEditDataSys(newPayroll);
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<Ptt> pttList = (List<Ptt>) session.getAttribute("detailPtt");
+        payrollBo.savePttDetail(pttList,payrollId);
+
+        session.removeAttribute("detailPtt");
     }
 
     public void saveEditDataJasprod(String payrollId, String koperasi, String dansos, String lainLain, String flagKalkulasiPph, String pphGaji){
@@ -12229,6 +12234,42 @@ public class PayrollAction extends BaseMasterAction{
         PayrollBo payrollBo = (PayrollBo) ctx.getBean("payrollBoProxy");
 
         payrollBo.saveEditDataTambahanD(newPayroll);
+    }
+
+    public String saveTmpPtt(String tipePtt, String nilai){
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<Ptt> pttList = new ArrayList<>();
+        List<Ptt> listOfResult = (List<Ptt>) session.getAttribute("detailPtt");
+        Ptt newData = new Ptt();
+        newData.setTipePttId(tipePtt);
+        newData.setTipePttName(CommonUtil.convertTipePtt(tipePtt));
+        newData.setNilaiPtt(BigDecimal.valueOf(Long.parseLong(nilai)));
+        newData.setNilai(CommonUtil.numbericFormat(newData.getNilaiPtt(),"###,###"));
+        if (listOfResult==null){
+            pttList.add(newData);
+        }else{
+            boolean dataSudahAda=false;
+            for (Ptt ptt : listOfResult){
+                if (ptt.getTipePttId().equalsIgnoreCase(tipePtt)){
+                    dataSudahAda=true;
+                }
+            }
+            pttList = listOfResult;
+            if (dataSudahAda){
+            }else{
+                pttList.add(newData);
+            }
+        }
+        BigDecimal total = new BigDecimal(0);
+        for (Ptt ptt : pttList){
+            total = total.add(ptt.getNilaiPtt());
+        }
+        session.setAttribute("detailPtt",pttList);
+        return total.toString();
+    }
+    public List<Ptt> getDetailPtt (){
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        return (List<Ptt>) session.getAttribute("detailPtt");
     }
     @Override
     public String downloadPdf() {

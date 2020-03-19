@@ -295,7 +295,7 @@
                                                     <table>
                                                         <s:action id="comboPeriode" namespace="/rekruitmen" name="initComboPeriodeTahunSekarang10_rekruitmen"/>
                                                         <s:select cssClass="form-control" list="#comboPeriode.listOfComboPeriode" id="tahunPayroll"
-                                                                  name="tahun" required="true" headerKey=""
+                                                                  name="tahun" required="true" headerKey="" disabled="true"
                                                                   headerValue="[Select one]"/>
                                                     </table>
                                                 </td>
@@ -735,8 +735,17 @@
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-5" >Tunj. Lain</label>
-                                <div class="col-sm-7">
+                                <div class="col-sm-6">
                                     <input readonly style="text-align: right" readonly type="text" class="form-control nip" id="tunjLain" name="nip">
+                                </div>
+                                <div class="col-sm-1">
+                                    <div class="form-group">
+                                        <div class="col-sm-1" align="left">
+                                            <a href="javascript:;" class="detailTunjlain" style="display: inline">
+                                                <span style="font-size: 25px" class="glyphicon glyphicon-zoom-in"></span>
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -854,24 +863,47 @@
                                 <h4>D. PTT</h4>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-sm-5" for="tipePttId1">Tipe Ptt:</label>
-                                <div class="col-sm-7">
-                                    <select class="form-control" id="tipePttId1">
-                                        <option value="0">[Select One]</option>
-                                        <option value="t">Tantiem</option>
-                                        <option value="R">Rekreasi</option>
-                                        <option value="tk">Tunjangan Khusus</option>
-                                        <option value="bPer">Biaya Pernikahan</option>
-                                        <option value="bPin">Biaya Pindah</option>
-                                        <option value="bPis">Biaya Pisah</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
                                 <label class="control-label col-sm-5" >Nilai PTT</label>
-                                <div class="col-sm-7">
-                                    <input style="text-align: right" type="text" class="form-control nip" id="nilaiPtt" name="nip" onfocusout="updateNilai(this.id, this.value)">
+                                <div class="col-sm-6">
+                                    <input style="text-align: right" type="text" readonly class="form-control nip" id="nilaiPtt" onfocusout="updateNilai(this.id, this.value)" name="nip">
                                 </div>
+                                <div class="col-sm-1">
+                                    <a href="javascript:;" class="btnDetailPtt">
+                                        <span style="font-size: 20px" class="glyphicon glyphicon-zoom-in"></span>
+                                    </a>
+                                </div>
+                                <script>
+                                    function loadPtt() {
+                                        $('.tabelPtt').find('tbody').remove();
+                                        $('.tabelPtt').find('thead').remove();
+
+                                        var tmp_table = "";
+                                        var tmp_table2 = "<tbody>";
+                                        var hasil = 0;
+
+                                        PayrollAction.getDetailPtt( function(listdata){
+                                            tmp_table = "<thead style='font-size: 13px; color: white; white-space: nowrap' ><tr class='active'>" +
+                                                "<th style='text-align: center; background-color:  #3c8dbc''>No </th>" +
+                                                "<th style='text-align: center; background-color:  #3c8dbc''>Nama PTT</th>" +
+                                                "<th style='text-align: center; background-color:  #3c8dbc''>Nilai</th>" +
+                                                "</tr></thead><tbody>";
+                                            $.each(listdata, function (i, item) {
+                                                tmp_table += '<tr style="font-size: 12px; white-space: nowrap">' +
+                                                    '<td align="left">' + (i+1) + '</td>' +
+                                                    '<td align="left">' + item.tipePttName+ '</td>' +
+                                                    '<td align="right">' + item.nilai+ '</td>' +
+                                                    "</tr>";
+                                            });
+                                            tmp_table += "</tbody>";
+                                            $('.tabelPtt').append(tmp_table);
+                                        });
+                                    }
+                                    $('.btnDetailPtt').click(function(){
+                                        loadPtt();
+                                        $('#modal-ptt').find('.modal-title').text('Detail PTT');
+                                        $('#modal-ptt').modal('show');
+                                    })
+                                </script>
                             </div>
                         </div>
                         <div class="col-sm-4">
@@ -998,14 +1030,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="form-group">
-                            <div class="col-sm-1" align="left">
-                                <a href="javascript:;" class="detailTunjlain" style="display: inline">
-                                    <span style="font-size: 25px" class="glyphicon glyphicon-zoom-in"></span>
-                                </a>
-                            </div>
-                        </div>
                     </div>
                 </form>
 
@@ -1013,6 +1037,76 @@
             <div class="modal-footer">
                 <a id="btnSave" type="btn btn-success" class="btn btn-default btn-success"><i class="fa fa-save"></i> Save</a>
                 <a type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modal-ptt" class="modal fade modal2" role="dialog">
+    <div class="modal-dialog " style="width:500px;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body" >
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="control-label col-sm-5" >Tipe PTT</label>
+                        <div class="col-sm-6">
+                            <select class="form-control" id="tipePttId1">
+                                <option value="0">[Select One]</option>
+                                <option value="t">Tantiem</option>
+                                <option value="R">Rekreasi</option>
+                                <option value="tk">Tunjangan Khusus</option>
+                                <option value="bPer">Biaya Pernikahan</option>
+                                <option value="bPin">Biaya Pindah</option>
+                                <option value="bPis">Biaya Pisah</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-5" >Nilai</label>
+                        <div class="col-sm-6">
+                            <input style="text-align: right"  type="text" class="form-control" id="nilaiModPtt">
+                        </div>
+                    </div>
+                </form>
+                <br>
+                <div class="col-md-offset-9" id="btnAddPttMod">
+                    <a type="button" class="btn btn-success"><i class="fa fa-plus"></i> Add</a>
+                </div>
+                <script>
+                    $('#btnAddPttMod').click(function () {
+                        var tipePtt = $('#tipePttId1').val();
+                        var nilai = $('#nilaiModPtt').val();
+                        if (tipePtt!="0"&&nilai!=""){
+                            PayrollAction.saveTmpPtt(tipePtt,nilai, function(result){
+                                $('#nilaiPtt').val(result);
+                                updateNilai("nilaiPtt", result)
+                                $('#tipePttId1').val("0");
+                                $('#nilaiModPtt').val("");
+                            });
+                            loadPtt();
+                        } else{
+                            var msg="";
+                            if (tipePtt!=''){
+                                msg+="Tipe PTT masih belum dipilih \n"
+                            }
+                            if (nilai!=''){
+                                msg+="Nilai masih belum dipilih \n"
+                            }
+                        }
+                    })
+                </script>
+                <br>
+                <div class="table-responsive">
+                    <table id="tabelPtt" class="tabelPtt table table-bordered">
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn btn-default" data-dismiss="modal">Close</a>
             </div>
         </div>
     </div>

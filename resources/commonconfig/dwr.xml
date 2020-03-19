@@ -516,6 +516,7 @@
           <param name="class" value="com.neurix.hris.master.payrollSkalaGaji.action.PayrollSkalaGajiAction"/>
       </create>
       <convert converter="bean" match="com.neurix.hris.master.payrollSkalaGaji.model.PayrollSkalaGaji"/>
+      <convert converter="bean" match="com.neurix.hris.transaksi.payroll.model.Ptt"/>
 
   </allow>
 

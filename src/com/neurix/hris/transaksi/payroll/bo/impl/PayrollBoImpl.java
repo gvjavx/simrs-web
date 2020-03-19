@@ -129,6 +129,15 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
     private PayrollCutiDao payrollCutiDao;
     private PayrollSkalaGajiBodDao payrollSkalaGajiBodDao;
     private HistoryJabatanPegawaiDao historyJabatanPegawaiDao;
+    private PayrollPttDao payrollPttDao;
+
+    public PayrollPttDao getPayrollPttDao() {
+        return payrollPttDao;
+    }
+
+    public void setPayrollPttDao(PayrollPttDao payrollPttDao) {
+        this.payrollPttDao = payrollPttDao;
+    }
 
     public PayrollSkalaGajiBodDao getPayrollSkalaGajiBodDao() {
         return payrollSkalaGajiBodDao;
@@ -8264,8 +8273,6 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                 itPayrollEntity.setPemondokan(payroll.getPemondokanNilai());
                 itPayrollEntity.setKomunikasi(payroll.getKomunikasiNilai());
 
-
-                itPayrollEntity.setIdLainLain(payroll.getIdLainLain());
                 itPayrollEntity.setLainLain(payroll.getLainLainNilai());
 
                 itPayrollEntity.setTotalA(payroll.getTotalANilai());
@@ -8611,10 +8618,8 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                     payrollPerson.setKomunikasiNilai(payroll.getKomunikasiNilai());
                     payrollPerson.setKomunikasi(CommonUtil.numbericFormat(payroll.getKomunikasiNilai(), "###,###"));
 
-                    payrollPerson.setIdLainLain(payroll.getIdLainLain());
                     payrollPerson.setLainLainNilai(payroll.getLainLainNilai());
                     payrollPerson.setLainLain(CommonUtil.numbericFormat(payroll.getLainLainNilai(), "###,###"));
-
 
                     payrollPerson.setKopkarNilai(payroll.getKopkarNilai());
                     payrollPerson.setKopkar(CommonUtil.numbericFormat(payroll.getKopkarNilai(), "###,###"));
@@ -22440,6 +22445,60 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                     logger.error("[payrollBoimpl.saveEditDataTambahanD] Error, " + e.getMessage());
                 }
             }
+        }
+    }
+
+    @Override
+    public void savePttDetail(List<Ptt> pttList,String payrollId) throws GeneralBOException {
+        // get all ptt for Flag N
+        List<ItPayrollPttEntity> payrollPttEntityList = new ArrayList<>();
+        String userLogin = CommonUtil.userLogin();
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        try {
+            payrollPttEntityList = payrollPttDao.getDataPtt(payrollId);
+        } catch (HibernateException e) {
+            logger.error("[payrollBoimpl.saveEditDataTambahanD] Error, " + e.getMessage());
+        }
+
+        //delete all ptt
+        for(ItPayrollPttEntity payrollPttEntity : payrollPttEntityList){
+            payrollPttEntity.setLastUpdate(updateTime);
+            payrollPttEntity.setLastUpdateWho(userLogin);
+            payrollPttEntity.setFlag("N");
+            payrollPttEntity.setAction("D");
+            try {
+                payrollPttDao.updateAndSave(payrollPttEntity);
+            } catch (HibernateException e) {
+                logger.error("[payrollBoimpl.saveEditDataTambahanD] Error, " + e.getMessage());
+            }
+        }
+
+        //add new ptt
+        for (Ptt ptt : pttList ){
+            String pttId="";
+            try {
+                pttId = payrollPttDao.getNextId();
+            } catch (HibernateException e) {
+                logger.error("[payrollBoimpl.saveEditDataTambahanD] Error, " + e.getMessage());
+            }
+
+            ItPayrollPttEntity payrollPttEntity = new ItPayrollPttEntity();
+            payrollPttEntity.setPayrollId(payrollId);
+            payrollPttEntity.setPayrollPttId(pttId);
+            payrollPttEntity.setIdPtt(ptt.getTipePttId());
+            payrollPttEntity.setNilai(ptt.getNilaiPtt());
+            payrollPttEntity.setCreatedDate(updateTime);
+            payrollPttEntity.setCreatedWho(userLogin);
+            payrollPttEntity.setLastUpdate(updateTime);
+            payrollPttEntity.setLastUpdateWho(userLogin);
+            payrollPttEntity.setFlag("Y");
+            payrollPttEntity.setAction("C");
+            try {
+                payrollPttDao.addAndSave(payrollPttEntity);
+            } catch (HibernateException e) {
+                logger.error("[payrollBoimpl.saveEditDataTambahanD] Error, " + e.getMessage());
+            }
+
         }
     }
 }

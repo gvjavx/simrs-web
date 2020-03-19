@@ -394,6 +394,7 @@
                 <value>sshconfig/com/neurix/simrs/transaksi/paketperiksa/hiberanate/ItSimrsPaketPasienEntity.hbm.xml</value>
 
                 <value>sshconfig/com/neurix/akuntansi/master/settingReportUser/hibernate/ImSettingReportUserEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ItPayrollPttEntity.hbm.xml</value>
 
             </list>
         </property>
