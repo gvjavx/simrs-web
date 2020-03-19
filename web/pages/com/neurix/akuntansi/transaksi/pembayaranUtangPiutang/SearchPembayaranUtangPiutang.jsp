@@ -227,7 +227,7 @@
                                                             <display:column property="metodePembayaran" sortable="true" title="Metode Pembayaran"  />
                                                             <display:column property="bayar" sortable="true" title="Total Bayar"  />
                                                             <display:column property="keterangan" sortable="true" title="Keterangan"  />
-                                                            <display:column property="noSlipBank" sortable="true" title="No. Slip Bank"  />
+                                                            <display:column property="noSlipBank" sortable="true" title="No. Referensi"  />
                                                             <display:column media="html" title="Posting"  style="text-align:center">
                                                                 <s:if test="#attr.row.flagPosting">
                                                                     <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_edit">
@@ -328,7 +328,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-4">No. Slip bank</label>
+                                <label class="col-md-4">No. Referensi</label>
                                 <div class="col-md-6">
                                     <s:textfield id="mod_no_slip_bank" onkeypress="$(this).css('border','')" readonly="true"
                                                  cssClass="form-control" />

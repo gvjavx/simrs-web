@@ -204,7 +204,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">No. Slip Bank</label>
+                                            <label class="col-md-4" style="margin-top: 7px">No. Referensi</label>
                                             <div class="col-md-8">
                                                 <s:textfield id="no_slip_bank" name="pembayaranUtangPiutang.noSlipBank" onkeypress="$(this).css('border','')" onchange="isiKeteterangan()"
                                                              cssClass="form-control" cssStyle="margin-top: 7px" />
@@ -511,8 +511,8 @@
                                 loadDetailPembayaran();
                                 //dihitung totalbayarnya
                                 var totalBayar = $('#bayar').val();
-                                totalBayar=totalBayar.replace(".","");
-                                var strBayar=bayar.replace(".","");
+                                totalBayar=totalBayar.replace(/[.]/g,"");
+                                var strBayar=bayar.replace(/[.]/g,"");
                                 var intTotalBayar=0;
                                 if (totalBayar!=''){
                                     intTotalBayar = parseInt(totalBayar);
@@ -555,11 +555,10 @@
                 PembayaranUtangPiutangAction.saveDetailPembayaran(kodeVendor,namaVendor,noNota,jumlahPembayaran,rekeningId,function (result) {
                     if (result==""){
                         loadDetailPembayaran();
-
                         //dihitung totalbayarnya
                         var totalBayar = $('#bayar').val();
-                        totalBayar=totalBayar.replace(".","");
-                        var strBayar=jumlahPembayaran.replace(".","");
+                        totalBayar=totalBayar.replace(/[.]/g,"");
+                        var strBayar=jumlahPembayaran.replace(/[.]/g,"");
                         var intTotalBayar=0;
                         if (totalBayar!=''){
                             intTotalBayar = parseInt(totalBayar);
@@ -594,8 +593,8 @@
                     alert("data berhasil dihapus");
                     loadDetailPembayaran();
                     var totalBayar = $('#bayar').val();
-                    totalBayar=totalBayar.replace(".","");
-                    var strBayar=biaya.replace(".","");
+                    totalBayar=totalBayar.replace(/[.]/g,"");
+                    var strBayar=biaya.replace(/[.]/g,"");
                     var intTotalBayar=0;
                     if (totalBayar!=''){
                         intTotalBayar = parseInt(totalBayar);
@@ -685,6 +684,7 @@
         rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
         return rupiah;
     }
+
 
 </script>
 <%@ include file="/pages/common/footer.jsp" %>

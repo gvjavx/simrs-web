@@ -534,6 +534,7 @@
       </create>
       <convert converter="bean" match="com.neurix.akuntansi.transaksi.tutupperiod.model.ItSimrsBatasTutupPeriodEntity"/>
       <convert converter="bean" match="com.neurix.akuntansi.transaksi.tutupperiod.model.BatasTutupPeriod"/>
+      <convert converter="bean" match="com.neurix.hris.transaksi.payroll.model.Ptt"/>
 
   </allow>
 

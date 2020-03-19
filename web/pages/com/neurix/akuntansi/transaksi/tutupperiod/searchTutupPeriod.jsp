@@ -54,8 +54,8 @@
                     <div class="box-body">
                         <%--<s:form id="kasirjalanForm" method="post" namespace="/kasirjalan" action="search_kasirjalan.action" theme="simple" cssClass="form-horizontal">--%>
                             <div class="form-group form-horizontal">
-                                <label class="control-label col-sm-2">Periode</label>
-                                <div class="col-sm-4">
+                                <label class="control-label col-sm-2 col-sm-offset-1">Periode</label>
+                                <div class="col-sm-3">
                                     <select class="form form-control" id="sel-bulan">
                                         <option value="1">Januari</option>
                                         <option value="2">Februari</option>
@@ -77,7 +77,7 @@
                                         <option value="2021">2021</option>
                                     </select>
                                 </div>
-                                <div class="col-sm-4">
+                                <div class="col-sm-2">
                                     <button class="btn btn-success" onclick="searchPeriod()"><i class="fa fa-check"></i> Choose</button>
                                 </div>
                             </div>

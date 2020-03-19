@@ -32,7 +32,7 @@
     <script type='text/javascript'>
 
         function link(){
-            window.location.href="<s:url action='initForm_payrollTunjanganJabatanStruktural'/>";
+            window.location.href="<s:url action='initForm_payrollTunjanganStrategis'/>";
         }
 
     </script>
@@ -49,7 +49,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Payroll Tunjangan Jabatan Struktural
+            Payroll Tunjangan Fungsional
             <small>e-HEALTH</small>
         </h1>
     </section>
@@ -61,7 +61,7 @@
         <table width="100%" align="center">
             <tr>
                 <td align="center">
-                    <s:form id="payrollTunjanganJabatanStrukturalForm" method="post"  theme="simple" namespace="/payrollTunjanganJabatanStruktural" action="search_payrollTunjanganJabatanStruktural.action" cssClass="well form-horizontal">
+                    <s:form id="payrollTunjanganStrategisForm" method="post"  theme="simple" namespace="/payrollTunjanganStrategis" action="search_payrollTunjanganStrategis.action" cssClass="well form-horizontal">
 
                         <s:hidden name="addOrEdit"/>
                         <s:hidden name="delete"/>
@@ -81,7 +81,7 @@
                                 </td>
                                 <td>
                                     <table>
-                                        <s:textfield  id="tunjJabatanStrukturalId" name="payrollTunjanganJabatanStruktural.tunjJabatanStrukturalId" required="false" readonly="false" cssClass="form-control"/>
+                                        <s:textfield  id="tunjStrategisId" name="payrollTunjanganStrategis.tunjStrategisId" required="false" readonly="false" cssClass="form-control"/>
                                     </table>
                                 </td>
                             </tr>
@@ -93,7 +93,7 @@
                                 <td>
                                     <table>
                                         <s:action id="comboPosition" namespace="/kelompokPosition" name="searchKelompok_kelompokPosition"/>
-                                        <s:select list="#comboPosition.comboListOfKelompokPosition" id="kelompokId" name="payrollTunjanganJabatanStruktural.kelompokId"
+                                        <s:select list="#comboPosition.comboListOfKelompokPosition" id="kelompokId" name="payrollTunjanganStrategis.kelompokId"
                                                   listKey="kelompokId" listValue="kelompokName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                     </table>
                                 </td>
@@ -106,7 +106,7 @@
                                 <td>
                                     <table>
                                         <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
-                                        <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="branchId" name="payrollTunjanganJabatanStruktural.branchId" required="true"
+                                        <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="branchId" name="payrollTunjanganStrategis.branchId" required="true"
                                                   listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" />
                                     </table>
                                 </td>
@@ -118,7 +118,7 @@
                                 </td>
                                 <td>
                                     <table>
-                                        <s:select list="#{'N':'Non-Active'}" id="flag" name="payrollTunjanganJabatanStruktural.flag"
+                                        <s:select list="#{'N':'Non-Active'}" id="flag" name="payrollTunjanganStrategis.flag"
                                                   headerKey="Y" headerValue="Active" cssClass="form-control" />
                                     </table>
 
@@ -135,14 +135,14 @@
                             <table align="center">
                                 <tr>
                                     <td>
-                                        <sj:submit type="button" cssClass="btn btn-primary" formIds="payrollTunjanganJabatanStrukturalForm" id="search" name="search"
+                                        <sj:submit type="button" cssClass="btn btn-primary" formIds="payrollTunjanganStrategisForm" id="search" name="search"
                                                    onClickTopics="showDialog" onCompleteTopics="closeDialog" >
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
                                     </td>
                                     <td>
-                                        <s:url var="urlAdd" namespace="/payrollTunjanganJabatanStruktural" action="add_payrollTunjanganJabatanStruktural" escapeAmp="false">
+                                        <s:url var="urlAdd" namespace="/payrollTunjanganStrategis" action="add_payrollTunjanganStrategis" escapeAmp="false">
                                         </s:url>
                                         <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">
                                             <i class="fa fa-plus"></i>
@@ -150,7 +150,7 @@
                                         </sj:a>
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_payrollTunjanganJabatanStruktural"/>'">
+                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_payrollTunjanganStrategis"/>'">
                                             <i class="fa fa-refresh"></i> Reset
                                         </button>
                                     </td>
@@ -172,10 +172,10 @@
 
                                         <s:set name="listOfPayrollSkalaGaji" value="#session.listOfResult" scope="request" />
                                         <display:table name="listOfPayrollSkalaGaji" class="table table-condensed table-striped table-hover"
-                                                       requestURI="paging_displaytag_payrollTunjanganJabatanStruktural.action" export="true" id="row" pagesize="14" style="font-size:10">
+                                                       requestURI="paging_displaytag_payrollTunjanganStrategis.action" export="true" id="row" pagesize="14" style="font-size:10">
                                             <display:column media="html" title="Edit">
                                                 <s:if test="#attr.row.flagYes">
-                                                    <s:url var="urlEdit" namespace="/payrollTunjanganJabatanStruktural" action="edit_payrollTunjanganJabatanStruktural" escapeAmp="false">
+                                                    <s:url var="urlEdit" namespace="/payrollTunjanganStrategis" action="edit_payrollTunjanganStrategis" escapeAmp="false">
                                                         <s:param name="id"><s:property value="#attr.row.tunjJabStrukturId"/></s:param>
                                                         <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
                                                     </s:url>
@@ -186,7 +186,7 @@
                                             </display:column>
 
                                             <display:column media="html" title="Delete" style="text-align:center;font-size:9">
-                                                <s:url var="urlViewDelete" namespace="/payrollTunjanganJabatanStruktural" action="delete_payrollTunjanganJabatanStruktural" escapeAmp="false">
+                                                <s:url var="urlViewDelete" namespace="/payrollTunjanganStrategis" action="delete_payrollTunjanganStrategis" escapeAmp="false">
                                                     <s:param name="id"><s:property value="#attr.row.tunjJabStrukturId" /></s:param>
                                                     <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
                                                 </s:url>
@@ -195,10 +195,8 @@
                                                 </sj:a>
 
                                             </display:column>
-                                            <display:column property="tunjJabStrukturId" sortable="true" title="T. Jab. Struktural ID" />
-                                            <display:column property="kelompokName" sortable="true" title="Kelompok Jabatan"  />
-                                            <display:column property="tunjJabatan" sortable="true" title="Tunj. Jabatan"  />
-                                            <display:column property="tunjStruktural" sortable="true" title="Tunj. Struktural"  />
+                                            <display:column property="tunjStrategisId" sortable="true" title="T. Jab. Fungsional ID" />
+                                            <display:column property="nilai" sortable="true" title="Nilai"  />
                                         </display:table>
                                     </td>
                                 </tr>
