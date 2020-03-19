@@ -129,6 +129,7 @@ public class SettingTutupPeriodAction extends BaseTransactionAction {
             batasTutupPeriod.setCreatedDate(periodEntity.getCreatedDate());
             batasTutupPeriod.setCreatedWho(periodEntity.getCreatedWho());
             batasTutupPeriod.setStTglBatas(periodEntity.getTglBatas() == null ? "" : periodEntity.getTglBatas().toString());
+            batasTutupPeriod.setFlagTutup(periodEntity.getFlagTutup());
             return batasTutupPeriod;
         }
 
