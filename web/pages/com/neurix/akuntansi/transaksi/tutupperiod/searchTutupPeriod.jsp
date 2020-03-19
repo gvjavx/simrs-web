@@ -83,22 +83,6 @@
                             </div>
 
                         <%--</s:form>--%>
-
-                            <%--<div class="alert alert-info alert-dismissable" id="alert-info">--%>
-                            <%--<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>--%>
-                            <%--<strong>Info!</strong> Pilih Priode Kemudian Choose--%>
-                            <%--</div>--%>
-
-                            <div class="alert alert-success alert-dismissable" id="alert-success" style="display: none">
-                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                                <strong>Success!</strong> Berhasil Menyimpan data
-                            </div>
-
-                            <div class="alert alert-warning alert-dismissable" id="alert-error" style="display: none">
-                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                                <strong>Error!</strong><span id="error-msg"></span>
-                            </div>
-
                     </div>
 
                     <div class="box-header with-border"></div>
@@ -106,6 +90,22 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> List Tutup Period <strong><span id="label-tahun"></span> - <span id="label-bulan"></span></strong> </h3>
                     </div>
                     <div class="box-body">
+
+                        <%--<div class="alert alert-info alert-dismissable" id="alert-info">--%>
+                        <%--<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>--%>
+                        <%--<strong>Info!</strong> Pilih Priode Kemudian Choose--%>
+                        <%--</div>--%>
+
+                        <div class="alert alert-success alert-dismissable" id="alert-success" style="display: none">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <strong>Success!</strong> Berhasil Menyimpan data
+                        </div>
+
+                        <div class="alert alert-warning alert-dismissable" id="alert-error" style="display: none">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <strong>Error!</strong><span id="error-msg"></span>
+                        </div>
+
                         <div class="row">
                             <div class="col-md-8 col-md-offset-2">
                                 <table id="sortTable" class="table table-bordered table-striped">
@@ -179,31 +179,19 @@
 
     function saveTutup(unit, tahun, bulan) {
 
-        console.log(unit+tahun+bulan)
+//        console.log(unit+tahun+bulan);
 
-//       var indexperiod = $("#index-period").val();
-//       var indexbranch = $("#index-branch").val();
-//       var arbranch = indexbranch.split("_");
-//
-//       var arperiod = [];
-//       for (i=1; i <= indexperiod; i++){
-//
-//           for (n=1; n < arbranch.length ; n++){
-//               var valperiod = $("#"+i+"_"+arbranch[n]).val();
-//               arperiod.push({"tahun" : tahun, "bulan" : i, "unit": arbranch[n], "tgl" : valperiod});
-//           }
-//       }
-//
-//       var jsonString = JSON.stringify(arperiod);
-//       SettingTutupPeriodAction.saveBatasTutupPeriod(jsonString, function(response){
-//           if (response.status == "error"){
-//               $("#alert-error").show();
-//               $("#error-msg").text(response.msg);
-//           } else {
-//               $("#alert-error").hide();
-//               $("#alert-success").show();
-//           }
-//       });
+        TutuPeriodAction.saveTutupPeriod(unit, tahun, bulan, function(response){
+           if (response.status == "error"){
+               $("#alert-error").show();
+               $("#error-msg").text(response.msg);
+           } else {
+               $("#alert-error").hide();
+               $("#alert-success").show();
+
+               searchPeriod();
+           }
+       });
     }
 
 </script>

@@ -164,6 +164,7 @@
             } else {
                 $("#btn-save").hide();
             }
+
             $("#head-period").html("<tr bgcolor=\"#90ee90\"><td>Periode</td>"+strHead+"</tr>");
             $("#body-period").html(strBody);
             $("#index-period").val(indexperiod);
@@ -175,6 +176,9 @@
             $.each(arrbatas, function (i, item) {
                 SettingTutupPeriodAction.getBatasTutupPeriod(item.unit, item.tahun, item.bulan, function(batas){
                     $("#"+item.id+"").val(batas.stTglBatas);
+                    if (batas.flagTutup == "Y"){
+                        $("#"+item.id+"").attr("disabled",'disabled');
+                    }
 //                    console.log(batas);
 //                    console.log("#"+item.id+" nilai : "+batas.stTglBatas);
                 });
