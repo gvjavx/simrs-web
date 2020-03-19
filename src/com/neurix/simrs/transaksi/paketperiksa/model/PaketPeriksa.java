@@ -33,6 +33,16 @@ public class PaketPeriksa {
 
     private String idPaketPasien;
 
+    private String keterangan;
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
     public String getIdPaketPasien() {
         return idPaketPasien;
     }

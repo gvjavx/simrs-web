@@ -146,7 +146,7 @@ public class PasienDao extends GenericDao<ImSimrsPasienEntity, String> {
                 "FROM im_simrs_pasien a\n" +
                 "INNER JOIN it_simrs_paket_pasien b ON a.id_pasien = b.id_pasien\n" +
                 "INNER JOIN mt_simrs_paket c ON b.id_paket = c.id_paket\n" +
-                "WHERE a.nama ILIKE :search";
+                "WHERE a.nama ILIKE :search AND b.flag = 'Y'";
 
         List<Object[]> result = new ArrayList<>();
         result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -177,13 +177,13 @@ public class PasienDao extends GenericDao<ImSimrsPasienEntity, String> {
                     List<Object[]> objects = getListAlamat(obj[7].toString());
                     if(objects != null){
                         for (Object[] ob: objects){
-                            pasien.setDesa(ob[0].toString());
-                            pasien.setKecamatan(ob[1].toString());
-                            pasien.setKota(ob[2].toString());
-                            pasien.setProvinsi(ob[3].toString());
-                            pasien.setKecamatanId(ob[4].toString());
-                            pasien.setKotaId(ob[5].toString());
-                            pasien.setProvinsiId(ob[6].toString());
+                            pasien.setDesa(ob[1].toString());
+                            pasien.setKecamatan(ob[2].toString());
+                            pasien.setKota(ob[3].toString());
+                            pasien.setProvinsi(ob[4].toString());
+                            pasien.setKecamatanId(ob[5].toString());
+                            pasien.setKotaId(ob[6].toString());
+                            pasien.setProvinsiId(ob[7].toString());
                         }
                     }
                 }

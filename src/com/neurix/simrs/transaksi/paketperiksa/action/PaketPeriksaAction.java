@@ -3,6 +3,7 @@ package com.neurix.simrs.transaksi.paketperiksa.action;
 import com.neurix.akuntansi.master.masterVendor.bo.MasterVendorBo;
 import com.neurix.akuntansi.master.masterVendor.model.MasterVendor;
 import com.neurix.common.action.BaseTransactionAction;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.kategoritindakan.bo.KategoriTindakanBo;
@@ -17,6 +18,7 @@ import com.neurix.simrs.transaksi.paketperiksa.model.*;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
 
 import com.neurix.simrs.transaksi.paketperiksa.model.PaketPeriksa;
@@ -27,9 +29,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
+import sun.misc.BASE64Decoder;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -205,6 +214,9 @@ public class PaketPeriksaAction extends BaseTransactionAction {
 
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             PasienBo pasienBo = (PasienBo) ctx.getBean("pasienBoProxy");
+            PaketPeriksaBo paketPeriksaBo = (PaketPeriksaBo) ctx.getBean("paketPeriksaBoProxy");
+            Boolean pasienDaftarPaket = false;
+
             List<Pasien> list = new ArrayList<>();
             Pasien dataPasien = new Pasien();
             dataPasien.setNoKtp(nik);
@@ -215,8 +227,25 @@ public class PaketPeriksaAction extends BaseTransactionAction {
                 logger.error("Found Error "+e.getMessage());
             }
 
+            Pasien pas = new Pasien();
+
             if(list.size() > 0){
-                pasien = list.get(0);
+
+                pas = list.get(0);
+
+                try {
+                    pasienDaftarPaket = paketPeriksaBo.cekPaketWithIdPasien(pas.getIdPasien());
+                }catch (GeneralBOException e){
+                    logger.error("Found Error "+e.getMessage());
+                }
+
+                if(pasienDaftarPaket){
+                    pasien.setStatus("error");
+                    pasien.setMsg("No RM "+pas.getIdPasien() +" Sudah terdaftar sebagai pasien paket..!");
+                }else{
+                    pasien = list.get(0);
+                }
+
             }else{
                 pasien = new Pasien();
             }
@@ -259,7 +288,7 @@ public class PaketPeriksaAction extends BaseTransactionAction {
         return response;
     }
 
-    public Pasien saveNewPasien(String jsonString) throws JSONException{
+    public Pasien saveNewPasien(String jsonString) throws JSONException, IOException {
 
         Pasien pasien = new Pasien();
         String userLogin = CommonUtil.userLogin();
@@ -286,6 +315,25 @@ public class PaketPeriksaAction extends BaseTransactionAction {
             dataPasien.setCreatedWho(userLogin);
             dataPasien.setLastUpdate(time);
             dataPasien.setLastUpdateWho(userLogin);
+
+            if(obj.getString("img_ktp") != null && !"".equalsIgnoreCase(obj.getString("img_ktp"))){
+                BASE64Decoder decoder = new BASE64Decoder();
+                byte[] decodedBytes = decoder.decodeBuffer(obj.getString("img_ktp"));
+                logger.info("Decoded upload data : " + decodedBytes.length);
+                String fileName = dataPasien.getNoKtp()+"-"+dateFormater("MM")+dateFormater("yy")+".jpg";
+                String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_KTP_PASIEN+fileName;
+                logger.info("File save path : " + uploadFile);
+                BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+
+                if (image == null) {
+                    logger.error("Buffered Image is null");
+                }else{
+                    File f = new File(uploadFile);
+                    // write the image
+                    ImageIO.write(image, "jpg", f);
+                    dataPasien.setUrlKtp(fileName);
+                }
+            }
 
             try {
                 pasien = pasienBo.saveAddWithResponse(dataPasien);
@@ -318,6 +366,27 @@ public class PaketPeriksaAction extends BaseTransactionAction {
         return list;
     }
 
+    public List<PaketPeriksa> detailPaket(String idPaket) throws JSONException{
+
+        List<PaketPeriksa> list = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PaketPeriksaBo paketPeriksaBo = (PaketPeriksaBo) ctx.getBean("paketPeriksaBoProxy");
+
+        if( idPaket != null && !"".equalsIgnoreCase(idPaket)){
+            try {
+                list = paketPeriksaBo.getDetailPaket(idPaket);
+            }catch (GeneralBOException e){
+                logger.error("Found Error "+e.getMessage());
+            }
+        }
+        return list;
+    }
+
+    private String dateFormater(String type) {
+        java.sql.Date date = new java.sql.Date(new java.util.Date().getTime());
+        DateFormat df = new SimpleDateFormat(type);
+        return df.format(date);
+    }
 
     public void setPaketPeriksaBoProxy(PaketPeriksaBo paketPeriksaBoProxy) {
         this.paketPeriksaBoProxy = paketPeriksaBoProxy;

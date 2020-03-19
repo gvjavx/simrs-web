@@ -10,6 +10,8 @@
     <%@ include file="/pages/common/header.jsp" %>
     <style>
     </style>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/PaketPeriksaAction.js"/>'></script>
+
     <script type='text/javascript'>
 
         $( document ).ready(function() {
@@ -122,7 +124,7 @@
                             <tr bgcolor="#90ee90">
                                 <td>ID Paket</td>
                                 <td>Nama Paket</td>
-                                <td align="center">Action</td>
+                                <td align="center" width="15%">Action</td>
                             </tr>
                             </thead>
                             <tbody>
@@ -131,13 +133,8 @@
                                     <td><s:property value="idPaket"/></td>
                                     <td><s:property value="namaPaket"/></td>
                                     <td align="center">
-                                        <s:url var="add_periksa_lab" namespace="/periksalab" action="add_periksalab" escapeAmp="false">
-                                            <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
-                                            <s:param name="lab"><s:property value="idPeriksaLab"/></s:param>
-                                        </s:url>
-                                        <s:a href="%{add_periksa_lab}">
-                                            <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer; ">
-                                        </s:a>
+                                        <img onclick="detailPaket('<s:property value="idPaket"/>','<s:property value="namaPaket"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-search-25.png"/>" style="cursor: pointer; ">
+                                        <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer; ">
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -150,8 +147,93 @@
     </section>
     <!-- /.content -->
 </div>
-<!-- /.content-wrapper -->
+
+<div class="modal fade" id="modal-detail">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-user"></i> Detail Paket</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_add">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_add"></p>
+                </div>
+                <table class="table table-striped">
+                    <tr>
+                        <td width="20%">ID paket</td>
+                        <td><p id="det_id_paket"></p></td>
+                    </tr>
+                    <tr>
+                        <td>Nama Paket</td>
+                        <td><p id="det_nama_paket"></p></td>
+                    </tr>
+                </table>
+                <div class="row">
+                    <div class="col-md-6">
+                       <p>Daftar Tindakan</p>
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                            <td>ID Tindakan</td>
+                            <td>Nama Tindakan</td>
+                            </thead>
+                            <tbody id="body_tindakan">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <p>Daftar Penunjang Medis</p>
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                            <td>Pemeriksaan</td>
+                            <td>Jenis Lab</td>
+                            </thead>
+                            <tbody id="body_lab">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_add" onclick="saveNewPasien()"><i class="fa fa-arrow-right"></i> Save
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
+                        id="load_add"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type='text/javascript'>
+    function detailPaket(idpaket, namaPaket){
+        $('#modal-detail').modal({show:true, backdrop:'static'});
+        $('#det_id_paket').text(idpaket);
+        $('#det_nama_paket').text(namaPaket);
+        PaketPeriksaAction.detailPaket(idpaket, function (response) {
+
+            if(response.length > 0){
+                var table1 = "";
+                var table2 = "";
+
+                $.each(response, function (i, item) {
+                   if(item.jenisItem == "tindakan"){
+                       table1 += '<tr><td>'+item.idItem+'</td><td>'+item.keterangan+'</td></tr>';
+                   } else{
+                       table2 += '<tr><td>'+item.keterangan+'</td><td>'+item.jenisItem+'</td></tr>';
+                   }
+                });
+
+                $('#body_tindakan').html(table1);
+                $('#body_lab').html(table2);
+           }
+        });
+    }
 </script>
 
 <%@ include file="/pages/common/footer.jsp" %>

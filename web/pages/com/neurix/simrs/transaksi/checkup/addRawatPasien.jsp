@@ -1111,7 +1111,7 @@
                             <s:hidden name="headerCheckup.idPelayananBpjs" id="idPelayananBpjs"></s:hidden>
                             <s:hidden name="headerCheckup.noCheckupOnline"></s:hidden>
 
-                            <s:if test='tipe != "bpjs"'>
+                            <s:if test='tipe == "umum"'>
                             <div class="box-header with-border"></div>
                             <div class="box-header with-border">
                                 <h3 class="box-title"><i class="fa fa-money"></i> Pembayaran</h3>

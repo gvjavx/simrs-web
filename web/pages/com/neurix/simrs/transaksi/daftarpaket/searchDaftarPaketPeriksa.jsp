@@ -131,7 +131,7 @@
                                 <tr>
                                     <td><s:property value="namaPerusahaan"/></td>
                                     <td><s:property value="namaPaket"/></td>
-                                    <td align="center"><p style="background-color: #0F9E5E"><s:property value="jumlah"/></p></td>
+                                    <td align="center"><button class="btn btn-primary btn-sm"><s:property value="jumlah"/></button></td>
                                     <td align="center">
                                         <img class="hvr-grow" onclick="detailPaket('<s:property value="idPerusahaan"/>','<s:property value="idPaket"/>','<s:property value="namaPerusahaan"/>','<s:property value="namaPaket"/>')" src="<s:url value="/pages/images/icons8-search-25.png"/>" style="cursor: pointer; ">
                                     </td>

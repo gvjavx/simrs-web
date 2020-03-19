@@ -297,6 +297,32 @@ public class PaketPeriksaBoImpl implements PaketPeriksaBo {
         return list;
     }
 
+    @Override
+    public List<PaketPeriksa> getDetailPaket(String idPaket) throws GeneralBOException {
+        List<PaketPeriksa> list = new ArrayList<>();
+        if (idPaket != null) {
+            try {
+                list = paketPasienDao.getDetailPaket(idPaket);
+            } catch (HibernateException e) {
+                logger.error("Found Error " + e.getMessage());
+            }
+        }
+        return list;
+    }
+
+    @Override
+    public Boolean cekPaketWithIdPasien(String idPasien) throws GeneralBOException {
+        Boolean response = false;
+
+        try {
+            response = paketPasienDao.cekPaketWithIdPasien(idPasien);
+        }catch (HibernateException e){
+            logger.error("Found Error "+e.getMessage());
+        }
+
+        return response;
+    }
+
     private String getNextPaketPeriksaId() {
 
         String id = "";

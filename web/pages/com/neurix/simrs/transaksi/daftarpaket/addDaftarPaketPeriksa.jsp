@@ -66,6 +66,10 @@
             border-width: 0 2px 2px 0;
             transform: rotate(45deg);
         }
+        canvas {
+            width: 100%;
+            height: 150px;
+        }
     </style>
 </head>
 
@@ -301,10 +305,8 @@
                             <label style="margin-top: 7px">Tanggal Lahir</label>
                             <input class="form-control datepicker datemask" id="add_tanggal_lahir" onchange="$(this).css('border','')">
                         </div>
-                    </div>
-                    <div class="col-md-4">
                         <div class="form-group">
-                            <label>Agama</label>
+                            <label style="margin-top: 7px">Agama</label>
                             <select class="form-control" id="add_agama" onchange="$(this).css('border','')">
                                 <option value="">[Select One]</option>
                                 <option value="Islam">Islam</option>
@@ -314,8 +316,10 @@
                                 <option value="Konguchu">Konguchu</option>
                             </select>
                         </div>
+                    </div>
+                    <div class="col-md-4">
                         <div class="form-group">
-                            <label style="margin-top: 7px">Profesi</label>
+                            <label >Profesi</label>
                             <input class="form-control" id="add_profesi">
                         </div>
                         <div class="form-group">
@@ -330,10 +334,8 @@
                             <label style="margin-top: 7px">No Telp</label>
                             <input class="form-control" id="add_no_telp">
                         </div>
-                    </div>
-                    <div class="col-md-4">
                         <div class="form-group">
-                            <label>Provinsi</label>
+                            <label style="margin-top: 7px">Provinsi</label>
                             <input class="form-control" id="add_provinsi" oninput="$(this).css('border','')">
                             <input type="hidden" id="add_id_provinsi">
                         </div>
@@ -342,8 +344,10 @@
                             <input class="form-control" id="add_kota" oninput="$(this).css('border','')">
                             <input type="hidden" id="add_id_kota">
                         </div>
+                    </div>
+                    <div class="col-md-4">
                         <div class="form-group">
-                            <label style="margin-top: 7px">Kecamatan</label>
+                            <label >Kecamatan</label>
                             <input class="form-control" id="add_kecamatan" oninput="$(this).css('border','')">
                             <input type="hidden" id="add_id_kecamatan">
                         </div>
@@ -363,10 +367,12 @@
                                                     </span>
                                 <input type="text" class="form-control" readonly>
                             </div>
+                            <canvas id="img_ktp_canvas" style="border: solid 1px #ccc"></canvas>
                             <%--<img id="img-upload" width="100%"--%>
                             <%--src="<s:url value="/pages/images/ktp-default.jpg"/>"--%>
                             <%--style="border: darkgray solid 1px; height: 170px; margin-top: 7px"/>--%>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -415,6 +421,9 @@
         listSelectMaster();
         listPaketPeriksa();
 
+        var canvas = document.getElementById('img_ktp_canvas');
+        var ctx = canvas.getContext('2d');
+
         $(document).on('change', '.btn-file :file', function () {
             var input = $(this),
                 label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
@@ -428,6 +437,18 @@
 
             if (input.length) {
                 input.val(log);
+                var reader = new FileReader();
+                reader.onload = function(event){
+                    var img = new Image();
+                    img.onload = function(){
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        ctx.clearRect(0,0,canvas.width,canvas.height);
+                        ctx.drawImage(img,0,0);
+                    }
+                    img.src = event.target.result;
+                }
+                reader.readAsDataURL(event.target.files[0]);
             } else {
                 if (log) alert(log);
             }
@@ -478,7 +499,7 @@
         var cek = false;
         var data = $('#table_pasien').tableToJSON();
 
-        if (nik != '' && nama != '') {
+        if (nik != '') {
 
             $.each(data, function (i, item) {
                 var noKtp = data[i]["NIK"];
@@ -502,7 +523,7 @@
                             var table = '<tr id="row' + nik + '">' +
                                 '<td>' + response.idPasien + '</td>' +
                                 '<td>' + nik + '</td>' +
-                                '<td>' + nama + '</td>' +
+                                '<td>' + response.nama + '</td>' +
                                 '<td style="vertical-align: middle"><label class="label label-success">No RM sudah ada</label></td>' +
                                 '<td align="center">' +
                                 '<img border="0" class="hvr-grow" onclick="delRow(\'' + nik + '\')" src="<s:url value="/pages/images/icons8-cancel-25.png"/>" style="cursor: pointer;">' +
@@ -511,13 +532,18 @@
                             $('#body_pasien').append(table);
                             $('#nik').val('');
                             $('#nama').val('');
-                        } else {
+                        }else if(response.status == "error"){
+                            $('#save_pasien').show();
+                            $('#load_pasien').hide();
+                            $('#warning_tindakan').show().fadeOut(5000);
+                            $('#msg').text(response.msg);
+                        }else {
                             $('#save_pasien').show();
                             $('#load_pasien').hide();
                             var table = '<tr id="row' + nik + '">' +
                                 '<td >' + '<span id="no_rm' + nik + '">' + '</td>' +
                                 '<td>' + nik + '</td>' +
-                                '<td>' + nama + '</td>' +
+                                '<td>' + '<span id="nama' + nik + '">' + '</td>' +
                                 '<td style="vertical-align: middle"><label class="label label-warning" id="lbl'+nik+'"><span id="sts'+nik+'">No RM tidak ada</span></label></td>' +
                                 '<td align="center">' +
                                 '<img border="0" class="hvr-grow" onclick="delRow(\'' + nik + '\')" src="<s:url value="/pages/images/icons8-cancel-25.png"/>" style="cursor: pointer;">' +
@@ -539,9 +565,9 @@
             if (nik == '') {
                 $('#war_nik').show();
             }
-            if (nama == '') {
-                $('#war_nama').show();
-            }
+            // if (nama == '') {
+            //     $('#war_nama').show();
+            // }
         }
     }
 
@@ -571,6 +597,9 @@
         var kota = $('#add_id_kota').val();
         var kecamatan = $('#add_id_kecamatan').val();
         var desa = $('#add_id_desa').val();
+        var canvas = document.getElementById('img_ktp_canvas');
+        var dataURL = canvas.toDataURL("image/png"),
+            dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
 
         if( nik != '' && nama != '' && jk != '' && tempatLahir != '' && tanggalLahir != '' &&
             agama != '' && provinsi != '' && kota != '' && kecamatan != '' && desa != ''){
@@ -585,7 +614,8 @@
                 'profesi':profesi,
                 'suku':suku,
                 'alamat':alamat,
-                'desa_id':desa
+                'desa_id':desa,
+                'img_ktp':dataURL
             };
 
             var objectString = JSON.stringify(data);
@@ -599,6 +629,7 @@
                         $('#info_dialog').dialog('open');
                         $('#modal-daftar-pasien').modal('hide');
                         $('#no_rm'+response.noKtp).text(response.idPasien);
+                        $('#nama'+response.noKtp).text(response.nama);
                         $('#btn_new'+response.noKtp).hide();
                         $('#lbl'+response.noKtp).removeClass("label label-warning").addClass("label label-success");
                         $('#sts'+response.noKtp).text("Berhasil membuat no RM");

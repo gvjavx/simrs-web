@@ -780,6 +780,7 @@ public class PasienBoImpl implements PasienBo {
 
                 response.setIdPasien(pasienEntity.getIdPasien());
                 response.setNoKtp(pasienEntity.getNoKtp());
+                response.setNama(pasienEntity.getNama());
                 response.setStatus("success");
                 response.setMsg("Berhasil");
 
