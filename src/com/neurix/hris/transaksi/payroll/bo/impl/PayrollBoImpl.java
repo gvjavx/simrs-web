@@ -8275,9 +8275,6 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
 
                 itPayrollEntity.setLainLain(payroll.getLainLainNilai());
 
-                itPayrollEntity.setTotalA(payroll.getTotalANilai());
-                itPayrollEntity.setTotalB(payroll.getTotalBNilai());
-                itPayrollEntity.setTotalC(payroll.getTotalCNilai());
                 itPayrollEntity.setGajiKotor(payroll.getGajiKotorNilai());
                 itPayrollEntity.setGajiBersih(payroll.getTotalGajiBersihNilai());
 
@@ -8297,16 +8294,18 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                 itPayrollEntity.setAction(payroll.getAction());
                 itPayrollEntity.setLastUpdateWho(payroll.getLastUpdateWho());
                 itPayrollEntity.setLastUpdate(payroll.getLastUpdate());
+
+                BigDecimal totalA = itPayrollEntity.getGajiGolongan().add(itPayrollEntity.gets)
+
+                itPayrollEntity.setTotalA(payroll.getTotalANilai());
+                itPayrollEntity.setTotalB(payroll.getTotalBNilai());
+                itPayrollEntity.setTotalC(payroll.getTotalCNilai());
                 payrollDao.updateAndSave(itPayrollEntity);
 
                 //jika terjadi perubahan nilai tunjangan Peralihan
                 if (perubahanPeralihan.equalsIgnoreCase("Y")) {
                 }
-
             }
-
-
-
         }
     }
 
