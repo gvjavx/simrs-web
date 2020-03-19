@@ -8200,14 +8200,9 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
     @Override
     public void saveEditDataSys(Payroll payroll) throws GeneralBOException {
         HttpSession session = ServletActionContext.getRequest().getSession();
-        Payroll payrollPerson = (Payroll) session.getAttribute("listDataPayrollPerson");
         PayrollPph payrollPphPerson = (PayrollPph) session.getAttribute("listDataPayrollPphPerson");
 
         ItPayrollEntity itPayrollEntity = payrollDao.getById("payrollId", payroll.getPayrollId(), "Y");
-        ImPosition imPosition = positionDao.getById("positionId", itPayrollEntity.getPositionId(), "Y");
-        ItPayrollPphEntity itPayrollPphEntity = new ItPayrollPphEntity();
-        ItPayrollJubileumEntity itPayrollJubileumEntity = new ItPayrollJubileumEntity();
-        ItPayrollPensiunEntity itPayrollPensiunEntity = new ItPayrollPensiunEntity();
 
         if(itPayrollEntity.getFlagPayroll().equalsIgnoreCase("Y") && itPayrollEntity.getFlagPayroll() != null ) {
             if (itPayrollEntity.getPayrollId() != null) {
@@ -8295,11 +8290,10 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                 itPayrollEntity.setLastUpdateWho(payroll.getLastUpdateWho());
                 itPayrollEntity.setLastUpdate(payroll.getLastUpdate());
 
-                BigDecimal totalA = itPayrollEntity.getGajiGolongan().add(itPayrollEntity.gets)
-
                 itPayrollEntity.setTotalA(payroll.getTotalANilai());
                 itPayrollEntity.setTotalB(payroll.getTotalBNilai());
                 itPayrollEntity.setTotalC(payroll.getTotalCNilai());
+                itPayrollEntity.setGajiBersih(payroll.getTotalGajiBersihNilai());
                 payrollDao.updateAndSave(itPayrollEntity);
 
                 //jika terjadi perubahan nilai tunjangan Peralihan

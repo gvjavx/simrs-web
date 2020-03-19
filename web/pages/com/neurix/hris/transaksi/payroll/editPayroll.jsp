@@ -691,6 +691,9 @@
                                 </div>
                             </div>--%>
                         </div>
+                        <div class="col-sm-4">
+
+                        </div>
                     </div>
                     <div class="row" id="totalAMod">
                         <div class="col-sm-4" id="komponenA">
@@ -3435,9 +3438,12 @@
         var tunjPph = document.getElementById("tunjPph").value;
         var pphGaji = document.getElementById("pphGaji1").value;
         var nilaiPtt = document.getElementById("nilaiPtt").value;
-        var idPtt = document.getElementById("tipePttId1").value;
 
-
+        //komponen total
+        var totalA = document.getElementById("totalA").value;
+        var totalB = document.getElementById("totalB").value;
+        var totalC = document.getElementById("totalC").value;
+        var gajiBersih = document.getElementById("gajiBersih").value;
 
         var flagPensiun = "N";
         var flagJubileum = "N";
@@ -3463,7 +3469,7 @@
                 PayrollAction.saveEditData(payrollId, nip, tunjanganPeralihan,pemondokan,
                         komunikasi, kopkar, iuranSp, iuranPiikb,bankBri, bankMandiri, infaq, perkesDanObat,
                         listrik, iuranProfesi, potonganLain,
-                        flagJubileum, flagPensiun, tunjPph, pphGaji,nilaiPtt,idPtt, function(listdata) {
+                        flagJubileum, flagPensiun, tunjPph, pphGaji,nilaiPtt,totalA,totalB,totalC,gajiBersih, function(listdata) {
                             alert('Data Berhasil Dirubah');
                             $('#modal-edit').modal('hide');
                             $('#formEdit')[0].reset();

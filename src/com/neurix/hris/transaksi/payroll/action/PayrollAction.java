@@ -2642,7 +2642,7 @@ public class PayrollAction extends BaseMasterAction{
                              String tunjPeralihan,String pemondokan,String komunikasi, //komponen A
                              String kopkar, String iuranSp, String iuranPiikb, String bankBri, String bankMandiri, // Komponen rincian C
                              String infaq, String perkesDanObat, String listrik, String iuranProfesi, String potonganLain, // Komponen rincian C
-                             String flagJubileum, String flagPensiun, String tunjPph, String pphGaji, String nilaiPtt, String idPtt){
+                             String flagJubileum, String flagPensiun, String tunjPph, String pphGaji, String nilaiPtt, String totalA,String totalB,String totalC,String gajiBersih){
         Payroll newPayroll = new Payroll();
         newPayroll.setNip(nip);
 //        newPayroll.setTipePegawai(tipePegawai);
@@ -2695,6 +2695,16 @@ public class PayrollAction extends BaseMasterAction{
         /*newPayroll.setCentangListrikAir(flagListrikAir);
         newPayroll.setCentangPerumahan(flagPerumahan);
         newPayroll.setCentangKalkulasiPph(flagKalkulasiPph);*/
+
+        newPayroll.setTotalA(totalA);
+        newPayroll.setTotalB(totalB);
+        newPayroll.setTotalC(totalC);
+        newPayroll.setTotalGajiBersih(gajiBersih);
+        newPayroll.setTotalANilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(totalA))));
+        newPayroll.setTotalBNilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(totalB))));
+        newPayroll.setTotalCNilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(totalC))));
+        newPayroll.setTotalGajiBersihNilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(gajiBersih))));
+
 
         String userLogin = CommonUtil.userLogin();
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
