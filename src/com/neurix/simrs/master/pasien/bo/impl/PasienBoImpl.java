@@ -799,6 +799,17 @@ public class PasienBoImpl implements PasienBo {
         return response;
     }
 
+    @Override
+    public List<Pasien> getListPasienWithPaket(String nama) throws GeneralBOException {
+        List<Pasien> list = new ArrayList<>();
+        try {
+            list = pasienDao.getListPasienWithPaket(nama);
+        }catch (HibernateException e){
+            logger.error("Found Erro "+e.getMessage());
+        }
+        return list;
+    }
+
     public void setPasienDao(PasienDao pasienDao) {
         this.pasienDao = pasienDao;
     }

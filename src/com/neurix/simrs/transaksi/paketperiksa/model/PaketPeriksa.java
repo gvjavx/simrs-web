@@ -27,6 +27,44 @@ public class PaketPeriksa {
     private String idPasien;
     private String namaPasien;
 
+    private String idKategoriItem;
+    private String idItem;
+    private String jenisItem;
+
+    private String idPaketPasien;
+
+    public String getIdPaketPasien() {
+        return idPaketPasien;
+    }
+
+    public void setIdPaketPasien(String idPaketPasien) {
+        this.idPaketPasien = idPaketPasien;
+    }
+
+    public String getIdKategoriItem() {
+        return idKategoriItem;
+    }
+
+    public void setIdKategoriItem(String idKategoriItem) {
+        this.idKategoriItem = idKategoriItem;
+    }
+
+    public String getIdItem() {
+        return idItem;
+    }
+
+    public void setIdItem(String idItem) {
+        this.idItem = idItem;
+    }
+
+    public String getJenisItem() {
+        return jenisItem;
+    }
+
+    public void setJenisItem(String jenisItem) {
+        this.jenisItem = jenisItem;
+    }
+
     public String getNamaPasien() {
         return namaPasien;
     }

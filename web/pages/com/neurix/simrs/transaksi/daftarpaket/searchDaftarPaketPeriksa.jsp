@@ -163,7 +163,7 @@
                 </div>
                     <table class="table table-striped">
                         <tr>
-                            <td>Nama Perusahaan</td>
+                            <td width="35%">Nama Perusahaan</td>
                             <td><p id="det_nama_perusahaan"></p></td>
                         </tr>
                         <tr>
@@ -175,7 +175,7 @@
                     <thead>
                         <td>No RM</td>
                         <td>Nama</td>
-                        <td>Status</td>
+                        <td align="center">Status</td>
                     </thead>
                     <tbody id="body_detail_pasien">
 
@@ -202,7 +202,24 @@
         $('#det_nama_paket').text(namaPaket);
         $('#modal-detail-pasien').modal({show:true, backdrop:'static'});
         PaketPeriksaAction.detailDaftarPaketPasien(idPaket, idPerusahaan, function (response) {
-            console.log(response);
+            if(response.length > 0){
+              var table = "";
+              $.each(response, function (i, item) {
+                  var label = ""
+                  if(item.flag == "Y"){
+                      label = '<label class="label label-warning">belum periksa</label>';
+                  }else{
+                      label = '<label class="label label-success">sudah periksa</label>';
+                  }
+                  table +=
+                      '<tr>' +
+                      '<td>'+item.idPasien+'</td>' +
+                      '<td>'+item.namaPasien+'</td>' +
+                      '<td align="center" style="vertical-align: middle">'+label+'</td>' +
+                      '</tr>'
+              });
+              $('#body_detail_pasien').html(table);
+            }
         })
 
     }

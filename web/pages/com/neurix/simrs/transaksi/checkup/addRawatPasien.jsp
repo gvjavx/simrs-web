@@ -545,6 +545,7 @@
                                             </script>
                                             <script type="application/javascript">
                                                 var functions, mapped;
+                                                var tipe = '<s:property value="tipe"/>';
                                                 $('#id_pasien').typeahead({
                                                     minLength: 1,
                                                     source: function (query, process) {
@@ -554,7 +555,7 @@
                                                         var data = [];
                                                         dwr.engine.setAsync(false);
 
-                                                        PasienAction.getListComboPasien(query, function (listdata) {
+                                                        PasienAction.getListComboPasien(query, tipe, function (listdata) {
                                                             data = listdata;
                                                         });
 
@@ -590,7 +591,8 @@
                                                                 kota: item.kota,
                                                                 kec: item.kecamatan,
                                                                 desa: item.desa,
-                                                                isLama: item.isPasienLama
+                                                                isLama: item.isPasienLama,
+                                                                idPelayanan: item.idPelayanan
                                                             };
                                                             functions.push(labelItem);
                                                         });
@@ -628,6 +630,9 @@
                                                         } else {
                                                             $('#kunjungan').val("Baru").attr('disabled', true);
                                                             $('#kunjungan_val').val("Baru");
+                                                        }
+                                                        if(selectedObj.idPelayanan != null){
+                                                            $('#poli').val(selectedObj.idPelayanan).trigger('change').attr('readonly', true);
                                                         }
                                                         $('#no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #st_tgl_lahir, #agama, #provinsi, #kabupaten, #kecamatan, #desa ').css('border', '');
                                                         return selectedObj.id;
@@ -1808,10 +1813,6 @@
     }
 
     function initlistPenjamin() {
-        // var url_string = window.location.href;
-        // var url = new URL(url_string);
-        // var tipe = url.searchParams.get("tipe");
-
         var tipe = '<s:property value="tipe"/>';
         var option = "";
         CheckupAction.getComboJenisPeriksaPasienWithBpjs(function (response) {
@@ -1829,6 +1830,9 @@
         if (tipe == "umum") {
             listPenjaminNoBpjs()
             $('#penjamin').val('umum').trigger('change');
+        }
+        if (tipe == "paket") {
+            $('#penjamin').val('paket').trigger('change').attr('readonly', true);
         }
     }
 

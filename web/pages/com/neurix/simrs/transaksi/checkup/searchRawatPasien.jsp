@@ -164,6 +164,10 @@
                                                     <i class="fa fa-user-plus"></i>Pasien Umum</a></li>
                                                 <li><a href="/simrs/checkup/add_checkup.action?tipe=bpjs">
                                                     <i class="fa fa-user-plus"></i>Pasien Bpjs</a></li>
+                                                <li><a href="/simrs/checkup/add_checkup.action?tipe=paket">
+                                                    <i class="fa fa-user-plus"></i>Pasien Paket</a></li>
+                                                <li><a href="/simrs/checkup/add_checkup.action?tipe=asuransi">
+                                                    <i class="fa fa-user-plus"></i>Pasien Asuransi</a></li>
                                             </ul>
                                         </div>
                                         <%--<a type="button" class="btn btn-primary" href="add_checkup.action"><i--%>

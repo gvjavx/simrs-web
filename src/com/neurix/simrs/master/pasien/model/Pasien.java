@@ -49,6 +49,25 @@ public class Pasien {
     private String status;
     private String msg;
 
+    private String idPaket;
+    private String idPelayanan;
+
+    public String getIdPaket() {
+        return idPaket;
+    }
+
+    public void setIdPaket(String idPaket) {
+        this.idPaket = idPaket;
+    }
+
+    public String getIdPelayanan() {
+        return idPelayanan;
+    }
+
+    public void setIdPelayanan(String idPelayanan) {
+        this.idPelayanan = idPelayanan;
+    }
+
     public String getStatus() {
         return status;
     }

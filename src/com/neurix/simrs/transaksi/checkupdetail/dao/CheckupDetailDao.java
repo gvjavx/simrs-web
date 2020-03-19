@@ -192,7 +192,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     detailCheckup.setStatusBayar(obj[12] == null ? "" : obj[12].toString());
 
                     if ("0".equalsIgnoreCase(detailCheckup.getStatusPeriksa()) || "1".equalsIgnoreCase(detailCheckup.getStatusPeriksa())) {
-                        if ("bpjs".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien())) {
+                        if ("bpjs".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien()) || "paket".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien())) {
 
                             HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
                             headerDetailCheckup.setIdDetailCheckup(obj[0].toString());

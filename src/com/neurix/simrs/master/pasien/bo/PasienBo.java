@@ -41,4 +41,5 @@ public interface PasienBo extends GeneralBo {
     public String getNextIdImg();
 
     public Pasien saveAddWithResponse(Pasien pasien) throws GeneralBOException;
+    public List<Pasien> getListPasienWithPaket(String nama) throws GeneralBOException;
 }
