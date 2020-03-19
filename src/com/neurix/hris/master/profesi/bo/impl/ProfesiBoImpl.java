@@ -95,39 +95,44 @@ public class ProfesiBoImpl implements ProfesiBo {
 //        String condition = null;
 
         if (bean!=null) {
-            String historyId = "";
-            String profesiId = bean.getProfesiId();
+            String status = cekStatus(bean.getProfesiName());
+            if (!status.equalsIgnoreCase("exist")){
+                String historyId = "";
+                String profesiId = bean.getProfesiId();
 
-            ImProfesiEntity imProfesiEntity = null;
-            try {
-                // Get data from database by ID
-                imProfesiEntity = profesiDao.getById("profesiId", profesiId);
-            } catch (HibernateException e) {
-                logger.error("[ProfesiBoImpl.saveEdit] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when searching data Profesi by Kode Profesi, please inform to your admin...," + e.getMessage());
-            }
-
-            if (imProfesiEntity != null) {
-                imProfesiEntity.setProfesiId(bean.getProfesiId());
-                imProfesiEntity.setProfesiName(bean.getProfesiName());
-                imProfesiEntity.setFlag(bean.getFlag());
-                imProfesiEntity.setAction(bean.getAction());
-                imProfesiEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                imProfesiEntity.setLastUpdate(bean.getLastUpdate());
-
-                String flag;
+                ImProfesiEntity imProfesiEntity = null;
                 try {
-                    // Update into database
-                    profesiDao.updateAndSave(imProfesiEntity);
-//                    condition = "Data SuccessFully Updated";
+                    // Get data from database by ID
+                    imProfesiEntity = profesiDao.getById("profesiId", profesiId);
                 } catch (HibernateException e) {
                     logger.error("[ProfesiBoImpl.saveEdit] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving update data Profesi, please info to your admin..." + e.getMessage());
+                    throw new GeneralBOException("Found problem when searching data Profesi by Kode Profesi, please inform to your admin...," + e.getMessage());
                 }
-            } else {
-                logger.error("[ProfesiBoImpl.saveEdit] Error, not found data Profesi with request id, please check again your data ...");
-                throw new GeneralBOException("Error, not found data Profesi with request id, please check again your data ...");
+
+                if (imProfesiEntity != null) {
+                    imProfesiEntity.setProfesiId(bean.getProfesiId());
+                    imProfesiEntity.setProfesiName(bean.getProfesiName());
+                    imProfesiEntity.setFlag(bean.getFlag());
+                    imProfesiEntity.setAction(bean.getAction());
+                    imProfesiEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    imProfesiEntity.setLastUpdate(bean.getLastUpdate());
+
+                    String flag;
+                    try {
+                        // Update into database
+                        profesiDao.updateAndSave(imProfesiEntity);
+//                    condition = "Data SuccessFully Updated";
+                    } catch (HibernateException e) {
+                        logger.error("[ProfesiBoImpl.saveEdit] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving update data Profesi, please info to your admin..." + e.getMessage());
+                    }
+                } else {
+                    logger.error("[ProfesiBoImpl.saveEdit] Error, not found data Profesi with request id, please check again your data ...");
+                    throw new GeneralBOException("Error, not found data Profesi with request id, please check again your data ...");
 //                condition = "Error, not found data Profesi with request id, please check again your data ...";
+                }
+            }else {
+                throw new GeneralBOException("Maaf Data Tersebut Sudah Ada");
             }
         }
         logger.info("[ProfesiBoImpl.saveEdit] end process <<<");
@@ -273,11 +278,11 @@ public class ProfesiBoImpl implements ProfesiBo {
         logger.info("[UserBoImpl.getComboUserWithCriteria] end process <<<");
         return listComboProfesi;
     }
-    public String cekStatus(String golonganId)throws GeneralBOException{
+    public String cekStatus(String profesiName)throws GeneralBOException{
         String status ="";
         List<ImProfesiEntity> skalaGajiEntity = new ArrayList<>();
         try {
-            skalaGajiEntity = profesiDao.getListProfesi(golonganId);
+            skalaGajiEntity = profesiDao.getListProfesi(profesiName);
         } catch (HibernateException e) {
             logger.error("[PayrollSkalaGajiBoImpl.getSearchPayrollSkalaGajiByCriteria] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());

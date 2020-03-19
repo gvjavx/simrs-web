@@ -100,7 +100,7 @@ public class PayrollTunjanganStrategisBoImpl implements PayrollTunjanganStrategi
 
             try {
                 // Get data from database by ID
-                imPayrollTunjanganStrategisEntity = payrollTunjanganStrategisDao.getById("tunjJabStrukturId", payrollTunjanganStrategis);
+                imPayrollTunjanganStrategisEntity = payrollTunjanganStrategisDao.getById("tunjStrategisId", payrollTunjanganStrategis);
             } catch (HibernateException e) {
                 logger.error("[PayrollTunjanganStrategisBoImpl.saveDelete] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when searching data alat by Kode alat, please inform to your admin...," + e.getMessage());
@@ -170,8 +170,6 @@ public class PayrollTunjanganStrategisBoImpl implements PayrollTunjanganStrategi
                     imPayrollTunjanganStrategisEntity.setNilai(BigDecimal.valueOf(0));
                 }
                 imPayrollTunjanganStrategisEntity.setGolonganId(bean.getGolonganId());
-                imPayrollTunjanganStrategisEntity.setCreatedWho(bean.getCreatedWho());
-                imPayrollTunjanganStrategisEntity.setCreatedDate(bean.getCreatedDate());
                 imPayrollTunjanganStrategisEntity.setFlag(bean.getFlag());
                 imPayrollTunjanganStrategisEntity.setAction(bean.getAction());
                 imPayrollTunjanganStrategisEntity.setLastUpdateWho(bean.getLastUpdateWho());

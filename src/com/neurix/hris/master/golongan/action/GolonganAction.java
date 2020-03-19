@@ -543,11 +543,11 @@ public class GolonganAction extends BaseMasterAction{
                 logId = golonganBoProxy.saveErrorMessage(e.getMessage(), "GolonganBO.saveEdit");
             } catch (GeneralBOException e1) {
                 logger.error("[GolonganAction.saveEdit] Error when saving error,", e1);
-                return ERROR;
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[GolonganAction.saveEdit] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            throw new GeneralBOException(e.getMessage());
         }
 
         logger.info("[GolonganAction.saveEdit] end process <<<");

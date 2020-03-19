@@ -229,15 +229,14 @@ public class DepartmentAction extends BaseMasterAction{
                 logId = departmentBoProxy.saveErrorMessage(e.getMessage(), "DepartmentBO.saveEdit");
             } catch (GeneralBOException e1) {
                 logger.error("[DepartmentAction.saveEdit] Error when saving error,", e1);
-                return ERROR;
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[DepartmentAction.saveEdit] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            throw new GeneralBOException(e.getMessage());
         }
 
         logger.info("[DepartmentAction.saveEdit] end process <<<");
-
         return "success_save_edit";
     }
 

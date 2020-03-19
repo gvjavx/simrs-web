@@ -137,7 +137,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="ijinName1" name="ijin.ijinName" required="true" disabled="false" cssClass="form-control"/>
+                                <s:textfield id="ijinName1" name="ijin.ijinName" readonly="true" required="true" disabled="false" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>

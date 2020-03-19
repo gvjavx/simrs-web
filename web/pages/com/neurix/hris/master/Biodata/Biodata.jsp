@@ -68,8 +68,9 @@
             var golongan            = document.getElementById("golongan1").value;
             var statusPegawai       = document.getElementById("statusPegawai1").value;
             var flag                = document.getElementById("flagAktif").value;
+            var masaGolongan        = document.getElementById("poinLebih").value;
 
-            if (statusPegawai != '' && nip != '' && namaPegawai != '' && noKtp != '' && tempatLahir != '' && tipePegawai != '' && tanggalLahir != '' && branch != '') {
+            if (statusPegawai != '' && nip != '' && namaPegawai != '' && noKtp != '' && tempatLahir != '' && tipePegawai != '' && tanggalLahir != '' && branch != '' && masaGolongan != '') {
                 if(flag == 'N'){
                     alert("Non Aktifkan User");
                 }
@@ -114,6 +115,9 @@
                  }*/
                 if (statusPegawai == '') {
                     msg += 'Field <strong>Status Pegawai</strong> is required.' + '<br/>';
+                }
+                if (masaGolongan == '') {
+                    msg += 'Field <strong>Masa Kerja Golongan</strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
@@ -866,7 +870,7 @@
 
                                 <tr>
                                     <td>
-                                        <label class="control-label"><small>Masa Kerja Golongan:</small></label>
+                                        <label class="control-label"><small>Masa Kerja Golongan*:</small></label>
                                     </td>
                                     <td>
                                         <table>

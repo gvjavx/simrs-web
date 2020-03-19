@@ -229,11 +229,11 @@ public class ProfesiAction extends BaseMasterAction{
                 logId = profesiBoProxy.saveErrorMessage(e.getMessage(), "ProfesiBO.saveEdit");
             } catch (GeneralBOException e1) {
                 logger.error("[ProfesiAction.saveEdit] Error when saving error,", e1);
-                return ERROR;
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[ProfesiAction.saveEdit] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            throw new GeneralBOException(e.getMessage());
         }
 
         logger.info("[ProfesiAction.saveEdit] end process <<<");
@@ -297,7 +297,6 @@ public class ProfesiAction extends BaseMasterAction{
                 logId = profesiBoProxy.saveErrorMessage(e.getMessage(), "liburBO.saveAdd");
             } catch (GeneralBOException e1) {
                 throw new GeneralBOException(e1.getMessage());
-
             }
             logger.error("[liburAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());

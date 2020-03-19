@@ -77,7 +77,7 @@ public class PayrollTunjanganJabatanStrukturalAction extends BaseMasterAction{
 
         if(kode != null && !"".equalsIgnoreCase(kode)){
             if(listOfResult != null){
-                for (PayrollTunjanganJabatanStruktural payrollTunjanganJabatanStruktural: listOfResult) {
+                for (PayrollTunjanganJabatanStruktural payrollTunjanganJabatanStruktural : listOfResult) {
                     if(kode.equalsIgnoreCase(payrollTunjanganJabatanStruktural.getTunjJabStrukturId()) && flag.equalsIgnoreCase(payrollTunjanganJabatanStruktural.getFlag())){
                         setPayrollTunjanganJabatanStruktural(payrollTunjanganJabatanStruktural);
                         break;

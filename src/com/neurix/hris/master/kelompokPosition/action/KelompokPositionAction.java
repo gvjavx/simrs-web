@@ -238,11 +238,11 @@ public class KelompokPositionAction extends BaseMasterAction{
                 logId = kelompokPositionBoProxy.saveErrorMessage(e.getMessage(), "KelompokPositionBO.saveEdit");
             } catch (GeneralBOException e1) {
                 logger.error("[KelompokPositionAction.saveEdit] Error when saving error,", e1);
-                return ERROR;
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[KelompokPositionAction.saveEdit] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            throw new GeneralBOException(e.getMessage());
         }
 
         logger.info("[KelompokPositionAction.saveEdit] end process <<<");

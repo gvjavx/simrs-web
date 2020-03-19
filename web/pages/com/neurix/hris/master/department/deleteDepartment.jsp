@@ -12,7 +12,9 @@
             //$('#waiting_dialog').dialog('close');
             $('#view_dialog_menu').dialog('close');
             $('#info_dialog').dialog('close');
-            window.location.reload(true);
+//            window.location.reload(true);
+            document.departmentForm.action = "search_department.action";
+            document.departmentForm.submit();
         };
 
         $.subscribe('beforeProcessSave', function (event, data) {

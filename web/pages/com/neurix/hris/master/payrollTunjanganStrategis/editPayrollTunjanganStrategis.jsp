@@ -130,10 +130,11 @@
                             <table>
                                 <s:action id="comboPosition" namespace="/admin/position"
                                           name="searchPosition_position"/>
-                                <s:select list="#comboPosition.listOfComboPosition" id="positionId2"
+                                <s:select disabled="true" list="#comboPosition.listOfComboPosition" id="positionId2"
                                           name="payrollTunjanganStrategis.positionId"
                                           listKey="positionId" listValue="positionName" headerKey=""
                                           headerValue="[Select one]" cssClass="form-control"/>
+                                <s:hidden name="payrollTunjanganStrategis.positionId"/>
                             </table>
                         </td>
                     </tr>
@@ -157,7 +158,7 @@
                             <table>
                                 <s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>
                                 <s:select list="#initComboTipe.listComboGolongan" id="golonganId2" name="payrollTunjanganStrategis.golonganId"
-                                          listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                          listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -186,15 +187,21 @@
                             <div id="crud">
                                 <td>
                                     <table>
-                                        <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"
+                                        <sj:dialog id="waiting_dialog" openTopics="showDialog"
+                                                   closeTopics="closeDialog" modal="true"
                                                    resizable="false"
-                                                   height="350" width="600" autoOpen="false" title="Saving ...">
+                                                   height="250" width="600" autoOpen="false"
+                                                   title="Searching ...">
                                             Please don't close this window, server is processing your request ...
-                                            </br>
-                                            </br>
-                                            </br>
+                                            <br>
                                             <center>
-                                                <img border="0" src="<s:url value="/pages/images/indicator-write.gif"/>" name="image_indicator_write">
+                                                <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                     src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                     name="image_indicator_write">
+                                                <br>
+                                                <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                     src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                     name="image_indicator_write">
                                             </center>
                                         </sj:dialog>
 

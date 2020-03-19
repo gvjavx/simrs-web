@@ -398,7 +398,7 @@ public class PositionAction extends BaseMasterAction {
 
                 deletePosition.setLastUpdate(updateTime);
                 deletePosition.setLastUpdateWho(userLogin);
-                deletePosition.setAction("D");
+                deletePosition.setAction("U");
 
                 positionBoProxy.saveDelete(deletePosition);
 
@@ -433,11 +433,10 @@ public class PositionAction extends BaseMasterAction {
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
             Position editPosition = getPosition();
-            editPosition.setCreatedDate(updateTime);
-            editPosition.setCreatedWho(userLogin);
             editPosition.setLastUpdate(updateTime);
             editPosition.setLastUpdateWho(userLogin);
             editPosition.setAction("U");
+            editPosition.setFlag("Y");
 
             positionBoProxy.saveEdit(editPosition);
 
@@ -447,11 +446,11 @@ public class PositionAction extends BaseMasterAction {
                 logId = positionBoProxy.saveErrorMessage(e.getMessage(), "PositionBO.saveEdit");
             } catch (GeneralBOException e1) {
                 logger.error("[PositionAction.saveEdit] Error when saving error,", e1);
-                return ERROR;
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[PositionAction.saveEdit] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            throw new GeneralBOException(e.getMessage());
         }
 //        String itemId = getPosition().getStPositionId();
 //        if (itemId != null && !"".equalsIgnoreCase(itemId)) {

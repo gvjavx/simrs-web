@@ -93,53 +93,59 @@ public class KelompokPositionBoImpl implements KelompokPositionBo {
         logger.info("[KelompokPositionBoImpl.saveEdit] start process >>>");
 
 //        String condition = null;
-
         if (bean!=null) {
 
-            String kelompokPositionId = bean.getKelompokId();
-            String idHistory = "";
-            ImKelompokPositionEntity imKelompokPositionEntity = null;
-            ImKelompokPositionHistoryEntity imKelompokPositionHistoryEntity = new ImKelompokPositionHistoryEntity();
-            try {
-                // Get data from database by ID
-                imKelompokPositionEntity = kelompokPositionDao.getById("kelompokId", kelompokPositionId);
-                idHistory = kelompokPositionDao.getNextKelompokPositionHistoryId();
-            } catch (HibernateException e) {
-                logger.error("[KelompokPositionBoImpl.saveEdit] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when searching data KelompokPosition by Kode KelompokPosition, please inform to your admin...," + e.getMessage());
-            }
+            String status = cekStatus(bean.getKelompokName());
+            if (!status.equalsIgnoreCase("exist")){
 
-            if (imKelompokPositionEntity != null) {
-                imKelompokPositionHistoryEntity.setId(idHistory);
-                imKelompokPositionHistoryEntity.setKelompokId(imKelompokPositionEntity.getKelompokId());
-                imKelompokPositionHistoryEntity.setKelompokName(imKelompokPositionEntity.getKelompokName());
-                imKelompokPositionHistoryEntity.setFlag(imKelompokPositionEntity.getFlag());
-                imKelompokPositionHistoryEntity.setAction(imKelompokPositionEntity.getAction());
-                imKelompokPositionHistoryEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                imKelompokPositionHistoryEntity.setLastUpdate(bean.getLastUpdate());
-                imKelompokPositionHistoryEntity.setCreatedWho(imKelompokPositionEntity.getCreatedWho());
-                imKelompokPositionHistoryEntity.setCreatedDate(imKelompokPositionEntity.getCreatedDate());
-
-                imKelompokPositionEntity.setKelompokId(bean.getKelompokId());
-                imKelompokPositionEntity.setKelompokName(bean.getKelompokName());
-                imKelompokPositionEntity.setFlag(bean.getFlag());
-                imKelompokPositionEntity.setAction(bean.getAction());
-                imKelompokPositionEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                imKelompokPositionEntity.setLastUpdate(bean.getLastUpdate());
-
-                String flag;
+                String kelompokPositionId = bean.getKelompokId();
+                String idHistory = "";
+                ImKelompokPositionEntity imKelompokPositionEntity = null;
+                ImKelompokPositionHistoryEntity imKelompokPositionHistoryEntity = new ImKelompokPositionHistoryEntity();
                 try {
-                    // Update into database
-                    kelompokPositionDao.updateAndSave(imKelompokPositionEntity);
-                    kelompokPositionDao.addAndSaveHistory(imKelompokPositionHistoryEntity);
+                    // Get data from database by ID
+                    imKelompokPositionEntity = kelompokPositionDao.getById("kelompokId", kelompokPositionId);
+                    idHistory = kelompokPositionDao.getNextKelompokPositionHistoryId();
                 } catch (HibernateException e) {
                     logger.error("[KelompokPositionBoImpl.saveEdit] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving update data KelompokPosition, please info to your admin..." + e.getMessage());
+                    throw new GeneralBOException("Found problem when searching data KelompokPosition by Kode KelompokPosition, please inform to your admin...," + e.getMessage());
                 }
-            } else {
-                logger.error("[KelompokPositionBoImpl.saveEdit] Error, not found data KelompokPosition with request id, please check again your data ...");
-                throw new GeneralBOException("Error, not found data KelompokPosition with request id, please check again your data ...");
+
+                if (imKelompokPositionEntity != null) {
+                    imKelompokPositionHistoryEntity.setId(idHistory);
+                    imKelompokPositionHistoryEntity.setKelompokId(imKelompokPositionEntity.getKelompokId());
+                    imKelompokPositionHistoryEntity.setKelompokName(imKelompokPositionEntity.getKelompokName());
+                    imKelompokPositionHistoryEntity.setFlag(imKelompokPositionEntity.getFlag());
+                    imKelompokPositionHistoryEntity.setAction(imKelompokPositionEntity.getAction());
+                    imKelompokPositionHistoryEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    imKelompokPositionHistoryEntity.setLastUpdate(bean.getLastUpdate());
+                    imKelompokPositionHistoryEntity.setCreatedWho(imKelompokPositionEntity.getCreatedWho());
+                    imKelompokPositionHistoryEntity.setCreatedDate(imKelompokPositionEntity.getCreatedDate());
+
+                    imKelompokPositionEntity.setKelompokId(bean.getKelompokId());
+                    imKelompokPositionEntity.setKelompokName(bean.getKelompokName());
+                    imKelompokPositionEntity.setFlag(bean.getFlag());
+                    imKelompokPositionEntity.setAction(bean.getAction());
+                    imKelompokPositionEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    imKelompokPositionEntity.setLastUpdate(bean.getLastUpdate());
+
+                    String flag;
+                    try {
+                        // Update into database
+                        kelompokPositionDao.updateAndSave(imKelompokPositionEntity);
+                        kelompokPositionDao.addAndSaveHistory(imKelompokPositionHistoryEntity);
+                    } catch (HibernateException e) {
+                        logger.error("[KelompokPositionBoImpl.saveEdit] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving update data KelompokPosition, please info to your admin..." + e.getMessage());
+                    }
+                } else {
+                    logger.error("[KelompokPositionBoImpl.saveEdit] Error, not found data KelompokPosition with request id, please check again your data ...");
+                    throw new GeneralBOException("Error, not found data KelompokPosition with request id, please check again your data ...");
 //                condition = "Error, not found data KelompokPosition with request id, please check again your data ...";
+                }
+
+            }else {
+                throw new GeneralBOException("Maaf Data Tersebut Sudah ada");
             }
         }
         logger.info("[KelompokPositionBoImpl.saveEdit] end process <<<");

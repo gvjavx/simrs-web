@@ -215,8 +215,6 @@ public class PositionBoImpl implements PositionBo {
             }else{
                 throw new GeneralBOException("Maaf Posisi Tersebut Sudah Ada");
             }
-
-
         }
 
         logger.info("[PositionBoImpl.saveAdd] end process <<<");
@@ -231,80 +229,124 @@ public class PositionBoImpl implements PositionBo {
         return result;
     }
 
-    public void saveEdit(Position positionNew) throws GeneralBOException {
-
+    public void saveEdit(Position bean) throws GeneralBOException{
         logger.info("[PositionBoImpl.saveEdit] start process >>>");
 
-        if (positionNew != null) {
+        if (bean != null){
+            String status = cekStatus(bean.getPositionName());
+            if (!status.equalsIgnoreCase("exist")){
+                String positionId = bean.getPositionId();
+                ImPosition imPosition = null;
 
-            //copy new data to model tabel
-            ImPosition imPositionNew = new ImPosition();
-            try {
-                BeanUtils.copyProperties(imPositionNew, positionNew);
-            } catch (IllegalAccessException e) {
-                logger.error("[PositionBoImpl.saveEdit] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when coping data object positionNew to ImPositionNew, please info to your admin..." + e.getMessage());
-            } catch (InvocationTargetException e) {
-                logger.error("[PositionBoImpl.saveEdit] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when coping data object positionNew to ImPositionNew, please info to your admin..." + e.getMessage());
-            }
-
-            //retrieve last data by id
-            String positionId = positionNew.getPositionId();
-
-            ImPosition imPositionOld = null;
-            try {
-                imPositionOld = positionDao.getById("positionId",positionId, "Y");
-            } catch (HibernateException e) {
-                logger.error("[PositionBoImpl.saveEdit] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when searching data position by id, please inform to your admin...," + e.getMessage());
-            }
-
-            if (imPositionOld != null) {
-
-                // move last data to table history
-                ImPositionHistory imPositionDeactive = new ImPositionHistory();
-                /*try {
-                    BeanUtils.copyProperties(imPositionDeactive, imPositionOld);
-                } catch (IllegalAccessException e) {
+                try{
+                    imPosition = positionDao.getById("positionId", positionId);
+                }catch (HibernateException e){
                     logger.error("[PositionBoImpl.saveEdit] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when coping data object positionOld to ImPositionBeforeDeactive, please info to your admin..." + e.getMessage());
-                } catch (InvocationTargetException e) {
-                    logger.error("[PositionBoImpl.saveEdit] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when coping data object positionOld to ImPositionBeforeDeactive, please info to your admin..." + e.getMessage());
+                    throw new GeneralBOException("Found problem when searching data Position by Position Id, please inform to your admin...," + e.getMessage());
                 }
 
-                try {
-                    positionDao.addAndSaveHistory(imPositionDeactive);
-                } catch (HibernateException e) {
-                    logger.error("[PositionBoImpl.saveEdit] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving deactive data role, please info to your admin..." + e.getMessage());
-                }*/
+                if (imPosition != null){
+                    imPosition.setPositionId(bean.getPositionId());
+                    imPosition.setPositionName(bean.getPositionName());
+                    imPosition.setDepartmentId(bean.getDepartmentId());
+                    imPosition.setKelompokId(bean.getKelompokId());
+                    imPosition.setBagianId(bean.getBagianId());
+                    imPosition.setFlag(bean.getFlag());
+                    imPosition.setAction(bean.getAction());
+                    imPosition.setLastUpdateWho(bean.getLastUpdateWho());
+                    imPosition.setLastUpdate(bean.getLastUpdate());
 
-                //update some of last data become new data
-                imPositionNew.setPositionId(positionId);
-                imPositionNew.setDepartmentId(positionNew.getDepartmentId());
-                imPositionNew.setKelompokId(positionNew.getKelompokId());
-                imPositionNew.setBagianId(positionNew.getBagianId());
-                imPositionNew.setFlag(imPositionOld.getFlag());
-
-                ImPosition imPositionActive = (ImPosition) positionDao.getSessionFactory().getCurrentSession().merge(imPositionNew);
-
-                try {
-                    positionDao.updateAndSave(imPositionActive);
-                } catch (HibernateException e) {
-                    logger.error("[PositionBoImpl.saveEdit] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving updated data position, please inform to your admin...," + e.getMessage());
+                    try{
+                        positionDao.updateAndSave(imPosition);
+                    }catch (HibernateException e){
+                        logger.error("[PositionBoImpl.saveEdit] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving update data Position, please info to your admin..." + e.getMessage());
+                    }
+                }else {
+                    logger.error("[PositionBoImpl.saveEdit] Error, not found data Position with request id, please check again your data ...");
+                    throw new GeneralBOException("Error, not found data Position with request id, please check again your data ...");
                 }
-
-            } else {
-                logger.error("[PositionBoImpl.saveEdit] Unable to save edit cause no found role key.");
-                throw new GeneralBOException("Found problem when saving edit data position cause no found role key., please info to your admin...");
+            }else {
+                throw new GeneralBOException("Maaf Posisi Tersebut Sudah Ada");
             }
         }
-
         logger.info("[PositionBoImpl.saveEdit] end process <<<");
     }
+
+//    public void saveEdit(Position positionNew) throws GeneralBOException {
+//
+//        logger.info("[PositionBoImpl.saveEdit] start process >>>");
+//
+//        if (positionNew != null) {
+//
+//            //copy new data to model tabel
+//            ImPosition imPositionNew = new ImPosition();
+//            try {
+//                BeanUtils.copyProperties(imPositionNew, positionNew);
+//            } catch (IllegalAccessException e) {
+//                logger.error("[PositionBoImpl.saveEdit] Error, " + e.getMessage());
+//                throw new GeneralBOException("Found problem when coping data object positionNewN to ImPositionNew, please info to your admin..." + e.getMessage());
+//            } catch (InvocationTargetException e) {
+//                logger.error("[PositionBoImpl.saveEdit] Error, " + e.getMessage());
+//                throw new GeneralBOException("Found problem when coping data object positionNew to ImPositionNew, please info to your admin..." + e.getMessage());
+//            }
+//
+//            //retrieve last data by id
+//            String positionId = positionNew.getPositionId();
+//
+//            ImPosition imPositionOld = null;
+//            try {
+//                imPositionOld = positionDao.getById("positionId",positionId, "Y");
+//            } catch (HibernateException e) {
+//                logger.error("[PositionBoImpl.saveEdit] Error, " + e.getMessage());
+//                throw new GeneralBOException("Found problem when searching data position by id, please inform to your admin...," + e.getMessage());
+//            }
+//
+//            if (imPositionOld != null) {
+//
+//                // move last data to table history
+//                ImPositionHistory imPositionDeactive = new ImPositionHistory();
+//                /*try {
+//                    BeanUtils.copyProperties(imPositionDeactive, imPositionOld);
+//                } catch (IllegalAccessException e) {
+//                    logger.error("[PositionBoImpl.saveEdit] Error, " + e.getMessage());
+//                    throw new GeneralBOException("Found problem when coping data object positionOld to ImPositionBeforeDeactive, please info to your admin..." + e.getMessage());
+//                } catch (InvocationTargetException e) {
+//                    logger.error("[PositionBoImpl.saveEdit] Error, " + e.getMessage());
+//                    throw new GeneralBOException("Found problem when coping data object positionOld to ImPositionBeforeDeactive, please info to your admin..." + e.getMessage());
+//                }
+//
+//                try {
+//                    positionDao.addAndSaveHistory(imPositionDeactive);
+//                } catch (HibernateException e) {
+//                    logger.error("[PositionBoImpl.saveEdit] Error, " + e.getMessage());
+//                    throw new GeneralBOException("Found problem when saving deactive data role, please info to your admin..." + e.getMessage());
+//                }*/
+//
+//                //update some of last data become new data
+//                imPositionNew.setPositionId(positionId);
+//                imPositionNew.setDepartmentId(positionNew.getDepartmentId());
+//                imPositionNew.setKelompokId(positionNew.getKelompokId());
+//                imPositionNew.setBagianId(positionNew.getBagianId());
+//                imPositionNew.setFlag(imPositionOld.getFlag());
+//
+//                ImPosition imPositionActive = (ImPosition) positionDao.getSessionFactory().getCurrentSession().merge(imPositionNew);
+//
+//                try {
+//                    positionDao.updateAndSave(imPositionActive);
+//                } catch (HibernateException e) {
+//                    logger.error("[PositionBoImpl.saveEdit] Error, " + e.getMessage());
+//                    throw new GeneralBOException("Found problem when saving updated data position, please inform to your admin...," + e.getMessage());
+//                }
+//
+//            } else {
+//                logger.error("[PositionBoImpl.saveEdit] Unable to save edit cause no found role key.");
+//                throw new GeneralBOException("Found problem when saving edit data position cause no found role key., please info to your admin...");
+//            }
+//        }
+//
+//        logger.info("[PositionBoImpl.saveEdit] end process <<<");
+//    }
 
     public void saveDelete(Position position) throws GeneralBOException {
 
@@ -549,11 +591,11 @@ public class PositionBoImpl implements PositionBo {
         }
         return positions;
     }
-    public String cekStatus(String golonganId)throws GeneralBOException{
+    public String cekStatus(String positionName)throws GeneralBOException{
         String status ="";
         List<ImPosition> skalaGajiEntity = new ArrayList<>();
         try {
-            skalaGajiEntity = positionDao.getListPosition(golonganId);
+            skalaGajiEntity = positionDao.getListPosition(positionName);
         } catch (HibernateException e) {
             logger.error("[PayrollSkalaGajiBoImpl.getSearchPayrollSkalaGajiByCriteria] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());

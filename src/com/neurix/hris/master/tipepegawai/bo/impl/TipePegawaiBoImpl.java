@@ -41,12 +41,8 @@ public class TipePegawaiBoImpl implements TipePegawaiBo{
 
     @Override
     public void saveDelete(TipePegawai bean) throws GeneralBOException {
+        logger.info("[Tipe.saveDelete] start process >>>");
 
-    }
-
-    @Override
-    public void saveEdit(TipePegawai bean) throws GeneralBOException {
-        logger.info("[TipePegawaiBoImpl.saveEdit] start process >>>");
         boolean saved = false;
         if (bean!=null) {
             ImHrisTipePegawai entityData = new ImHrisTipePegawai();
@@ -64,6 +60,64 @@ public class TipePegawaiBoImpl implements TipePegawaiBo{
             } catch (HibernateException e) {
                 logger.error("[TipePegawaiBoImpl.saveEdit] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when saving new data alat, please info to your admin..." + e.getMessage());
+            }
+        }
+        if (saved){
+            String id;
+            try {
+                // Generating ID, get from postgre sequence
+                id = tipePegawaiDao.getTipePegawaiHistoryId();
+            } catch (HibernateException e) {
+                logger.error("[TipePegawaiBoImpl.saveAdd] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when getting sequence alat id, please info to your admin..." + e.getMessage());
+            }
+            ImHrisTipePegawaiHistory entityData = new ImHrisTipePegawaiHistory();
+            entityData.setTipePegawaiId(bean.getTipePegawaiId());
+            entityData.setTipePegawaiName(bean.getTipePegawaiName());
+            entityData.setFlag(bean.getFlag());
+            entityData.setAction(bean.getAction());
+            entityData.setCreateDateWho(bean.getCreatedWho());
+            entityData.setLastUpdateWho(bean.getLastUpdateWho());
+            entityData.setCreatedDate(bean.getCreatedDate());
+            entityData.setLastUpdate(bean.getLastUpdate());
+            entityData.setId(id);
+            try {
+                tipePegawaiDao.addAndSaveHistory(entityData);
+                saved = true;
+            } catch (HibernateException e) {
+                logger.error("[TipePegawaiBoImpl.saveEdit] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when saving new data alat, please info to your admin..." + e.getMessage());
+            }
+
+        }
+        logger.info("[TipePegawaiBoImpl.saveDelete] end process <<<");
+    }
+
+    @Override
+    public void saveEdit(TipePegawai bean) throws GeneralBOException {
+        logger.info("[TipePegawaiBoImpl.saveEdit] start process >>>");
+        boolean saved = false;
+        if (bean!=null) {
+            String status = cekStatus(bean.getTipePegawaiName());
+            if (!status.equalsIgnoreCase("Exist")){
+                ImHrisTipePegawai entityData = new ImHrisTipePegawai();
+                entityData.setTipePegawaiId(bean.getTipePegawaiId());
+                entityData.setTipePegawaiName(bean.getTipePegawaiName());
+                entityData.setFlag(bean.getFlag());
+                entityData.setAction(bean.getAction());
+                entityData.setCreateDateWho(bean.getCreatedWho());
+                entityData.setLastUpdateWho(bean.getLastUpdateWho());
+                entityData.setCreatedDate(bean.getCreatedDate());
+                entityData.setLastUpdate(bean.getLastUpdate());
+                try {
+                    tipePegawaiDao.updateAndSave(entityData);
+                    saved = true;
+                } catch (HibernateException e) {
+                    logger.error("[TipePegawaiBoImpl.saveEdit] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data alat, please info to your admin..." + e.getMessage());
+                }
+            }else {
+                throw new GeneralBOException("Maaf Data Tersebut Sudah Ada");
             }
         }
         if (saved){

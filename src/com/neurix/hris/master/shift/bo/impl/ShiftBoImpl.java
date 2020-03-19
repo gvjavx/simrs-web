@@ -263,7 +263,7 @@ public class ShiftBoImpl implements ShiftBo {
                         returnData.setBranchName("");
                     }
 
-                    if (listEntity.getProfesiId()!=null){
+                    if (listEntity.getProfesiId()!=null && !"".equalsIgnoreCase(listEntity.getProfesiId())){
 
                         ImProfesiEntity profesiEntity = profesiDao.getById("profesiId",listEntity.getProfesiId());
                         returnData.setProfesiName(profesiEntity.getProfesiName());

@@ -121,42 +121,46 @@ public class GolonganPkwtBoImpl implements GolonganPkwtBo {
 //        String condition = null;
 
         if (bean!=null) {
+            String status = cekStatus(bean.getGolonganPkwtName());
+            if (!status.equalsIgnoreCase("exist")){
+                String golonganPkwtId = bean.getGolonganPkwtId();
+                String historyId = "";
 
-            String golonganPkwtId = bean.getGolonganPkwtId();
-            String historyId = "";
+                ImGolonganPkwtEntity imGolonganPkwtEntity = null;
 
-            ImGolonganPkwtEntity imGolonganPkwtEntity = null;
-
-            try {
-                // Get data from database by ID
-                imGolonganPkwtEntity = golonganPkwtDao.getById("golonganPkwtId", golonganPkwtId);
-            } catch (HibernateException e) {
-                logger.error("[GolonganPkwtBoImpl.saveEdit] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when searching data GolonganPkwt by Kode GolonganPkwt, please inform to your admin...," + e.getMessage());
-            }
-
-            if (imGolonganPkwtEntity != null) {
-                //
-                imGolonganPkwtEntity.setGolonganPkwtId(bean.getGolonganPkwtId());
-                imGolonganPkwtEntity.setGolonganPkwtName(bean.getGolonganPkwtName());
-                imGolonganPkwtEntity.setFlag(bean.getFlag());
-                imGolonganPkwtEntity.setAction(bean.getAction());
-                imGolonganPkwtEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                imGolonganPkwtEntity.setLastUpdate(bean.getLastUpdate());
-
-                String flag;
                 try {
-                    // Update into database
-                    golonganPkwtDao.updateAndSave(imGolonganPkwtEntity);
-//                    condition = "Data SuccessFully Updated";
+                    // Get data from database by ID
+                    imGolonganPkwtEntity = golonganPkwtDao.getById("golonganPkwtId", golonganPkwtId);
                 } catch (HibernateException e) {
                     logger.error("[GolonganPkwtBoImpl.saveEdit] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving update data GolonganPkwt, please info to your admin..." + e.getMessage());
+                    throw new GeneralBOException("Found problem when searching data GolonganPkwt by Kode GolonganPkwt, please inform to your admin...," + e.getMessage());
                 }
-            } else {
-                logger.error("[GolonganPkwtBoImpl.saveEdit] Error, not found data GolonganPkwt with request id, please check again your data ...");
-                throw new GeneralBOException("Error, not found data GolonganPkwt with request id, please check again your data ...");
+
+                if (imGolonganPkwtEntity != null) {
+                    //
+                    imGolonganPkwtEntity.setGolonganPkwtId(bean.getGolonganPkwtId());
+                    imGolonganPkwtEntity.setGolonganPkwtName(bean.getGolonganPkwtName());
+                    imGolonganPkwtEntity.setFlag(bean.getFlag());
+                    imGolonganPkwtEntity.setAction(bean.getAction());
+                    imGolonganPkwtEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    imGolonganPkwtEntity.setLastUpdate(bean.getLastUpdate());
+
+                    String flag;
+                    try {
+                        // Update into database
+                        golonganPkwtDao.updateAndSave(imGolonganPkwtEntity);
+//                    condition = "Data SuccessFully Updated";
+                    } catch (HibernateException e) {
+                        logger.error("[GolonganPkwtBoImpl.saveEdit] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving update data GolonganPkwt, please info to your admin..." + e.getMessage());
+                    }
+                } else {
+                    logger.error("[GolonganPkwtBoImpl.saveEdit] Error, not found data GolonganPkwt with request id, please check again your data ...");
+                    throw new GeneralBOException("Error, not found data GolonganPkwt with request id, please check again your data ...");
 //                condition = "Error, not found data GolonganPkwt with request id, please check again your data ...";
+                }
+            }else {
+                throw new GeneralBOException("Maaf Data Tersebut Sudah Ada");
             }
         }
         logger.info("[GolonganPkwtBoImpl.saveEdit] end process <<<");
@@ -198,10 +202,9 @@ public class GolonganPkwtBoImpl implements GolonganPkwtBo {
                     throw new GeneralBOException("Found problem when saving new data GolonganPkwt, please info to your admin..." + e.getMessage());
                 }
             }
-//            else{
-//                throw new GeneralBOException("Maaf Data Tersebut Sudah Ada");
-//            }
-
+            else{
+                throw new GeneralBOException("Maaf Data Tersebut Sudah Ada");
+            }
         }
 
         logger.info("[GolonganPkwtBoImpl.saveAdd] end process <<<");
@@ -278,11 +281,11 @@ public class GolonganPkwtBoImpl implements GolonganPkwtBo {
     public Long saveErrorMessage(String message, String moduleMethod) throws GeneralBOException {
         return null;
     }
-    public String cekStatus(String golonganId)throws GeneralBOException{
+    public String cekStatus(String golonganName)throws GeneralBOException{
         String status ="";
         List<ImGolonganPkwtEntity> skalaGajiEntity = new ArrayList<>();
         try {
-            skalaGajiEntity = golonganPkwtDao.getListGolongan(golonganId);
+            skalaGajiEntity = golonganPkwtDao.getListGolongan(golonganName);
         } catch (HibernateException e) {
             logger.error("[PayrollSkalaGajiBoImpl.getSearchPayrollSkalaGajiByCriteria] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());

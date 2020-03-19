@@ -272,7 +272,7 @@ public class TipePegawaiAction extends BaseMasterAction {
             tipePegawai.setFlag("N");
 
 
-            tipePegawaiBoProxy.saveEdit(tipePegawai);
+            tipePegawaiBoProxy.saveDelete(tipePegawai);
         }catch (GeneralBOException e) {
             Long logId = null;
             try {

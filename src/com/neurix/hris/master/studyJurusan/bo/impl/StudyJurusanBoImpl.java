@@ -95,38 +95,43 @@ public class StudyJurusanBoImpl implements StudyJurusanBo {
 
         if (bean!=null) {
 
-            String studyJurusanId = bean.getJurusanId();
-            String idHistory = "";
-            ImStudyJurusanEntity imStudyJurusanEntity = null;
-            try {
-                // Get data from database by ID
-                imStudyJurusanEntity = studyJurusanDao.getById("jurusanId", studyJurusanId);
-            } catch (HibernateException e) {
-                logger.error("[StudyJurusanBoImpl.saveEdit] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when searching data StudyJurusan by Kode StudyJurusan, please inform to your admin...," + e.getMessage());
-            }
-
-            if (imStudyJurusanEntity != null) {
-
-                imStudyJurusanEntity.setJurusanId(bean.getJurusanId());
-                imStudyJurusanEntity.setJurusanName(bean.getJurusanName());
-                imStudyJurusanEntity.setFlag(bean.getFlag());
-                imStudyJurusanEntity.setAction(bean.getAction());
-                imStudyJurusanEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                imStudyJurusanEntity.setLastUpdate(bean.getLastUpdate());
-
-                String flag;
+            String status = cekStatus(bean.getJurusanName());
+            if (!status.equalsIgnoreCase("exist")){
+                String studyJurusanId = bean.getJurusanId();
+                String idHistory = "";
+                ImStudyJurusanEntity imStudyJurusanEntity = null;
                 try {
-                    // Update into database
-                    studyJurusanDao.updateAndSave(imStudyJurusanEntity);
+                    // Get data from database by ID
+                    imStudyJurusanEntity = studyJurusanDao.getById("jurusanId", studyJurusanId);
                 } catch (HibernateException e) {
                     logger.error("[StudyJurusanBoImpl.saveEdit] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving update data StudyJurusan, please info to your admin..." + e.getMessage());
+                    throw new GeneralBOException("Found problem when searching data StudyJurusan by Kode StudyJurusan, please inform to your admin...," + e.getMessage());
                 }
-            } else {
-                logger.error("[StudyJurusanBoImpl.saveEdit] Error, not found data StudyJurusan with request id, please check again your data ...");
-                throw new GeneralBOException("Error, not found data StudyJurusan with request id, please check again your data ...");
+
+                if (imStudyJurusanEntity != null) {
+
+                    imStudyJurusanEntity.setJurusanId(bean.getJurusanId());
+                    imStudyJurusanEntity.setJurusanName(bean.getJurusanName());
+                    imStudyJurusanEntity.setFlag(bean.getFlag());
+                    imStudyJurusanEntity.setAction(bean.getAction());
+                    imStudyJurusanEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    imStudyJurusanEntity.setLastUpdate(bean.getLastUpdate());
+
+                    String flag;
+                    try {
+                        // Update into database
+                        studyJurusanDao.updateAndSave(imStudyJurusanEntity);
+                    } catch (HibernateException e) {
+                        logger.error("[StudyJurusanBoImpl.saveEdit] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving update data StudyJurusan, please info to your admin..." + e.getMessage());
+                    }
+                } else {
+                    logger.error("[StudyJurusanBoImpl.saveEdit] Error, not found data StudyJurusan with request id, please check again your data ...");
+                    throw new GeneralBOException("Error, not found data StudyJurusan with request id, please check again your data ...");
 //                condition = "Error, not found data StudyJurusan with request id, please check again your data ...";
+                }
+            }else {
+                throw new GeneralBOException("Maaf Data Tersebut Sudah Ada");
             }
         }
         logger.info("[StudyJurusanBoImpl.saveEdit] end process <<<");
@@ -273,11 +278,11 @@ public class StudyJurusanBoImpl implements StudyJurusanBo {
         logger.info("[UserBoImpl.getComboUserWithCriteria] end process <<<");
         return listComboStudyJurusan;
     }
-    public String cekStatus(String golonganId)throws GeneralBOException{
+    public String cekStatus(String jurusanName)throws GeneralBOException{
         String status ="";
         List<ImStudyJurusanEntity> skalaGajiEntity = new ArrayList<>();
         try {
-            skalaGajiEntity = studyJurusanDao.getListStudyJurusan(golonganId);
+            skalaGajiEntity = studyJurusanDao.getListStudyJurusan(jurusanName);
         } catch (HibernateException e) {
             logger.error("[PayrollSkalaGajiBoImpl.getSearchPayrollSkalaGajiByCriteria] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());

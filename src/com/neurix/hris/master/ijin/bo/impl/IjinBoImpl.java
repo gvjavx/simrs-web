@@ -167,37 +167,41 @@ public class IjinBoImpl implements IjinBo {
         logger.info("[IjinBoImpl.saveAdd] start process >>>");
 
         if (bean!=null) {
+            String status = cekStatus(bean.getIjinName(), bean.getFlag());
+            if (!status.equalsIgnoreCase("exist")){
+                String ijinId;
+                try {
+                    // Generating ID, get from postgre sequence
+                    ijinId = ijinDao.getNextIjinId();
+                } catch (HibernateException e) {
+                    logger.error("[IjinBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when getting sequence ijinId id, please info to your admin..." + e.getMessage());
+                }
 
-            String ijinId;
-            try {
-                // Generating ID, get from postgre sequence
-                ijinId = ijinDao.getNextIjinId();
-            } catch (HibernateException e) {
-                logger.error("[IjinBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when getting sequence ijinId id, please info to your admin..." + e.getMessage());
-            }
+                // creating object entity serializable
+                ImIjinEntity imIjinEntity = new ImIjinEntity();
 
-            // creating object entity serializable
-            ImIjinEntity imIjinEntity = new ImIjinEntity();
+                imIjinEntity.setIjinId(ijinId);
+                imIjinEntity.setIjinName(bean.getIjinName());
+                imIjinEntity.setJumlahIjin(bean.getJumlahIjin());
+                imIjinEntity.setGender(bean.getGender());
+                imIjinEntity.setTipeHari(bean.getTipeHari());
+                imIjinEntity.setFlag(bean.getFlag());
+                imIjinEntity.setAction(bean.getAction());
+                imIjinEntity.setCreatedWho(bean.getCreatedWho());
+                imIjinEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                imIjinEntity.setCreatedDate(bean.getCreatedDate());
+                imIjinEntity.setLastUpdate(bean.getLastUpdate());
 
-            imIjinEntity.setIjinId(ijinId);
-            imIjinEntity.setIjinName(bean.getIjinName());
-            imIjinEntity.setJumlahIjin(bean.getJumlahIjin());
-            imIjinEntity.setGender(bean.getGender());
-            imIjinEntity.setTipeHari(bean.getTipeHari());
-            imIjinEntity.setFlag(bean.getFlag());
-            imIjinEntity.setAction(bean.getAction());
-            imIjinEntity.setCreatedWho(bean.getCreatedWho());
-            imIjinEntity.setLastUpdateWho(bean.getLastUpdateWho());
-            imIjinEntity.setCreatedDate(bean.getCreatedDate());
-            imIjinEntity.setLastUpdate(bean.getLastUpdate());
-
-            try {
-                // insert into database
-                ijinDao.addAndSave(imIjinEntity);
-            } catch (HibernateException e) {
-                logger.error("[IjinBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when saving new data Ijin, please info to your admin..." + e.getMessage());
+                try {
+                    // insert into database
+                    ijinDao.addAndSave(imIjinEntity);
+                } catch (HibernateException e) {
+                    logger.error("[IjinBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data Ijin, please info to your admin..." + e.getMessage());
+                }
+            }else {
+                throw new GeneralBOException("Maaf Data dengan Nama Ijin Tersebut Sudah Ada");
             }
         }
 
@@ -422,5 +426,22 @@ public class IjinBoImpl implements IjinBo {
         }
         logger.info("[IjinBoImpl.getComboIjinIdWithKelamin] end process <<<");
         return listComboIjin;
+    }
+
+    public String cekStatus(String ijinName, String flag){
+        String status = "";
+        List<ImIjinEntity> imIjinEntities = new ArrayList<>();
+        try{
+            imIjinEntities = ijinDao.getDataIjin(ijinName, flag);
+        }catch (HibernateException e){
+            logger.error("[IjinBoImpl.cekStatus] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        if (imIjinEntities.size()>0){
+            status = "exist";
+        }else {
+            status = "notExist";
+        }
+        return status;
     }
 }

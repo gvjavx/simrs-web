@@ -136,7 +136,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="positionName2" name="position.positionName" required="false" readonly="false" cssClass="form-control" />
+                                <s:textfield id="positionName2" name="position.positionName" required="false" cssClass="form-control" />
                             </table>
                         </td>
                     </tr>

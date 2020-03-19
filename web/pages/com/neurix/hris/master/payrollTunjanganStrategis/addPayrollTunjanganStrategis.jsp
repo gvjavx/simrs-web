@@ -144,7 +144,7 @@
                             <table>
                                 <s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>
                                 <s:select list="#initComboTipe.listComboGolongan" id="golonganId1" name="payrollTunjanganStrategis.golonganId"
-                                          listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                          listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -176,7 +176,7 @@
                                                    closeTopics="closeDialog" modal="true"
                                                    resizable="false"
                                                    height="250" width="600" autoOpen="false"
-                                                   title="Save Data ...">
+                                                   title="Searching ...">
                                             Please don't close this window, server is processing your request ...
                                             <br>
                                             <center>

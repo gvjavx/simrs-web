@@ -204,7 +204,7 @@
                                             <display:column property="ijinName" sortable="true" title="Name"  />
                                             <display:column property="jumlahIjin" sortable="true" title="Jumlah Hari"  />
                                             <display:column property="gender" sortable="true" title="Gender"  />
-                                            <%--<display:column property="tipeHari" sortable="true" title="Tipe Hari"  />--%>
+                                            <display:column property="tipeHari" sortable="true" title="Tipe Hari"  />
 
                                             <display:column property="createdWho" sortable="true" title="Created who"  />
                                             <display:column property="lastUpdateWho" sortable="true" title="Last update who"  />

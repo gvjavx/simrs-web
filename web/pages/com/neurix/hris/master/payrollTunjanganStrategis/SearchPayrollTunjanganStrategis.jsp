@@ -180,7 +180,7 @@
                                         <br>
                                         <br>
                                         <center>
-                                            <table id="showdata" width="80%">
+                                            <table id="showdata" width="40%">
                                                 <tr>
                                                     <td align="center">
                                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
@@ -218,6 +218,12 @@
                                                             <display:column property="positionName" sortable="true" title="Jabatan"  />
                                                             <display:column property="nilai" sortable="true" title="Nilai"  />
                                                             <display:column property="golonganName" sortable="true" title="Golongan"  />
+                                                            <display:column property="createdWho" sortable="true" title="Created who"  />
+                                                            <display:column property="lastUpdateWho" sortable="true" title="Last update who"  />
+                                                            <display:column property="flag" sortable="true" title="flag"  />
+                                                            <display:column property="action" sortable="true" title="action"  />
+                                                            <display:column property="createdDate" sortable="true" title="Created date"  />
+                                                            <display:column property="lastUpdate" sortable="true" title="Last update"  />
                                                         </display:table>
                                                     </td>
                                                 </tr>
