@@ -34,23 +34,23 @@ public class PaketPeriksaBoImpl implements PaketPeriksaBo {
 
         List<MtSimrsPaketEntity> paketEntities = getListEntityPaket(bean);
         List<PaketPeriksa> paketPeriksaList = new ArrayList<>();
-        if (paketEntities.size() > 0){
+        if (paketEntities.size() > 0) {
 
             PaketPeriksa paketPeriksa;
-            for (MtSimrsPaketEntity paketEntity : paketEntities){
+            for (MtSimrsPaketEntity paketEntity : paketEntities) {
                 paketPeriksa = new PaketPeriksa();
                 paketPeriksa.setIdPaket(paketEntity.getIdPaket());
                 paketPeriksa.setNamaPaket(paketEntity.getNamaPaket());
                 paketPeriksa.setIdKelasPaket(paketEntity.getIdKelasPaket());
 
-                PaketPeriksa kelas = new PaketPeriksa();
-                kelas.setIdKelasPaket(paketEntity.getIdKelasPaket());
-                List<ImSimrsKelasPaketEntity> kelasPaketEntities = getListEntityKelasPaket(kelas);
-                if (kelasPaketEntities.size() > 0){
-                    for (ImSimrsKelasPaketEntity kelasPaketEntity : kelasPaketEntities){
-                        paketPeriksa.setNamaKelasPaket(kelasPaketEntity.getNamaKelasPaket());
-                    }
-                }
+//                PaketPeriksa kelas = new PaketPeriksa();
+//                kelas.setIdKelasPaket(paketEntity.getIdKelasPaket());
+//                List<ImSimrsKelasPaketEntity> kelasPaketEntities = getListEntityKelasPaket(kelas);
+//                if (kelasPaketEntities.size() > 0){
+//                    for (ImSimrsKelasPaketEntity kelasPaketEntity : kelasPaketEntities){
+//                        paketPeriksa.setNamaKelasPaket(kelasPaketEntity.getNamaKelasPaket());
+//                    }
+//                }
 
                 paketPeriksa.setFlag(paketEntity.getFlag());
                 paketPeriksa.setAction(paketEntity.getAction());
@@ -65,23 +65,28 @@ public class PaketPeriksaBoImpl implements PaketPeriksaBo {
         return paketPeriksaList;
     }
 
-    public List<MtSimrsPaketEntity> getListEntityPaket(PaketPeriksa bean) throws GeneralBOException{
+    public List<MtSimrsPaketEntity> getListEntityPaket(PaketPeriksa bean) throws GeneralBOException {
 
         List<MtSimrsPaketEntity> paketEntities = new ArrayList<>();
-        if (bean != null){
+        if (bean != null) {
             Map hsCriteria = new HashMap();
-            if (bean.getIdPaket() != null)
+            if (bean.getIdPaket() != null && !"".equalsIgnoreCase(bean.getIdPaket())) {
                 hsCriteria.put("id_paket", bean.getIdPaket());
-            if (bean.getIdKelasPaket() != null)
-                hsCriteria.put("id_kelas_paket", bean.getIdKelasPaket());
-            if (bean.getIdPerusahaan() != null)
-                hsCriteria.put("id_perusahaan", bean.getIdPerusahaan());
+            }
+            if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())) {
+                hsCriteria.put("branch_id", bean.getBranchId());
+            }
+            if (bean.getNamaPaket() != null && !"".equalsIgnoreCase(bean.getNamaPaket())) {
+                hsCriteria.put("nama_paket", bean.getNamaPaket());
+            }
+
+            hsCriteria.put("flag","Y");
 
             try {
                 paketEntities = paketDao.getByCriteria(hsCriteria);
-            } catch (HibernateException e){
+            } catch (HibernateException e) {
                 logger.error("[PaketPeriksaBoImpl.getListEntityPaket] ERROR. ", e);
-                new GeneralBOException("[PaketPeriksaBoImpl.getListEntityPaket] ERROR. "+e);
+                new GeneralBOException("[PaketPeriksaBoImpl.getListEntityPaket] ERROR. " + e);
             }
         }
         return paketEntities;
@@ -93,26 +98,25 @@ public class PaketPeriksaBoImpl implements PaketPeriksaBo {
     }
 
 
-
-    public List<ItSimrsPaketPasienEntity> getListEntityPaketPasien(PaketPasien bean) throws GeneralBOException{
+    public List<ItSimrsPaketPasienEntity> getListEntityPaketPasien(PaketPasien bean) throws GeneralBOException {
 
         List<ItSimrsPaketPasienEntity> paketPasienEntities = new ArrayList<>();
-        if (bean != null){
+        if (bean != null) {
 
             Map hsCriteria = new HashMap();
-            if (bean.getIdPasien() != null){
+            if (bean.getIdPasien() != null) {
                 hsCriteria.put("id_pasien", bean.getIdPasien());
             }
 
-            if (bean.getIdPaket() != null){
+            if (bean.getIdPaket() != null) {
                 hsCriteria.put("id_paket", bean.getIdPaket());
             }
 
             try {
                 paketPasienEntities = paketPasienDao.getByCriteria(hsCriteria);
-            } catch (HibernateException e){
+            } catch (HibernateException e) {
                 logger.error("[PaketPeriksaBoImpl.getListEntityPaketPasien] ERROR. ", e);
-                new GeneralBOException("[PaketPeriksaBoImpl.getListEntityPaketPasien] ERROR. "+e);
+                new GeneralBOException("[PaketPeriksaBoImpl.getListEntityPaketPasien] ERROR. " + e);
             }
         }
         return paketPasienEntities;
@@ -123,37 +127,37 @@ public class PaketPeriksaBoImpl implements PaketPeriksaBo {
         return null;
     }
 
-    public List<MtSimrsItemPaketEntity> getListEntityItemPaket(ItemPaket bean) throws GeneralBOException{
+    public List<MtSimrsItemPaketEntity> getListEntityItemPaket(ItemPaket bean) throws GeneralBOException {
 
         List<MtSimrsItemPaketEntity> itemPaketEntities = new ArrayList<>();
-        if (bean != null){
+        if (bean != null) {
 
             Map hsCriteria = new HashMap();
-            if (bean.getIdItemPaket() != null){
+            if (bean.getIdItemPaket() != null) {
                 hsCriteria.put("id_item_paket", bean.getIdItemPaket());
             }
 
-            if (bean.getIdPaket() != null){
+            if (bean.getIdPaket() != null) {
                 hsCriteria.put("id_paket", bean.getIdPaket());
             }
 
-            if (bean.getIdItem() != null){
+            if (bean.getIdItem() != null) {
                 hsCriteria.put("id_item", bean.getIdItem());
             }
 
-            if (bean.getIdKategoriItem() != null){
+            if (bean.getIdKategoriItem() != null) {
                 hsCriteria.put("id_kategori_item", bean.getIdKategoriItem());
             }
 
-            if (bean.getJenisItem() != null){
+            if (bean.getJenisItem() != null) {
                 hsCriteria.put("jenis_item", bean.getJenisItem());
             }
 
             try {
                 itemPaketEntities = itemPaketDao.getByCriteria(hsCriteria);
-            } catch (HibernateException e){
+            } catch (HibernateException e) {
                 logger.error("[PaketPeriksaBoImpl.getListEntityItemPaket] ERROR. ", e);
-                new GeneralBOException("[PaketPeriksaBoImpl.getListEntityItemPaket] ERROR. "+e);
+                new GeneralBOException("[PaketPeriksaBoImpl.getListEntityItemPaket] ERROR. " + e);
             }
         }
 
@@ -166,21 +170,21 @@ public class PaketPeriksaBoImpl implements PaketPeriksaBo {
         logger.info("[PaketPeriksaBoImpl.savePaketPeriksa] START >>>");
         CrudResponse response = new CrudResponse();
 
-        if (bean != null){
+        if (bean != null) {
             bean.setIdPaket(getNextItemPaketId());
             try {
                 paketDao.addAndSave(bean);
                 response.setStatus("success");
-            } catch (HibernateException e){
+            } catch (HibernateException e) {
                 response.setStatus("error");
                 response.setMsg(e.getMessage());
                 logger.error("[PaketPeriksaBoImpl.savePaketPeriksa] ERROR. ", e);
-                new GeneralBOException("[PaketPeriksaBoImpl.savePaketPeriksa] ERROR. "+e);
+                new GeneralBOException("[PaketPeriksaBoImpl.savePaketPeriksa] ERROR. " + e);
             }
 
-            if (listItem.size() > 0){
+            if (listItem.size() > 0) {
 
-                for (MtSimrsItemPaketEntity itemPaketEntity : listItem){
+                for (MtSimrsItemPaketEntity itemPaketEntity : listItem) {
                     itemPaketEntity.setIdItemPaket(getNextItemPaketId());
                     itemPaketEntity.setIdPaket(bean.getIdPaket());
                     itemPaketEntity.setFlag(bean.getFlag());
@@ -193,11 +197,11 @@ public class PaketPeriksaBoImpl implements PaketPeriksaBo {
                     try {
                         itemPaketDao.addAndSave(itemPaketEntity);
                         response.setStatus("success");
-                    } catch (HibernateException e){
+                    } catch (HibernateException e) {
                         response.setStatus("error");
                         response.setMsg(e.getMessage());
                         logger.error("[PaketPeriksaBoImpl.savePaketPeriksa] ERROR. ", e);
-                        new GeneralBOException("[PaketPeriksaBoImpl.savePaketPeriksa] ERROR. "+e);
+                        new GeneralBOException("[PaketPeriksaBoImpl.savePaketPeriksa] ERROR. " + e);
                     }
                 }
 
@@ -212,7 +216,7 @@ public class PaketPeriksaBoImpl implements PaketPeriksaBo {
     public CheckResponse savePaketPasien(PaketPasien bean) throws GeneralBOException {
         CheckResponse response = new CheckResponse();
 
-        if(bean != null){
+        if (bean != null) {
 
             ItSimrsPaketPasienEntity entity = new ItSimrsPaketPasienEntity();
 
@@ -231,10 +235,10 @@ public class PaketPeriksaBoImpl implements PaketPeriksaBo {
                 paketPasienDao.addAndSave(entity);
                 response.setStatus("success");
                 response.setMessage("Berhasil");
-            }catch (HibernateException e){
+            } catch (HibernateException e) {
                 response.setStatus("error");
-                response.setMessage("Found Error "+e.getMessage());
-                logger.error("Found Error "+e.getMessage());
+                response.setMessage("Found Error " + e.getMessage());
+                logger.error("Found Error " + e.getMessage());
             }
         }
 
@@ -249,65 +253,91 @@ public class PaketPeriksaBoImpl implements PaketPeriksaBo {
     @Override
     public List<ImSimrsKelasPaketEntity> getListEntityKelasPaket(PaketPeriksa bean) throws GeneralBOException {
         List<ImSimrsKelasPaketEntity> kelasPaketEntities = new ArrayList<>();
-        if (bean != null){
+        if (bean != null) {
 
             Map hsCriteria = new HashMap();
-            if (bean.getIdKelasPaket() != null){
+            if (bean.getIdKelasPaket() != null) {
                 hsCriteria.put("id_kelas_paket", bean.getIdKelasPaket());
             }
 
             try {
                 kelasPaketEntities = kelasPaketDao.getByCriteria(hsCriteria);
-            } catch (HibernateException e){
+            } catch (HibernateException e) {
                 logger.error("[PaketPeriksaBoImpl.getListEntityKelasPaket] ERROR. ", e);
-                new GeneralBOException("[PaketPeriksaBoImpl.getListEntityKelasPaket] ERROR. "+e);
+                new GeneralBOException("[PaketPeriksaBoImpl.getListEntityKelasPaket] ERROR. " + e);
             }
 
         }
         return kelasPaketEntities;
     }
 
-    private String getNextPaketPeriksaId(){
+    @Override
+    public List<PaketPeriksa> getListDaftarPaketPasien(PaketPeriksa bean) throws GeneralBOException {
+        List<PaketPeriksa> list = new ArrayList<>();
+        if (bean != null) {
+            try {
+                list = paketPasienDao.getListDaftarPaketPasien(bean);
+            } catch (HibernateException e) {
+                logger.error("Found Error " + e.getMessage());
+            }
+        }
+        return list;
+    }
+
+    @Override
+    public List<PaketPeriksa> getListDetailDaftarPaketPasien(String idPaket, String idPerusahaan, String branchId) throws GeneralBOException {
+        List<PaketPeriksa> list = new ArrayList<>();
+        if (idPaket != null && idPerusahaan != null && branchId != null) {
+            try {
+                list = paketPasienDao.getDetailDaftarPaketPasien(idPaket, idPerusahaan, branchId);
+            } catch (HibernateException e) {
+                logger.error("Found Error " + e.getMessage());
+            }
+        }
+        return list;
+    }
+
+    private String getNextPaketPeriksaId() {
 
         String id = "";
 
         try {
             id = paketDao.getNextSeq();
-        } catch (HibernateException e){
+        } catch (HibernateException e) {
             logger.error("[PaketPeriksaBoImpl.getNextPaketPeriksaId] ERROR. ", e);
         }
 
-        if (!"".equalsIgnoreCase(id)){
-            id = "PKT"+id;
+        if (!"".equalsIgnoreCase(id)) {
+            id = "PKT" + id;
         }
 
         return id;
     }
 
-    private String getNextItemPaketId(){
+    private String getNextItemPaketId() {
         String id = "";
         try {
             id = itemPaketDao.getNextSeq();
-        } catch (HibernateException e){
+        } catch (HibernateException e) {
             logger.error("[PaketPeriksaBoImpl.getNextItemPaketId] ERROR. ", e);
         }
 
-        if (!"".equalsIgnoreCase(id)){
-            id = "ITP"+id;
+        if (!"".equalsIgnoreCase(id)) {
+            id = "ITP" + id;
         }
         return id;
     }
 
-    private String getNextIdPaketPasien(){
+    private String getNextIdPaketPasien() {
         String id = "";
         try {
             id = paketPasienDao.getNextSeq();
-        } catch (HibernateException e){
+        } catch (HibernateException e) {
             logger.error("[PaketPeriksaBoImpl.getNextItemPaketId] ERROR. ", e);
         }
 
-        if (!"".equalsIgnoreCase(id)){
-            id = "PKP"+id;
+        if (!"".equalsIgnoreCase(id)) {
+            id = "PKP" + id;
         }
         return id;
     }

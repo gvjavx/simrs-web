@@ -279,15 +279,15 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label>NIK</label>
-                            <input class="form-control" id="add_nik">
+                            <input class="form-control" id="add_nik" oninput="$(this).css('border','')">
                         </div>
                         <div class="form-group">
                             <label style="margin-top: 7px">Nama</label>
-                            <input class="form-control" id="add_nama">
+                            <input class="form-control" id="add_nama" oninput="$(this).css('border','')">
                         </div>
                         <div class="form-group">
                             <label style="margin-top: 7px">Jenis Kelamin</label>
-                            <select class="form-control" id="add_jk">
+                            <select class="form-control" id="add_jk" onchange="$(this).css('border','')">
                                 <option value="">[Select One]</option>
                                 <option value="L">Laki-Laki</option>
                                 <option value="P">Perempuan</option>
@@ -295,17 +295,17 @@
                         </div>
                         <div class="form-group">
                             <label style="margin-top: 7px">Tempat Lahir</label>
-                            <input class="form-control" id="add_tempat_lahir">
+                            <input class="form-control" id="add_tempat_lahir" oninput="$(this).css('border','')">
                         </div>
                         <div class="form-group">
                             <label style="margin-top: 7px">Tanggal Lahir</label>
-                            <input class="form-control" id="add_tanggal_lahir">
+                            <input class="form-control datepicker datemask" id="add_tanggal_lahir" onchange="$(this).css('border','')">
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label>Agama</label>
-                            <select class="form-control" id="add_agama">
+                            <select class="form-control" id="add_agama" onchange="$(this).css('border','')">
                                 <option value="">[Select One]</option>
                                 <option value="Islam">Islam</option>
                                 <option value="Kristen">Kristen</option>
@@ -334,22 +334,22 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label>Provinsi</label>
-                            <input class="form-control" id="add_provinsi">
+                            <input class="form-control" id="add_provinsi" oninput="$(this).css('border','')">
                             <input type="hidden" id="add_id_provinsi">
                         </div>
                         <div class="form-group">
                             <label style="margin-top: 7px">Kota</label>
-                            <input class="form-control" id="add_kota">
+                            <input class="form-control" id="add_kota" oninput="$(this).css('border','')">
                             <input type="hidden" id="add_id_kota">
                         </div>
                         <div class="form-group">
                             <label style="margin-top: 7px">Kecamatan</label>
-                            <input class="form-control" id="add_kecamatan">
+                            <input class="form-control" id="add_kecamatan" oninput="$(this).css('border','')">
                             <input type="hidden" id="add_id_kecamatan">
                         </div>
                         <div class="form-group">
                             <label style="margin-top: 7px">Kelurahan/Desa</label>
-                            <input class="form-control" id="add_desa">
+                            <input class="form-control" id="add_desa" oninput="$(this).css('border','')">
                             <input type="hidden" id="add_id_desa">
                         </div>
                         <div class="form-group">
@@ -410,13 +410,37 @@
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
 
-    var idDetailCheckup = "";
-
     $(document).ready(function () {
         $('#daftar_paket').addClass('active');
         listSelectMaster();
         listPaketPeriksa();
+
+        $(document).on('change', '.btn-file :file', function () {
+            var input = $(this),
+                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+            input.trigger('fileselect', [label]);
+        });
+
+        $('.btn-file :file').on('fileselect', function (event, label) {
+
+            var input = $(this).parents('.input-group').find(':text'),
+                log = label;
+
+            if (input.length) {
+                input.val(log);
+            } else {
+                if (log) alert(log);
+            }
+
+        });
     });
+
+    function toContent(){
+        var pos = $('#close_pos').val();
+        if(pos == 1){
+            window.location.href = 'initForm_daftarpaket.action';
+        }
+    }
 
     function listSelectMaster() {
         var option = "<option value=''>[Select One]</option>";
@@ -494,10 +518,10 @@
                                 '<td >' + '<span id="no_rm' + nik + '">' + '</td>' +
                                 '<td>' + nik + '</td>' +
                                 '<td>' + nama + '</td>' +
-                                '<td style="vertical-align: middle"><label class="label label-warning">No RM tidak ada</label></td>' +
+                                '<td style="vertical-align: middle"><label class="label label-warning" id="lbl'+nik+'"><span id="sts'+nik+'">No RM tidak ada</span></label></td>' +
                                 '<td align="center">' +
                                 '<img border="0" class="hvr-grow" onclick="delRow(\'' + nik + '\')" src="<s:url value="/pages/images/icons8-cancel-25.png"/>" style="cursor: pointer;">' +
-                                '<img border="0" class="hvr-grow" onclick="daftarBaru(\'' + nik + '\',\'' + nama + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' +
+                                '<img border="0" id="btn_new'+nik+'" class="hvr-grow" onclick="daftarBaru(\'' + nik + '\',\'' + nama + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' +
                                 '</td>'+
                                 '</tr>';
                             $('#body_pasien').append(table);
@@ -548,31 +572,78 @@
         var kecamatan = $('#add_id_kecamatan').val();
         var desa = $('#add_id_desa').val();
 
-        data = {
-            'nik':nik,
-            'nama':nama,
-            'jk':jk,
-            'tempat_lahir':tempatLahir,
-            'tanggal_lahir':tanggalLahir,
-            'agama':agama,
-            'profesi':profesi,
-            'suku':suku,
-            'alamat':alamat,
-            'desa_id':'123213'
-        };
+        if( nik != '' && nama != '' && jk != '' && tempatLahir != '' && tanggalLahir != '' &&
+            agama != '' && provinsi != '' && kota != '' && kecamatan != '' && desa != ''){
 
-        var objectString = JSON.stringify(data);
-        dwr.engine.setAsync(true);
-        PaketPeriksaAction.saveNewPasien(objectString, {callback: function (response) {
-            if(response.status == "success"){
-                $('#info_dialog').dialog('open');
-                $('#modal-daftar-pasien').modal('hide');
-                $('#no_rm'+response.noKtp).text(response.idPasien);
-            }else{
-                $('#warning_add').show();
-                $('#msg_add').text(response.msg);
+            data = {
+                'nik':nik,
+                'nama':nama,
+                'jk':jk,
+                'tempat_lahir':tempatLahir,
+                'tanggal_lahir':tanggalLahir,
+                'agama':agama,
+                'profesi':profesi,
+                'suku':suku,
+                'alamat':alamat,
+                'desa_id':desa
+            };
+
+            var objectString = JSON.stringify(data);
+            $('#save_add').hide();
+            $('#load_add').show();
+            dwr.engine.setAsync(true);
+            PaketPeriksaAction.saveNewPasien(objectString, {callback: function (response) {
+                    if(response.status == "success"){
+                        $('#save_add').show();
+                        $('#load_add').hide();
+                        $('#info_dialog').dialog('open');
+                        $('#modal-daftar-pasien').modal('hide');
+                        $('#no_rm'+response.noKtp).text(response.idPasien);
+                        $('#btn_new'+response.noKtp).hide();
+                        $('#lbl'+response.noKtp).removeClass("label label-warning").addClass("label label-success");
+                        $('#sts'+response.noKtp).text("Berhasil membuat no RM");
+                    }else{
+                        $('#save_add').show();
+                        $('#load_add').hide();
+                        $('#warning_add').show();
+                        $('#msg_add').text(response.msg).fadeOut(5000);
+                    }
+                }});
+        }else{
+            $('#warning_add').show().fadeOut(5000);
+            $('#msg_add').text("Silahkan cek kembali data inputan anda...!");
+            if(nik == ''){
+                $('#add_nik').css('border','solid 1px red');
             }
-        }});
+            if(nama == ''){
+                $('#add_nama').css('border','solid 1px red');
+            }
+            if(jk == ''){
+                $('#add_jk').css('border','solid 1px red');
+            }
+            if(tempatLahir == ''){
+                $('#add_tempat_lahir').css('border','solid 1px red');
+            }
+            if(tanggalLahir == ''){
+                $('#add_tanggal_lahir').css('border','solid 1px red');
+            }
+            if(agama == ''){
+                $('#add_agama').css('border','solid 1px red');
+            }
+            if(provinsi == ''){
+                $('#add_provinsi').css('border','solid 1px red');
+            }
+            if(kota == ''){
+                $('#add_kota').css('border','solid 1px red');
+            }
+            if(kecamatan == ''){
+                $('#add_kecamatan').css('border','solid 1px red');
+            }
+            if(desa == ''){
+                $('#add_desa').css('border','solid 1px red');
+            }
+        }
+
     }
 
     function savePaketPasien() {
@@ -580,32 +651,44 @@
         var perusahaan = $('#perusahanan').val();
         var paket = $('#paket').val();
         var data = $('#table_pasien').tableToJSON();
+        var cek = false;
 
         var result = [];
 
         $.each(data, function (i, item) {
             var idPasien = data[i]["NO RM"];
+            if(idPasien == ""){
+                cek = true;
+            }
             result.push({'id_pasien': idPasien, 'id_paket': paket, 'id_perusahaan': perusahaan});
         });
 
         var jsonStinng = JSON.stringify(result);
 
         if(perusahaan != '' && paket != '' && jsonStinng != '[]'){
-            $("#waiting_dialog").dialog('open');
-            dwr.engine.setAsync(true);
-            PaketPeriksaAction.savePaketPasien(jsonStinng, {
-                callback: function (response) {
-                    if (response.status == "success") {
-                        $("#waiting_dialog").dialog('close');
-                        $('#info_dialog').dialog('open');
-                    } else {
-                        $("#waiting_dialog").dialog('close');
-                        $('#error_dialog').dialog('open');
-                        $('#errorMessage').text(response.msg);
 
+            if(cek){
+                $('#warning_tindakan').show().fadeOut(5000);
+                $('#msg').text("Terdapat No RM yang masih kosong, silahkan daftarkan dulu...!");
+            }else{
+                $("#waiting_dialog").dialog('open');
+                dwr.engine.setAsync(true);
+                PaketPeriksaAction.savePaketPasien(jsonStinng, {
+                    callback: function (response) {
+                        if (response.status == "success") {
+                            $("#waiting_dialog").dialog('close');
+                            $('#info_dialog').dialog('open');
+                            $('#close_pos').val(1);
+                        } else {
+                            $("#waiting_dialog").dialog('close');
+                            $('#error_dialog').dialog('open');
+                            $('#errorMessage').text(response.msg);
+
+                        }
                     }
-                }
-            });
+                });
+            }
+
         }else{
             $('#warning_tindakan').show().fadeOut(5000);
             $('#msg').text("Silahkan cek kembali data inputan...!");
@@ -642,12 +725,12 @@
         updater: function (item) {
             var selectedObj = mapped[item];
             var namaAlat = selectedObj.label;
-            $('#add_id_provinsi').val(selectedObj.id);
+            document.getElementById("add_id_provinsi").value = selectedObj.id;
+            prov = selectedObj.id;
             return namaAlat;
         }
     });
 
-    var prov = $('#add_id_provinsi').val();
     $('#add_kota').typeahead({
         minLength: 1,
         source: function (query, process) {
@@ -659,7 +742,9 @@
             ProvinsiAction.initComboKota(query, prov, function (listdata) {
                 data = listdata;
             });
+            //alert(prov);
             $.each(data, function (i, item) {
+                //alert(item.kotaName);
                 var labelItem = item.kotaName;
                 mapped[labelItem] = {id: item.kotaId, label: labelItem};
                 functions.push(labelItem);
@@ -670,13 +755,13 @@
         updater: function (item) {
             var selectedObj = mapped[item];
             var namaAlat = selectedObj.label;
-            $('#add_id_kota').val(selectedObj.id);
-            console.log(selectedObj.id);
+            document.getElementById("add_id_kota").value = selectedObj.id;
+
+            kab = selectedObj.id;
             return namaAlat;
         }
     });
 
-   var kota = $('#add_id_kota').val();
     $('#add_kecamatan').typeahead({
         minLength: 1,
         source: function (query, process) {
@@ -685,10 +770,12 @@
 
             var data = [];
             dwr.engine.setAsync(false);
-            ProvinsiAction.initComboKecamatan(query, "3574", function (listdata) {
+            ProvinsiAction.initComboKecamatan(query, kab, function (listdata) {
                 data = listdata;
             });
+            //alert(prov);
             $.each(data, function (i, item) {
+                //alert(item.kotaName);
                 var labelItem = item.kecamatanName;
                 mapped[labelItem] = {id: item.kecamatanId, label: labelItem};
                 functions.push(labelItem);
@@ -699,12 +786,13 @@
         updater: function (item) {
             var selectedObj = mapped[item];
             var namaAlat = selectedObj.label;
-            $('#add_id_kecamatan').val(selectedObj.id);
+            document.getElementById("add_id_kecamatan").value = selectedObj.id;
+
+            kec = selectedObj.id;
             return namaAlat;
         }
     });
 
-    var kec = $('#add_id_kecamatan').val();
     $('#add_desa').typeahead({
         minLength: 1,
         source: function (query, process) {
@@ -716,6 +804,7 @@
             ProvinsiAction.initComboDesa(query, kec, function (listdata) {
                 data = listdata;
             });
+            //alert(prov);
             $.each(data, function (i, item) {
                 //alert(item.kotaName);
                 var labelItem = item.desaName;
@@ -728,11 +817,12 @@
         updater: function (item) {
             var selectedObj = mapped[item];
             var namaAlat = selectedObj.label;
-            $('#add_id_desa').val(selectedObj.id);
+            document.getElementById("add_id_desa").value = selectedObj.id;
+
+            desa = selectedObj.id;
             return namaAlat;
         }
     });
-
 
 </script>
 

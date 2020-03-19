@@ -42,7 +42,6 @@ public class PaketPeriksaAction extends BaseTransactionAction {
 
     private PaketPeriksaBo paketPeriksaBoProxy;
     private MasterVendorBo masterVendorBoProxy;
-    //private MasterVendorBo masterVendorBoProxy;
     private PaketPeriksa paketPeriksa;
 
 
@@ -132,11 +131,12 @@ public class PaketPeriksaAction extends BaseTransactionAction {
     public String search() {
 
         PaketPeriksa paketPeriksa = getPaketPeriksa();
+        paketPeriksa.setBranchId(CommonUtil.userBranchLogin());
         HttpSession session = ServletActionContext.getRequest().getSession();
-        List<ImSimrsKelasPaketEntity> list = new ArrayList<>();
+        List<PaketPeriksa> list = new ArrayList<>();
 
         try {
-            list = paketPeriksaBoProxy.getListEntityKelasPaket(paketPeriksa);
+            list = paketPeriksaBoProxy.getListPaketPeriksa(paketPeriksa);
         }catch (GeneralBOException e){
             logger.error("Found Error when search paket "+e.getMessage());
         }
@@ -145,6 +145,24 @@ public class PaketPeriksaAction extends BaseTransactionAction {
         session.setAttribute("listOfResult",list);
         return "search";
 
+    }
+
+    public String searchDaftarPaket(){
+
+        PaketPeriksa paketPeriksa = getPaketPeriksa();
+        paketPeriksa.setBranchId(CommonUtil.userBranchLogin());
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<PaketPeriksa> list = new ArrayList<>();
+
+        try {
+            list = paketPeriksaBoProxy.getListDaftarPaketPasien(paketPeriksa);
+        }catch (GeneralBOException e){
+            logger.error("Found Error when search paket "+e.getMessage());
+        }
+
+        session.removeAttribute("listOfResult");
+        session.setAttribute("listOfResult",list);
+        return "search";
     }
 
     @Override
@@ -279,6 +297,25 @@ public class PaketPeriksaAction extends BaseTransactionAction {
         }
 
         return pasien;
+    }
+
+    public List<PaketPeriksa> detailDaftarPaketPasien(String idPaket, String idPerusahaan) throws JSONException{
+
+        List<PaketPeriksa> list = new ArrayList<>();
+        String branchId = CommonUtil.userBranchLogin();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PaketPeriksaBo paketPeriksaBo = (PaketPeriksaBo) ctx.getBean("paketPeriksaBoProxy");
+
+        if( idPaket != null && !"".equalsIgnoreCase(idPaket)
+            && idPerusahaan != null && !"".equalsIgnoreCase(idPerusahaan)){
+
+            try {
+                list = paketPeriksaBo.getListDetailDaftarPaketPasien(idPaket, idPerusahaan, branchId);
+            }catch (GeneralBOException e){
+                logger.error("Found Error "+e.getMessage());
+            }
+        }
+        return list;
     }
 
 

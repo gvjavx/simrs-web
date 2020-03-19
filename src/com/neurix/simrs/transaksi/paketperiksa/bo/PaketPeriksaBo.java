@@ -21,4 +21,7 @@ public interface PaketPeriksaBo{
 
     public List<ImSimrsKelasPaketEntity> getListEntityKelasPaket(PaketPeriksa bean) throws GeneralBOException;
 
+    public List<PaketPeriksa> getListDaftarPaketPasien(PaketPeriksa bean) throws GeneralBOException;
+    public List<PaketPeriksa> getListDetailDaftarPaketPasien(String idPaket, String idPerusahaan, String branchId) throws GeneralBOException;
+
 }

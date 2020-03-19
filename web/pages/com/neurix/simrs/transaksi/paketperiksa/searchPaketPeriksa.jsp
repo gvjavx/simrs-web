@@ -48,17 +48,17 @@
                         <div class="form-group">
                             <s:form id="paketperiksaForm" method="post" namespace="/paketperiksa" action="search_paketperiksa.action" theme="simple" cssClass="form-horizontal">
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4">ID Detail Checkup</label>
+                                    <label class="control-label col-sm-4">ID Paket</label>
                                     <div class="col-sm-4">
-                                        <s:textfield id="id_detail_checkup" cssStyle="margin-top: 7px"
-                                                     name="periksaLab.idDetailCheckup" required="false"
+                                        <s:textfield id="id_paket" cssStyle="margin-top: 7px"
+                                                     name="paketPeriksa.idPaket" required="false"
                                                      readonly="false" cssClass="form-control"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Nama Paket</label>
                                     <div class="col-sm-4">
-                                        <s:textfield id="nama_pasien" name="paketPeriksa.nama"
+                                        <s:textfield id="nama_paket" name="paketPeriksa.namaPaket"
                                                      required="false" readonly="false"
                                                      cssClass="form-control" cssStyle="margin-top: 7px"/>
                                     </div>
@@ -120,21 +120,16 @@
                         <table id="myTable" class="table table-bordered table-striped">
                             <thead >
                             <tr bgcolor="#90ee90">
+                                <td>ID Paket</td>
                                 <td>Nama Paket</td>
-                                <td>ID Detail Checkup</td>
-                                <td>Nama Pasien</td>
-                                <td>Pemeriksaan</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
                             <tbody>
-                            <s:iterator value="#session.listOfResult" status="listOfPeriksaLab">
+                            <s:iterator value="#session.listOfResult">
                                 <tr>
-                                    <td><s:property value="stCreatedDate"/></td>
-                                    <td><s:property value="idDetailCheckup"/></td>
-                                    <td><s:property value="namaPasien"/></td>
-                                    <td><s:property value="labName"/></td>
-                                    <%--<td><s:property value="idPeriksaLab"/></td>--%>
+                                    <td><s:property value="idPaket"/></td>
+                                    <td><s:property value="namaPaket"/></td>
                                     <td align="center">
                                         <s:url var="add_periksa_lab" namespace="/periksalab" action="add_periksalab" escapeAmp="false">
                                             <s:param name="id"><s:property value="idDetailCheckup"/></s:param>

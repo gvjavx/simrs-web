@@ -160,7 +160,7 @@
                                 <div class="alert alert-danger alert-dismissible" style="display: none"
                                      id="warning_tindakan">
                                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                                    Silahkan cek kembali data inputan dan jumlah harus lebih dari 0
+                                    <p id="msg_tin"></p>
                                 </div>
                                 <div class="row">
                                     <div class="form-group">
@@ -259,10 +259,10 @@
                                 <div class="alert alert-danger alert-dismissible" style="display: none"
                                      id="warning_lab">
                                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                                    Silahkan cek kembali data inputan!
+                                    <p id="msg_lab"></p>
                                 </div>
                                 <div class="row">
-                                    <div class="form-group">
+                                    <div class="form-group" style="margin-top: 42px">
                                         <label class="col-md-3" style="margin-top: 7px">Kategori Lab</label>
                                         <div class="col-md-7">
                                             <s:action id="comboLab" namespace="/kategorilab"
@@ -345,18 +345,19 @@
                     </div>
                     <div class="box-header with-border">
                         <div class="row">
+                            <div class="alert alert-danger alert-dismissible" style="display: none"
+                                 id="warning_paket">
+                                <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                                <p id="msg_paket"></p>
+                            </div>
                                 <div class="form-group">
-                                    <%--<div class="col-md-4">--%>
-                                        <%--<label>Kelas Paket</label>--%>
-                                        <%--<select class="form-control">--%>
-                                            <%--<option value="">[Select One]</option>--%>
-                                            <%--<option value="1">Kelas 1</option>--%>
-                                            <%--<option value="2">Kelas 2</option>--%>
-                                        <%--</select>--%>
-                                    <%--</div>--%>
                                     <div class="col-md-4">
-                                        <label>Paket</label>
-                                        <input class="form-control" id="nama_paket">
+                                        <label>Nama Paket</label>
+                                        <input class="form-control" id="nama_paket" oninput="var warn =$('#war_paket').is(':visible'); if (warn){$('#cor_paket').show().fadeOut(3000);$('#war_paket').hide()}">
+                                        <p style="color: red; display: none;"
+                                           id="war_paket"><i class="fa fa-times"></i> required</p>
+                                        <p style="color: green; display: none;"
+                                           id="cor_paket"><i class="fa fa-check"></i> correct</p>
                                     </div>
                                     <div class="col-md-4">
                                         <div style="margin-top: 23px">
@@ -482,7 +483,7 @@
         var cek = false;
         var data = $('#table_tindakan').tableToJSON();
 
-        if (idTindakan != '' && qty > 0 && idKategori != '') {
+        if (idTindakan != '' && idTindakan != null && idKategori != null && qty > 0 && idKategori != '') {
 
 
             var id = "";
@@ -499,21 +500,35 @@
 
             var data = $('#table_tindakan').tableToJSON();
             var row = data.length;
+            var cek = false;
 
-            var table = '<tr id="row'+id+'">' +
+            $.each(data, function (i, item) {
+                var tin2 = data[i]["Tindakan"];
+                if(tin == tin2){
+                    cek = true;
+                }
+            });
+
+            if(cek){
+                $('#warning_tindakan').show().fadeOut(5000);
+                $('#msg_tin').text("Data tindakan sudah ada dalam list...!");
+            }else{
+
+                var table = '<tr id="row'+id+'">' +
                     '<td>' + tin + '<input type="hidden" value="'+id+'" id="tindakan_id'+row+'">' + '</td>' +
                     '<td align="center">' + qty + '<input type="hidden" value="'+idKategori+'" id="kategori_id'+row+'">' +'</td>' +
                     '<td align="center">' + '<img border="0" class="hvr-grow" onclick="delRow(\''+id+'\')" src="<s:url value="/pages/images/icons8-cancel-25.png"/>" style="cursor: pointer;">' + '</td>'
-                    '</tr>';
+                '</tr>';
 
                 $('#body_tindakan').append(table);
                 $('#modal-tindakan').modal('hide');
-                $('#save_tindakan').show();
-                $('#load_tindakan').hide();
+                $('#poli').attr('disabled','');
+                $('#tin_id_tindakan').val('').trigger('change');
+            }
 
         } else {
             $('#warning_tindakan').show().fadeOut(5000);
-
+            $('#msg_tin').text("Silahkan cek kembali data inputan anda...!");
             if (idKategori == '') {
                 $('#war_kategori').show();
             }
@@ -545,10 +560,6 @@
             if(kat[1] != 'null' && kat[1] != ''){
                 ktr = kat[1];
             }
-
-            console.log(idKategori);
-            console.log(id);
-            console.log(ktr);
 
             var option = "<option value=''>[Select One]</option>";
             LabAction.listLab(id, function (response) {
@@ -605,18 +616,34 @@
             var data = $('#table_lab').tableToJSON();
             var row = data.length;
 
-            var table = '<tr id="row'+idl+'">' +
-                        '<td>'+idLab.split("|")[1]+'<input type="hidden" id="kategori_lab'+row+'" value="'+idk+'">'+'</td>' +
-                        '<td>'+idKategori.split("|")[1]+
-                        '<input type="hidden" id="lab_id'+row+'" value="'+idl+'">'+
-                        '<input type="hidden" id="parameter_id'+row+'" value="'+idParameter+'">'+
-                        '</td>' +
-                        '<td align="center">' + '<img border="0" class="hvr-grow" onclick="delRow(\''+idl+'\')" src="<s:url value="/pages/images/icons8-cancel-25.png"/>" style="cursor: pointer;">' + '</td>'+
-                        '</tr>';
-            $('#body_lab').append(table);
+            var cek = false;
+
+            $.each(data, function (i, item) {
+                var jen = data[i]["Pemeriksaan"];
+                if(idLab.split("|")[1] == jen){
+                    cek = true;
+                }
+            });
+
+            if(cek){
+                $('#warning_lab').show().fadeOut(5000);
+                $('#msg_lab').text("Data sudah ada di dalam list...!");
+            }else{
+                var table = '<tr id="row'+idl+'">' +
+                    '<td>'+idLab.split("|")[1]+'<input type="hidden" id="kategori_lab'+row+'" value="'+idk+'">'+'</td>' +
+                    '<td>'+idKategori.split("|")[1]+
+                    '<input type="hidden" id="lab_id'+row+'" value="'+idl+'">'+
+                    '<input type="hidden" id="parameter_id'+row+'" value="'+idParameter+'">'+
+                    '</td>' +
+                    '<td align="center">' + '<img border="0" class="hvr-grow" onclick="delRow(\''+idl+'\')" src="<s:url value="/pages/images/icons8-cancel-25.png"/>" style="cursor: pointer;">' + '</td>'+
+                    '</tr>';
+                $('#body_lab').append(table);
+                $('#lab_parameter').val('').trigger('change')
+            }
 
         } else {
             $('#warning_lab').show().fadeOut(5000);
+            $('#msg_lab').text("Silahkan cek kembali data inputan...!");
             if (idKategori == '') {
                 $('#war_kategori_lab').show();
             }
@@ -636,6 +663,7 @@
         var tindakan = $('#table_tindakan').tableToJSON();
         var lab = $('#table_lab').tableToJSON();
         var result = [];
+
         $.each(tindakan, function (i, item) {
             var idTindakan = $('#tindakan_id'+i).val();
             var idKategori = $('#kategori_id'+i).val();
@@ -659,19 +687,28 @@
         });
 
         var jsonStinng = JSON.stringify(result);
-        $("#waiting_dialog").dialog('open');
-        dwr.engine.setAsync(true);
-        PaketPeriksaAction.savePaket(idPelayanan, namaPaket, jsonStinng, {callback: function (response) {
-            if(response.status == "success"){
-                $("#waiting_dialog").dialog('close');
-                $('#info_dialog').dialog('open');
-            }else{
-                $("#waiting_dialog").dialog('close');
-                $('#error_dialog').dialog('open');
-                $('#errorMessage').text(response.msg);
 
+        if(jsonStinng != '[]' && namaPaket != ''){
+            $("#waiting_dialog").dialog('open');
+            dwr.engine.setAsync(true);
+            PaketPeriksaAction.savePaket(idPelayanan, namaPaket, jsonStinng, {callback: function (response) {
+                    if(response.status == "success"){
+                        $("#waiting_dialog").dialog('close');
+                        $('#info_dialog').dialog('open');
+                    }else{
+                        $("#waiting_dialog").dialog('close');
+                        $('#error_dialog').dialog('open');
+                        $('#errorMessage').text(response.msg);
+
+                    }
+                }});
+        }else{
+            $('#warning_paket').show().fadeOut(5000);
+            $('#msg_paket').text("Silahkan cek kembali data inputan anda..!");
+            if(namaPaket == ''){
+                $('#war_paket').show();
             }
-        }});
+        }
     }
 
 

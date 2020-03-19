@@ -10,6 +10,7 @@
     <%@ include file="/pages/common/header.jsp" %>
     <style>
     </style>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/PaketPeriksaAction.js"/>'></script>
     <script type='text/javascript'>
 
         $( document ).ready(function() {
@@ -45,19 +46,19 @@
                     </div>
                     <div class="box-body">
                         <div class="form-group">
-                            <s:form id="daftarpaketperiksaForm" method="post" namespace="/paketperiksa" action="search_paketperiksa.action" theme="simple" cssClass="form-horizontal">
+                            <s:form id="daftarpaketperiksaForm" method="post" namespace="/daftarpaket" action="searchDaftarPaket_daftarpaket.action" theme="simple" cssClass="form-horizontal">
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4">ID Detail Checkup</label>
+                                    <label class="control-label col-sm-4">Nama Perusahaan</label>
                                     <div class="col-sm-4">
                                         <s:textfield id="id_detail_checkup" cssStyle="margin-top: 7px"
-                                                     name="periksaLab.idDetailCheckup" required="false"
+                                                     name="paketPeriksa.namaPerusahaan" required="false"
                                                      readonly="false" cssClass="form-control"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Nama Paket</label>
                                     <div class="col-sm-4">
-                                        <s:textfield id="nama_pasien" name="paketPeriksa.nama"
+                                        <s:textfield id="nama_pasien" name="paketPeriksa.namaPaket"
                                                      required="false" readonly="false"
                                                      cssClass="form-control" cssStyle="margin-top: 7px"/>
                                     </div>
@@ -119,29 +120,20 @@
                         <table id="myTable" class="table table-bordered table-striped">
                             <thead >
                             <tr bgcolor="#90ee90">
+                                <td>Nama Perusahaan</td>
                                 <td>Nama Paket</td>
-                                <td>ID Detail Checkup</td>
-                                <td>Nama Pasien</td>
-                                <td>Pemeriksaan</td>
-                                <td align="center">Action</td>
+                                <td align="center" width="20%">Jumlah Pasien</td>
+                                <td align="center" width="10%">Action</td>
                             </tr>
                             </thead>
                             <tbody>
-                            <s:iterator value="#session.listOfResult" status="listOfPeriksaLab">
+                            <s:iterator value="#session.listOfResult">
                                 <tr>
-                                    <td><s:property value="stCreatedDate"/></td>
-                                    <td><s:property value="idDetailCheckup"/></td>
-                                    <td><s:property value="namaPasien"/></td>
-                                    <td><s:property value="labName"/></td>
-                                    <%--<td><s:property value="idPeriksaLab"/></td>--%>
+                                    <td><s:property value="namaPerusahaan"/></td>
+                                    <td><s:property value="namaPaket"/></td>
+                                    <td align="center"><p style="background-color: #0F9E5E"><s:property value="jumlah"/></p></td>
                                     <td align="center">
-                                        <s:url var="add_periksa_lab" namespace="/periksalab" action="add_periksalab" escapeAmp="false">
-                                            <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
-                                            <s:param name="lab"><s:property value="idPeriksaLab"/></s:param>
-                                        </s:url>
-                                        <s:a href="%{add_periksa_lab}">
-                                            <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer; ">
-                                        </s:a>
+                                        <img class="hvr-grow" onclick="detailPaket('<s:property value="idPerusahaan"/>','<s:property value="idPaket"/>','<s:property value="namaPerusahaan"/>','<s:property value="namaPaket"/>')" src="<s:url value="/pages/images/icons8-search-25.png"/>" style="cursor: pointer; ">
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -155,7 +147,65 @@
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
+
+<div class="modal fade" id="modal-detail-pasien">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-user"></i> Daftar Pasien</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_add">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_add"></p>
+                </div>
+                    <table class="table table-striped">
+                        <tr>
+                            <td>Nama Perusahaan</td>
+                            <td><p id="det_nama_perusahaan"></p></td>
+                        </tr>
+                        <tr>
+                            <td>Nama Paket</td>
+                            <td><p id="det_nama_paket"></p></td>
+                        </tr>
+                    </table>
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <td>No RM</td>
+                        <td>Nama</td>
+                        <td>Status</td>
+                    </thead>
+                    <tbody id="body_detail_pasien">
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_add" onclick="saveNewPasien()"><i class="fa fa-arrow-right"></i> Save
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
+                        id="load_add"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type='text/javascript'>
+    function detailPaket(idPerusahaan, idPaket, namaPerusahaan, namaPaket){
+        $('#det_nama_perusahaan').text(namaPerusahaan);
+        $('#det_nama_paket').text(namaPaket);
+        $('#modal-detail-pasien').modal({show:true, backdrop:'static'});
+        PaketPeriksaAction.detailDaftarPaketPasien(idPaket, idPerusahaan, function (response) {
+            console.log(response);
+        })
+
+    }
 </script>
 
 <%@ include file="/pages/common/footer.jsp" %>
