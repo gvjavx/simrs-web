@@ -529,6 +529,12 @@
       <create creator="new">
           <param name="class" value="com.neurix.akuntansi.transaksi.tutupperiod.action.SettingTutupPeriodAction"/>
       </create>
+      <create creator="new">
+          <param name="class" value="com.neurix.akuntansi.transaksi.tutupperiod.action.TutuPeriodAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.akuntansi.transaksi.tutupperiod.model.ItSimrsBatasTutupPeriodEntity"/>
+      <convert converter="bean" match="com.neurix.akuntansi.transaksi.tutupperiod.model.BatasTutupPeriod"/>
+
   </allow>
 
 </dwr>

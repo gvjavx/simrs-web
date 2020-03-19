@@ -63,7 +63,8 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
         }
     }
 
-    private List<ItSimrsBatasTutupPeriodEntity> getListEntityBatasTutupPeriode(BatasTutupPeriod bean) throws GeneralBOException{
+    @Override
+    public List<ItSimrsBatasTutupPeriodEntity> getListEntityBatasTutupPeriode(BatasTutupPeriod bean) throws GeneralBOException{
 
         Map hsCriteria = new HashMap();
         if (bean.getTahun() != null){

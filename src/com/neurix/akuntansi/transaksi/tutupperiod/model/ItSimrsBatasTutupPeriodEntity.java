@@ -20,6 +20,7 @@ public class ItSimrsBatasTutupPeriodEntity implements Serializable {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String flagTutup;
 
     public String getId() {
         return id;
@@ -109,4 +110,11 @@ public class ItSimrsBatasTutupPeriodEntity implements Serializable {
         this.lastUpdateWho = lastUpdateWho;
     }
 
+    public String getFlagTutup() {
+        return flagTutup;
+    }
+
+    public void setFlagTutup(String flagTutup) {
+        this.flagTutup = flagTutup;
+    }
 }

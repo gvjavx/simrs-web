@@ -51,35 +51,38 @@
                         <h3 class="box-title"><i class="fa fa-filter"></i> Setting Batas Tutup Period</h3>
                     </div>
                     <div class="box-body">
-                        <%--<s:form id="kasirjalanForm" method="post" namespace="/kasirjalan" action="search_kasirjalan.action" theme="simple" cssClass="form-horizontal">--%>
-                            <div class="form-group form-horizontal">
-                                <label class="control-label col-sm-4">Tahun</label>
-                                <div class="col-sm-4">
-                                    <select class="form form-control" id="tahun">
-                                        <option value="2020">2020</option>
-                                        <option value="2021">2021</option>
-                                    </select>
-                                </div>
-                                <div class="col-sm-4">
-                                    <button class="btn btn-success" onclick="searchPeriod()"><i class="fa fa-check"></i> Choose</button>
-                                </div>
+                        <div class="form-group form-horizontal">
+                            <label class="control-label col-sm-4">Tahun</label>
+                            <div class="col-sm-4">
+                                <select class="form form-control" id="tahun">
+                                    <option value="2020">2020</option>
+                                    <option value="2021">2021</option>
+                                </select>
                             </div>
-                        <%--</s:form>--%>
+                            <div class="col-sm-4">
+                                <button class="btn btn-success" onclick="searchPeriod()"><i class="fa fa-check"></i> Choose</button>
+                            </div>
+                        </div>
                     </div>
                     <div class="box-header with-border"></div>
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-th-list"></i> List Period <span id="label-tahun"></span></h3>
                     </div>
                     <div class="box-body">
-                        <table id="sortTable" class="table table-bordered table-striped">
-                            <thead id="head-period">
-                            <%--<tr bgcolor="#90ee90" id="head-period"></tr>--%>
-                            </thead>
-                            <tbody id="body-period">
-                            </tbody>
-                            <input type="hidden" id="index-period"/>
-                            <input type="hidden" id="index-branch"/>
-                        </table>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table id="sortTable" class="table table-bordered table-striped">
+                                    <thead id="head-period">
+                                    <%--<tr bgcolor="#90ee90" id="head-period"></tr>--%>
+                                    </thead>
+                                    <tbody id="body-period">
+                                    </tbody>
+                                    <input type="hidden" id="index-period"/>
+                                    <input type="hidden" id="index-branch"/>
+                                </table>
+                            </div>
+                        </div>
+
 
                         <div class="alert alert-info alert-dismissable" id="alert-info">
                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -135,6 +138,7 @@
             var strBody = "";
             var indexperiod = 0;
             var indexbranch = "";
+            var arrbatas = [];
             if(response.length > 0){
                 $.each(response, function (i, item) {
                     strHead += "<td>"+item.branchName+"</td>";
@@ -147,6 +151,7 @@
                     if(response.length > 0){
                         $.each(response, function (i, itembranch) {
                             strbranch += "<td><input type='date' id='"+item.id+"_"+itembranch.branchId+"' class='form form-control'/></td>";
+                            arrbatas.push({"unit":itembranch.branchId, "tahun":tahun, "bulan":item.id, "id":item.id+"_"+itembranch.branchId});
                         });
                     }
 
@@ -164,7 +169,16 @@
             $("#index-period").val(indexperiod);
             $("#index-branch").val(indexbranch);
             $("#label-tahun").text(tahun);
-//            console.log(strBody);
+
+//            console.log(arrbatas);
+//            console.log("ATAS");
+            $.each(arrbatas, function (i, item) {
+                SettingTutupPeriodAction.getBatasTutupPeriod(item.unit, item.tahun, item.bulan, function(batas){
+                    $("#"+item.id+"").val(batas.stTglBatas);
+//                    console.log(batas);
+//                    console.log("#"+item.id+" nilai : "+batas.stTglBatas);
+                });
+            });
         });
     }
 

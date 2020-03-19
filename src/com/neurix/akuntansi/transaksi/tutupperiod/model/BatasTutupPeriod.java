@@ -20,6 +20,16 @@ public class BatasTutupPeriod {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String stTglBatas;
+    private String flagTutup;
+
+    public String getStTglBatas() {
+        return stTglBatas;
+    }
+
+    public void setStTglBatas(String stTglBatas) {
+        this.stTglBatas = stTglBatas;
+    }
 
     public String getId() {
         return id;
@@ -109,4 +119,11 @@ public class BatasTutupPeriod {
         this.lastUpdateWho = lastUpdateWho;
     }
 
+    public String getFlagTutup() {
+        return flagTutup;
+    }
+
+    public void setFlagTutup(String flagTutup) {
+        this.flagTutup = flagTutup;
+    }
 }

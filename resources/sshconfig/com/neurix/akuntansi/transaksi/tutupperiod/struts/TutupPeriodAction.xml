@@ -65,10 +65,10 @@
             <exception-mapping exception="java.lang.RuntimeException" result="global_error" />
         </global-exception-mappings>
 
-        <action name="*_settingtutupperiod"
-                class="com.neurix.akuntansi.transaksi.tutupperiod.action.SettingTutupPeriodAction" method="{1}">
+        <action name="*_tutupperiod"
+                class="com.neurix.akuntansi.transaksi.tutupperiod.action.TutuPeriodAction" method="{1}">
             <interceptor-ref name="ivelinStack" />
-            <result name="input">/pages/com/neurix/akuntansi/transaksi/pembayaranUtangPiutang/SearchPembayaranUtangPiutang.jsp</result>
+            <result name="success">/pages/com/neurix/akuntansi/transaksi/tutupperiod/searchTutupPeriod.jsp</result>
 
             <result name="print_report_bukti_posting" type="jasper">
                 <param name="location">/pages/report/com/neurix/akuntansi/bukti.jasper</param>
