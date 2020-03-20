@@ -182,6 +182,9 @@
         <action name="ruangan/*" class="com.neurix.simrs.mobileapi.RuanganController">
             <interceptor-ref name="mobileStack"/>
         </action>
+        <action name="user/*" class="com.neurix.hris.mobileapi.UserController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
     </package>
 
 </struts>

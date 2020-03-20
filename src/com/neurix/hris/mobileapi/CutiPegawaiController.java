@@ -35,6 +35,8 @@ public class CutiPegawaiController implements ModelDriven<Object> {
     private String idNotif;
     private String catatan;
     private String confirm;
+    private String nipPengganti;
+    private String namaPengganti;
 
     public void setNotifikasiBoProxy(NotifikasiBo notifikasiBoProxy) {
         this.notifikasiBoProxy = notifikasiBoProxy;
@@ -42,6 +44,22 @@ public class CutiPegawaiController implements ModelDriven<Object> {
 
     public void setUserBoProxy(UserBo userBoProxy) {
         this.userBoProxy = userBoProxy;
+    }
+
+    public String getNipPengganti() {
+        return nipPengganti;
+    }
+
+    public void setNipPengganti(String nipPengganti) {
+        this.nipPengganti = nipPengganti;
+    }
+
+    public String getNamaPengganti() {
+        return namaPengganti;
+    }
+
+    public void setNamaPengganti(String namaPengganti) {
+        this.namaPengganti = namaPengganti;
     }
 
     public void setCutiPegawaiBoProxy(CutiPegawaiBo cutiPegawaiBoProxy) {
@@ -121,6 +139,7 @@ public class CutiPegawaiController implements ModelDriven<Object> {
             editCutiPegawai.setLastUpdate(updateTime);
             editCutiPegawai.setAction("U");
             editCutiPegawai.setFlag("Y");
+            editCutiPegawai.setPegawaiPenggantiSementara(nipPengganti);
 
            List<Notifikasi> notifikasiList = cutiPegawaiBoProxy.saveApprove(editCutiPegawai);
 
