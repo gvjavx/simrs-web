@@ -3,10 +3,46 @@ package com.neurix.hris.transaksi.payroll.model;
 import java.math.BigDecimal;
 
 public class Ptt {
-    String tipePttId;
-    String tipePttName;
-    String nilai;
-    BigDecimal nilaiPtt;
+    private String payrollPttId;
+    private String tipePttId;
+    private String tipePttName;
+    private String nilai;
+    private BigDecimal nilaiPtt;
+    private String tahun;
+    private String bulan;
+    private String nip;
+
+    public String getPayrollPttId() {
+        return payrollPttId;
+    }
+
+    public void setPayrollPttId(String payrollPttId) {
+        this.payrollPttId = payrollPttId;
+    }
+
+    public String getNip() {
+        return nip;
+    }
+
+    public void setNip(String nip) {
+        this.nip = nip;
+    }
+
+    public String getBulan() {
+        return bulan;
+    }
+
+    public void setBulan(String bulan) {
+        this.bulan = bulan;
+    }
+
+    public String getTahun() {
+        return tahun;
+    }
+
+    public void setTahun(String tahun) {
+        this.tahun = tahun;
+    }
 
     public String getTipePttId() {
         return tipePttId;

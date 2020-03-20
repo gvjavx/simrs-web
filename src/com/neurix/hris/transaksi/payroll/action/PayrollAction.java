@@ -68,6 +68,16 @@ public class PayrollAction extends BaseMasterAction{
     private String positionId;
     private String tanggalAktif;
 
+    private boolean payrollBulan12;
+
+    public boolean isPayrollBulan12() {
+        return payrollBulan12;
+    }
+
+    public void setPayrollBulan12(boolean payrollBulan12) {
+        this.payrollBulan12 = payrollBulan12;
+    }
+
     public String getPositionId() {
         return positionId;
     }
@@ -1571,6 +1581,19 @@ public class PayrollAction extends BaseMasterAction{
                 payrollPerson.setTotalC(payroll.getTotalC()); //Total B
                 payrollPerson.setTotalCNilai(payroll.getTotalCNilai()); //Total B
 
+                if ("12".equalsIgnoreCase(payroll.getBulan())){
+                    //pph bulan 12
+                    payrollPerson.setTotalLain11BulanNilai(payroll.getTotalLain11BulanNilai());
+                    payrollPerson.setPph11BulanNilai(payroll.getPph11BulanNilai());
+                    payrollPerson.setPphSeharusnyaNilai(payroll.getPphSeharusnyaNilai());
+                    payrollPerson.setSelisihPphNilai(payroll.getSelisihPphNilai());
+
+                    payrollPerson.setTotalLain11Bulan(payroll.getTotalLain11Bulan());
+                    payrollPerson.setPph11Bulan(payroll.getPph11Bulan());
+                    payrollPerson.setPphSeharusnya(payroll.getPphSeharusnya());
+                    payrollPerson.setSelisihPph(payroll.getSelisihPph());
+                }
+
                 payrollPerson.setTotalGajiBersih(payroll.getTotalGajiBersih());
                 payrollPerson.setTotalGajiBersihNilai(payroll.getTotalGajiBersihNilai());
                 setPayroll(payrollPerson);
@@ -1877,6 +1900,19 @@ public class PayrollAction extends BaseMasterAction{
         payrollPerson.setHutangPphPengobatan(payroll.getHutangPphPengobatan());
         payrollPerson.setKurangPphPengobatan(payroll.getKurangPphPengobatan());
         payrollPerson.setJumlahPphPengobatan(payroll.getJumlahPphPengobatan());*/
+
+        if ("12".equalsIgnoreCase(payrolls.getBulan())){
+            //pph bulan 12
+            payrollPerson.setTotalLain11BulanNilai(payrolls.getTotalLain11BulanNilai());
+            payrollPerson.setPph11BulanNilai(payrolls.getPph11BulanNilai());
+            payrollPerson.setPphSeharusnyaNilai(payrolls.getPphSeharusnyaNilai());
+            payrollPerson.setSelisihPphNilai(payrolls.getSelisihPphNilai());
+
+            payrollPerson.setTotalLain11Bulan(payrolls.getTotalLain11Bulan());
+            payrollPerson.setPph11Bulan(payrolls.getPph11Bulan());
+            payrollPerson.setPphSeharusnya(payrolls.getPphSeharusnya());
+            payrollPerson.setSelisihPph(payrolls.getSelisihPph());
+        }
 
         session.removeAttribute("listDataPayrollPerson");
         session.removeAttribute("listDataPayrollPphPerson");
@@ -2508,7 +2544,9 @@ public class PayrollAction extends BaseMasterAction{
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
             return ERROR;
         }
-
+        if (("12").equalsIgnoreCase(getBulan())){
+            payrollBulan12=true;
+        }
         logger.info("[payrollAction.saveAdd] end process >>>");
         return "init_edit";
     }
@@ -12281,6 +12319,25 @@ public class PayrollAction extends BaseMasterAction{
         HttpSession session = ServletActionContext.getRequest().getSession();
         return (List<Ptt>) session.getAttribute("detailPtt");
     }
+    public List<Ptt> getDetailPttSetahun (){
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        return (List<Ptt>) session.getAttribute("detailPttSetahun");
+    }
+    private BigDecimal getTotalLainLainSetahun(String nip , String tahun){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PayrollBo payrollBo = (PayrollBo) ctx.getBean("payrollBoProxy");
+        List<Ptt> pttList = payrollBo.getTotalLainLainSetahun(nip,tahun);
+
+        BigDecimal hasil = BigDecimal.ZERO;
+        for (Ptt ptt : pttList){
+            hasil=hasil.add(ptt.getNilaiPtt());
+        }
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.setAttribute("detailPttSetahun",pttList);
+
+        return hasil;
+    }
+
     @Override
     public String downloadPdf() {
         return null;

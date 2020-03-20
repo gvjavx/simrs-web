@@ -7710,6 +7710,18 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
         payroll.setTotalGajiBersihNilai(itPayrollEntity2.getGajiBersih());
 
 
+        if(("12").equalsIgnoreCase(itPayrollEntity2.getBulan())){
+            payroll.setTotalLain11BulanNilai(itPayrollEntity2.getTotalLain11Bulan());
+            payroll.setPph11BulanNilai(itPayrollEntity2.getPph11Bulan());
+            payroll.setPphSeharusnyaNilai(itPayrollEntity2.getPphSeharusnya());
+            payroll.setSelisihPphNilai(itPayrollEntity2.getSelisihPph());
+
+            payroll.setTotalLain11Bulan(CommonUtil.numbericFormat(itPayrollEntity2.getTotalLain11Bulan(), "###,###"));
+            payroll.setPph11Bulan(CommonUtil.numbericFormat(itPayrollEntity2.getPph11Bulan(), "###,###"));
+            payroll.setPphSeharusnya(CommonUtil.numbericFormat(itPayrollEntity2.getPphSeharusnya(), "###,###"));
+            payroll.setSelisihPph(CommonUtil.numbericFormat(itPayrollEntity2.getSelisihPph(), "###,###"));
+        }
+
         return payroll;
     }
 
@@ -22493,5 +22505,31 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
             }
 
         }
+    }
+
+    @Override
+    public List<Ptt> getTotalLainLainSetahun(String nip, String tahun) throws GeneralBOException {
+        List<ItPayrollPttEntity> payrollPttEntityList = new ArrayList<>();
+        List<Ptt> listResult = new ArrayList<>();
+        try {
+            payrollPttEntityList = payrollPttDao.getDataPttByNipAndTahun(nip,tahun);
+        } catch (HibernateException e) {
+            logger.error("[payrollBoimpl.getTotalLainLainSetahun] Error, " + e.getMessage());
+        }
+        for (ItPayrollPttEntity payrollPttEntity : payrollPttEntityList){
+            Ptt ptt = new Ptt();
+            ptt.setPayrollPttId(payrollPttEntity.getPayrollPttId());
+            ptt.setTipePttId(payrollPttEntity.getIdPtt());
+            ptt.setNilaiPtt(payrollPttEntity.getNilai());
+            ptt.setNip(payrollPttEntity.getNip());
+            ptt.setTahun(payrollPttEntity.getTahun());
+            ptt.setBulan(payrollPttEntity.getBulan());
+            ptt.setNilai(CommonUtil.numbericFormat(payrollPttEntity.getNilai(),"###,###"));
+            ptt.setTipePttName(CommonUtil.convertTipePtt(payrollPttEntity.getIdPtt()));
+
+            listResult.add(ptt);
+        }
+
+        return listResult;
     }
 }

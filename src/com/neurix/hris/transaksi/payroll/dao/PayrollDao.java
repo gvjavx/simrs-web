@@ -4089,4 +4089,15 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
         }
         return total;
     }
+
+    public List<ItPayrollEntity> getDataPayrollByNip(String nip,String tahun) throws HibernateException {
+        List<ItPayrollEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItPayrollEntity.class)
+                .add(Restrictions.eq("nip", nip))
+                .add(Restrictions.eq("approvalFlag", "Y"))
+                .add(Restrictions.eq("flag", "Y"))
+                .add(Restrictions.eq("tahun", tahun))
+                .addOrder(Order.desc("bulan"))
+                .list();
+        return results;
+    }
 }

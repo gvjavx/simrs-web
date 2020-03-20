@@ -691,9 +691,6 @@
                                 </div>
                             </div>--%>
                         </div>
-                        <div class="col-sm-4">
-
-                        </div>
                     </div>
                     <div class="row" id="totalAMod">
                         <div class="col-sm-4" id="komponenA">
@@ -859,8 +856,6 @@
                                     <input style="text-align: right" readonly type="text" class="form-control nip" id="totalB" name="nip">
                                 </div>
                             </div>
-
-                            <br>
                             <br>
                             <div align="center">
                                 <h4>D. PTT</h4>
@@ -870,10 +865,8 @@
                                 <div class="col-sm-6">
                                     <input style="text-align: right" type="text" readonly class="form-control nip" id="nilaiPtt" onfocusout="updateNilai(this.id, this.value)" name="nip">
                                 </div>
-                                <div class="col-sm-1">
-                                    <a href="javascript:;" class="btnDetailPtt">
-                                        <span style="font-size: 20px" class="glyphicon glyphicon-zoom-in"></span>
-                                    </a>
+                                <div class="col-sm-1 pull-right">
+                                    <button type="button" id="btnDetailPtt" class="btn btn-primary">View</button>
                                 </div>
                                 <script>
                                     function loadPtt() {
@@ -908,6 +901,47 @@
                                     })
                                 </script>
                             </div>
+                            <br>
+                            <s:if test="payrollBulan12">
+                                <div class ="pphBulan12">
+                                    <div align="center">
+                                        <h4>Selisih PPH </h4>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-5" id="labelTotalPtt" >Total Ptt Setahun. </label>
+                                        <div class="col-sm-6">
+                                            <input style="text-align: right" readonly type="text" class="form-control nip" id="totalPtt" name="nip">
+                                        </div>
+                                        <div class="col-sm-1 pull-right">
+                                            <button type="button" class="btn btn-primary">View</button>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-5" id="labelPph11Bulan" >Pph 11 Bulan </label>
+                                        <div class="col-sm-6">
+                                            <input style="text-align: right" readonly type="text" class="form-control nip" id="pph11Bulan" name="nip">
+                                        </div>
+                                        <div class="col-sm-1 pull-right">
+                                            <button type="button" class="btn btn-primary">View</button>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-5" id="labelPphSeharusnya" >Pph Seharusnya </label>
+                                        <div class="col-sm-6">
+                                            <input style="text-align: right" type="text" readonly class="form-control nip" id="pphSeharusnya" name="nip">
+                                        </div>
+                                        <div class="col-sm-1 pull-right">
+                                            <button type="button" class="btn btn-primary">View</button>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-5" id="labelSelisih" >Selisih pph 21 </label>
+                                        <div class="col-sm-7">
+                                            <input style="text-align: right" type="text" readonly class="form-control nip" id="selisihPph" name="nip">
+                                        </div>
+                                    </div>
+                                </div>
+                            </s:if>
                         </div>
                         <div class="col-sm-4">
                             <div align="center">
@@ -1044,6 +1078,7 @@
         </div>
     </div>
 </div>
+
 <div id="modal-ptt" class="modal fade modal2" role="dialog">
     <div class="modal-dialog " style="width:500px;">
         <!-- Modal content-->
@@ -4222,6 +4257,12 @@
                 $('#totalB').val(listdata.totalB);
                 $('#totalC').val(listdata.totalC);
                 $('#gajiBersih').val(listdata.totalGajiBersih);
+
+                //pph bulan 12
+                $('#totalPtt').val(listdata.totalLain11Bulan);
+                $('#pph11Bulan').val(listdata.pph11Bulan);
+                $('#pphSeharusnya').val(listdata.pphSeharusnya);
+                $('#selisihPph').val(listdata.selisihPph);
             });
             //alert( $('#branchId1').text);
             $('#modal-edit').find('.modal-title').text('Detail Payroll');
@@ -4619,6 +4660,7 @@
     }
 
     window.loadDataModal = function(){
+        console.log("load data modal");
         //var payrollId = $(this).val().replace(/\n|\r/g, "");
         var payrollId = document.getElementById("payrollId").value;
         PayrollAction.getDetailEdit(payrollId, function(listdata){
@@ -4702,11 +4744,19 @@
             $('#totalC').val(listdata.totalC);
             $('#gajiBersih').val(listdata.totalGajiBersih);
 
+            //pph bulan 12
+            $('#totalPtt').val(listdata.totalLain11Bulan);
+            $('#pph11Bulan').val(listdata.pph11Bulan);
+            $('#pphSeharusnya').val(listdata.pphSeharusnya);
+            $('#selisihPph').val(listdata.selisihPph);
+
+
         });
     }
 
     window.reloadDataModal = function(){
         var payrollId = document.getElementById("payrollId2").value;
+        console.log("load data modal");
 
         PayrollAction.reloadDetailEdit(payrollId, function(listdata){
             if(listdata.tipePegawai == "TP03" && listdata.strukturGaji != "G"){
@@ -4872,6 +4922,12 @@
             $('#totalC').val(listdata.totalC);
             $('#gajiBersih').val(listdata.totalGajiBersih);
 
+
+            //pph bulan 12
+            $('#totalPtt').val(listdata.totalLain11Bulan);
+            $('#pph11Bulan').val(listdata.pph11Bulan);
+            $('#pphSeharusnya').val(listdata.pphSeharusnya);
+            $('#selisihPph').val(listdata.selisihPph);
 
             /*$('#pendidikan').val(listdata.totalPendidikan);
              $('#jasprod').val(listdata.totalJasProd);

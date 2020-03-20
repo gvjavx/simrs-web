@@ -140,4 +140,6 @@ public interface PayrollBo extends BaseMasterBo<Payroll>{
     public List<PayrollTunjanganLain> getDetailEditTunjLainSys(String payrollId) throws GeneralBOException;
 
     void savePttDetail(List<Ptt> pttList, String payrollId) throws GeneralBOException;
+
+    List<Ptt> getTotalLainLainSetahun(String nip, String tahun) throws GeneralBOException;
 }
