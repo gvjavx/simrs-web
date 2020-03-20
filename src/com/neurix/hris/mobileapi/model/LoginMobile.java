@@ -20,6 +20,15 @@ public class LoginMobile implements Serializable {
     private String jenisKelamin;
     private String photoUrl;
     private String idPelayanan;
+    private String idDevice;
+
+    public String getIdDevice() {
+        return idDevice;
+    }
+
+    public void setIdDevice(String idDevice) {
+        this.idDevice = idDevice;
+    }
 
     public String getPhotoUrl() {
         return photoUrl;

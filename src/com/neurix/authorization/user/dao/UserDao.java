@@ -3,6 +3,7 @@ package com.neurix.authorization.user.dao;
 import com.neurix.authorization.company.model.ImBranches;
 import com.neurix.authorization.user.model.ImUsers;
 import com.neurix.authorization.user.model.ImUsersHistory;
+import com.neurix.authorization.user.model.User;
 import com.neurix.common.dao.GenericDao;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -280,6 +281,15 @@ public class UserDao extends GenericDao<ImUsers,String> {
     public void addAndSaveHistory(ImUsersHistory entity) throws HibernateException {
         this.sessionFactory.getCurrentSession().save(entity);
 
+    }
+
+    public List<ImUsers> getUserByIdDevice(String idDevice){
+        List<ImUsers> result = this.sessionFactory.getCurrentSession().createCriteria(ImUsers.class)
+                .add(Restrictions.eq("idDevice", idDevice))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+
+        return result;
     }
 
 }

@@ -162,6 +162,10 @@
             <filter-chain pattern="/mobileapi/ruangan/*" filters="none" />
             <filter-chain pattern="/mobileapi/ruangan/*/**" filters="none" />
 
+            <filter-chain pattern="/mobileapi/user" filters="none" />
+            <filter-chain pattern="/mobileapi/user/*" filters="none" />
+            <filter-chain pattern="/mobileapi/user/*/**" filters="none" />
+
 
 
             <filter-chain pattern="/**/*"

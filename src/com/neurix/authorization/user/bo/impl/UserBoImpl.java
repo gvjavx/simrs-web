@@ -1605,6 +1605,10 @@ public class UserBoImpl implements UserBo {
                 hsCriteria.put("position_id", searchUsers.getPositionId());
             }
 
+            if (searchUsers.getIdDevice() != null && !"".equalsIgnoreCase(searchUsers.getIdDevice())) {
+                hsCriteria.put("id_device", searchUsers.getIdDevice());
+            }
+
             if (searchUsers.getFlag() != null && !"".equalsIgnoreCase(searchUsers.getFlag())) {
                 if ("N".equalsIgnoreCase(searchUsers.getFlag())) {
                     hsCriteria.put("flag", "N");
@@ -2180,6 +2184,37 @@ public class UserBoImpl implements UserBo {
         Long result = GenerateBoLog.generateBoLog(userDao, message, moduleMethod);
 
         return result;
+    }
+
+    @Override
+    public void saveEditIdDevice(User user) throws GeneralBOException {
+        logger.info("[UserBoImpl.saveEdit] start process >>>");
+        if (user != null) {
+
+
+            ImUsersPK primaryKey = new ImUsersPK();
+            primaryKey.setId(user.getUserId());
+
+            ImUsers imUsersOld = null;
+            try {
+                imUsersOld = userDao.getById(primaryKey, "Y");
+            } catch (HibernateException e) {
+                logger.error("[UserBoImpl.saveEditIdDevice] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when saving edit data users, please info to your admin..." + e.getMessage());
+            }
+
+            imUsersOld.setIdDevice(user.getIdDevice());
+            imUsersOld.setLastUpdate(user.getLastUpdate());
+            imUsersOld.setLastUpdateWho(user.getLastUpdateWho());
+
+            try {
+                userDao.updateAndSave(imUsersOld);
+            } catch (GeneralBOException e){
+                logger.error("[UserBoImpl.saveEditIdDevice] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when saving edit data users, please info to your admin..." + e.getMessage());
+            }
+        }
+        logger.info("[UserBoImpl.saveEdit] start process >>>");
     }
 
     public void saveEdit(User usersNew) throws GeneralBOException {
@@ -2978,5 +3013,27 @@ public class UserBoImpl implements UserBo {
         }
         logger.info("[UserBoImpl.getComboUserWithCriteria] end process <<<");
         return listComboUser;
+    }
+
+    @Override
+    public User getUserByIdDevice(String idDevice) throws GeneralBOException {
+        logger.info("[UserBoImpl.getUserByIdDevice] start process <<<");
+        List<ImUsers> result = new ArrayList<>();
+
+        try {
+            result = userDao.getUserByIdDevice(idDevice);
+        } catch (GeneralBOException e){
+            logger.info("[UserBoImpl.getUserByIdDevice] error get user id device");
+        }
+
+        User user = new User();
+        if (result.size() > 0){
+            user.setUserId(result.get(0).getPrimaryKey().getId());
+            user.setUsername(result.get(0).getUserName());
+            user.setIdDevice(result.get(0).getIdDevice());
+        }
+
+        logger.info("[UserBoImpl.getUserByIdDevice] end process <<<");
+        return user;
     }
 }

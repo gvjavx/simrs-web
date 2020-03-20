@@ -2,6 +2,7 @@ package com.neurix.hris.mobileapi;
 
 import com.neurix.authorization.role.model.Roles;
 import com.neurix.authorization.user.bo.UserBo;
+import com.neurix.authorization.user.model.User;
 import com.neurix.authorization.user.model.UserDetailsLogin;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.hris.mobileapi.model.LoginMobile;
@@ -17,6 +18,7 @@ import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 public class LoginMobileController extends ValidationAwareSupport implements ModelDriven<Object> {
@@ -32,6 +34,7 @@ public class LoginMobileController extends ValidationAwareSupport implements Mod
     private String os;
     private String username;
     private String password;
+    private String idDevice;
 
     public void setNotifikasiFcmBoProxy(NotifikasiFcmBo notifikasiFcmBoProxy) {
         this.notifikasiFcmBoProxy = notifikasiFcmBoProxy;
@@ -45,8 +48,25 @@ public class LoginMobileController extends ValidationAwareSupport implements Mod
     public HttpHeaders create() {
         logger.info("[TaskAsmudController.create] start process POST /loginmobile >>>");
 
+        List<User> result = new ArrayList<>();
+
         String userId = username;
         String rawPassword = password;
+        boolean finger = false;
+
+        if (idDevice != null && !idDevice.equalsIgnoreCase("")){
+
+            User user = new User();
+
+            try {
+                user = userBoProxy.getUserByIdDevice(idDevice);
+                userId = user.getUserId();
+                finger = true;
+            } catch (GeneralBOException e) {
+                logger.info("[LoginMobileController.create] error get user data POST /loginmobile >>>");
+                throw new GeneralBOException("Fingerprint not found");
+            }
+        }
 
         //checking if other device used this userId, if found then throws error
         boolean isFound = false;
@@ -86,7 +106,7 @@ public class LoginMobileController extends ValidationAwareSupport implements Mod
                 String hashedPassword = passwordEncoder.encodePassword(rawPassword,null);
                 String userPassword = userDetailsLogin.getPassword();
 
-                if (userPassword.equalsIgnoreCase(hashedPassword)) {
+                if (userPassword.equalsIgnoreCase(hashedPassword) || finger) {
 
                     String sessionId = null;
                     //get session id
@@ -127,6 +147,7 @@ public class LoginMobileController extends ValidationAwareSupport implements Mod
                         model.setJenisKelamin(userDetailsLogin.getJenisKelamin());
                         model.setPhotoUrl(userDetailsLogin.getPhotoUserUrl());
                         model.setIdPelayanan(userDetailsLogin.getIdPleyanan());
+                        model.setIdDevice(idDevice);
 
                         String roleId="";
                         String roleName="";
@@ -325,5 +346,13 @@ public class LoginMobileController extends ValidationAwareSupport implements Mod
 
     public void setOs(String os) {
         this.os = os;
+    }
+
+    public String getIdDevice() {
+        return idDevice;
+    }
+
+    public void setIdDevice(String idDevice) {
+        this.idDevice = idDevice;
     }
 }
