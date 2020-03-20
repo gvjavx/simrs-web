@@ -320,7 +320,7 @@ public class PaketPeriksaAction extends BaseTransactionAction {
                 BASE64Decoder decoder = new BASE64Decoder();
                 byte[] decodedBytes = decoder.decodeBuffer(obj.getString("img_ktp"));
                 logger.info("Decoded upload data : " + decodedBytes.length);
-                String fileName = dataPasien.getNoKtp()+"-"+dateFormater("MM")+dateFormater("yy")+".jpg";
+                String fileName = dataPasien.getNoKtp()+"-"+dateFormater("MM")+dateFormater("yy")+".png";
                 String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_KTP_PASIEN+fileName;
                 logger.info("File save path : " + uploadFile);
                 BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
@@ -330,7 +330,7 @@ public class PaketPeriksaAction extends BaseTransactionAction {
                 }else{
                     File f = new File(uploadFile);
                     // write the image
-                    ImageIO.write(image, "jpg", f);
+                    ImageIO.write(image, "png", f);
                     dataPasien.setUrlKtp(fileName);
                 }
             }
