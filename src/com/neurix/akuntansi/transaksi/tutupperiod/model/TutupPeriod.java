@@ -1,5 +1,6 @@
 package com.neurix.akuntansi.transaksi.tutupperiod.model;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 /**
@@ -12,6 +13,14 @@ public class TutupPeriod {
     private String stTglAkhirPeriod;
     private String stTglAwalPeriod;
     private String unit;
+    private String idTutupPeriod;
+    private String rekeningId;
+    private String parentId;
+    private String kodeRekening;
+    private String namaKodeRekening;
+    private BigDecimal jumlahDebit;
+    private BigDecimal jumlahKredit;
+    private String posisi;
     private String flag;
     private String action;
     private Timestamp createdDate;
@@ -19,6 +28,7 @@ public class TutupPeriod {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String flagTutup;
+
 
     public String getId() {
         return id;
@@ -122,5 +132,69 @@ public class TutupPeriod {
 
     public void setFlagTutup(String flagTutup) {
         this.flagTutup = flagTutup;
+    }
+
+    public String getIdTutupPeriod() {
+        return idTutupPeriod;
+    }
+
+    public void setIdTutupPeriod(String idTutupPeriod) {
+        this.idTutupPeriod = idTutupPeriod;
+    }
+
+    public String getRekeningId() {
+        return rekeningId;
+    }
+
+    public void setRekeningId(String rekeningId) {
+        this.rekeningId = rekeningId;
+    }
+
+    public String getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
+    }
+
+    public String getKodeRekening() {
+        return kodeRekening;
+    }
+
+    public void setKodeRekening(String kodeRekening) {
+        this.kodeRekening = kodeRekening;
+    }
+
+    public BigDecimal getJumlahDebit() {
+        return jumlahDebit;
+    }
+
+    public void setJumlahDebit(BigDecimal jumlahDebit) {
+        this.jumlahDebit = jumlahDebit;
+    }
+
+    public BigDecimal getJumlahKredit() {
+        return jumlahKredit;
+    }
+
+    public void setJumlahKredit(BigDecimal jumlahKredit) {
+        this.jumlahKredit = jumlahKredit;
+    }
+
+    public String getPosisi() {
+        return posisi;
+    }
+
+    public void setPosisi(String posisi) {
+        this.posisi = posisi;
+    }
+
+    public String getNamaKodeRekening() {
+        return namaKodeRekening;
+    }
+
+    public void setNamaKodeRekening(String namaKodeRekening) {
+        this.namaKodeRekening = namaKodeRekening;
     }
 }

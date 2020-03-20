@@ -387,6 +387,7 @@
                 <value>sshconfig/com/neurix/akuntansi/master/mappingJurnal/hibernate/ImMappingJurnalEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/master/masterVendor/hibernate/ImMasterVendorEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/tutupperiod/hibernate/ItSImrsBatasTutupPeriodEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/transaksi/tutupperiod/hibernate/ItAkunTutupPeriodEntity.hbm.xml</value>
 
                 <!--Hibernate Config For PAKET SIMRS-->
                 <value>sshconfig/com/neurix/simrs/transaksi/paketperiksa/hiberanate/ImSimrsKelasPaketEntity.hbm.xml</value>
