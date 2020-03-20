@@ -32,7 +32,7 @@
     <script type='text/javascript'>
 
         function link(){
-            window.location.href="<s:url action='initForm_profesi'/>";
+            window.location.href="<s:url action='initForm_position'/>";
         }
 
     </script>
@@ -49,9 +49,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Profesi
+            Posisi
             <small>e-HEALTH</small>
         </h1>
+        <%--<ol class="breadcrumb">--%>
+        <%--<li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>--%>
+        <%--<li class="active">Here</li>--%>
+        <%--</ol>--%>
     </section>
 
 
@@ -61,7 +65,7 @@
         <table width="100%" align="center">
             <tr>
                 <td align="center">
-                    <s:form id="profesiForm" method="post"  theme="simple" namespace="/profesi" action="search_profesi.action" cssClass="well form-horizontal">
+                    <s:form id="posisiForm" method="post"  theme="simple" namespace="/admin/position" action="search_position.action" cssClass="well form-horizontal">
 
                         <s:hidden name="addOrEdit"/>
                         <s:hidden name="delete"/>
@@ -77,26 +81,62 @@
                         <table >
                             <tr>
                                 <td>
-                                    <label class="control-label"><small>Profesi Id :</small></label>
+                                    <label class="control-label"><small>Posisi Id :</small></label>
                                 </td>
                                 <td>
                                     <table>
-                                        <s:textfield  id="profesiId" name="profesi.profesiId" required="false" readonly="false" cssClass="form-control"/>
+                                        <s:textfield id="positionId" name="position.stPositionId" required="false" readonly="false" cssClass="form-control" />
                                     </table>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td>
-                                    <label class="control-label"><small>Profesi Name :</small></label>
+                                    <label class="control-label"><small>Nama Posisi :</small></label>
                                 </td>
                                 <td>
                                     <table>
-                                        <s:textfield  id="profesiName" name="profesi.profesiName" required="false" readonly="false" cssClass="form-control"/>
+                                        <s:textfield id="positionName" name="position.positionName" required="false" readonly="false" cssClass="form-control" />
                                     </table>
                                 </td>
                             </tr>
-
+                            <tr>
+                                <td>
+                                    <label class="control-label"><small>Bidang/Devisi :</small></label>
+                                </td>
+                                <td>
+                                    <table>
+                                        <s:action id="comboMasaTanam" namespace="/department" name="initDepartment_department"/>
+                                        <s:select list="#session.listOfResultDepartment" id="departmentId" name="position.departmentId"
+                                                  listKey="departmentId" listValue="departmentName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="control-label"><small>Bagian :</small></label>
+                                </td>
+                                <td>
+                                    <table>
+                                        <s:action id="comboBagian" namespace="/positionBagian" name="searchPositionBagian_positionBagian"/>
+                                        <s:select list="#comboBagian.comboListOfPositionBagian" id="bagianId" name="position.bagianId"
+                                                  listKey="bagianId" listValue="bagianName" headerKey="" headerValue="[Select one]"
+                                                  cssClass="form-control"/>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="control-label"><small>Kelompok Jabatan :</small></label>
+                                </td>
+                                <td>
+                                    <table>
+                                        <s:action id="comboKelompok" namespace="/kelompokPosition" name="searchKelompok_kelompokPosition"/>
+                                        <s:select list="#comboKelompok.comboListOfKelompokPosition" id="kelompokId" name="position.kelompokId"
+                                                  listKey="kelompokId" listValue="kelompokName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                    </table>
+                                </td>
+                            </tr>
 
                             <tr>
                                 <td>
@@ -104,8 +144,8 @@
                                 </td>
                                 <td>
                                     <table>
-                                        <s:select list="#{'N':'Non-Active'}" id="flag" name="profesi.flag"
-                                                  headerKey="Y" headerValue="Active" cssClass="form-control" />
+                                        <s:select list="#{'N':'Non-Active'}" id="flag" name="position.flag"
+                                                  headerKey="Y" headerValue="Active" cssClass="form-control"/>
                                     </table>
 
                                 </td>
@@ -121,22 +161,22 @@
                             <table align="center">
                                 <tr>
                                     <td>
-                                        <sj:submit type="button" cssClass="btn btn-primary" formIds="profesiForm" id="search" name="search"
+                                        <sj:submit type="button" cssClass="btn btn-primary" formIds="posisiForm" id="search" name="search"
                                                    onClickTopics="showDialog" onCompleteTopics="closeDialog" >
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
                                     </td>
                                     <td>
-                                        <s:url var="urlAdd" namespace="/profesi" action="add_profesi" escapeAmp="false">
+                                        <s:url var="urlAdd" namespace="/admin/position" action="add_position" escapeAmp="false">
                                         </s:url>
                                         <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">
                                             <i class="fa fa-plus"></i>
-                                            Add Profesi
+                                            Add Posisi
                                         </sj:a>
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_profesi"/>'">
+                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_position"/>'">
                                             <i class="fa fa-refresh"></i> Reset
                                         </button>
                                     </td>
@@ -152,17 +192,17 @@
                                     <td align="center">
                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
                                                    height="500" width="900" autoOpen="false"
-                                                   title="Profesi ">
+                                                   title="Posisi ">
                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                         </sj:dialog>
 
-                                        <s:set name="listOfProfesi" value="#session.listOfResult" scope="request" />
-                                        <display:table name="listOfProfesi" class="table table-condensed table-striped table-hover"
-                                                       requestURI="paging_displaytag_profesi.action" export="true" id="row" pagesize="14" style="font-size:10">
+                                        <s:set name="listOfPosition" value="#session.listOfResult" scope="request" />
+                                        <display:table name="listOfPosition" class="table table-condensed table-striped table-hover"
+                                                       requestURI="paging_displaytag.action" export="true" id="row" pagesize="20" style="font-size:10">
                                             <display:column media="html" title="Edit">
                                                 <s:if test="#attr.row.flagYes">
-                                                    <s:url var="urlEdit" namespace="/profesi" action="edit_profesi" escapeAmp="false">
-                                                        <s:param name="id"><s:property value="#attr.row.profesiId"/></s:param>
+                                                    <s:url var="urlEdit" namespace="/admin/position" action="edit_position" escapeAmp="false">
+                                                        <s:param name="id"><s:property value="#attr.row.positionId"/></s:param>
                                                         <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
                                                     </s:url>
                                                     <sj:a onClickTopics="showDialogMenu" href="%{urlEdit}">
@@ -172,8 +212,8 @@
                                             </display:column>
 
                                             <display:column media="html" title="Delete" style="text-align:center;font-size:9">
-                                                <s:url var="urlViewDelete" namespace="/profesi" action="delete_profesi" escapeAmp="false">
-                                                    <s:param name="id"><s:property value="#attr.row.profesiId" /></s:param>
+                                                <s:url var="urlViewDelete" namespace="/admin/position" action="delete_position" escapeAmp="false">
+                                                    <s:param name="id"><s:property value="#attr.row.positionId" /></s:param>
                                                     <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
                                                 </s:url>
                                                 <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
@@ -181,16 +221,22 @@
                                                 </sj:a>
 
                                             </display:column>
-                                            <display:column property="profesiId" sortable="true" title="Profesi ID" />
-                                            <display:column property="profesiName" sortable="true" title="Profesi Name"  />
-
+                                            <display:column property="positionId" sortable="true" title="Id"/>
+                                            <display:column property="positionName" sortable="true" title="Nama Posisi"/>
+                                            <display:column property="departmentName" sortable="true" title="Bidang/Divisi"/>
+                                            <display:column property="bagianName" sortable="true" title="Bagian"/>
+                                            <display:column property="kelompokName" sortable="true" title="Kelompok Jabatan"/>
                                             <display:column property="createdWho" sortable="true" title="Created who"  />
                                             <display:column property="lastUpdateWho" sortable="true" title="Last update who"  />
                                             <display:column property="flag" sortable="true" title="flag"  />
                                             <display:column property="action" sortable="true" title="action"  />
                                             <display:column property="createdDate" sortable="true" title="Created date"  />
                                             <display:column property="lastUpdate" sortable="true" title="Last update"  />
-
+                                            <display:setProperty name="paging.banner.item_name">Position</display:setProperty>
+                                            <display:setProperty name="paging.banner.items_name">Positions</display:setProperty>
+                                            <display:setProperty name="export.excel.filename">Positions.xls</display:setProperty>
+                                            <display:setProperty name="export.csv.filename">Positions.csv</display:setProperty>
+                                            <display:setProperty name="export.pdf.filename">Positions.pdf</display:setProperty>
                                         </display:table>
                                     </td>
                                 </tr>

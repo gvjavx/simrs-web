@@ -47,12 +47,57 @@
                     && percentBpjsTkPers != ''&& iuranKaryawan != ''&& jpkKaryawan != ''
                     && jkkPers != ''&& jhtPers != ''&& jkmPers != ''&& iurPers != ''&& jpkPers != '') {
                 if(isNaN(minBpjsKs) ==  false && isNaN(maxBpjsKs) == false && isNaN(minBpjsTk) == false && isNaN(maxBpjsTk) == false){
-                    if (confirm('Do you want to save this record?')) {
-                        event.originalEvent.options.submit = true;
-                        $.publish('showDialog');
-                    } else {
-                        // Cancel Submit comes with 1.8.0
+                    if (percentBpjsKsKary <= 100 && percentBpjsKsPers <= 100 && percentBpjsTkKary <= 100 && percentBpjsTkPers <= 100
+                        && iuranKaryawan <= 100 && jpkKaryawan <= 100 && iurPers <= 100 && jkkPers <= 100 && jhtPers <= 100 && jkmPers <= 100
+                        && jpkPers <= 100){
+                        if (confirm('Do you want to save this record?')) {
+                            event.originalEvent.options.submit = true;
+                            $.publish('showDialog');
+                        } else {
+                            // Cancel Submit comes with 1.8.0
+                            event.originalEvent.options.submit = false;
+                        }
+                    }else {
                         event.originalEvent.options.submit = false;
+                        var msg = "";
+                        if (percentBpjsKsKary > 100){
+                            msg += 'Field <strong>Persen BPJS KS Kary. </strong> Lebih Dari 100%.' + '<br/>';
+                        }
+                        if (percentBpjsKsPers > 100){
+                            msg += 'Field <strong>Persen BPJS KS Pers. </strong> Lebih Dari 100%.' + '<br/>';
+                        }
+                        if (iuranKaryawan > 100){
+                            msg += 'Field <strong>Iuran Karyawan </strong> Lebih Dari 100%.' + '<br/>';
+                        }
+                        if (jpkKaryawan > 100){
+                            msg += 'Field <strong>JPK Karyawan </strong> Lebih Dari 100%.' + '<br/>';
+                        }
+                        if (jkkPers > 100){
+                            msg += 'Field <strong>JKK Perusahaan </strong> Lebih Dari 100%.' + '<br/>';
+                        }
+                        if (jhtPers > 100){
+                            msg += 'Field <strong>JHT Perusahaan </strong> Lebih Dari 100%.' + '<br/>';
+                        }
+                        if (jkmPers > 100){
+                            msg += 'Field <strong>JKM Perusahaan </strong> Lebih Dari 100%.' + '<br/>';
+                        }
+                        if (jpkPers > 100){
+                            msg += 'Field <strong>JPK Perusahaan </strong> Lebih Dari 100%.' + '<br/>';
+                        }
+
+                        if (percentBpjsTkKary > 100){
+                            msg += 'Field <strong>Persen BPJS TK Kary. </strong> Lebih Dari 100%.' + '<br/>';
+                        }
+                        if (iurPers > 100){
+                            msg += 'Field <strong>Iuran Perusahaan </strong> Lebih Dari 100%.' + '<br/>';
+                        }
+                        if (percentBpjsTkPers > 100){
+                            msg += 'Field <strong>Persen BPJS TK Pers. </strong> Lebih Dari 100%.' + '<br/>';
+                        }
+
+                        document.getElementById('errorValidationMessage').innerHTML = msg;
+
+                        $.publish('showErrorValidationDialog');
                     }
                 }else{
                     event.originalEvent.options.submit = false;
@@ -194,7 +239,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Min Bpjs Ks :</small></label>
+                            <label class="control-label"><small>Min Bpjs Ks (Rp):</small></label>
                         </td>
                         <td>
                             <table>
@@ -204,7 +249,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Max Bpjs Ks :</small></label>
+                            <label class="control-label"><small>Max Bpjs Ks (Rp):</small></label>
                         </td>
                         <td>
                             <table>
@@ -214,7 +259,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Min Bpjs Tk :</small></label>
+                            <label class="control-label"><small>Min Bpjs Tk (Rp):</small></label>
                         </td>
                         <td>
                             <table>
@@ -224,7 +269,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Max Bpjs Tk :</small></label>
+                            <label class="control-label"><small>Max Bpjs Tk (Rp):</small></label>
                         </td>
                         <td>
                             <table>
@@ -404,15 +449,21 @@
                             <div id="crud">
                                 <td>
                                     <table>
-                                        <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"
+                                        <sj:dialog id="waiting_dialog" openTopics="showDialog"
+                                                   closeTopics="closeDialog" modal="true"
                                                    resizable="false"
-                                                   height="350" width="600" autoOpen="false" title="Saving ...">
+                                                   height="250" width="600" autoOpen="false"
+                                                   title="Searching ...">
                                             Please don't close this window, server is processing your request ...
-                                            </br>
-                                            </br>
-                                            </br>
+                                            <br>
                                             <center>
-                                                <img border="0" src="<s:url value="/pages/images/indicator-write.gif"/>" name="image_indicator_write">
+                                                <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                     src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                     name="image_indicator_write">
+                                                <br>
+                                                <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                     src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                     name="image_indicator_write">
                                             </center>
                                         </sj:dialog>
 

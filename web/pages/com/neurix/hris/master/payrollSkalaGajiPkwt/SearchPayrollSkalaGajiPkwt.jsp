@@ -49,7 +49,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Payroll Gaji Pkwt
+            Payroll Gaji PKWT
             <small>e-HEALTH</small>
         </h1>
     </section>
@@ -189,6 +189,12 @@
                                             <display:column property="santunanKhusus" sortable="true" title="Santunan Khusus"  />
                                             <display:column property="tunjFunsional" sortable="true" title="Tunj. Fungsional"  />
                                             <display:column property="tunjtambahan" sortable="true" title="Tunj. Tambahan"  />
+                                            <display:column property="createdWho" sortable="true" title="Created who"  />
+                                            <display:column property="lastUpdateWho" sortable="true" title="Last update who"  />
+                                            <display:column property="flag" sortable="true" title="flag"  />
+                                            <display:column property="action" sortable="true" title="action"  />
+                                            <display:column property="createdDate" sortable="true" title="Created date"  />
+                                            <display:column property="lastUpdate" sortable="true" title="Last update"  />
                                         </display:table>
                                     </td>
                                 </tr>

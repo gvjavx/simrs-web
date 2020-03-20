@@ -16,11 +16,10 @@
         };
 
         $.subscribe('beforeProcessSave', function (event, data) {
-            var idKelompokPosition = document.getElementById("kelompokPositionId1").value;
+//            var idKelompokPosition = document.getElementById("kelompokPositionId1").value;
             var nameKelompokPosition    = document.getElementById("kelompokPositionName1").value;
 
-
-
+            console.log(nameKelompokPosition);
             if (nameKelompokPosition != '' ) {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
@@ -110,17 +109,6 @@
                 <table >
                     <tr>
                         <td>
-                            <label class="control-label"><small>Kelompok Id :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield  id="kelompokPositionId1" name="kelompokPosition.kelompokId" required="true" readonly="true" cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
                             <label class="control-label"><small>Kelompok Name :</small></label>
                         </td>
                         <td>
@@ -157,15 +145,21 @@
                             <div id="crud">
                                 <td>
                                     <table>
-                                        <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"
+                                        <sj:dialog id="waiting_dialog" openTopics="showDialog"
+                                                   closeTopics="closeDialog" modal="true"
                                                    resizable="false"
-                                                   height="350" width="600" autoOpen="false" title="Saving ...">
+                                                   height="250" width="600" autoOpen="false"
+                                                   title="Searching ...">
                                             Please don't close this window, server is processing your request ...
-                                            </br>
-                                            </br>
-                                            </br>
+                                            <br>
                                             <center>
-                                                <img border="0" src="<s:url value="/pages/images/indicator-write.gif"/>" name="image_indicator_write">
+                                                <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                     src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                     name="image_indicator_write">
+                                                <br>
+                                                <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                     src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                     name="image_indicator_write">
                                             </center>
                                         </sj:dialog>
 

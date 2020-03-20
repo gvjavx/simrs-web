@@ -108,4 +108,13 @@ public class IjinDao extends GenericDao<ImIjinEntity, String> {
                 .list();
         return results;
     }
+
+    public List<ImIjinEntity> getDataIjin(String ijinName, String flag)throws HibernateException{
+        List<ImIjinEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImIjinEntity.class)
+                .add(Restrictions.eq("ijinName", ijinName))
+                .add(Restrictions.eq("flag", flag))
+                .list();
+
+        return results;
+    }
 }

@@ -156,40 +156,39 @@ public class GolonganBoImpl implements GolonganBo {
         logger.info("[GolonganBoImpl.saveAdd] start process >>>");
 
         if (bean!=null) {
-            String status = cekStatus(bean.getLevel());
+            String status = cekStatus(bean.getLevel(), bean.getFlag());
             if (!status.equalsIgnoreCase("Exist")){
+                String golonganId;
+                try {
+                    // Generating ID, get from postgre sequence
+                    golonganId = golonganDao.getNextGolonganId();
+                } catch (HibernateException e) {
+                    logger.error("[GolonganBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when getting sequence golonganId id, please info to your admin..." + e.getMessage());
+                }
 
+                // creating object entity serializable
+                ImGolonganEntity imGolonganEntity = new ImGolonganEntity();
+
+                imGolonganEntity.setGolonganId(golonganId);
+                imGolonganEntity.setGolonganName(bean.getGolonganName());
+                imGolonganEntity.setLevel(bean.getLevel());
+                imGolonganEntity.setFlag(bean.getFlag());
+                imGolonganEntity.setAction(bean.getAction());
+                imGolonganEntity.setCreatedWho(bean.getCreatedWho());
+                imGolonganEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                imGolonganEntity.setCreatedDate(bean.getCreatedDate());
+                imGolonganEntity.setLastUpdate(bean.getLastUpdate());
+
+                try {
+                    // insert into database
+                    golonganDao.addAndSave(imGolonganEntity);
+                } catch (HibernateException e) {
+                    logger.error("[GolonganBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data Golongan, please info to your admin..." + e.getMessage());
+                }
             }else{
                 throw new GeneralBOException("Maaf Data Dengan Level Tersebut Sudah Ada");
-            }
-            String golonganId;
-            try {
-                // Generating ID, get from postgre sequence
-                golonganId = golonganDao.getNextGolonganId();
-            } catch (HibernateException e) {
-                logger.error("[GolonganBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when getting sequence golonganId id, please info to your admin..." + e.getMessage());
-            }
-
-            // creating object entity serializable
-            ImGolonganEntity imGolonganEntity = new ImGolonganEntity();
-
-            imGolonganEntity.setGolonganId(golonganId);
-            imGolonganEntity.setGolonganName(bean.getGolonganName());
-            imGolonganEntity.setLevel(bean.getLevel());
-            imGolonganEntity.setFlag(bean.getFlag());
-            imGolonganEntity.setAction(bean.getAction());
-            imGolonganEntity.setCreatedWho(bean.getCreatedWho());
-            imGolonganEntity.setLastUpdateWho(bean.getLastUpdateWho());
-            imGolonganEntity.setCreatedDate(bean.getCreatedDate());
-            imGolonganEntity.setLastUpdate(bean.getLastUpdate());
-
-            try {
-                // insert into database
-                golonganDao.addAndSave(imGolonganEntity);
-            } catch (HibernateException e) {
-                logger.error("[GolonganBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when saving new data Golongan, please info to your admin..." + e.getMessage());
             }
         }
 
@@ -250,6 +249,7 @@ public class GolonganBoImpl implements GolonganBo {
                     returnGolongan.setCreatedWho(golonganEntity.getCreatedWho());
                     returnGolongan.setCreatedDate(golonganEntity.getCreatedDate());
                     returnGolongan.setLastUpdate(golonganEntity.getLastUpdate());
+                    returnGolongan.setLastUpdateWho(golonganEntity.getLastUpdateWho());
 
                     returnGolongan.setAction(golonganEntity.getAction());
                     returnGolongan.setFlag(golonganEntity.getFlag());
@@ -297,9 +297,22 @@ public class GolonganBoImpl implements GolonganBo {
         logger.info("[UserBoImpl.getComboUserWithCriteria] end process <<<");
         return listComboGolongan;
     }
-    public String cekStatus(Integer golonganId)throws GeneralBOException{
+    public String cekStatus(Integer level, String flag)throws GeneralBOException{
         String status ="";
-        status = golonganDao.getStatus(golonganId);
+        List<ImGolonganEntity> golonganEntityList = new ArrayList<>();
+        try{
+            golonganEntityList = golonganDao.getDataGolongan(level, flag);
+        }catch (HibernateException e){
+            logger.error("[GolonganBoImpl.cekStatus] Error, "+e.getMessage());
+            throw new GeneralBOException("Found problem when saving data, please info to your admin..."+e.getMessage());
+        }
+        if (golonganEntityList.size() > 0){
+            status = "exist";
+        }else {
+            status = "notExist";
+        }
         return status;
+//        status = golonganDao.getStatus(golonganId);
+//        return status;
     }
 }

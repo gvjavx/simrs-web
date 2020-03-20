@@ -35,12 +35,22 @@
         <property name="createdDate">
             <column name="created_date" sql-type="timestamp" length="29" precision="6"/>
         </property>
+
+        <!--<property name="createdDate">-->
+            <!--<column name="created_date" sql-type="date" not-null="false" />-->
+        <!--</property>-->
+
         <property name="createdWho">
             <column name="created_who" sql-type="varchar" length="100"/>
         </property>
         <property name="lastUpdate">
             <column name="last_update" sql-type="timestamp" length="29" precision="6"/>
         </property>
+
+        <!--<property name="lastUpdate">-->
+            <!--<column name="last_update" sql-type="date" not-null="false" />-->
+        <!--</property>-->
+
         <property name="lastUpdateWho">
             <column name="last_update_who" sql-type="varchar" length="100"/>
         </property>

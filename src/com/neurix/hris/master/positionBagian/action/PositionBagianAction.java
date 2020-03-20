@@ -99,8 +99,8 @@ public class PositionBagianAction extends BaseMasterAction{
         setAddOrEdit(true);
         setAdd(true);
 
-        HttpSession session = ServletActionContext.getRequest().getSession();
-        session.removeAttribute("listOfResult");
+//        HttpSession session = ServletActionContext.getRequest().getSession();
+//        session.removeAttribute("listOfResult");
 
         logger.info("[PositionBagianAction.add] stop process >>>");
         return "init_add";
@@ -229,11 +229,11 @@ public class PositionBagianAction extends BaseMasterAction{
                 logId = positionBagianBoProxy.saveErrorMessage(e.getMessage(), "PositionBagianBO.saveEdit");
             } catch (GeneralBOException e1) {
                 logger.error("[PositionBagianAction.saveEdit] Error when saving error,", e1);
-                return ERROR;
+                throw new GeneralBOException(e.getMessage());
             }
             logger.error("[PositionBagianAction.saveEdit] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            throw new GeneralBOException(e.getMessage());
         }
 
         logger.info("[PositionBagianAction.saveEdit] end process <<<");

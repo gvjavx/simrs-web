@@ -8,11 +8,11 @@
 
 
         <id name="skalaGajiPensiunId">
-            <column name="skala_gaji_pensiun_id" sql-type="varchar" length="3" not-null="true" />
+            <column name="skala_gaji_pensiun_id" sql-type="varchar" length="10" not-null="true" />
         </id>
 
         <property name="golonganId">
-            <column name="golongan_id" sql-type="integer" not-null="true" />
+            <column name="golongan_id" sql-type="varchar" length="3" not-null="true" />
         </property>
         <property name="poin">
             <column name="poin" sql-type="integer" not-null="true" />

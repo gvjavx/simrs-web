@@ -68,8 +68,9 @@
             var golongan            = document.getElementById("golongan1").value;
             var statusPegawai       = document.getElementById("statusPegawai1").value;
             var flag                = document.getElementById("flagAktif").value;
+            var masaGolongan        = document.getElementById("poinLebih").value;
 
-            if (statusPegawai != '' && nip != '' && namaPegawai != '' && noKtp != '' && tempatLahir != '' && tipePegawai != '' && tanggalLahir != '' && branch != '') {
+            if (statusPegawai != '' && nip != '' && namaPegawai != '' && noKtp != '' && tempatLahir != '' && tipePegawai != '' && tanggalLahir != '' && branch != '' && masaGolongan != '') {
                 if(flag == 'N'){
                     alert("Non Aktifkan User");
                 }
@@ -114,6 +115,9 @@
                  }*/
                 if (statusPegawai == '') {
                     msg += 'Field <strong>Status Pegawai</strong> is required.' + '<br/>';
+                }
+                if (masaGolongan == '') {
+                    msg += 'Field <strong>Masa Kerja Golongan</strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
@@ -866,7 +870,7 @@
 
                                 <tr>
                                     <td>
-                                        <label class="control-label"><small>Masa Kerja Golongan:</small></label>
+                                        <label class="control-label"><small>Masa Kerja Golongan*:</small></label>
                                     </td>
                                     <td>
                                         <table>
@@ -1372,15 +1376,20 @@
                                 <div id="crud">
                                     <td>
                                         <table>
-                                            <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"
+                                            <sj:dialog id="waiting_dialog" openTopics="showDialog"
+                                                       closeTopics="closeDialog" modal="true"
                                                        resizable="false"
-                                                       height="350" width="600" autoOpen="false" title="Saving ...">
+                                                       height="250" width="600" autoOpen="false">
                                                 Please don't close this window, server is processing your request ...
-                                                </br>
-                                                </br>
-                                                </br>
+                                                <br>
                                                 <center>
-                                                    <img border="0" src="<s:url value="/pages/images/indicator-write.gif"/>" name="image_indicator_write">
+                                                    <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                         src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                         name="image_indicator_write">
+                                                    <br>
+                                                    <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                         src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                         name="image_indicator_write">
                                                 </center>
                                             </sj:dialog>
 

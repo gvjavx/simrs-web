@@ -49,7 +49,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Golongan Pkwt
+            Golongan PKWT
             <small>e-HEALTH</small>
         </h1>
         <%--<ol class="breadcrumb">--%>
@@ -188,6 +188,12 @@
                                             </display:column>
                                             <%--<display:column property="golonganPkwtId" sortable="true" title="GolonganPkwt ID" />--%>
                                             <display:column property="golonganPkwtName" sortable="true" title="Nama"  />
+                                            <display:column property="flag" sortable="true" title="flag"  />
+                                            <display:column property="createdWho" sortable="true" title="Created who"  />
+                                            <display:column property="lastUpdateWho" sortable="true" title="Last update who"  />
+                                            <display:column property="action" sortable="true" title="action"  />
+                                            <display:column property="createdDate" sortable="true" title="Created date"  />
+                                            <display:column property="lastUpdate" sortable="true" title="Last update"  />
                                             <%--<display:column property="flag" sortable="true" title="Flag" />
                                             <display:column property="createdWho" sortable="true" title="CreatedWho"/>--%>
 

@@ -190,8 +190,12 @@
                                             <display:column property="bagianId" sortable="true" title="Bagian Id" />
                                             <display:column property="bagianName" sortable="true" title="Bagian Name"  />
 
-                                            <display:column property="flag" sortable="true" title="Flag" />
-                                            <display:column property="createdWho" sortable="true" title="CreatedWho"/>
+                                            <display:column property="flag" sortable="true" title="flag"  />
+                                            <display:column property="createdWho" sortable="true" title="Created who"  />
+                                            <display:column property="lastUpdateWho" sortable="true" title="Last update who"  />
+                                            <display:column property="action" sortable="true" title="action"  />
+                                            <display:column property="createdDate" sortable="true" title="Created date"  />
+                                            <display:column property="lastUpdate" sortable="true" title="Last update"  />
 
                                         </display:table>
                                     </td>

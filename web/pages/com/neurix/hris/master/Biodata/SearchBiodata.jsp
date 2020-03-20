@@ -750,9 +750,12 @@
                                             <display:column property="stTanggalAktif" sortable="true" title="Tanggal Aktif"/>
                                             <display:column property="stTanggalPensiun" sortable="true" title="Tanggal Pensiun"/>
 
-
-
                                             <display:column property="flag" sortable="true" title="Aktif" />
+                                            <display:column property="createdWho" sortable="true" title="Created who"  />
+                                            <display:column property="lastUpdateWho" sortable="true" title="Last update who"/>
+                                            <display:column property="action" sortable="true" title="action"  />
+                                            <display:column property="createdDate" sortable="true" title="Created date"  />
+                                            <display:column property="lastUpdate" sortable="true" title="Last update"  />
 
 
                                         </display:table>
