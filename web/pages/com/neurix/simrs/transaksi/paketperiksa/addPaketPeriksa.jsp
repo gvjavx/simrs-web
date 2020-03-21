@@ -416,6 +416,10 @@
 
     });
 
+    function toContent(){
+        window.location.href = 'initForm_paketperiksa.action';
+    }
+
     function listSelectTindakan(idKategori) {
         var idx = idKategori.selectedIndex
         if (idx > 0) {

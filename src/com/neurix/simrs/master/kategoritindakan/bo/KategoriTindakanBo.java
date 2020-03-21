@@ -8,6 +8,5 @@ import java.util.List;
 public interface KategoriTindakanBo {
 
     public List<KategoriTindakan> getByCriteria(KategoriTindakan bean) throws GeneralBOException;
-
     public List<KategoriTindakan> getListKategoriTindakan(String idPelayanan) throws GeneralBOException;
 }

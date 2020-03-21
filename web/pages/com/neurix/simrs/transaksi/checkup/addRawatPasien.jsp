@@ -942,7 +942,7 @@
                                                           list="#initComboPoli.listOfPelayanan" id="poli"
                                                           name="headerCheckup.idPelayanan" listKey="idPelayanan"
                                                           listValue="namaPelayanan"
-                                                          onchange="$(this).css('border',''); listDokter(this); var warn =$('#war_poli').is(':visible'); if (warn){$('#cor_poli').show().fadeOut(3000);$('#war_poli').hide()}"
+                                                          onchange="$(this).css('border',''); listDokter(this.value); var warn =$('#war_poli').is(':visible'); if (warn){$('#cor_poli').show().fadeOut(3000);$('#war_poli').hide()}"
                                                           headerKey="" headerValue="[Select one]"
                                                           cssClass="form-control select2"/>
                                                 <span style="color: red; display: none" id="war_poli"><i
@@ -974,7 +974,6 @@
                                             <div class="col-md-8">
                                                 <select style="margin-top: 7px" id="penjamin"
                                                         class="form-control select2"
-                                                        name="headerCheckup.idJenisPeriksaPasien"
                                                         style="margin-top: 7px; width: 100%"
                                                         onchange="var warn =$('#war_penjamin').is(':visible'); if (warn){$('#con_penjamin').show().fadeOut(3000);$('#war_penjamin').hide()}">
                                                     <option value="">[Select One]</option>
@@ -985,6 +984,7 @@
                                                         class="fa fa-check"></i> correct</span>
                                             </div>
                                         </div>
+                                        <s:hidden name="headerCheckup.idJenisPeriksaPasien" id="id_jenis_periksa"></s:hidden>
                                         <div class="form-group">
                                             <label class="col-md-4">Kunjungan</label>
                                             <div class="col-md-8">
@@ -1824,16 +1824,10 @@
                 $('#penjamin').html(option);
             }
         });
-        if (tipe == "bpjs") {
-            $('#penjamin').val('bpjs').trigger('change');
-        }
-        if (tipe == "umum") {
-            listPenjaminNoBpjs()
-            $('#penjamin').val('umum').trigger('change');
-        }
-        if (tipe == "paket") {
-            $('#penjamin').val('paket').trigger('change').attr('readonly', true);
-        }
+
+        $('#penjamin').val(tipe).trigger('change').attr('disabled', true);
+
+        $('#id_jenis_periksa').val(tipe);
     }
 
     function listPenjaminNoBpjs() {
@@ -1912,22 +1906,24 @@
     }
 
     function listDokter(idPelayanan) {
-        var idx = idPelayanan.selectedIndex;
-        var idPoli = idPelayanan.options[idx].value;
+        // var idx = idPelayanan.selectedIndex;
+        // var idPoli = idPelayanan.options[idx].value;
         var option = "";
-        CheckupAction.listOfDokter(idPoli, function (response) {
-            option = "<option value=''>[Select One]</option>";
-            if (response != null) {
-                console.log(response);
-                $.each(response, function (i, item) {
-                    option += "<option value='" + item.idDokter + "'>" + item.namaDokter + "</option>";
-                });
+        if(idPelayanan != null && idPelayanan != ''){
+            CheckupAction.listOfDokter(idPelayanan, function (response) {
+                option = "<option value=''>[Select One]</option>";
+                if (response != null) {
+                    console.log(response);
+                    $.each(response, function (i, item) {
+                        option += "<option value='" + item.idDokter + "'>" + item.namaDokter + "</option>";
+                    });
 
-                $('#dokter').html(option);
-            } else {
-                option = option;
-            }
-        });
+                    $('#dokter').html(option);
+                } else {
+                    option = option;
+                }
+            });
+        }
     }
 
     function initListDokter() {

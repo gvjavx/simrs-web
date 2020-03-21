@@ -961,10 +961,16 @@ public class CheckupDetailAction extends BaseMasterAction {
         logger.info("[CheckupDetailAction.getListComboKategoriTIndakan] start process >>>");
 
         List<KategoriTindakan> kategoriTindakanList = new ArrayList<>();
-        KategoriTindakan kategoriTindakan = new KategoriTindakan();
+        String pelayanan = "";
+
+        if("ADMIN RS".equalsIgnoreCase(CommonUtil.roleAsLogin())){
+            pelayanan = "";
+        }else{
+            pelayanan = CommonUtil.userPelayananIdLogin();
+        }
 
         try {
-            kategoriTindakanList = kategoriTindakanBoProxy.getByCriteria(kategoriTindakan);
+            kategoriTindakanList = kategoriTindakanBoProxy.getListKategoriTindakan(pelayanan);
         } catch (GeneralBOException e) {
             logger.error("[CheckupDetailAction.getListComboKategoriTIndakan] Error when get kategori tindakan ," + "Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error Found problem when get kategori tindakan , please inform to your admin.\n" + e.getMessage());
@@ -981,11 +987,11 @@ public class CheckupDetailAction extends BaseMasterAction {
         List<Tindakan> tindakanList = new ArrayList<>();
         Tindakan tindakan = new Tindakan();
         tindakan.setIdKategoriTindakan(idKategoriTindakan);
-        if ("ADMIN RS".equalsIgnoreCase(CommonUtil.roleAsLogin())) {
-            //tampil semua tindakan
-        } else {
-            tindakan.setIdPelayanan(CommonUtil.userPelayananIdLogin());
-        }
+//        if ("ADMIN RS".equalsIgnoreCase(CommonUtil.roleAsLogin())) {
+//            //tampil semua tindakan
+//        } else {
+//            tindakan.setIdPelayanan(CommonUtil.userPelayananIdLogin());
+//        }
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         TindakanBo tindakanBo = (TindakanBo) ctx.getBean("tindakanBoProxy");
@@ -998,6 +1004,26 @@ public class CheckupDetailAction extends BaseMasterAction {
 
         logger.info("[CheckupDetailAction.listOfDokter] end process >>>");
         return tindakanList;
+    }
+
+    public List<KategoriTindakan> getListComboTindakanKategori(String idPelayanan) {
+        logger.info("[CheckupDetailAction.listOfDokter] start process >>>");
+
+        List<KategoriTindakan> kategoriTindakans = new ArrayList<>();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        KategoriTindakanBo kategoriTindakanBo = (KategoriTindakanBo) ctx.getBean("kategoriTindakanBoProxy");
+
+        if(idPelayanan != null && !"".equalsIgnoreCase(idPelayanan)){
+            try {
+                kategoriTindakans = kategoriTindakanBo.getListKategoriTindakan(idPelayanan);
+            } catch (GeneralBOException e) {
+                logger.error("[CheckupDetailAction.listOfDokter] Error when searching data, Found problem when searching data, please inform to your admin.", e);
+            }
+        }
+
+        logger.info("[CheckupDetailAction.listOfDokter] end process >>>");
+        return kategoriTindakans;
     }
 
     public CrudResponse saveKeterangan(String noCheckup, String idDetailCheckup, String idKtg, String poli, String kelas, String kamar, String idDokter, String ket, String tglCekup, String ketCekup, String jenisPasien, String caraPulang, String pendamping, String tujuan, String idPasien, String metodeBayar, String uangMuka, String jenisBayar) {

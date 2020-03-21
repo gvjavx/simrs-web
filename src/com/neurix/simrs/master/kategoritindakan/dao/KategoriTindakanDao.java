@@ -37,25 +37,28 @@ public class KategoriTindakanDao extends GenericDao<ImSimrsKategoriTindakanEntit
     public List<KategoriTindakan> getListKategoriTindakan(String idPelayanan){
 
         List<KategoriTindakan> tindakanList = new ArrayList<>();
+        String pelayanan = "%";
 
         if(idPelayanan != null && !"".equalsIgnoreCase(idPelayanan)){
-            String SQL = "SELECT a.id_kategori_tindakan, a.kategori_tindakan \n" +
-                    "FROM im_simrs_kategori_tindakan a\n" +
-                    "INNER JOIN im_simrs_kategori_tindakan_pelayanan b ON a.id_kategori_tindakan = b.id_kategori\n" +
-                    "WHERE b.id_pelayanan = :idPel";
+            pelayanan = idPelayanan;
+        }
 
-            List<Object[]> results = new ArrayList<>();
-            results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
-                    .setParameter("idPel", idPelayanan)
-                    .list();
+        String SQL = "SELECT a.id_kategori_tindakan, a.kategori_tindakan \n" +
+                "FROM im_simrs_kategori_tindakan a\n" +
+                "INNER JOIN im_simrs_kategori_tindakan_pelayanan b ON a.id_kategori_tindakan = b.id_kategori\n" +
+                "WHERE b.id_pelayanan LIKE :idPel";
 
-            if(results.size() > 0){
-                for (Object[] obj: results){
-                    KategoriTindakan tindakan = new KategoriTindakan();
-                    tindakan.setIdKategoriTindakan(obj[0] == null ? "" : obj[0].toString());
-                    tindakan.setKategoriTindakan(obj[1] == null ? "" : obj[1].toString());
-                    tindakanList.add(tindakan);
-                }
+        List<Object[]> results = new ArrayList<>();
+        results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("idPel", pelayanan)
+                .list();
+
+        if(results.size() > 0){
+            for (Object[] obj: results){
+                KategoriTindakan tindakan = new KategoriTindakan();
+                tindakan.setIdKategoriTindakan(obj[0] == null ? "" : obj[0].toString());
+                tindakan.setKategoriTindakan(obj[1] == null ? "" : obj[1].toString());
+                tindakanList.add(tindakan);
             }
         }
 

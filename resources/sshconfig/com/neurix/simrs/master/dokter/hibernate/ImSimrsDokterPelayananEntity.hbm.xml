@@ -4,15 +4,18 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="com.neurix.simrs.master.dokter.model.ImSimrsDokterEntity" dynamic-update="true"
-           table="im_simrs_dokter" select-before-update="true" schema="public">
+    <class name="com.neurix.simrs.master.dokter.model.ImSimrsDokterPelayananEntity" dynamic-update="true"
+           table="im_simrs_dokter_pelayanan" select-before-update="true" schema="public">
 
 
-        <id name="idDokter">
-            <column name="id_dokter" sql-type="varchar" length="30" not-null="true" />
+        <id name="idDokterPelayanan">
+            <column name="id_dokter_pelayanan" sql-type="varchar" length="30" not-null="true" />
         </id>
-        <property name="namaDokter">
-            <column name="nama_dokter" sql-type="varchar" length="100" not-null="false"/>
+        <property name="idDokter">
+            <column name="id_dokter" sql-type="varchar" length="30" not-null="false"/>
+        </property>
+        <property name="idPelayanan">
+            <column name="id_pelayanan" sql-type="varchar" length="30" not-null="false"/>
         </property>
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />
@@ -32,14 +35,6 @@
         <property name="lastUpdateWho">
             <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
         </property>
-        <property name="kuota">
-            <column name="kuota" sql-type="varchar" length="5" not-null="false" />
-        </property>
-
-        <property name="kodeDpjp">
-            <column name="kode_dpjp" sql-type="varchar" length="100" not-null="false" />
-        </property>
-
 
     </class>
 </hibernate-mapping>

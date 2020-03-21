@@ -1,37 +1,25 @@
 package com.neurix.simrs.master.dokter.model;
 
-import java.io.Serializable;
 import java.sql.Timestamp;
 
-/**
- * Created by Toshiba on 07/11/2019.
- */
-public class ImSimrsDokterEntity implements Serializable{
+public class DokterPelayanan {
+
+    private String idDokterPelayanan;
     private String idDokter;
-    private String namaDokter;
+    private String idPelayanan;
     private String flag;
     private String action;
     private Timestamp createdDate;
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
-    private String kuota;
-    private String kodeDpjp;
 
-    public String getKodeDpjp() {
-        return kodeDpjp;
+    public String getIdDokterPelayanan() {
+        return idDokterPelayanan;
     }
 
-    public void setKodeDpjp(String kodeDpjp) {
-        this.kodeDpjp = kodeDpjp;
-    }
-
-    public String getKuota() {
-        return kuota;
-    }
-
-    public void setKuota(String kuota) {
-        this.kuota = kuota;
+    public void setIdDokterPelayanan(String idDokterPelayanan) {
+        this.idDokterPelayanan = idDokterPelayanan;
     }
 
     public String getIdDokter() {
@@ -42,12 +30,12 @@ public class ImSimrsDokterEntity implements Serializable{
         this.idDokter = idDokter;
     }
 
-    public String getNamaDokter() {
-        return namaDokter;
+    public String getIdPelayanan() {
+        return idPelayanan;
     }
 
-    public void setNamaDokter(String namaDokter) {
-        this.namaDokter = namaDokter;
+    public void setIdPelayanan(String idPelayanan) {
+        this.idPelayanan = idPelayanan;
     }
 
     public String getFlag() {
@@ -96,19 +84,5 @@ public class ImSimrsDokterEntity implements Serializable{
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
-    }
-
-    @Override
-    public String toString() {
-        return "ImSimrsDokterEntity{" +
-                "idDokter='" + idDokter + '\'' +
-                ", namaDokter='" + namaDokter + '\'' +
-                ", flag='" + flag + '\'' +
-                ", action='" + action + '\'' +
-                ", createdDate=" + createdDate +
-                ", createdWho='" + createdWho + '\'' +
-                ", lastUpdate=" + lastUpdate +
-                ", lastUpdateWho='" + lastUpdateWho + '\'' +
-                '}';
     }
 }

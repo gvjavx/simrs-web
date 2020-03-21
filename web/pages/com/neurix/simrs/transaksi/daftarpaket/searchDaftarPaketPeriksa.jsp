@@ -73,7 +73,7 @@
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
-                                        <a type="button" class="btn btn-danger" href="initForm_paketperiksa.action">
+                                        <a type="button" class="btn btn-danger" href="initForm_daftarpaket.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
                                         <a type="button" class="btn btn-primary" href="add_daftarpaket.action">
