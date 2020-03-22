@@ -1,8 +1,14 @@
 package com.neurix.akuntansi.transaksi.tutupperiod.bo.impl;
 
+import com.neurix.akuntansi.master.kodeRekening.dao.KodeRekeningDao;
+import com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDao;
+import com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDetailDao;
+import com.neurix.akuntansi.transaksi.saldoakhir.dao.SaldoAkhirDao;
 import com.neurix.akuntansi.transaksi.tutupperiod.bo.TutupPeriodBo;
 import com.neurix.akuntansi.transaksi.tutupperiod.dao.BatasTutupPeriodDao;
+import com.neurix.akuntansi.transaksi.tutupperiod.dao.TutupPeriodDao;
 import com.neurix.akuntansi.transaksi.tutupperiod.model.BatasTutupPeriod;
+import com.neurix.akuntansi.transaksi.tutupperiod.model.ItAkunTutupPeriodEntity;
 import com.neurix.akuntansi.transaksi.tutupperiod.model.ItSimrsBatasTutupPeriodEntity;
 import com.neurix.akuntansi.transaksi.tutupperiod.model.TutupPeriod;
 import com.neurix.common.exception.GeneralBOException;
@@ -23,6 +29,11 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
 
     private RiwayatTindakanDao riwayatTindakanDao;
     private BatasTutupPeriodDao batasTutupPeriodDao;
+    private JurnalDao jurnalDao;
+    private JurnalDetailDao jurnalDetailDao;
+    private SaldoAkhirDao saldoAkhirDao;
+    private KodeRekeningDao kodeRekeningDao;
+    private TutupPeriodDao tutupPeriodDao;
 
     @Override
     public void saveSettingPeriod(List<ItSimrsBatasTutupPeriodEntity> batasList) throws GeneralBOException {
@@ -101,8 +112,42 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
             List<ItSimrsBatasTutupPeriodEntity> batasTutupPeriodEntities = getListEntityBatasTutupPeriode(batasTutupPeriod);
             if (batasTutupPeriodEntities.size() > 0){
 
-                // jika ditemukan update
                 ItSimrsBatasTutupPeriodEntity batasTutupPeriodEntity = batasTutupPeriodEntities.get(0);
+
+                TutupPeriod tutupPeriod = new TutupPeriod();
+                tutupPeriod.setTahun(bean.getTahun());
+                tutupPeriod.setBulan(bean.getBulan());
+                tutupPeriod.setUnit(bean.getUnit());
+
+                List<TutupPeriod> jurnalDatas = tutupPeriodDao.getListDetailJurnalByCriteria(tutupPeriod);
+                if (jurnalDatas.size() > 0) {
+
+                    for (TutupPeriod jurnalDetail : jurnalDatas) {
+
+                        ItAkunTutupPeriodEntity akunTutupPeriodEntity = new ItAkunTutupPeriodEntity();
+                        akunTutupPeriodEntity.setId(getNextTutupPeriodId());
+                        akunTutupPeriodEntity.setIdTutupPeriod(batasTutupPeriodEntity.getId());
+                        akunTutupPeriodEntity.setKodeRekening(jurnalDetail.getKodeRekening());
+                        akunTutupPeriodEntity.setRekeningId(jurnalDetail.getRekeningId());
+                        akunTutupPeriodEntity.setParentId(jurnalDetail.getParentId());
+                        akunTutupPeriodEntity.setFlag("Y");
+                        akunTutupPeriodEntity.setAction("C");
+                        akunTutupPeriodEntity.setCreatedDate(jurnalDetail.getCreatedDate());
+                        akunTutupPeriodEntity.setCreatedWho(jurnalDetail.getCreatedWho());
+                        akunTutupPeriodEntity.setLastUpdate(jurnalDetail.getLastUpdate());
+                        akunTutupPeriodEntity.setLastUpdateWho(jurnalDetail.getLastUpdateWho());
+
+                        try {
+                            tutupPeriodDao.addAndSave(akunTutupPeriodEntity);
+                        } catch (HibernateException e) {
+                            logger.error("[TutupPeriodBoImpl.saveUpdateTutupPeriod] ERROR. ", e);
+                            throw new GeneralBOException("[TutupPeriodBoImpl.saveUpdateTutupPeriod] ERROR. ", e);
+                        }
+                    }
+                }
+
+
+                // jika ditemukan update
                 batasTutupPeriodEntity.setFlagTutup(bean.getFlagTutup());
                 batasTutupPeriodEntity.setAction("U");
                 batasTutupPeriodEntity.setLastUpdate(bean.getLastUpdate());
@@ -127,6 +172,39 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                 batasEntity.setCreatedWho(bean.getCreatedWho());
                 batasEntity.setLastUpdate(bean.getLastUpdate());
                 batasEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                TutupPeriod tutupPeriod = new TutupPeriod();
+                tutupPeriod.setTahun(bean.getTahun());
+                tutupPeriod.setBulan(bean.getBulan());
+                tutupPeriod.setUnit(bean.getUnit());
+
+                // if tutup period
+                List<TutupPeriod> jurnalDatas = tutupPeriodDao.getListDetailJurnalByCriteria(tutupPeriod);
+                if (jurnalDatas.size() > 0) {
+
+                    for (TutupPeriod jurnalDetail : jurnalDatas) {
+
+                        ItAkunTutupPeriodEntity akunTutupPeriodEntity = new ItAkunTutupPeriodEntity();
+                        akunTutupPeriodEntity.setId(getNextTutupPeriodId());
+                        akunTutupPeriodEntity.setIdTutupPeriod(batasEntity.getId());
+                        akunTutupPeriodEntity.setKodeRekening(jurnalDetail.getKodeRekening());
+                        akunTutupPeriodEntity.setRekeningId(jurnalDetail.getRekeningId());
+                        akunTutupPeriodEntity.setParentId(jurnalDetail.getParentId());
+                        akunTutupPeriodEntity.setFlag("Y");
+                        akunTutupPeriodEntity.setAction("C");
+                        akunTutupPeriodEntity.setCreatedDate(jurnalDetail.getCreatedDate());
+                        akunTutupPeriodEntity.setCreatedWho(jurnalDetail.getCreatedWho());
+                        akunTutupPeriodEntity.setLastUpdate(jurnalDetail.getLastUpdate());
+                        akunTutupPeriodEntity.setLastUpdateWho(jurnalDetail.getLastUpdateWho());
+
+                        try {
+                            tutupPeriodDao.addAndSave(akunTutupPeriodEntity);
+                        } catch (HibernateException e) {
+                            logger.error("[TutupPeriodBoImpl.saveUpdateTutupPeriod] ERROR. ", e);
+                            throw new GeneralBOException("[TutupPeriodBoImpl.saveUpdateTutupPeriod] ERROR. ", e);
+                        }
+                    }
+                }
 
                 try {
                     batasTutupPeriodDao.addAndSave(batasEntity);
@@ -155,11 +233,53 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
         return id;
     }
 
+    private String getNextSaldoAkhirId(){
+        String id = "";
+        try {
+            id = saldoAkhirDao.getNextSeq();
+        } catch (HibernateException e){
+            logger.error("[TutupPeriodBoImpl.getNextSaldoAkhirId] ERROR. ", e);
+        }
+
+        return id;
+    }
+
+    private String getNextTutupPeriodId(){
+        String id = "";
+        try {
+            id = tutupPeriodDao.getNextSeq();
+        } catch (HibernateException e){
+            logger.error("[TutupPeriodBoImpl.getNextTutupPeriodId] ERROR. ", e);
+        }
+
+        return id;
+    }
+
     public void setRiwayatTindakanDao(RiwayatTindakanDao riwayatTindakanDao) {
         this.riwayatTindakanDao = riwayatTindakanDao;
     }
 
     public void setBatasTutupPeriodDao(BatasTutupPeriodDao batasTutupPeriodDao) {
         this.batasTutupPeriodDao = batasTutupPeriodDao;
+    }
+
+    public void setJurnalDao(JurnalDao jurnalDao) {
+        this.jurnalDao = jurnalDao;
+    }
+
+    public void setJurnalDetailDao(JurnalDetailDao jurnalDetailDao) {
+        this.jurnalDetailDao = jurnalDetailDao;
+    }
+
+    public void setSaldoAkhirDao(SaldoAkhirDao saldoAkhirDao) {
+        this.saldoAkhirDao = saldoAkhirDao;
+    }
+
+    public void setKodeRekeningDao(KodeRekeningDao kodeRekeningDao) {
+        this.kodeRekeningDao = kodeRekeningDao;
+    }
+
+    public void setTutupPeriodDao(TutupPeriodDao tutupPeriodDao) {
+        this.tutupPeriodDao = tutupPeriodDao;
     }
 }
