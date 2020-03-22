@@ -72,7 +72,7 @@ public class TutupPeriodDao extends GenericDao<ItAkunTutupPeriodEntity, String> 
                 "kd.parent_id,\n" +
                 "kd.kode_rekening,\n" +
                 "kd.nama_kode_rekening\n" +
-                "ORDER BY kd.kode_rekening";
+                "ORDER BY kd.parent_id, kd.kode_rekening";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("bulan", new Integer(bean.getBulan()))
