@@ -8302,6 +8302,11 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                 itPayrollEntity.setLastUpdateWho(payroll.getLastUpdateWho());
                 itPayrollEntity.setLastUpdate(payroll.getLastUpdate());
 
+<<<<<<< HEAD
+=======
+//                BigDecimal totalA = itPayrollEntity.getGajiGolongan().add(itPayrollEntity.gets);
+
+>>>>>>> sigit/dev
                 itPayrollEntity.setTotalA(payroll.getTotalANilai());
                 itPayrollEntity.setTotalB(payroll.getTotalBNilai());
                 itPayrollEntity.setTotalC(payroll.getTotalCNilai());

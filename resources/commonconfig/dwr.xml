@@ -517,9 +517,7 @@
       </create>
 
       <convert converter="bean" match="com.neurix.hris.master.payrollSkalaGaji.model.PayrollSkalaGaji"/>
-<<<<<<< HEAD
       <convert converter="bean" match="com.neurix.hris.transaksi.payroll.model.Ptt"/>
-=======
       <convert converter="bean" match="com.neurix.akuntansi.master.masterVendor.model.MasterVendor"/>
 
       <!--Paket Periksa-->
@@ -534,7 +532,16 @@
       <create creator="new">
           <param name="class" value="com.neurix.simrs.transaksi.statusperiksa.action.StatusPeriksaAction"/>
       </create>
->>>>>>> sodiq/editor
+      <!--Setting Batas Tutup Period-->
+      <create creator="new">
+          <param name="class" value="com.neurix.akuntansi.transaksi.tutupperiod.action.SettingTutupPeriodAction"/>
+      </create>
+      <create creator="new">
+          <param name="class" value="com.neurix.akuntansi.transaksi.tutupperiod.action.TutuPeriodAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.akuntansi.transaksi.tutupperiod.model.ItSimrsBatasTutupPeriodEntity"/>
+      <convert converter="bean" match="com.neurix.akuntansi.transaksi.tutupperiod.model.BatasTutupPeriod"/>
+      <convert converter="bean" match="com.neurix.hris.transaksi.payroll.model.Ptt"/>
 
   </allow>
 

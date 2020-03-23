@@ -88,6 +88,10 @@ public class BranchBoImpl implements BranchBo {
                 hsCriteria.put("branch_address", searchBranch.getBranchAddress());
             }
 
+            if (searchBranch.getAreaId() != null && !"".equalsIgnoreCase(searchBranch.getAreaId())) {
+                hsCriteria.put("area_id", searchBranch.getAreaId());
+            }
+
             if (searchBranch.getFlag() != null && !"".equalsIgnoreCase(searchBranch.getFlag())) {
                 if ("N".equalsIgnoreCase(searchBranch.getFlag())) {
                     hsCriteria.put("flag", "N");
