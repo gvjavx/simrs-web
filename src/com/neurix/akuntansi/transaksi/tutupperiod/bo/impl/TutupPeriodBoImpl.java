@@ -130,12 +130,16 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
 
                     for (TutupPeriod jurnalDetail : jurnalDatas) {
 
+                        jurnalDetail.setIdTutupPeriod(batasTutupPeriodEntity.getId());
+
                         ItAkunTutupPeriodEntity akunTutupPeriodEntity = new ItAkunTutupPeriodEntity();
                         akunTutupPeriodEntity.setId(getNextTutupPeriodId());
                         akunTutupPeriodEntity.setIdTutupPeriod(batasTutupPeriodEntity.getId());
                         akunTutupPeriodEntity.setKodeRekening(jurnalDetail.getKodeRekening());
                         akunTutupPeriodEntity.setRekeningId(jurnalDetail.getRekeningId());
                         akunTutupPeriodEntity.setParentId(jurnalDetail.getParentId());
+                        akunTutupPeriodEntity.setJumlahDebit(jurnalDetail.getJumlahDebit());
+                        akunTutupPeriodEntity.setJumlahKredit(jurnalDetail.getJumlahKredit());
                         akunTutupPeriodEntity.setFlag("Y");
                         akunTutupPeriodEntity.setAction("C");
                         akunTutupPeriodEntity.setCreatedDate(jurnalDetail.getCreatedDate());
@@ -203,12 +207,16 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
 
                     for (TutupPeriod jurnalDetail : jurnalDatas) {
 
+                        jurnalDetail.setIdTutupPeriod(batasEntity.getId());
+
                         ItAkunTutupPeriodEntity akunTutupPeriodEntity = new ItAkunTutupPeriodEntity();
                         akunTutupPeriodEntity.setId(getNextTutupPeriodId());
                         akunTutupPeriodEntity.setIdTutupPeriod(batasEntity.getId());
                         akunTutupPeriodEntity.setKodeRekening(jurnalDetail.getKodeRekening());
                         akunTutupPeriodEntity.setRekeningId(jurnalDetail.getRekeningId());
                         akunTutupPeriodEntity.setParentId(jurnalDetail.getParentId());
+                        akunTutupPeriodEntity.setJumlahDebit(jurnalDetail.getJumlahDebit());
+                        akunTutupPeriodEntity.setJumlahKredit(jurnalDetail.getJumlahKredit());
                         akunTutupPeriodEntity.setFlag("Y");
                         akunTutupPeriodEntity.setAction("C");
                         akunTutupPeriodEntity.setCreatedDate(jurnalDetail.getCreatedDate());
@@ -235,12 +243,12 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                     try {
                         batasTutupPeriodDao.addAndSave(batasEntity);
                     } catch (HibernateException e){
-                        logger.error("[TutupPeriodBoImpl.saveSettingPeriod] ERROR. ",e);
-                        throw new GeneralBOException("[TutupPeriodBoImpl.saveSettingPeriod] ERROR. ",e);
+                        logger.error("[TutupPeriodBoImpl.saveUpdateTutupPeriod] ERROR. ",e);
+                        throw new GeneralBOException("[TutupPeriodBoImpl.saveUpdateTutupPeriod] ERROR. ",e);
                     }
                 } else {
-                    logger.error("[TutupPeriodBoImpl.saveSettingPeriod] ERROR. gagal menyimpan tutup period");
-                    throw new GeneralBOException("[TutupPeriodBoImpl.saveSettingPeriod] ERROR. gagal menyimpan tutup period");
+                    logger.error("[TutupPeriodBoImpl.saveUpdateTutupPeriod] ERROR. gagal menyimpan tutup period");
+                    throw new GeneralBOException("[TutupPeriodBoImpl.saveUpdateTutupPeriod] ERROR. gagal menyimpan tutup period");
                 }
             }
         }
@@ -265,19 +273,21 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                 TutupPeriod tutupPeriod = new TutupPeriod();
                 tutupPeriod.setRekeningId(childPeriod.getParentId());
                 tutupPeriod.setIdTutupPeriod(childPeriod.getIdTutupPeriod());
+                tutupPeriod.setJumlahDebit(childPeriod.getJumlahDebit());
+                tutupPeriod.setJumlahKredit(childPeriod.getJumlahKredit());
 
-                ImKodeRekeningEntity kodeRekening = getKodeRekeningById(childPeriod.getRekeningId());
-                if (kodeRekening.getRekeningId() != null){
+                ImKodeRekeningEntity kodeRekening = getKodeRekeningById(tutupPeriod.getRekeningId());
+                if ( kodeRekening != null && kodeRekening.getRekeningId() != null){
                     tutupPeriod.setParentId(kodeRekening.getParentId());
                     tutupPeriod.setKodeRekening(kodeRekening.getKodeRekening());
                 }
 
                 // jika parent_id != null untuk filtering level tertinggi;
                 // parent_id = null berarti diatas level tertinggi maka logic if false. tidak dapat lanjut proses;
-                if (!"".equalsIgnoreCase(childPeriod.getParentId()) && tutupPeriod.getParentId() != null){
+                if (!"".equalsIgnoreCase(tutupPeriod.getParentId()) && tutupPeriod.getParentId() != null){
 
                     // jika list parent kosong
-                    if (parentPeriods.size() > 0){
+                    if (parentPeriods.size() == 0){
                         parentPeriods.add(tutupPeriod);
                         i++;
                     } else {
@@ -286,13 +296,13 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                         // jika parent index sebelumnya ditemukan parent rekening_id sama dengan child parent_id;
                         // maka dilakukan sum kredit, debit;
                         // kemudian update parent period;
-                        if (minParentPeriod.getRekeningId().equalsIgnoreCase(tutupPeriod.getParentId())){
+                        if (minParentPeriod.getRekeningId().equalsIgnoreCase(tutupPeriod.getRekeningId())){
 
-                            tutupPeriod.setJumlahDebit(minParentPeriod.getJumlahDebit().add(childPeriod.getJumlahDebit()));
-                            tutupPeriod.setJumlahKredit(minParentPeriod.getJumlahKredit().add(childPeriod.getJumlahKredit()));
+                            tutupPeriod.setJumlahDebit(minParentPeriod.getJumlahDebit().add(tutupPeriod.getJumlahDebit()));
+                            tutupPeriod.setJumlahKredit(minParentPeriod.getJumlahKredit().add(tutupPeriod.getJumlahKredit()));
 
                             // update list parrentPeriods;
-                            parentPeriods.remove(i+1);
+                            parentPeriods.remove(minParentPeriod);
                             parentPeriods.add(tutupPeriod);
                         } else {
 
@@ -315,6 +325,7 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                     ItAkunTutupPeriodEntity tutupPeriodEntity = new ItAkunTutupPeriodEntity();
 
                     tutupPeriodEntity.setId(getNextTutupPeriodId());
+                    tutupPeriodEntity.setRekeningId(parentPeriod.getRekeningId());
                     tutupPeriodEntity.setIdTutupPeriod(parentPeriod.getIdTutupPeriod());
                     tutupPeriodEntity.setParentId(parentPeriod.getParentId());
                     tutupPeriodEntity.setKodeRekening(parentPeriod.getKodeRekening());
@@ -330,8 +341,8 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                     try {
                         tutupPeriodDao.addAndSave(tutupPeriodEntity);
                     } catch (HibernateException e){
-                        logger.error("[TutupPeriodBoImpl.saveSettingPeriod] ERROR. ",e);
-                        throw new GeneralBOException("[TutupPeriodBoImpl.saveSettingPeriod] ERROR. ",e);
+                        logger.error("[TutupPeriodBoImpl.prosesTutupPeriod] ERROR. ",e);
+                        throw new GeneralBOException("[TutupPeriodBoImpl.prosesTutupPeriod] ERROR. ",e);
                     }
                 }
 

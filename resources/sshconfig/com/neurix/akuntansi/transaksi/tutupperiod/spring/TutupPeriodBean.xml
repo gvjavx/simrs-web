@@ -20,6 +20,7 @@
           p:jurnalDetailDao-ref="jurnalDetailDao"
           p:jurnalDao-ref="jurnalDao"
           p:tutupPeriodDao-ref="tutupPeriodDao"
+          p:kodeRekeningDao-ref="kodeRekeningDao"
     />
 
     <bean id="tutupPeriodBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
