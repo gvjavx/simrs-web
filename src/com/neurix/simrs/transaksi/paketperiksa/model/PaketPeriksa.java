@@ -35,6 +35,16 @@ public class PaketPeriksa {
 
     private String keterangan;
 
+    private String idItemPaket;
+
+    public String getIdItemPaket() {
+        return idItemPaket;
+    }
+
+    public void setIdItemPaket(String idItemPaket) {
+        this.idItemPaket = idItemPaket;
+    }
+
     public String getKeterangan() {
         return keterangan;
     }

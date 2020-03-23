@@ -14,6 +14,7 @@
     <bean id="statusPeriksaBo" class="com.neurix.simrs.transaksi.statusperiksa.bo.impl.StatusPeriksaBoImpl"
           p:checkupDetailDao-ref="checkupDetailDao"
           p:headerCheckupDao-ref="headerCheckupDao"
+          p:uangMukaDao-ref="uangMukaDao"
     />
 
     <bean id="statusPeriksaBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

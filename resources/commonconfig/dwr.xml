@@ -532,6 +532,8 @@
           <param name="class" value="com.neurix.simrs.transaksi.statusperiksa.action.StatusPeriksaAction"/>
       </create>
 
+      <convert converter="bean" match="com.neurix.simrs.master.jenisperiksapasien.model.Asuransi"/>
+
   </allow>
 
 </dwr>

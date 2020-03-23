@@ -47,6 +47,43 @@ public class ItSimrsHeaderDetailCheckupEntity implements Serializable{
 
     private String isKronis;
 
+    private BigDecimal coverBiaya;
+    private String idAsuransi;
+    private String idPaket;
+    private String noKartuAsuransi;
+
+    public String getNoKartuAsuransi() {
+        return noKartuAsuransi;
+    }
+
+    public void setNoKartuAsuransi(String noKartuAsuransi) {
+        this.noKartuAsuransi = noKartuAsuransi;
+    }
+
+    public BigDecimal getCoverBiaya() {
+        return coverBiaya;
+    }
+
+    public void setCoverBiaya(BigDecimal coverBiaya) {
+        this.coverBiaya = coverBiaya;
+    }
+
+    public String getIdAsuransi() {
+        return idAsuransi;
+    }
+
+    public void setIdAsuransi(String idAsuransi) {
+        this.idAsuransi = idAsuransi;
+    }
+
+    public String getIdPaket() {
+        return idPaket;
+    }
+
+    public void setIdPaket(String idPaket) {
+        this.idPaket = idPaket;
+    }
+
     public String getIsKronis() {
         return isKronis;
     }

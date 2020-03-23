@@ -18,6 +18,7 @@
           p:branchBoProxy-ref="branchBoProxy"
           p:billingSystemBoProxy-ref="billingSystemBoProxy"
           p:permintaanResepBoProxy-ref="permintaanResepBoProxy"
+          p:asuransiBoProxy-ref="asuransiBoProxy"
 
     />
     <bean id="rawatInapController" class="com.neurix.simrs.mobileapi.RawatInapController"

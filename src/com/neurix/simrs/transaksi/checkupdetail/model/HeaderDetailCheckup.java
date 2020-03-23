@@ -113,6 +113,108 @@ public class HeaderDetailCheckup extends BaseModel{
 
     private String noBpjs;
 
+    private BigDecimal coverBiaya;
+    private String idAsuransi;
+    private String idPaket;
+    private String noKartuAsuransi;
+
+    private String noRujukan;
+    private String tglRujukan;
+    private String suratRujukan;
+    private String namaAsuransi;
+
+    private String noPpk;
+    private String perujuk;
+    private String namaPerujuk;
+
+    public String getPerujuk() {
+        return perujuk;
+    }
+
+    public void setPerujuk(String perujuk) {
+        this.perujuk = perujuk;
+    }
+
+    public String getNamaPerujuk() {
+        return namaPerujuk;
+    }
+
+    public void setNamaPerujuk(String namaPerujuk) {
+        this.namaPerujuk = namaPerujuk;
+    }
+
+    public String getNoPpk() {
+        return noPpk;
+    }
+
+    public void setNoPpk(String noPpk) {
+        this.noPpk = noPpk;
+    }
+
+    public String getNoRujukan() {
+        return noRujukan;
+    }
+
+    public void setNoRujukan(String noRujukan) {
+        this.noRujukan = noRujukan;
+    }
+
+    public String getTglRujukan() {
+        return tglRujukan;
+    }
+
+    public void setTglRujukan(String tglRujukan) {
+        this.tglRujukan = tglRujukan;
+    }
+
+    public String getSuratRujukan() {
+        return suratRujukan;
+    }
+
+    public void setSuratRujukan(String suratRujukan) {
+        this.suratRujukan = suratRujukan;
+    }
+
+    public String getNamaAsuransi() {
+        return namaAsuransi;
+    }
+
+    public void setNamaAsuransi(String namaAsuransi) {
+        this.namaAsuransi = namaAsuransi;
+    }
+
+    public String getNoKartuAsuransi() {
+        return noKartuAsuransi;
+    }
+
+    public void setNoKartuAsuransi(String noKartuAsuransi) {
+        this.noKartuAsuransi = noKartuAsuransi;
+    }
+
+    public BigDecimal getCoverBiaya() {
+        return coverBiaya;
+    }
+
+    public void setCoverBiaya(BigDecimal coverBiaya) {
+        this.coverBiaya = coverBiaya;
+    }
+
+    public String getIdAsuransi() {
+        return idAsuransi;
+    }
+
+    public void setIdAsuransi(String idAsuransi) {
+        this.idAsuransi = idAsuransi;
+    }
+
+    public String getIdPaket() {
+        return idPaket;
+    }
+
+    public void setIdPaket(String idPaket) {
+        this.idPaket = idPaket;
+    }
+
     public String getNoBpjs() {
         return noBpjs;
     }

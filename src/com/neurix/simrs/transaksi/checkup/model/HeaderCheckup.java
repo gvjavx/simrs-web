@@ -111,6 +111,52 @@ public class HeaderCheckup {
 
     private String isKronis;
 
+    private String idPaket;
+    private String idAsuransi;
+    private BigDecimal coverBiaya;
+    private String noKartuAsuransi;
+    private String namaAsuransi;
+
+    public String getNamaAsuransi() {
+        return namaAsuransi;
+    }
+
+    public void setNamaAsuransi(String namaAsuransi) {
+        this.namaAsuransi = namaAsuransi;
+    }
+
+    public String getNoKartuAsuransi() {
+        return noKartuAsuransi;
+    }
+
+    public void setNoKartuAsuransi(String noKartuAsuransi) {
+        this.noKartuAsuransi = noKartuAsuransi;
+    }
+
+    public String getIdAsuransi() {
+        return idAsuransi;
+    }
+
+    public void setIdAsuransi(String idAsuransi) {
+        this.idAsuransi = idAsuransi;
+    }
+
+    public BigDecimal getCoverBiaya() {
+        return coverBiaya;
+    }
+
+    public void setCoverBiaya(BigDecimal coverBiaya) {
+        this.coverBiaya = coverBiaya;
+    }
+
+    public String getIdPaket() {
+        return idPaket;
+    }
+
+    public void setIdPaket(String idPaket) {
+        this.idPaket = idPaket;
+    }
+
     public String getIsKronis() {
         return isKronis;
     }

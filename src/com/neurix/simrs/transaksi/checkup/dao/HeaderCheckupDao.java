@@ -692,7 +692,13 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "b.url_ttd, \n" +
                     "a.tinggi, \n" +
                     "a.berat_badan, \n" +
-                    "j.no_bpjs \n" +
+                    "j.no_bpjs, \n" +
+                    "a.no_rujukan, \n" +
+                    "a.tgl_rujukan, \n" +
+                    "a.url_doc_rujuk, \n" +
+                    "k.id_asuransi, \n" +
+                    "k.nama_asuransi, \n" +
+                    "b.no_kartu_asuransi\n" +
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
@@ -703,6 +709,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "INNER JOIN im_hris_provinsi h ON g.provinsi_id = h.provinsi_id\n" +
                     "INNER JOIN im_simrs_pasien j ON a.id_pasien = j.id_pasien\n" +
                     "LEFT JOIN it_simrs_rawat_inap i ON b.id_detail_checkup = i.id_detail_checkup\n" +
+                    "LEFT JOIN im_simrs_asuransi k ON b.id_asuransi = k.id_asuransi\n" +
                     "WHERE b.id_detail_checkup = :id";
 
             List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -754,7 +761,12 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     checkup.setTinggi(obj[32] == null ? "" : obj[32].toString());
                     checkup.setBerat(obj[33] == null ? "" : obj[33].toString());
                     checkup.setNoBpjs(obj[34] == null ? "" : obj[34].toString());
-
+                    checkup.setNoRujukan(obj[35] == null ? "" : obj[35].toString());
+                    checkup.setTglRujukan(obj[36] == null ? "" : obj[36].toString());
+                    checkup.setUrlDocRujuk(obj[37] == null ? "" : obj[37].toString());
+                    checkup.setIdAsuransi(obj[38] == null ? "" : obj[38].toString());
+                    checkup.setNamaAsuransi(obj[39] == null ? "" : obj[39].toString());
+                    checkup.setNoKartuAsuransi(obj[40] == null ? "" : obj[40].toString());
                 }
             }
         }

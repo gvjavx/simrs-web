@@ -188,6 +188,42 @@ public class PaketPasienDao extends GenericDao<ItSimrsPaketPasienEntity, String>
         return paketPeriksaList;
     }
 
+    public List<PaketPeriksa> getItemPaketWithIdPaket(String idPaket) {
+
+        List<PaketPeriksa> paketPeriksaList = new ArrayList<>();
+
+        if (idPaket != null && !"".equalsIgnoreCase(idPaket)) {
+
+            String SQL = "SELECT \n" +
+                    "id_item_paket,\n" +
+                    "id_paket,\n" +
+                    "id_kategori_item,\n" +
+                    "id_item,\n" +
+                    "jenis_item\n" +
+                    "FROM mt_simrs_item_paket_periksa\n" +
+                    "WHERE id_paket = :id";
+
+            List<Object[]> results = new ArrayList<>();
+            results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("id", idPaket)
+                    .list();
+
+            if (results.size() > 0) {
+                for (Object[] obj : results) {
+                    PaketPeriksa paketPeriksa = new PaketPeriksa();
+                    paketPeriksa.setIdItemPaket(obj[0] == null ? "" : obj[0].toString());
+                    paketPeriksa.setIdPaket(obj[1] == null ? "" : obj[1].toString());
+                    paketPeriksa.setIdKategoriItem(obj[2] == null ? "" : obj[2].toString());
+                    paketPeriksa.setIdItem(obj[3] == null ? "" : obj[3].toString());
+                    paketPeriksa.setJenisItem(obj[4] == null ? "" : obj[4].toString());
+                    paketPeriksaList.add(paketPeriksa);
+                }
+            }
+        }
+
+        return paketPeriksaList;
+    }
+
     public List<PaketPeriksa> getDetailPaket(String idPaket) {
 
         List<PaketPeriksa> paketPeriksaList = new ArrayList<>();

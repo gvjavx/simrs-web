@@ -241,7 +241,7 @@ public class RawatInapAction extends BaseMasterAction {
                     if ("P".equalsIgnoreCase(checkup.getJenisKelamin())) {
                         jk = "Perempuan";
                     } else {
-                        jk = "laki-Laki";
+                        jk = "Laki-Laki";
                     }
                 }
                 rawatInap.setJenisKelamin(jk);

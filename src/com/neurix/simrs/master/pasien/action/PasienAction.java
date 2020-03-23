@@ -553,7 +553,7 @@ public class PasienAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PasienBo pasienBo = (PasienBo) ctx.getBean("pasienBoProxy");
 
-        if("paket".equalsIgnoreCase(tipe)){
+        if("paket_perusahaan".equalsIgnoreCase(tipe)){
             try {
                 listOfPasien = pasienBo.getListPasienWithPaket(query);
             } catch (GeneralBOException e) {

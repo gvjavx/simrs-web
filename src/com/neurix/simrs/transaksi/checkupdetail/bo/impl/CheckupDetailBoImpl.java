@@ -151,6 +151,45 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         return headerDetailCheckup;
     }
 
+    @Override
+    public CheckResponse saveUpdateDataAsuransi(HeaderCheckup bean) throws GeneralBOException {
+        CheckResponse response = new CheckResponse();
+
+        if(bean.getNoCheckup() != null && !"".equalsIgnoreCase(bean.getNoCheckup())){
+
+            ItSimrsHeaderChekupEntity entity = new ItSimrsHeaderChekupEntity();
+
+            try {
+
+                entity = headerCheckupDao.getById("noCheckup", bean.getNoCheckup());
+
+                if(entity != null){
+
+                    entity.setNoRujukan(bean.getNoRujukan());
+                    entity.setTglRujukan(java.sql.Date.valueOf(bean.getTglRujukan()));
+                    entity.setUrlDocRujuk(bean.getUrlDocRujuk());
+                    entity.setLastUpdate(bean.getLastUpdate());
+                    entity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                    try {
+                        headerCheckupDao.updateAndSave(entity);
+                        response.setStatus("success");
+                        response.setMessage("Berhasil");
+                    }catch (HibernateException e){
+                        response.setStatus("error");
+                        response.setMessage("Found Error "+e.getMessage());
+                        logger.error("Found Error "+e.getMessage());
+                    }
+                }
+            }catch (HibernateException e){
+                response.setStatus("error");
+                response.setMessage("Found Error "+e.getMessage());
+                logger.error("Found Error "+e.getMessage());
+            }
+        }
+        return response;
+    }
+
     protected List<HeaderDetailCheckup> setToDetailCheckupTemplate(List<ItSimrsHeaderDetailCheckupEntity> entityList) throws GeneralBOException {
         logger.info("[CheckupDetailBoImpl.setToDetailCheckupTemplate] Start >>>>>>>");
         List<HeaderDetailCheckup> results = new ArrayList<>();

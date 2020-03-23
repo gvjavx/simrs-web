@@ -67,8 +67,12 @@ import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
+import sun.misc.BASE64Decoder;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -441,7 +445,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                 if ("P".equalsIgnoreCase(checkup.getJenisKelamin())) {
                     jk = "Perempuan";
                 } else {
-                    jk = "laki-Laki";
+                    jk = "Laki-Laki";
                 }
             }
             detailCheckup.setJenisKelamin(jk);
@@ -457,6 +461,11 @@ public class CheckupDetailAction extends BaseMasterAction {
             detailCheckup.setNoSep(checkup.getNoSep());
             detailCheckup.setJenisPeriksaPasien(checkup.getStatusPeriksaName());
             detailCheckup.setMetodePembayaran(checkup.getMetodePembayaran());
+            detailCheckup.setNoRujukan(checkup.getNoRujukan());
+            detailCheckup.setTglRujukan(checkup.getTglRujukan());
+            detailCheckup.setSuratRujukan(checkup.getUrlDocRujuk());
+            detailCheckup.setIdAsuransi(checkup.getIdAsuransi());
+            detailCheckup.setNamaAsuransi(checkup.getNamaAsuransi());
             setHeaderDetailCheckup(detailCheckup);
 
         } else {
@@ -1054,7 +1063,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
         headerDetailCheckup.setKeteranganCekupUlang(ketCekup);
 
-        if ("selesai".equalsIgnoreCase(idKtg)) {
+        if ("selesai".equalsIgnoreCase(idKtg) || "lanjut_biaya".equalsIgnoreCase(idKtg)) {
             headerDetailCheckup.setKeteranganSelesai(ket);
             headerDetailCheckup.setCaraPasienPulang(caraPulang);
             headerDetailCheckup.setPendamping(pendamping);
@@ -1098,7 +1107,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
         try {
 
-            if("success".equalsIgnoreCase(response.getStatus()) || "selesai".equalsIgnoreCase(idKtg)){
+            if("success".equalsIgnoreCase(response.getStatus()) || "selesai".equalsIgnoreCase(idKtg) || "lanjut_biaya".equalsIgnoreCase(idKtg)){
                 headerDetailCheckup.setLastUpdate(new Timestamp(System.currentTimeMillis()));
                 headerDetailCheckup.setLastUpdateWho(CommonUtil.userLogin());
                 response = checkupDetailBo.saveEdit(headerDetailCheckup);
@@ -1513,6 +1522,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                                         if (getPasien != null) {
 
                                             String namaDokter = "";
+                                            String kodeDpjp = "";
 
                                             List<Dokter> dokterArrayList = new ArrayList<>();
                                             Dokter dokter = new Dokter();
@@ -1527,6 +1537,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                                             if (dokterArrayList.size() > 0) {
                                                 namaDokter = dokterArrayList.get(0).getNamaDokter();
+                                                kodeDpjp = dokterArrayList.get(0).getNamaDokter();
                                             }
 
                                             SepRequest sepRequest = new SepRequest();
@@ -1556,7 +1567,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                                             sepRequest.setKdKecamatanLakaLantas("");
                                             sepRequest.setKdKabupatenLakaLantas("");
                                             sepRequest.setNoSuratSkdp(getBranch.getSuratSkdp());
-                                            sepRequest.setKodeDpjp(idDokter);
+                                            sepRequest.setKodeDpjp(kodeDpjp);
                                             sepRequest.setNoTelp(getPasien.getNoTelp());
                                             sepRequest.setUserPembuatSep(user);
 
@@ -1919,6 +1930,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                                             String namaDokter = "";
                                             String idDokter = "";
+                                            String kodeDpjp = "";
 
                                             String noSkdpVal = detailCheckup.getNoSep();
                                             String noSkdp = noSkdpVal.substring(noSkdpVal.length() - 6);
@@ -1953,6 +1965,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                                                 if (dokterArrayList.size() > 0) {
                                                     namaDokter = dokterArrayList.get(0).getNamaDokter();
                                                     idDokter = dokterArrayList.get(0).getIdDokter();
+                                                    kodeDpjp = dokterArrayList.get(0).getKodeDpjp();
                                                 }
 
                                             }
@@ -1984,7 +1997,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                                             sepRequest.setKdKecamatanLakaLantas("");
                                             sepRequest.setKdKabupatenLakaLantas("");
                                             sepRequest.setNoSuratSkdp(noSkdp);
-                                            sepRequest.setKodeDpjp(idDokter);
+                                            sepRequest.setKodeDpjp(kodeDpjp);
                                             sepRequest.setNoTelp(getPasien.getNoTelp());
                                             sepRequest.setUserPembuatSep(user);
 
@@ -2469,6 +2482,27 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                         Pasien getPasien = pasienList.get(0);
 
+                        List<Dokter> dokterList = new ArrayList<>();
+                        Dokter dokter = new Dokter();
+                        dokter.setIdDokter(checkup.getIdDokter());
+                        dokter.setFlag("Y");
+                        try {
+                            dokterList = dokterBoProxy.getByCriteria(dokter);
+                        } catch (GeneralBOException e) {
+                            Long logId = null;
+                            logger.error("[CheckupAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+                            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+                            return ERROR;
+                        }
+
+                        String namaDokter = "";
+                        String kodeDpjp = "";
+
+                        if (dokterList.size() > 0) {
+                            namaDokter = dokterList.get(0).getNamaDokter();
+                            kodeDpjp = dokterList.get(0).getKodeDpjp();
+                        }
+
                         SepRequest sepRequest = new SepRequest();
                         sepRequest.setNoKartu(getPasien.getNoBpjs());
                         sepRequest.setTglSep(dateToday);
@@ -2522,7 +2556,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                         sepRequest.setKdKecamatanLakaLantas("");
                         sepRequest.setKdKabupatenLakaLantas("");
                         sepRequest.setNoSuratSkdp(getBranch.getSuratSkdp());
-                        sepRequest.setKodeDpjp(checkup.getIdDokter());
+                        sepRequest.setKodeDpjp(kodeDpjp);
                         sepRequest.setNoTelp(getPasien.getNoTelp());
                         sepRequest.setUserPembuatSep(userLogin);
 
@@ -2557,8 +2591,10 @@ public class CheckupDetailAction extends BaseMasterAction {
                             }
 
                             klaimRequest.setGender(jk);
+                            klaimRequest.setCoderNik(getBranch.getCoderNik());
 
                             KlaimResponse responseNewClaim = new KlaimResponse();
+
                             try {
                                 responseNewClaim = eklaimBoProxy.insertNewClaimEklaim(klaimRequest, userArea);
                             } catch (GeneralBOException e) {
@@ -2625,25 +2661,6 @@ public class CheckupDetailAction extends BaseMasterAction {
                                 klaimDetailRequest.setTarifRsAlkes("");
                                 klaimDetailRequest.setTarifRsBmhp("");
                                 klaimDetailRequest.setTarifRsSewaAlat("");
-
-                                List<Dokter> dokterList = new ArrayList<>();
-                                Dokter dokter = new Dokter();
-                                dokter.setIdDokter(checkup.getIdDokter());
-                                dokter.setFlag("Y");
-                                try {
-                                    dokterList = dokterBoProxy.getByCriteria(dokter);
-                                } catch (GeneralBOException e) {
-                                    Long logId = null;
-                                    logger.error("[CheckupAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-                                    addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-                                    return ERROR;
-                                }
-
-                                String namaDokter = "";
-                                if (dokterList.size() > 0) {
-                                    namaDokter = dokterList.get(0).getNamaDokter();
-                                }
-
                                 klaimDetailRequest.setTarifPoliEks("");
                                 klaimDetailRequest.setNamaDokter(namaDokter);
                                 klaimDetailRequest.setKodeTarif(getBranch.getKodeTarif());
@@ -3243,6 +3260,48 @@ public class CheckupDetailAction extends BaseMasterAction {
                 logger.error("Found Error when update antrian online");
             }
         }
+    }
+
+    public CheckResponse saveUpdateDataAsuransi(String noCheckup, String noPolisi, String tgl, String fotoRujuak) throws IOException{
+        CheckResponse response = new CheckResponse();
+
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        String user = CommonUtil.userLogin();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+        HeaderCheckup headerCheckup = new HeaderCheckup();
+        headerCheckup.setNoCheckup(noCheckup);
+        headerCheckup.setNoRujukan(noPolisi);
+        headerCheckup.setTglRujukan(tgl);
+        headerCheckup.setLastUpdate(updateTime);
+        headerCheckup.setLastUpdateWho(user);
+
+        if(fotoRujuak != null && !"".equalsIgnoreCase(fotoRujuak)){
+            BASE64Decoder decoder = new BASE64Decoder();
+            byte[] decodedBytes = decoder.decodeBuffer(fotoRujuak);
+            logger.info("Decoded upload data : " + decodedBytes.length);
+            String fileName = noCheckup+"-"+dateFormater("MM")+dateFormater("yy")+".png";
+            String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_DOC_RUJUK_PASIEN+fileName;
+            logger.info("File save path : " + uploadFile);
+            BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+
+            if (image == null) {
+                logger.error("Buffered Image is null");
+            }else{
+                File f = new File(uploadFile);
+                // write the image
+                ImageIO.write(image, "png", f);
+                headerCheckup.setUrlDocRujuk(fileName);
+            }
+        }
+
+        try {
+            response = checkupDetailBo.saveUpdateDataAsuransi(headerCheckup);
+        }catch (GeneralBOException e){
+            response.setStatus("error");
+            response.setMessage("Error when save data asurasi "+e.getMessage());
+        }
+        return response;
     }
 
     @Override

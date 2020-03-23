@@ -185,7 +185,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/ProvinsiAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PasienAction.js"/>'></script>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/RawatInapAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/PaketPeriksaAction.js"/>'></script>
     <script type='text/javascript'>
 
         function confirm() {
@@ -592,7 +592,8 @@
                                                                 kec: item.kecamatan,
                                                                 desa: item.desa,
                                                                 isLama: item.isPasienLama,
-                                                                idPelayanan: item.idPelayanan
+                                                                idPelayanan: item.idPelayanan,
+                                                                idPaket: item.idPaket
                                                             };
                                                             functions.push(labelItem);
                                                         });
@@ -634,6 +635,11 @@
                                                         if(selectedObj.idPelayanan != null){
                                                             $('#poli').val(selectedObj.idPelayanan).trigger('change').attr('readonly', true);
                                                         }
+
+                                                        if(selectedObj.idPaket != null && selectedObj.idPaket != ''){
+                                                            $('#paket').val(selectedObj.idPaket).trigger('change').attr('disabled',true);
+                                                        }
+
                                                         $('#no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #st_tgl_lahir, #agama, #provinsi, #kabupaten, #kecamatan, #desa ').css('border', '');
                                                         return selectedObj.id;
                                                     }
@@ -780,15 +786,6 @@
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Foto KTP</label>
                                             <div class="col-md-8">
-                                                    <%--<div class="input-group" style="margin-top: 7px" id="img_file">--%>
-                                                    <%--<span class="input-group-btn">--%>
-                                                    <%--<span class="btn btn-default btn-file">--%>
-                                                    <%--&lt;%&ndash;<input type="file" id="imgInp" accept=".jpg" name="fileUploadKtpPasien" onchange="$('#img_file').css('border','')">&ndash;%&gt;--%>
-                                                    <%--Browse… <s:file id="imgInp" accept=".jpg" name="fileUpload" onchange="$('#img_file').css('border','')"></s:file>--%>
-                                                    <%--</span>--%>
-                                                    <%--</span>--%>
-                                                    <%--<input type="text" class="form-control" readonly>--%>
-                                                    <%--</div>--%>
                                                 <img id="img-upload" width="100%"
                                                      src="<s:url value="/pages/images/ktp-default.jpg"/>"
                                                      style="border: darkgray solid 1px; height: 170px; margin-top: 7px"/>
@@ -875,12 +872,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <%--<div class="form-group">--%>
-                                            <%--<label class="col-md-4" style="margin-top: 7px">Uang Muka</label>--%>
-                                            <%--<div class="col-md-8">--%>
-                                                <%--<s:textfield type="number" cssStyle="margin-top: 7px" name="headerCheckup.uangMuka" cssClass="form-control"/>--%>
-                                            <%--</div>--%>
-                                        <%--</div>--%>
                                     </div>
                                 </div>
                             </div>
@@ -934,7 +925,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="col-md-4">Poli</label>
+                                            <label class="col-md-4" style="margin-top: 10px">Poli</label>
                                             <div class="col-md-8">
                                                 <s:action id="initComboPoli" namespace="/checkup"
                                                           name="getComboPelayanan_checkup"/>
@@ -952,7 +943,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Dokter</label>
+                                            <label class="col-md-4" style="margin-top: 10px">Dokter</label>
                                             <div class="col-md-8">
                                                 <select id="dokter" class="form-control select2"
                                                         name="headerCheckup.idDokter"
@@ -970,11 +961,11 @@
 
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Penjamin</label>
+                                            <label class="col-md-4" style="margin-top: 10px">Jenis Pasien</label>
                                             <div class="col-md-8">
-                                                <select style="margin-top: 7px" id="penjamin"
+                                                <select id="penjamin"
                                                         class="form-control select2"
-                                                        style="margin-top: 7px; width: 100%"
+                                                        style="width: 100%"
                                                         onchange="var warn =$('#war_penjamin').is(':visible'); if (warn){$('#con_penjamin').show().fadeOut(3000);$('#war_penjamin').hide()}">
                                                     <option value="">[Select One]</option>
                                                 </select>
@@ -985,11 +976,31 @@
                                             </div>
                                         </div>
                                         <s:hidden name="headerCheckup.idJenisPeriksaPasien" id="id_jenis_periksa"></s:hidden>
+
+                                        <s:if test='tipe == "paket_perusahaan" || tipe == "paket_biasa"'>
                                         <div class="form-group">
-                                            <label class="col-md-4">Kunjungan</label>
+                                            <label class="col-md-4" style="margin-top: 10px">Paket</label>
                                             <div class="col-md-8">
-                                                <s:select list="#{'Lama':'Lama','Baru':'Baru'}"
-                                                          cssStyle="margin-top: 7px" onchange="$(this).css('border','')"
+                                                <select id="paket"
+                                                        class="form-control select2"
+                                                        style="width: 100%"
+                                                        onchange="var warn =$('#war_paket').is(':visible'); if (warn){$('#con_paket').show().fadeOut(3000);$('#war_paket').hide()}; $('#id_paket').val(this.value)">
+                                                    <option value="">[Select One]</option>
+                                                </select>
+                                                <span style="color: red; display: none" id="warpaket"><i
+                                                        class="fa fa-times"></i> required</span>
+                                                <span style="color: green; display: none" id="con_paket"><i
+                                                        class="fa fa-check"></i> correct</span>
+                                            </div>
+                                        </div>
+                                        </s:if>
+                                        <s:hidden name="headerCheckup.idPaket" id="id_paket"></s:hidden>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4" style="margin-top: 10px">Kunjungan</label>
+                                            <div class="col-md-8">
+                                                <s:select cssStyle="margin-top: 7px" list="#{'Lama':'Lama','Baru':'Baru'}"
+                                                          onchange="$(this).css('border','')"
                                                           id="kunjungan"
                                                           headerKey="" headerValue="[Select one]"
                                                           cssClass="form-control"/>
@@ -1000,6 +1011,86 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <s:if test='tipe == "asuransi"'>
+                            <div class="box-header with-border"></div>
+                            <div class="box-header with-border">
+                                <h3 class="box-title"><i class="fa fa-user"></i> Data Asuransi</h3>
+                            </div>
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-md-4" style="margin-top: 10px">Asuransi</label>
+                                            <div class="col-md-8">
+                                                <select id="asuransi" name="headerCheckup.idAsuransi"
+                                                        class="form-control select2"
+                                                        style="width: 100%"
+                                                        onchange="var warn =$('#war_asuransi').is(':visible'); if (warn){$('#con_asuransi').show().fadeOut(3000);$('#war_asuransi').hide()}; showLaka(this.value)">
+                                                    <option value="">[Select One]</option>
+                                                </select>
+                                                <span style="color: red; display: none" id="war_asuransi"><i
+                                                        class="fa fa-times"></i> required</span>
+                                                <span style="color: green; display: none" id="con_asuransi"><i
+                                                        class="fa fa-check"></i> correct</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" id="form_no_kartu">
+                                            <label class="col-md-4" style="margin-top: 10px">No Kartu</label>
+                                            <div class="col-md-8">
+                                                <s:textfield name="headerCheckup.noKartuAsuransi" cssStyle="margin-top: 7px" cssClass="form-control" onkeypress="var warn =$('#war_no_asuransi').is(':visible'); if (warn){$('#con_no_asuransi').show().fadeOut(3000);$('#war_no_asuransi').hide()}"></s:textfield>
+                                                <span style="color: red; display: none" id="war_no_asuransi"><i
+                                                        class="fa fa-times"></i> required</span>
+                                                <span style="color: green; display: none" id="con_no_asuransi"><i
+                                                        class="fa fa-check"></i> correct</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" id="form_jasaraharja_1" style="display: none">
+                                            <label class="col-md-4" style="margin-top: 10px">No Polisi</label>
+                                            <div class="col-md-8">
+                                                <s:textfield name="headerCheckup.noRujukan" cssStyle="margin-top: 7px" cssClass="form-control" onkeypress="var warn =$('#war_no_asuransi').is(':visible'); if (warn){$('#con_no_asuransi').show().fadeOut(3000);$('#war_no_asuransi').hide()}"></s:textfield>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-md-4" style="margin-top: 10px">Jumlah Cover</label>
+                                            <div class="col-md-8">
+                                                <div class="input-group" style="margin-top: 7px">
+                                                    <div class="input-group-addon">
+                                                        Rp.
+                                                    </div>
+                                                    <s:hidden name="headerCheckup.coverBiaya" id="cover_biaya"></s:hidden>
+                                                    <s:textfield type="text" id="nominal_cover_biaya" cssClass="form-control"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="form_jasaraharja_2" style="display: none">
+                                        <div class="form-group">
+                                            <label class="col-md-4" style="margin-top: 10px">Tanggal Kejadian</label>
+                                            <div class="col-md-8">
+                                                <s:textfield name="headerCheckup.tglRujukan" cssStyle="margin-top: 7px" cssClass="form-control datepicker" onkeypress="var warn =$('#war_no_asuransi').is(':visible'); if (warn){$('#con_no_asuransi').show().fadeOut(3000);$('#war_no_asuransi').hide()}"></s:textfield>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4" style="margin-top: 10px">Foro Surat Polisi</label>
+                                            <div class="col-md-8">
+                                                <div class="input-group" style="margin-top: 7px">
+                                                    <span class="input-group-btn">
+                                                        <span class="btn btn-default btn-file">
+                                                            Browse… <s:file accept=".jpg" name="fileUploadDocPolisi"></s:file>
+                                                        </span>
+                                                    </span>
+                                                    <input type="text" class="form-control" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </s:if>
 
                             <s:if test='tipe == "bpjs"'>
                             <div class="box-header with-border"></div>
@@ -1086,6 +1177,7 @@
                                 </div>
                             </div>
                             </s:if>
+
                             <div class="box-header with-border"></div>
                             <div class="box-header with-border">
                                 <h3 class="box-title"><i class="fa fa-user"></i> Form Inputan</h3>
@@ -1638,8 +1730,6 @@
                 $('#pre_ket_alergi').hide();
             }
 
-
-
         });
 
         $(document).on('change', '.btn-file :file', function () {
@@ -1686,6 +1776,7 @@
         console.log(isOnline);
 
         var nominal = document.getElementById('uang_muka');
+        var coverBiaya = document.getElementById("nominal_cover_biaya");
         if(nominal != null && nominal != ''){
             nominal.addEventListener('keyup', function (e) {
                 nominal.value = formatRupiah2(this.value);
@@ -1695,6 +1786,18 @@
                     $('#uang_muka_val').val(valBayar);
                 }else{
                     $('#uang_muka_val').val('');
+                }
+            });
+        }
+
+        if(coverBiaya != null && coverBiaya != ''){
+            coverBiaya.addEventListener('keyup', function (e) {
+                coverBiaya.value = formatRupiah2(this.value);
+                var valCover = coverBiaya.value.replace(/[.]/g, '');
+                if(valCover != ''){
+                    $('#cover_biaya').val(valCover);
+                }else{
+                    $('#cover_biaya').val('');
                 }
             });
         }
@@ -1827,6 +1930,13 @@
 
         $('#penjamin').val(tipe).trigger('change').attr('disabled', true);
 
+        if(tipe == 'asuransi'){
+            listSelectAsuransi();
+        }
+        if(tipe == 'paket_perusahaan' || tipe == 'paket_biasa'){
+            listSelectPaket(tipe);
+        }
+
         $('#id_jenis_periksa').val(tipe);
     }
 
@@ -1841,6 +1951,49 @@
                 $('#penjamin').html(option);
             }
         });
+    }
+
+    function listSelectAsuransi() {
+        var option = "<option value=''>[Select One]</option>";
+        CheckupAction.getComboAsuransi(function (response) {
+            if (response.length > 0) {
+                $.each(response, function (i, item) {
+                    option += '<option value="' + item.idAsuransi + '">' + item.namaAsuransi + '</option>';
+                });
+                $('#asuransi').html(option);
+            }else {
+                $('#asuransi').html(option);
+            }
+        });
+    }
+
+    function listSelectPaket(tipe) {
+
+        var option = "<option value=''>[Select One]</option>";
+        PaketPeriksaAction.getListPaketPeriksa(function (response) {
+            if (response.length > 0) {
+                console.log(response);
+                $.each(response, function (i, item) {
+                    option += "<option value='" + item.idPaket + "'>" + item.namaPaket + "</option>";
+                });
+                $('#paket').html(option);
+            } else {
+                $('#paket').html(option);
+            }
+        });
+    }
+
+    function showLaka(idAsuransi){
+        if(idAsuransi != ''){
+
+            if(idAsuransi == "ASN00000001"){
+                $('#form_jasaraharja_1, #form_jasaraharja_2').show();
+                $('#form_no_kartu').hide();
+            }else{
+                $('#form_jasaraharja_1, #form_jasaraharja_2').hide();
+                $('#form_no_kartu').show();
+            }
+        }
     }
 
     function checkBpjs() {
