@@ -28,6 +28,12 @@ public class SaldoAkhirDao extends GenericDao<ItAkunSaldoAkhirEntity, String> {
         if (mapCriteria.get("saldo_akhir_id") != null){
             criteria.add(Restrictions.eq("saldoAkhirId", mapCriteria.get("saldo_akhir_id").toString()));
         }
+        if (mapCriteria.get("rekening_id") != null){
+            criteria.add(Restrictions.eq("rekeningId", mapCriteria.get("rekening_id").toString()));
+        }
+        if (mapCriteria.get("periode") != null){
+            criteria.add(Restrictions.eq("periode", mapCriteria.get("periode").toString()));
+        }
         if (mapCriteria.get("branch_id") != null){
             criteria.add(Restrictions.eq("branchId", mapCriteria.get("branch_id").toString()));
         }
