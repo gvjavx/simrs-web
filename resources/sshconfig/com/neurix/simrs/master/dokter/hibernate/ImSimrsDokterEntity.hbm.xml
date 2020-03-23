@@ -36,6 +36,10 @@
             <column name="kuota" sql-type="varchar" length="5" not-null="false" />
         </property>
 
+        <property name="kodeDpjp">
+            <column name="kode_dpjp" sql-type="varchar" length="100" not-null="false" />
+        </property>
+
 
     </class>
 </hibernate-mapping>

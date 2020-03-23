@@ -545,6 +545,7 @@
                                             </script>
                                             <script type="application/javascript">
                                                 var functions, mapped;
+                                                var tipe = '<s:property value="tipe"/>';
                                                 $('#id_pasien').typeahead({
                                                     minLength: 1,
                                                     source: function (query, process) {
@@ -554,7 +555,7 @@
                                                         var data = [];
                                                         dwr.engine.setAsync(false);
 
-                                                        PasienAction.getListComboPasien(query, function (listdata) {
+                                                        PasienAction.getListComboPasien(query, tipe, function (listdata) {
                                                             data = listdata;
                                                         });
 
@@ -590,7 +591,8 @@
                                                                 kota: item.kota,
                                                                 kec: item.kecamatan,
                                                                 desa: item.desa,
-                                                                isLama: item.isPasienLama
+                                                                isLama: item.isPasienLama,
+                                                                idPelayanan: item.idPelayanan
                                                             };
                                                             functions.push(labelItem);
                                                         });
@@ -628,6 +630,9 @@
                                                         } else {
                                                             $('#kunjungan').val("Baru").attr('disabled', true);
                                                             $('#kunjungan_val').val("Baru");
+                                                        }
+                                                        if(selectedObj.idPelayanan != null){
+                                                            $('#poli').val(selectedObj.idPelayanan).trigger('change').attr('readonly', true);
                                                         }
                                                         $('#no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #st_tgl_lahir, #agama, #provinsi, #kabupaten, #kecamatan, #desa ').css('border', '');
                                                         return selectedObj.id;
@@ -937,7 +942,7 @@
                                                           list="#initComboPoli.listOfPelayanan" id="poli"
                                                           name="headerCheckup.idPelayanan" listKey="idPelayanan"
                                                           listValue="namaPelayanan"
-                                                          onchange="$(this).css('border',''); listDokter(this); var warn =$('#war_poli').is(':visible'); if (warn){$('#cor_poli').show().fadeOut(3000);$('#war_poli').hide()}"
+                                                          onchange="$(this).css('border',''); listDokter(this.value); var warn =$('#war_poli').is(':visible'); if (warn){$('#cor_poli').show().fadeOut(3000);$('#war_poli').hide()}"
                                                           headerKey="" headerValue="[Select one]"
                                                           cssClass="form-control select2"/>
                                                 <span style="color: red; display: none" id="war_poli"><i
@@ -969,7 +974,6 @@
                                             <div class="col-md-8">
                                                 <select style="margin-top: 7px" id="penjamin"
                                                         class="form-control select2"
-                                                        name="headerCheckup.idJenisPeriksaPasien"
                                                         style="margin-top: 7px; width: 100%"
                                                         onchange="var warn =$('#war_penjamin').is(':visible'); if (warn){$('#con_penjamin').show().fadeOut(3000);$('#war_penjamin').hide()}">
                                                     <option value="">[Select One]</option>
@@ -980,6 +984,7 @@
                                                         class="fa fa-check"></i> correct</span>
                                             </div>
                                         </div>
+                                        <s:hidden name="headerCheckup.idJenisPeriksaPasien" id="id_jenis_periksa"></s:hidden>
                                         <div class="form-group">
                                             <label class="col-md-4">Kunjungan</label>
                                             <div class="col-md-8">
@@ -1106,7 +1111,7 @@
                             <s:hidden name="headerCheckup.idPelayananBpjs" id="idPelayananBpjs"></s:hidden>
                             <s:hidden name="headerCheckup.noCheckupOnline"></s:hidden>
 
-                            <s:if test='tipe != "bpjs"'>
+                            <s:if test='tipe == "umum"'>
                             <div class="box-header with-border"></div>
                             <div class="box-header with-border">
                                 <h3 class="box-title"><i class="fa fa-money"></i> Pembayaran</h3>
@@ -1808,10 +1813,6 @@
     }
 
     function initlistPenjamin() {
-        // var url_string = window.location.href;
-        // var url = new URL(url_string);
-        // var tipe = url.searchParams.get("tipe");
-
         var tipe = '<s:property value="tipe"/>';
         var option = "";
         CheckupAction.getComboJenisPeriksaPasienWithBpjs(function (response) {
@@ -1823,13 +1824,10 @@
                 $('#penjamin').html(option);
             }
         });
-        if (tipe == "bpjs") {
-            $('#penjamin').val('bpjs').trigger('change');
-        }
-        if (tipe == "umum") {
-            listPenjaminNoBpjs()
-            $('#penjamin').val('umum').trigger('change');
-        }
+
+        $('#penjamin').val(tipe).trigger('change').attr('disabled', true);
+
+        $('#id_jenis_periksa').val(tipe);
     }
 
     function listPenjaminNoBpjs() {
@@ -1908,22 +1906,24 @@
     }
 
     function listDokter(idPelayanan) {
-        var idx = idPelayanan.selectedIndex;
-        var idPoli = idPelayanan.options[idx].value;
+        // var idx = idPelayanan.selectedIndex;
+        // var idPoli = idPelayanan.options[idx].value;
         var option = "";
-        CheckupAction.listOfDokter(idPoli, function (response) {
-            option = "<option value=''>[Select One]</option>";
-            if (response != null) {
-                console.log(response);
-                $.each(response, function (i, item) {
-                    option += "<option value='" + item.idDokter + "'>" + item.namaDokter + "</option>";
-                });
+        if(idPelayanan != null && idPelayanan != ''){
+            CheckupAction.listOfDokter(idPelayanan, function (response) {
+                option = "<option value=''>[Select One]</option>";
+                if (response != null) {
+                    console.log(response);
+                    $.each(response, function (i, item) {
+                        option += "<option value='" + item.idDokter + "'>" + item.namaDokter + "</option>";
+                    });
 
-                $('#dokter').html(option);
-            } else {
-                option = option;
-            }
-        });
+                    $('#dokter').html(option);
+                } else {
+                    option = option;
+                }
+            });
+        }
     }
 
     function initListDokter() {

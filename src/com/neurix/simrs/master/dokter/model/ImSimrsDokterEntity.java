@@ -16,6 +16,15 @@ public class ImSimrsDokterEntity implements Serializable{
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String kuota;
+    private String kodeDpjp;
+
+    public String getKodeDpjp() {
+        return kodeDpjp;
+    }
+
+    public void setKodeDpjp(String kodeDpjp) {
+        this.kodeDpjp = kodeDpjp;
+    }
 
     public String getKuota() {
         return kuota;

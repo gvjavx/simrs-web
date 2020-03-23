@@ -20,7 +20,7 @@ import java.util.Map;
 /**
  * Created by Toshiba on 14/11/2019.
  */
-public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo{
+public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
     private static transient Logger logger = Logger.getLogger(DokterBoImpl.class);
     private DokterDao dokterDao;
     private PelayananSpesialisDao pelayananSpesialisDao;
@@ -30,9 +30,9 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo{
         logger.info("[DokterBoImpl.getByCriteria] Start >>>>>>>>");
         List<Dokter> results = new ArrayList<>();
 
-        if (bean != null){
+        if (bean != null) {
             List<ImSimrsDokterEntity> entities = getListEntityDokter(bean);
-            if (!entities.isEmpty()){
+            if (!entities.isEmpty()) {
                 results = setToTemplateDokter(entities);
             }
         }
@@ -41,7 +41,7 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo{
         return results;
     }
 
-    protected List<ImSimrsDokterEntity> getListEntityDokter(Dokter bean) throws GeneralBOException{
+    protected List<ImSimrsDokterEntity> getListEntityDokter(Dokter bean) throws GeneralBOException {
         logger.info("[DokterBoImpl.getListEntityDokter] Start >>>>>>>>");
         List<ImSimrsDokterEntity> results = new ArrayList<>();
 
@@ -51,7 +51,7 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo{
 
         try {
             results = dokterDao.getByCriteria(hsCriteria);
-        } catch (HibernateException e){
+        } catch (HibernateException e) {
             logger.error("[DokterBoImpl.getListEntityDokter] Error When search dokter data ");
         }
 
@@ -59,12 +59,12 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo{
         return results;
     }
 
-    private List<Dokter> setToTemplateDokter(List<ImSimrsDokterEntity> entityList){
+    private List<Dokter> setToTemplateDokter(List<ImSimrsDokterEntity> entityList) {
         logger.info("[DokterBoImpl.setToTemplateDokter] Start >>>>>>>>");
         List<Dokter> results = new ArrayList<>();
 
         Dokter dokter;
-        for (ImSimrsDokterEntity entity : entityList){
+        for (ImSimrsDokterEntity entity : entityList) {
             dokter = new Dokter();
             dokter.setIdDokter(entity.getIdDokter());
             dokter.setNamaDokter(entity.getNamaDokter());
@@ -75,6 +75,7 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo{
             dokter.setCreatedWho(entity.getCreatedWho());
             dokter.setLastUpdate(entity.getLastUpdate());
             dokter.setLastUpdateWho(entity.getLastUpdateWho());
+            dokter.setKodeDpjp(entity.getKodeDpjp());
             results.add(dokter);
         }
 
@@ -86,7 +87,7 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo{
     public List<Dokter> getByIdPelayanan(String idPelayanan, String branchId) throws GeneralBOException {
         logger.info("[DokterBoImpl.getByIdPelayanan] Start >>>>>>>>");
         List<Dokter> results = new ArrayList<>();
-        if (idPelayanan != null && !"".equalsIgnoreCase(idPelayanan)){
+        if (idPelayanan != null && !"".equalsIgnoreCase(idPelayanan)) {
 
             List<ImSimrsPoliSpesialisEntity> poliSpesialisEntities = null;
             Map hsCriteria = new HashMap();
@@ -94,19 +95,19 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo{
 
             try {
                 poliSpesialisEntities = pelayananSpesialisDao.getByCriteria(hsCriteria);
-            } catch (HibernateException e){
+            } catch (HibernateException e) {
                 logger.info("[DokterBoImpl.getByIdPelayanan] Error when get dokter by pelayanan ", e);
             }
 
-            if (!poliSpesialisEntities.isEmpty()){
-                for (ImSimrsPoliSpesialisEntity poliEntity : poliSpesialisEntities){
+            if (!poliSpesialisEntities.isEmpty()) {
+                for (ImSimrsPoliSpesialisEntity poliEntity : poliSpesialisEntities) {
                     DokterSpesialis dokterSpesialis = new DokterSpesialis();
                     dokterSpesialis.setIdSpesialis(poliEntity.getPrimaryKey().getIdSpesialis());
 
                     List<DokterSpesialis> dokterSpesialisList = getListDokterSpesialis(dokterSpesialis);
-                    if (!dokterSpesialisList.isEmpty()){
+                    if (!dokterSpesialisList.isEmpty()) {
                         Dokter dokter;
-                        for (DokterSpesialis listDokter : dokterSpesialisList){
+                        for (DokterSpesialis listDokter : dokterSpesialisList) {
 
                             dokter = new Dokter();
                             dokter.setIdDokter(listDokter.getIdDokter());
@@ -139,7 +140,7 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo{
         boolean isSuccess = false;
 
         try {
-          dokter = dokterDao.getById("idDokter", idDokter, "Y");
+            dokter = dokterDao.getById("idDokter", idDokter, "Y");
         } catch (GeneralBOException e) {
             logger.info("[DokterBoImpl.editKuota] Error when editKuota ", e);
         }
@@ -156,6 +157,20 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo{
 
         logger.info("[DokterBoImpl.editKuota] End <<<<<<<<");
         return isSuccess;
+    }
+
+    @Override
+    public List<Dokter> getDokterByPelayanan(String idPelayanan) throws GeneralBOException {
+        List<Dokter> dokterList = new ArrayList<>();
+
+        if (idPelayanan != null && !"".equalsIgnoreCase(idPelayanan)) {
+            try {
+                dokterList = dokterDao.getListDokterByPelayanan(idPelayanan);
+            } catch (HibernateException e) {
+                logger.error("Found Error when search " + e.getMessage());
+            }
+        }
+        return dokterList;
     }
 
     public void setDokterDao(DokterDao dokterDao) {

@@ -1,10 +1,12 @@
 package com.neurix.simrs.master.dokter.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.master.dokter.model.ImSimrsDokterEntity;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -28,5 +30,37 @@ public class DokterDao extends GenericDao<ImSimrsDokterEntity, String> {
 
         List<ImSimrsDokterEntity> result = criteria.list();
         return result;
+    }
+
+    public List<Dokter> getListDokterByPelayanan(String idPelayanan){
+
+        List<Dokter> list = new ArrayList<>();
+
+        if (idPelayanan != null && !"".equalsIgnoreCase(idPelayanan)){
+
+            String SQL = "SELECT \n" +
+                    "a.id_dokter, \n" +
+                    "a.nama_dokter, \n" +
+                    "a.kode_dpjp \n" +
+                    "FROM im_simrs_dokter a\n" +
+                    "INNER JOIN im_simrs_dokter_pelayanan b ON a.id_dokter = b.id_dokter\n" +
+                    "WHERE b.id_pelayanan = :id";
+            List<Object[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("id", idPelayanan)
+                    .list();
+
+            if(result.size() > 0){
+
+                for (Object[] obj: result){
+                    Dokter dokter = new Dokter();
+                    dokter.setIdDokter(obj[0] == null ? "" : obj[0].toString());
+                    dokter.setNamaDokter(obj[1] == null ? "" : obj[1].toString());
+                    dokter.setKodeDpjp(obj[2] == null ? "" : obj[2].toString());
+                    list.add(dokter);
+                }
+            }
+        }
+        return list;
     }
 }

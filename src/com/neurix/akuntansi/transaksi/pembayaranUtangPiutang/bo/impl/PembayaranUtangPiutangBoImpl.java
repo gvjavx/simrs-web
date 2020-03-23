@@ -595,4 +595,18 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
         logger.info("[PembayaranUtangPiutangBoImpl.postingJurnal] end process <<<");
         return rekeningKas;
     }
+    @Override
+    public String getNamaRekeningKasJurnal(String noJurnal) throws GeneralBOException {
+        logger.info("[PembayaranUtangPiutangBoImpl.postingJurnal] start process >>>");
+        String rekeningKas="";
+        try {
+            // Update into database
+            rekeningKas= kodeRekeningDao.getNamaRekeningKasForJurnal(noJurnal);
+        } catch (HibernateException e) {
+            logger.error("[PembayaranUtangPiutangBoImpl.postingJurnal] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when saving update data PembayaranUtangPiutang, please info to your admin..." + e.getMessage());
+        }
+        logger.info("[PembayaranUtangPiutangBoImpl.postingJurnal] end process <<<");
+        return rekeningKas;
+    }
 }

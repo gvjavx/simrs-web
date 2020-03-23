@@ -482,7 +482,7 @@
                                             </div>
                                         </s:if>
                                         <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">ID Pasien</label>
+                                            <label class="col-md-4" style="margin-top: 7px">No RM</label>
                                             <div class="col-md-8">
                                                 <s:textfield id="id_pasien" name="headerCheckup.idPasien"
                                                              onkeypress="$(this).css('border','');"
@@ -911,7 +911,6 @@
                                             <div class="col-md-8">
                                                 <select style="margin-top: 7px" id="penjamin"
                                                         class="form-control select2"
-                                                        name="headerCheckup.idJenisPeriksaPasien"
                                                         style="margin-top: 7px; width: 100%"
                                                         onchange="var warn =$('#war_penjamin').is(':visible'); if (warn){$('#con_penjamin').show().fadeOut(3000);$('#war_penjamin').hide()}">
                                                     <option value="">[Select One]</option>
@@ -922,6 +921,7 @@
                                                         class="fa fa-check"></i> correct</span>
                                             </div>
                                         </div>
+                                        <s:hidden name="headerCheckup.idJenisPeriksaPasien" id="id_jenis_periksa"></s:hidden>
                                         <div class="form-group">
                                             <label class="col-md-4">Kunjungan</label>
                                             <div class="col-md-8">
@@ -1593,13 +1593,15 @@
                 $('#penjamin').html(option);
             }
         });
-        if (tipe == "bpjs") {
-            $('#penjamin').val('bpjs').trigger('change');
-        }
-        if (tipe == "umum") {
-            listPenjaminNoBpjs()
-            $('#penjamin').val('umum').trigger('change');
-        }
+        // if (tipe == "bpjs") {
+        //     $('#penjamin').val('bpjs').trigger('change');
+        // }
+        // if (tipe == "umum") {
+        //     listPenjaminNoBpjs()
+        //     $('#penjamin').val('umum').trigger('change');
+        // }
+        $('#penjamin').val(tipe).trigger('change').attr('disabled',true);
+        $('#id_jenis_periksa').val(tipe);
     }
 
     function listPenjaminNoBpjs() {

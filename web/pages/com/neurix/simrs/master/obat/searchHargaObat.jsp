@@ -269,7 +269,7 @@
                 </div>
                 <div class="row" style="margin-top: 7px">
                     <div class="form-group">
-                        <label class="col-md-5" style="margin-top: 7px">Harga Net</label>
+                        <label class="col-md-5" style="margin-top: 7px">Harga</label>
                         <div class="col-md-7">
                             <input type="number" id="mod-harga-net" onchange="hitungDiskon()" class="form-control">
                         </div>

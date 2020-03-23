@@ -142,8 +142,8 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
             data.setTotal(BigDecimal.valueOf(Double.parseDouble(row[5].toString())));
             data.setMasterId((String) row[6]);
             data.setNamaMaster((String) row[7]);
-            data.setMasterGrp(row[8].toString());
-            data.setKurs(BigDecimal.valueOf(Double.parseDouble(row[9].toString())));
+//            data.setMasterGrp(row[8].toString());
+            data.setKurs(BigDecimal.valueOf(Double.parseDouble(row[8].toString())));
             listOfResult.add(data);
         }
         return listOfResult;

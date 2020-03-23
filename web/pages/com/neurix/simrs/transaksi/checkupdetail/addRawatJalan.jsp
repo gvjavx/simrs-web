@@ -917,16 +917,21 @@
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Kategori Tindakan</label>
                         <div class="col-md-7">
-                            <s:action id="initComboKategoriTindakan" namespace="/checkupdetail"
-                                      name="getListComboKategoriTindakan_checkupdetail"/>
-                            <s:select cssStyle="margin-top: 7px; width: 100%"
-                                      onchange="listSelectTindakan(this); var warn =$('#war_kategori').is(':visible'); if (warn){$('#cor_kategori').show().fadeOut(3000);$('#war_kategori').hide()}"
-                                      list="#initComboKategoriTindakan.listOfKategoriTindakan"
-                                      id="tin_id_ketgori_tindakan"
-                                      listKey="idKategoriTindakan"
-                                      listValue="kategoriTindakan"
-                                      headerKey="" headerValue="[Select one]"
-                                      cssClass="form-control select2"/>
+                            <%--<s:action id="initComboKategoriTindakan" namespace="/checkupdetail"--%>
+                                      <%--name="getListComboKategoriTindakan_checkupdetail"/>--%>
+                            <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
+                                      <%--onchange="listSelectTindakan(this.value); var warn =$('#war_kategori').is(':visible'); if (warn){$('#cor_kategori').show().fadeOut(3000);$('#war_kategori').hide()}"--%>
+                                      <%--list="#initComboKategoriTindakan.listOfKategoriTindakan"--%>
+                                      <%--id="tin_id_ketgori_tindakan"--%>
+                                      <%--listKey="idKategoriTindakan"--%>
+                                      <%--listValue="kategoriTindakan"--%>
+                                      <%--headerKey="" headerValue="[Select one]"--%>
+                                      <%--cssClass="form-control select2"/>--%>
+                                <select class="form-control select2" style="margin-top: 7px; width: 100%"
+                                        id="tin_id_ketgori_tindakan"
+                                        onchange="listSelectTindakan(this.value); var warn =$('#war_kategori').is(':visible'); if (warn){$('#cor_kategori').show().fadeOut(3000);$('#war_kategori').hide()}">
+                                    <option value=''>[Select One]</option>
+                                </select>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
@@ -1145,7 +1150,7 @@
                             <s:action id="comboLab" namespace="/kategorilab"
                                       name="getListKategoriLab_kategorilab"/>
                             <s:select cssStyle="margin-top: 7px; width: 100%"
-                                      onchange="var warn =$('#war_kategori_lab').is(':visible'); if (warn){$('#cor_kategori_lab').show().fadeOut(3000);$('#war_kategori_lab').hide()}; listSelectLab(this)"
+                                      onchange="var warn =$('#war_kategori_lab').is(':visible'); if (warn){$('#cor_kategori_lab').show().fadeOut(3000);$('#war_kategori_lab').hide()}; listSelectLab(this.value)"
                                       list="#comboLab.listOfKategoriLab" id="lab_kategori"
                                       listKey="idKategoriLab"
                                       listValue="namaKategori"
@@ -1670,6 +1675,7 @@
         listAlergi();
         hitungStatusBiaya();
         hitungBmi();
+        listSelectTindakanKategori();
 
         $('#img_ktp').on('click', function (e) {
             e.preventDefault();
@@ -2099,24 +2105,37 @@
     }
 
     function listSelectTindakan(idKategori) {
-        var idx = idKategori.selectedIndex;
-        var idKtg = idKategori.options[idx].value;
+        // var idx = idKategori.selectedIndex;
+        // var idKtg = idKategori.options[idx].value;
         var option = "<option value=''>[Select One]</option>";
-        if (idKtg != '') {
-            CheckupDetailAction.getListComboTindakan(idKtg, function (response) {
+        if (idKategori != '') {
+            CheckupDetailAction.getListComboTindakan(idKategori, function (response) {
                 if (response != null) {
                     $.each(response, function (i, item) {
                         option += "<option value='" + item.idTindakan + "'>" + item.tindakan + "</option>";
                     });
+                    $('#tin_id_tindakan').html(option);
                 } else {
-                    option = option;
+                    $('#tin_id_tindakan').html('');
                 }
             });
         } else {
-            option = option;
+            $('#tin_id_tindakan').html('');
         }
+    }
 
-        $('#tin_id_tindakan').html(option);
+    function listSelectTindakanKategori() {
+        var option = "<option value=''>[Select One]</option>";
+            CheckupDetailAction.getListComboTindakanKategori(idPoli, function (response) {
+                if (response != null) {
+                    $.each(response, function (i, item) {
+                        option += "<option value='" + item.idKategoriTindakan + "'>" + item.kategoriTindakan + "</option>";
+                    });
+                    $('#tin_id_ketgori_tindakan').html(option);
+                } else {
+                    $('#tin_id_ketgori_tindakan').html('');
+                }
+            });
     }
 
     function toContent() {
@@ -2544,10 +2563,7 @@
         $('#body_diagnosa').html(table);
     }
 
-    function listSelectLab(select) {
-        var idx = select.selectedIndex;
-        var idKategori = select.options[idx].value;
-
+    function listSelectLab(idKategori) {
         var option = "<option value=''>[Select One]</option>";
         if (idKategori != '') {
             LabAction.listLab(idKategori, function (response) {
@@ -2555,15 +2571,14 @@
                     $.each(response, function (i, item) {
                         option += "<option value='" + item.idLab + "'>" + item.namaLab + "</option>";
                     });
+                    $('#lab_lab').html(option);
                 } else {
-                    option = option;
+                    o$('#lab_lab').html(option);
                 }
             });
         } else {
-            option = option;
+            $('#lab_lab').html(option);
         }
-
-        $('#lab_lab').html(option);
     }
 
     function listSelectParameter(select) {

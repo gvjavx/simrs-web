@@ -515,8 +515,26 @@
       <create creator="new">
           <param name="class" value="com.neurix.hris.master.payrollSkalaGaji.action.PayrollSkalaGajiAction"/>
       </create>
+
       <convert converter="bean" match="com.neurix.hris.master.payrollSkalaGaji.model.PayrollSkalaGaji"/>
+<<<<<<< HEAD
       <convert converter="bean" match="com.neurix.hris.transaksi.payroll.model.Ptt"/>
+=======
+      <convert converter="bean" match="com.neurix.akuntansi.master.masterVendor.model.MasterVendor"/>
+
+      <!--Paket Periksa-->
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.paketperiksa.action.PaketPeriksaAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.paketperiksa.model.ImSimrsKelasPaketEntity"/>
+      <convert converter="bean" match="com.neurix.simrs.master.kategoritindakan.model.KategoriTindakan"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.paketperiksa.model.PaketPeriksa"/>
+
+      <!--Paket Periksa-->
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.statusperiksa.action.StatusPeriksaAction"/>
+      </create>
+>>>>>>> sodiq/editor
 
   </allow>
 

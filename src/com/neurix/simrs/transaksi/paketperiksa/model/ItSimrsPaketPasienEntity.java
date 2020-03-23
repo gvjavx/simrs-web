@@ -17,6 +17,7 @@ public class ItSimrsPaketPasienEntity implements Serializable {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String idPerusahaan;
 
     public String getId() {
         return id;
@@ -88,5 +89,13 @@ public class ItSimrsPaketPasienEntity implements Serializable {
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    public String getIdPerusahaan() {
+        return idPerusahaan;
+    }
+
+    public void setIdPerusahaan(String idPerusahaan) {
+        this.idPerusahaan = idPerusahaan;
     }
 }
