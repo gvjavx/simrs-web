@@ -8,6 +8,9 @@
     <bean id="absensiAction" class="com.neurix.hris.transaksi.absensi.action.AbsensiAction"
           p:absensiBoProxy-ref="absensiBoProxy" />
 
+    <bean id="absensiOnine" class="com.neurix.hris.mobileapi.AbsensiOnlineController"
+          p:absensiBoProxy-ref="absensiBoProxy" />
+
     <bean id="absensiBo" class="com.neurix.hris.transaksi.absensi.bo.impl.AbsensiBoImpl"
           p:absensiPegawaiDao-ref="absensiPegawaiDao"
           p:biodataDao-ref="biodataDao"
