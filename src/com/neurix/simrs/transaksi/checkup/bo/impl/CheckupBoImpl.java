@@ -906,7 +906,6 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                 }
             }
         }
-
     }
 
     private String dateFormater(String type) {

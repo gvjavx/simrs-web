@@ -11,6 +11,7 @@ import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
 import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
+import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.Fpk;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
@@ -909,7 +910,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             mapJurnal.put("bank", bank);
 
             String noJurnal = "";
-            String catatan = "Pembayaran Piutang BPJS Bank "+bank+" No. FPK "+fpkId+" No. Slip "+noSlip;
+            String catatan = "Pembayaran Piutang BPJS Bank "+bank+" No. FPK "+fpkId+" No. Referensi "+noSlip;
             try {
 
                 noJurnal = billingSystemBo.createJurnal("10", mapJurnal, branchId, catatan, "Y");
@@ -940,6 +941,23 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 response.setStatus("error");
                 response.setMsg("Found error "+e);
                 return response;
+            }
+        }
+        return response;
+    }
+
+    public CheckResponse saveRefund(String id){
+        CheckResponse response = new CheckResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        KasirRawatJalanBo kasirRawatJalanBo = (KasirRawatJalanBo) ctx.getBean("kasirRawatJalanBoProxy");
+
+        if(id != null && !"".equalsIgnoreCase(id)){
+            try {
+                response = kasirRawatJalanBo.saveRefund(id);
+            }catch (GeneralBOException e){
+                response.setStatus("error");
+                response.setMessage("Found Error "+e.getMessage());
+                logger.error("Found Error when save refund"+e.getMessage());
             }
         }
         return response;

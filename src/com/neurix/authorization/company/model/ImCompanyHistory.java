@@ -23,6 +23,15 @@ public class ImCompanyHistory {
     private String flag;
     private String action;
     private Long id;
+    private String periodeGaji;
+
+    public String getPeriodeGaji() {
+        return periodeGaji;
+    }
+
+    public void setPeriodeGaji(String periodeGaji) {
+        this.periodeGaji = periodeGaji;
+    }
 
     @Basic
     @Column(name = "company_id", nullable = false, insertable = true, updatable = true, length = 20)

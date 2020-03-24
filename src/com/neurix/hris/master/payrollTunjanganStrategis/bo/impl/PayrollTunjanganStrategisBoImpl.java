@@ -222,10 +222,10 @@ public class PayrollTunjanganStrategisBoImpl implements PayrollTunjanganStrategi
             Map hsCriteria = new HashMap();
 
             if (searchBean.getTunjStrategisId() != null && !"".equalsIgnoreCase(searchBean.getTunjStrategisId())) {
-                hsCriteria.put("tunjJabStrukturId", searchBean.getTunjStrategisId());
+                hsCriteria.put("tunjStrategisId", searchBean.getTunjStrategisId());
             }
             if (searchBean.getPositionId() != null && !"".equalsIgnoreCase(searchBean.getPositionId())) {
-                hsCriteria.put("kelompokId", searchBean.getPositionId());
+                hsCriteria.put("positionId", searchBean.getPositionId());
             }
 
 
@@ -256,6 +256,7 @@ public class PayrollTunjanganStrategisBoImpl implements PayrollTunjanganStrategi
                     returnPayrollTunjanganStrategis = new PayrollTunjanganStrategis();
                     returnPayrollTunjanganStrategis.setTunjStrategisId(payrollTunjanganStrategisEntity.getTunjStrategisId());
                     returnPayrollTunjanganStrategis.setGolonganId(payrollTunjanganStrategisEntity.getGolonganId());
+                    returnPayrollTunjanganStrategis.setNilai(payrollTunjanganStrategisEntity.getNilai().doubleValue());
 
 
                     /*if(returnPayrollTunjanganStrategis.getGolonganId() != null){

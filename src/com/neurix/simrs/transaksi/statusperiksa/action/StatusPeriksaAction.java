@@ -541,6 +541,14 @@ public class StatusPeriksaAction extends BaseTransactionAction {
                                     headerDetailCheckup.setSuratRujukan(fileName);
                                 }
                             }
+
+                            Tindakan tindakan = new Tindakan();
+                            tindakan.setIdTindakan("TDK0000787");
+
+                            List<Tindakan> tindakans = new ArrayList<>();
+                            tindakans.add(tindakan);
+                            headerDetailCheckup.setTindakanList(tindakans);
+
                         }
 
                         if("asuransi".equalsIgnoreCase(jenisPasien)){

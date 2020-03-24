@@ -995,4 +995,23 @@ public class CommonUtil {
         }
         return status;
     }
+
+    public static String convertTipePtt(String tipePttId){
+        switch (tipePttId){
+            case "t":
+                return "Tantiem";
+            case "R":
+                return "Rekreasi";
+            case "tk":
+                return "Tunjangan Khusus";
+            case "bPer":
+                return "Biaya Pernikahan";
+            case "bPin":
+                return "Biaya Pindah";
+            case "bPis":
+                return "Biaya Pisah";
+                default:
+                    return "";
+        }
+    }
 }

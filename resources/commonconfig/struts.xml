@@ -161,6 +161,7 @@
     <include file="sshconfig/com/neurix/hris/master/carrerPath/struts/CarrerPathAction.xml"/>
     <include file="sshconfig/com/neurix/hris/master/pelatihanJabatan/struts/PelatihanJabatanAction.xml"/>
     <include file="sshconfig/com/neurix/hris/master/payrollMasterInsentif/struts/PayrollMasterInsentifAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/payrollSkalaGajiBod/struts/PayrollSkalaGajiBodAction.xml"/>
 
 
     <!--Struts Route Config For SIMRS Is Here-->
@@ -223,5 +224,7 @@
     <include file="sshconfig/com/neurix/akuntansi/master/mappingJurnal/struts/MappingJurnalAction.xml"/>
     <include file="sshconfig/com/neurix/akuntansi/master/masterVendor/struts/MasterVendorAction.xml"/>
     <include file="sshconfig/com/neurix/akuntansi/master/settingReportUser/struts/SettingReportUserAction.xml"/>
+    <include file="sshconfig/com/neurix/akuntansi/transaksi/tutupperiod/struts/SettingTutupPeriodAction.xml"/>
+    <include file="sshconfig/com/neurix/akuntansi/transaksi/tutupperiod/struts/TutupPeriodAction.xml"/>
 
 </struts>

@@ -46,29 +46,39 @@
         $( document ).ready(function() {
             $('#pembayaran_uang_muka, #pembayaran_active').addClass('active');
             $('#pembayaran_open').addClass('menu-open');
+
             var nominal = document.getElementById('nominal_uang_muka');
-            nominal.addEventListener('keyup', function (e) {
-                nominal.value = formatRupiah2(this.value);
-                var valBayar = nominal.value.replace(/[.]/g, '');
-                $('#val_uang_muka').val(valBayar);
-                var total = $('#total_uang_muka').val();
+            var refNominal = document.getElementById('ref_nominal_uang_muka');
 
-                var a = parseInt(total);
-                var b = parseInt(valBayar);
+            if(nominal != ''){
+                nominal.addEventListener('keyup', function (e) {
+                    nominal.value = formatRupiah2(this.value);
+                    var valBayar = nominal.value.replace(/[.]/g, '');
+                    $('#val_uang_muka').val(valBayar);
+                    var total = $('#total_uang_muka').val();
 
-                console.log(total);
-                console.log(a);
-                console.log(b);
+                    var a = parseInt(total);
+                    var b = parseInt(valBayar);
 
-                if (b >= a) {
-                    var kembalian = valBayar - total;
-                    // $('#kembalian').val("" + kembalian);
-                    $('#kembalian').val(formatRupiah(kembalian));
-                } else {
-                    $('#kembalian').val('');
-                    // $('#nominal_kembalian').val('');
-                }
-            });
+                    if (b >= a) {
+                        var kembalian = valBayar - total;
+                        // $('#kembalian').val("" + kembalian);
+                        $('#kembalian').val(formatRupiah(kembalian));
+                    } else {
+                        $('#kembalian').val('');
+                        // $('#nominal_kembalian').val('');
+                    }
+                });
+            }
+
+            if(refNominal != ''){
+                refNominal.addEventListener('keyup', function (e) {
+                    refNominal.value = formatRupiah2(this.value);
+                    var valBayar = refNominal.value.replace(/[.]/g, '');
+                    $('#ref_val_uang_muka').val(valBayar);
+                    var total = $('#ref_total_uang_muka').val();
+                });
+            }
 
         });
 
@@ -262,7 +272,15 @@
                                     <td><s:property value="namaPelayanan"/></td>
                                     <td style="vertical-align: middle" align="center">
                                         <s:if test='#row.statusBayar == "Y"'>
-                                            <label class="label label-success"> sudah bayar</label>
+                                            <s:if test='#row.flagRefund == "R"'>
+                                                <label class="label label-warning"> proses refund</label>
+                                            </s:if>
+                                            <s:elseif test='#row.flagRefund == "Y"'>
+                                                <label class="label label-info"> sudah refund</label>
+                                            </s:elseif>
+                                            <s:else>
+                                                <label class="label label-success"> sudah bayar</label>
+                                            </s:else>
                                         </s:if>
                                         <s:else>
                                             <label class="label label-warning"> belum bayar</label>
@@ -278,6 +296,9 @@
                                             <s:a href="%{print_invo}" target="_blank">
                                             <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-print-25.png"/>">
                                             </s:a>
+                                            <s:if test='#row.flagRefund == "R"'>
+                                                <img class="hvr-grow" onclick="showRefund('<s:property value="idDetailCheckup"/>')" style="cursor: pointer" src="<s:url value="/pages/images/icons8-transaction-25.png"/>">
+                                            </s:if>
                                         </s:if>
                                         <s:else>
                                             <img id="t_<s:property value="idDetailCheckup"/>" onclick="showInvoice('<s:property value="noCheckup"/>','<s:property value="idDetailCheckup"/>','<s:property value="idPasien"/>')" class="hvr-grow" src="<s:url value="/pages/images/icon_payment.ico"/>" style="cursor: pointer;">
@@ -458,6 +479,123 @@
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
                         id="load_fin"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-refund">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-medkit"></i> Detail Pasien</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_refund">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_refund"></p>
+                </div>
+                <div class="box-header with-border">
+                    <h3 class="box-title"><i class="fa fa-user"></i> Data Pasien</h3>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="table table-striped">
+                                <tr style="display: none;" id="ref_no_sep_show">
+                                    <td><b>No SEP</b></td>
+                                    <td style="vertical-align: middle"><span class="label label-success" id="ref_no_sep"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>No RM</b></td>
+                                    <td><span id="ref_no_rm"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>ID Detail Checkup</b></td>
+                                    <td><span id="ref_no_checkup"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>NIK</b></td>
+                                    <td><span id="ref_nik"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Nama</b></td>
+                                    <td><span id="ref_nama"></span></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-md-6">
+                            <table class="table table-striped">
+                                <tr>
+                                    <td><b>Jenis Kelamin</b></td>
+                                    <td><span id="ref_jenis_kelamin"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Tempat, Tgl Lahir</b></td>
+                                    <td><span id="ref_tgl"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Alamat</b></td>
+                                    <td><span id="ref_desa"></span>, <span id="ref_kecamatan"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Jenis Pasien</b></td>
+                                    <td><span id="ref_jenis_pasien"></span></td>
+                                </tr>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+                <input type="hidden" id="ref_id_detail_checkup">
+                <div class="box-header with-border"></div>
+                <div class="box-header with-border">
+                    <h3 class="box-title"><i class="fa fa-money"></i> Uang Muka Pasien</h3>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="table table-bordered table-striped" id="tabel_tindakan_ref">
+                                <thead>
+                                <tr bgcolor="#90ee90">
+                                    <td width="20%">Tanggal</td>
+                                    <td align="center" width="20%">Uang Muka (Rp.)</td>
+                                </tr>
+                                </thead>
+                                <tbody id="body_tindakan_ref">
+                                </tbody>
+                            </table>
+                        </div>
+                        <input type="hidden" id="ref_total_uang_muka">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-md-4" style="margin-top: 7px">Konfirmasi Uang Muka</label>
+                                <div class="col-md-8">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            Rp.
+                                        </div>
+                                        <input class="form-control" id="ref_nominal_uang_muka">
+                                        <input type="hidden" class="form-control" id="ref_val_uang_muka">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_refund"><i class="fa fa-arrow-right"></i> Save
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
+                        id="load_refund"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
             </div>
@@ -660,6 +798,115 @@
                 $('#load_fin').hide();
                 $('#warning_fin').show().fadeOut(10000);
                 $('#msg_fin').text(response.msg);
+            }
+        }});
+    }
+
+    function showRefund(idDetailCheckup){
+        $('#modal-refund').modal({show:true, backdrop:'static'});
+        CheckupAction.listDataPasien(idDetailCheckup, function (response) {
+            if (response != null) {
+                var tanggal = response.tglLahir;
+                var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
+                var jenisKelamin = "";
+
+                if (response.jenisKelamin == "L") {
+                    jenisKelamin = "Laki-Laki";
+                } else {
+                    jenisKelamin = "Perempuan";
+                }
+                if(response.noSep != ''){
+                    $('#ref_no_sep_show').show();
+                }else{
+                    $('#ref_no_sep_show').hide();
+                }
+                $('#ref_no_rm').html(response.idPasien);
+                $('#ref_jenis_pasien').html(response.idJenisPeriksaPasien.toUpperCase());
+                $('#ref_no_sep').html(response.noSep);
+                $('#ref_no_checkup').html(idDetailCheckup);
+                $('#ref_nik').html(response.noKtp);
+                $('#ref_nama').html(response.nama);
+                $('#ref_jenis_kelamin').html(jenisKelamin);
+                $('#ref_tgl').html(response.tempatLahir + ", " + dateFormat);
+                $('#ref_agama').html(response.agama);
+                $('#ref_suku').html(response.suku);
+                $('#ref_alamat').html(response.jalan);
+                $('#ref_provinsi').html(response.namaProvinsi);
+                $('#ref_kabupaten').html(response.namaKota);
+                $('#ref_kecamatan').html(response.namaKecamatan);
+                $('#ref_desa').html(response.namaDesa);
+            }
+        });
+        KasirRawatJalanAction.getListUangMuka(idDetailCheckup, function (response) {
+            dataTindakan = response;
+            if (dataTindakan != null) {
+                var table = "";
+                var total = 0;
+                var id = "";
+                $.each(dataTindakan, function (i, item) {
+                    var tanggal = "";
+                    var uangmuka    = 0;
+
+
+                    if (item.createdDate != null && item.createdDate !=  '') {
+                        tanggal = item.createdDate;
+                    }
+
+                    if (item.dibayar != null && item.dibayar != '') {
+                        uangmuka = item.dibayar;
+                    }
+
+                    table += '<tr id="row'+item.id+'" >' +
+                        "<td >"+formateDate(tanggal)+"</td>" +
+                        "<td align='right' style='padding-right: 20px'>" + formatRupiah(uangmuka) + "</td>" +
+                        "</tr>";
+                    total = parseInt(total) + parseInt(uangmuka);
+                    id = item.id;
+                });
+
+                $('#body_tindakan_ref').html(table);
+                $('#ref_total_uang_muka').val(total);
+
+                $('#save_refund').attr('onclick','confirmRefund(\''+id+'\',\''+total+'\')');
+
+            }
+        });
+    }
+
+    function confirmRefund(id, total){
+        var refund = $('#ref_val_uang_muka').val();
+
+        if(total != '' && refund != ''){
+
+            if(total == refund){
+                $('#modal-confirm-dialog').modal('show');
+                $('#save_con').attr('onclick','saveRefund(\''+id+'\')');
+            }else{
+                $('#warning_refund').show().fadeOut(5000);
+                $('#msg_refund').text("Refund Uang muka tidak boleh lebih atau kurang dari uang muka yang sudah dibayar...!");
+            }
+        }else{
+            $('#warning_refund').show().fadeOut(5000);
+            $('#msg_refund').text("Silahkan cek kembali data inputan anda..!");
+        }
+    }
+
+    function saveRefund(id){
+        $('#modal-confirm-dialog').modal('hide');
+        $('#save_refund').hide();
+        $('#load_refund').show();
+        dwr.engine.setAsync(true);
+        KasirRawatJalanAction.saveRefund(id, {callback: function (response) {
+            if(response.status == "success"){
+                $('#info_dialog').dialog('open');
+                $('#modal-refund').modal('hide');
+                $('#save_refund').show();
+                $('#load_refund').hide();
+            }else{
+                $('#save_refund').show();
+                $('#load_refund').hide();
+                $('#warning_refund').show().fadeOut(5000);
+                $('#msg_refund').text(response.message);
             }
         }});
     }

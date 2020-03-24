@@ -16,6 +16,10 @@
           p:headerCheckupDao-ref="headerCheckupDao"
           p:uangMukaDao-ref="uangMukaDao"
           p:diagnosaRawatDao-ref="diagnosaRawatDao"
+          p:tindakanRawatDao-ref="tindakanRawatDao"
+          p:riwayatTindakanDao-ref="riwayatTindakanDao"
+          p:tindakanDao-ref="tindakanDao"
+          p:headerCheckupLogDao-ref="headerCheckupLogDao"
     />
 
     <bean id="statusPeriksaBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

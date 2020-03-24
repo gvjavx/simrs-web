@@ -2469,7 +2469,7 @@
     }
     window.listPosisiHistory = function (branch, divisi) {
         var branch = document.getElementById("branch1").value;
-        var divisi = document.getElementById("divisi1").value;
+        var divisi = document.getElementById("departmentId").value;
         $('#positionId3').empty();
         $('#positionId3').append($("<option></option>")
                 .attr("value", '')
@@ -3576,12 +3576,12 @@
 
                 }
             } else {
-                if (branchId == '' && divisiId == '' && posisiId == '' && tanggal == ''&& tanggalKeluar ==''&& tipePegawaiId == '') {
+                if (branchId == '' && divisiId == '' && posisiId == '' && tanggal == ''&& tipePegawaiId == '') {
                     alert('Isi Field Terlebih Dahulu');
                 } else {
                     var msg ="Field:  \n";
                     var msg2 ="";
-                    if (branchId == '' || divisiId == '' || posisiId == '' || tanggal == ''|| tanggalKeluar ==''|| tipePegawaiId=='') {
+                    if (branchId == '' || divisiId == '' || posisiId == '' || tanggal == ''||  tipePegawaiId=='') {
                         if(branchId == ''){
                             msg+="- Nama Perusahaan\n";
                         }
@@ -3598,18 +3598,25 @@
                                 msg2+="- Format Tanggal Diangkat Salah\n";
                             }
                         }
+                        if(tipePegawaiId ==''){
+                            msg+="- Tipe Pegawai\n";
+                        }
+                        alert(msg+"Harus Diisi\n"+msg2);
+                    }else if(tanggalKeluar==''&&aktifFlag =='N'){
+                        var msg ="Field:  \n";
+                        var msg2 ="";
                         if(tanggalKeluar == ''){
-                            msg+="- Tanggal Selesai\n";
+                            if(aktifFlag =='N'){
+                                msg+="- Tanggal Selesai\n";
+                            }
                         }else{
                             if(tanggalKeluar.length <10){
                                 msg2+="- Format Tanggal Selesai Salah\n";
                             }
                         }
-                        if(tipePegawaiId ==''){
-                            msg+="- Tipe Pegawai\n";
-                        }
                         alert(msg+"Harus Diisi\n"+msg2);
-                    } else{
+                    }
+                    else{
                         if (confirm('Are you sure you want to save this Record?')) {
                             dwr.engine.setAsync(false);
                             BiodataAction.saveEditPengalamanKerja(id, nip, branchId, divisiId, posisiId, tanggal,tanggalKeluar, tipePegawaiId,
@@ -4061,14 +4068,14 @@
             <s:else>
             BiodataAction.searchDataEditPengalamanKerja(id, function (listdata) {
                 $('#branchIdRiwayatKerja').val(listdata.branchId).change();
-                $('#positionId3').val(listdata.posisiId).change();
                 $('#departmentId').val(listdata.divisiId).change();
+                $('#positionId3').val(listdata.posisiId).change();
+                $('#profesi3').val(listdata.profesiId).change();
                 $('#pengalamanPerusahaan').val(listdata.namaPerusahaan);
                 $('#pengalamanJabatan').val(listdata.jabatan);
                 $('#pengalamanTanggalMasuk').val(listdata.tanggalMasuk);
                 $('#pengalamanTanggalKeluar').val(listdata.tanggalKeluar);
                 $('#pengalamanTipePegawaiId').val(listdata.tipePegawaiId).change();
-                $('#flagAktif1').val(listdata.flagJabatanAktif).change();
                 if(listdata.tipePegawaiId == "TP01"){
                     $('#pengalamanGolonganId1').val(listdata.golonganId).change();
                     $('#golonganHistory1Group').show();
@@ -4078,6 +4085,15 @@
                     $('#golonganHistory3').val(listdata.golonganId).change();
                     $('#golonganHistory1Group').hide();
                     $('#golonganHistory2Group').show();
+                }
+                if(listdata.tanggalKeluar!=null){
+                    if(listdata.tanggalKeluar!=''){
+                        $('#flagAktif1').val("N").change();
+                    }else{
+                        $('#flagAktif1').val("Y").change();
+                    }
+                }else{
+                    $('#flagAktif1').val("Y").change();
                 }
                 $('#pengalamanId').val(listdata.pengalamanId);
                 $('#pengalamanGolonganName').val(listdata.golonganName);

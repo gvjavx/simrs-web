@@ -3,9 +3,14 @@ package com.neurix.simrs.transaksi.statusperiksa.bo.impl;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.diagnosa.dao.DiagnosaDao;
+import com.neurix.simrs.master.tindakan.dao.TindakanDao;
+import com.neurix.simrs.master.tindakan.model.ImSimrsTindakanEntity;
+import com.neurix.simrs.master.tindakan.model.Tindakan;
 import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao;
+import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupLogDao;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
+import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupLogEntity;
 import com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao;
 import com.neurix.simrs.transaksi.checkupdetail.dao.UangMukaDao;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
@@ -14,10 +19,15 @@ import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsUangMukaPendaftaran
 import com.neurix.simrs.transaksi.checkupdetail.model.UangMuka;
 import com.neurix.simrs.transaksi.diagnosarawat.dao.DiagnosaRawatDao;
 import com.neurix.simrs.transaksi.diagnosarawat.model.ItSimrsDiagnosaRawatEntity;
+import com.neurix.simrs.transaksi.riwayattindakan.dao.RiwayatTindakanDao;
+import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsRiwayatTindakanEntity;
 import com.neurix.simrs.transaksi.statusperiksa.bo.StatusPeriksaBo;
+import com.neurix.simrs.transaksi.tindakanrawat.dao.TindakanRawatDao;
+import com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -35,6 +45,10 @@ public class StatusPeriksaBoImpl implements StatusPeriksaBo {
     private HeaderCheckupDao headerCheckupDao;
     private UangMukaDao uangMukaDao;
     private DiagnosaRawatDao diagnosaRawatDao;
+    private TindakanRawatDao tindakanRawatDao;
+    private RiwayatTindakanDao riwayatTindakanDao;
+    private TindakanDao tindakanDao;
+    private HeaderCheckupLogDao headerCheckupLogDao;
 
     @Override
     public List<HeaderDetailCheckup> getListStatusPeriksa(HeaderDetailCheckup headerDetailCheckup) throws GeneralBOException {
@@ -82,6 +96,33 @@ public class StatusPeriksaBoImpl implements StatusPeriksaBo {
                         headerChekupEntity.setJenisTransaksi(bean.getIdJenisPeriksaPasien());
                         headerChekupEntity.setLastUpdateWho(bean.getLastUpdateWho());
                         headerChekupEntity.setLastUpdate(bean.getLastUpdate());
+
+                        try {
+                            ItSimrsHeaderChekupLogEntity logEntity = new ItSimrsHeaderChekupLogEntity();
+                            logEntity.setIdHeaderCheckupLog("CKL" + getNextIdHeaderLog());
+                            logEntity.setNoCheckup(headerChekupEntity.getNoCheckup());
+                            logEntity.setIdJenisPeriksaPasien(headerChekupEntity.getIdJenisPeriksaPasien());
+                            logEntity.setCreatedDate(bean.getLastUpdate());
+                            logEntity.setCreatedWho(bean.getLastUpdateWho());
+                            logEntity.setLastUpdate(bean.getLastUpdate());
+                            logEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                            logEntity.setAction("C");
+                            logEntity.setFlag("Y");
+
+                            try {
+                                headerCheckupLogDao.addAndSave(logEntity);
+                                response.setStatus("success");
+                                response.setMessage("Berhasil");
+                            } catch (HibernateException e) {
+                                response.setStatus("error");
+                                response.setMessage("Found Error when save log " + e.getMessage());
+                                logger.error("Found Error when save log " + e.getMessage());
+                            }
+                        } catch (HibernateException e) {
+                            response.setStatus("error");
+                            response.setMessage("Found Error when save log " + e.getMessage());
+                            logger.error("Found Error when save log " + e.getMessage());
+                        }
 
                         try {
                             headerCheckupDao.updateAndSave(headerChekupEntity);
@@ -144,6 +185,75 @@ public class StatusPeriksaBoImpl implements StatusPeriksaBo {
                                     } catch (HibernateException e) {
                                         logger.error("[DiagnosaRawatBoImpl.saveAdd] Error when saving diagnosa ", e);
                                         throw new GeneralBOException("Error when saving diagnosa " + e.getMessage());
+                                    }
+                                }
+
+                                if (bean.getTindakanList().size() > 0) {
+                                    for (Tindakan tindakan : bean.getTindakanList()) {
+                                        List<ImSimrsTindakanEntity> tindakanEntities = getListEntityTindakan(tindakan);
+                                        if (tindakanEntities.size() > 0) {
+
+                                            ImSimrsTindakanEntity tindakanEntity = tindakanEntities.get(0);
+                                            ItSimrsTindakanRawatEntity tindakanRawatEntity = new ItSimrsTindakanRawatEntity();
+                                            tindakanRawatEntity.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
+                                            tindakanRawatEntity.setIdTindakanRawat("TDR" + getNextTindakanRawatId());
+                                            tindakanRawatEntity.setIdTindakan(tindakanEntity.getIdTindakan());
+                                            tindakanRawatEntity.setNamaTindakan(tindakanEntity.getTindakan());
+                                            tindakanRawatEntity.setIdDokter(bean.getIdDokter());
+                                            tindakanRawatEntity.setCreatedDate(bean.getCreatedDate());
+                                            tindakanRawatEntity.setCreatedWho(bean.getCreatedWho());
+                                            tindakanRawatEntity.setLastUpdate(bean.getCreatedDate());
+                                            tindakanRawatEntity.setLastUpdateWho(bean.getCreatedWho());
+                                            tindakanRawatEntity.setFlag("Y");
+                                            tindakanRawatEntity.setAction("U");
+
+                                            if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
+                                                tindakanRawatEntity.setTarif(tindakanEntity.getTarifBpjs());
+                                            } else {
+                                                tindakanRawatEntity.setTarif(tindakanEntity.getTarif());
+                                            }
+
+                                            tindakanRawatEntity.setQty(new BigInteger(String.valueOf(1)));
+                                            tindakanRawatEntity.setTarifTotal(tindakanRawatEntity.getTarif().multiply(tindakanRawatEntity.getQty()));
+
+                                            try {
+
+                                                tindakanRawatDao.addAndSave(tindakanRawatEntity);
+
+                                                if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
+
+                                                    ItSimrsRiwayatTindakanEntity riwayatTindakan = new ItSimrsRiwayatTindakanEntity();
+                                                    riwayatTindakan.setIdRiwayatTindakan("RWT" + getNextIdRiwayatTindakan());
+                                                    riwayatTindakan.setIdTindakan(tindakanRawatEntity.getIdTindakanRawat());
+                                                    riwayatTindakan.setNamaTindakan(tindakanRawatEntity.getNamaTindakan());
+                                                    riwayatTindakan.setTotalTarif(new BigDecimal(String.valueOf(tindakanRawatEntity.getTarifTotal())));
+                                                    riwayatTindakan.setApproveBpjsFlag("Y");
+                                                    riwayatTindakan.setKategoriTindakanBpjs("konsultasi");
+                                                    riwayatTindakan.setKeterangan("tindakan");
+                                                    riwayatTindakan.setJenisPasien(bean.getIdJenisPeriksaPasien());
+                                                    riwayatTindakan.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
+                                                    riwayatTindakan.setFlagUpdateKlaim("Y");
+                                                    riwayatTindakan.setCreatedWho(bean.getCreatedWho());
+                                                    riwayatTindakan.setCreatedDate(bean.getCreatedDate());
+                                                    riwayatTindakan.setLastUpdate(bean.getLastUpdate());
+                                                    riwayatTindakan.setLastUpdateWho(bean.getLastUpdateWho());
+                                                    riwayatTindakan.setFlag("Y");
+                                                    riwayatTindakan.setAction("C");
+                                                    riwayatTindakan.setTanggalTindakan(bean.getCreatedDate());
+
+                                                    try {
+                                                        riwayatTindakanDao.addAndSave(riwayatTindakan);
+                                                    } catch (HibernateException e) {
+                                                        logger.error("[CheckupBoImpl FOunf error]" + e.getMessage());
+                                                    }
+
+                                                }
+
+                                            } catch (HibernateException e) {
+                                                logger.error("[CheckupBoImpl.saveAdd] Error When Saving tindakan rawat" + e.getMessage());
+                                                throw new GeneralBOException("[CheckupBoImpl.saveAdd] Error When Saving tindakan rawat" + e.getMessage());
+                                            }
+                                        }
                                     }
                                 }
 
@@ -241,6 +351,34 @@ public class StatusPeriksaBoImpl implements StatusPeriksaBo {
         return entityUangMuka;
     }
 
+    private List<ImSimrsTindakanEntity> getListEntityTindakan(Tindakan bean) throws GeneralBOException {
+        logger.info("[CheckupBoImpl.getListEntityTindakan] Start >>>>>>>");
+
+        List<ImSimrsTindakanEntity> tindakanEntities = new ArrayList<>();
+        if (bean != null) {
+            Map hsCriteria = new HashMap();
+            if (bean.getIdTindakan() != null) {
+                hsCriteria.put("id_tindakan", bean.getIdTindakan());
+            }
+            if (bean.getIdKategoriTindakan() != null) {
+                hsCriteria.put("id_kategori_tindakan", bean.getIdKategoriTindakan());
+            }
+            if (bean.getFlag() != null) {
+                hsCriteria.put("flag", bean.getFlag());
+            }
+            try {
+                tindakanEntities = tindakanDao.getByCriteria(hsCriteria);
+            } catch (HibernateException e) {
+                logger.error("[CheckupBoImpl.getListEntityTindakan] ERROR " + e.getMessage());
+                throw new GeneralBOException("[CheckupBoImpl.getListEntityTindakan] ERROR " + e.getMessage());
+            }
+
+        }
+        logger.info("[CheckupBoImpl.getListEntityTindakan] End <<<<<<<");
+        return tindakanEntities;
+
+    }
+
     private String dateFormater(String type) {
         Date date = new Date(new java.util.Date().getTime());
         DateFormat df = new SimpleDateFormat(type);
@@ -253,6 +391,37 @@ public class StatusPeriksaBoImpl implements StatusPeriksaBo {
             id = diagnosaRawatDao.getNextSeq();
         } catch (HibernateException e) {
             logger.error("[DiagnosaRawatBoImpl.getNextId] Error when get next diagnosa rawat id ", e);
+        }
+        return id;
+    }
+
+    private String getNextTindakanRawatId() {
+        String id = "";
+        try {
+            id = tindakanRawatDao.getNextTindakanRawatId();
+        } catch (HibernateException e) {
+            logger.error("[CheckupBoImpl.getNextTindakanRawatId] Error when get seq ", e);
+            throw new GeneralBOException("[CheckupBoImpl.getNextTindakanRawatId] Error when get seq " + e.getMessage());
+        }
+        return id;
+    }
+
+    private String getNextIdRiwayatTindakan() {
+        String id = "";
+        try {
+            id = riwayatTindakanDao.getNextSeq();
+        } catch (HibernateException e) {
+            logger.error("[RiwayatTindakanBoImpl.getNextIdRiwayatTindakan] ERROR When create sequences", e);
+        }
+        return id;
+    }
+
+    private String getNextIdHeaderLog() {
+        String id = "";
+        try {
+            id = headerCheckupLogDao.getNextSeq();
+        } catch (HibernateException e) {
+            logger.error("[RiwayatTindakanBoImpl.getNextIdHeaderLog] ERROR When create sequences", e);
         }
         return id;
     }
@@ -275,5 +444,21 @@ public class StatusPeriksaBoImpl implements StatusPeriksaBo {
 
     public void setUangMukaDao(UangMukaDao uangMukaDao) {
         this.uangMukaDao = uangMukaDao;
+    }
+
+    public void setTindakanRawatDao(TindakanRawatDao tindakanRawatDao) {
+        this.tindakanRawatDao = tindakanRawatDao;
+    }
+
+    public void setRiwayatTindakanDao(RiwayatTindakanDao riwayatTindakanDao) {
+        this.riwayatTindakanDao = riwayatTindakanDao;
+    }
+
+    public void setTindakanDao(TindakanDao tindakanDao) {
+        this.tindakanDao = tindakanDao;
+    }
+
+    public void setHeaderCheckupLogDao(HeaderCheckupLogDao headerCheckupLogDao) {
+        this.headerCheckupLogDao = headerCheckupLogDao;
     }
 }

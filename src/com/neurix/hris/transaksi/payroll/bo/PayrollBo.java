@@ -138,4 +138,6 @@ public interface PayrollBo extends BaseMasterBo<Payroll>{
     public BigDecimal hitungIuranBpjs(BigDecimal dasarPerhitunganBpjs, Double percent);
 
     public List<PayrollTunjanganLain> getDetailEditTunjLainSys(String payrollId) throws GeneralBOException;
+
+    void savePttDetail(List<Ptt> pttList, String payrollId) throws GeneralBOException;
 }

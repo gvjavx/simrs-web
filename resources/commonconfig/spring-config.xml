@@ -132,6 +132,7 @@
     <import resource="sshconfig/com/neurix/hris/master/carrerPath/spring/CarrerPathBean.xml"/>
     <import resource="sshconfig/com/neurix/hris/master/pelatihanJabatan/spring/PelatihanJabatanBean.xml"/>
     <import resource="sshconfig/com/neurix/hris/master/payrollMasterInsentif/spring/PayrollMasterInsentifBean.xml"/>
+    <import resource="sshconfig/com/neurix/hris/master/payrollSkalaGajiBod/spring/PayrollSkalaGajiBodBean.xml"/>
 
     <!--BEAN SIMRS HERE-->
     <import resource="sshconfig/com/neurix/simrs/transaksi/checkup/spring/CheckupBean.xml"/>
@@ -208,5 +209,6 @@
     <import resource="sshconfig/com/neurix/akuntansi/master/mappingJurnal/spring/MappingJurnalBean.xml"/>
     <import resource="sshconfig/com/neurix/akuntansi/master/masterVendor/spring/MasterVendorBean.xml"/>
     <import resource="sshconfig/com/neurix/akuntansi/master/settingReportUser/spring/SettingReportUserBean.xml"/>
+    <import resource="sshconfig/com/neurix/akuntansi/transaksi/tutupperiod/spring/TutupPeriodBean.xml"/>
 
 </beans>

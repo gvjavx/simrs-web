@@ -139,6 +139,16 @@ public class ImCompany implements Serializable {
     private BigDecimal maxBpjsPensiun;
     private BigDecimal maxBpjsKesehatan ;
 
+    private String periodeGaji;
+
+    public String getPeriodeGaji() {
+        return periodeGaji;
+    }
+
+    public void setPeriodeGaji(String periodeGaji) {
+        this.periodeGaji = periodeGaji;
+    }
+
     public BigDecimal getMaxBpjsTk() {
         return maxBpjsTk;
     }

@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -419,7 +420,7 @@ public class HeaderDetailCheckup extends BaseModel{
         this.typeTransaction = typeTransaction;
     }
 
-    private List<Tindakan> tindakanList;
+    private List<Tindakan> tindakanList = new ArrayList<>();
 
     public List<Tindakan> getTindakanList() {
         return tindakanList;
