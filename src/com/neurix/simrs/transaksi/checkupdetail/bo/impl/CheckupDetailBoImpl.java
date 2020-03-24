@@ -190,6 +190,17 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         return response;
     }
 
+    @Override
+    public PermintaanResep getDataDokter(String id) throws GeneralBOException {
+        PermintaanResep resep = new PermintaanResep();
+        try {
+            resep = checkupDetailDao.getDataDokterWithResep(id);
+        }catch (HibernateException e){
+            logger.error("Found Error "+e.getMessage());
+        }
+        return resep;
+    }
+
     protected List<HeaderDetailCheckup> setToDetailCheckupTemplate(List<ItSimrsHeaderDetailCheckupEntity> entityList) throws GeneralBOException {
         logger.info("[CheckupDetailBoImpl.setToDetailCheckupTemplate] Start >>>>>>>");
         List<HeaderDetailCheckup> results = new ArrayList<>();

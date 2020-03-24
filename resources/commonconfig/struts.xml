@@ -209,6 +209,7 @@
     <include file="sshconfig/com/neurix/simrs/transaksi/paketperiksa/struts/PaketPeriksaAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/paketperiksa/struts/DaftarPaketPeriksaAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/statusperiksa/struts/StatusPeriksaAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/daftarulang/struts/DaftarUlangAction.xml"/>
 
     <!--AKUNTANSI-->
     <!--MASTER -->

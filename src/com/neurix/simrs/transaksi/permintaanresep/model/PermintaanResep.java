@@ -52,6 +52,24 @@ public class PermintaanResep{
     private String urlKtp;
 
     private String ttdPasien;
+    private String ttdDokter;
+    private String namaDokter;
+
+    public String getNamaDokter() {
+        return namaDokter;
+    }
+
+    public void setNamaDokter(String namaDokter) {
+        this.namaDokter = namaDokter;
+    }
+
+    public String getTtdDokter() {
+        return ttdDokter;
+    }
+
+    public void setTtdDokter(String ttdDokter) {
+        this.ttdDokter = ttdDokter;
+    }
 
     public String getTtdPasien() {
         return ttdPasien;

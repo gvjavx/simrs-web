@@ -9,7 +9,15 @@
 <head>
     <%@ include file="/pages/common/header.jsp" %>
     <style>
+        .paint-canvas {
+            border: 1px black solid;
+            display: block;
+            margin: 1rem;
+        }
 
+        .color-picker {
+            margin: 1rem 1rem 0 1rem;
+        }
     </style>
 
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
@@ -1598,7 +1606,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_resep_head" onclick="saveResepObat()"><i
+                <button type="button" class="btn btn-success" id="save_resep_head" onclick="saveResepObatTtd()"><i
                         class="fa fa-arrow-right"></i> Buat Resep
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
@@ -1733,6 +1741,40 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-ttd">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-pencil"></i> Tanda Tangan Dokter
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group" style="padding-top: 10px; padding-bottom: 10px">
+                    <div class="col-md-1">
+                        <input type="color" style="margin-left: -6px; margin-top: -8px" class="js-color-picker  color-picker pull-left">
+                    </div>
+                    <div class="col-md-9">
+                        <input type="range" style="margin-top: -8px" class="js-line-range" min="1" max="72" value="1">
+                    </div>
+                    <div class="col-md-2">
+                        <div style="margin-top: -8px;" class="js-range-value">1 px</div>
+                    </div>
+                </div>
+                <canvas class="js-paint  paint-canvas" id="ttd_canvas" width="550" height="300"></canvas>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-danger" onclick="clearConvas()"><i class="fa fa-pencil"></i> Clear
+                </button>
+                <button class="btn btn-success pull-right" onclick="saveResepObat()"><i class="fa fa-check"></i> Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="modal-confirm-dialog">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -1797,6 +1839,56 @@
             }
 
         });
+
+        const paintCanvas = document.querySelector(".js-paint");
+        const context = paintCanvas.getContext("2d");
+        context.lineCap = "round";
+
+        const colorPicker = document.querySelector(".js-color-picker");
+
+        colorPicker.addEventListener("change", function (evt) {
+            context.strokeStyle = evt.target.value;
+        });
+
+        const lineWidthRange = document.querySelector(".js-line-range");
+        const lineWidthLabel = document.querySelector(".js-range-value");
+
+        lineWidthRange.addEventListener("input", function (evt) {
+            const width = evt.target.value;
+            lineWidthLabel.innerHTML = width+" px";
+            context.lineWidth = width;
+        });
+
+        let x = 0,
+            y = 0;
+        let isMouseDown = false;
+
+        const stopDrawing = function () {
+            isMouseDown = false;
+        };
+
+        const startDrawing = function (evt) {
+            isMouseDown = true;
+            [x, y] = [evt.offsetX, evt.offsetY];
+        };
+
+        const drawLine = function (evt) {
+            if (isMouseDown) {
+                const newX = evt.offsetX;
+                const newY = evt.offsetY;
+                context.beginPath();
+                context.moveTo(x, y);
+                context.lineTo(newX, newY);
+                context.stroke();
+                x = newX;
+                y = newY;
+            }
+        };
+
+        paintCanvas.addEventListener("mousedown", startDrawing);
+        paintCanvas.addEventListener("mousemove", drawLine);
+        paintCanvas.addEventListener("mouseup", stopDrawing);
+        paintCanvas.addEventListener("mouseout", stopDrawing);
 
         var nominal = document.getElementById('uang_muka');
         if(nominal != ''){
@@ -2053,11 +2145,25 @@
                     $('#pembayaran').show();
                 }
             }
-            if (idKtg == "selesai" || idKtg == "" || idKtg == "lanjut_biaya") {
+            if (idKtg == "selesai") {
                 $('#pembayaran').hide();
                 $("#kamar").attr('style', 'display:none');
                 $("#form-poli").attr('style', 'display:none');
                 $("#form-selesai").show();
+                $("#form-cekup").hide();
+            }
+            if (idKtg == "lanjut_biaya") {
+                $('#pembayaran').hide();
+                $("#kamar").attr('style', 'display:none');
+                $("#form-poli").attr('style', 'display:none');
+                $("#form-selesai").hide();
+                $("#form-cekup").hide();
+            }
+            if(idKtg == ""){
+                $('#pembayaran').hide();
+                $("#kamar").hide();
+                $("#form-poli").hide();
+                $("#form-selesai").hide();
                 $("#form-cekup").hide();
             }
         }
@@ -2182,6 +2288,38 @@
                     $('#war_kolom-2').show();
                 }
             }
+            if(idKtg == "lanjut_biaya"){
+
+                    if(namaAsuransi == "Jasa Raharja"){
+                        if(noRujukan != '' && tglRujukan != '' && suratRujukan != ''){
+                            $('#save_con').attr('onclick','saveKeterangan(\''+idKtg+'\', \''+poli+'\', \''+kelas+'\', \''+kamar+'\', \''+ket_selesai+'\', \''+tgl_cekup+'\', \''+ket_cekup+'\', \''+jenisPasien+'\',\''+idPasien+'\',\''+metodeBayar+'\', \''+uangMuka+'\')');
+                            $('#modal-confirm-dialog').modal('show');
+                        }else{
+                            $('#laka_no_polisi').val(noRujukan);
+                            $('#laka_tgl_kejadian').val(noRujukan);
+                            $('#laka_surat_rujukan').val(suratRujukan);
+                            $('#modal-laka').modal({show:true, backdrop:'static'});
+                            var data  = {
+                                'id_ktg':idKtg,
+                                'poli':poli,
+                                'kelas':kelas,
+                                'kamar':kamar,
+                                'ket_selesai':ket_selesai,
+                                'tgl_cekup':tgl_cekup,
+                                'ket_cekup':ket_cekup,
+                                'jenis':jenisPasien,
+                                'id_pasien':idPasien,
+                                'metode_bayar':metodeBayar,
+                                'uang_muka':uangMuka
+                            }
+                            var result = JSON.stringify(data);
+                            $('#save_laka').attr('onclick','saveDataAsuransi(\''+result+'\')');
+                        }
+                    }else{
+                        $('#save_con').attr('onclick','saveKeterangan(\''+idKtg+'\', \''+poli+'\', \''+kelas+'\', \''+kamar+'\', \''+ket_selesai+'\', \''+tgl_cekup+'\', \''+ket_cekup+'\', \''+jenisPasien+'\',\''+idPasien+'\',\''+metodeBayar+'\', \''+uangMuka+'\')');
+                        $('#modal-confirm-dialog').modal('show');
+                    }
+            }
         } else {
             $('#warning_ket').show().fadeOut(5000);
             $('#war_catatan').show();
@@ -2291,7 +2429,7 @@
                 }
             });
         }
-        if(idKtg == "selesai"){
+        if(idKtg == "selesai" || idKtg == "lanjut_biaya"){
             $('#save_ket').hide();
             $('#load_ket').show();
             $('#waiting_dialog').dialog('open');
@@ -3408,7 +3546,7 @@
         $('#total_harga_obat').val(formatRupiah(jumlah));
     }
 
-    function saveResepObat() {
+    function saveResepObatTtd() {
 
         var idDokter = $('#tin_id_dokter').val();
         var data = $('#tabel_rese_detail').tableToJSON();
@@ -3417,12 +3555,37 @@
         var apotek = $('#resep_apotek').val();
 
         if (stringData != '[]') {
+            $('#modal-ttd').modal({show:true, backdrop:'static'});
+        } else {
+            $('#warning_resep_head').show().fadeOut(5000);
+            $('#msg_resep').text("Silahkan cek kembali data inputan anda..!");
+        }
+    }
+
+    function clearConvas(){
+        var canvas = document.getElementById('ttd_canvas');
+        const context = canvas.getContext('2d');
+        context.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function saveResepObat() {
+        $('#modal-ttd').modal('hide');
+        var idDokter = $('#tin_id_dokter').val();
+        var data = $('#tabel_rese_detail').tableToJSON();
+        var stringData = JSON.stringify(data);
+        var idPelayanan = $('#resep_apotek').val();
+        var apotek = $('#resep_apotek').val();
+        var canvas = document.getElementById('ttd_canvas');
+        var dataURL = canvas.toDataURL("image/png"),
+            dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+        var ttd  = isBlank(canvas);
+        if (stringData != '[]' && !ttd) {
             var idPelayanan = apotek.split('|')[0];
             var namaPelayanan = apotek.split('|')[1];
             $('#save_resep_head').hide();
             $('#load_resep_head').show();
             dwr.engine.setAsync(true);
-            PermintaanResepAction.saveResepPasien(idDetailCheckup, idPoli, idDokter, idPasien, stringData, idPelayanan, {
+            PermintaanResepAction.saveResepPasien(idDetailCheckup, idPoli, idDokter, idPasien, stringData, idPelayanan, dataURL, {
                 callback: function (response) {
                     if (response == "success") {
                         dwr.engine.setAsync(false);
@@ -3434,6 +3597,7 @@
                         listResepPasien();
                     } else {
                         $('#warning_resep_head').show().fadeOut(5000);
+                        $('#msg_resep').text("Silahkan cek kembali data inputan anda..!");
                         $('#save_resep_head').show();
                         $('#load_resep_head').hide();
                     }
@@ -3441,7 +3605,15 @@
             });
         } else {
             $('#warning_resep_head').show().fadeOut(5000);
+            $('#msg_resep').text("Silahkan cek kembali data inputan anda..!");
         }
+    }
+
+    function isBlank(canvas){
+        const blank = document.createElement("canvas");
+        blank.width = canvas.width;
+        blank.height = canvas.height;
+        return canvas.toDataURL() === blank.toDataURL();
     }
 
     function listResepPasien() {
@@ -3477,7 +3649,7 @@
     }
 
     function printResep(id) {
-        window.open('printResepPasien_checkupdetail.action?id=' + noCheckup + '&idResep=' + id, '_blank');
+        window.open('printResepPasien_checkupdetail.action?id=' + idDetailCheckup + '&idResep=' + id, '_blank');
     }
 
     function detailResep(id) {

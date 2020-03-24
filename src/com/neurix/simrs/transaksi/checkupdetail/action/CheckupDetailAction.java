@@ -1063,13 +1063,18 @@ public class CheckupDetailAction extends BaseMasterAction {
 
         headerDetailCheckup.setKeteranganCekupUlang(ketCekup);
 
-        if ("selesai".equalsIgnoreCase(idKtg) || "lanjut_biaya".equalsIgnoreCase(idKtg)) {
+        if ("selesai".equalsIgnoreCase(idKtg)) {
             headerDetailCheckup.setKeteranganSelesai(ket);
             headerDetailCheckup.setCaraPasienPulang(caraPulang);
             headerDetailCheckup.setPendamping(pendamping);
             headerDetailCheckup.setTempatTujuan(tujuan);
             headerDetailCheckup.setKeteranganCekupUlang(ketCekup);
             headerDetailCheckup.setStatus(idKtg);
+            cekRawatInap(idDetailCheckup);
+        }
+
+        if("lanjut_biaya".equalsIgnoreCase(idKtg)){
+            headerDetailCheckup.setKeteranganSelesai("Lanjut Biaya");
             cekRawatInap(idDetailCheckup);
         }
 
@@ -2859,57 +2864,71 @@ public class CheckupDetailAction extends BaseMasterAction {
 
     public String printResepPasien() {
 
+        HeaderCheckup checkup = new HeaderCheckup();
         String idResep = getIdResep();
         String id = getId();
         String jk = "";
 
         String branch = CommonUtil.userBranchLogin();
         String logo = "";
-
-        switch (branch) {
-            case CommonConstant.BRANCH_RS01:
-                logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.LOGO_RS01;
-                break;
-            case CommonConstant.BRANCH_RS02:
-                logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.LOGO_RS02;
-                break;
-            case CommonConstant.BRANCH_RS03:
-                logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.LOGO_RS03;
-                break;
-        }
-
-        HeaderCheckup headerCheckup = getHeaderCheckup(id);
-        JenisPriksaPasien jenisPriksaPasien = getListJenisPeriksaPasien(headerCheckup.getIdJenisPeriksaPasien());
-
-        reportParams.put("area", CommonUtil.userAreaName());
-        reportParams.put("unit", CommonUtil.userBranchNameLogin());
-        reportParams.put("idPasien", headerCheckup.getIdPasien());
-        reportParams.put("resepId", idResep);
-        reportParams.put("logo", logo);
-        reportParams.put("nik", headerCheckup.getNoKtp());
-        reportParams.put("nama", headerCheckup.getNama());
-        String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(headerCheckup.getTglLahir());
-        reportParams.put("tglLahir", headerCheckup.getTempatLahir() + ", " + formatDate);
-        if ("L".equalsIgnoreCase(headerCheckup.getJenisKelamin())) {
-            jk = "Laki-Laki";
-        } else {
-            jk = "Perempuan";
-        }
-        reportParams.put("jenisKelamin", jk);
-        reportParams.put("jenisPasien", jenisPriksaPasien.getKeterangan());
-        reportParams.put("poli", headerCheckup.getNamaPelayanan());
-        reportParams.put("provinsi", headerCheckup.getNamaProvinsi());
-        reportParams.put("kabupaten", headerCheckup.getNamaKota());
-        reportParams.put("kecamatan", headerCheckup.getNamaKecamatan());
-        reportParams.put("desa", headerCheckup.getNamaDesa());
-
+        Branch branches = new Branch();
+        PermintaanResep permintaanResep = new PermintaanResep();
 
         try {
-            preDownload();
-        } catch (SQLException e) {
-            logger.error("[ReportAction.printCard] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
-            return "search";
+            branches = branchBoProxy.getBranchById(branch, "Y");
+        } catch (GeneralBOException e) {
+            logger.error("Found Error when searhc branch logo");
+        }
+
+        if (branches != null) {
+            logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.RESOURCE_PATH_IMAGES + branches.getLogoName();
+        }
+
+        try {
+            checkup = checkupBoProxy.getDataDetailPasien(id);
+        } catch (GeneralBOException e) {
+            logger.error("Found Error when search data detail pasien " + e.getMessage());
+        }
+
+        try {
+            permintaanResep = checkupDetailBoProxy.getDataDokter(idResep);
+        }catch (HibernateException e){
+            logger.error("Found Error "+e.getMessage());
+        }
+
+        if (checkup != null) {
+
+            reportParams.put("dokter", permintaanResep.getNamaDokter());
+            reportParams.put("ttdDokter", CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_TTD_DOKTER+permintaanResep.getTtdDokter());
+            reportParams.put("area", CommonUtil.userAreaName());
+            reportParams.put("unit", CommonUtil.userBranchNameLogin());
+            reportParams.put("idPasien", checkup.getIdPasien());
+            reportParams.put("resepId", idResep);
+            reportParams.put("logo", logo);
+            reportParams.put("nik", checkup.getNoKtp());
+            reportParams.put("nama", checkup.getNama());
+            String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
+            reportParams.put("tglLahir", checkup.getTempatLahir() + ", " + formatDate);
+            if ("L".equalsIgnoreCase(checkup.getJenisKelamin())) {
+                jk = "Laki-Laki";
+            } else {
+                jk = "Perempuan";
+            }
+            reportParams.put("jenisKelamin", jk);
+            reportParams.put("jenisPasien", checkup.getStatusPeriksaName());
+            reportParams.put("poli", checkup.getNamaPelayanan());
+            reportParams.put("provinsi", checkup.getNamaProvinsi());
+            reportParams.put("kabupaten", checkup.getNamaKota());
+            reportParams.put("kecamatan", checkup.getNamaKecamatan());
+            reportParams.put("desa", checkup.getNamaDesa());
+
+            try {
+                preDownload();
+            } catch (SQLException e) {
+                logger.error("[ReportAction.printCard] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+                addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
+                return "search";
+            }
         }
 
         return "print_resep";

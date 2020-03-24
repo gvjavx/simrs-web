@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printStrukResepPasien" language="groovy" pageWidth="421" pageHeight="595" whenNoDataType="AllSectionsNoDetail" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
-	<property name="ireport.zoom" value="1.6105100000000039"/>
+	<property name="ireport.zoom" value="1.464100000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="248"/>
+	<property name="ireport.y" value="349"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -64,6 +64,9 @@
 	<parameter name="reportParams.idPasien" class="java.lang.String"/>
 	<parameter name="reportParams.ttdPasien" class="java.lang.String"/>
 	<parameter name="reportParams.petugas" class="java.lang.String"/>
+	<parameter name="reportParams.dokter" class="java.lang.String"/>
+	<parameter name="reportParams.ttdDokter" class="java.lang.String"/>
+	<parameter name="reportParams.ttdApoteker" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT ttd_pasien FROM mt_simrs_permintaan_resep WHERE id_permintaan_resep = $P{reportParams.resepId}]]>
 	</queryString>
@@ -621,7 +624,7 @@
 			</staticText>
 			<image onErrorType="Blank">
 				<reportElement x="11" y="14" width="94" height="50" uuid="b7b67a8d-416c-4c31-981f-e0f74f971f4c"/>
-				<imageExpression><![CDATA[$P{reportParams.ttdPasien}+$F{ttd_pasien}]]></imageExpression>
+				<imageExpression><![CDATA[$P{reportParams.ttdPasien}]]></imageExpression>
 			</image>
 			<textField>
 				<reportElement x="0" y="64" width="115" height="15" uuid="4f60337f-5ec1-4b92-9a74-4b1822a26ca4"/>
@@ -632,7 +635,7 @@
 				<textFieldExpression><![CDATA[$P{reportParams.nama} == null ? "" : $P{reportParams.nama}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="266" y="64" width="115" height="15" uuid="836afd73-8a7e-4c23-a9b5-09c6f342d6eb"/>
+				<reportElement x="266" y="63" width="115" height="15" uuid="836afd73-8a7e-4c23-a9b5-09c6f342d6eb"/>
 				<box leftPadding="1"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -643,8 +646,34 @@
 				<reportElement x="0" y="78" width="115" height="1" uuid="853638bc-c744-4e75-bfc0-cd68d3a3da9a"/>
 			</line>
 			<line>
-				<reportElement x="268" y="79" width="110" height="1" uuid="8b9d08bc-a15f-45be-be18-f9d84766d5e2"/>
+				<reportElement x="268" y="78" width="110" height="1" uuid="8b9d08bc-a15f-45be-be18-f9d84766d5e2"/>
 			</line>
+			<staticText>
+				<reportElement x="133" y="0" width="115" height="14" uuid="0bbba264-fa99-4701-b17e-11456a6c6951"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Dokter]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="133" y="64" width="115" height="15" uuid="3c5be2b8-d6c9-4798-9fb7-b0dcbf9a215d"/>
+				<box leftPadding="1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.dokter} == null ? "" : $P{reportParams.dokter}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="124" y="78" width="133" height="1" uuid="debda0f8-c1b8-4763-8451-740c60bcd2ae"/>
+			</line>
+			<image onErrorType="Blank">
+				<reportElement x="145" y="14" width="94" height="50" uuid="b4b7416c-33f2-4d80-9bb4-dcadf7a422c7"/>
+				<imageExpression><![CDATA[$P{reportParams.ttdDokter}]]></imageExpression>
+			</image>
+			<image onErrorType="Blank">
+				<reportElement x="277" y="14" width="94" height="50" uuid="a2d9fd1e-4a23-472d-8fc9-51cb53d92e45"/>
+				<imageExpression><![CDATA[$P{reportParams.ttdApoteker}]]></imageExpression>
+			</image>
 		</band>
 	</lastPageFooter>
 	<summary>

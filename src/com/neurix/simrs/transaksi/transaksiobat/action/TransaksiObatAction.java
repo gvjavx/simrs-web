@@ -1418,12 +1418,11 @@ public class TransaksiObatAction extends BaseMasterAction {
         String idApprove = getIdApprove();
         String jk = "";
 
-//        HeaderDetailCheckup headerDetailCheckup = getDetailCheckup(id);
-
         TransaksiObatDetail transaksiObatDetail = new TransaksiObatDetail();
         List<TransaksiObatDetail> pembelianObatList = new ArrayList<>();
         List<RiwayatTransaksiObat> riwayatList = new ArrayList<>();
         HeaderCheckup checkup = new HeaderCheckup();
+        PermintaanResep permintaanResep = new PermintaanResep();
 
         if (!"".equalsIgnoreCase(idApprove) && idApprove != null) {
 
@@ -1434,6 +1433,12 @@ public class TransaksiObatAction extends BaseMasterAction {
             }
 
             if (checkup != null) {
+
+                try {
+                    permintaanResep = checkupDetailBoProxy.getDataDokter(idResep);
+                }catch (HibernateException e){
+                    logger.error("Found Error "+e.getMessage());
+                }
 
                 try {
                     pembelianObatList = transaksiObatBoProxy.listObatResepApprove(idApprove);
@@ -1488,9 +1493,11 @@ public class TransaksiObatAction extends BaseMasterAction {
 
             }
 
+            reportParams.put("dokter", permintaanResep.getNamaDokter());
+            reportParams.put("ttdDokter", CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_TTD_DOKTER+permintaanResep.getTtdDokter());
             reportParams.put("resepId", idResep);
             reportParams.put("petugas", CommonUtil.userLogin());
-            reportParams.put("ttdPasien", CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_TTD_PASIEN);
+            reportParams.put("ttdPasien", CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_TTD_PASIEN+permintaanResep.getTtdPasien());
             reportParams.put("idPasien", checkup.getIdPasien());
             reportParams.put("nik", checkup.getNoKtp());
             reportParams.put("nama", checkup.getNama());

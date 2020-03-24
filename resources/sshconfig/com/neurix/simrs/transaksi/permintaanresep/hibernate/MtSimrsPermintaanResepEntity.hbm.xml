@@ -56,9 +56,15 @@
         <property name="tujuanPelayanan">
             <column name="tujuan_pelayanan" sql-type="varchar" length="30" not-null="false" />
         </property>
+        <property name="idDokter">
+            <column name="id_dokter" sql-type="varchar" length="30" not-null="false" />
+        </property>
 
         <property name="ttdPasien">
             <column name="ttd_pasien" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="ttdDokter">
+            <column name="ttd_dokter" sql-type="varchar" length="100" not-null="false" />
         </property>
     </class>
 </hibernate-mapping>

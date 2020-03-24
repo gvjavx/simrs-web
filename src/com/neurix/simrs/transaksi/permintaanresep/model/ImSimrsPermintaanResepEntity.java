@@ -27,7 +27,15 @@ public class ImSimrsPermintaanResepEntity implements Serializable {
     private String tujuanPelayanan;
 
     private String ttdPasien;
+    private String ttdDokter;
 
+    public String getTtdDokter() {
+        return ttdDokter;
+    }
+
+    public void setTtdDokter(String ttdDokter) {
+        this.ttdDokter = ttdDokter;
+    }
 
     public String getTtdPasien() {
         return ttdPasien;

@@ -8,6 +8,7 @@ import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
+import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
 
 import java.math.BigDecimal;
@@ -51,5 +52,7 @@ public interface CheckupDetailBo {
     public HeaderDetailCheckup getBiayaTindakan(String idDetailCheckup) throws GeneralBOException;
 
     public CheckResponse saveUpdateDataAsuransi(HeaderCheckup bean) throws GeneralBOException;
+
+    public PermintaanResep getDataDokter(String id) throws GeneralBOException;
 
 }
