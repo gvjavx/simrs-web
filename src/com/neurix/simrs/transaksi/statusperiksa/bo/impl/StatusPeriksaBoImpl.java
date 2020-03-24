@@ -1,6 +1,8 @@
 package com.neurix.simrs.transaksi.statusperiksa.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.diagnosa.dao.DiagnosaDao;
 import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
@@ -10,12 +12,15 @@ import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsUangMukaPendaftaranEntity;
 import com.neurix.simrs.transaksi.checkupdetail.model.UangMuka;
+import com.neurix.simrs.transaksi.diagnosarawat.dao.DiagnosaRawatDao;
+import com.neurix.simrs.transaksi.diagnosarawat.model.ItSimrsDiagnosaRawatEntity;
 import com.neurix.simrs.transaksi.statusperiksa.bo.StatusPeriksaBo;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
 import java.math.BigInteger;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,6 +34,7 @@ public class StatusPeriksaBoImpl implements StatusPeriksaBo {
     private CheckupDetailDao checkupDetailDao;
     private HeaderCheckupDao headerCheckupDao;
     private UangMukaDao uangMukaDao;
+    private DiagnosaRawatDao diagnosaRawatDao;
 
     @Override
     public List<HeaderDetailCheckup> getListStatusPeriksa(HeaderDetailCheckup headerDetailCheckup) throws GeneralBOException {
@@ -61,7 +67,7 @@ public class StatusPeriksaBoImpl implements StatusPeriksaBo {
 
                     if (headerChekupEntity != null) {
 
-                        if("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
+                        if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
                             headerChekupEntity.setNoRujukan(bean.getNoRujukan());
                             headerChekupEntity.setNoPpkRujukan(bean.getNoPpk());
                             headerChekupEntity.setTglRujukan(Date.valueOf(bean.getTglRujukan()));
@@ -92,18 +98,18 @@ public class StatusPeriksaBoImpl implements StatusPeriksaBo {
 
                     if (detailCheckupEntity != null) {
 
-                        if("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
+                        if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
                             detailCheckupEntity.setNoSep(bean.getNoSep());
                             detailCheckupEntity.setKodeCbg(bean.getKodeCbg());
                             detailCheckupEntity.setTarifBpjs(bean.getTarifBpjs());
                         }
 
-                        if("asuransi".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
+                        if ("asuransi".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
                             detailCheckupEntity.setIdAsuransi(bean.getIdAsuransi());
                             detailCheckupEntity.setNoKartuAsuransi(bean.getNoKartuAsuransi());
                         }
 
-                        if("umum".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
+                        if ("umum".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
                             detailCheckupEntity.setMetodePembayaran(bean.getMetodePembayaran());
                         }
 
@@ -114,7 +120,33 @@ public class StatusPeriksaBoImpl implements StatusPeriksaBo {
 
                             checkupDetailDao.updateAndSave(detailCheckupEntity);
 
-                            if("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
+                            if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
+
+                                if (bean.getDiagnosa() != null && !"".equalsIgnoreCase(bean.getDiagnosa())
+                                        && bean.getNamaDiagnosa() != null && !"".equalsIgnoreCase(bean.getNamaDiagnosa())) {
+                                    ItSimrsDiagnosaRawatEntity entity = new ItSimrsDiagnosaRawatEntity();
+
+                                    String id = getNextIdDiagnosa();
+                                    entity.setIdDiagnosaRawat("DGR" + id);
+                                    entity.setIdDiagnosa(bean.getDiagnosa());
+                                    entity.setIdDetailCheckup(bean.getIdDetailCheckup());
+                                    entity.setKeteranganDiagnosa(bean.getNamaDiagnosa());
+                                    entity.setJenisDiagnosa("0");
+                                    entity.setFlag("Y");
+                                    entity.setAction("U");
+                                    entity.setCreatedDate(bean.getLastUpdate());
+                                    entity.setLastUpdate(bean.getLastUpdate());
+                                    entity.setCreatedWho(bean.getLastUpdateWho());
+                                    entity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                                    try {
+                                        diagnosaRawatDao.addAndSave(entity);
+                                    } catch (HibernateException e) {
+                                        logger.error("[DiagnosaRawatBoImpl.saveAdd] Error when saving diagnosa ", e);
+                                        throw new GeneralBOException("Error when saving diagnosa " + e.getMessage());
+                                    }
+                                }
+
                                 UangMuka uangMuka = new UangMuka();
                                 uangMuka.setIdDetailCheckup(bean.getIdDetailCheckup());
                                 ItSimrsUangMukaPendaftaranEntity entityUangMuka = getEntityUangMuka(uangMuka);
@@ -137,7 +169,7 @@ public class StatusPeriksaBoImpl implements StatusPeriksaBo {
                                 }
                             }
 
-                            if("umum".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
+                            if ("umum".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
                                 if (bean.getJumlahUangMuka() != null && !"".equalsIgnoreCase(bean.getJumlahUangMuka().toString())) {
                                     ItSimrsUangMukaPendaftaranEntity uangMukaPendaftaranEntity = new ItSimrsUangMukaPendaftaranEntity();
                                     uangMukaPendaftaranEntity.setId("UM" + bean.getBranchId() + dateFormater("MM") + dateFormater("yy") + uangMukaDao.getNextId());
@@ -213,6 +245,20 @@ public class StatusPeriksaBoImpl implements StatusPeriksaBo {
         Date date = new Date(new java.util.Date().getTime());
         DateFormat df = new SimpleDateFormat(type);
         return df.format(date);
+    }
+
+    private String getNextIdDiagnosa() {
+        String id = "";
+        try {
+            id = diagnosaRawatDao.getNextSeq();
+        } catch (HibernateException e) {
+            logger.error("[DiagnosaRawatBoImpl.getNextId] Error when get next diagnosa rawat id ", e);
+        }
+        return id;
+    }
+
+    public void setDiagnosaRawatDao(DiagnosaRawatDao diagnosaRawatDao) {
+        this.diagnosaRawatDao = diagnosaRawatDao;
     }
 
     public static Logger getLogger() {

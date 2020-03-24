@@ -15,6 +15,7 @@
           p:checkupDetailDao-ref="checkupDetailDao"
           p:headerCheckupDao-ref="headerCheckupDao"
           p:uangMukaDao-ref="uangMukaDao"
+          p:diagnosaRawatDao-ref="diagnosaRawatDao"
     />
 
     <bean id="statusPeriksaBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

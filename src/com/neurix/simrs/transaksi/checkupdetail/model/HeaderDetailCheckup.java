@@ -127,6 +127,16 @@ public class HeaderDetailCheckup extends BaseModel{
     private String perujuk;
     private String namaPerujuk;
 
+    private String flagRefund;
+
+    public String getFlagRefund() {
+        return flagRefund;
+    }
+
+    public void setFlagRefund(String flagRefund) {
+        this.flagRefund = flagRefund;
+    }
+
     public String getPerujuk() {
         return perujuk;
     }

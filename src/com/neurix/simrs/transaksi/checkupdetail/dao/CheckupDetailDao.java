@@ -819,7 +819,8 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 "um.jumlah,\n" +
                 "um.status_bayar,\n" +
                 "um.created_date, ps.id_pasien,\n" +
-                "um.jumlah_dibayar\n" +
+                "um.jumlah_dibayar,\n" +
+                "um.flag_refund\n" +
                 "FROM it_simrs_header_detail_checkup dt\n" +
                 "INNER JOIN it_simrs_header_checkup ck ON ck.no_checkup = dt.no_checkup\n" +
                 "INNER JOIN it_simrs_uang_muka_pendaftaran um ON um.id_detail_checkup = dt.id_detail_checkup\n" +
@@ -873,6 +874,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 detailCheckup.setCreatedDate((Timestamp) obj[6]);
                 detailCheckup.setIdPasien(obj[7] == null ? "" : obj[7].toString());
                 detailCheckup.setJumlahUangMukaDibayar(obj[8] == null ? new BigInteger(String.valueOf(0)) : (BigInteger) obj[8]);
+                detailCheckup.setFlagRefund(obj[9] == null ? "" : obj[9].toString());
                 detailCheckups.add(detailCheckup);
             }
         }
