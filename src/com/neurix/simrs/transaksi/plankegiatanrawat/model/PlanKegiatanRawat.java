@@ -26,6 +26,9 @@ public class PlanKegiatanRawat {
     private String diagnosa;
     private String branchId;
     private String flagDikerjakan;
+    private String idPasien;
+    private String idPelayanan;
+    private String namaPelayanan;
 
     public String getNamaPasien() {
         return namaPasien;
@@ -169,5 +172,29 @@ public class PlanKegiatanRawat {
 
     public void setFlagDikerjakan(String flagDikerjakan) {
         this.flagDikerjakan = flagDikerjakan;
+    }
+
+    public String getIdPasien() {
+        return idPasien;
+    }
+
+    public void setIdPasien(String idPasien) {
+        this.idPasien = idPasien;
+    }
+
+    public String getIdPelayanan() {
+        return idPelayanan;
+    }
+
+    public void setIdPelayanan(String idPelayanan) {
+        this.idPelayanan = idPelayanan;
+    }
+
+    public String getNamaPelayanan() {
+        return namaPelayanan;
+    }
+
+    public void setNamaPelayanan(String namaPelayanan) {
+        this.namaPelayanan = namaPelayanan;
     }
 }
