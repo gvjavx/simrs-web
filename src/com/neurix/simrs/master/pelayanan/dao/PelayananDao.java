@@ -48,8 +48,7 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
     public List<Pelayanan> getListApotek(){
 
         String SQL = "SELECT id_pelayanan, nama_pelayanan FROM im_simrs_pelayanan \n" +
-                "WHERE is_poli = 'N' \n" +
-                "AND nama_pelayanan NOT LIKE 'IGD'\n" +
+                "WHERE tipe_pelayanan = 'apotek' \n" +
                 "AND flag = 'Y'";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)

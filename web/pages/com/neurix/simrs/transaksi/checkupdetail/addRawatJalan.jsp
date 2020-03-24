@@ -1574,11 +1574,25 @@
                         <td>Racik</td>
                         <td>Kronis</td>
                         <td>Pengambilan Berikutnya</td>
+                        <td>Harga</td>
                         <td align="center" width="5%">Action</td>
                         </thead>
                         <tbody id="body_detail">
                         </tbody>
                     </table>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-4">
+                            <label>Total Harga</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    Rp.
+                                </div>
+                                <input class="form-control" id="total_harga_obat" readonly>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
@@ -2430,10 +2444,14 @@
     }
 
     function formatRupiah(angka) {
-        var reverse = angka.toString().split('').reverse().join(''),
+        if(angka != '' && angka != null && angka > 0){
+            var reverse = angka.toString().split('').reverse().join(''),
                 ribuan = reverse.match(/\d{1,3}/g);
-        ribuan = ribuan.join('.').split('').reverse().join('');
-        return ribuan;
+            ribuan = ribuan.join('.').split('').reverse().join('');
+            return ribuan;
+        }else{
+            return 0;
+        }
     }
 
 
@@ -3258,6 +3276,7 @@
         var jenisResep = $("#jenis_resep").val();
         var flagKronis = $("#val-kronis").val();
         var hariKronis = "";
+        var harga = "";
 
         if (flagKronis == "Y"){
             hariKronis = $("#hari-kronis").val();
@@ -3298,6 +3317,10 @@
             if (obat.split('|')[6] != 'null' && obat.split('|')[6] != '') {
                 bijiPerLembar = obat.split('|')[6];
             }
+            if (obat.split('|')[8] != 'null' && obat.split('|')[8] != '') {
+                harga = obat.split('|')[8];
+            }
+
 
             var stok = 0;
 
@@ -3312,6 +3335,7 @@
             }
 
             if (parseInt(qty) <= parseInt(stok)) {
+
                 $.each(data, function (i, item) {
                     if (item.ID == id) {
                         cek = true;
@@ -3321,6 +3345,7 @@
                 if (cek) {
                     $('#warning_data_exits').show().fadeOut(5000);
                 } else {
+                    var totalHarga = parseInt(qty) * parseInt(harga);
                     $('#resep_apotek').attr('disabled', true);
                     $('#desti_apotek').html(namaPelayanan);
                     var row = '<tr id=' + id + '>' +
@@ -3332,9 +3357,18 @@
                             '<td>' + jenisResep + '</td>' +
                             '<td>' + labelKronis(flagKronis) + '</td>' +
                             '<td aling="center">' + hariKronis + '</td>' +
-                            '<td align="center"><img border="0" onclick="delRowObat(\'' + id + '\')" class="hvr-grow" src="<s:url value="/pages/images/delete-flat.png"/>" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
+                            '<td aling="center">' + formatRupiah(totalHarga) + '</td>' +
+                            '<td align="center"><img border="0" onclick="delRowObat(\'' + id + '\',\''+totalHarga+'\')" class="hvr-grow" src="<s:url value="/pages/images/delete-flat.png"/>" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
                             '</tr>';
                     $('#body_detail').append(row);
+                    var total = $('#total_harga_obat').val();
+                    console.log(total);
+                    var tot = 0;
+                    if(total != ""){
+                        tot = total.replace(/[.]/g, '');
+                    }
+                    var jumlah = parseInt(totalHarga) + parseInt(tot);
+                    $('#total_harga_obat').val(formatRupiah(jumlah));
                 }
             } else {
                 $('#warning_resep_head').show().fadeOut(5000);
@@ -3362,8 +3396,16 @@
         }
     }
 
-    function delRowObat(id) {
+    function delRowObat(id, harga) {
         $('#' + id).remove();
+        var total = $('#total_harga_obat').val();
+        var tot = 0;
+        if(total != ""){
+            tot = total.replace(/[.]/g, '');
+        }
+        console.log(harga);
+        var jumlah = parseInt(tot) - parseInt(harga);
+        $('#total_harga_obat').val(formatRupiah(jumlah));
     }
 
     function saveResepObat() {
@@ -3661,7 +3703,7 @@
             ObatPoliAction.getSelectOptionObatByPoli(idPel, jenisPasien, function (response) {
                 if (response != null) {
                     $.each(response, function (i, item) {
-                        option += "<option value='" + item.idObat + "|" + item.namaObat + "|" + item.qtyBox + "|" + item.qtyLembar + "|" + item.qtyBiji + "|" + item.lembarPerBox + "|" + item.bijiPerLembar + "|" + item.flagKronis + "'>" + item.namaObat + "</option>";
+                        option += "<option value='" + item.idObat + "|" + item.namaObat + "|" + item.qtyBox + "|" + item.qtyLembar + "|" + item.qtyBiji + "|" + item.lembarPerBox + "|" + item.bijiPerLembar + "|" + item.flagKronis + "|" + item.harga + "'>" + item.namaObat + "</option>";
                     });
                     $('#resep_nama_obat').html(option);
                 }
