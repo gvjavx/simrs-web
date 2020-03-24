@@ -24,6 +24,8 @@ public class PlanKegiatanRawat {
     private String namaPasien;
     private String ruang;
     private String diagnosa;
+    private String branchId;
+    private String flagDikerjakan;
 
     public String getNamaPasien() {
         return namaPasien;
@@ -151,5 +153,21 @@ public class PlanKegiatanRawat {
 
     public void setIdDetailCheckup(String idDetailCheckup) {
         this.idDetailCheckup = idDetailCheckup;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
+    public String getFlagDikerjakan() {
+        return flagDikerjakan;
+    }
+
+    public void setFlagDikerjakan(String flagDikerjakan) {
+        this.flagDikerjakan = flagDikerjakan;
     }
 }

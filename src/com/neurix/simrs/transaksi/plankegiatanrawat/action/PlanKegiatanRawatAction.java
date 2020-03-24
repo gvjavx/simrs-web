@@ -13,12 +13,12 @@ public class PlanKegiatanRawatAction extends BaseTransactionAction {
 
     @Override
     public String search() {
-        return null;
+        return SUCCESS;
     }
 
     @Override
     public String initForm() {
-        return null;
+        return SUCCESS;
     }
 
     public void setPlanKegiatanRawatBoProxy(PlanKegiatanRawatBo planKegiatanRawatBoProxy) {

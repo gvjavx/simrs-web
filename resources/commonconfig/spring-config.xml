@@ -192,6 +192,7 @@
     <import resource="sshconfig/com/neurix/simrs/transaksi/kasirrawatjalan/spring/KasirRawatJalanBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/monitorruangan/spring/MonitorRuanganBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/paketperiksa/spring/PaketPeriksaBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/plankegiatanrawat/spring/PlanKegiatanRawatBean.xml"/>
 
     <!--BEAN AKUNTANSI HERE-->
     <import resource="sshconfig/com/neurix/akuntansi/master/kodeRekening/spring/KodeRekeningBean.xml"/>

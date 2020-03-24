@@ -29,6 +29,8 @@ public class PlanKegiatanRawatDao extends GenericDao<ItSimrsPlanKegiatanRawatEnt
             criteria.add(Restrictions.eq("id", mapCriteria.get("id").toString()));
         if (mapCriteria.get("id_detail_checkup") != null)
             criteria.add(Restrictions.eq("idDetailCheckup", mapCriteria.get("id_detail_checkup").toString()));
+        if (mapCriteria.get("branch_id") != null)
+            criteria.add(Restrictions.eq("branchId", mapCriteria.get("branch_id").toString()));
 
         List<ItSimrsPlanKegiatanRawatEntity> results = criteria.list();
         return results;
