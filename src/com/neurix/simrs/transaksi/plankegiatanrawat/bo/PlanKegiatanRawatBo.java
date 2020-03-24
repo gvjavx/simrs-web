@@ -10,4 +10,5 @@ import java.util.List;
  */
 public interface PlanKegiatanRawatBo {
     public List<PlanKegiatanRawat> getSearchByCritria(PlanKegiatanRawat bean) throws GeneralBOException;
+    public List<PlanKegiatanRawat> getListKegiatanRawat(PlanKegiatanRawat bean) throws GeneralBOException;
 }

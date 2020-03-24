@@ -70,6 +70,11 @@ public class PlanKegiatanRawatBoImpl implements PlanKegiatanRawatBo {
         return planKegiatanRawatEntities;
     }
 
+    @Override
+    public List<PlanKegiatanRawat> getListKegiatanRawat(PlanKegiatanRawat bean) throws GeneralBOException {
+        return planKegiatanRawatDao.getSearchPlanKegiataRawat(bean);
+    }
+
     public void setPlanKegiatanRawatDao(PlanKegiatanRawatDao planKegiatanRawatDao) {
         this.planKegiatanRawatDao = planKegiatanRawatDao;
     }

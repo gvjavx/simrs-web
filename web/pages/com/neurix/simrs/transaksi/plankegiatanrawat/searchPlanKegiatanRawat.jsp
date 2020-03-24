@@ -11,6 +11,7 @@
     <style>
     </style>
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/PlanKegiatanRawatAction.js"/>'></script>
     <script type='text/javascript'>
 
         $(document).ready(function () {
@@ -53,7 +54,7 @@
                                     <div class="row">
                                         <label class="control-label col-sm-4" for="headerCheckup.idPasien">No. RM</label>
                                         <div class="col-sm-4">
-                                            <s:textfield id="id_pasien" cssStyle="margin-top: 7px"
+                                            <s:textfield id="idPasien" cssStyle="margin-top: 7px"
                                                          name="headerCheckup.idPasien" required="false"
                                                          readonly="false" cssClass="form-control"/>
                                         </div>
@@ -66,7 +67,7 @@
                                             <s:action id="initComboPoli" namespace="/checkup"
                                                       name="getComboPelayanan_checkup"/>
                                             <s:select cssStyle="margin-top: 7px; width: 100%"
-                                                      list="#initComboPoli.listOfPelayanan" id="poli"
+                                                      list="#initComboPoli.listOfPelayanan" id="idPelayanan"
                                                       name="headerCheckup.idPelayanan" listKey="idPelayanan"
                                                       listValue="namaPelayanan"
                                                       headerKey="" headerValue="[Select one]"
@@ -91,42 +92,6 @@
                                         </a>
                                     </div>
                                 </div>
-                                <%--<div class="form-group">--%>
-                                    <%--<label class="control-label col-sm-5"></label>--%>
-                                    <%--<div class="col-sm-5" style="display: none">--%>
-
-                                        <%--<sj:dialog id="waiting_dialog" openTopics="showDialogLoading"--%>
-                                                   <%--closeTopics="closeDialog" modal="true"--%>
-                                                   <%--resizable="false"--%>
-                                                   <%--height="250" width="600" autoOpen="false"--%>
-                                                   <%--title="Searching ...">--%>
-                                            <%--Please don't close this window, server is processing your request ...--%>
-                                            <%--<br>--%>
-                                            <%--&lt;%&ndash;<center>&ndash;%&gt;--%>
-                                                <%--&lt;%&ndash;<img border="0" style="width: 150px; height: 150px"&ndash;%&gt;--%>
-                                                     <%--&lt;%&ndash;src="<s:url value="/pages/images/spinner.gif"/>"&ndash;%&gt;--%>
-                                                     <%--&lt;%&ndash;name="image_indicator_write">&ndash;%&gt;--%>
-                                            <%--&lt;%&ndash;</center>&ndash;%&gt;--%>
-                                            <%--<center>--%>
-                                                <%--<img border="0" style="width: 130px; height: 120px; margin-top: 20px"--%>
-                                                     <%--src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"--%>
-                                                     <%--name="image_indicator_write">--%>
-                                                <%--<br>--%>
-                                                <%--<img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"--%>
-                                                     <%--src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"--%>
-                                                     <%--name="image_indicator_write">--%>
-                                            <%--</center>--%>
-                                        <%--</sj:dialog>--%>
-                                        <%--<sj:dialog id="view_dialog_user" openTopics="showDialogUser" modal="true"--%>
-                                                   <%--resizable="false" cssStyle="text-align:left;"--%>
-                                                   <%--height="650" width="900" autoOpen="false" title="View Detail"--%>
-                                        <%-->--%>
-                                            <%--<center><img border="0" src="<s:url value="/pages/images/spinner.gif"/>"--%>
-                                                         <%--alt="Loading..."/></center>--%>
-                                        <%--</sj:dialog>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-                            <%--</s:form>--%>
                         </div>
                     </div>
                     <div class="box-header with-border"></div>
@@ -175,214 +140,38 @@
     <!-- /.content -->
 </div>
 
-<div class="modal fade" id="modal-detail-pasien">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #00a65a">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-search"></i> Detail Rawat Pasien</h4>
-            </div>
-            <div class="modal-body">
-                <div class="box-header with-border">
-                    <h3 class="box-title"><i class="fa fa-user"></i> Data Pasien</h3>
-                </div>
-                <div class="box-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <table class="table table-striped">
-                                <tr>
-                                    <td><b>No Checkup</b></td>
-                                    <td><span id="det_no_checkup"></span></td>
-                                </tr>
-                                <tr>
-                                    <td><b>NIK</b></td>
-                                    <td><span id="det_nik"></span></td>
-                                </tr>
-                                <tr>
-                                    <td><b>Nama</b></td>
-                                    <td><span id="det_nama"></span></td>
-                                </tr>
-                                <tr>
-                                    <td><b>Jenis Kelamin</b></td>
-                                    <td><span id="det_jenis_kelamin"></span></td>
-                                </tr>
-                                <tr>
-                                    <td><b>Tempat, TGL Lahir</b></td>
-                                    <td><span id="det_tgl"></span></td>
-                                </tr>
-                                <tr>
-                                    <td><b>Agama</b></td>
-                                    <td><span id="det_agama"></span></td>
-                                </tr>
-                                <tr>
-                                    <td><b>Suku</b></td>
-                                    <td><span id="det_suku"></span></td>
-                                </tr>
-                            </table>
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-md-6">
-                            <table class="table table-striped">
-                                <tr>
-                                    <td><b>Alamat</b></td>
-                                    <td><span id="det_alamat"></span></td>
-                                </tr>
-                                <tr>
-                                    <td><b>Provinsi</b></td>
-                                    <td><span id="det_provinsi"></span></td>
-                                </tr>
-                                <tr>
-                                    <td><b>Kabupaten</b></td>
-                                    <td><span id="det_kabupaten"></span></td>
-                                </tr>
-                                <tr>
-                                    <td><b>Kecamatan</b></td>
-                                    <td><span id="det_kecamatan"></span></td>
-                                </tr>
-                                <tr>
-                                    <td><b>Desa</b></td>
-                                    <td><span id="det_desa"></span></td>
-                                </tr>
-                            </table>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="box-header with-border"></div>
-                <div class="box-header with-border">
-                    <h3 class="box-title"><i class="fa fa-user"></i> Data Riwayat Checkup</h3>
-                </div>
-
-                <div class="box-body">
-                    <table class="table table-bordered table-striped">
-                        <thead>
-                        <tr bgcolor="#90ee90">
-                            <td>Poli</td>
-                            <td>Status</td>
-                            <td>Keterangan</td>
-                            <td>Ruang</td>
-                            <td>No</td>
-                        </tr>
-                        </thead>
-                        <tbody id="det_riwayat">
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <script type='text/javascript'>
-    function detail_pasien(idCheckup) {
-        var table = "";
-        var dataRiwayat = [];
-        var dataPasien = [];
-        var noCheckup = "";
-        var nik = "";
-        var namaPasien = "";
-        var jenisKelamin = "";
-        var tglLahir = "";
-        var agama = "";
-        var suku = "";
-        var alamat = "";
-        var provinsi = "";
-        var kabupaten = "";
-        var kecamatan = "";
-        var desa = "";
-        var pelayanan = "";
-        var ket = "";
-        var ruangan = "";
-        var noRuangan = "";
 
-        var url = '<s:url value="/pages/images/spinner.gif"/>';
-        $('#v_'+idCheckup).attr('src',url).css('width', '30px', 'height', '40px');
+    function search() {
 
+        var idPasien = $("#idPasien").val();
+        var idPelayanan = $("#idPelayanan").val();
 
-        setTimeout(function () {
+        var arrJson = [];
+        arrJson.push({"id_pasien":idPasien, "id_pelayanan":idPelayanan});
+        var stJson = JSON.stringify(arrJson);
 
-            var url = '<s:url value="/pages/images/search_flat.png"/>';
-            $('#v_'+idCheckup).attr('src',url).css('width', '25px', 'height', '25px');
+        PlanKegiatanRawatAction.getSearchKegiatanRawat(stJson, function (response) {
+            if (response.length > 0){
 
-            CheckupAction.listDataPasien(idCheckup, function (response) {
-                dataPasien = response;
-                if (dataPasien != null) {
-                    $.each(dataPasien, function (i, item) {
-                        var tanggal = item.tglLahir;
-                        var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
-                        noCheckup = item.noCheckup;
-                        nik = item.noKtp;
-                        namaPasien = item.nama;
+                var str = "";
+                $.each(response, function (i, item) {
+                    str += "<tr>" +
+                        "<td>" + item.stCreatedDate + "</td>" +
+                        "<td>" + item.namaPasien + "</td>" +
+                        "<td>" + item.namaPelayanan + "</td>" +
+                        "<td>" + item.diagnosa + "</td>" +
+                        "<td><button class='btn btn-primary'><i class='fa fa-search'></i> View </button> <button class='btn btn-primary'><i class='fa fa-edit'></i> Edit</button> </td>" +
+                        "</tr>";
+                });
 
-                        if (item.jenisKelamin == "L") {
-                            jenisKelamin = "Laki-Laki";
-                        } else {
-                            jenisKelamin = "Perempuan";
-                        }
+                $("#body-list-plan").html(str);
 
-                        tglLahir = item.tempatLahir + ", " + dateFormat;
-                        agama = item.agama;
-                        suku = item.suku;
-                        alamat = item.jalan;
-                        provinsi = item.namaProvinsi;
-                        kabupaten = item.namaKota;
-                        kecamatan = item.namaKecamatan;
-                        desa = item.namaDesa;
-                    });
-                }
-            });
+            } else {
 
-            CheckupAction.listRiwayatPasien(idCheckup, function (response) {
-                dataRiwayat = response;
-                if (dataRiwayat != null) {
-                    $.each(dataRiwayat, function (i, item) {
+            }
+        })
 
-                        if (item.namaPelayanan) {
-                            pelayanan = item.namaPelayanan;
-                        }
-                        if (item.keteranganSelesai) {
-                            ket = item.keteranganSelesai;
-                        }
-                        if (item.namaRuangan) {
-                            ruangan = item.namaRuangan;
-                        }
-                        if (item.noRuangan) {
-                            noRuangan = item.noRuangan;
-                        }
-
-
-                        table += "<tr>" +
-                                "<td>" + pelayanan + "</td>" +
-                                "<td>" + item.statusPeriksa + "</td>" +
-                                "<td>" + ket + "</td>" +
-                                "<td>" + ruangan + "</td>" +
-                                "<td>" + noRuangan + "</td>" +
-                                "</tr>"
-                    });
-                }
-            });
-
-            $('#det_no_checkup').html(noCheckup);
-            $('#det_nik').html(nik);
-            $('#det_nama').html(namaPasien);
-            $('#det_jenis_kelamin').html(jenisKelamin);
-            $('#det_tgl').html(tglLahir);
-            $('#det_agama').html(agama);
-            $('#det_suku').html(suku);
-            $('#det_alamat').html(alamat);
-            $('#det_provinsi').html(provinsi);
-            $('#det_kabupaten').html(kabupaten);
-            $('#det_kecamatan').html(kecamatan);
-            $('#det_desa').html(desa);
-            $('#det_riwayat').html(table);
-            $('#modal-detail-pasien').modal('show');
-
-        }, 100)
     }
 
 </script>

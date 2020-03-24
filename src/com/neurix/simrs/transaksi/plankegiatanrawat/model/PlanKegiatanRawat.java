@@ -29,6 +29,15 @@ public class PlanKegiatanRawat {
     private String idPasien;
     private String idPelayanan;
     private String namaPelayanan;
+    private String stCreatedDate;
+
+    public String getStCreatedDate() {
+        return stCreatedDate;
+    }
+
+    public void setStCreatedDate(String stCreatedDate) {
+        this.stCreatedDate = stCreatedDate;
+    }
 
     public String getNamaPasien() {
         return namaPasien;

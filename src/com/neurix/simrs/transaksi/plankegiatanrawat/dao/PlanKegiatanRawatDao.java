@@ -97,10 +97,10 @@ public class PlanKegiatanRawatDao extends GenericDao<ItSimrsPlanKegiatanRawatEnt
                 ") ds ON ds.id_detail_checkup = dt.id_detail_checkup\n" +
                 "WHERE\n" +
                 "dt.status_periksa != '3'\n" +
-                "AND pl.id_pelayanan LIKE '%'\n" +
-                "AND hd.branch_id = ''\n" +
-                "AND dt.id_detail_checkup LIKE '%'\n" +
-                "AND hd.id_pasien LIKE '%'";
+                "AND pl.id_pelayanan LIKE :poli \n" +
+                "AND hd.branch_id = :unit \n" +
+                "AND dt.id_detail_checkup LIKE :idDetailCheckup \n" +
+                "AND hd.id_pasien LIKE :pasien ";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("poli", idPelayanan)
@@ -119,6 +119,7 @@ public class PlanKegiatanRawatDao extends GenericDao<ItSimrsPlanKegiatanRawatEnt
                 plan.setNamaPasien(obj[2].toString());
                 plan.setNamaPelayanan(obj[3].toString());
                 plan.setDiagnosa(obj[4] == null ? "" : obj[4].toString());
+                plan.setStCreatedDate(obj[1].toString());
                 planKegiatanRawats.add(plan);
             }
         }
