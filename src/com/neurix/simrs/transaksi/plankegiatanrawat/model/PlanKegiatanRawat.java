@@ -30,6 +30,15 @@ public class PlanKegiatanRawat {
     private String idPelayanan;
     private String namaPelayanan;
     private String stCreatedDate;
+    private String stLastUpdate;
+
+    public String getStLastUpdate() {
+        return stLastUpdate;
+    }
+
+    public void setStLastUpdate(String stLastUpdate) {
+        this.stLastUpdate = stLastUpdate;
+    }
 
     public String getStCreatedDate() {
         return stCreatedDate;

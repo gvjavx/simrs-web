@@ -58,6 +58,11 @@ public class PlanKegiatanRawatAction extends BaseTransactionAction {
         PlanKegiatanRawatBo planKegiatanRawatBo = (PlanKegiatanRawatBo) ctx.getBean("planKegiatanRawatBoProxy");
 
         return planKegiatanRawatBo.getListKegiatanRawat(plan);
+    }
 
+    public List<PlanKegiatanRawat> getListPlanKegiatan(String diDetail){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PlanKegiatanRawatBo planKegiatanRawatBo = (PlanKegiatanRawatBo) ctx.getBean("planKegiatanRawatBoProxy");
+        return null;
     }
 }

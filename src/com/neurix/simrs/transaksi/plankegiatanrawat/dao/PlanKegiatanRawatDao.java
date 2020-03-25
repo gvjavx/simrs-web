@@ -126,4 +126,53 @@ public class PlanKegiatanRawatDao extends GenericDao<ItSimrsPlanKegiatanRawatEnt
 
         return planKegiatanRawats;
     }
+
+    public List<PlanKegiatanRawat> getListPlanGroup(PlanKegiatanRawat bean){
+
+        if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())){
+
+            String idDetail = bean.getIdDetailCheckup();
+            String SQL = "SELECT\n" +
+                    "a.id_detail_checkup,\n" +
+                    "a.tgl_mulai,\n" +
+                    "a.created_who,\n" +
+                    "a.last_update_who,\n" +
+                    "a.last_update\n" +
+                    "FROM it_simrs_plan_kegiatan_rawat a\n" +
+                    "INNER JOIN \n" +
+                    "(\n" +
+                    "\tSELECT\n" +
+                    "\tplan.id_detail_checkup,\n" +
+                    "\tplan.tgl_mulai,\n" +
+                    "\tmax(plan.last_update) as last_update\n" +
+                    "\tFROM it_simrs_plan_kegiatan_rawat plan\n" +
+                    "\tWHERE id_detail_checkup LIKE :idDetail \n" +
+                    "\tGROUP BY\n" +
+                    "\tplan.id_detail_checkup,\n" +
+                    "\tplan.tgl_mulai\n" +
+                    ") b ON b.id_detail_checkup = a.id_detail_checkup\n" +
+                    "AND b.tgl_mulai = a.tgl_mulai \n" +
+                    "AND b.last_update = a.last_update";
+
+            List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("idDetail", idDetail)
+                    .list();
+
+            List<PlanKegiatanRawat> planKegiatanRawats = new ArrayList<>();
+            if (results.size() > 0){
+                PlanKegiatanRawat plan;
+                for (Object[] obj : results){
+                    plan = new PlanKegiatanRawat();
+                    plan.setIdDetailCheckup(obj[0].toString());
+                    plan.setTglMulai((Date) obj[1]);
+                    plan.setCreatedWho(obj[2].toString());
+                    plan.setLastUpdateWho(obj[3].toString());
+                    plan.setStLastUpdate(obj[4].toString());
+                    planKegiatanRawats.add(plan);
+                }
+            }
+            return planKegiatanRawats;
+        }
+        return new ArrayList<>();
+    }
 }

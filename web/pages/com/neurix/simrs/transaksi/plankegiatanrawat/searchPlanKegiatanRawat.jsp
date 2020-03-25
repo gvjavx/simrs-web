@@ -140,6 +140,175 @@
     <!-- /.content -->
 </div>
 
+<div class="modal fade" id="modal-view-plan">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> View Daftar Rencana Rawat</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped table-bordered">
+                    <thead id="head-view-plan">
+                    <tr>
+                        <td>Tgl Mulai</td>
+                        <td>Created Who</td>
+                        <td>Last Update Who</td>
+                        <td>Last Update</td>
+                        <td>Action</td>
+                    </tr>
+                    </thead>
+                    <tbody id="body-view-plan">
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-view-plan-detail">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> View Detail Rencana Rawat</h4>
+            </div>
+            <div class="modal-body" id="body-view-plan-detail">
+                <%--<table class="table table-striped table-bordered">--%>
+                    <%--<thead id="head-view-plan-detail">--%>
+                    <%--<tr>--%>
+                        <%--<td>Tgl Mulai</td>--%>
+                        <%--<td>Created Who</td>--%>
+                        <%--<td>Last Update Who</td>--%>
+                        <%--<td>Last Update</td>--%>
+                    <%--</tr>--%>
+                    <%--</thead>--%>
+                    <%--<tbody id="body-view-plan-detail">--%>
+                    <%--</tbody>--%>
+                <%--</table>--%>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-add-plan">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Tambah Rencana Rawat </h4>
+            </div>
+            <div class="modal-body">
+                <div style="margin-bottom:20px">
+                    <button type="button" class="btn btn-success" onclick="addMonVitalSign()">
+                        <i class="fa fa-plus"></i> Add Monitoring Vital Sign
+                    </button>
+                    <%--<button type="button" class="btn btn-info" onclick="showGrafVitalSign('<s:property value="rawatInap.idDetailCheckup"/>')">--%>
+                        <%--<i class="fa fa-pie-chart"></i> View Graf--%>
+                    <%--</button>--%>
+                    <button type="button" class="btn btn-success" onclick="addObCairan()">
+                        <i class="fa fa-plus"></i> Add Monitoring Cairan
+                    </button>
+                    <button type="button" class="btn btn-success" onclick="addPemberianObat('parenteral')">
+                        <i class="fa fa-plus"></i> Add Obat Parenteral
+                    </button>
+                    <button type="button" class="btn btn-success" onclick="addPemberianObat('nonparenteral')">
+                        <i class="fa fa-plus"></i> Add Obat Non Parenteral
+                    </button>
+                </div>
+                <br>
+
+                <h4> Vital Sign </h4>
+                <table class="table table-bordered" style="width: 50%">
+                    <thead>
+                    <td>Jam</td>
+                    <td>Created Who</td>
+                    <td>Created Date</td>
+                    </thead>
+                    <tbody id="body-list-vital-sign">
+
+                    </tbody>
+                </table>
+                <br>
+
+                <h4> Monitoring Cairan </h4>
+                <table class="table table-bordered" style="font-size:11px;">
+                    <thead>
+                    <td width="10%">Tgl</td>
+                    <td>Macam Cairan</td>
+                    <td>Melalui</td>
+                    <td>Jumlah</td>
+                    <td>Jam Mulai</td>
+                    <td>Jam Selesai</td>
+                    <td>Cek Tambahan Obat</td>
+                    <td>Sisa</td>
+                    <td>Jam Ukur Buang</td>
+                    <td>Dari</td>
+                    <td>Balance Cairan</td>
+                    <td>Keterangan</td>
+                    <td>Created Who</td>
+                    </thead>
+                    <tbody id="body-list-cairan">
+
+                    </tbody>
+                </table>
+                <br>
+
+                <h4> Obat Parenteral </h4>
+                <table class="table table-bordered">
+                    <thead>
+                    <td>Nama Obat</td>
+                    <td>Cara Pemberian</td>
+                    <td>Dosis</td>
+                    <td>Skin Test</td>
+                    <td>Waktu</td>
+                    <td>Keterangan</td>
+                    <td>Created Who</td>
+                    <td>Created Date</td>
+                    </thead>
+                    <tbody id="body-list-perenteral">
+
+                    </tbody>
+                </table>
+                <br>
+
+                <h4> Obat Non Parenteral </h4>
+                <table class="table table-bordered">
+                    <thead>
+                    <td>Nama Obat</td>
+                    <td>Dosis</td>
+                    <td>Waktu</td>
+                    <td>Keterangan</td>
+                    <td>Created Who</td>
+                    <td>Created Date</td>
+                    </thead>
+                    <tbody id="body-list-nonparenteral">
+
+                    </tbody>
+                </table>
+                <br>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" data-dismiss="modal"><i class="fa fa-check"></i> Save
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type='text/javascript'>
 
     function search() {
@@ -161,7 +330,10 @@
                         "<td>" + item.namaPasien + "</td>" +
                         "<td>" + item.namaPelayanan + "</td>" +
                         "<td>" + item.diagnosa + "</td>" +
-                        "<td><button class='btn btn-primary'><i class='fa fa-search'></i> View </button> <button class='btn btn-primary'><i class='fa fa-edit'></i> Edit</button> </td>" +
+                        "<td align='center'>" +
+                        "<button class='btn btn-primary' onclick=\"viewAddPlan('"+item.idDetailCheckup+"')\"><i class='fa fa-plus'></i></button> " +
+                        "<button class='btn btn-primary' onclick=\"viewPlan('"+item.idDetailCheckup+"')\"><i class='fa fa-search'></i></button>" +
+                        "</td>" +
                         "</tr>";
                 });
 
@@ -171,7 +343,35 @@
 
             }
         })
+    }
 
+    function viewPlan(idDetail){
+        $("#modal-view-plan").modal('show');
+
+        PlanKegiatanRawatAction.getListPlanKegiatan(idDetail, function (response) {
+
+            var str = "";
+            $.each(response, function (i, item) {
+                str += "<tr>" +
+                    "<td>"+ item.tglMasuk +"</td>" +
+                    "<td>"+ item.createdWho +"</td>" +
+                    "<td>"+ item.lastUpdateWho +"</td>" +
+                    "<td>"+ item.stLastUpdate +"</td>" +
+                    "<td><button class='btn btn-primary' onclick=\"viewPlanDetail('"+item.idDetailCheckup+"','"+item.tglMasuk+"')\"><i class='fa fa-search'></i></button></td>" +
+                    "</tr>";
+            })
+
+            $("#body-view-plan").html(str);
+
+        })
+    }
+
+    function viewPlanDetail(idDetail, tglMasuk){
+        $("#modal-view-plan-detail").modal('show');
+    }
+
+    function viewAddPlan(idDetail) {
+        $("#modal-add-plan").modal('show');
     }
 
 </script>
