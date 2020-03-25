@@ -210,14 +210,25 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Tambah Rencana Rawat </h4>
             </div>
             <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-md-2" style="margin-top: 7px;">
+                        <label>Tanggal Plan :</label>
+                    </div>
+                    <div class="col-md-4" style="margin-top: 7px;">
+                        <input type="date" class="form-control" id="tgl">
+                    </div>
+                </div>
+                <br>
+
                 <div style="margin-bottom:20px">
-                    <button type="button" class="btn btn-success" onclick="addMonVitalSign()">
+                    <button type="button" class="btn btn-success" onclick="showModalAdd('vitalsign')">
                         <i class="fa fa-plus"></i> Add Monitoring Vital Sign
                     </button>
                     <%--<button type="button" class="btn btn-info" onclick="showGrafVitalSign('<s:property value="rawatInap.idDetailCheckup"/>')">--%>
                         <%--<i class="fa fa-pie-chart"></i> View Graf--%>
                     <%--</button>--%>
-                    <button type="button" class="btn btn-success" onclick="addObCairan()">
+                    <button type="button" class="btn btn-success" onclick="showModalAdd('cairan')">
                         <i class="fa fa-plus"></i> Add Monitoring Cairan
                     </button>
                     <button type="button" class="btn btn-success" onclick="addPemberianObat('parenteral')">
@@ -229,12 +240,14 @@
                 </div>
                 <br>
 
+                <input type="hidden" id="idDetailCheckup">
+
                 <h4> Vital Sign </h4>
                 <table class="table table-bordered" style="width: 50%">
                     <thead>
+                    <td>Waktu</td>
                     <td>Jam</td>
-                    <td>Created Who</td>
-                    <td>Created Date</td>
+                    <td>Catatan Dokter</td>
                     </thead>
                     <tbody id="body-list-vital-sign">
 
@@ -245,7 +258,7 @@
                 <h4> Monitoring Cairan </h4>
                 <table class="table table-bordered" style="font-size:11px;">
                     <thead>
-                    <td width="10%">Tgl</td>
+                    <td>Waktu</td>
                     <td>Macam Cairan</td>
                     <td>Melalui</td>
                     <td>Jumlah</td>
@@ -256,8 +269,7 @@
                     <td>Jam Ukur Buang</td>
                     <td>Dari</td>
                     <td>Balance Cairan</td>
-                    <td>Keterangan</td>
-                    <td>Created Who</td>
+                    <td>Catatan Dokter</td>
                     </thead>
                     <tbody id="body-list-cairan">
 
@@ -268,14 +280,13 @@
                 <h4> Obat Parenteral </h4>
                 <table class="table table-bordered">
                     <thead>
+                    <td>Waktu</td>
                     <td>Nama Obat</td>
                     <td>Cara Pemberian</td>
                     <td>Dosis</td>
                     <td>Skin Test</td>
                     <td>Waktu</td>
-                    <td>Keterangan</td>
-                    <td>Created Who</td>
-                    <td>Created Date</td>
+                    <td>Catatan Dokter</td>
                     </thead>
                     <tbody id="body-list-perenteral">
 
@@ -286,12 +297,11 @@
                 <h4> Obat Non Parenteral </h4>
                 <table class="table table-bordered">
                     <thead>
+                    <td>Waktu</td>
                     <td>Nama Obat</td>
                     <td>Dosis</td>
                     <td>Waktu</td>
-                    <td>Keterangan</td>
-                    <td>Created Who</td>
-                    <td>Created Date</td>
+                    <td>Catatan Dokter</td>
                     </thead>
                     <tbody id="body-list-nonparenteral">
 
@@ -309,7 +319,241 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-add-vital-sign">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Observasi Vital Sign</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label style="margin-top: 7px">Jam</label>
+                        </div>
+                        <div class="col-md-2">
+                            <select style="margin-top: 7px" class="form-control" id="mvs_jam">
+                                <option val='8'>8</option>
+                                <option val='12'>12</option>
+                                <option val='16'>16</option>
+                                <option val='20'>20</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label style="margin-top: 7px">Waktu</label>
+                        </div>
+                        <div class="col-md-4">
+                            <select style="margin-top: 7px" class="form-control" id="mvs_waktu">
+                                <option val='pagi'>Pagi</option>
+                                <option val='siang'>Siang</option>
+                                <option val='malam'>Malam</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label style="margin-top: 7px">Catatan Dokter</label>
+                        </div>
+                        <div class="col-md-6">
+                            <textarea class="form-control" style="margin-top: 7px" id="mvs_ket"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="alert alert-success alert-dismissible" style="display: none" id="success_save_asesmen">
+                    <h4><i class="icon fa fa-info"></i> Success!</h4>
+                    <p>Data Berhasil Tersimpan</p>
+                </div>
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="error_save_asesmen">
+                    <h4><i class="icon fa fa-ban"></i> Error !</h4>
+                    <p id="error_ket_asesmen"></p>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_asesmen" onclick="saveToList('vitalsign')"><i class="fa fa-arrow-right"></i> Save
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_asesmen"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-add-cairan">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Observasi Cairan</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label style="margin-top: 7px">Waktu</label>
+                        </div>
+                        <div class="col-md-8">
+                            <select style="margin-top: 7px" class="form-control" id="mcr_waktu">
+                                <option val='pagi'>Pagi</option>
+                                <option val='siang'>Siang</option>
+                                <option val='malam'>Malam</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label style="margin-top: 7px">Macam Cairan</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" style="margin-top: 7px" name="" value="" class="form-control" id="mcr_macam">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label style="margin-top: 7px">Melalui</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" style="margin-top: 7px" name="" value="" class="form-control" id="mcr_melalui">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label style="margin-top: 7px">Jumlah (dalam botol)</label>
+                        </div>
+                        <div class="col-md-4">
+                            <input type="number" style="margin-top: 7px" name="" value="" class="form-control" id="mcr_jumlah">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-4">
+                        </div>
+                        <div class="col-md-4">
+                            <label style="margin-top: 7px">Jam mulai</label>
+                            <input type="text" name="" value="" class="time form-control" id="mcr_mulai">
+                        </div>
+                        <div class="col-md-4">
+                            <label style="margin-top: 7px">Jam selesai</label>
+                            <input type="text" name="" value="" class="time form-control" id="mcr_selesai">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label style="margin-top: 7px">Cek tambahan obat</label>
+                        </div>
+                        <div class="col-md-4">
+                            <select style="margin-top: 7px" class="form-control" id="mcr_cek">
+                                <option value="Ya">Ya</option>
+                                <option value="Tidak">Tidak</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label style="margin-top: 7px">Sisa</label>
+                        </div>
+                        <div class="col-md-4">
+                            <input style="margin-top: 7px" type="number" name="" value="" class="form-control" id="mcr_sisa">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label style="margin-top: 7px">Jam ukur buang</label>
+                        </div>
+                        <div class="col-md-4">
+                            <input style="margin-top: 7px" type="text" name="" value="" class="time form-control" id="mcr_buang">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label style="margin-top: 7px">Dari</label>
+                        </div>
+                        <div class="col-md-4">
+                            <select style="margin-top: 7px" class="form-control" id="mcr_dari">
+                                <option val='Selang lambung'>Selang lambung</option>
+                                <option val='Kandung kencing'>Kandung kencing</option>
+                                <option val='Air seni biasa'>Air seni biasa</option>
+                                <option val='Drainage'>Drainage</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label style="margin-top: 7px">Balance Cairan</label>
+                        </div>
+                        <div class="col-md-4">
+                            <input style="margin-top: 7px" type="number" name="" value="" class="form-control" id="mcr_balance">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label style="margin-top: 7px">Catatan Dokter</label>
+                        </div>
+                        <div class="col-md-8">
+                            <textarea style="margin-top: 7px" class="form-control" id="mcr_ket"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <br>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" onclick="saveToList('cairan')"><i class="fa fa-arrow-right"></i> Save
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type='text/javascript'>
+
+    var listOfVitalSign = [];
+    var listOfCairan = [];
+    var listOfParenteral = [];
+    var listOfNonParenteral = [];
+
+    function formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2)
+            month = '0' + month;
+        if (day.length < 2)
+            day = '0' + day;
+
+        return [year, month, day].join('-');
+    }
 
     function search() {
 
@@ -366,12 +610,120 @@
         })
     }
 
+
     function viewPlanDetail(idDetail, tglMasuk){
         $("#modal-view-plan-detail").modal('show');
     }
 
     function viewAddPlan(idDetail) {
+        setAllListNull();
+        $("#tgl").val(formatDate(Date.now()));
         $("#modal-add-plan").modal('show');
+    }
+
+    function setAllListNull() {
+        listOfCairan = [];
+        listOfVitalSign = [];
+        listOfParenteral = [];
+        listOfNonParenteral = [];
+        $("#body-list-vital-sign").html("");
+        $("#body-list-cairan").html("");
+        $("#body-list-perenteral").html("");
+        $("#body-list-nonparenteral").html("");
+    }
+
+    function showModalAdd(param) {
+        if (param == "vitalsign")
+            $("#modal-add-vital-sign").modal('show');
+        if (param == "cairan")
+            $("#modal-add-cairan").modal('show');
+    }
+
+    function saveToList(param) {
+        if(param == "vitalsign"){
+
+            var jam = $("#mvs_jam").val();
+            var waktu = $("#mvs_waktu").val();
+            var ket = $("#mvs_ket").val();
+
+            listOfVitalSign.push({"jam":jam, "waktu":waktu, "ket":ket});
+            setToListTable(param);
+        }
+        if (param == "cairan"){
+
+            var waktu = $("#mcr_waktu").val();
+            var macam = $("#mcr_macam").val();
+            var melalui = $("#mcr_melalui").val();
+            var jumlah = $("#mcr_jumlah").val();
+            var mulai = $("#mcr_mulai").val();
+            var selesai = $("#mcr_selesai").val();
+            var cek = $("#mcr_cek").val();
+            var sisa = $("#mcr_sisa").val();
+            var buang = $("#mcr_buang").val();
+            var dari = $("#mcr_dari").val();
+            var balance = $("#mcr_balance").val();
+            var ket = $("#mcr_ket").val();
+
+            listOfCairan.push({
+                "waktu":waktu,
+                "macam":macam,
+                "melalui":melalui,
+                "jumlah":jumlah,
+                "mulai":mulai,
+                "selesai":selesai,
+                "cek":cek,
+                "sisa":sisa,
+                "buang":buang,
+                "dari":dari,
+                "balance":balance,
+                "ket":ket
+            });
+            setToListTable(param);
+        }
+    }
+
+    function setToListTable(param) {
+
+        if(param == "vitalsign"){
+            $("#body-list-vital-sign").html("");
+            if(listOfVitalSign.length > 0) {
+                var str = "";
+                $.each(listOfVitalSign, function (i, item) {
+                    str += "<tr>" +
+                        "<td>"+ item.waktu +"</td>" +
+                        "<td>"+ item.jam +"</td>" +
+                        "<td>"+ item.ket +"</td>" +
+                        "</tr>"
+                });
+                $("#modal-add-vital-sign").modal('hide');
+                $("#body-list-vital-sign").html(str);
+            }
+        }
+
+        if(param == "cairan"){
+            $("#body-list-cairan").html("");
+            if(listOfCairan.length > 0) {
+                var str = "";
+                $.each(listOfCairan, function (i, item) {
+                    str += "<tr>" +
+                        "<td>"+ item.waktu +"</td>" +
+                        "<td>"+ item.macam +"</td>" +
+                        "<td>"+ item.melalui +"</td>" +
+                        "<td>"+ item.jumlah +"</td>" +
+                        "<td>"+ item.mulai +"</td>" +
+                        "<td>"+ item.selesai +"</td>" +
+                        "<td>"+ item.cek +"</td>" +
+                        "<td>"+ item.sisa +"</td>" +
+                        "<td>"+ item.buang +"</td>" +
+                        "<td>"+ item.dari +"</td>" +
+                        "<td>"+ item.balance +"</td>" +
+                        "<td>"+ item.ket +"</td>" +
+                        "</tr>"
+                });
+                $("#modal-add-cairan").modal('hide');
+                $("#body-list-cairan").html(str);
+            }
+        }
     }
 
 </script>
