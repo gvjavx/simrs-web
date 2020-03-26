@@ -168,6 +168,7 @@ public class PlanKegiatanRawatDao extends GenericDao<ItSimrsPlanKegiatanRawatEnt
                     plan.setCreatedWho(obj[2].toString());
                     plan.setLastUpdateWho(obj[3].toString());
                     plan.setStLastUpdate(obj[4].toString());
+                    plan.setStTglMulai(plan.getTglMulai().toString());
                     planKegiatanRawats.add(plan);
                 }
             }

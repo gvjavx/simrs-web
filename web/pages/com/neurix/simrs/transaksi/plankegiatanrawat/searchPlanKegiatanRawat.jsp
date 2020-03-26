@@ -52,6 +52,16 @@
                                     <%--theme="simple" cssClass="form-horizontal">--%>
                                 <div class="form-group form-horizontal">
                                     <div class="row">
+                                        <label class="control-label col-sm-4">Id Detail Chcekup</label>
+                                        <div class="col-sm-4">
+                                            <s:textfield id="search_iddetailcheckup" cssStyle="margin-top: 7px"
+                                                         name="headerCheckup.idDetailCheckup" required="false"
+                                                         readonly="false" cssClass="form-control"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group form-horizontal">
+                                    <div class="row">
                                         <label class="control-label col-sm-4" for="headerCheckup.idPasien">No. RM</label>
                                         <div class="col-sm-4">
                                             <s:textfield id="idPasien" cssStyle="margin-top: 7px"
@@ -180,6 +190,12 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> View Detail Rencana Rawat</h4>
             </div>
             <div class="modal-body" id="body-view-plan-detail">
+                <br>
+                <div id="body-list-plan-pagi"></div>
+                <br>
+                <div id="body-list-plan-siang"></div>
+                <br>
+                <div id="body-list-plan-malam"></div>
                 <%--<table class="table table-striped table-bordered">--%>
                     <%--<thead id="head-view-plan-detail">--%>
                     <%--<tr>--%>
@@ -312,7 +328,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" data-dismiss="modal"><i class="fa fa-check"></i> Save
+                <button type="button" class="btn btn-success" onclick="savePlan()"><i class="fa fa-check"></i> Save
                 </button>
             </div>
         </div>
@@ -597,11 +613,11 @@
             var str = "";
             $.each(response, function (i, item) {
                 str += "<tr>" +
-                    "<td>"+ item.tglMasuk +"</td>" +
+                    "<td>"+ item.stTglMulai +"</td>" +
                     "<td>"+ item.createdWho +"</td>" +
                     "<td>"+ item.lastUpdateWho +"</td>" +
                     "<td>"+ item.stLastUpdate +"</td>" +
-                    "<td><button class='btn btn-primary' onclick=\"viewPlanDetail('"+item.idDetailCheckup+"','"+item.tglMasuk+"')\"><i class='fa fa-search'></i></button></td>" +
+                    "<td><button class='btn btn-primary' onclick=\"viewPlanDetail('"+item.idDetailCheckup+"','"+item.stTglMulai+"')\"><i class='fa fa-search'></i></button></td>" +
                     "</tr>";
             })
 
@@ -612,11 +628,96 @@
 
 
     function viewPlanDetail(idDetail, tglMasuk){
+
+        var listPagi = [];
+        var listSiang = [];
+        var listMalam = [];
+
+        PlanKegiatanRawatAction.getListPlanKegiatanRawatByTglMulai(idDetail, tglMasuk, function (response) {
+
+            console.log(response);
+
+            if (response.length > 0){
+                $.each(response, function(i,item){
+                    if (item.waktu == "pagi"){
+                        listPagi.push({"ket":item.keterangan, "createdwho":item.createdWho, "kegiatan":setLabelKegiatan(item.jenisKegiatan)});
+                    }
+                    if (item.waktu == "siang"){
+                        listSiang.push({"ket":item.keterangan, "createdwho":item.createdWho, "kegiatan":setLabelKegiatan(item.jenisKegiatan)});
+                    }
+                    if (item.waktu == "malam"){
+                        listMalam.push({"ket":item.keterangan, "createdwho":item.createdWho, "kegiatan":setLabelKegiatan(item.jenisKegiatan)});
+                    }
+                });
+
+                var strPagi = "";
+                $.each(listPagi, function (i, item){
+                    strPagi += "<tr>" +
+                        "<td>" + item.kegiatan + "</td>" +
+                        "<td>" + item.ket + "</td>" +
+                        "<td>" + item.kegiatan + "</td>" +
+                        "<td align='center'><button class='btn btn-primary'><i class='fa fa-search'></i>View Detail</button></td>" +
+                        "</tr>";
+                });
+                var strSiang = "";
+                $.each(listSiang, function (i, item){
+                    strSiang += "<tr>" +
+                        "<td>" + item.kegiatan + "</td>" +
+                        "<td>" + item.ket + "</td>" +
+                        "<td>" + item.kegiatan + "</td>" +
+                        "<td align='center'><button class='btn btn-primary'><i class='fa fa-search'></i>View Detail</button></td>" +
+                        "</tr>";
+                });
+                var strMalam = "";
+                $.each(listMalam, function (i, item){
+                    strMalam += "<tr>" +
+                        "<td>" + item.kegiatan + "</td>" +
+                        "<td>" + item.ket + "</td>" +
+                        "<td>" + item.kegiatan + "</td>" +
+                        "<td align='center'><button class='btn btn-primary'><i class='fa fa-search'></i>View Detail</button></td>" +
+                        "</tr>";
+                });
+
+                $("#body-list-plan-pagi").html(setLabelWaktu("pagi")+"<table class='table' style='font-size: 12px'>"+strPagi+"</table>");
+                $("#body-list-plan-siang").html(setLabelWaktu("siang")+"<table class='table' style='font-size: 12px'>"+strSiang+"</table>");
+                $("#body-list-plan-malam").html(setLabelWaktu("malam")+"<table class='table' style='font-size: 12px'>"+strMalam+"</table>");
+            } else {
+                $("#body-list-plan-pagi").html("");
+                $("#body-list-plan-siang").html("");
+                $("#body-list-plan-malam").html("");
+            }
+        });
+
         $("#modal-view-plan-detail").modal('show');
+    }
+
+    function setLabelKegiatan(param){
+        if (param == "vitalsign")
+            return "<span class='label label-primary'>Monitoring Vital Sign</span>";
+        else if (param == "cairan")
+            return "<span class='label label-success'>Monitoring Cairan</span>";
+        else if (param == "parenteral")
+            return "<span class='label label-info'>Pemberian Obat Parenteral</span>";
+        else if (param == "nonparenteral")
+            return "<span class='label label-warning'>Pemberian Obat Non Parenteral</span>";
+        else
+            return "<span class='label label-default'>"+param+"</span>";
+    }
+
+    function setLabelWaktu(param){
+        if (param == "pagi")
+            return "<h4><span class='label label-success'>Pagi</span></h4>";
+        else if (param == "siang")
+            return "<h4><span class='label label-success'>Siang</span></h4>";
+        else if (param == "malam")
+            return "<h4><span class='label label-success'>Malam</span></h4>";
+        else
+            return "<h4><span class='label label-default'>"+param+"</span></h4>";
     }
 
     function viewAddPlan(idDetail) {
         setAllListNull();
+        $("#idDetailCheckup").val(idDetail);
         $("#tgl").val(formatDate(Date.now()));
         $("#modal-add-plan").modal('show');
     }
@@ -729,6 +830,35 @@
                 $("#modal-add-cairan").modal('hide');
                 $("#body-list-cairan").html(str);
             }
+        }
+    }
+
+    function savePlan(){
+
+        var idDetail = $("#idDetailCheckup").val();
+        var tglPlan = $("#tgl").val();
+
+        var strVitalSign = JSON.stringify(listOfVitalSign);
+        var strCairan = JSON.stringify(listOfCairan);
+        var strParenteral = JSON.stringify(listOfParenteral);
+        var strNonParenteral = JSON.stringify(listOfNonParenteral);
+
+        if (idDetail != "" && tglPlan != ""){
+            PlanKegiatanRawatAction.savePlanKegiatanRawat(idDetail, tglPlan, strVitalSign, strCairan, strParenteral, strNonParenteral, function(response) {
+                if (response.status == "success"){
+                    alert("success");
+                    $("#modal-add-plan").modal('hide');
+                    $("#search_iddetailcheckup").val(idDetail);
+                    search();
+                } else {
+                    alert(response.msg);
+                    $("#modal-add-plan").modal('hide');
+                    $("#search_iddetailcheckup").val(idDetail);
+                    search();
+                }
+            })
+        } else {
+            alert("kosong");
         }
     }
 

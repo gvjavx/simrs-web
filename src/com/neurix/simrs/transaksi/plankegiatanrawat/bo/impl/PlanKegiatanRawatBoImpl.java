@@ -53,7 +53,24 @@ public class PlanKegiatanRawatBoImpl implements PlanKegiatanRawatBo {
             PlanKegiatanRawat kegiatanRawat;
             for (ItSimrsPlanKegiatanRawatEntity planKegiatan : planKegiatanRawatEntities){
                 kegiatanRawat = new PlanKegiatanRawat();
-
+                kegiatanRawat.setId(planKegiatan.getId());
+                kegiatanRawat.setIdKategori(planKegiatan.getIdKategori());
+                kegiatanRawat.setIdDetailCheckup(planKegiatan.getIdDetailCheckup());
+                kegiatanRawat.setJamMulai(planKegiatan.getJamMulai());
+                kegiatanRawat.setJamSelesai(planKegiatan.getJamSelesai());
+                kegiatanRawat.setTglMulai(planKegiatan.getTglMulai());
+                kegiatanRawat.setTglSelesai(planKegiatan.getTglSelesai());
+                kegiatanRawat.setBranchId(planKegiatan.getBranchId());
+                kegiatanRawat.setWaktu(planKegiatan.getWaktu());
+                kegiatanRawat.setJenisKegiatan(planKegiatan.getJenisKegiatan());
+                kegiatanRawat.setKeterangan(planKegiatan.getKeterangan());
+                kegiatanRawat.setFlag(planKegiatan.getFlag());
+                kegiatanRawat.setAction(planKegiatan.getAction());
+                kegiatanRawat.setCreatedDate(planKegiatan.getCreatedDate());
+                kegiatanRawat.setCreatedWho(planKegiatan.getCreatedWho());
+                kegiatanRawat.setLastUpdate(planKegiatan.getLastUpdate());
+                kegiatanRawat.setLastUpdateWho(planKegiatan.getLastUpdateWho());
+                kegiatanRawat.setStTglMulai(planKegiatan.getTglMulai().toString());
                 planKegiatanRawats.add(kegiatanRawat);
             }
         }
@@ -68,6 +85,8 @@ public class PlanKegiatanRawatBoImpl implements PlanKegiatanRawatBo {
             hsCriteria.put("id", bean.getId());
         if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup()))
             hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+        if (bean.getTglMulai() != null)
+            hsCriteria.put("tgl_mulai", bean.getTglMulai());
 
         List<ItSimrsPlanKegiatanRawatEntity> planKegiatanRawatEntities = new ArrayList<>();
 
@@ -128,6 +147,7 @@ public class PlanKegiatanRawatBoImpl implements PlanKegiatanRawatBo {
                     planEntity.setTglSelesai(bean.getTglSelesai());
                     planEntity.setKeterangan(vitalSign.getCatatanDokter());
                     planEntity.setJenisKegiatan("vitalsign");
+                    planEntity.setBranchId(bean.getBranchId());
                     planEntity.setFlag(bean.getFlag());
                     planEntity.setAction(bean.getAction());
                     planEntity.setCreatedDate(bean.getCreatedDate());
@@ -175,6 +195,7 @@ public class PlanKegiatanRawatBoImpl implements PlanKegiatanRawatBo {
                     planEntity.setTglMulai(bean.getTglMulai());
                     planEntity.setTglSelesai(bean.getTglSelesai());
                     planEntity.setKeterangan(monCairan.getCatatanDokter());
+                    planEntity.setBranchId(bean.getBranchId());
                     planEntity.setJenisKegiatan("cairan");
                     planEntity.setFlag(bean.getFlag());
                     planEntity.setAction(bean.getAction());

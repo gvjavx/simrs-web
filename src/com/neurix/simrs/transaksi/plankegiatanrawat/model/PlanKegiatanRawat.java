@@ -32,6 +32,33 @@ public class PlanKegiatanRawat {
     private String stCreatedDate;
     private String stLastUpdate;
     private String waktu;
+    private String jenisKegiatan;
+    private String keterangan;
+    private String stTglMulai;
+
+    public String getStTglMulai() {
+        return stTglMulai;
+    }
+
+    public void setStTglMulai(String stTglMulai) {
+        this.stTglMulai = stTglMulai;
+    }
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
+    public String getJenisKegiatan() {
+        return jenisKegiatan;
+    }
+
+    public void setJenisKegiatan(String jenisKegiatan) {
+        this.jenisKegiatan = jenisKegiatan;
+    }
 
     public String getWaktu() {
         return waktu;

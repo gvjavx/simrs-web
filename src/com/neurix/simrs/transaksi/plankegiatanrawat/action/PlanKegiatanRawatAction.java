@@ -82,9 +82,21 @@ public class PlanKegiatanRawatAction extends BaseTransactionAction {
         return planKegiatanRawatBo.getListPlanKegitatanRawat(planKegiatanRawat);
     }
 
+    public List<PlanKegiatanRawat> getListPlanKegiatanRawatByTglMulai(String idDetailCheckup, String tglPlan){
+
+        PlanKegiatanRawat planKegiatanRawat = new PlanKegiatanRawat();
+        planKegiatanRawat.setIdDetailCheckup(idDetailCheckup);
+        planKegiatanRawat.setTglMulai(Date.valueOf(tglPlan));
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PlanKegiatanRawatBo planKegiatanRawatBo = (PlanKegiatanRawatBo) ctx.getBean("planKegiatanRawatBoProxy");
+        return planKegiatanRawatBo.getSearchByCritria(planKegiatanRawat);
+    }
+
     public CrudResponse savePlanKegiatanRawat(String idDetailCheckup, String tglPlan, String listOfVitalSign, String listOfCairan, String listOfParenteral, String listOfNonParenteral) throws JSONException{
 
         String userLogin = CommonUtil.userLogin();
+        String branchId = CommonUtil.userBranchLogin();
         Timestamp time = new Timestamp(System.currentTimeMillis());
 
         CrudResponse response = new CrudResponse();
@@ -97,6 +109,7 @@ public class PlanKegiatanRawatAction extends BaseTransactionAction {
         planKegiatanRawat.setIdDetailCheckup(idDetailCheckup);
         planKegiatanRawat.setTglMulai(Date.valueOf(tglPlan));
         planKegiatanRawat.setTglSelesai(Date.valueOf(tglPlan));
+        planKegiatanRawat.setBranchId(branchId);
         planKegiatanRawat.setFlag("Y");
         planKegiatanRawat.setAction("C");
         planKegiatanRawat.setCreatedDate(time);
@@ -163,8 +176,9 @@ public class PlanKegiatanRawatAction extends BaseTransactionAction {
             logger.error("[PlanKegiatanAction.savePlanKegiatanRawat] ERROR. ", e);
             response.setStatus("error");
             response.setMsg("[PlanKegiatanAction.savePlanKegiatanRawat] ERROR. "+ e);
+            return response;
         }
 
-        return  response;
+        return response;
     }
 }

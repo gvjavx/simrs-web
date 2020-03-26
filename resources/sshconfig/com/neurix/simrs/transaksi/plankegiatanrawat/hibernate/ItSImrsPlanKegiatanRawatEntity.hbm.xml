@@ -5,7 +5,7 @@
 <hibernate-mapping>
 
     <class name="com.neurix.simrs.transaksi.plankegiatanrawat.model.ItSimrsPlanKegiatanRawatEntity" dynamic-update="true"
-           table="mt_simrs_permintaan_resep" select-before-update="true" schema="public">
+           table="it_simrs_plan_kegiatan_rawat" select-before-update="true" schema="public">
 
 
         <id name="id">
@@ -40,6 +40,9 @@
         </property>
         <property name="jenisKegiatan">
             <column name="jenis_kegiatan" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="waktu">
+            <column name="waktu" sql-type="varchar" length="100" not-null="false" />
         </property>
         <property name="action">
             <column name="action" sql-type="varchar" length="1" not-null="false" />
