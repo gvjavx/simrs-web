@@ -31,6 +31,15 @@ public class PlanKegiatanRawat {
     private String namaPelayanan;
     private String stCreatedDate;
     private String stLastUpdate;
+    private String waktu;
+
+    public String getWaktu() {
+        return waktu;
+    }
+
+    public void setWaktu(String waktu) {
+        this.waktu = waktu;
+    }
 
     public String getStLastUpdate() {
         return stLastUpdate;

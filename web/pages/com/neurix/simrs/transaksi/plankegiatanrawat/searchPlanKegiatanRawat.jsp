@@ -635,8 +635,14 @@
     function showModalAdd(param) {
         if (param == "vitalsign")
             $("#modal-add-vital-sign").modal('show');
-        if (param == "cairan")
+        if (param == "cairan"){
+
+            $("#mcr_mulai").timepicker();
+            $("#mcr_selesai").timepicker();
+            $("#mcr_buang").timepicker();
+
             $("#modal-add-cairan").modal('show');
+        }
     }
 
     function saveToList(param) {

@@ -25,6 +25,7 @@ public class ItSimrsPlanKegiatanRawatEntity implements Serializable {
     private String flagDikerjakan;
     private String keterangan;
     private String waktu;
+    private String jenisKegiatan;
 
     public String getId() {
         return id;
@@ -160,5 +161,13 @@ public class ItSimrsPlanKegiatanRawatEntity implements Serializable {
 
     public void setWaktu(String waktu) {
         this.waktu = waktu;
+    }
+
+    public String getJenisKegiatan() {
+        return jenisKegiatan;
+    }
+
+    public void setJenisKegiatan(String jenisKegiatan) {
+        this.jenisKegiatan = jenisKegiatan;
     }
 }

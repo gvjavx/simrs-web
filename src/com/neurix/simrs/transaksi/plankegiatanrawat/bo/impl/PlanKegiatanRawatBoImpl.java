@@ -6,6 +6,14 @@ import com.neurix.simrs.master.pelayanan.dao.PelayananDao;
 import com.neurix.simrs.master.ruangan.dao.RuanganDao;
 import com.neurix.simrs.master.ruangan.model.Ruangan;
 import com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao;
+import com.neurix.simrs.transaksi.moncairan.dao.MonCairanDao;
+import com.neurix.simrs.transaksi.moncairan.model.ItSimrsMonCairanEntity;
+import com.neurix.simrs.transaksi.moncairan.model.MonCairan;
+import com.neurix.simrs.transaksi.monpemberianobat.dao.MonPemberianObatDao;
+import com.neurix.simrs.transaksi.monpemberianobat.model.MonPemberianObat;
+import com.neurix.simrs.transaksi.monvitalsign.dao.MonVitalSignDao;
+import com.neurix.simrs.transaksi.monvitalsign.model.ItSimrsMonVitalSignEntity;
+import com.neurix.simrs.transaksi.monvitalsign.model.MonVitalSign;
 import com.neurix.simrs.transaksi.plankegiatanrawat.bo.PlanKegiatanRawatBo;
 import com.neurix.simrs.transaksi.plankegiatanrawat.dao.PlanKegiatanRawatDao;
 import com.neurix.simrs.transaksi.plankegiatanrawat.model.ItSimrsPlanKegiatanRawatEntity;
@@ -32,6 +40,9 @@ public class PlanKegiatanRawatBoImpl implements PlanKegiatanRawatBo {
     private PelayananDao pelayananDao;
     private RawatInapDao rawatInapDao;
     private RuanganDao ruanganDao;
+    private MonVitalSignDao monVitalSignDao;
+    private MonCairanDao monCairanDao;
+    private MonPemberianObatDao monPemberianObatDao;
 
     @Override
     public List<PlanKegiatanRawat> getSearchByCritria(PlanKegiatanRawat bean) throws GeneralBOException {
@@ -80,6 +91,183 @@ public class PlanKegiatanRawatBoImpl implements PlanKegiatanRawatBo {
         return planKegiatanRawatDao.getListPlanGroup(bean);
     }
 
+
+    @Override
+    public void saveAddPlanKegiatan(PlanKegiatanRawat bean, List<MonVitalSign> vitalSignList, List<MonCairan> cairanList, List<MonPemberianObat> pemberianObatList) throws GeneralBOException {
+
+        if (bean != null){
+
+            List<ItSimrsPlanKegiatanRawatEntity> planEntities = new ArrayList<>();
+
+            if (vitalSignList.size() > 0){
+                for (MonVitalSign vitalSign : vitalSignList){
+                    ItSimrsMonVitalSignEntity monVitalSignEntity = new ItSimrsMonVitalSignEntity();
+                    monVitalSignEntity.setId(getNextMonVitalSign());
+                    monVitalSignEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
+                    monVitalSignEntity.setJam(vitalSign.getJam());
+                    monVitalSignEntity.setFlag(bean.getFlag());
+                    monVitalSignEntity.setAction(bean.getAction());
+                    monVitalSignEntity.setCreatedDate(bean.getCreatedDate());
+                    monVitalSignEntity.setCreatedWho(bean.getCreatedWho());
+                    monVitalSignEntity.setLastUpdate(bean.getLastUpdate());
+                    monVitalSignEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                    try {
+                        monVitalSignDao.addAndSave(monVitalSignEntity);
+                    } catch (HibernateException e){
+                        logger.error("[PlanKegiatanRawatBoImpl.saveAddPlanKegiatan] ERROR. ",e);
+                        throw new GeneralBOException("[PlanKegiatanRawatBoImpl.saveAddPlanKegiatan] ERROR. "+e);
+                    }
+
+                    ItSimrsPlanKegiatanRawatEntity planEntity = new ItSimrsPlanKegiatanRawatEntity();
+                    planEntity.setIdKategori(monVitalSignEntity.getId());
+                    planEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
+                    planEntity.setId(getNextPlanId());
+                    planEntity.setWaktu(bean.getWaktu());
+                    planEntity.setTglMulai(bean.getTglMulai());
+                    planEntity.setTglSelesai(bean.getTglSelesai());
+                    planEntity.setKeterangan(vitalSign.getCatatanDokter());
+                    planEntity.setJenisKegiatan("vitalsign");
+                    planEntity.setFlag(bean.getFlag());
+                    planEntity.setAction(bean.getAction());
+                    planEntity.setCreatedDate(bean.getCreatedDate());
+                    planEntity.setCreatedWho(bean.getCreatedWho());
+                    planEntity.setLastUpdate(bean.getLastUpdate());
+                    planEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    planEntities.add(planEntity);
+                }
+            }
+
+            if (cairanList.size() > 0){
+                for (MonCairan monCairan : cairanList){
+                    ItSimrsMonCairanEntity monCairanEntity = new ItSimrsMonCairanEntity();
+                    monCairanEntity.setId(getNextMonCairan());
+                    monCairanEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
+                    monCairanEntity.setMacamCairan(monCairan.getMacamCairan());
+                    monCairanEntity.setMelalui(monCairan.getMelalui());
+                    monCairanEntity.setJumlah(monCairan.getJumlah());
+                    monCairanEntity.setJamMulai(monCairan.getJamMulai());
+                    monCairanEntity.setJamSelesai(monCairan.getJamSelesai());
+                    monCairanEntity.setCekTambahanObat(monCairan.getCekTambahanObat());
+                    monCairanEntity.setSisa(monCairan.getSisa());
+                    monCairanEntity.setJamUkurBuang(monCairan.getJamUkurBuang());
+                    monCairanEntity.setDari(monCairan.getDari());
+                    monCairanEntity.setBalanceCairan(monCairan.getBalanceCairan());
+                    monCairanEntity.setFlag(bean.getFlag());
+                    monCairanEntity.setAction(bean.getAction());
+                    monCairanEntity.setCreatedDate(bean.getCreatedDate());
+                    monCairanEntity.setCreatedWho(bean.getCreatedWho());
+                    monCairanEntity.setLastUpdate(bean.getLastUpdate());
+                    monCairanEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                    try {
+                        monCairanDao.addAndSave(monCairanEntity);
+                    } catch (HibernateException e){
+                        logger.error("[PlanKegiatanRawatBoImpl.saveAddPlanKegiatan] ERROR. ",e);
+                        throw new GeneralBOException("[PlanKegiatanRawatBoImpl.saveAddPlanKegiatan] ERROR. "+e);
+                    }
+
+                    ItSimrsPlanKegiatanRawatEntity planEntity = new ItSimrsPlanKegiatanRawatEntity();
+                    planEntity.setIdKategori(monCairanEntity.getId());
+                    planEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
+                    planEntity.setId(getNextPlanId());
+                    planEntity.setWaktu(bean.getWaktu());
+                    planEntity.setTglMulai(bean.getTglMulai());
+                    planEntity.setTglSelesai(bean.getTglSelesai());
+                    planEntity.setKeterangan(monCairan.getCatatanDokter());
+                    planEntity.setJenisKegiatan("cairan");
+                    planEntity.setFlag(bean.getFlag());
+                    planEntity.setAction(bean.getAction());
+                    planEntity.setCreatedDate(bean.getCreatedDate());
+                    planEntity.setCreatedWho(bean.getCreatedWho());
+                    planEntity.setLastUpdate(bean.getLastUpdate());
+                    planEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    planEntities.add(planEntity);
+
+                }
+            }
+
+            if (pemberianObatList.size() > 0){
+
+            }
+
+
+            // save to plan kegiatan rawat
+            if (planEntities.size() > 0){
+                for (ItSimrsPlanKegiatanRawatEntity planKegiatanRawatEntity : planEntities){
+                    try {
+                        planKegiatanRawatDao.addAndSave(planKegiatanRawatEntity);
+                    } catch (HibernateException e){
+                        logger.error("[PlanKegiatanRawatBoImpl.saveAddPlanKegiatan] ERROR. ",e);
+                        throw new GeneralBOException("[PlanKegiatanRawatBoImpl.saveAddPlanKegiatan] ERROR. "+e);
+                    }
+                }
+            }
+
+
+        } else {
+            logger.error("[PlanKegiatanRawatBoImpl.getListEntityPlanKegiatan] ERROR. data kosong.");
+            throw new GeneralBOException("[PlanKegiatanRawatBoImpl.getListEntityPlanKegiatan] ERROR. data kosong.");
+        }
+    }
+
+    private String getNextPlanId(){
+        String id = "";
+        try {
+            id = planKegiatanRawatDao.getNextSeq();
+        } catch (HibernateException e){
+            logger.error("[RawatInapBoImpl.getNextPlanId] Error when get seq ",e);
+            throw new GeneralBOException("[RawatInapBoImpl.getNextPlanId] Error when get seq "+e.getMessage());
+        }
+
+        if (!"".equalsIgnoreCase(id)){
+            id = "PLR"+id;
+        }
+        return id;
+    }
+
+    private String getNextMonCairan(){
+        String id = "";
+        try {
+            id = monCairanDao.getNextSeq();
+        } catch (HibernateException e){
+            logger.error("[RawatInapBoImpl.getNextMonCairan] Error when get seq ",e);
+            throw new GeneralBOException("[RawatInapBoImpl.getNextMonCairan] Error when get seq "+e.getMessage());
+        }
+        if (!"".equalsIgnoreCase(id)){
+            id = "OCR"+id;
+        }
+        return id;
+    }
+
+    private String getNextMonPemberianObat(){
+        String id = "";
+        try {
+            id = monPemberianObatDao.getNextSeq();
+        } catch (HibernateException e){
+            logger.error("[RawatInapBoImpl.getNextMonPemberianObat] Error when get seq ",e);
+            throw new GeneralBOException("[RawatInapBoImpl.getNextMonPemberianObat] Error when get seq "+e.getMessage());
+        }
+        if (!"".equalsIgnoreCase(id)){
+            id = "POT"+id;
+        }
+        return id;
+    }
+
+    private String getNextMonVitalSign(){
+        String id = "";
+        try {
+            id = monVitalSignDao.getNextSeq();
+        } catch (HibernateException e){
+            logger.error("[RawatInapBoImpl.getNextMonVitalSign] Error when get seq ",e);
+            throw new GeneralBOException("[RawatInapBoImpl.getNextMonVitalSign] Error when get seq "+e.getMessage());
+        }
+        if (!"".equalsIgnoreCase(id)){
+            id = "OVS"+id;
+        }
+        return id;
+    }
+
     public void setPlanKegiatanRawatDao(PlanKegiatanRawatDao planKegiatanRawatDao) {
         this.planKegiatanRawatDao = planKegiatanRawatDao;
     }
@@ -102,5 +290,17 @@ public class PlanKegiatanRawatBoImpl implements PlanKegiatanRawatBo {
 
     public void setRuanganDao(RuanganDao ruanganDao) {
         this.ruanganDao = ruanganDao;
+    }
+
+    public void setMonVitalSignDao(MonVitalSignDao monVitalSignDao) {
+        this.monVitalSignDao = monVitalSignDao;
+    }
+
+    public void setMonCairanDao(MonCairanDao monCairanDao) {
+        this.monCairanDao = monCairanDao;
+    }
+
+    public void setMonPemberianObatDao(MonPemberianObatDao monPemberianObatDao) {
+        this.monPemberianObatDao = monPemberianObatDao;
     }
 }
