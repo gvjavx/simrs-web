@@ -654,33 +654,33 @@
                 $.each(listPagi, function (i, item){
                     strPagi += "<tr>" +
                         "<td>" + item.kegiatan + "</td>" +
+                        "<td>" + item.createdwho + "</td>" +
                         "<td>" + item.ket + "</td>" +
-                        "<td>" + item.kegiatan + "</td>" +
-                        "<td align='center'><button class='btn btn-primary'><i class='fa fa-search'></i>View Detail</button></td>" +
+                        "<td align='center'><button class='btn btn-sm btn-primary'><i class='fa fa-search'></i> View Detail</button></td>" +
                         "</tr>";
                 });
                 var strSiang = "";
                 $.each(listSiang, function (i, item){
                     strSiang += "<tr>" +
                         "<td>" + item.kegiatan + "</td>" +
+                        "<td>" + item.createdwho + "</td>" +
                         "<td>" + item.ket + "</td>" +
-                        "<td>" + item.kegiatan + "</td>" +
-                        "<td align='center'><button class='btn btn-primary'><i class='fa fa-search'></i>View Detail</button></td>" +
+                        "<td align='center'><button class='btn btn-sm btn-primary'><i class='fa fa-search'></i> View Detail</button></td>" +
                         "</tr>";
                 });
                 var strMalam = "";
                 $.each(listMalam, function (i, item){
                     strMalam += "<tr>" +
                         "<td>" + item.kegiatan + "</td>" +
+                        "<td>" + item.createdwho + "</td>" +
                         "<td>" + item.ket + "</td>" +
-                        "<td>" + item.kegiatan + "</td>" +
-                        "<td align='center'><button class='btn btn-primary'><i class='fa fa-search'></i>View Detail</button></td>" +
+                        "<td align='center'><button class='btn btn-sm btn-primary'><i class='fa fa-search'></i> View Detail</button></td>" +
                         "</tr>";
                 });
 
-                $("#body-list-plan-pagi").html(setLabelWaktu("pagi")+"<table class='table' style='font-size: 12px'>"+strPagi+"</table>");
-                $("#body-list-plan-siang").html(setLabelWaktu("siang")+"<table class='table' style='font-size: 12px'>"+strSiang+"</table>");
-                $("#body-list-plan-malam").html(setLabelWaktu("malam")+"<table class='table' style='font-size: 12px'>"+strMalam+"</table>");
+                $("#body-list-plan-pagi").html(setLabelWaktu("pagi")+"<table class='table' style='font-size: 15px'>"+strPagi+"</table>");
+                $("#body-list-plan-siang").html(setLabelWaktu("siang")+"<table class='table' style='font-size: 15px'>"+strSiang+"</table>");
+                $("#body-list-plan-malam").html(setLabelWaktu("malam")+"<table class='table' style='font-size: 15px'>"+strMalam+"</table>");
             } else {
                 $("#body-list-plan-pagi").html("");
                 $("#body-list-plan-siang").html("");
@@ -706,11 +706,11 @@
 
     function setLabelWaktu(param){
         if (param == "pagi")
-            return "<h4><span class='label label-success'>Pagi</span></h4>";
+            return "<h4><span class='label label-info'>Pagi</span></h4>";
         else if (param == "siang")
-            return "<h4><span class='label label-success'>Siang</span></h4>";
+            return "<h4><span class='label label-info'>Siang</span></h4>";
         else if (param == "malam")
-            return "<h4><span class='label label-success'>Malam</span></h4>";
+            return "<h4><span class='label label-info'>Malam</span></h4>";
         else
             return "<h4><span class='label label-default'>"+param+"</span></h4>";
     }
