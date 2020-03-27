@@ -41,6 +41,9 @@
         <property name="jenisKegiatan">
             <column name="jenis_kegiatan" sql-type="varchar" length="100" not-null="false" />
         </property>
+        <property name="keterangan">
+            <column name="keterangan" sql-type="text" not-null="false" />
+        </property>
         <property name="waktu">
             <column name="waktu" sql-type="varchar" length="100" not-null="false" />
         </property>
