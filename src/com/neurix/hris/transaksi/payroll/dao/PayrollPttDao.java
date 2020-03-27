@@ -47,7 +47,7 @@ public class PayrollPttDao extends GenericDao<ItPayrollPttEntity, String> {
     }
 
     public List<ItPayrollPttEntity> getDataPtt(String payrollId) throws HibernateException {
-        List<ItPayrollPttEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImPayrollPtkpEntity.class)
+        List<ItPayrollPttEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItPayrollPttEntity.class)
                 .add(Restrictions.eq("payrollId", payrollId))
                 .add(Restrictions.eq("flag", "Y"))
                 .list();
@@ -59,6 +59,7 @@ public class PayrollPttDao extends GenericDao<ItPayrollPttEntity, String> {
                 .add(Restrictions.eq("nip", nip))
                 .add(Restrictions.eq("tahun", tahun))
                 .add(Restrictions.eq("flag", "Y"))
+                .add(Restrictions.ne("bulan", "12"))
                 .list();
         return results;
     }

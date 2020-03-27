@@ -484,9 +484,9 @@ public class BranchBoImpl implements BranchBo {
             resultBranch.setFaktorJubileum(imBranches.getFaktorJubileum());
             resultBranch.setBiayaJasprod(imBranches.getBiayaJasprod());
             resultBranch.setPeriodeGajiAktif(imBranches.getPeriodeGajiAktif());
-            resultBranch.setUangMakan(imBranches.getUangMakan());
-            resultBranch.setLemburGajiAwal(imBranches.getLemburGajiAwal());
-            resultBranch.setLemburGajiAkhir(imBranches.getLemburGajiAkhir());*/
+            resultBranch.setUangMakan(imBranches.getUangMakan());*/
+//            resultBranch.setLemburGajiAwal(imBranches.getLemburGajiAwal());
+//            resultBranch.setLemburGajiAkhir(imBranches.getLemburGajiAkhir());
 
             resultBranch.setCreatedWho(imBranches.getCreatedWho());
             resultBranch.setCreatedDate(imBranches.getCreatedDate());

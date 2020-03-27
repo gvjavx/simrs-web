@@ -572,7 +572,6 @@ public class CommonUtil {
     public static String convertDateToMonth(Date tanggal){
         Calendar cal = Calendar.getInstance();
         cal.setTime(tanggal);
-        int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH);
         String stBulan = "";
         switch (month){
