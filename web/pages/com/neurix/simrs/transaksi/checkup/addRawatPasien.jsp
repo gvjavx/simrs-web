@@ -984,7 +984,7 @@
                                                 <select id="paket"
                                                         class="form-control select2"
                                                         style="width: 100%"
-                                                        onchange="var warn =$('#war_paket').is(':visible'); if (warn){$('#con_paket').show().fadeOut(3000);$('#war_paket').hide()}; $('#id_paket').val(this.value)">
+                                                        onchange="var warn =$('#war_paket').is(':visible'); if (warn){$('#con_paket').show().fadeOut(3000);$('#war_paket').hide()}; selectPelayanan(this.value)">
                                                     <option value="">[Select One]</option>
                                                 </select>
                                                 <span style="color: red; display: none" id="warpaket"><i
@@ -993,8 +993,21 @@
                                                         class="fa fa-check"></i> correct</span>
                                             </div>
                                         </div>
-                                        </s:if>
                                         <s:hidden name="headerCheckup.idPaket" id="id_paket"></s:hidden>
+                                        </s:if>
+
+                                        <s:if test='tipe == "ptpn"'>
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 10px">No Kartu</label>
+                                                <div class="col-md-8">
+                                                    <s:textfield name="headerCheckup.noKartuAsuransi" cssStyle="margin-top: 7px" cssClass="form-control"></s:textfield>
+                                                    <span style="color: red; display: none" id="war_kts"><i
+                                                            class="fa fa-times"></i> required</span>
+                                                    <span style="color: green; display: none" id="con_kts"><i
+                                                            class="fa fa-check"></i> correct</span>
+                                                </div>
+                                            </div>
+                                        </s:if>
 
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 10px">Kunjungan</label>
@@ -1974,13 +1987,23 @@
             if (response.length > 0) {
                 console.log(response);
                 $.each(response, function (i, item) {
-                    option += "<option value='" + item.idPaket + "'>" + item.namaPaket + "</option>";
+                    option += "<option value='" + item.idPaket +"|"+ item.idPelayanan + "'>" + item.namaPaket + "</option>";
                 });
                 $('#paket').html(option);
             } else {
                 $('#paket').html(option);
             }
         });
+    }
+
+    function selectPelayanan(value){
+        if(value != ''){
+            var isi = value.split("|");
+            var pak = isi[0];
+            var pel = isi[1];
+            $('#poli').val(pel).trigger('change');
+            $('#id_paket').val(pak);
+        }
     }
 
     function showLaka(idAsuransi){
@@ -2059,8 +2082,6 @@
     }
 
     function listDokter(idPelayanan) {
-        // var idx = idPelayanan.selectedIndex;
-        // var idPoli = idPelayanan.options[idx].value;
         var option = "";
         if(idPelayanan != null && idPelayanan != ''){
             CheckupAction.listOfDokter(idPelayanan, function (response) {

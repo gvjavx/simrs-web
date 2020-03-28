@@ -243,34 +243,34 @@
                             </tbody>
                         </table>
                     </div>
-                    <div style="display: none" id="new_obat">
-                        <div class="box-header with-border"></div>
-                        <div class="box-header with-border">
-                            <h3 class="box-title"><i class="fa fa-file-text-o"></i> Daftar Obat dengan ID pabrik baru
-                            </h3>
-                        </div>
-                        <div class="box-body">
-                            <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_new_po">
-                                <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                                <p id="msg_new_po"></p>
-                            </div>
-                            <table class="table table-bordered table-striped" id="tabel_new_po">
-                                <thead>
-                                <tr bgcolor="#90ee90">
-                                    <td>Nama Obat</td>
-                                    <td align="center">Qty Request</td>
-                                    <td align="center">Qty Approve</td>
-                                    <td align="center">Satuan Jenis</td>
-                                    <td align="center">Lembar/Box</td>
-                                    <td align="center">Biji/Lembar</td>
-                                    <td align="center">Action</td>
-                                </tr>
-                                </thead>
-                                <tbody id="body_new_pabrik">
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                    <%--<div style="display: none" id="new_obat">--%>
+                        <%--<div class="box-header with-border"></div>--%>
+                        <%--<div class="box-header with-border">--%>
+                            <%--<h3 class="box-title"><i class="fa fa-file-text-o"></i> Daftar Obat dengan ID pabrik baru--%>
+                            <%--</h3>--%>
+                        <%--</div>--%>
+                        <%--<div class="box-body">--%>
+                            <%--<div class="alert alert-danger alert-dismissible" style="display: none" id="warning_new_po">--%>
+                                <%--<h4><i class="icon fa fa-ban"></i> Warning!</h4>--%>
+                                <%--<p id="msg_new_po"></p>--%>
+                            <%--</div>--%>
+                            <%--<table class="table table-bordered table-striped" id="tabel_new_po">--%>
+                                <%--<thead>--%>
+                                <%--<tr bgcolor="#90ee90">--%>
+                                    <%--<td>Nama Obat</td>--%>
+                                    <%--<td align="center">Qty Request</td>--%>
+                                    <%--<td align="center">Qty Approve</td>--%>
+                                    <%--<td align="center">Satuan Jenis</td>--%>
+                                    <%--<td align="center">Lembar/Box</td>--%>
+                                    <%--<td align="center">Biji/Lembar</td>--%>
+                                    <%--<td align="center">Action</td>--%>
+                                <%--</tr>--%>
+                                <%--</thead>--%>
+                                <%--<tbody id="body_new_pabrik">--%>
+                                <%--</tbody>--%>
+                            <%--</table>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
                     <div class="box-header with-border"></div>
                     <div class="box-body">
                         <div class="form-group">
@@ -561,6 +561,66 @@
                                id="cor_app_expired"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Diskon</label>
+                        <div class="col-md-7">
+                            <div class="input-group" style="margin-top: 7px">
+                                <div class="input-group-addon">
+                                    Rp.
+                                </div>
+                                <s:textfield cssClass="form-control"
+                                             id="app_diskon"
+                                             onkeypress="var warn =$('#war_app_diskon').is(':visible'); if (warn){$('#cor_app_diskon').show().fadeOut(3000);$('#war_app_diskon').hide()}"></s:textfield>
+                                <input type="hidden" id="val_diskon">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_app_diskon"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_app_diskon"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Bruto</label>
+                        <div class="col-md-7">
+                            <div class="input-group" style="margin-top: 7px">
+                                <div class="input-group-addon">
+                                    Rp.
+                                </div>
+                                <s:textfield cssClass="form-control"
+                                             id="app_bruto"
+                                             onkeypress="var warn =$('#war_app_bruto').is(':visible'); if (warn){$('#cor_app_bruto').show().fadeOut(3000);$('#war_app_bruto').hide()}"></s:textfield>
+                                <input type="hidden" id="val_bruto">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_app_bruto"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_app_bruto"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Netto</label>
+                        <div class="col-md-7">
+                            <div class="input-group" style="margin-top: 7px">
+                                <div class="input-group-addon">
+                                    Rp.
+                                </div>
+                                <s:textfield cssClass="form-control"
+                                             id="app_netto" disabled="true"
+                                             onkeypress="var warn =$('#war_app_netto').is(':visible'); if (warn){$('#cor_app_netto').show().fadeOut(3000);$('#war_app_netto').hide()}"></s:textfield>
+                                <input type="hidden" id="val_netto">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_app_netto"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_app_netto"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
@@ -646,7 +706,61 @@
     $(document).ready(function () {
         $('#permintaan_po').addClass('active');
         listNewObat(idApprovalObat);
+
+        var nominal1 = document.getElementById('app_diskon');
+        if(nominal1 != ''){
+            nominal1.addEventListener('keyup', function (e) {
+                nominal1.value = formatRupiah2(this.value);
+                var valBayar1 = nominal1.value.replace(/[.]/g, '');
+
+                if(valBayar1 != ''){
+                    $('#val_diskon').val(valBayar1);
+                }else{
+                    $('#val_diskon').val('');
+                }
+            });
+        }
+        var nominal2 = document.getElementById('app_bruto');
+        if(nominal2 != ''){
+            nominal2.addEventListener('keyup', function (e) {
+                nominal2.value = formatRupiah2(this.value);
+                var valBayar2 = nominal2.value.replace(/[.]/g, '');
+
+                if(valBayar2 != ''){
+                    $('#val_bruto').val(valBayar2);
+                    var diskon = $('#val_diskon').val();
+                    if(diskon != '' && parseInt(valBayar2) > parseInt(diskon)){
+                        var hasil = parseInt(valBayar2) - parseInt(diskon);
+                        console.log(hasil);
+                        $('#app_netto').val(formatRupiah(hasil));
+                        $('#val_netto').val(hasil);
+                    }else{
+                        $('#app_netto').val('');
+                        $('#val_netto').val('');
+                    }
+                }else{
+                    $('#val_bruto').val('');
+                }
+            });
+        }
     });
+
+    function formatRupiah2(angka) {
+        console.log(angka);
+        var number_string = angka.replace(/[^,\d]/g, '').toString(),
+            split = number_string.split(','),
+            sisa = split[0].length % 3,
+            rupiah = split[0].substr(0, sisa),
+            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+        if (ribuan) {
+            separator = sisa ? '.' : '';
+            rupiah += separator + ribuan.join('.');
+        }
+
+        rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+        return rupiah;
+    }
 
     function showModal(idObat, pabrik, idDetail, namaObat, qty, satuan, harga, idApp) {
 
@@ -721,6 +835,8 @@
         var lembarPerBox = $('#app_lembar_perbox').val();
         var bijiPerLembar = $('#app_biji_perlembar').val();
         var expiredValue = $('#app_expired').val();
+        var diskon = $('#app_diskon').val();
+        var bruto = $('#app_bruto').val();
         var expired = expiredValue.split("-").reverse().join("-");
 
         var qtyApproveValue = $('#qtyApprove'+id).text();
@@ -731,7 +847,7 @@
             qtyApprove = qtyApproveValue;
         }
 
-        if(qty != '' && lembarPerBox != '' && bijiPerLembar != '' && expired != ''){
+        if(qty != '' && lembarPerBox != '' && bijiPerLembar != '' && expired != '' && diskon != '' && bruto != '' ){
             if(parseInt(qty) <= parseInt(qtyReq)) {
                 $('#modal-confirm-dialog').modal('show');
                 $('#save_con').attr('onclick','saveApprove(\'' + id + '\',\'' + idDetail + '\',\'' + qty + '\',\'' + idPabrik + '\',\'' + lembarPerBox + '\',\'' + bijiPerLembar + '\',\'' + noBt + '\',\'' + expired + '\',\'' + totalQtyApp + '\',\'' + qtyReq + '\',\'' + qtyApprove + '\')');
@@ -748,22 +864,31 @@
             if(qty == ''){
                 $('#war_app_qty_app').show();
             }
-            if(lembarPerBox = ''){
+            if(lembarPerBox == ''){
                 $('#war_app_lembar_perbox').show();
             }
-            if(bijiPerLembar = ''){
+            if(bijiPerLembar == ''){
                 $('#war_app_biji_perlembar').show();
+            }
+            if(diskon == ''){
+                $('#war_app_diskon').show();
+            }
+            if(bruto == ''){
+                $('#war_app_bruto').show();
             }
         }
     }
 
     function saveApprove(id, idDetail, qty, idPabrik, lembarPerBox, bijiPerLembar, noBt, expired, totalQtyApp, qtyReq, qtyApprove){
         $('#modal-confirm-dialog').modal('hide');
+        var diskon = $('#val_diskon').val();
+        var bruto = $('#val_bruto').val();
+        var netto = $('#val_netto').val();
         $('#save_approve').hide();
         $('#load_approve').show();
         dwr.engine.setAsync(true);
-        PermintaanVendorAction.saveUpdateListObat(idDetail, qty, idPabrik, "Y", lembarPerBox, bijiPerLembar, noBt, expired, function (response) {
-            if (response == "success") {
+        PermintaanVendorAction.saveUpdateListObat(idDetail, qty, idPabrik, "Y", lembarPerBox, bijiPerLembar, noBt, expired, diskon, bruto, netto, function (response) {
+            if (response.status == "success") {
                 dwr.engine.setAsync(false);
                 $('#modal-approve').modal('hide');
                 $('#status' + id).html('<img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">');
@@ -781,7 +906,7 @@
                 $('#save_obat').show();
                 $('#load_obat').hide();
                 $('#warning_obat').show().fadeOut(5000);
-                $('#obat_error').text("Terjadi kesalahan ketika proses simpan ke database..!");
+                $('#obat_error').text(response.message);
             }
         })
     }
@@ -821,36 +946,21 @@
             $('#save_obat').hide();
             $('#load_obat').show();
 
-            if (id != '') {
-                dwr.engine.setAsync(true);
-                ObatAction.editObat(id, nama, jenis, harga, biji, flag, function (response) {
-                    if (response == "success") {
-                        dwr.engine.setAsync(false);
-                        $('#modal-obat').modal('hide');
-                        $('#body_po').append(row);
-                    } else {
-                        $('#save_obat').show();
-                        $('#load_obat').hide();
-                        $('#warning_obat').show().fadeOut(5000);
-                        $('#obat_error').text("Terjadi kesalahan ketika proses simpan ke database..!");
-                    }
-                })
-            } else {
-                dwr.engine.setAsync(true);
-                PermintaanVendorAction.saveNewPabrik(idDetail, nama, jenis, merek, pabrik, lembarBox, bijiLembar, harga, qty, qtyApp, satuan, idApp, function (response) {
-                    if (response == "success") {
-                        dwr.engine.setAsync(false);
-                        $('#modal-obat').modal('hide');
-                        listNewObat(idApp);
-                        $('#approve' + idObat).html("Dibuatkan obat baru").addClass("label label-warning");
-                    } else {
-                        $('#save_obat').show();
-                        $('#load_obat').hide();
-                        $('#warning_obat').show().fadeOut(5000);
-                        $('#obat_error').text("Terjadi kesalahan ketika proses simpan ke database..!");
-                    }
-                })
-            }
+            dwr.engine.setAsync(true);
+            PermintaanVendorAction.saveNewPabrik(idDetail, nama, jenis, merek, pabrik, lembarBox, bijiLembar, harga, qty, qtyApp, satuan, idApp, function (response) {
+                if (response.status == "success") {
+                    dwr.engine.setAsync(false);
+                    $('#modal-obat').modal('hide');
+                    listNewObat(idApp);
+                    $('#approve' + idObat).html("Dibuatkan obat baru").addClass("label label-warning");
+                } else {
+                    $('#save_obat').show();
+                    $('#load_obat').hide();
+                    $('#warning_obat').show().fadeOut(5000);
+                    $('#obat_error').text(response.message);
+                }
+            });
+
         } else {
             $('#warning_obat').show().fadeOut(5000);
             $('#obat_error').text("Silahkan cek kembali data inputan..!");

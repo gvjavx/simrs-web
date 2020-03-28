@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.permintaanvendor.model;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
@@ -16,8 +17,51 @@ public class BatchPermintaanObat {
     private String stLastUpdateWho;
 
     private String isApprove;
+    private String urlDoc;
+    private String noFaktur;
+    private Date tanggalFaktur;
+    private String noInvoice;
+    private String noDo;
 
+    public String getNoFaktur() {
+        return noFaktur;
+    }
 
+    public void setNoFaktur(String noFaktur) {
+        this.noFaktur = noFaktur;
+    }
+
+    public Date getTanggalFaktur() {
+        return tanggalFaktur;
+    }
+
+    public void setTanggalFaktur(Date tanggalFaktur) {
+        this.tanggalFaktur = tanggalFaktur;
+    }
+
+    public String getNoInvoice() {
+        return noInvoice;
+    }
+
+    public void setNoInvoice(String noInvoice) {
+        this.noInvoice = noInvoice;
+    }
+
+    public String getNoDo() {
+        return noDo;
+    }
+
+    public void setNoDo(String noDo) {
+        this.noDo = noDo;
+    }
+
+    public String getUrlDoc() {
+        return urlDoc;
+    }
+
+    public void setUrlDoc(String urlDoc) {
+        this.urlDoc = urlDoc;
+    }
 
     public String getStLastUpdateWho() {
         return stLastUpdateWho;

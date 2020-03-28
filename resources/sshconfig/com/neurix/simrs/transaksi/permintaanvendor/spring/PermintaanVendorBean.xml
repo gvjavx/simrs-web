@@ -19,9 +19,10 @@
          p:approvalTransaksiObatDao-ref="approvalTransaksiObatDao"
          p:transaksiObatDetailDao-ref="transaksiObatDetailDao"
          p:obatDao-ref="obatDao"
-          p:tempObatGejalaDao-ref="tempObatGejalaDao"
-          p:transaksiObatDetailBatchDao-ref="transaksiObatDetailBatchDao"
-          p:vendorDao-ref="vendorDao"
+         p:tempObatGejalaDao-ref="tempObatGejalaDao"
+         p:transaksiObatDetailBatchDao-ref="transaksiObatDetailBatchDao"
+         p:vendorDao-ref="vendorDao"
+         p:obatGejalaDao-ref="obatGejalaDao"
     />
 
     <bean id="permintaanVendorBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

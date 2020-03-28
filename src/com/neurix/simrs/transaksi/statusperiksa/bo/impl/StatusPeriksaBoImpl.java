@@ -148,6 +148,7 @@ public class StatusPeriksaBoImpl implements StatusPeriksaBo {
                         if ("asuransi".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
                             detailCheckupEntity.setIdAsuransi(bean.getIdAsuransi());
                             detailCheckupEntity.setNoKartuAsuransi(bean.getNoKartuAsuransi());
+                            detailCheckupEntity.setCoverBiaya(bean.getCoverBiaya());
                         }
 
                         if ("umum".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {

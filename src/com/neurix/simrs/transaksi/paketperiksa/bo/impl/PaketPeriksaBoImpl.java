@@ -58,6 +58,7 @@ public class PaketPeriksaBoImpl implements PaketPeriksaBo {
                 paketPeriksa.setCreatedWho(paketEntity.getCreatedWho());
                 paketPeriksa.setLastUpdate(paketEntity.getLastUpdate());
                 paketPeriksa.setLastUpdateWho(paketEntity.getLastUpdateWho());
+                paketPeriksa.setIdPelayanan(paketEntity.getIdPelayanan());
                 paketPeriksaList.add(paketPeriksa);
             }
         }

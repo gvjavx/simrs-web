@@ -554,6 +554,7 @@ public class StatusPeriksaAction extends BaseTransactionAction {
                         if("asuransi".equalsIgnoreCase(jenisPasien)){
                             headerDetailCheckup.setIdAsuransi(obj.getString("id_asuransi"));
                             headerDetailCheckup.setNoKartuAsuransi(obj.getString("no_kartu"));
+                            headerDetailCheckup.setCoverBiaya(new BigDecimal(obj.getString("cover_biaya")));
                         }
 
                         if("umum".equalsIgnoreCase(jenisPasien)){

@@ -6,6 +6,7 @@ import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +52,52 @@ public class PermintaanVendor{
     private String isMobile;
     private String notaVendor;
     private String urlDoc;
+
+    private String tglCair;
+    private String noFaktur;
+    private Date tanggalFaktur;
+    private String noInvoice;
+    private String noDo;
+
+    public String getNoFaktur() {
+        return noFaktur;
+    }
+
+    public void setNoFaktur(String noFaktur) {
+        this.noFaktur = noFaktur;
+    }
+
+    public Date getTanggalFaktur() {
+        return tanggalFaktur;
+    }
+
+    public void setTanggalFaktur(Date tanggalFaktur) {
+        this.tanggalFaktur = tanggalFaktur;
+    }
+
+    public String getNoInvoice() {
+        return noInvoice;
+    }
+
+    public void setNoInvoice(String noInvoice) {
+        this.noInvoice = noInvoice;
+    }
+
+    public String getNoDo() {
+        return noDo;
+    }
+
+    public void setNoDo(String noDo) {
+        this.noDo = noDo;
+    }
+
+    public String getTglCair() {
+        return tglCair;
+    }
+
+    public void setTglCair(String tglCair) {
+        this.tglCair = tglCair;
+    }
 
     public String getNotaVendor() {
         return notaVendor;

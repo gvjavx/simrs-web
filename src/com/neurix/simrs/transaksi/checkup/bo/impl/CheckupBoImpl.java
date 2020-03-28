@@ -481,6 +481,10 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                     detailCheckupEntity.setNoKartuAsuransi(bean.getNoKartuAsuransi());
                 }
 
+                if("ptpn".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
+                    detailCheckupEntity.setNoKartuAsuransi(bean.getNoKartuAsuransi());
+                }
+
                 try {
                     checkupDetailDao.addAndSave(detailCheckupEntity);
                 } catch (HibernateException e) {

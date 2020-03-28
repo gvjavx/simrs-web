@@ -13,6 +13,14 @@
 
     <bean id="daftarUlangBo" class="com.neurix.simrs.transaksi.daftarulang.bo.impl.DaftarUlangBoImpl"
           p:checkupDetailDao-ref="checkupDetailDao"
+          p:diagnosaRawatDao-ref="diagnosaRawatDao"
+          p:uangMukaDao-ref="uangMukaDao"
+          p:rawatInapDao-ref="rawatInapDao"
+          p:riwayatTindakanDao-ref="riwayatTindakanDao"
+          p:dokterTeamDao-ref="dokterTeamDao"
+          p:ruanganDao-ref="ruanganDao"
+          p:tindakanDao-ref="tindakanDao"
+          p:tindakanRawatDao-ref="tindakanRawatDao"
     />
 
     <bean id="daftarUlangBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

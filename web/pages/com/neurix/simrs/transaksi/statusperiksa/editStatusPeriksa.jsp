@@ -377,12 +377,24 @@
                                         </select>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="col-md-4" style="margin-top: 10px">No Kartu</label>
                                     <div class="col-md-8">
                                         <input class="form-control" style="margin-top: 7px" id="no_kartu">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="col-md-4" style="margin-top: 10px">Cover Biaya</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group" style="margin-top: 7px">
+                                            <div class="input-group-addon">
+                                                Rp.
+                                            </div>
+                                            <input class="form-control" id="cover_biaya">
+                                            <input type="hidden" id="val_cover_biaya">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -404,6 +416,22 @@
 </div>
 
 <script type='text/javascript'>
+
+    function formatRupiah2(angka) {
+        var number_string = angka.replace(/[^,\d]/g, '').toString(),
+            split = number_string.split(','),
+            sisa = split[0].length % 3,
+            rupiah = split[0].substr(0, sisa),
+            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+        if (ribuan) {
+            separator = sisa ? '.' : '';
+            rupiah += separator + ribuan.join('.');
+        }
+
+        rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+        return rupiah;
+    }
 
     $(document).ready(function () {
         $('#status_pasien').addClass('active');
@@ -443,6 +471,21 @@
             }
 
         });
+
+        var nominal = document.getElementById('cover_biaya');
+        if(nominal != null && nominal != ''){
+            nominal.addEventListener('keyup', function (e) {
+                nominal.value = formatRupiah2(this.value);
+                var valCover = nominal.value.replace(/[.]/g, '');
+
+                if(valCover != ''){
+                    $('#val_cover_biaya').val(valCover);
+                }else{
+                    $('#val_cover_biaya').val('');
+                }
+            });
+        }
+
     });
 
     var menus, mapped;
@@ -652,6 +695,7 @@
         var uangMuka        = $('#uang_muka').val();
         var asuransi        = $('#asuransi').val();
         var noKartu         = $('#no_kartu').val();
+        var coverBiaya      = $('#val_cover_biaya').val();
         var fotoSurat       = $('#surat_rujuk').val();
         var canvas = document.getElementById('temp_surat_rujuk');
         var dataURL = canvas.toDataURL("image/png"),
@@ -771,6 +815,7 @@
                     data = {
                         'id_asuransi':asuransi,
                         'no_kartu':noKartu,
+                        'cover_biaya':coverBiaya,
                         'jenis_periksa':jenisPeriksa,
                         'id_pasien':idPasien,
                         'id_detail_checkup':idDetail

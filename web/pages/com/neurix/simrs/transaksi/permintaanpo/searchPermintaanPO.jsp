@@ -187,18 +187,17 @@
                                     <td align="center">
 
                                         <s:if test='#row.keterangan == "Telah Dikonfirmasi"'>
-                                            <s:url var="print_po" namespace="/permintaanpo" action="printPermintaanPO_permintaanpo" escapeAmp="false">
-                                                <s:param name="id"><s:property value="idPermintaanVendor"/></s:param>
-                                            </s:url>
-                                            <s:a href="%{print_po}" target="_blink">
-                                                <img class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">
-                                            </s:a>
-
+                                            <%--<s:url var="print_po" namespace="/permintaanpo" action="printPermintaanPO_permintaanpo" escapeAmp="false">--%>
+                                                <%--<s:param name="id"><s:property value="idPermintaanVendor"/></s:param>--%>
+                                            <%--</s:url>--%>
+                                            <%--<s:a href="%{print_po}" target="_blink">--%>
+                                                <%--<img class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">--%>
+                                            <%--</s:a>--%>
                                             <s:if test='#row.flag == "N"'>
-                                                <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-test-passed-25-orange.png"/>" onclick="showDetailListObat('<s:property value="idPermintaanVendor"/>','<s:property value="flag"/>')">
+                                                <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-test-passed-25-orange.png"/>" onclick="showBatch('<s:property value="idPermintaanVendor"/>','<s:property value="flag"/>','<s:property value="idApprovalObat"/>')">
                                             </s:if>
                                             <s:else>
-                                                <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-test-passed-25-2.png"/>" onclick="showDetailListObat('<s:property value="idPermintaanVendor"/>','<s:property value="flag"/>')">
+                                                <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-test-passed-25-2.png"/>" onclick="showBatch('<s:property value="idPermintaanVendor"/>','<s:property value="flag"/>','<s:property value="idApprovalObat"/>')">
                                             </s:else>
                                         </s:if>
                                         <s:else>
@@ -221,252 +220,43 @@
     </section>
 </div>
 
-
-<div class="modal fade" id="modal-request-obat">
-    <div class="modal-dialog modal-flat">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #00a65a">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Request Obat Gudang</h4>
-            </div>
-            <div class="modal-body">
-                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_request">
-                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    <p id="msg_request"></p>
-                </div>
-                <div class="row">
-                    <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Nama Obat</label>
-                        <div class="col-md-7">
-                            <s:action id="initObat" namespace="/obat"
-                                      name="getListObat_obat"/>
-                            <s:select cssStyle="margin-top: 7px; width: 100%"
-                                      list="#initObat.listOfObat" id="req_nama_obat"
-                                      listKey="idObat + '|' + namaObat + '|' + qty"
-                                      onchange="var warn =$('#war_req_obat').is(':visible'); if (warn){$('#cor_req_obat').show().fadeOut(3000);$('#war_req_obat').hide()}; setStokObatPoli(this)"
-                                      listValue="namaObat"
-                                      headerKey="" headerValue="[Select one]"
-                                      cssClass="form-control select2"/>
-                        </div>
-                        <div class="col-md-2">
-                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
-                               id="war_req_obat"><i class="fa fa-times"></i> required</p>
-                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                               id="cor_req_obat"><i class="fa fa-check"></i> correct</p>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Stok Obat Tujuan</label>
-                        <div class="col-md-7">
-                            <input class="form-control" style="margin-top: 7px" readonly id="req_stok_apotek">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Stok Obat Poli</label>
-                        <div class="col-md-7">
-                            <input class="form-control" style="margin-top: 7px" readonly id="req_stok">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Jumlah Request</label>
-                        <div class="col-md-7">
-                            <input oninput="var warn =$('#war_req_qty').is(':visible'); if (warn){$('#cor_req_qty').show().fadeOut(3000);$('#war_req_qty').hide()}"
-                                   style="margin-top: 7px" class="form-control" type="number" min="1"
-                                   id="req_qty">
-                        </div>
-                        <div class="col-md-2">
-                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
-                               id="war_req_qty"><i class="fa fa-times"></i> required</p>
-                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                               id="cor_req_qty"><i class="fa fa-check"></i> correct</p>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px"></label>
-                        <div class="col-md-7">
-                            <button class="btn btn-success pull-right" style="margin-top: 7px"
-                                    onclick="addObatToList(1)"><i class="fa fa-plus"></i> Tambah
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="box-header with-border">
-                </div>
-                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_data_exits">
-                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    Data obat sudah tersedia..!
-                </div>
-                <div class="box-header with-border"><i class="fa fa-file-o"></i> Request Obat
-                </div>
-                <div class="box">
-                    <table class="table table-striped table-bordered" id="tabel_request">
-                        <thead>
-                        <td>ID</td>
-                        <td>Nama Obat</td>
-                        <td>Qty</td>
-                        <td align="center" width="5%">Action</td>
-                        </thead>
-                        <tbody id="body_request">
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
-                </button>
-                <button type="button" class="btn btn-success" id="save_request" onclick="saveAddRequest()"><i
-                        class="fa fa-arrow-right"></i> Request
-                </button>
-                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
-                        id="load_request"><i
-                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<div class="modal fade" id="modal-request-detail">
-    <div class="modal-dialog modal-flat">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #00a65a">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> <span
-                        id="judul_req"></span>
-                </h4>
-            </div>
-            <div class="modal-body">
-                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_request_detail">
-                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    <p id="msg_request_detail"></p>
-                </div>
-                <div class="row">
-                    <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Tanggal Request</label>
-                        <div class="col-md-7">
-                            <input type="text" class="form-control" readonly="true" id="req_tanggal"
-                                   style="margin-top: 7px">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">ID Permintaan</label>
-                        <div class="col-md-7">
-                            <input type="text" class="form-control" readonly="true" id="req_id_permintaan"
-                                   style="margin-top: 7px">
-                        </div>
-                    </div>
-                    <input type="hidden" id="req_id_approve">
-                </div>
-                <div class="box-header with-border"></div>
-                <div class="box-header with-border"><i class="fa fa-file-o"></i> Detail Request Obat
-                </div>
-                <div class="box">
-                    <table class="table table-striped table-bordered" id="tabel_request_detail">
-                        <thead>
-                        <td>ID</td>
-                        <td>Nama Obat</td>
-                        <td align="center">Request</td>
-                        <td align="center">Approve</td>
-                        </thead>
-                        <tbody id="body_request_detail">
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
-                </button>
-                <button type="button" class="btn btn-success" id="save_req_detail" onclick="saveConfirm()"><i
-                        class="fa fa-arrow-right"></i> Konfirmasi
-                </button>
-                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
-                        id="load_req_detail"><i
-                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<div class="modal fade" id="modal-reture-detail">
+<div class="modal fade" id="modal-batch">
     <div class="modal-dialog modal-flat" style="width: 60%">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Reture Obat Gudang
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Purchase Order Obat <span id="detail_batch"></span>
                 </h4>
             </div>
             <div class="modal-body">
-                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_reture_detail">
+                <div class="alert alert-danger alert-dismissible" style="display: none;" id="warning_bat">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    <p id="msg_reture_detail"></p>
-                </div>
-                <div class="row">
-                    <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Tanggal Request</label>
-                        <div class="col-md-7">
-                            <input type="text" class="form-control" readonly="true" id="ret_tanggal"
-                                   style="margin-top: 7px">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">ID Permintaan</label>
-                        <div class="col-md-7">
-                            <input type="text" class="form-control" readonly="true" id="ret_id_permintaan"
-                                   style="margin-top: 7px">
-                        </div>
-                    </div>
-                    <input type="hidden" id="ret_id_approve">
-                </div>
-                <div class="box-header with-border"></div>
-                <div class="box-header with-border"><i class="fa fa-file-o"></i> Detail Request Obat
+                    <p id="msg_bat"></p>
                 </div>
                 <div class="box">
-                    <table class="table table-striped table-bordered" id="tabel_reture_head">
+                    <table class="table table-striped table-bordered" id="tabel_bat">
                         <thead>
-                        <td>ID</td>
-                        <td>Nama Obat</td>
-                        <td align="center">Stok Obat</td>
-                        <td align="center">Request</td>
-                        <td align="center">Approve</td>
-                        <td align="center">Reture</td>
+                        <td align="center">No Batch</td>
+                        <td>Last Update</td>
                         <td align="center">Action</td>
                         </thead>
-                        <tbody id="body_reture_head">
+                        <tbody id="body_bat">
                         </tbody>
                     </table>
                 </div>
-                <div class="box-header with-border"></div>
-                <div class="box-header with-border"><i class="fa fa-file-o"></i> Detail Reture Obat
-                </div>
-                <div class="box">
-                    <table class="table table-striped table-bordered" id="tabel_reture_detail">
-                        <thead>
-                        <td>ID</td>
-                        <td>Nama Obat</td>
-                        <td align="center">Qty</td>
-                        <td align="center">Action</td>
-                        </thead>
-                        <tbody id="body_reture_detail">
-                        </tbody>
-                    </table>
-                </div>
+                <input type="hidden" id="bat_id_permintaan_vendor">
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_ret_detail" onclick="saveAddReture()"><i
-                        class="fa fa-arrow-right"></i> Reture
-                </button>
-                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
-                        id="load_ret_detail"><i
-                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
-                </button>
+                <%--<button type="button" class="btn btn-success" id="save_bat" onclick="confirmSaveTutup()"><i--%>
+                        <%--class="fa fa-arrow-right"></i> Save--%>
+                <%--</button>--%>
+                <%--<button style="display: none; cursor: no-drop" type="button" class="btn btn-success"--%>
+                        <%--id="load_bat"><i--%>
+                        <%--class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...--%>
+                <%--</button>--%>
             </div>
         </div>
     </div>
@@ -478,13 +268,45 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Tutup Purchase Order Obat <span id="detail_batch"></span>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Purchase Order Obat <span id="detail_batch"></span>
                 </h4>
             </div>
             <div class="modal-body">
                 <div class="alert alert-danger alert-dismissible" style="display: none;" id="warning_detail">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                     <p id="msg_detail"></p>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="table table-striped">
+                                <tr>
+                                    <td width="40%">Nomor Faktur</td>
+                                    <td><p id="det_no_faktur"></p></td>
+                                </tr>
+                                <tr>
+                                    <td>Tanggal Faktur</td>
+                                    <td><p id="det_tlg_faktur"></p></td>
+                                </tr>
+                                <tr>
+                                    <td>Foto Doc</td>
+                                    <td><button id="det_img" class="btn btn-primary"><i class="fa fa-image"></i></button></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <table class="table table-striped">
+                                <tr>
+                                    <td width="40%">Nomor Invoice</td>
+                                    <td><p id="det_no_invoice"></p></td>
+                                </tr>
+                                <tr>
+                                    <td>No DO</td>
+                                    <td><p id="det_no_do"></p></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
                 </div>
                 <div class="box">
                     <table class="table table-striped table-bordered" id="tabel_detail">
@@ -505,12 +327,33 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_detail" onclick="confirmSaveTutup()"><i
-                        class="fa fa-arrow-right"></i> Save
-                </button>
-                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
-                        id="load_detail"><i
-                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                <%--<button type="button" class="btn btn-success" id="save_detail" onclick="confirmSaveTutup()"><i--%>
+                        <%--class="fa fa-arrow-right"></i> Save--%>
+                <%--</button>--%>
+                <%--<button style="display: none; cursor: no-drop" type="button" class="btn btn-success"--%>
+                        <%--id="load_detail"><i--%>
+                        <%--class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...--%>
+                <%--</button>--%>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-doc">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-file-archive-o"></i> Surat PO</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <img id="img_surat_po" style="height: 500px; width: 100%">
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
             </div>
         </div>
@@ -542,15 +385,41 @@
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
 
-    function showDetailListObat(idpermintaanPo, flag){
+    function showBatch(idPermintaan, flag, idApproval){
+        $('#modal-batch').modal({show:true, backdrop:'static'});
+        PermintaanVendorAction.listBatch(idApproval, function (response) {
+            console.log(response);
+            var table = "";
+            if(response.length > 0){
+                $.each(response, function (i, item) {
+                    var tgl = $.datepicker.formatDate('dd-mm-yy', new Date(item.tanggalFaktur));
+                    table += '<tr>' +
+                        '<td align="center">'+item.noBatch+'</td>' +
+                        '<td>'+item.stLastUpdateWho+'</td>' +
+                        '<td align="center">' +
+                        '<a target="_blank" href="printPermintaanPO_permintaanpo?id='+idPermintaan+'">' +
+                        '<img src="<s:url value="/pages/images/icons8-print-25.png"/>">'+
+                        '</a>'+
+                        '<img style="cursor: pointer" onclick="showDetailListObat(\''+idPermintaan+'\',\''+item.noBatch+'\',\''+item.noFaktur+'\',\''+tgl+'\',\''+item.noInvoice+'\',\''+item.noDo+'\',\''+item.urlDoc+'\')" src="<s:url value="/pages/images/icons8-search-25.png"/>"></td>' +
+                        '</tr>';
+                });
+                $('#body_bat').html(table);
+            }
+        })
+    }
+    function showDetailListObat(idpermintaanPo, noBatch, noFaktur, tglFaktur, noInvoice, noDo, img){
         $('#modal-detail').modal({show:true, backdrop:'static'});
+        $('#det_no_faktur').text(noFaktur);
+        $('#det_tlg_faktur').text(tglFaktur);
+        $('#det_no_invoice').text(noInvoice);
+        $('#det_no_do').text(noDo);
+        $('#det_img').attr('onclick', 'showDoc(\''+img+'\')')
         $('#loading_detail').show();
         $('#save_detail').show();
         $('#id_permintaan_vendor').val(idpermintaanPo);
         dwr.engine.setAsync(true);
         var table = "";
-
-        PermintaanVendorAction.getListDetailObatApproved(idpermintaanPo, null, {
+        PermintaanVendorAction.getListDetailObatApproved(idpermintaanPo, noBatch, {
             callback: function (response) {
                 if (response != null) {
                     $.each(response, function (i, item) {
@@ -571,12 +440,6 @@
                 $('#body_detail').html(table);
             }
         });
-
-        if(flag == "Y"){
-            $('#save_detail').show();
-        }else{
-            $('#save_detail').hide();
-        }
     }
 
     function confirmSaveTutup(){
@@ -596,10 +459,6 @@
                     $('#info_dialog').dialog('open');
                     $('#save_detail').show();
                     $('#load_detail').hide();
-                    // $('#id_permintaan').val(idPermintaan);
-                    // $('#flag').val("N");
-                    // document.permintaanPOForm.action = 'search_permintaanpo.action';
-                    // document.permintaanPOForm.submit();
                 } else {
                     $('#save_detail').show();
                     $('#load_detail').hide();
@@ -614,304 +473,10 @@
         window.location.reload(true);
     }
 
-    function showModal() {
-            $('#req_nama_obat').val('').trigger('change');
-            $('#req_qty').val('');
-            $('#req_stok').val('');
-            $('#req_stok_apotek').val('');
-            $('#req_qty').val('');
-            $('#body_request').html('');
-            $('#modal-request-obat').modal('show');
-    }
-
-    function setStokObatPoli(select) {
-
-        var idx = select.selectedIndex;
-        var idObat = select.options[idx].value;
-        console.log(idObat);
-        var stok = 0;
-        var id = idObat.split('|')[0];
-        var nama = idObat.split('|')[1];
-        var stokApotek = idObat.split('|')[2];
-
-        if (idObat != '') {
-            ObatPoliAction.getStokObatPoli(id, function (response) {
-                if (response != null) {
-                    $.each(response, function (i, item) {
-                        if (item.qty != null) {
-                            if (item.idObat == id) {
-                                stok = item.qty;
-                            }
-                        } else {
-                            stok = 0;
-                        }
-                    });
-                }
-            });
-        }
-
-        $('#req_stok').val(stok);
-        $('#req_stok_apotek').val(stokApotek);
-    }
-
-    function setStokPoli(select) {
-        var idx = select.selectedIndex;
-        var idObat = select.options[idx].value;
-        var id = idObat.split('|')[0];
-        var nama = idObat.split('|')[1];
-        var stok = idObat.split('|')[2];
-
-        $('#ret_stok').val(stok);
-    }
-
-    function addObatToList() {
-
-            var obat = $('#req_nama_obat').val();
-            var qty = $('#req_qty').val();
-            var stok = $('#req_stok_apotek').val();
-            var data = $('#tabel_request').tableToJSON();
-
-            var id = obat.split('|')[0];
-            var nama = obat.split('|')[1];
-
-            var cek = false;
-
-            if (obat != '' && qty != '') {
-
-                if (parseInt(qty) <= parseInt(stok)) {
-                    $.each(data, function (i, item) {
-                        if (item.ID == id) {
-                            cek = true;
-                        }
-                    });
-
-                    if (cek) {
-                        $('#warning_data_exits').show().fadeOut(5000);
-                    } else {
-                        var row = '<tr id=' + id + '>' +
-                                '<td>' + id + '</td>' +
-                                '<td>' + nama + '</td>' +
-                                '<td>' + qty + '</td>' +
-                                '<td align="center"><img border="0" onclick="delRowObat(\'' + id + '\')" class="hvr-grow" src="<s:url value="/pages/images/delete-flat.png"/>" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
-                                '</tr>';
-                        $('#body_request').append(row);
-                    }
-                } else {
-                    $('#warning_request').show().fadeOut(5000);
-                    $('#msg_request').text('Jumlah Request tidak boleh melebihi stok obat...!');
-                }
-            } else {
-                if (obat == '') {
-                    $('#war_req_obat').show();
-                }
-                if (qty == '' || qty <= 0) {
-                    $('#war_req_qty').show();
-                }
-                $('#warning_request').show().fadeOut(5000);
-                $('#msg_request').text('Silahkan cek kembali data inputan...!');
-            }
-    }
-
-    function delRowObat(id) {
-        $('#' + id).remove();
-        $('#btn' + id).show();
-        $('#new_qty'+id).attr('disabled',false);
-    }
-
-    function saveAddRequest() {
-
-            var data = $('#tabel_request').tableToJSON();
-            var stringData = JSON.stringify(data);
-
-            if (stringData != '[]') {
-
-                $('#save_request').hide();
-                $('#load_request').show();
-
-                dwr.engine.setAsync(true);
-                ObatPoliAction.saveAddRequest(stringData, "GDG", {
-                    callback: function (response) {
-                        if (response == "success") {
-                            dwr.engine.setAsync(false);
-                            $('#modal-request-obat').modal('hide');
-                            $('#info_dialog').dialog('open');
-                            $('#save_request').show();
-                            $('#load_request').hide();
-                        } else {
-                            $('#warning_request').show().fadeOut(5000);
-                            $('#save_request').show();
-                            $('#load_request').hide();
-                        }
-                    }
-                });
-
-            } else {
-                $('#warning_request').show().fadeOut(5000);
-            }
-    }
-
-    function confirm(idApp, idPermin, tanggal, tujuan) {
-        $('#judul_req').html('Konfirmasi request diterima');
-        $('#req_id_permintaan').val(idPermin);
-        $('#req_tanggal').val(tanggal);
-        $('#req_id_approve').val(idApp);
-        $('#modal-request-detail').modal('show');
-        var table = "";
-        PermintaanObatPoliAction.listDetailPermintaan(idPermin, false, tujuan, "Y", {
-            callback: function (response) {
-                if (response != null) {
-                    $.each(response, function (i, item) {
-                        table += "<tr>" +
-                                "<td>" + item.idObat + "</td>" +
-                                "<td>" + item.namaObat + "</td>" +
-                                "<td align='center'>" + item.qty + "</td>" +
-                                "<td align='center'>" + item.qtyApprove + "</td>" +
-                                "</tr>";
-                    });
-                }
-            }
-        });
-        $('#body_request_detail').html(table);
-    }
-
-    function saveConfirm() {
-        var data = $('#tabel_request_detail').tableToJSON();
-        var stringData = JSON.stringify(data);
-        var idApp = $('#req_id_approve').val();
-        var idPermin = $('#req_id_permintaan').val();
-
-        if (stringData != '[]') {
-
-            $('#save_req_detail').hide();
-            $('#load_req_detail').show();
-
-            dwr.engine.setAsync(true);
-            ObatPoliAction.saveKonfirmasiDiterima(idApp, idPermin, stringData, {
-                callback: function (response) {
-                    if (response == "success") {
-                        dwr.engine.setAsync(false);
-                        $('#modal-request-detail').modal('hide');
-                        $('#info_dialog').dialog('open');
-                        $('#save_req_detail').show();
-                        $('#load_req_detail').hide();
-                    } else {
-                        $('#warning_reture').show().fadeOut(5000);
-                        $('#save_reture').show();
-                        $('#load_reture').hide();
-                    }
-                }
-            });
-
-        } else {
-            $('#warning_reture').show().fadeOut(5000);
-        }
-    }
-
-    function printRequest(idApp, idPermin) {
-        PermintaanObatPoliAction.printPermintaanObat(idApp, idPermin, {
-            callback: function (response) {
-                if (response == "success") {
-                    dwr.engine.setAsync(false);
-                    $('#modal-reture').modal('hide');
-                    $('#info_dialog').dialog('open');
-                    $('#save_ret').show();
-                    $('#load_ret').hide();
-                } else {
-                    $('#warning_request').show().fadeOut(5000);
-                    $('#msg_reture').text(response);
-                    $('#save_ret').show();
-                    $('#load_ret').hide();
-                }
-            }
-        });
-    }
-
-    function showReture(idPermin, tanggal, idPelayanan) {
-        $('#ret_id_permintaan').val(idPermin);
-        $('#ret_tanggal').val(tanggal);
-        $('#modal-reture-detail').modal('show');
-        var table = "";
-        PermintaanObatPoliAction.listDetailPermintaan(idPermin, true, idPelayanan, "N", {
-            callback: function (response) {
-                console.log(response);
-                if (response != null) {
-                    $.each(response, function (i, item) {
-                        table += "<tr>" +
-                                "<td>" + '<span id=obat' + item.idObat + '>' + item.idObat + '</span>' + "</td>" +
-                                "<td>" + '<span id=nama_obat' + item.idObat + '>' + item.namaObat + '</span>' + "</td>" +
-                                "<td align='center'>" + '<span id=qty_poli' + item.idObat + '>' + item.qtyPoli + '</span>' + "</td>" +
-                                "<td align='center'>" + item.qty + "</td>" +
-                                "<td align='center'>" + '<span id=qty_approve' + item.idObat + '>' + item.qtyApprove + '</span>' + "</td>" +
-                                "<td align='center'>" + '<input type="number" id=new_qty' + item.idObat + ' style="width: 80px" class="form-control">' + "</td>" +
-                                "<td align='center'>" + '<a type="button" id=btn' + item.idObat + ' onclick="addToListReture(\'' + item.idObat + '\')" class="btn btn-success"><i class="fa fa-plus"></i></a>' + "</td>" +
-                                "</tr>";
-                    });
-                }
-            }
-        });
-        $('#body_reture_head').html(table);
-    }
-
-    function addToListReture(id) {
-        var idObat      = $('#obat'+id).text();
-        var namaObat    = $('#nama_obat'+id).text();
-        var qty         = $('#new_qty'+id).val();
-        var qtyPoli     = $('#qty_poli'+ id).text();
-        var qtyApprove  = $('#qty_approve'+id).text();
-
-        if (qty != '' && parseInt(qty) > 0) {
-            if (parseInt(qty) <= parseInt(qtyPoli) && parseInt(qty) <= parseInt(qtyApprove)) {
-                var row = '<tr id=' + id + '>' +
-                        '<td>' + idObat + '</td>' +
-                        '<td>' + namaObat + '</td>' +
-                        '<td align="center">' + qty + '</td>' +
-                        '<td align="center"><img border="0" onclick="delRowObat(\'' + id + '\')" class="hvr-grow" src="<s:url value="/pages/images/delete-flat.png"/>" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
-                        '</tr>';
-                $('#body_reture_detail').append(row);
-                $('#btn'+id).hide();
-                $('#new_qty'+id).attr('disabled',true);
-            } else {
-                $('#warning_reture_detail').show().fadeOut(5000);
-                $('#msg_reture_detail').text('Qty tidak boleh melebihi qty stok dan approve...!');
-            }
-        } else {
-            $('#warning_reture_detail').show().fadeOut(5000);
-            $('#msg_reture_detail').text('Qty reture tidak boleh kosong...!');
-        }
-    }
-
-    function saveAddReture(){
-        var data = $('#tabel_reture_detail').tableToJSON();
-        var stringData = JSON.stringify(data);
-        console.log(data);
-
-        if (stringData != '[]') {
-
-            $('#save_req_detail').hide();
-            $('#load_ret_detail').show();
-
-            dwr.engine.setAsync(true);
-            ObatPoliAction.saveAddReture(stringData, "GDG", {
-                callback: function (response) {
-                    if (response == "success") {
-                        dwr.engine.setAsync(false);
-                        $('#modal-reture-detail').modal('hide');
-                        $('#info_dialog').dialog('open');
-                        $('#save_req_detail').show();
-                        $('#load_ret_detail').hide();
-                    } else {
-                        $('#warning_reture_detail').show().fadeOut(5000);
-                        $('#msg_reture_detail').text('Terjadi kesalahan saat menyimpan data...!');
-                        $('#save_req_detail').show();
-                        $('#load_ret_detail').hide();
-                    }
-                }
-            });
-
-        } else {
-            $('#warning_reture_detail').show().fadeOut(5000);
-            $('#msg_reture_detail').text('Silahkan cek kembali data inputan berikut...!');
-        }
+    function showDoc(img){
+        console.log(img);
+        $('#img_surat_po').attr('src',img);
+        $('#modal-doc').modal('show');
     }
 
 </script>

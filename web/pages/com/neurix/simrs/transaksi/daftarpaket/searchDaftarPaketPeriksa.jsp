@@ -185,12 +185,12 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_add" onclick="saveNewPasien()"><i class="fa fa-arrow-right"></i> Save
-                </button>
-                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
-                        id="load_add"><i
-                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
-                </button>
+                <%--<button type="button" class="btn btn-success" id="save_add" onclick="saveNewPasien()"><i class="fa fa-arrow-right"></i> Save--%>
+                <%--</button>--%>
+                <%--<button style="display: none; cursor: no-drop" type="button" class="btn btn-success"--%>
+                        <%--id="load_add"><i--%>
+                        <%--class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...--%>
+                <%--</button>--%>
             </div>
         </div>
     </div>

@@ -11,7 +11,7 @@
     <style>
     </style>
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/StatusPeriksaAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/DaftarUlangAction.js"/>'></script>
 </head>
 
 <body class="hold-transition skin-blue fixed sidebar-mini">
@@ -361,7 +361,8 @@
                                             <div class="input-group-addon">
                                                 Rp.
                                             </div>
-                                            <input class="form-control" id="uang_muka">
+                                            <input class="form-control" id="val_uang_muka">
+                                            <input type="hidden" id="uang_muka">
                                         </div>
                                     </div>
                                 </div>
@@ -377,12 +378,24 @@
                                         </select>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="col-md-4" style="margin-top: 10px">No Kartu</label>
                                     <div class="col-md-8">
                                         <input class="form-control" style="margin-top: 7px" id="no_kartu">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="col-md-4" style="margin-top: 10px">Cover Biaya</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group" style="margin-top: 7px">
+                                            <div class="input-group-addon">
+                                                Rp.
+                                            </div>
+                                            <input class="form-control" id="cover_biaya">
+                                            <input type="hidden" id="val_cover_biaya">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -443,6 +456,33 @@
             }
 
         });
+
+        var nominal = document.getElementById('cover_biaya');
+        if(nominal != null && nominal != ''){
+            nominal.addEventListener('keyup', function (e) {
+                nominal.value = formatRupiah2(this.value);
+                var valCover = nominal.value.replace(/[.]/g, '');
+
+                if(valCover != ''){
+                    $('#val_cover_biaya').val(valCover);
+                }else{
+                    $('#val_cover_biaya').val('');
+                }
+            });
+        }
+
+        var uangMuka = document.getElementById('val_uang_muka');
+        uangMuka.addEventListener('keyup', function (e) {
+            uangMuka.value = formatRupiah2(this.value);
+            var valUangMuka = uangMuka.value.replace(/[.]/g, '');
+
+            if(valUangMuka != ''){
+                $('#uang_muka').val(valUangMuka);
+            }else{
+                $('#uang_muka').val('');
+            }
+        });
+
     });
 
     var menus, mapped;
@@ -478,8 +518,24 @@
         }
     });
 
+    function formatRupiah2(angka) {
+        var number_string = angka.replace(/[^,\d]/g, '').toString(),
+            split = number_string.split(','),
+            sisa = split[0].length % 3,
+            rupiah = split[0].substr(0, sisa),
+            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+        if (ribuan) {
+            separator = sisa ? '.' : '';
+            rupiah += separator + ribuan.join('.');
+        }
+
+        rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+        return rupiah;
+    }
+
     function toContent(){
-        window.location.href = 'initForm_statuspasien.action';
+        window.location.href = 'initForm_daftarulang.action';
     }
 
     function selectJenisPeriksa(jenis){
@@ -651,6 +707,7 @@
         var uangMuka        = $('#uang_muka').val();
         var asuransi        = $('#asuransi').val();
         var noKartu         = $('#no_kartu').val();
+        var coverBiaya      = $('#val_cover_biaya').val();
         var fotoSurat       = $('#surat_rujuk').val();
         var canvas = document.getElementById('temp_surat_rujuk');
         var dataURL = canvas.toDataURL("image/png"),
@@ -685,7 +742,7 @@
                         var result = JSON.stringify(data);
                         $('#waiting_dialog').dialog('open');
                         dwr.engine.setAsync(true);
-                        StatusPeriksaAction.savePerubahanStatus(result, {callback: function (response) {
+                        DaftarUlangAction.saveDaftarUlang(result, {callback: function (response) {
                                 if(response.status == "success"){
                                     $('#waiting_dialog').dialog('close');
                                     $('#info_dialog').dialog('open');
@@ -748,7 +805,7 @@
                     var result = JSON.stringify(data);
                     $('#waiting_dialog').dialog('open');
                     dwr.engine.setAsync(true);
-                    StatusPeriksaAction.savePerubahanStatus(result, {callback: function (response) {
+                    DaftarUlangAction.saveDaftarUlang(result, {callback: function (response) {
                             if(response.status == "success"){
                                 $('#waiting_dialog').dialog('close');
                                 $('#info_dialog').dialog('open');
@@ -770,6 +827,7 @@
                     data = {
                         'id_asuransi':asuransi,
                         'no_kartu':noKartu,
+                        'cover_biaya':coverBiaya,
                         'jenis_periksa':jenisPeriksa,
                         'id_pasien':idPasien,
                         'id_detail_checkup':idDetail
@@ -778,7 +836,7 @@
                     var result = JSON.stringify(data);
                     $('#waiting_dialog').dialog('open');
                     dwr.engine.setAsync(true);
-                    StatusPeriksaAction.savePerubahanStatus(result, {callback: function (response) {
+                    DaftarUlangAction.saveDaftarUlang(result, {callback: function (response) {
                             if(response.status == "success"){
                                 $('#waiting_dialog').dialog('close');
                                 $('#info_dialog').dialog('open');

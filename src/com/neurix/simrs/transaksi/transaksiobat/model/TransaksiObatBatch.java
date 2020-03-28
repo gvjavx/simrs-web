@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.transaksiobat.model;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -27,6 +28,80 @@ public class TransaksiObatBatch {
     private String diterimaFlag;
 
     private String flagObatBpjs;
+    private String noFaktur;
+    private Date tanggalFaktur;
+    private String noInvoice;
+    private String noDo;
+
+    private BigDecimal diskon;
+    private BigDecimal bruto;
+    private BigDecimal netto;
+
+    private String urlDoc;
+
+    public String getUrlDoc() {
+        return urlDoc;
+    }
+
+    public void setUrlDoc(String urlDoc) {
+        this.urlDoc = urlDoc;
+    }
+
+    public BigDecimal getDiskon() {
+        return diskon;
+    }
+
+    public void setDiskon(BigDecimal diskon) {
+        this.diskon = diskon;
+    }
+
+    public BigDecimal getBruto() {
+        return bruto;
+    }
+
+    public void setBruto(BigDecimal bruto) {
+        this.bruto = bruto;
+    }
+
+    public BigDecimal getNetto() {
+        return netto;
+    }
+
+    public void setNetto(BigDecimal netto) {
+        this.netto = netto;
+    }
+
+    public String getNoFaktur() {
+        return noFaktur;
+    }
+
+    public void setNoFaktur(String noFaktur) {
+        this.noFaktur = noFaktur;
+    }
+
+    public Date getTanggalFaktur() {
+        return tanggalFaktur;
+    }
+
+    public void setTanggalFaktur(Date tanggalFaktur) {
+        this.tanggalFaktur = tanggalFaktur;
+    }
+
+    public String getNoInvoice() {
+        return noInvoice;
+    }
+
+    public void setNoInvoice(String noInvoice) {
+        this.noInvoice = noInvoice;
+    }
+
+    public String getNoDo() {
+        return noDo;
+    }
+
+    public void setNoDo(String noDo) {
+        this.noDo = noDo;
+    }
 
     public String getFlagObatBpjs() {
         return flagObatBpjs;
