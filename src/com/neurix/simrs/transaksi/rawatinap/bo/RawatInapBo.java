@@ -41,4 +41,8 @@ public interface RawatInapBo {
     public List<MonVitalSign> getListGraf(MonVitalSign bean);
     public List<ImSimrsKategoriSkorRanapEntity> getListKategoriSkorRanapByHead(String head);
     public List<RawatInap> getByCriteria(RawatInap bean) throws GeneralBOException;
+
+    public MonVitalSign getMonVitalSignById(String id) throws GeneralBOException;
+    public MonCairan getMonCairanById(String id) throws GeneralBOException;
+    public MonPemberianObat getMonPemberianObatById(String id) throws GeneralBOException;
 }

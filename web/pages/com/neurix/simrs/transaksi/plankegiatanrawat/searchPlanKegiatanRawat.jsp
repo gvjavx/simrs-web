@@ -621,7 +621,7 @@
                         </div>
                     </div>
                 </div>
-                <input type="hidden" id="ind_asesmen" class="form form-control"/>
+                <input type="hidden" id="edit_mvs_id"/>
                 <br>
                 <div class="alert alert-success alert-dismissible" style="display: none" id="success_save_vitalsign">
                     <h4><i class="icon fa fa-info"></i> Success!</h4>
@@ -635,7 +635,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_vitalsign" onclick="saveVitalSign('<s:property value="rawatInap.noCheckup"/>', '<s:property value="rawatInap.idDetailCheckup"/>')"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_vitalsign" onclick="saveUpdatePlan('vitalsign')"><i class="fa fa-arrow-right"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_vitalsign"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -755,7 +755,10 @@
                         "<td style='width:200px'>" + item.kegiatan + "</td>" +
                         "<td align='left'><strong>" + item.createdwho + "</strong></td>" +
                         "<td>" + item.ket + "</td>" +
-                        "<td align='right'><button class='btn btn-sm btn-primary' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','view');\"><i class='fa fa-search'></i> View Detail</button></td>" +
+                        "<td align='right'>" +
+                        "<button class='btn btn-sm btn-primary' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','view');\"><i class='fa fa-search'></i> View Detail</button>" +
+                        "<button class='btn btn-sm btn-info' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','edit');\"><i class='fa fa-edit'></i> Edit</button>" +
+                        "</td>" +
                         "</tr>";
                 });
                 var strSiang = "";
@@ -764,7 +767,10 @@
                         "<td style='width:200px'>" + item.kegiatan + "</td>" +
                         "<td align='left'><strong>" + item.createdwho + "</strong></td>" +
                         "<td>" + item.ket + "</td>" +
-                        "<td align='right'><button class='btn btn-sm btn-primary' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','view');\"><i class='fa fa-search'></i> View Detail</button></td>" +
+                        "<td align='right'>" +
+                        "<button class='btn btn-sm btn-primary' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','view');\"><i class='fa fa-search'></i> View Detail</button>" +
+                        "<button class='btn btn-sm btn-info' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','edit');\"><i class='fa fa-edit'></i> Edit</button>" +
+                        "</td>" +
                         "</tr>";
                 });
                 var strMalam = "";
@@ -773,7 +779,10 @@
                         "<td style='width:200px'>" + item.kegiatan + "</td>" +
                         "<td align='left'><strong>" + item.createdwho + "</strong></td>" +
                         "<td>" + item.ket + "</td>" +
-                        "<td align='right'><button class='btn btn-sm btn-primary' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','view');\"><i class='fa fa-search'></i> View Detail</button></td>" +
+                        "<td align='right'>" +
+                        "<button class='btn btn-sm btn-primary' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','view');\"><i class='fa fa-search'></i> View Detail</button>" +
+                        "<button class='btn btn-sm btn-info' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','edit');\"><i class='fa fa-edit'></i> Edit</button>" +
+                        "</td>" +
                         "</tr>";
                 });
 
@@ -930,6 +939,12 @@
                 $("#body-list-cairan").html(str);
             }
         }
+        if(param == "parenteral"){
+
+        }
+        if(param == "nonparenteral"){
+
+        }
     }
 
     function savePlan(){
@@ -970,36 +985,100 @@
     }
 
     function viewVitalSign(id, type){
+        $("#success_save_vitalsign").hide();
+        $("#error_save_vitalsign").hide();
+        $("#load_vitalsign").hide();
 
         $("#modal-edit-vital-sign").modal('show');
 
-        RawatInapAction.getListMonVitalSign("", "", id, function (response) {
-            if (response.length > 0){
-                $.each(response, function (i, item) {
+        RawatInapAction.getDataMonVitalSign(id, function (item) {
 
-                    $("#edit_mvs_jam").val(item.jam);
-                    $("#edit_mvs_nafas").val(item.nafas);
-                    $("#edit_mvs_nadi").val(item.nadi);
-                    $("#edit_mvs_suhu").val(item.suhu);
-                    $("#edit_mvs_tensi").val(item.tensi);
-                    $("#edit_mvs_tb").val(item.tb);
-                    $("#edit_mvs_bb").val(item.bb);
-                });
+            $("#edit_mvs_jam").val(item.jam);
+            $("#edit_mvs_nafas").val(item.nafas);
+            $("#edit_mvs_nadi").val(item.nadi);
+            $("#edit_mvs_suhu").val(item.suhu);
+            $("#edit_mvs_tensi").val(item.tensi);
+            $("#edit_mvs_tb").val(item.tb);
+            $("#edit_mvs_bb").val(item.bb);
+            $("#edit_mvs_id").val(id);
 
-                if (type == "view"){
-                    $("#edit_mvs_jam").attr('disabled','disabled');
-                    $("#edit_mvs_nafas").attr('disabled','disabled');
-                    $("#edit_mvs_nadi").attr('disabled','disabled');
-                    $("#edit_mvs_suhu").attr('disabled','disabled');
-                    $("#edit_mvs_tensi").attr('disabled','disabled');
-                    $("#edit_mvs_tb").attr('disabled','disabled');
-                    $("#edit_mvs_bb").attr('disabled','disabled');
-                    $("#save_vitalsign").hide();
-                }
+            if (type == "view"){
+                $("#edit_mvs_jam").attr('disabled','disabled');
+                $("#edit_mvs_nafas").attr('disabled','disabled');
+                $("#edit_mvs_nadi").attr('disabled','disabled');
+                $("#edit_mvs_suhu").attr('disabled','disabled');
+                $("#edit_mvs_tensi").attr('disabled','disabled');
+                $("#edit_mvs_tb").attr('disabled','disabled');
+                $("#edit_mvs_bb").attr('disabled','disabled');
+                $("#save_vitalsign").hide();
+            } else {
+                $("#edit_mvs_jam").removeAttr('disabled');
+                $("#edit_mvs_nafas").removeAttr('disabled');
+                $("#edit_mvs_nadi").removeAttr('disabled');
+                $("#edit_mvs_suhu").removeAttr('disabled');
+                $("#edit_mvs_tensi").removeAttr('disabled');
+                $("#edit_mvs_tb").removeAttr('disabled');
+                $("#edit_mvs_bb").removeAttr('disabled');
+                $("#save_vitalsign").show();
             }
         })
-
     }
+
+    function saveUpdatePlan(tipe){
+        if (tipe == "vitalsign"){
+            saveUpdateVitalSign();
+        }
+        if (tipe == "cairan"){
+
+        }
+        if (tipe == "parenteral"){
+
+        }
+        if (tipe == "nonparenteral"){
+
+        }
+    }
+
+    function saveUpdateVitalSign() {
+
+        var id = $("#edit_mvs_id").val();
+        var jam = $("#edit_mvs_jam").val();
+        var nafas = $("#edit_mvs_nafas").val();
+        var nadi = $("#edit_mvs_nadi").val();
+        var suhu = $("#edit_mvs_suhu").val();
+        var tensi = $("#edit_mvs_tensi").val();
+        var tb = $("#edit_mvs_tb").val();
+        var bb = $("#edit_mvs_bb").val();
+
+        var arrData = [];
+        arrData.push({
+            "jam":jam,
+            "nadi":nadi,
+            "nafas":nafas,
+            "suhu":suhu,
+            "tensi":tensi,
+            "tb":tb,
+            "bb":bb
+        });
+
+        var stJson = JSON.stringify(arrData);
+        $("#load_vitalsign").show();
+        $("#save_vitalsign").hide();
+
+        dwr.engine.setAsync(true);
+        RawatInapAction.saveUpdateMonVitalSign(id, stJson, function(response){
+            if (response.status == "success"){
+                $("#success_save_vitalsign").show();
+                $("#load_vitalsign").hide();
+            } else {
+                $("#success_save_vitalsign").show();
+                $("#error_save_vitalsign").show();
+                $("#error_ket_vitalsign").text(response.msg);
+            }
+        });
+    }
+
+
 
 </script>
 

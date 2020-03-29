@@ -719,6 +719,30 @@ public class RawatInapAction extends BaseMasterAction {
         return rawatInapBo.getListMonVitalSign(monVitalSign);
     }
 
+    public MonVitalSign getDataMonVitalSign(String id) {
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
+
+        return rawatInapBo.getMonVitalSignById(id);
+    }
+
+    public MonCairan getDataMonCairan(String id) {
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
+
+        return rawatInapBo.getMonCairanById(id);
+    }
+
+    public MonPemberianObat getMonPemberianObat(String id) {
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
+
+        return rawatInapBo.getMonPemberianObatById(id);
+    }
+
     public CrudResponse saveMonVitalSign(String noCheckup, String idDetail, String jsonString) throws JSONException {
 
         String userLogin = CommonUtil.userLogin();
