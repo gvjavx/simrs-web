@@ -6,6 +6,7 @@ import com.neurix.simrs.master.pelayanan.dao.PelayananDao;
 import com.neurix.simrs.master.ruangan.dao.RuanganDao;
 import com.neurix.simrs.master.ruangan.model.Ruangan;
 import com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao;
+import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
 import com.neurix.simrs.transaksi.moncairan.dao.MonCairanDao;
 import com.neurix.simrs.transaksi.moncairan.model.ItSimrsMonCairanEntity;
 import com.neurix.simrs.transaksi.moncairan.model.MonCairan;
@@ -65,6 +66,7 @@ public class PlanKegiatanRawatBoImpl implements PlanKegiatanRawatBo {
                 kegiatanRawat.setWaktu(planKegiatan.getWaktu());
                 kegiatanRawat.setJenisKegiatan(planKegiatan.getJenisKegiatan());
                 kegiatanRawat.setKeterangan(planKegiatan.getKeterangan());
+                kegiatanRawat.setFlagDikerjakan(planKegiatan.getFlagDikerjakan());
                 kegiatanRawat.setFlag(planKegiatan.getFlag());
                 kegiatanRawat.setAction(planKegiatan.getAction());
                 kegiatanRawat.setCreatedDate(planKegiatan.getCreatedDate());
@@ -119,11 +121,22 @@ public class PlanKegiatanRawatBoImpl implements PlanKegiatanRawatBo {
 
             List<ItSimrsPlanKegiatanRawatEntity> planEntities = new ArrayList<>();
 
+            Map hsCriteria = new HashMap();
+            hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+            List<ItSimrsHeaderDetailCheckupEntity> detailCheckupEntities = checkupDetailDao.getByCriteria(hsCriteria);
+
+            String noCheckup = "";
+            if (detailCheckupEntities.size() > 0){
+                noCheckup = detailCheckupEntities.get(0).getNoCheckup();
+            }
+
             if (vitalSignList.size() > 0){
                 for (MonVitalSign vitalSign : vitalSignList){
                     ItSimrsMonVitalSignEntity monVitalSignEntity = new ItSimrsMonVitalSignEntity();
                     monVitalSignEntity.setId(getNextMonVitalSign());
                     monVitalSignEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
+                    monVitalSignEntity.setNoCheckup(noCheckup);
+
                     monVitalSignEntity.setJam(vitalSign.getJam());
                     monVitalSignEntity.setFlag(bean.getFlag());
                     monVitalSignEntity.setAction(bean.getAction());
@@ -164,6 +177,8 @@ public class PlanKegiatanRawatBoImpl implements PlanKegiatanRawatBo {
                     ItSimrsMonCairanEntity monCairanEntity = new ItSimrsMonCairanEntity();
                     monCairanEntity.setId(getNextMonCairan());
                     monCairanEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
+                    monCairanEntity.setNoCheckup(noCheckup);
+
                     monCairanEntity.setMacamCairan(monCairan.getMacamCairan());
                     monCairanEntity.setMelalui(monCairan.getMelalui());
                     monCairanEntity.setJumlah(monCairan.getJumlah());
@@ -214,6 +229,7 @@ public class PlanKegiatanRawatBoImpl implements PlanKegiatanRawatBo {
                     ItSimrsMonPemberianObatEntity monPemberianObatEntity = new ItSimrsMonPemberianObatEntity();
                     monPemberianObatEntity.setId(getNextMonPemberianObat());
                     monPemberianObatEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
+                    monPemberianObatEntity.setNoCheckup(noCheckup);
 
                     monPemberianObatEntity.setNamaObat(monPemberianObat.getNamaObat());
                     monPemberianObatEntity.setCaraPemberian(monPemberianObat.getCaraPemberian() == null ? "" : monPemberianObat.getCaraPemberian());

@@ -872,7 +872,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_asesmen" onclick="savePemberianObat('<s:property value="rawatInap.noCheckup"/>', '<s:property value="rawatInap.idDetailCheckup"/>')"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_asesmen" onclick="saveToList('nonparenteral')"><i class="fa fa-arrow-right"></i> Save
                 </button>
             </div>
         </div>
@@ -983,7 +983,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_asesmen" onclick="savePemberianObat('<s:property value="rawatInap.noCheckup"/>', '<s:property value="rawatInap.idDetailCheckup"/>')"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_asesmen" onclick="saveToList('parenteral')"><i class="fa fa-arrow-right"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_asesmen"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -1087,13 +1087,13 @@
                         ket = item.keterangan;
 
                     if (item.waktu.toLowerCase() == "pagi"){
-                        listPagi.push({"ket": ket, "createdwho":item.createdWho, "kegiatan":setLabelKegiatan(item.jenisKegiatan), "id":item.idKategori, "jenis":item.jenisKegiatan});
+                        listPagi.push({"ket": ket, "createdwho":item.createdWho, "kegiatan":setLabelKegiatan(item.jenisKegiatan), "id":item.idKategori, "jenis":item.jenisKegiatan, "flag":item.flagDikerjakan});
                     }
                     if (item.waktu.toLowerCase() == "siang"){
-                        listSiang.push({"ket":ket, "createdwho":item.createdWho, "kegiatan":setLabelKegiatan(item.jenisKegiatan), "id":item.idKategori, "jenis":item.jenisKegiatan});
+                        listSiang.push({"ket":ket, "createdwho":item.createdWho, "kegiatan":setLabelKegiatan(item.jenisKegiatan), "id":item.idKategori, "jenis":item.jenisKegiatan, "flag":item.flagDikerjakan});
                     }
                     if (item.waktu.toLowerCase() == "malam"){
-                        listMalam.push({"ket":ket, "createdwho":item.createdWho, "kegiatan":setLabelKegiatan(item.jenisKegiatan), "id":item.idKategori, "jenis":item.jenisKegiatan});
+                        listMalam.push({"ket":ket, "createdwho":item.createdWho, "kegiatan":setLabelKegiatan(item.jenisKegiatan), "id":item.idKategori, "jenis":item.jenisKegiatan, "flag":item.flagDikerjakan});
                     }
                 });
 
@@ -1102,10 +1102,11 @@
                     strPagi += "<tr>" +
                         "<td style='width:200px'>" + item.kegiatan + "</td>" +
                         "<td align='left'><strong>" + item.createdwho + "</strong></td>" +
-                        "<td>" + item.ket + "</td>" +
+                        "<td style='width:30%'>" + item.ket + "</td>" +
+                        "<td align='center'>" + setIconDikerjakan(item.flag) + "</td>" +
                         "<td align='right'>" +
                         "<button class='btn btn-sm btn-primary' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','view');\"><i class='fa fa-search'></i> View Detail</button>" +
-                        "<button class='btn btn-sm btn-info' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','edit');\"><i class='fa fa-edit'></i> Edit</button>" +
+                        "<button class='btn btn-sm btn-info' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','edit');\"><i class='fa fa-edit'></i> Action</button>" +
                         "</td>" +
                         "</tr>";
                 });
@@ -1114,10 +1115,11 @@
                     strSiang += "<tr>" +
                         "<td style='width:200px'>" + item.kegiatan + "</td>" +
                         "<td align='left'><strong>" + item.createdwho + "</strong></td>" +
-                        "<td>" + item.ket + "</td>" +
+                        "<td style='width:30%'>" + item.ket + "</td>" +
+                        "<td align='center'>" + setIconDikerjakan(item.flag) + "</td>" +
                         "<td align='right'>" +
                         "<button class='btn btn-sm btn-primary' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','view');\"><i class='fa fa-search'></i> View Detail</button>" +
-                        "<button class='btn btn-sm btn-info' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','edit');\"><i class='fa fa-edit'></i> Edit</button>" +
+                        "<button class='btn btn-sm btn-info' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','edit');\"><i class='fa fa-edit'></i> Action</button>" +
                         "</td>" +
                         "</tr>";
                 });
@@ -1126,10 +1128,11 @@
                     strMalam += "<tr>" +
                         "<td style='width:200px'>" + item.kegiatan + "</td>" +
                         "<td align='left'><strong>" + item.createdwho + "</strong></td>" +
-                        "<td>" + item.ket + "</td>" +
+                        "<td style='width:30%'>" + item.ket + "</td>" +
+                        "<td align='center'>" + setIconDikerjakan(item.flag) + "</td>" +
                         "<td align='right'>" +
                         "<button class='btn btn-sm btn-primary' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','view');\"><i class='fa fa-search'></i> View Detail</button>" +
-                        "<button class='btn btn-sm btn-info' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','edit');\"><i class='fa fa-edit'></i> Edit</button>" +
+                        "<button class='btn btn-sm btn-info' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','edit');\"><i class='fa fa-edit'></i> Action</button>" +
                         "</td>" +
                         "</tr>";
                 });
@@ -1145,6 +1148,14 @@
         });
 
         $("#modal-view-plan-detail").modal('show');
+    }
+
+    function setIconDikerjakan(param) {
+        if(param == "Y"){
+            return "<i class='fa fa-check'></i>";
+        } else {
+            return " - ";
+        }
     }
 
     function setLabelKegiatan(param){
@@ -1204,7 +1215,9 @@
         if (param == "parenteral"){
 
             var idPoli = $("#idPoli").val();
+
             RawatInapAction.getListObatParenteral(idPoli, function(response){
+                var str = "";
                 $.each(response, function(i, item) {
                     str += "<option val=\'"+item.namaObat+"\'>"+item.namaObat+"</option>";
                 });
@@ -1216,6 +1229,7 @@
         if (param == "nonparenteral"){
 
             RawatInapAction.getListObatNonParenteral(idDetailCheckup, "%",  function(response){
+                var str = "";
                 $.each(response, function(i, item) {
                     str += "<option val=\'"+item.namaObat+"\'>"+item.namaObat+"</option>";
                 });
@@ -1276,7 +1290,7 @@
             var waktupemberian = $("#select_waktu_par").val();
             var ket = $("#par_keterangan").val();
 
-            listOfParenteral.push({
+            listOfNonParenteral.push({
                 "waktu":waktu,
                 "obat":obat,
                 "nama":nama,
@@ -1371,7 +1385,6 @@
             });
             $("#modal-add-pemberian-parenteral").hide();
             $("#body-list-perenteral").html(str);
-
         }
 
         if(param == "nonparenteral"){
