@@ -67,6 +67,43 @@ public class ImBiodataEntity implements Serializable {
     private Integer masaKerjaGolongan;
     private String branchIdTerakhir;
     private String positionIdTerakhir;
+    private String flagTunjanganSupervisi;
+    private String flagTunjanganLokasi;
+    private String flagTunjanganSiaga;
+    private String flagTunjanganProfesional;
+
+
+    public String getFlagTunjanganSupervisi() {
+        return flagTunjanganSupervisi;
+    }
+
+    public void setFlagTunjanganSupervisi(String flagTunjanganSupervisi) {
+        this.flagTunjanganSupervisi = flagTunjanganSupervisi;
+    }
+
+    public String getFlagTunjanganLokasi() {
+        return flagTunjanganLokasi;
+    }
+
+    public void setFlagTunjanganLokasi(String flagTunjanganLokasi) {
+        this.flagTunjanganLokasi = flagTunjanganLokasi;
+    }
+
+    public String getFlagTunjanganSiaga() {
+        return flagTunjanganSiaga;
+    }
+
+    public void setFlagTunjanganSiaga(String flagTunjanganSiaga) {
+        this.flagTunjanganSiaga = flagTunjanganSiaga;
+    }
+
+    public String getFlagTunjanganProfesional() {
+        return flagTunjanganProfesional;
+    }
+
+    public void setFlagTunjanganProfesional(String flagTunjanganProfesional) {
+        this.flagTunjanganProfesional = flagTunjanganProfesional;
+    }
 
     public String getProfesiId() {
         return profesiId;

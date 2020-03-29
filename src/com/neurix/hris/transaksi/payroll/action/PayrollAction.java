@@ -78,6 +78,7 @@ public class PayrollAction extends BaseMasterAction{
         this.payrollBulan12 = payrollBulan12;
     }
 
+
     public String getPositionId() {
         return positionId;
     }
@@ -339,13 +340,23 @@ public class PayrollAction extends BaseMasterAction{
     @Override
     public String add() {
         logger.info("[PayrollAction.add] start process >>>");
-        Payroll addSppd = new Payroll();
-        setPayroll(addSppd);
+        String branchId = CommonUtil.userBranchLogin();
+        Payroll data = new Payroll();
+        if (branchId!=null) {
+            data.setBranchId(branchId);
+            if (("KP").equalsIgnoreCase(branchId)){
+                data.setKantorPusat(true);
+            }
+        }else{
+            data.setBranchId("");
+        }
+        payroll=data;
         setAddOrEdit(true);
         setAdd(true);
 
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("dataPayroll");
+        session.removeAttribute("listCekNip");
 
         logger.info("[PayrollAction.add] stop process >>>");
         return "init_add";
@@ -357,7 +368,10 @@ public class PayrollAction extends BaseMasterAction{
 
         HttpSession session = ServletActionContext.getRequest().getSession();
         payroll = (Payroll) session.getAttribute("dataPayroll");
-
+        session.removeAttribute("listCekNip");
+        if (("PN").equalsIgnoreCase(payroll.getTipe())||("JB").equalsIgnoreCase(payroll.getTipe())){
+            payroll.setAdaCheckBox(true);
+        }
         setPayroll(payroll);
         logger.info("[PayrollAction.add] stop process >>>");
         return "init_add_v2";
@@ -1424,6 +1438,7 @@ public class PayrollAction extends BaseMasterAction{
         Payroll payrollPerson = new Payroll();
         PayrollPph payrollPphPerson = new PayrollPph();
         List<PayrollTunjanganLain>listOfResultPayrollTunjanganLain = new ArrayList<>();
+        List<Ptt>listOfResultPtt = new ArrayList<>();
         HttpSession session = ServletActionContext.getRequest().getSession();
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -1431,6 +1446,7 @@ public class PayrollAction extends BaseMasterAction{
         payrolls = payrollBo.getDetailEditSys(payrollId);
         payrollPphPerson = payrollBo.getDetailEditPphSys(payrollId);
         listOfResultPayrollTunjanganLain = payrollBo.getDetailEditTunjLainSys(payrollId);
+        listOfResultPtt = payrollBo.getPayrollPttByPayrollId(payrollId);
         // PPh pengobatan
         payrollPerson.setPayrollId(payrollId);
         payrollPerson.setBulan(payrolls.getBulan());
@@ -1620,6 +1636,7 @@ public class PayrollAction extends BaseMasterAction{
         session.setAttribute("listDataPayrollPerson", payrollPerson);
         session.setAttribute("listDataPayrollPphPerson", payrollPphPerson);
         session.setAttribute("listDataPayrollTunjanganLain", listOfResultPayrollTunjanganLain);
+        session.setAttribute("detailPtt", listOfResultPtt);
         return payrolls;
     }
 
@@ -1989,18 +2006,26 @@ public class PayrollAction extends BaseMasterAction{
             strBulanBefore = ""+ bulanBefore;
         }
 
-        String awal = branch.getLemburGajiAwal()+"-" + strBulanBefore + "-"+ tahunBefore;
-        String akhir = branch.getLemburGajiAkhir()+"-" + bulan + "-" + tahun ;
+        String []jumlahTanggalTahunKabisat = {"","31","29","31","30","31","30","31","31","30","31","30","31"};
+        String []jumlahTanggalTahunBiasa = {"","31","28","31","30","31","30","31","31","30","31","30","31"};
+        String jumlahTanggalTemp="";
 
-//        String awal = "11-" + "01" + "-"+ tahunBefore;
-//        String akhir = "10-" + "02" + "-" + tahun ;
+        if(Integer.parseInt(tahun) % 4 == 0){
+            jumlahTanggalTemp=jumlahTanggalTahunKabisat[Integer.parseInt(bulan)];
+        }else{
+            jumlahTanggalTemp=jumlahTanggalTahunBiasa[Integer.parseInt(bulan)];
+        }
+
+        String awal = "01"+"-" + strBulanBefore + "-"+ tahunBefore;
+        String akhir = jumlahTanggalTemp+"-" + strBulanBefore + "-" + tahunBefore ;
+
 
         searchAbsensi.setTanggal(CommonUtil.convertToDate(awal));
         searchAbsensi.setTanggalAkhir(CommonUtil.convertToDate(akhir));
         searchAbsensi.setNip(nip);
         searchAbsensi.setBranchId(branchId);
 
-        absensiPegawaiList = payrollBo.dataAbsensiLembur(searchAbsensi);
+//        absensiPegawaiList = payrollBo.dataAbsensiLembur(searchAbsensi);
 
         return CommonUtil.numbericFormat(payrollBo.reloadBiayaLembur(searchAbsensi), "###,###");
     }
@@ -2336,7 +2361,9 @@ public class PayrollAction extends BaseMasterAction{
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
             return ERROR;
         }
-
+        if (("12").equalsIgnoreCase(getBulan())){
+            payrollBulan12=true;
+        }
         logger.info("[payrollAction.saveAdd] end process >>>");
         return "view_payroll";
     }
@@ -2349,6 +2376,25 @@ public class PayrollAction extends BaseMasterAction{
         List<Payroll> listDataPayroll = new ArrayList();
         List<Payroll> listDataPayrollBackup = new ArrayList();
 
+        String tipe="";
+        if (("Y").equalsIgnoreCase(payroll.getFlagPayroll())){
+            tipe="PR";
+        }else if (("Y").equalsIgnoreCase(payroll.getFlagThr())){
+            tipe="T";
+        }else if (("Y").equalsIgnoreCase(payroll.getFlagJasprod())){
+            tipe="JP";
+        }else if (("Y").equalsIgnoreCase(payroll.getFlagJubileum())){
+            tipe="JB";
+        }else if (("Y").equalsIgnoreCase(payroll.getFlagPensiun())){
+            tipe="PN";
+        }else if (("Y").equalsIgnoreCase(payroll.getFlagInsentif())){
+            tipe="IN";
+        }else if (("Y").equalsIgnoreCase(payroll.getFlagCutiPanjang())){
+            tipe="CP";
+        }else if (("Y").equalsIgnoreCase(payroll.getFlagCutiTahunan())){
+            tipe="CT";
+        }
+        payroll.setTipe(tipe);
         try {
             listDataPayroll = payrollBoProxy.dataAddPayroll(payroll);
             listDataPayrollBackup = payrollBoProxy.copyDataPayroll(listDataPayroll);
@@ -2378,7 +2424,7 @@ public class PayrollAction extends BaseMasterAction{
                              String tunjPeralihan,String pemondokan,String komunikasi, //komponen A
                              String kopkar, String iuranSp, String iuranPiikb, String bankBri, String bankMandiri, // Komponen rincian C
                              String infaq, String perkesDanObat, String listrik, String iuranProfesi, String potonganLain, // Komponen rincian C
-                             String flagJubileum, String flagPensiun, String tunjPph, String pphGaji, String nilaiPtt, String totalA,String totalB,String totalC,String gajiBersih,String totalPttSetahun,String pphSeharusnya,String pph11Bulan,String selisihPph21,String totalPotLainLain){
+                             String flagJubileum, String flagPensiun, String tunjPph, String pphGaji, String nilaiPtt, String totalA,String totalB,String totalC,String gajiBersih,String totalPttSetahun,String pphSeharusnya,String pph11Bulan,String selisihPph21,String totalPotLainLain,String bulan,String tahun){
         Payroll newPayroll = new Payroll();
         newPayroll.setNip(nip);
 //        newPayroll.setTipePegawai(tipePegawai);
@@ -2462,7 +2508,7 @@ public class PayrollAction extends BaseMasterAction{
 
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<Ptt> pttList = (List<Ptt>) session.getAttribute("detailPtt");
-        payrollBo.savePttDetail(pttList,payrollId);
+        payrollBo.savePttDetail(pttList,payrollId,nip,bulan,tahun);
 
         session.removeAttribute("detailPtt");
     }
@@ -2508,6 +2554,21 @@ public class PayrollAction extends BaseMasterAction{
     }
 
     public Payroll getApproval(String branchId, String bulan, String tahun, String tipe){
+        Payroll payroll = null;
+        Payroll searchPayroll = new Payroll();
+        searchPayroll.setBranchId(branchId);
+        searchPayroll.setBulan(bulan);
+        searchPayroll.setTahun(tahun);
+        searchPayroll.setTipe(tipe);
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PayrollBo payrollBo = (PayrollBo) ctx.getBean("payrollBoProxy");
+
+        payroll = payrollBo.getPayrollApprove(searchPayroll);
+        return payroll ;
+    }
+
+    public Payroll getApprovalUnit(String branchId, String bulan, String tahun, String tipe){
         Payroll payroll = null;
         Payroll searchPayroll = new Payroll();
         searchPayroll.setBranchId(branchId);
@@ -2581,6 +2642,19 @@ public class PayrollAction extends BaseMasterAction{
         payrollBo.approvePayroll(searchPayroll);
     }
 
+    public void approvePayrollUnit(String branchId, String bulan, String tahun, String statusApprove, String tipe){
+        Payroll searchPayroll = new Payroll();
+        searchPayroll.setBranchId(branchId);
+        searchPayroll.setBulan(bulan);
+        searchPayroll.setTahun(tahun);
+        searchPayroll.setTipe(tipe);
+        searchPayroll.setApprovalUnitFlag(statusApprove);
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PayrollBo payrollBo = (PayrollBo) ctx.getBean("payrollBoProxy");
+        payrollBo.approvePayrollUnit(searchPayroll);
+    }
+
     public String saveDelete(){
         logger.info("[PayrollAction.saveDelete] start process >>>");
         try {
@@ -2616,7 +2690,7 @@ public class PayrollAction extends BaseMasterAction{
 
     public String saveAdd(){
         logger.info("[PayrollAction.saveAdd] start process >>>");
-        Payroll payroll = new Payroll();
+        Payroll payroll = getPayroll();
         String userLogin = CommonUtil.userLogin();
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
@@ -2629,9 +2703,30 @@ public class PayrollAction extends BaseMasterAction{
 
         try {
             HttpSession session = ServletActionContext.getRequest().getSession();
-            List<Payroll> listPayroll = (List<Payroll>) session.getAttribute("listDataPayroll");
 
-            payrollBoProxy.saveAddData(listPayroll, payroll);
+            if (("JB").equalsIgnoreCase(payroll.getTipe())||("PN").equalsIgnoreCase(payroll.getTipe())){
+                List<Payroll> listOfResult = (List<Payroll>) session.getAttribute("listCekNip");
+                List<Payroll> listPayroll = (List<Payroll>) session.getAttribute("listDataPayroll");
+
+                List<Payroll> dataProses = new ArrayList<>();
+
+                for (Payroll dataCek : listOfResult){
+                    for (Payroll allData : listPayroll){
+                        if (dataCek.getNip().equalsIgnoreCase(allData.getNip())){
+                            dataProses.add(allData);
+                            break;
+                        }
+                    }
+                }
+
+                payrollBoProxy.saveAddData(dataProses, payroll);
+
+            }else{
+                List<Payroll> listPayroll = (List<Payroll>) session.getAttribute("listDataPayroll");
+                payrollBoProxy.saveAddData(listPayroll, payroll);
+            }
+
+
         }catch (GeneralBOException e) {
             Long logId = null;
             try {
@@ -2659,34 +2754,24 @@ public class PayrollAction extends BaseMasterAction{
         String hasil = "";
         String id = getId();
         String tipe = getTipe();
-        String noSurat = getNoSurat();
         String tanggalSK = getTanggalSk();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         ItPayrollEntity payroll = new ItPayrollEntity();
         if (id != null) {
             if(tipe.equalsIgnoreCase("PR")){
                 Branch branch = new Branch();
-
                 try{
                     PayrollBo payrollBo = (PayrollBo) ctx.getBean("payrollBoProxy");
                     payroll = payrollBo.getPayrollById(id);
                     BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
                     branch = branchBo.getBranchById(payroll.getBranchId(),"Y");
                 }catch( HibernateException e){
+                    throw e;
+                }
 
-                }
-                String logo ="";
-                if (payroll.getBranchId().equalsIgnoreCase("RS01")){
-                    logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS01;
-                }else if (payroll.getBranchId().equalsIgnoreCase("RS02")){
-                    logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS02;
-                }else if (payroll.getBranchId().equalsIgnoreCase("RS03")){
-                    logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS03;
-                }else{
-                    logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU;
-                }
                 String stTanggal = CommonUtil.convertDateToString( new java.util.Date());
-                reportParams.put("urlLogo", logo);
+                reportParams.put("areaId",CommonUtil.userAreaName());
+                reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
                 reportParams.put("branchId", payroll.getBranchId());
                 reportParams.put("branchName", branch.getBranchName());
                 reportParams.put("alamatSurat", branch.getAlamatSurat()+","+stTanggal);
@@ -2697,58 +2782,28 @@ public class PayrollAction extends BaseMasterAction{
                 reportParams.put("date", stTanggal);
                 hasil = "success_print_report_payroll";
             }else if(tipe.equalsIgnoreCase("T")){
-
+                throw new GeneralBOException("Report Belum ada ");
             }else if(tipe.equalsIgnoreCase("PD")){
-
+                throw new GeneralBOException("Report Belum ada ");
             }else if(tipe.equalsIgnoreCase("JP")){
-
+                throw new GeneralBOException("Report Belum ada ");
             }else if(tipe.equalsIgnoreCase("JB")){
-
+                throw new GeneralBOException("Report Belum ada ");
             }else if(tipe.equalsIgnoreCase("PN")) {
                 String payrollId = getId();
-                String tahun = getTahun();
-                String bulan = getBulan();
-                String tanggalPensiunRealisasi = getTanggalSk();
-                String positionId = getPositionId();
-                String tanggalAktif = getTanggalAktif();
-
-                Date tanggalPensiun = CommonUtil.convertStringToDate(tanggalPensiunRealisasi);
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(tanggalPensiun);
-                cal.add(Calendar.DATE, -1);
-                java.util.Date tangalMasaKerjaAkhir =  cal.getTime();
-
-                String masaKerjaAkhirRealisasi = CommonUtil.convertDateToString(tangalMasaKerjaAkhir);
-                String[] tanggalSk = getTanggalSk().split("-");
-                String tglPensiun = tanggalSk[0] + " " + CommonUtil.convertNumberToStringBulan(tanggalSk[1]).toUpperCase() + " " + tanggalSk[2];
-                String tglCetakPensiun = tanggalSk[0] + " " + CommonUtil.convertNumberToStringBulan(tanggalSk[1]) + " " + tanggalSk[2];
-                String namaDirektur = payrollBoProxy.getDirektur();
-                payroll = payrollBoProxy.getPayrollById(payrollId);
-                String nettoDiterima =CommonUtil.angkaToTerbilang(payroll.getGajiBersih().longValue());
-
                 if (payrollId != null) {
                     Branch branch = new Branch();
-
                     try{
                         PayrollBo payrollBo = (PayrollBo) ctx.getBean("payrollBoProxy");
                         payroll = payrollBo.getPayrollById(payrollId);
                         BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
                         branch = branchBo.getBranchById(payroll.getBranchId(),"Y");
                     }catch( HibernateException e){
-
-                    }
-                    String logo ="";
-                    if (payroll.getBranchId().equalsIgnoreCase("RS01")){
-                        logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS01;
-                    }else if (payroll.getBranchId().equalsIgnoreCase("RS02")){
-                        logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS02;
-                    }else if (payroll.getBranchId().equalsIgnoreCase("RS03")){
-                        logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS03;
-                    }else{
-                        logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU;
+                        throw e;
                     }
                     String stTanggal = CommonUtil.convertDateToString( new java.util.Date());
-                    reportParams.put("urlLogo", logo);
+                    reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
+                    reportParams.put("areaId",CommonUtil.userAreaName());
                     reportParams.put("branchId", payroll.getBranchId());
                     reportParams.put("branchName", branch.getBranchName());
                     reportParams.put("alamatSurat", branch.getAlamatSurat()+","+stTanggal);
@@ -2757,12 +2812,6 @@ public class PayrollAction extends BaseMasterAction{
                     reportParams.put("bulan", bulan);
                     reportParams.put("noSurat", getNoSurat());
                     reportParams.put("payrollId", payrollId);
-                    reportParams.put("direktur", namaDirektur);
-                    reportParams.put("tanggalPensiunRealisasi", tanggalPensiunRealisasi);
-                    reportParams.put("masaKerjaAkhirRealisasi", masaKerjaAkhirRealisasi);
-                    reportParams.put("tglPensiun", tglPensiun);
-                    reportParams.put("tglCetakPensiun", tglCetakPensiun);
-                    reportParams.put("nettoDiterima", nettoDiterima);
                     reportParams.put("tanggalAktif", tanggalAktif);
                     reportParams.put("positionId", positionId);
                     reportParams.put("date", stTanggal);
@@ -2780,27 +2829,24 @@ public class PayrollAction extends BaseMasterAction{
                     logger.error("[ReportAction.printReportPayroll] Error when downloading ,", e1);
                 }
                 logger.error("[ReportAction.printReportPayroll] Error when print report ," + "[" + logId + "] Found problem when downloading data, please inform to your admin.", e);
-                addActionError("Error, " + "[code=" + logId + "] Found problem when downloading data, please inform to your admin.");
+                throw new GeneralBOException("Error, " + "[code=" + logId + "] Found problem when downloading data, please inform to your admin.");
             }
 
         } else {
             logger.error("[ReportAction.printReportPayroll] Error when print report kpi unit, data musim tanam is empty , Found problem when downloading data, please inform to your admin.");
-            addActionError("Error, Found problem when downloading data, list kpi unit is empty, please inform to your admin.");
+            throw new GeneralBOException("Error, Found problem when downloading data, list kpi unit is empty, please inform to your admin.");
         }
-
         logger.info("[ReportAction.printReportPayroll] end process <<<");
-
         return hasil;
     }
 
     public String printReportPayrollByBranch(){
-        logger.info("[ReportAction.printReportKPIUnit] start process >>>");
+        logger.info("[ReportAction.printReportPayrollByBranch] start process >>>");
         String branchId = getBranchId();
         Branch branch = new Branch();
         String bulan = getBulan();
         String tahun = getTahun();
         String tipe = getTipe();
-
         String hasil = "";
 
         if(tipe.equalsIgnoreCase("PR")){
@@ -2825,20 +2871,11 @@ public class PayrollAction extends BaseMasterAction{
                 BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
                 branch = branchBo.getBranchById(branchId,"Y");
             }catch( HibernateException e){
-
-            }
-            String logo ="";
-            if (branchId.equalsIgnoreCase("RS01")){
-                logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS01;
-            }else if (branchId.equalsIgnoreCase("RS02")){
-                logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS02;
-            }else if (branchId.equalsIgnoreCase("RS03")){
-                logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS03;
-            }else{
-                logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU;
+                throw new HibernateException(e.getMessage());
             }
             String stTanggal = CommonUtil.convertDateToString( new java.util.Date());
-            reportParams.put("urlLogo", logo);
+            reportParams.put("areaId",CommonUtil.userAreaName());
+            reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
             reportParams.put("branchId", branchId);
             reportParams.put("branchName", branch.getBranchName());
             reportParams.put("alamatSurat", branch.getAlamatSurat()+","+stTanggal);
@@ -2853,19 +2890,18 @@ public class PayrollAction extends BaseMasterAction{
                 try {
                     logId = payrollBoProxy.saveErrorMessage(e.getMessage(), "printReportPayrollByBranch");
                 } catch (GeneralBOException e1) {
-                    logger.error("[ReportAction.printReportKPIUnit] Error when downloading ,", e1);
+                    logger.error("[ReportAction.printReportPayrollByBranch] Error when downloading ,", e1);
+                    throw new GeneralBOException("[ReportAction.printReportPayrollByBranch] Error when downloading ,", e1);
                 }
-                logger.error("[ReportAction.printReportKPIUnit] Error when print report ," + "[" + logId + "] Found problem when downloading data, please inform to your admin.", e);
-                addActionError("Error, " + "[code=" + logId + "] Found problem when downloading data, please inform to your admin.");
+                logger.error("[ReportAction.printReportPayrollByBranch] Error when print report ," + "[" + logId + "] Found problem when downloading data, please inform to your admin.", e);
+                throw new GeneralBOException("Error, " + "[code=" + logId + "] Found problem when downloading data, please inform to your admin.");
             }
 
         } else {
-            logger.error("[ReportAction.printReportKPIUnit] Error when print report kpi unit, data musim tanam is empty , Found problem when downloading data, please inform to your admin.");
-            addActionError("Error, Found problem when downloading data, list kpi unit is empty, please inform to your admin.");
+            logger.error("[ReportAction.printReportPayrollByBranch] Error when print report kpi unit, data musim tanam is empty , Found problem when downloading data, please inform to your admin.");
+            throw new GeneralBOException("Error, Found problem when downloading data, list kpi unit is empty, please inform to your admin.");
         }
-
         logger.info("[ReportAction.printReportPayrollByBranch] end process <<<");
-
         return hasil;
     }
 
@@ -2929,22 +2965,22 @@ public class PayrollAction extends BaseMasterAction{
     public String printReportJubileum(){
         logger.info("[ReportAction.printReportPayrollJubileum] start process >>>");
         String payrollId = getId();
-        String kabidSdm = getKabidSdm();
-        if (("").equalsIgnoreCase(kabidSdm)){
-            kabidSdm = payrollBoProxy.getKabidSdm();
-        }
-        String tanggalAkhirMasaKerja=getTanggalAkhir();
-        String tanggalCetak=getTanggal();
-        String[] tgl = tanggalCetak.split("-");
-        String tglCetakFinal = tgl[0]+" "+CommonUtil.convertNumberToStringBulan(tgl[1])+" "+tgl[2];
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
 
         if (payrollId != null) {
-            reportParams.put("urlLogo", CommonConstant.URL_IMAGE_LOGO_REPORT);
+            Branch branch = new Branch();
+            try{
+                BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+                branch = branchBo.getBranchById(getBranchId(),"Y");
+            }catch( HibernateException e){
+                throw e;
+            }
+            reportParams.put("areaId",CommonUtil.userAreaName());
+            reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
             reportParams.put("titleReport", "PENETAPAN UANG JUBILEUM");
             reportParams.put("payrollId", payrollId);
-            reportParams.put("namaKabid", kabidSdm);
-            reportParams.put("tanggalAkhirMasaKerja", tanggalAkhirMasaKerja);
-            reportParams.put("tanggalCetak", tglCetakFinal);
+            reportParams.put("branchName", branch.getBranchName());
+            reportParams.put("date", CommonUtil.convertDateToString(new java.util.Date()));
 
             try {
                 preDownload();
@@ -10440,6 +10476,11 @@ public class PayrollAction extends BaseMasterAction{
             addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
             return ERROR;
         }
+        String branchId = CommonUtil.userBranchLogin();
+        if (("KP").equalsIgnoreCase(branchId)){
+            searchPayroll.setKantorPusat(true);
+        }
+        payroll=searchPayroll;
 
         logger.info("[PayrollAction.search] end process <<<");
 
@@ -10562,8 +10603,19 @@ public class PayrollAction extends BaseMasterAction{
     public String initForm() {
         logger.info("[PayrollAction.initForm] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
-
+        String branchId = CommonUtil.userBranchLogin();
+        Payroll data = new Payroll();
+        if (branchId!=null) {
+            data.setBranchId(branchId);
+            if (("KP").equalsIgnoreCase(branchId)){
+                data.setKantorPusat(true);
+            }
+        }else{
+            data.setBranchId("");
+        }
+        payroll=data;
         session.removeAttribute("listOfResult");
+        session.removeAttribute("listCekNip");
         logger.info("[PayrollAction.initForm] end process >>>");
         return INPUT;
     }
@@ -12019,6 +12071,24 @@ public class PayrollAction extends BaseMasterAction{
         session.setAttribute("detailPtt",pttList);
         return total.toString();
     }
+    public String deletePttSession(String tipePtt){
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<Ptt> pttList = new ArrayList<>();
+        List<Ptt> listOfResult = (List<Ptt>) session.getAttribute("detailPtt");
+        for (Ptt ptt : listOfResult){
+            if (ptt.getTipePttId().equalsIgnoreCase(tipePtt)){
+            }else{
+                pttList.add(ptt);
+            }
+        }
+        BigDecimal total = new BigDecimal(0);
+        for (Ptt ptt : pttList){
+            total = total.add(ptt.getNilaiPtt());
+        }
+        session.setAttribute("detailPtt",pttList);
+        return total.toString();
+    }
+
     public List<Ptt> getDetailPtt (){
         HttpSession session = ServletActionContext.getRequest().getSession();
         return (List<Ptt>) session.getAttribute("detailPtt");
@@ -12042,6 +12112,42 @@ public class PayrollAction extends BaseMasterAction{
         PayrollBo payrollBo = (PayrollBo) ctx.getBean("payrollBoProxy");
 
         return payrollBo.searchDetailPPhSeharusnya(nip,tahun,totalA,totalRlab,tunjDapen,tunjBpjsKs,tunjBpjsTk,iuranDapen,iuranBpjsKs,iuranBpjsTk,statusKelurga,jumlahAnak);
+    }
+
+    public void addUserCekToSession(String nip){
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<Payroll> cekNipList = new ArrayList<>();
+        List<Payroll> listOfResult = (List<Payroll>) session.getAttribute("listCekNip");
+        Payroll newData = new Payroll();
+        newData.setNip(nip);
+        if (listOfResult==null){
+            cekNipList.add(newData);
+        }else{
+            boolean dataSudahAda=false;
+            for (Payroll payroll : listOfResult){
+                if (payroll.getNip().equalsIgnoreCase(nip)){
+                    dataSudahAda=true;
+                }
+            }
+            if (dataSudahAda){
+            }else{
+                cekNipList.add(newData);
+            }
+        }
+        session.setAttribute("listCekNip",cekNipList);
+    }
+
+    public void deleteUserCekToSession(String nip){
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<Payroll> cekNipList = new ArrayList<>();
+        List<Payroll> listOfResult = (List<Payroll>) session.getAttribute("listCekNip");
+        for (Payroll payroll : listOfResult){
+            if (payroll.getNip().equalsIgnoreCase(nip)){
+            }else{
+                cekNipList.add(payroll);
+            }
+        }
+        session.setAttribute("listCekNip",cekNipList);
     }
 
     @Override

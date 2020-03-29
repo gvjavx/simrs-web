@@ -552,7 +552,6 @@
 
 <div id="modal-edit" class="modal fade" role="dialog">
     <div class="modal-dialog " style="width:100%">
-
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
@@ -883,18 +882,38 @@
                                                 "<th style='text-align: center; background-color:  #3c8dbc''>No </th>" +
                                                 "<th style='text-align: center; background-color:  #3c8dbc''>Nama PTT</th>" +
                                                 "<th style='text-align: center; background-color:  #3c8dbc''>Nilai</th>" +
+                                                "<th style='text-align: center; background-color:  #3c8dbc''>Delete</th>" +
                                                 "</tr></thead><tbody>";
                                             $.each(listdata, function (i, item) {
                                                 tmp_table += '<tr style="font-size: 12px; white-space: nowrap">' +
                                                     '<td align="left">' + (i+1) + '</td>' +
                                                     '<td align="left">' + item.tipePttName+ '</td>' +
                                                     '<td align="right">' + item.nilai+ '</td>' +
+                                                    '<td align="center">' +
+                                                    "<a href='javascript:;' class ='item-delete-ptt' data ='"+item.tipePttId+"'>" +
+                                                    "<img border='0' src='<s:url value='/pages/images/delete_task.png'/>'>"+
+                                                    '</a>' +
+                                                    '</td>' +
                                                     "</tr>";
                                             });
                                             tmp_table += "</tbody>";
                                             $('.tabelPtt').append(tmp_table);
                                         });
                                     }
+                                    $(document).ready(function(){
+                                        $('.tabelPtt').on('click', '.item-delete-ptt', function () {
+                                            if (confirm('Apakah anda ingin menghapus PTT ini ?')){
+                                                var tipePttId = $(this).attr('data');
+                                                dwr.engine.setAsync(false);
+                                                PayrollAction.deletePttSession(tipePttId,function(result) {
+                                                    alert("sukses menghapus PTT");
+                                                    $('#nilaiPtt').val(result);
+                                                    updateNilai("nilaiPtt", result);
+                                                    loadPtt();
+                                                });
+                                            }
+                                        });
+                                    })
                                     $('#btnDetailPtt').click(function(){
                                         loadPtt();
                                         $('#modal-ptt').find('.modal-title').text('Detail PTT');
@@ -1192,7 +1211,7 @@
                 </center>
             </div>
             <div class="modal-footer">
-                <a type="button" class="btn btn-success" id="btnRefreshLembur" >Refresh</a>
+                <%--<a type="button" class="btn btn-success" id="btnRefreshLembur" >Refresh</a>--%>
                 <a type="button" class="btn btn-default" data-dismiss="modal">Close</a>
             </div>
         </div>
@@ -3485,12 +3504,12 @@
     $('#btnSave').click(function(){
         var payrollId = document.getElementById("payrollId2").value;
         var nip = document.getElementById("nip").value;
-
+        var bulan = document.getElementById("bulan").value;
+        var tahun = document.getElementById("tahun").value;
         //Komponen A
         var tunjanganPeralihan = document.getElementById("tunjPeralihan").value;
         var pemondokan = document.getElementById("pemondokan").value;
         var komunikasi = document.getElementById("komunikasi").value;
-
 
         //komponen rincian potongan
         var kopkar = document.getElementById("kopkar").value;
@@ -3506,11 +3525,19 @@
         var tunjPph = document.getElementById("tunjPph").value;
         var pphGaji = document.getElementById("pphGaji1").value;
         var nilaiPtt = document.getElementById("nilaiPtt").value;
-        var totalPttSetahun = document.getElementById("totalPtt").value;
-        var pphSeharusnya = document.getElementById("pphSeharusnya").value;
-        var pph11Bulan = document.getElementById("pph11Bulan").value;
-        var selisihPph21 = document.getElementById("selisihPph").value;
         var totalPotLainLain = document.getElementById("totalPotonganLain").value;
+
+        var totalPttSetahun = "0";
+        var pphSeharusnya = "0";
+        var pph11Bulan = "0";
+        var selisihPph21 = "0";
+
+        if (bulan=="12"){
+            totalPttSetahun = document.getElementById("totalPtt").value;
+            pphSeharusnya = document.getElementById("pphSeharusnya").value;
+            pph11Bulan = document.getElementById("pph11Bulan").value;
+            selisihPph21 = document.getElementById("selisihPph").value;
+        }
 
         //komponen total
         var totalA = document.getElementById("totalA").value;
@@ -3530,7 +3557,7 @@
                 PayrollAction.saveEditData(payrollId, nip, tunjanganPeralihan,pemondokan,
                         komunikasi, kopkar, iuranSp, iuranPiikb,bankBri, bankMandiri, infaq, perkesDanObat,
                         listrik, iuranProfesi, potonganLain,
-                        flagJubileum, flagPensiun, tunjPph, pphGaji,nilaiPtt,totalA,totalB,totalC,gajiBersih,totalPttSetahun,pphSeharusnya,pph11Bulan,selisihPph21,totalPotLainLain, function(listdata) {
+                        flagJubileum, flagPensiun, tunjPph, pphGaji,nilaiPtt,totalA,totalB,totalC,gajiBersih,totalPttSetahun,pphSeharusnya,pph11Bulan,selisihPph21,totalPotLainLain,bulan,tahun, function(listdata) {
                             alert('Data Berhasil Dirubah');
                             $('#modal-edit').modal('hide');
                             $('#formEdit')[0].reset();
@@ -4176,7 +4203,7 @@
                     $('.detailPphGaji').show();
                     //$('.detailPphGaji').hide();
                     $('.detailLembur').hide();
-                    $('#tunjLain').attr('readonly', true);
+                    // $('#tunjLain').attr('readonly', true);
                     $('#tunjLain').attr('readonly', true);
                     $('#tunjPeralihan').attr('readonly', true);
                     $('#pemondokan').attr('readonly', true);
@@ -4231,13 +4258,12 @@
                 $('#tunjStruktural').val(listdata.tunjanganStruktural);
                 $('#tunjStrategis').val(listdata.tunjanganStrategis);
                 $('#tunjPeralihan').val(listdata.tunjanganPeralihan);
-                $('#tunjTambahan').val(listdata.tunjanganPeralihan);
+                $('#tunjTambahan').val(listdata.tunjanganTambahan);
                 $('#tunjLain').val(listdata.tunjanganLain);
                 $('#pemondokan').val(listdata.pemondokan);
                 $('#komunikasi').val(listdata.komunikasi);
                 $('#tambahanLain').val(listdata.tambahanLain);
                 $('#tunjLembur').val(listdata.tunjanganLembur);
-
 
                 //komponen B
                 //RLAB
@@ -4679,7 +4705,6 @@
     }
 
     window.loadDataModal = function(){
-        console.log("load data modal");
         //var payrollId = $(this).val().replace(/\n|\r/g, "");
         var payrollId = document.getElementById("payrollId").value;
         PayrollAction.getDetailEdit(payrollId, function(listdata){
@@ -4775,7 +4800,6 @@
 
     window.reloadDataModal = function(){
         var payrollId = document.getElementById("payrollId2").value;
-        console.log("load data modal");
 
         PayrollAction.reloadDetailEdit(payrollId, function(listdata){
             if(listdata.tipePegawai == "TP03" && listdata.strukturGaji != "G"){
@@ -5129,19 +5153,21 @@
         PayrollAction.searchTotalPPh11Bulan(nip,tahun, function(listdata) {
             tmp_table = "<thead style='font-size: 14px; color: white' ><tr class='active'>"+
                 "<th style='text-align: center; background-color:  #3c8dbc'>Bulan</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc'>Tipe</th>"+
                 "<th style='text-align: center; background-color:  #3c8dbc''>PPH</th>"+
                 "</tr></thead>";
             var i = i ;
             $.each(listdata, function (i, item) {
                 tmp_table += '<tr style="font-size: 12px;" ">' +
                     '<td align="center">' + item.bulan + '</td>' +
+                    '<td align="center">' + item.jenisPayroll + '</td>' +
                     '<td align="center">' + item.stNilai+ '</td>' +
                     "</tr>";
                 jumlah = item.stJumlahNilai;
             });
             tmp_table += '<tfoot >' +
                 '<tr style="font-size: 12px;">' +
-                '<td colspan = "1" style="text-align: center"> Jumlah PPh 11 Bulan</td>' +
+                '<td colspan = "2" style="text-align: center"> Jumlah PPh 11 Bulan</td>' +
                 '<td style="text-align: center">'+jumlah+'</td>' +
                 '</tr>' +
                 '</tfoot>';

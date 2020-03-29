@@ -402,7 +402,6 @@
                                         </table>
                                     </td>
                                 </tr>
-
                                 <tr>
                                     <td>
                                         <label class="control-label"><small>Bidang :</small></label>
@@ -1168,11 +1167,11 @@
                                         <table>
                                             <s:if test="isDelete()">
                                                 <input type="checkbox" id="supervisi" class="checkZakat" disabled onchange="cekSupervisi()" />
-                                                <s:textfield cssStyle="display: none" id="flagTunjSupervisi" name="biodata.flagTunjSupervisi"  />
+                                                <s:hidden id="flagTunjSupervisi" name="biodata.flagTunjSupervisi"  />
                                             </s:if>
                                             <s:else>
-                                                <input type="checkbox" id="supervisi" class="checkZakat" onchange="cekSupervisi()" />
-                                                <s:textfield cssStyle="display: none" id="flagTunjSupervisi" name="biodata.flagTunjSupervisi"  />
+                                                <input type="checkbox" id="supervisi" class="checkZakat" onchange="cekSupervisi()"  />
+                                                <s:hidden id="flagTunjSupervisi" name="biodata.flagTunjSupervisi"  />
                                             </s:else>
                                         </table>
                                     </td>
@@ -1185,11 +1184,11 @@
                                         <table>
                                             <s:if test="isDelete()">
                                                 <input type="checkbox" id="lokasi" class="checkZakat" disabled onchange="cekLokasi()" />
-                                                <s:textfield cssStyle="display: none" id="flagTunjLokasi" name="biodata.flagTunjLokasi"  />
+                                                <s:hidden id="flagTunjLokasi" name="biodata.flagTunjLokasi"  />
                                             </s:if>
                                             <s:else>
                                                 <input type="checkbox" id="lokasi" class="checkZakat" onchange="cekLokasi()" />
-                                                <s:textfield cssStyle="display: none" id="flagTunjLokasi" name="biodata.flagTunjLokasi"  />
+                                                <s:hidden id="flagTunjLokasi" name="biodata.flagTunjLokasi"  />
                                             </s:else>
                                         </table>
                                     </td>
@@ -1202,11 +1201,11 @@
                                         <table>
                                             <s:if test="isDelete()">
                                                 <input type="checkbox" id="siaga" class="checkZakat" disabled onchange="cekSiaga()" />
-                                                <s:textfield cssStyle="display: none" id="flagTunjSiaga" name="biodata.flagTunjSiaga"  />
+                                                <s:hidden id="flagTunjSiaga" name="biodata.flagTunjSiaga"  />
                                             </s:if>
                                             <s:else>
                                                 <input type="checkbox" id="siaga" class="checkZakat" onchange="cekSiaga()" />
-                                                <s:textfield cssStyle="display: none" id="flagTunjSiaga" name="biodata.flagTunjSiaga"  />
+                                                <s:hidden id="flagTunjSiaga" name="biodata.flagTunjSiaga"  />
                                             </s:else>
                                         </table>
                                     </td>
@@ -1223,7 +1222,7 @@
                                             </s:if>
                                             <s:else>
                                                 <input type="checkbox" id="profesional" class="checkZakat" onchange="cekProfesional()" />
-                                                <s:textfield cssStyle="display: none" id="flagTunjProfesional" name="biodata.flagTunjProfesional"  />
+                                                <s:hidden id="flagTunjProfesional" name="biodata.flagTunjProfesional"  />
                                             </s:else>
                                         </table>
                                     </td>
@@ -2636,7 +2635,36 @@
         } else {
             document.getElementById("aktif").checked = false;
         }
-
+        var aktif = document.getElementById("flagAktif").value;
+        if (aktif == "Y") {
+            document.getElementById("aktif").checked = true;
+        } else {
+            document.getElementById("aktif").checked = false;
+        }
+        var flagTunjSupervisi = document.getElementById("flagTunjSupervisi").value;
+        if (flagTunjSupervisi == "Y") {
+            document.getElementById("supervisi").checked = true;
+        } else {
+            document.getElementById("supervisi").checked = false;
+        }
+        var flagTunjLokasi = document.getElementById("flagTunjLokasi").value;
+        if (flagTunjLokasi == "Y") {
+            document.getElementById("lokasi").checked = true;
+        } else {
+            document.getElementById("lokasi").checked = false;
+        }
+        var flagTunjSiaga = document.getElementById("flagTunjSiaga").value;
+        if (flagTunjSiaga == "Y") {
+            document.getElementById("siaga").checked = true;
+        } else {
+            document.getElementById("siaga").checked = false;
+        }
+        var flagTunjProfesional = document.getElementById("flagTunjProfesional").value;
+        if (flagTunjProfesional == "Y") {
+            document.getElementById("profesional").checked = true;
+        } else {
+            document.getElementById("profesional").checked = false;
+        }
 
         function loadStudy(nip) {
             $('.studyTable').find('tbody').remove();
@@ -4680,7 +4708,7 @@
 
 
     window.cekSupervisi = function () {
-        if ($('#supervisi').is(":checked")) {
+        if (document.getElementById("supervisi").checked == true) {
             $("#flagTunjSupervisi").val("Y");
         } else {
             $("#flagTunjSupervisi").val("N");
@@ -4688,7 +4716,7 @@
     }
 
     window.cekLokasi = function () {
-        if ($('#lokasi').is(":checked")) {
+        if (document.getElementById("lokasi").checked == true) {
             $("#flagTunjLokasi").val("Y");
         } else {
             $("#flagTunjLokasi").val("N");
@@ -4696,14 +4724,14 @@
     }
 
     window.cekSiaga = function () {
-        if ($('#siaga').is(":checked")) {
+        if (document.getElementById("siaga").checked == true) {
             $("#flagTunjSiaga").val("Y");
         } else {
             $("#flagTunjSiaga").val("N");
         }
     }
     window.cekProfesional = function () {
-        if ($('#profesional').is(":checked")) {
+        if (document.getElementById("profesional").checked == true) {
             $("#flagTunjProfesional").val("Y");
         } else {
             $("#flagTunjProfesional").val("N");

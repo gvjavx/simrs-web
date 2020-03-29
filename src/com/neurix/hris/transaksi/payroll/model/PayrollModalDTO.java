@@ -10,6 +10,7 @@ public class PayrollModalDTO {
     private String jenisPtt;
     private BigDecimal jumlahNilai;
     private String stJumlahNilai;
+    private String jenisPayroll;
 
     //modal pph seharusnya
     private BigDecimal totPendBruto;
@@ -35,6 +36,14 @@ public class PayrollModalDTO {
     private String stPtkp;
     private String stPkp;
     private String stPphSeharusnya;
+
+    public String getJenisPayroll() {
+        return jenisPayroll;
+    }
+
+    public void setJenisPayroll(String jenisPayroll) {
+        this.jenisPayroll = jenisPayroll;
+    }
 
     public BigDecimal getTotPendBruto() {
         return totPendBruto;

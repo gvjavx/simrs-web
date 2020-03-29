@@ -112,7 +112,18 @@
         <property name="flagMess">
             <column name="flag_mess" sql-type="varchar" length="1" />
         </property>
-
+        <property name="flagTunjanganSupervisi">
+            <column name="flag_tunjangan_supervisi" sql-type="varchar" length="1" />
+        </property>
+        <property name="flagTunjanganLokasi">
+            <column name="flag_tunjangan_lokasi" sql-type="varchar" length="1" />
+        </property>
+        <property name="flagTunjanganSiaga">
+            <column name="flag_tunjangan_siaga" sql-type="varchar" length="1" />
+        </property>
+        <property name="flagTunjanganProfesional">
+            <column name="flag_tunjangan_profesional" sql-type="varchar" length="1" />
+        </property>
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />
         </property>

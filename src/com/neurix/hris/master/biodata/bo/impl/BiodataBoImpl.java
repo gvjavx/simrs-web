@@ -506,6 +506,40 @@ public class BiodataBoImpl implements BiodataBo {
                         personilPositionDao.updateAndSave(itPerson);
                     }
                 }
+
+                List<ItTunjLainPegawaiEntity> tunjLainPegawaiEntityList = tunjLainPegawaiDao.getAllData(bean.getNip());
+                if (tunjLainPegawaiEntityList!=null){
+                    for (ItTunjLainPegawaiEntity itTunjLainPegawaiEntity : tunjLainPegawaiEntityList){
+                        if (bean.getFlagTunjSupervisi().equalsIgnoreCase("Y")){
+                            itTunjLainPegawaiEntity.setFlagTunjSupervisi("Y");
+                        }else{
+                            itTunjLainPegawaiEntity.setFlagTunjSupervisi("N");
+                        }
+                        if (bean.getFlagTunjLokasi().equalsIgnoreCase("Y")){
+                            itTunjLainPegawaiEntity.setFlagTunjLokasi("Y");
+                        }else{
+                            itTunjLainPegawaiEntity.setFlagTunjLokasi("N");
+                        }
+                        if (bean.getFlagTunjSiaga().equalsIgnoreCase("Y")){
+                            itTunjLainPegawaiEntity.setFlagTunjSiaga("Y");
+                        }else{
+                            itTunjLainPegawaiEntity.setFlagTunjSiaga("N");
+                        }
+                        if (bean.getFlagTunjProfesional().equalsIgnoreCase("Y")){
+                            itTunjLainPegawaiEntity.setFlagTunjProfesional("Y");
+                        }else{
+                            itTunjLainPegawaiEntity.setFlagTunjProfesional("N");
+                        }
+
+                        itTunjLainPegawaiEntity.setFlag(bean.getFlag());
+                        itTunjLainPegawaiEntity.setAction(bean.getAction());
+                        itTunjLainPegawaiEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                        itTunjLainPegawaiEntity.setLastUpdate(bean.getLastUpdate());
+
+                        tunjLainPegawaiDao.updateAndSave(itTunjLainPegawaiEntity);
+                    }
+                }
+
                 try {
                     // Update into database
                     biodataDao.updateAndSave(imBiodataEntity);
@@ -619,12 +653,6 @@ public class BiodataBoImpl implements BiodataBo {
                 imBiodataEntity.setMasaKerjaGolongan(Integer.parseInt(bean.getStMasaKerjaGol()));
                 imBiodataEntity.setGolonganDapenId(bean.getGolonganDapenId());
 
-                //Tanggal Pensiun Lama
-            /*DateTime tglLahir = new DateTime(bean.getTanggalLahir());
-            tglLahir = tglLahir.plusYears(55);
-            String strTglLahir[] = CommonUtil.convertDateToString(bean.getTanggalLahir()).split("-");
-            imBiodataEntity.setTanggalPensiun(CommonUtil.convertStringToDate((strTglLahir[0]) + "-" + strTglLahir[1] + "-" + strTglLahir[2]));*/
-
                 imBiodataEntity.setGender(bean.getGender());
                 imBiodataEntity.setJumlahAnak(bean.getJumlahAnak());
                 imBiodataEntity.setNpwp(bean.getNpwp());
@@ -660,7 +688,6 @@ public class BiodataBoImpl implements BiodataBo {
                     logger.error("[BiodataBoImpl.saveAdd] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when saving new data Biodata, please info to your admin..." + e.getMessage());
                 }
-
 
                 //save flag tunjangan2 jabatan
                 String idTunjLain = tunjLainPegawaiDao.getNextTunjLain();
@@ -1227,6 +1254,16 @@ public class BiodataBoImpl implements BiodataBo {
                     returnBiodata.setNamaBank(personalEntity.getNamaBank());
                     returnBiodata.setNoRekBank(personalEntity.getNoRekBank());
                     returnBiodata.setCabangBank(personalEntity.getCabangBank());
+
+                    List<ItTunjLainPegawaiEntity> tunjLainPegawaiEntityList = tunjLainPegawaiDao.getAllData(personalEntity.getNip());
+                    if (tunjLainPegawaiEntityList!=null){
+                        for (ItTunjLainPegawaiEntity itTunjLainPegawaiEntity : tunjLainPegawaiEntityList){
+                            returnBiodata.setFlagTunjSupervisi(itTunjLainPegawaiEntity.getFlagTunjSupervisi());
+                            returnBiodata.setFlagTunjLokasi(itTunjLainPegawaiEntity.getFlagTunjLokasi());
+                            returnBiodata.setFlagTunjSiaga(itTunjLainPegawaiEntity.getFlagTunjSiaga());
+                            returnBiodata.setFlagTunjProfesional(itTunjLainPegawaiEntity.getFlagTunjProfesional());
+                        }
+                    }
 
                     returnBiodata.setCreatedWho(personalEntity.getCreatedWho());
                     returnBiodata.setCreatedDate(personalEntity.getCreatedDate());

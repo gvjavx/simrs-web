@@ -157,411 +157,422 @@
         <section class="content-header">
             <h1>
                 Add Payroll
-                <small>e-HEALTH</small>
+                <small>GO-MEDSYS</small>
             </h1>
         </section>
-
-
         <!-- Main content -->
         <section class="content">
-            <table width="100%" align="center">
-                <tr>
-                    <td align="center">
-                        <s:form id="payrollForm" method="post"  theme="simple" namespace="/payroll" action="save_payroll.action" cssClass="well form-horizontal">
-
-                            <s:hidden name="addOrEdit"/>
-                            <s:hidden name="delete"/>
-
-                            <table>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title"><i class="fa fa-filter"></i>Add Payroll</h3>
+                        </div>
+                        <div class="box-body">
+                            <table width="100%" align="center">
                                 <tr>
-                                    <td width="10%" align="center">
-                                        <%@ include file="/pages/common/message.jsp" %>
-                                    </td>
-                                </tr>
-                            </table>
+                                    <td align="center">
+                                        <s:form id="payrollForm" method="post"  theme="simple" namespace="/payroll" action="save_payroll.action" cssClass="form-horizontal">
 
-                            <table >
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td>
-                                        <label class="control-label"><small>Unit :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                                            <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="payroll.branchId"
-                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                                        </table>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <input type="checkbox" id="checkPayroll" class="checkApprove" value="payroll"
-                                               onchange="changePayroll(this)">
-                                    </td>
-                                    <td></td>
-                                    <td>
-                                        <label class="control-label"><small>Payroll :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:select list="#{'01':'Januari', '02' : 'Februari', '03':'Maret', '04':'April', '05':'Mei', '06':'Juni', '07':'Juli',
-                                '08': 'Agustus', '09' : 'September', '10' : 'Oktober', '11' : 'November', '12' : 'Desember'}"
-                                                      id="bulanPayroll" name="payroll.bulan" onchange="changeBulan(this)"
-                                                      headerKey="0" headerValue="Bulan" cssClass="form-control" />
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:select list="#{'2017':'2017', '2018' : '2018', '2019':'2019', '2020':'2020', '2021':'2021', '2022':'2022', '2023':'2023'}"
-                                                      id="tahunPayroll" name="payroll.tahun" onchange="changeTahun(this)"
-                                                      headerKey="0" headerValue="Tahun" cssClass="form-control" />
-                                        </table>
-                                    </td>
-                                    <td style="display: none">
-                                        <table>
-                                            <s:textfield  id="flagPayroll" name="payroll.flagPayroll" required="false"
-                                                          cssClass="form-control" value="Y"/>
-                                        </table>
-                                    </td >
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <input type="checkbox" id="checkCutiTahunan" class="checkApprove" value="cutiTahunan"
-                                               onchange="changeCutiTahunan(this)">
-                                    </td>
-                                    <td></td>
-                                    <td>
-                                        <label class="control-label"><small>Cuti Tahunan :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:select list="#{'01':'Januari', '02' : 'Februari', '03':'Maret', '04':'April', '05':'Mei', '06':'Juni', '07':'Juli',
-                                '08': 'Agustus', '09' : 'September', '10' : 'Oktober', '11' : 'November', '12' : 'Desember'}"
-                                                      id="bulanCutiTahunan" disabled="true"
-                                                      headerKey="0" headerValue="Bulan" cssClass="form-control" />
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:select list="#{'2017':'2017', '2018' : '2018', '2019':'2019', '2020':'2020', '2021':'2021', '2022':'2022', '2023':'2023'}"
-                                                      id="tahunCutiTahunan" disabled="true"
-                                                      headerKey="0" headerValue="Tahun" cssClass="form-control" />
-                                        </table>
-                                    </td>
-                                    <td style="display: none">
-                                        <table>
-                                            <s:textfield  id="flagCutiTahunan" name="payroll.flagCutiTahunan" required="false"
-                                                          cssClass="form-control" value="N"/>
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <input type="checkbox" id="checkCutiPanjang" class="checkApprove" value="cutiPanjang"
-                                               onchange="changeCutiPanjang(this)">
-                                    </td>
-                                    <td></td>
-                                    <td>
-                                        <label class="control-label"><small>Cuti Panjang :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:select list="#{'01':'Januari', '02' : 'Februari', '03':'Maret', '04':'April', '05':'Mei', '06':'Juni', '07':'Juli',
-                                '08': 'Agustus', '09' : 'September', '10' : 'Oktober', '11' : 'November', '12' : 'Desember'}"
-                                                      id="bulanCutiPanjang" disabled="true"
-                                                      headerKey="0" headerValue="Bulan" cssClass="form-control" />
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:select list="#{'2017':'2017', '2018' : '2018', '2019':'2019', '2020':'2020', '2021':'2021', '2022':'2022', '2023':'2023'}"
-                                                      id="tahunCutiPanjang" disabled="true"
-                                                      headerKey="0" headerValue="Tahun" cssClass="form-control" />
-                                        </table>
-                                    </td>
-                                    <td style="display: none">
-                                        <table>
-                                            <s:textfield  id="flagCutiPanjang" name="payroll.flagCutiPanjang" required="false"
-                                                          cssClass="form-control" value="N"/>
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <input type="checkbox" id="checkThr" class="checkApprove" value="thr"
-                                               onchange="changeThr(this)" >
-                                    </td>
-                                    <td></td>
-                                    <td>
-                                        <label class="control-label"><small>THR :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:select list="#{'01':'Januari', '02' : 'Februari', '03':'Maret', '04':'April', '05':'Mei', '06':'Juni', '07':'Juli',
-                                '08': 'Agustus', '09' : 'September', '10' : 'Oktober', '11' : 'November', '12' : 'Desember'}"
-                                                      id="bulanThr" name="department.flag" disabled="true"
-                                                      headerKey="0" headerValue="Bulan" cssClass="form-control" />
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:select list="#{'2017':'2017', '2018' : '2018', '2019':'2019', '2020':'2020', '2021':'2021', '2022':'2022', '2023':'2023'}"
-                                                      id="tahunThr" name="department.flag" disabled="true"
-                                                      headerKey="0" headerValue="Tahun" cssClass="form-control" />
-                                        </table>
-                                    </td>
-                                    <td style="display: none">
-                                        <table>
-                                            <s:textfield  id="flagThr" name="payroll.flagThr" required="false"
-                                                          cssClass="form-control" value="N"/>
-                                        </table>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <input type="checkbox" id="checkJasprod" class="checkApprove" value="jasprod"
-                                               onchange="changeJasprod(this)">
-                                    </td>
-                                    <td></td>
-                                    <td>
-                                        <label class="control-label"><small>Jasopr :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:select list="#{'01':'Januari', '02' : 'Februari', '03':'Maret', '04':'April', '05':'Mei', '06':'Juni', '07':'Juli',
-                                '08': 'Agustus', '09' : 'September', '10' : 'Oktober', '11' : 'November', '12' : 'Desember'}"
-                                                      id="bulanJasprod" disabled="true"
-                                                      headerKey="0" headerValue="Bulan" cssClass="form-control" />
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:select list="#{'2017':'2017', '2018' : '2018', '2019':'2019', '2020':'2020', '2021':'2021', '2022':'2022', '2023':'2023'}"
-                                                      id="tahunJasprod" disabled="true"
-                                                      headerKey="0" headerValue="Tahun" cssClass="form-control" />
-                                        </table>
-                                    </td>
-                                    <td style="display: none">
-                                        <table>
-                                            <s:textfield  id="flagJasprod" name="payroll.flagJasprod" required="false"
-                                                          cssClass="form-control" value="N"/>
-                                        </table>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <input type="checkbox" id="checkJubileum" class="checkApprove" value="jubileum"
-                                               onchange="changeJubileum(this)">
-                                    </td>
-                                    <td></td>
-                                    <td>
-                                        <label class="control-label"><small>PMP :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:select list="#{'01':'Januari', '02' : 'Februari', '03':'Maret', '04':'April', '05':'Mei', '06':'Juni', '07':'Juli',
-                                '08': 'Agustus', '09' : 'September', '10' : 'Oktober', '11' : 'November', '12' : 'Desember'}"
-                                                      id="bulanJubileum" disabled="true"
-                                                      headerKey="0" headerValue="Bulan" cssClass="form-control" />
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:select list="#{'2017':'2017', '2018' : '2018', '2019':'2019', '2020':'2020', '2021':'2021', '2022':'2022', '2023':'2023'}"
-                                                      id="tahunJubileum" disabled="true"
-                                                      headerKey="0" headerValue="Tahun" cssClass="form-control" />
-                                        </table>
-                                    </td>
-                                    <td style="display: none">
-                                        <table>
-                                            <s:textfield  id="flagJubileum" name="payroll.flagJubileum" required="false"
-                                                          cssClass="form-control" value="N"/>
-                                        </table>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <input type="checkbox" id="checkPesangon" class="checkApprove" value="pesangon"
-                                               onchange="changePesangon(this)">
-                                    </td>
-                                    <td></td>
-                                    <td>
-                                        <label class="control-label"><small>SHT :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:select list="#{'01':'Januari', '02' : 'Februari', '03':'Maret', '04':'April', '05':'Mei', '06':'Juni', '07':'Juli',
-                                '08': 'Agustus', '09' : 'September', '10' : 'Oktober', '11' : 'November', '12' : 'Desember'}"
-                                                      id="bulanPesangon" disabled="true"
-                                                      headerKey="0" headerValue="Bulan" cssClass="form-control" />
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:select list="#{'2017':'2017', '2018' : '2018', '2019':'2019', '2020':'2020', '2021':'2021', '2022':'2022', '2023':'2023'}"
-                                                      id="tahunPesangon" disabled="true"
-                                                      headerKey="0" headerValue="Tahun" cssClass="form-control" />
-                                        </table>
-                                    </td>
-                                    <td style="display: none">
-                                        <table>
-                                            <s:textfield  id="flagPensiun" name="payroll.flagPensiun" required="false"
-                                                          cssClass="form-control" value="N"/>
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <input type="checkbox" id="checkInsentif" class="checkApprove" value="jasprod"
-                                               onchange="changeInsentif(this)">
-                                    </td>
-                                    <td></td>
-                                    <td>
-                                        <label class="control-label"><small>Insentif :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:select list="#{'01':'Januari', '02' : 'Februari', '03':'Maret', '04':'April', '05':'Mei', '06':'Juni', '07':'Juli',
-                                '08': 'Agustus', '09' : 'September', '10' : 'Oktober', '11' : 'November', '12' : 'Desember'}"
-                                                      id="bulanInsentif" disabled="true"
-                                                      headerKey="0" headerValue="Bulan" cssClass="form-control" />
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:select list="#{'2017':'2017', '2018' : '2018', '2019':'2019', '2020':'2020', '2021':'2021', '2022':'2022', '2023':'2023'}"
-                                                      id="tahunInsentif" disabled="true"
-                                                      headerKey="0" headerValue="Tahun" cssClass="form-control" />
-                                        </table>
-                                    </td>
-                                    <td style="display: none">
-                                        <table>
-                                            <s:textfield  id="flagInsentif" name="payroll.flagInsentif" required="false"
-                                                          cssClass="form-control" value="N"/>
-                                        </table>
-                                    </td>
-                                </tr>
-
-
-                            </table>
-
-
-
-                            <br>
-
-                            <div id="actions" class="form-actions">
-                                <table align="center">
-                                    <tr>
-                                        <td>
-                                            <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="payrollForm" id="save" name="save"
-                                                       onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog"
-                                                       onSuccessTopics="gantiHalaman" onErrorTopics="errorDialogSearch" >
-                                                <i class="fa fa-search"></i>
-                                                Search
-                                            </sj:submit>
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="add_payroll.action"/>'">
-                                                <i class="fa fa-refresh"></i> Reset
-                                            </button>
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-default" onclick="window.location.href='<s:url action="initForm_payroll.action"/>'">
-                                                <i class="fa fa-close"></i> Cancel
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-
-                            <br>
-
-                            <center>
-                                <table id="showdata" width="100%">
-                                    <tr>
-                                        <td align="center">
-                                            <table style="width: 100%;" class="sppdPersonTable table table-bordered">
-                                            </table>
-                                        </td>
-                                    </tr>
-                                </table>
-
-                            </center>
-
-                            <div id="actions" class="form-actions">
-                                <table>
-                                    <tr>
-                                            <%--<div id="crud">--%>
-                                        <td>
+                                            <s:hidden name="addOrEdit"/>
+                                            <s:hidden name="delete"/>
                                             <table>
-                                                <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"
-                                                           resizable="false"
-                                                           height="350" width="600" autoOpen="false" title="Searching ...">
-                                                    Please don't close this window, server is processing your request ...
-                                                    </br>
-                                                    </br>
-                                                    </br>
-                                                    <center>
-                                                        <img border="0" src="<s:url value="/pages/images/indicator-read.gif"/>" name="image_indicator_write">
-                                                    </center>
-                                                </sj:dialog>
+                                                <tr>
+                                                    <td width="10%" align="center">
+                                                        <%@ include file="/pages/common/message.jsp" %>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <table>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>
+                                                        <label class="control-label"><small>Unit :</small></label>
+                                                    </td>
+                                                    <td>
+                                                        <table>
+                                                            <s:if test="%{payroll.kantorPusat}">
+                                                                <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                                                <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="payroll.branchId"
+                                                                          listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                            </s:if>
+                                                            <s:else>
+                                                                <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                                                <s:select list="#initComboBranch.listOfComboBranch" id="unitTmp" name="payroll.branchId" disabled="true"
+                                                                          listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                                <s:hidden id="branchId" name="payroll.branchId" />
+                                                            </s:else>
+                                                        </table>
+                                                    </td>
+                                                </tr>
 
-                                                <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false"
-                                                           height="200" width="400" autoOpen="false" title="Infomation Dialog"
-                                                           buttons="{
+                                                <tr>
+                                                    <td>
+                                                        <input type="checkbox" id="checkPayroll" class="checkApprove" value="payroll"
+                                                               onchange="changePayroll(this)">
+                                                    </td>
+                                                    <td></td>
+                                                    <td>
+                                                        <label class="control-label"><small>Payroll :</small></label>
+                                                    </td>
+                                                    <td>
+                                                        <table>
+                                                            <s:select list="#{'01':'Januari', '02' : 'Februari', '03':'Maret', '04':'April', '05':'Mei', '06':'Juni', '07':'Juli',
+                                '08': 'Agustus', '09' : 'September', '10' : 'Oktober', '11' : 'November', '12' : 'Desember'}"
+                                                                      id="bulanPayroll" name="payroll.bulan" onchange="changeBulan(this)"
+                                                                      headerKey="0" headerValue="Bulan" cssClass="form-control" />
+                                                        </table>
+                                                    </td>
+                                                    <td>
+                                                        <table>
+                                                            <s:action id="comboPeriode" namespace="/rekruitmen" name="initComboPeriodeTahunSekarang10_rekruitmen"/>
+                                                            <s:select cssClass="form-control" list="#comboPeriode.listOfComboPeriode" id="tahunPayroll" onchange="changeTahun(this)"
+                                                                      name="payroll.tahun" required="true" headerKey=""
+                                                                      headerValue="[Select one]"/>
+                                                        </table>
+                                                    </td>
+                                                    <script>
+                                                        var dt = new Date();
+                                                        $('#bulanPayroll').val(("0" + (dt.getMonth() + 1)).slice(-2));
+                                                        $('#tahunPayroll').val(dt.getFullYear());
+                                                        $(document).ready(function(){
+                                                            $('#bulanCutiTahunan').val(("0" + (dt.getMonth() + 1)).slice(-2)).change();
+                                                            $('#bulanThr').val(("0" + (dt.getMonth() + 1)).slice(-2)).change();
+                                                            $('#bulanCutiPanjang').val(("0" + (dt.getMonth() + 1)).slice(-2)).change();
+                                                            $('#bulanJasprod').val(("0" + (dt.getMonth() + 1)).slice(-2)).change();
+                                                            $('#bulanJubileum').val(("0" + (dt.getMonth() + 1)).slice(-2)).change();
+                                                            $('#bulanPesangon').val(("0" + (dt.getMonth() + 1)).slice(-2)).change();
+                                                            $('#bulanInsentif').val(("0" + (dt.getMonth() + 1)).slice(-2)).change();
+                                                            $('#tahunCutiTahunan').val(dt.getFullYear()).change();
+                                                            $('#tahunCutiPanjang').val(dt.getFullYear()).change();
+                                                            $('#tahunThr').val(dt.getFullYear()).change();
+                                                            $('#tahunJasprod').val(dt.getFullYear()).change();
+                                                            $('#tahunJubileum').val(dt.getFullYear()).change();
+                                                            $('#tahunPesangon').val(dt.getFullYear()).change();
+                                                            $('#tahunInsentif').val(dt.getFullYear()).change();
+                                                        })
+                                                    </script>
+                                                    <td style="display: none">
+                                                        <table>
+                                                            <s:textfield  id="flagPayroll" name="payroll.flagPayroll" required="false"
+                                                                          cssClass="form-control" value="Y"/>
+                                                        </table>
+                                                    </td >
+                                                </tr>
+
+                                                <tr>
+                                                    <td>
+                                                        <input type="checkbox" id="checkCutiTahunan" class="checkApprove" value="cutiTahunan"
+                                                               onchange="changeCutiTahunan(this)">
+                                                    </td>
+                                                    <td></td>
+                                                    <td>
+                                                        <label class="control-label"><small>Cuti Tahunan :</small></label>
+                                                    </td>
+                                                    <td>
+                                                        <table>
+                                                            <s:select list="#{'01':'Januari', '02' : 'Februari', '03':'Maret', '04':'April', '05':'Mei', '06':'Juni', '07':'Juli',
+                                '08': 'Agustus', '09' : 'September', '10' : 'Oktober', '11' : 'November', '12' : 'Desember'}"
+                                                                      id="bulanCutiTahunan" disabled="true"
+                                                                      headerKey="0" headerValue="Bulan" cssClass="form-control" />
+                                                        </table>
+                                                    </td>
+                                                    <td>
+                                                        <table>
+                                                            <s:action id="comboPeriode" namespace="/rekruitmen" name="initComboPeriodeTahunSekarang10_rekruitmen"/>
+                                                            <s:select cssClass="form-control" list="#comboPeriode.listOfComboPeriode" id="tahunCutiTahunan" headerKey="" disabled="true"
+                                                                      headerValue="[Select one]"/>
+                                                        </table>
+                                                    </td>
+                                                    <td style="display: none">
+                                                        <table>
+                                                            <s:textfield  id="flagCutiTahunan" name="payroll.flagCutiTahunan" required="false"
+                                                                          cssClass="form-control" value="N"/>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <input type="checkbox" id="checkCutiPanjang" class="checkApprove" value="cutiPanjang"
+                                                               onchange="changeCutiPanjang(this)">
+                                                    </td>
+                                                    <td></td>
+                                                    <td>
+                                                        <label class="control-label"><small>Cuti Panjang :</small></label>
+                                                    </td>
+                                                    <td>
+                                                        <table>
+                                                            <s:select list="#{'01':'Januari', '02' : 'Februari', '03':'Maret', '04':'April', '05':'Mei', '06':'Juni', '07':'Juli',
+                                '08': 'Agustus', '09' : 'September', '10' : 'Oktober', '11' : 'November', '12' : 'Desember'}"
+                                                                      id="bulanCutiPanjang" disabled="true"
+                                                                      headerKey="0" headerValue="Bulan" cssClass="form-control" />
+                                                        </table>
+                                                    </td>
+                                                    <td>
+                                                        <table>
+                                                            <s:action id="comboPeriode" namespace="/rekruitmen" name="initComboPeriodeTahunSekarang10_rekruitmen"/>
+                                                            <s:select cssClass="form-control" list="#comboPeriode.listOfComboPeriode" id="tahunCutiPanjang" headerKey="" disabled="true"
+                                                                      headerValue="[Select one]"/>
+                                                        </table>
+                                                    </td>
+                                                    <td style="display: none">
+                                                        <table>
+                                                            <s:textfield  id="flagCutiPanjang" name="payroll.flagCutiPanjang" required="false"
+                                                                          cssClass="form-control" value="N"/>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <input type="checkbox" id="checkThr" class="checkApprove" value="thr"
+                                                               onchange="changeThr(this)" >
+                                                    </td>
+                                                    <td></td>
+                                                    <td>
+                                                        <label class="control-label"><small>THR :</small></label>
+                                                    </td>
+                                                    <td>
+                                                        <table>
+                                                            <s:select list="#{'01':'Januari', '02' : 'Februari', '03':'Maret', '04':'April', '05':'Mei', '06':'Juni', '07':'Juli',
+                                '08': 'Agustus', '09' : 'September', '10' : 'Oktober', '11' : 'November', '12' : 'Desember'}"
+                                                                      id="bulanThr" name="department.flag" disabled="true"
+                                                                      headerKey="0" headerValue="Bulan" cssClass="form-control" />
+                                                        </table>
+                                                    </td>
+                                                    <td>
+                                                        <table>
+                                                            <s:action id="comboPeriode" namespace="/rekruitmen" name="initComboPeriodeTahunSekarang10_rekruitmen"/>
+                                                            <s:select cssClass="form-control" list="#comboPeriode.listOfComboPeriode" id="tahunThr" headerKey="" disabled="true"
+                                                                      headerValue="[Select one]"/>
+                                                        </table>
+                                                    </td>
+                                                    <td style="display: none">
+                                                        <table>
+                                                            <s:textfield  id="flagThr" name="payroll.flagThr" required="false"
+                                                                          cssClass="form-control" value="N"/>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>
+                                                        <input type="checkbox" id="checkJasprod" class="checkApprove" value="jasprod"
+                                                               onchange="changeJasprod(this)">
+                                                    </td>
+                                                    <td></td>
+                                                    <td>
+                                                        <label class="control-label"><small>Jasopr :</small></label>
+                                                    </td>
+                                                    <td>
+                                                        <table>
+                                                            <s:select list="#{'01':'Januari', '02' : 'Februari', '03':'Maret', '04':'April', '05':'Mei', '06':'Juni', '07':'Juli',
+                                '08': 'Agustus', '09' : 'September', '10' : 'Oktober', '11' : 'November', '12' : 'Desember'}"
+                                                                      id="bulanJasprod" disabled="true"
+                                                                      headerKey="0" headerValue="Bulan" cssClass="form-control" />
+                                                        </table>
+                                                    </td>
+                                                    <td>
+                                                        <table>
+                                                            <s:action id="comboPeriode" namespace="/rekruitmen" name="initComboPeriodeTahunSekarang10_rekruitmen"/>
+                                                            <s:select cssClass="form-control" list="#comboPeriode.listOfComboPeriode" id="tahunJasprod" headerKey="" disabled="true"
+                                                                      headerValue="[Select one]"/>
+                                                        </table>
+                                                    </td>
+                                                    <td style="display: none">
+                                                        <table>
+                                                            <s:textfield  id="flagJasprod" name="payroll.flagJasprod" required="false"
+                                                                          cssClass="form-control" value="N"/>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>
+                                                        <input type="checkbox" id="checkJubileum" class="checkApprove" value="jubileum"
+                                                               onchange="changeJubileum(this)">
+                                                    </td>
+                                                    <td></td>
+                                                    <td>
+                                                        <label class="control-label"><small>PMP :</small></label>
+                                                    </td>
+                                                    <td>
+                                                        <table>
+                                                            <s:select list="#{'01':'Januari', '02' : 'Februari', '03':'Maret', '04':'April', '05':'Mei', '06':'Juni', '07':'Juli',
+                                '08': 'Agustus', '09' : 'September', '10' : 'Oktober', '11' : 'November', '12' : 'Desember'}"
+                                                                      id="bulanJubileum" disabled="true"
+                                                                      headerKey="0" headerValue="Bulan" cssClass="form-control" />
+                                                        </table>
+                                                    </td>
+                                                    <td>
+                                                        <table>
+                                                            <s:action id="comboPeriode" namespace="/rekruitmen" name="initComboPeriodeTahunSekarang10_rekruitmen"/>
+                                                            <s:select cssClass="form-control" list="#comboPeriode.listOfComboPeriode" id="tahunJubileum" headerKey="" disabled="true"
+                                                                      headerValue="[Select one]"/>
+                                                        </table>
+                                                    </td>
+                                                    <td style="display: none">
+                                                        <table>
+                                                            <s:textfield  id="flagJubileum" name="payroll.flagJubileum" required="false"
+                                                                          cssClass="form-control" value="N"/>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>
+                                                        <input type="checkbox" id="checkPesangon" class="checkApprove" value="pesangon"
+                                                               onchange="changePesangon(this)">
+                                                    </td>
+                                                    <td></td>
+                                                    <td>
+                                                        <label class="control-label"><small>SHT :</small></label>
+                                                    </td>
+                                                    <td>
+                                                        <table>
+                                                            <s:select list="#{'01':'Januari', '02' : 'Februari', '03':'Maret', '04':'April', '05':'Mei', '06':'Juni', '07':'Juli',
+                                '08': 'Agustus', '09' : 'September', '10' : 'Oktober', '11' : 'November', '12' : 'Desember'}"
+                                                                      id="bulanPesangon" disabled="true"
+                                                                      headerKey="0" headerValue="Bulan" cssClass="form-control" />
+                                                        </table>
+                                                    </td>
+                                                    <td>
+                                                        <table>
+                                                            <s:action id="comboPeriode" namespace="/rekruitmen" name="initComboPeriodeTahunSekarang10_rekruitmen"/>
+                                                            <s:select cssClass="form-control" list="#comboPeriode.listOfComboPeriode" id="tahunPesangon" headerKey="" disabled="true"
+                                                                      headerValue="[Select one]"/>
+                                                        </table>
+                                                    </td>
+                                                    <td style="display: none">
+                                                        <table>
+                                                            <s:textfield  id="flagPensiun" name="payroll.flagPensiun" required="false"
+                                                                          cssClass="form-control" value="N"/>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <input type="checkbox" id="checkInsentif" class="checkApprove" value="jasprod"
+                                                               onchange="changeInsentif(this)">
+                                                    </td>
+                                                    <td></td>
+                                                    <td>
+                                                        <label class="control-label"><small>Insentif :</small></label>
+                                                    </td>
+                                                    <td>
+                                                        <table>
+                                                            <s:select list="#{'01':'Januari', '02' : 'Februari', '03':'Maret', '04':'April', '05':'Mei', '06':'Juni', '07':'Juli',
+                                '08': 'Agustus', '09' : 'September', '10' : 'Oktober', '11' : 'November', '12' : 'Desember'}"
+                                                                      id="bulanInsentif" disabled="true"
+                                                                      headerKey="0" headerValue="Bulan" cssClass="form-control" />
+                                                        </table>
+                                                    </td>
+                                                    <td>
+                                                        <table>
+                                                            <s:action id="comboPeriode" namespace="/rekruitmen" name="initComboPeriodeTahunSekarang10_rekruitmen"/>
+                                                            <s:select cssClass="form-control" list="#comboPeriode.listOfComboPeriode" id="tahunInsentif" headerKey="" disabled="true"
+                                                                      headerValue="[Select one]"/>
+                                                        </table>
+                                                    </td>
+                                                    <td style="display: none">
+                                                        <table>
+                                                            <s:textfield  id="flagInsentif" name="payroll.flagInsentif" required="false"
+                                                                          cssClass="form-control" value="N"/>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <br>
+                                            <div id="actions" class="form-actions">
+                                                <table align="center">
+                                                    <tr>
+                                                        <td>
+                                                            <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="payrollForm" id="save" name="save"
+                                                                       onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog"
+                                                                       onSuccessTopics="gantiHalaman" onErrorTopics="errorDialogSearch" >
+                                                                <i class="fa fa-search"></i>
+                                                                Search
+                                                            </sj:submit>
+                                                        </td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="add_payroll.action"/>'">
+                                                                <i class="fa fa-refresh"></i> Reset
+                                                            </button>
+                                                        </td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-default" onclick="window.location.href='<s:url action="initForm_payroll.action"/>'">
+                                                                <i class="fa fa-close"></i> Cancel
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+
+                                            <br>
+                                            <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"
+                                                       resizable="false"
+                                                       height="350" width="600" autoOpen="false" title="Searching ...">
+                                                Please don't close this window, server is processing your request ...
+                                                </br>
+                                                <center>
+                                                    <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                         src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                         name="image_indicator_write">
+                                                    <br>
+                                                    <img class="spin" border="0"
+                                                         style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                         src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                         name="image_indicator_write">
+                                                </center>
+                                            </sj:dialog>
+
+                                            <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false"
+                                                       height="200" width="400" autoOpen="false" title="Infomation Dialog"
+                                                       buttons="{
                                                               'OK':function() {
                                                                       clos();
                                                                    }
                                                             }"
-                                                >
-                                                    <img border="0" src="<s:url value="/pages/images/icon_success.png"/>" name="icon_success">
-                                                    Record has been saved successfully.
-                                                </sj:dialog>
+                                            >
+                                                <img border="0" src="<s:url value="/pages/images/icon_success.png"/>" name="icon_success">
+                                                Record has been saved successfully.
+                                            </sj:dialog>
 
-                                                <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
-                                                           height="250" width="600" autoOpen="false" title="Error Dialog"
-                                                           buttons="{
+                                            <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
+                                                       height="250" width="600" autoOpen="false" title="Error Dialog"
+                                                       buttons="{
                                                                         'OK':function() { $('#error_dialog').dialog('close'); }
                                                                     }"
-                                                >
-                                                    <div class="alert alert-error fade in">
-                                                        <label class="control-label" align="left">
-                                                            <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessage"></p>
-                                                        </label>
-                                                    </div>
-                                                </sj:dialog>
+                                            >
+                                                <div class="alert alert-error fade in">
+                                                    <label class="control-label" align="left">
+                                                        <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessage"></p>
+                                                    </label>
+                                                </div>
+                                            </sj:dialog>
 
-                                                <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog" modal="true" resizable="false"
-                                                           height="280" width="500" autoOpen="false" title="Warning"
-                                                           buttons="{
+                                            <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog" modal="true" resizable="false"
+                                                       height="280" width="500" autoOpen="false" title="Warning"
+                                                       buttons="{
                                                                         'OK':function() { $('#error_validation_dialog').dialog('close'); }
                                                                     }"
-                                                >
-                                                    <div class="alert alert-error fade in">
-                                                        <label class="control-label" align="left">
-                                                            <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> Please check this field :
-                                                            <br/>
-                                                            <center><div id="errorValidationMessage"></div></center>
-                                                        </label>
-                                                    </div>
-                                                </sj:dialog>
-                                            </table>
-                                        </td>
-                                            <%--</div>--%>
-                                    </tr>
-                                </table>
-                            </div>
-                        </s:form>
-                    </td>
-                </tr>
-            </table>
+                                            >
+                                                <div class="alert alert-error fade in">
+                                                    <label class="control-label" align="left">
+                                                        <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> Please check this field :
+                                                        <br/>
+                                                        <center><div id="errorValidationMessage"></div></center>
+                                                    </label>
+                                                </div>
+                                            </sj:dialog>
+                                        </s:form>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
         <!-- /.content -->
     </div>

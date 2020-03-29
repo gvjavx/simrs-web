@@ -79,6 +79,8 @@ public interface PayrollBo extends BaseMasterBo<Payroll>{
     public String getDirektur() throws GeneralBOException;
     public String getKabidSdm() throws GeneralBOException;
 
+    void approvePayrollUnit(Payroll bean) throws GeneralBOException;
+
     public PayrollKonsistensi showKonsistensiGaji(String nip, String bulan, String tahun) throws GeneralBOException;
     public List<Payroll> printReportPayrollBulanSys(String bulan1, String tahun1, String unit, String status) throws GeneralBOException;
     public List<Payroll> printReportPayrollPotonganDinasSys(String bulan1, String tahun1, String unit, String status) throws GeneralBOException;
@@ -139,11 +141,13 @@ public interface PayrollBo extends BaseMasterBo<Payroll>{
 
     public List<PayrollTunjanganLain> getDetailEditTunjLainSys(String payrollId) throws GeneralBOException;
 
-    void savePttDetail(List<Ptt> pttList, String payrollId) throws GeneralBOException;
+    void savePttDetail(List<Ptt> pttList, String payrollId,String nip,String bulan,String tahun) throws GeneralBOException;
 
     List<Ptt> getTotalLainLainSetahun(String nip, String tahun) throws GeneralBOException;
 
     List<PayrollModalDTO> getTotalPPh11Bulan(String nip, String tahun) throws GeneralBOException;
 
     PayrollModalDTO searchDetailPPhSeharusnya(String nip, String tahun, String totalA, String totalRlab, String tunjDapen, String tunjBpjsKs, String tunjBpjsTk, String iuranDapen, String iuranBpjsKs, String iuranBpjsTk, String statusKelurga, String jumlahAnak) throws GeneralBOException;
+
+    List<Ptt> getPayrollPttByPayrollId(String payrollId) throws GeneralBOException;
 }

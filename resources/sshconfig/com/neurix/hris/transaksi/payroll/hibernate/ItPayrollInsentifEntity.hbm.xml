@@ -47,6 +47,9 @@
         <property name="tunjRumah">
             <column name="rumah" sql-type="numeric" length="10" precision="2" not-null="true" />
         </property>
+        <property name="tunjPph">
+            <column name="tunjangan_pph" sql-type="numeric" length="15" precision="2" not-null="true" />
+        </property>
         <property name="tunjListrik">
             <column name="listrik" sql-type="numeric" length="10" precision="2" not-null="true" />
         </property>

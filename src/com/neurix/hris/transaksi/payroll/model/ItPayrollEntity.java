@@ -97,6 +97,16 @@ public class ItPayrollEntity implements Serializable {
     private BigDecimal umr;
 
     private String ApprovalFlag;
+    private Timestamp approvalDate;
+    private String approvalId;
+    private String approvalName;
+
+    //approve unit
+    private String approvalUnitFlag;
+    private String approvalUnitId;
+    private Timestamp approvalUnitDate;
+    private String approvalUnitName;
+
     private String flagPayroll;
     private String danaPensiun;
     private Date tanggalAktif;
@@ -234,6 +244,66 @@ public class ItPayrollEntity implements Serializable {
     private BigDecimal pph11Bulan;
     private BigDecimal selisihPph;
     private BigDecimal totalLain11Bulan;
+
+    private String gender;
+    private String tipePegawai;
+    private String tipePegawaiName;
+    private String strukturGaji;
+    private Date tanggal;
+    private BigDecimal biodataGaji;
+    private int masaKerja;
+    private String statusGiling;
+    private String danaPensiunName;
+    private String flagPjs;
+    private String npwp;
+
+    private String flag;
+    private String action;
+    private Timestamp createdDate;
+    private Timestamp lastUpdate;
+    private String createdWho;
+    private String lastUpdateWho;
+
+    private int jumlahPegawai;
+
+    private ImHrisTipePegawai imHrisTipePegawai;
+    private ImBranches imBranches;
+    private ImDepartmentEntity imDepartmentEntity;
+    private ImPosition imPosition;
+    private ImBiodataEntity imBiodataEntity;
+    private ItPayrollPphEntity itPayrollPphEntity;
+
+    public String getApprovalUnitFlag() {
+        return approvalUnitFlag;
+    }
+
+    public void setApprovalUnitFlag(String approvalUnitFlag) {
+        this.approvalUnitFlag = approvalUnitFlag;
+    }
+
+    public String getApprovalUnitId() {
+        return approvalUnitId;
+    }
+
+    public void setApprovalUnitId(String approvalUnitId) {
+        this.approvalUnitId = approvalUnitId;
+    }
+
+    public Timestamp getApprovalUnitDate() {
+        return approvalUnitDate;
+    }
+
+    public void setApprovalUnitDate(Timestamp approvalUnitDate) {
+        this.approvalUnitDate = approvalUnitDate;
+    }
+
+    public String getApprovalUnitName() {
+        return approvalUnitName;
+    }
+
+    public void setApprovalUnitName(String approvalUnitName) {
+        this.approvalUnitName = approvalUnitName;
+    }
 
     public BigDecimal getPph11Bulan() {
         return pph11Bulan;
@@ -1038,37 +1108,6 @@ public class ItPayrollEntity implements Serializable {
     public void setUmr(BigDecimal umr) {
         this.umr = umr;
     }
-
-    private Timestamp approvalDate;
-    private String approvalId;
-    private String approvalName;
-    private String gender;
-    private String tipePegawai;
-    private String tipePegawaiName;
-    private String strukturGaji;
-    private Date tanggal;
-    private BigDecimal biodataGaji;
-    private int masaKerja;
-    private String statusGiling;
-    private String danaPensiunName;
-    private String flagPjs;
-    private String npwp;
-
-    private String flag;
-    private String action;
-    private Timestamp createdDate;
-    private Timestamp lastUpdate;
-    private String createdWho;
-    private String lastUpdateWho;
-
-    private int jumlahPegawai;
-
-    private ImHrisTipePegawai imHrisTipePegawai;
-    private ImBranches imBranches;
-    private ImDepartmentEntity imDepartmentEntity;
-    private ImPosition imPosition;
-    private ImBiodataEntity imBiodataEntity;
-    private ItPayrollPphEntity itPayrollPphEntity;
 
     public ItPayrollPphEntity getItPayrollPphEntity() {
         return itPayrollPphEntity;
