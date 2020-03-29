@@ -198,7 +198,9 @@
 
            for (n=1; n < arbranch.length ; n++){
                var valperiod = $("#"+i+"_"+arbranch[n]).val();
-               arperiod.push({"tahun" : tahun, "bulan" : i, "unit": arbranch[n], "tgl" : valperiod});
+               if (valperiod != ""){
+                   arperiod.push({"tahun" : tahun, "bulan" : i, "unit": arbranch[n], "tgl" : valperiod});
+               }
            }
        }
 

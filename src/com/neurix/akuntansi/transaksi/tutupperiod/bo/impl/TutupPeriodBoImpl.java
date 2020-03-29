@@ -388,7 +388,7 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
 
         List<TutupPeriod> parentPeriods = new ArrayList<>();
 
-        // jika parameter periods sebagai child tidak tidak kosong
+        // jika parameter periods sebagai child tidak kosong
         // maka prosess untuk insert, sum, collecting data parrentPeriods;
         if (periods.size() > 0){
 
