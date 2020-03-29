@@ -326,6 +326,61 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
         }
     }
 
+    @Override
+    public void saveUpdateLockPeriod(TutupPeriod bean) throws GeneralBOException {
+
+        BatasTutupPeriod batasTutupPeriod = new BatasTutupPeriod();
+        batasTutupPeriod.setTahun(bean.getTahun());
+        batasTutupPeriod.setBulan(bean.getBulan());
+        batasTutupPeriod.setUnit(bean.getUnit());
+
+        List<ItSimrsBatasTutupPeriodEntity> batasTutupPeriodEntities = getListEntityBatasTutupPeriode(batasTutupPeriod);
+        if (batasTutupPeriodEntities.size() > 0){
+
+            ItSimrsBatasTutupPeriodEntity batasTutupPeriodEntity = batasTutupPeriodEntities.get(0);
+
+            // jika ditemukan update
+            batasTutupPeriodEntity.setFlagTutup(bean.getFlagTutup());
+            batasTutupPeriodEntity.setAction("U");
+            batasTutupPeriodEntity.setLastUpdate(bean.getLastUpdate());
+            batasTutupPeriodEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+            try {
+                batasTutupPeriodDao.updateAndSave(batasTutupPeriodEntity);
+            } catch (HibernateException e){
+                logger.error("[TutupPeriodBoImpl.saveUpdateLockPeriod] ERROR. ",e);
+                throw new GeneralBOException("[TutupPeriodBoImpl.saveUpdateLockPeriod] ERROR. ",e);
+            }
+
+        } else {
+
+            ItSimrsBatasTutupPeriodEntity batasEntity = new ItSimrsBatasTutupPeriodEntity();
+            batasEntity.setId(getNextIdBatasPeriod());
+            batasEntity.setTahun(bean.getTahun());
+            batasEntity.setBulan(bean.getBulan());
+            batasEntity.setUnit(bean.getUnit());
+            batasEntity.setFlagTutup(bean.getFlagTutup());
+            batasEntity.setAction("C");
+            batasEntity.setFlag(bean.getFlag());
+            batasEntity.setCreatedDate(bean.getCreatedDate());
+            batasEntity.setCreatedWho(bean.getCreatedWho());
+            batasEntity.setLastUpdate(bean.getLastUpdate());
+            batasEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+            TutupPeriod tutupPeriod = new TutupPeriod();
+            tutupPeriod.setTahun(bean.getTahun());
+            tutupPeriod.setBulan(bean.getBulan());
+            tutupPeriod.setUnit(bean.getUnit());
+
+            try {
+                batasTutupPeriodDao.addAndSave(batasEntity);
+            } catch (HibernateException e){
+                logger.error("[TutupPeriodBoImpl.saveUpdateLockPeriod] ERROR. ",e);
+                throw new GeneralBOException("[TutupPeriodBoImpl.saveUpdateLockPeriod] ERROR. ",e);
+            }
+        }
+    }
+
     public List<TutupPeriod> prosesTutupPeriod(List<TutupPeriod> periods) throws GeneralBOException{
 
         String userLogin = CommonUtil.userLogin();

@@ -12,6 +12,7 @@
     </style>
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PlanKegiatanRawatAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/RawatInapAction.js"/>'></script>
     <script type='text/javascript'>
 
         $(document).ready(function () {
@@ -159,19 +160,21 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> View Daftar Rencana Rawat</h4>
             </div>
             <div class="modal-body">
-                <table class="table table-striped table-bordered">
-                    <thead id="head-view-plan">
-                    <tr>
-                        <td>Tgl Mulai</td>
-                        <td>Created Who</td>
-                        <td>Last Update Who</td>
-                        <td>Last Update</td>
-                        <td>Action</td>
-                    </tr>
-                    </thead>
-                    <tbody id="body-view-plan">
-                    </tbody>
-                </table>
+                <div class="row">
+                    <div class="col-md-4 col-md-offset-4">
+                        <table class="table table-striped table-bordered">
+                            <thead id="head-view-plan">
+                            <tr>
+                                <td>Tgl Mulai</td>
+                                <td align="center">Action</td>
+                            </tr>
+                            </thead>
+                            <tbody id="body-view-plan">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
@@ -196,18 +199,6 @@
                 <div id="body-list-plan-siang"></div>
                 <br>
                 <div id="body-list-plan-malam"></div>
-                <%--<table class="table table-striped table-bordered">--%>
-                    <%--<thead id="head-view-plan-detail">--%>
-                    <%--<tr>--%>
-                        <%--<td>Tgl Mulai</td>--%>
-                        <%--<td>Created Who</td>--%>
-                        <%--<td>Last Update Who</td>--%>
-                        <%--<td>Last Update</td>--%>
-                    <%--</tr>--%>
-                    <%--</thead>--%>
-                    <%--<tbody id="body-view-plan-detail">--%>
-                    <%--</tbody>--%>
-                <%--</table>--%>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
@@ -550,6 +541,110 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-edit-vital-sign">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Observasi Vital Sign</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label style="margin-top: 7px">Jam</label>
+                        </div>
+                        <div class="col-md-2">
+                            <select style="margin-top: 7px" class="form-control" id="edit_mvs_jam">
+                                <option val='8'>8</option>
+                                <option val='12'>12</option>
+                                <option val='16'>16</option>
+                                <option val='20'>20</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <hr style="color:#b0b0b0"/>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label>Nafas</label>
+                            <select class="form-control" id="edit_mvs_nafas">
+                                <option val='10'>10</option>
+                                <option val='20'>20</option>
+                                <option val='30'>30</option>
+                                <option val='40'>40</option>
+                                <option val='50'>50</option>
+                                <option val='60'>60</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label>Nadi</label>
+                            <select class="form-control" id="edit_mvs_nadi">
+                                <option val='40'>40</option>
+                                <option val='60'>60</option>
+                                <option val='80'>80</option>
+                                <option val='100'>100</option>
+                                <option val='120'>120</option>
+                                <option val='140'>140</option>
+                                <option val='160'>160</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label>Suhu</label>
+                            <select class="form-control" id="edit_mvs_suhu">
+                                <option val='36'>36</option>
+                                <option val='37'>37</option>
+                                <option val='38'>38</option>
+                                <option val='39'>39</option>
+                                <option val='40'>40</option>
+                                <option val='41'>41</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label>Tensi</label>
+                            <input type="number" name="" value="" class="form-control" id="edit_mvs_tensi">
+                        </div>
+                    </div>
+                </div>
+                <hr style="color:#b0b0b0"/>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label>Tinggi badan</label>
+                            <input type="number" name="" value="" class="form-control" placeholder="cm" id="edit_mvs_tb">
+                        </div>
+                        <div class="col-md-3">
+                            <label>Berat badan</label>
+                            <input type="number" name="" value="" class="form-control" placeholder="Kg" id="edit_mvs_bb">
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" id="ind_asesmen" class="form form-control"/>
+                <br>
+                <div class="alert alert-success alert-dismissible" style="display: none" id="success_save_vitalsign">
+                    <h4><i class="icon fa fa-info"></i> Success!</h4>
+                    <p>Data Berhasil Tersimpan</p>
+                </div>
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="error_save_vitalsign">
+                    <h4><i class="icon fa fa-ban"></i> Error !</h4>
+                    <p id="error_ket_vitalsign"></p>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_vitalsign" onclick="saveVitalSign('<s:property value="rawatInap.noCheckup"/>', '<s:property value="rawatInap.idDetailCheckup"/>')"><i class="fa fa-arrow-right"></i> Save
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_vitalsign"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type='text/javascript'>
 
     var listOfVitalSign = [];
@@ -614,10 +709,7 @@
             $.each(response, function (i, item) {
                 str += "<tr>" +
                     "<td>"+ item.stTglMulai +"</td>" +
-                    "<td>"+ item.createdWho +"</td>" +
-                    "<td>"+ item.lastUpdateWho +"</td>" +
-                    "<td>"+ item.stLastUpdate +"</td>" +
-                    "<td><button class='btn btn-primary' onclick=\"viewPlanDetail('"+item.idDetailCheckup+"','"+item.stTglMulai+"')\"><i class='fa fa-search'></i></button></td>" +
+                    "<td align='center'><button class='btn btn-primary' onclick=\"viewPlanDetail('"+item.idDetailCheckup+"','"+item.stTglMulai+"')\"><i class='fa fa-search'></i></button></td>" +
                     "</tr>";
             })
 
@@ -639,42 +731,49 @@
 
             if (response.length > 0){
                 $.each(response, function(i,item){
-                    if (item.waktu == "pagi"){
-                        listPagi.push({"ket":item.keterangan, "createdwho":item.createdWho, "kegiatan":setLabelKegiatan(item.jenisKegiatan)});
+
+                    var ket = "";
+                    if (item.keterangan == null)
+                        ket = "";
+                    else
+                        ket = item.keterangan;
+
+                    if (item.waktu.toLowerCase() == "pagi"){
+                        listPagi.push({"ket": ket, "createdwho":item.createdWho, "kegiatan":setLabelKegiatan(item.jenisKegiatan), "id":item.idKategori, "jenis":item.jenisKegiatan});
                     }
-                    if (item.waktu == "siang"){
-                        listSiang.push({"ket":item.keterangan, "createdwho":item.createdWho, "kegiatan":setLabelKegiatan(item.jenisKegiatan)});
+                    if (item.waktu.toLowerCase() == "siang"){
+                        listSiang.push({"ket":ket, "createdwho":item.createdWho, "kegiatan":setLabelKegiatan(item.jenisKegiatan), "id":item.idKategori, "jenis":item.jenisKegiatan});
                     }
-                    if (item.waktu == "malam"){
-                        listMalam.push({"ket":item.keterangan, "createdwho":item.createdWho, "kegiatan":setLabelKegiatan(item.jenisKegiatan)});
+                    if (item.waktu.toLowerCase() == "malam"){
+                        listMalam.push({"ket":ket, "createdwho":item.createdWho, "kegiatan":setLabelKegiatan(item.jenisKegiatan), "id":item.idKategori, "jenis":item.jenisKegiatan});
                     }
                 });
 
                 var strPagi = "";
                 $.each(listPagi, function (i, item){
                     strPagi += "<tr>" +
-                        "<td>" + item.kegiatan + "</td>" +
-                        "<td>" + item.createdwho + "</td>" +
+                        "<td style='width:200px'>" + item.kegiatan + "</td>" +
+                        "<td align='left'><strong>" + item.createdwho + "</strong></td>" +
                         "<td>" + item.ket + "</td>" +
-                        "<td align='center'><button class='btn btn-sm btn-primary'><i class='fa fa-search'></i> View Detail</button></td>" +
+                        "<td align='right'><button class='btn btn-sm btn-primary' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','view');\"><i class='fa fa-search'></i> View Detail</button></td>" +
                         "</tr>";
                 });
                 var strSiang = "";
                 $.each(listSiang, function (i, item){
                     strSiang += "<tr>" +
-                        "<td>" + item.kegiatan + "</td>" +
-                        "<td>" + item.createdwho + "</td>" +
+                        "<td style='width:200px'>" + item.kegiatan + "</td>" +
+                        "<td align='left'><strong>" + item.createdwho + "</strong></td>" +
                         "<td>" + item.ket + "</td>" +
-                        "<td align='center'><button class='btn btn-sm btn-primary'><i class='fa fa-search'></i> View Detail</button></td>" +
+                        "<td align='right'><button class='btn btn-sm btn-primary' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','view');\"><i class='fa fa-search'></i> View Detail</button></td>" +
                         "</tr>";
                 });
                 var strMalam = "";
                 $.each(listMalam, function (i, item){
                     strMalam += "<tr>" +
-                        "<td>" + item.kegiatan + "</td>" +
-                        "<td>" + item.createdwho + "</td>" +
+                        "<td style='width:200px'>" + item.kegiatan + "</td>" +
+                        "<td align='left'><strong>" + item.createdwho + "</strong></td>" +
                         "<td>" + item.ket + "</td>" +
-                        "<td align='center'><button class='btn btn-sm btn-primary'><i class='fa fa-search'></i> View Detail</button></td>" +
+                        "<td align='right'><button class='btn btn-sm btn-primary' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','view');\"><i class='fa fa-search'></i> View Detail</button></td>" +
                         "</tr>";
                 });
 
@@ -838,6 +937,8 @@
         var idDetail = $("#idDetailCheckup").val();
         var tglPlan = $("#tgl").val();
 
+//        console.log(listOfVitalSign);
+
         var strVitalSign = JSON.stringify(listOfVitalSign);
         var strCairan = JSON.stringify(listOfCairan);
         var strParenteral = JSON.stringify(listOfParenteral);
@@ -860,6 +961,44 @@
         } else {
             alert("kosong");
         }
+    }
+
+    function viewKegiatan(idKategori, jenis, tipe){
+        if (jenis == "vitalsign"){
+            viewVitalSign(idKategori, tipe);
+        }
+    }
+
+    function viewVitalSign(id, type){
+
+        $("#modal-edit-vital-sign").modal('show');
+
+        RawatInapAction.getListMonVitalSign("", "", id, function (response) {
+            if (response.length > 0){
+                $.each(response, function (i, item) {
+
+                    $("#edit_mvs_jam").val(item.jam);
+                    $("#edit_mvs_nafas").val(item.nafas);
+                    $("#edit_mvs_nadi").val(item.nadi);
+                    $("#edit_mvs_suhu").val(item.suhu);
+                    $("#edit_mvs_tensi").val(item.tensi);
+                    $("#edit_mvs_tb").val(item.tb);
+                    $("#edit_mvs_bb").val(item.bb);
+                });
+
+                if (type == "view"){
+                    $("#edit_mvs_jam").attr('disabled','disabled');
+                    $("#edit_mvs_nafas").attr('disabled','disabled');
+                    $("#edit_mvs_nadi").attr('disabled','disabled');
+                    $("#edit_mvs_suhu").attr('disabled','disabled');
+                    $("#edit_mvs_tensi").attr('disabled','disabled');
+                    $("#edit_mvs_tb").attr('disabled','disabled');
+                    $("#edit_mvs_bb").attr('disabled','disabled');
+                    $("#save_vitalsign").hide();
+                }
+            }
+        })
+
     }
 
 </script>

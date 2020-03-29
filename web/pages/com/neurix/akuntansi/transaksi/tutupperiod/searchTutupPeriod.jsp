@@ -112,6 +112,7 @@
                                     <thead id="head-period">
                                     <tr bgcolor="#90ee90">
                                         <td>Unit</td>
+                                        <td>Tgl Tutup Period</td>
                                         <td>Action</td>
                                         <td>Status</td>
                                     </tr>
@@ -141,6 +142,20 @@
 
 <script type='text/javascript'>
 
+    function formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2)
+            month = '0' + month;
+        if (day.length < 2)
+            day = '0' + day;
+
+        return [year, month, day].join('-');
+    }
+
     function searchPeriod(){
 
         var tahun = $("#sel-tahun").val();
@@ -160,10 +175,59 @@
                 $.each(response, function (i, item) {
 
                     TutuPeriodAction.getDataBatasTutupPeriod(item.branchId, tahun, bulan, function (batas) {
-                        if (batas.flagTutup == "Y"){
-                            strBody += "<tr><td>"+item.branchName+"</td><td align='center'><button class='btn btn-primary' onclick=\"saveTutup('"+item.branchId+"','"+tahun+"','"+bulan+"')\" disabled>Tutup</button></td><td align='center'><span class='label label-danger'>Sudah Ditutup</span></td></tr>";
+                        if ( batas.stTglBatas == null ){
+                            strBody += "<tr>" +
+                                "<td>"+item.branchName+"</td>" +
+                                "<td>"+setNullToString(batas.stTglBatas)+"</td>" +
+                                "<td align='center'>" +
+                                "<button class='btn btn-primary' onclick=\"saveTutup('"+item.branchId+"','"+tahun+"','"+bulan+"')\" disabled>Tutup</button>" +
+                                " <button class='btn btn-info' onclick=\"saveLock('"+item.branchId+"','"+tahun+"','"+bulan+"')\" disabled>Lock</button>" +
+                                "</td>" +
+                                "<td align='center'><span class='label label-default'>Belum Set Tgl</span></td>" +
+                                "</tr>";
                         } else {
-                            strBody += "<tr><td>"+item.branchName+"</td><td align='center'><button class='btn btn-primary' onclick=\"saveTutup('"+item.branchId+"','"+tahun+"','"+bulan+"')\">Tutup</button></td><td align='center'><span class='label label-warning'>Belum Ditutup</span></td></tr>";
+
+                            if (batas.flagTutup == "Y"){
+                                strBody += "<tr>" +
+                                    "<td>"+item.branchName+"</td>" +
+                                    "<td>"+setNullToString(batas.stTglBatas)+"</td>" +
+                                    "<td align='center'>" +
+                                    "<button class='btn btn-primary' onclick=\"saveTutup('"+item.branchId+"','"+tahun+"','"+bulan+"')\" disabled>Tutup</button>" +
+                                    " <button class='btn btn-info' onclick=\"saveLock('"+item.branchId+"','"+tahun+"','"+bulan+"')\" disabled>Lock</button>" +
+                                    "</td>" +
+                                    "<td align='center'><span class='label label-danger'>Sudah Ditutup</span></td>" +
+                                    "</tr>";
+                            } else if ( batas.flagTutup == "P" ){
+                                strBody += "<tr>" +
+                                    "<td>"+item.branchName+"</td>" +
+                                    "<td>"+setNullToString(batas.stTglBatas)+"</td>" +
+                                    "<td align='center'>" +
+                                    "<button class='btn btn-primary' onclick=\"saveTutup('"+item.branchId+"','"+tahun+"','"+bulan+"')\">Tutup</button>" +
+                                    " <button class='btn btn-info' onclick=\"saveLock('"+item.branchId+"','"+tahun+"','"+bulan+"')\" disabled>Lock</button>" +
+                                    "</td>" +
+                                    "<td align='center'><span class='label label-warning'>Lock Process</span></td>" +
+                                    "</tr>";
+                            } else if (batas.stTglBatas != formatDate(Date.now())){
+                                strBody += "<tr>" +
+                                    "<td>"+item.branchName+"</td>" +
+                                    "<td>"+setNullToString(batas.stTglBatas)+"</td>" +
+                                    "<td align='center'>" +
+                                    "<button class='btn btn-primary' onclick=\"saveTutup('"+item.branchId+"','"+tahun+"','"+bulan+"')\" disabled>Tutup</button>" +
+                                    " <button class='btn btn-info' onclick=\"saveLock('"+item.branchId+"','"+tahun+"','"+bulan+"')\" disabled>Lock</button>" +
+                                    "</td>" +
+                                    "<td align='center'><span class='label label-default'>Belum Waktu Tutup</span></td>" +
+                                    "</tr>";
+                            } else {
+                                strBody += "<tr>" +
+                                    "<td>" + item.branchName + "</td>" +
+                                    "<td>" + setNullToString(batas.stTglBatas) + "</td>" +
+                                    "<td align='center'>" +
+                                    "<button class='btn btn-primary' onclick=\"saveTutup('" + item.branchId + "','" + tahun + "','" + bulan + "')\">Tutup</button>" +
+                                    " <button class='btn btn-info' onclick=\"saveLock('" + item.branchId + "','" + tahun + "','" + bulan + "')\">Lock</button>" +
+                                    "</td>" +
+                                    "<td align='center'><span class='label label-success'>Siap Ditutup</span></td>" +
+                                    "</tr>";
+                            }
                         }
                     });
 
@@ -178,9 +242,6 @@
     }
 
     function saveTutup(unit, tahun, bulan) {
-
-//        console.log(unit+tahun+bulan);
-
         TutuPeriodAction.saveTutupPeriod(unit, tahun, bulan, function(response){
            if (response.status == "error"){
                $("#alert-error").show();
@@ -192,6 +253,28 @@
                searchPeriod();
            }
        });
+    }
+
+    function saveLock(unit, tahun, bulan){
+        TutuPeriodAction.saveLockPeriod(unit, tahun, bulan, function(response){
+            if (response.status == "error"){
+                $("#alert-error").show();
+                $("#error-msg").text(response.msg);
+            } else {
+                $("#alert-error").hide();
+                $("#alert-success").show();
+
+                searchPeriod();
+            }
+        });
+    }
+
+    function setNullToString(params){
+        if (params == null){
+            return " - ";
+        } else {
+            return params;
+        }
     }
 
 </script>

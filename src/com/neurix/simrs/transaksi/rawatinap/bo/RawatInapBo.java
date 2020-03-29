@@ -29,10 +29,13 @@ public interface RawatInapBo {
     public ImSimrsKategoriSkorRanapEntity kategoriSkorRanap(String id);
     public List<MonVitalSign> getListMonVitalSign(MonVitalSign bean);
     public CrudResponse saveMonVitalSign(ItSimrsMonVitalSignEntity bean);
+    public void saveUpdateMonVitalSign(ItSimrsMonVitalSignEntity bean) throws GeneralBOException;
     public List<MonCairan> getListMonCairan(MonCairan bean);
     public CrudResponse saveMonCairan(ItSimrsMonCairanEntity bean);
+    public void saveUpdateMonCairan(ItSimrsMonCairanEntity bean) throws GeneralBOException;
     public List<MonPemberianObat> getListPemberianObat(MonPemberianObat bean);
     public CrudResponse saveMonPemberianObat(ItSimrsMonPemberianObatEntity bean);
+    public void saveUpdateMonPemberianObat(ItSimrsMonPemberianObatEntity bean) throws GeneralBOException;
     public List<Obat> getListObatParenteral(String idPelayanan);
     public List<Obat> getListObatNonParenteral(String idDetail, String kategori);
     public List<MonVitalSign> getListGraf(MonVitalSign bean);

@@ -142,7 +142,7 @@ public class PlanKegiatanRawatBoImpl implements PlanKegiatanRawatBo {
                     planEntity.setIdKategori(monVitalSignEntity.getId());
                     planEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
                     planEntity.setId(getNextPlanId());
-                    planEntity.setWaktu(bean.getWaktu());
+                    planEntity.setWaktu(vitalSign.getWaktu());
                     planEntity.setTglMulai(bean.getTglMulai());
                     planEntity.setTglSelesai(bean.getTglSelesai());
                     planEntity.setKeterangan(vitalSign.getCatatanDokter());
@@ -191,7 +191,7 @@ public class PlanKegiatanRawatBoImpl implements PlanKegiatanRawatBo {
                     planEntity.setIdKategori(monCairanEntity.getId());
                     planEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
                     planEntity.setId(getNextPlanId());
-                    planEntity.setWaktu(bean.getWaktu());
+                    planEntity.setWaktu(monCairan.getWaktu());
                     planEntity.setTglMulai(bean.getTglMulai());
                     planEntity.setTglSelesai(bean.getTglSelesai());
                     planEntity.setKeterangan(monCairan.getCatatanDokter());

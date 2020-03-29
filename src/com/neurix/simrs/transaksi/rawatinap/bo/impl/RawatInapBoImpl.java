@@ -14,6 +14,8 @@ import com.neurix.simrs.transaksi.monpemberianobat.model.MonPemberianObat;
 import com.neurix.simrs.transaksi.monvitalsign.dao.MonVitalSignDao;
 import com.neurix.simrs.transaksi.monvitalsign.model.ItSimrsMonVitalSignEntity;
 import com.neurix.simrs.transaksi.monvitalsign.model.MonVitalSign;
+import com.neurix.simrs.transaksi.plankegiatanrawat.dao.PlanKegiatanRawatDao;
+import com.neurix.simrs.transaksi.plankegiatanrawat.model.ItSimrsPlanKegiatanRawatEntity;
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
 import com.neurix.simrs.transaksi.rawatinap.dao.RawatInapDao;
 import com.neurix.simrs.transaksi.rawatinap.model.ItSimrsRawatInapEntity;
@@ -50,6 +52,7 @@ public class RawatInapBoImpl implements RawatInapBo {
     private MonCairanDao monCairanDao;
     private MonPemberianObatDao monPemberianObatDao;
     private MonVitalSignDao monVitalSignDao;
+    private PlanKegiatanRawatDao planKegiatanRawatDao;
 
     protected List<ItSimrsRawatInapEntity> getListEntityByCriteria(RawatInap bean) throws GeneralBOException{
         logger.info("[RawatInapBoImpl.getListEntityByCriteria] Start >>>>>>>");
@@ -315,6 +318,75 @@ public class RawatInapBoImpl implements RawatInapBo {
     }
 
     @Override
+    public void saveUpdateMonVitalSign(ItSimrsMonVitalSignEntity bean) throws GeneralBOException {
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id", bean.getId());
+
+        List<ItSimrsMonVitalSignEntity> monVitalSignEntities = new ArrayList<>();
+        try {
+            monVitalSignEntities = monVitalSignDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[RawatInapBoImpl.saveUpdateMonVitalSign] ERROR. ",e);
+            throw new GeneralBOException("[RawatInapBoImpl.saveUpdateMonVitalSign] ERROR. "+e);
+        }
+
+        if (monVitalSignEntities.size() > 0){
+            for (ItSimrsMonVitalSignEntity vitalSignEntity : monVitalSignEntities){
+                vitalSignEntity.setJam(bean.getJam());
+                vitalSignEntity.setNadi(bean.getNadi());
+                vitalSignEntity.setNafas(bean.getNafas());
+                vitalSignEntity.setSuhu(bean.getSuhu());
+                vitalSignEntity.setTensi(bean.getTensi());
+                vitalSignEntity.setTb(bean.getTb());
+                vitalSignEntity.setBb(bean.getBb());
+                vitalSignEntity.setAction(bean.getAction());
+                vitalSignEntity.setLastUpdate(bean.getLastUpdate());
+                vitalSignEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                try {
+                    monVitalSignDao.updateAndSave(vitalSignEntity);
+                } catch (HibernateException e){
+                    logger.error("[RawatInapBoImpl.saveUpdateMonVitalSign] ERROR. ",e);
+                    throw new GeneralBOException("[RawatInapBoImpl.saveUpdateMonVitalSign] ERROR. "+e);
+                }
+
+                updateFlagKegiatanRawat(vitalSignEntity.getId(), bean.getLastUpdateWho(), bean.getLastUpdate());
+            }
+        }
+    }
+
+    private void updateFlagKegiatanRawat(String idKategori, String user, Timestamp time){
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_kategori", idKategori);
+
+        List<ItSimrsPlanKegiatanRawatEntity> plans = new ArrayList<>();
+        try {
+            plans = planKegiatanRawatDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[RawatInapBoImpl.updateFlagKegiatanRawat] ERROR. ",e);
+            throw new GeneralBOException("[RawatInapBoImpl.updateFlagKegiatanRawat] ERROR. "+e);
+        }
+
+        if (plans.size() > 0){
+            for (ItSimrsPlanKegiatanRawatEntity planEntity : plans){
+                planEntity.setLastUpdate(time);
+                planEntity.setLastUpdateWho(user);
+                planEntity.setAction("U");
+                planEntity.setFlagDikerjakan("Y");
+
+                try {
+                    planKegiatanRawatDao.updateAndSave(planEntity);
+                } catch (HibernateException e){
+                    logger.error("[RawatInapBoImpl.updateFlagKegiatanRawat] ERROR. ",e);
+                    throw new GeneralBOException("[RawatInapBoImpl.updateFlagKegiatanRawat] ERROR. "+e);
+                }
+            }
+        }
+    }
+
+    @Override
     public List<MonCairan> getListMonCairan(MonCairan bean) {
         Map hsCriteria = new HashMap();
         if (bean.getNoCheckup() != null)
@@ -382,6 +454,52 @@ public class RawatInapBoImpl implements RawatInapBo {
     }
 
     @Override
+    public void saveUpdateMonCairan(ItSimrsMonCairanEntity bean) throws GeneralBOException {
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id", bean.getId());
+
+        List<ItSimrsMonCairanEntity> monCairanEntities = new ArrayList<>();
+
+        try {
+            monCairanEntities = monCairanDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[RawatInapBoImpl.saveUpdateMonCairan] ERROR",e);
+            throw new GeneralBOException("[RawatInapBoImpl.saveUpdateMonCairan] ERROR"+e.getMessage());
+        }
+
+        if (monCairanEntities.size() > 0){
+            for (ItSimrsMonCairanEntity monCairanEntity : monCairanEntities){
+
+                monCairanEntity.setMacamCairan(bean.getMacamCairan());
+                monCairanEntity.setMelalui(bean.getMelalui());
+                monCairanEntity.setJumlah(bean.getJumlah());
+                monCairanEntity.setJamMulai(bean.getJamMulai());
+                monCairanEntity.setJamSelesai(bean.getJamSelesai());
+                monCairanEntity.setCekTambahanObat(bean.getCekTambahanObat());
+                monCairanEntity.setJamUkurBuang(bean.getJamUkurBuang());
+                monCairanEntity.setDari(bean.getDari());
+                monCairanEntity.setBalanceCairan(bean.getBalanceCairan());
+                monCairanEntity.setKeterangan(bean.getKeterangan());
+                monCairanEntity.setSisa(bean.getSisa());
+                monCairanEntity.setAction(bean.getAction());
+                monCairanEntity.setLastUpdate(bean.getLastUpdate());
+                monCairanEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                try {
+                    monCairanDao.updateAndSave(monCairanEntity);
+                } catch (HibernateException e){
+                    logger.error("[RawatInapBoImpl.saveUpdateMonCairan] ERROR",e);
+                    throw new GeneralBOException("[RawatInapBoImpl.saveUpdateMonCairan] ERROR"+e.getMessage());
+                }
+
+                updateFlagKegiatanRawat(monCairanEntity.getId(), bean.getLastUpdateWho(), bean.getLastUpdate());
+            }
+        }
+
+    }
+
+    @Override
     public List<MonPemberianObat> getListPemberianObat(MonPemberianObat bean) {
         Map hsCriteria = new HashMap();
         if (bean.getNoCheckup() != null)
@@ -445,6 +563,45 @@ public class RawatInapBoImpl implements RawatInapBo {
             }
         }
         return response;
+    }
+
+    @Override
+    public void saveUpdateMonPemberianObat(ItSimrsMonPemberianObatEntity bean) throws GeneralBOException {
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id", bean.getId());
+
+        List<ItSimrsMonPemberianObatEntity> monPemberianObatEntities = new ArrayList<>();
+        try {
+            monPemberianObatEntities = monPemberianObatDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[RawatInapBoImpl.saveUpdateMonPemberianObat] ERROR",e);
+            throw new GeneralBOException("[RawatInapBoImpl.saveUpdateMonPemberianObat] ERROR"+e.getMessage());
+        }
+
+        if (monPemberianObatEntities.size() > 0){
+            for (ItSimrsMonPemberianObatEntity obatEntity : monPemberianObatEntities){
+
+                obatEntity.setCaraPemberian(bean.getCaraPemberian());
+                obatEntity.setDosis(bean.getDosis());
+                obatEntity.setSkinTes(bean.getSkinTes());
+                obatEntity.setWaktu(bean.getWaktu());
+                obatEntity.setKeterangan(bean.getKeterangan());
+                obatEntity.setKategori(bean.getKategori());
+                obatEntity.setAction(bean.getAction());
+                obatEntity.setLastUpdate(bean.getLastUpdate());
+                obatEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                try {
+                    monPemberianObatDao.updateAndSave(obatEntity);
+                } catch (HibernateException e){
+                    logger.error("[RawatInapBoImpl.saveUpdateMonPemberianObat] ERROR",e);
+                    throw new GeneralBOException("[RawatInapBoImpl.saveUpdateMonPemberianObat] ERROR"+e.getMessage());
+                }
+
+                updateFlagKegiatanRawat(obatEntity.getId(), bean.getLastUpdateWho(), bean.getLastUpdate());
+            }
+        }
     }
 
     @Override
@@ -602,5 +759,9 @@ public class RawatInapBoImpl implements RawatInapBo {
 
     public void setMonVitalSignDao(MonVitalSignDao monVitalSignDao) {
         this.monVitalSignDao = monVitalSignDao;
+    }
+
+    public void setPlanKegiatanRawatDao(PlanKegiatanRawatDao planKegiatanRawatDao) {
+        this.planKegiatanRawatDao = planKegiatanRawatDao;
     }
 }
