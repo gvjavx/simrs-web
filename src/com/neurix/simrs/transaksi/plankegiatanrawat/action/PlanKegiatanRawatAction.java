@@ -158,12 +158,37 @@ public class PlanKegiatanRawatAction extends BaseTransactionAction {
             JSONArray json = new JSONArray(listOfParenteral);
             for (int i = 0; i < json.length(); i++) {
                 JSONObject obj = json.getJSONObject(i);
+
+                MonPemberianObat monPemberianObat = new MonPemberianObat();
+                monPemberianObat.setWaktu(obj.getString("waktu"));
+                monPemberianObat.setCatatanDokter(obj.getString("ket"));
+
+                monPemberianObat.setNamaObat(obj.getString("nama"));
+                monPemberianObat.setCaraPemberian(obj.getString("cara"));
+                monPemberianObat.setDosis(obj.getString("dosis"));
+                monPemberianObat.setSkinTes(obj.getString("skintes"));
+                monPemberianObat.setWaktuPemberian(obj.getString("waktupemberian"));
+                monPemberianObat.setKeterangan(obj.getString("ket"));
+                monPemberianObat.setKategori(obj.getString("kat"));
+                monPemberianObats.add(monPemberianObat);
             }
         }
         if (!"".equalsIgnoreCase(listOfNonParenteral)){
             JSONArray json = new JSONArray(listOfNonParenteral);
             for (int i = 0; i < json.length(); i++) {
                 JSONObject obj = json.getJSONObject(i);
+
+                MonPemberianObat monPemberianObat = new MonPemberianObat();
+                monPemberianObat.setWaktu(obj.getString("waktu"));
+                monPemberianObat.setCatatanDokter(obj.getString("ket"));
+
+                monPemberianObat.setNamaObat(obj.getString("nama"));
+                monPemberianObat.setDosis(obj.getString("dosis"));
+                monPemberianObat.setWaktuPemberian(obj.getString("waktupemberian"));
+                monPemberianObat.setKeterangan(obj.getString("ket"));
+                monPemberianObat.setKategori(obj.getString("kat"));
+                monPemberianObats.add(monPemberianObat);
+
             }
         }
 

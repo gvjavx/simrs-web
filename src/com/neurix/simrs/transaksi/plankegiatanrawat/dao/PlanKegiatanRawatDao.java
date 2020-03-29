@@ -76,7 +76,8 @@ public class PlanKegiatanRawatDao extends GenericDao<ItSimrsPlanKegiatanRawatEnt
                 "dt.created_date as tgl_masuk,\n" +
                 "ps.nama,\n" +
                 "pl.nama_pelayanan, \n" +
-                "ds.keterangan_diagnosa\n" +
+                "ds.keterangan_diagnosa,\n" +
+                "pl.id_pelayanan\n" +
                 "FROM it_simrs_header_detail_checkup dt\n" +
                 "INNER JOIN im_simrs_pelayanan pl ON pl.id_pelayanan = dt.id_pelayanan\n" +
                 "INNER JOIN it_simrs_header_checkup hd ON hd.no_checkup = dt.no_checkup\n" +
@@ -121,6 +122,7 @@ public class PlanKegiatanRawatDao extends GenericDao<ItSimrsPlanKegiatanRawatEnt
                 plan.setNamaPasien(obj[2].toString());
                 plan.setNamaPelayanan(obj[3].toString());
                 plan.setDiagnosa(obj[4] == null ? "" : obj[4].toString());
+                plan.setIdPelayanan(obj[5].toString());
                 plan.setStCreatedDate(obj[1].toString());
                 planKegiatanRawats.add(plan);
             }

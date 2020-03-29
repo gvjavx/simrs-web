@@ -10,6 +10,7 @@ import com.neurix.simrs.transaksi.moncairan.dao.MonCairanDao;
 import com.neurix.simrs.transaksi.moncairan.model.ItSimrsMonCairanEntity;
 import com.neurix.simrs.transaksi.moncairan.model.MonCairan;
 import com.neurix.simrs.transaksi.monpemberianobat.dao.MonPemberianObatDao;
+import com.neurix.simrs.transaksi.monpemberianobat.model.ItSimrsMonPemberianObatEntity;
 import com.neurix.simrs.transaksi.monpemberianobat.model.MonPemberianObat;
 import com.neurix.simrs.transaksi.monvitalsign.dao.MonVitalSignDao;
 import com.neurix.simrs.transaksi.monvitalsign.model.ItSimrsMonVitalSignEntity;
@@ -209,7 +210,50 @@ public class PlanKegiatanRawatBoImpl implements PlanKegiatanRawatBo {
             }
 
             if (pemberianObatList.size() > 0){
+                for (MonPemberianObat monPemberianObat : pemberianObatList){
+                    ItSimrsMonPemberianObatEntity monPemberianObatEntity = new ItSimrsMonPemberianObatEntity();
+                    monPemberianObatEntity.setId(getNextMonPemberianObat());
+                    monPemberianObatEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
 
+                    monPemberianObatEntity.setNamaObat(monPemberianObat.getNamaObat());
+                    monPemberianObatEntity.setCaraPemberian(monPemberianObat.getCaraPemberian() == null ? "" : monPemberianObat.getCaraPemberian());
+                    monPemberianObatEntity.setDosis(monPemberianObat.getDosis());
+                    monPemberianObatEntity.setSkinTes(monPemberianObat.getSkinTes() == null ? "" : monPemberianObat.getSkinTes());
+                    monPemberianObatEntity.setWaktu(monPemberianObat.getWaktu());
+                    monPemberianObatEntity.setKategori(monPemberianObat.getKategori());
+                    monPemberianObatEntity.setFlag(bean.getFlag());
+                    monPemberianObatEntity.setAction(bean.getAction());
+                    monPemberianObatEntity.setCreatedDate(bean.getCreatedDate());
+                    monPemberianObatEntity.setCreatedWho(bean.getCreatedWho());
+                    monPemberianObatEntity.setLastUpdate(bean.getLastUpdate());
+                    monPemberianObatEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                    try {
+                        monPemberianObatDao.addAndSave(monPemberianObatEntity);
+                    } catch (HibernateException e){
+                        logger.error("[PlanKegiatanRawatBoImpl.saveAddPlanKegiatan] ERROR. ",e);
+                        throw new GeneralBOException("[PlanKegiatanRawatBoImpl.saveAddPlanKegiatan] ERROR. "+e);
+                    }
+
+                    ItSimrsPlanKegiatanRawatEntity planEntity = new ItSimrsPlanKegiatanRawatEntity();
+                    planEntity.setIdKategori(monPemberianObat.getId());
+                    planEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
+                    planEntity.setId(getNextPlanId());
+                    planEntity.setWaktu(monPemberianObat.getWaktu());
+                    planEntity.setTglMulai(bean.getTglMulai());
+                    planEntity.setTglSelesai(bean.getTglSelesai());
+                    planEntity.setKeterangan(monPemberianObat.getCatatanDokter());
+                    planEntity.setBranchId(bean.getBranchId());
+                    planEntity.setJenisKegiatan(monPemberianObat.getKategori());
+                    planEntity.setFlag(bean.getFlag());
+                    planEntity.setAction(bean.getAction());
+                    planEntity.setCreatedDate(bean.getCreatedDate());
+                    planEntity.setCreatedWho(bean.getCreatedWho());
+                    planEntity.setLastUpdate(bean.getLastUpdate());
+                    planEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    planEntities.add(planEntity);
+
+                }
             }
 
 

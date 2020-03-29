@@ -24,7 +24,16 @@ public class MonPemberianObat {
     private String lastUpdateWho;
     private String stDate;
     private String kategori;
+    private String waktuPemberian;
     private String catatanDokter;
+
+    public String getWaktuPemberian() {
+        return waktuPemberian;
+    }
+
+    public void setWaktuPemberian(String waktuPemberian) {
+        this.waktuPemberian = waktuPemberian;
+    }
 
     public String getCatatanDokter() {
         return catatanDokter;
