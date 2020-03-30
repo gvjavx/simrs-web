@@ -201,6 +201,17 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         return resep;
     }
 
+    @Override
+    public HeaderDetailCheckup getCoverBiayaAsuransi(String idDetailCheckup) throws GeneralBOException {
+        HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+        try {
+            detailCheckup = checkupDetailDao.getCoverBiayaAsuransi(idDetailCheckup);
+        }catch (HibernateException e){
+            logger.error("found Error "+e.getMessage());
+        }
+        return detailCheckup;
+    }
+
     protected List<HeaderDetailCheckup> setToDetailCheckupTemplate(List<ItSimrsHeaderDetailCheckupEntity> entityList) throws GeneralBOException {
         logger.info("[CheckupDetailBoImpl.setToDetailCheckupTemplate] Start >>>>>>>");
         List<HeaderDetailCheckup> results = new ArrayList<>();

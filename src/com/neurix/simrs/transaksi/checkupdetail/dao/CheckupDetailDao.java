@@ -1586,6 +1586,90 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
         return checkupList;
     }
 
+    public HeaderDetailCheckup getCoverBiayaAsuransi(String idDetailCheckup){
+
+        HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+
+        if(idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)){
+            String SQL = "SELECT \n" +
+                    "a.id_detail_checkup, \n" +
+                    "a.id_asuransi, \n" +
+                    "a.no_kartu_asuransi,\n" +
+                    "a.cover_biaya,\n" +
+                    "b.total_tindakan,\n" +
+                    "c.total_lab,\n" +
+                    "d.total_radiologi,\n" +
+                    "e.total_resep\n" +
+                    "FROM it_simrs_header_detail_checkup a\n" +
+                    "LEFT JOIN (\n" +
+                    "\tSELECT id_detail_checkup, SUM(tarif_total) as total_tindakan \n" +
+                    "\tFROM it_simrs_tindakan_rawat GROUP BY id_detail_checkup\n" +
+                    "\t) b ON a.id_detail_checkup = b.id_detail_checkup \n" +
+                    "LEFT JOIN(\n" +
+                    "\tSELECT a.id_detail_checkup, SUM(c.tarif) as total_lab FROM it_simrs_periksa_lab a\n" +
+                    "\tINNER JOIN it_simrs_periksa_lab_detail b ON a.id_periksa_lab = b.id_periksa_lab\n" +
+                    "\tINNER JOIN im_simrs_lab_detail c ON b.id_lab_detail = c.id_lab_detail\n" +
+                    "\tGROUP BY a.id_detail_checkup\n" +
+                    "\t) c ON a.id_detail_checkup = c.id_detail_checkup \n" +
+                    "LEFT JOIN(\n" +
+                    "\tSELECT a.id_detail_checkup, SUM(c.tarif) as total_radiologi FROM it_simrs_periksa_lab a\n" +
+                    "\tINNER JOIN it_simrs_periksa_radiologi b ON a.id_periksa_lab = b.id_periksa_lab\n" +
+                    "\tINNER JOIN im_simrs_lab_detail c ON b.id_lab_detail = c.id_lab_detail\n" +
+                    "\tGROUP BY a.id_detail_checkup\n" +
+                    "\t) d ON a.id_detail_checkup = d.id_detail_checkup \n" +
+                    "LEFT JOIN (\n" +
+                    "\tSELECT a.id_detail_checkup, (c.qty * d.harga_jual) as total_resep FROM mt_simrs_permintaan_resep a\n" +
+                    "\tINNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat\n" +
+                    "\tINNER JOIN (SELECT id_transaksi_obat_detail, SUM(qty_approve) as qty FROM mt_simrs_transaksi_obat_detail_batch \n" +
+                    "\tWHERE approve_flag = 'Y'\n" +
+                    "\tGROUP BY id_transaksi_obat_detail) c ON b.id_transaksi_obat_detail = c.id_transaksi_obat_detail\n" +
+                    "\tINNER JOIN mt_simrs_harga_obat d ON b.id_obat = d.id_obat\n" +
+                    "\t) e ON a.id_detail_checkup = e.id_detail_checkup \n" +
+                    "WHERE a.id_detail_checkup = :id";
+
+            List<Object[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("id", idDetailCheckup)
+                    .list();
+            if(result.size() > 0){
+                Object[] objects = result.get(0);
+                if(objects != null){
+                    BigDecimal coverBiaya = new BigDecimal(String.valueOf("0"));
+                    BigDecimal tindakan = new BigDecimal(String.valueOf("0"));
+                    BigDecimal lab = new BigDecimal(String.valueOf("0"));
+                    BigDecimal radiologi = new BigDecimal(String.valueOf("0"));
+                    BigDecimal resep = new BigDecimal(String.valueOf("0"));
+                    BigDecimal totalTindakan = new BigDecimal(String.valueOf("0"));
+
+                    if(objects[3] != null && !"".equalsIgnoreCase(objects[3].toString())){
+                        coverBiaya = new BigDecimal(objects[3].toString());
+
+                        if(objects[4] != null && !"".equalsIgnoreCase(objects[4].toString())){
+                            tindakan = new BigDecimal(objects[4].toString());
+                        }
+                        if(objects[5] != null && !"".equalsIgnoreCase(objects[5].toString())){
+                            lab = new BigDecimal(objects[5].toString());
+                        }
+                        if(objects[6] != null && !"".equalsIgnoreCase(objects[6].toString())){
+                            radiologi = new BigDecimal(objects[6].toString());
+                        }
+                        if(objects[7] != null && !"".equalsIgnoreCase(objects[7].toString())){
+                            resep = new BigDecimal(objects[7].toString());
+                        }
+
+                        totalTindakan = tindakan.add(lab).add(radiologi).add(resep);
+                    }
+                    detailCheckup.setIdDetailCheckup(objects[0] == null ? "" : objects[0].toString());
+                    detailCheckup.setIdAsuransi(objects[1] == null ? "" : objects[1].toString());
+                    detailCheckup.setNoKartuAsuransi(objects[2] == null ? "" : objects[2].toString());
+                    detailCheckup.setCoverBiaya(coverBiaya);
+                    detailCheckup.setTarifTindakan(totalTindakan);
+                }
+            }
+        }
+        return detailCheckup;
+    }
+
     public String getNextId() {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_detail_checkup')");
         Iterator<BigInteger> iter = query.list().iterator();

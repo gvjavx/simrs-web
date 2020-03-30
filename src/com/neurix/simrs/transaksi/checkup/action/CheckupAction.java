@@ -904,7 +904,7 @@ public class CheckupAction extends BaseMasterAction {
 
                             List<Tindakan> tindakanList = new ArrayList<>();
                             Tindakan tindakan = new Tindakan();
-                            tindakan.setIdTindakan("03");
+                            tindakan.setIdTindakan("TDK0000787");
 
                             try {
                                 tindakanList = tindakanBoProxy.getByCriteria(tindakan);
@@ -1055,6 +1055,13 @@ public class CheckupAction extends BaseMasterAction {
                     throw new GeneralBOException("Error when search PPK pelayanan");
                 }
             }
+
+            Tindakan tindakan = new Tindakan();
+            tindakan.setIdTindakan("TDK0000787");
+
+            List<Tindakan> tindakans = new ArrayList<>();
+            tindakans.add(tindakan);
+            checkup.setTindakanList(tindakans);
         }
 
         if (checkup.getDiagnosa() != null && !"".equalsIgnoreCase(checkup.getDiagnosa())
@@ -1109,12 +1116,6 @@ public class CheckupAction extends BaseMasterAction {
                 logger.error("[CheckupAction.saveAdd] Error Convert String Tgl Lahir to Date.", e);
             }
 
-            Tindakan tindakan = new Tindakan();
-            tindakan.setIdTindakan("03");
-
-            List<Tindakan> tindakans = new ArrayList<>();
-            tindakans.add(tindakan);
-
             checkup.setNoCheckup(noCheckup);
             checkup.setBranchId(userArea);
             checkup.setCreatedWho(userLogin);
@@ -1125,7 +1126,6 @@ public class CheckupAction extends BaseMasterAction {
             checkup.setFlag("Y");
             checkup.setStatusPeriksa("0");
             checkup.setNoSep(genNoSep);
-            checkup.setTindakanList(tindakans);
 
             if (this.fileUploadDoc != null) {
                 if ("image/jpeg".equalsIgnoreCase(this.fileUploadDocContentType)) {

@@ -351,6 +351,17 @@
             return rupiah;
         }
 
+        function formatRupiah(angka) {
+            if(angka != '' && angka != null && angka > 0){
+                var reverse = angka.toString().split('').reverse().join(''),
+                    ribuan = reverse.match(/\d{1,3}/g);
+                ribuan = ribuan.join('.').split('').reverse().join('');
+                return ribuan;
+            }else{
+                return 0;
+            }
+        }
+
 
     </script>
 </head>
@@ -567,6 +578,7 @@
                                                             } else {
                                                                 labelItem = item.noKtp + "-" + item.nama;
                                                             }
+                                                            console.log(item.namaPaket);
                                                             mapped[labelItem] = {
                                                                 id: item.idPasien,
                                                                 nama: item.nama,
@@ -593,7 +605,8 @@
                                                                 desa: item.desa,
                                                                 isLama: item.isPasienLama,
                                                                 idPelayanan: item.idPelayanan,
-                                                                idPaket: item.idPaket
+                                                                idPaket: item.idPaket,
+                                                                namaPaket: item.namaPaket
                                                             };
                                                             functions.push(labelItem);
                                                         });
@@ -637,7 +650,10 @@
                                                         }
 
                                                         if(selectedObj.idPaket != null && selectedObj.idPaket != ''){
-                                                            $('#paket').val(selectedObj.idPaket).trigger('change').attr('disabled',true);
+                                                            // $('#paket').val(selectedObj.idPaket).trigger('change').attr('disabled',true);
+                                                            $('#id_paket').val(selectedObj.idPaket);
+                                                            $('#paket_perusahaan').val(selectedObj.namaPaket);
+                                                            console.log(selectedObj.namaPaket);
                                                         }
 
                                                         $('#no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #st_tgl_lahir, #agama, #provinsi, #kabupaten, #kecamatan, #desa ').css('border', '');
@@ -977,7 +993,7 @@
                                         </div>
                                         <s:hidden name="headerCheckup.idJenisPeriksaPasien" id="id_jenis_periksa"></s:hidden>
 
-                                        <s:if test='tipe == "paket_perusahaan" || tipe == "paket_biasa"'>
+                                        <s:if test='tipe == "paket_biasa"'>
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 10px">Paket</label>
                                             <div class="col-md-8">
@@ -993,8 +1009,18 @@
                                                         class="fa fa-check"></i> correct</span>
                                             </div>
                                         </div>
-                                        <s:hidden name="headerCheckup.idPaket" id="id_paket"></s:hidden>
                                         </s:if>
+
+                                        <s:if test='tipe == "paket_perusahaan"'>
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 10px">Paket</label>
+                                                <div class="col-md-8">
+                                                    <input style="margin-top: 7px" class="form-control" id="paket_perusahaan" readonly>
+                                                </div>
+                                            </div>
+                                        </s:if>
+
+                                        <s:hidden name="headerCheckup.idPaket" id="id_paket"></s:hidden>
 
                                         <s:if test='tipe == "ptpn"'>
                                             <div class="form-group">
@@ -2012,9 +2038,14 @@
             if(idAsuransi == "ASN00000001"){
                 $('#form_jasaraharja_1, #form_jasaraharja_2').show();
                 $('#form_no_kartu').hide();
+                var cover = formatRupiah(20000000);
+                $('#nominal_cover_biaya').val(cover);
+                $('#cover_biaya').val('20000000');
             }else{
                 $('#form_jasaraharja_1, #form_jasaraharja_2').hide();
                 $('#form_no_kartu').show();
+                $('#cover_biaya').val('');
+                $('#nominal_cover_biaya').val('');
             }
         }
     }

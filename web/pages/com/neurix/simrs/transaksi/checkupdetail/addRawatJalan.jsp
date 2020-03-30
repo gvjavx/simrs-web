@@ -561,6 +561,54 @@
                         </div>
                     </div>
 
+                    <div id="status_asuransi" style="display: none">
+                        <div class="box-header with-border">
+                        </div>
+                        <div class="box-header with-border">
+                            <h3 class="box-title"><i class="fa fa-line-chart"></i> Status Biaya Tindakan</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-offset-2 col-md-8">
+                                    <h5>
+                                        Cover Biaya Asuransi
+                                        <small class="pull-right" style="margin-top: 7px">Rp. <span id="b_asuransi"></span>
+                                        </small>
+                                    </h5>
+                                    <div class="progress">
+                                        <div id="sts_cover_biaya_asuransi">
+                                        </div>
+                                    </div>
+                                    <h5>
+                                        Total Biaya Tindakan
+                                        <small class="pull-right" style="margin-top: 7px">Rp. <span
+                                                id="b_tindakan_asuransi"></span></small>
+                                    </h5>
+                                    <div class="progress">
+                                        <div id="sts_biaya_tindakan_asuransi">
+                                        </div>
+                                    </div>
+                                    <ul style="list-style-type: none">
+                                        <li><i class="fa fa-square" style="color: #337ab7"></i> Total biaya cover Asuransi
+                                        </li>
+                                        <li><i class="fa fa-square" style="color: #5cb85c"></i> Total biaya tindakan <
+                                            50% dari cover biaya Asuransi
+                                        </li>
+                                        <li><i class="fa fa-square" style="color: #f0ad4e"></i> Total biaya tindakan >
+                                            50% dan < 70% dari cover biaya Asuransi
+                                        </li>
+                                        <li><i class="fa fa-square" style="color: #d9534f"></i> Total biaya tindakan >
+                                            70% dari cover biaya Asuransi
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-2">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="box-header with-border" id="pos_tin">
                     </div>
                     <div class="box-header with-border">
@@ -1819,6 +1867,7 @@
         hitungStatusBiaya();
         hitungBmi();
         listSelectTindakanKategori();
+        hitungCoverBiaya()
 
         $('#img_ktp').on('click', function (e) {
             e.preventDefault();
@@ -1986,6 +2035,54 @@
 
     function printGelangPasien() {
         window.open('printGelangPasien_checkupdetail.action?id=' + noCheckup, '_blank');
+    }
+
+    function hitungCoverBiaya() {
+        CheckupDetailAction.getBiayaAsuransi(idDetailCheckup, function (response) {
+            console.log(response);
+            if (response.coverBiaya != null && response.coverBiaya != '') {
+                $('#status_asuransi').show();
+                if (response.coverBiaya != null) {
+
+                    var coverBiaya = response.coverBiaya;
+                    var biayaTindakan = response.tarifTindakan;
+
+                    var persen = "";
+                    if (coverBiaya != '' && biayaTindakan) {
+                        persen = ((parseInt(biayaTindakan) / parseInt(coverBiaya)) * 100).toFixed(2);
+                    } else {
+                        persen = 0;
+                    }
+
+                    var barClass = "";
+                    var barLabel = "";
+
+                    if (parseInt(persen) > 70) {
+                        barClass = 'progress-bar-danger';
+                    } else if (parseInt(persen) > 50) {
+                        barClass = 'progress-bar-warning';
+                    } else {
+                        barClass = 'progress-bar-success';
+                    }
+
+                    var barBpjs = '<div class="progress-bar progress-bar-primary" style="width: 100%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">' + "100%" + '</div>';
+
+                    var barTindakan = '<div class="progress-bar ' + barClass + '" style="width: ' + persen + '%" role="progressbar" aria-valuenow="' + persen + '" aria-valuemin="0" aria-valuemax="100">' + persen + "%" + '</div>';
+
+                    if (coverBiaya != '') {
+                        $('#sts_cover_biaya_asuransi').html(barBpjs);
+                        $('#b_asuransi').html(formatRupiah(coverBiaya) + " (100%)");
+                    }
+
+                    if (biayaTindakan != '') {
+                        $('#sts_biaya_tindakan_asuransi').html(barTindakan);
+                        $('#b_tindakan_asuransi').html(formatRupiah(biayaTindakan) + " (" + persen + "%)");
+                    }
+                }
+            } else {
+                $('#status_asuransi').hide();
+            }
+        });
     }
 
     function hitungStatusBiaya() {
@@ -2692,6 +2789,7 @@
                             dwr.engine.setAsync(false);
                             listTindakan();
                             hitungStatusBiaya();
+                            hitungCoverBiaya();
                             $('#modal-tindakan').modal('hide');
                             $('#info_dialog').dialog('open');
                             $('#close_pos').val(2);
@@ -2710,6 +2808,7 @@
                             dwr.engine.setAsync(false);
                             listTindakan();
                             hitungStatusBiaya();
+                            hitungCoverBiaya();
                             $('#modal-tindakan').modal('hide');
                             $('#info_dialog').dialog('open');
                             $('#close_pos').val(2);

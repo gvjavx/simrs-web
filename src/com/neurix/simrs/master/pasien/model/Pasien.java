@@ -51,6 +51,15 @@ public class Pasien {
 
     private String idPaket;
     private String idPelayanan;
+    private String namaPaket;
+
+    public String getNamaPaket() {
+        return namaPaket;
+    }
+
+    public void setNamaPaket(String namaPaket) {
+        this.namaPaket = namaPaket;
+    }
 
     public String getIdPaket() {
         return idPaket;

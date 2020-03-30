@@ -8,6 +8,7 @@
     <bean id="permintaanVendorAction" class="com.neurix.simrs.transaksi.permintaanvendor.action.PermintaanVendorAction"
           p:permintaanVendorBoProxy-ref="permintaanVendorBoProxy"
           p:vendorBoProxy-ref="vendorBoProxy"
+          p:branchBoProxy-ref="branchBoProxy"
     />
 
     <bean id="purchaseOrderContoller" class="com.neurix.simrs.mobileapi.PurchaseOrderController"

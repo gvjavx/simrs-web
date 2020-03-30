@@ -1,6 +1,8 @@
 package com.neurix.simrs.transaksi.permintaanvendor.action;
 
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
+import com.neurix.authorization.company.bo.BranchBo;
+import com.neurix.authorization.company.model.Branch;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
@@ -60,6 +62,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
     private PermintaanVendor permintaanVendor;
     private VendorBo vendorBoProxy;
     private Vendor vendor;
+    private BranchBo branchBoProxy;
 
     private File fileUpload;
     private String fileUploadFileName;
@@ -70,6 +73,10 @@ public class PermintaanVendorAction extends BaseMasterAction {
     private Integer noBatch;
     private String newBatch;
     private String isVerif;
+
+    public void setBranchBoProxy(BranchBo branchBoProxy) {
+        this.branchBoProxy = branchBoProxy;
+    }
 
     public String getIsVerif() {
         return isVerif;
@@ -925,16 +932,16 @@ public class PermintaanVendorAction extends BaseMasterAction {
             String branch = CommonUtil.userBranchLogin();
             String logo = "";
 
-            switch (branch) {
-                case CommonConstant.BRANCH_RS01:
-                    logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.LOGO_RS01;
-                    break;
-                case CommonConstant.BRANCH_RS02:
-                    logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.LOGO_RS02;
-                    break;
-                case CommonConstant.BRANCH_RS03:
-                    logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.LOGO_RS03;
-                    break;
+            Branch branches = new Branch();
+
+            try {
+                branches = branchBoProxy.getBranchById(branch, "Y");
+            } catch (GeneralBOException e) {
+                logger.error("Found Error when searhc branch logo");
+            }
+
+            if (branches != null) {
+                logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.RESOURCE_PATH_IMAGES + branches.getLogoName();
             }
 
             JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(obatDetailList);
@@ -942,6 +949,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
             reportParams.put("permintaanId", idPermintaan);
             reportParams.put("logo", logo);
             reportParams.put("unit", CommonUtil.userBranchNameLogin());
+            reportParams.put("area", CommonUtil.userAreaName());
             reportParams.put("idVendor", vendorResult.getIdVendor());
             reportParams.put("namaVendor", vendorResult.getNamaVendor());
             reportParams.put("email", vendorResult.getEmail());
@@ -949,6 +957,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
             reportParams.put("alamat", vendorResult.getAlamat());
             reportParams.put("petugas", CommonUtil.userLogin());
             reportParams.put("listNewObat", itemData);
+            reportParams.put("tglCair", permintaanVendorList.get(0).getTglCair());
 
             try {
                 preDownload();

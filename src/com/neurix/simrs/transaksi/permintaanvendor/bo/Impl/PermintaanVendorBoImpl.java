@@ -87,6 +87,8 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                     permintaanVendor.setCreatedWho(permintaanVendorEntity.getCreatedWho());
                     permintaanVendor.setLastUpdate(permintaanVendorEntity.getLastUpdate());
                     permintaanVendor.setLastUpdateWho(permintaanVendorEntity.getLastUpdateWho());
+                    String tglCair = new SimpleDateFormat("dd-MM-yyyy").format(permintaanVendorEntity.getTglCair());
+                    permintaanVendor.setTglCair(tglCair);
 
 
                     if (!"".equalsIgnoreCase(permintaanVendor.getIdApprovalObat())) {

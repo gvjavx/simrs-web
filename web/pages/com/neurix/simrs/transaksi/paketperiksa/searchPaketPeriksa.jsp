@@ -134,7 +134,7 @@
                                     <td><s:property value="namaPaket"/></td>
                                     <td align="center">
                                         <img onclick="detailPaket('<s:property value="idPaket"/>','<s:property value="namaPaket"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-search-25.png"/>" style="cursor: pointer; ">
-                                        <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer; ">
+                                        <%--<img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer; ">--%>
                                     </td>
                                 </tr>
                             </s:iterator>
