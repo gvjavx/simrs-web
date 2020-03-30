@@ -1228,7 +1228,9 @@
         }
         if (param == "nonparenteral"){
 
-            RawatInapAction.getListObatNonParenteral(idDetailCheckup, "%",  function(response){
+            var idDetail = $("#idDetailCheckup").val();
+
+            RawatInapAction.getListObatNonParenteral(idDetail, "%",  function(response){
                 var str = "";
                 $.each(response, function(i, item) {
                     str += "<option val=\'"+item.namaObat+"\'>"+item.namaObat+"</option>";
@@ -1281,36 +1283,16 @@
             });
             setToListTable(param);
         }
-        if (param == "nonparenteral"){
+        if (param == "parenteral"){
 
             var waktu = $("#par_waktu").val();
             var obat = $("#select_obat_par").val();
             var nama = $("#select_obat_par").text();
+            var cara = $("#par_cara").val();
             var dosis = $("#par_dosis").val();
+            var skintes = $("#par_skintes").val();
             var waktupemberian = $("#select_waktu_par").val();
             var ket = $("#par_keterangan").val();
-
-            listOfNonParenteral.push({
-                "waktu":waktu,
-                "obat":obat,
-                "nama":nama,
-                "dosis":dosis,
-                "waktupemberian":waktupemberian,
-                "ket":ket,
-                "kat":param
-            });
-            setToListTable(param);
-        }
-        if (param == "parenteral"){
-
-            var waktu = $("#nonpar_waktu").val();
-            var obat = $("#select_obat_nonpar").val();
-            var nama = $("#select_obat_nonpar").text();
-            var cara = $("#nonpar_cara").val();
-            var dosis = $("#nonpar_dosis").val();
-            var skintes = $("#nonpar_skintes").val();
-            var waktupemberian = $("#select_waktu_nonpar").val();
-            var ket = $("#nonpar_keterangan").val();
 
             listOfParenteral.push({
                 "waktu":waktu,
@@ -1319,6 +1301,26 @@
                 "cara":cara,
                 "dosis":dosis,
                 "skintes":skintes,
+                "waktupemberian":waktupemberian,
+                "ket":ket,
+                "kat":param
+            });
+            setToListTable(param);
+        }
+        if (param == "nonparenteral"){
+
+            var waktu = $("#nonpar_waktu").val();
+            var obat = $("#select_obat_nonpar").val();
+            var nama = $("#select_obat_nonpar").text();
+            var dosis = $("#nonpar_dosis").val();
+            var waktupemberian = $("#select_waktu_nonpar").val();
+            var ket = $("#nonpar_keterangan").val();
+
+            listOfNonParenteral.push({
+                "waktu":waktu,
+                "obat":obat,
+                "nama":nama,
+                "dosis":dosis,
                 "waktupemberian":waktupemberian,
                 "ket":ket,
                 "kat":param

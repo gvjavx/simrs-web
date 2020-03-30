@@ -1588,7 +1588,7 @@
                                       <%--id="resep_jenis_satuan"--%>
                                       <%--headerKey="biji" headerValue="Biji"--%>
                                       <%--cssClass="form-control select2"/>--%>
-                            <select class="form-control" style="width: 100%; margin-top: 7px" onchange="var warn = $('#war_rep_jenis_satuan').is(':visible'); if (warn){$('#cor_rep_jenis_satuan').show().fadeOut(3000);$('#war_rep_jenis_satuan').hide()};defaultValByJenisSatuan(this.value)">
+                            <select class="form-control" id="resep_jenis_satuan" style="width: 100%; margin-top: 7px" onchange="var warn = $('#war_rep_jenis_satuan').is(':visible'); if (warn){$('#cor_rep_jenis_satuan').show().fadeOut(3000);$('#war_rep_jenis_satuan').hide()};defaultValByJenisSatuan(this.value)">
                                 <option value="biji" selected>Biji</option>
                                 <option value="lembar">Lembar</option>
                                 <option value="box">Box</option>
@@ -4496,6 +4496,8 @@
             if ("biji" == jenisSatuan) {
                 stok = parseInt(qtyBiji) + ((parseInt(lembarPerBox * parseInt(qtyBox))) * parseInt(bijiPerLembar));
             }
+
+            console.log("RESEP >>>"+qty+" - "+stok);
 
             if (parseInt(qty) <= parseInt(stok)) {
                 $.each(data, function (i, item) {
