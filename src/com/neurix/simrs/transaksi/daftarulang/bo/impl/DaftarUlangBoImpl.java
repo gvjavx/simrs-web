@@ -8,7 +8,9 @@ import com.neurix.simrs.master.ruangan.model.Ruangan;
 import com.neurix.simrs.master.tindakan.dao.TindakanDao;
 import com.neurix.simrs.master.tindakan.model.ImSimrsTindakanEntity;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
+import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
+import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
 import com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao;
 import com.neurix.simrs.transaksi.checkupdetail.dao.UangMukaDao;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
@@ -33,6 +35,7 @@ import org.hibernate.HibernateException;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -53,6 +56,7 @@ public class DaftarUlangBoImpl implements DaftarUlangBo {
     private DiagnosaRawatDao diagnosaRawatDao;
     private RuanganDao ruanganDao;
     private TindakanDao tindakanDao;
+    private HeaderCheckupDao headerCheckupDao;
 
     @Override
     public List<HeaderDetailCheckup> getListDaftarUlangPasien(HeaderDetailCheckup headerDetailCheckup) throws GeneralBOException {
@@ -73,6 +77,46 @@ public class DaftarUlangBoImpl implements DaftarUlangBo {
     public CheckResponse saveDaftarUlang(HeaderDetailCheckup bean) throws GeneralBOException {
         logger.info("[CheckupDetailBoImpl.saveEdit] Start >>>>>>>");
         CheckResponse response = new CheckResponse();
+
+        ItSimrsHeaderChekupEntity chekupEntity = new ItSimrsHeaderChekupEntity();
+
+        try {
+            chekupEntity = headerCheckupDao.getById("noCheckup", bean.getNoCheckup());
+            if(chekupEntity != null){
+                try {
+
+                    chekupEntity.setNoRujukan(bean.getNoRujukan());
+                    chekupEntity.setNoPpkRujukan(bean.getNoPpk());
+                    chekupEntity.setTglRujukan(Date.valueOf(bean.getTglRujukan()));
+                    chekupEntity.setUrlDocRujuk(bean.getSuratRujukan());
+                    chekupEntity.setIdPelayananBpjs(bean.getIdPelayanan());
+                    chekupEntity.setKelasPasien(bean.getIdKelas());
+                    chekupEntity.setRujuk(bean.getPerujuk());
+                    chekupEntity.setKetRujukan(bean.getNamaPerujuk());
+                    chekupEntity.setIdJenisPeriksaPasien(bean.getIdJenisPeriksaPasien());
+                    chekupEntity.setJenisTransaksi(bean.getIdJenisPeriksaPasien());
+                    chekupEntity.setLastUpdate(bean.getLastUpdate());
+                    chekupEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                    try {
+                        headerCheckupDao.updateAndSave(chekupEntity);
+                    }catch (HibernateException e){
+                        response.setStatus("error");
+                        response.setMessage("Error When Saving data checkup " + e.getMessage());
+                    }
+
+                }catch (HibernateException e){
+                    logger.error("Found Error "+e.getMessage());
+                    response.setStatus("error");
+                    response.setMessage("Error When Saving data checkup " + e.getMessage());
+                }
+            }
+
+        }catch (HibernateException e){
+            logger.error("Found Error "+e.getMessage());
+            response.setStatus("error");
+            response.setMessage("Error When Saving data detail checkup " + e.getMessage());
+        }
 
         ItSimrsHeaderDetailCheckupEntity detail = new ItSimrsHeaderDetailCheckupEntity();
 
@@ -744,5 +788,9 @@ public class DaftarUlangBoImpl implements DaftarUlangBo {
 
     public void setTindakanDao(TindakanDao tindakanDao) {
         this.tindakanDao = tindakanDao;
+    }
+
+    public void setHeaderCheckupDao(HeaderCheckupDao headerCheckupDao) {
+        this.headerCheckupDao = headerCheckupDao;
     }
 }

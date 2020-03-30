@@ -887,6 +887,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
         logger.info("[PermintaanVendorAction.printPermintaanPO] START process <<<");
 
         String idPermintaan = getId();
+        Integer noBatch = getNoBatch();
 
         PermintaanVendor permintaanVendor = new PermintaanVendor();
         permintaanVendor.setIdPermintaanVendor(idPermintaan);
@@ -957,6 +958,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
             reportParams.put("alamat", vendorResult.getAlamat());
             reportParams.put("petugas", CommonUtil.userLogin());
             reportParams.put("listNewObat", itemData);
+            reportParams.put("noBatch", noBatch);
             reportParams.put("tglCair", permintaanVendorList.get(0).getTglCair());
 
             try {

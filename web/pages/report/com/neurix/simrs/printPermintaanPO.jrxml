@@ -41,6 +41,7 @@
 	<parameter name="reportParams.unit" class="java.lang.String"/>
 	<parameter name="reportParams.area" class="java.lang.String"/>
 	<parameter name="reportParams.tglCair" class="java.lang.String"/>
+	<parameter name="reportParams.noBatch" class="java.lang.Integer"/>
 	<queryString>
 		<![CDATA[SELECT
 a.id_approval_obat,
@@ -54,14 +55,15 @@ e.no_faktur,
 TO_CHAR(e.tanggal_faktur, 'DD-MM-YYYY') as tgl_faktur,
 e.no_invoice,
 e.no_do,
+e.no_batch,
 TO_CHAR(b.tanggal_pencairan, 'DD-MM-YYYY') as tgl_cair
 FROM mt_simrs_approval_transaksi_obat a
 INNER JOIN mt_simrs_permintaan_obat_vendor b ON a.id_approval_obat = b.id_approval_obat
 INNER JOIN mt_simrs_transaksi_obat_detail c ON a.id_approval_obat = c.id_approval_obat
 INNER JOIN (SELECT id_obat, nama_obat FROM im_simrs_obat GROUP BY id_obat, nama_obat) d ON c.id_obat = d.id_obat
-INNER JOIN (SELECT id_transaksi_obat_detail, SUM(qty_approve) as qty_approve, no_faktur, tanggal_faktur, no_invoice, no_do FROM mt_simrs_transaksi_obat_detail_batch
-GROUP BY id_transaksi_obat_detail, no_faktur, tanggal_faktur, no_invoice, no_do) e ON c.id_transaksi_obat_detail = e.id_transaksi_obat_detail
-WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId}]]>
+INNER JOIN (SELECT id_transaksi_obat_detail, SUM(qty_approve) as qty_approve, no_faktur, tanggal_faktur, no_invoice, no_do, no_batch FROM mt_simrs_transaksi_obat_detail_batch
+GROUP BY id_transaksi_obat_detail, no_faktur, tanggal_faktur, no_invoice, no_do, no_batch) e ON c.id_transaksi_obat_detail = e.id_transaksi_obat_detail
+WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId} AND e.no_batch = $P{reportParams.noBatch}]]>
 	</queryString>
 	<field name="id_approval_obat" class="java.lang.String"/>
 	<field name="id_permintaan_obat_vendor" class="java.lang.String"/>
@@ -74,6 +76,7 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId}]]>
 	<field name="tgl_faktur" class="java.lang.String"/>
 	<field name="no_invoice" class="java.lang.String"/>
 	<field name="no_do" class="java.lang.String"/>
+	<field name="no_batch" class="java.lang.Integer"/>
 	<field name="tgl_cair" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>

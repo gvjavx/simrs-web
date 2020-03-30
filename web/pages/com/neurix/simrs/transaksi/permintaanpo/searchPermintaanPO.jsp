@@ -386,6 +386,7 @@
 <script type='text/javascript'>
 
     function showBatch(idPermintaan, flag, idApproval){
+        $('#body_bat').html('');
         $('#modal-batch').modal({show:true, backdrop:'static'});
         PermintaanVendorAction.listBatch(idApproval, function (response) {
             console.log(response);
@@ -397,7 +398,7 @@
                         '<td align="center">'+item.noBatch+'</td>' +
                         '<td>'+item.stLastUpdateWho+'</td>' +
                         '<td align="center">' +
-                        '<a target="_blank" href="printPermintaanPO_permintaanpo?id='+idPermintaan+'">' +
+                        '<a target="_blank" href="printPermintaanPO_permintaanpo?id='+idPermintaan+'&noBatch='+item.noBatch+'">' +
                         '<img src="<s:url value="/pages/images/icons8-print-25.png"/>">'+
                         '</a>'+
                         '<img style="cursor: pointer" onclick="showDetailListObat(\''+idPermintaan+'\',\''+item.noBatch+'\',\''+item.noFaktur+'\',\''+tgl+'\',\''+item.noInvoice+'\',\''+item.noDo+'\',\''+item.urlDoc+'\')" src="<s:url value="/pages/images/icons8-search-25.png"/>"></td>' +

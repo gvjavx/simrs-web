@@ -22,6 +22,9 @@ import com.neurix.simrs.transaksi.diagnosarawat.model.ItSimrsDiagnosaRawatEntity
 import com.neurix.simrs.transaksi.riwayattindakan.dao.RiwayatTindakanDao;
 import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsRiwayatTindakanEntity;
 import com.neurix.simrs.transaksi.statusperiksa.bo.StatusPeriksaBo;
+import com.neurix.simrs.transaksi.teamdokter.dao.DokterTeamDao;
+import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
+import com.neurix.simrs.transaksi.teamdokter.model.ItSimrsDokterTeamEntity;
 import com.neurix.simrs.transaksi.tindakanrawat.dao.TindakanRawatDao;
 import com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity;
 import org.apache.log4j.Logger;
@@ -49,6 +52,7 @@ public class StatusPeriksaBoImpl implements StatusPeriksaBo {
     private RiwayatTindakanDao riwayatTindakanDao;
     private TindakanDao tindakanDao;
     private HeaderCheckupLogDao headerCheckupLogDao;
+    private DokterTeamDao dokterTeamDao;
 
     @Override
     public List<HeaderDetailCheckup> getListStatusPeriksa(HeaderDetailCheckup headerDetailCheckup) throws GeneralBOException {
@@ -190,6 +194,25 @@ public class StatusPeriksaBoImpl implements StatusPeriksaBo {
                                 }
 
                                 if (bean.getTindakanList().size() > 0) {
+
+                                    ItSimrsDokterTeamEntity dokterTeamEntity = new ItSimrsDokterTeamEntity();
+                                    if("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
+                                        Map hsCriteria = new HashMap();
+                                        hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+                                        List<ItSimrsDokterTeamEntity> list = new ArrayList<>();
+
+                                        try {
+                                            list = dokterTeamDao.getByCriteria(hsCriteria);
+                                        }catch (HibernateException e){
+                                            response.setStatus("error");
+                                            response.setMessage("Found Error "+e.getMessage());
+                                            logger.error("found error"+e.getMessage());
+                                        }
+                                        if(list.size() > 0){
+                                            dokterTeamEntity = list.get(0);
+                                        }
+                                    }
+
                                     for (Tindakan tindakan : bean.getTindakanList()) {
                                         List<ImSimrsTindakanEntity> tindakanEntities = getListEntityTindakan(tindakan);
                                         if (tindakanEntities.size() > 0) {
@@ -200,7 +223,7 @@ public class StatusPeriksaBoImpl implements StatusPeriksaBo {
                                             tindakanRawatEntity.setIdTindakanRawat("TDR" + getNextTindakanRawatId());
                                             tindakanRawatEntity.setIdTindakan(tindakanEntity.getIdTindakan());
                                             tindakanRawatEntity.setNamaTindakan(tindakanEntity.getTindakan());
-                                            tindakanRawatEntity.setIdDokter(bean.getIdDokter());
+                                            tindakanRawatEntity.setIdDokter(dokterTeamEntity.getIdDokter());
                                             tindakanRawatEntity.setCreatedDate(bean.getCreatedDate());
                                             tindakanRawatEntity.setCreatedWho(bean.getCreatedWho());
                                             tindakanRawatEntity.setLastUpdate(bean.getCreatedDate());
@@ -264,7 +287,7 @@ public class StatusPeriksaBoImpl implements StatusPeriksaBo {
 
                                 if (entityUangMuka != null) {
 
-                                    entityUangMuka.setFlagRefund("Y");
+                                    entityUangMuka.setFlagRefund("R");
                                     entityUangMuka.setLastUpdate(bean.getLastUpdate());
                                     entityUangMuka.setLastUpdateWho(bean.getLastUpdateWho());
 
@@ -461,5 +484,9 @@ public class StatusPeriksaBoImpl implements StatusPeriksaBo {
 
     public void setHeaderCheckupLogDao(HeaderCheckupLogDao headerCheckupLogDao) {
         this.headerCheckupLogDao = headerCheckupLogDao;
+    }
+
+    public void setDokterTeamDao(DokterTeamDao dokterTeamDao) {
+        this.dokterTeamDao = dokterTeamDao;
     }
 }

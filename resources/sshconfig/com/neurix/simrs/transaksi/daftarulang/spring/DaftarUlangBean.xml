@@ -21,6 +21,7 @@
           p:ruanganDao-ref="ruanganDao"
           p:tindakanDao-ref="tindakanDao"
           p:tindakanRawatDao-ref="tindakanRawatDao"
+          p:headerCheckupDao-ref="headerCheckupDao"
     />
 
     <bean id="daftarUlangBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -39,6 +40,7 @@
         <property name="transactionAttributes">
             <props>
                 <prop key="getByCriteria">readOnly</prop>
+                <prop key="saveDaftarUlang">PROPAGATION_REQUIRED</prop>
             </props>
         </property>
     </bean>

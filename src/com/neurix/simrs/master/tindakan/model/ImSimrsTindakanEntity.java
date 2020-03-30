@@ -1,6 +1,9 @@
 package com.neurix.simrs.master.tindakan.model;
 
+import com.neurix.simrs.master.diagnosa.dao.DiagnosaDao;
+
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 
@@ -20,6 +23,25 @@ public class ImSimrsTindakanEntity implements Serializable{
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String kategoriInaBpjs;
+
+    private String branchId;
+    private BigDecimal diskon;
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
+    public BigDecimal getDiskon() {
+        return diskon;
+    }
+
+    public void setDiskon(BigDecimal diskon) {
+        this.diskon = diskon;
+    }
 
     public String getIdTindakan() {
         return idTindakan;
