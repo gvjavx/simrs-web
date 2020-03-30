@@ -20,6 +20,7 @@ public class HeaderDetailCheckup extends BaseModel{
     private String statusPeriksa;
     private String statusBayar;
     private BigInteger totalBiaya;
+    private BigInteger totalBiayaDariBpjs;
     private String keteranganSelesai;
     private String jenisLab;
     private String branchId;
@@ -104,6 +105,14 @@ public class HeaderDetailCheckup extends BaseModel{
 
     private String diagnosa;
     private String namaDiagnosa;
+
+    public BigInteger getTotalBiayaDariBpjs() {
+        return totalBiayaDariBpjs;
+    }
+
+    public void setTotalBiayaDariBpjs(BigInteger totalBiayaDariBpjs) {
+        this.totalBiayaDariBpjs = totalBiayaDariBpjs;
+    }
 
     public String getDiagnosa() {
         return diagnosa;

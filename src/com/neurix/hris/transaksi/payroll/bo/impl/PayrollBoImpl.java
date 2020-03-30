@@ -1668,6 +1668,10 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                 int i = 0;
                 // payroll yg diproses hanya karyawan tetap dan pkwt dalam masa kerja tersebut
                 for (ItPayrollEntity payrollEntity : itPayroll) {
+                    if (("00102159").equalsIgnoreCase(payrollEntity.getNip())){
+                        int a = 0;
+                    }
+
                     i++;
                     payroll = new Payroll();
                     payrollPph = new PayrollPph();
@@ -2663,7 +2667,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
 
                     BigDecimal totalA = new BigDecimal(0);
                     totalA = totalA.add(gaji).add(santunanKhusus).add(tunjJabatanStruktural).add(tunjStruktural)
-                            .add(tunjStrategis).add(tunjPeralihan).add(tunjLain).add(tunjTambahan).add(tambahanLain).add(lembur).add(pemondokan).add(komunikasi);
+                            .add(tunjStrategis).add(tunjPeralihan).add(tunjLain).add(tunjTambahan).add(tambahanLain).add(lembur).add(pemondokan).add(komunikasi).add(lembur);
                     payroll.setTotalA(CommonUtil.numbericFormat(totalA, "###,###"));
                     payroll.setTotalANilai(totalA);
 
@@ -8737,7 +8741,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                     BigDecimal nilaiA = payrollPerson.getGajiGolonganNilai().add(payrollPerson.getTunjanganUmkNilai()).add(payrollPerson.getTunjanganJabatanStrukturalNilai())
                             .add(payrollPerson.getTunjanganStrukturalNilai()).add(payrollPerson.getTunjanganStrategisNilai()).add(payrollPerson.getTunjanganPeralihanNilai())
                             .add(payrollPerson.getTunjanganLainNilai()).add(payrollPerson.getTunjanganTambahanNilai()).add( payrollPerson.getPemondokanNilai())
-                            .add(payrollPerson.getKomunikasiNilai());
+                            .add(payrollPerson.getKomunikasiNilai()).add(payrollPerson.getTunjanganLemburNilai());
                     payrollPerson.setTotalA(CommonUtil.numbericFormat(nilaiA, "###,###")); //Total A
                     payrollPerson.setTotalANilai(nilaiA); //Total A
 
@@ -8797,7 +8801,13 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                     payrollPerson.setTotalC(CommonUtil.numbericFormat(nilaiC, "###,###")); //Total C
                     payrollPerson.setTotalCNilai(nilaiC); //Total C
 
-                    BigDecimal gajiBersih = nilaiA.add(payrollPerson.getTotalBNilai().add(payrollPerson.getLainLainNilai())).subtract(nilaiC);
+                    BigDecimal nilaiB = payrollPerson.getTotalRlabNilai().add(payrollPerson.getTunjanganDapenNilai()).add(payrollPerson.getTunjanganBpjsKsNilai())
+                            .add(payrollPerson.getTunjanganBpjsTkNilai()).add(payrollPerson.getTunjanganPphNilai());
+
+                    payrollPerson.setTotalB(CommonUtil.numbericFormat(nilaiB, "###,###")); //Total B
+                    payrollPerson.setTotalBNilai(nilaiB); //Total B
+
+                    BigDecimal gajiBersih = nilaiA.add(nilaiB.add(payrollPerson.getLainLainNilai())).subtract(nilaiC);
                     payrollPerson.setTotalGajiBersih(CommonUtil.numbericFormat(gajiBersih, "###,###")); //gaji bersih
                     payrollPerson.setTotalGajiBersihNilai(gajiBersih);
                 }

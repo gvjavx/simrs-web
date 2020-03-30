@@ -253,6 +253,8 @@
                                         <a type="button" class="btn btn-danger" href="initForm_createfpk.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
+                                        <a href="importCsv_createfpk.action" class="btn btn-primary" id="btn_import_csv"><i class="fa fa-upload"></i>
+                                            Import CSV</a>
                                         <a class="btn btn-primary" id="btn_create" style="display: none" onclick="createFPK()"><i class="fa fa-plus"></i>
                                             Create FPK</a>
                                     </div>

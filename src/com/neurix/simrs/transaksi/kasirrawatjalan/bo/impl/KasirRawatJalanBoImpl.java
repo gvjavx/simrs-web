@@ -9,6 +9,7 @@ import com.neurix.simrs.transaksi.checkup.model.ItSImrsFpkEntity;
 import com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao;
 import com.neurix.simrs.transaksi.checkupdetail.dao.UangMukaDao;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
+import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsUangMukaPendaftaranEntity;
 import com.neurix.simrs.transaksi.checkupdetail.model.UangMuka;
 import com.neurix.simrs.transaksi.kasirrawatjalan.bo.KasirRawatJalanBo;
@@ -248,5 +249,18 @@ public class KasirRawatJalanBoImpl implements KasirRawatJalanBo {
             logger.error("[RiwayatTindakanBoImpl.getNextIdRiwayatTindakan] ERROR When create sequences", e);
         }
         return id;
+    }
+
+    @Override
+    public List<ItSimrsHeaderDetailCheckupEntity> getSearchCheckupBySep(String noSep) throws GeneralBOException {
+
+        List<ItSimrsHeaderDetailCheckupEntity> list = new ArrayList<>();
+        try {
+            list = checkupDetailDao.getSearchCheckupBySep(noSep);
+        }catch (HibernateException e){
+            logger.error("Found Error "+e.getMessage());
+        }
+
+        return list;
     }
 }

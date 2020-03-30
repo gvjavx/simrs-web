@@ -24,6 +24,7 @@ import com.neurix.simrs.transaksi.transaksiobat.bo.TransaksiObatBo;
 import com.neurix.simrs.transaksi.transaksiobat.model.RiwayatTransaksiObat;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
@@ -35,12 +36,14 @@ import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
 import javax.xml.soap.Detail;
+import java.io.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,6 +65,33 @@ public class KasirRawatJalanAction extends BaseMasterAction {
     private BillingSystemBo billingSystemBoProxy;
     private BranchBo branchBoProxy;
     private String jenis;
+    private File fileUpload;
+    private String fileUploadFileName;
+    private String fileUploadContentType;
+
+    public String getFileUploadFileName() {
+        return fileUploadFileName;
+    }
+
+    public void setFileUploadFileName(String fileUploadFileName) {
+        this.fileUploadFileName = fileUploadFileName;
+    }
+
+    public String getFileUploadContentType() {
+        return fileUploadContentType;
+    }
+
+    public void setFileUploadContentType(String fileUploadContentType) {
+        this.fileUploadContentType = fileUploadContentType;
+    }
+
+    public File getFileUpload() {
+        return fileUpload;
+    }
+
+    public void setFileUpload(File fileUpload) {
+        this.fileUpload = fileUpload;
+    }
 
     public String getJenis() {
         return jenis;
@@ -816,6 +846,108 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         return "search";
     }
 
+    public String importCsv() {
+        logger.info("[KasirRawatJalanAction.importCsv] start process >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+
+        session.removeAttribute("listOfImportCsv");
+
+        logger.info("[KasirRawatJalanAction.importCsv] end process <<<");
+        return "import_csv";
+    }
+
+    public String goToHasilCsv() {
+        logger.info("[KasirRawatJalanAction.goToHasilCsv] start process >>>");
+
+        logger.info("[KasirRawatJalanAction.goToHasilCsv] end process <<<");
+        return "hasil_import_csv";
+    }
+
+    public String prosesImportCsv() {
+        logger.info("[KasirRawatJalanAction.prosesImportCsv] start process >>>");
+        List<HeaderDetailCheckup> listOfResult = new ArrayList<>();
+        HttpSession session = ServletActionContext.getRequest().getSession();
+
+        if (this.fileUpload != null) {
+            if ("application/vnd.ms-excel".equalsIgnoreCase(this.fileUploadContentType)) {
+                if (this.fileUpload.length() <= 5242880 && this.fileUpload.length() > 0) {
+                    // file name
+                    String fileName = this.fileUploadFileName;
+                    String fileNameReplace = fileName.replace(" ", "_");
+                    String newFileName = "CSV_FPK" + "_" + dateFormater("MM") + dateFormater("yy") + "_" + fileNameReplace;
+                    // deklarasi path file
+                    String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_DOC_FPK;
+                    logger.info("[CheckupAction.uploadImages] FILEPATH :" + filePath);
+
+                    // persiapan pemindahan file
+                    File fileToCreate = new File(filePath, newFileName);
+
+                    try {
+                        // pemindahan file
+                        FileUtils.copyFile(this.fileUpload, fileToCreate);
+                        logger.info("[CheckupAction.uploadImages] SUCCES PINDAH");
+                    } catch (IOException e) {
+                        logger.error("[CheckupAction.uploadImages] error, " + e.getMessage());
+                        throw new GeneralBOException("Found Error when upload images rujukan " + e.getMessage());
+                    }
+
+                    BufferedReader br = null;
+                    String line = "";
+                    String cvsSplitBy = ",";
+                    int x = 1;
+                    try {
+                        br = new BufferedReader(new FileReader(this.fileUpload));
+                        while ((line = br.readLine()) != null) {
+                            //melewatkan judul nomor 1
+                            if (x!=1){
+                                // use comma as separator
+                                String[] data = line.split(cvsSplitBy);
+
+                                //hasilnya
+                                HeaderDetailCheckup result = new HeaderDetailCheckup();
+                                result.setNoSep(data[0]);
+                                result.setTotalBiayaDariBpjs(new BigInteger(data[1]));
+
+                                //dicari di tabel
+                                HeaderDetailCheckup search = new HeaderDetailCheckup();
+                                search.setNoSep(data[0]);
+                                List<ItSimrsHeaderDetailCheckupEntity> resultList = kasirRawatJalanBoProxy.getSearchCheckupBySep(data[0]);
+                                for (ItSimrsHeaderDetailCheckupEntity headerDetailCheckup : resultList){
+                                    result.setTotalBiaya(headerDetailCheckup.getTotalBiaya());
+                                }
+
+                                listOfResult.add(result);
+                            }
+                            x++;
+                        }
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }else{
+                    String status = "ERROR : Ukuran file terlalu besar";
+                    logger.error("[CheckupAction.uploadImages] " + status);
+                    throw new GeneralBOException(status);
+                }
+            }else{
+                String status = "ERROR : file yang diupload tidak sesuai ( Gunakan CSV )";
+                logger.error("[CheckupAction.uploadImages] " + status);
+                throw new GeneralBOException(status);
+            }
+        }else{
+            String status = "ERROR : file yang diupload tidak ada";
+            logger.error("[CheckupAction.uploadImages] " + status);
+            throw new GeneralBOException(status);
+        }
+
+        session.removeAttribute("listOfImportCsv");
+        session.setAttribute("listOfImportCsv", listOfResult);
+
+        logger.info("[KasirRawatJalanAction.prosesImportCsv] end process <<<");
+        return "hasil_import_csv";
+    }
+
     public CrudResponse saveNoFPK(String jsonString, String noFPK, String tanggal) throws JSONException {
         CrudResponse response = new CrudResponse();
         List<Fpk> fpkList = new ArrayList<>();
@@ -943,6 +1075,12 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             }
         }
         return response;
+    }
+
+    private String dateFormater(String type) {
+        java.sql.Date date = new java.sql.Date(new java.util.Date().getTime());
+        DateFormat df = new SimpleDateFormat(type);
+        return df.format(date);
     }
 
     @Override

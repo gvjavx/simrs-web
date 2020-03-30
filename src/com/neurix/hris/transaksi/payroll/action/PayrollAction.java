@@ -2708,6 +2708,17 @@ public class PayrollAction extends BaseMasterAction{
                 List<Payroll> listOfResult = (List<Payroll>) session.getAttribute("listCekNip");
                 List<Payroll> listPayroll = (List<Payroll>) session.getAttribute("listDataPayroll");
 
+                if (listOfResult==null){
+                    String status ="ERROR : belum ada data yang di centang";
+                    logger.error("[payrollAction.saveAdd] "+status);
+                    throw new GeneralBOException(status);
+                }
+                if (listOfResult.size()==0){
+                    String status ="ERROR : belum ada data yang di centang";
+                    logger.error("[payrollAction.saveAdd] "+status);
+                    throw new GeneralBOException(status);
+                }
+
                 List<Payroll> dataProses = new ArrayList<>();
 
                 for (Payroll dataCek : listOfResult){
