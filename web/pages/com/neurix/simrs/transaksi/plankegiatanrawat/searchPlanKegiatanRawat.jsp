@@ -50,59 +50,59 @@
                     <div class="box-body">
                         <div class="form-group">
                             <%--<s:form id="permintaanForm" method="post" namespace="/planrawat" action="search_checkup.action"--%>
-                                    <%--theme="simple" cssClass="form-horizontal">--%>
-                                <div class="form-group form-horizontal">
-                                    <div class="row">
-                                        <label class="control-label col-sm-4">Id Detail Chcekup</label>
-                                        <div class="col-sm-4">
-                                            <s:textfield id="search_iddetailcheckup" cssStyle="margin-top: 7px"
-                                                         name="headerCheckup.idDetailCheckup" required="false"
-                                                         readonly="false" cssClass="form-control"/>
-                                        </div>
+                            <%--theme="simple" cssClass="form-horizontal">--%>
+                            <div class="form-group form-horizontal">
+                                <div class="row">
+                                    <label class="control-label col-sm-4">Id Detail Chcekup</label>
+                                    <div class="col-sm-4">
+                                        <s:textfield id="search_iddetailcheckup" cssStyle="margin-top: 7px"
+                                                     name="headerCheckup.idDetailCheckup" required="false"
+                                                     readonly="false" cssClass="form-control"/>
                                     </div>
                                 </div>
-                                <div class="form-group form-horizontal">
-                                    <div class="row">
-                                        <label class="control-label col-sm-4" for="headerCheckup.idPasien">No. RM</label>
-                                        <div class="col-sm-4">
-                                            <s:textfield id="idPasien" cssStyle="margin-top: 7px"
-                                                         name="headerCheckup.idPasien" required="false"
-                                                         readonly="false" cssClass="form-control"/>
-                                        </div>
+                            </div>
+                            <div class="form-group form-horizontal">
+                                <div class="row">
+                                    <label class="control-label col-sm-4" for="headerCheckup.idPasien">No. RM</label>
+                                    <div class="col-sm-4">
+                                        <s:textfield id="idPasien" cssStyle="margin-top: 7px"
+                                                     name="headerCheckup.idPasien" required="false"
+                                                     readonly="false" cssClass="form-control"/>
                                     </div>
                                 </div>
-                                <div class="form-group form-horizontal">
-                                    <div class="row">
-                                        <label class="control-label col-sm-4">Poli</label>
-                                        <div class="col-sm-4">
-                                            <s:action id="initComboPoli" namespace="/checkup"
-                                                      name="getComboPelayanan_checkup"/>
-                                            <s:select cssStyle="margin-top: 7px; width: 100%"
-                                                      list="#initComboPoli.listOfPelayanan" id="idPelayanan"
-                                                      name="headerCheckup.idPelayanan" listKey="idPelayanan"
-                                                      listValue="namaPelayanan"
-                                                      headerKey="" headerValue="[Select one]"
-                                                      cssClass="form-control select2"/>
-                                        </div>
+                            </div>
+                            <div class="form-group form-horizontal">
+                                <div class="row">
+                                    <label class="control-label col-sm-4">Poli</label>
+                                    <div class="col-sm-4">
+                                        <s:action id="initComboPoli" namespace="/checkup"
+                                                  name="getComboPelayanan_checkup"/>
+                                        <s:select cssStyle="margin-top: 7px; width: 100%"
+                                                  list="#initComboPoli.listOfPelayanan" id="idPelayanan"
+                                                  name="headerCheckup.idPelayanan" listKey="idPelayanan"
+                                                  listValue="namaPelayanan"
+                                                  headerKey="" headerValue="[Select one]"
+                                                  cssClass="form-control select2"/>
                                     </div>
                                 </div>
-                                <br>
-                                <div class="form-group form-horizontal">
-                                    <label class="control-label col-sm-4"></label>
-                                    <div class="col-sm-6" style="margin-top: 7px">
-                                        <button class="btn btn-primary" onclick="search()"><i class="fa fa-search"></i> Search</button>
-                                        <%--<sj:submit type="button" cssClass="btn btn-success" formIds="permintaanForm"--%>
-                                                   <%--id="search" name="search"--%>
-                                                   <%--onClickTopics="showDialogLoading"--%>
-                                                   <%--onCompleteTopics="closeDialogLoading">--%>
-                                            <%--<i class="fa fa-search"></i>--%>
-                                            <%--Search--%>
-                                        <%--</sj:submit>--%>
-                                        <a type="button" class="btn btn-danger" href="initForm_planrawat.action">
-                                            <i class="fa fa-refresh"></i> Reset
-                                        </a>
-                                    </div>
+                            </div>
+                            <br>
+                            <div class="form-group form-horizontal">
+                                <label class="control-label col-sm-4"></label>
+                                <div class="col-sm-6" style="margin-top: 7px">
+                                    <button class="btn btn-primary" onclick="search()"><i class="fa fa-search"></i> Search</button>
+                                    <%--<sj:submit type="button" cssClass="btn btn-success" formIds="permintaanForm"--%>
+                                    <%--id="search" name="search"--%>
+                                    <%--onClickTopics="showDialogLoading"--%>
+                                    <%--onCompleteTopics="closeDialogLoading">--%>
+                                    <%--<i class="fa fa-search"></i>--%>
+                                    <%--Search--%>
+                                    <%--</sj:submit>--%>
+                                    <a type="button" class="btn btn-danger" href="initForm_planrawat.action">
+                                        <i class="fa fa-refresh"></i> Reset
+                                    </a>
                                 </div>
+                            </div>
                         </div>
                     </div>
                     <div class="box-header with-border"></div>
@@ -122,24 +122,24 @@
                             </thead>
                             <tbody id="body-list-plan">
                             <%--<s:iterator value="#session.listOfResult" status="listOfUsers">--%>
-                                <%--<tr>--%>
-                                    <%--<td><s:property value="noCheckup"/></td>--%>
-                                    <%--<td><s:property value="idPasien"/></td>--%>
-                                    <%--<td><s:property value="nama"/></td>--%>
-                                    <%--<td><s:property value="namaPelayanan"/></td>--%>
-                                    <%--<td><s:property value="statusPeriksaName"/></td>--%>
-                                    <%--<td align="center">--%>
-                                        <%--<img border="0" class="hvr-grow" id="v_<s:property value="noCheckup"/>" src="<s:url value="/pages/images/search_flat.png"/>"--%>
-                                             <%--style="cursor: pointer; width: 25px; height: 25px" onclick="detail_pasien('<s:property value="noCheckup"/>')">--%>
-                                        <%--<s:url var="edit" namespace="/checkup" action="edit_checkup" escapeAmp="false">--%>
-                                            <%--<s:param name="id"><s:property value="noCheckup"/></s:param>--%>
-                                        <%--</s:url>--%>
-                                        <%--<s:a href="%{edit}">--%>
-                                            <%--<img border="0" class="hvr-grow" src="<s:url value="/pages/images/edit-flat-new.png"/>"--%>
-                                                 <%--style="cursor: pointer; width: 25px; height: 25px">--%>
-                                        <%--</s:a>--%>
-                                    <%--</td>--%>
-                                <%--</tr>--%>
+                            <%--<tr>--%>
+                            <%--<td><s:property value="noCheckup"/></td>--%>
+                            <%--<td><s:property value="idPasien"/></td>--%>
+                            <%--<td><s:property value="nama"/></td>--%>
+                            <%--<td><s:property value="namaPelayanan"/></td>--%>
+                            <%--<td><s:property value="statusPeriksaName"/></td>--%>
+                            <%--<td align="center">--%>
+                            <%--<img border="0" class="hvr-grow" id="v_<s:property value="noCheckup"/>" src="<s:url value="/pages/images/search_flat.png"/>"--%>
+                            <%--style="cursor: pointer; width: 25px; height: 25px" onclick="detail_pasien('<s:property value="noCheckup"/>')">--%>
+                            <%--<s:url var="edit" namespace="/checkup" action="edit_checkup" escapeAmp="false">--%>
+                            <%--<s:param name="id"><s:property value="noCheckup"/></s:param>--%>
+                            <%--</s:url>--%>
+                            <%--<s:a href="%{edit}">--%>
+                            <%--<img border="0" class="hvr-grow" src="<s:url value="/pages/images/edit-flat-new.png"/>"--%>
+                            <%--style="cursor: pointer; width: 25px; height: 25px">--%>
+                            <%--</s:a>--%>
+                            <%--</td>--%>
+                            <%--</tr>--%>
                             <%--</s:iterator>--%>
                             </tbody>
                         </table>
@@ -234,7 +234,7 @@
                         <i class="fa fa-plus"></i> Add Monitoring Vital Sign
                     </button>
                     <%--<button type="button" class="btn btn-info" onclick="showGrafVitalSign('<s:property value="rawatInap.idDetailCheckup"/>')">--%>
-                        <%--<i class="fa fa-pie-chart"></i> View Graf--%>
+                    <%--<i class="fa fa-pie-chart"></i> View Graf--%>
                     <%--</button>--%>
                     <button type="button" class="btn btn-success" onclick="showModalAdd('cairan')">
                         <i class="fa fa-plus"></i> Add Monitoring Cairan
@@ -879,6 +879,109 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-edit-pemberian-non-parenteral">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> <span id="label-pemberian"></span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label style="margin-top: 7px">Obat</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input style="margin-top: 7px" type="text" name="" value="" class="form-control" id="select_obat_edit_nonpar" readonly>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" id="input_edit_par_cara">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label style="margin-top: 7px">Cara Pemberian</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input style="margin-top: 7px" type="text" name="" value="" class="form-control" id="edit_par_cara">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label style="margin-top: 7px">Dosis</label>
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" style="margin-top: 7px" name="" value="" class="form-control" id="edit_nonpar_dosis">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" id="input_edit_par_skintes">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label style="margin-top: 7px">Skin Tes</label>
+                        </div>
+                        <div class="col-md-4">
+                            <input style="margin-top: 7px" type="text" name="" value="" class="form-control" id="edit_par_skintes">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label style="margin-top: 7px">Waktu Pemberian</label>
+                        </div>
+                        <div class="col-md-4">
+                            <select style="margin-top: 7px" class="form-control" id="select_waktu_edit_nonpar">
+                                <option value='pagi'>Pagi</option>
+                                <option value='siang'>Siang</option>
+                                <option value='sore'>Sore</option>
+                                <option value='malam'>Malam</option>
+                                <option value='bila perlu'>Bila Perlu</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label style="margin-top: 7px">Keterangan</label>
+                        </div>
+                        <div class="col-md-8">
+                            <textarea style="margin-top: 7px" class="form-control" name="name" rows="8" cols="80" id="edit_nonpar_keterangan"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <input type="hidden" id="edit_nonpar_id"/>
+                <div class="alert alert-success alert-dismissible" style="display: none" id="success_save_nonpar">
+                    <h4><i class="icon fa fa-info"></i> Success!</h4>
+                    <p>Data Berhasil Tersimpan</p>
+                </div>
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="error_save_nonpar">
+                    <h4><i class="icon fa fa-ban"></i> Error !</h4>
+                    <p id="error_ket_nonpar"></p>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_nonpar"><i class="fa fa-arrow-right"></i> Save
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_nonpar"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="modal-add-pemberian-parenteral">
     <div class="modal-dialog modal-flat">
         <div class="modal-content">
@@ -1444,6 +1547,13 @@
         if (jenis == "cairan"){
             viewCairan(idKategori, tipe);
         }
+        if (jenis == "parenteral"){
+            viewPemberianObat(idKategori, tipe, jenis)
+        }
+        if (jenis == "nonparenteral"){
+            viewPemberianObat(idKategori, tipe, jenis);
+        }
+
     }
 
     function viewVitalSign(id, type){
@@ -1540,6 +1650,63 @@
         })
     }
 
+    function viewPemberianObat(id, type, kategori){
+        $("#success_save_nonpar").hide();
+        $("#error_save_nonpar").hide();
+        $("#load_nonpar").hide();
+
+        $("#modal-edit-pemberian-non-parenteral").modal('show');
+
+        RawatInapAction.getMonPemberianObat(id, function (item) {
+
+            if (kategori == "nonparenteral"){
+                $("#label-pemberian").text("Observasi Obat Non Parenteral");
+                $("#input_edit_par_cara").hide();
+                $("#input_edit_par_skintes").hide();
+                $("#save_nonpar").attr('onclick','saveUpdatePlan(\'nonparenteral\')');
+
+                $("#select_obat_edit_nonpar").val(item.namaObat);
+                $("#edit_nonpar_dosis").val(item.dosis);
+                $("#select_waktu_edit_nonpar").val(item.waktu.toLowerCase());
+                $("#edit_nonpar_keterangan").val(item.keterangan);
+                $("#edit_nonpar_id").val(item.id);
+
+
+            } else {
+                $("#label-pemberian").text("Observasi Obat Parenteral");
+                $("#edit_par_cara").show();
+                $("#edit_par_skintes").show();
+                $("#save_nonpar").attr('onclick','saveUpdatePlan(\'parenteral\')');
+
+                $("#edit_par_cara").val(item.caraPemberian);
+                $("#edit_par_skintes").val(item.skinTes);
+                $("#select_obat_edit_nonpar").val(item.namaObat);
+                $("#edit_nonpar_dosis").val(item.dosis);
+                $("#select_waktu_edit_nonpar").val(item.waktu.toLowerCase());
+                $("#edit_nonpar_keterangan").val(item.keterangan);
+                $("#edit_nonpar_id").val(item.id);
+            }
+
+            if (type == "view"){
+
+                $("#edit_nonpar_dosis").attr('disabled','disabled');
+                $("#select_waktu_edit_nonpar").attr('disabled','disabled');
+                $("#edit_nonpar_keterangan").attr('disabled','disabled');
+                $("#edit_par_cara").attr('disabled','disabled');
+                $("#edit_par_skintes").attr('disabled','disabled');
+                $("#save_nonpar").hide();
+
+            } else {
+                $("#edit_nonpar_dosis").removeAttr('disabled');
+                $("#select_waktu_edit_nonpar").removeAttr('disabled');
+                $("#edit_nonpar_keterangan").removeAttr('disabled');
+                $("#edit_par_cara").removeAttr('disabled');
+                $("#edit_par_skintes").removeAttr('disabled');
+                $("#save_nonpar").show();
+            }
+        })
+    }
+
     function saveUpdatePlan(tipe){
         if (tipe == "vitalsign"){
             saveUpdateVitalSign();
@@ -1548,10 +1715,10 @@
             saveUpdateCairan();
         }
         if (tipe == "parenteral"){
-
+            saveUpdatePemberianObat();
         }
         if (tipe == "nonparenteral"){
-
+            saveUpdatePemberianObat();
         }
     }
 
@@ -1637,6 +1804,43 @@
                 $("#success_save_cairan").show();
                 $("#error_save_cairan").show();
                 $("#error_ket_cairan").text(response.msg);
+            }
+        });
+    }
+
+    function saveUpdatePemberianObat() {
+
+        var id = $("#edit_nonpar_id").val();
+        var obat = $("#select_obat_edit_nonpar").val();
+        var cara = $("#edit_par_cara").val();
+        var skintes = $("#edit_par_skintes").val();
+        var dosis = $("#edit_nonpar_dosis").val();
+        var waktu = $("#select_waktu_edit_nonpar").val();
+        var ket = $("#edit_nonpar_keterangan").val();
+
+        var arrData = [];
+        arrData.push({
+            "name":obat,
+            "cara":cara,
+            "dosis":dosis,
+            "tes":skintes,
+            "waktu":waktu,
+            "ket":ket
+        });
+
+        var stJson = JSON.stringify(arrData);
+        $("#load_nonpar").show();
+        $("#save_nonpar").hide();
+
+        dwr.engine.setAsync(true);
+        RawatInapAction.saveUpdateMonPemberianObat(id, stJson, function(response){
+            if (response.status == "success"){
+                $("#success_save_nonpar").show();
+                $("#load_nonpar").hide();
+            } else {
+                $("#success_save_nonpar").show();
+                $("#error_save_nonpar").show();
+                $("#error_ket_nonpar").text(response.msg);
             }
         });
     }

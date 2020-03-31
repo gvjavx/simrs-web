@@ -637,7 +637,6 @@ public class RawatInapBoImpl implements RawatInapBo {
                 obatEntity.setSkinTes(bean.getSkinTes());
                 obatEntity.setWaktu(bean.getWaktu());
                 obatEntity.setKeterangan(bean.getKeterangan());
-                obatEntity.setKategori(bean.getKategori());
                 obatEntity.setAction(bean.getAction());
                 obatEntity.setLastUpdate(bean.getLastUpdate());
                 obatEntity.setLastUpdateWho(bean.getLastUpdateWho());

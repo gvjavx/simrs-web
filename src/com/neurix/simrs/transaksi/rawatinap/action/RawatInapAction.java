@@ -987,7 +987,6 @@ public class RawatInapAction extends BaseMasterAction {
             monPemberianObatEntity.setSkinTes(obj.getString("tes"));
             monPemberianObatEntity.setWaktu(obj.getString("waktu"));
             monPemberianObatEntity.setKeterangan(obj.getString("ket"));
-            monPemberianObatEntity.setKategori(obj.getString("kat"));
             monPemberianObatEntity.setAction("U");
             monPemberianObatEntity.setLastUpdate(now);
             monPemberianObatEntity.setLastUpdateWho(userLogin);

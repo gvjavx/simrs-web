@@ -252,7 +252,7 @@ public class PlanKegiatanRawatBoImpl implements PlanKegiatanRawatBo {
                     }
 
                     ItSimrsPlanKegiatanRawatEntity planEntity = new ItSimrsPlanKegiatanRawatEntity();
-                    planEntity.setIdKategori(monPemberianObat.getId());
+                    planEntity.setIdKategori(monPemberianObatEntity.getId());
                     planEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
                     planEntity.setId(getNextPlanId());
                     planEntity.setWaktu(monPemberianObat.getWaktu());
