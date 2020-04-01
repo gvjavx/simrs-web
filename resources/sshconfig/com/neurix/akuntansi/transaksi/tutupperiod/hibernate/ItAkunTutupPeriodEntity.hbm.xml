@@ -10,7 +10,7 @@
             <column name="id" sql-type="varchar" length="30" not-null="true" />
         </id>
         <property name="idTutupPeriod">
-            <column name="id_tutup_period" sql-type="varchar" length="30" not-null="false" />
+            <column name="id_tutup_periode" sql-type="varchar" length="30" not-null="false" />
         </property>
         <property name="rekeningId">
             <column name="rekening_id" sql-type="varchar" length="12" not-null="false" />

@@ -15,5 +15,6 @@ public interface TutupPeriodBo {
     public List<ItSimrsBatasTutupPeriodEntity> getListEntityBatasTutupPeriode(BatasTutupPeriod bean) throws GeneralBOException;
     public void saveSettingPeriod(List<ItSimrsBatasTutupPeriodEntity> batasList) throws GeneralBOException;
     public void saveUpdateTutupPeriod(TutupPeriod bean) throws GeneralBOException;
+    public void saveUpdateLockPeriod(TutupPeriod bean) throws GeneralBOException;
 
 }

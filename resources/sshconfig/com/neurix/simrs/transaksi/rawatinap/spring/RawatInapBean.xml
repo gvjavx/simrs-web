@@ -29,6 +29,7 @@
           p:monCairanDao-ref="monCairanDao"
           p:monPemberianObatDao-ref="monPemberianObatDao"
           p:monVitalSignDao-ref="monVitalSignDao"
+          p:planKegiatanRawatDao-ref="planKegiatanRawatDao"
     />
 
     <bean id="rawatInapBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -48,6 +49,9 @@
             <props>
                 <prop key="getByCriteria">readOnly</prop>
                 <prop key="saveAdd">PROPAGATION_REQUIRED</prop>
+                <prop key="saveUpdateMonVitalSign">PROPAGATION_REQUIRED</prop>
+                <prop key="saveUpdateMonCairan">PROPAGATION_REQUIRED</prop>
+                <prop key="saveUpdateMonPemberianObat">PROPAGATION_REQUIRED</prop>
             </props>
         </property>
     </bean>

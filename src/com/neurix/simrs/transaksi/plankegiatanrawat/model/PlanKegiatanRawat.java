@@ -24,6 +24,65 @@ public class PlanKegiatanRawat {
     private String namaPasien;
     private String ruang;
     private String diagnosa;
+    private String branchId;
+    private String flagDikerjakan;
+    private String idPasien;
+    private String idPelayanan;
+    private String namaPelayanan;
+    private String stCreatedDate;
+    private String stLastUpdate;
+    private String waktu;
+    private String jenisKegiatan;
+    private String keterangan;
+    private String stTglMulai;
+
+    public String getStTglMulai() {
+        return stTglMulai;
+    }
+
+    public void setStTglMulai(String stTglMulai) {
+        this.stTglMulai = stTglMulai;
+    }
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
+    public String getJenisKegiatan() {
+        return jenisKegiatan;
+    }
+
+    public void setJenisKegiatan(String jenisKegiatan) {
+        this.jenisKegiatan = jenisKegiatan;
+    }
+
+    public String getWaktu() {
+        return waktu;
+    }
+
+    public void setWaktu(String waktu) {
+        this.waktu = waktu;
+    }
+
+    public String getStLastUpdate() {
+        return stLastUpdate;
+    }
+
+    public void setStLastUpdate(String stLastUpdate) {
+        this.stLastUpdate = stLastUpdate;
+    }
+
+    public String getStCreatedDate() {
+        return stCreatedDate;
+    }
+
+    public void setStCreatedDate(String stCreatedDate) {
+        this.stCreatedDate = stCreatedDate;
+    }
 
     public String getNamaPasien() {
         return namaPasien;
@@ -151,5 +210,45 @@ public class PlanKegiatanRawat {
 
     public void setIdDetailCheckup(String idDetailCheckup) {
         this.idDetailCheckup = idDetailCheckup;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
+    public String getFlagDikerjakan() {
+        return flagDikerjakan;
+    }
+
+    public void setFlagDikerjakan(String flagDikerjakan) {
+        this.flagDikerjakan = flagDikerjakan;
+    }
+
+    public String getIdPasien() {
+        return idPasien;
+    }
+
+    public void setIdPasien(String idPasien) {
+        this.idPasien = idPasien;
+    }
+
+    public String getIdPelayanan() {
+        return idPelayanan;
+    }
+
+    public void setIdPelayanan(String idPelayanan) {
+        this.idPelayanan = idPelayanan;
+    }
+
+    public String getNamaPelayanan() {
+        return namaPelayanan;
+    }
+
+    public void setNamaPelayanan(String namaPelayanan) {
+        this.namaPelayanan = namaPelayanan;
     }
 }

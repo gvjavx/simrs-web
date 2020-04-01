@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -55,6 +56,9 @@ public class TutuPeriodAction extends BaseTransactionAction {
         batasTutupPeriod.setTahun(tahun);
         batasTutupPeriod.setBulan(bulan);
 
+        // get current date
+        Date dateNow = new Date(System.currentTimeMillis());
+
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         TutupPeriodBo tutupPeriodBo = (TutupPeriodBo) ctx.getBean("tutupPeriodBoProxy");
 
@@ -76,6 +80,19 @@ public class TutuPeriodAction extends BaseTransactionAction {
             batasTutupPeriod.setCreatedDate(periodEntity.getCreatedDate());
             batasTutupPeriod.setCreatedWho(periodEntity.getCreatedWho());
             batasTutupPeriod.setStTglBatas(periodEntity.getTglBatas() == null ? "" : periodEntity.getTglBatas().toString());
+
+            String statusTanggal = "null";
+            if (periodEntity.getTglBatas() != null){
+                if (dateNow.before(periodEntity.getTglBatas())){
+                    statusTanggal = "kurang";
+                } else if (dateNow.after(periodEntity.getTglBatas())){
+                    statusTanggal = "lebih";
+                } else {
+                    statusTanggal = "siap";
+                }
+            }
+
+            batasTutupPeriod.setStatusTanggal(statusTanggal);
             batasTutupPeriod.setFlagTutup(periodEntity.getFlagTutup());
             return batasTutupPeriod;
         }
@@ -105,6 +122,38 @@ public class TutuPeriodAction extends BaseTransactionAction {
 
         try {
             tutupPeriodBo.saveUpdateTutupPeriod(tutupPeriod);
+            response.setStatus("success");
+        } catch (GeneralBOException e){
+            logger.error("[TutupPeriodAction.saveTutupPeriod] ERROR. ", e);
+            response.setStatus("error");
+            response.setMsg("[TutupPeriodAction.saveTutupPeriod] ERROR. "+e);
+            return response;
+        }
+        return response;
+    }
+
+    public CrudResponse saveLockPeriod(String unit, String tahun, String bulan){
+        CrudResponse response = new CrudResponse();
+
+        String userLogin = CommonUtil.userLogin();
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        TutupPeriodBo tutupPeriodBo = (TutupPeriodBo) ctx.getBean("tutupPeriodBoProxy");
+
+        TutupPeriod tutupPeriod = new TutupPeriod();
+        tutupPeriod.setUnit(unit);
+        tutupPeriod.setTahun(tahun);
+        tutupPeriod.setBulan(bulan);
+        tutupPeriod.setFlagTutup("P");
+        tutupPeriod.setFlag("Y");
+        tutupPeriod.setCreatedDate(time);
+        tutupPeriod.setCreatedWho(userLogin);
+        tutupPeriod.setLastUpdate(time);
+        tutupPeriod.setLastUpdateWho(userLogin);
+
+        try {
+            tutupPeriodBo.saveUpdateLockPeriod(tutupPeriod);
             response.setStatus("success");
         } catch (GeneralBOException e){
             logger.error("[TutupPeriodAction.saveTutupPeriod] ERROR. ", e);

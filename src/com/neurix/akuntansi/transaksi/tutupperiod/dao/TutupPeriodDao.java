@@ -34,6 +34,8 @@ public class TutupPeriodDao extends GenericDao<ItAkunTutupPeriodEntity, String> 
             criteria.add(Restrictions.eq("rekeningId", mapCriteria.get("rekening_id").toString()));
         if (mapCriteria.get("parent_id") != null)
             criteria.add(Restrictions.eq("parentId", mapCriteria.get("parent_id").toString()));
+        if (mapCriteria.get("id_tutup_period") != null)
+            criteria.add(Restrictions.eq("idTutupPeriod", mapCriteria.get("id_tutup_period").toString()));
 
         return criteria.list();
     }
@@ -51,6 +53,9 @@ public class TutupPeriodDao extends GenericDao<ItAkunTutupPeriodEntity, String> 
 //        if (bean.getRekeningId() != null && !"".equalsIgnoreCase(bean.getRekeningId())){
 //            rekening = bean.getRekeningId();
 //        }
+
+        BigDecimal dcBulan = new BigDecimal(bean.getBulan());
+        BigDecimal dcTahun = new BigDecimal(bean.getTahun());
 
         String SQL = "SELECT \n" +
                 "dt.rekening_id,\n" +
@@ -75,9 +80,9 @@ public class TutupPeriodDao extends GenericDao<ItAkunTutupPeriodEntity, String> 
                 "ORDER BY kd.parent_id, kd.kode_rekening";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
-                .setParameter("bulan", new Integer(bean.getBulan()))
-                .setParameter("tahun", new Integer(bean.getTahun()))
                 .setParameter("unit", bean.getUnit())
+                .setParameter("bulan", dcBulan)
+                .setParameter("tahun", dcTahun)
                 .list();
 
         List<TutupPeriod> tutupPeriods = new ArrayList<>();
@@ -91,6 +96,7 @@ public class TutupPeriodDao extends GenericDao<ItAkunTutupPeriodEntity, String> 
                 tutupPeriod.setNamaKodeRekening(obj[3].toString());
                 tutupPeriod.setJumlahDebit(obj[4] == null ? new BigDecimal(0) : (BigDecimal) obj[4]);
                 tutupPeriod.setJumlahKredit(obj[5] == null ? new BigDecimal(0) : (BigDecimal) obj[5]);
+                tutupPeriods.add(tutupPeriod);
             }
         }
 
