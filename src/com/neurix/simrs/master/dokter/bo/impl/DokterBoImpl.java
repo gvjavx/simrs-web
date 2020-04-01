@@ -75,6 +75,8 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo{
             dokter.setCreatedWho(entity.getCreatedWho());
             dokter.setLastUpdate(entity.getLastUpdate());
             dokter.setLastUpdateWho(entity.getLastUpdateWho());
+            dokter.setLat(entity.getLat());
+            dokter.setLon(entity.getLon());
             results.add(dokter);
         }
 
@@ -146,6 +148,33 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo{
 
         if (dokter != null) {
             dokter.setKuota(kuota);
+            try {
+                dokterDao.updateAndSave(dokter);
+                isSuccess = true;
+            } catch (GeneralBOException e) {
+                logger.info("[DokterBoImpl.editKuota] Error when editKuota ", e);
+            }
+        }
+
+        logger.info("[DokterBoImpl.editKuota] End <<<<<<<<");
+        return isSuccess;
+    }
+
+    public boolean editLatLon(String idDokter, String lat, String lon){
+        logger.info("[DokterBoImpl.editKuota] Start <<<<<<<<");
+
+        ImSimrsDokterEntity dokter = null;
+        boolean isSuccess = false;
+
+        try {
+            dokter = dokterDao.getById("idDokter", idDokter, "Y");
+        } catch (GeneralBOException e) {
+            logger.info("[DokterBoImpl.editKuota] Error when editKuota ", e);
+        }
+
+        if (dokter != null) {
+            dokter.setLat(lat);
+            dokter.setLon(lon);
             try {
                 dokterDao.updateAndSave(dokter);
                 isSuccess = true;

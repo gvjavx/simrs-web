@@ -7,12 +7,16 @@ import com.neurix.hris.transaksi.absensi.bo.AbsensiBo;
 import com.neurix.hris.transaksi.absensi.bo.MesinAbsensiDetailBo;
 import com.neurix.hris.transaksi.absensi.model.MesinAbsensiDetail;
 import com.opensymphony.xwork2.ModelDriven;
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.rest.DefaultHttpHeaders;
 import org.apache.struts2.rest.HttpHeaders;
 
+import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 
@@ -29,7 +33,42 @@ public class AbsensiOnlineController implements ModelDriven<Object> {
     private Collection<MesinAbsensiMobile> listOfMesinAbsensi = new ArrayList<>();
 
     String pin;
+    String jam;
+    String tanggal;
     String action;
+    String username;
+
+    public Collection<MesinAbsensiMobile> getListOfMesinAbsensi() {
+        return listOfMesinAbsensi;
+    }
+
+    public void setListOfMesinAbsensi(Collection<MesinAbsensiMobile> listOfMesinAbsensi) {
+        this.listOfMesinAbsensi = listOfMesinAbsensi;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getJam() {
+        return jam;
+    }
+
+    public void setJam(String jam) {
+        this.jam = jam;
+    }
+
+    public String getTanggal() {
+        return tanggal;
+    }
+
+    public void setTanggal(String tanggal) {
+        this.tanggal = tanggal;
+    }
 
     public String getPin() {
         return pin;
@@ -74,8 +113,7 @@ public class AbsensiOnlineController implements ModelDriven<Object> {
     @Override
     public Object getModel() {
         switch (action) {
-            case "getAbsensi":
-                return listOfMesinAbsensi;
+
             default: return model;
 
         }
@@ -85,6 +123,10 @@ public class AbsensiOnlineController implements ModelDriven<Object> {
         logger.info("AbsensiOnlineController.create] start process POST /absensi <<<");
 
         Timestamp now = new Timestamp(System.currentTimeMillis());
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat sdf2 = new SimpleDateFormat("HH:mm");
+        String nowDate = sdf.format(now);
+        String nowTime = sdf2.format(now);
 
         if (action.equalsIgnoreCase("saveAdd")){
             MesinAbsensiDetail bean = new MesinAbsensiDetail();
@@ -92,7 +134,14 @@ public class AbsensiOnlineController implements ModelDriven<Object> {
             bean.setStatus("1");
             bean.setVerifyMode("M");
             bean.setWorkCode("0");
-            bean.setScanDate(now);
+            bean.setStScanDate(nowDate);
+            bean.setJam(nowTime);
+            bean.setFlag("Y");
+            bean.setAction("C");
+            bean.setCreatedDate(now);
+            bean.setLastUpdate(now);
+            bean.setCreatedWho(username);
+            bean.setLastUpdateWho(username);
 
             try {
                 mesinAbsensiDetailBoProxy.saveAdd(bean);
@@ -109,27 +158,20 @@ public class AbsensiOnlineController implements ModelDriven<Object> {
 
             MesinAbsensiDetail bean = new MesinAbsensiDetail();
             bean.setPin(pin);
-
-            String tgl = CommonUtil.convertTimestampToString(now);
+            bean.setTanggalDari(CommonUtil.convertToDate(tanggal));
 
             try {
-                result = absensiBoProxy.getByCriteriaAbsensiDetail(bean, tgl);
+                result = mesinAbsensiDetailBoProxy.getByCriteria(bean);
             } catch (GeneralBOException e) {
                 logger.error("AbsensiOnlineController.getAbensi] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when get data AbsensiOnlineController, please info to your admin..." + e.getMessage());
             }
 
-            if (result.size() > 0) {
-                for (MesinAbsensiDetail item : result) {
-                    MesinAbsensiMobile mesinAbsensiMobile = new MesinAbsensiMobile();
-                    mesinAbsensiMobile.setPin(pin);
-                    mesinAbsensiMobile.setTanggal(item.getTanggal());
-                    mesinAbsensiMobile.setStatus(item.getStatus());
-                    mesinAbsensiMobile.setStatusName(item.getStatusName());
+            String[] temp = result.get(result.size()-1).getScanDate().toString().split(" ");
+            String[] temp2 = temp[1].split(":");
 
-                    listOfMesinAbsensi.add(mesinAbsensiMobile);
-                }
-            }
+
+            model.setScanDate(temp2[0]+":"+temp2[1]);
         }
 
 
