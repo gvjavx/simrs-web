@@ -196,7 +196,7 @@
                 $.each(response, function (i, item) {
 
                     TutuPeriodAction.getDataBatasTutupPeriod(item.branchId, tahun, bulan, function (batas) {
-                        if ( batas.stTglBatas == null ){
+                        if ( batas.statusTanggal == null ){
                             strBody += "<tr>" +
                                 "<td>"+item.branchName+"</td>" +
                                 "<td align='center'>"+setNullToString(batas.stTglBatas)+"</td>" +
@@ -205,11 +205,11 @@
                                 " <button class='btn btn-info' id='btn-lock-"+item.branchId+"'  onclick=\"saveLock('"+item.branchId+"','"+tahun+"','"+bulan+"')\" disabled>Lock</button>" +
                                 "<span id='load-save-"+item.branchId+"'></span>" +
                                 "</td>" +
-                                "<td align='center'><span class='label label-default'>Belum Set Tgl</span></td>" +
+                                "<td align='center'><span class='label label-default'>Belum Set Tanggal Tutup</span></td>" +
                                 "</tr>";
                         } else {
 
-                            if (batas.flagTutup == "Y"){
+                            if (batas.statusTanggal == "Y"){
                                 strBody += "<tr>" +
                                     "<td>"+item.branchName+"</td>" +
                                     "<td align='center'>"+setNullToString(batas.stTglBatas)+"</td>" +
@@ -231,7 +231,7 @@
                                     "</td>" +
                                     "<td align='center'><span class='label label-warning'>Lock Process</span></td>" +
                                     "</tr>";
-                            } else if (batas.stTglBatas != formatDate(Date.now())){
+                            } else if (batas.statusTanggal == "kurang"){
                                 strBody += "<tr>" +
                                     "<td>"+item.branchName+"</td>" +
                                     "<td align='center'>"+setNullToString(batas.stTglBatas)+"</td>" +
@@ -240,7 +240,18 @@
                                     " <button class='btn btn-info' id='btn-lock-"+item.branchId+"' onclick=\"saveLock('"+item.branchId+"','"+tahun+"','"+bulan+"')\" disabled>Lock</button>" +
                                     "<span id='load-save-"+item.branchId+"'></span>" +
                                     "</td>" +
-                                    "<td align='center'><span class='label label-default'>Bukan Waktu Tutup</span></td>" +
+                                    "<td align='center'><span class='label label-default'>Belum Waktu Tutup</span></td>" +
+                                    "</tr>";
+                            } else if (batas.statusTanggal == "lebih"){
+                                strBody += "<tr>" +
+                                    "<td>"+item.branchName+"</td>" +
+                                    "<td align='center'>"+setNullToString(batas.stTglBatas)+"</td>" +
+                                    "<td align='center'>" +
+                                    "<button class='btn btn-primary' id='btn-tutup-"+item.branchId+"' onclick=\"saveTutup('"+item.branchId+"','"+tahun+"','"+bulan+"')\">Tutup</button>" +
+                                    " <button class='btn btn-info' id='btn-lock-"+item.branchId+"' onclick=\"saveLock('"+item.branchId+"','"+tahun+"','"+bulan+"')\">Lock</button>" +
+                                    "<span id='load-save-"+item.branchId+"'></span>" +
+                                    "</td>" +
+                                    "<td align='center'><span class='label label-default'>Lewat Waktu Tutup</span></td>" +
                                     "</tr>";
                             } else {
                                 strBody += "<tr>" +

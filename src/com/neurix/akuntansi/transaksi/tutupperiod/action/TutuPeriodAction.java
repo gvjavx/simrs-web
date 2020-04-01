@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -55,6 +56,9 @@ public class TutuPeriodAction extends BaseTransactionAction {
         batasTutupPeriod.setTahun(tahun);
         batasTutupPeriod.setBulan(bulan);
 
+        // get current date
+        Date dateNow = new Date(System.currentTimeMillis());
+
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         TutupPeriodBo tutupPeriodBo = (TutupPeriodBo) ctx.getBean("tutupPeriodBoProxy");
 
@@ -76,6 +80,19 @@ public class TutuPeriodAction extends BaseTransactionAction {
             batasTutupPeriod.setCreatedDate(periodEntity.getCreatedDate());
             batasTutupPeriod.setCreatedWho(periodEntity.getCreatedWho());
             batasTutupPeriod.setStTglBatas(periodEntity.getTglBatas() == null ? "" : periodEntity.getTglBatas().toString());
+
+            String statusTanggal = "null";
+            if (periodEntity.getTglBatas() != null){
+                if (dateNow.before(periodEntity.getTglBatas())){
+                    statusTanggal = "kurang";
+                } else if (dateNow.after(periodEntity.getTglBatas())){
+                    statusTanggal = "lebih";
+                } else {
+                    statusTanggal = "siap";
+                }
+            }
+
+            batasTutupPeriod.setStatusTanggal(statusTanggal);
             batasTutupPeriod.setFlagTutup(periodEntity.getFlagTutup());
             return batasTutupPeriod;
         }

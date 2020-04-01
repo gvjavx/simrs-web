@@ -74,6 +74,8 @@ public class PlanKegiatanRawatBoImpl implements PlanKegiatanRawatBo {
                 kegiatanRawat.setLastUpdate(planKegiatan.getLastUpdate());
                 kegiatanRawat.setLastUpdateWho(planKegiatan.getLastUpdateWho());
                 kegiatanRawat.setStTglMulai(planKegiatan.getTglMulai().toString());
+                kegiatanRawat.setStCreatedDate(planKegiatan.getCreatedDate().toString());
+                kegiatanRawat.setStLastUpdate(planKegiatan.getLastUpdate().toString());
                 planKegiatanRawats.add(kegiatanRawat);
             }
         }

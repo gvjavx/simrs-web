@@ -58,12 +58,13 @@ public class PlanKegiatanRawatAction extends BaseTransactionAction {
             if (!"".equalsIgnoreCase(obj.getString("id_pasien"))){
                 plan.setIdPasien(obj.getString("id_pasien"));
             }
-//            if (!"".equalsIgnoreCase(obj.getString("id_detail_checkup"))){
-//                plan.setIdDetailCheckup(obj.getString("id_detail_checkup"));
-//            }
+            if (!"".equalsIgnoreCase(obj.getString("id_detail_checkup"))){
+                plan.setIdDetailCheckup(obj.getString("id_detail_checkup"));
+            }
             if (!"".equalsIgnoreCase(obj.getString("id_pelayanan"))){
                 plan.setIdDetailCheckup(obj.getString("id_pelayanan"));
             }
+
         }
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();

@@ -71,21 +71,21 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group form-horizontal">
-                                <div class="row">
-                                    <label class="control-label col-sm-4">Poli</label>
-                                    <div class="col-sm-4">
-                                        <s:action id="initComboPoli" namespace="/checkup"
-                                                  name="getComboPelayanan_checkup"/>
-                                        <s:select cssStyle="margin-top: 7px; width: 100%"
-                                                  list="#initComboPoli.listOfPelayanan" id="idPelayanan"
-                                                  name="headerCheckup.idPelayanan" listKey="idPelayanan"
-                                                  listValue="namaPelayanan"
-                                                  headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control select2"/>
-                                    </div>
-                                </div>
-                            </div>
+                            <%--<div class="form-group form-horizontal">--%>
+                                <%--<div class="row">--%>
+                                    <%--<label class="control-label col-sm-4">Poli</label>--%>
+                                    <%--<div class="col-sm-4">--%>
+                                        <%--<s:action id="initComboPoli" namespace="/checkup"--%>
+                                                  <%--name="getComboPelayanan_checkup"/>--%>
+                                        <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
+                                                  <%--list="#initComboPoli.listOfPelayanan" id="idPelayanan"--%>
+                                                  <%--name="headerCheckup.idPelayanan" listKey="idPelayanan"--%>
+                                                  <%--listValue="namaPelayanan"--%>
+                                                  <%--headerKey="" headerValue="[Select one]"--%>
+                                                  <%--cssClass="form-control select2"/>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
                             <br>
                             <div class="form-group form-horizontal">
                                 <label class="control-label col-sm-4"></label>
@@ -113,7 +113,8 @@
                         <table id="myTable" class="table table-bordered table-striped">
                             <thead>
                             <tr bgcolor="#90ee90">
-                                <td>Tgl Masuk</td>
+                                <td>No. Pendaftaran</td>
+                                <td>No. RM</td>
                                 <td>Nama Pasien</td>
                                 <td>Nama Pelayanan</td>
                                 <td>Diagnosa Terakhir</td>
@@ -1120,10 +1121,10 @@
     function search() {
 
         var idPasien = $("#idPasien").val();
-        var idPelayanan = $("#idPelayanan").val();
+        var idDetail = $("#search_iddetailcheckup").val();
 
         var arrJson = [];
-        arrJson.push({"id_pasien":idPasien, "id_pelayanan":idPelayanan});
+        arrJson.push({"id_pasien":idPasien, "id_detail_checkup":idDetail, "id_pelayanan":""});
         var stJson = JSON.stringify(arrJson);
 
         PlanKegiatanRawatAction.getSearchKegiatanRawat(stJson, function (response) {
@@ -1132,7 +1133,8 @@
                 var str = "";
                 $.each(response, function (i, item) {
                     str += "<tr>" +
-                        "<td>" + item.stCreatedDate + "</td>" +
+                        "<td>" + item.idDetailCheckup + "</td>" +
+                        "<td>" + item.idPasien + "</td>" +
                         "<td>" + item.namaPasien + "</td>" +
                         "<td>" + item.namaPelayanan + "</td>" +
                         "<td>" + item.diagnosa + "</td>" +
@@ -1178,8 +1180,6 @@
 
         PlanKegiatanRawatAction.getListPlanKegiatanRawatByTglMulai(idDetail, tglMasuk, function (response) {
 
-            console.log(response);
-
             if (response.length > 0){
                 $.each(response, function(i,item){
 
@@ -1190,23 +1190,55 @@
                         ket = item.keterangan;
 
                     if (item.waktu.toLowerCase() == "pagi"){
-                        listPagi.push({"ket": ket, "createdwho":item.createdWho, "kegiatan":setLabelKegiatan(item.jenisKegiatan), "id":item.idKategori, "jenis":item.jenisKegiatan, "flag":item.flagDikerjakan});
+                        listPagi.push({
+                            "ket": ket,
+                            "createdwho":item.createdWho,
+                            "kegiatan":setLabelKegiatan(item.jenisKegiatan),
+                            "id":item.idKategori, "jenis":item.jenisKegiatan,
+                            "flag":item.flagDikerjakan,
+                            "createddate":item.stCreatedDate,
+                            "lastupdatewho":item.lastUpdateWho,
+                            "lastupdate":item.stLastUpdate
+                        });
                     }
                     if (item.waktu.toLowerCase() == "siang"){
-                        listSiang.push({"ket":ket, "createdwho":item.createdWho, "kegiatan":setLabelKegiatan(item.jenisKegiatan), "id":item.idKategori, "jenis":item.jenisKegiatan, "flag":item.flagDikerjakan});
+                        listSiang.push({
+                            "ket": ket,
+                            "createdwho":item.createdWho,
+                            "kegiatan":setLabelKegiatan(item.jenisKegiatan),
+                            "id":item.idKategori, "jenis":item.jenisKegiatan,
+                            "flag":item.flagDikerjakan,
+                            "createddate":item.stCreatedDate,
+                            "lastupdatewho":item.lastUpdateWho,
+                            "lastupdate":item.stLastUpdate
+                        });
                     }
                     if (item.waktu.toLowerCase() == "malam"){
-                        listMalam.push({"ket":ket, "createdwho":item.createdWho, "kegiatan":setLabelKegiatan(item.jenisKegiatan), "id":item.idKategori, "jenis":item.jenisKegiatan, "flag":item.flagDikerjakan});
+                        listSiang.push({
+                            "ket": ket,
+                            "createdwho":item.createdWho,
+                            "kegiatan":setLabelKegiatan(item.jenisKegiatan),
+                            "id":item.idKategori, "jenis":item.jenisKegiatan,
+                            "flag":item.flagDikerjakan,
+                            "createddate":item.stCreatedDate,
+                            "lastupdatewho":item.lastUpdateWho,
+                            "lastupdate":item.stLastUpdate
+                        });
                     }
                 });
+
+                console.log("List Pagi >>> "+listPagi);
 
                 var strPagi = "";
                 $.each(listPagi, function (i, item){
                     strPagi += "<tr>" +
                         "<td style='width:200px'>" + item.kegiatan + "</td>" +
                         "<td align='left'><strong>" + item.createdwho + "</strong></td>" +
-                        "<td style='width:30%'>" + item.ket + "</td>" +
+                        "<td align='left'><strong>" + item.createddate + "</strong></td>" +
+                        "<td style='width:15%'>" + item.ket + "</td>" +
                         "<td align='center'>" + setIconDikerjakan(item.flag) + "</td>" +
+                        "<td align='left'><strong>" + setWaktuDikerjakan(item.flag, item.lastupdatewho) + "</strong></td>" +
+                        "<td align='left'><strong>" + setWaktuDikerjakan(item.flag, item.lastupdate) + "</strong></td>" +
                         "<td align='right'>" +
                         "<button class='btn btn-sm btn-primary' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','view');\"><i class='fa fa-search'></i> View Detail</button>" +
                         "<button class='btn btn-sm btn-info' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','edit');\"><i class='fa fa-edit'></i> Action</button>" +
@@ -1218,8 +1250,11 @@
                     strSiang += "<tr>" +
                         "<td style='width:200px'>" + item.kegiatan + "</td>" +
                         "<td align='left'><strong>" + item.createdwho + "</strong></td>" +
-                        "<td style='width:30%'>" + item.ket + "</td>" +
+                        "<td align='left'><strong>" + item.createddate + "</strong></td>" +
+                        "<td style='width:15%'>" + item.ket + "</td>" +
                         "<td align='center'>" + setIconDikerjakan(item.flag) + "</td>" +
+                        "<td align='left'><strong>" + setWaktuDikerjakan(item.flag, item.lastupdatewho) + "</strong></td>" +
+                        "<td align='left'><strong>" + setWaktuDikerjakan(item.flag, item.lastupdate) + "</strong></td>" +
                         "<td align='right'>" +
                         "<button class='btn btn-sm btn-primary' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','view');\"><i class='fa fa-search'></i> View Detail</button>" +
                         "<button class='btn btn-sm btn-info' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','edit');\"><i class='fa fa-edit'></i> Action</button>" +
@@ -1231,8 +1266,11 @@
                     strMalam += "<tr>" +
                         "<td style='width:200px'>" + item.kegiatan + "</td>" +
                         "<td align='left'><strong>" + item.createdwho + "</strong></td>" +
-                        "<td style='width:30%'>" + item.ket + "</td>" +
+                        "<td align='left'><strong>" + item.createddate + "</strong></td>" +
+                        "<td style='width:15%'>" + item.ket + "</td>" +
                         "<td align='center'>" + setIconDikerjakan(item.flag) + "</td>" +
+                        "<td align='left'><strong>" + setWaktuDikerjakan(item.flag, item.lastupdatewho) + "</strong></td>" +
+                        "<td align='left'><strong>" + setWaktuDikerjakan(item.flag, item.lastupdate) + "</strong></td>" +
                         "<td align='right'>" +
                         "<button class='btn btn-sm btn-primary' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','view');\"><i class='fa fa-search'></i> View Detail</button>" +
                         "<button class='btn btn-sm btn-info' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','edit');\"><i class='fa fa-edit'></i> Action</button>" +
@@ -1240,9 +1278,22 @@
                         "</tr>";
                 });
 
-                $("#body-list-plan-pagi").html(setLabelWaktu("pagi")+"<table class='table' style='font-size: 15px'>"+strPagi+"</table>");
-                $("#body-list-plan-siang").html(setLabelWaktu("siang")+"<table class='table' style='font-size: 15px'>"+strSiang+"</table>");
-                $("#body-list-plan-malam").html(setLabelWaktu("malam")+"<table class='table' style='font-size: 15px'>"+strMalam+"</table>");
+                var header = "<thead style='color: white;background-color: grey'>" +
+                        "<tr>" +
+                        "<td>Kegiatan</td>" +
+                        "<td>Created Who</td>" +
+                        "<td>Created Date</td>" +
+                        "<td>Catatan Kegiatan</td>" +
+                        "<td>Status</td>" +
+                        "<td>Last Update Who</td>" +
+                        "<td>Last Update</td>" +
+                        "<td>Action</td>" +
+                        "</tr>" +
+                        "</thead>";
+
+                $("#body-list-plan-pagi").html(setLabelWaktu("pagi")+"<table class='table' style='font-size: 12px'>"+header+"<tbody>"+strPagi+"</tbody></table>");
+                $("#body-list-plan-siang").html(setLabelWaktu("siang")+"<table class='table' style='font-size: 12px'>"+header+"<tbody>"+strSiang+"</tbody></table>");
+                $("#body-list-plan-malam").html(setLabelWaktu("malam")+"<table class='table' style='font-size: 12px'>"+header+"<tbody>"+strMalam+"</tbody></table>");
             } else {
                 $("#body-list-plan-pagi").html("");
                 $("#body-list-plan-siang").html("");
@@ -1261,17 +1312,25 @@
         }
     }
 
+    function setWaktuDikerjakan(param, nilai) {
+        if(param == "Y"){
+            return nilai;
+        } else {
+            return " - ";
+        }
+    }
+
     function setLabelKegiatan(param){
         if (param == "vitalsign")
-            return "<span class='label label-primary'>Monitoring Vital Sign</span>";
+            return "<span class='label label-primary' style='font-size: 11px'>Monitoring Vital Sign</span>";
         else if (param == "cairan")
-            return "<span class='label label-success'>Monitoring Cairan</span>";
+            return "<span class='label label-success' style='font-size: 11px'>Monitoring Cairan</span>";
         else if (param == "parenteral")
-            return "<span class='label label-info'>Pemberian Obat Parenteral</span>";
+            return "<span class='label label-info' style='font-size: 11px'>Pemberian Obat Parenteral</span>";
         else if (param == "nonparenteral")
-            return "<span class='label label-warning'>Pemberian Obat Non Parenteral</span>";
+            return "<span class='label label-warning' style='font-size: 11px'>Pemberian Obat Non Parenteral</span>";
         else
-            return "<span class='label label-default'>"+param+"</span>";
+            return "<span class='label label-default' style='font-size: 11px'>"+param+"</span>";
     }
 
     function setLabelWaktu(param){
@@ -1435,6 +1494,9 @@
     function setToListTable(param) {
 
         if(param == "vitalsign"){
+
+            console.log(listOfVitalSign);
+
             $("#body-list-vital-sign").html("");
             if(listOfVitalSign.length > 0) {
                 var str = "";
