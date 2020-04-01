@@ -151,7 +151,7 @@ public class LoginMobileController extends ValidationAwareSupport implements Mod
                         model.setPin(userDetailsLogin.getPin());
 
                         String roleId="";
-                        String roleName="";t
+                        String roleName="";
                         List<Roles> listOfRoles = userDetailsLogin.getRoles();
                         for (Roles item : listOfRoles) {
                             roleId = item.getRoleId().toString();
