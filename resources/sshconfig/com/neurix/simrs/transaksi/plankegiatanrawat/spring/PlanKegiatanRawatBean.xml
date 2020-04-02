@@ -5,7 +5,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
-    <bean id="permintaanResepAction" class="com.neurix.simrs.transaksi.plankegiatanrawat.action.PlanKegiatanRawatAction"
+    <bean id="planKegiatanRawatAction" class="com.neurix.simrs.transaksi.plankegiatanrawat.action.PlanKegiatanRawatAction"
           p:planKegiatanRawatBoProxy-ref="planKegiatanRawatBo"
     />
 
@@ -16,6 +16,9 @@
           p:pelayananDao-ref="pelayananDao"
           p:rawatInapDao-ref="rawatInapDao"
           p:ruanganDao-ref="ruanganDao"
+          p:monPemberianObatDao-ref="monPemberianObatDao"
+          p:monCairanDao-ref="monCairanDao"
+          p:monVitalSignDao-ref="monVitalSignDao"
     />
 
     <bean id="planKegiatanRawatBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -34,8 +37,7 @@
         <property name="transactionAttributes">
             <props>
                 <prop key="getByCriteria">readOnly</prop>
-                <prop key="saveAdd">PROPAGATION_REQUIRED</prop>
-                <prop key="saveObatResep">PROPAGATION_REQUIRED</prop>
+                <prop key="saveAddPlanKegiatan">PROPAGATION_REQUIRED</prop>
             </props>
         </property>
     </bean>

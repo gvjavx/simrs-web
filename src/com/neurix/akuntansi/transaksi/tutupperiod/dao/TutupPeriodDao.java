@@ -34,6 +34,8 @@ public class TutupPeriodDao extends GenericDao<ItAkunTutupPeriodEntity, String> 
             criteria.add(Restrictions.eq("rekeningId", mapCriteria.get("rekening_id").toString()));
         if (mapCriteria.get("parent_id") != null)
             criteria.add(Restrictions.eq("parentId", mapCriteria.get("parent_id").toString()));
+        if (mapCriteria.get("id_tutup_period") != null)
+            criteria.add(Restrictions.eq("idTutupPeriod", mapCriteria.get("id_tutup_period").toString()));
 
         return criteria.list();
     }

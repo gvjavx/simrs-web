@@ -644,6 +644,30 @@ public class RawatInapAction extends BaseMasterAction {
         return rawatInapBo.getListMonVitalSign(monVitalSign);
     }
 
+    public MonVitalSign getDataMonVitalSign(String id) {
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
+
+        return rawatInapBo.getMonVitalSignById(id);
+    }
+
+    public MonCairan getDataMonCairan(String id) {
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
+
+        return rawatInapBo.getMonCairanById(id);
+    }
+
+    public MonPemberianObat getMonPemberianObat(String id) {
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
+
+        return rawatInapBo.getMonPemberianObatById(id);
+    }
+
     public CrudResponse saveMonVitalSign(String noCheckup, String idDetail, String jsonString) throws JSONException {
 
         String userLogin = CommonUtil.userLogin();
@@ -675,6 +699,47 @@ public class RawatInapAction extends BaseMasterAction {
         RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
 
         return rawatInapBo.saveMonVitalSign(monVitalSignEntity);
+    }
+
+    public CrudResponse saveUpdateMonVitalSign(String id, String jsonString) throws JSONException {
+
+        CrudResponse response = new CrudResponse();
+
+        String userLogin = CommonUtil.userLogin();
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+
+        ItSimrsMonVitalSignEntity monVitalSignEntity = new ItSimrsMonVitalSignEntity();
+        JSONArray json = new JSONArray(jsonString);
+        for (int i = 0; i < json.length(); i++) {
+            JSONObject obj = json.getJSONObject(i);
+            monVitalSignEntity.setId(id);
+            monVitalSignEntity.setJam(Integer.valueOf(obj.getString("jam").toString()));
+            monVitalSignEntity.setNadi(Integer.valueOf(obj.getString("nadi").toString()));
+            monVitalSignEntity.setNafas(Integer.valueOf(obj.getString("nafas").toString()));
+            monVitalSignEntity.setSuhu(Integer.valueOf(obj.getString("suhu").toString()));
+            monVitalSignEntity.setTensi(Integer.valueOf(obj.getString("tensi").toString()));
+            monVitalSignEntity.setTb(Integer.valueOf(obj.getString("tb").toString()));
+            monVitalSignEntity.setBb(Integer.valueOf(obj.getString("bb").toString()));
+
+            monVitalSignEntity.setFlag("Y");
+            monVitalSignEntity.setAction("U");
+            monVitalSignEntity.setLastUpdate(now);
+            monVitalSignEntity.setLastUpdateWho(userLogin);
+        }
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
+
+        try {
+            rawatInapBo.saveUpdateMonVitalSign(monVitalSignEntity);
+            response.setStatus("success");
+        } catch (GeneralBOException e){
+            logger.error("[RawatInapAction.saveUpdateMonVitalSign] ERROR. ", e);
+            response.setStatus("error");
+            response.setMsg("[RawatInapAction.saveUpdateMonVitalSign] ERROR. "+ e);
+        }
+
+        return response;
     }
 
     public List<MonCairan> getListMonCairan(String noCheckup, String idDetailCheckup, String id) {
@@ -731,6 +796,50 @@ public class RawatInapAction extends BaseMasterAction {
         return rawatInapBo.saveMonCairan(monCairanEntity);
     }
 
+    public CrudResponse saveUpdateMonCairan(String id, String jsonString) throws JSONException {
+
+        CrudResponse response = new CrudResponse();
+
+        String userLogin = CommonUtil.userLogin();
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+
+        ItSimrsMonCairanEntity monCairanEntity = new ItSimrsMonCairanEntity();
+        JSONArray json = new JSONArray(jsonString);
+        for (int i = 0; i < json.length(); i++) {
+            JSONObject obj = json.getJSONObject(i);
+            monCairanEntity.setId(id);
+            monCairanEntity.setMacamCairan(obj.getString("macam"));
+            monCairanEntity.setMelalui(obj.getString("melalui"));
+            monCairanEntity.setJumlah(obj.getString("jumlah"));
+            monCairanEntity.setJamMulai(obj.getString("mulai"));
+            monCairanEntity.setJamSelesai(obj.getString("selesai"));
+            monCairanEntity.setCekTambahanObat(obj.getString("cek"));
+            monCairanEntity.setJamUkurBuang(obj.getString("jam_ukur_buang"));
+            monCairanEntity.setDari(obj.getString("dari"));
+            monCairanEntity.setBalanceCairan(obj.getString("balance"));
+            monCairanEntity.setKeterangan(obj.getString("ket"));
+            monCairanEntity.setSisa(obj.getString("sisa"));
+            monCairanEntity.setFlag("Y");
+            monCairanEntity.setAction("U");
+            monCairanEntity.setLastUpdate(now);
+            monCairanEntity.setLastUpdateWho(userLogin);
+        }
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
+
+        try {
+            rawatInapBo.saveUpdateMonCairan(monCairanEntity);
+            response.setStatus("success");
+        } catch (GeneralBOException e){
+            logger.error("[RawatInapAction.saveUpdateMonCairan] ERROR. ", e);
+            response.setStatus("error");
+            response.setMsg("[RawatInapAction.saveUpdateMonCairan] ERROR. "+ e);
+        }
+
+        return response;
+    }
+
     public List<MonPemberianObat> getListMonPemberianObat(String noCheckup, String idDetailCheckup, String kategori, String id) {
 
         MonPemberianObat monPemberianObat = new MonPemberianObat();
@@ -783,6 +892,44 @@ public class RawatInapAction extends BaseMasterAction {
         RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
 
         return rawatInapBo.saveMonPemberianObat(monPemberianObatEntity);
+    }
+
+    public CrudResponse saveUpdateMonPemberianObat(String id, String jsonString) throws JSONException {
+
+        CrudResponse response = new CrudResponse();
+
+        String userLogin = CommonUtil.userLogin();
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+
+        ItSimrsMonPemberianObatEntity monPemberianObatEntity = new ItSimrsMonPemberianObatEntity();
+        JSONArray json = new JSONArray(jsonString);
+        for (int i = 0; i < json.length(); i++) {
+            JSONObject obj = json.getJSONObject(i);
+            monPemberianObatEntity.setId(id);
+            monPemberianObatEntity.setNamaObat(obj.getString("name"));
+            monPemberianObatEntity.setCaraPemberian(obj.getString("cara"));
+            monPemberianObatEntity.setDosis(obj.getString("dosis"));
+            monPemberianObatEntity.setSkinTes(obj.getString("tes"));
+            monPemberianObatEntity.setWaktu(obj.getString("waktu"));
+            monPemberianObatEntity.setKeterangan(obj.getString("ket"));
+            monPemberianObatEntity.setAction("U");
+            monPemberianObatEntity.setLastUpdate(now);
+            monPemberianObatEntity.setLastUpdateWho(userLogin);
+        }
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
+
+        try {
+            rawatInapBo.saveUpdateMonPemberianObat(monPemberianObatEntity);
+            response.setStatus("success");
+        } catch (GeneralBOException e){
+            logger.error("[RawatInapAction.saveUpdateMonPemberianObat] ERROR. ", e);
+            response.setStatus("error");
+            response.setMsg("[RawatInapAction.saveUpdateMonPemberianObat] ERROR. "+ e);
+        }
+
+        return response;
     }
 
     public List<Obat> getListObatParenteral(String id) {

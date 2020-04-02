@@ -22,6 +22,15 @@ public class BatasTutupPeriod {
     private String lastUpdateWho;
     private String stTglBatas;
     private String flagTutup;
+    private String statusTanggal;
+
+    public String getStatusTanggal() {
+        return statusTanggal;
+    }
+
+    public void setStatusTanggal(String statusTanggal) {
+        this.statusTanggal = statusTanggal;
+    }
 
     public String getStTglBatas() {
         return stTglBatas;
