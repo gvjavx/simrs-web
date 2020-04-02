@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+    <bean id="tutuPeriodAction" class="com.neurix.akuntansi.transaksi.tutupperiod.action.TutuPeriodAction"
+          p:tutupPeriodBoProxy-ref="tutupPeriodBoProxy"
+    />
+
+    <bean id="settingTutupPeriodAction" class="com.neurix.akuntansi.transaksi.tutupperiod.action.SettingTutupPeriodAction"
+          p:tutupPeriodBoProxy-ref="tutupPeriodBoProxy"
+    />
+
+    <bean id="tutupPeriodBo" class="com.neurix.akuntansi.transaksi.tutupperiod.bo.impl.TutupPeriodBoImpl"
+          p:riwayatTindakanDao-ref="riwayatTindakanDao"
+          p:batasTutupPeriodDao-ref="batasTutupPeriodDao"
+          p:saldoAkhirDao-ref="saldoAkhirDao"
+          p:jurnalDetailDao-ref="jurnalDetailDao"
+          p:jurnalDao-ref="jurnalDao"
+          p:tutupPeriodDao-ref="tutupPeriodDao"
+          p:kodeRekeningDao-ref="kodeRekeningDao"
+    />
+
+    <bean id="tutupPeriodBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="tutupPeriodBo">
+        <property name="interceptorNames">
+            <list>
+                <value>transactionTutupPeriodInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="transactionTutupPeriodInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          p:transactionManager-ref="transactionManager">
+        <property name="transactionAttributes">
+            <props>
+                <prop key="getByCriteria">readOnly</prop>
+                <prop key="saveSettingPeriod">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="batasTutupPeriodDao" class="com.neurix.akuntansi.transaksi.tutupperiod.dao.BatasTutupPeriodDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="tutupPeriodDao" class="com.neurix.akuntansi.transaksi.tutupperiod.dao.TutupPeriodDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="saldoAkhirDao" class="com.neurix.akuntansi.transaksi.saldoakhir.dao.SaldoAkhirDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+</beans>

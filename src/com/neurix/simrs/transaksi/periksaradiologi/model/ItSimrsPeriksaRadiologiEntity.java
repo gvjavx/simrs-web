@@ -20,6 +20,25 @@ public class ItSimrsPeriksaRadiologiEntity implements Serializable{
     private String lastUpdateWho;
     private String idPeriksaLab;
 
+    private String idLabDetail;
+    private String namaDetailPeriksa;
+
+    public String getIdLabDetail() {
+        return idLabDetail;
+    }
+
+    public void setIdLabDetail(String idLabDetail) {
+        this.idLabDetail = idLabDetail;
+    }
+
+    public String getNamaDetailPeriksa() {
+        return namaDetailPeriksa;
+    }
+
+    public void setNamaDetailPeriksa(String namaDetailPeriksa) {
+        this.namaDetailPeriksa = namaDetailPeriksa;
+    }
+
     public String getIdPeriksaLab() {
         return idPeriksaLab;
     }

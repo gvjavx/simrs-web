@@ -20,6 +20,101 @@ public class PaketPeriksa {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
 
+    private String idPelayanan;
+    private String branchId;
+    private String jumlah;
+
+    private String idPasien;
+    private String namaPasien;
+
+    private String idKategoriItem;
+    private String idItem;
+    private String jenisItem;
+
+    private String idPaketPasien;
+
+    private String keterangan;
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
+    public String getIdPaketPasien() {
+        return idPaketPasien;
+    }
+
+    public void setIdPaketPasien(String idPaketPasien) {
+        this.idPaketPasien = idPaketPasien;
+    }
+
+    public String getIdKategoriItem() {
+        return idKategoriItem;
+    }
+
+    public void setIdKategoriItem(String idKategoriItem) {
+        this.idKategoriItem = idKategoriItem;
+    }
+
+    public String getIdItem() {
+        return idItem;
+    }
+
+    public void setIdItem(String idItem) {
+        this.idItem = idItem;
+    }
+
+    public String getJenisItem() {
+        return jenisItem;
+    }
+
+    public void setJenisItem(String jenisItem) {
+        this.jenisItem = jenisItem;
+    }
+
+    public String getNamaPasien() {
+        return namaPasien;
+    }
+
+    public void setNamaPasien(String namaPasien) {
+        this.namaPasien = namaPasien;
+    }
+
+    public String getIdPasien() {
+        return idPasien;
+    }
+
+    public void setIdPasien(String idPasien) {
+        this.idPasien = idPasien;
+    }
+
+    public String getJumlah() {
+        return jumlah;
+    }
+
+    public void setJumlah(String jumlah) {
+        this.jumlah = jumlah;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
+    public String getIdPelayanan() {
+        return idPelayanan;
+    }
+
+    public void setIdPelayanan(String idPelayanan) {
+        this.idPelayanan = idPelayanan;
+    }
+
     public String getIdPaket() {
         return idPaket;
     }

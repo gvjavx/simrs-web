@@ -14,4 +14,6 @@ public interface DokterBo {
     public boolean editKuota(String idDokter, String kuota) throws GeneralBOException;
     public boolean editLatLon(String idDokter, String lat, String lon) throws GeneralBOException;
 
+
+    public List<Dokter> getDokterByPelayanan(String idPelayanan) throws GeneralBOException;
 }

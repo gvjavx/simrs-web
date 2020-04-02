@@ -691,7 +691,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "a.url_doc_rujuk,\n" +
                     "b.url_ttd, \n" +
                     "a.tinggi, \n" +
-                    "a.berat_badan \n" +
+                    "a.berat_badan, \n" +
+                    "j.no_bpjs \n" +
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
@@ -752,6 +753,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     checkup.setUrlTtd(obj[31] == null ? "" : obj[31].toString());
                     checkup.setTinggi(obj[32] == null ? "" : obj[32].toString());
                     checkup.setBerat(obj[33] == null ? "" : obj[33].toString());
+                    checkup.setNoBpjs(obj[34] == null ? "" : obj[34].toString());
 
                 }
             }

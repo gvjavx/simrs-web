@@ -179,67 +179,69 @@
                                                     </table>
                                                     <script>
                                                         $(document).ready(function() {
-                                                            var tipePerson = $('#tipeAging').val();
+                                                            var tipePerson = $('#tipeLaporan').val();
                                                             var functions, mapped;
-                                                            if (tipePerson=='usaha'){
-                                                                $('#masterId').typeahead({
-                                                                    minLength: 1,
-                                                                    source: function (query, process) {
-                                                                        functions = [];
-                                                                        mapped = {};
-                                                                        var data = [];
-                                                                        dwr.engine.setAsync(false);
-                                                                        MasterAction.initTypeaheadMaster(query,function (listdata) {
-                                                                            data = listdata;
-                                                                        });
-                                                                        $.each(data, function (i, item) {
-                                                                            var labelItem = item.nomorVendor + " | " + item.nama;
-                                                                            mapped[labelItem] = {
-                                                                                id: item.nomorVendor,
-                                                                                nama: item.nama
-                                                                            };
-                                                                            functions.push(labelItem);
-                                                                        });
-                                                                        process(functions);
-                                                                    },
-                                                                    updater: function (item) {
-                                                                        var selectedObj = mapped[item];
-                                                                        $('#masterName').val(selectedObj.nama);
-                                                                        return selectedObj.id;
-                                                                    }
-                                                                });
-                                                            }else if (tipePerson=='pasien') {
-                                                                $('#masterId').typeahead({
-                                                                    minLength: 1,
-                                                                    source: function (query, process) {
-                                                                        functions = [];
-                                                                        mapped = {};
-
-                                                                        var data = [];
-                                                                        dwr.engine.setAsync(false);
-
-                                                                        PasienAction.getListComboPasien(query, function (listdata) {
-                                                                            data = listdata;
-                                                                        });
-
-                                                                        $.each(data, function (i, item) {
-                                                                            var labelItem = item.idPasien+" | "+item.nama;
-                                                                            mapped[labelItem] = {
-                                                                                id: item.idPasien,
-                                                                                nama:item.nama
-                                                                            };
-                                                                            functions.push(labelItem);
-                                                                        });
-                                                                        process(functions);
-
-                                                                    },
-                                                                    updater: function (item) {
-                                                                        var selectedObj = mapped[item];
-                                                                        $('#masterName').val(selectedObj.nama);
-                                                                        return selectedObj.id;
-                                                                    }
-                                                                });
-                                                            }
+                                                            console.log(tipePerson);
+                                                            $('#masterId').typeahead({
+                                                                minLength: 1,
+                                                                source: function (query, process) {
+                                                                    functions = [];
+                                                                    mapped = {};
+                                                                    var data = [];
+                                                                    dwr.engine.setAsync(false);
+                                                                    MasterAction.initTypeaheadMaster(query,function (listdata) {
+                                                                        data = listdata;
+                                                                    });
+                                                                    $.each(data, function (i, item) {
+                                                                        var labelItem = item.nomorVendor + " | " + item.nama;
+                                                                        mapped[labelItem] = {
+                                                                            id: item.nomorVendor,
+                                                                            nama: item.nama
+                                                                        };
+                                                                        functions.push(labelItem);
+                                                                    });
+                                                                    process(functions);
+                                                                },
+                                                                updater: function (item) {
+                                                                    var selectedObj = mapped[item];
+                                                                    $('#masterName').val(selectedObj.nama);
+                                                                    return selectedObj.id;
+                                                                }
+                                                            });
+                                                            // if (tipePerson=='hutang_usaha'||tipePerson=='piutang_usaha'||tipePerson=='uang_muka'){
+                                                            //
+                                                            // }else if (tipePerson=='piutang_pasien'||tipePerson=='uang_muka_p') {
+                                                            //     $('#masterId').typeahead({
+                                                            //         minLength: 1,
+                                                            //         source: function (query, process) {
+                                                            //             functions = [];
+                                                            //             mapped = {};
+                                                            //
+                                                            //             var data = [];
+                                                            //             dwr.engine.setAsync(false);
+                                                            //
+                                                            //             PasienAction.getListComboPasien(query, function (listdata) {
+                                                            //                 data = listdata;
+                                                            //             });
+                                                            //
+                                                            //             $.each(data, function (i, item) {
+                                                            //                 var labelItem = item.idPasien+" | "+item.nama;
+                                                            //                 mapped[labelItem] = {
+                                                            //                     id: item.idPasien,
+                                                            //                     nama:item.nama
+                                                            //                 };
+                                                            //                 functions.push(labelItem);
+                                                            //             });
+                                                            //             process(functions);
+                                                            //
+                                                            //         },
+                                                            //         updater: function (item) {
+                                                            //             var selectedObj = mapped[item];
+                                                            //             $('#masterName').val(selectedObj.nama);
+                                                            //             return selectedObj.id;
+                                                            //         }
+                                                            //     });
+                                                            // }
                                                         });
                                                     </script>
                                                 </td>

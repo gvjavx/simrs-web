@@ -164,6 +164,10 @@
                                                     <i class="fa fa-user-plus"></i>Pasien Umum</a></li>
                                                 <li><a href="/simrs/checkup/add_checkup.action?tipe=bpjs">
                                                     <i class="fa fa-user-plus"></i>Pasien Bpjs</a></li>
+                                                <li><a href="/simrs/checkup/add_checkup.action?tipe=paket">
+                                                    <i class="fa fa-user-plus"></i>Pasien Paket</a></li>
+                                                <li><a href="/simrs/checkup/add_checkup.action?tipe=asuransi">
+                                                    <i class="fa fa-user-plus"></i>Pasien Asuransi</a></li>
                                             </ul>
                                         </div>
                                         <%--<a type="button" class="btn btn-primary" href="add_checkup.action"><i--%>
@@ -720,7 +724,7 @@
         if (idPasien==""){
             alert("nomor BPJS masih kosong");
         } else{
-            var url=btoa('http://localhost:8080/simrs/loginFinger.action?userId='+idPasien+'&tipe=bpjs');
+            var url=btoa('http://192.168.43.222:8080/simrs/loginFinger.action?userId='+idPasien+'&tipe=bpjs');
             window.location.href = 'finspot:FingerspotVer;'+url;
         }
     });

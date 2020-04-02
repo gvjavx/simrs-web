@@ -29,6 +29,24 @@ public class MonCairan {
     private String lastUpdateWho;
     private String sisa;
     private String stDate;
+    private String waktu;
+    private String catatanDokter;
+
+    public String getWaktu() {
+        return waktu;
+    }
+
+    public void setWaktu(String waktu) {
+        this.waktu = waktu;
+    }
+
+    public String getCatatanDokter() {
+        return catatanDokter;
+    }
+
+    public void setCatatanDokter(String catatanDokter) {
+        this.catatanDokter = catatanDokter;
+    }
 
     public String getSisa() {
         return sisa;

@@ -18,7 +18,7 @@
 		<defaultValueExpression><![CDATA["40023"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String">
-		<defaultValueExpression><![CDATA["C:\\tomcat-7-64x\\webapps\\simrs\\pages\\report\\com\\neurix\\akuntansi\\"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["C:\\apache-tomcat-8.5.40\\webapps\\simrs\\pages\\report\\com\\neurix\\akuntansi\\"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="kota" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="periodeTitle" class="java.lang.String" isForPrompting="false"/>

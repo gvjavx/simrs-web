@@ -69,6 +69,12 @@
           p:permintaanResepDao-ref="permintaanResepDao"
           p:transaksiObatDetailDao-ref="transaksiObatDetailDao"
           p:approvalTransaksiObatDao-ref="approvalTransaksiObatDao"
+          p:periksaLabDao-ref="periksaLabDao"
+          p:periksaLabDetailDao-ref="periksaLabDetailDao"
+          p:periksaRadiologiDao-ref="periksaRadiologiDao"
+          p:paketPasienDao-ref="paketPasienDao"
+          p:itemPaketDao-ref="itemPaketDao"
+          p:labDetailDao-ref="labDetailDao"
 
     />
 

@@ -6,7 +6,7 @@ import java.sql.Timestamp;
 /**
  * Created by Toshiba on 07/11/2019.
  */
-public class ImSimrsDokterEntity implements Serializable{
+public class ImSimrsDokterEntity implements Serializable {
     private String idDokter;
     private String namaDokter;
     private String flag;
@@ -18,6 +18,7 @@ public class ImSimrsDokterEntity implements Serializable{
     private String kuota;
     private String lat;
     private String lon;
+    private String kodeDpjp;
 
     public String getLat() {
         return lat;
@@ -33,6 +34,15 @@ public class ImSimrsDokterEntity implements Serializable{
 
     public void setLon(String lon) {
         this.lon = lon;
+    }
+
+
+    public String getKodeDpjp() {
+        return kodeDpjp;
+    }
+
+    public void setKodeDpjp(String kodeDpjp) {
+        this.kodeDpjp = kodeDpjp;
     }
 
     public String getKuota() {

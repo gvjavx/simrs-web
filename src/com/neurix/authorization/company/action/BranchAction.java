@@ -485,4 +485,14 @@ public class BranchAction extends BaseMasterAction {
         return listOfSearchBranch;
     }
 
+    public List<Branch> getListBranchByArea(){
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+
+        Branch branch = new Branch();
+        branch.setAreaId(CommonUtil.userAreaId());
+        return branchBo.getByCriteria(branch);
+    }
+
 }
