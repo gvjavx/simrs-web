@@ -571,9 +571,10 @@
                 console.log(response);
                 option = "<option value=''>[Select One]</option>";
                 $.each(response, function (i, item) {
-                    if( item.idJenisPeriksaPasien != "paket_perusahaan"
-                        &&  item.idJenisPeriksaPasien != "paket_biasa"
-                        &&  item.idJenisPeriksaPasien != "ptpn"){
+                    if( item.idJenisPeriksaPasien != jenisPasien
+                        && item.idJenisPeriksaPasien != "paket_perusahaan"
+                        && item.idJenisPeriksaPasien != "paket_individu"
+                        && item.idJenisPeriksaPasien != "ptpn"){
                         option += '<option value="' + item.idJenisPeriksaPasien + '">' + item.keterangan + '</option>';
                     }
                 });

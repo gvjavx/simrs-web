@@ -184,7 +184,7 @@
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
                                     <td><s:property value="desa"/></td>
-                                    <td><s:property value="idJenisPeriksaPasien"/></td>
+                                    <td><s:property value="jenisPeriksaPasien"/></td>
                                     <td align="center">
                                         <a href="add_daftarulang.action?id=<s:property value="idDetailCheckup"/>">
                                             <img class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">

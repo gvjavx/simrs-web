@@ -155,13 +155,13 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     public CheckResponse saveUpdateDataAsuransi(HeaderCheckup bean) throws GeneralBOException {
         CheckResponse response = new CheckResponse();
 
-        if(bean.getNoCheckup() != null && !"".equalsIgnoreCase(bean.getNoCheckup())){
+        if(bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())){
 
-            ItSimrsHeaderChekupEntity entity = new ItSimrsHeaderChekupEntity();
+            ItSimrsHeaderDetailCheckupEntity entity = new ItSimrsHeaderDetailCheckupEntity();
 
             try {
 
-                entity = headerCheckupDao.getById("noCheckup", bean.getNoCheckup());
+                entity = checkupDetailDao.getById("idDetailCheckup", bean.getIdDetailCheckup());
 
                 if(entity != null){
 
@@ -172,7 +172,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                     entity.setLastUpdateWho(bean.getLastUpdateWho());
 
                     try {
-                        headerCheckupDao.updateAndSave(entity);
+                        checkupDetailDao.updateAndSave(entity);
                         response.setStatus("success");
                         response.setMessage("Berhasil");
                     }catch (HibernateException e){
@@ -206,6 +206,17 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
         try {
             detailCheckup = checkupDetailDao.getCoverBiayaAsuransi(idDetailCheckup);
+        }catch (HibernateException e){
+            logger.error("found Error "+e.getMessage());
+        }
+        return detailCheckup;
+    }
+
+    @Override
+    public HeaderDetailCheckup getTotalBiayaTindakanBpjs(String idDetailCheckup) throws GeneralBOException {
+        HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+        try {
+            detailCheckup = checkupDetailDao.getTotalBiayaTindakanBpjs(idDetailCheckup);
         }catch (HibernateException e){
             logger.error("found Error "+e.getMessage());
         }
@@ -294,16 +305,16 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             ItSimrsHeaderDetailCheckupEntity entity = detailCheckupEntityList.get(0);
             entity.setStatusPeriksa(bean.getStatusPeriksa());
             entity.setKeteranganSelesai(bean.getKeteranganSelesai());
-            entity.setKeteranganCekupUlang(bean.getKeteranganCekupUlang());
+            entity.setKeteranganCekupUlang(bean.getKeteranganCekupUlang() != null && !"".equalsIgnoreCase(bean.getKeteranganCekupUlang()) ? bean.getKeteranganCekupUlang() : null);
             entity.setTglCekup(bean.getTglCekup());
             entity.setJenisLab(bean.getJenisLab());
             entity.setFlag(bean.getFlag());
             entity.setAction(bean.getAction());
             entity.setLastUpdate(bean.getLastUpdate());
             entity.setLastUpdateWho(bean.getLastUpdateWho());
-            entity.setCaraPasienPulang(bean.getCaraPasienPulang());
-            entity.setPendamping(bean.getPendamping());
-            entity.setTempatTujuan(bean.getTempatTujuan());
+            entity.setCaraPasienPulang(bean.getCaraPasienPulang() != null && !"".equalsIgnoreCase(bean.getCaraPasienPulang()) ? bean.getCaraPasienPulang() : null);
+            entity.setPendamping(bean.getPendamping() != null && !"".equalsIgnoreCase(bean.getPendamping()) ? bean.getPendamping() : null);
+            entity.setTempatTujuan(bean.getTempatTujuan() != null && !"".equalsIgnoreCase(bean.getTempatTujuan()) ? bean.getTempatTujuan() : null);
             entity.setInvoice(bean.getInvoice());
             entity.setUrlTtd(bean.getUrlTtd());
 
@@ -396,6 +407,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                 }
             }
         }
+
         logger.info("[CheckupDetailBoImpl.saveEdit] End <<<<<<<<");
         return response;
     }

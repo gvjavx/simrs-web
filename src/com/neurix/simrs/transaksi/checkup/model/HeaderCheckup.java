@@ -117,6 +117,25 @@ public class HeaderCheckup {
     private String noKartuAsuransi;
     private String namaAsuransi;
 
+    private Date tglCheckup;
+    private String keterangan;
+
+    public Date getTglCheckup() {
+        return tglCheckup;
+    }
+
+    public void setTglCheckup(Date tglCheckup) {
+        this.tglCheckup = tglCheckup;
+    }
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
     public String getNamaAsuransi() {
         return namaAsuransi;
     }

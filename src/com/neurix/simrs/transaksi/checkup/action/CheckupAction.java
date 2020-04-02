@@ -1062,6 +1062,7 @@ public class CheckupAction extends BaseMasterAction {
             List<Tindakan> tindakans = new ArrayList<>();
             tindakans.add(tindakan);
             checkup.setTindakanList(tindakans);
+            checkup.setNoSep(genNoSep);
         }
 
         if (checkup.getDiagnosa() != null && !"".equalsIgnoreCase(checkup.getDiagnosa())
@@ -1125,7 +1126,6 @@ public class CheckupAction extends BaseMasterAction {
             checkup.setAction("C");
             checkup.setFlag("Y");
             checkup.setStatusPeriksa("0");
-            checkup.setNoSep(genNoSep);
 
             if (this.fileUploadDoc != null) {
                 if ("image/jpeg".equalsIgnoreCase(this.fileUploadDocContentType)) {
@@ -2808,15 +2808,15 @@ public class CheckupAction extends BaseMasterAction {
                     sepRequest.setTglSep(dateToday);
                     sepRequest.setPpkPelayanan(getBranch.getPpkPelayanan());//cons id rumah sakit // branch
                     sepRequest.setJnsPelayanan("2");//jenis rawat inap apa jalan
-                    sepRequest.setKlsRawat(checkupEntity.getKelasPasien());//kelas rawat dari bpjs // checkup
+//                    sepRequest.setKlsRawat(checkupEntity.getKelasPasien());//kelas rawat dari bpjs // checkup
                     sepRequest.setNoMr(checkupEntity.getIdPasien());//id pasien // checkup
                     sepRequest.setAsalRujukan("1");//
-                    sepRequest.setTglRujukan(checkupEntity.getTglRujukan().toString()); // checkup
-                    sepRequest.setNoRujukan(checkupEntity.getNoRujukan()); // checkup
-                    sepRequest.setPpkRujukan(checkupEntity.getNoPpkRujukan()); // checkup
+//                    sepRequest.setTglRujukan(checkupEntity.getTglRujukan().toString()); // checkup
+//                    sepRequest.setNoRujukan(checkupEntity.getNoRujukan()); // checkup
+//                    sepRequest.setPpkRujukan(checkupEntity.getNoPpkRujukan()); // checkup
                     sepRequest.setCatatan("");
                     sepRequest.setDiagAwal(bean.getDiagnosa()); // checkup
-                    sepRequest.setPoliTujuan(checkupEntity.getIdPelayananBpjs()); // checkup
+//                    sepRequest.setPoliTujuan(checkupEntity.getIdPelayananBpjs()); // checkup
                     sepRequest.setPoliEksekutif("0");
                     sepRequest.setCob("0");
                     sepRequest.setKatarak("0");
@@ -2882,7 +2882,7 @@ public class CheckupAction extends BaseMasterAction {
                             klaimDetailRequest.setTglMasuk(updateTime.toString());
                             klaimDetailRequest.setTglPulang(updateTime.toString());
                             klaimDetailRequest.setJenisRawat("2"); // checkup
-                            klaimDetailRequest.setKelasRawat(checkupEntity.getKelasPasien()); // checkup
+//                            klaimDetailRequest.setKelasRawat(checkupEntity.getKelasPasien()); // checkup
                             klaimDetailRequest.setAdlChronic("");
                             klaimDetailRequest.setIcuIndikator("");
                             klaimDetailRequest.setIcuLos("");

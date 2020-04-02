@@ -106,6 +106,7 @@
                                        buttons="{
                                                                                 'OK':function() {
                                                                                          $('#info_dialog').dialog('close');
+                                                                                         toContent()
                                                                                      }
                                                                             }"
                             >
@@ -173,7 +174,12 @@
                             <s:iterator value="#session.listOfObatDetail" var="row">
                                 <tr id='row<s:property value="idObat"/>'>
                                     <td><s:property value="idObat"/></td>
-                                    <td><s:property value="namaObat"/></td>
+                                    <td>
+                                        <s:property value="namaObat"/>
+                                        <s:if test='#row.namaObatBaru != null && #row.namaObatBaru != ""'>
+                                            <small style="margin-left: 2px"><label class="label label-success">new</label></small>
+                                        </s:if>
+                                    </td>
                                     <td align="center"><span id='qty<s:property value="idObat"/>'><s:property
                                             value="qty"/></span></td>
                                     <td align="center"><span id='qtyApprove<s:property value="idObat"/>'><s:property
@@ -194,9 +200,10 @@
                                             </s:if>
                                             <s:else>
                                             <div class="input-group">
-                                                <input onchange="verify('<s:property value="idObat"/>', this.value,'<s:property value="qty"/>', '<s:property value="idTransaksiObatDetail"/>','<s:property value="namaObat"/>', '<s:property value="jenisSatuan"/>', '<s:property value="hargaPo"/>', '<s:property value="idApprovalObat"/>', '<s:property value="lembarPerBox"/>', '<s:property value="bijiPerLembar"/>', '<s:property value="noBatch"/>', '<s:property value="sumQtyApprove"/>')" class="form-control"
+                                                <input oninput="cekObat(this.value, '<s:property value="idObat"/>', '<s:property value="qty"/>', '<s:property value="idTransaksiObatDetail"/>','<s:property value="namaObat"/>', '<s:property value="jenisSatuan"/>', '<s:property value="hargaPo"/>', '<s:property value="idApprovalObat"/>', '<s:property value="lembarPerBox"/>', '<s:property value="bijiPerLembar"/>', '<s:property value="noBatch"/>', '<s:property value="sumQtyApprove"/>')" class="form-control"
                                                        id='pabrik<s:property value="idObat"/>'>
-                        <div class="input-group-addon">
+                                                    <%--<input id="cek_obat_<s:property value="idObat"/>" class="form-control" oninput="cekObat(this.value, '<s:property value="idObat"/>')">--%>
+                                                    <div class="input-group-addon">
                             <span id='status<s:property value="idObat"/>'></span>
                         </div>
                     </div>
@@ -341,7 +348,7 @@
                         <label class="col-md-3" style="margin-top: 7px">ID Pabrik</label>
                         <div class="col-md-7">
                             <s:textfield type="text" min="1" cssClass="form-control"
-                                         cssStyle="margin-top: 7px" id="add_pabrik" readonly="true"
+                                         cssStyle="margin-top: 7px" id="add_pabrik"
                                          onkeypress="var warn =$('#war_pabrik').is(':visible'); if (warn){$('#cor_pabrik').show().fadeOut(3000);$('#war_pabrik').hide()}"></s:textfield>
                         </div>
                         <div class="col-md-2">
@@ -407,20 +414,20 @@
                                id="cor_qty_request"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Qty Approve</label>
-                        <div class="col-md-7">
-                            <s:textfield type="number" min="1" cssClass="form-control"
-                                         cssStyle="margin-top: 7px" id="add_qty_approve"
-                                         onkeypress="var warn =$('#war_qty_approve').is(':visible'); if (warn){$('#cor_qty_approve').show().fadeOut(3000);$('#war_qty_approve').hide()}"></s:textfield>
-                        </div>
-                        <div class="col-md-2">
-                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
-                               id="war_qty_approve"><i class="fa fa-times"></i> required</p>
-                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                               id="cor_qty_approve"><i class="fa fa-check"></i> correct</p>
-                        </div>
-                    </div>
+                    <%--<div class="form-group">--%>
+                        <%--<label class="col-md-3" style="margin-top: 7px">Qty Approve</label>--%>
+                        <%--<div class="col-md-7">--%>
+                            <%--<s:textfield type="number" min="1" cssClass="form-control"--%>
+                                         <%--cssStyle="margin-top: 7px" id="add_qty_approve"--%>
+                                         <%--onkeypress="var warn =$('#war_qty_approve').is(':visible'); if (warn){$('#cor_qty_approve').show().fadeOut(3000);$('#war_qty_approve').hide()}"></s:textfield>--%>
+                        <%--</div>--%>
+                        <%--<div class="col-md-2">--%>
+                            <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px"--%>
+                               <%--id="war_qty_approve"><i class="fa fa-times"></i> required</p>--%>
+                            <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px"--%>
+                               <%--id="cor_qty_approve"><i class="fa fa-check"></i> correct</p>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Jenis Satuan</label>
                         <div class="col-md-7">
@@ -483,7 +490,7 @@
                 </div>
                 <div class="alert alert-success alert-dismissible" id="warning_approve">
                     <h4><i class="icon fa fa-info"></i> Info!</h4>
-                    ID pabrik berhasil di verifikasi...!
+                    Data Obat berhasil di verifikasi...!
                 </div>
                 <div id="warning_fisik"></div>
                 <div class="row">
@@ -649,22 +656,22 @@
             <div class="modal-body">
                 <div class="alert alert-danger alert-dismissible">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    ID pabrik tidak sesuai...!
+                    Data Obat tidak ditemukan...!
                 </div>
                 <div class="alert alert-info alert-dismissible">
                     <h4><i class="icon fa fa-info"></i> Info!</h4>
                     <p>Tekan tombol <b>Tambah obat</b> untuk menambahkan obat tersebut.</p>
-                    <p>Tekan tombol <b>Cancel obat</b> untuk membatalkan obat tersebut.</p>
+                    <%--<p>Tekan tombol <b>Cancel obat</b> untuk membatalkan obat tersebut.</p>--%>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Close
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_confirm"><i class="fa fa-arrow-right"></i> Tambah
+                <button type="button" class="btn btn-success" id="save_confirm"><i class="fa fa-plus"></i> Tambah
                     Obat
                 </button>
-                <button type="button" class="btn btn-danger" id="cancel_confirm"><i class="fa fa-times"></i> Cancel Obat
-                </button>
+                <%--<button type="button" class="btn btn-danger" id="cancel_confirm"><i class="fa fa-times"></i> Cancel Obat--%>
+                <%--</button>--%>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-danger" id="load_confirm"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
@@ -745,6 +752,71 @@
         }
     });
 
+    function cekObat(value, idObat, qty, idDetail, nama, jenis, harga, idApp, lembarPerBox, bijiPerlembar,noBt, sumQty){
+        var functions, mapped;
+        $('#pabrik'+idObat).typeahead({
+            minLength: 3,
+            source: function (query, process) {
+                functions = [];
+                mapped = {};
+
+                var data = [];
+                dwr.engine.setAsync(false);
+
+                PermintaanVendorAction.searchObat(query, function (listdata) {
+                    data = listdata;
+                });
+
+                if (data.length > 0) {
+                    $.each(data, function (i, item) {
+                        var labelItem =  item.idObat+"-"+item.idPabrik +"-" + item.namaObat;
+                        mapped[labelItem] = {
+                            id: item.idObat,
+                            nama: item.namaObat,
+                            idPabrik: item.idPabrik
+                        };
+                        functions.push(labelItem);
+                    });
+                    process(functions);
+                }else{
+                    $('#cancel_confirm').show();
+                    $('#load_confirm').hide();
+                    $('#modal-confirm').modal({show:true, backdrop:'static'});
+                    $('#save_confirm').attr('onclick', 'showModal(\'' +  idObat + '\',\'' + value + '\',\'' + idDetail + '\',\'' + nama + '\',\'' + qty + '\',\'' + jenis + '\',\'' + harga + '\',\'' + idApp + '\')');
+                    $('#cancel_confirm').attr('onclick', 'saveNotApprove(\'' +  idObat + '\', \'' + idDetail + '\')');
+                }
+            },
+            updater: function (item) {
+                var selectedObj = mapped[item];
+                if(selectedObj.id == idObat){
+                    $('#app_expired').val('');
+                    $('#app_lembar_perbox, #kon_lembar').val(lembarPerBox);
+                    $('#app_biji_perlembar, #kon_biji').val(bijiPerlembar);
+                    $('#app_qty').val(qty);
+                    $('#app_qty_app').val(sumQty);
+                    $('#save_approve').attr('onclick', 'confirmSaveApprove(\'' + selectedObj.id + '\', \'' + idDetail + '\', \'' + selectedObj.idPabrik + '\', \'' + noBt + '\')').show();
+                    $('#save_approve').show();
+                    $('#load_approve').hide();
+                    $('#modal-approve').modal({show:true, backdrop:'static'});
+                }else{
+                    $('#cancel_confirm').show();
+                    $('#load_confirm').hide();
+                    $('#modal-confirm').modal({show:true, backdrop:'static'});
+                    $('#save_confirm').attr('onclick', 'showModal(\'' +  selectedObj.id + '\',\'' + value + '\',\'' + idDetail + '\',\'' + nama + '\',\'' + qty + '\',\'' + jenis + '\',\'' + harga + '\',\'' + idApp + '\')');
+                    $('#cancel_confirm').attr('onclick', 'saveNotApprove(\'' +  selectedObj.id + '\', \'' + idDetail + '\')');
+                }
+                return selectedObj.id;
+            }
+        });
+    }
+
+    function toContent(){
+        var ref = $('#close_pos').val();
+        if(ref == 1){
+            window.location.reload(true);
+        }
+    }
+
     function formatRupiah2(angka) {
         console.log(angka);
         var number_string = angka.replace(/[^,\d]/g, '').toString(),
@@ -766,7 +838,7 @@
 
         $('#add_merek, #add_lembar_box, #add_biji_lembar').val('');
         $('#add_jenis_obat').val('').trigger('change');
-        $('#add_pabrik').val(pabrik);
+        $('#add_pabrik').val('');
         $('#add_nama_obat').val('');
         $('#add_jenis_satuan').val(satuan).trigger('change');
         var id = "";
@@ -951,8 +1023,10 @@
                 if (response.status == "success") {
                     dwr.engine.setAsync(false);
                     $('#modal-obat').modal('hide');
-                    listNewObat(idApp);
-                    $('#approve' + idObat).html("Dibuatkan obat baru").addClass("label label-warning");
+                    $('#info_dialog').dialog('open');
+                    $('#close_pos').val(1);
+                    // listNewObat(idApp);
+                    // $('#approve' + idObat).html("Dibuatkan obat baru").addClass("label label-warning");
                 } else {
                     $('#save_obat').show();
                     $('#load_obat').hide();

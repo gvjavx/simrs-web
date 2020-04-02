@@ -882,6 +882,21 @@ public class PermintaanVendorAction extends BaseMasterAction {
         return transaksiObatDetails;
     }
 
+    public List<Obat> searchObat(String query) {
+        List<Obat> obatArrayList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PermintaanVendorBo permintaanVendorBo = (PermintaanVendorBo) ctx.getBean("permintaanVendorBoProxy");
+        String branchId = CommonUtil.userBranchLogin();
+        if (query != null && !"".equalsIgnoreCase(query) && branchId != null && !"".equalsIgnoreCase(branchId)) {
+            try {
+                obatArrayList = permintaanVendorBo.getSearchObat(query, branchId);
+            } catch (GeneralBOException e) {
+                logger.error("Found Error when search list obat " + e.getMessage());
+            }
+        }
+        return obatArrayList;
+    }
+
     public String printPermintaanPO() {
 
         logger.info("[PermintaanVendorAction.printPermintaanPO] START process <<<");

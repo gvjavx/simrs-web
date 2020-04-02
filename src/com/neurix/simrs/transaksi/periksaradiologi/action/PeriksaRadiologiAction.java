@@ -253,7 +253,7 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
         List<PeriksaLab> listPeriksaLabList = new ArrayList();
 
         // hanya kategori lab radiologi saja
-        periksaLab.setIdKategoriLab("01");
+        periksaLab.setIdKategoriLab("KAL00000001");
 
         try {
             listPeriksaLabList = periksaLabBoProxy.getSearchLab(periksaLab);

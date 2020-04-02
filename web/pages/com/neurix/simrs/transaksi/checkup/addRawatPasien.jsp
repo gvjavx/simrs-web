@@ -606,7 +606,8 @@
                                                                 isLama: item.isPasienLama,
                                                                 idPelayanan: item.idPelayanan,
                                                                 idPaket: item.idPaket,
-                                                                namaPaket: item.namaPaket
+                                                                namaPaket: item.namaPaket,
+                                                                tarif: item.tarif
                                                             };
                                                             functions.push(labelItem);
                                                         });
@@ -653,7 +654,7 @@
                                                             // $('#paket').val(selectedObj.idPaket).trigger('change').attr('disabled',true);
                                                             $('#id_paket').val(selectedObj.idPaket);
                                                             $('#paket_perusahaan').val(selectedObj.namaPaket);
-                                                            console.log(selectedObj.namaPaket);
+                                                            $('#cover_biaya_paket').val(selectedObj.tarif);
                                                         }
 
                                                         $('#no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #st_tgl_lahir, #agama, #provinsi, #kabupaten, #kecamatan, #desa ').css('border', '');
@@ -993,7 +994,7 @@
                                         </div>
                                         <s:hidden name="headerCheckup.idJenisPeriksaPasien" id="id_jenis_periksa"></s:hidden>
 
-                                        <s:if test='tipe == "paket_biasa"'>
+                                        <s:if test='tipe == "paket_individu"'>
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 10px">Paket</label>
                                             <div class="col-md-8">
@@ -1020,7 +1021,10 @@
                                             </div>
                                         </s:if>
 
-                                        <s:hidden name="headerCheckup.idPaket" id="id_paket"></s:hidden>
+                                        <s:if test='tipe == "paket_perusahaan" || tipe == "paket_individu"'>
+                                            <s:hidden name="headerCheckup.idPaket" id="id_paket"></s:hidden>
+                                            <s:hidden name="headerCheckup.coverBiaya" id="cover_biaya_paket"></s:hidden>
+                                        </s:if>
 
                                         <s:if test='tipe == "ptpn"'>
                                             <div class="form-group">
@@ -1972,7 +1976,7 @@
         if(tipe == 'asuransi'){
             listSelectAsuransi();
         }
-        if(tipe == 'paket_perusahaan' || tipe == 'paket_biasa'){
+        if(tipe == 'paket_perusahaan' || tipe == 'paket_individu'){
             listSelectPaket(tipe);
         }
 
@@ -2013,7 +2017,7 @@
             if (response.length > 0) {
                 console.log(response);
                 $.each(response, function (i, item) {
-                    option += "<option value='" + item.idPaket +"|"+ item.idPelayanan + "'>" + item.namaPaket + "</option>";
+                    option += "<option value='" + item.idPaket +"|"+ item.idPelayanan +"|"+ item.tarif + "'>" + item.namaPaket + "</option>";
                 });
                 $('#paket').html(option);
             } else {
@@ -2027,8 +2031,10 @@
             var isi = value.split("|");
             var pak = isi[0];
             var pel = isi[1];
+            var cover = isi[2];
             $('#poli').val(pel).trigger('change');
             $('#id_paket').val(pak);
+            $('#cover_biaya_paket').val(cover);
         }
     }
 

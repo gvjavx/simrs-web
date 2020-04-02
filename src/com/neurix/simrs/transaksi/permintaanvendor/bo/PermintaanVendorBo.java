@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.permintaanvendor.bo;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.permintaanvendor.model.BatchPermintaanObat;
@@ -35,4 +36,5 @@ public interface PermintaanVendorBo {
     public void saveUpoadDocPermintaanVendor(PermintaanVendor bean) throws GeneralBOException;
 
     public List<TransaksiObatDetail> getListObatByBatch(String idPermintaan, Integer noBatch) throws GeneralBOException;
+    public List<Obat> getSearchObat(String query, String branch) throws GeneralBOException;
 }

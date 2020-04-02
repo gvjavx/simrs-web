@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printResepPasien" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
 	<property name="ireport.zoom" value="1.3636363636363658"/>
-	<property name="ireport.x" value="63"/>
-	<property name="ireport.y" value="339"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -255,7 +255,7 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId} AND e.no_ba
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[Tgl Pencairan]]></text>
+				<text><![CDATA[Tanggal Penyerahan]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="398" y="128" width="157" height="20" uuid="690bed17-3da9-47e5-bc27-fa9e7f92d353"/>
@@ -307,7 +307,7 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId} AND e.no_ba
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[Tgl Faktur]]></text>
+				<text><![CDATA[Tanggal Faktur]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="398" y="68" width="157" height="20" uuid="bf96c570-a4d1-47e2-ab58-009a8badc839"/>

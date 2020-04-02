@@ -337,7 +337,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-4" style="margin-top: 7px">Tanggal Pencairan</label>
+                                    <label class="col-md-4" style="margin-top: 7px">Tanggal Penyerahan</label>
                                     <div class="col-md-8">
                                         <div class="input-group" style="margin-top: 7px">
                                             <div class="input-group-addon">

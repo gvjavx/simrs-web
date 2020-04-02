@@ -359,7 +359,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "b.tgl_antrian,  \n" +
                 "b.no_checkup, \n" +
                 "b.id_detail_checkup,\n" +
-                "a.id_jenis_periksa_pasien,\n" +
+                "b.id_jenis_periksa_pasien,\n" +
                 "f.id,\n" +
                 "f.id_detail_checkup,\n" +
                 "f.status_bayar\n" +
@@ -672,7 +672,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "a.no_telp,\n" +
                     "a.agama,\n" +
                     "j.url_ktp,\n" +
-                    "a.id_jenis_periksa_pasien,\n" +
+                    "b.id_jenis_periksa_pasien,\n" +
                     "b.id_detail_checkup,\n" +
                     "b.id_pelayanan,\n" +
                     "b.no_sep,\n" +
@@ -688,21 +688,23 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "i.nama_ruangan,\n" +
                     "b.metode_pembayaran,\n" +
                     "b.no_jurnal,\n" +
-                    "a.url_doc_rujuk,\n" +
+                    "b.url_doc_rujuk,\n" +
                     "b.url_ttd, \n" +
                     "a.tinggi, \n" +
                     "a.berat_badan, \n" +
                     "j.no_bpjs, \n" +
-                    "a.no_rujukan, \n" +
-                    "a.tgl_rujukan, \n" +
-                    "a.url_doc_rujuk, \n" +
+                    "b.no_rujukan, \n" +
+                    "b.tgl_rujukan, \n" +
                     "k.id_asuransi, \n" +
                     "k.nama_asuransi, \n" +
-                    "b.no_kartu_asuransi\n" +
+                    "b.no_kartu_asuransi, \n" +
+                    "b.tgl_cekup, \n" +
+                    "b.keterangan_cekup_ulang, \n" +
+                    "b.cover_biaya \n" +
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
-                    "INNER JOIN im_simrs_jenis_periksa_pasien d ON a.id_jenis_periksa_pasien = d.id_jenis_periksa_pasien\n" +
+                    "INNER JOIN im_simrs_jenis_periksa_pasien d ON b.id_jenis_periksa_pasien = d.id_jenis_periksa_pasien\n" +
                     "INNER JOIN im_hris_desa e ON CAST(a.desa_id AS VARCHAR) = e.desa_id \n" +
                     "INNER JOIN im_hris_kecamatan f ON e.kecamatan_id = f.kecamatan_id\n" +
                     "INNER JOIN im_hris_kota g ON f.kota_id = g.kota_id\n" +
@@ -763,10 +765,12 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     checkup.setNoBpjs(obj[34] == null ? "" : obj[34].toString());
                     checkup.setNoRujukan(obj[35] == null ? "" : obj[35].toString());
                     checkup.setTglRujukan(obj[36] == null ? "" : obj[36].toString());
-                    checkup.setUrlDocRujuk(obj[37] == null ? "" : obj[37].toString());
-                    checkup.setIdAsuransi(obj[38] == null ? "" : obj[38].toString());
-                    checkup.setNamaAsuransi(obj[39] == null ? "" : obj[39].toString());
-                    checkup.setNoKartuAsuransi(obj[40] == null ? "" : obj[40].toString());
+                    checkup.setIdAsuransi(obj[37] == null ? "" : obj[37].toString());
+                    checkup.setNamaAsuransi(obj[38] == null ? "" : obj[38].toString());
+                    checkup.setNoKartuAsuransi(obj[39] == null ? "" : obj[39].toString());
+                    checkup.setTglCheckup(obj[40] != null ? Date.valueOf(obj[40].toString()) : null);
+                    checkup.setKeterangan(obj[41] == null ? "" : obj[41].toString());
+                    checkup.setCoverBiaya(obj[42] == null ? new BigDecimal(String.valueOf("0")) : new BigDecimal(obj[42].toString()));
                 }
             }
         }

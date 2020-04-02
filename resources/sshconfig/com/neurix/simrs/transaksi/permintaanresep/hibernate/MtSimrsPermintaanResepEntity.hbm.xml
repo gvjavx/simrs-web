@@ -66,5 +66,11 @@
         <property name="ttdDokter">
             <column name="ttd_dokter" sql-type="varchar" length="100" not-null="false" />
         </property>
+        <property name="ttdApoteker">
+            <column name="ttd_apoteker" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="idApoteker">
+            <column name="id_apoteker" sql-type="varchar" length="100" not-null="false" />
+        </property>
     </class>
 </hibernate-mapping>

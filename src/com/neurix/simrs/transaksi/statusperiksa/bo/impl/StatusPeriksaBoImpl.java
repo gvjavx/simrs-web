@@ -85,27 +85,29 @@ public class StatusPeriksaBoImpl implements StatusPeriksaBo {
 
                     if (headerChekupEntity != null) {
 
-                        if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
-                            headerChekupEntity.setNoRujukan(bean.getNoRujukan());
-                            headerChekupEntity.setNoPpkRujukan(bean.getNoPpk());
-                            headerChekupEntity.setTglRujukan(Date.valueOf(bean.getTglRujukan()));
-                            headerChekupEntity.setUrlDocRujuk(bean.getSuratRujukan());
-                            headerChekupEntity.setKelasPasien(bean.getIdKelas());
-                            headerChekupEntity.setRujuk(bean.getPerujuk());
-                            headerChekupEntity.setKetRujukan(bean.getNamaPerujuk());
-                            headerChekupEntity.setIdPelayananBpjs(bean.getIdPelayanan());
-                        }
-
-                        headerChekupEntity.setIdJenisPeriksaPasien(bean.getIdJenisPeriksaPasien());
-                        headerChekupEntity.setJenisTransaksi(bean.getIdJenisPeriksaPasien());
                         headerChekupEntity.setLastUpdateWho(bean.getLastUpdateWho());
                         headerChekupEntity.setLastUpdate(bean.getLastUpdate());
 
                         try {
+                            headerCheckupDao.updateAndSave(headerChekupEntity);
+                            response.setStatus("success");
+                            response.setMessage("Berhasil");
+                        } catch (HibernateException e) {
+                            response.setStatus("error");
+                            response.setMessage("Found Error when save update " + e.getMessage());
+                            logger.error("Found Error when save update header " + e.getMessage());
+                        }
+                    }
+
+                    detailCheckupEntity = checkupDetailDao.getById("idDetailCheckup", bean.getIdDetailCheckup());
+
+                    if (detailCheckupEntity != null) {
+
+                        try {
                             ItSimrsHeaderChekupLogEntity logEntity = new ItSimrsHeaderChekupLogEntity();
                             logEntity.setIdHeaderCheckupLog("CKL" + getNextIdHeaderLog());
-                            logEntity.setNoCheckup(headerChekupEntity.getNoCheckup());
-                            logEntity.setIdJenisPeriksaPasien(headerChekupEntity.getIdJenisPeriksaPasien());
+                            logEntity.setNoCheckup(detailCheckupEntity.getNoCheckup());
+                            logEntity.setIdJenisPeriksaPasien(detailCheckupEntity.getIdJenisPeriksaPasien());
                             logEntity.setCreatedDate(bean.getLastUpdate());
                             logEntity.setCreatedWho(bean.getLastUpdateWho());
                             logEntity.setLastUpdate(bean.getLastUpdate());
@@ -128,22 +130,15 @@ public class StatusPeriksaBoImpl implements StatusPeriksaBo {
                             logger.error("Found Error when save log " + e.getMessage());
                         }
 
-                        try {
-                            headerCheckupDao.updateAndSave(headerChekupEntity);
-                            response.setStatus("success");
-                            response.setMessage("Berhasil");
-                        } catch (HibernateException e) {
-                            response.setStatus("error");
-                            response.setMessage("Found Error when save update " + e.getMessage());
-                            logger.error("Found Error when save update header " + e.getMessage());
-                        }
-                    }
-
-                    detailCheckupEntity = checkupDetailDao.getById("idDetailCheckup", bean.getIdDetailCheckup());
-
-                    if (detailCheckupEntity != null) {
-
                         if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
+                            detailCheckupEntity.setNoRujukan(bean.getNoRujukan());
+                            detailCheckupEntity.setNoPpkRujukan(bean.getNoPpk());
+                            detailCheckupEntity.setTglRujukan(Date.valueOf(bean.getTglRujukan()));
+                            detailCheckupEntity.setUrlDocRujuk(bean.getSuratRujukan());
+                            detailCheckupEntity.setKelasPasien(bean.getIdKelas());
+                            detailCheckupEntity.setRujuk(bean.getPerujuk());
+                            detailCheckupEntity.setKetRujukan(bean.getNamaPerujuk());
+                            detailCheckupEntity.setIdPelayananBpjs(bean.getIdPelayanan());
                             detailCheckupEntity.setNoSep(bean.getNoSep());
                             detailCheckupEntity.setKodeCbg(bean.getKodeCbg());
                             detailCheckupEntity.setTarifBpjs(bean.getTarifBpjs());
@@ -159,6 +154,7 @@ public class StatusPeriksaBoImpl implements StatusPeriksaBo {
                             detailCheckupEntity.setMetodePembayaran(bean.getMetodePembayaran());
                         }
 
+                        detailCheckupEntity.setIdJenisPeriksaPasien(bean.getIdJenisPeriksaPasien());
                         detailCheckupEntity.setLastUpdate(bean.getLastUpdate());
                         detailCheckupEntity.setLastUpdateWho(bean.getLastUpdateWho());
 
@@ -280,7 +276,9 @@ public class StatusPeriksaBoImpl implements StatusPeriksaBo {
                                         }
                                     }
                                 }
+                            }
 
+                            if("asuransi".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
                                 UangMuka uangMuka = new UangMuka();
                                 uangMuka.setIdDetailCheckup(bean.getIdDetailCheckup());
                                 ItSimrsUangMukaPendaftaranEntity entityUangMuka = getEntityUangMuka(uangMuka);
@@ -333,6 +331,7 @@ public class StatusPeriksaBoImpl implements StatusPeriksaBo {
                                     }
                                 }
                             }
+
                         } catch (HibernateException e) {
                             response.setStatus("error");
                             response.setMessage("Found Error when save update " + e.getMessage());

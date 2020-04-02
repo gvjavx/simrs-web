@@ -66,6 +66,16 @@ public class PeriksaLab extends BaseModel implements Serializable{
 
     private String stCreatedDate;
 
+    private BigDecimal tarif;
+
+    public BigDecimal getTarif() {
+        return tarif;
+    }
+
+    public void setTarif(BigDecimal tarif) {
+        this.tarif = tarif;
+    }
+
     @Override
     public String getStCreatedDate() {
         return stCreatedDate;

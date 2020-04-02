@@ -59,6 +59,7 @@ public class PaketPeriksaBoImpl implements PaketPeriksaBo {
                 paketPeriksa.setLastUpdate(paketEntity.getLastUpdate());
                 paketPeriksa.setLastUpdateWho(paketEntity.getLastUpdateWho());
                 paketPeriksa.setIdPelayanan(paketEntity.getIdPelayanan());
+                paketPeriksa.setTarif(paketEntity.getTarif());
                 paketPeriksaList.add(paketPeriksa);
             }
         }
@@ -205,7 +206,6 @@ public class PaketPeriksaBoImpl implements PaketPeriksaBo {
                         new GeneralBOException("[PaketPeriksaBoImpl.savePaketPeriksa] ERROR. " + e);
                     }
                 }
-
             }
         }
 
@@ -322,6 +322,19 @@ public class PaketPeriksaBoImpl implements PaketPeriksaBo {
         }
 
         return response;
+    }
+
+    @Override
+    public List<PaketPeriksa> getDetailItemPaket(String idLab, String idPaket) throws GeneralBOException {
+        List<PaketPeriksa> list = new ArrayList<>();
+        if (idPaket != null && idLab != null) {
+            try {
+                list = paketPasienDao.getDetailItemPaket(idLab, idPaket);
+            } catch (HibernateException e) {
+                logger.error("Found Error " + e.getMessage());
+            }
+        }
+        return list;
     }
 
     private String getNextPaketPeriksaId() {

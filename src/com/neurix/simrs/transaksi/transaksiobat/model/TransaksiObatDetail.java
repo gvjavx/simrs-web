@@ -80,6 +80,16 @@ public class TransaksiObatDetail extends BaseModel {
     private BigDecimal bruto;
     private BigDecimal netto;
 
+    private String namaObatBaru;
+
+    public String getNamaObatBaru() {
+        return namaObatBaru;
+    }
+
+    public void setNamaObatBaru(String namaObatBaru) {
+        this.namaObatBaru = namaObatBaru;
+    }
+
     public BigDecimal getDiskon() {
         return diskon;
     }

@@ -163,10 +163,6 @@ public class RawatInapAction extends BaseMasterAction {
     public String add() {
         logger.info("[RawatInapAction.add] start process >>>");
 
-        //get data from session
-//        HttpSession session = ServletActionContext.getRequest().getSession();
-//        List<RawatInap> listOfResult = (List) session.getAttribute("listOfResult");
-
         String id = getId();
         String jk = "";
 
@@ -274,105 +270,6 @@ public class RawatInapAction extends BaseMasterAction {
                 setRawatInap(new RawatInap());
             }
         }
-//        if (id != null && !"".equalsIgnoreCase(id)) {
-//
-//            if (listOfResult != null) {
-//
-//                for (RawatInap rawatInap : listOfResult) {
-//                    if (id.equalsIgnoreCase(rawatInap.getNoCheckup())) {
-//
-//                        HeaderCheckup headerCheckup = getHeaderCheckup(rawatInap.getNoCheckup());
-//                        rawatInap.setIdPasien(headerCheckup.getIdPasien());
-//                        rawatInap.setNamaPasien(headerCheckup.getNama());
-//                        rawatInap.setAlamat(headerCheckup.getJalan());
-//                        rawatInap.setDesa(headerCheckup.getNamaDesa());
-//                        rawatInap.setKecamatan(headerCheckup.getNamaKecamatan());
-//                        rawatInap.setKota(headerCheckup.getNamaKota());
-//                        rawatInap.setProvinsi(headerCheckup.getNamaProvinsi());
-//                        rawatInap.setIdPelayanan(headerCheckup.getIdPelayanan());
-//                        rawatInap.setNamaPelayanan(headerCheckup.getNamaPelayanan());
-//                        if (headerCheckup.getJenisKelamin() != null) {
-//                            if ("P".equalsIgnoreCase(headerCheckup.getJenisKelamin())) {
-//                                jk = "Perempuan";
-//                            } else {
-//                                jk = "laki-Laki";
-//                            }
-//                        }
-//                        rawatInap.setJenisKelamin(jk);
-//                        rawatInap.setTempatLahir(headerCheckup.getTempatLahir());
-//                        rawatInap.setTglLahir(headerCheckup.getTglLahir() == null ? null : headerCheckup.getTglLahir().toString());
-//                        String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(headerCheckup.getTglLahir());
-//                        rawatInap.setTempatTglLahir(headerCheckup.getTempatLahir() + ", " + formatDate);
-//                        rawatInap.setIdJenisPeriksa(headerCheckup.getIdJenisPeriksaPasien());
-//                        rawatInap.setNik(headerCheckup.getNoKtp());
-//                        rawatInap.setUrlKtp(headerCheckup.getUrlKtp());
-//                        rawatInap.setNoSep(headerCheckup.getNoSep());
-//
-//                        JenisPriksaPasien jenisPriksaPasien = getListJenisPeriksaPasien(headerCheckup.getIdJenisPeriksaPasien());
-//                        rawatInap.setJenisPeriksaPasien(jenisPriksaPasien.getKeterangan());
-//
-//                        List<RiwayatTindakan> riwayatTindakanList = new ArrayList<>();
-//
-//                        try {
-//                            riwayatTindakanList = riwayatTindakanBoProxy.cekTodayTarifKamar(rawatInap.getIdDetailCheckup());
-//                        }catch (GeneralBOException e){
-//                            logger.error("[RawatInapAction.add] Found Error when search tindakan riwayat >>>" +e);
-//                        }
-//
-//                        if(riwayatTindakanList.isEmpty()){
-//
-//                            List<Ruangan> ruanganList = new ArrayList<>();
-//                            Ruangan ruangan = new Ruangan();
-//                            ruangan.setIdRuangan(rawatInap.getIdRuangan());
-//
-//                            try {
-//                                ruanganList = ruanganBoProxy.getByCriteria(ruangan);
-//                            }catch (GeneralBOException e){
-//                                logger.error("[RawatInapAction.add] Found Error when search ruangan >>>" +e);
-//                            }
-//
-//                            if(!ruanganList.isEmpty()){
-//                                ruangan = ruanganList.get(0);
-//
-//                                if(ruanganList != null){
-//
-//                                    String user = CommonUtil.userLogin();
-//                                    Timestamp now = new Timestamp(System.currentTimeMillis());
-//
-//                                    RiwayatTindakan tindakan = new RiwayatTindakan();
-//                                    tindakan.setIdTindakan(ruangan.getIdRuangan());
-//                                    tindakan.setNamaTindakan("Tarif Kamar "+ruangan.getNamaRuangan()+ " No. " +ruangan.getNoRuangan());
-//                                    tindakan.setKeterangan("kamar");
-//                                    tindakan.setTotalTarif(new BigDecimal(ruangan.getTarif()));
-//                                    tindakan.setIdDetailCheckup(rawatInap.getIdDetailCheckup());
-//                                    tindakan.setJenisPasien(rawatInap.getIdJenisPeriksa());
-//                                    tindakan.setAction("C");
-//                                    tindakan.setFlag("Y");
-//                                    tindakan.setCreatedDate(now);
-//                                    tindakan.setCreatedWho(user);
-//                                    tindakan.setLastUpdate(now);
-//                                    tindakan.setLastUpdateWho(user);
-//                                    tindakan.setTanggalTindakan(now);
-//
-//                                    try {
-//                                        riwayatTindakanBoProxy.saveAdd(tindakan);
-//                                    }catch (GeneralBOException e){
-//                                        logger.error("[RawatInapAction] Found Error when save add riwayat tindakan "+e);
-//                                    }
-//                                }
-//                            }
-//                        }
-//                        setRawatInap(rawatInap);
-//                        break;
-//                    }
-//                }
-//
-//            } else {
-//                setRawatInap(new RawatInap());
-//            }
-//        } else {
-//            setRawatInap(new RawatInap());
-//        }
 
         logger.info("[RawatInapAction.add] end process <<<");
         return "init_add";

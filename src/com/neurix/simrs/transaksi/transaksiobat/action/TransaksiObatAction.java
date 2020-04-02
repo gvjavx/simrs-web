@@ -1496,8 +1496,9 @@ public class TransaksiObatAction extends BaseMasterAction {
             reportParams.put("dokter", permintaanResep.getNamaDokter());
             reportParams.put("ttdDokter", CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_TTD_DOKTER+permintaanResep.getTtdDokter());
             reportParams.put("resepId", idResep);
-            reportParams.put("petugas", CommonUtil.userLogin());
+            reportParams.put("petugas", permintaanResep.getNamaApoteker());
             reportParams.put("ttdPasien", CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_TTD_PASIEN+permintaanResep.getTtdPasien());
+            reportParams.put("ttdApoteker", CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_TTD_APOTEKER+permintaanResep.getTtdApoteker());
             reportParams.put("idPasien", checkup.getIdPasien());
             reportParams.put("nik", checkup.getNoKtp());
             reportParams.put("nama", checkup.getNama());
@@ -1531,31 +1532,38 @@ public class TransaksiObatAction extends BaseMasterAction {
         return "print_struk_resep_pasien";
     }
 
-    public CheckResponse saveTtdPasien(String base64String, String idResep) throws IOException {
-        logger.info("base64 "+base64String);
+    public CheckResponse saveTtdPasien(String ttdPasien, String idResep, String ttdApoteker) throws IOException {
+        logger.info("base64 "+ttdPasien);
         CheckResponse response = new CheckResponse();
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         TransaksiObatBo transaksiObatBo = (TransaksiObatBo) ctx.getBean("transaksiObatBoProxy");
         BASE64Decoder decoder = new BASE64Decoder();
-        byte[] decodedBytes = decoder.decodeBuffer(base64String);
-        logger.info("Decoded upload data : " + decodedBytes.length);
-        String fileName = idResep+"-"+dateFormater("MM")+dateFormater("yy")+".png";
-        String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_TTD_PASIEN+fileName;
-        logger.info("File save path : " + uploadFile);
-        BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
 
-        if (image == null) {
+        byte[] decodedBytes1 = decoder.decodeBuffer(ttdPasien);
+        byte[] decodedBytes2 = decoder.decodeBuffer(ttdApoteker);
+
+        logger.info("Decoded upload data : " + decodedBytes1.length);
+        String fileName1 = "ttd_pasien-"+idResep+"-"+dateFormater("MM")+dateFormater("yy")+".png";
+        String fileName2 = "ttd_apoteker-"+idResep+"-"+dateFormater("MM")+dateFormater("yy")+".png";
+        String uploadFile1 = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_TTD_PASIEN+fileName1;
+        String uploadFile2 = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_TTD_PASIEN+fileName2;
+        logger.info("File save path : " + uploadFile1);
+        BufferedImage image1 = ImageIO.read(new ByteArrayInputStream(decodedBytes1));
+        BufferedImage image2 = ImageIO.read(new ByteArrayInputStream(decodedBytes2));
+
+        if (image1 == null) {
             logger.error("Buffered Image is null");
             response.setStatus("error");
             return response;
         }else{
-            File f = new File(uploadFile);
+            File f1 = new File(uploadFile1);
+            File f2 = new File(uploadFile2);
             // write the image
-            ImageIO.write(image, "png", f);
+            ImageIO.write(image1, "png", f1);
+            ImageIO.write(image2, "png", f2);
             response.setStatus("success");
-
-            response = transaksiObatBo.setTtdPasien(idResep, fileName);
+            response = transaksiObatBo.setTtdPasien(idResep, fileName1, fileName2);
         }
 
         return response;

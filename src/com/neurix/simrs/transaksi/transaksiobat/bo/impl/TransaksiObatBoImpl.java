@@ -1929,7 +1929,7 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
     }
 
     @Override
-    public CheckResponse setTtdPasien(String idPermintaan, String ttdPasien) throws GeneralBOException {
+    public CheckResponse setTtdPasien(String idPermintaan, String ttdPasien, String ttdApoteker) throws GeneralBOException {
         CheckResponse response = new CheckResponse();
 
         if(idPermintaan != null && !"".equalsIgnoreCase(idPermintaan)){
@@ -1947,6 +1947,8 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                 if(entity != null){
 
                     entity.setTtdPasien(ttdPasien);
+                    entity.setTtdApoteker(ttdApoteker);
+                    entity.setIdApoteker(CommonUtil.userIdLogin());
                     entity.setAction("U");
 
                     try {

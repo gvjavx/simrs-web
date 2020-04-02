@@ -35,6 +35,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -80,6 +81,7 @@ public class PaketPeriksaAction extends BaseTransactionAction {
         List<PaketPeriksa> list = new ArrayList<>();
         PaketPeriksa periksa = new PaketPeriksa();
         periksa.setFlag("Y");
+        periksa.setBranchId(CommonUtil.userBranchLogin());
 
         try {
             list = paketPeriksaBo.getListPaketPeriksa(periksa);
@@ -90,7 +92,7 @@ public class PaketPeriksaAction extends BaseTransactionAction {
         return list;
     }
 
-    public CrudResponse savePaket(String idPelayanan, String namaPaket, String jsonString) throws JSONException{
+    public CrudResponse savePaket(String idPelayanan, String namaPaket, BigDecimal tarifPaket, String jsonString) throws JSONException{
 
         String userLogin = CommonUtil.userLogin();
         Timestamp time = new Timestamp(System.currentTimeMillis());
@@ -111,6 +113,7 @@ public class PaketPeriksaAction extends BaseTransactionAction {
 
         MtSimrsPaketEntity paketPeriksa = new MtSimrsPaketEntity();
         paketPeriksa.setNamaPaket(namaPaket);
+        paketPeriksa.setTarif(tarifPaket);
         paketPeriksa.setFlag("Y");
         paketPeriksa.setAction("C");
         paketPeriksa.setBranchId(CommonUtil.userBranchLogin());
@@ -375,6 +378,22 @@ public class PaketPeriksaAction extends BaseTransactionAction {
         if( idPaket != null && !"".equalsIgnoreCase(idPaket)){
             try {
                 list = paketPeriksaBo.getDetailPaket(idPaket);
+            }catch (GeneralBOException e){
+                logger.error("Found Error "+e.getMessage());
+            }
+        }
+        return list;
+    }
+
+    public List<PaketPeriksa> detailItem(String idLab, String idPaket) throws JSONException{
+
+        List<PaketPeriksa> list = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PaketPeriksaBo paketPeriksaBo = (PaketPeriksaBo) ctx.getBean("paketPeriksaBoProxy");
+
+        if(idPaket != null && !"".equalsIgnoreCase(idPaket) && idLab != null && !"".equalsIgnoreCase(idLab)){
+            try {
+                list = paketPeriksaBo.getDetailItemPaket(idLab, idPaket);
             }catch (GeneralBOException e){
                 logger.error("Found Error "+e.getMessage());
             }

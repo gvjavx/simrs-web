@@ -55,6 +55,25 @@ public class PermintaanResep{
     private String ttdDokter;
     private String namaDokter;
 
+    private String ttdApoteker;
+    private String namaApoteker;
+
+    public String getTtdApoteker() {
+        return ttdApoteker;
+    }
+
+    public void setTtdApoteker(String ttdApoteker) {
+        this.ttdApoteker = ttdApoteker;
+    }
+
+    public String getNamaApoteker() {
+        return namaApoteker;
+    }
+
+    public void setNamaApoteker(String namaApoteker) {
+        this.namaApoteker = namaApoteker;
+    }
+
     public String getNamaDokter() {
         return namaDokter;
     }

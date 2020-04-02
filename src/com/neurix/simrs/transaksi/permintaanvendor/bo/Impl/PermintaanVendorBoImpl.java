@@ -155,6 +155,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                                 transaksiObatDetail.setJenisSatuan(transaksiObatDetailEntity.getJenisSatuan());
                                 transaksiObatDetail.setIdPabrik(obatEntity.getIdPabrik());
                                 transaksiObatDetail.setMerek(transaksiObatDetailEntity.getMrek());
+                                transaksiObatDetail.setNamaObatBaru(transaksiObatDetailEntity.getNamaObatBaru());
 
                                 if ("box".equalsIgnoreCase(transaksiObatDetailEntity.getJenisSatuan())) {
                                     transaksiObatDetail.setHargaPo(transaksiObatDetailEntity.getAverageHargaBox());
@@ -629,7 +630,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                 obatDetailEntity.setQtyBox(bean.getQtyBox());
                 obatDetailEntity.setIdObat(obatEntity.getIdObat());
                 obatDetailEntity.setNamaObatBaru(obatEntity.getNamaObat());
-                obatDetailEntity.setLembarPerBox(obatDetailEntity.getLembarPerBox());
+                obatDetailEntity.setLembarPerBox(obatEntity.getLembarPerBox());
                 obatDetailEntity.setBijiPerLembar(obatEntity.getBijiPerLembar());
                 obatDetailEntity.setQty(bean.getQty());
                 obatDetailEntity.setQtyApprove(obatEntity.getQty());
@@ -643,6 +644,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                 obatDetailEntity.setKeterangan("Permintaan PO");
                 obatDetailEntity.setIdPabrik(bean.getIdPabrik());
                 obatDetailEntity.setMrek(bean.getMerek());
+                obatDetailEntity.setFlagObatBpjs(entityList.getFlagObatBpjs());
 
                 if ("box".equalsIgnoreCase(bean.getJenisSatuan())) {
                     obatDetailEntity.setAverageHargaBox(bean.getHargaPo());
@@ -668,6 +670,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                 }
             }
         }
+
         return response;
     }
 
@@ -1574,6 +1577,20 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
             }
         }
         return transaksiObatDetails;
+    }
+
+    @Override
+    public List<Obat> getSearchObat(String query, String branch) throws GeneralBOException {
+        List<Obat> obatArrayList = new ArrayList<>();
+
+        if(query != null && !"".equalsIgnoreCase(query) && branch != null && !"".equalsIgnoreCase(branch)){
+            try {
+                obatArrayList = obatDao.getSearchObat(query, branch);
+            }catch (HibernateException e){
+                logger.error("Found error when search obat list "+e.getMessage());
+            }
+        }
+        return obatArrayList;
     }
 
     private ImSimrsVendorEntity getListEntityVendorObat(Vendor bean) throws GeneralBOException{

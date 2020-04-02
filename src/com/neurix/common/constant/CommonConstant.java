@@ -44,6 +44,7 @@ public class CommonConstant {
     public final static String RESOURCE_PATH_DOC_PO = "/upload/surat_po/";
     public final static String RESOURCE_PATH_TTD_PASIEN = "/upload/ttd_pasien/";
     public final static String RESOURCE_PATH_TTD_DOKTER = "/upload/ttd_dokter/";
+    public final static String RESOURCE_PATH_TTD_APOTEKER = "/upload/ttd_apoteker/";
 
     public final static String RESOURCE_PATH_USER_UPLOAD_PAYMENT_BANK = "/pages/upload/";
     public final static String RESOURCE_PATH_USER_UPLOAD = "/pages/upload/image/profile/";

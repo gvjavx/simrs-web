@@ -193,7 +193,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <s:iterator value="#session.listOfResult" status="listOfRawatJalan" id="listRawatjalan">
+                            <s:iterator value="#session.listOfResult" var="row">
                                 <tr>
                                     <td><s:property value="noCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
@@ -202,7 +202,7 @@
                                     <td><s:property value="statusPeriksaName"/></td>
                                     <td><s:property value="keteranganSelesai"/></td>
                                     <td align="center">
-                                        <s:if test="#listRawatjalan.statusPeriksa == 0 || #listRawatjalan.statusPeriksa == 1">
+                                        <s:if test='#row.statusPeriksa == "0" || #row.statusPeriksa == "1"'>
                                             <s:url var="add_rawat_jalan" namespace="/checkupdetail" action="add_checkupdetail" escapeAmp="false">
                                                 <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
                                             </s:url>
@@ -210,6 +210,13 @@
                                                 <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
                                             </s:a>
                                         </s:if>
+                                        <s:if test='#row.tglCekup == null'>
+                                        </s:if>
+                                        <s:else>
+                                            <a target="_blank" href="printSuratKeterangan_checkupdetail.action?id=<s:property value="idDetailCheckup"/>">
+                                                <img src="<s:url value="/pages/images/icons8-print-25.png"/>">
+                                            </a>
+                                        </s:else>
                                     </td>
                                 </tr>
                             </s:iterator>

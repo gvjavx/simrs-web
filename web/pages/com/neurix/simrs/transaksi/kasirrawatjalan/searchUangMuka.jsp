@@ -48,7 +48,7 @@
             $('#pembayaran_open').addClass('menu-open');
 
             var nominal = document.getElementById('nominal_uang_muka');
-            var refNominal = document.getElementById('ref_nominal_uang_muka');
+            // var refNominal = document.getElementById('ref_nominal_uang_muka');
 
             if(nominal != ''){
                 nominal.addEventListener('keyup', function (e) {
@@ -71,14 +71,14 @@
                 });
             }
 
-            if(refNominal != ''){
-                refNominal.addEventListener('keyup', function (e) {
-                    refNominal.value = formatRupiah2(this.value);
-                    var valBayar = refNominal.value.replace(/[.]/g, '');
-                    $('#ref_val_uang_muka').val(valBayar);
-                    var total = $('#ref_total_uang_muka').val();
-                });
-            }
+            // if(refNominal != ''){
+            //     refNominal.addEventListener('keyup', function (e) {
+            //         refNominal.value = formatRupiah2(this.value);
+            //         var valBayar = refNominal.value.replace(/[.]/g, '');
+            //         $('#ref_val_uang_muka').val(valBayar);
+            //         var total = $('#ref_total_uang_muka').val();
+            //     });
+            // }
 
         });
 
@@ -559,7 +559,7 @@
                 </div>
                 <div class="box-body">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-offset-3 col-md-6">
                             <table class="table table-bordered table-striped" id="tabel_tindakan_ref">
                                 <thead>
                                 <tr bgcolor="#90ee90">
@@ -572,20 +572,20 @@
                             </table>
                         </div>
                         <input type="hidden" id="ref_total_uang_muka">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="col-md-4" style="margin-top: 7px">Konfirmasi Uang Muka</label>
-                                <div class="col-md-8">
-                                    <div class="input-group">
-                                        <div class="input-group-addon">
-                                            Rp.
-                                        </div>
-                                        <input class="form-control" id="ref_nominal_uang_muka">
-                                        <input type="hidden" class="form-control" id="ref_val_uang_muka">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <%--<div class="col-md-6">--%>
+                            <%--<div class="form-group">--%>
+                                <%--<label class="col-md-4" style="margin-top: 7px">Konfirmasi Uang Muka</label>--%>
+                                <%--<div class="col-md-8">--%>
+                                    <%--<div class="input-group">--%>
+                                        <%--<div class="input-group-addon">--%>
+                                            <%--Rp.--%>
+                                        <%--</div>--%>
+                                        <%--<input class="form-control" id="ref_nominal_uang_muka">--%>
+                                        <%--<input type="hidden" class="form-control" id="ref_val_uang_muka">--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
                     </div>
                 </div>
             </div>
@@ -874,21 +874,21 @@
     }
 
     function confirmRefund(id, total){
-        var refund = $('#ref_val_uang_muka').val();
-
-        if(total != '' && refund != ''){
-
-            if(total == refund){
-                $('#modal-confirm-dialog').modal('show');
-                $('#save_con').attr('onclick','saveRefund(\''+id+'\')');
-            }else{
-                $('#warning_refund').show().fadeOut(5000);
-                $('#msg_refund').text("Refund Uang muka tidak boleh lebih atau kurang dari uang muka yang sudah dibayar...!");
-            }
-        }else{
-            $('#warning_refund').show().fadeOut(5000);
-            $('#msg_refund').text("Silahkan cek kembali data inputan anda..!");
-        }
+        // var refund = $('#ref_val_uang_muka').val();
+        //
+        // if(total != '' && refund != ''){
+        //
+        //     if(total == total){
+        $('#modal-confirm-dialog').modal('show');
+        $('#save_con').attr('onclick','saveRefund(\''+id+'\')');
+        //     }else{
+        //         $('#warning_refund').show().fadeOut(5000);
+        //         $('#msg_refund').text("Refund Uang muka tidak boleh lebih atau kurang dari uang muka yang sudah dibayar...!");
+        //     }
+        // }else{
+        //     $('#warning_refund').show().fadeOut(5000);
+        //     $('#msg_refund').text("Silahkan cek kembali data inputan anda..!");
+        // }
     }
 
     function saveRefund(id){

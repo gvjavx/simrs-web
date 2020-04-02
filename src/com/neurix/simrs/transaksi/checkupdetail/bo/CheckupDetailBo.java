@@ -55,5 +55,6 @@ public interface CheckupDetailBo {
 
     public PermintaanResep getDataDokter(String id) throws GeneralBOException;
     public HeaderDetailCheckup getCoverBiayaAsuransi(String idDetailCheckup) throws GeneralBOException;
+    public HeaderDetailCheckup getTotalBiayaTindakanBpjs(String idDetailCheckup) throws GeneralBOException;
 
 }

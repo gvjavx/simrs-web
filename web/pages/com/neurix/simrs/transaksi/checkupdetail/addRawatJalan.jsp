@@ -65,6 +65,29 @@
             return rupiah;
         }
 
+        function formatRupiah(angka) {
+            if(angka != '' && angka != null && angka > 0){
+                var reverse = angka.toString().split('').reverse().join(''),
+                    ribuan = reverse.match(/\d{1,3}/g);
+                ribuan = ribuan.join('.').split('').reverse().join('');
+                return ribuan;
+            }else{
+                return 0;
+            }
+        }
+
+        function convertSentenceCase(myString){
+            if(myString != null && myString != ''){
+                var rg = /(^\w{1}|\ \s*\w{1})/gi;
+                myString = myString.replace(rg, function(toReplace) {
+                    return toReplace.toUpperCase();
+                });
+                return myString;
+            }else{
+                return "";
+            }
+        }
+
     </script>
     <style>
         .form-check {
@@ -213,12 +236,21 @@
                                             <table><s:label name="headerDetailCheckup.tempatTglLahir"></s:label></table>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td><b>Metode Pembayaran</b></td>
-                                        <td>
-                                            <table><s:label name="headerDetailCheckup.metodePembayaran"></s:label></table>
-                                        </td>
-                                    </tr>
+                                    <s:if test='headerDetailCheckup.metodePembayaran != null && headerDetailCheckup.metodePembayaran != ""'>
+                                        <tr>
+                                            <td><b>Metode Pembayaran</b></td>
+                                            <td>
+                                                <table>
+                                                    <script>
+                                                        var metode = '<s:property value="headerDetailCheckup.metodePembayaran"/>';
+                                                        var met = metode.replace("_", " ");
+                                                        var meto = convertSentenceCase(met);
+                                                        document.write(meto);
+                                                    </script>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </s:if>
                                 </table>
                             </div>
                             <!-- /.col -->
@@ -240,6 +272,32 @@
                                             </table>
                                         </td>
                                     </tr>
+                                    <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "paket_perusahaan" || headerDetailCheckup.idJenisPeriksaPasien == "paket_individu"'>
+                                        <tr>
+                                            <td><b>Tarif Paket</b></td>
+                                            <td>
+                                                <table>
+                                                    <script>
+                                                        var tar = '<s:property value="headerDetailCheckup.coverBiaya"/>';
+                                                        if(tar != null){
+                                                            document.write("Rp. "+formatRupiah(tar));
+                                                        }
+                                                    </script>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </s:if>
+                                    <s:if test='headerDetailCheckup.namaAsuransi != null && headerDetailCheckup.namaAsuransi != ""'>
+                                        <tr>
+                                            <td><b>Nama Asuransi</b></td>
+                                            <td>
+                                                <table>
+                                                    <s:label id="nama_asuransi"
+                                                             name="headerDetailCheckup.namaAsuransi"></s:label>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </s:if>
                                     <tr>
                                         <td><b>Poli</b></td>
                                         <td>
@@ -254,15 +312,9 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><b>Provinsi</b></td>
+                                        <td><b>Desa</b></td>
                                         <td>
-                                            <table><s:label name="headerDetailCheckup.provinsi"></s:label></table>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><b>Kabupaten</b></td>
-                                        <td>
-                                            <table><s:label name="headerDetailCheckup.kota"></s:label></table>
+                                            <table><s:label name="headerDetailCheckup.desa"></s:label></table>
                                         </td>
                                     </tr>
                                     <tr>
@@ -272,9 +324,15 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><b>Desa</b></td>
+                                        <td><b>Kabupaten</b></td>
                                         <td>
-                                            <table><s:label name="headerDetailCheckup.desa"></s:label></table>
+                                            <table><s:label name="headerDetailCheckup.kota"></s:label></table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Provinsi</b></td>
+                                        <td>
+                                            <table><s:label name="headerDetailCheckup.provinsi"></s:label></table>
                                         </td>
                                     </tr>
                                 </table>
@@ -461,9 +519,11 @@
                                 </table>
                             </div>
                             <div class="col-md-6">
-                                <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
-                                        onclick="showModal(1)"><i class="fa fa-plus"></i> Tambah Dokter
-                                </button>
+                                <s:if test='headerDetailCheckup.idJenisPeriksaPasien != "paket_individu" && headerDetailCheckup.idJenisPeriksaPasien != "paket_perusahaan"'>
+                                    <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
+                                            onclick="showModal(1)"><i class="fa fa-plus"></i> Tambah Dokter
+                                    </button>
+                                </s:if>
                                 <table class="table table-bordered table-striped">
                                     <thead>
                                     <tr bgcolor="#90ee90">
@@ -615,26 +675,41 @@
                         <h3 class="box-title"><i class="fa fa-medkit"></i> Tindakan</h3>
                     </div>
                     <div class="box-body">
+                        <input type="hidden" id="tin_id_dokter">
+                        <s:if test='headerDetailCheckup.idJenisPeriksaPasien != "paket_individu" && headerDetailCheckup.idJenisPeriksaPasien != "paket_perusahaan"'>
                         <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
                                 onclick="showModal(2)"><i class="fa fa-plus"></i> Tambah Tindakan
                         </button>
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                            <tr bgcolor="#90ee90">
-                                <td>Tanggal</td>
-                                <td>Tindakan</td>
-                                <%--<td>Dokter</td>--%>
-                                <%--<td>Perawat</td>--%>
-                                <td align="center">Tarif (Rp.)</td>
-                                <td align="center">Qty</td>
-                                <td align="center">Total (Rp.)</td>
-                                <td align="center">Action</td>
-                                <input type="hidden" id="tin_id_dokter">
-                            </tr>
-                            </thead>
-                            <tbody id="body_tindakan">
-                            </tbody>
-                        </table>
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                <tr bgcolor="#90ee90">
+                                    <td>Tanggal</td>
+                                    <td>Tindakan</td>
+                                        <%--<td>Dokter</td>--%>
+                                        <%--<td>Perawat</td>--%>
+                                    <td align="center">Tarif (Rp.)</td>
+                                    <td align="center">Qty</td>
+                                    <td align="center">Total (Rp.)</td>
+                                    <td align="center">Action</td>
+                                </tr>
+                                </thead>
+                                <tbody id="body_tindakan">
+                                </tbody>
+                            </table>
+                        </s:if>
+                        <s:else>
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                <tr bgcolor="#90ee90">
+                                    <td>Tanggal</td>
+                                    <td>Tindakan</td>
+                                    <td align="center" width="10%">Action</td>
+                                </tr>
+                                </thead>
+                                <tbody id="body_tindakan_paket">
+                                </tbody>
+                            </table>
+                        </s:else>
                     </div>
                     <div class="box-header with-border" id="pos_lab">
                     </div>
@@ -642,9 +717,11 @@
                         <h3 class="box-title"><i class="fa fa-hospital-o"></i> Penunjang Medis</h3>
                     </div>
                     <div class="box-body">
+                        <s:if test='headerDetailCheckup.idJenisPeriksaPasien != "paket_individu" && headerDetailCheckup.idJenisPeriksaPasien != "paket_perusahaan"'>
                         <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
                                 onclick="showModal(4)"><i class="fa fa-plus"></i> Penunjang Medis
                         </button>
+                        </s:if>
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr bgcolor="#90ee90">
@@ -652,7 +729,7 @@
                                 <td>Pemeriksaan</td>
                                 <td>Status</td>
                                 <td>Jenis Lab</td>
-                                <td align="center">Action</td>
+                                <td align="center" width="10%">Action</td>
                             </tr>
                             </thead>
                             <tbody id="body_lab">
@@ -1853,6 +1930,7 @@
     var idPasien = $('#id_pasien').val();
     var noCheckup = $('#no_checkup').val();
     var jenisPeriksa = $('#jenis_periksa').text();
+    var jenisPeriksaPasien = $('#jenis_pasien').val();
 
     $(document).ready(function () {
         $('#rawat_jalan').addClass('active');
@@ -2038,100 +2116,103 @@
     }
 
     function hitungCoverBiaya() {
-        CheckupDetailAction.getBiayaAsuransi(idDetailCheckup, function (response) {
-            console.log(response);
-            if (response.coverBiaya != null && response.coverBiaya != '') {
-                $('#status_asuransi').show();
-                if (response.coverBiaya != null) {
+        var jenis = $('#jenis_pasien').val();
+        if("asuransi" == jenis){
+            CheckupDetailAction.getBiayaAsuransi(idDetailCheckup, function (response) {
+                console.log(response);
+                if (response.coverBiaya != null && response.coverBiaya != '') {
+                    $('#status_asuransi').show();
+                    if (response.coverBiaya != null) {
 
-                    var coverBiaya = response.coverBiaya;
-                    var biayaTindakan = response.tarifTindakan;
+                        var coverBiaya = response.coverBiaya;
+                        var biayaTindakan = response.tarifTindakan;
 
-                    var persen = "";
-                    if (coverBiaya != '' && biayaTindakan) {
-                        persen = ((parseInt(biayaTindakan) / parseInt(coverBiaya)) * 100).toFixed(2);
-                    } else {
-                        persen = 0;
+                        var persen = "";
+                        if (coverBiaya != '' && biayaTindakan) {
+                            persen = ((parseInt(biayaTindakan) / parseInt(coverBiaya)) * 100).toFixed(2);
+                        } else {
+                            persen = 0;
+                        }
+
+                        var barClass = "";
+                        var barLabel = "";
+
+                        if (parseInt(persen) > 70) {
+                            barClass = 'progress-bar-danger';
+                        } else if (parseInt(persen) > 50) {
+                            barClass = 'progress-bar-warning';
+                        } else {
+                            barClass = 'progress-bar-success';
+                        }
+
+                        var barBpjs = '<div class="progress-bar progress-bar-primary" style="width: 100%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">' + "100%" + '</div>';
+
+                        var barTindakan = '<div class="progress-bar ' + barClass + '" style="width: ' + persen + '%" role="progressbar" aria-valuenow="' + persen + '" aria-valuemin="0" aria-valuemax="100">' + persen + "%" + '</div>';
+
+                        if (coverBiaya != '') {
+                            $('#sts_cover_biaya_asuransi').html(barBpjs);
+                            $('#b_asuransi').html(formatRupiah(coverBiaya) + " (100%)");
+                        }
+
+                        if (biayaTindakan != '') {
+                            $('#sts_biaya_tindakan_asuransi').html(barTindakan);
+                            $('#b_tindakan_asuransi').html(formatRupiah(biayaTindakan) + " (" + persen + "%)");
+                        }
                     }
-
-                    var barClass = "";
-                    var barLabel = "";
-
-                    if (parseInt(persen) > 70) {
-                        barClass = 'progress-bar-danger';
-                    } else if (parseInt(persen) > 50) {
-                        barClass = 'progress-bar-warning';
-                    } else {
-                        barClass = 'progress-bar-success';
-                    }
-
-                    var barBpjs = '<div class="progress-bar progress-bar-primary" style="width: 100%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">' + "100%" + '</div>';
-
-                    var barTindakan = '<div class="progress-bar ' + barClass + '" style="width: ' + persen + '%" role="progressbar" aria-valuenow="' + persen + '" aria-valuemin="0" aria-valuemax="100">' + persen + "%" + '</div>';
-
-                    if (coverBiaya != '') {
-                        $('#sts_cover_biaya_asuransi').html(barBpjs);
-                        $('#b_asuransi').html(formatRupiah(coverBiaya) + " (100%)");
-                    }
-
-                    if (biayaTindakan != '') {
-                        $('#sts_biaya_tindakan_asuransi').html(barTindakan);
-                        $('#b_tindakan_asuransi').html(formatRupiah(biayaTindakan) + " (" + persen + "%)");
-                    }
+                } else {
+                    $('#status_asuransi').hide();
                 }
-            } else {
-                $('#status_asuransi').hide();
-            }
-        });
+            });
+        }
     }
 
     function hitungStatusBiaya() {
-        CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, "", function (response) {
-            console.log(response);
-            if (response.idJenisPeriksaPasien == "bpjs") {
-                $('#status_bpjs').show();
-                if (response.tarifBpjs != null && response.tarifTindakan != null) {
+        var jenis = $('#jenis_pasien').val();
+        if("bpjs" == jenis){
+            CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, "RWJ", function (response) {
+                    $('#status_bpjs').show();
+                    if (response.tarifBpjs != null && response.tarifTindakan != null) {
 
-                    var coverBiaya = response.tarifBpjs;
-                    var biayaTindakan = response.tarifTindakan;
-                    $('#kode_cbg').text(response.kodeCbg);
+                        var coverBiaya = response.tarifBpjs;
+                        var biayaTindakan = response.tarifTindakan;
+                        $('#kode_cbg').text(response.kodeCbg);
 
-                    var persen = "";
-                    if (coverBiaya != '' && biayaTindakan) {
-                        persen = ((parseInt(biayaTindakan) / parseInt(coverBiaya)) * 100).toFixed(2);
-                    } else {
-                        persen = 0;
+                        var persen = "";
+                        if (coverBiaya != '' && biayaTindakan) {
+                            persen = ((parseInt(biayaTindakan) / parseInt(coverBiaya)) * 100).toFixed(2);
+                        } else {
+                            persen = 0;
+                        }
+
+                        var barClass = "";
+                        var barLabel = "";
+
+                        if (parseInt(persen) > 70) {
+                            barClass = 'progress-bar-danger';
+                        } else if (parseInt(persen) > 50) {
+                            barClass = 'progress-bar-warning';
+                        } else {
+                            barClass = 'progress-bar-success';
+                        }
+
+                        var barBpjs = '<div class="progress-bar progress-bar-primary" style="width: 100%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">' + "100.00%" + '</div>';
+
+                        var barTindakan = '<div class="progress-bar ' + barClass + '" style="width: ' + persen + '%" role="progressbar" aria-valuenow="' + persen + '" aria-valuemin="0" aria-valuemax="100">' + persen + "%" + '</div>';
+
+                        if (coverBiaya != '') {
+                            $('#sts_cover_biaya').html(barBpjs);
+                            $('#b_bpjs').html(formatRupiah(coverBiaya) + " (100%)");
+                        }
+
+                        if (biayaTindakan != '') {
+                            $('#sts_biaya_tindakan').html(barTindakan);
+                            $('#b_tindakan').html(formatRupiah(biayaTindakan) + " (" + persen + "%)");
+                        }
                     }
-
-                    var barClass = "";
-                    var barLabel = "";
-
-                    if (parseInt(persen) > 70) {
-                        barClass = 'progress-bar-danger';
-                    } else if (parseInt(persen) > 50) {
-                        barClass = 'progress-bar-warning';
-                    } else {
-                        barClass = 'progress-bar-success';
-                    }
-
-                    var barBpjs = '<div class="progress-bar progress-bar-primary" style="width: 100%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">' + "100.00%" + '</div>';
-
-                    var barTindakan = '<div class="progress-bar ' + barClass + '" style="width: ' + persen + '%" role="progressbar" aria-valuenow="' + persen + '" aria-valuemin="0" aria-valuemax="100">' + persen + "%" + '</div>';
-
-                    if (coverBiaya != '') {
-                        $('#sts_cover_biaya').html(barBpjs);
-                        $('#b_bpjs').html(formatRupiah(coverBiaya) + " (100%)");
-                    }
-
-                    if (biayaTindakan != '') {
-                        $('#sts_biaya_tindakan').html(barTindakan);
-                        $('#b_tindakan').html(formatRupiah(biayaTindakan) + " (" + persen + "%)");
-                    }
-                }
-            } else {
-                $('#status_bpjs').hide();
-            }
-        });
+            });
+        }else{
+            $('#status_bpjs').hide();
+        }
     }
 
     function saveAlergi(id) {
@@ -2448,7 +2529,7 @@
             $('#save_laka').hide();
             $('#load_laka').show();
             dwr.engine.setAsync(true);
-            CheckupDetailAction.saveUpdateDataAsuransi(noCheckup, noPolisi, tglKejadian, dataURL, function (response) {
+            CheckupDetailAction.saveUpdateDataAsuransi(idDetailCheckup, noPolisi, tglKejadian, dataURL, function (response) {
                 if(response.status == "success"){
                     $('#save_laka').show();
                     $('#load_laka').hide();
@@ -2678,17 +2759,6 @@
 
     }
 
-    function formatRupiah(angka) {
-        if(angka != '' && angka != null && angka > 0){
-            var reverse = angka.toString().split('').reverse().join(''),
-                ribuan = reverse.match(/\d{1,3}/g);
-            ribuan = ribuan.join('.').split('').reverse().join('');
-            return ribuan;
-        }else{
-            return 0;
-        }
-    }
-
 
     function saveDokter(id) {
         var idDokter = $('#dok_id_dokter').val();
@@ -2859,6 +2929,7 @@
     function listTindakan() {
 
         var table = "";
+        var table2 = "";
         var data = [];
         var trfTtl = 0;
         TindakanRawatAction.listTindakanRawat(idDetailCheckup, function (response) {
@@ -2898,16 +2969,26 @@
                             "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editTindakan(\'' + item.idTindakanRawat + '\',\'' + item.idTindakan + '\',\'' + item.idKategoriTindakan + '\',\'' + item.idPerawat + '\',\'' + item.qty + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' + "</td>" +
                             "</tr>";
 
+                    table2 += "<tr>" +
+                        "<td>" + dateFormat + "</td>" +
+                        "<td>" + item.namaTindakan + "</td>" +
+                        "<td align='center'></td>" +
+                        "</tr>";
+
                 });
-                table = table + "<tr>" +
+
+                if("paket_perusahaan" == jenisPeriksaPasien || "paket_individu" == jenisPeriksaPasien){
+                    $('#body_tindakan_paket').html(table2);
+                }else{
+                    table = table + "<tr>" +
                         "<td colspan='4'>Total</td>" +
                         "<td align='right'>" + formatRupiah(trfTtl) + "</td>" +
                         "<td></td>" +
                         "</tr>";
+                    $('#body_tindakan').html(table);
+                }
             }
         });
-
-        $('#body_tindakan').html(table);
 
     }
 
@@ -3135,13 +3216,25 @@
                     if (item.labName != null) {
                         lab = item.labName;
                     }
-                    table += "<tr>" +
+
+                    if("paket_perusahaan" == jenisPeriksaPasien || "paket_individu" == jenisPeriksaPasien){
+                        table += "<tr>" +
+                            "<td>" + dateFormat + "</td>" +
+                            "<td>" + lab + "</td>" +
+                            "<td>" + status + "</td>" +
+                            "<td>" + item.kategoriLabName + "</td>" +
+                            "<td align='center'></td>" +
+                            "</tr>";
+                    }else{
+                        table += "<tr>" +
                             "<td>" + dateFormat + "</td>" +
                             "<td>" + lab + "</td>" +
                             "<td>" + status + "</td>" +
                             "<td>" + item.kategoriLabName + "</td>" +
                             "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editLab(\'' + item.idPeriksaLab + '\',\'' + item.idLab + '\',\'' + item.idKategoriLab + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' + "</td>" +
-                            "</tr>"
+                            "</tr>";
+                    }
+
                 });
             }
         });

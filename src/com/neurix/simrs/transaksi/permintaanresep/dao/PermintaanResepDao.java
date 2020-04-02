@@ -79,7 +79,7 @@ public class PermintaanResepDao extends GenericDao<ImSimrsPermintaanResepEntity,
                 "\tWHERE flag_kronis_diambil "+sqlDiambil+"\n"+
                 "\tAND hari_kronis is not null\n" +
                 "\tAND hc.id_pasien = :idPasien\n" +
-                "\tAND hc.id_jenis_periksa_pasien = 'bpjs'\n" +
+                "\tAND dc.id_jenis_periksa_pasien = 'bpjs'\n" +
                 "\tAND dc.status_periksa = '3'\n" +
                 "\tGROUP BY\n" +
                 "\thc.id_pasien,\n" +

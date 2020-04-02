@@ -9,6 +9,7 @@ import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -211,5 +212,82 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
         Iterator<BigInteger> iter=query.list().iterator();
         String sId = String.format("%08d", iter.next());
         return sId;
+    }
+
+    public PeriksaLab getTotalTarif(String idLab, String idPeriksa){
+        PeriksaLab periksaLab = new PeriksaLab();
+
+        if(!"".equalsIgnoreCase(idLab) && idLab != null && !"".equalsIgnoreCase(idPeriksa) && idPeriksa != null){
+            String SQLCEK = "SELECT \n" +
+                    "b.id_kategori_lab, \n" +
+                    "b.nama_kategori, \n" +
+                    "a.id_lab \n" +
+                    "FROM im_simrs_lab a\n" +
+                    "INNER JOIN im_simrs_kategori_lab b ON a.id_kategori_lab = b.id_kategori_lab\n" +
+                    "WHERE a.id_lab = :id";
+            List<Object[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQLCEK)
+                    .setParameter("id", idLab)
+                    .list();
+
+            if(result.size() > 0){
+                Object[] objLab = result.get(0);
+                String namaKategori = objLab[1].toString();
+                if(namaKategori != null && !"".equalsIgnoreCase(namaKategori)){
+                    periksaLab.setKategoriLabName(namaKategori.toLowerCase());
+
+                    if("Radiologi".equalsIgnoreCase(namaKategori)){
+                        String SQL = "SELECT \n" +
+                                "a.id_periksa_lab,  \n" +
+                                "SUM(c.tarif) as total,\n" +
+                                "d.nama_lab \n" +
+                                "FROM it_simrs_periksa_lab a\n" +
+                                "INNER JOIN it_simrs_periksa_radiologi b ON a.id_periksa_lab = b.id_periksa_lab\n" +
+                                "INNER JOIN im_simrs_lab_detail c ON b.id_lab_detail = c.id_lab_detail\n" +
+                                "INNER JOIN im_simrs_lab d ON a.id_lab = d.id_lab\n" +
+                                "WHERE a.id_periksa_lab = :idPeriksa\n" +
+                                "GROUP BY a.id_periksa_lab, d.nama_lab";
+
+                        List<Object[]> results = new ArrayList<>();
+                        results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                                .setParameter("idPeriksa", idPeriksa)
+                                .list();
+
+                        if(results.size() > 0){
+                            Object[] objects = results.get(0);
+                            periksaLab.setIdPeriksaLab(objects[0] == null ? "" : objects[0].toString());
+                            periksaLab.setTarif(objects[1] == null ? new BigDecimal(String.valueOf("0")) : new BigDecimal(objects[1].toString()));
+                            periksaLab.setLabName(objects[2] == null ? "" : objects[2].toString());
+                        }
+
+                    }else{
+                        String SQL = "SELECT \n" +
+                                "a.id_periksa_lab,  \n" +
+                                "SUM(c.tarif) as total, \n" +
+                                "d.nama_lab \n" +
+                                "FROM it_simrs_periksa_lab a\n" +
+                                "INNER JOIN it_simrs_periksa_lab_detail b ON a.id_periksa_lab = b.id_periksa_lab\n" +
+                                "INNER JOIN im_simrs_lab_detail c ON b.id_lab_detail = c.id_lab_detail\n" +
+                                "INNER JOIN im_simrs_lab d ON a.id_lab = d.id_lab\n" +
+                                "WHERE a.id_periksa_lab = :idPeriksa\n" +
+                                "GROUP BY a.id_periksa_lab, d.nama_lab\n";
+
+                        List<Object[]> results = new ArrayList<>();
+                        results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                                .setParameter("idPeriksa", idPeriksa)
+                                .list();
+
+                        if(results.size() > 0){
+                            Object[] objects = results.get(0);
+                            periksaLab.setIdPeriksaLab(objects[0] == null ? "" : objects[0].toString());
+                            periksaLab.setTarif(objects[1] == null ? new BigDecimal(String.valueOf("0")) : new BigDecimal(objects[1].toString()));
+                            periksaLab.setLabName(objects[2] == null ? "" : objects[2].toString());
+                        }
+                    }
+                }
+            }
+        }
+
+        return periksaLab;
     }
 }

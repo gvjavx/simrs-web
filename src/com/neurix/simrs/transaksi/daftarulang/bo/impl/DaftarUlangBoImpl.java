@@ -85,16 +85,6 @@ public class DaftarUlangBoImpl implements DaftarUlangBo {
             if(chekupEntity != null){
                 try {
 
-                    chekupEntity.setNoRujukan(bean.getNoRujukan());
-                    chekupEntity.setNoPpkRujukan(bean.getNoPpk());
-                    chekupEntity.setTglRujukan(Date.valueOf(bean.getTglRujukan()));
-                    chekupEntity.setUrlDocRujuk(bean.getSuratRujukan());
-                    chekupEntity.setIdPelayananBpjs(bean.getIdPelayanan());
-                    chekupEntity.setKelasPasien(bean.getIdKelas());
-                    chekupEntity.setRujuk(bean.getPerujuk());
-                    chekupEntity.setKetRujukan(bean.getNamaPerujuk());
-                    chekupEntity.setIdJenisPeriksaPasien(bean.getIdJenisPeriksaPasien());
-                    chekupEntity.setJenisTransaksi(bean.getIdJenisPeriksaPasien());
                     chekupEntity.setLastUpdate(bean.getLastUpdate());
                     chekupEntity.setLastUpdateWho(bean.getLastUpdateWho());
 
@@ -122,6 +112,24 @@ public class DaftarUlangBoImpl implements DaftarUlangBo {
 
         try {
             detail = checkupDetailDao.getById("idDetailCheckup", bean.getIdDetailCheckup());
+
+            if(detail != null){
+
+                detail.setKeteranganSelesai("Sudah Lanjut Biaya");
+                detail.setLastUpdateWho(bean.getLastUpdateWho());
+                detail.setLastUpdate(bean.getLastUpdate());
+
+                try {
+                    checkupDetailDao.updateAndSave(detail);
+                    response.setStatus("success");
+                    response.setMessage("Berhasil");
+                }catch (HibernateException e){
+                    response.setStatus("error");
+                    response.setMessage("Error When Saving data detail checkup " + e.getMessage());
+                    logger.error("found error "+e.getMessage());
+                }
+            }
+
         }catch (HibernateException e){
             logger.error("Found Error "+e.getMessage());
             response.setStatus("error");
@@ -144,12 +152,22 @@ public class DaftarUlangBoImpl implements DaftarUlangBo {
         detailCheckupEntity.setLastUpdate(bean.getLastUpdate());
         detailCheckupEntity.setLastUpdateWho(bean.getLastUpdateWho());
         detailCheckupEntity.setTglAntrian(bean.getCreatedDate());
+        detailCheckupEntity.setIdJenisPeriksaPasien(bean.getIdJenisPeriksaPasien());
+        detailCheckupEntity.setBranchId(CommonUtil.userBranchLogin());
 
         if("umum".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
             detailCheckupEntity.setMetodePembayaran(bean.getMetodePembayaran());
         }
 
         if("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
+            detailCheckupEntity.setNoRujukan(bean.getNoRujukan());
+            detailCheckupEntity.setNoPpkRujukan(bean.getNoPpk());
+            detailCheckupEntity.setTglRujukan(Date.valueOf(bean.getTglRujukan()));
+            detailCheckupEntity.setUrlDocRujuk(bean.getSuratRujukan());
+            detailCheckupEntity.setIdPelayananBpjs(bean.getIdPelayanan());
+            detailCheckupEntity.setKelasPasien(bean.getIdKelas());
+            detailCheckupEntity.setRujuk(bean.getPerujuk());
+            detailCheckupEntity.setKetRujukan(bean.getNamaPerujuk());
             detailCheckupEntity.setNoSep(bean.getNoSep());
             detailCheckupEntity.setTarifBpjs(bean.getTarifBpjs());
             detailCheckupEntity.setKodeCbg(bean.getKodeCbg());
@@ -319,7 +337,7 @@ public class DaftarUlangBoImpl implements DaftarUlangBo {
             }
         }
 
-        if (!"bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
+        if ("umum".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
             // save uang muka
             ItSimrsUangMukaPendaftaranEntity uangMukaPendaftaranEntity = new ItSimrsUangMukaPendaftaranEntity();
             if (bean.getBranchId() != null && !bean.getBranchId().equalsIgnoreCase("")) {

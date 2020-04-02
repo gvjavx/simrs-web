@@ -44,13 +44,94 @@ public class ItSimrsHeaderDetailCheckupEntity implements Serializable{
     private String noJurnal;
 
     private String kodeCbg;
-
     private String isKronis;
 
     private BigDecimal coverBiaya;
     private String idAsuransi;
     private String idPaket;
     private String noKartuAsuransi;
+
+    private String idJenisPeriksaPasien;
+    private String rujuk;
+    private String urlDocRujuk;
+    private String ketRujukan;
+    private String kelasPasien;
+    private String idPelayananBpjs;
+    private String noRujukan;
+    private String noPpkRujukan;
+    private Date tglRujukan;
+
+    public String getIdJenisPeriksaPasien() {
+        return idJenisPeriksaPasien;
+    }
+
+    public void setIdJenisPeriksaPasien(String idJenisPeriksaPasien) {
+        this.idJenisPeriksaPasien = idJenisPeriksaPasien;
+    }
+
+    public String getRujuk() {
+        return rujuk;
+    }
+
+    public void setRujuk(String rujuk) {
+        this.rujuk = rujuk;
+    }
+
+    public String getUrlDocRujuk() {
+        return urlDocRujuk;
+    }
+
+    public void setUrlDocRujuk(String urlDocRujuk) {
+        this.urlDocRujuk = urlDocRujuk;
+    }
+
+    public String getKetRujukan() {
+        return ketRujukan;
+    }
+
+    public void setKetRujukan(String ketRujukan) {
+        this.ketRujukan = ketRujukan;
+    }
+
+    public String getKelasPasien() {
+        return kelasPasien;
+    }
+
+    public void setKelasPasien(String kelasPasien) {
+        this.kelasPasien = kelasPasien;
+    }
+
+    public String getIdPelayananBpjs() {
+        return idPelayananBpjs;
+    }
+
+    public void setIdPelayananBpjs(String idPelayananBpjs) {
+        this.idPelayananBpjs = idPelayananBpjs;
+    }
+
+    public String getNoRujukan() {
+        return noRujukan;
+    }
+
+    public void setNoRujukan(String noRujukan) {
+        this.noRujukan = noRujukan;
+    }
+
+    public String getNoPpkRujukan() {
+        return noPpkRujukan;
+    }
+
+    public void setNoPpkRujukan(String noPpkRujukan) {
+        this.noPpkRujukan = noPpkRujukan;
+    }
+
+    public Date getTglRujukan() {
+        return tglRujukan;
+    }
+
+    public void setTglRujukan(Date tglRujukan) {
+        this.tglRujukan = tglRujukan;
+    }
 
     public String getNoKartuAsuransi() {
         return noKartuAsuransi;

@@ -506,6 +506,17 @@ public class PeriksaLabBoImpl implements PeriksaLabBo{
         return response;
     }
 
+    @Override
+    public PeriksaLab getTarifTotalPemeriksaan(String idLab, String idPeriksaan) throws GeneralBOException {
+        PeriksaLab periksaLab = new PeriksaLab();
+        try {
+            periksaLab = periksaLabDao.getTotalTarif(idLab, idPeriksaan);
+        }catch (HibernateException e){
+            logger.error("Found Error "+e.getMessage());
+        }
+        return periksaLab;
+    }
+
     private List<ItSimrsPeriksaLabDetailEntity> getListEntityPerikasDetailLab(PeriksaLabDetail bean) throws GeneralBOException{
         logger.info("[PeriksaLabBoImpl.getListEntityPerikasDetailLab] START >>>>>>>>> ");
         List<ItSimrsPeriksaLabDetailEntity> periksaLabDetailEntities = new ArrayList<>();
