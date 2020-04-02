@@ -568,6 +568,9 @@ public class StatusPeriksaAction extends BaseTransactionAction {
                         headerDetailCheckup.setLastUpdate(time);
                         headerDetailCheckup.setLastUpdateWho(userLogin);
                         headerDetailCheckup.setNoSep(genNoSep);
+                        headerDetailCheckup.setCreatedWho(userLogin);
+                        headerDetailCheckup.setCreatedDate(time);
+                        headerDetailCheckup.setBranchId(branchId);
 
                         try {
                             finalResponse = statusPeriksaBo.saveEditPerubahanStatus(headerDetailCheckup);

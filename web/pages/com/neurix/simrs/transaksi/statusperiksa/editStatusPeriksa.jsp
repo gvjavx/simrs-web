@@ -361,7 +361,8 @@
                                             <div class="input-group-addon">
                                                 Rp.
                                             </div>
-                                            <input class="form-control" id="uang_muka">
+                                            <input type="hidden" class="form-control" id="uang_muka">
+                                            <input class="form-control" id="nominal_uang_muka">
                                         </div>
                                     </div>
                                 </div>
@@ -482,6 +483,20 @@
                     $('#val_cover_biaya').val(valCover);
                 }else{
                     $('#val_cover_biaya').val('');
+                }
+            });
+        }
+
+        var uangMuka = document.getElementById('nominal_uang_muka');
+        if(uangMuka != null && uangMuka != ''){
+            uangMuka.addEventListener('keyup', function (e) {
+                uangMuka.value = formatRupiah2(this.value);
+                var valCover = uangMuka.value.replace(/[.]/g, '');
+
+                if(valCover != ''){
+                    $('#uang_muka').val(valCover);
+                }else{
+                    $('#uang_muka').val('');
                 }
             });
         }

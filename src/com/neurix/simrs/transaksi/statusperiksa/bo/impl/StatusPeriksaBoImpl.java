@@ -310,8 +310,8 @@ public class StatusPeriksaBoImpl implements StatusPeriksaBo {
                                     uangMukaPendaftaranEntity.setAction("C");
                                     uangMukaPendaftaranEntity.setCreatedDate(bean.getCreatedDate());
                                     uangMukaPendaftaranEntity.setCreatedWho(bean.getCreatedWho());
-                                    uangMukaPendaftaranEntity.setLastUpdate(bean.getCreatedDate());
-                                    uangMukaPendaftaranEntity.setLastUpdateWho(bean.getCreatedWho());
+                                    uangMukaPendaftaranEntity.setLastUpdate(bean.getLastUpdate());
+                                    uangMukaPendaftaranEntity.setLastUpdateWho(bean.getLastUpdateWho());
 
                                     if (bean.getJumlahUangMuka() == null || bean.getJumlahUangMuka().compareTo(new BigInteger(String.valueOf(0))) == 0) {
                                         uangMukaPendaftaranEntity.setJumlah(new BigInteger(String.valueOf(0)));

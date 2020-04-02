@@ -567,6 +567,7 @@ public class DaftarUlangAction extends BaseTransactionAction {
                         headerDetailCheckup.setCreatedWho(userLogin);
                         headerDetailCheckup.setLastUpdate(time);
                         headerDetailCheckup.setLastUpdateWho(userLogin);
+                        headerDetailCheckup.setBranchId(branchId);
 
                         try {
                             finalResponse = daftarUlangBo.saveDaftarUlang(headerDetailCheckup);
