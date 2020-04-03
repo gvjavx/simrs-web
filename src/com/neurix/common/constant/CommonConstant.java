@@ -49,12 +49,14 @@ public class CommonConstant {
     public final static String RESOURCE_PATH_DEFAULT_MAP = "/pages/upload/map/";
     public final static String RESOURCE_PATH_SAVED_UPLOAD_PAYMENT_DIRECTORY = "C:\\xampp\\tomcat\\webapps\\";
 
+    public final static String RESOURCE_PATH_USER_UPLOAD_IJAZAH = "/pages/upload/image/ijazah/";
+
     //sodiq, 18 Nov 2019, Upload KTP pasien
 //    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = "C:\\Users\\user\\Pictures";
     public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = "C:\\Users\\pc001\\Pictures";
-    public final static String RESOURCE_PATH_IMG_ASSET = "C:\\apache-tomcat-8.5.40\\webapps";
+//    public final static String RESOURCE_PATH_IMG_ASSET = "C:\\apache-tomcat-8.5.40\\webapps";
 //    public final static String RESOURCE_PATH_IMG_ASSET = "/opt/tomcat/webapps";
-//    public final static String RESOURCE_PATH_IMG_ASSET = "C:\\tomcat-7-64x\\webapps";
+    public final static String RESOURCE_PATH_IMG_ASSET = "C:\\tomcat-7-64x\\webapps";
 
 
 //    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY="C:\\Users\\Toshiba\\Pictures";
@@ -110,11 +112,11 @@ public class CommonConstant {
 //    public final static String URL_IMAGE_LOGO_REPORT = "C:\\tomcat-7-64x\\webapps\\hris\\pages\\images\\LOGO-RW.png";
 //        public final static String URL_IMAGE_LOGO_REPORT = "/opt/tomcat/webapps/simrs/pages/images/LOGO-RW.png";
 
-//    public final static String URL_IMAGE_LOGO_REPORT = "C:\\tomcat-7-64x\\webapps\\simrs\\pages\\images\\LOGO-RW.png";
-//    public final static String URL_LOGO_REPORT = "C:\\tomcat-7-64x\\webapps\\simrs\\pages\\images\\";
+    public final static String URL_IMAGE_LOGO_REPORT = "C:\\tomcat-7-64x\\webapps\\simrs\\pages\\images\\logo-nmu.png";
+    public final static String URL_LOGO_REPORT = "C:\\tomcat-7-64x\\webapps\\simrs\\pages\\images\\";
 
-    public final static String URL_IMAGE_LOGO_REPORT = "C:\\apache-tomcat-8.5.40\\webapps\\simrs\\pages\\images\\LOGO-RW.png";
-    public final static String URL_LOGO_REPORT = "C:\\apache-tomcat-8.5.40\\webapps\\simrs\\pages\\images\\";
+//    public final static String URL_IMAGE_LOGO_REPORT = "C:\\apache-tomcat-8.5.40\\webapps\\simrs\\pages\\images\\LOGO-RW.png";
+//    public final static String URL_LOGO_REPORT = "C:\\apache-tomcat-8.5.40\\webapps\\simrs\\pages\\images\\";
 
 //    public final static String URL_IMAGE_LOGO_REPORT = "/opt/tomcat/webapps/simrs/pages/images/LOGO-RW.png";
 //    public final static String URL_LOGO_REPORT = "/opt/tomcat/webapps/simrs/pages/images/";

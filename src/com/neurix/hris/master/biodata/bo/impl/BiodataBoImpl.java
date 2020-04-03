@@ -424,100 +424,213 @@ public class BiodataBoImpl implements BiodataBo {
 //        String condition = null;
 
         if (bean!=null) {
-            String historyId = "";
-            String personalId = bean.getNip();
+            String cekTipePgw = cekStatusPgw(bean.getNip(), bean.getTipePegawai());
+            if (cekTipePgw.equalsIgnoreCase("true")){
+                if ("K".equalsIgnoreCase(bean.getStatusKeluarga())){
+                    String cekStatus = cekStatusKeluarga(bean.getNip());
+                    if (cekStatus.equalsIgnoreCase("Exist")){
+                        String historyId = "";
+                        String personalId = bean.getNip();
 
-            ImBiodataEntity imBiodataEntity = null;
-            List<ItPersonilPositionEntity> itPersonilPositionEntity = null;
-            ImBiodataHistoryEntity imBiodataHistoryEntity = new ImBiodataHistoryEntity();
-            try {
-                // Get data from database by ID
-                imBiodataEntity = biodataDao.getById("nip", personalId);
-                itPersonilPositionEntity = personilPositionDao.getListNip(bean.getNip());
-            } catch (HibernateException e) {
-                logger.error("[BiodataBoImpl.saveEdit] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when searching data Biodata by Kode Biodata, please inform to your admin...," + e.getMessage());
-            }
+                        ImBiodataEntity imBiodataEntity = null;
+                        List<ItPersonilPositionEntity> itPersonilPositionEntity = null;
+                        ImBiodataHistoryEntity imBiodataHistoryEntity = new ImBiodataHistoryEntity();
+                        try {
+                            // Get data from database by ID
+                            imBiodataEntity = biodataDao.getById("nip", personalId);
+                            itPersonilPositionEntity = personilPositionDao.getListNip(bean.getNip());
+                        } catch (HibernateException e) {
+                            logger.error("[BiodataBoImpl.saveEdit] Error, " + e.getMessage());
+                            throw new GeneralBOException("Found problem when searching data Biodata by Kode Biodata, please inform to your admin...," + e.getMessage());
+                        }
 
-            if (imBiodataEntity != null) {
-                imBiodataEntity.setNip(bean.getNip());
-                imBiodataEntity.setNamaPegawai(bean.getNamaPegawai());
-                imBiodataEntity.setGender(bean.getGender());
-                imBiodataEntity.setAgama(bean.getAgama());
-                imBiodataEntity.setStatusKeluarga(bean.getStatusKeluarga());
-                imBiodataEntity.setJumlahAnak(bean.getJumlahAnak());
-                imBiodataEntity.setTempatLahir(bean.getTempatLahir());
-                imBiodataEntity.setTanggalLahir(bean.getTanggalLahir());
-                imBiodataEntity.setTanggalPensiun(bean.getTanggalPensiun());
-                imBiodataEntity.setTanggalMasuk(bean.getTanggalMasuk());
-                imBiodataEntity.setTanggalAktif(bean.getTanggalAktif());
-                imBiodataEntity.setBranchId(bean.getBranch());
-                imBiodataEntity.setPosisiId(bean.getPositionId());
-                imBiodataEntity.setNpwp(bean.getNpwp());
-                imBiodataEntity.setGelarDepan(bean.getGelarDepan());
-                imBiodataEntity.setGelarBelakang(bean.getGelarBelakang());
-                imBiodataEntity.setNoKtp(bean.getNoKtp());
-                imBiodataEntity.setNoTelp(bean.getNoTelp());
-                imBiodataEntity.setAlamat(bean.getAlamat());
-                imBiodataEntity.setProvinsiId(bean.getProvinsiId());
-                imBiodataEntity.setKotaId(bean.getKabupatenId());
-                imBiodataEntity.setKecamatanId(bean.getKecamatanId());
-                imBiodataEntity.setDesaId(bean.getDesaId());
-                imBiodataEntity.setRtRw(bean.getRtRw());
-                imBiodataEntity.setTipePegawai(bean.getTipePegawai());
-                imBiodataEntity.setStrukturGaji(bean.getStrukturGaji());
+                        if (imBiodataEntity != null) {
+                            imBiodataEntity.setNip(bean.getNip());
+                            imBiodataEntity.setNamaPegawai(bean.getNamaPegawai());
+                            imBiodataEntity.setGender(bean.getGender());
+                            imBiodataEntity.setAgama(bean.getAgama());
+                            imBiodataEntity.setStatusKeluarga(bean.getStatusKeluarga());
+                            imBiodataEntity.setJumlahAnak(bean.getJumlahAnak());
+                            imBiodataEntity.setTempatLahir(bean.getTempatLahir());
+                            imBiodataEntity.setTanggalLahir(bean.getTanggalLahir());
+                            imBiodataEntity.setTanggalPensiun(bean.getTanggalPensiun());
+                            imBiodataEntity.setTanggalMasuk(bean.getTanggalMasuk());
+                            imBiodataEntity.setTanggalAktif(bean.getTanggalAktif());
+                            imBiodataEntity.setBranchId(bean.getBranch());
+                            imBiodataEntity.setPosisiId(bean.getPositionId());
+                            imBiodataEntity.setNpwp(bean.getNpwp());
+                            imBiodataEntity.setGelarDepan(bean.getGelarDepan());
+                            imBiodataEntity.setGelarBelakang(bean.getGelarBelakang());
+                            imBiodataEntity.setNoKtp(bean.getNoKtp());
+                            imBiodataEntity.setNoTelp(bean.getNoTelp());
+                            imBiodataEntity.setAlamat(bean.getAlamat());
+                            imBiodataEntity.setProvinsiId(bean.getProvinsiId());
+                            imBiodataEntity.setKotaId(bean.getKabupatenId());
+                            imBiodataEntity.setKecamatanId(bean.getKecamatanId());
+                            imBiodataEntity.setDesaId(bean.getDesaId());
+                            imBiodataEntity.setRtRw(bean.getRtRw());
+                            imBiodataEntity.setTipePegawai(bean.getTipePegawai());
+                            imBiodataEntity.setStrukturGaji(bean.getStrukturGaji());
 //                imBiodataEntity.setGaji(BigDecimal.valueOf(Double.parseDouble(bean.getGaji())));
-                imBiodataEntity.setStatusGiling(bean.getStatusGiling());
-                imBiodataEntity.setMt(bean.getMt());
-                imBiodataEntity.setGolongan(bean.getGolongan());
-                imBiodataEntity.setPin(bean.getPin());
-                imBiodataEntity.setStatusPegawai(bean.getStatusPegawai());
-                imBiodataEntity.setDanaPensiun(bean.getDanaPensiun());
-                imBiodataEntity.setNoAnggotaDapen(bean.getNoAnggotaDapen());
-                imBiodataEntity.setNoBpjsKetenagakerjaan(bean.getNoBpjsKetenagakerjaan());
-                imBiodataEntity.setNoBpjsKetenagakerjaanPensiun(bean.getNoBpjsKetenagakerjaanPensiun());
-                imBiodataEntity.setNoBpjsKesehatan(bean.getNoBpjsKesehatan());
-                imBiodataEntity.setNamaBank(bean.getNamaBank());
-                imBiodataEntity.setNoRekBank(bean.getNoRekBank());
-                imBiodataEntity.setCabangBank(bean.getCabangBank());
+                            imBiodataEntity.setStatusGiling(bean.getStatusGiling());
+                            imBiodataEntity.setMt(bean.getMt());
+                            imBiodataEntity.setGolongan(bean.getGolongan());
+                            imBiodataEntity.setPin(bean.getPin());
+                            imBiodataEntity.setStatusPegawai(bean.getStatusPegawai());
+                            imBiodataEntity.setDanaPensiun(bean.getDanaPensiun());
+                            imBiodataEntity.setNoAnggotaDapen(bean.getNoAnggotaDapen());
+                            imBiodataEntity.setNoBpjsKetenagakerjaan(bean.getNoBpjsKetenagakerjaan());
+                            imBiodataEntity.setNoBpjsKetenagakerjaanPensiun(bean.getNoBpjsKetenagakerjaanPensiun());
+                            imBiodataEntity.setNoBpjsKesehatan(bean.getNoBpjsKesehatan());
+                            imBiodataEntity.setNamaBank(bean.getNamaBank());
+                            imBiodataEntity.setNoRekBank(bean.getNoRekBank());
+                            imBiodataEntity.setCabangBank(bean.getCabangBank());
 
-                imBiodataEntity.setMasaKerjaGolongan(Integer.parseInt(bean.getStMasaKerjaGol()));
-                imBiodataEntity.setGolonganDapenId(bean.getGolonganDapenId());
+                            imBiodataEntity.setTanggalPraPensiun(bean.getTanggalPraPensiun());
 
-                if(bean.getFotoUpload() != null){
-                    imBiodataEntity.setFotoUpload(bean.getFotoUpload());
-                }
-                imBiodataEntity.setFlag(bean.getFlag());
-                imBiodataEntity.setAction(bean.getAction());
-                imBiodataEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                imBiodataEntity.setLastUpdate(bean.getLastUpdate());
+                            imBiodataEntity.setMasaKerjaGolongan(Integer.parseInt(bean.getStMasaKerjaGol()));
+                            imBiodataEntity.setGolonganDapenId(bean.getGolonganDapenId());
 
-                if(itPersonilPositionEntity != null){
-                    for(ItPersonilPositionEntity itPerson : itPersonilPositionEntity){
-                        itPerson.setBranchId(bean.getBranch());
-                        itPerson.setDivisiId(bean.getDivisi());
-                        itPerson.setPositionId(bean.getPositionId());
-                        itPerson.setProfesiId(bean.getProfesiId());
-                        itPerson.setPjs(bean.getPjs());
-                        itPerson.setFlag(bean.getFlag());
-                        itPerson.setAction(bean.getAction());
-                        itPerson.setLastUpdateWho(bean.getLastUpdateWho());
-                        itPerson.setLastUpdate(bean.getLastUpdate());
-                        personilPositionDao.updateAndSave(itPerson);
+                            if(bean.getFotoUpload() != null){
+                                imBiodataEntity.setFotoUpload(bean.getFotoUpload());
+                            }
+                            imBiodataEntity.setFlag(bean.getFlag());
+                            imBiodataEntity.setAction(bean.getAction());
+                            imBiodataEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                            imBiodataEntity.setLastUpdate(bean.getLastUpdate());
+
+                            if(itPersonilPositionEntity != null){
+                                for(ItPersonilPositionEntity itPerson : itPersonilPositionEntity){
+                                    itPerson.setBranchId(bean.getBranch());
+                                    itPerson.setDivisiId(bean.getDivisi());
+                                    itPerson.setPositionId(bean.getPositionId());
+                                    itPerson.setProfesiId(bean.getProfesiId());
+                                    itPerson.setPjs(bean.getPjs());
+                                    itPerson.setFlag(bean.getFlag());
+                                    itPerson.setAction(bean.getAction());
+                                    itPerson.setLastUpdateWho(bean.getLastUpdateWho());
+                                    itPerson.setLastUpdate(bean.getLastUpdate());
+                                    personilPositionDao.updateAndSave(itPerson);
+                                }
+                            }
+                            try {
+                                // Update into database
+                                biodataDao.updateAndSave(imBiodataEntity);
+
+                            } catch (HibernateException e) {
+                                logger.error("[BiodataBoImpl.saveEdit] Error, " + e.getMessage());
+                                throw new GeneralBOException("Found problem when saving update data Biodata, please info to your admin..." + e.getMessage());
+                            }
+
+                        } else {
+                            logger.error("[BiodataBoImpl.saveEdit] Error, not found data Biodata with request id, please check again your data ...");
+                            throw new GeneralBOException("Error, not found data Biodata with request id, please check again your data ...");
+
+                        }
+                    }else {
+                        throw new GeneralBOException("Peringatan!!!, Form Keluarga harus diisi dahulu apabila berstatus keluarga (harus memiliki suami atau istri");
+                    }
+                }else {
+                    String historyId = "";
+                    String personalId = bean.getNip();
+
+                    ImBiodataEntity imBiodataEntity = null;
+                    List<ItPersonilPositionEntity> itPersonilPositionEntity = null;
+                    ImBiodataHistoryEntity imBiodataHistoryEntity = new ImBiodataHistoryEntity();
+                    try {
+                        // Get data from database by ID
+                        imBiodataEntity = biodataDao.getById("nip", personalId);
+                        itPersonilPositionEntity = personilPositionDao.getListNip(bean.getNip());
+                    } catch (HibernateException e) {
+                        logger.error("[BiodataBoImpl.saveEdit] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when searching data Biodata by Kode Biodata, please inform to your admin...," + e.getMessage());
+                    }
+
+                    if (imBiodataEntity != null) {
+                        imBiodataEntity.setNip(bean.getNip());
+                        imBiodataEntity.setNamaPegawai(bean.getNamaPegawai());
+                        imBiodataEntity.setGender(bean.getGender());
+                        imBiodataEntity.setAgama(bean.getAgama());
+                        imBiodataEntity.setStatusKeluarga(bean.getStatusKeluarga());
+                        imBiodataEntity.setJumlahAnak(bean.getJumlahAnak());
+                        imBiodataEntity.setTempatLahir(bean.getTempatLahir());
+                        imBiodataEntity.setTanggalLahir(bean.getTanggalLahir());
+                        imBiodataEntity.setTanggalPensiun(bean.getTanggalPensiun());
+                        imBiodataEntity.setTanggalMasuk(bean.getTanggalMasuk());
+                        imBiodataEntity.setTanggalAktif(bean.getTanggalAktif());
+                        imBiodataEntity.setBranchId(bean.getBranch());
+                        imBiodataEntity.setPosisiId(bean.getPositionId());
+                        imBiodataEntity.setNpwp(bean.getNpwp());
+                        imBiodataEntity.setGelarDepan(bean.getGelarDepan());
+                        imBiodataEntity.setGelarBelakang(bean.getGelarBelakang());
+                        imBiodataEntity.setNoKtp(bean.getNoKtp());
+                        imBiodataEntity.setNoTelp(bean.getNoTelp());
+                        imBiodataEntity.setAlamat(bean.getAlamat());
+                        imBiodataEntity.setProvinsiId(bean.getProvinsiId());
+                        imBiodataEntity.setKotaId(bean.getKabupatenId());
+                        imBiodataEntity.setKecamatanId(bean.getKecamatanId());
+                        imBiodataEntity.setDesaId(bean.getDesaId());
+                        imBiodataEntity.setRtRw(bean.getRtRw());
+                        imBiodataEntity.setTipePegawai(bean.getTipePegawai());
+                        imBiodataEntity.setStrukturGaji(bean.getStrukturGaji());
+//                imBiodataEntity.setGaji(BigDecimal.valueOf(Double.parseDouble(bean.getGaji())));
+                        imBiodataEntity.setStatusGiling(bean.getStatusGiling());
+                        imBiodataEntity.setMt(bean.getMt());
+                        imBiodataEntity.setGolongan(bean.getGolongan());
+                        imBiodataEntity.setPin(bean.getPin());
+                        imBiodataEntity.setStatusPegawai(bean.getStatusPegawai());
+                        imBiodataEntity.setDanaPensiun(bean.getDanaPensiun());
+                        imBiodataEntity.setNoAnggotaDapen(bean.getNoAnggotaDapen());
+                        imBiodataEntity.setNoBpjsKetenagakerjaan(bean.getNoBpjsKetenagakerjaan());
+                        imBiodataEntity.setNoBpjsKetenagakerjaanPensiun(bean.getNoBpjsKetenagakerjaanPensiun());
+                        imBiodataEntity.setNoBpjsKesehatan(bean.getNoBpjsKesehatan());
+                        imBiodataEntity.setNamaBank(bean.getNamaBank());
+                        imBiodataEntity.setNoRekBank(bean.getNoRekBank());
+                        imBiodataEntity.setCabangBank(bean.getCabangBank());
+
+                        imBiodataEntity.setTanggalPraPensiun(bean.getTanggalPraPensiun());
+
+                        imBiodataEntity.setMasaKerjaGolongan(Integer.parseInt(bean.getStMasaKerjaGol()));
+                        imBiodataEntity.setGolonganDapenId(bean.getGolonganDapenId());
+
+                        if(bean.getFotoUpload() != null){
+                            imBiodataEntity.setFotoUpload(bean.getFotoUpload());
+                        }
+                        imBiodataEntity.setFlag(bean.getFlag());
+                        imBiodataEntity.setAction(bean.getAction());
+                        imBiodataEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                        imBiodataEntity.setLastUpdate(bean.getLastUpdate());
+
+                        if(itPersonilPositionEntity != null){
+                            for(ItPersonilPositionEntity itPerson : itPersonilPositionEntity){
+                                itPerson.setBranchId(bean.getBranch());
+                                itPerson.setDivisiId(bean.getDivisi());
+                                itPerson.setPositionId(bean.getPositionId());
+                                itPerson.setProfesiId(bean.getProfesiId());
+                                itPerson.setPjs(bean.getPjs());
+                                itPerson.setFlag(bean.getFlag());
+                                itPerson.setAction(bean.getAction());
+                                itPerson.setLastUpdateWho(bean.getLastUpdateWho());
+                                itPerson.setLastUpdate(bean.getLastUpdate());
+                                personilPositionDao.updateAndSave(itPerson);
+                            }
+                        }
+                        try {
+                            // Update into database
+                            biodataDao.updateAndSave(imBiodataEntity);
+
+                        } catch (HibernateException e) {
+                            logger.error("[BiodataBoImpl.saveEdit] Error, " + e.getMessage());
+                            throw new GeneralBOException("Found problem when saving update data Biodata, please info to your admin..." + e.getMessage());
+                        }
+
+                    } else {
+                        logger.error("[BiodataBoImpl.saveEdit] Error, not found data Biodata with request id, please check again your data ...");
+                        throw new GeneralBOException("Error, not found data Biodata with request id, please check again your data ...");
                     }
                 }
-                try {
-                    // Update into database
-                    biodataDao.updateAndSave(imBiodataEntity);
-
-                } catch (HibernateException e) {
-                    logger.error("[BiodataBoImpl.saveEdit] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving update data Biodata, please info to your admin..." + e.getMessage());
-                }
-            } else {
-                logger.error("[BiodataBoImpl.saveEdit] Error, not found data Biodata with request id, please check again your data ...");
-                throw new GeneralBOException("Error, not found data Biodata with request id, please check again your data ...");
-
+            }else {
+                throw new GeneralBOException("Peringatan!!!, Tipe Karyawan tetap tidak boleh diganti dengan Tipe Karyawan PKWT");
             }
         }
         logger.info("[BiodataBoImpl.saveEdit] end process <<<");
@@ -619,6 +732,8 @@ public class BiodataBoImpl implements BiodataBo {
                 imBiodataEntity.setMasaKerjaGolongan(Integer.parseInt(bean.getStMasaKerjaGol()));
                 imBiodataEntity.setGolonganDapenId(bean.getGolonganDapenId());
 
+                imBiodataEntity.setTanggalPraPensiun(bean.getTanggalPraPensiun());
+
                 //Tanggal Pensiun Lama
             /*DateTime tglLahir = new DateTime(bean.getTanggalLahir());
             tglLahir = tglLahir.plusYears(55);
@@ -643,6 +758,7 @@ public class BiodataBoImpl implements BiodataBo {
                 imBiodataEntity.setMt(bean.getMt());
                 imBiodataEntity.setPin(bean.getPin());
                 imBiodataEntity.setNamaBank(bean.getNamaBank());
+                imBiodataEntity.setCabangBank(bean.getCabangBank());
                 imBiodataEntity.setNoRekBank(bean.getNoRekBank());
 
                 imBiodataEntity.setFlag(bean.getFlag());
@@ -705,25 +821,87 @@ public class BiodataBoImpl implements BiodataBo {
 
                 HttpSession session = ServletActionContext.getRequest().getSession();
                 List<Keluarga> listKeluarga = (List<Keluarga>) session.getAttribute("listKeluarga");
-                if(listKeluarga != null){
-                    for(Keluarga keluarga: listKeluarga){
-                        ImKeluargaEntity imKeluargaEntity = new ImKeluargaEntity();
-                        imKeluargaEntity.setKeluargaId(keluargaDao.getNextKeluargaId());
-                        imKeluargaEntity.setNip(bean.getNip());
-                        imKeluargaEntity.setName(keluarga.getName());
-                        imKeluargaEntity.setStatusKeluarga(keluarga.getStatusKeluargaId());
+//                if(listKeluarga != null){
+//                    for(Keluarga keluarga: listKeluarga){
+//                        ImKeluargaEntity imKeluargaEntity = new ImKeluargaEntity();
+//                        imKeluargaEntity.setKeluargaId(keluargaDao.getNextKeluargaId());
+//                        imKeluargaEntity.setNip(bean.getNip());
+//                        imKeluargaEntity.setName(keluarga.getName());
+//                        imKeluargaEntity.setStatusKeluarga(keluarga.getStatusKeluargaId());
+//
+//                        imKeluargaEntity.setFlag(bean.getFlag());
+//                        imKeluargaEntity.setAction(bean.getAction());
+//                        imKeluargaEntity.setCreatedWho(bean.getCreatedWho());
+//                        imKeluargaEntity.setLastUpdateWho(bean.getLastUpdateWho());
+//                        imKeluargaEntity.setCreatedDate(bean.getCreatedDate());
+//                        imKeluargaEntity.setLastUpdate(bean.getLastUpdate());
+//                        try {
+//                            keluargaDao.addAndSave(imKeluargaEntity);
+//                        } catch (HibernateException e) {
+//                            logger.error("[BiodataBoImpl.saveAdd] Error, " + e.getMessage());
+//                            throw new GeneralBOException("Found problem when saving new data Biodata, please info to your admin..." + e.getMessage());
+//                        }
+//                    }
+//                }
+                int keluargaPgw = 0;
+                if ("K".equalsIgnoreCase(bean.getStatusKeluarga())){
+                    if(listKeluarga != null){
+                        for(Keluarga keluarga: listKeluarga){
+                            if ("I".equalsIgnoreCase(keluarga.getStatusKeluargaId()) || "S".equalsIgnoreCase(keluarga.getStatusKeluargaId())){
+                                for (Keluarga keluarga1 : listKeluarga){
+                                    ImKeluargaEntity imKeluargaEntity = new ImKeluargaEntity();
+                                    imKeluargaEntity.setKeluargaId(keluargaDao.getNextKeluargaId());
+                                    imKeluargaEntity.setNip(bean.getNip());
+                                    imKeluargaEntity.setName(keluarga1.getName());
+                                    imKeluargaEntity.setStatusKeluarga(keluarga1.getStatusKeluargaId());
+                                    imKeluargaEntity.setGender(keluarga1.getGender());
+                                    imKeluargaEntity.setTanggalLahir(keluarga1.getTanggalLahir());
 
-                        imKeluargaEntity.setFlag(bean.getFlag());
-                        imKeluargaEntity.setAction(bean.getAction());
-                        imKeluargaEntity.setCreatedWho(bean.getCreatedWho());
-                        imKeluargaEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                        imKeluargaEntity.setCreatedDate(bean.getCreatedDate());
-                        imKeluargaEntity.setLastUpdate(bean.getLastUpdate());
-                        try {
-                            keluargaDao.addAndSave(imKeluargaEntity);
-                        } catch (HibernateException e) {
-                            logger.error("[BiodataBoImpl.saveAdd] Error, " + e.getMessage());
-                            throw new GeneralBOException("Found problem when saving new data Biodata, please info to your admin..." + e.getMessage());
+                                    imKeluargaEntity.setFlag(bean.getFlag());
+                                    imKeluargaEntity.setAction(bean.getAction());
+                                    imKeluargaEntity.setCreatedWho(bean.getCreatedWho());
+                                    imKeluargaEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                                    imKeluargaEntity.setCreatedDate(bean.getCreatedDate());
+                                    imKeluargaEntity.setLastUpdate(bean.getLastUpdate());
+                                    try {
+                                        keluargaDao.addAndSave(imKeluargaEntity);
+                                    } catch (HibernateException e) {
+                                        logger.error("[BiodataBoImpl.saveAdd] Error, " + e.getMessage());
+                                        throw new GeneralBOException("Found problem when saving new data Biodata, please info to your admin..." + e.getMessage());
+                                    }
+                                }
+                            }else {
+                                keluargaPgw += 1;
+                                if (listKeluarga.size() == keluargaPgw)
+                                    throw new GeneralBOException("Peringatan!!!, Form Keluarga harus berisi suami atau istri jika berstatus berkeluarga");
+                            }
+                        }
+                    }else {
+                        throw new GeneralBOException("Peringatan!!!, Form Keluarga harus diisi dahulu apabila berstatus keluarga");
+                    }
+                }else {
+                    if(listKeluarga != null){
+                        for(Keluarga keluarga: listKeluarga){
+                            ImKeluargaEntity imKeluargaEntity = new ImKeluargaEntity();
+                            imKeluargaEntity.setKeluargaId(keluargaDao.getNextKeluargaId());
+                            imKeluargaEntity.setNip(bean.getNip());
+                            imKeluargaEntity.setName(keluarga.getName());
+                            imKeluargaEntity.setStatusKeluarga(keluarga.getStatusKeluargaId());
+                            imKeluargaEntity.setGender(keluarga.getGender());
+                            imKeluargaEntity.setTanggalLahir(keluarga.getTanggalLahir());
+
+                            imKeluargaEntity.setFlag(bean.getFlag());
+                            imKeluargaEntity.setAction(bean.getAction());
+                            imKeluargaEntity.setCreatedWho(bean.getCreatedWho());
+                            imKeluargaEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                            imKeluargaEntity.setCreatedDate(bean.getCreatedDate());
+                            imKeluargaEntity.setLastUpdate(bean.getLastUpdate());
+                            try {
+                                keluargaDao.addAndSave(imKeluargaEntity);
+                            } catch (HibernateException e) {
+                                logger.error("[BiodataBoImpl.saveAdd] Error, " + e.getMessage());
+                                throw new GeneralBOException("Found problem when saving new data Biodata, please info to your admin..." + e.getMessage());
+                            }
                         }
                     }
                 }
@@ -755,32 +933,153 @@ public class BiodataBoImpl implements BiodataBo {
                 }
 
                 List<PengalamanKerja> listPengalamanKerja = (List<PengalamanKerja>) session.getAttribute("listPengalamanKerja");
-                if(listPengalamanKerja != null){
-                    for(PengalamanKerja pengalamanKerja: listPengalamanKerja){
-                        ImPengalamanKerjaEntity imPengalamanKerjaEntity = new ImPengalamanKerjaEntity();
-                        imPengalamanKerjaEntity.setPengalamanId(pengalamanKerjaDao.getNextPengalamanKerja());
-                        imPengalamanKerjaEntity.setNip(bean.getNip());
-                        imPengalamanKerjaEntity.setNamaPerusahaan(pengalamanKerja.getNamaPerusahaan());
-                        imPengalamanKerjaEntity.setJabatan(pengalamanKerja.getJabatan());
-                        if(pengalamanKerja.getStTahunKeluar() != null && !"".equalsIgnoreCase(pengalamanKerja.getStTahunKeluar()) &&
-                                pengalamanKerja.getStTtahunMasuk() != null && !"".equalsIgnoreCase(pengalamanKerja.getStTtahunMasuk())){
-                            imPengalamanKerjaEntity.setTahunMasuk(CommonUtil.convertStringToDate(pengalamanKerja.getStTtahunMasuk()));
-                            imPengalamanKerjaEntity.setTahunKeluar(CommonUtil.convertStringToDate(pengalamanKerja.getStTahunKeluar()));
-                        }
+//                if(listPengalamanKerja != null){
+//                    for(PengalamanKerja pengalamanKerja: listPengalamanKerja){
+//                        ImPengalamanKerjaEntity imPengalamanKerjaEntity = new ImPengalamanKerjaEntity();
+//                        imPengalamanKerjaEntity.setPengalamanId(pengalamanKerjaDao.getNextPengalamanKerja());
+//                        imPengalamanKerjaEntity.setNip(bean.getNip());
+//                        imPengalamanKerjaEntity.setNamaPerusahaan(pengalamanKerja.getNamaPerusahaan());
+//                        imPengalamanKerjaEntity.setJabatan(pengalamanKerja.getJabatan());
+//                        if(pengalamanKerja.getStTahunKeluar() != null && !"".equalsIgnoreCase(pengalamanKerja.getStTahunKeluar()) &&
+//                                pengalamanKerja.getStTtahunMasuk() != null && !"".equalsIgnoreCase(pengalamanKerja.getStTtahunMasuk())){
+//                            imPengalamanKerjaEntity.setTahunMasuk(CommonUtil.convertStringToDate(pengalamanKerja.getStTtahunMasuk()));
+//                            imPengalamanKerjaEntity.setTahunKeluar(CommonUtil.convertStringToDate(pengalamanKerja.getStTahunKeluar()));
+//                        }
+//
+//                        imPengalamanKerjaEntity.setFlag(bean.getFlag());
+//                        imPengalamanKerjaEntity.setAction(bean.getAction());
+//                        imPengalamanKerjaEntity.setCreatedWho(bean.getCreatedWho());
+//                        imPengalamanKerjaEntity.setLastUpdateWho(bean.getLastUpdateWho());
+//                        imPengalamanKerjaEntity.setCreatedDate(bean.getCreatedDate());
+//                        imPengalamanKerjaEntity.setLastUpdate(bean.getLastUpdate());
+//                        try {
+//                            pengalamanKerjaDao.addAndSave(imPengalamanKerjaEntity);
+//                        } catch (HibernateException e) {
+//                            logger.error("[BiodataBoImpl.saveAdd] Error, " + e.getMessage());
+//                            throw new GeneralBOException("Found problem when saving new data Biodata, please info to your admin..." + e.getMessage());
+//                        }
+//                    }
+//                }
 
-                        imPengalamanKerjaEntity.setFlag(bean.getFlag());
-                        imPengalamanKerjaEntity.setAction(bean.getAction());
-                        imPengalamanKerjaEntity.setCreatedWho(bean.getCreatedWho());
-                        imPengalamanKerjaEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                        imPengalamanKerjaEntity.setCreatedDate(bean.getCreatedDate());
-                        imPengalamanKerjaEntity.setLastUpdate(bean.getLastUpdate());
-                        try {
-                            pengalamanKerjaDao.addAndSave(imPengalamanKerjaEntity);
-                        } catch (HibernateException e) {
-                            logger.error("[BiodataBoImpl.saveAdd] Error, " + e.getMessage());
-                            throw new GeneralBOException("Found problem when saving new data Biodata, please info to your admin..." + e.getMessage());
+                String pengalamanId;
+                List<HistoryJabatanPegawai> historyJabatanPegawai = new ArrayList<>();
+                String branchName, positionname, divisiName, tipePegawaiName;
+                String golonganName="";
+                int jum = 0;
+                if(listPengalamanKerja != null){
+                    for(PengalamanKerja pengalamanKerja1: listPengalamanKerja){
+
+                        if ("Y".equalsIgnoreCase(pengalamanKerja1.getFlagJabatanAktif())){
+                            for (PengalamanKerja pengalamanKerja : listPengalamanKerja){
+                                ImtHrisHistoryJabatanPegawaiEntity historyJabatan = new ImtHrisHistoryJabatanPegawaiEntity();
+                                try {
+                                    // Generating ID, get from postgre sequence
+                                    pengalamanId = historyJabatanPegawaiDao.getNextPersonilPositionId();
+
+                                    //mengambil branch name, position name, divisi name, golongan name, tipe pegawai name
+                                    if (!pengalamanKerja.getBranchId().equalsIgnoreCase("0")){
+                                        branchName = historyJabatanPegawaiDao.getBranchById(pengalamanKerja.getBranchId());
+
+                                    }else {
+                                        branchName = pengalamanKerja.getBranchName();
+                                    }
+                                    if (!pengalamanKerja.getDivisiId().equalsIgnoreCase("0")){
+                                        divisiName = historyJabatanPegawaiDao.getDivisiById(pengalamanKerja.getDivisiId());
+                                    }else {
+                                        divisiName = pengalamanKerja.getDivisiName();
+                                    }
+                                    if (!pengalamanKerja.getJabatan().equalsIgnoreCase("0")){
+                                        positionname = historyJabatanPegawaiDao.getPositionById(pengalamanKerja.getJabatan());
+                                    }else {
+                                        positionname = pengalamanKerja.getPositionName();
+                                    }
+                                    if(pengalamanKerja.getGolonganId()!= null){
+                                        if (!pengalamanKerja.getGolonganId().equalsIgnoreCase("")){
+                                            if (pengalamanKerja.getTipePegawaiId().equalsIgnoreCase("TP01")){
+                                                golonganName = historyJabatanPegawaiDao.getGolonganById(pengalamanKerja.getGolonganId());
+                                            }
+                                            if (pengalamanKerja.getTipePegawaiId().equalsIgnoreCase("TP03")){
+                                                List<ImGolonganPkwtEntity> golonganPkwtEntities = new ArrayList<>();
+                                                golonganPkwtEntities = golonganPkwtDao.getGolonganById(pengalamanKerja.getGolonganId());
+                                                if (golonganPkwtEntities.size()>0){
+                                                    for (ImGolonganPkwtEntity golonganPkwtLoop: golonganPkwtEntities){
+                                                        golonganName = golonganPkwtLoop.getGolonganPkwtName();
+                                                    }
+                                                }
+                                            }
+                                        }else {
+                                            golonganName = null;
+                                        }
+                                    }else{
+                                        golonganName = null;
+                                    }
+                                    tipePegawaiName = historyJabatanPegawaiDao.getTipePegawaiById(pengalamanKerja.getTipePegawaiId());
+
+                                    historyJabatanPegawai = historyJabatanPegawaiDao.geyBagianByPositionId(pengalamanKerja.getPosisiId());
+                                    if (historyJabatanPegawai.size() >0){
+                                        for (HistoryJabatanPegawai result: historyJabatanPegawai){
+                                            historyJabatan.setBagianId(result.getBagianId());
+                                            historyJabatan.setBagianName(result.getBagianName());
+                                        }
+                                    }
+                                } catch (HibernateException e) {
+                                    logger.error("[PengalamanKerjaBoImpl.saveAdd] Error, " + e.getMessage());
+                                    throw new GeneralBOException("Found problem when getting sequence PengalamanKerjaId id, please info to your admin..." + e.getMessage());
+                                }
+
+
+                                historyJabatan.setHistoryJabatanId(pengalamanId);
+                                historyJabatan.setNip(pengalamanKerja.getNip());
+                                historyJabatan.setBranchId(pengalamanKerja.getBranchId());
+                                historyJabatan.setBranchName(branchName);
+                                historyJabatan.setDivisiId(pengalamanKerja.getDivisiId());
+                                historyJabatan.setDivisiName(divisiName);
+                                historyJabatan.setPositionId(pengalamanKerja.getJabatan());
+                                historyJabatan.setPositionName(positionname);
+                                historyJabatan.setTipePegawaiId(pengalamanKerja.getTipePegawaiId());
+                                historyJabatan.setTipePegawaiName(tipePegawaiName);
+                                historyJabatan.setGolonganId(pengalamanKerja.getGolonganId());
+                                historyJabatan.setGolonganName(golonganName);
+                                historyJabatan.setTanggal(pengalamanKerja.getStTtahunMasuk());
+                                historyJabatan.setTanggalKeluar(pengalamanKerja.getStTahunKeluar());
+                                historyJabatan.setBidangId(pengalamanKerja.getDivisiId());
+                                historyJabatan.setBidangName(divisiName);
+                                historyJabatan.setProfesiId(pengalamanKerja.getProfesiId());
+
+                                historyJabatan.setFlag(pengalamanKerja.getFlag());
+                                historyJabatan.setAction(pengalamanKerja.getAction());
+                                historyJabatan.setCreatedWho(pengalamanKerja.getCreatedWho());
+                                historyJabatan.setLastUpdateWho(pengalamanKerja.getLastUpdateWho());
+                                historyJabatan.setCreatedDate(pengalamanKerja.getCreatedDate());
+                                historyJabatan.setLastUpdate(pengalamanKerja.getLastUpdate());
+                                historyJabatan.setPjsFlag(pengalamanKerja.getPjsFlag());
+                                historyJabatan.setJabatanFlag(pengalamanKerja.getFlagJabatanAktif());
+
+                                String tahun = "";
+                                String smkAda = "N";
+                                if(pengalamanKerja.getStTtahunMasuk().length() > 4){
+                                    String strBln[] = pengalamanKerja.getStTtahunMasuk().split("-");
+                                    tahun = strBln[2];
+                                }else{
+                                    tahun = pengalamanKerja.getTahun();
+                                }
+                                historyJabatan.setTahun(tahun);
+                                try {
+                                    // insert into database
+                                    historyJabatanPegawaiDao.addAndSave(historyJabatan);
+                                } catch (HibernateException e) {
+                                    logger.error("[PengalamanKerjaBoImpl.saveAdd] Error, " + e.getMessage());
+                                    throw new GeneralBOException("Found problem when saving new data PengalamanKerja, please info to your admin..." + e.getMessage());
+                                }
+                            }
+                        }else {
+                            jum += 1;
+                            if (jum == listPengalamanKerja.size())
+                                throw new GeneralBOException("Peringatan!!!, Form Riwayat Kerja harus memiliki satu jabatan aktif");
                         }
                     }
+                }else {
+                    throw new GeneralBOException("Peringatan!!!, Form Riwayat Kerja harus memiliki satu jabatan aktif");
                 }
 
                 List<Reward> listReward = (List<Reward>) session.getAttribute("listReward");
@@ -1089,6 +1388,13 @@ public class BiodataBoImpl implements BiodataBo {
                         returnBiodata.setStTanggalAktif("");
                     }
 
+                    if (personalEntity.getTanggalPraPensiun() != null){
+                        String stringTanggal = dateFormat.format(personalEntity.getTanggalPraPensiun());
+                        returnBiodata.setStTanggalPraPensiun(stringTanggal);
+                    }else {
+                        returnBiodata.setStTanggalPraPensiun("");
+                    }
+
                     returnBiodata.setNip(personalEntity.getNip());
                     returnBiodata.setNamaPegawai(personalEntity.getNamaPegawai());
                     returnBiodata.setGelarDepan(personalEntity.getGelarDepan());
@@ -1239,8 +1545,13 @@ public class BiodataBoImpl implements BiodataBo {
                         returnBiodata.setPathFoto(ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_USER_UPLOAD
                                 + personalEntity.getFotoUpload());
                     }else{
-                        returnBiodata.setPathFoto(ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_USER_UPLOAD
-                                + "unknown-person2.jpg");
+                        if ("L".equalsIgnoreCase(personalEntity.getGender())){
+                            returnBiodata.setPathFoto(ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_USER_UPLOAD
+                                    + "man_employee.png");
+                        }else {
+                            returnBiodata.setPathFoto(ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_USER_UPLOAD
+                                    + "women_employee.png");
+                        }
                     }
                     listOfResult.add(returnBiodata);
                 }
@@ -1854,10 +2165,14 @@ public class BiodataBoImpl implements BiodataBo {
                 historyJabatanPegawai.setHistoryJabatanId(imtHistory.getHistoryJabatanId());
                 historyJabatanPegawai.setNip(imtHistory.getNip());
                 historyJabatanPegawai.setBidangName(imtHistory.getBidangName());
+                historyJabatanPegawai.setDivisiName(imtHistory.getDivisiName());
                 historyJabatanPegawai.setStatus(imtHistory.getTipePegawaiName());
                 historyJabatanPegawai.setPositionName(imtHistory.getPositionName());
                 historyJabatanPegawai.setBranchName(imtHistory.getBranchName());
-                historyJabatanPegawai.setTahun(imtHistory.getTahun());
+//                historyJabatanPegawai.setTahun(imtHistory.getTahun());
+                historyJabatanPegawai.setTanggal(imtHistory.getTanggal());
+                historyJabatanPegawai.setTanggalKeluar(imtHistory.getTanggalKeluar());
+
                 historyJabatanPegawai.setPjsFlag(imtHistory.getPjsFlag());
                 listHistory.add(historyJabatanPegawai);
             }
@@ -2273,6 +2588,7 @@ public class BiodataBoImpl implements BiodataBo {
                 imPengalamanKerjaEntity.setTanggalKeluar(bean.getTanggalKeluar());
                 imPengalamanKerjaEntity.setBidangId(bean.getDivisiId());
                 imPengalamanKerjaEntity.setBidangName(divisiName);
+                imPengalamanKerjaEntity.setJabatanFlag(bean.getFlagJabatanAktif());
 
                 imPengalamanKerjaEntity.setFlag(bean.getFlag());
                 imPengalamanKerjaEntity.setAction(bean.getAction());
@@ -2319,109 +2635,115 @@ public class BiodataBoImpl implements BiodataBo {
         logger.info("[PengalamanKerjaBoImpl.saveAdd] start process >>>");
 
         if (bean!=null) {
-            // creating object entity serializable
-            ImtHrisHistoryJabatanPegawaiEntity historyJabatan = new ImtHrisHistoryJabatanPegawaiEntity();
-            String pengalamanId;
-            List<HistoryJabatanPegawai> historyJabatanPegawai = new ArrayList<>();
-            String branchName, positionname, divisiName, tipePegawaiName;
-            String golonganName="";
-            try {
-                // Generating ID, get from postgre sequence
-                pengalamanId = historyJabatanPegawaiDao.getNextPersonilPositionId();
+            String status = cekStatusJabatan(bean.getNip(), bean.getFlagJabatanAktif());
+            if ("true".equalsIgnoreCase(status)){
+                // creating object entity serializable
+                ImtHrisHistoryJabatanPegawaiEntity historyJabatan = new ImtHrisHistoryJabatanPegawaiEntity();
+                String pengalamanId;
+                List<HistoryJabatanPegawai> historyJabatanPegawai = new ArrayList<>();
+                String branchName, positionname, divisiName, tipePegawaiName;
+                String golonganName="";
+                try {
+                    // Generating ID, get from postgre sequence
+                    pengalamanId = historyJabatanPegawaiDao.getNextPersonilPositionId();
 
-                //mengambil branch name, position name, divisi name, golongan name, tipe pegawai name
-                if (!bean.getBranchId().equalsIgnoreCase("0")){
-                    branchName = historyJabatanPegawaiDao.getBranchById(bean.getBranchId());
+                    //mengambil branch name, position name, divisi name, golongan name, tipe pegawai name
+                    if (!bean.getBranchId().equalsIgnoreCase("0")){
+                        branchName = historyJabatanPegawaiDao.getBranchById(bean.getBranchId());
 
-                }else {
-                    branchName = bean.getBranchName();
-                }
-                if (!bean.getDivisiId().equalsIgnoreCase("0")){
-                    divisiName = historyJabatanPegawaiDao.getDivisiById(bean.getDivisiId());
-                }else {
-                    divisiName = bean.getDivisiName();
-                }
-                if (!bean.getPositionId().equalsIgnoreCase("0")){
-                    positionname = historyJabatanPegawaiDao.getPositionById(bean.getPositionId());
-                }else {
-                    positionname = bean.getPositionName();
-                }
-                if(bean.getGolonganId()!= null){
-                    if (!bean.getGolonganId().equalsIgnoreCase("")){
-                        if (bean.getTipePegawaiId().equalsIgnoreCase("TP01")){
-                            golonganName = historyJabatanPegawaiDao.getGolonganById(bean.getGolonganId());
-                        }
-                        if (bean.getTipePegawaiId().equalsIgnoreCase("TP03")){
-                            List<ImGolonganPkwtEntity> golonganPkwtEntities = new ArrayList<>();
-                            golonganPkwtEntities = golonganPkwtDao.getGolonganById(bean.getGolonganId());
-                            if (golonganPkwtEntities.size()>0){
-                                for (ImGolonganPkwtEntity golonganPkwtLoop: golonganPkwtEntities){
-                                    golonganName = golonganPkwtLoop.getGolonganPkwtName();
+                    }else {
+                        branchName = bean.getBranchName();
+                    }
+                    if (!bean.getDivisiId().equalsIgnoreCase("0")){
+                        divisiName = historyJabatanPegawaiDao.getDivisiById(bean.getDivisiId());
+                    }else {
+                        divisiName = bean.getDivisiName();
+                    }
+                    if (!bean.getPositionId().equalsIgnoreCase("0")){
+                        positionname = historyJabatanPegawaiDao.getPositionById(bean.getPositionId());
+                    }else {
+                        positionname = bean.getPositionName();
+                    }
+                    if(bean.getGolonganId()!= null){
+                        if (!bean.getGolonganId().equalsIgnoreCase("")){
+                            if (bean.getTipePegawaiId().equalsIgnoreCase("TP01")){
+                                golonganName = historyJabatanPegawaiDao.getGolonganById(bean.getGolonganId());
+                            }
+                            if (bean.getTipePegawaiId().equalsIgnoreCase("TP03")){
+                                List<ImGolonganPkwtEntity> golonganPkwtEntities = new ArrayList<>();
+                                golonganPkwtEntities = golonganPkwtDao.getGolonganById(bean.getGolonganId());
+                                if (golonganPkwtEntities.size()>0){
+                                    for (ImGolonganPkwtEntity golonganPkwtLoop: golonganPkwtEntities){
+                                        golonganName = golonganPkwtLoop.getGolonganPkwtName();
+                                    }
                                 }
                             }
+                        }else {
+                            golonganName = null;
                         }
-                    }else {
+                    }else{
                         golonganName = null;
                     }
-                }else{
-                    golonganName = null;
-                }
-                tipePegawaiName = historyJabatanPegawaiDao.getTipePegawaiById(bean.getTipePegawaiId());
+                    tipePegawaiName = historyJabatanPegawaiDao.getTipePegawaiById(bean.getTipePegawaiId());
 
-                historyJabatanPegawai = historyJabatanPegawaiDao.geyBagianByPositionId(bean.getPositionId());
-                if (historyJabatanPegawai.size() >0){
-                    for (HistoryJabatanPegawai result: historyJabatanPegawai){
-                        historyJabatan.setBagianId(result.getBagianId());
-                        historyJabatan.setBagianName(result.getBagianName());
+                    historyJabatanPegawai = historyJabatanPegawaiDao.geyBagianByPositionId(bean.getPositionId());
+                    if (historyJabatanPegawai.size() >0){
+                        for (HistoryJabatanPegawai result: historyJabatanPegawai){
+                            historyJabatan.setBagianId(result.getBagianId());
+                            historyJabatan.setBagianName(result.getBagianName());
+                        }
                     }
+                } catch (HibernateException e) {
+                    logger.error("[PengalamanKerjaBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when getting sequence PengalamanKerjaId id, please info to your admin..." + e.getMessage());
                 }
-            } catch (HibernateException e) {
-                logger.error("[PengalamanKerjaBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when getting sequence PengalamanKerjaId id, please info to your admin..." + e.getMessage());
-            }
 
 
-            historyJabatan.setHistoryJabatanId(pengalamanId);
-            historyJabatan.setNip(bean.getNip());
-            historyJabatan.setBranchId(bean.getBranchId());
-            historyJabatan.setBranchName(branchName);
-            historyJabatan.setDivisiId(bean.getDivisiId());
-            historyJabatan.setDivisiName(divisiName);
-            historyJabatan.setPositionId(bean.getPositionId());
-            historyJabatan.setPositionName(positionname);
-            historyJabatan.setTipePegawaiId(bean.getTipePegawaiId());
-            historyJabatan.setTipePegawaiName(tipePegawaiName);
-            historyJabatan.setGolonganId(bean.getGolonganId());
-            historyJabatan.setGolonganName(golonganName);
-            historyJabatan.setTanggal(bean.getTanggal());
-            historyJabatan.setTanggalKeluar(bean.getTanggalKeluar());
-            historyJabatan.setBidangId(bean.getDivisiId());
-            historyJabatan.setBidangName(divisiName);
-            historyJabatan.setProfesiId(bean.getProfesiId());
+                historyJabatan.setHistoryJabatanId(pengalamanId);
+                historyJabatan.setNip(bean.getNip());
+                historyJabatan.setBranchId(bean.getBranchId());
+                historyJabatan.setBranchName(branchName);
+                historyJabatan.setDivisiId(bean.getDivisiId());
+                historyJabatan.setDivisiName(divisiName);
+                historyJabatan.setPositionId(bean.getPositionId());
+                historyJabatan.setPositionName(positionname);
+                historyJabatan.setTipePegawaiId(bean.getTipePegawaiId());
+                historyJabatan.setTipePegawaiName(tipePegawaiName);
+                historyJabatan.setGolonganId(bean.getGolonganId());
+                historyJabatan.setGolonganName(golonganName);
+                historyJabatan.setTanggal(bean.getTanggal());
+                historyJabatan.setTanggalKeluar(bean.getTanggalKeluar());
+                historyJabatan.setBidangId(bean.getDivisiId());
+                historyJabatan.setBidangName(divisiName);
+                historyJabatan.setProfesiId(bean.getProfesiId());
 
-            historyJabatan.setFlag(bean.getFlag());
-            historyJabatan.setAction(bean.getAction());
-            historyJabatan.setCreatedWho(bean.getCreatedWho());
-            historyJabatan.setLastUpdateWho(bean.getLastUpdateWho());
-            historyJabatan.setCreatedDate(bean.getCreatedDate());
-            historyJabatan.setLastUpdate(bean.getLastUpdate());
-            historyJabatan.setPjsFlag(bean.getPjsFlag());
+                historyJabatan.setFlag(bean.getFlag());
+                historyJabatan.setAction(bean.getAction());
+                historyJabatan.setCreatedWho(bean.getCreatedWho());
+                historyJabatan.setLastUpdateWho(bean.getLastUpdateWho());
+                historyJabatan.setCreatedDate(bean.getCreatedDate());
+                historyJabatan.setLastUpdate(bean.getLastUpdate());
+                historyJabatan.setPjsFlag(bean.getPjsFlag());
+                historyJabatan.setJabatanFlag(bean.getFlagJabatanAktif());
 
-            String tahun = "";
-            String smkAda = "N";
-            if(bean.getTanggal().length() > 4){
-                String strBln[] = bean.getTanggal().split("-");
-                tahun = strBln[2];
-            }else{
-                tahun = bean.getTahun();
-            }
-            historyJabatan.setTahun(tahun);
-            try {
-                // insert into database
-                historyJabatanPegawaiDao.addAndSave(historyJabatan);
-            } catch (HibernateException e) {
-                logger.error("[PengalamanKerjaBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when saving new data PengalamanKerja, please info to your admin..." + e.getMessage());
+                String tahun = "";
+                String smkAda = "N";
+                if(bean.getTanggal().length() > 4){
+                    String strBln[] = bean.getTanggal().split("-");
+                    tahun = strBln[2];
+                }else{
+                    tahun = bean.getTahun();
+                }
+                historyJabatan.setTahun(tahun);
+                try {
+                    // insert into database
+                    historyJabatanPegawaiDao.addAndSave(historyJabatan);
+                } catch (HibernateException e) {
+                    logger.error("[PengalamanKerjaBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data PengalamanKerja, please info to your admin..." + e.getMessage());
+                }
+            }else {
+                throw new GeneralBOException("Peringatan!!!, User sudah memiliki 1 jabatan aktif");
             }
         }
 
@@ -2620,6 +2942,7 @@ public class BiodataBoImpl implements BiodataBo {
             }else{
                 pengalamanKerja.setPosisiId("0");
             }
+            pengalamanKerja.setProfesiId(searchPengalamanKerja.getProfesiId());
             pengalamanKerja.setPositionName(searchPengalamanKerja.getPositionName());
             pengalamanKerja.setGolonganId(searchPengalamanKerja.getGolonganId());
             pengalamanKerja.setGolonganName(searchPengalamanKerja.getGolonganName());
@@ -2752,16 +3075,37 @@ public class BiodataBoImpl implements BiodataBo {
                 }else{
                     pengalamanKerja.setProfesiName("-");
                 }
-                if (historyLoop.getTahun()!=null){
-                    if(!historyLoop.getTahun().equalsIgnoreCase("")){
-                        pengalamanKerja.setStTtahunMasuk(historyLoop.getTahun());
-                    }
-                    else{
+
+//                if (historyLoop.getTahun()!=null){
+//                    if(!historyLoop.getTahun().equalsIgnoreCase("")){
+//                        pengalamanKerja.setStTtahunMasuk(historyLoop.getTahun());
+//                    }
+//                    else{
+//                        pengalamanKerja.setStTtahunMasuk("-");
+//                    }
+//                }else{
+//                    pengalamanKerja.setStTtahunMasuk("-");
+//                }
+                if (historyLoop.getTanggal() != null){
+                    if (!historyLoop.getTanggal().equalsIgnoreCase("")){
+                        pengalamanKerja.setStTtahunMasuk(historyLoop.getTanggal());
+                    }else {
                         pengalamanKerja.setStTtahunMasuk("-");
                     }
-                }else{
+                }else {
                     pengalamanKerja.setStTtahunMasuk("-");
                 }
+                if (historyLoop.getTanggalKeluar() != null){
+                    if (!historyLoop.getTanggalKeluar().equalsIgnoreCase("")){
+                        pengalamanKerja.setStTahunKeluar(historyLoop.getTanggalKeluar());
+                    }else {
+                        pengalamanKerja.setStTahunKeluar("-");
+                    }
+                }else {
+                    pengalamanKerja.setStTahunKeluar("-");
+                }
+
+
                 if ("Y".equalsIgnoreCase(historyLoop.getPjsFlag()) && historyLoop.getPjsFlag()!=null){
                     pengalamanKerja.setPjsFlag("Ya");
                 }
@@ -3079,44 +3423,49 @@ public class BiodataBoImpl implements BiodataBo {
         logger.info("[PengalamanKerjaBoImpl.saveDelete] start process >>>");
 
         if (bean!=null) {
-            String PengalamanKerjaId = bean.getPengalamanId();
-            ImtHrisHistoryJabatanPegawaiEntity imPengalamanKerjaEntity = null;
-            try {
-                // Get data from database by ID
-                imPengalamanKerjaEntity = historyJabatanPegawaiDao.getById("historyJabatanId", PengalamanKerjaId);
-            } catch (HibernateException e) {
-                logger.error("[PengalamanKerjaBoImpl.saveDelete] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when searching data Pengalaman by Kode Pengalaman, please inform to your admin...," + e.getMessage());
-            }
-
-            if (imPengalamanKerjaEntity != null) {
-
-                imPengalamanKerjaEntity.setFlag(bean.getFlag());
-                imPengalamanKerjaEntity.setAction(bean.getAction());
-                imPengalamanKerjaEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                imPengalamanKerjaEntity.setLastUpdate(bean.getLastUpdate());
-
-                String flag;
-
-                String tahun = "";
-                String smkAda = "N";
-                if(imPengalamanKerjaEntity.getTahun().length() > 4){
-                    String strBln[] = imPengalamanKerjaEntity.getTahun().split("-");
-                    tahun = strBln[2];
-                }else{
-                    tahun = bean.getStTtahunMasuk();
-                }
-
-
+            String status = cekMutasiJabatan(bean.getPengalamanId());
+            if (status.equalsIgnoreCase("true")){
+                String PengalamanKerjaId = bean.getPengalamanId();
+                ImtHrisHistoryJabatanPegawaiEntity imPengalamanKerjaEntity = null;
                 try {
-                    historyJabatanPegawaiDao.updateAndSave(imPengalamanKerjaEntity);
+                    // Get data from database by ID
+                    imPengalamanKerjaEntity = historyJabatanPegawaiDao.getById("historyJabatanId", PengalamanKerjaId);
                 } catch (HibernateException e) {
                     logger.error("[PengalamanKerjaBoImpl.saveDelete] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving update data PengalamanKerja, please info to your admin..." + e.getMessage());
+                    throw new GeneralBOException("Found problem when searching data Pengalaman by Kode Pengalaman, please inform to your admin...," + e.getMessage());
                 }
-            } else {
-                logger.error("[PengalamanKerjaBoImpl.saveDelete] Error, not found data PengalamanKerja with request id, please check again your data ...");
-                throw new GeneralBOException("Error, not found data PengalamanKerja with request id, please check again your data ...");
+
+                if (imPengalamanKerjaEntity != null) {
+
+                    imPengalamanKerjaEntity.setFlag(bean.getFlag());
+                    imPengalamanKerjaEntity.setAction(bean.getAction());
+                    imPengalamanKerjaEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    imPengalamanKerjaEntity.setLastUpdate(bean.getLastUpdate());
+
+                    String flag;
+
+                    String tahun = "";
+                    String smkAda = "N";
+                    if(imPengalamanKerjaEntity.getTahun().length() > 4){
+                        String strBln[] = imPengalamanKerjaEntity.getTahun().split("-");
+                        tahun = strBln[2];
+                    }else{
+                        tahun = bean.getStTtahunMasuk();
+                    }
+
+
+                    try {
+                        historyJabatanPegawaiDao.updateAndSave(imPengalamanKerjaEntity);
+                    } catch (HibernateException e) {
+                        logger.error("[PengalamanKerjaBoImpl.saveDelete] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving update data PengalamanKerja, please info to your admin..." + e.getMessage());
+                    }
+                } else {
+                    logger.error("[PengalamanKerjaBoImpl.saveDelete] Error, not found data PengalamanKerja with request id, please check again your data ...");
+                    throw new GeneralBOException("Error, not found data PengalamanKerja with request id, please check again your data ...");
+                }
+            }else {
+                throw new GeneralBOException("Perhatian!!! Riwayat kerja mutasi");
             }
         }
         logger.info("[PengalamanKerjaBoImpl.saveDelete] end process <<<");
@@ -3705,6 +4054,7 @@ public class BiodataBoImpl implements BiodataBo {
                 }else{
                     historyJabatanPegawai.setBranchName("-");
                 }
+
                 historyJabatanPegawai.setTahun(imtHistory.getTahun());
                 historyJabatanPegawai.setTanggal(imtHistory.getTanggal());
                 historyJabatanPegawai.setPjsFlag(imtHistory.getPjsFlag());
@@ -3832,12 +4182,12 @@ public class BiodataBoImpl implements BiodataBo {
         logger.info("[BiodataBoImpl.convertEntityToModel] start process >>>");
         return result;
     }
-    public String cekStatus(String golonganId, String noKtp)throws GeneralBOException{
+    public String cekStatus(String nip, String noKtp)throws GeneralBOException{
         String status ="";
         ImBiodataEntity skalaGajiEntity = new ImBiodataEntity();
         ImBiodataEntity skalaGajiEntity2 = new ImBiodataEntity();
         try {
-            skalaGajiEntity = biodataDao.getById("nip", golonganId);
+            skalaGajiEntity = biodataDao.getById("nip", nip);
         } catch (HibernateException e) {
             logger.error("[PayrollSkalaGajiBoImpl.getSearchPayrollSkalaGajiByCriteria] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
@@ -3853,6 +4203,93 @@ public class BiodataBoImpl implements BiodataBo {
                 status="notExits";
             }
         }
+        return status;
+    }
+
+    public String cekStatusPgw(String nip, String tipePegawai){
+        String status = "true";
+
+        ImBiodataEntity imBiodataEntity = new ImBiodataEntity();
+        try{
+            imBiodataEntity = biodataDao.getById("nip", nip);
+        }catch (HibernateException e){
+            logger.error("[BiodataBoImpl.cekStatusKeluarga] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        if (imBiodataEntity != null){
+            if ("TP01".equalsIgnoreCase(imBiodataEntity.getTipePegawai())){
+                if (tipePegawai.equalsIgnoreCase(imBiodataEntity.getTipePegawai())){
+                    status = "true";
+                }else {
+                    status = "false";
+                }
+            }
+        }
+
+        return status;
+    }
+
+    public String cekStatusKeluarga(String nip){
+        String status = "notExits";
+
+        List <ImKeluargaEntity> imKeluargaEntity = new ArrayList<>();
+        try{
+            imKeluargaEntity = keluargaDao.getDataKeluarga(nip);
+        }catch (HibernateException e){
+            logger.error("[BiodataBoImpl.cekStatusKeluarga] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+
+        if (imKeluargaEntity != null){
+            for (ImKeluargaEntity imKeluargaEntity1 : imKeluargaEntity){
+                if ("S".equalsIgnoreCase(imKeluargaEntity1.getStatusKeluarga()) || "I".equalsIgnoreCase(imKeluargaEntity1.getStatusKeluarga())){
+                    status = "exist";
+                }
+            }
+        }
+
+        return status;
+    }
+
+    public String cekStatusJabatan(String nip, String statusJabatan){
+        String status = "true";
+
+        List<ImtHrisHistoryJabatanPegawaiEntity> imtHrisHistoryJabatanPegawaiEntity = new ArrayList<>();
+
+        try{
+            imtHrisHistoryJabatanPegawaiEntity = historyJabatanPegawaiDao.getDataJabatan(nip);
+        }catch (HibernateException e){
+            logger.error("[BiodataBoImpl.cekStatusKeluarga] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        if (imtHrisHistoryJabatanPegawaiEntity != null){
+            for (ImtHrisHistoryJabatanPegawaiEntity entity: imtHrisHistoryJabatanPegawaiEntity){
+                if (statusJabatan.equalsIgnoreCase(entity.getJabatanFlag())){
+                    status = "false";
+                }
+            }
+        }
+
+        return status;
+    }
+
+    public String cekMutasiJabatan(String pengalamanId){
+        String status = "true";
+
+        List<ImtHrisHistoryJabatanPegawaiEntity> imtHrisHistoryJabatanPegawaiEntity = new ArrayList<>();
+
+        try{
+            imtHrisHistoryJabatanPegawaiEntity = historyJabatanPegawaiDao.getStatusMutasi(pengalamanId);
+        }catch (HibernateException e){
+            logger.error("[BiodataBoImpl.cekStatusKeluarga] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        if (imtHrisHistoryJabatanPegawaiEntity != null){
+            if ("Y".equalsIgnoreCase(imtHrisHistoryJabatanPegawaiEntity.get(0).getMutasiFlag())){
+                status = "false";
+            }
+        }
+
         return status;
     }
 }

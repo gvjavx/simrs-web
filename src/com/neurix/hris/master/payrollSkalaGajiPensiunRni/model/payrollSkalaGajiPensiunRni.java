@@ -17,7 +17,7 @@ public class payrollSkalaGajiPensiunRni extends BaseModel {
     private String golonganName;
     private int poin;
     private BigDecimal nilai;
-
+    private String stNilai;
 
     public String getGolonganName() {
         return golonganName;
@@ -57,5 +57,13 @@ public class payrollSkalaGajiPensiunRni extends BaseModel {
 
     public void setSkalaGajiPensiunId(String skalaGajiPensiunId) {
         this.skalaGajiPensiunId = skalaGajiPensiunId;
+    }
+
+    public String getStNilai() {
+        return stNilai;
+    }
+
+    public void setStNilai(String stNilai) {
+        this.stNilai = stNilai;
     }
 }

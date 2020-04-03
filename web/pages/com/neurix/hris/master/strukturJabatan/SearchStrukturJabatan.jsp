@@ -125,6 +125,10 @@
                     $('#branchIdEdit').val(item.branchId);
                     $('#positionIdEdit').val(item.positionId);
                     $('#levelEdit').val(item.level);
+                    $('#createDateEdit').val(item.cDate);
+                    $('#lastUpdateEdit').val(item.lUpdate);
+                    $('#lastUpdateWhoEdit').val(item.lastUpdateWho);
+                    $('#createdWhoEdit').val(item.createdWho);
                     selectParent(branch, 'Edit');
                     var level = parseInt(item.level) - 1;
                     $('#parentIdEdit').val(item.parentId + '-' + level).change();
@@ -327,7 +331,7 @@
     <section class="content-header">
         <h1>
             Struktur Jabatan
-            <small>e-HEALTH</small>
+            <small>GO-MEDSYS</small>
         </h1>
 
     </section>
@@ -654,6 +658,34 @@
                             <label class="control-label col-sm-4" for="StrukturJabatan.level">Level :</label>
                             <div class="col-sm-6">
                                 <s:textfield  id="levelEdit" name="strukturJabatan.level" required="false" readonly="true" cssClass="form-control"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="StrukturJabatan.level">Created Date :</label>
+                            <div class="col-sm-6">
+                                <s:textfield  id="createDateEdit" name="strukturJabatan.cDate" required="false" readonly="true" cssClass="form-control"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="StrukturJabatan.level">Lats Update :</label>
+                            <div class="col-sm-6">
+                                <s:textfield  id="lastUpdateEdit" name="strukturJabatan.lastUpdate" required="false" readonly="true" cssClass="form-control"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="StrukturJabatan.level">Create Who :</label>
+                            <div class="col-sm-6">
+                                <s:textfield  id="createdWhoEdit" name="strukturJabatan.lUpdate" required="false" readonly="true" cssClass="form-control"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="StrukturJabatan.level">Last Update Who :</label>
+                            <div class="col-sm-6">
+                                <s:textfield  id="lastUpdateWhoEdit" name="strukturJabatan.lastUpdateWho" required="false" readonly="true" cssClass="form-control"/>
                             </div>
                         </div>
 

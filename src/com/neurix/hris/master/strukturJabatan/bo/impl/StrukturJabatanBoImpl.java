@@ -11,6 +11,7 @@ import com.neurix.hris.master.strukturJabatan.model.ImStrukturJabatanEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -179,6 +180,16 @@ public class StrukturJabatanBoImpl implements StrukturJabatanBo {
             strukturJabatan1.setLevel(strukturJabatan.getLevel());
             strukturJabatan1.setBranchId(strukturJabatan.getBranchId());
             strukturJabatan1.setPositionId(strukturJabatan.getPositionId());
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+            String createDate = dateFormat.format(strukturJabatan.getCreatedDate());
+//            strukturJabatan1.setCreatedDate(createDate);
+            strukturJabatan1.setcDate(createDate);
+            strukturJabatan1.setCreatedWho(strukturJabatan.getCreatedWho());
+            String lastUpdate = dateFormat.format(strukturJabatan.getLastUpdate());
+            strukturJabatan1.setlUpdate(lastUpdate);
+//            strukturJabatan1.setLastUpdate(strukturJabatan.getLastUpdate());
+            strukturJabatan1.setLastUpdateWho(strukturJabatan.getLastUpdateWho());
         }
 
         return strukturJabatan1;

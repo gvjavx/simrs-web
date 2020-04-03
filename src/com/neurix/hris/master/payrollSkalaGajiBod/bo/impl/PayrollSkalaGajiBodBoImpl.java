@@ -11,6 +11,7 @@ import com.neurix.hris.master.payrollSkalaGajiBod.model.PayrollSkalaGajiBod;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -256,6 +257,8 @@ public class PayrollSkalaGajiBodBoImpl implements PayrollSkalaGajiBodBo {
 
     private PayrollSkalaGajiBod convertEntity (ImPayrollSkalaGajiBodEntity payrollSkalaGajiBodEntity){
         PayrollSkalaGajiBod result = new PayrollSkalaGajiBod();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+
         result.setPayrollSkalaGajiBodId(payrollSkalaGajiBodEntity.getPayrollSkalaGajiBodId());
         result.setPositionId(payrollSkalaGajiBodEntity.getPositionId());
         result.setGajiBod(payrollSkalaGajiBodEntity.getGajiBod());
@@ -274,6 +277,15 @@ public class PayrollSkalaGajiBodBoImpl implements PayrollSkalaGajiBodBo {
         }
         if (result.getJumlahPengasilanBulan()!=null){
             result.setStJumlahPenghasilanBulan(CommonUtil.numbericFormat(result.getJumlahPengasilanBulan(),"###,###"));
+        }
+
+        if (payrollSkalaGajiBodEntity.getCreatedDate() != null){
+            String createdDate = dateFormat.format(payrollSkalaGajiBodEntity.getCreatedDate());
+            result.setStCreatedDate(createdDate);
+        }
+        if (payrollSkalaGajiBodEntity.getLastUpdate() != null){
+            String lastUpdate = dateFormat.format(payrollSkalaGajiBodEntity.getLastUpdate());
+            result.setStLastUpdate(lastUpdate);
         }
 
         if (payrollSkalaGajiBodEntity.getPositionId()!=null){

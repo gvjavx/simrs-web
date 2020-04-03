@@ -305,7 +305,6 @@
                                                                 <s:else>
                                                                 </s:else>
                                                             </display:column>
-                                                            <s:if test="#attr.row.cekAdmin">
                                                             <display:column media="html" title="Refresh">
                                                                 <s:if test="#attr.row.lemburApprove">
                                                                     <s:if test="#attr.row.adaAbsen">
@@ -320,7 +319,6 @@
                                                                     </s:if>
                                                                 </s:if>
                                                             </display:column>
-                                                            </s:if>
                                                             <s:if test="#attr.row.cekAdmin">
                                                             <display:column media="html" title="Sesuaikan">
                                                                     <s:if test="#attr.row.lemburApprove">

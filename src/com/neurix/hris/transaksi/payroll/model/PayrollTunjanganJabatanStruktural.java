@@ -20,6 +20,11 @@ public class PayrollTunjanganJabatanStruktural extends BaseModel {
     private String kelompokName;
     private BigDecimal tunjJabatan;
     private BigDecimal tunjStruktural;
+    private String stTunjJabatan;
+    private String stTunjStruktural;
+
+    private String stCreatedDate;
+    private String stLastUpdate;
 
     public String getKelompokName() {
         return kelompokName;
@@ -53,6 +58,22 @@ public class PayrollTunjanganJabatanStruktural extends BaseModel {
         this.tunjStruktural = tunjStruktural;
     }
 
+    public String getStTunjJabatan() {
+        return stTunjJabatan;
+    }
+
+    public void setStTunjJabatan(String stTunjJabatan) {
+        this.stTunjJabatan = stTunjJabatan;
+    }
+
+    public String getStTunjStruktural() {
+        return stTunjStruktural;
+    }
+
+    public void setStTunjStruktural(String stTunjStruktural) {
+        this.stTunjStruktural = stTunjStruktural;
+    }
+
     public double getNilai() {
         return nilai;
     }
@@ -75,5 +96,23 @@ public class PayrollTunjanganJabatanStruktural extends BaseModel {
 
     public void setTunjJabStrukturId(String tunjJabStrukturId) {
         this.tunjJabStrukturId = tunjJabStrukturId;
+    }
+
+    @Override
+    public String getStCreatedDate() {
+        return stCreatedDate;
+    }
+
+    public void setStCreatedDate(String stCreatedDate) {
+        this.stCreatedDate = stCreatedDate;
+    }
+
+    @Override
+    public String getStLastUpdate() {
+        return stLastUpdate;
+    }
+
+    public void setStLastUpdate(String stLastUpdate) {
+        this.stLastUpdate = stLastUpdate;
     }
 }

@@ -9,6 +9,7 @@ import com.neurix.hris.master.golongan.model.ImGolonganHistoryEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -241,16 +242,27 @@ public class GolonganBoImpl implements GolonganBo {
                 // Looping from dao to object and save in collection
                 for(ImGolonganEntity golonganEntity : imGolonganEntity){
                     returnGolongan = new Golongan();
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+
                     returnGolongan.setGolonganId(golonganEntity.getGolonganId());
                     returnGolongan.setGolonganName(golonganEntity.getGolonganName());
                     returnGolongan.setLevel(golonganEntity.getLevel());
                     returnGolongan.setStLevel(golonganEntity.getLevel().toString());
-
                     returnGolongan.setCreatedWho(golonganEntity.getCreatedWho());
-                    returnGolongan.setCreatedDate(golonganEntity.getCreatedDate());
-                    returnGolongan.setLastUpdate(golonganEntity.getLastUpdate());
-                    returnGolongan.setLastUpdateWho(golonganEntity.getLastUpdateWho());
 
+                    if (golonganEntity.getCreatedDate() != null){
+                        String createdDate = dateFormat.format(golonganEntity.getCreatedDate());
+                        returnGolongan.setStCreatedDate(createdDate);
+                    }
+                    returnGolongan.setCreatedDate(golonganEntity.getCreatedDate());
+
+                    if (golonganEntity.getLastUpdate() != null){
+                        String lastUpdate = dateFormat.format(golonganEntity.getLastUpdate());
+                        returnGolongan.setStLastUpdate(lastUpdate);
+                    }
+                    returnGolongan.setLastUpdate(golonganEntity.getLastUpdate());
+
+                    returnGolongan.setLastUpdateWho(golonganEntity.getLastUpdateWho());
                     returnGolongan.setAction(golonganEntity.getAction());
                     returnGolongan.setFlag(golonganEntity.getFlag());
                     listOfResult.add(returnGolongan);

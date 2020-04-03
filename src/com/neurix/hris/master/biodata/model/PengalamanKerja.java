@@ -42,6 +42,10 @@ public class PengalamanKerja extends BaseModel {
     private String profesiName;
     private String flagJabatanAktif;
 
+    private String branchName;
+    private String tahun;
+    private String jabatanName;
+
     public String getProfesiName() {
         return profesiName;
     }
@@ -256,5 +260,29 @@ public class PengalamanKerja extends BaseModel {
 
     public void setTahunMasuk(Date tahunMasuk) {
         this.tahunMasuk = tahunMasuk;
+    }
+
+    public String getBranchName() {
+        return branchName;
+    }
+
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
+    }
+
+    public String getTahun() {
+        return tahun;
+    }
+
+    public void setTahun(String tahun) {
+        this.tahun = tahun;
+    }
+
+    public String getJabatanName() {
+        return jabatanName;
+    }
+
+    public void setJabatanName(String jabatanName) {
+        this.jabatanName = jabatanName;
     }
 }

@@ -43,7 +43,7 @@ public class PayrollSkalaGajiPkwtDao extends GenericDao<ImPayrollSkalaGajiPkwtEn
             criteria.add(Restrictions.eq("flag", (String) mapCriteria.get("flag")));
         }
         // Order by
-        criteria.addOrder(Order.desc("skalaGajiPkwtId"));
+        criteria.addOrder(Order.desc("createdDate"));
 
         List<ImPayrollSkalaGajiPkwtEntity> results = criteria.list();
 

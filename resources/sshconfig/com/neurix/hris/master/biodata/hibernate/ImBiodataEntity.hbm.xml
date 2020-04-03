@@ -15,28 +15,19 @@
             <column name="nama_pegawai" sql-type="varchar" length="100" not-null="true" />
         </property>
         <property name="gelarDepan">
-            <column name="gelar_depan" sql-type="varchar" length="10" not-null="false" />
+            <column name="gelar_depan" sql-type="varchar" length="20" not-null="false" />
         </property>
         <property name="gelarBelakang">
-            <column name="gelar_belakang" sql-type="varchar" length="10" not-null="false" />
-        </property>
-        <property name="tanggalMasuk">
-            <column name="tanggal_masuk" sql-type="timestamp" not-null="false" />
-        </property>
-        <property name="tanggalAktif">
-            <column name="tanggal_aktif" sql-type="timestamp" not-null="false" />
-        </property>
-        <property name="tanggalPensiun">
-            <column name="tanggal_pensiun" sql-type="timestamp" not-null="false" />
+            <column name="gelar_belakang" sql-type="varchar" length="20" not-null="false" />
         </property>
         <property name="noKtp">
-            <column name="no_ktp" sql-type="varchar" length="16" not-null="false" />
+            <column name="no_ktp" sql-type="varchar" length="20" not-null="false" />
         </property>
         <property name="alamat">
             <column name="alamat" sql-type="varchar" length="1000" not-null="false" />
         </property>
         <property name="rtRw">
-            <column name="rt_rw" sql-type="varchar" length="8" not-null="false" />
+            <column name="rt_rw" sql-type="varchar" length="100" not-null="false" />
         </property>
         <property name="desaId">
             <column name="desa" sql-type="varchar" length="100" not-null="false" />
@@ -45,7 +36,7 @@
             <column name="kecamatan" sql-type="varchar" length="100" not-null="false" />
         </property>
         <property name="noTelp">
-            <column name="no_telp" sql-type="varchar" length="15" not-null="false" />
+            <column name="no_telp" sql-type="varchar" length="100" not-null="false" />
         </property>
         <property name="kotaId">
             <column name="kabupaten" sql-type="varchar" length="10" not-null="false" />
@@ -71,7 +62,24 @@
         <property name="keterangan">
             <column name="keterangan" sql-type="varchar" length="1000" not-null="false" />
         </property>
-
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="tanggalAktif">
+            <column name="tanggal_aktif" sql-type="timestamp" not-null="false" />
+        </property>
+        <property name="golongan">
+            <column name="golongan_id" sql-type="varchar" length="10" not-null="false" />
+        </property>
         <!--<property name="divisi">-->
             <!--<column name="divisi" sql-type="varchar" length="4" not-null="false" />-->
         <!--</property>-->
@@ -85,11 +93,74 @@
         <property name="jumlahAnak">
             <column name="jumlah_anak" sql-type="bigint"/>
         </property>
+        <property name="gender">
+            <column name="jenis_kelamin" sql-type="integer" not-null="false" />
+        </property>
+        <property name="statusGiling">
+            <column name="status_giling" sql-type="varchar" length="10" not-null="false" />
+        </property>
+
+        <property name="noSkAktif">
+            <column name="no_sk_aktif" sql-type="integer" not-null="false" />
+        </property>
+
+
         <property name="pin">
             <column name="pin" sql-type="varchar" length="10"/>
         </property>
+        <property name="point">
+            <column name="point" sql-type="integer" not-null="false" />
+        </property>
+        <property name="zakatProfesi">
+            <column name="zakat_profesi" sql-type="integer" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="date" not-null="false" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="date" not-null="false" />
+        </property>
+        <property name="tanggalPensiun">
+            <column name="tanggal_pensiun" sql-type="timestamp" not-null="false" />
+        </property>
+        <!--<property name="danaPensiun">-->
+            <!--<column name="dana_pensiun" sql-type="numeric" length="5" precision="2"/>-->
+        <!--</property>-->
         <property name="danaPensiun">
-            <column name="dana_pensiun" sql-type="numeric" length="5" precision="2"/>
+            <column name="dana_pensiun" sql-type="varchar" length="100" />
+        </property>
+        <property name="strukturGaji">
+            <column name="struktur_gaji" sql-type="varchar" length="1" />
+        </property>
+        <property name="gaji">
+            <column name="gaji" sql-type="numeric" length="10" precision="2"/>
+        </property>
+        <property name="poinLebih">
+            <column name="poin_lebih" sql-type="integer" not-null="false" />
+        </property>
+        <!--<property name="agama">-->
+            <!--<column name="agama" sql-type="integer" not-null="false" />-->
+        <!--</property>-->
+        <property name="agama">
+            <column name="agama" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <!--<property name="tanggalMenikah">-->
+            <!--<column name="tanggal_menikah" sql-type="integer" not-null="false" />-->
+        <!--</property>-->
+        <property name="tanggalMenikah">
+            <column name="tanggal_menikah" sql-type="date" not-null="false" />
+        </property>
+        <!--<property name="npwp">-->
+            <!--<column name="npwp" sql-type="integer" not-null="false" />-->
+        <!--</property>-->
+        <property name="npwp">
+            <column name="npwp" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <!--<property name="mt">-->
+            <!--<column name="mt" sql-type="integer" not-null="false" />-->
+        <!--</property>-->
+        <property name="mt">
+            <column name="mt" sql-type="varchar" length="10" not-null="false" />
         </property>
         <property name="noAnggotaDapen">
             <column name="no_anggota_dapen" sql-type="varchar" length="30" />
@@ -103,63 +174,8 @@
         <property name="noBpjsKesehatan">
             <column name="no_bpjs_kesehatan" sql-type="varchar" length="30" />
         </property>
-        <property name="strukturGaji">
-            <column name="struktur_gaji" sql-type="varchar" length="1" />
-        </property>
-        <property name="gaji">
-            <column name="gaji" sql-type="numeric" length="5" precision="2"/>
-        </property>
-        <property name="flagMess">
-            <column name="flag_mess" sql-type="varchar" length="1" />
-        </property>
-
-        <property name="flag">
-            <column name="flag" sql-type="varchar" length="1" not-null="false" />
-        </property>
-        <property name="action">
-            <column name="action" sql-type="varchar" length="1" not-null="false" />
-        </property>
-        <property name="createdWho">
-            <column name="created_who" sql-type="varchar" length="20" not-null="false" />
-        </property>
-        <property name="lastUpdateWho">
-            <column name="last_update_who" sql-type="varchar" length="20" not-null="false" />
-        </property>
-        <property name="createdDate">
-            <column name="created_date" sql-type="date" not-null="false" />
-        </property>
-        <property name="lastUpdate">
-            <column name="last_update" sql-type="date" not-null="false" />
-        </property>
-        <property name="golongan">
-            <column name="golongan_id" sql-type="varchar" length="10" not-null="false" />
-        </property>
         <property name="shift">
             <column name="shift" sql-type="varchar" length="1" not-null="false" />
-        </property>
-            <property name="point">
-            <column name="point" sql-type="integer" not-null="false" />
-        </property>
-        <property name="poinLebih">
-            <column name="poin_lebih" sql-type="integer" not-null="false" />
-        </property>
-        <property name="agama">
-            <column name="agama" sql-type="integer" not-null="false" />
-        </property>
-        <property name="tanggalMenikah">
-            <column name="tanggal_menikah" sql-type="integer" not-null="false" />
-        </property>
-        <property name="npwp">
-            <column name="npwp" sql-type="integer" not-null="false" />
-        </property>
-        <property name="mt">
-            <column name="mt" sql-type="integer" not-null="false" />
-        </property>
-        <property name="golonganDapenId">
-            <column name="golongan_dapen_id" sql-type="varchar" length="3" not-null="false" />
-        </property>
-        <property name="masaKerjaGolongan">
-            <column name="masa_kerja_gol" sql-type="integer" not-null="false" />
         </property>
         <property name="golonganDapen">
             <column name="golongan_dapen" sql-type="varchar" not-null="false" />
@@ -173,27 +189,24 @@
         <property name="noRekBank">
             <column name="no_rek_bank" sql-type="varchar" not-null="false" />
         </property>
-        <property name="cabangBank">
-            <column name="cabang_bank" sql-type="varchar" not-null="false" />
-        </property>
-
         <property name="persentasiHutangPph">
             <column name="persentase_pph_komisaris" sql-type="numeric" length="5" precision="2" not-null="false" />
         </property>
-
-        <property name="gender">
-            <column name="jenis_kelamin" sql-type="integer" not-null="false" />
+        <property name="cabangBank">
+            <column name="cabang_bank" sql-type="varchar" not-null="false" />
         </property>
-        <property name="zakatProfesi">
-            <column name="zakat_profesi" sql-type="integer" not-null="false" />
+        <property name="flagMess">
+            <column name="flag_mess" sql-type="varchar" length="1" />
         </property>
-        <property name="noSkAktif">
-            <column name="no_sk_aktif" sql-type="integer" not-null="false" />
+        <property name="tanggalMasuk">
+            <column name="tanggal_masuk" sql-type="timestamp" not-null="false" />
         </property>
-        <property name="statusGiling">
-            <column name="status_giling" sql-type="varchar" length="10" not-null="false" />
+        <property name="golonganDapenId">
+            <column name="golongan_dapen_id" sql-type="varchar" length="3" not-null="false" />
         </property>
-
+        <property name="masaKerjaGolongan">
+            <column name="masa_kerja_gol" sql-type="integer" not-null="false" />
+        </property>
         <property name="tanggalAkhirKontrak">
             <column name="tgl_akhir_kontrak" sql-type="timestamp" not-null="false" />
         </property>
@@ -203,6 +216,10 @@
         <property name="positionIdTerakhir">
             <column name="position_id_terakhir" sql-type="varchar" length="10" not-null="false" />
         </property>
+        <property name="tanggalPraPensiun">
+            <column name="tanggal_pra_pensiun" sql-type="timestamp" not-null="false" />
+        </property>
+
 
         <many-to-one name="imProvinsiEntity" class="com.neurix.hris.master.provinsi.model.ImProvinsiEntity"
                      insert="false" update="false" fetch="select" cascade="all">

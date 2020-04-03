@@ -117,14 +117,6 @@
         </div>
     </div>
 
-    <div class="form-group">
-        <label class="control-label col-sm-2">Flag :</label>
-        <div class="col-sm-8" align="left">
-            <s:select cssClass="form-control" list="#{'Y':'Active', 'N':'NonActive'}" id="flag" name="tipePegawai.flag"
-                      headerKey="" headerValue="[Select one]"/>
-        </div>
-    </div>
-
     <br>
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">

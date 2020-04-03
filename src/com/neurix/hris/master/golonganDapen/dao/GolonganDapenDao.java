@@ -46,7 +46,7 @@ public class GolonganDapenDao extends GenericDao<ImGolonganDapenEntity, String> 
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
 
         // Order by
-        criteria.addOrder(Order.asc("golonganDapenId"));
+        criteria.addOrder(Order.asc("createdDate"));
 
         List<ImGolonganDapenEntity> results = criteria.list();
 
