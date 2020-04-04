@@ -157,7 +157,6 @@
         <section class="content-header">
             <h1>
                 Add Payroll
-                <small>GO-MEDSYS</small>
             </h1>
         </section>
         <!-- Main content -->

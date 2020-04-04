@@ -125,7 +125,7 @@ public interface PayrollBo extends BaseMasterBo<Payroll>{
 
     public String cekTunjanganInsentif(int bulanMulai, int bulanSampai, int tahun, String branchId) throws GeneralBOException;
 
-    List<Payroll> searchReportEsptSys(String tahun, String unit) throws GeneralBOException;
+    List<PayrollEsptDTO> searchReportEsptSys(String tahun, String unit) throws GeneralBOException;
 
     List<PayrollPendapatanPphDTO> searchReportPendapatanPph(String tahun, String unit) throws GeneralBOException;
 

@@ -106,6 +106,36 @@ public class HeaderDetailCheckup extends BaseModel{
     private String diagnosa;
     private String namaDiagnosa;
 
+    //for import
+    private String noSlipBank;
+    private String bank;
+    private String stTanggalFpk;
+
+
+    public String getNoSlipBank() {
+        return noSlipBank;
+    }
+
+    public void setNoSlipBank(String noSlipBank) {
+        this.noSlipBank = noSlipBank;
+    }
+
+    public String getBank() {
+        return bank;
+    }
+
+    public void setBank(String bank) {
+        this.bank = bank;
+    }
+
+    public String getStTanggalFpk() {
+        return stTanggalFpk;
+    }
+
+    public void setStTanggalFpk(String stTanggalFpk) {
+        this.stTanggalFpk = stTanggalFpk;
+    }
+
     public BigInteger getTotalBiayaDariBpjs() {
         return totalBiayaDariBpjs;
     }

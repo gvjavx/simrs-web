@@ -242,7 +242,6 @@
     <section class="content-header">
         <h1>
             Edit Payroll
-            <small>GO-MEDSYS</small>
         </h1>
     </section>
     <!-- Main content -->
@@ -3604,6 +3603,18 @@
             $('#bulanPayroll').val(bulan).change();
             $('#tahunPayroll').val(tahun).change();
             $('#branchId').val(branchId).change();
+        }
+
+        if (tipe!="PR"){
+            $('#detailTunjlain').hide();
+            $('#detailLembur').hide();
+            $('#btnDetailPtt').hide();
+            $('#btnSave').hide();
+            if (bulan=="12"){
+                $('#btnViewTotalPtt11').hide();
+                $('#btnViewPPhSeharusnya').hide();
+                $('#btnViewTotalPPh11').hide();
+            }
         }
 
         window.menujuLink = function(param, param2){

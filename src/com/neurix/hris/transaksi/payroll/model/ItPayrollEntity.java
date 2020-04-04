@@ -273,6 +273,7 @@ public class ItPayrollEntity implements Serializable {
     private ImBiodataEntity imBiodataEntity;
     private ItPayrollPphEntity itPayrollPphEntity;
 
+
     public String getApprovalUnitFlag() {
         return approvalUnitFlag;
     }

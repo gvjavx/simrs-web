@@ -951,13 +951,14 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
         }else if(tipe.equalsIgnoreCase("IN")){
             tipeWhere = "flagInsentif";
         }
-
         List<ItPayrollEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItPayrollEntity.class)
                 .add(Restrictions.eq("branchId", branchId))
                 .add(Restrictions.eq("bulan", bulan))
                 .add(Restrictions.eq("tahun", tahun))
                 .add(Restrictions.eq("flag", "Y"))
                 .add(Restrictions.eq(tipeWhere, "Y"))
+                .createCriteria("imPosition")
+                .addOrder(Order.asc("kelompokId"))
                 .list();
         return results;
     }
@@ -3868,79 +3869,71 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
         return listOfResult;
     }
 
-    public List<ItPayrollEntity> searchReportEspt(final String tahun, final String unit) {
-        final List<ItPayrollEntity> listOfResult = new ArrayList<ItPayrollEntity>();
-        List<Object[]> results = new ArrayList<Object[]>();
-        final String query = "select\n" +
-                "\tpayroll.nip,\n" +
-                "\tsum(payroll.gaji_golongan) as gaji_dasar,\n" +
-                "\tsum(payroll.tunjangan_umk) as tunjangan_umk,\n" +
-                "\tsum(payroll.tunjangan_struktural) as tunjangan_struktural,\n" +
-                "\tsum(payroll.tunjangan_peralihan) as tunjangan_peralihan,\n" +
-                "\tsum(payroll.tunjangan_jabatan_struktural) as tunjangan_jabatan_struktural,\n" +
-                "\tsum(payroll.tunjangan_strategis) as tunjangan_strategis,\n" +
-                "\tsum(payroll.kompensasi) as tunjangan_kompensasi,\n" +
-                "\tsum(payroll.tunjangan_transport) as tunjangan_transport,\n" +
-                "\tsum(payroll.tunjangan_air_listrik) as tunjangan_air_listrik,\n" +
-                "\tsum(payroll.tunjangan_pengobatan) as tunjangan_pengobatan,\n" +
-                "\tsum(payroll.tunjangan_perumahan) as tunjangan_perumahan,\n" +
-                "\tsum(payroll.tunjangan_pph) as tunjangan_pph,\n" +
-                "\tsum(payroll.tunjangan_lembur) as tunjangan_lembur,\n" +
-                "\tsum(payroll.tunjangan_lain) as tunjangan_lain,\n" +
-                "\tsum(payroll.total_a) as penghasilan_kotor,\n" +
-                "\tsum(payroll.tunjangan_baju_dinas) as tunjangan_baju_dinas,\n" +
-                "\tcount(payroll.nip) as masa_kerja,\n" +
-                "\tsum(payroll.iuran_pensiun) as iuran_pensiun,\n" +
-                "\tsum(payroll.iuran_bpjs_tk) as iuran_bpjs_tk,\n" +
-                "\tsum(payroll.iuran_bpjs_pensiun) as iuran_bpjs_pensiun,\n" +
-                "\tsum(payroll.iuran_bpjs_kesehatan) as iuran_bpjs_kesehatan,\n" +
-                "\tsum(payroll.uang_muka_lainnya) as uang_muka_lainnya,\n" +
-                "\tsum(payroll.kekurangan_bpjs_tk) as kekurangan_bpjs_tk,\n" +
-                "\tMAX(paypph.iuran_jkm_jkk) as iuranjkmjkk\n" +
+    public List<PayrollEsptDTO> searchReportEspt(String tahun, String unit) {
+        List<PayrollEsptDTO> listOfResult = new ArrayList<>();
+        List<Object[]> results;
+        final String query = "SELECT\n" +
+                "\tMIN(p.bulan) AS masaperolehanawal,\n" +
+                "\tMAX(p.bulan) AS masaperolehanakhir,\n" +
+                "\tpeg.npwp AS npwp,\n" +
+                "\tpeg.no_ktp AS noktp,\n" +
+                "\tpeg.nama_pegawai AS nama,\n" +
+                "\tpeg.alamat AS alamat,\n" +
+                "\tpeg.jenis_kelamin AS jk,\n" +
+                "\tpeg.status_keluarga AS status,\n" +
+                "\tpeg.jumlah_anak AS jumlahanak,\t\n" +
+                "\tpos.position_name AS namajabatan,\n" +
+                "\tsum(p.gaji_golongan) as jumlah1gaji,\n" +
+                "\tsum(p.tunjangan_pph) as jumlah2tunjpph,\n" +
+                "\tsum(p.tunjangan_umk+p.tunjangan_jabatan_struktural+p.tunjangan_struktural+p.tunjangan_strategis+p.tunjangan_peralihan+p.tunjangan_lain+p.tunjangan_tambahan+p.tunjangan_lembur+p.pemondokan+p.komunikasi+p.total_rlab+p.tunjangan_dapen+p.tunjangan_bpjs_ks+p.tunjangan_bpjs_tk) as jumlah3tunjanganlemburlainnya,\n" +
+                "\tsum(p.iuran_dapen_peg+p.iuran_bpjs_tk_kary+p.iuran_bpjs_ks_kary) as jumlah10iuranpensiunthtjht," +
+                "\tp.nip \n" +
                 "from\n" +
-                "\tim_position posisi\n" +
-                "\tleft join im_hris_position_bagian bagian on bagian.bagian_id = posisi.bagian_id\n" +
-                "\tleft join it_hris_payroll payroll on payroll.position_id = posisi.position_id\n" +
-                "\tleft join im_hris_pegawai pegawai on pegawai.nip = payroll.nip\n" +
-                "\tleft join it_hris_pegawai_position pegawai_position on pegawai.nip = pegawai_position.nip\n" +
-                "\tLEFT JOIN it_hris_payroll_pph paypph ON payroll.payroll_id=paypph.payroll_id\n" +
+                "\tit_hris_payroll p\n" +
+                "\tleft join it_hris_pegawai_position pp on p.nip = pp.nip\n" +
+                "\tleft join im_position pos on pp.position_id = pos.position_id\n" +
+                "\tleft join im_hris_pegawai peg on peg.nip = p.nip\n" +
                 "where\n" +
-                "\tpegawai_position.branch_id= '"+unit+"'\n" +
-                "\tand pegawai.flag ='Y'\n" +
-                "\tand payroll.flag_payroll ='Y'\n" +
-                "\tand payroll.tahun = '"+tahun+"'\n" +
+                "\tpp.branch_id= '"+unit+"'\n" +
+                "\tand peg.flag ='Y'\n" +
+                "\tand pp.flag='Y'\n" +
+                "\tand p.flag='Y'\n" +
+                "\tand pos.flag='Y'\n" +
+                "\tand p.approval_flag='Y'\n" +
+                "\tand p.flag_payroll ='Y'\n" +
+                "\tand p.tahun = '"+tahun+"'\n" +
                 "group by\n" +
-                "\tpayroll.nip\n" +
+                "\tp.nip,\n" +
+                "\tpeg.npwp,\n" +
+                "\tpeg.no_ktp,\n" +
+                "\tpeg.nama_pegawai,\n" +
+                "\tpeg.alamat,\n" +
+                "\tpeg.jenis_kelamin,\n" +
+                "\tpeg.status_keluarga,\n" +
+                "\tpeg.jumlah_anak,\n" +
+                "\tpos.position_name,\n" +
+                "\tpos.kelompok_id\n" +
                 "order by\n" +
-                "\tpayroll.nip";
+                "\tpos.kelompok_id\n" +
+                "\t";
         results = (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(query).list();
-        for (final Object[] row : results) {
-            final ItPayrollEntity result = new ItPayrollEntity();
-            result.setNip((String)row[0]);
-            result.setGajiGolongan(BigDecimal.valueOf(Double.valueOf(row[1].toString())));
-            result.setTunjanganUmk(BigDecimal.valueOf(Double.valueOf(row[2].toString())));
-            result.setTunjanganStruktural(BigDecimal.valueOf(Double.valueOf(row[3].toString())));
-            result.setTunjanganPeralihan(BigDecimal.valueOf(Double.valueOf(row[4].toString())));
-            result.setTunjanganJabatanStruktural(BigDecimal.valueOf(Double.valueOf(row[5].toString())));
-            result.setTunjanganStrategis(BigDecimal.valueOf(Double.valueOf(row[6].toString())));
-            result.setKompensasi(BigDecimal.valueOf(Double.valueOf(row[7].toString())));
-            result.setTunjanganTransport(BigDecimal.valueOf(Double.valueOf(row[8].toString())));
-            result.setTunjanganAirListrik(BigDecimal.valueOf(Double.valueOf(row[9].toString())));
-            result.setTunjanganPengobatan(BigDecimal.valueOf(Double.valueOf(row[10].toString())));
-            result.setTunjanganPerumahan(BigDecimal.valueOf(Double.valueOf(row[11].toString())));
-            result.setTunjanganPph(BigDecimal.valueOf(Double.valueOf(row[12].toString())));
-            result.setTunjanganLembur(BigDecimal.valueOf(Double.valueOf(row[13].toString())));
-            result.setTunjanganLain(BigDecimal.valueOf(Double.valueOf(row[14].toString())));
-            result.setTotalA(BigDecimal.valueOf(Double.valueOf(row[15].toString())));
-            result.setTunjanganBajuDinas(BigDecimal.valueOf(Double.valueOf(row[16].toString())));
-            result.setMasaKerjaBulan(Integer.valueOf(row[17].toString()));
-            result.setIuranPensiun(BigDecimal.valueOf(Double.valueOf(row[18].toString())));
-            result.setIuranBpjsTk(BigDecimal.valueOf(Double.valueOf(row[19].toString())));
-            result.setIuranBpjsPensiun(BigDecimal.valueOf(Double.valueOf(row[20].toString())));
-            result.setIuranBpjsKesehatan(BigDecimal.valueOf(Double.valueOf(row[21].toString())));
-            result.setUangMukaLainnya(BigDecimal.valueOf(Double.valueOf(row[22].toString())));
-            result.setKekuranganBpjsTk(BigDecimal.valueOf(Double.valueOf(row[23].toString())));
-            result.setIuranJkmJkk(BigDecimal.valueOf(Double.valueOf(row[24].toString())));
+        for (Object[] row : results) {
+            PayrollEsptDTO result = new PayrollEsptDTO();
+            result.setMasaPerolehanAwal((String)row[0]);
+            result.setMasaPerolehanAkhir((String)row[1]);
+            result.setNpwp((String)row[2]);
+            result.setNik((String)row[3]);
+            result.setNama((String)row[4]);
+            result.setAlamat((String)row[5]);
+            result.setJenisKelamin((String)row[6]);
+            result.setStatusPtkp((String)row[7]);
+            result.setJumlahTanggungan(String.valueOf(row[8]));
+            result.setNamaJabatan((String)row[9]);
+            result.setJumlah1(BigDecimal.valueOf(Double.valueOf(row[10].toString())));
+            result.setJumlah2(BigDecimal.valueOf(Double.valueOf(row[11].toString())));
+            result.setJumlah3(BigDecimal.valueOf(Double.valueOf(row[12].toString())));
+            result.setJumlah10(BigDecimal.valueOf(Double.valueOf(row[13].toString())));
+            result.setNip((String)row[14]);
             listOfResult.add(result);
         }
         return listOfResult;
@@ -4121,6 +4114,16 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
         return results;
     }
 
+    public List<ItPayrollEntity> getDataPayrollByBulan12Branch(String branchId,String tahun) throws HibernateException {
+        List<ItPayrollEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItPayrollEntity.class)
+                .add(Restrictions.eq("tahun", tahun))
+                .add(Restrictions.eq("bulan", "12"))
+                .add(Restrictions.eq("branchId", branchId))
+                .addOrder(Order.desc("payrollId"))
+                .list();
+        return results;
+    }
+
     public List<ItPayrollEntity> getDataPayrollByBulanBranchApproveNull(String branchId) throws HibernateException {
         List<ItPayrollEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItPayrollEntity.class)
                 .add(Restrictions.eq("flag", "Y"))
@@ -4210,6 +4213,27 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
         }
         return total;
     }
+    public BigDecimal getPPhGaji12Bulan(String tahun,String nip){
+        BigDecimal total = new BigDecimal(0);
+        String query="select \n" +
+                "\tsum(pph_gaji\n" +
+                "\t\t  ) as jumlah\n" +
+                "\tfrom it_hris_payroll\n" +
+                "\t\twhere nip = '"+nip+"'\n" +
+                "\t\tand tahun='"+tahun+"'\n" +
+                "\t\tand flag='Y'\n" +
+                "\t\tand flag_payroll='Y'\n" +
+                "\t\tand approval_flag='Y'";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            total = BigDecimal.valueOf(Double.parseDouble(results.toString()));
+        }else{
+            total = BigDecimal.valueOf(0);
+        }
+        return total;
+    }
+
     public BigDecimal getPPhGajiBonusSetahun(String tahun,String nip){
         BigDecimal total = new BigDecimal(0);
         String query="select \n" +
@@ -4220,6 +4244,7 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
                 "\t\tand tahun='"+tahun+"'\n" +
                 "\t\tand flag='Y'\n" +
                 "\t\tand flag_payroll<>'Y'\n" +
+                "\t\tand flag_pensiun<>'Y'\n" +
                 "\t\tand approval_flag='Y'";
         Object results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query).uniqueResult();
@@ -4262,6 +4287,7 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
                 "\t\tand tahun='"+tahun+"'\n" +
                 "\t\tand flag='Y'\n" +
                 "\t\tand flag_payroll<>'Y'\n" +
+                "\t\tand flag_pensiun<>'Y'\n" +
                 "\t\tand approval_flag='Y'";
         Object results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query).uniqueResult();
@@ -4283,6 +4309,7 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
                 "\t\tand tahun='"+tahun+"'\n" +
                 "\t\tand flag='Y'\n" +
                 "\t\tand flag_payroll<>'Y'\n" +
+                "\t\tand flag_pensiun<>'Y'\n" +
                 "\t\tand approval_flag='Y'";
         Object results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query).uniqueResult();

@@ -52,7 +52,6 @@
     <section class="content-header">
         <h1>
             Payroll
-            <small>GO-MEDSYS</small>
         </h1>
     </section>
     <!-- Main content -->
@@ -187,7 +186,7 @@
                                         <br>
                                         <br>
                                         <center>
-                                            <table id="showdata" width="100%">
+                                            <table id="showdata" width="60%">
                                                 <tr>
                                                     <td align="center">
                                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
@@ -199,7 +198,7 @@
                                                         <s:set name="listOfPayroll" value="#session.listOfResult" scope="request" />
                                                         <display:table name="listOfPayroll" class=" tablePayroll table table-condensed table-striped table-hover"
                                                                        requestURI="paging_displaytag_payroll.action" export="true" id="row" pagesize="24" style="font-size:10">
-                                                                <display:column media="html" title="Approve Kanpus" style="text-align:center;">
+                                                                <display:column media="html" title="Approve Kanpus">
                                                                     <s:if test='#attr.row.statusApprove=="K"'>
                                                                         <s:if test="%{payroll.kantorPusat}">
                                                                         <a href="javascript:;" bulan="<s:property value="%{#attr.row.bulan}"/>"
@@ -216,7 +215,7 @@
                                                                         <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_edit">
                                                                     </s:elseif>
                                                                 </display:column>
-                                                            <display:column media="html" title="Approve Unit" style="text-align:center;">
+                                                            <display:column media="html" title="Approve Unit">
                                                                 <s:if test='#attr.row.statusApprove=="U"'>
                                                                     <a href="javascript:;" bulan="<s:property value="%{#attr.row.bulan}"/>"
                                                                        tahun="<s:property value="%{#attr.row.tahun}"/>"
@@ -242,11 +241,16 @@
                                                                     <s:param name="branchId"><s:property value="#attr.row.branchId"/></s:param>
                                                                     <s:param name="tipe"><s:property value="#attr.row.tipe"/></s:param>
                                                                 </s:url>
-                                                                <s:if test='#attr.row.statusApprove=="D"'>
+                                                                <s:if test='#attr.row.statusApprove=="K"'>
                                                                     <s:a href="%{urlEdit}">
                                                                         <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" >
                                                                     </s:a>
                                                                 </s:if>
+                                                                <s:elseif test='#attr.row.statusApprove=="D"'>
+                                                                    <s:a href="%{urlEdit}">
+                                                                        <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" >
+                                                                    </s:a>
+                                                                </s:elseif>
                                                             </display:column>
                                                             <display:column media="html" title="Edit">
                                                                 <s:url var="urlEdit" namespace="/payroll" action="edit_payroll" escapeAmp="false">
@@ -282,8 +286,8 @@
                                                             <display:column property="bulan" title="Bulan"  />
                                                             <display:column property="tahun" title="Tahun"  />
                                                             <display:column property="jumlahPegawai" title="Jumlah Pegawai"  />
-                                                            <display:column property="totalA" title="Jumlah Kotor"  />
-                                                            <display:column property="totalGajiBersih" title="Jumlah Bersih"  />
+                                                            <display:column style="text-align:right;" property="totalA" title="Jumlah Kotor"  />
+                                                            <display:column style="text-align:right;" property="totalGajiBersih" title="Jumlah Bersih"  />
                                                             <display:column property="approvalFlag" title="Status Approve" />
                                                             <display:column property="stApprovalDate" title="Tanggal Approve" />
                                                         </display:table>

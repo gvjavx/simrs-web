@@ -9,6 +9,20 @@
     <%@ include file="/pages/common/header.jsp" %>
     <script type="text/javascript">
         $(document).ready(function () {
+            function callSearch2() {
+                $('#view_dialog_menu').dialog('close');
+                $('#info_dialog').dialog('close');
+            }
+            function link(){
+                window.location.href="<s:url action='initForm_createfpk'/>";
+            }
+
+            $('#sortTable2').DataTable({
+                "order": [[1, "desc"]],
+                "columnDefs": [
+                    { "orderable": false, "targets": 0 }
+                ]
+            });
             window.close = function () {
                 $('#view_dialog_menu').dialog('close');
                 $('#info_dialog').dialog('close');
@@ -57,7 +71,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            FPK (Form Penganjuan Klaim) Pasien BPJS
+            FPK (Form Pengajuan Klaim) Pasien BPJS
             <small>GO-MEDSYS</small>
         </h1>
     </section>
@@ -70,11 +84,58 @@
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-upload"></i> Hasil Import CSV BPJS Kesehatan</h3>
                     </div>
-                    <s:form id="importCsvForm" enctype="multipart/form-data" method="post" namespace="/createfpk"
-                            action="prosesImportCsv_createfpk.action" theme="simple">
+                    <s:form id="saveImportCsv" enctype="multipart/form-data" method="post" namespace="/createfpk"
+                            action="saveImportCsv_createfpk.action" theme="simple">
                         <div class="box-body">
                             <div class="row">
-                                <div class="col-md-offset-2 col-md-8">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-offset-2 col-sm-2" style="margin-top: 7px">Bank</label>
+                                    <div class="col-md-4">
+                                        <select class="form-control" id="bank" name="headerDetailCheckup.bank">
+                                            <option value="" >[Select One]</option>
+                                            <option value="bri">BRI</option>
+                                            <option value="bni">BNI</option>
+                                            <option value="bca">BCA</option>
+                                            <option value="mandiri">Mandiri</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-offset-2 col-sm-2" style="margin-top: 7px">No. FPK</label>
+                                    <div class="col-sm-4">
+                                        <s:textfield id="npFpk" cssStyle="margin-top: 7px"
+                                                     name="headerDetailCheckup.noFpk" required="false"
+                                                     readonly="false" cssClass="form-control"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-offset-2 col-sm-2" style="margin-top: 7px">No. Slip</label>
+                                    <div class="col-sm-4">
+                                        <s:textfield id="noSlipBank" cssStyle="margin-top: 7px"
+                                                     name="headerDetailCheckup.noSlipBank" required="false"
+                                                     readonly="false" cssClass="form-control"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-offset-2 col-sm-2" style="margin-top: 7px">Tanggal</label>
+                                    <div class="col-md-4">
+                                        <div class="input-group date" style="margin-top: 7px" id="stTanggalFpk">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <input class="form-control datepicker" id="tanggal_fpk" name="headerDetailCheckup.stTanggalFpk">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
                                     <div class="box-header with-border"></div>
                                     <div class="box-header with-border">
                                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar SEP Klaim</h3>
@@ -83,18 +144,40 @@
                                         <table id="sortTable2" class="table table-bordered table-striped">
                                             <thead>
                                             <tr bgcolor="#90ee90">
+                                                <td>ID</td>
                                                 <td>No. SEP</td>
                                                 <td>Total Biaya ( dari RS )</td>
                                                 <td>Total Biaya ( dari BPJS )</td>
-
+                                                <td>Keterangan</td>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             <s:iterator value="#session.listOfImportCsv" var="row">
                                                 <tr>
+                                                    <td><s:property value="idDetailCheckup"/></td>
                                                     <td><s:property value="NoSep"/></td>
-                                                    <td><s:property value="totalBiaya"/></td>
-                                                    <td><s:property value="totalBiayaDariBpjs"/></td>
+                                                    <td style="text-align: right"><s:property value="totalBiaya" /></td>
+                                                    <td style="text-align: right"><s:property value="totalBiayaDariBpjs"/></td>
+                                                    <td>
+                                                        <s:if test='#row.statusBayar == "SB"'>
+                                                            <label class="label label-danger"> Data SEP sudah di klaim</label>
+                                                        </s:if>
+                                                        <s:elseif test='#row.statusBayar == "N"'>
+                                                            <label class="label label-danger"> Data SEP tidak ada</label>
+                                                        </s:elseif>
+                                                        <s:elseif test='#row.statusBayar == "KB"'>
+                                                            <label class="label label-warning"> Biaya BPJS < Biaya RS</label>
+                                                        </s:elseif>
+                                                        <s:elseif test='#row.statusBayar == "LB"'>
+                                                            <label class="label label-success"> Biaya BPJS > Biaya RS</label>
+                                                        </s:elseif>
+                                                        <s:elseif test='#row.statusBayar == "P"'>
+                                                            <label class="label label-success"> Biaya BPJS = Biaya RS</label>
+                                                        </s:elseif>
+                                                        <s:else>
+                                                            <label class="label label-default"> Kesalahan data</label>
+                                                        </s:else>
+                                                    </td>
                                                 </tr>
                                             </s:iterator>
                                             </tbody>
@@ -106,13 +189,13 @@
                                     <div class="form-group col-md-offset-4">
                                         <br>
                                         <sj:submit targets="crud" type="button" cssClass="btn btn-primary"
-                                                   formIds="importCsvForm" id="save" name="save"
+                                                   formIds="saveImportCsv" id="save" name="save"
                                                    onBeforeTopics="beforeProcessSave"
                                                    onCompleteTopics="closeDialog,successDialog"
                                                    onSuccessTopics="successDialog"
                                                    onErrorTopics="errorDialog">
-                                            <i class="fa fa-upload"></i>
-                                            Import
+                                            <i class="fa fa-save"></i>
+                                            Save
                                         </sj:submit>
                                         <a type="button" class="btn btn-danger" href="initForm_createfpk.action">
                                             <i class="fa fa-arrow-left"></i> Go Back

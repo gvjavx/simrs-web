@@ -903,6 +903,12 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                                 // use comma as separator
                                 String[] data = line.split(cvsSplitBy);
 
+                                if (data.length!=2){
+                                    String status="ERROR : file CSV tidak sesuai";
+                                    logger.error("[CheckupAction.uploadImages] "+status );
+                                    throw new GeneralBOException(status);
+                                }
+
                                 //hasilnya
                                 HeaderDetailCheckup result = new HeaderDetailCheckup();
                                 result.setNoSep(data[0]);
@@ -914,7 +920,24 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                                 List<ItSimrsHeaderDetailCheckupEntity> resultList = kasirRawatJalanBoProxy.getSearchCheckupBySep(data[0]);
                                 for (ItSimrsHeaderDetailCheckupEntity headerDetailCheckup : resultList){
                                     result.setTotalBiaya(headerDetailCheckup.getTotalBiaya());
+                                    result.setStatus(headerDetailCheckup.getStatusBayar());
+                                    result.setIdDetailCheckup(headerDetailCheckup.getIdDetailCheckup());
                                 }
+                                String statusBayar;
+                                if (("Y").equalsIgnoreCase(result.getStatus())){
+                                    statusBayar="SB";
+                                }else if (result.getTotalBiaya()==null){
+                                    statusBayar="N";
+                                }else if (result.getTotalBiayaDariBpjs().compareTo(result.getTotalBiaya())<0){
+                                    statusBayar="KB";
+                                }else if (result.getTotalBiaya().compareTo(result.getTotalBiayaDariBpjs())<0){
+                                    statusBayar="LB";
+                                }else if (result.getTotalBiaya().compareTo(result.getTotalBiayaDariBpjs())==0){
+                                    statusBayar="P";
+                                }else{
+                                    statusBayar="UK";
+                                }
+                                result.setStatusBayar(statusBayar);
 
                                 listOfResult.add(result);
                             }
@@ -946,6 +969,95 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
         logger.info("[KasirRawatJalanAction.prosesImportCsv] end process <<<");
         return "hasil_import_csv";
+    }
+
+    public String saveImportCsv() {
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        HeaderDetailCheckup data = getHeaderDetailCheckup();
+        List<HeaderDetailCheckup> listCsvImport = (List<HeaderDetailCheckup>) session.getAttribute("listOfImportCsv");
+        List<Fpk> fpkList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        KasirRawatJalanBo kasirRawatJalanBo = (KasirRawatJalanBo) ctx.getBean("kasirRawatJalanBoProxy");
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+        BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
+
+        for (HeaderDetailCheckup detailCheckup : listCsvImport){
+            Fpk fpk = new Fpk();
+            fpk.setNoFpk(data.getNoFpk());
+            fpk.setNoSep(detailCheckup.getNoSep());
+            fpk.setIdDetailCheckup(detailCheckup.getIdDetailCheckup());
+            fpk.setIdPasien(detailCheckup.getIdPasien());
+            fpk.setNoSlip(data.getNoSlipBank());
+
+            fpkList.add(fpk);
+        }
+
+        // create map jurnal
+        List<Map> mapListKlaim = new ArrayList<>();
+        BigDecimal total = new BigDecimal(0);
+        for (Fpk fpk : fpkList){
+            HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+            detailCheckup.setIdDetailCheckup(fpk.getIdDetailCheckup());
+
+            List<HeaderDetailCheckup> details = checkupDetailBo.getByCriteria(detailCheckup);
+            if (details.size() > 0){
+                for (HeaderDetailCheckup detail : details){
+                    BigDecimal nilai = checkupDetailBo.getSumJumlahTindakan(detail.getIdDetailCheckup(), "");
+                    BigDecimal nilaiObat = checkupDetailBo.getSumJumlahTindakan(detail.getIdDetailCheckup(), "resep");
+
+                    BigDecimal ppn = nilaiObat.multiply(new BigDecimal(0.1)).setScale(2, BigDecimal.ROUND_HALF_UP);
+                    BigDecimal totalNilai = nilai.add(ppn);
+
+                    total = total.add(totalNilai);
+
+                    Map mapKlaim = new HashMap();
+                    mapKlaim.put("bukti", detail.getInvoice());
+                    mapKlaim.put("pasien_id", fpk.getIdPasien());
+                    mapKlaim.put("nilai", totalNilai);
+                    mapListKlaim.add(mapKlaim);
+                }
+            }
+        }
+
+        String branchId = CommonUtil.userBranchLogin();
+        String userLogin = CommonUtil.userLogin();
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+
+        Map mapJurnal = new HashMap();
+        mapJurnal.put("kas", total);
+        mapJurnal.put("piutang_pasien_bpjs", mapListKlaim);
+        mapJurnal.put("metode_bayar", "transfer");
+        mapJurnal.put("bank", data.getBank());
+
+        String noJurnal = "";
+        String catatan = "Pembayaran Piutang BPJS Bank "+data.getBank()+" No. FPK "+data.getNoFpk()+" No. Referensi "+data.getNoSlipBank();
+        try {
+            noJurnal = billingSystemBo.createJurnal("10", mapJurnal, branchId, catatan, "Y");
+            if (!"".equalsIgnoreCase(noJurnal)){
+                for (Fpk fpk : fpkList){
+                    HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+                    detailCheckup.setIdDetailCheckup(fpk.getIdDetailCheckup());
+                    detailCheckup.setNoJurnal(noJurnal);
+                    detailCheckup.setBranchId(branchId);
+                    detailCheckup.setAction("U");
+                    detailCheckup.setLastUpdate(time);
+                    detailCheckup.setLastUpdateWho(userLogin);
+
+                    try {
+                        checkupDetailBo.saveUpdateNoJuran(detailCheckup);
+                    } catch (GeneralBOException e){
+                        logger.error("Found Error");
+                        throw new GeneralBOException(e.getMessage());
+                    }
+                }
+            }
+            kasirRawatJalanBo.pembayaranFPK(fpkList);
+        }catch (GeneralBOException e){
+            logger.error("Found Error");
+            throw new GeneralBOException(e.getMessage());
+        }
+
+        return "success_save_import_fpk";
     }
 
     public CrudResponse saveNoFPK(String jsonString, String noFPK, String tanggal) throws JSONException {
@@ -1006,7 +1118,6 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             List<Map> mapListKlaim = new ArrayList<>();
             BigDecimal total = new BigDecimal(0);
             for (Fpk fpk : fpkList){
-
                 HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
                 detailCheckup.setIdDetailCheckup(fpk.getIdDetailCheckup());
 

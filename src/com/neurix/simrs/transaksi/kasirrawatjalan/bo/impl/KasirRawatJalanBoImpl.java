@@ -253,14 +253,28 @@ public class KasirRawatJalanBoImpl implements KasirRawatJalanBo {
 
     @Override
     public List<ItSimrsHeaderDetailCheckupEntity> getSearchCheckupBySep(String noSep) throws GeneralBOException {
-
         List<ItSimrsHeaderDetailCheckupEntity> list = new ArrayList<>();
+        List<ItSimrsHeaderDetailCheckupEntity> listOfResult = new ArrayList<>();
         try {
             list = checkupDetailDao.getSearchCheckupBySep(noSep);
         }catch (HibernateException e){
             logger.error("Found Error "+e.getMessage());
         }
 
-        return list;
+        for (ItSimrsHeaderDetailCheckupEntity headerDetailCheckupEntity : list){
+            Map hscriteria = new HashMap();
+            hscriteria.put("no_sep",noSep);
+            hscriteria.put("flag","Y");
+            List<ItSImrsFpkEntity> fpkEntityList = fpkDao.getByCriteria(hscriteria);
+
+            headerDetailCheckupEntity.setStatusBayar(null);
+            for (ItSImrsFpkEntity fpkEntity : fpkEntityList){
+                if (("Y").equalsIgnoreCase(fpkEntity.getStatusBayar())){
+                    headerDetailCheckupEntity.setStatusBayar("Y");
+                }
+            }
+            listOfResult.add(headerDetailCheckupEntity);
+        }
+        return listOfResult;
     }
 }

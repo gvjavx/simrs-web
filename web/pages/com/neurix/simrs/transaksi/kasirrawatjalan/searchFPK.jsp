@@ -155,7 +155,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            FPK (Form Penganjuan Klaim) Pasien BPJS
+            FPK (Form Pengajuan Klaim) Pasien BPJS
             <small>e-HEALTH</small>
         </h1>
     </section>
@@ -254,7 +254,7 @@
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
                                         <a href="importCsv_createfpk.action" class="btn btn-primary" id="btn_import_csv"><i class="fa fa-upload"></i>
-                                            Import CSV</a>
+                                            Import Klaim BPJS</a>
                                         <a class="btn btn-primary" id="btn_create" style="display: none" onclick="createFPK()"><i class="fa fa-plus"></i>
                                             Create FPK</a>
                                     </div>
@@ -400,7 +400,7 @@
                                             <option value="bca">BCA</option>
                                             <option value="mandiri">Mandiri</option>
                                         </select>
-                                    </div>
+                                    </div>`
                                 </div>
                                 <%--<div class="form-group">--%>
                                     <%--<label class="col-md-2" style="margin-top: 7px">No Kartu</label>--%>

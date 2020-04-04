@@ -109,7 +109,6 @@
     <section class="content-header">
         <h1>
             View Payroll
-            <small>GO-MEDSYS</small>
         </h1>
     </section>
     <!-- Main content -->
@@ -286,13 +285,13 @@
                                                         <s:set name="listDataPayroll" value="#session.listDataPayroll" scope="request" />
                                                         <display:table name="listDataPayroll" class="tablePayroll table table-condensed table-striped table-hover"
                                                                        requestURI="paging_displaytag_view_payroll.action" export="true" id="row" pagesize="40" style="font-size:10">
+                                                            <s:if test="#attr.row.cetakSatuan">
                                                             <display:column media="html" title="Print">
-                                                                <s:if test="#attr.row.cetakSatuan">
                                                                 <a href="javascript:;" data="<s:property value="%{#attr.row.payrollId}"/>" class="item-print">
                                                                     <img border="0" src="<s:url value="/pages/images/icon_printer_lama.ico"/>" name="icon_edit">
                                                                 </a>
-                                                                </s:if>
                                                             </display:column>
+                                                            </s:if>
                                                             <display:column media="html" title="View">
                                                                 <a href="javascript:;" data="<s:property value="%{#attr.row.payrollId}"/>" class="item-edit">
                                                                     <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_edit">
@@ -314,14 +313,14 @@
                                                             <display:column style="text-align:right;" property="totalJasProd" sortable="true" title="Jasprod" />
                                                             <display:column style="color: #4d9900;" property="tanggalJubileum" sortable="true" title="Jubileum" />
                                                             <display:column style="color: #b3b300;" property="stTanggalPensiun" sortable="true" title="Pensiun" />
-                                                            <display:column style="text-align:center;" media="html" title="Promosi">
+                                                            <%--<display:column style="text-align:center;" media="html" title="Promosi">
                                                                 <s:if test="#attr.row.flagPromosiOn">
                                                                     <a href="javascript:;" payrollId="<s:property value="%{#attr.row.payrollId}"/>"
                                                                        nip="<s:property value="%{#attr.row.nip}"/>" class="item-promosi">
                                                                         <span style="font-size: 17px" class="glyphicon glyphicon-user"></span>
                                                                     </a>
                                                                 </s:if>
-                                                            </display:column>
+                                                            </display:column>--%>
 
 
 
@@ -2458,7 +2457,6 @@
         $('#branchId').val(branchId).change();
         $('#tipe').val(tipe).change();
 
-
         if(bulan != null){
             $('#txtTipeId').val(tipe);
             $('#txtBulanPayroll').val(bulan);
@@ -2475,6 +2473,16 @@
             $('#tahunPayroll').val(tahun).change();
             $('#branchId').val(branchId).change();
             $('#tipe').val(tipe).change();
+        }
+        if (tipe!="PR"){
+            $('#detailTunjlain').hide();
+            $('#detailLembur').hide();
+            $('#btnDetailPtt').hide();
+            if (bulan=="12"){
+                $('#btnViewTotalPtt11').hide();
+                $('#btnViewPPhSeharusnya').hide();
+                $('#btnViewTotalPPh11').hide();
+            }
         }
 
         window.menujuLink = function(param, param2){

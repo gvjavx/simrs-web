@@ -10,6 +10,8 @@ import com.neurix.hris.master.biodata.dao.PelatihanJabatanUserDao;
 import com.neurix.hris.master.biodata.model.*;
 import com.neurix.hris.master.ijin.model.Ijin;
 import com.neurix.hris.master.keluarga.model.Keluarga;
+import com.neurix.hris.master.profesi.bo.ProfesiBo;
+import com.neurix.hris.master.profesi.model.Profesi;
 import com.neurix.hris.master.reward.model.Reward;
 import com.neurix.hris.master.sertifikat.model.Sertifikat;
 import com.neurix.hris.master.study.bo.StudyBo;
@@ -1862,6 +1864,9 @@ public class BiodataAction extends BaseMasterAction{
 
     public void saveAddPengalaman(String nip, String namaPerusahaan, String jabatan, String tanggalMasuk, String tanggalKeluar){
         logger.info("[StudyAction.saveAdd] start process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+
+
 
         try {
             PengalamanKerja pengalamanKerja = new PengalamanKerja();
@@ -2156,11 +2161,21 @@ public class BiodataAction extends BaseMasterAction{
     public String saveAddDataPengalamaKerja(String nip, String branchId, String divisiId, String positionId, String tanggal, String tanggalKeluar,
                                             String tipePegawaiId, String golonganId,String pjsFlag, String perusahaanLain, String bidangLain, String jabatanLain, String flagAktif, String profesiId){
         logger.info("[BiodataAction.saveAdd] start process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        String hasilProfesi="";
+        ProfesiBo profesiBo = (ProfesiBo) ctx.getBean("profesiBoProxy");
+        Profesi searchProfesi = new Profesi();
+        searchProfesi.setProfesiId(profesiId);
+        searchProfesi.setFlag("Y");
+        List<Profesi> profesis = profesiBo.getByCriteria(searchProfesi);
+        for (Profesi profesi : profesis){
+            hasilProfesi = profesi.getProfesiName();
+        }
+
 
         try {
             HistoryJabatanPegawai historyJabatanPegawai = new HistoryJabatanPegawai();
             historyJabatanPegawai.setNip(nip);
-
             historyJabatanPegawai.setBranchId(branchId);
             if (branchId.equalsIgnoreCase("0")){
                 if (perusahaanLain!=null){
@@ -2202,7 +2217,6 @@ public class BiodataAction extends BaseMasterAction{
             historyJabatanPegawai.setAction("C");
             historyJabatanPegawai.setFlag("Y");
 
-            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             BiodataBo userBo = (BiodataBo) ctx.getBean("biodataBoProxy");
             userBo.addPengalamanKerja(historyJabatanPegawai);
         }catch (GeneralBOException e) {
