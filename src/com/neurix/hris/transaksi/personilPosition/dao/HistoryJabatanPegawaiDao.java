@@ -112,6 +112,25 @@ public class HistoryJabatanPegawaiDao extends GenericDao<ImtHrisHistoryJabatanPe
         return results;
     }
 
+    public List<ImtHrisHistoryJabatanPegawaiEntity> getDataJabatan(String term) throws HibernateException {
+
+        List<ImtHrisHistoryJabatanPegawaiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImtHrisHistoryJabatanPegawaiEntity.class)
+                .add(Restrictions.eq("nip",term))
+                .add(Restrictions.eq("jabatanFlag", "Y"))
+                .addOrder(Order.asc("historyJabatanId"))
+                .list();
+
+        return results;
+    }
+
+    public List<ImtHrisHistoryJabatanPegawaiEntity> getStatusMutasi(String term) throws HibernateException {
+        List<ImtHrisHistoryJabatanPegawaiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImtHrisHistoryJabatanPegawaiEntity.class)
+                .add(Restrictions.eq("historyJabatanId",term))
+                .list();
+
+        return results;
+    }
+
     public List<ImtHrisHistoryJabatanPegawaiEntity> historyJabatanDanSmk(String nip){
         List<ImtHrisHistoryJabatanPegawaiEntity> listOfResult = new ArrayList<ImtHrisHistoryJabatanPegawaiEntity>();
         List<Object[]> results = new ArrayList<Object[]>();

@@ -140,7 +140,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="tunjJabatan1" name="payrollTunjanganJabatanStruktural.tunjJabatan" required="true"  cssClass="form-control"/>
+                                <s:textfield type="number" id="tunjJabatan1" name="payrollTunjanganJabatanStruktural.tunjJabatan" required="true"  cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -150,7 +150,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="tunjStruktural1" name="payrollTunjanganJabatanStruktural.tunjStruktural" required="true"  cssClass="form-control"/>
+                                <s:textfield type="number" id="tunjStruktural1" name="payrollTunjanganJabatanStruktural.tunjStruktural" required="true"  cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>

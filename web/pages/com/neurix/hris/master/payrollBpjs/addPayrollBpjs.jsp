@@ -50,12 +50,37 @@
                     if (percentBpjsKsKary <= 100 && percentBpjsKsPers <= 100 && percentBpjsTkKary <= 100 && percentBpjsTkPers <= 100
                         && iuranKaryawan <= 100 && jpkKaryawan <= 100 && iurPers <= 100 && jkkPers <= 100 && jhtPers <= 100 && jkmPers <= 100
                         && jpkPers <= 100){
-                        if (confirm('Do you want to save this record?')) {
-                            event.originalEvent.options.submit = true;
-                            $.publish('showDialog');
-                        } else {
-                            // Cancel Submit comes with 1.8.0
+
+                        console.log("min "+minBpjsKs);
+                        console.log("max "+maxBpjsKs);
+                        console.log("min "+minBpjsTk);
+                        console.log("max "+maxBpjsTk);
+                        var bool = (minBpjsKs >= maxBpjsKs && minBpjsTk >= maxBpjsTk);
+                        console.log("bool "+bool);
+                        if (minBpjsKs <= maxBpjsKs && minBpjsTk <= maxBpjsTk){
+                            if (confirm('Do you want to save this record?')) {
+                                event.originalEvent.options.submit = true;
+                                $.publish('showDialog');
+                            } else {
+                                // Cancel Submit comes with 1.8.0
+                                event.originalEvent.options.submit = false;
+                            }
+                        }else {
+
                             event.originalEvent.options.submit = false;
+                            var msg = "";
+                            if (minBpjsKs > maxBpjsKs){
+                                msg += 'Field <strong>Peringatan. </strong> Min BPJS KS lebih besar daripada Max BPJS KS.' + '<br/>';
+                                console.log("Error");
+                            }
+                            if (minBpjsTk > maxBpjsTk){
+                                msg += 'Field <strong>Peringatan. </strong> Min BPJS TK lebih besar daripada Max BPJS TK.' + '<br/>';
+                                console.log("Error");
+                            }
+
+                            document.getElementById('errorValidationMessage').innerHTML = msg;
+
+                            $.publish('showErrorValidationDialog');
                         }
                     }else {
                         event.originalEvent.options.submit = false;
@@ -283,7 +308,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="percentBpjsKsKary1" name="payrollBpjs.iuranBpjsKsKaryPersen" required="true" cssClass="form-control"/>
+                                <s:textfield type="number" id="percentBpjsKsKary1" name="payrollBpjs.iuranBpjsKsKaryPersen" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -293,7 +318,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="percentBpjsKsPers1" name="payrollBpjs.iuranBpjsKsPersPersen" required="true" cssClass="form-control"/>
+                                <s:textfield type="number" id="percentBpjsKsPers1" name="payrollBpjs.iuranBpjsKsPersPersen" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -308,7 +333,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="iuranKaryawan1" name="payrollBpjs.iuranKary" required="true" cssClass="form-control" />
+                                <s:textfield type="number" id="iuranKaryawan1" name="payrollBpjs.iuranKary" required="true" cssClass="form-control" />
                             </table>
                         </td>
                     </tr>
@@ -318,7 +343,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="jpkKaryawan1" name="payrollBpjs.jpkKary" required="true" cssClass="form-control" onchange="setPersenTkKary()" />
+                                <s:textfield type="number" id="jpkKaryawan1" name="payrollBpjs.jpkKary" required="true" cssClass="form-control" onchange="setPersenTkKary()" />
                             </table>
                         </td>
                     </tr>
@@ -328,7 +353,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield readonly="true" id="percentBpjsTkKary1" name="payrollBpjs.iuranBpjsTkKaryPersen" required="true" cssClass="form-control"/>
+                                <s:textfield type="number" readonly="true" id="percentBpjsTkKary1" name="payrollBpjs.iuranBpjsTkKaryPersen" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -343,7 +368,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="jkkPers1" name="payrollBpjs.jkkPers" required="true" cssClass="form-control"/>
+                                <s:textfield type="number" id="jkkPers1" name="payrollBpjs.jkkPers" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -353,7 +378,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="jhtPers1" name="payrollBpjs.jhtPers" required="true" cssClass="form-control"/>
+                                <s:textfield type="number" id="jhtPers1" name="payrollBpjs.jhtPers" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -363,7 +388,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="jkmPers1" name="payrollBpjs.jkmPers" required="true" cssClass="form-control" onchange="setiuranTkPers()"/>
+                                <s:textfield type="number" id="jkmPers1" name="payrollBpjs.jkmPers" required="true" cssClass="form-control" onchange="setiuranTkPers()"/>
                             </table>
                         </td>
                     </tr>
@@ -383,7 +408,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="jpkPers1" name="payrollBpjs.jpkPers" required="true" cssClass="form-control" onchange="setPersenTkPers()"/>
+                                <s:textfield type="number" id="jpkPers1" name="payrollBpjs.jpkPers" required="true" cssClass="form-control" onchange="setPersenTkPers()"/>
                             </table>
                         </td>
                     </tr>

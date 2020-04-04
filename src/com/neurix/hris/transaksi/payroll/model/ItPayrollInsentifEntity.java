@@ -37,6 +37,7 @@ public class ItPayrollInsentifEntity implements Serializable {
     private BigDecimal tunjListrik;
     private BigDecimal tunjAir;
     private BigDecimal tunjBbm;
+    private BigDecimal tunjPph;
 
     private String flag;
     private String action;
@@ -44,6 +45,14 @@ public class ItPayrollInsentifEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+    public BigDecimal getTunjPph() {
+        return tunjPph;
+    }
+
+    public void setTunjPph(BigDecimal tunjPph) {
+        this.tunjPph = tunjPph;
+    }
 
     public BigDecimal getTotalThp() {
         return totalThp;

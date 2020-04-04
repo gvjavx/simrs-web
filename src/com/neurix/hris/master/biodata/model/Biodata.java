@@ -114,11 +114,13 @@ public class Biodata extends BaseModel {
     private String stMasaKerjaGol;
     private int masaKerjaGolongan;
 
-
     private String flagTunjSupervisi;
     private String flagTunjLokasi;
     private String flagTunjSiaga;
     private String flagTunjProfesional;
+
+    private Date tanggalPraPensiun;
+    private String stTanggalPraPensiun;
 
     public String getProfesiName() {
         return profesiName;
@@ -922,5 +924,21 @@ public class Biodata extends BaseModel {
 
     public void setKeterangan(String keterangan) {
         this.keterangan = keterangan;
+    }
+
+    public String getStTanggalPraPensiun() {
+        return stTanggalPraPensiun;
+    }
+
+    public void setStTanggalPraPensiun(String stTanggalPraPensiun) {
+        this.stTanggalPraPensiun = stTanggalPraPensiun;
+    }
+
+    public Date getTanggalPraPensiun() {
+        return tanggalPraPensiun;
+    }
+
+    public void setTanggalPraPensiun(Date tanggalPraPensiun) {
+        this.tanggalPraPensiun = tanggalPraPensiun;
     }
 }

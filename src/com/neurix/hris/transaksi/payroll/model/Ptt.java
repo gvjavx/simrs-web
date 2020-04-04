@@ -11,6 +11,24 @@ public class Ptt {
     private String tahun;
     private String bulan;
     private String nip;
+    private BigDecimal jumlahPtt;
+    private String stJumlahPtt;
+
+    public BigDecimal getJumlahPtt() {
+        return jumlahPtt;
+    }
+
+    public void setJumlahPtt(BigDecimal jumlahPtt) {
+        this.jumlahPtt = jumlahPtt;
+    }
+
+    public String getStJumlahPtt() {
+        return stJumlahPtt;
+    }
+
+    public void setStJumlahPtt(String stJumlahPtt) {
+        this.stJumlahPtt = stJumlahPtt;
+    }
 
     public String getPayrollPttId() {
         return payrollPttId;

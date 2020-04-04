@@ -102,6 +102,14 @@
             <column name="last_update" sql-type="date" not-null="false" />
         </property>
 
+        <property name="jabatanFlag">
+            <column name="jabatan_flag" sql-type="varchar" length="1" />
+        </property>
+
+        <property name="mutasiFlag">
+            <column name="mutasi_flag" sql-type="varchar" length="1" />
+        </property>
+
         <many-to-one name="imPosition" class="com.neurix.authorization.position.model.ImPosition"
                      insert="false" update="false" fetch="select" cascade="all">
             <column name="position_id"/>

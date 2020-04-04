@@ -78,6 +78,7 @@ public class PayrollAction extends BaseMasterAction{
         this.payrollBulan12 = payrollBulan12;
     }
 
+
     public String getPositionId() {
         return positionId;
     }
@@ -339,13 +340,23 @@ public class PayrollAction extends BaseMasterAction{
     @Override
     public String add() {
         logger.info("[PayrollAction.add] start process >>>");
-        Payroll addSppd = new Payroll();
-        setPayroll(addSppd);
+        String branchId = CommonUtil.userBranchLogin();
+        Payroll data = new Payroll();
+        if (branchId!=null) {
+            data.setBranchId(branchId);
+            if (("KP").equalsIgnoreCase(branchId)){
+                data.setKantorPusat(true);
+            }
+        }else{
+            data.setBranchId("");
+        }
+        payroll=data;
         setAddOrEdit(true);
         setAdd(true);
 
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("dataPayroll");
+        session.removeAttribute("listCekNip");
 
         logger.info("[PayrollAction.add] stop process >>>");
         return "init_add";
@@ -357,7 +368,10 @@ public class PayrollAction extends BaseMasterAction{
 
         HttpSession session = ServletActionContext.getRequest().getSession();
         payroll = (Payroll) session.getAttribute("dataPayroll");
-
+        session.removeAttribute("listCekNip");
+        if (("PN").equalsIgnoreCase(payroll.getTipe())||("JB").equalsIgnoreCase(payroll.getTipe())){
+            payroll.setAdaCheckBox(true);
+        }
         setPayroll(payroll);
         logger.info("[PayrollAction.add] stop process >>>");
         return "init_add_v2";
@@ -570,10 +584,13 @@ public class PayrollAction extends BaseMasterAction{
                                                   String tunjPeralihan,String pemondokan,String komunikasi, //komponen A
                                                   String kopkar, String iuranSp, String iuranPiikb, String bankBri, String bankMandiri, // Komponen rincian C
                                                   String infaq, String perkesDanObat, String listrik, String iuranProfesi, String potonganLain, // Komponen rincian C
-                                                  String flagJubileum, String flagPensiun, String nilaiPtt, String idPtt){
+                                                  String flagJubileum, String flagPensiun, String nilaiPtt, String bulan,String tahun){
         Payroll newPayroll = new Payroll();
         newPayroll.setPayrollId(payrollId);
 //        newPayroll.setTipePegawai(tipePegawai);
+        newPayroll.setBulan(bulan);
+        newPayroll.setTahun(tahun);
+        newPayroll.setNip(nip);
 
         //Komponen A
         newPayroll.setTunjanganPeralihan(tunjPeralihan);
@@ -587,8 +604,8 @@ public class PayrollAction extends BaseMasterAction{
         newPayroll.setKopkar(kopkar);
         newPayroll.setKopkarNilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(kopkar))));
         newPayroll.setIuranSp(iuranSp);
-        newPayroll.setIuranSpNilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(iuranPiikb))));
-        newPayroll.setIuranPiikb(iuranSp);
+        newPayroll.setIuranSpNilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(iuranSp))));
+        newPayroll.setIuranPiikb(iuranPiikb);
         newPayroll.setIuranPiikbNilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(iuranPiikb))));
         newPayroll.setBankBri(bankBri);
         newPayroll.setBankBriNilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(bankBri))));
@@ -680,198 +697,6 @@ public class PayrollAction extends BaseMasterAction{
                 }
             }
         }
-    }
-
-    public String refreshData(){
-        HttpSession session = ServletActionContext.getRequest().getSession();
-        List<Payroll> listPayrollBackup = (List<Payroll>) session.getAttribute("listDataPayrollBackup");
-        List<PayrollPph> listPayrollPph = (List<PayrollPph>) session.getAttribute("listDataPayrollPphBackup");
-        Payroll payroll = (Payroll) session.getAttribute("dataPayroll");
-        List<Payroll> resultListPayroll = new ArrayList<>();
-
-        for(Payroll payrollBackup : listPayrollBackup){
-            Payroll payrollPerson = new Payroll();
-
-            payrollPerson.setBulan(payrollBackup.getBulan());
-            payrollPerson.setTahun(payrollBackup.getTahun());
-            payrollPerson.setNip(payrollBackup.getNip());
-            payrollPerson.setNama(payrollBackup.getNama());
-            payrollPerson.setKelompokId(payrollBackup.getKelompokId());
-            payrollPerson.setNpwp(payrollBackup.getNpwp());
-            payrollPerson.setStatusPegawai(payrollBackup.getStatusPegawai());
-            payrollPerson.setTipePegawai(payrollBackup.getTipePegawai());
-            payrollPerson.setTipePegawaiName(payrollBackup.getTipePegawaiName());
-            payrollPerson.setStrukturGaji(payrollBackup.getStrukturGaji());
-            payrollPerson.setStTanggalAktif(payrollBackup.getStTanggalAktif());
-
-            payrollPerson.setStTanggalAktifSekarang(payrollBackup.getStTanggalAktifSekarang());
-
-            payrollPerson.setStTanggalPayroll(payrollBackup.getStTanggalPayroll());
-            payrollPerson.setMasaKerjaTahun(payrollBackup.getMasaKerjaTahun());
-            payrollPerson.setMasaKerjaBulan(payrollBackup.getMasaKerjaBulan());
-            payrollPerson.setPositionId(payrollBackup.getPositionId());
-            payrollPerson.setPositionName(payrollBackup.getPositionName());
-            payrollPerson.setDepartmentId(payrollBackup.getDepartmentId());
-            payrollPerson.setDepartmentName(payrollBackup.getDepartmentName());
-            payrollPerson.setBranchId(payrollBackup.getBranchId());
-            payrollPerson.setBranchName(payrollBackup.getBranchName());
-            payrollPerson.setGolonganId(payrollBackup.getGolonganId());
-            payrollPerson.setGolonganName(payrollBackup.getGolonganName());
-            payrollPerson.setPoint(payrollBackup.getPoint());
-            payrollPerson.setStatusKeluarga(payrollBackup.getStatusKeluarga());
-            payrollPerson.setMultifikator(payrollBackup.getMultifikator());
-            payrollPerson.setJumlahAnak(payrollBackup.getJumlahAnak());
-            payrollPerson.setGender(payrollBackup.getGender());
-            payrollPerson.setDanaPensiunName(payrollBackup.getDanaPensiunName());
-            payrollPerson.setFlagPjs(payrollBackup.getFlagPjs());
-            payrollPerson.setFlagPromosiOn(payrollBackup.isFlagPromosiOn());
-
-            payrollPerson.setFlagPayroll(payrollBackup.getFlagPayroll());
-            payrollPerson.setFlagRapel(payrollBackup.getFlagRapel());
-            payrollPerson.setFlagThr(payrollBackup.getFlagThr());
-            payrollPerson.setFlagPendidikan(payrollBackup.getFlagPendidikan());
-            payrollPerson.setFlagJubileum(payrollBackup.getFlagJubileum());
-            payrollPerson.setFlagJasprod(payrollBackup.getFlagJasprod());
-            payrollPerson.setFlagPensiun(payrollBackup.getFlagPensiun());
-            payrollPerson.setFlagZakat(payrollBackup.getFlagZakat());
-
-            payrollPerson.setFaktorKeluargaId(payrollBackup.getFaktorKeluargaId());
-
-            payrollPerson.setCentangListrikAir("Y");
-            payrollPerson.setCentangPerumahan("Y");
-            payrollPerson.setCentangListrikAir(payrollBackup.getCentangListrikAir());
-            payrollPerson.setCentangPerumahan(payrollBackup.getCentangPerumahan());
-            payrollPerson.setFlagListrikAirOn(payrollBackup.isFlagListrikAirOn());
-            payrollPerson.setFlagPerumahanOn(payrollBackup.isFlagPerumahanOn());
-
-            payrollPerson.setFlagPensiunOn(payrollBackup.isFlagPensiunOn());
-            payrollPerson.setStTanggalPensiun(payrollBackup.getStTanggalPensiun());
-            payrollPerson.setLabelPensiun(payrollBackup.getLabelPensiun());
-            payrollPerson.setCentangPensiun(payrollBackup.getCentangPensiun());
-            payrollPerson.setTanggalJubileum(payrollBackup.getTanggalJubileum());
-            payrollPerson.setFlagJubileumOn(payrollBackup.isFlagJubileumOn());
-            payrollPerson.setCentangJubileum(payrollBackup.getCentangJubileum());
-            payrollPerson.setFlagJubileum(payrollBackup.getFlagJubileum());
-            payrollPerson.setLabelJubileum(payrollBackup.getLabelJubileum());
-
-            payrollPerson.setGajiGolongan(payrollBackup.getGajiGolongan()); //Gaji
-            payrollPerson.setGajiGolonganNilai(payrollBackup.getGajiGolonganNilai()); //Gaji Nilai
-            payrollPerson.setTunjanganUmk(payrollBackup.getTunjanganUmk()); //Tunj. UMK
-            payrollPerson.setTunjanganUmkNilai(payrollBackup.getTunjanganUmkNilai()); //Tunj. UMK Nilai
-            payrollPerson.setGajiPensiun(payrollBackup.getGajiPensiun()); //Gaji Untuk Pensiun
-            payrollPerson.setGajiPensiunNilai(payrollBackup.getGajiPensiunNilai()); //Gaji Untuk Pensiun
-            payrollPerson.setGajiBpjs(payrollBackup.getGajiBpjs()); //Gaji Untuk BPJS
-            payrollPerson.setGajiBpjsNilai(payrollBackup.getGajiBpjsNilai()); //Gaji Untuk BPJS Nilai
-
-            payrollPerson.setTunjanganStruktural(payrollBackup.getTunjanganStruktural()); //Tunj. Struktural
-            payrollPerson.setTunjanganStrukturalNilai(payrollBackup.getTunjanganStrukturalNilai()); //Tunj. Struktural Nilai
-            payrollPerson.setTunjanganPendidikan(payrollBackup.getTunjanganPendidikan()); //Tunj. Pendidikan
-            payrollPerson.setTunjanganPendidikanNilai(payrollBackup.getTunjanganPendidikanNilai()); //Tunj. Pendidikan Nilai
-            payrollPerson.setTunjanganPeralihan(payrollBackup.getTunjanganPeralihan()); //Tunj. Peraliahan ---
-            payrollPerson.setTunjanganPeralihanNilai(payrollBackup.getTunjanganPeralihanNilai()); //Tunj. Peraliahan Nilai---
-
-            payrollPerson.setTunjanganJabatanStruktural(payrollBackup.getTunjanganJabatanStruktural()); //Tunj. Jabatan Struktural
-            payrollPerson.setTunjanganJabatanStrukturalNilai(payrollBackup.getTunjanganJabatanStrukturalNilai()); //Tunj. Jabatan Struktural Nilai
-            payrollPerson.setTunjanganStrategis(payrollBackup.getTunjanganStrategis()); //Tunj. Strategis
-            payrollPerson.setTunjanganStrategisNilai(payrollBackup.getTunjanganStrategisNilai()); //Tunj. Strategis Nilai
-            payrollPerson.setKompensasi(payrollBackup.getKompensasi()); //Kompensasi
-            payrollPerson.setKompensasiNilai(payrollBackup.getKompensasiNilai()); //Kompensasi Nilai
-            payrollPerson.setTunjanganTransport(payrollBackup.getTunjanganTransport()); //Transport
-            payrollPerson.setTunjanganTransportNilai(payrollBackup.getTunjanganTransportNilai()); //Transport Nilai
-
-            payrollPerson.setTunjanganAirListrik(payrollBackup.getTunjanganAirListrik()); //Tunj Air Listrik
-            payrollPerson.setTunjanganAirListrikNilai(payrollBackup.getTunjanganAirListrikNilai()); //Tunj Air Listrik Nilai
-            payrollPerson.setTunjanganPengobatan(payrollBackup.getTunjanganPengobatan()); //Tunj Pengobatan
-            payrollPerson.setTunjanganPengobatanNilai(payrollBackup.getTunjanganPengobatanNilai()); //Tunj Pengobatan Nilai
-            payrollPerson.setTunjanganBajuDinas(payrollBackup.getTunjanganBajuDinas()); //Tunj Pakaian DinAs
-            payrollPerson.setTunjanganBajuDinasNilai(payrollBackup.getTunjanganBajuDinasNilai()); //Tunj Pakaian DinAs Nilai
-
-            payrollPerson.setTunjanganPerumahan(payrollBackup.getTunjanganPerumahan()); //Tunj. Perumahan
-            payrollPerson.setTunjanganPerumahanNilai(payrollBackup.getTunjanganPerumahanNilai()); //Tunj. Perumahan Nilai
-            payrollPerson.setTunjanganPph(payrollBackup.getTunjanganPph()); //Tunj PPh ---
-            payrollPerson.setTunjanganPphNilai(payrollBackup.getTunjanganPphNilai()); //Tunj PPh Nilai ---
-            payrollPerson.setTunjanganLain(payrollBackup.getTunjanganLain()); //Tunj Lain - lain
-            payrollPerson.setTunjanganLainNilai(payrollBackup.getTunjanganLainNilai()); //Tunj Lain - lain Nilai
-            payrollPerson.setTunjanganLembur(payrollBackup.getTunjanganLembur()); //Tunj Lembur ---
-            payrollPerson.setTunjanganLemburNilai(payrollBackup.getTunjanganLemburNilai()); //Tunj Lembur Nilai ---
-
-            payrollPerson.setTotalA(payrollBackup.getTotalA());
-            payrollPerson.setTotalANilai(payrollBackup.getTotalANilai()); //Nilai Total A
-
-
-            payrollPerson.setUangMukaLainnya(payrollBackup.getUangMukaLainnya()); //Uang Muka Lainnya
-            payrollPerson.setUangMukaLainnyaNilai(payrollBackup.getUangMukaLainnyaNilai()); //Uang Muka Lainnya Nilai
-            payrollPerson.setIuranBpjsPensiun(payrollBackup.getIuranBpjsPensiun()); //Iuran Bpjs Pensiun
-            payrollPerson.setIuranBpjsPensiunNilai(payrollBackup.getIuranBpjsPensiunNilai()); //Iuran Bpjs Pensiun Nilai
-            payrollPerson.setIuranPensiun(payrollBackup.getIuranPensiun()); //Iuran Pensiun
-            payrollPerson.setIuranPensiunNilai(payrollBackup.getIuranPensiunNilai()); //Iuran Pensiun Nilai
-            payrollPerson.setPphGaji(payrollBackup.getPphGaji()); //Pph Gaji
-            payrollPerson.setPphGajiNilai(payrollBackup.getPphGajiNilai()); //Pph Gaji Nilai
-            payrollPerson.setPphPengobatan(payrollBackup.getPphPengobatan()); //Pph pengobatan
-            payrollPerson.setPphPengobatanNilai(payrollBackup.getPphPengobatanNilai()); //Pph Pengobatan Nilai
-            payrollPerson.setIuranBpjsKesehatan(payrollBackup.getIuranBpjsKesehatan()); //Iuran Bpjs Kesehatan
-            payrollPerson.setIuranBpjsKesehatanNilai(payrollBackup.getIuranBpjsKesehatanNilai()); //Iuran Bpjs Kesehatan Nilai
-            payrollPerson.setIuranBpjsTk(payrollBackup.getIuranBpjsTk()); //Iuran Bpjs Tk
-            payrollPerson.setIuranBpjsTkNilai(payrollBackup.getIuranBpjsTkNilai()); //Iuran Bpjs Tk Nilai
-            payrollPerson.setKekuranganBpjsTk(payrollBackup.getKekuranganBpjsTk()); //Kekurangan Bpjs
-            payrollPerson.setKekuranganBpjsTkNilai(payrollBackup.getKekuranganBpjsTkNilai()); //Kekurangan Bpjs Nilai
-            payrollPerson.setTotalB(payrollBackup.getTotalB()); //Total B
-            payrollPerson.setTotalBNilai(payrollBackup.getTotalBNilai()); //Total B
-
-            payrollPerson.setFlagPromosiOn(payrollBackup.isFlagPromosiOn());
-            payrollPerson.setUmr(payrollBackup.getUmr());
-            payrollPerson.setZakat(payrollBackup.getZakat()); //Zakat
-            payrollPerson.setZakatNilai(payrollBackup.getZakatNilai()); //Zakat Nilai
-            payrollPerson.setPengobatan(payrollBackup.getPengobatan()); //Pengobatan
-            payrollPerson.setPengobatanNilai(payrollBackup.getPengobatanNilai()); //Pengobatan Nilai
-            payrollPerson.setKoperasi(payrollBackup.getKoperasi()); //Koperasi
-            payrollPerson.setKoperasiNilai(payrollBackup.getKoperasiNilai()); //Koperasi Nilai
-            payrollPerson.setDansos(payrollBackup.getDansos()); //Dansos
-            payrollPerson.setDansosNilai(payrollBackup.getDansosNilai()); //Dansos Nilai
-            payrollPerson.setSP(payrollBackup.getSP()); //Sp
-            payrollPerson.setSPNilai(payrollBackup.getSPNilai()); //Sp Nilai
-            payrollPerson.setBazis(payrollBackup.getBazis()); //Bazis
-            payrollPerson.setBazisNilai(payrollBackup.getBazisNilai()); //Bazis Nilai
-            payrollPerson.setBapor(payrollBackup.getBapor()); //Bapor
-            payrollPerson.setBaporNilai(payrollBackup.getBaporNilai()); //Baporilai
-            payrollPerson.setLainLain(payrollBackup.getLainLain()); //LainLain
-            payrollPerson.setLainLainNilai(payrollBackup.getLainLainNilai()); //LainLain Nilai
-            payrollPerson.setTotalC(payrollBackup.getTotalC()); //Total C
-            payrollPerson.setTotalCNilai(payrollBackup.getTotalCNilai()); //Total C Nilai
-
-            payrollPerson.setTotalRapel(payrollBackup.getTotalRapel());
-            payrollPerson.setTotalRapelNilai(payrollBackup.getTotalRapelNilai());
-            payrollPerson.setTotalThr(payrollBackup.getTotalThr());
-            payrollPerson.setTotalThrNilai(payrollBackup.getTotalThrNilai());
-            payrollPerson.setTotalPendidikan(payrollBackup.getTotalPendidikan());
-            payrollPerson.setTotalPendidikanNilai(payrollBackup.getTotalPendidikanNilai());
-            payrollPerson.setTotalJasProd(payrollBackup.getTotalJasProd());
-            payrollPerson.setTotalJasProdNilai(payrollBackup.getTotalJasProdNilai());
-            payrollPerson.setTotalPensiun(payrollBackup.getTotalPensiun());
-            payrollPerson.setTotalPensiunNilai(payrollBackup.getTotalPensiunNilai());
-            payrollPerson.setBesarJubileum(payrollBackup.getBesarJubileum());
-            payrollPerson.setBesarJubileumNilai(payrollBackup.getBesarJubileumNilai());
-            payrollPerson.setTotalKaliJubileum(payrollBackup.getTotalKaliJubileum());
-            payrollPerson.setTotalKaliJubileumNilai(payrollBackup.getTotalKaliJubileumNilai());
-
-            payrollPerson.setTotalTambahan(payrollBackup.getTotalTambahan()); //Total D
-            payrollPerson.setTotalTambahanNilai(payrollBackup.getTotalTambahanNilai()); //Total C Nilai
-            payrollPerson.setTotalGajiBersih(payrollBackup.getTotalGajiBersih());
-            payrollPerson.setTotalGajiBersihNilai(payrollBackup.getTotalGajiBersihNilai());
-
-            payrollPerson.setFlagKonsistensi(payrollBackup.isFlagKonsistensi());
-
-            resultListPayroll.add(payrollPerson);
-        }
-
-        session.removeAttribute("listDataPayrollSearch");
-        session.removeAttribute("listDataPayroll");
-        session.setAttribute("listDataPayrollSearch", resultListPayroll);
-        session.setAttribute("listDataPayroll", resultListPayroll);
-        session.setAttribute("listDataPayrollPph", listPayrollPph);
-        setPayroll(payroll);
-
-        return "init_add_v2";
     }
 
     public String cancelPage(){
@@ -1613,6 +1438,7 @@ public class PayrollAction extends BaseMasterAction{
         Payroll payrollPerson = new Payroll();
         PayrollPph payrollPphPerson = new PayrollPph();
         List<PayrollTunjanganLain>listOfResultPayrollTunjanganLain = new ArrayList<>();
+        List<Ptt>listOfResultPtt = new ArrayList<>();
         HttpSession session = ServletActionContext.getRequest().getSession();
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -1620,6 +1446,7 @@ public class PayrollAction extends BaseMasterAction{
         payrolls = payrollBo.getDetailEditSys(payrollId);
         payrollPphPerson = payrollBo.getDetailEditPphSys(payrollId);
         listOfResultPayrollTunjanganLain = payrollBo.getDetailEditTunjLainSys(payrollId);
+        listOfResultPtt = payrollBo.getPayrollPttByPayrollId(payrollId);
         // PPh pengobatan
         payrollPerson.setPayrollId(payrollId);
         payrollPerson.setBulan(payrolls.getBulan());
@@ -1783,123 +1610,9 @@ public class PayrollAction extends BaseMasterAction{
         payrollPerson.setTotalC(payrolls.getTotalC()); //Total B
         payrollPerson.setTotalCNilai(payrolls.getTotalCNilai()); //Total B
 
+
         payrollPerson.setTotalGajiBersih(payrolls.getTotalGajiBersih());
         payrollPerson.setTotalGajiBersihNilai(payrolls.getTotalGajiBersihNilai());
-
-                        /*payrollPerson.setGajiPensiun(payroll.getGajiPensiun()); //Gaji Untuk Pensiun
-                        payrollPerson.setGajiPensiunNilai(payroll.getGajiPensiunNilai()); //Gaji Untuk Pensiun
-                        payrollPerson.setGajiBpjs(payroll.getGajiBpjs()); //Gaji Untuk BPJS
-                        payrollPerson.setGajiBpjsNilai(payroll.getGajiBpjsNilai()); //Gaji Untuk BPJS Nilai*/
-
-
-                        /*payrollPerson.setTunjanganPendidikan(payroll.getTunjanganPendidikan()); //Tunj. Pendidikan
-                        payrollPerson.setTunjanganPendidikanNilai(payroll.getTunjanganPendidikanNilai()); //Tunj. Pendidikan Nilai
-                        payrollPerson.setTunjanganPeralihan(payroll.getTunjanganPeralihan()); //Tunj. Peraliahan ---
-                        payrollPerson.setTunjanganPeralihanNilai(payroll.getTunjanganPeralihanNilai()); //Tunj. Peraliahan Nilai---*/
-
-
-
-                        /*payrollPerson.setKompensasi(payroll.getKompensasi()); //Kompensasi
-                        payrollPerson.setKompensasiNilai(payroll.getKompensasiNilai()); //Kompensasi Nilai
-                        payrollPerson.setTunjanganTransport(payroll.getTunjanganTransport()); //Transport
-                        payrollPerson.setTunjanganTransportNilai(payroll.getTunjanganTransportNilai()); //Transport Nilai
-
-                        payrollPerson.setTunjanganAirListrik(payroll.getTunjanganAirListrik()); //Tunj Air Listrik
-                        payrollPerson.setTunjanganAirListrikNilai(payroll.getTunjanganAirListrikNilai()); //Tunj Air Listrik Nilai
-                        payrollPerson.setTunjanganPengobatan(payroll.getTunjanganPengobatan()); //Tunj Pengobatan
-                        payrollPerson.setTunjanganPengobatanNilai(payroll.getTunjanganPengobatanNilai()); //Tunj Pengobatan Nilai
-                        payrollPerson.setTunjanganBajuDinas(payroll.getTunjanganBajuDinas()); //Tunj Pakaian DinAs
-                        payrollPerson.setTunjanganBajuDinasNilai(payroll.getTunjanganBajuDinasNilai()); //Tunj Pakaian DinAs Nilai
-
-                        payrollPerson.setTunjanganPerumahan(payroll.getTunjanganPerumahan()); //Tunj. Perumahan
-                        payrollPerson.setTunjanganPerumahanNilai(payroll.getTunjanganPerumahanNilai()); //Tunj. Perumahan Nilai
-                        payrollPerson.setTunjanganPph(payroll.getTunjanganPph()); //Tunj PPh ---
-                        payrollPerson.setTunjanganPphNilai(payroll.getTunjanganPphNilai()); //Tunj PPh Nilai ---
-                        payrollPerson.setTunjanganLain(payroll.getTunjanganLain()); //Tunj Lain - lain
-                        payrollPerson.setTunjanganLainNilai(payroll.getTunjanganLainNilai()); //Tunj Lain - lain Nilai
-                        payrollPerson.setTunjanganLembur(payroll.getTunjanganLembur()); //Tunj Lembur ---
-                        payrollPerson.setTunjanganLemburNilai(payroll.getTunjanganLemburNilai()); //Tunj Lembur Nilai ---*/
-
-
-
-
-                        /*payrollPerson.setUangMukaLainnya(payroll.getUangMukaLainnya()); //Uang Muka Lainnya
-                        payrollPerson.setUangMukaLainnyaNilai(payroll.getUangMukaLainnyaNilai()); //Uang Muka Lainnya Nilai
-                        payrollPerson.setIuranBpjsPensiun(payroll.getIuranBpjsPensiun()); //Iuran Bpjs Pensiun
-                        payrollPerson.setIuranBpjsPensiunNilai(payroll.getIuranBpjsPensiunNilai()); //Iuran Bpjs Pensiun Nilai
-                        payrollPerson.setIuranPensiun(payroll.getIuranPensiun()); //Iuran Pensiun
-                        payrollPerson.setIuranPensiunNilai(payroll.getIuranPensiunNilai()); //Iuran Pensiun Nilai
-                        payrollPerson.setPphGaji(payroll.getPphGaji()); //Pph Gaji
-                        payrollPerson.setPphGajiNilai(payroll.getPphGajiNilai()); //Pph Gaji Nilai
-                        payrollPerson.setPphPengobatan(payroll.getPphPengobatan()); //Pph pengobatan
-                        payrollPerson.setPphPengobatanNilai(payroll.getPphPengobatanNilai()); //Pph Pengobatan Nilai
-                        payrollPerson.setIuranBpjsKesehatan(payroll.getIuranBpjsKesehatan()); //Iuran Bpjs Kesehatan
-                        payrollPerson.setIuranBpjsKesehatanNilai(payroll.getIuranBpjsKesehatanNilai()); //Iuran Bpjs Kesehatan Nilai
-                        payrollPerson.setIuranBpjsTk(payroll.getIuranBpjsTk()); //Iuran Bpjs Tk
-                        payrollPerson.setIuranBpjsTkNilai(payroll.getIuranBpjsTkNilai()); //Iuran Bpjs Tk Nilai
-                        payrollPerson.setKekuranganBpjsTk(payroll.getKekuranganBpjsTk()); //Kekurangan Bpjs
-                        payrollPerson.setKekuranganBpjsTkNilai(payroll.getKekuranganBpjsTkNilai()); //Kekurangan Bpjs Nilai
-                        payrollPerson.setTotalB(payroll.getTotalB()); //Total B
-                        payrollPerson.setTotalBNilai(payroll.getTotalBNilai()); //Total B*/
-
-       /* payrollPerson.setFlagPromosiOn(payroll.isFlagPromosiOn());
-        payrollPerson.setUmr(payroll.getUmr());
-        payrollPerson.setZakat(payroll.getZakat()); //Zakat
-        payrollPerson.setZakatNilai(payroll.getZakatNilai()); //Zakat Nilai
-        payrollPerson.setPengobatan(payroll.getPengobatan()); //Pengobatan
-        payrollPerson.setPengobatanNilai(payroll.getPengobatanNilai()); //Pengobatan Nilai
-        payrollPerson.setKoperasi(payroll.getKoperasi()); //Koperasi
-        payrollPerson.setKoperasiNilai(payroll.getKoperasiNilai()); //Koperasi Nilai
-        payrollPerson.setDansos(payroll.getDansos()); //Dansos
-        payrollPerson.setDansosNilai(payroll.getDansosNilai()); //Dansos Nilai
-        payrollPerson.setSP(payroll.getSP()); //Sp
-        payrollPerson.setSPNilai(payroll.getSPNilai()); //Sp Nilai
-        payrollPerson.setBazis(payroll.getBazis()); //Bazis
-        payrollPerson.setBazisNilai(payroll.getBazisNilai()); //Bazis Nilai
-        payrollPerson.setBapor(payroll.getBapor()); //Bapor
-        payrollPerson.setBaporNilai(payroll.getBaporNilai()); //Baporilai
-        payrollPerson.setLainLain(payroll.getLainLain()); //LainLain
-        payrollPerson.setLainLainNilai(payroll.getLainLainNilai()); //LainLain Nilai
-        payrollPerson.setTotalC(payroll.getTotalC()); //Total C
-        payrollPerson.setTotalCNilai(payroll.getTotalCNilai()); //Total C Nilai*/
-
-        /*payrollPerson.setTotalRapel(payroll.getTotalRapel());
-        payrollPerson.setTotalRapelNilai(payroll.getTotalRapelNilai());
-        payrollPerson.setTotalThr(payroll.getTotalThr());
-        payrollPerson.setTotalThrNilai(payroll.getTotalThrNilai());
-        payrollPerson.setTotalThrBersih(payroll.getTotalThrBersih());
-        payrollPerson.setTotalThrBersihNilai(payroll.getTotalThrBersihNilai());
-
-
-        payrollPerson.setTotalPendidikan(payroll.getTotalPendidikan());
-        payrollPerson.setTotalPendidikanNilai(payroll.getTotalPendidikanNilai());
-        payrollPerson.setTotalJasProd(payroll.getTotalJasProd());
-        payrollPerson.setTotalJasProdNilai(payroll.getTotalJasProdNilai());
-        payrollPerson.setTotalInsentif(payroll.getTotalInsentif());
-        payrollPerson.setTotalInsentifNilai(payroll.getTotalInsentifNilai());
-        payrollPerson.setNettoPensiun(payroll.getNettoPensiun());
-        payrollPerson.setNettoPensiunNilai(payroll.getNettoPensiunNilai());
-        payrollPerson.setBesarJubileum(payroll.getBesarJubileum());
-        payrollPerson.setBesarJubileumNilai(payroll.getBesarJubileumNilai());
-        payrollPerson.setTotalKaliJubileum(payroll.getTotalKaliJubileum());
-        payrollPerson.setTotalKaliJubileumNilai(payroll.getTotalKaliJubileumNilai());
-        payrollPerson.setNettoJubileum(payroll.getNettoJubileum());
-        payrollPerson.setNettoJubileumNilai(payroll.getNettoJubileumNilai());
-
-        payrollPerson.setTotalTambahan(payroll.getTotalTambahan()); //Total D
-        payrollPerson.setTotalTambahanNilai(payroll.getTotalTambahanNilai()); //Total C Nilai
-        payrollPerson.setTotalGajiBersih(payroll.getTotalGajiBersih());
-        payrollPerson.setTotalGajiBersihNilai(payroll.getTotalGajiBersihNilai());
-
-        payrollPerson.setFlagKonsistensi(payroll.isFlagKonsistensi());
-
-        payrollPerson.setCentangKalkulasiPph(payroll.getCentangKalkulasiPph());
-        payrollPerson.setCentangKalkulasiPphPengobatan(payroll.getCentangKalkulasiPphPengobatan());
-        // PPH Pengobatan
-        payrollPerson.setJumlahPengobatan(payroll.getJumlahPengobatan());
-        payrollPerson.setHutangPphPengobatan(payroll.getHutangPphPengobatan());
-        payrollPerson.setKurangPphPengobatan(payroll.getKurangPphPengobatan());
-        payrollPerson.setJumlahPphPengobatan(payroll.getJumlahPphPengobatan());*/
 
         if ("12".equalsIgnoreCase(payrolls.getBulan())){
             //pph bulan 12
@@ -1923,6 +1636,7 @@ public class PayrollAction extends BaseMasterAction{
         session.setAttribute("listDataPayrollPerson", payrollPerson);
         session.setAttribute("listDataPayrollPphPerson", payrollPphPerson);
         session.setAttribute("listDataPayrollTunjanganLain", listOfResultPayrollTunjanganLain);
+        session.setAttribute("detailPtt", listOfResultPtt);
         return payrolls;
     }
 
@@ -1931,13 +1645,9 @@ public class PayrollAction extends BaseMasterAction{
         AbsensiPegawai searchAbsensi = new AbsensiPegawai();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PayrollBo payrollBo = (PayrollBo) ctx.getBean("payrollBoProxy");
-        BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
-
-        Branch branch = branchBo.getBranchById(branchId,"Y");
 
         int bulanBefore = Integer.valueOf(bulan);
         String strBulanBefore = bulan;
-        String strBulan = bulan;
         int tahunBefore = Integer.valueOf(tahun);
 
         bulanBefore -= 1 ;
@@ -1951,19 +1661,24 @@ public class PayrollAction extends BaseMasterAction{
             strBulanBefore = ""+ bulanBefore;
         }
 
-        String awal = branch.getLemburGajiAwal()+"-" + strBulanBefore + "-"+ tahunBefore;
-        String akhir = branch.getLemburGajiAkhir()+"-" + bulan + "-" + tahun ;
+        String []jumlahTanggalTahunKabisat = {"","31","29","31","30","31","30","31","31","30","31","30","31"};
+        String []jumlahTanggalTahunBiasa = {"","31","28","31","30","31","30","31","31","30","31","30","31"};
+        String jumlahTanggalTemp="";
 
-//        String awal = "11-" + "01" + "-"+ tahunBefore;
-//        String akhir = "10-" + "02" + "-" + tahun ;
+        if(Integer.parseInt(tahun) % 4 == 0){
+            jumlahTanggalTemp=jumlahTanggalTahunKabisat[Integer.parseInt(bulan)];
+        }else{
+            jumlahTanggalTemp=jumlahTanggalTahunBiasa[Integer.parseInt(bulan)];
+        }
+
+        String awal = "01"+"-" + strBulanBefore + "-"+ tahunBefore;
+        String akhir = jumlahTanggalTemp+"-" + strBulanBefore + "-" + tahunBefore ;
 
         searchAbsensi.setTanggal(CommonUtil.convertToDate(awal));
         searchAbsensi.setTanggalAkhir(CommonUtil.convertToDate(akhir));
         searchAbsensi.setNip(nip);
         searchAbsensi.setBranchId(branchId);
         absensiPegawaiList = payrollBo.dataAbsensiLembur(searchAbsensi);
-
-        //payrolls.addAll(getPayroll());
         return absensiPegawaiList;
     }
 
@@ -2269,10 +1984,10 @@ public class PayrollAction extends BaseMasterAction{
     // Reload Biaya Lembur
     public String reloadBiayaLembur(String nip, String branchId, String bulan, String tahun) {
         List<AbsensiPegawai> absensiPegawaiList = null;
-        Branch branch = new Branch();
         AbsensiPegawai searchAbsensi = new AbsensiPegawai();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PayrollBo payrollBo = (PayrollBo) ctx.getBean("payrollBoProxy");
+        Branch branch = new Branch();
         BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
         branch = branchBo.getBranchById(branchId,"Y");
 
@@ -2291,18 +2006,26 @@ public class PayrollAction extends BaseMasterAction{
             strBulanBefore = ""+ bulanBefore;
         }
 
-        String awal = branch.getLemburGajiAwal()+"-" + strBulanBefore + "-"+ tahunBefore;
-        String akhir = branch.getLemburGajiAkhir()+"-" + bulan + "-" + tahun ;
+        String []jumlahTanggalTahunKabisat = {"","31","29","31","30","31","30","31","31","30","31","30","31"};
+        String []jumlahTanggalTahunBiasa = {"","31","28","31","30","31","30","31","31","30","31","30","31"};
+        String jumlahTanggalTemp="";
 
-//        String awal = "11-" + "01" + "-"+ tahunBefore;
-//        String akhir = "10-" + "02" + "-" + tahun ;
+        if(Integer.parseInt(tahun) % 4 == 0){
+            jumlahTanggalTemp=jumlahTanggalTahunKabisat[Integer.parseInt(bulan)];
+        }else{
+            jumlahTanggalTemp=jumlahTanggalTahunBiasa[Integer.parseInt(bulan)];
+        }
+
+        String awal = "01"+"-" + strBulanBefore + "-"+ tahunBefore;
+        String akhir = jumlahTanggalTemp+"-" + strBulanBefore + "-" + tahunBefore ;
+
 
         searchAbsensi.setTanggal(CommonUtil.convertToDate(awal));
         searchAbsensi.setTanggalAkhir(CommonUtil.convertToDate(akhir));
         searchAbsensi.setNip(nip);
         searchAbsensi.setBranchId(branchId);
 
-        absensiPegawaiList = payrollBo.dataAbsensiLembur(searchAbsensi);
+//        absensiPegawaiList = payrollBo.dataAbsensiLembur(searchAbsensi);
 
         return CommonUtil.numbericFormat(payrollBo.reloadBiayaLembur(searchAbsensi), "###,###");
     }
@@ -2638,7 +2361,9 @@ public class PayrollAction extends BaseMasterAction{
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
             return ERROR;
         }
-
+        if (("12").equalsIgnoreCase(getBulan())){
+            payrollBulan12=true;
+        }
         logger.info("[payrollAction.saveAdd] end process >>>");
         return "view_payroll";
     }
@@ -2651,6 +2376,25 @@ public class PayrollAction extends BaseMasterAction{
         List<Payroll> listDataPayroll = new ArrayList();
         List<Payroll> listDataPayrollBackup = new ArrayList();
 
+        String tipe="";
+        if (("Y").equalsIgnoreCase(payroll.getFlagPayroll())){
+            tipe="PR";
+        }else if (("Y").equalsIgnoreCase(payroll.getFlagThr())){
+            tipe="T";
+        }else if (("Y").equalsIgnoreCase(payroll.getFlagJasprod())){
+            tipe="JP";
+        }else if (("Y").equalsIgnoreCase(payroll.getFlagJubileum())){
+            tipe="JB";
+        }else if (("Y").equalsIgnoreCase(payroll.getFlagPensiun())){
+            tipe="PN";
+        }else if (("Y").equalsIgnoreCase(payroll.getFlagInsentif())){
+            tipe="IN";
+        }else if (("Y").equalsIgnoreCase(payroll.getFlagCutiPanjang())){
+            tipe="CP";
+        }else if (("Y").equalsIgnoreCase(payroll.getFlagCutiTahunan())){
+            tipe="CT";
+        }
+        payroll.setTipe(tipe);
         try {
             listDataPayroll = payrollBoProxy.dataAddPayroll(payroll);
             listDataPayrollBackup = payrollBoProxy.copyDataPayroll(listDataPayroll);
@@ -2680,7 +2424,7 @@ public class PayrollAction extends BaseMasterAction{
                              String tunjPeralihan,String pemondokan,String komunikasi, //komponen A
                              String kopkar, String iuranSp, String iuranPiikb, String bankBri, String bankMandiri, // Komponen rincian C
                              String infaq, String perkesDanObat, String listrik, String iuranProfesi, String potonganLain, // Komponen rincian C
-                             String flagJubileum, String flagPensiun, String tunjPph, String pphGaji, String nilaiPtt, String totalA,String totalB,String totalC,String gajiBersih){
+                             String flagJubileum, String flagPensiun, String tunjPph, String pphGaji, String nilaiPtt, String totalA,String totalB,String totalC,String gajiBersih,String totalPttSetahun,String pphSeharusnya,String pph11Bulan,String selisihPph21,String totalPotLainLain,String bulan,String tahun){
         Payroll newPayroll = new Payroll();
         newPayroll.setNip(nip);
 //        newPayroll.setTipePegawai(tipePegawai);
@@ -2721,6 +2465,8 @@ public class PayrollAction extends BaseMasterAction{
         newPayroll.setIuranProfesiNilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(iuranProfesi))));
         newPayroll.setPotonganLain(potonganLain);
         newPayroll.setPotonganLainNilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(potonganLain))));
+        newPayroll.setTotalPotonganLain(totalPotLainLain);
+        newPayroll.setTotalPotonganLainNilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(totalPotLainLain))));
 
         //Komponen D
         newPayroll.setLainLain(nilaiPtt);
@@ -2743,6 +2489,11 @@ public class PayrollAction extends BaseMasterAction{
         newPayroll.setTotalCNilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(totalC))));
         newPayroll.setTotalGajiBersihNilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(gajiBersih))));
 
+        //komponen pph21
+        newPayroll.setTotalLain11BulanNilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(totalPttSetahun))));
+        newPayroll.setPphSeharusnyaNilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(pphSeharusnya))));
+        newPayroll.setPph11BulanNilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(pph11Bulan))));
+        newPayroll.setSelisihPphNilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(selisihPph21))));
 
         String userLogin = CommonUtil.userLogin();
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
@@ -2753,12 +2504,11 @@ public class PayrollAction extends BaseMasterAction{
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PayrollBo payrollBo = (PayrollBo) ctx.getBean("payrollBoProxy");
 
-        //payrollBo.editDataSys(newPayroll);
         payrollBo.saveEditDataSys(newPayroll);
 
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<Ptt> pttList = (List<Ptt>) session.getAttribute("detailPtt");
-        payrollBo.savePttDetail(pttList,payrollId);
+        payrollBo.savePttDetail(pttList,payrollId,nip,bulan,tahun);
 
         session.removeAttribute("detailPtt");
     }
@@ -2804,6 +2554,21 @@ public class PayrollAction extends BaseMasterAction{
     }
 
     public Payroll getApproval(String branchId, String bulan, String tahun, String tipe){
+        Payroll payroll = null;
+        Payroll searchPayroll = new Payroll();
+        searchPayroll.setBranchId(branchId);
+        searchPayroll.setBulan(bulan);
+        searchPayroll.setTahun(tahun);
+        searchPayroll.setTipe(tipe);
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PayrollBo payrollBo = (PayrollBo) ctx.getBean("payrollBoProxy");
+
+        payroll = payrollBo.getPayrollApprove(searchPayroll);
+        return payroll ;
+    }
+
+    public Payroll getApprovalUnit(String branchId, String bulan, String tahun, String tipe){
         Payroll payroll = null;
         Payroll searchPayroll = new Payroll();
         searchPayroll.setBranchId(branchId);
@@ -2877,6 +2642,19 @@ public class PayrollAction extends BaseMasterAction{
         payrollBo.approvePayroll(searchPayroll);
     }
 
+    public void approvePayrollUnit(String branchId, String bulan, String tahun, String statusApprove, String tipe){
+        Payroll searchPayroll = new Payroll();
+        searchPayroll.setBranchId(branchId);
+        searchPayroll.setBulan(bulan);
+        searchPayroll.setTahun(tahun);
+        searchPayroll.setTipe(tipe);
+        searchPayroll.setApprovalUnitFlag(statusApprove);
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PayrollBo payrollBo = (PayrollBo) ctx.getBean("payrollBoProxy");
+        payrollBo.approvePayrollUnit(searchPayroll);
+    }
+
     public String saveDelete(){
         logger.info("[PayrollAction.saveDelete] start process >>>");
         try {
@@ -2912,7 +2690,7 @@ public class PayrollAction extends BaseMasterAction{
 
     public String saveAdd(){
         logger.info("[PayrollAction.saveAdd] start process >>>");
-        Payroll payroll = new Payroll();
+        Payroll payroll = getPayroll();
         String userLogin = CommonUtil.userLogin();
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
@@ -2925,9 +2703,41 @@ public class PayrollAction extends BaseMasterAction{
 
         try {
             HttpSession session = ServletActionContext.getRequest().getSession();
-            List<Payroll> listPayroll = (List<Payroll>) session.getAttribute("listDataPayroll");
 
-            payrollBoProxy.saveAddData(listPayroll, payroll);
+            if (("JB").equalsIgnoreCase(payroll.getTipe())||("PN").equalsIgnoreCase(payroll.getTipe())){
+                List<Payroll> listOfResult = (List<Payroll>) session.getAttribute("listCekNip");
+                List<Payroll> listPayroll = (List<Payroll>) session.getAttribute("listDataPayroll");
+
+                if (listOfResult==null){
+                    String status ="ERROR : belum ada data yang di centang";
+                    logger.error("[payrollAction.saveAdd] "+status);
+                    throw new GeneralBOException(status);
+                }
+                if (listOfResult.size()==0){
+                    String status ="ERROR : belum ada data yang di centang";
+                    logger.error("[payrollAction.saveAdd] "+status);
+                    throw new GeneralBOException(status);
+                }
+
+                List<Payroll> dataProses = new ArrayList<>();
+
+                for (Payroll dataCek : listOfResult){
+                    for (Payroll allData : listPayroll){
+                        if (dataCek.getNip().equalsIgnoreCase(allData.getNip())){
+                            dataProses.add(allData);
+                            break;
+                        }
+                    }
+                }
+
+                payrollBoProxy.saveAddData(dataProses, payroll);
+
+            }else{
+                List<Payroll> listPayroll = (List<Payroll>) session.getAttribute("listDataPayroll");
+                payrollBoProxy.saveAddData(listPayroll, payroll);
+            }
+
+
         }catch (GeneralBOException e) {
             Long logId = null;
             try {
@@ -2955,34 +2765,24 @@ public class PayrollAction extends BaseMasterAction{
         String hasil = "";
         String id = getId();
         String tipe = getTipe();
-        String noSurat = getNoSurat();
         String tanggalSK = getTanggalSk();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         ItPayrollEntity payroll = new ItPayrollEntity();
         if (id != null) {
             if(tipe.equalsIgnoreCase("PR")){
                 Branch branch = new Branch();
-
                 try{
                     PayrollBo payrollBo = (PayrollBo) ctx.getBean("payrollBoProxy");
                     payroll = payrollBo.getPayrollById(id);
                     BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
                     branch = branchBo.getBranchById(payroll.getBranchId(),"Y");
                 }catch( HibernateException e){
+                    throw e;
+                }
 
-                }
-                String logo ="";
-                if (payroll.getBranchId().equalsIgnoreCase("RS01")){
-                    logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS01;
-                }else if (payroll.getBranchId().equalsIgnoreCase("RS02")){
-                    logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS02;
-                }else if (payroll.getBranchId().equalsIgnoreCase("RS03")){
-                    logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS03;
-                }else{
-                    logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU;
-                }
                 String stTanggal = CommonUtil.convertDateToString( new java.util.Date());
-                reportParams.put("urlLogo", logo);
+                reportParams.put("areaId",CommonUtil.userAreaName());
+                reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
                 reportParams.put("branchId", payroll.getBranchId());
                 reportParams.put("branchName", branch.getBranchName());
                 reportParams.put("alamatSurat", branch.getAlamatSurat()+","+stTanggal);
@@ -2993,58 +2793,28 @@ public class PayrollAction extends BaseMasterAction{
                 reportParams.put("date", stTanggal);
                 hasil = "success_print_report_payroll";
             }else if(tipe.equalsIgnoreCase("T")){
-
+                throw new GeneralBOException("Report Belum ada ");
             }else if(tipe.equalsIgnoreCase("PD")){
-
+                throw new GeneralBOException("Report Belum ada ");
             }else if(tipe.equalsIgnoreCase("JP")){
-
+                throw new GeneralBOException("Report Belum ada ");
             }else if(tipe.equalsIgnoreCase("JB")){
-
+                throw new GeneralBOException("Report Belum ada ");
             }else if(tipe.equalsIgnoreCase("PN")) {
                 String payrollId = getId();
-                String tahun = getTahun();
-                String bulan = getBulan();
-                String tanggalPensiunRealisasi = getTanggalSk();
-                String positionId = getPositionId();
-                String tanggalAktif = getTanggalAktif();
-
-                Date tanggalPensiun = CommonUtil.convertStringToDate(tanggalPensiunRealisasi);
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(tanggalPensiun);
-                cal.add(Calendar.DATE, -1);
-                java.util.Date tangalMasaKerjaAkhir =  cal.getTime();
-
-                String masaKerjaAkhirRealisasi = CommonUtil.convertDateToString(tangalMasaKerjaAkhir);
-                String[] tanggalSk = getTanggalSk().split("-");
-                String tglPensiun = tanggalSk[0] + " " + CommonUtil.convertNumberToStringBulan(tanggalSk[1]).toUpperCase() + " " + tanggalSk[2];
-                String tglCetakPensiun = tanggalSk[0] + " " + CommonUtil.convertNumberToStringBulan(tanggalSk[1]) + " " + tanggalSk[2];
-                String namaDirektur = payrollBoProxy.getDirektur();
-                payroll = payrollBoProxy.getPayrollById(payrollId);
-                String nettoDiterima =CommonUtil.angkaToTerbilang(payroll.getGajiBersih().longValue());
-
                 if (payrollId != null) {
                     Branch branch = new Branch();
-
                     try{
                         PayrollBo payrollBo = (PayrollBo) ctx.getBean("payrollBoProxy");
                         payroll = payrollBo.getPayrollById(payrollId);
                         BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
                         branch = branchBo.getBranchById(payroll.getBranchId(),"Y");
                     }catch( HibernateException e){
-
-                    }
-                    String logo ="";
-                    if (payroll.getBranchId().equalsIgnoreCase("RS01")){
-                        logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS01;
-                    }else if (payroll.getBranchId().equalsIgnoreCase("RS02")){
-                        logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS02;
-                    }else if (payroll.getBranchId().equalsIgnoreCase("RS03")){
-                        logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS03;
-                    }else{
-                        logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU;
+                        throw e;
                     }
                     String stTanggal = CommonUtil.convertDateToString( new java.util.Date());
-                    reportParams.put("urlLogo", logo);
+                    reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
+                    reportParams.put("areaId",CommonUtil.userAreaName());
                     reportParams.put("branchId", payroll.getBranchId());
                     reportParams.put("branchName", branch.getBranchName());
                     reportParams.put("alamatSurat", branch.getAlamatSurat()+","+stTanggal);
@@ -3053,12 +2823,6 @@ public class PayrollAction extends BaseMasterAction{
                     reportParams.put("bulan", bulan);
                     reportParams.put("noSurat", getNoSurat());
                     reportParams.put("payrollId", payrollId);
-                    reportParams.put("direktur", namaDirektur);
-                    reportParams.put("tanggalPensiunRealisasi", tanggalPensiunRealisasi);
-                    reportParams.put("masaKerjaAkhirRealisasi", masaKerjaAkhirRealisasi);
-                    reportParams.put("tglPensiun", tglPensiun);
-                    reportParams.put("tglCetakPensiun", tglCetakPensiun);
-                    reportParams.put("nettoDiterima", nettoDiterima);
                     reportParams.put("tanggalAktif", tanggalAktif);
                     reportParams.put("positionId", positionId);
                     reportParams.put("date", stTanggal);
@@ -3076,27 +2840,24 @@ public class PayrollAction extends BaseMasterAction{
                     logger.error("[ReportAction.printReportPayroll] Error when downloading ,", e1);
                 }
                 logger.error("[ReportAction.printReportPayroll] Error when print report ," + "[" + logId + "] Found problem when downloading data, please inform to your admin.", e);
-                addActionError("Error, " + "[code=" + logId + "] Found problem when downloading data, please inform to your admin.");
+                throw new GeneralBOException("Error, " + "[code=" + logId + "] Found problem when downloading data, please inform to your admin.");
             }
 
         } else {
             logger.error("[ReportAction.printReportPayroll] Error when print report kpi unit, data musim tanam is empty , Found problem when downloading data, please inform to your admin.");
-            addActionError("Error, Found problem when downloading data, list kpi unit is empty, please inform to your admin.");
+            throw new GeneralBOException("Error, Found problem when downloading data, list kpi unit is empty, please inform to your admin.");
         }
-
         logger.info("[ReportAction.printReportPayroll] end process <<<");
-
         return hasil;
     }
 
     public String printReportPayrollByBranch(){
-        logger.info("[ReportAction.printReportKPIUnit] start process >>>");
+        logger.info("[ReportAction.printReportPayrollByBranch] start process >>>");
         String branchId = getBranchId();
         Branch branch = new Branch();
         String bulan = getBulan();
         String tahun = getTahun();
         String tipe = getTipe();
-
         String hasil = "";
 
         if(tipe.equalsIgnoreCase("PR")){
@@ -3121,20 +2882,11 @@ public class PayrollAction extends BaseMasterAction{
                 BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
                 branch = branchBo.getBranchById(branchId,"Y");
             }catch( HibernateException e){
-
-            }
-            String logo ="";
-            if (branchId.equalsIgnoreCase("RS01")){
-                logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS01;
-            }else if (branchId.equalsIgnoreCase("RS02")){
-                logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS02;
-            }else if (branchId.equalsIgnoreCase("RS03")){
-                logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS03;
-            }else{
-                logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU;
+                throw new HibernateException(e.getMessage());
             }
             String stTanggal = CommonUtil.convertDateToString( new java.util.Date());
-            reportParams.put("urlLogo", logo);
+            reportParams.put("areaId",CommonUtil.userAreaName());
+            reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
             reportParams.put("branchId", branchId);
             reportParams.put("branchName", branch.getBranchName());
             reportParams.put("alamatSurat", branch.getAlamatSurat()+","+stTanggal);
@@ -3149,19 +2901,18 @@ public class PayrollAction extends BaseMasterAction{
                 try {
                     logId = payrollBoProxy.saveErrorMessage(e.getMessage(), "printReportPayrollByBranch");
                 } catch (GeneralBOException e1) {
-                    logger.error("[ReportAction.printReportKPIUnit] Error when downloading ,", e1);
+                    logger.error("[ReportAction.printReportPayrollByBranch] Error when downloading ,", e1);
+                    throw new GeneralBOException("[ReportAction.printReportPayrollByBranch] Error when downloading ,", e1);
                 }
-                logger.error("[ReportAction.printReportKPIUnit] Error when print report ," + "[" + logId + "] Found problem when downloading data, please inform to your admin.", e);
-                addActionError("Error, " + "[code=" + logId + "] Found problem when downloading data, please inform to your admin.");
+                logger.error("[ReportAction.printReportPayrollByBranch] Error when print report ," + "[" + logId + "] Found problem when downloading data, please inform to your admin.", e);
+                throw new GeneralBOException("Error, " + "[code=" + logId + "] Found problem when downloading data, please inform to your admin.");
             }
 
         } else {
-            logger.error("[ReportAction.printReportKPIUnit] Error when print report kpi unit, data musim tanam is empty , Found problem when downloading data, please inform to your admin.");
-            addActionError("Error, Found problem when downloading data, list kpi unit is empty, please inform to your admin.");
+            logger.error("[ReportAction.printReportPayrollByBranch] Error when print report kpi unit, data musim tanam is empty , Found problem when downloading data, please inform to your admin.");
+            throw new GeneralBOException("Error, Found problem when downloading data, list kpi unit is empty, please inform to your admin.");
         }
-
         logger.info("[ReportAction.printReportPayrollByBranch] end process <<<");
-
         return hasil;
     }
 
@@ -3225,22 +2976,22 @@ public class PayrollAction extends BaseMasterAction{
     public String printReportJubileum(){
         logger.info("[ReportAction.printReportPayrollJubileum] start process >>>");
         String payrollId = getId();
-        String kabidSdm = getKabidSdm();
-        if (("").equalsIgnoreCase(kabidSdm)){
-            kabidSdm = payrollBoProxy.getKabidSdm();
-        }
-        String tanggalAkhirMasaKerja=getTanggalAkhir();
-        String tanggalCetak=getTanggal();
-        String[] tgl = tanggalCetak.split("-");
-        String tglCetakFinal = tgl[0]+" "+CommonUtil.convertNumberToStringBulan(tgl[1])+" "+tgl[2];
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
 
         if (payrollId != null) {
-            reportParams.put("urlLogo", CommonConstant.URL_IMAGE_LOGO_REPORT);
+            Branch branch = new Branch();
+            try{
+                BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+                branch = branchBo.getBranchById(getBranchId(),"Y");
+            }catch( HibernateException e){
+                throw e;
+            }
+            reportParams.put("areaId",CommonUtil.userAreaName());
+            reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
             reportParams.put("titleReport", "PENETAPAN UANG JUBILEUM");
             reportParams.put("payrollId", payrollId);
-            reportParams.put("namaKabid", kabidSdm);
-            reportParams.put("tanggalAkhirMasaKerja", tanggalAkhirMasaKerja);
-            reportParams.put("tanggalCetak", tglCetakFinal);
+            reportParams.put("branchName", branch.getBranchName());
+            reportParams.put("date", CommonUtil.convertDateToString(new java.util.Date()));
 
             try {
                 preDownload();
@@ -10736,6 +10487,11 @@ public class PayrollAction extends BaseMasterAction{
             addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
             return ERROR;
         }
+        String branchId = CommonUtil.userBranchLogin();
+        if (("KP").equalsIgnoreCase(branchId)){
+            searchPayroll.setKantorPusat(true);
+        }
+        payroll=searchPayroll;
 
         logger.info("[PayrollAction.search] end process <<<");
 
@@ -10858,8 +10614,19 @@ public class PayrollAction extends BaseMasterAction{
     public String initForm() {
         logger.info("[PayrollAction.initForm] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
-
+        String branchId = CommonUtil.userBranchLogin();
+        Payroll data = new Payroll();
+        if (branchId!=null) {
+            data.setBranchId(branchId);
+            if (("KP").equalsIgnoreCase(branchId)){
+                data.setKantorPusat(true);
+            }
+        }else{
+            data.setBranchId("");
+        }
+        payroll=data;
         session.removeAttribute("listOfResult");
+        session.removeAttribute("listCekNip");
         logger.info("[PayrollAction.initForm] end process >>>");
         return INPUT;
     }
@@ -11236,987 +11003,337 @@ public class PayrollAction extends BaseMasterAction{
         final BranchBo branchBo = (BranchBo)ctx.getBean("branchBoProxy");
         Branch branch = new Branch();
         branch = branchBo.getBranchById(unit, "Y");
-        List<Payroll> listData = new ArrayList<Payroll>();
-        final List listOfData = new ArrayList();
-        final List listOfColumn = new ArrayList();
-        final String periode = " Tahun " + tahun;
+        List<PayrollEsptDTO> listData = new ArrayList<PayrollEsptDTO>();
+        List listOfData = new ArrayList();
+        List listOfColumn = new ArrayList();
+        String periode = " Tahun " + tahun;
         if (tipe.equalsIgnoreCase("1721")) {
             titleReport = "Tarikan Excel 1721 " + branch.getBranchName();
             filename = "Tarikan Excel 1721-" + tahun + "-" + unit;
-            listData = (List<Payroll>)payrollBo.searchReportEsptSys(tahun, unit);
-            listOfColumn.add("nip");
-            listOfColumn.add("");
-            listOfColumn.add("");
-            listOfColumn.add("nama");
-            listOfColumn.add("npwp");
-            listOfColumn.add("masa kerja");
-            listOfColumn.add("st_gaji");
-            listOfColumn.add("ptkp");
-            listOfColumn.add("gaji");
-            listOfColumn.add("rapel_gaji");
-            listOfColumn.add("gaji+rapel");
-            listOfColumn.add("t_umk");
-            listOfColumn.add("t_struk");
-            listOfColumn.add("t_alih");
-            listOfColumn.add("t_strat");
-            listOfColumn.add("t_kompen");
-            listOfColumn.add("tunj_trp");
-            listOfColumn.add("tunj_lair");
-            listOfColumn.add("tunj_rumah");
-            listOfColumn.add("tunj_obat");
-            listOfColumn.add("upah_lbr");
-            listOfColumn.add("rapel_tunj");
-            listOfColumn.add("jmlTunj");
-            listOfColumn.add("tunj_pph");
-            listOfColumn.add("kast_prs");
-            listOfColumn.add("pak_dinas");
-            listOfColumn.add("pendidikan");
-            listOfColumn.add("thr");
-            listOfColumn.add("japrod");
-            listOfColumn.add("jubilium");
-            listOfColumn.add("insentif");
-            listOfColumn.add("Jml bonus");
-            listOfColumn.add("BRUTO");
-            listOfColumn.add("bi_jab");
-            listOfColumn.add("pensiun+kekurangan");
-            listOfColumn.add("astek+kekurangan");
-            listOfColumn.add("PKP");
-            listOfColumn.add("PAJAK");
-            RowData rowData = new RowData();
-            List listOfCell = new ArrayList();
-            CellDetail cellDetail = new CellDetail();
-            cellDetail.setCellID(0);
-            cellDetail.setValueCell("");
-            cellDetail.setAlignmentCell(1);
-            listOfCell.add(cellDetail);
-            cellDetail = new CellDetail();
-            cellDetail.setCellID(1);
-            cellDetail.setValueCell("");
-            cellDetail.setAlignmentCell(1);
-            listOfCell.add(cellDetail);
-            cellDetail = new CellDetail();
-            cellDetail.setCellID(1);
-            cellDetail.setValueCell("");
-            cellDetail.setAlignmentCell(1);
-            listOfCell.add(cellDetail);
-            cellDetail = new CellDetail();
-            cellDetail.setCellID(2);
-            cellDetail.setValueCell("");
-            cellDetail.setAlignmentCell(1);
-            listOfCell.add(cellDetail);
-            cellDetail = new CellDetail();
-            cellDetail.setCellID(3);
-            cellDetail.setValueCell("");
-            cellDetail.setAlignmentCell(1);
-            listOfCell.add(cellDetail);
-            cellDetail = new CellDetail();
-            cellDetail.setCellID(4);
-            cellDetail.setValueCell("");
-            cellDetail.setAlignmentCell(1);
-            listOfCell.add(cellDetail);
-            cellDetail = new CellDetail();
-            cellDetail.setCellID(5);
-            cellDetail.setValueCell("");
-            cellDetail.setAlignmentCell(1);
-            listOfCell.add(cellDetail);
-            cellDetail = new CellDetail();
-            cellDetail.setCellID(6);
-            cellDetail.setValueCell("");
-            cellDetail.setAlignmentCell(1);
-            listOfCell.add(cellDetail);
-            cellDetail = new CellDetail();
-            cellDetail.setCellID(7);
-            cellDetail.setValueCell("");
-            cellDetail.setAlignmentCell(1);
-            listOfCell.add(cellDetail);
-            cellDetail = new CellDetail();
-            cellDetail.setCellID(8);
-            cellDetail.setValueCell("");
-            cellDetail.setAlignmentCell(1);
-            listOfCell.add(cellDetail);
-            cellDetail = new CellDetail();
-            cellDetail.setCellID(9);
-            cellDetail.setValueCell("");
-            cellDetail.setAlignmentCell(1);
-            listOfCell.add(cellDetail);
-            cellDetail = new CellDetail();
-            cellDetail.setCellID(10);
-            cellDetail.setValueCell("");
-            cellDetail.setAlignmentCell(1);
-            listOfCell.add(cellDetail);
-            cellDetail = new CellDetail();
-            cellDetail.setCellID(11);
-            cellDetail.setValueCell("");
-            cellDetail.setAlignmentCell(1);
-            listOfCell.add(cellDetail);
-            cellDetail = new CellDetail();
-            cellDetail.setCellID(12);
-            cellDetail.setValueCell("");
-            cellDetail.setAlignmentCell(1);
-            listOfCell.add(cellDetail);
-            cellDetail = new CellDetail();
-            cellDetail.setCellID(13);
-            cellDetail.setValueCell("");
-            cellDetail.setAlignmentCell(1);
-            listOfCell.add(cellDetail);
-            cellDetail = new CellDetail();
-            cellDetail.setCellID(14);
-            cellDetail.setValueCell("");
-            cellDetail.setAlignmentCell(1);
-            listOfCell.add(cellDetail);
-            cellDetail = new CellDetail();
-            cellDetail.setCellID(15);
-            cellDetail.setValueCell("");
-            cellDetail.setAlignmentCell(1);
-            listOfCell.add(cellDetail);
-            cellDetail = new CellDetail();
-            cellDetail.setCellID(16);
-            cellDetail.setValueCell("");
-            cellDetail.setAlignmentCell(1);
-            listOfCell.add(cellDetail);
-            cellDetail = new CellDetail();
-            cellDetail.setCellID(17);
-            cellDetail.setValueCell("");
-            cellDetail.setAlignmentCell(1);
-            listOfCell.add(cellDetail);
-            cellDetail = new CellDetail();
-            cellDetail.setCellID(18);
-            cellDetail.setValueCell("");
-            cellDetail.setAlignmentCell(1);
-            listOfCell.add(cellDetail);
-            cellDetail = new CellDetail();
-            cellDetail.setCellID(19);
-            cellDetail.setValueCell("");
-            cellDetail.setAlignmentCell(1);
-            listOfCell.add(cellDetail);
-            cellDetail = new CellDetail();
-            cellDetail.setCellID(20);
-            cellDetail.setValueCell("");
-            cellDetail.setAlignmentCell(1);
-            listOfCell.add(cellDetail);
-            cellDetail = new CellDetail();
-            cellDetail.setCellID(21);
-            cellDetail.setValueCell("");
-            cellDetail.setAlignmentCell(1);
-            listOfCell.add(cellDetail);
-            cellDetail = new CellDetail();
-            cellDetail.setCellID(22);
-            cellDetail.setValueCell("");
-            cellDetail.setAlignmentCell(1);
-            listOfCell.add(cellDetail);
-            cellDetail = new CellDetail();
-            cellDetail.setCellID(23);
-            cellDetail.setValueCell("bpjs beban perusahaan");
-            cellDetail.setAlignmentCell(1);
-            listOfCell.add(cellDetail);
-            cellDetail = new CellDetail();
-            cellDetail.setCellID(24);
-            cellDetail.setValueCell("");
-            cellDetail.setAlignmentCell(1);
-            listOfCell.add(cellDetail);
-            cellDetail = new CellDetail();
-            cellDetail.setCellID(25);
-            cellDetail.setValueCell("");
-            cellDetail.setAlignmentCell(1);
-            listOfCell.add(cellDetail);
-            cellDetail = new CellDetail();
-            cellDetail.setCellID(26);
-            cellDetail.setValueCell("");
-            cellDetail.setAlignmentCell(1);
-            listOfCell.add(cellDetail);
-            cellDetail = new CellDetail();
-            cellDetail.setCellID(27);
-            cellDetail.setValueCell("");
-            cellDetail.setAlignmentCell(1);
-            listOfCell.add(cellDetail);
-            cellDetail = new CellDetail();
-            cellDetail.setCellID(28);
-            cellDetail.setValueCell("");
-            cellDetail.setAlignmentCell(1);
-            listOfCell.add(cellDetail);
-            cellDetail = new CellDetail();
-            cellDetail.setCellID(29);
-            cellDetail.setValueCell("");
-            cellDetail.setAlignmentCell(1);
-            listOfCell.add(cellDetail);
-            cellDetail = new CellDetail();
-            cellDetail.setCellID(30);
-            cellDetail.setValueCell("");
-            cellDetail.setAlignmentCell(1);
-            listOfCell.add(cellDetail);
-            cellDetail = new CellDetail();
-            cellDetail.setCellID(31);
-            cellDetail.setValueCell("");
-            cellDetail.setAlignmentCell(1);
-            listOfCell.add(cellDetail);
-            cellDetail = new CellDetail();
-            cellDetail.setCellID(32);
-            cellDetail.setValueCell("");
-            cellDetail.setAlignmentCell(1);
-            listOfCell.add(cellDetail);
-            cellDetail = new CellDetail();
-            cellDetail.setCellID(33);
-            cellDetail.setValueCell("beban pribadi");
-            cellDetail.setAlignmentCell(1);
-            listOfCell.add(cellDetail);
-            cellDetail = new CellDetail();
-            cellDetail.setCellID(34);
-            cellDetail.setValueCell("beban pribadi");
-            cellDetail.setAlignmentCell(1);
-            listOfCell.add(cellDetail);
-            cellDetail = new CellDetail();
-            cellDetail.setCellID(35);
-            cellDetail.setValueCell("");
-            cellDetail.setAlignmentCell(1);
-            listOfCell.add(cellDetail);
-            cellDetail = new CellDetail();
-            cellDetail.setCellID(36);
-            cellDetail.setValueCell("");
-            cellDetail.setAlignmentCell(1);
-            listOfCell.add(cellDetail);
-            rowData.setListOfCell(listOfCell);
-            listOfData.add(rowData);
-            for (final Payroll data : listData) {
-                rowData = new RowData();
-                listOfCell = new ArrayList();
-                String nip = "";
-                if (data.getNip() != null && !"".equalsIgnoreCase(data.getNip())) {
-                    final String[] bagianNip = data.getNip().split("-");
-                    nip = bagianNip[1];
-                }
-                final BigDecimal gajirapel = data.getGajiGolonganNilai().add(data.getRapelGajiGolongan());
-                final BigDecimal jmlTunjangan = data.getTunjanganUmkNilai().add(data.getTunjanganStrukturalNilai()).add(data.getTunjanganPeralihanNilai()).add(data.getTunjanganStrategisNilai()).add(data.getKompensasiNilai()).add(data.getTunjanganTransportNilai()).add(data.getTunjanganAirListrikNilai()).add(data.getTunjanganPerumahanNilai()).add(data.getTunjanganPengobatanNilai()).add(data.getTunjanganLemburNilai()).add(data.getRapelTunjangan()).add(data.getTunjanganLainNilai()).add(data.getTunjanganJabatanStrukturalNilai());
-                final BigDecimal jmlBonus = data.getTotalPendidikanNilai().add(data.getTotalThrNilai()).add(data.getTotalJasProdNilai()).add(data.getTotalJubileumNilai()).add(data.getTotalInsentifNilai());
-                final BigDecimal bruto = jmlTunjangan.add(data.getTunjanganPphNilai()).add(data.getTunjanganBajuDinasNilai()).add(jmlBonus).add(gajirapel).add(data.getKastPrs());
-                final BigDecimal bruto5Persen = bruto.multiply(BigDecimal.valueOf(5L).divide(BigDecimal.valueOf(100L)));
-                BigDecimal bijab;
-                if (bruto5Persen.compareTo(BigDecimal.valueOf(6000000L)) > 0) {
-                    bijab = BigDecimal.valueOf(6000000L);
-                }
-                else {
-                    bijab = bruto5Persen;
-                }
-                final BigDecimal pkp = bruto.subtract(bijab).subtract(data.getPtkpNilai()).subtract(data.getIuranPensiunNilai()).subtract(data.getIuranBpjsTkNilai());
-                final BigDecimal pajak = this.hitungHutangPajak(pkp);
-                cellDetail = new CellDetail();
+            listData = payrollBo.searchReportEsptSys(tahun, unit);
+            listOfColumn.add("Masa Pajak");
+            listOfColumn.add("Tahun Pajak");
+            listOfColumn.add("Pembetulan");
+            listOfColumn.add("No. Bukti Potong");
+            listOfColumn.add("Masa Perolehan Awal");
+            listOfColumn.add("Masa Perolehan Akhir");
+            listOfColumn.add("NPWP");
+            listOfColumn.add("NIK");
+            listOfColumn.add("Nama");
+            listOfColumn.add("Alamat");
+            listOfColumn.add("Jenis Kelamin");
+            listOfColumn.add("Status PTKP");
+            listOfColumn.add("Jumlah Tanggungan");
+            listOfColumn.add("Nama Jabatan");
+            listOfColumn.add("WP Luar Negeri");
+            listOfColumn.add("Kode Negara");
+            listOfColumn.add("Kode Pajak");
+            listOfColumn.add("Jumlah 1 - gaji/pensiun/tht/jht");
+            listOfColumn.add("Jumlah 2 - tunj. PPh");
+            listOfColumn.add("Jumlah 3 - Tunj. Lainnya,Uang Lembur,dll");
+            listOfColumn.add("Jumlah 4 - Honorarium,Imbalan Lain Sejenis");
+            listOfColumn.add("Jumlah 5 - Premi Asuransi yang dibayar Pemberi Kerja");
+            listOfColumn.add("Jumlah 6 - Penerimaan dlm bentuk natura & kenikmatan lainnya dikenakan Pemot. PPh 21");
+            listOfColumn.add("Jumlah 7 - Tantiem,Bonus,THR dll");
+            listOfColumn.add("Jumlah 8 - Jml Peng. Bruto");
+            listOfColumn.add("Jumlah 9 - Biaya Jabatan/Biaya Pensiun");
+            listOfColumn.add("Jumlah 10 - Iuran Pensiun,Iuran THT/JHT");
+            listOfColumn.add("Jumlah 11 - Jumlah Pengurang (9+10)");
+            listOfColumn.add("Jumlah 12 - Jumlah Penghasilan Netto (8-11)");
+            listOfColumn.add("Jumlah 13 - Penghasilan netto masa sebelumnya");
+            listOfColumn.add("Jumlah 14 - Jml. Peng. Netto sethn/disethnkan");
+            listOfColumn.add("Jumlah 15 - PTKP");
+            listOfColumn.add("Jumlah 16 - PKP Pajak Setahun (14-15)");
+            listOfColumn.add("Jumlah 17 - PPh 21 Atas Penghasilan Setahun / disetahunkan");
+            listOfColumn.add("Jumlah 18 - PPh 21 yg tlh dipotong masa sblmnya");
+            listOfColumn.add("Jumlah 19 - PPh 21 Terutang");
+            listOfColumn.add("Jumlah 20 - PPh 21 yg tlh dipotong/dilunasi");
+            listOfColumn.add("Selisih PPH 21");
+            listOfColumn.add("Kurang Bayar");
+            listOfColumn.add("Status Pindah");
+            listOfColumn.add("NPWP Pemotong");
+            listOfColumn.add("Nama Pemotong");
+            listOfColumn.add("Tanggal Bukti Potong");
+            listOfColumn.add("Status Berhenti");
+
+            for (PayrollEsptDTO data : listData) {
+                RowData rowData = new RowData();
+                List listOfCell = new ArrayList();
+                CellDetail cellDetail = new CellDetail();
+
+                //masa Pajak
                 cellDetail.setCellID(0);
-                cellDetail.setValueCell(data.getNip());
-                cellDetail.setAlignmentCell(1);
+                cellDetail.setValueCell(data.getMasaPajak());
+                cellDetail.setAlignmentCell(2);
                 listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
+
+                //Tahun Pajak
                 cellDetail.setCellID(1);
-                cellDetail.setValueCell(nip);
-                cellDetail.setAlignmentCell(1);
+                cellDetail.setValueCell(data.getTahunPajak());
+                cellDetail.setAlignmentCell(2);
                 listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(1);
-                cellDetail.setValueCell("");
-                cellDetail.setAlignmentCell(1);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
+
+                //Pembetulan
                 cellDetail.setCellID(2);
+                cellDetail.setValueCell(data.getPembetulan());
+                cellDetail.setAlignmentCell(2);
+                listOfCell.add(cellDetail);
+
+                //Nomor Bukti Potong
+                cellDetail.setCellID(3);
+                cellDetail.setValueCell(data.getNomorBuktiPotong());
+                cellDetail.setAlignmentCell(2);
+                listOfCell.add(cellDetail);
+
+                //Masa Perolehan Awal
+                cellDetail.setCellID(4);
+                cellDetail.setValueCell(data.getMasaPerolehanAwal());
+                cellDetail.setAlignmentCell(2);
+                listOfCell.add(cellDetail);
+
+                //Masa Perolehan Akhir
+                cellDetail.setCellID(5);
+                cellDetail.setValueCell(data.getMasaPerolehanAkhir());
+                cellDetail.setAlignmentCell(2);
+                listOfCell.add(cellDetail);
+
+                //NPWP
+                cellDetail.setCellID(6);
+                cellDetail.setValueCell(data.getNpwp());
+                cellDetail.setAlignmentCell(2);
+                listOfCell.add(cellDetail);
+
+                //NIK
+                cellDetail.setCellID(7);
+                cellDetail.setValueCell(data.getNik());
+                cellDetail.setAlignmentCell(1);
+                listOfCell.add(cellDetail);
+
+                //Nama
+                cellDetail.setCellID(8);
                 cellDetail.setValueCell(data.getNama());
                 cellDetail.setAlignmentCell(1);
                 listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(3);
-                cellDetail.setValueCell(data.getNpwp());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(4);
-                cellDetail.setValueCell(data.getMasaKerjaBulan());
-                cellDetail.setAlignmentCell(2);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(5);
-                cellDetail.setValueCell(data.getStatusKeluarga() + "/" + data.getJumlahAnak());
-                cellDetail.setAlignmentCell(2);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(6);
-                cellDetail.setValueCell(data.getPtkpNilai().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(7);
-                cellDetail.setValueCell(data.getGajiGolonganNilai().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(8);
-                cellDetail.setValueCell(data.getRapelGajiGolongan().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
+
+                //Alamat
                 cellDetail.setCellID(9);
-                cellDetail.setValueCell(gajirapel.doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(10);
-                cellDetail.setValueCell(data.getTunjanganUmkNilai().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(11);
-                cellDetail.setValueCell(data.getTunjanganStrukturalNilai().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(12);
-                cellDetail.setValueCell(data.getTunjanganPeralihanNilai().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(13);
-                cellDetail.setValueCell(data.getTunjanganStrategisNilai().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(14);
-                cellDetail.setValueCell(data.getKompensasiNilai().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(15);
-                cellDetail.setValueCell(data.getTunjanganTransportNilai().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(16);
-                cellDetail.setValueCell(data.getTunjanganAirListrikNilai().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(17);
-                cellDetail.setValueCell(data.getTunjanganPerumahanNilai().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(18);
-                cellDetail.setValueCell(data.getTunjanganPengobatanNilai().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(19);
-                cellDetail.setValueCell(data.getTunjanganLemburNilai().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(20);
-                cellDetail.setValueCell(data.getRapelTunjangan().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(21);
-                cellDetail.setValueCell(jmlTunjangan.doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(22);
-                cellDetail.setValueCell(data.getTunjanganPphNilai().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(23);
-                cellDetail.setValueCell(data.getKastPrs().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(24);
-                cellDetail.setValueCell(data.getTunjanganBajuDinasNilai().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(25);
-                cellDetail.setValueCell(data.getTotalPendidikanNilai().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(26);
-                cellDetail.setValueCell(data.getTotalThrNilai().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(27);
-                cellDetail.setValueCell(data.getTotalJasProdNilai().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(28);
-                cellDetail.setValueCell(data.getTotalJubileumNilai().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(29);
-                cellDetail.setValueCell(data.getTotalInsentifNilai().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(30);
-                cellDetail.setValueCell(jmlBonus.doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(31);
-                cellDetail.setValueCell(bruto.doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(32);
-                cellDetail.setValueCell(bijab.doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(33);
-                cellDetail.setValueCell(data.getIuranPensiunNilai().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(34);
-                cellDetail.setValueCell(data.getIuranBpjsTkNilai().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(35);
-                cellDetail.setValueCell(pkp.doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(36);
-                cellDetail.setValueCell(pajak.doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                rowData.setListOfCell(listOfCell);
-                listOfData.add(rowData);
-            }
-        }
-        else if (tipe.equalsIgnoreCase("pdppph")) {
-            titleReport = "Tarikan Pendapatan+pph " + branch.getBranchName();
-            filename = "Tarikan Pendapatan+pph-" + tahun + "-" + unit;
-            final List<PayrollPendapatanPphDTO> listData2 = (List<PayrollPendapatanPphDTO>)payrollBo.searchReportPendapatanPph(tahun, unit);
-            listOfColumn.add("NIP");
-            listOfColumn.add("NAMA");
-            listOfColumn.add("PDP_01");
-            listOfColumn.add("PPH_01");
-            listOfColumn.add("PDP_02");
-            listOfColumn.add("PPH_02");
-            listOfColumn.add("PDP_03");
-            listOfColumn.add("PPH_03");
-            listOfColumn.add("PDP_04");
-            listOfColumn.add("PPH_04");
-            listOfColumn.add("PDP_05");
-            listOfColumn.add("PPH_05");
-            listOfColumn.add("PDP_06");
-            listOfColumn.add("PPH_06");
-            listOfColumn.add("PDP_07");
-            listOfColumn.add("PPH_07");
-            listOfColumn.add("PDP_08");
-            listOfColumn.add("PPH_08");
-            listOfColumn.add("PDP_09");
-            listOfColumn.add("PPH_09");
-            listOfColumn.add("PDP_10");
-            listOfColumn.add("PPH_10");
-            listOfColumn.add("PDP_11");
-            listOfColumn.add("PPH_11");
-            listOfColumn.add("PDP_12");
-            listOfColumn.add("PPH_12");
-            listOfColumn.add("PDP_DIDIK");
-            listOfColumn.add("PPH_DIDIK");
-            listOfColumn.add("PDP_THR");
-            listOfColumn.add("PPH_THR");
-            listOfColumn.add("PDP_BONUS");
-            listOfColumn.add("PPH_BONUS");
-            listOfColumn.add("JBT_BONUS");
-            listOfColumn.add("PDP_RAPEL");
-            listOfColumn.add("PPH_RAPEL");
-            listOfColumn.add("RPL1");
-            listOfColumn.add("PDP_JUBEL");
-            listOfColumn.add("PPH_LAIN");
-            listOfColumn.add("JUMLAH GAJI");
-            listOfColumn.add("");
-            listOfColumn.add("TUNJ_OBT01");
-            listOfColumn.add("PPH_OBT01");
-            listOfColumn.add("TUNJ_OBT02");
-            listOfColumn.add("PPH_OBT02");
-            listOfColumn.add("TUNJ_OBT03");
-            listOfColumn.add("PPH_OBT03");
-            listOfColumn.add("TUNJ_OBT04");
-            listOfColumn.add("PPH_OBT04");
-            listOfColumn.add("TUNJ_OBT05");
-            listOfColumn.add("PPH_OBT05");
-            listOfColumn.add("TUNJ_OBT06");
-            listOfColumn.add("PPH_OBT06");
-            listOfColumn.add("TUNJ_OBT07");
-            listOfColumn.add("PPH_OBT07");
-            listOfColumn.add("TUNJ_OBT08");
-            listOfColumn.add("PPH_OBT08");
-            listOfColumn.add("TUNJ_OBT09");
-            listOfColumn.add("PPH_OBT09");
-            listOfColumn.add("TUNJ_OBT10");
-            listOfColumn.add("PPH_OBT10");
-            listOfColumn.add("TUNJ_OBT11");
-            listOfColumn.add("PPH_OBT11");
-            listOfColumn.add("TUNJ_OBT12");
-            listOfColumn.add("PPH_OBT12");
-            listOfColumn.add("JUMLAH OBT");
-            listOfColumn.add("");
-            listOfColumn.add("LBR_01");
-            listOfColumn.add("LBR_02");
-            listOfColumn.add("LBR_03");
-            listOfColumn.add("LBR_04");
-            listOfColumn.add("LBR_05");
-            listOfColumn.add("LBR_06");
-            listOfColumn.add("LBR_07");
-            listOfColumn.add("LBR_08");
-            listOfColumn.add("LBR_09");
-            listOfColumn.add("LBR_10");
-            listOfColumn.add("LBR_11");
-            listOfColumn.add("LBR_12");
-            listOfColumn.add("JML_LBR");
-            listOfColumn.add("");
-            listOfColumn.add("PDP(LBR)+OBT");
-            listOfColumn.add("KAST_PER");
-            listOfColumn.add("PAK_DINAS");
-            RowData rowData = new RowData();
-            List listOfCell = new ArrayList();
-            for (int i = 0; i <= 82; ++i) {
-                final CellDetail cellDetail = new CellDetail();
-                cellDetail.setCellID(i);
-                cellDetail.setValueCell(i + 1);
-                cellDetail.setAlignmentCell(2);
-                listOfCell.add(cellDetail);
-            }
-            rowData.setListOfCell(listOfCell);
-            listOfData.add(rowData);
-            for (final PayrollPendapatanPphDTO data2 : listData2) {
-                rowData = new RowData();
-                listOfCell = new ArrayList();
-                CellDetail cellDetail = new CellDetail();
-                cellDetail.setCellID(0);
-                cellDetail.setValueCell(data2.getNip());
+                cellDetail.setValueCell(data.getAlamat());
                 cellDetail.setAlignmentCell(1);
                 listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(1);
-                cellDetail.setValueCell(data2.getNama());
-                cellDetail.setAlignmentCell(1);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(2);
-                cellDetail.setValueCell(data2.getPdp01().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(3);
-                cellDetail.setValueCell(data2.getPph01().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(4);
-                cellDetail.setValueCell(data2.getPdp02().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(5);
-                cellDetail.setValueCell(data2.getPph02().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(6);
-                cellDetail.setValueCell(data2.getPdp03().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(7);
-                cellDetail.setValueCell(data2.getPph03().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(8);
-                cellDetail.setValueCell(data2.getPdp04().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(9);
-                cellDetail.setValueCell(data2.getPph04().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
+
+                //Jenis Kelamin
                 cellDetail.setCellID(10);
-                cellDetail.setValueCell(data2.getPdp05().doubleValue());
-                cellDetail.setAlignmentCell(3);
+                cellDetail.setValueCell(data.getJenisKelamin());
+                cellDetail.setAlignmentCell(2);
                 listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
+
+                //Status PTKP
                 cellDetail.setCellID(11);
-                cellDetail.setValueCell(data2.getPph05().doubleValue());
-                cellDetail.setAlignmentCell(3);
+                cellDetail.setValueCell(data.getStatusPtkp());
+                cellDetail.setAlignmentCell(2);
                 listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
+
+                //Jumlah Tanggungan
                 cellDetail.setCellID(12);
-                cellDetail.setValueCell(data2.getPdp06().doubleValue());
-                cellDetail.setAlignmentCell(3);
+                cellDetail.setValueCell(data.getJumlahTanggungan());
+                cellDetail.setAlignmentCell(2);
                 listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
+
+                //Nama Jabatan
                 cellDetail.setCellID(13);
-                cellDetail.setValueCell(data2.getPph06().doubleValue());
-                cellDetail.setAlignmentCell(3);
+                cellDetail.setValueCell(data.getNamaJabatan());
+                cellDetail.setAlignmentCell(2);
                 listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
+
+                //WP luar Negeri
                 cellDetail.setCellID(14);
-                cellDetail.setValueCell(data2.getPdp07().doubleValue());
-                cellDetail.setAlignmentCell(3);
+                cellDetail.setValueCell(data.getWpLuarNegeri());
+                cellDetail.setAlignmentCell(2);
                 listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
+
+                //Kode Luar Negeri
                 cellDetail.setCellID(15);
-                cellDetail.setValueCell(data2.getPph07().doubleValue());
-                cellDetail.setAlignmentCell(3);
+                cellDetail.setValueCell(data.getKodeLuarNegeri());
+                cellDetail.setAlignmentCell(2);
                 listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
+
+                //Kode Pajak
                 cellDetail.setCellID(16);
-                cellDetail.setValueCell(data2.getPdp08().doubleValue());
-                cellDetail.setAlignmentCell(3);
+                cellDetail.setValueCell(data.getKodePajak());
+                cellDetail.setAlignmentCell(2);
                 listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
+
+                //Jumlah 1 Gaji/pensiun/tht/jht
                 cellDetail.setCellID(17);
-                cellDetail.setValueCell(data2.getPph08().doubleValue());
+                cellDetail.setValueCell(data.getJumlah1().doubleValue());
                 cellDetail.setAlignmentCell(3);
                 listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
+
+                //Jumlah 2 Tunj. PPh
                 cellDetail.setCellID(18);
-                cellDetail.setValueCell(data2.getPdp09().doubleValue());
+                cellDetail.setValueCell(data.getJumlah2().doubleValue());
                 cellDetail.setAlignmentCell(3);
                 listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
+
+                //Jumlah 3 Tunj. Lainnya , lembur, dll
                 cellDetail.setCellID(19);
-                cellDetail.setValueCell(data2.getPph09().doubleValue());
+                cellDetail.setValueCell(data.getJumlah3().doubleValue());
                 cellDetail.setAlignmentCell(3);
                 listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
+
+                //Jumlah 4 Honorarium,imbalan,lain sejenis
                 cellDetail.setCellID(20);
-                cellDetail.setValueCell(data2.getPdp10().doubleValue());
+                cellDetail.setValueCell(data.getJumlah4().doubleValue());
                 cellDetail.setAlignmentCell(3);
                 listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
+
+                //Jumlah 5 Premi Asuransi yang dibayarkan pemberi kerja
                 cellDetail.setCellID(21);
-                cellDetail.setValueCell(data2.getPph10().doubleValue());
+                cellDetail.setValueCell(data.getJumlah5().doubleValue());
                 cellDetail.setAlignmentCell(3);
                 listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
+
+                //Jumlah 6 Penerimaan dalam bentuk natura dan kenikmatan lainnya
                 cellDetail.setCellID(22);
-                cellDetail.setValueCell(data2.getPdp11().doubleValue());
+                cellDetail.setValueCell(data.getJumlah6().doubleValue());
                 cellDetail.setAlignmentCell(3);
                 listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
+
+                //Jumlah 7 Tantiem , Bonus , THR , dll
                 cellDetail.setCellID(23);
-                cellDetail.setValueCell(data2.getPph11().doubleValue());
+                cellDetail.setValueCell(data.getJumlah7().doubleValue());
                 cellDetail.setAlignmentCell(3);
                 listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
+
+                //Jumlah 8 Jml Penghasilan Bruto
                 cellDetail.setCellID(24);
-                cellDetail.setValueCell(data2.getPdp12().doubleValue());
+                cellDetail.setValueCell(data.getJumlah8().doubleValue());
                 cellDetail.setAlignmentCell(3);
                 listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
+
+                //Jumlah 9 Biaya jabatan / Biaya pensiun
                 cellDetail.setCellID(25);
-                cellDetail.setValueCell(data2.getPph12().doubleValue());
+                cellDetail.setValueCell(data.getJumlah9().doubleValue());
                 cellDetail.setAlignmentCell(3);
                 listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
+
+                //Jumlah 10 Iuran Pensiun , iuran THT / JHT
                 cellDetail.setCellID(26);
-                cellDetail.setValueCell(data2.getPdpDidik().doubleValue());
+                cellDetail.setValueCell(data.getJumlah10().doubleValue());
                 cellDetail.setAlignmentCell(3);
                 listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
+
+                //Jumlah 11 Jumlah Pengurang ( 9+10 )
                 cellDetail.setCellID(27);
-                cellDetail.setValueCell(data2.getPphDidik().doubleValue());
+                cellDetail.setValueCell(data.getJumlah11().doubleValue());
                 cellDetail.setAlignmentCell(3);
                 listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
+
+                //Jumlah 12 Jumlah Penghasilan Netto
                 cellDetail.setCellID(28);
-                cellDetail.setValueCell(data2.getPdpThr().doubleValue());
+                cellDetail.setValueCell(data.getJumlah12().doubleValue());
                 cellDetail.setAlignmentCell(3);
                 listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
+
+                //Jumlah 13 Penghasilan Netto Masa Sebelumnya
                 cellDetail.setCellID(29);
-                cellDetail.setValueCell(data2.getPphThr().doubleValue());
+                cellDetail.setValueCell(data.getJumlah13().doubleValue());
                 cellDetail.setAlignmentCell(3);
                 listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
+
+                //Jumlah 14 Jumlah Penghasilan Netto Setahun /  Disetahunkan
                 cellDetail.setCellID(30);
-                cellDetail.setValueCell(data2.getPdpBonus().doubleValue());
+                cellDetail.setValueCell(data.getJumlah14().doubleValue());
                 cellDetail.setAlignmentCell(3);
                 listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
+
+                //Jumlah 15 PTKP
                 cellDetail.setCellID(31);
-                cellDetail.setValueCell(data2.getPphBonus().doubleValue());
+                cellDetail.setValueCell(data.getJumlah15().doubleValue());
                 cellDetail.setAlignmentCell(3);
                 listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
+
+                //Jumlah 16 Penghasilan PKP setahun ( 14-15 )
                 cellDetail.setCellID(32);
-                cellDetail.setValueCell("");
-                cellDetail.setValueCell(data2.getJbtBonus().doubleValue());
+                cellDetail.setValueCell(data.getJumlah16().doubleValue());
                 cellDetail.setAlignmentCell(3);
                 listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
+
+                //Jumlah 17 PPH 21 Atas Penghasilan setahun / disetahunkan
                 cellDetail.setCellID(33);
-                cellDetail.setValueCell(data2.getPdpRapel().doubleValue());
+                cellDetail.setValueCell(data.getJumlah17().doubleValue());
                 cellDetail.setAlignmentCell(3);
                 listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
+
+                //Jumlah 18 PPh 21 Yang tlh Dipotong masa sebelumnya
                 cellDetail.setCellID(34);
-                cellDetail.setValueCell(data2.getPphRapel().doubleValue());
+                cellDetail.setValueCell(data.getJumlah18().doubleValue());
                 cellDetail.setAlignmentCell(3);
                 listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
+
+                //Jumlah 19 PPh 21 Terutang
                 cellDetail.setCellID(35);
-                cellDetail.setValueCell("");
+                cellDetail.setValueCell(data.getJumlah19().doubleValue());
                 cellDetail.setAlignmentCell(3);
                 listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
+
+                //Jumlah 20 PPh 21 Yang telah dipotong / dilunasi
                 cellDetail.setCellID(36);
-                cellDetail.setValueCell(data2.getPdpJubel().doubleValue());
+                cellDetail.setValueCell(data.getJumlah20().doubleValue());
                 cellDetail.setAlignmentCell(3);
                 listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
+
+                //Selisih PPh 21
                 cellDetail.setCellID(37);
-                cellDetail.setValueCell(data2.getPphLain().doubleValue());
+                cellDetail.setValueCell(data.getSelisih21().doubleValue());
                 cellDetail.setAlignmentCell(3);
                 listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
+
+                // Kurang Bayar PPh 21
                 cellDetail.setCellID(38);
-                cellDetail.setValueCell(data2.getJumlahGaji().doubleValue());
+                cellDetail.setValueCell(data.getKurangBayar21().doubleValue());
                 cellDetail.setAlignmentCell(3);
                 listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
+
+                // Status Pindah
                 cellDetail.setCellID(39);
-                cellDetail.setValueCell(data2.getJumlahPphGaji().doubleValue());
-                cellDetail.setAlignmentCell(3);
+                cellDetail.setValueCell(data.getStatusPindah());
+                cellDetail.setAlignmentCell(2);
                 listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
+
+                // NPWP Pemotong
                 cellDetail.setCellID(40);
-                cellDetail.setValueCell(data2.getTunObt01().doubleValue());
-                cellDetail.setAlignmentCell(3);
+                cellDetail.setValueCell(data.getNpwpPemotong());
+                cellDetail.setAlignmentCell(1);
                 listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
+
+                // Nama Pemotong
                 cellDetail.setCellID(41);
-                cellDetail.setValueCell(data2.getPphObt01().doubleValue());
-                cellDetail.setAlignmentCell(3);
+                cellDetail.setValueCell(data.getNamaPemotong());
+                cellDetail.setAlignmentCell(1);
                 listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
+
+                //Tanggal Bukti Potong
                 cellDetail.setCellID(42);
-                cellDetail.setValueCell(data2.getTunObt02().doubleValue());
-                cellDetail.setAlignmentCell(3);
+                cellDetail.setValueCell(data.getTanggalBuktiPotong());
+                cellDetail.setAlignmentCell(2);
                 listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
+
+                //Status berhenti
                 cellDetail.setCellID(43);
-                cellDetail.setValueCell(data2.getPphObt02().doubleValue());
-                cellDetail.setAlignmentCell(3);
+                cellDetail.setValueCell(data.getStatusBerhenti());
+                cellDetail.setAlignmentCell(2);
                 listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(44);
-                cellDetail.setValueCell(data2.getTunObt03().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(45);
-                cellDetail.setValueCell(data2.getPphObt03().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(46);
-                cellDetail.setValueCell(data2.getTunObt04().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(47);
-                cellDetail.setValueCell(data2.getPphObt04().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(48);
-                cellDetail.setValueCell(data2.getTunObt05().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(49);
-                cellDetail.setValueCell(data2.getPphObt05().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(50);
-                cellDetail.setValueCell(data2.getTunObt06().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(51);
-                cellDetail.setValueCell(data2.getPphObt06().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(52);
-                cellDetail.setValueCell(data2.getTunObt07().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(53);
-                cellDetail.setValueCell(data2.getPphObt07().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(54);
-                cellDetail.setValueCell(data2.getTunObt08().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(55);
-                cellDetail.setValueCell(data2.getPphObt08().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(56);
-                cellDetail.setValueCell(data2.getTunObt09().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(57);
-                cellDetail.setValueCell(data2.getPphObt09().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(58);
-                cellDetail.setValueCell(data2.getTunObt10().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(59);
-                cellDetail.setValueCell(data2.getPphObt10().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(60);
-                cellDetail.setValueCell(data2.getTunObt11().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(61);
-                cellDetail.setValueCell(data2.getPphObt11().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(62);
-                cellDetail.setValueCell(data2.getTunObt12().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(63);
-                cellDetail.setValueCell(data2.getPphObt12().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(64);
-                cellDetail.setValueCell(data2.getJumlahObt().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(65);
-                cellDetail.setValueCell(data2.getJumlahPphObt().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(66);
-                cellDetail.setValueCell(data2.getLbr01().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(67);
-                cellDetail.setValueCell(data2.getLbr02().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(68);
-                cellDetail.setValueCell(data2.getLbr03().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(69);
-                cellDetail.setValueCell(data2.getLbr04().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(70);
-                cellDetail.setValueCell(data2.getLbr05().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(71);
-                cellDetail.setValueCell(data2.getLbr06().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(72);
-                cellDetail.setValueCell(data2.getLbr07().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(73);
-                cellDetail.setValueCell(data2.getLbr08().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(74);
-                cellDetail.setValueCell(data2.getLbr09().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(75);
-                cellDetail.setValueCell(data2.getLbr10().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(76);
-                cellDetail.setValueCell(data2.getLbr11().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(77);
-                cellDetail.setValueCell(data2.getLbr12().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(78);
-                cellDetail.setValueCell(data2.getJumlahlbr().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(79);
-                cellDetail.setValueCell("");
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(80);
-                cellDetail.setValueCell(data2.getJumlahPdpLbrObt().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(81);
-                cellDetail.setValueCell(data2.getKasPer().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
-                cellDetail = new CellDetail();
-                cellDetail.setCellID(82);
-                cellDetail.setValueCell(data2.getPakaianDinas().doubleValue());
-                cellDetail.setAlignmentCell(3);
-                listOfCell.add(cellDetail);
+
                 rowData.setListOfCell(listOfCell);
                 listOfData.add(rowData);
             }
         }
-        final HSSFWorkbook wb = DownloadUtil.generateExcelOutput(titleReport, periode, listOfColumn, listOfData, (List)null);
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+        HSSFWorkbook wb = DownloadUtil.generateExcelOutput(titleReport, periode, listOfColumn, listOfData, null);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {
-            wb.write((OutputStream)baos);
+            wb.write(baos);
         }
         catch (IOException e) {
             Long logId = null;
@@ -12224,14 +11341,14 @@ public class PayrollAction extends BaseMasterAction{
                 logId = this.payrollBoProxy.saveErrorMessage(e.getMessage(), "payrollAction.payrollReportExcelEspt");
             }
             catch (GeneralBOException e2) {
-                PayrollAction.logger.error((Object)"[payrollAction.payrollReportExcelEspt] Error when downloading,", (Throwable)e2);
+                logger.error((Object)"[payrollAction.payrollReportExcelEspt] Error when downloading,", (Throwable)e2);
             }
-            PayrollAction.logger.error((Object)("[payrollAction.payrollReportExcelEspt] Error when downloading data of function,[" + logId + "] Found problem when downloading data, please inform to your admin."), (Throwable)e);
-            this.addActionError("Error, [code=" + logId + "] Found problem when downloding data, please inform to your admin.");
-            return "error";
+            logger.error((Object)("[payrollAction.payrollReportExcelEspt] Error when downloading data of function,[" + logId + "] Found problem when downloading data, please inform to your admin."), (Throwable)e);
+            addActionError("Error, [code=" + logId + "] Found problem when downloding data, please inform to your admin.");
+            throw new GeneralBOException(e.getMessage());
         }
-        this.setExcelStream((InputStream)new ByteArrayInputStream(baos.toByteArray()));
-        this.setContentDisposition("filename=\"" + filename + ".${documentFormat}\"");
+        setExcelStream((InputStream)new ByteArrayInputStream(baos.toByteArray()));
+        setContentDisposition("filename=\"" + filename + ".${documentFormat}\"");
         PayrollAction.logger.info((Object)"[payrollAction.payrollReportExcelEspt] end process <<<");
         return "downloadXlsRekapGaji";
     }
@@ -12315,27 +11432,83 @@ public class PayrollAction extends BaseMasterAction{
         session.setAttribute("detailPtt",pttList);
         return total.toString();
     }
+    public String deletePttSession(String tipePtt){
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<Ptt> pttList = new ArrayList<>();
+        List<Ptt> listOfResult = (List<Ptt>) session.getAttribute("detailPtt");
+        for (Ptt ptt : listOfResult){
+            if (ptt.getTipePttId().equalsIgnoreCase(tipePtt)){
+            }else{
+                pttList.add(ptt);
+            }
+        }
+        BigDecimal total = new BigDecimal(0);
+        for (Ptt ptt : pttList){
+            total = total.add(ptt.getNilaiPtt());
+        }
+        session.setAttribute("detailPtt",pttList);
+        return total.toString();
+    }
+
     public List<Ptt> getDetailPtt (){
         HttpSession session = ServletActionContext.getRequest().getSession();
         return (List<Ptt>) session.getAttribute("detailPtt");
     }
-    public List<Ptt> getDetailPttSetahun (){
-        HttpSession session = ServletActionContext.getRequest().getSession();
-        return (List<Ptt>) session.getAttribute("detailPttSetahun");
-    }
-    private BigDecimal getTotalLainLainSetahun(String nip , String tahun){
+    public List<Ptt> searchTotalPtt11Bulan(String nip , String tahun){
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PayrollBo payrollBo = (PayrollBo) ctx.getBean("payrollBoProxy");
-        List<Ptt> pttList = payrollBo.getTotalLainLainSetahun(nip,tahun);
 
-        BigDecimal hasil = BigDecimal.ZERO;
-        for (Ptt ptt : pttList){
-            hasil=hasil.add(ptt.getNilaiPtt());
-        }
+        return payrollBo.getTotalLainLainSetahun(nip,tahun);
+    }
+
+    public List<PayrollModalDTO> searchTotalPPh11Bulan(String nip , String tahun){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PayrollBo payrollBo = (PayrollBo) ctx.getBean("payrollBoProxy");
+
+        return payrollBo.getTotalPPh11Bulan(nip,tahun);
+    }
+
+    public PayrollModalDTO searchDetailPPhSeharusnya(String nip , String tahun,String totalA,String totalRlab,String tunjDapen,String tunjBpjsKs,String tunjBpjsTk,String iuranDapen,String iuranBpjsKs,String iuranBpjsTk,String statusKelurga,String jumlahAnak){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PayrollBo payrollBo = (PayrollBo) ctx.getBean("payrollBoProxy");
+
+        return payrollBo.searchDetailPPhSeharusnya(nip,tahun,totalA,totalRlab,tunjDapen,tunjBpjsKs,tunjBpjsTk,iuranDapen,iuranBpjsKs,iuranBpjsTk,statusKelurga,jumlahAnak);
+    }
+
+    public void addUserCekToSession(String nip){
         HttpSession session = ServletActionContext.getRequest().getSession();
-        session.setAttribute("detailPttSetahun",pttList);
+        List<Payroll> cekNipList = new ArrayList<>();
+        List<Payroll> listOfResult = (List<Payroll>) session.getAttribute("listCekNip");
+        Payroll newData = new Payroll();
+        newData.setNip(nip);
+        if (listOfResult==null){
+            cekNipList.add(newData);
+        }else{
+            boolean dataSudahAda=false;
+            for (Payroll payroll : listOfResult){
+                if (payroll.getNip().equalsIgnoreCase(nip)){
+                    dataSudahAda=true;
+                }
+            }
+            if (dataSudahAda){
+            }else{
+                cekNipList.add(newData);
+            }
+        }
+        session.setAttribute("listCekNip",cekNipList);
+    }
 
-        return hasil;
+    public void deleteUserCekToSession(String nip){
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<Payroll> cekNipList = new ArrayList<>();
+        List<Payroll> listOfResult = (List<Payroll>) session.getAttribute("listCekNip");
+        for (Payroll payroll : listOfResult){
+            if (payroll.getNip().equalsIgnoreCase(nip)){
+            }else{
+                cekNipList.add(payroll);
+            }
+        }
+        session.setAttribute("listCekNip",cekNipList);
     }
 
     @Override

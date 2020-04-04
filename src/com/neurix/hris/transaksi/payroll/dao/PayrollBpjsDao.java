@@ -51,7 +51,7 @@ public class PayrollBpjsDao extends GenericDao<ImPayrollBpjsEntity, String> {
         }
 
         // Order by
-        criteria.addOrder(Order.desc("branchId"));
+        criteria.addOrder(Order.asc("branchId"));
 
         List<ImPayrollBpjsEntity> results = criteria.list();
 

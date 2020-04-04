@@ -36,6 +36,7 @@ public class PayrollInsentif extends BaseModel {
     private BigDecimal tunjAirNilai;
     private BigDecimal tunjBbmNilai;
     private BigDecimal totalThpNilai;
+    private BigDecimal tunjPphNilai;
 
     private String totalInsentif;
     private String totalInsentifBersih;
@@ -52,6 +53,23 @@ public class PayrollInsentif extends BaseModel {
     private String tunjAir;
     private String tunjBbm;
     private String totalThp;
+    private String tunjPph;
+
+    public BigDecimal getTunjPphNilai() {
+        return tunjPphNilai;
+    }
+
+    public void setTunjPphNilai(BigDecimal tunjPphNilai) {
+        this.tunjPphNilai = tunjPphNilai;
+    }
+
+    public String getTunjPph() {
+        return tunjPph;
+    }
+
+    public void setTunjPph(String tunjPph) {
+        this.tunjPph = tunjPph;
+    }
 
     public String getTotalThp() {
         return totalThp;

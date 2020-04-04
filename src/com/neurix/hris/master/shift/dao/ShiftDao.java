@@ -44,7 +44,7 @@ public class ShiftDao extends GenericDao<ImHrisShiftEntity,String> {
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
 
         // Order by
-        criteria.addOrder(Order.asc("shiftId"));
+        criteria.addOrder(Order.desc("shiftId"));
 
         List<ImHrisShiftEntity> results = criteria.list();
 

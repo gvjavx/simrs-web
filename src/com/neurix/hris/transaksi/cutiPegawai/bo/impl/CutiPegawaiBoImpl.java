@@ -239,6 +239,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                 itCutiPegawaiEntity.setCancelDate(bean.getCancelDate());
                 itCutiPegawaiEntity.setCancelPerson(bean.getCancelPerson());
                 itCutiPegawaiEntity.setCancelNote(bean.getCancelNote());
+                itCutiPegawaiEntity.setKeterangan(bean.getKeterangan());
                 
                 itCutiPegawaiEntity.setFlag(bean.getFlag());
                 itCutiPegawaiEntity.setAction(bean.getAction());

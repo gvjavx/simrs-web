@@ -172,7 +172,7 @@
     <section class="content-header">
         <h1>
             Biodata Form
-            <small>e-HEALTH</small>
+            <small>GO-MEDSYS</small>
         </h1>
     </section>
 
@@ -315,10 +315,10 @@
                                     <td>
                                         <table>
                                             <s:if test="isDelete()">
-                                                <s:textfield id="jumlahAnak" name="biodata.jumlahAnak" readonly="true" required="true" disabled="false" cssClass="form-control"/>
+                                                <s:textfield type="number" id="jumlahAnak" name="biodata.jumlahAnak" readonly="true" required="true" disabled="false" cssClass="form-control"/>
                                             </s:if>
                                             <s:else>
-                                                <s:textfield id="jumlahAnak" name="biodata.jumlahAnak" readonly="false" required="true" disabled="false" cssClass="form-control"/>
+                                                <s:textfield type="number" id="jumlahAnak" name="biodata.jumlahAnak" readonly="false" required="true" disabled="false" cssClass="form-control"/>
                                             </s:else>
 
                                         </table>
@@ -354,6 +354,27 @@
                                             <s:else>
                                                 <s:textfield cssStyle="text-align: left;" onchange="getTanggalPensiun(this.value)"
                                                              cssClass="form-control" id="tanggalLahir1" name="biodata.stTanggalLahir" />
+                                            </s:else>
+
+                                        </table>
+
+                                    </td>
+
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>Tanggal Pra Pensiun :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <s:textfield cssStyle="text-align: left;" readonly="true"
+                                                             cssClass="form-control" id="tanggalPraPensiun" name="biodata.stTanggalPraPensiun" />
+                                            </s:if>
+                                            <s:else>
+                                                <s:textfield cssStyle="text-align: left;"
+                                                             cssClass="form-control" id="tanggalPraPensiun" name="biodata.stTanggalPraPensiun" />
                                             </s:else>
 
                                         </table>
@@ -402,7 +423,6 @@
                                         </table>
                                     </td>
                                 </tr>
-
                                 <tr>
                                     <td>
                                         <label class="control-label"><small>Bidang :</small></label>
@@ -468,9 +488,14 @@
                                                 <input type="checkbox" id="pjs" class="checkZakat" disabled onchange="cekPjs()" />
                                                 <s:textfield cssStyle="display: none" id="flagPjs" name="biodata.pjs"  />
                                             </s:if>
-                                            <s:else>
+                                            <s:elseif test="isAdd()">
                                                 <input type="checkbox" id="pjs" class="checkZakat" onchange="cekPjs()" />
                                                 <s:textfield cssStyle="display: none" id="flagPjs" name="biodata.pjs"  />
+                                            </s:elseif>
+                                            <s:else>
+                                                <input type="checkbox" id="pjs" class="checkZakat" disabled onchange="cekPjs()" />
+                                                <s:textfield cssStyle="display: none" id="flagPjs" name="biodata.pjs"  />
+                                                <%--<s:hidden name="biodata.pjs"/>--%>
                                             </s:else>
                                         </table>
                                     </td>
@@ -531,10 +556,10 @@
                                     <td>
                                         <table>
                                             <s:if test="isDelete()">
-                                                <s:textfield id="noKtp1" name="biodata.noKtp" required="true" disabled="false" readonly="true" cssClass="form-control"/>
+                                                <s:textfield id="noKtp1" type="number" name="biodata.noKtp" required="true" disabled="false" readonly="true" cssClass="form-control"/>
                                             </s:if>
                                             <s:else>
-                                                <s:textfield id="noKtp1" name="biodata.noKtp" required="true" disabled="false" cssClass="form-control"/>
+                                                <s:textfield id="noKtp1" type="number" name="biodata.noKtp" required="true" disabled="false" cssClass="form-control"/>
                                             </s:else>
                                         </table>
                                     </td>
@@ -547,10 +572,10 @@
                                     <td>
                                         <table>
                                             <s:if test="isDelete()">
-                                                <s:textfield id="noTelp1" name="biodata.noTelp" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                <s:textfield id="noTelp1" type="number" name="biodata.noTelp" required="true" disabled="false" cssClass="form-control" readonly="true"/>
                                             </s:if>
                                             <s:else>
-                                                <s:textfield id="noTelp1" name="biodata.noTelp" required="true" disabled="false" cssClass="form-control"/>
+                                                <s:textfield id="noTelp1" type="number" name="biodata.noTelp" required="true" disabled="false" cssClass="form-control"/>
                                             </s:else>
                                         </table>
                                     </td>
@@ -875,10 +900,10 @@
                                     <td>
                                         <table>
                                             <s:if test="isDelete()">
-                                                <s:textfield id="poinLebih" name="biodata.stMasaKerjaGol" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                <s:textfield id="poinLebih" type="number" name="biodata.stMasaKerjaGol" required="true" disabled="false" cssClass="form-control" readonly="true"/>
                                             </s:if>
                                             <s:else>
-                                                <s:textfield id="poinLebih"  name="biodata.stMasaKerjaGol" required="true" cssClass="form-control"/>
+                                                <s:textfield id="poinLebih"  type="number" name="biodata.stMasaKerjaGol" required="true" cssClass="form-control"/>
                                             </s:else>
                                         </table>
                                     </td>
@@ -935,10 +960,10 @@
                                     <td>
                                         <table>
                                             <s:if test="isDelete()">
-                                                <s:textfield id="noAnggotaDapen" name="biodata.noAnggotaDapen" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                <s:textfield id="noAnggotaDapen" type="number" name="biodata.noAnggotaDapen" required="true" disabled="false" cssClass="form-control" readonly="true"/>
                                             </s:if>
                                             <s:else>
-                                                <s:textfield id="noAnggotaDapen"  name="biodata.noAnggotaDapen" required="true" cssClass="form-control"/>
+                                                <s:textfield id="noAnggotaDapen"  type="number" name="biodata.noAnggotaDapen" required="true" cssClass="form-control"/>
                                             </s:else>
                                         </table>
                                     </td>
@@ -951,10 +976,10 @@
                                     <td>
                                         <table>
                                             <s:if test="isDelete()">
-                                                <s:textfield id="noBpjsKetenagakerjaan" name="biodata.noBpjsKetenagakerjaan" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                <s:textfield id="noBpjsKetenagakerjaan" type="number" name="biodata.noBpjsKetenagakerjaan" required="true" disabled="false" cssClass="form-control" readonly="true"/>
                                             </s:if>
                                             <s:else>
-                                                <s:textfield id="noBpjsKetenagakerjaan"  name="biodata.noBpjsKetenagakerjaan" required="true" cssClass="form-control"/>
+                                                <s:textfield id="noBpjsKetenagakerjaan"  type="number" name="biodata.noBpjsKetenagakerjaan" required="true" cssClass="form-control"/>
                                             </s:else>
                                         </table>
                                     </td>
@@ -967,10 +992,10 @@
                                     <td>
                                         <table>
                                             <s:if test="isDelete()">
-                                                <s:textfield id="noBpjsKetenagakerjaanPensiun" name="biodata.noBpjsKetenagakerjaanPensiun" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                <s:textfield id="noBpjsKetenagakerjaanPensiun" type="number" name="biodata.noBpjsKetenagakerjaanPensiun" required="true" disabled="false" cssClass="form-control" readonly="true"/>
                                             </s:if>
                                             <s:else>
-                                                <s:textfield id="noBpjsKetenagakerjaanPensiun"  name="biodata.noBpjsKetenagakerjaanPensiun" required="true" cssClass="form-control"/>
+                                                <s:textfield id="noBpjsKetenagakerjaanPensiun" type="number" name="biodata.noBpjsKetenagakerjaanPensiun" required="true" cssClass="form-control"/>
                                             </s:else>
                                         </table>
                                     </td>
@@ -983,10 +1008,10 @@
                                     <td>
                                         <table>
                                             <s:if test="isDelete()">
-                                                <s:textfield id="noBpjsKesehatan" name="biodata.noBpjsKesehatan" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                <s:textfield id="noBpjsKesehatan" type="number" name="biodata.noBpjsKesehatan" required="true" disabled="false" cssClass="form-control" readonly="true"/>
                                             </s:if>
                                             <s:else>
-                                                <s:textfield id="noBpjsKesehatan"  name="biodata.noBpjsKesehatan" required="true" cssClass="form-control"/>
+                                                <s:textfield id="noBpjsKesehatan" type="number" name="biodata.noBpjsKesehatan" required="true" cssClass="form-control"/>
                                             </s:else>
                                         </table>
                                     </td>
@@ -1015,10 +1040,10 @@
                                     <td>
                                         <table>
                                             <s:if test="isDelete()">
-                                                <s:textfield id="pin" name="biodata.pin" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                <s:textfield id="pin" type="number" name="biodata.pin" required="true" disabled="false" cssClass="form-control" readonly="true"/>
                                             </s:if>
                                             <s:else>
-                                                <s:textfield id="pin"  name="biodata.pin" required="true" cssClass="form-control"/>
+                                                <s:textfield id="pin"  type="number" name="biodata.pin" required="true" cssClass="form-control"/>
                                             </s:else>
                                         </table>
                                     </td>
@@ -1049,13 +1074,14 @@
                                     </td>
                                     <td>
                                         <table>
-                                            <s:if test="isDelete()">
-                                                <s:textfield cssStyle="text-align: left;" readonly="true"
+                                            <s:if test="isAdd()">
+                                                <s:textfield cssStyle="text-align: left;"
                                                              cssClass="form-control" id="tanggalAktif" name="biodata.stTanggalAktif" />
                                             </s:if>
                                             <s:else>
-                                                <s:textfield cssStyle="text-align: left;"
-                                                             cssClass="form-control" id="tanggalAktif" name="biodata.stTanggalAktif" />
+                                                <s:textfield cssStyle="text-align: left;" readonly="true"
+                                                             cssClass="form-control" id="tanggalAktif" name="biodata.stTanggalAktif" disabled="true"/>
+                                                <s:hidden name="biodata.stTanggalAktif"/>
                                             </s:else>
 
                                         </table>
@@ -1087,12 +1113,12 @@
                                     <td>
                                         <table>
                                             <s:if test="isDelete()">
-                                                <input type="checkbox" id="aktif" class="checkZakat" disabled onchange="cekAktif()" />
-                                                <s:textfield cssStyle="display: none" id="flagAktif" name="biodata.flag"  />
+                                                <input type="checkbox" id="aktif" class="checkZakat" disabled onchange="cekAktif()"/>
+                                                <s:textfield cssStyle="display: none" id="flagAktif" name="biodata.flag" value="Y" />
                                             </s:if>
                                             <s:else>
-                                                <input type="checkbox" id="aktif" class="checkZakat" onchange="cekAktif()" />
-                                                <s:textfield cssStyle="display: none" id="flagAktif" name="biodata.flag"  />
+                                                <input type="checkbox" id="aktif" class="checkZakat" disabled onchange="cekAktif()"/>
+                                                <s:textfield cssStyle="display: none" id="flagAktif" name="biodata.flag" value="Y" />
                                             </s:else>
                                         </table>
                                     </td>
@@ -1139,7 +1165,7 @@
                                                 <s:textfield id="cabangBank" name="biodata.cabangBank" required="true" disabled="false" cssClass="form-control" readonly="true"/>
                                             </s:if>
                                             <s:else>
-                                                <s:textfield id="cabangBank"  name="biodata.cabangBank" required="true" cssClass="form-control"/>
+                                                <s:textfield id="cabangBank" name="biodata.cabangBank" required="true" cssClass="form-control"/>
                                             </s:else>
                                         </table>
                                     </td>
@@ -1152,10 +1178,10 @@
                                     <td>
                                         <table>
                                             <s:if test="isDelete()">
-                                                <s:textfield id="noRekBank" name="biodata.noRekBank" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                <s:textfield id="noRekBank" type="number" name="biodata.noRekBank" required="true" disabled="false" cssClass="form-control" readonly="true"/>
                                             </s:if>
                                             <s:else>
-                                                <s:textfield id="noRekBank"  name="biodata.noRekBank" required="true" cssClass="form-control"/>
+                                                <s:textfield id="noRekBank" type="number" name="biodata.noRekBank" required="true" cssClass="form-control"/>
                                             </s:else>
                                         </table>
                                     </td>
@@ -1168,11 +1194,11 @@
                                         <table>
                                             <s:if test="isDelete()">
                                                 <input type="checkbox" id="supervisi" class="checkZakat" disabled onchange="cekSupervisi()" />
-                                                <s:textfield cssStyle="display: none" id="flagTunjSupervisi" name="biodata.flagTunjSupervisi"  />
+                                                <s:hidden id="flagTunjSupervisi" name="biodata.flagTunjSupervisi"  />
                                             </s:if>
                                             <s:else>
-                                                <input type="checkbox" id="supervisi" class="checkZakat" onchange="cekSupervisi()" />
-                                                <s:textfield cssStyle="display: none" id="flagTunjSupervisi" name="biodata.flagTunjSupervisi"  />
+                                                <input type="checkbox" id="supervisi" class="checkZakat" onchange="cekSupervisi()"  />
+                                                <s:hidden id="flagTunjSupervisi" name="biodata.flagTunjSupervisi"  />
                                             </s:else>
                                         </table>
                                     </td>
@@ -1185,11 +1211,11 @@
                                         <table>
                                             <s:if test="isDelete()">
                                                 <input type="checkbox" id="lokasi" class="checkZakat" disabled onchange="cekLokasi()" />
-                                                <s:textfield cssStyle="display: none" id="flagTunjLokasi" name="biodata.flagTunjLokasi"  />
+                                                <s:hidden id="flagTunjLokasi" name="biodata.flagTunjLokasi"  />
                                             </s:if>
                                             <s:else>
                                                 <input type="checkbox" id="lokasi" class="checkZakat" onchange="cekLokasi()" />
-                                                <s:textfield cssStyle="display: none" id="flagTunjLokasi" name="biodata.flagTunjLokasi"  />
+                                                <s:hidden id="flagTunjLokasi" name="biodata.flagTunjLokasi"  />
                                             </s:else>
                                         </table>
                                     </td>
@@ -1202,11 +1228,11 @@
                                         <table>
                                             <s:if test="isDelete()">
                                                 <input type="checkbox" id="siaga" class="checkZakat" disabled onchange="cekSiaga()" />
-                                                <s:textfield cssStyle="display: none" id="flagTunjSiaga" name="biodata.flagTunjSiaga"  />
+                                                <s:hidden id="flagTunjSiaga" name="biodata.flagTunjSiaga"  />
                                             </s:if>
                                             <s:else>
                                                 <input type="checkbox" id="siaga" class="checkZakat" onchange="cekSiaga()" />
-                                                <s:textfield cssStyle="display: none" id="flagTunjSiaga" name="biodata.flagTunjSiaga"  />
+                                                <s:hidden id="flagTunjSiaga" name="biodata.flagTunjSiaga"  />
                                             </s:else>
                                         </table>
                                     </td>
@@ -1223,75 +1249,24 @@
                                             </s:if>
                                             <s:else>
                                                 <input type="checkbox" id="profesional" class="checkZakat" onchange="cekProfesional()" />
-                                                <s:textfield cssStyle="display: none" id="flagTunjProfesional" name="biodata.flagTunjProfesional"  />
-                                            </s:else>
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label class="control-label"><small>Direksi :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:if test="isDelete()">
-                                                <input type="checkbox" id="direksi" class="checkZakat" disabled onchange="cekDireksi()" />
-                                                <s:textfield cssStyle="display: none" id="flagTunjDireksi" name="biodata.flagTunjDireksi"  />
-                                            </s:if>
-                                            <s:else>
-                                                <input type="checkbox" id="direksi" class="checkZakat" onchange="cekDireksi()" />
-                                                <s:textfield cssStyle="display: none" id="flagTunjDireksi" name="biodata.flagTunjDireksi"  />
-                                            </s:else>
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label class="control-label"><small>Komisaris :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:if test="isDelete()">
-                                                <input type="checkbox" id="komisaris" class="checkZakat" disabled onchange="cekKomisaris()" />
-                                                <s:textfield cssStyle="display: none" id="flagTunjKomisaris" name="biodata.flagTunjKomisaris"  />
-                                            </s:if>
-                                            <s:else>
-                                                <input type="checkbox" id="komisaris" class="checkZakat" onchange="cekKomisaris()" />
-                                                <s:textfield cssStyle="display: none" id="flagTunjKomisaris" name="biodata.flagTunjKomisaris"  />
-                                            </s:else>
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label class="control-label"><small>Komite Audit :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:if test="isDelete()">
-                                                <input type="checkbox" id="koiteAudit" class="checkZakat" disabled onchange="cekKoiteAudit()" />
-                                                <s:textfield cssStyle="display: none" id="flagTunjKoiteAudit" name="biodata.flagTunjKoiteAudit"  />
-                                            </s:if>
-                                            <s:else>
-                                                <input type="checkbox" id="koiteAudit" class="checkZakat" onchange="cekKoiteAudit()" />
-                                                <s:textfield cssStyle="display: none" id="flagTunjKoiteAudit" name="biodata.flagTunjKoiteAudit"  />
+                                                <s:hidden id="flagTunjProfesional" name="biodata.flagTunjProfesional"  />
                                             </s:else>
                                         </table>
                                     </td>
                                 </tr>
 
-                                <s:if test="isDelete()">
-                                    <tr>
-                                        <td>
-                                            <label class="control-label"><small>Keterangan :</small></label>
-                                        </td>
-                                        <td>
-                                            <table>
-                                                <s:textarea id="keterangan1" rows="3" name="biodata.keterangan" required="true" disabled="false" cssClass="form-control" />
-                                            </table>
-                                        </td>
-                                    </tr>
-                                </s:if>
+                                <%--<s:if test="isDelete()">--%>
+                                    <%--<tr>--%>
+                                        <%--<td>--%>
+                                            <%--<label class="control-label"><small>Keterangan :</small></label>--%>
+                                        <%--</td>--%>
+                                        <%--<td>--%>
+                                            <%--<table>--%>
+                                                <%--<s:textarea id="keterangan1" rows="3" name="biodata.keterangan" required="true" disabled="false" cssClass="form-control" />--%>
+                                            <%--</table>--%>
+                                        <%--</td>--%>
+                                    <%--</tr>--%>
+                                <%--</s:if>--%>
                             </table>
 
                         </div>
@@ -1355,20 +1330,35 @@
                         </div>
 
                     </div>
-                    <sj:submit targets="crusd" type="button" cssClass="btn btn-primary" formIds="homeForm" id="save" name="save"
-                               onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
-                               onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
-                        <s:if test="isDelete()">
-                            <i class="fa fa-trash"></i>
-                            Delete
-                        </s:if>
-                        <s:else>
+
+                    <s:if test="isAddOrEdit()">
+                        <sj:submit targets="crusd" type="button" cssClass="btn btn-primary" formIds="homeForm" id="save" name="save"
+                                   onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
+                                   onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
                             <i class="fa fa-check"></i>
                             Save
-                        </s:else>
+                        </sj:submit>
+                    </s:if>
 
-                    </sj:submit>
-                    <a href="search_biodata.action" class="btn btn-danger"><i class="fa fa-close"></i> Cancel</a>
+                    <%--<sj:submit targets="crusd" type="button" cssClass="btn btn-primary" formIds="homeForm" id="save" name="save"--%>
+                               <%--onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"--%>
+                               <%--onSuccessTopics="successDialog" onErrorTopics="errorDialog" >                        --%>
+                        <%--<s:if test="isDelete()">--%>
+                            <%--<i class="fa fa-trash"></i>--%>
+                            <%--Delete--%>
+                        <%--</s:if>--%>
+                        <%--<s:else>--%>
+                            <%--<i class="fa fa-check"></i>--%>
+                            <%--Save--%>
+                        <%--</s:else>--%>
+                    <%--</sj:submit>--%>
+
+                    <s:if test="isDelete()">
+                        <a href="search_biodata.action" class="btn btn-danger"><i class="fa fa-close"></i> Back</a>
+                    </s:if>
+                    <s:else>
+                        <a href="search_biodata.action" class="btn btn-danger"><i class="fa fa-close"></i> Cancel</a>
+                    </s:else>
                     <%--<a href="search_biodata.action" class="btn btn-danger"><i class="fa fa-close"></i> Tes</a>--%>
                     <div id="actions" class="form-actions">
                         <table>
@@ -1533,6 +1523,14 @@
                             <input type="text" class="form-control" id="studyTahunAkhir" name="txtStdudyName">
                         </div>
                     </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Ijazah (Jpg): </label>
+                        <div class="col-sm-8">
+                            <s:file id="fileUploadIjazah" name="fileUploadIjazah" cssClass="form-control" />
+                        </div>
+                    </div>
+
                 </form>
             </div>
             <div class="modal-footer">
@@ -1577,9 +1575,11 @@
                     <div id="namaPerusahaanLain" class="form-group" style="display: none">
                         <label class="control-label col-sm-4" for="gender">Nama Perusahaan Lain: </label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="perusahaanLain">
+                            <%--<input type="text" class="form-control" id="perusahaanLain">--%>
+                                <input type="text" class="form-control" id="pengalamanPerusahaan">
                         </div>
                     </div>
+
                     <div class="form-group" id="namaBidang">
                         <label class="control-label col-sm-4" >Bidang : </label>
                         <div class="col-sm-8">
@@ -2604,16 +2604,18 @@
 
         var pathFoto = document.getElementById("pathFoto").value;
         var nama = document.getElementById("namaPegawai1").value;
+        var jenis = document.getElementById("gender").value;
+        console.log(jenis);
         if (pathFoto != '') {
             if (pathFoto == 'null') {
-                $('#detailImg').attr('src', '/hris/pages/upload/image/profile/img_avatar.png');
+                $('#detailImg').attr('src', '/simrs/pages/upload/image/profile/man_employee.png');
                 $('#detailImg').attr('alt', nama);
             } else {
                 $('#detailImg').attr('src', pathFoto);
                 $('#detailImg').attr('alt', nama);
             }
         } else {
-            $('#detailImg').attr('src', '/hris/pages/upload/image/profile/img_avatar.png');
+            $('#detailImg').attr('src', '/simrs/pages/upload/image/profile/man_employee.png');
             $('#detailImg').attr('alt', nama);
         }
         var zakat = document.getElementById("flagZakat").value;
@@ -2636,7 +2638,36 @@
         } else {
             document.getElementById("aktif").checked = false;
         }
-
+        var aktif = document.getElementById("flagAktif").value;
+        if (aktif == "Y") {
+            document.getElementById("aktif").checked = true;
+        } else {
+            document.getElementById("aktif").checked = false;
+        }
+        var flagTunjSupervisi = document.getElementById("flagTunjSupervisi").value;
+        if (flagTunjSupervisi == "Y") {
+            document.getElementById("supervisi").checked = true;
+        } else {
+            document.getElementById("supervisi").checked = false;
+        }
+        var flagTunjLokasi = document.getElementById("flagTunjLokasi").value;
+        if (flagTunjLokasi == "Y") {
+            document.getElementById("lokasi").checked = true;
+        } else {
+            document.getElementById("lokasi").checked = false;
+        }
+        var flagTunjSiaga = document.getElementById("flagTunjSiaga").value;
+        if (flagTunjSiaga == "Y") {
+            document.getElementById("siaga").checked = true;
+        } else {
+            document.getElementById("siaga").checked = false;
+        }
+        var flagTunjProfesional = document.getElementById("flagTunjProfesional").value;
+        if (flagTunjProfesional == "Y") {
+            document.getElementById("profesional").checked = true;
+        } else {
+            document.getElementById("profesional").checked = false;
+        }
 
         function loadStudy(nip) {
             $('.studyTable').find('tbody').remove();
@@ -2723,7 +2754,10 @@
                         "<th style='text-align: center; background-color:  #3c8dbc'>Nama Perusahaan</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc''>Jabatan</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc''>Profesi</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal / Tahun</th>" +
+//                        "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal / Tahun</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Masuk</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Keluar</th>" +
+
                         "<th style='text-align: center; background-color:  #3c8dbc''>Tipe Pegawai</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc''>Golongan</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
@@ -2736,7 +2770,10 @@
                         "<th style='text-align: center; background-color:  #3c8dbc'>Nama Perusahaan</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc''>Jabatan</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc''>Profesi</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal / Tahun</th>" +
+//                        "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal / Tahun</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Masuk</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Keluar</th>" +
+
                         "<th style='text-align: center; background-color:  #3c8dbc''>Tipe Pegawai</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc''>Golongan</th>" +
                         "</tr></thead>";
@@ -2752,6 +2789,8 @@
                             '<td align="center">' + item.jabatan + '</td>' +
                             '<td align="center">' + item.profesiName + '</td>' +
                             '<td align="center">' + item.stTtahunMasuk + '</td>' +
+                            '<td align="center">' + item.stTahunKeluar + '</td>' +
+
                             '<td align="center">' + item.tipePegawai + '</td>' +
                             '<td align="center">' + item.golonganName + '</td>' +
                             '<td align="center">' +
@@ -2773,6 +2812,8 @@
                             '<td align="center">' + item.jabatan + '</td>' +
                             '<td align="center">' + item.profesiName + '</td>' +
                             '<td align="center">' + item.stTtahunMasuk + '</td>' +
+                            '<td align="center">' + item.stTahunKeluar + '</td>' +
+
                             '<td align="center">' + item.tipePegawai + '</td>' +
                             '<td align="center">' + item.golonganName + '</td>' +
                             "</tr>";
@@ -3136,8 +3177,8 @@
                 $.each(listdata, function (i, item) {
                     tmp_table += '<tr style="font-size: 12px;" ">' +
                             '<td >' + (i + 1) + '</td>' +
-                            '<td >' + item.namaPerusahaan + '</td>' +
-                            '<td align="center">' + item.jabatan + '</td>' +
+                            '<td >' + item.branchName + '</td>' +
+                            '<td align="center">' + item.jabatanName + '</td>' +
                             '<td align="center">' + item.stTtahunMasuk + '</td>' +
                             '<td align="center">' + item.stTahunKeluar + '</td>' +
                             '<td align="center">' +
@@ -3404,6 +3445,7 @@
             //var tahunAwal = document.getElementById("studyTahunAwal").value;
             var tahunAwal = "";
             var tahunAkhir = document.getElementById("studyTahunAkhir").value;
+            var uploadIjazah = document.getElementById("fileUploadIjazah").value;
 
 
             var result = '';
@@ -3491,39 +3533,191 @@
             }
             var pjsFlag = document.getElementById("pjsFlag1").value;
             var aktifFlag = document.getElementById("flagAktif1").value;
-            var perusahaanLain = document.getElementById("perusahaanLain").value;
-            var bidangLain = document.getElementById("bidangLain").value;
-            var jabatanLain = document.getElementById("jabatanLain").value;
+
+//            var namaPerusahaan = document.getElementById("pengalamanPerusahaan").value;
+//            var jabatan = document.getElementById("pengalamanJabatan").value;
+
+//            var perusahaanLain = document.getElementById("perusahaanLain").value;
+            var perusahaanLain = document.getElementById("namaPerusahaanLain").value;
+//            var bidangLain = document.getElementById("bidangLain").value;
+            var bidangLain = document.getElementById("namaBidangLain").value;
+//            var jabatanLain = document.getElementById("jabatanLain").value;
+            var jabatanLain = document.getElementById("namaJabatanLain").value;
 
             if(branchId != 'lain'){
                 namaPerusahaan = $("#branchIdRiwayatKerja option:selected").text();
             }
+
+            console.log(id);
+            console.log(nip);
+            console.log(branchId);
+            console.log(divisiId);
+            console.log(posisiId);
+            console.log(profesiId);
+            console.log(tanggal);
+            console.log(tanggalKeluar);
+            console.log(tipePegawaiId);
+            console.log(golonganId);
+            console.log(pjsFlag);
+            console.log(aktifFlag);
+//            console.log(perusahaanLain);
+//            console.log(bidangLain);
+//            console.log(jabatanLain);
+
             var result = '';
             <s:if test="isAdd()">
             if (url == 'addPengalamanKerja') {
                 console.log('yayaya');
-                if (branchId == '' && divisiId == '' && posisiId == '' && tanggal == ''&& tanggalKeluar =='' && tipePegawaiId =='' &&golonganId =='') {
+                if (branchId == '' || divisiId == '' || posisiId == '' || tanggal == ''|| tipePegawaiId =='' || profesiId =='') {
                     alert('Semua Field Harus Diisi !');
                 } else {
-                    if (confirm('Apakah anda yakin ingin menyimpan data?')) {
-                        dwr.engine.setAsync(false);
-                        BiodataAction.saveAddPengalaman(nip, branchId, divisiId, posisiId, tanggal, tipePegawaiId, golonganId, pjsFlag,   function (listdata) {
-                            alert('Data Berhasil Disimpan');
-                            $('#modal-pengalamanKerja').modal('hide');
-                            $('#myFormPengalaman')[0].reset();
-                            loadSessionPengalamanKerja();
-                        });
+                    var msg ="Field:  \n";
+                    var msg2 ="";
+                    if (branchId == '' || divisiId == '' || posisiId == '' || tanggal == ''||tipePegawaiId =='') {
+                        if(branchId == ''){
+                            msg+="- Nama Perusahaan\n";
+                        }
+                        if(divisiId == ''){
+                            msg+="- Bidang\n";
+                        }
+                        if(posisiId == ''){
+                            msg+="- Jabatan\n";
+                        }
+                        if(profesiId == ''){
+                            msg+="- Profesi\n";
+                        }
+                        if(tanggal == ''){
+                            msg+="- Tanggal Diangkat\n";
+                        }else{
+                            if(tanggal.length <10){
+                                msg2+="- Format Tanggal Diangkat Salah\n";
+                            }
+                        }
+//                        if(tanggalKeluar == ''){
+//                            if(aktifFlag == 'N'){
+//                                msg+="- Tanggal Selesai\n";
+//                            }
+//                        }else{
+//                            if(tanggalKeluar.length <10){
+//                                if(aktifFlag == 'N'){
+//                                    msg2+="- Format Tanggal Selesai Salah\n";
+//                                }
+//                            }
+//                        }
+                        if(tipePegawaiId ==''){
+                            msg+="- Tipe Pegawai\n";
+                        }
+                        alert(msg+"Harus Diisi\n"+msg2);
+                    }else if(tanggalKeluar == ''){
+
+                        if(tanggalKeluar == ''){
+                            if(aktifFlag == 'N'){
+                                msg+="- Jabatan aktif harus 'YA' apabila Tanggal Selesai kosong\n";
+                                alert(msg);
+                            }else {
+                                if (confirm('Are you sure you want to save this Record?')) {
+                                    dwr.engine.setAsync(false);
+                                    dwr.engine.beginBatch();
+                                    BiodataAction.saveAddPengalaman(nip, branchId, posisiId, divisiId, profesiId, tanggal, tanggalKeluar, tipePegawaiId, golonganId, pjsFlag, aktifFlag,function (listdata) {
+                                        alert('Data Berhasil Disimpan');
+                                        $('#modal-pengalamanKerja').modal('hide');
+                                        $('#myFormPengalaman')[0].reset();
+                                        loadSessionPengalamanKerja();
+                                    });
+                                    dwr.engine.endBatch({
+                                        errorHandler:function(errorString, exception){
+                                            alert('Jabatan aktif sudah ada');
+                                        }
+                                    });
+                                }
+                            }
+                        }else{
+                            if(tanggalKeluar.length <10){
+                                if(aktifFlag == 'N'){
+                                    msg+="- Format Tanggal Selesai Salah\n";
+                                    alert(msg);
+                                }
+                            }
+                        }
+
+                    }else {
+                        if (confirm('Apakah anda yakin ingin menyimpan data?')) {
+                            dwr.engine.setAsync(false);
+                            dwr.engine.beginBatch();
+                            BiodataAction.saveAddPengalaman(nip, branchId, posisiId, divisiId, profesiId, tanggal, tanggalKeluar, tipePegawaiId, golonganId, pjsFlag, aktifFlag,function (listdata) {
+                                alert('Data Berhasil Disimpan');
+                                $('#modal-pengalamanKerja').modal('hide');
+                                $('#myFormPengalaman')[0].reset();
+                                loadSessionPengalamanKerja();
+                            });
+
+                            dwr.engine.endBatch({
+                                errorHandler:function(errorString, exception){
+                                    alert(exception+' Jabatan aktif sudah ada');
+                                }
+                            });
+                        }
                     }
                 }
             } else {
-                if (confirm('Are you sure you want to save this Record?')) {
-                    dwr.engine.setAsync(false);
-                    BiodataAction.initEditPengalaman(id, nip, namaPerusahaan, jabatan, tanggalMasuk, tanggalKeluar, function (listdata) {
-                        alert('Data Successfully Updated');
-                        $('#modal-pengalamanKerja').modal('hide');
-                        $('#myFormPengalaman')[0].reset();
-                        loadSessionPengalamanKerja();
-                    });
+                if (branchId == '' || divisiId == '' || posisiId == '' || tanggal == ''|| tipePegawaiId =='' || profesiId =='') {
+                    alert('Semua Field Harus Diisi !');
+                }else{
+                    var msg ="Field:  \n";
+                    var msg2 ="";
+                    if (branchId == '' || divisiId == '' || posisiId == '' || tanggal == ''||tipePegawaiId =='') {
+                        if(branchId == ''){
+                            msg+="- Nama Perusahaan\n";
+                        }
+                        if(divisiId == ''){
+                            msg+="- Bidang\n";
+                        }
+                        if(posisiId == ''){
+                            msg+="- Jabatan\n";
+                        }
+                        if(profesiId == ''){
+                            msg+="- Profesi\n";
+                        }
+                        if(tanggal == ''){
+                            msg+="- Tanggal Diangkat\n";
+                        }else{
+                            if(tanggal.length <10){
+                                msg2+="- Format Tanggal Diangkat Salah\n";
+                            }
+                        }
+//                        if(tanggalKeluar == ''){
+//                            if(aktifFlag == 'N'){
+//                                msg+="- Tanggal Selesai\n";
+//                            }
+//                        }else{
+//                            if(tanggalKeluar.length <10){
+//                                if(aktifFlag == 'N'){
+//                                    msg2+="- Format Tanggal Selesai Salah\n";
+//                                }
+//                            }
+//                        }
+                        if(tipePegawaiId ==''){
+                            msg+="- Tipe Pegawai\n";
+                        }
+                        alert(msg+"Harus Diisi\n"+msg2);
+                    }else{
+                        console.log('yayaya');
+                        if (confirm('Are you sure you want to save this Record?')) {
+                            dwr.engine.setAsync(false);
+//                            BiodataAction.initEditPengalaman(id, nip, namaPerusahaan, posisiId, tanggalMasuk, tanggalKeluar, function (listdata) {
+//                                alert('Data Successfully Updated');
+//                                $('#modal-pengalamanKerja').modal('hide');
+//                                $('#myFormPengalaman')[0].reset();
+//                                loadSessionPengalamanKerja();
+//                            });
+                            BiodataAction.initEditPengalaman(id, nip, branchId, posisiId, divisiId, profesiId, tanggal, tanggalKeluar, tipePegawaiId, golonganId, pjsFlag, aktifFlag, function (listdata) {
+                                alert('Data Successfully Updated');
+                                $('#modal-pengalamanKerja').modal('hide');
+                                $('#myFormPengalaman')[0].reset();
+                                loadSessionPengalamanKerja();
+                            });
+                        }
+                    }
                 }
             }
             </s:if>
@@ -3554,21 +3748,43 @@
                                 msg2+="- Format Tanggal Diangkat Salah\n";
                             }
                         }
+                        if(tipePegawaiId ==''){
+                            msg+="- Tipe Pegawai\n";
+                        }
+
+                        alert(msg+"Harus Diisi\n"+msg2);
+                    }
+                    else if(tanggalKeluar == ''){
                         if(tanggalKeluar == ''){
                             if(aktifFlag == 'N'){
-                                msg+="- Tanggal Selesai\n";
+                                msg+="- Jabatan aktif harus 'YA' apabila Tanggal Selesai kosong\n";
+                                alert(msg);
+                            }else {
+                                if (confirm('Are you sure you want to save this Record?')) {
+                                    dwr.engine.setAsync(false);
+                                    dwr.engine.beginBatch();
+                                    BiodataAction.saveAddDataPengalamaKerja(nip, branchId, divisiId, posisiId, tanggal,tanggalKeluar, tipePegawaiId,
+                                            golonganId, pjsFlag, perusahaanLain, bidangLain, jabatanLain, aktifFlag,profesiId, function (listdata) {
+                                                alert('Data Successfully Added');
+                                                $('#modal-pengalamanKerja').modal('hide');
+                                                $('#myFormPengalaman')[0].reset();
+                                                loadPengalamanKerja(nip);
+                                            });
+                                    dwr.engine.endBatch({
+                                        errorHandler:function(errorString, exception){
+                                            alert('Jabatan aktif sudah ada');
+                                        }
+                                    });
+                                }
                             }
                         }else{
                             if(tanggalKeluar.length <10){
                                 if(aktifFlag == 'N'){
-                                    msg2+="- Format Tanggal Selesai Salah\n";
+                                    msg+="- Format Tanggal Selesai Salah\n";
+                                    alert(msg);
                                 }
                             }
                         }
-                        if(tipePegawaiId ==''){
-                            msg+="- Tipe Pegawai\n";
-                        }
-                        alert(msg+"Harus Diisi\n"+msg2);
                     }
                     else{
                         if (confirm('Are you sure you want to save this Record?')) {
@@ -3629,7 +3845,7 @@
                         if (confirm('Are you sure you want to save this Record?')) {
                             dwr.engine.setAsync(false);
                             BiodataAction.saveEditPengalamanKerja(id, nip, branchId, divisiId, posisiId, tanggal,tanggalKeluar, tipePegawaiId,
-                                    golonganId, perusahaanLain, bidangLain, jabatanLain, function (listdata) {
+                                    golonganId, perusahaanLain, bidangLain, jabatanLain, aktifFlag, function (listdata) {
                                         alert('Data Successfully Updated');
                                         $('#modal-pengalamanKerja').modal('hide');
                                         $('#myFormPengalaman')[0].reset();
@@ -3882,7 +4098,7 @@
                 } else {
                     if (confirm('Are you sure you want to save this Record?')) {
                         dwr.engine.setAsync(false);
-                        KeluargaAction.saveAdd(keluargaName, statusKeluarga, statusKeluargaName, tanggalLahir, function (listdata) {
+                        KeluargaAction.saveAdd(keluargaName, statusKeluarga, statusKeluargaName, tanggalLahir, genderKeluarga,function (listdata) {
                             alert('Data Successfully Added');
                             $('#modal-editKeluarga').modal('hide');
                             $('#myFormKeluarga')[0].reset();
@@ -3893,7 +4109,7 @@
             } else {
                 if (confirm('Are you sure you want to save this Record?')) {
                     dwr.engine.setAsync(false);
-                    KeluargaAction.initEdit(keluargaId, keluargaName, statusKeluarga, statusKeluargaName, tanggalLahir, function (listdata) {
+                    KeluargaAction.initEdit(keluargaId, keluargaName, statusKeluarga, statusKeluargaName, tanggalLahir, genderKeluarga,function (listdata) {
                         alert('Data Successfully Updated');
                         $('#modal-editKeluarga').modal('hide');
                         $('#myFormKeluarga')[0].reset();
@@ -4067,11 +4283,24 @@
             var id = $(this).attr('data');
             <s:if test="isAdd()">
             BiodataAction.initSearchPengalamanKerja(id, function (listdata) {
-                $('#pengalamanPerusahaan').val(listdata.namaPerusahaan);
-                $('#pengalamanJabatan').val(listdata.jabatan);
+//                $('#pengalamanPerusahaan').val(listdata.namaPerusahaan);
+//                $('#pengalamanJabatan').val(listdata.jabatan);
+//                $('#pengalamanTanggalMasuk').val(listdata.stTtahunMasuk);
+//                $('#pengalamanTanggalKeluar').val(listdata.stTahunKeluar);
+//                $('#pengalamanId').val(listdata.pengalamanId);
+
+                $('#branchIdRiwayatKerja').val(listdata.branchId);
+                $('#departmentId').val(listdata.divisiId);
+                $('#positionId3').val(listdata.jabatan);
+                $('#profesi3').val(listdata.profesiId);
                 $('#pengalamanTanggalMasuk').val(listdata.stTtahunMasuk);
                 $('#pengalamanTanggalKeluar').val(listdata.stTahunKeluar);
                 $('#pengalamanId').val(listdata.pengalamanId);
+                $('#golonganHistory3').val(listdata.golonganId);
+
+                $('#pengalamanTipePegawaiId').val(listdata.tipePegawaiId);
+                $('#pjsFlag1').val(listdata.pjsFlag);
+                $('#flagAktif1').val(listdata.flagJabatanAktif);
             });
             </s:if>
             <s:else>
@@ -4125,6 +4354,7 @@
                 $('#statusKeluarga').val(listdata.statusKeluargaId);
                 $('#tanggalLahirkeluarga').val((myDate.getDate()) + '-' + ("0" + (myDate.getMonth() + 1)).slice(-2) + '-' + myDate.getFullYear());
                 $('#keluargaId').val(listdata.keluargaId);
+                $('#genderKeluarga').val(listdata.gender);
             });
             </s:if>
             <s:else>
@@ -4204,8 +4434,8 @@
 
             <s:if test="isAdd()">
             BiodataAction.initSearchPengalamanKerja(id, function (listdata) {
-                $('#deletePengalamanPerusahaan').val(listdata.namaPerusahaan);
-                $('#deletePengalamanJabatan').val(listdata.jabatan);
+                $('#deletePengalamanPerusahaan').val(listdata.branchName);
+                $('#deletePengalamanJabatan').val(listdata.jabatanName);
                 $('#deletePengalamanTanggalMasuk').val(listdata.stTtahunMasuk);
                 $('#deletePengalamanTanggalKeluar').val(listdata.stTahunKeluar);
                 $('#deletePengalamanId').val(listdata.pengalamanId);
@@ -4235,11 +4465,19 @@
             $('#deleteModalPengalamanKerja').modal('show');
             $('#btnDeletePengalamanKerja').unbind().click(function () {
                 if (confirm('Are you sure you want to Delete this Record?')) {
+                    dwr.engine.setAsync(false);
+                    dwr.engine.beginBatch();
                     BiodataAction.saveDeletePengalamanKerja(id, function (listdata) {
                         $('#deleteModalPengalamanKerja').modal('hide');
                         $('#myForm')[0].reset();
                         alert('Record has been Deleted successfully.');
                         loadPengalamanKerja(nip);
+                    });
+
+                    dwr.engine.endBatch({
+                        errorHandler:function(errorString, exception){
+                            alert('Peringatan!! Riwayat Kerja mutasi tidak dapat dihapus.');
+                        }
                     });
                 }
             });
@@ -4612,6 +4850,13 @@
             yearRange: "-50:+10"
         });
 
+        $('#tanggalPraPensiun').datepicker({
+            dateFormat: 'dd-mm-yy',
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-30:+30"
+        });
+
         $('#tanggalPensiun').datepicker({
             dateFormat: 'dd-mm-yy',
             changeMonth: true,
@@ -4680,7 +4925,7 @@
 
 
     window.cekSupervisi = function () {
-        if ($('#supervisi').is(":checked")) {
+        if (document.getElementById("supervisi").checked == true) {
             $("#flagTunjSupervisi").val("Y");
         } else {
             $("#flagTunjSupervisi").val("N");
@@ -4688,7 +4933,7 @@
     }
 
     window.cekLokasi = function () {
-        if ($('#lokasi').is(":checked")) {
+        if (document.getElementById("lokasi").checked == true) {
             $("#flagTunjLokasi").val("Y");
         } else {
             $("#flagTunjLokasi").val("N");
@@ -4696,14 +4941,14 @@
     }
 
     window.cekSiaga = function () {
-        if ($('#siaga').is(":checked")) {
+        if (document.getElementById("siaga").checked == true) {
             $("#flagTunjSiaga").val("Y");
         } else {
             $("#flagTunjSiaga").val("N");
         }
     }
     window.cekProfesional = function () {
-        if ($('#profesional').is(":checked")) {
+        if (document.getElementById("profesional").checked == true) {
             $("#flagTunjProfesional").val("Y");
         } else {
             $("#flagTunjProfesional").val("N");
@@ -4810,12 +5055,82 @@
                 .text("Anak Kelima"));
     }
 
+//    window.getTanggalPensiun = function (tanggal) {
+//        var tanggalPensiun = document.getElementById("tanggalPensiun").value;
+//        var res = tanggal.split("-");
+//        var tahun = parseInt(res[2]) + 55;
+//
+//        if(tanggalPensiun == ''){
+//            $('#tanggalPensiun').val(res[0] + "-" + res[1] + "-" + tahun);
+//        }
+//    };
+
     window.getTanggalPensiun = function (tanggal) {
         var tanggalPensiun = document.getElementById("tanggalPensiun").value;
+        var tanggalPraPensiun = document.getElementById("tanggalPraPensiun").value;
         var res = tanggal.split("-");
         var tahun = parseInt(res[2]) + 55;
+
+        if (tanggalPraPensiun == ''){
+            if  (res[1] > 06){
+                var bulan = parseInt(res[1] - 6);
+                console.log("test "+bulan);
+                $('#tanggalPraPensiun').val(res[0] + "-0" + bulan + "-" + tahun);
+            }else {
+                if (res[1] == 06){
+                    var bulan = parseInt(12);
+                    var tahun1 = parseInt(tahun - 1);
+                    console.log("test2 "+bulan);
+                    $('#tanggalPraPensiun').val(res[0] + "-" + bulan + "-" + tahun1);
+                }else{
+                    var bulan = parseInt(12 - (6 - res[1]));
+                    var tahun1 = parseInt(tahun - 1);
+                    console.log("test3 "+bulan);
+                    if (bulan > 9){
+                        $('#tanggalPraPensiun').val(res[0] + "-" + bulan + "-" + tahun1);
+                    }else {
+                        $('#tanggalPraPensiun').val(res[0] + "-0" + bulan + "-" + tahun1);
+                    }
+                }
+            }
+        }else{
+            if  (res[1] > 06){
+                var bulan = parseInt(res[1] - 6);
+                console.log("test "+bulan);
+                $('#tanggalPraPensiun').val(res[0] + "-0" + bulan + "-" + tahun);
+            }else {
+                if (res[1] == 06){
+                    var bulan = parseInt(12);
+                    var tahun1 = parseInt(tahun - 1);
+                    console.log("test2 "+bulan);
+                    $('#tanggalPraPensiun').val(res[0] + "-" + bulan + "-" + tahun1);
+                }else{
+                    var bulan = parseInt(12 - (6 - res[1]));
+                    var tahun1 = parseInt(tahun - 1);
+                    console.log("test3 "+bulan);
+                    if (bulan > 9){
+                        $('#tanggalPraPensiun').val(res[0] + "-" + bulan + "-" + tahun1);
+                    }else {
+                        $('#tanggalPraPensiun').val(res[0] + "-0" + bulan + "-" + tahun1);
+                    }
+                }
+            }
+        }
+
         if(tanggalPensiun == ''){
-            $('#tanggalPensiun').val(res[0] + "-" + res[1] + "-" + tahun);
+            if (res[0] > 1){
+                res[0] = 31;
+                $('#tanggalPensiun').val(res[0] + "-" + res[1] + "-" + tahun);
+            }else{
+                $('#tanggalPensiun').val(res[0] + "-" + res[1] + "-" + tahun);
+            }
+        }else{
+            if (res[0] > 1){
+                res[0] = 31;
+                $('#tanggalPensiun').val(res[0] + "-" + res[1] + "-" + tahun);
+            }else{
+                $('#tanggalPensiun').val(res[0] + "-" + res[1] + "-" + tahun);
+            }
         }
     };
 </script>

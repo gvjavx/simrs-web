@@ -154,13 +154,13 @@
             </div>
         </div>
     </div>
-    <div class="form-group">
-        <label class="control-label col-sm-2">Flag :</label>
-        <div class="col-sm-8" align="left">
-            <s:select cssClass="form-control" list="#{'N':'NonAktif'}" id="flag" name="shift.flag"
-                      headerKey="Y" headerValue="Aktif"/>
-        </div>
-    </div>
+    <%--<div class="form-group">--%>
+        <%--<label class="control-label col-sm-2">Flag :</label>--%>
+        <%--<div class="col-sm-8" align="left">--%>
+            <%--<s:select cssClass="form-control" list="#{'N':'NonAktif'}" id="flag" name="shift.flag"--%>
+                      <%--headerKey="Y" headerValue="Aktif"/>--%>
+        <%--</div>--%>
+    <%--</div>--%>
 
     <br>
     <div class="form-group">

@@ -41,14 +41,12 @@ public class DepartmentDao extends GenericDao<ImDepartmentEntity, String> {
             if (mapCriteria.get("department_name")!=null) {
                 criteria.add(Restrictions.ilike("departmentName", "%" + (String)mapCriteria.get("department_name") + "%"));
             }
-
-
         }
 
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
 
         // Order by
-        criteria.addOrder(Order.asc("departmentId"));
+        criteria.addOrder(Order.desc("departmentId"));
 
         List<ImDepartmentEntity> results = criteria.list();
 

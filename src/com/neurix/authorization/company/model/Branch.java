@@ -28,7 +28,6 @@ public class Branch extends BaseModel implements Serializable, Comparable<Branch
     private String lemburGajiAwal;
     private String lemburGajiAkhir;
 
-
     private BigDecimal umr;
     private BigDecimal minBpjsKs;
     private BigDecimal maxBpjsKs;

@@ -20,6 +20,7 @@ public class HeaderDetailCheckup extends BaseModel{
     private String statusPeriksa;
     private String statusBayar;
     private BigInteger totalBiaya;
+    private BigInteger totalBiayaDariBpjs;
     private String keteranganSelesai;
     private String jenisLab;
     private String branchId;
@@ -151,6 +152,44 @@ public class HeaderDetailCheckup extends BaseModel{
 
     public void setIdRuang(String idRuang) {
         this.idRuang = idRuang;
+    }
+
+    //for import
+    private String noSlipBank;
+    private String bank;
+    private String stTanggalFpk;
+
+
+    public String getNoSlipBank() {
+        return noSlipBank;
+    }
+
+    public void setNoSlipBank(String noSlipBank) {
+        this.noSlipBank = noSlipBank;
+    }
+
+    public String getBank() {
+        return bank;
+    }
+
+    public void setBank(String bank) {
+        this.bank = bank;
+    }
+
+    public String getStTanggalFpk() {
+        return stTanggalFpk;
+    }
+
+    public void setStTanggalFpk(String stTanggalFpk) {
+        this.stTanggalFpk = stTanggalFpk;
+    }
+
+    public BigInteger getTotalBiayaDariBpjs() {
+        return totalBiayaDariBpjs;
+    }
+
+    public void setTotalBiayaDariBpjs(BigInteger totalBiayaDariBpjs) {
+        this.totalBiayaDariBpjs = totalBiayaDariBpjs;
     }
 
     public String getDiagnosa() {

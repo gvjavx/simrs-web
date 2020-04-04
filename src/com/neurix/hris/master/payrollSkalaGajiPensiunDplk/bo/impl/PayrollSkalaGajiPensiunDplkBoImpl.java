@@ -1,6 +1,7 @@
 package com.neurix.hris.master.payrollSkalaGajiPensiunDplk.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.payrollSkalaGajiPensiunDplk.bo.PayrollSkalaGajiPensiunDplkBo;
 import com.neurix.hris.master.payrollSkalaGajiPensiunDplk.dao.PayrollSkalaGajiPensiunDplkDao;
 import com.neurix.hris.master.payrollSkalaGajiPensiunDplk.model.ImPayrollSkalaGajiPensiunDplkEntity;
@@ -238,6 +239,7 @@ public class PayrollSkalaGajiPensiunDplkBoImpl implements PayrollSkalaGajiPensiu
                         returnPayrollSkalaGaji.setGolonganName(payrollSkalaGajiEntity.getImGolonganEntity().getGolonganName());
                     }
                     returnPayrollSkalaGaji.setNilai(payrollSkalaGajiEntity.getNilai());
+                    returnPayrollSkalaGaji.setStNilai(CommonUtil.numbericFormat(payrollSkalaGajiEntity.getNilai(), "###,###"));
                     returnPayrollSkalaGaji.setPoin(payrollSkalaGajiEntity.getPoin());
 
                     returnPayrollSkalaGaji.setCreatedWho(payrollSkalaGajiEntity.getCreatedWho());

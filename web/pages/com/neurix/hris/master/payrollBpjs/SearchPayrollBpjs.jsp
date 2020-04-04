@@ -50,7 +50,7 @@
     <section class="content-header">
         <h1>
             Payroll BPJS
-            <small>e-HEALTH</small>
+            <small>GO-MEDSYS</small>
         </h1>
     </section>
 
@@ -154,7 +154,7 @@
                                     <td align="center">
                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
                                                    height="900" width="550" autoOpen="false"
-                                                   title="Payroll Skala Gaji Pkwt">
+                                                   title="Payroll BPJS">
                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                         </sj:dialog>
 
@@ -174,15 +174,17 @@
                                             </display:column>
 
                                             <display:column media="html" title="Delete" style="text-align:center;font-size:9">
-                                                <s:url var="urlViewDelete" namespace="/payrollBpjs" action="delete_payrollBpjs" escapeAmp="false">
-                                                    <s:param name="id"><s:property value="#attr.row.bpjsId" /></s:param>
-                                                    <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
-                                                </s:url>
-                                                <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
-                                                </sj:a>
-
+                                                <s:if test="#attr.row.flagYes">
+                                                    <s:url var="urlViewDelete" namespace="/payrollBpjs" action="delete_payrollBpjs" escapeAmp="false">
+                                                        <s:param name="id"><s:property value="#attr.row.bpjsId" /></s:param>
+                                                        <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
+                                                    </s:url>
+                                                    <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
+                                                        <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
+                                                    </sj:a>
+                                                </s:if>
                                             </display:column>
+
                                             <display:column property="bpjsId" sortable="true" title="Skala Gaji ID" />
                                             <display:column property="branchName" sortable="true" title="Unit" />
                                             <display:column property="numMinBpjsKs" sortable="true" title="Min Bpjs Ks" />
