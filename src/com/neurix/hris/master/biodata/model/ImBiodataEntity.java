@@ -105,6 +105,8 @@ public class ImBiodataEntity implements Serializable {
         this.flagTunjanganProfesional = flagTunjanganProfesional;
     }
 
+    private Date tanggalPraPensiun;
+
     public String getProfesiId() {
         return profesiId;
     }
@@ -239,6 +241,14 @@ public class ImBiodataEntity implements Serializable {
 
     public void setNoRekBank(String noRekBank) {
         this.noRekBank = noRekBank;
+    }
+
+    public Date getTanggalPraPensiun() {
+        return tanggalPraPensiun;
+    }
+
+    public void setTanggalPraPensiun(Date tanggalPraPensiun) {
+        this.tanggalPraPensiun = tanggalPraPensiun;
     }
 
     private String masaGiling;

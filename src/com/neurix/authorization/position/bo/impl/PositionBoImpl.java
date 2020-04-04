@@ -235,7 +235,7 @@ public class PositionBoImpl implements PositionBo {
         logger.info("[PositionBoImpl.saveEdit] start process >>>");
 
         if (bean != null){
-            String status = cekStatus(bean.getPositionName());
+            String status = cekStatusEdit(bean.getPositionName(), bean.getDepartmentId(), bean.getBagianId(), bean.getKelompokId());
             if (!status.equalsIgnoreCase("exist")){
                 String positionId = bean.getPositionId();
                 ImPosition imPosition = null;
@@ -269,7 +269,7 @@ public class PositionBoImpl implements PositionBo {
                     throw new GeneralBOException("Error, not found data Position with request id, please check again your data ...");
                 }
             }else {
-                throw new GeneralBOException("Maaf Posisi Tersebut Sudah Ada");
+                throw new GeneralBOException("Maaf Posisi Tersebut Sudah Terisi");
             }
         }
         logger.info("[PositionBoImpl.saveEdit] end process <<<");
@@ -595,17 +595,34 @@ public class PositionBoImpl implements PositionBo {
     }
     public String cekStatus(String positionName)throws GeneralBOException{
         String status ="";
-        List<ImPosition> skalaGajiEntity = new ArrayList<>();
+        List<ImPosition> imPositions = new ArrayList<>();
         try {
-            skalaGajiEntity = positionDao.getListPosition(positionName);
+            imPositions = positionDao.getListPosition(positionName);
         } catch (HibernateException e) {
-            logger.error("[PayrollSkalaGajiBoImpl.getSearchPayrollSkalaGajiByCriteria] Error, " + e.getMessage());
+            logger.error("[PositionBoImpl.cekStatus] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
         }
-        if (skalaGajiEntity.size()>0){
+        if (imPositions.size()>0){
             status = "exist";
         }else{
             status="notExits";
+        }
+        return status;
+    }
+
+    public String cekStatusEdit(String positionName, String department, String bagian, String kelompok) throws GeneralBOException{
+        String status = "";
+        List<ImPosition> positions = new ArrayList<>();
+        try{
+            positions = positionDao.getListPositionByCriteria(positionName, department, bagian, kelompok);
+        }catch (HibernateException e){
+            logger.error("[PositionBoImpl.cekStatusEdit] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        if (positions.size()>0){
+            status = "exist";
+        }else {
+            status = "notExist";
         }
         return status;
     }

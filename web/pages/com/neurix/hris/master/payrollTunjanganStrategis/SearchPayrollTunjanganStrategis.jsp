@@ -191,7 +191,7 @@
 
                                                         <s:set name="listOfPayrollSkalaGaji" value="#session.listOfResult" scope="request" />
                                                         <display:table name="listOfPayrollSkalaGaji" class="table table-condensed table-striped table-hover"
-                                                                       requestURI="paging_displaytag_payrollTunjanganJabatanStruktural.action" export="true" id="row" pagesize="14" style="font-size:10">
+                                                                       requestURI="paging_displaytag_payrollTunjanganStrategis.action" export="true" id="row" pagesize="14" style="font-size:10">
                                                             <display:column media="html" title="Edit">
                                                                 <s:if test="#attr.row.flagYes">
                                                                     <s:url var="urlEdit" namespace="/payrollTunjanganStrategis" action="edit_payrollTunjanganStrategis" escapeAmp="false">
@@ -205,18 +205,19 @@
                                                             </display:column>
 
                                                             <display:column media="html" title="Delete" style="text-align:center;font-size:9">
-                                                                <s:url var="urlViewDelete" namespace="/payrollTunjanganStrategis" action="delete_payrollTunjanganStrategis" escapeAmp="false">
-                                                                    <s:param name="id"><s:property value="#attr.row.tunjStrategisId" /></s:param>
-                                                                    <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
-                                                                </s:url>
-                                                                <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
-                                                                    <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
-                                                                </sj:a>
-
+                                                                <s:if test="#attr.row.flagYes">
+                                                                    <s:url var="urlViewDelete" namespace="/payrollTunjanganStrategis" action="delete_payrollTunjanganStrategis" escapeAmp="false">
+                                                                        <s:param name="id"><s:property value="#attr.row.tunjStrategisId" /></s:param>
+                                                                        <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
+                                                                    </s:url>
+                                                                    <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
+                                                                        <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
+                                                                    </sj:a>
+                                                                </s:if>
                                                             </display:column>
                                                             <display:column property="tunjStrategisId" sortable="true" title="T. Jab. Struktural ID" />
                                                             <display:column property="positionName" sortable="true" title="Jabatan"  />
-                                                            <display:column property="nilai" sortable="true" title="Nilai"  />
+                                                            <display:column property="stNilai" sortable="true" title="Nilai"  />
                                                             <display:column property="golonganName" sortable="true" title="Golongan"  />
                                                             <display:column property="createdWho" sortable="true" title="Created who"  />
                                                             <display:column property="lastUpdateWho" sortable="true" title="Last update who"  />

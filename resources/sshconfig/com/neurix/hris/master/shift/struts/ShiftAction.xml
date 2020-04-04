@@ -102,10 +102,10 @@
 
         </action>
 
-        <action name="paging_displaytag_alatdetail"
-                class="com.neurix.pmsapb.alatapb.alatdetail.action.AlatDetailAction" method="paging">
+        <action name="paging_displaytag_shift"
+                class="com.neurix.hris.master.shift.action.ShiftAction" method="paging">
             <interceptor-ref name="defaultStack"/>
-            <result name="success">/pages/com/neurix/pmsapb/alatapb/alatdetail/searchAlatDetailApb.jsp</result>
+            <result name="success">/pages/com/neurix/hris/master/shift/searchShift.jsp</result>
         </action>
 
     </package>

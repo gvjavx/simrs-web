@@ -2,16 +2,20 @@ package com.neurix.hris.master.study.action;
 
 //import com.neurix.authorization.company.bo.AreaBo;
 import com.neurix.common.action.BaseMasterAction;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.study.bo.StudyBo;
 import com.neurix.hris.master.study.model.Study;
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -25,6 +29,8 @@ public class StudyAction extends BaseMasterAction{
     protected static transient Logger logger = Logger.getLogger(StudyAction.class);
     private StudyBo studyBoProxy;
     private Study study;
+
+    private File fileUploadIjazah;
 
     private List<Study> listComboStudy = new ArrayList<Study>();
 
@@ -69,6 +75,14 @@ public class StudyAction extends BaseMasterAction{
 
     public void setInitComboStudy(List<Study> initComboStudy) {
         this.initComboStudy = initComboStudy;
+    }
+
+    public File getFileUploadIjazah() {
+        return fileUploadIjazah;
+    }
+
+    public void setFileUploadIjazah(File fileUploadIjazah) {
+        this.fileUploadIjazah = fileUploadIjazah;
     }
 
     public Study init(String kode, String flag){
@@ -387,6 +401,34 @@ public class StudyAction extends BaseMasterAction{
             study.setLastUpdateWho(userLogin);
             study.setAction("C");
             study.setFlag("Y");
+
+            if (this.fileUploadIjazah != null){
+                String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY + ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_USER_UPLOAD_IJAZAH;
+                String fileName = typeStudy + ".jpg";
+                File fileToCreate = new File(filePath, fileName);
+
+                //create file to save to folder '/upload'
+                byte[] contentFile = null;
+                try {
+                    FileUtils.copyFile(this.fileUploadIjazah, fileToCreate);
+                    contentFile = FileUtils.readFileToByteArray(this.fileUploadIjazah);
+                } catch (IOException e) {
+                    Long logId = null;
+                    try {
+                        logId = studyBoProxy.saveErrorMessage(e.getMessage(), "UserAction.save");
+                    } catch (GeneralBOException e1) {
+                        logger.error("[UserAction.save] Error when saving error,", e1);
+                    }
+                    logger.error("[UserAction.save] Error when uploading and saving user," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+                    addActionError("Error, " + "[code=" + logId + "] Found problem when uploading and saving user, please inform to your admin. Cause : " + e.getMessage());
+                    return ERROR;
+                }
+
+                if (contentFile!=null) {
+                    study.setContentFile(contentFile);
+                    study.setFotoUpload(fileName);
+                }
+            }
 
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             StudyBo studyBo = (StudyBo) ctx.getBean("studyBoProxy");

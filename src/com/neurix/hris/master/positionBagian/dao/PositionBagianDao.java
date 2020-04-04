@@ -49,7 +49,7 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
 
         // Order by
 
-        criteria.addOrder(Order.asc("bagianId"));
+        criteria.addOrder(Order.desc("bagianId"));
 
         List<ImPositionBagianEntity> results = criteria.list();
 

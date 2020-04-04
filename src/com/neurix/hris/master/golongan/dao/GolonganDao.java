@@ -52,7 +52,7 @@ public class GolonganDao extends GenericDao<ImGolonganEntity, String> {
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
 
         // Order by
-        criteria.addOrder(Order.asc("golonganId"));
+        criteria.addOrder(Order.desc("golonganId"));
 
         List<ImGolonganEntity> results = criteria.list();
 

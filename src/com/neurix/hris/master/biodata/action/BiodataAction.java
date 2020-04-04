@@ -1,6 +1,10 @@
 package com.neurix.hris.master.biodata.action;
 
 //import com.neurix.authorization.company.bo.AreaBo;
+import com.neurix.authorization.company.bo.BranchBo;
+import com.neurix.authorization.company.model.Branch;
+import com.neurix.authorization.position.bo.PositionBo;
+import com.neurix.authorization.position.model.Position;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
@@ -52,6 +56,8 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -620,20 +626,24 @@ public class BiodataAction extends BaseMasterAction{
                     String userLogin = CommonUtil.userLogin();
                     Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
-                    if (biodata.getStTanggalLahir() != null && !"".equalsIgnoreCase(biodata.getStTanggalLahir())) {
-                        biodata.setTanggalLahir(CommonUtil.convertToDate(biodata.getStTanggalLahir()));
+                    if (editBiodata.getStTanggalLahir() != null && !"".equalsIgnoreCase(editBiodata.getStTanggalLahir())) {
+                        editBiodata.setTanggalLahir(CommonUtil.convertToDate(editBiodata.getStTanggalLahir()));
                     }
 
-                    if (biodata.getStTanggalPensiun() != null && !"".equalsIgnoreCase(biodata.getStTanggalPensiun())) {
-                        biodata.setTanggalPensiun(CommonUtil.convertToDate(biodata.getStTanggalPensiun()));
+                    if (editBiodata.getStTanggalPensiun() != null && !"".equalsIgnoreCase(editBiodata.getStTanggalPensiun())) {
+                        editBiodata.setTanggalPensiun(CommonUtil.convertToDate(editBiodata.getStTanggalPensiun()));
                     }
 
-                    if (biodata.getStTanggalMasuk() != null && !"".equalsIgnoreCase(biodata.getStTanggalMasuk())) {
-                        biodata.setTanggalMasuk(CommonUtil.convertToDate(biodata.getStTanggalMasuk()));
+                    if (editBiodata.getStTanggalMasuk() != null && !"".equalsIgnoreCase(editBiodata.getStTanggalMasuk())) {
+                        editBiodata.setTanggalMasuk(CommonUtil.convertToDate(editBiodata.getStTanggalMasuk()));
                     }
 
-                    if (biodata.getStTanggalAktif() != null && !"".equalsIgnoreCase(biodata.getStTanggalAktif())) {
-                        biodata.setTanggalAktif(CommonUtil.convertToDate(biodata.getStTanggalAktif()));
+                    if (editBiodata.getStTanggalAktif() != null && !"".equalsIgnoreCase(editBiodata.getStTanggalAktif())) {
+                        editBiodata.setTanggalAktif(CommonUtil.convertToDate(editBiodata.getStTanggalAktif()));
+                    }
+
+                    if (editBiodata.getStTanggalPraPensiun() != null && !"".equalsIgnoreCase(editBiodata.getStTanggalPraPensiun())){
+                        editBiodata.setTanggalPraPensiun(CommonUtil.convertToDate(editBiodata.getStTanggalPraPensiun()));
                     }
 
                     if (this.fileUpload!=null) {
@@ -677,11 +687,11 @@ public class BiodataAction extends BaseMasterAction{
                         logId = biodataBoProxy.saveErrorMessage(e.getMessage(), "PersonalBO.saveEdit");
                     } catch (GeneralBOException e1) {
                         logger.error("[BiodataAction.saveEdit] Error when saving error,", e1);
-                        return ERROR;
+                        throw new GeneralBOException(e1.getMessage());
                     }
                     logger.error("[BiodataAction.saveEdit] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
                     addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-                    return ERROR;
+                    throw new GeneralBOException(e.getMessage());
                 }
 
                 logger.info("[BiodataAction.saveEdit] end process <<<");
@@ -710,6 +720,10 @@ public class BiodataAction extends BaseMasterAction{
 
                     if (biodata.getStTanggalAktif() != null && !"".equalsIgnoreCase(biodata.getStTanggalAktif())) {
                         biodata.setTanggalAktif(CommonUtil.convertToDate(biodata.getStTanggalAktif()));
+                    }
+
+                    if (biodata.getStTanggalPraPensiun() != null && !"".equalsIgnoreCase(biodata.getStTanggalPraPensiun())){
+                        biodata.setTanggalPraPensiun(CommonUtil.convertToDate(biodata.getStTanggalPraPensiun()));
                     }
 
                     if (this.fileUpload!=null) {
@@ -743,7 +757,7 @@ public class BiodataAction extends BaseMasterAction{
                     biodata.setCreatedWho(userLogin);
                     biodata.setLastUpdate(updateTime);
                     biodata.setCreatedDate(updateTime);
-                    biodata.setTanggalAktif(CommonUtil.convertTimestampToDate(updateTime));
+//                    biodata.setTanggalAktif(CommonUtil.convertTimestampToDate(updateTime));
                     biodata.setLastUpdateWho(userLogin);
                     biodata.setAction("C");
                     biodata.setStatusCaption("Online");
@@ -755,12 +769,12 @@ public class BiodataAction extends BaseMasterAction{
                     try {
                         logId = biodataBoProxy.saveErrorMessage(e.getMessage(), "pengalamanKerjaBO.saveAdd");
                     } catch (GeneralBOException e1) {
-                        logger.error("[pengalamanKerjaAction.saveAdd] Error when saving error,", e1);
-                        return ERROR;
+                        logger.error("[BiodataAction.saveAdd] Error when saving error,", e1);
+                        throw new GeneralBOException(e1.getMessage());
                     }
-                    logger.error("[pengalamanKerjaAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+                    logger.error("[BiodataAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
                     addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-                    return ERROR;
+                    throw new GeneralBOException(e.getMessage());
                 }
 
 
@@ -1862,7 +1876,8 @@ public class BiodataAction extends BaseMasterAction{
         session.setAttribute("listSertifikat", listSertifikat);
     }
 
-    public void saveAddPengalaman(String nip, String namaPerusahaan, String jabatan, String tanggalMasuk, String tanggalKeluar){
+    public void saveAddPengalaman(String nip, String branchId, String jabatan, String devisiId, String profesiId,
+                                  String tanggalMasuk, String tanggalKeluar, String tipePegawai, String golongan, String pjs, String aktifFlag){
         logger.info("[StudyAction.saveAdd] start process >>>");
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
 
@@ -1870,19 +1885,48 @@ public class BiodataAction extends BaseMasterAction{
 
         try {
             PengalamanKerja pengalamanKerja = new PengalamanKerja();
+
+            ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
+            Branch branch = new Branch();
+            BranchBo branchBo = (BranchBo) context.getBean("branchBoProxy");
+            branch.setBranchId(branchId);
+            branch.setFlag("Y");
+            List<Branch> branches = branchBo.getByCriteria(branch);
+            String branchName = branches.get(0).getBranchName();
+            pengalamanKerja.setBranchName(branchName);
+
+            Position position = new Position();
+            PositionBo positionBo = (PositionBo) context.getBean("positionBoProxy");
+            position.setPositionId(jabatan);
+            position.setFlag("Y");
+            List<Position> positions = positionBo.getByCriteria(position);
+            String positionName = positions.get(0).getPositionName();
+            pengalamanKerja.setJabatanName(positionName);
+
             pengalamanKerja.setNip(nip);
-            pengalamanKerja.setNamaPerusahaan(namaPerusahaan);
+            pengalamanKerja.setBranchId(branchId);
             pengalamanKerja.setJabatan(jabatan);
+            pengalamanKerja.setDivisiId(devisiId);
+            pengalamanKerja.setProfesiId(profesiId);
 
             if(tanggalMasuk != null && !"".equalsIgnoreCase(tanggalMasuk)){
                 pengalamanKerja.setTahunMasuk(CommonUtil.convertStringToDate(tanggalMasuk));
                 pengalamanKerja.setStTtahunMasuk(tanggalMasuk);
+            }else {
+                pengalamanKerja.setStTtahunMasuk("-");
             }
 
             if(tanggalKeluar != null && !"".equalsIgnoreCase(tanggalKeluar)){
                 pengalamanKerja.setTahunKeluar(CommonUtil.convertStringToDate(tanggalKeluar));
                 pengalamanKerja.setStTahunKeluar(tanggalKeluar);
+            }else {
+                pengalamanKerja.setStTahunKeluar("-");
             }
+
+            pengalamanKerja.setTipePegawaiId(tipePegawai);
+            pengalamanKerja.setGolonganId(golongan);
+            pengalamanKerja.setPjsFlag(pjs);
+            pengalamanKerja.setFlagJabatanAktif(aktifFlag);
 
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
@@ -1895,15 +1939,65 @@ public class BiodataAction extends BaseMasterAction{
             pengalamanKerja.setFlag("Y");
 
             int id = 0;
+            int jumlah = 0;
+            boolean status = false;
             HttpSession session = ServletActionContext.getRequest().getSession();
             List<PengalamanKerja> listOfResult = (List<PengalamanKerja>) session.getAttribute("listPengalamanKerja");
+
             if(listOfResult != null){
-                for(PengalamanKerja pengalamanKerja1: listOfResult){
-                    id = Integer.parseInt(pengalamanKerja1.getPengalamanId());
+                if (listOfResult.size() > 0){
+                    for (PengalamanKerja pengalamanKerja2 : listOfResult){
+                        if (aktifFlag.equalsIgnoreCase(pengalamanKerja2.getFlagJabatanAktif())){
+                            if ("N".equalsIgnoreCase(aktifFlag)){
+                                status = true;
+                            }else {
+                                status = false;
+                                break;
+                            }
+                        }else {
+                            status = true;
+                        }
+                    }
+
+                    if (status){
+
+//                        String statusDate = cekStatus(listOfResult, CommonUtil.convertStringToDate(tanggalMasuk), CommonUtil.convertStringToDate(tanggalKeluar));
+//                        if ("true".equalsIgnoreCase(statusDate)){
+//                            for(PengalamanKerja pengalamanKerja1: listOfResult){
+//                                id = Integer.parseInt(pengalamanKerja1.getPengalamanId());
+//                            }
+//                            id++;
+//                            pengalamanKerja.setPengalamanId(id + "");
+//
+//                            listOfResult.add(pengalamanKerja);
+//                        }else {
+//                            throw new GeneralBOException("Perhatian!!! Tanggal jabatan aktif tidak boleh kurang dari tanggal jabatan tidak aktif");
+//                        }
+
+
+                        for(PengalamanKerja pengalamanKerja1: listOfResult){
+                            id = Integer.parseInt(pengalamanKerja1.getPengalamanId());
+                        }
+                        id++;
+                        pengalamanKerja.setPengalamanId(id + "");
+
+                        listOfResult.add(pengalamanKerja);
+                    }else {
+                        throw new GeneralBOException("Perhatian!!! Jabatan aktif sudah ada");
+                    }
+                }else {
+                    listOfResult = new ArrayList<>();
+                    pengalamanKerja.setPengalamanId(id + "");
+                    listOfResult.add(pengalamanKerja);
                 }
-                id++;
-                pengalamanKerja.setPengalamanId(id + "");
-                listOfResult.add(pengalamanKerja);
+
+//                for(PengalamanKerja pengalamanKerja1: listOfResult){
+//                    id = Integer.parseInt(pengalamanKerja1.getPengalamanId());
+//                }
+//                id++;
+//                pengalamanKerja.setPengalamanId(id + "");
+//
+//                listOfResult.add(pengalamanKerja);
             }else{
                 listOfResult = new ArrayList<>();
                 pengalamanKerja.setPengalamanId(id + "");
@@ -1922,6 +2016,39 @@ public class BiodataAction extends BaseMasterAction{
             logger.error("[pengalamanKerjaAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
         }
+    }
+
+    private String cekStatus(List<PengalamanKerja> listOfResult, Date tanggalMasuk, Date tanggalKeluar){
+        String status = "true";
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+
+        for (PengalamanKerja pengalamanKerja : listOfResult){
+            if ("Y".equalsIgnoreCase(pengalamanKerja.getFlagJabatanAktif())){
+                Date listDate = pengalamanKerja.getTahunMasuk();
+                if (listDate.compareTo(tanggalMasuk) > 0){
+                    status = "true";
+                }else if (listDate.compareTo(tanggalMasuk) < 0){
+                    status = "false";
+                }else if (listDate.compareTo(tanggalMasuk) == 0){
+                    status = "false";
+                }
+
+                if (listDate.compareTo(tanggalKeluar) > 0){
+                    status = "true";
+                }else if (listDate.compareTo(tanggalKeluar) < 0){
+                    status = "false";
+                }else if (listDate.compareTo(tanggalKeluar) == 0){
+                    status = "true";
+                }
+//                try {
+////                    String tglMasuk = pengalamanKerja.getTanggalMasuk();
+//
+//                } catch (ParseException e) {
+//                }
+            }
+        }
+
+        return status;
     }
 
     public void saveAddReward(String nip, String tanggal, String jenis, String keterangan){
@@ -2048,16 +2175,46 @@ public class BiodataAction extends BaseMasterAction{
         }
     }
 
-    public String initEditPengalaman(String id, String nip, String namaPerusahaan, String jabatan, String tanggalMasuk, String tanggalKeluar){
+    public String initEditPengalaman(String id, String nip, String branchId, String jabatan, String devisiId, String profesiId,
+                                     String tanggalMasuk, String tanggalKeluar, String tipePegawai, String golongan, String pjs, String aktifFlag){
         logger.info("[BiodataAction.saveEdit] start process >>>");
         PengalamanKerja pengalamanKerja = new PengalamanKerja();
 
         pengalamanKerja.setPengalamanId(id);
         pengalamanKerja.setNip(nip);
-        pengalamanKerja.setNamaPerusahaan(namaPerusahaan);
+        pengalamanKerja.setBranchId(branchId);
+//        pengalamanKerja.setNamaPerusahaan(namaPerusahaan);
         pengalamanKerja.setJabatan(jabatan);
-        pengalamanKerja.setStTtahunMasuk(tanggalMasuk);
-        pengalamanKerja.setStTahunKeluar(tanggalKeluar);
+
+        pengalamanKerja.setDivisiId(devisiId);
+        pengalamanKerja.setProfesiId(profesiId);
+
+//        pengalamanKerja.setStTtahunMasuk(tanggalMasuk);
+//        pengalamanKerja.setStTahunKeluar(tanggalKeluar);
+        if(tanggalMasuk != null && !"".equalsIgnoreCase(tanggalMasuk)){
+            pengalamanKerja.setTahunMasuk(CommonUtil.convertStringToDate(tanggalMasuk));
+            pengalamanKerja.setStTtahunMasuk(tanggalMasuk);
+        }
+
+        if(tanggalKeluar != null && !"".equalsIgnoreCase(tanggalKeluar)){
+            pengalamanKerja.setTahunKeluar(CommonUtil.convertStringToDate(tanggalKeluar));
+            pengalamanKerja.setStTahunKeluar(tanggalKeluar);
+        }
+
+        pengalamanKerja.setTipePegawaiId(tipePegawai);
+        pengalamanKerja.setGolonganId(golongan);
+        pengalamanKerja.setPjsFlag(pjs);
+        pengalamanKerja.setFlagJabatanAktif(aktifFlag);
+
+        String userLogin = CommonUtil.userLogin();
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+        pengalamanKerja.setCreatedWho(userLogin);
+        pengalamanKerja.setLastUpdate(updateTime);
+        pengalamanKerja.setCreatedDate(updateTime);
+        pengalamanKerja.setLastUpdateWho(userLogin);
+        pengalamanKerja.setAction("C");
+        pengalamanKerja.setFlag("Y");
 
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<PengalamanKerja> listPengalamanKerja= new ArrayList<>();
@@ -2222,14 +2379,14 @@ public class BiodataAction extends BaseMasterAction{
         }catch (GeneralBOException e) {
             Long logId = null;
             try {
-                logId = studyBoProxy.saveErrorMessage(e.getMessage(), "pengalamanKerjaBO.saveAdd");
+                logId = biodataBoProxy.saveErrorMessage(e.getMessage(), "pengalamanKerjaBO.saveAdd");
             } catch (GeneralBOException e1) {
                 logger.error("[pengalamanKerjaAction.saveAdd] Error when saving error,", e1);
-                return ERROR;
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[pengalamanKerjaAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            throw new GeneralBOException(e.getMessage());
         }
         return "";
     }
@@ -2442,6 +2599,7 @@ public class BiodataAction extends BaseMasterAction{
             historyJabatanPegawai.setTanggalKeluar(tanggalKeluar);
             historyJabatanPegawai.setTipePegawaiId(tipePegawaiId);
             historyJabatanPegawai.setGolonganId(golonganId);
+            historyJabatanPegawai.setFlagJabatanAktif(flagAktif);
 
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
@@ -2604,19 +2762,20 @@ public class BiodataAction extends BaseMasterAction{
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
-                logId = studyBoProxy.saveErrorMessage(e.getMessage(), "BiodataBo.saveDeletePengalamanKerja");
+                logId = biodataBoProxy.saveErrorMessage(e.getMessage(), "BiodataBo.saveDeletePengalamanKerja");
             } catch (GeneralBOException e1) {
                 logger.error("[BiodataAction.saveDeletePengalamanKerja] Error when saving error,", e1);
-                return ERROR;
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[BiodataAction.saveDeletePengalamanKerja] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            throw new GeneralBOException(e.getMessage());
         }
 
         logger.info("[BiodataAction.saveDeletePengalamanKerja] end process <<<");
 
-        return "success_save_delete";
+//        return "success_save_delete";
+        return "";
     }
 
     public String saveDeleteReward(String id){
@@ -2794,6 +2953,7 @@ public class BiodataAction extends BaseMasterAction{
                 foto = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY + ServletActionContext.getRequest().getContextPath() +
                         CommonConstant.RESOURCE_PATH_USER_UPLOAD + "img_avatar.png";
             }
+
             reportParams.put("urlLogo", CommonConstant.URL_IMAGE_LOGO_REPORT);
             reportParams.put("urlFoto", foto);
             reportParams.put("nip", getId());

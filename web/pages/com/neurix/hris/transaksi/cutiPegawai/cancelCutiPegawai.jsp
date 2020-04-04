@@ -39,6 +39,18 @@
                 $.publish('showErrorDialogCancelCutiPegawai');
             }
         });
+
+        $.subscribe('beforeProcessDeleteCancelCutiPegawai', function (event, data) {
+            if (confirm('Do you want to delete this record ?')) {
+                event.originalEvent.options.submit = true;
+                $.publish('showDialogCancelCutiPegawai');
+
+            } else {
+                // Cancel Submit comes with 1.8.0
+                event.originalEvent.options.submit = false;
+            }
+        });
+
         $.subscribe('successDialogCancelCutiPegawai', function (event, data) {
             if (event.originalEvent.request.status == 200) {
                 jQuery(".ui-dialog-titlebar-close").hide();
@@ -234,16 +246,16 @@
                             </table>
                         </td>
                     </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Pegawai Pengganti Sementara :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield  id="pegawaiPenggantiSementara" name="cutiPegawai.pegawaiPenggantiSementara" required="false" readonly="true" cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>
+                    <%--<tr>--%>
+                        <%--<td>--%>
+                            <%--<label class="control-label"><small>Pegawai Pengganti Sementara :</small></label>--%>
+                        <%--</td>--%>
+                        <%--<td>--%>
+                            <%--<table>--%>
+                                <%--<s:textfield  id="pegawaiPenggantiSementara" name="cutiPegawai.pegawaiPenggantiSementara" required="false" readonly="true" cssClass="form-control"/>--%>
+                            <%--</table>--%>
+                        <%--</td>--%>
+                    <%--</tr>--%>
                     <tr>
                         <td>
                             <label class="control-label"><small>Keterangan Batal :</small></label>
@@ -278,15 +290,22 @@
                             <div id="crud">
                                 <td>
                                     <table>
-                                        <sj:dialog id="waiting_dialog" openTopics="showDialogCancelCutiPegawai" closeTopics="closeDialogCancelCutiPegawai" modal="true"
+
+                                        <sj:dialog id="waiting_dialog" openTopics="showDialogCancelCutiPegawai"
+                                                   closeTopics="closeDialogCancelCutiPegawai" modal="true"
                                                    resizable="false"
-                                                   height="350" width="600" autoOpen="false" title="Saving ...">
+                                                   height="250" width="600" autoOpen="false"
+                                                   title="Save Data ...">
                                             Please don't close this window, server is processing your request ...
-                                            </br>
-                                            </br>
-                                            </br>
+                                            <br>
                                             <center>
-                                                <img border="0" src="<s:url value="/pages/images/indicator-write.gif"/>" name="image_indicator_write">
+                                                <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                     src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                     name="image_indicator_write">
+                                                <br>
+                                                <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                     src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                     name="image_indicator_write">
                                             </center>
                                         </sj:dialog>
 

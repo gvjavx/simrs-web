@@ -50,7 +50,7 @@
     <section class="content-header">
         <h1>
             Bidang/ Divisi
-            <small>e-HEALTH</small>
+            <small>GO-MEDSYS</small>
         </h1>
     </section>
 
@@ -77,7 +77,7 @@
                         <table >
                             <tr>
                                 <td>
-                                    <label class="control-label"><small>Department Id :</small></label>
+                                    <label class="control-label"><small>Devisi Id :</small></label>
                                 </td>
                                 <td>
                                     <table>
@@ -88,7 +88,7 @@
 
                             <tr>
                                 <td>
-                                    <label class="control-label"><small>Department Name :</small></label>
+                                    <label class="control-label"><small>Nama Devisi :</small></label>
                                 </td>
                                 <td>
                                     <table>
@@ -172,17 +172,18 @@
                                             </display:column>
 
                                             <display:column media="html" title="Delete" style="text-align:center;font-size:9">
-                                                <s:url var="urlViewDelete" namespace="/department" action="delete_department" escapeAmp="false">
-                                                    <s:param name="id"><s:property value="#attr.row.departmentId" /></s:param>
-                                                    <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
-                                                </s:url>
-                                                <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
-                                                </sj:a>
-
+                                                <s:if test="#attr.row.flagYes">
+                                                    <s:url var="urlViewDelete" namespace="/department" action="delete_department" escapeAmp="false">
+                                                        <s:param name="id"><s:property value="#attr.row.departmentId" /></s:param>
+                                                        <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
+                                                    </s:url>
+                                                    <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
+                                                        <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
+                                                    </sj:a>
+                                                </s:if>
                                             </display:column>
-                                            <display:column property="departmentId" sortable="true" title="Department ID" />
-                                            <display:column property="departmentName" sortable="true" title="Department Name"  />
+                                            <display:column property="departmentId" sortable="true" title="Devisi ID" />
+                                            <display:column property="departmentName" sortable="true" title="Nama Devisi"  />
 
                                             <display:column property="createdWho" sortable="true" title="Created who"  />
                                             <display:column property="lastUpdateWho" sortable="true" title="Last update who"  />

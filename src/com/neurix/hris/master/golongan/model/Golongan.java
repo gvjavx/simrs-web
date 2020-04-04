@@ -17,6 +17,9 @@ public class Golongan extends BaseModel {
     private String stLevel;
     private Integer level;
 
+    private String stCreatedDate;
+    private String stLastUpdate;
+
     public String getStLevel() {
         return stLevel;
     }
@@ -47,5 +50,23 @@ public class Golongan extends BaseModel {
 
     public void setGolonganName(String golonganName) {
         this.golonganName = golonganName;
+    }
+
+    @Override
+    public String getStCreatedDate() {
+        return stCreatedDate;
+    }
+
+    public void setStCreatedDate(String stCreatedDate) {
+        this.stCreatedDate = stCreatedDate;
+    }
+
+    @Override
+    public String getStLastUpdate() {
+        return stLastUpdate;
+    }
+
+    public void setStLastUpdate(String stLastUpdate) {
+        this.stLastUpdate = stLastUpdate;
     }
 }

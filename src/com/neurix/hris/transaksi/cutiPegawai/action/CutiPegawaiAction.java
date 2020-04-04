@@ -257,7 +257,7 @@ public class CutiPegawaiAction extends BaseMasterAction {
         }
         setAddOrEdit(true);
         setAdd(true);
-        session.removeAttribute("listOfResultCutiPegawai");
+//        session.removeAttribute("listOfResultCutiPegawai");
 
         logger.info("[CutiPegawaiAction.add] stop process >>>");
         return "init_add";

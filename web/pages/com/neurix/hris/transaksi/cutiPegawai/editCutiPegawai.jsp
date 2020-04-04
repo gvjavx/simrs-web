@@ -252,7 +252,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    <s:textfield id="tgl2" name="cutiPegawai.stTanggalDari" cssClass="form-control pull-right"
+                                        <s:textfield id="tgl2" name="cutiPegawai.stTanggalDari" cssClass="form-control pull-right"
                                                  required="true"  cssStyle=""/>
                                 </div>
                             </table>
@@ -306,16 +306,16 @@
                         <td>
                             <s:textarea rows="2" id="keterangan12" name="cutiPegawai.keterangan" required="true" cssClass="form-control"/>                        </td>
                     </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Pegawai Pengganti Sementara :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield  id="pegawaiPenggantiSementara" name="cutiPegawai.pegawaiPenggantiSementara" required="false" readonly="true" cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>
+                    <%--<tr>--%>
+                        <%--<td>--%>
+                            <%--<label class="control-label"><small>Pegawai Pengganti Sementara :</small></label>--%>
+                        <%--</td>--%>
+                        <%--<td>--%>
+                            <%--<table>--%>
+                                <%--<s:textfield  id="pegawaiPenggantiSementara" name="cutiPegawai.pegawaiPenggantiSementara" required="false" readonly="true" cssClass="form-control"/>--%>
+                            <%--</table>--%>
+                        <%--</td>--%>
+                    <%--</tr>--%>
                 </table>
 
                 <br>
@@ -340,15 +340,21 @@
                             <div id="crud">
                                 <td>
                                     <table>
-                                        <sj:dialog id="waiting_dialog" openTopics="showDialogEditCutiPegawai" closeTopics="closeDialogEditCutiPegawai" modal="true"
+                                        <sj:dialog id="waiting_dialog" openTopics="showDialogEditCutiPegawai"
+                                                   closeTopics="closeDialogEditCutiPegawai" modal="true"
                                                    resizable="false"
-                                                   height="350" width="600" autoOpen="false" title="Saving ...">
+                                                   height="250" width="600" autoOpen="false"
+                                                   title="Save Data ...">
                                             Please don't close this window, server is processing your request ...
-                                            </br>
-                                            </br>
-                                            </br>
+                                            <br>
                                             <center>
-                                                <img border="0" src="<s:url value="/pages/images/indicator-write.gif"/>" name="image_indicator_write">
+                                                <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                     src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                     name="image_indicator_write">
+                                                <br>
+                                                <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                     src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                     name="image_indicator_write">
                                             </center>
                                         </sj:dialog>
 

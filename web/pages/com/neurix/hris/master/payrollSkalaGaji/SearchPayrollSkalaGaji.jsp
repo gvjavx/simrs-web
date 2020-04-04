@@ -50,7 +50,7 @@
     <section class="content-header">
         <h1>
             Payroll Skala Gaji
-            <small>e-HEALTH</small>
+            <small>GO-MEDSYS</small>
         </h1>
     </section>
 
@@ -186,14 +186,15 @@
                                             </display:column>
 
                                             <display:column media="html" title="Delete" style="text-align:center;font-size:9">
-                                                <s:url var="urlViewDelete" namespace="/payrollSkalaGaji" action="delete_payrollSkalaGaji" escapeAmp="false">
-                                                    <s:param name="id"><s:property value="#attr.row.skalaGajiId" /></s:param>
-                                                    <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
-                                                </s:url>
-                                                <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
-                                                </sj:a>
-
+                                                <s:if test="#attr.row.flagYes">
+                                                    <s:url var="urlViewDelete" namespace="/payrollSkalaGaji" action="delete_payrollSkalaGaji" escapeAmp="false">
+                                                        <s:param name="id"><s:property value="#attr.row.skalaGajiId" /></s:param>
+                                                        <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
+                                                    </s:url>
+                                                    <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
+                                                        <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
+                                                    </sj:a>
+                                                </s:if>
                                             </display:column>
                                             <display:column property="skalaGajiId" sortable="true" title="Skala Gaji ID" />
                                             <display:column property="stLevel" sortable="true" title="Level"  />
@@ -203,12 +204,12 @@
                                             <display:column property="stListrik" sortable="true" title="Tunj. Listrik"  />
                                             <display:column property="stAir" sortable="true" title="Tunj. Air"  />
                                             <display:column property="stBbm" sortable="true" title="Tunj. Bbm"  />
-                                            <display:column property="createdWho" sortable="true" title="Created who"  />
-                                            <display:column property="lastUpdateWho" sortable="true" title="Last update who"  />
                                             <display:column property="flag" sortable="true" title="flag"  />
                                             <display:column property="action" sortable="true" title="action"  />
-                                            <display:column property="createdDate" sortable="true" title="Created date"  />
-                                            <display:column property="lastUpdate" sortable="true" title="Last update"  />
+                                            <display:column property="stCreatedDate" sortable="true" title="Created date"  />
+                                            <display:column property="createdWho" sortable="true" title="Created who"  />
+                                            <display:column property="stLastUpdate" sortable="true" title="Last update"  />
+                                            <display:column property="lastUpdateWho" sortable="true" title="Last update who"  />
                                         </display:table>
                                     </td>
                                 </tr>

@@ -116,11 +116,21 @@
                 <table >
                     <tr>
                         <td>
+                            <label class="control-label"><small>Gaji Pokok :</small></label>
+                        </td>
+                        <td>
                             <table>
-                                <s:textfield cssStyle="display: none"  id="skalaGajiId1" readonly="true" name="payrollSkalaGajiPkwt.skalaGajiPkwtId" required="true"  cssClass="form-control"/>
+                                <s:textfield id="skalaGajiId1" readonly="true" name="payrollSkalaGajiPkwt.skalaGajiPkwtId" required="true"  cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
+                    <%--<tr>--%>
+                        <%--<td>--%>
+                            <%--<table>--%>
+                                <%--<s:textfield cssStyle="display: none"  id="skalaGajiId1" readonly="true" name="payrollSkalaGajiPkwt.skalaGajiPkwtId" required="true"  cssClass="form-control"/>--%>
+                            <%--</table>--%>
+                        <%--</td>--%>
+                    <%--</tr>--%>
                     <tr>
                         <td>
                             <table>

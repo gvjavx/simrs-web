@@ -26,6 +26,9 @@ public class PayrollSkalaGajiBod extends BaseModel {
    private String stTunjTelekomunikasi;
    private String stJumlahPenghasilanBulan;
 
+    private String stCreatedDate;
+    private String stLastUpdate;
+
     public String getTahun() {
         return tahun;
     }
@@ -120,5 +123,23 @@ public class PayrollSkalaGajiBod extends BaseModel {
 
     public void setStJumlahPenghasilanBulan(String stJumlahPenghasilanBulan) {
         this.stJumlahPenghasilanBulan = stJumlahPenghasilanBulan;
+    }
+
+    @Override
+    public String getStCreatedDate() {
+        return stCreatedDate;
+    }
+
+    public void setStCreatedDate(String stCreatedDate) {
+        this.stCreatedDate = stCreatedDate;
+    }
+
+    @Override
+    public String getStLastUpdate() {
+        return stLastUpdate;
+    }
+
+    public void setStLastUpdate(String stLastUpdate) {
+        this.stLastUpdate = stLastUpdate;
     }
 }
