@@ -475,6 +475,29 @@ public class RawatInapBoImpl implements RawatInapBo {
                     monCairan.setLastUpdateWho(entity.getLastUpdateWho());
                     monCairan.setStDate(stringDate(entity.getCreatedDate()));
                     monCairans.add(monCairan);
+                } else if  (bean.getIsMobile().equalsIgnoreCase("Y")){
+                    monCairan = new MonCairan();
+                    monCairan.setId(entity.getId());
+                    monCairan.setNoCheckup(entity.getNoCheckup());
+                    monCairan.setIdDetailCheckup(entity.getIdDetailCheckup());
+                    monCairan.setMacamCairan(entity.getMacamCairan());
+                    monCairan.setMelalui(entity.getMelalui());
+                    monCairan.setJumlah(entity.getJumlah());
+                    monCairan.setJamMulai(entity.getJamMulai());
+                    monCairan.setJamSelesai(entity.getJamSelesai());
+                    monCairan.setCekTambahanObat(entity.getCekTambahanObat());
+                    monCairan.setJamUkurBuang(entity.getJamUkurBuang());
+                    monCairan.setDari(entity.getDari());
+                    monCairan.setBalanceCairan(entity.getBalanceCairan());
+                    monCairan.setKeterangan(entity.getKeterangan());
+                    monCairan.setFlag(entity.getFlag());
+                    monCairan.setAction(entity.getAction());
+                    monCairan.setCreatedDate(entity.getCreatedDate());
+                    monCairan.setCreatedWho(entity.getCreatedWho());
+                    monCairan.setLastUpdate(entity.getLastUpdate());
+                    monCairan.setLastUpdateWho(entity.getLastUpdateWho());
+                    monCairan.setStDate(stringDate(entity.getCreatedDate()));
+                    monCairans.add(monCairan);
                 }
             }
         }

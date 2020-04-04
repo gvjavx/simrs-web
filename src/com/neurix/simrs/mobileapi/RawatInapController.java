@@ -1155,6 +1155,7 @@ public class RawatInapController implements ModelDriven<Object> {
             MonCairan monCairan = new MonCairan();
             monCairan.setIdDetailCheckup(idDetailCheckup);
             monCairan.setId(idMonCairan);
+            monCairan.setIsMobile("Y");
 
             try {
                 result = rawatInapBoProxy.getListMonCairan(monCairan);
@@ -1262,7 +1263,7 @@ public class RawatInapController implements ModelDriven<Object> {
             itSimrsMonPemberianObatEntity.setKeterangan(addMonPemberianObat.getKeterangan());
             itSimrsMonPemberianObatEntity.setKategori(addMonPemberianObat.getKategori());
 
-            itSimrsMonPemberianObatEntity.setFlag("Y");
+            itSimrsMonPemberianObatEntity.setFlag("U");
             itSimrsMonPemberianObatEntity.setAction("C");
             itSimrsMonPemberianObatEntity.setCreatedDate(now);
             itSimrsMonPemberianObatEntity.setCreatedWho(addMonPemberianObat.getCreatedWho());
