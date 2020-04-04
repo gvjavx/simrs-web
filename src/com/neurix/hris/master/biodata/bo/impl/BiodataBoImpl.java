@@ -1581,7 +1581,7 @@ public class BiodataBoImpl implements BiodataBo {
                     returnBiodata.setFlagZakat(personalEntity.getZakatProfesi());
                     returnBiodata.setGender(personalEntity.getGender());
                     returnBiodata.setNpwp(personalEntity.getNpwp());
-                    returnBiodata.setGaji(personalEntity.getGaji().toPlainString());
+//                    returnBiodata.setGaji(personalEntity.getGaji().toPlainString());
                     returnBiodata.setStrukturGaji(personalEntity.getStrukturGaji());
                     returnBiodata.setStrukturGaji2(personalEntity.getStrukturGaji());
                     returnBiodata.setStatusGiling(personalEntity.getStatusGiling());
