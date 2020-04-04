@@ -67,6 +67,15 @@ public class PeriksaLab extends BaseModel implements Serializable{
     private String stCreatedDate;
 
     private BigDecimal tarif;
+    private String branchId;
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
 
     public BigDecimal getTarif() {
         return tarif;

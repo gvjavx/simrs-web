@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.checkup.bo.impl;
 
+import com.neurix.akuntansi.master.masterVendor.model.MasterVendor;
 import com.neurix.akuntansi.master.trans.model.Trans;
 import com.neurix.authorization.company.dao.BranchDao;
 import com.neurix.authorization.company.model.ImBranches;
@@ -446,7 +447,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                     detailCheckupEntity.setStatusPeriksa(bean.getStatusPeriksa());
                 }
 
-                if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
+                if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "ptpn".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
                     detailCheckupEntity.setKodeCbg(bean.getKodeCbg());
                     detailCheckupEntity.setRujuk(bean.getRujuk());
                     detailCheckupEntity.setKetRujukan(bean.getKetPerujuk());
@@ -512,7 +513,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                             tindakanRawatEntity.setFlag("Y");
                             tindakanRawatEntity.setAction("U");
 
-                            if ("bpjs".equalsIgnoreCase(bean.getJenisTransaksi())) {
+                            if ("bpjs".equalsIgnoreCase(bean.getJenisTransaksi()) || "ptpn".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
                                 tindakanRawatEntity.setTarif(tindakanEntity.getTarifBpjs());
                             } else {
                                 tindakanRawatEntity.setTarif(tindakanEntity.getTarif());
@@ -525,7 +526,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
 
                                 tindakanRawatDao.addAndSave(tindakanRawatEntity);
 
-                                if ("bpjs".equalsIgnoreCase(bean.getJenisTransaksi())) {
+                                if ("bpjs".equalsIgnoreCase(bean.getJenisTransaksi()) || "ptpn".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
 
                                     ItSimrsRiwayatTindakanEntity riwayatTindakan = new ItSimrsRiwayatTindakanEntity();
                                     riwayatTindakan.setIdRiwayatTindakan("RWT" + getNextIdRiwayatTindakan());
@@ -563,7 +564,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                 }
 
                 // save uang muka
-                if (!"bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
+                if ("umum".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
 
                     if (bean.getUangMuka() != null && !"".equalsIgnoreCase(bean.getUangMuka().toString())) {
                         ItSimrsUangMukaPendaftaranEntity uangMukaPendaftaranEntity = new ItSimrsUangMukaPendaftaranEntity();
@@ -2367,6 +2368,17 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             }
         }
         return response;
+    }
+
+    @Override
+    public List<MasterVendor> getComboListPtpn() throws GeneralBOException {
+        List<MasterVendor> vendorList = new ArrayList<>();
+        try {
+            vendorList = headerCheckupDao.getComboListPtpn();
+        }catch (HibernateException e){
+            logger.error("Found Error "+e.getMessage());
+        }
+        return vendorList;
     }
 
     private String getNextDetailLapId() {

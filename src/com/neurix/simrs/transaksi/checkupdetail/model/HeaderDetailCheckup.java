@@ -129,6 +129,15 @@ public class HeaderDetailCheckup extends BaseModel{
     private String namaPerujuk;
 
     private String flagRefund;
+    private String idPelayananBpjs;
+
+    public String getIdPelayananBpjs() {
+        return idPelayananBpjs;
+    }
+
+    public void setIdPelayananBpjs(String idPelayananBpjs) {
+        this.idPelayananBpjs = idPelayananBpjs;
+    }
 
     public String getFlagRefund() {
         return flagRefund;

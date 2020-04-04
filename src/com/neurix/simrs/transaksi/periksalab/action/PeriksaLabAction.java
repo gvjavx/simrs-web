@@ -8,6 +8,7 @@ import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
 import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
+import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
@@ -183,6 +184,7 @@ public class PeriksaLabAction extends BaseMasterAction {
 
         // hanya kategori lab laboratorium saja
         periksaLab.setIdKategoriLab("KAL00000002");
+        periksaLab.setBranchId(CommonUtil.userBranchLogin());
 
         try {
             listPeriksaLabList = periksaLabBoProxy.getSearchLab(periksaLab);
@@ -211,8 +213,8 @@ public class PeriksaLabAction extends BaseMasterAction {
         String tglToday = new SimpleDateFormat("dd-MM-yyyy").format(date);
 
         PeriksaLab periksaLab = new PeriksaLab();
-        periksaLab.setStTglFrom(tglToday);
-        periksaLab.setStTglTo(tglToday);
+        periksaLab.setStDateFrom(tglToday);
+        periksaLab.setStDateTo(tglToday);
         setPeriksaLab(periksaLab);
 
         HttpSession session = ServletActionContext.getRequest().getSession();
@@ -456,9 +458,9 @@ public class PeriksaLabAction extends BaseMasterAction {
         return SUCCESS;
     }
 
-    public String saveEditDokterLab(String idPeriksaLab, String idDokter) {
+    public CheckResponse saveEditDokterLab(String idPeriksaLab, String idDokter) {
         logger.info("[PeriksaLabAction.saveEditDokterLab] start process >>>");
-
+        CheckResponse response = new CheckResponse();
         try {
             String userLogin = CommonUtil.userLogin();
             String userArea = CommonUtil.userBranchLogin();
@@ -477,14 +479,12 @@ public class PeriksaLabAction extends BaseMasterAction {
             periksaLabBo.saveDokterLab(periksaLab);
 
         } catch (GeneralBOException e) {
-            Long logId = null;
-            logger.error("[PeriksaLabAction.saveOrderLab] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            response.setStatus("error");
+            response.setMessage("Error"+e.getMessage());
         }
 
         logger.info("[PeriksaLabAction.saveOrderLab] End process >>>");
-        return SUCCESS;
+        return response;
     }
 
     public String printPeriksaLab() {

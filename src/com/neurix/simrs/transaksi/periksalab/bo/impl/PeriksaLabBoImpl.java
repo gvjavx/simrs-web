@@ -440,9 +440,11 @@ public class PeriksaLabBoImpl implements PeriksaLabBo{
     }
 
     @Override
-    public void saveDokterLab(PeriksaLab bean) throws GeneralBOException {
+    public CheckResponse saveDokterLab(PeriksaLab bean) throws GeneralBOException {
 
         logger.info("[PeriksaLabBoImpl.saveDokterLab] start <<<<<<<<<");
+
+        CheckResponse response = new CheckResponse();
 
         if (bean != null){
 
@@ -450,7 +452,11 @@ public class PeriksaLabBoImpl implements PeriksaLabBo{
 
             try {
                 entity = periksaLabDao.getById("idPeriksaLab", bean.getIdPeriksaLab());
+                response.setStatus("success");
+                response.setMessage("Berhasil");
             } catch (HibernateException e){
+                response.setStatus("error");
+                response.setMessage("Error "+e.getMessage());
                 logger.error("[PeriksaLabBoImpl.saveDokterLab] Error when getById periksa lab ",e);
                 throw new GeneralBOException("[PeriksaLabBoImpl.saveDokterLab] Error when save edit periksa lab "+e.getMessage());
             }
@@ -460,19 +466,25 @@ public class PeriksaLabBoImpl implements PeriksaLabBo{
                 entity.setAction(bean.getAction());
                 entity.setLastUpdate(bean.getLastUpdate());
                 entity.setLastUpdateWho(bean.getLastUpdateWho());
+                entity.setTanggalSelesaiPeriksa(bean.getLastUpdate());
                 entity.setStatusPeriksa("3");
                 entity.setApproveFlag("Y");
             }
 
             try {
                 periksaLabDao.updateAndSave(entity);
+                response.setStatus("success");
+                response.setMessage("Berhasil");
             } catch (HibernateException e){
+                response.setStatus("error");
+                response.setMessage("Error "+e.getMessage());
                 logger.error("[PeriksaLabBoImpl.saveDokterLab] Error when periksa lab ", e);
                 throw new GeneralBOException("Error when edit diagnosa " + e.getMessage());
             }
         }
 
         logger.info("[PeriksaLabBoImpl.saveDokterLab] End <<<<<<<<<");
+        return response;
     }
 
     @Override

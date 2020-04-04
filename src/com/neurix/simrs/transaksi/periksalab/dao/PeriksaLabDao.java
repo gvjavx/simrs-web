@@ -82,6 +82,7 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
             String dateTo = "";
 
             String kategori = "%";
+            String branchId = "%";
 
             if (bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())){
                 idPasien = bean.getIdPasien();
@@ -115,6 +116,9 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                 dateTo = bean.getStDateTo();
             }
 
+            if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
+                branchId = bean.getBranchId();
+            }
 
             String SQL = "SELECT\n" +
                     "pl.id_periksa_lab,\n" +
@@ -133,12 +137,13 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                     "AND c.nama LIKE :nama \n" +
                     "AND lab.id_lab LIKE :idLab \n" +
                     "AND pl.status_periksa LIKE :status \n" +
+                    "AND c.branch_id LIKE :branchId \n" +
                     "AND dc.id_detail_checkup LIKE :idDetailCheckup";
 
             List<Object[]> results = new ArrayList<>();
             if (!"".equalsIgnoreCase(dateFrom) && !"".equalsIgnoreCase(dateTo)){
 
-                SQL = SQL + "\n AND pl.created_date > :dateFrom AND pl.created_date < :dateTo " +
+                SQL = SQL + "\n AND CAST(pl.created_date AS date) >= to_date(:dateFrom, 'dd-MM-yyyy') AND CAST(pl.created_date AS date) <= to_date(:dateTo, 'dd-MM-yyyy') " +
                         "\n ORDER BY pl.created_date ASC";
 
                 results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -150,6 +155,7 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                         .setParameter("kategori", kategori)
                         .setParameter("dateFrom", dateFrom)
                         .setParameter("dateTo", dateTo)
+                        .setParameter("branchId", branchId)
                         .list();
 
             } else {
@@ -163,6 +169,7 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                         .setParameter("idLab", idLab)
                         .setParameter("status", statusPeriksa)
                         .setParameter("kategori", kategori)
+                        .setParameter("branchId", branchId)
                         .list();
             }
 
@@ -178,7 +185,6 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                     dataLab.setLabName(obj[5].toString());
                     dataLab.setCreatedDate((Timestamp) obj[6]);
                     String formatDate = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(dataLab.getCreatedDate());
-
                     dataLab.setStCreatedDate(formatDate);
                     checkupList.add(dataLab);
                 }

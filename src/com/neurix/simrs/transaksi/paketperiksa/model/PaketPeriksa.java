@@ -41,6 +41,15 @@ public class PaketPeriksa {
     private BigDecimal tarif;
     private String namaLab;
     private String idLab;
+    private String namaPelayanan;
+
+    public String getNamaPelayanan() {
+        return namaPelayanan;
+    }
+
+    public void setNamaPelayanan(String namaPelayanan) {
+        this.namaPelayanan = namaPelayanan;
+    }
 
     public String getNamaLab() {
         return namaLab;

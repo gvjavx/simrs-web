@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.checkup.action;
 
+import com.neurix.akuntansi.master.masterVendor.model.MasterVendor;
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.authorization.company.bo.AreaBo;
 import com.neurix.authorization.company.bo.BranchBo;
@@ -188,6 +189,7 @@ public class CheckupAction extends BaseMasterAction {
     private List<Pelayanan> listOfApotek = new ArrayList<>();
     private List<Pelayanan> listOfPelayananIgd = new ArrayList<>();
     private List<Asuransi> listOfAsuransi = new ArrayList<>();
+    private List<Pelayanan> listOfPelayananPaket = new ArrayList<>();
 
     private HeaderCheckup headerCheckup;
     private String id;
@@ -419,6 +421,14 @@ public class CheckupAction extends BaseMasterAction {
         this.eklaimBoProxy = eklaimBoProxy;
     }
 
+    public List<Pelayanan> getListOfPelayananPaket() {
+        return listOfPelayananPaket;
+    }
+
+    public void setListOfPelayananPaket(List<Pelayanan> listOfPelayananPaket) {
+        this.listOfPelayananPaket = listOfPelayananPaket;
+    }
+
     @Override
     public String add() {
         logger.info("[CheckupAction.add] start process >>>");
@@ -594,7 +604,6 @@ public class CheckupAction extends BaseMasterAction {
 
         }
 
-//        checkup.setIdJenisPeriksaPasien(tipe);
         checkup.setJenisTransaksi(tipe);
         setHeaderCheckup(checkup);
 
@@ -765,7 +774,7 @@ public class CheckupAction extends BaseMasterAction {
         String dateToday = new SimpleDateFormat("yyyy-MM-dd").format(dateNow);
 
         //jika bpjs
-        if ("bpjs".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien())) {
+        if ("bpjs".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien()) || "ptpn".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien())) {
 
             List<Pasien> pasienList = new ArrayList<>();
             List<Branch> branchList = new ArrayList<>();
@@ -1298,6 +1307,19 @@ public class CheckupAction extends BaseMasterAction {
         return "init_add";
     }
 
+    public String getComboPelayananPaketPeriksa() {
+        List<Pelayanan> pelayananList = new ArrayList<>();
+        try {
+            pelayananList = pelayananBoProxy.getListPelayananPaketPeriksa(CommonUtil.userBranchLogin());
+        } catch (HibernateException e) {
+            logger.error("[CheckupAction.getComboPelayanan] Error when get data for combo listOfPelayanan", e);
+            addActionError(" Error when get data for combo listOfPelayanan" + e.getMessage());
+        }
+
+        listOfPelayananPaket.addAll(pelayananList);
+        return "init_add";
+    }
+
     public String getComboPelayananIgd() {
 
         List<Pelayanan> pelayananList = new ArrayList<>();
@@ -1318,9 +1340,8 @@ public class CheckupAction extends BaseMasterAction {
 
     public String getComboApotek() {
         List<Pelayanan> pelayananList = new ArrayList<>();
-
         try {
-            pelayananList = pelayananBoProxy.getListApotek();
+            pelayananList = pelayananBoProxy.getListApotek(CommonUtil.userBranchLogin());
         } catch (HibernateException e) {
             logger.error("[CheckupAction.getComboPelayanan] Error when get data for combo listOfPelayanan", e);
             addActionError(" Error when get data for combo listOfPelayanan" + e.getMessage());
@@ -3127,5 +3148,22 @@ public class CheckupAction extends BaseMasterAction {
         }
 
         return asuransiList;
+    }
+
+    public List<MasterVendor> getComboPtpn() {
+
+        List<MasterVendor> vendorList = new ArrayList<>();
+        Asuransi asuransi = new Asuransi();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+
+        try {
+            vendorList = checkupBo.getComboListPtpn();
+        } catch (HibernateException e) {
+            logger.error("[CheckupAction.getComboPelayanan] Error when get data for combo listOfPelayanan", e);
+            addActionError(" Error when get data for combo listOfPelayanan" + e.getMessage());
+        }
+
+        return vendorList;
     }
 }

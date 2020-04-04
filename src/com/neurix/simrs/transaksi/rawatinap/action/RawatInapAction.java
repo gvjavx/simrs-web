@@ -302,6 +302,7 @@ public class RawatInapAction extends BaseMasterAction {
 
         RawatInap rawatInap = getRawatInap();
         List<RawatInap> listOfRawatInap = new ArrayList();
+        rawatInap.setBranchId(CommonUtil.userBranchLogin());
 
         try {
             listOfRawatInap = rawatInapBoProxy.getSearchRawatInap(rawatInap);

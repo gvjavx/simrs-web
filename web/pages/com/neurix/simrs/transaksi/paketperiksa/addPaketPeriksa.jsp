@@ -80,7 +80,6 @@
     <section class="content-header">
         <h1>
             Tambah Paket Periksa
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -167,9 +166,9 @@
                                         <label class="col-md-3" style="margin-top: 7px">Poli</label>
                                         <div class="col-md-7">
                                     <s:action id="initComboPoli" namespace="/checkup"
-                                              name="getComboPelayanan_checkup"/>
+                                              name="getComboPelayananPaketPeriksa_checkup"/>
                                     <s:select cssStyle="margin-top: 7px; width: 100%"
-                                              list="#initComboPoli.listOfPelayanan" id="poli"
+                                              list="#initComboPoli.listOfPelayananPaket" id="poli"
                                               name="headerCheckup.idPelayanan" listKey="idPelayanan"
                                               listValue="namaPelayanan"
                                               onchange="$(this).css('border',''); listKategori(this.value); var warn =$('#war_poli').is(':visible'); if (warn){$('#cor_poli').show().fadeOut(3000);$('#war_poli').hide()}"
@@ -186,16 +185,6 @@
                                     <div class="form-group">
                                         <label class="col-md-3" style="margin-top: 7px">Kategori</label>
                                         <div class="col-md-7">
-                                            <%--<s:action id="initComboKategoriTindakan" namespace="/checkupdetail"--%>
-                                                      <%--name="getListComboKategoriTindakan_checkupdetail"/>--%>
-                                            <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
-                                                      <%--onchange="listSelectTindakan(this); var warn =$('#war_kategori').is(':visible'); if (warn){$('#cor_kategori').show().fadeOut(3000);$('#war_kategori').hide()}"--%>
-                                                      <%--list="#initComboKategoriTindakan.listOfKategoriTindakan"--%>
-                                                      <%--id="tin_id_ketgori_tindakan"--%>
-                                                      <%--listKey="idKategoriTindakan"--%>
-                                                      <%--listValue="kategoriTindakan"--%>
-                                                      <%--headerKey="" headerValue="[Select one]"--%>
-                                                      <%--cssClass="form-control select2"/>--%>
                                             <select style="margin-top: 7px" class="form-control select2" id="tin_id_ketgori_tindakan" onchange="listSelectTindakan(this); var warn =$('#war_kategori').is(':visible'); if (warn){$('#cor_kategori').show().fadeOut(3000);$('#war_kategori').hide()}">
                                                 <option value="">[Select One]</option>
                                             </select>

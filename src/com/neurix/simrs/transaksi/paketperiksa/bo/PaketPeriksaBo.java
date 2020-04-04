@@ -27,4 +27,7 @@ public interface PaketPeriksaBo{
     public Boolean cekPaketWithIdPasien(String idPasien) throws GeneralBOException;
     public List<PaketPeriksa> getDetailItemPaket(String idLab, String idPaket) throws GeneralBOException;
 
+    public List<PaketPeriksa> getListPaketRawatJalan(String branchId) throws GeneralBOException;
+    public List<PaketPeriksa> getListPaketIgd(String branchId) throws GeneralBOException;
+
 }

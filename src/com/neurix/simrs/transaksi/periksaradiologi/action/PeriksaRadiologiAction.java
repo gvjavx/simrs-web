@@ -6,6 +6,7 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
 import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
+import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
@@ -115,10 +116,6 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
     public String add() {
         logger.info("[PeriksaRadiologiAction.add] start process >>>");
 
-        //get data from session
-//        HttpSession session = ServletActionContext.getRequest().getSession();
-//        List<PeriksaLab> listOfResult = (List) session.getAttribute("listOfResult");
-
         String id = getId();
         String lab = getLab();
 
@@ -171,54 +168,6 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
             } else {
                 setPeriksaLab(new PeriksaLab());
             }
-//            if (listOfResult != null) {
-//
-//                for (PeriksaLab periksaLab : listOfResult) {
-//                    if (id.equalsIgnoreCase(periksaLab.getIdPeriksaLab())) {
-//
-//                        HeaderDetailCheckup headerDetailCheckup = getDetailCheckup(periksaLab.getIdDetailCheckup());
-//                        periksaLab.setNoCheckup(headerDetailCheckup.getNoCheckup());
-//
-//                        HeaderCheckup headerCheckup = getHeaderCheckup(headerDetailCheckup.getNoCheckup());
-//                        periksaLab.setIdPasien(headerCheckup.getIdPasien());
-//                        periksaLab.setNamaPasien(headerCheckup.getNama());
-//                        periksaLab.setAlamat(headerCheckup.getJalan());
-//                        periksaLab.setDesa(headerCheckup.getNamaDesa());
-//                        periksaLab.setKecamatan(headerCheckup.getNamaKecamatan());
-//                        periksaLab.setKota(headerCheckup.getNamaKota());
-//                        periksaLab.setProvinsi(headerCheckup.getNamaProvinsi());
-//                        periksaLab.setIdPelayanan(headerCheckup.getIdPelayanan());
-//                        periksaLab.setNamaPelayanan(headerCheckup.getNamaPelayanan());
-//                        if(headerCheckup.getJenisKelamin()!= null){
-//                            if("P".equalsIgnoreCase(headerCheckup.getJenisKelamin())){
-//                                jk = "Perempuan";
-//                            }else{
-//                                jk = "laki-Laki";
-//                            }
-//                        }
-//                        periksaLab.setJenisKelamin(jk);
-//                        periksaLab.setTempatLahir(headerCheckup.getTempatLahir());
-//                        periksaLab.setTglLahir(headerCheckup.getTglLahir() == null ? null : headerCheckup.getTglLahir().toString());
-//                        String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(headerCheckup.getTglLahir());
-//                        periksaLab.setTempatTglLahir(headerCheckup.getTempatLahir()+", "+formatDate);
-//                        periksaLab.setIdJenisPeriksa(headerCheckup.getIdJenisPeriksaPasien());
-//                        periksaLab.setNik(headerCheckup.getNoKtp());
-//                        periksaLab.setUrlKtp(headerCheckup.getUrlKtp());
-//
-//                        JenisPriksaPasien jenisPriksaPasien = getListJenisPeriksaPasien(headerCheckup.getIdJenisPeriksaPasien());
-//                        periksaLab.setJenisPeriksaPasien(jenisPriksaPasien.getKeterangan());
-//
-//                        setPeriksaLab(periksaLab);
-//
-//                        break;
-//                    }
-//                }
-//
-//            } else {
-//                setPeriksaLab(new PeriksaLab());
-//            }
-//        } else {
-//            setPeriksaLab(new PeriksaLab());
         }
 
         logger.info("[PeriksaRadiologiAction.add] end process <<<");
@@ -254,6 +203,7 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
 
         // hanya kategori lab radiologi saja
         periksaLab.setIdKategoriLab("KAL00000001");
+        periksaLab.setBranchId(CommonUtil.userBranchLogin());
 
         try {
             listPeriksaLabList = periksaLabBoProxy.getSearchLab(periksaLab);
@@ -282,8 +232,8 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
         String tglToday = new SimpleDateFormat("dd-MM-yyyy").format(date);
 
         PeriksaLab periksaLab = new PeriksaLab();
-        periksaLab.setStTglTo(tglToday);
-        periksaLab.setStTglFrom(tglToday);
+        periksaLab.setStDateFrom(tglToday);
+        periksaLab.setStDateTo(tglToday);
         setPeriksaLab(periksaLab);
 
         HttpSession session = ServletActionContext.getRequest().getSession();
@@ -304,75 +254,10 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
         return null;
     }
 
-    private HeaderCheckup getHeaderCheckup(String noCheckup){
-        logger.info("[PeriksaRadiologiAction.getHeaderCheckup] start process >>>");
-
-        HeaderCheckup headerCheckup = new HeaderCheckup();
-        headerCheckup.setNoCheckup(noCheckup);
-
-        List<HeaderCheckup> headerCheckupList = new ArrayList<>();
-        try {
-            headerCheckupList = checkupBoProxy.getByCriteria(headerCheckup);
-        } catch (GeneralBOException e){
-            logger.error("[PeriksaRadiologiAction.getHeaderCheckup] Error When Get Header Checkup Data", e);
-        }
-
-        HeaderCheckup result = new HeaderCheckup();
-        if (!headerCheckupList.isEmpty()){
-            result = headerCheckupList.get(0);
-        }
-
-        logger.info("[PeriksaRadiologiAction.getHeaderCheckup] end process <<<");
-        return result;
-    }
-
-    private HeaderDetailCheckup getDetailCheckup(String idDetailCheckup){
-        logger.info("[PeriksaRadiologiAction.getDetailCheckup] start process >>>");
-
-        HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
-        detailCheckup.setIdDetailCheckup(idDetailCheckup);
-
-        List<HeaderDetailCheckup> detailCheckupList = new ArrayList<>();
-        try {
-            detailCheckupList = checkupDetailBoProxy.getByCriteria(detailCheckup);
-        } catch (GeneralBOException e){
-            logger.error("[PeriksaRadiologiAction.getDetailCheckup] Error When Get Header Checkup Data", e);
-        }
-
-        HeaderDetailCheckup result = new HeaderDetailCheckup();
-        if (!detailCheckupList.isEmpty()){
-            result = detailCheckupList.get(0);
-        }
-
-        logger.info("[PeriksaRadiologiAction.getDetailCheckup] end process <<<");
-        return result;
-    }
-
-    private JenisPriksaPasien getListJenisPeriksaPasien(String idJenisPeriksa){
-        logger.info("[PeriksaRadiologiAction.getListJenisPeriksaPasien] start process >>>");
-
-        JenisPriksaPasien jenisPriksaPasien = new JenisPriksaPasien();
-        jenisPriksaPasien.setIdJenisPeriksaPasien(idJenisPeriksa);
-
-        List<JenisPriksaPasien> jenisPriksaPasienList = new ArrayList<>();
-        try {
-            jenisPriksaPasienList = jenisPriksaPasienBoProxy.getListAllJenisPeriksa(jenisPriksaPasien);
-        } catch (GeneralBOException e){
-            logger.error("[PeriksaRadiologiAction.getListJenisPeriksaPasien] Error When Get Jenis Pasien Data", e);
-        }
-
-        JenisPriksaPasien result = new JenisPriksaPasien();
-        if (!jenisPriksaPasienList.isEmpty()){
-            result = jenisPriksaPasienList.get(0);
-        }
-
-        logger.info("[PeriksaRadiologiAction.getListJenisPeriksaPasien] end process <<<");
-        return result;
-    }
-
-    public String saveRadiologi(String idPeriksaRadiologi, String idDokter, String kesimpulan){
+    public CheckResponse saveRadiologi(String idPeriksaRadiologi, String kesimpulan){
 
         logger.info("[PeriksaRadiologiAction.saveRadiologi] start process >>>");
+        CheckResponse response = new CheckResponse();
         try {
             String userLogin = CommonUtil.userLogin();
             String userArea = CommonUtil.userBranchLogin();
@@ -380,7 +265,6 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
 
             PeriksaRadiologi periksaRadiologi = new PeriksaRadiologi();
             periksaRadiologi.setIdPeriksaRadiologi(idPeriksaRadiologi);
-            periksaRadiologi.setIdDokterRadiologi(idDokter);
             periksaRadiologi.setKesimpulan(kesimpulan);
             periksaRadiologi.setLastUpdate(updateTime);
             periksaRadiologi.setLastUpdateWho(userLogin);
@@ -388,17 +272,46 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
 
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             PeriksaRadiologiBo periksaRadiologiBo = (PeriksaRadiologiBo) ctx.getBean("periksaRadiologiBoProxy");
-
-            periksaRadiologiBo.saveEdit(periksaRadiologi);
+            response = periksaRadiologiBo.saveEdit(periksaRadiologi);
 
         }catch (GeneralBOException e) {
-            Long logId = null;
-            logger.error("[PeriksaRadiologiAction.saveRadiologi] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            logger.error("Found Error");
+            response.setStatus("error");
+            response.setMessage("Found Error "+e.getMessage());
         }
+
         logger.info("[PeriksaRadiologiAction.saveRadiologi] end process >>>");
-        return SUCCESS;
+        return response;
+    }
+
+    public CheckResponse saveDokterRadiologi(String idPeriksaLab, String idDokter){
+
+        logger.info("[PeriksaRadiologiAction.saveRadiologi] start process >>>");
+        CheckResponse response = new CheckResponse();
+        try {
+            String userLogin = CommonUtil.userLogin();
+            String userArea = CommonUtil.userBranchLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+            PeriksaRadiologi periksaRadiologi = new PeriksaRadiologi();
+            periksaRadiologi.setIdPeriksaLab(idPeriksaLab);
+            periksaRadiologi.setIdDokterRadiologi(idDokter);
+            periksaRadiologi.setLastUpdate(updateTime);
+            periksaRadiologi.setLastUpdateWho(userLogin);
+            periksaRadiologi.setAction("U");
+
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            PeriksaRadiologiBo periksaRadiologiBo = (PeriksaRadiologiBo) ctx.getBean("periksaRadiologiBoProxy");
+            response = periksaRadiologiBo.saveDokterRadiologi(periksaRadiologi);
+
+        }catch (GeneralBOException e) {
+            logger.error("Found Error");
+            response.setStatus("error");
+            response.setMessage("Found Error "+e.getMessage());
+        }
+
+        logger.info("[PeriksaRadiologiAction.saveRadiologi] end process >>>");
+        return response;
     }
 
     public List<PeriksaRadiologi> getIdPemeriksaRadiologi(String idPeriksaLab){
@@ -427,7 +340,6 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
             return null;
         }
     }
-
 
     public PeriksaRadiologiBo getPeriksaRadiologiBoProxy() {
         return periksaRadiologiBoProxy;

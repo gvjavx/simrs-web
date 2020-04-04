@@ -1982,7 +1982,8 @@ public class CheckupDetailAction extends BaseMasterAction {
                         headerDetailCheckup.setRawatInap(true);
                         headerDetailCheckup.setNoSep(genNoSep);
                         headerDetailCheckup.setTindakanList(tindakans);
-                        headerDetailCheckup.setIdJenisPeriksaPasien(checkup.getIdJenisPeriksaPasien());
+                        headerDetailCheckup.setIdJenisPeriksaPasien(detailCheckup.getIdJenisPeriksaPasien());
+                        headerDetailCheckup.setBranchId(branchId);
 
                         if (uangMuka != null && !"".equalsIgnoreCase(uangMuka)) {
                             headerDetailCheckup.setJumlahUangMuka(new BigInteger(uangMuka));
@@ -2209,7 +2210,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         String dateToday = new SimpleDateFormat("yyyy-MM-dd").format(dateNow);
 
         //jika bpjs
-        if ("bpjs".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien())) {
+        if ("bpjs".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien()) || "ptpn".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien())) {
 
             List<Pasien> pasienList = new ArrayList<>();
             List<Branch> branchList = new ArrayList<>();

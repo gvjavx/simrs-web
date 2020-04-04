@@ -92,6 +92,31 @@ public class PaketPeriksaAction extends BaseTransactionAction {
         return list;
     }
 
+    public List<PaketPeriksa> getListPaketPeriksaByTipe(String tipe){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PaketPeriksaBo paketPeriksaBo = (PaketPeriksaBo) ctx.getBean("paketPeriksaBoProxy");
+
+        List<PaketPeriksa> list = new ArrayList<>();
+
+        if("RJ".equalsIgnoreCase(tipe)){
+            try {
+                list = paketPeriksaBo.getListPaketRawatJalan(CommonUtil.userBranchLogin());
+            }catch (GeneralBOException e){
+                logger.error("Found Error "+e.getMessage());
+            }
+        }
+
+        if("IGD".equalsIgnoreCase(tipe)){
+            try {
+                list = paketPeriksaBo.getListPaketIgd(CommonUtil.userBranchLogin());
+            }catch (GeneralBOException e){
+                logger.error("Found Error "+e.getMessage());
+            }
+        }
+
+        return list;
+    }
+
     public CrudResponse savePaket(String idPelayanan, String namaPaket, BigDecimal tarifPaket, String jsonString) throws JSONException{
 
         String userLogin = CommonUtil.userLogin();

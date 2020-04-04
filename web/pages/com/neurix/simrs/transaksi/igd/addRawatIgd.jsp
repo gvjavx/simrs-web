@@ -51,6 +51,17 @@
             $.publish('showErrorDialog');
         });
 
+        function formatRupiah(angka) {
+            if(angka != '' && angka != null && angka > 0){
+                var reverse = angka.toString().split('').reverse().join(''),
+                    ribuan = reverse.match(/\d{1,3}/g);
+                ribuan = ribuan.join('.').split('').reverse().join('');
+                return ribuan;
+            }else{
+                return 0;
+            }
+        }
+
         function formatRupiah2(angka) {
             var number_string = angka.replace(/[^,\d]/g, '').toString(),
                 split = number_string.split(','),
@@ -150,7 +161,6 @@
     <section class="content-header">
         <h1>
             Rawat IGD Pasien
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -231,11 +241,10 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><b>Jenis Pasien</b></td>
+                                        <td><b>Poli</b></td>
                                         <td>
                                             <table>
-                                                <s:label name="headerDetailCheckup.jenisPeriksaPasien"></s:label>
-                                            </table>
+                                                <s:label name="headerDetailCheckup.namaPelayanan"></s:label></table>
                                         </td>
                                     </tr>
                                 </table>
@@ -247,16 +256,40 @@
                                     <img border="2" id="img_ktp" src="<s:property value="headerDetailCheckup.urlKtp"/>"
                                          style="cursor: pointer; height: 90px; width: 190px; margin-top: 4px">
                                 </div>
-                                <%--<img border="2" class="card card-4 pull-right" src="<s:url value="/pages/images/ktp-tes.jpg"/>"--%>
-                                <%--style="cursor: pointer; margin-top: -90px; height: 100px; width: 200px;">--%>
                                 <table class="table table-striped">
                                     <tr>
-                                        <td><b>Poli</b></td>
+                                        <td><b>Jenis Pasien</b></td>
                                         <td>
                                             <table>
-                                                <s:label name="headerDetailCheckup.namaPelayanan"></s:label></table>
+                                                <s:label name="headerDetailCheckup.jenisPeriksaPasien"></s:label>
+                                            </table>
                                         </td>
                                     </tr>
+                                    <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "paket_perusahaan" || headerDetailCheckup.idJenisPeriksaPasien == "paket_individu"'>
+                                        <tr>
+                                            <td><b>Tarif Paket</b></td>
+                                            <td>
+                                                <table>
+                                                    <script>
+                                                        var tar = '<s:property value="headerDetailCheckup.coverBiaya"/>';
+                                                        if(tar != null){
+                                                            document.write("Rp. "+formatRupiah(tar));
+                                                        }
+                                                    </script>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </s:if>
+                                    <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "asuransi"'>
+                                        <tr>
+                                            <td><b>Nama Asuransi</b></td>
+                                            <td>
+                                                <table>
+                                                    <s:label name="headerDetailCheckup.namaAsuransi"></s:label>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </s:if>
                                     <tr>
                                         <td><b>Alamat</b></td>
                                         <td>
@@ -264,9 +297,9 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><b>Provinsi</b></td>
+                                        <td><b>Desa</b></td>
                                         <td>
-                                            <table><s:label name="headerDetailCheckup.provinsi"></s:label></table>
+                                            <table><s:label name="headerDetailCheckup.desa"></s:label></table>
                                         </td>
                                     </tr>
                                     <tr>
@@ -282,9 +315,9 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><b>Desa</b></td>
+                                        <td><b>Provinsi</b></td>
                                         <td>
-                                            <table><s:label name="headerDetailCheckup.desa"></s:label></table>
+                                            <table><s:label name="headerDetailCheckup.provinsi"></s:label></table>
                                         </td>
                                     </tr>
 
@@ -411,9 +444,11 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="box-body">
-                                    <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
-                                            onclick="showModal(1)"><i class="fa fa-plus"></i> Tambah Dokter
-                                    </button>
+                                    <s:if test='headerDetailCheckup.idJenisPeriksaPasien != "paket_individu" && headerDetailCheckup.idJenisPeriksaPasien != "paket_perusahaan"'>
+                                        <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
+                                                onclick="showModal(1)"><i class="fa fa-plus"></i> Tambah Dokter
+                                        </button>
+                                    </s:if>
                                     <table class="table table-bordered table-striped">
                                         <thead>
                                         <tr bgcolor="#90ee90">
@@ -511,26 +546,41 @@
                             <h3 class="box-title"><i class="fa fa-medkit"></i> Tindakan</h3>
                         </div>
                         <div class="box-body">
-                            <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
-                                    onclick="showModal(2)"><i class="fa fa-plus"></i> Tambah Tindakan
-                            </button>
-                            <table class="table table-bordered table-striped">
-                                <thead>
-                                <tr bgcolor="#90ee90">
-                                    <td>Tanggal</td>
-                                    <td>Tindakan</td>
-                                    <%--<td>Dokter</td>--%>
-                                    <%--<td>Perawat</td>--%>
-                                    <td align="right">Tarif (Rp.)</td>
-                                    <td align="center">Qty</td>
-                                    <td align="right">Total (Rp.)</td>
-                                    <td align="center">Action</td>
-                                    <input type="hidden" id="tin_id_dokter">
-                                </tr>
-                                </thead>
-                                <tbody id="body_tindakan">
-                                </tbody>
-                            </table>
+                            <input type="hidden" id="tin_id_dokter">
+                            <s:if test='headerDetailCheckup.idJenisPeriksaPasien != "paket_individu" && headerDetailCheckup.idJenisPeriksaPasien != "paket_perusahaan"'>
+                                <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
+                                        onclick="showModal(2)"><i class="fa fa-plus"></i> Tambah Tindakan
+                                </button>
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr bgcolor="#90ee90">
+                                        <td>Tanggal</td>
+                                        <td>Tindakan</td>
+                                            <%--<td>Dokter</td>--%>
+                                            <%--<td>Perawat</td>--%>
+                                        <td align="center">Tarif (Rp.)</td>
+                                        <td align="center">Qty</td>
+                                        <td align="center">Total (Rp.)</td>
+                                        <td align="center">Action</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="body_tindakan">
+                                    </tbody>
+                                </table>
+                            </s:if>
+                            <s:else>
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr bgcolor="#90ee90">
+                                        <td>Tanggal</td>
+                                        <td>Tindakan</td>
+                                        <td align="center" width="10%">Action</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="body_tindakan_paket">
+                                    </tbody>
+                                </table>
+                            </s:else>
                         </div>
 
                         <div class="box-header with-border" id="pos_lab">
@@ -539,9 +589,11 @@
                             <h3 class="box-title"><i class="fa fa-hospital-o"></i> Penunjang Medis</h3>
                         </div>
                         <div class="box-body">
-                            <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
-                                    onclick="showModal(4)"><i class="fa fa-plus"></i> Penunjang
-                            </button>
+                            <s:if test='headerDetailCheckup.idJenisPeriksaPasien != "paket_individu" && headerDetailCheckup.idJenisPeriksaPasien != "paket_perusahaan"'>
+                                <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
+                                        onclick="showModal(4)"><i class="fa fa-plus"></i> Penunjang Medis
+                                </button>
+                            </s:if>
                             <table class="table table-bordered table-striped">
                                 <thead>
                                 <tr bgcolor="#90ee90">
@@ -2246,6 +2298,7 @@
     var idPoli = $('#id_palayanan').val();
     var idPasien = $('#id_pasien').val();
     var noCheckup = $('#no_checkup').val();
+    var jenisPeriksaPasien = $('#jenis_pasien').val();
 
     $(document).ready(function () {
         $('#igd').addClass('active');
@@ -2344,9 +2397,9 @@
     });
 
     function hitungStatusBiaya() {
-        CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, "", function (response) {
-            console.log(response);
-            if (response.idJenisPeriksaPasien == "bpjs") {
+        var jenis = $('#jenis_pasien').val();
+        if("bpjs" == jenis){
+            CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, "RWJ", function (response) {
                 $('#status_bpjs').show();
                 if (response.tarifBpjs != null && response.tarifTindakan != null) {
 
@@ -2386,10 +2439,10 @@
                         $('#b_tindakan').html(formatRupiah(biayaTindakan) + " (" + persen + "%)");
                     }
                 }
-            } else {
-                $('#status_bpjs').hide();
-            }
-        });
+            });
+        }else{
+            $('#status_bpjs').hide();
+        }
     }
 
     function saveAlergi(id) {
@@ -2984,6 +3037,7 @@
     function listTindakan() {
 
         var table = "";
+        var table2 = "";
         var data = [];
         var trfTtl = 0;
         TindakanRawatAction.listTindakanRawat(idDetailCheckup, function (response) {
@@ -2997,6 +3051,7 @@
                     var tarifTotal = "-";
                     var trfTotal = 0;
                     var qtyTotal = 0;
+                    var perawat = "";
 
                     if (item.tarif != null) {
                         tarif = formatRupiah(item.tarif);
@@ -3009,28 +3064,39 @@
                     if (item.qty != null) {
                         qtyTotal += item.qty;
                     }
+                    if (item.idPerawat != null) {
+                        perawat = item.idPerawat;
+                    }
 
                     table += "<tr>" +
                         "<td>" + dateFormat + "</td>" +
                         "<td>" + item.namaTindakan + "</td>" +
-                        // "<td>" + item.namaDokter + "</td>" +
-                        // "<td>" + item.idPerawat + "</td>" +
-                        "<td align='right'>"+ tarif +"</td>" +
+                        "<td align='right'>" + tarif + "</td>" +
                         "<td align='center'>" + item.qty + "</td>" +
                         "<td align='right'>" + tarifTotal + "</td>" +
                         "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editTindakan(\'' + item.idTindakanRawat + '\',\'' + item.idTindakan + '\',\'' + item.idKategoriTindakan + '\',\'' + item.idPerawat + '\',\'' + item.qty + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' + "</td>" +
                         "</tr>";
 
+                    table2 += "<tr>" +
+                        "<td>" + dateFormat + "</td>" +
+                        "<td>" + item.namaTindakan + "</td>" +
+                        "<td align='center'></td>" +
+                        "</tr>";
+
                 });
-                table = table + "<tr>" +
-                    "<td colspan='4'>Total</td>" +
-                    "<td align='right'>" + formatRupiah(trfTtl) + "</td>" +
-                    "<td></td>" +
-                    "</tr>";
+
+                if("paket_perusahaan" == jenisPeriksaPasien || "paket_individu" == jenisPeriksaPasien){
+                    $('#body_tindakan_paket').html(table2);
+                }else{
+                    table = table + "<tr>" +
+                        "<td colspan='4'>Total</td>" +
+                        "<td align='right'>" + formatRupiah(trfTtl) + "</td>" +
+                        "<td></td>" +
+                        "</tr>";
+                    $('#body_tindakan').html(table);
+                }
             }
         });
-
-        $('#body_tindakan').html(table);
 
     }
 
@@ -3252,13 +3318,25 @@
                     if (item.labName != null) {
                         lab = item.labName;
                     }
-                    table += "<tr>" +
-                        "<td>" + dateFormat + "</td>" +
-                        "<td>" + lab + "</td>" +
-                        "<td>" + status + "</td>" +
-                        "<td>" + item.kategoriLabName + "</td>" +
-                        "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editLab(\'' + item.idPeriksaLab + '\',\'' + item.idLab + '\',\'' + item.idKategoriLab + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' + "</td>" +
-                        "</tr>"
+
+                    if("paket_perusahaan" == jenisPeriksaPasien || "paket_individu" == jenisPeriksaPasien){
+                        table += "<tr>" +
+                            "<td>" + dateFormat + "</td>" +
+                            "<td>" + lab + "</td>" +
+                            "<td>" + status + "</td>" +
+                            "<td>" + item.kategoriLabName + "</td>" +
+                            "<td align='center'></td>" +
+                            "</tr>";
+                    }else{
+                        table += "<tr>" +
+                            "<td>" + dateFormat + "</td>" +
+                            "<td>" + lab + "</td>" +
+                            "<td>" + status + "</td>" +
+                            "<td>" + item.kategoriLabName + "</td>" +
+                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editLab(\'' + item.idPeriksaLab + '\',\'' + item.idLab + '\',\'' + item.idKategoriLab + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' + "</td>" +
+                            "</tr>";
+                    }
+
                 });
             }
         });

@@ -7,6 +7,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -331,6 +332,84 @@ public class PaketPasienDao extends GenericDao<ItSimrsPaketPasienEntity, String>
                     paketPeriksa.setIdKategoriItem(obj[2] == null ? "" : obj[2].toString());
                     paketPeriksa.setIdItem(obj[3] == null ? "" : obj[3].toString());
                     paketPeriksa.setKeterangan(obj[4] == null ? "" : obj[4].toString());
+                    paketPeriksaList.add(paketPeriksa);
+                }
+            }
+        }
+
+        return paketPeriksaList;
+    }
+
+    public List<PaketPeriksa> getPaketPeriksaRawatJalan(String branchId) {
+
+        List<PaketPeriksa> paketPeriksaList = new ArrayList<>();
+
+        if (branchId != null && !"".equalsIgnoreCase(branchId)) {
+
+            String SQL = "SELECT \n" +
+                    "a.id_paket,\n" +
+                    "a.nama_paket,\n" +
+                    "a.flag,\n" +
+                    "a.id_pelayanan,\n" +
+                    "a.tarif,\n" +
+                    "b.nama_pelayanan\n" +
+                    "FROM mt_simrs_paket a\n" +
+                    "INNER JOIN im_simrs_pelayanan b ON a.id_pelayanan = b.id_pelayanan\n" +
+                    "WHERE a.branch_id = :id AND b.tipe_pelayanan = 'rawat_jalan'\n";
+
+            List<Object[]> results = new ArrayList<>();
+            results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("id", branchId)
+                    .list();
+
+            if (results.size() > 0) {
+                for (Object[] obj : results) {
+                    PaketPeriksa paketPeriksa = new PaketPeriksa();
+                    paketPeriksa.setIdPaket(obj[0] == null ? "" : obj[0].toString());
+                    paketPeriksa.setNamaPaket(obj[1] == null ? "" : obj[1].toString());
+                    paketPeriksa.setFlag(obj[2] == null ? "" : obj[2].toString());
+                    paketPeriksa.setIdPelayanan(obj[3] == null ? "" : obj[3].toString());
+                    paketPeriksa.setTarif(obj[4] == null ? new BigDecimal(String.valueOf("0")) : new BigDecimal(obj[4].toString()));
+                    paketPeriksa.setNamaPelayanan(obj[5] == null ? "" : obj[5].toString());
+                    paketPeriksaList.add(paketPeriksa);
+                }
+            }
+        }
+
+        return paketPeriksaList;
+    }
+
+    public List<PaketPeriksa> getPaketPeriksaIgd(String branchId) {
+
+        List<PaketPeriksa> paketPeriksaList = new ArrayList<>();
+
+        if (branchId != null && !"".equalsIgnoreCase(branchId)) {
+
+            String SQL = "SELECT \n" +
+                    "a.id_paket,\n" +
+                    "a.nama_paket,\n" +
+                    "a.flag,\n" +
+                    "a.id_pelayanan,\n" +
+                    "a.tarif,\n" +
+                    "b.nama_pelayanan\n" +
+                    "FROM mt_simrs_paket a\n" +
+                    "INNER JOIN im_simrs_pelayanan b ON a.id_pelayanan = b.id_pelayanan\n" +
+                    "WHERE a.branch_id = :id AND b.tipe_pelayanan = 'igd'";
+
+            List<Object[]> results = new ArrayList<>();
+            results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("id", branchId)
+                    .list();
+
+            if (results.size() > 0) {
+                for (Object[] obj : results) {
+                    PaketPeriksa paketPeriksa = new PaketPeriksa();
+                    paketPeriksa.setIdPaket(obj[0] == null ? "" : obj[0].toString());
+                    paketPeriksa.setNamaPaket(obj[1] == null ? "" : obj[1].toString());
+                    paketPeriksa.setFlag(obj[2] == null ? "" : obj[2].toString());
+                    paketPeriksa.setIdPelayanan(obj[3] == null ? "" : obj[3].toString());
+                    paketPeriksa.setTarif(obj[4] == null ? new BigDecimal(String.valueOf("0")) : new BigDecimal(obj[4].toString()));
+                    paketPeriksa.setNamaPelayanan(obj[5] == null ? "" : obj[5].toString());
                     paketPeriksaList.add(paketPeriksa);
                 }
             }
