@@ -44,11 +44,21 @@ public class KodeRekeningDao extends GenericDao<ImKodeRekeningEntity, String> {
             if (mapCriteria.get("tipe_rekening_id")!=null) {
                 criteria.add(Restrictions.eq("tipeRekeningId", (String) mapCriteria.get("tipe_rekening_id")));
             }
+            if (mapCriteria.get("parent_id")!=null) {
+                criteria.add(Restrictions.eq("parentId", (String) mapCriteria.get("parent_id")));
+            }
+            if (mapCriteria.get("level")!=null) {
+                criteria.add(Restrictions.eq("level", (Long) mapCriteria.get("level")));
+            }
         }
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
 
         // Order by
-        criteria.addOrder(Order.asc("kodeRekening"));
+        if (mapCriteria.get("parent_order") != null){
+            criteria.addOrder(Order.asc("parentId"));
+        } else {
+            criteria.addOrder(Order.asc("kodeRekening"));
+        }
 
         List<ImKodeRekeningEntity> results = criteria.list();
 

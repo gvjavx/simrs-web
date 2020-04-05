@@ -2,6 +2,7 @@ package com.neurix.akuntansi.transaksi.tutupperiod.bo.impl;
 
 import com.neurix.akuntansi.master.kodeRekening.dao.KodeRekeningDao;
 import com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity;
+import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDao;
 import com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDetailDao;
 import com.neurix.akuntansi.transaksi.saldoakhir.dao.SaldoAkhirDao;
@@ -21,6 +22,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -128,78 +130,106 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                 tutupPeriod.setBulan(bean.getBulan());
                 tutupPeriod.setUnit(bean.getUnit());
 
-                List<TutupPeriod> jurnalDatas = tutupPeriodDao.getListDetailJurnalByCriteria(tutupPeriod);
-                if (jurnalDatas.size() > 0) {
+                List<TutupPeriod> listOfTutupData = new ArrayList<>();
+                Integer level = tutupPeriodDao.getLowestLevelKodeRekening();
+                if (level.compareTo(0) == 1){
 
-                    for (TutupPeriod jurnalDetail : jurnalDatas) {
+                    KodeRekening kodeRekening = new KodeRekening();
+                    kodeRekening.setLevel(level.longValue());
 
-                        jurnalDetail.setIdTutupPeriod(batasTutupPeriodEntity.getId());
-                        jurnalDetail.setBulan(bean.getBulan());
-                        jurnalDetail.setTahun(bean.getTahun());
-                        jurnalDetail.setUnit(bean.getUnit());
+                    List<ImKodeRekeningEntity> kodeRekeningEntities = getListEntityKodeRekening(kodeRekening);
+                    if (kodeRekeningEntities.size() > 0){
+                        for (ImKodeRekeningEntity kodeRekeningEntity : kodeRekeningEntities){
 
-                        ItAkunSaldoAkhirEntity saldoAkhirEntity = new ItAkunSaldoAkhirEntity();
-                        saldoAkhirEntity.setSaldoAkhirId(getNextSaldoAkhirId());
-                        saldoAkhirEntity.setBranchId(jurnalDetail.getUnit());
-                        saldoAkhirEntity.setPeriode(jurnalDetail.getBulan()+"-"+jurnalDetail.getTahun());
-                        saldoAkhirEntity.setRekeningId(jurnalDetail.getRekeningId());
-                        saldoAkhirEntity.setJumlahDebit(jurnalDetail.getJumlahDebit());
-                        saldoAkhirEntity.setJumlahKredit(jurnalDetail.getJumlahKredit());
-                        saldoAkhirEntity.setFlag("Y");
-                        saldoAkhirEntity.setAction("C");
-                        saldoAkhirEntity.setCreatedDate(bean.getCreatedDate());
-                        saldoAkhirEntity.setCreatedWho(bean.getCreatedWho());
-                        saldoAkhirEntity.setLastUpdate(bean.getLastUpdate());
-                        saldoAkhirEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                            TutupPeriod jurnalDetail = new TutupPeriod();
+                            jurnalDetail.setIdTutupPeriod(batasTutupPeriodEntity.getId());
+                            jurnalDetail.setBulan(bean.getBulan());
+                            jurnalDetail.setTahun(bean.getTahun());
+                            jurnalDetail.setUnit(bean.getUnit());
+                            jurnalDetail.setRekeningId(kodeRekeningEntity.getRekeningId());
 
-                        // mendapatkan data saldo akhir periode sebelumnya dengan rekening_id dan unit
-                        SaldoAkhir saldoAkhir = new SaldoAkhir();
-                        saldoAkhir.setPeriode(getPeriodeSebelum(jurnalDetail.getBulan(), jurnalDetail.getTahun()));
-                        saldoAkhir.setBranchId(jurnalDetail.getUnit());
-                        saldoAkhir.setRekeningId(jurnalDetail.getRekeningId());
+                            List<TutupPeriod> jurnalDatas = tutupPeriodDao.getListDetailJurnalByCriteria(jurnalDetail);
+                            if (jurnalDatas.size() > 0){
+                                TutupPeriod jurnalData = jurnalDatas.get(0);
 
-                        ItAkunSaldoAkhirEntity saldoAkhirLalu = new ItAkunSaldoAkhirEntity();
-                        List<ItAkunSaldoAkhirEntity> saldoAkhirEntities = getListEntitySaldoAkhir(saldoAkhir);
-                        if (saldoAkhirEntities.size() > 0){
-                            saldoAkhirLalu = saldoAkhirEntities.get(0);
-
-                            // jika posisi saldo akhir yang lalu dengan rekening_id yang dicari adalah debit maka akan menambah jumlah debit
-                            if ("D".equalsIgnoreCase(saldoAkhirLalu.getPosisi())){
-                                jurnalDetail.setJumlahDebit(jurnalDetail.getJumlahDebit().add(saldoAkhirLalu.getJumlahDebit()));
+                                jurnalDetail.setJumlahDebit(jurnalData.getJumlahDebit());
+                                jurnalDetail.setJumlahKredit(jurnalData.getJumlahKredit());
                             } else {
-                                // jika saldo akhir lalu adalah kredit maka akan menambah jumlah kredit
-                                jurnalDetail.setJumlahKredit(jurnalDetail.getJumlahKredit().add(saldoAkhirLalu.getJumlahKredit()));
+                                jurnalDetail.setJumlahDebit(new BigDecimal(0));
+                                jurnalDetail.setJumlahKredit(new BigDecimal(0));
+                            }
+
+                            ItAkunSaldoAkhirEntity saldoAkhirEntity = new ItAkunSaldoAkhirEntity();
+                            saldoAkhirEntity.setSaldoAkhirId(getNextSaldoAkhirId());
+                            saldoAkhirEntity.setBranchId(jurnalDetail.getUnit());
+                            saldoAkhirEntity.setPeriode(jurnalDetail.getBulan()+"-"+jurnalDetail.getTahun());
+                            saldoAkhirEntity.setRekeningId(jurnalDetail.getRekeningId());
+                            saldoAkhirEntity.setJumlahDebit(jurnalDetail.getJumlahDebit());
+                            saldoAkhirEntity.setJumlahKredit(jurnalDetail.getJumlahKredit());
+                            saldoAkhirEntity.setFlag("Y");
+                            saldoAkhirEntity.setAction("C");
+                            saldoAkhirEntity.setCreatedDate(bean.getCreatedDate());
+                            saldoAkhirEntity.setCreatedWho(bean.getCreatedWho());
+                            saldoAkhirEntity.setLastUpdate(bean.getLastUpdate());
+                            saldoAkhirEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+//                            if ("00013".equalsIgnoreCase(saldoAkhirEntity.getRekeningId())){
+//                                logger.info("PIUTANG PASIEN NON BPJS : DEBIT >>>> :" + saldoAkhirEntity.getJumlahDebit());
+//                                logger.info("PIUTANG PASIEN NON BPJS : KREDIT >>>> :" + saldoAkhirEntity.getJumlahKredit());
+//                            }
+
+                            // mendapatkan data saldo akhir periode sebelumnya dengan rekening_id dan unit
+                            SaldoAkhir saldoAkhir = new SaldoAkhir();
+                            saldoAkhir.setPeriode(getPeriodeSebelum(jurnalDetail.getBulan(), jurnalDetail.getTahun()));
+                            saldoAkhir.setBranchId(jurnalDetail.getUnit());
+                            saldoAkhir.setRekeningId(jurnalDetail.getRekeningId());
+
+                            ItAkunSaldoAkhirEntity saldoAkhirLalu = new ItAkunSaldoAkhirEntity();
+                            List<ItAkunSaldoAkhirEntity> saldoAkhirEntities = getListEntitySaldoAkhir(saldoAkhir);
+                            if (saldoAkhirEntities.size() > 0){
+                                saldoAkhirLalu = saldoAkhirEntities.get(0);
+
+                                // jika posisi saldo akhir yang lalu dengan rekening_id yang dicari adalah debit maka akan menambah jumlah debit
+                                if ("D".equalsIgnoreCase(saldoAkhirLalu.getPosisi())){
+                                    saldoAkhirEntity.setJumlahDebit(saldoAkhirEntity.getJumlahDebit().add(saldoAkhirLalu.getSaldo()));
+                                    jurnalDetail.setJumlahDebit(saldoAkhirEntity.getJumlahDebit().add(saldoAkhirLalu.getSaldo()));
+                                } else {
+                                    // jika saldo akhir lalu adalah kredit maka akan menambah jumlah kredit
+                                    saldoAkhirEntity.setJumlahKredit(saldoAkhirEntity.getJumlahKredit().add(saldoAkhirLalu.getSaldo()));
+                                    jurnalDetail.setJumlahKredit(saldoAkhirEntity.getJumlahKredit().add(saldoAkhirLalu.getSaldo()));
+                                }
+                            }
+                            // end
+
+                            if (saldoAkhirEntity.getJumlahDebit().compareTo(saldoAkhirEntity.getJumlahKredit()) == 1){
+
+                                // jika debit lebih besar maka debit - kredit = saldo, posisi = debit
+                                saldoAkhirEntity.setPosisi("D");
+                                saldoAkhirEntity.setSaldo(saldoAkhirEntity.getJumlahDebit().subtract(saldoAkhirEntity.getJumlahKredit()));
+                            } else {
+
+                                // jika kredit lebih besar maka kredit - debit = saldo, posisi = kredit
+                                saldoAkhirEntity.setPosisi("K");
+                                saldoAkhirEntity.setSaldo(saldoAkhirEntity.getJumlahKredit().subtract(saldoAkhirEntity.getJumlahDebit()));
+                            }
+
+                            listOfTutupData.add(jurnalDetail);
+
+                            try {
+                                saldoAkhirDao.addAndSave(saldoAkhirEntity);
+                            } catch (HibernateException e){
+                                logger.error("[TutupPeriodBoImpl.saveUpdateTutupPeriod] ERROR. ",e);
+                                throw new GeneralBOException("[TutupPeriodBoImpl.saveUpdateTutupPeriod] ERROR. ",e);
                             }
                         }
-                        // end
 
-                        if (jurnalDetail.getJumlahDebit().compareTo(jurnalDetail.getJumlahKredit()) == 1){
-
-                            // jika debit lebih besar maka debit - kredit = saldo, posisi = debit
-                            saldoAkhirEntity.setPosisi("D");
-                            saldoAkhirEntity.setSaldo(jurnalDetail.getJumlahDebit().subtract(jurnalDetail.getJumlahKredit()));
-                        } else {
-
-                            // jika kredit lebih besar maka kredit - debit = saldo, posisi = kredit
-                            saldoAkhirEntity.setPosisi("K");
-                            saldoAkhirEntity.setSaldo(jurnalDetail.getJumlahKredit().subtract(jurnalDetail.getJumlahDebit()));
+                        // mengambil parent diatasnya sekaligus insert;
+                        List<TutupPeriod> tutupPeriods = prosesTutupPeriod(listOfTutupData, bean, level-1);
+                        if (tutupPeriods.size() == 0){
+                            isClear = true;
                         }
-
-                        try {
-                            saldoAkhirDao.addAndSave(saldoAkhirEntity);
-                        } catch (HibernateException e){
-                            logger.error("[TutupPeriodBoImpl.saveUpdateTutupPeriod] ERROR. ",e);
-                            throw new GeneralBOException("[TutupPeriodBoImpl.saveUpdateTutupPeriod] ERROR. ",e);
-                        }
-                    }
-
-                    // mengambil parent diatasnya sekaligus insert;
-                    List<TutupPeriod> tutupPeriods = prosesTutupPeriod(jurnalDatas, 5);
-                    if (tutupPeriods.size() == 0){
-                        isClear = true;
                     }
                 }
-
 
                 // jika ditemukan update
                 batasTutupPeriodEntity.setFlagTutup(bean.getFlagTutup());
@@ -218,171 +248,12 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                     logger.error("[TutupPeriodBoImpl.saveSettingPeriod] ERROR. gagal menyimpan tutup period");
                     throw new GeneralBOException("[TutupPeriodBoImpl.saveSettingPeriod] ERROR. gagal menyimpan tutup period");
                 }
-
-            } else {
-
-                ItSimrsBatasTutupPeriodEntity batasEntity = new ItSimrsBatasTutupPeriodEntity();
-                batasEntity.setId(getNextIdBatasPeriod());
-                batasEntity.setTahun(bean.getTahun());
-                batasEntity.setBulan(bean.getBulan());
-                batasEntity.setUnit(bean.getUnit());
-                batasEntity.setFlagTutup(bean.getFlagTutup());
-                batasEntity.setAction("C");
-                batasEntity.setFlag(bean.getFlag());
-                batasEntity.setCreatedDate(bean.getCreatedDate());
-                batasEntity.setCreatedWho(bean.getCreatedWho());
-                batasEntity.setLastUpdate(bean.getLastUpdate());
-                batasEntity.setLastUpdateWho(bean.getLastUpdateWho());
-
-                TutupPeriod tutupPeriod = new TutupPeriod();
-                tutupPeriod.setTahun(bean.getTahun());
-                tutupPeriod.setBulan(bean.getBulan());
-                tutupPeriod.setUnit(bean.getUnit());
-
-                // if tutup period
-                List<TutupPeriod> jurnalDatas = tutupPeriodDao.getListDetailJurnalByCriteria(tutupPeriod);
-                if (jurnalDatas.size() > 0) {
-
-                    for (TutupPeriod jurnalDetail : jurnalDatas) {
-
-                        jurnalDetail.setIdTutupPeriod(batasEntity.getId());
-                        jurnalDetail.setBulan(bean.getBulan());
-                        jurnalDetail.setTahun(bean.getTahun());
-                        jurnalDetail.setUnit(bean.getUnit());
-
-                        ItAkunSaldoAkhirEntity saldoAkhirEntity = new ItAkunSaldoAkhirEntity();
-                        saldoAkhirEntity.setSaldoAkhirId(getNextSaldoAkhirId());
-                        saldoAkhirEntity.setBranchId(jurnalDetail.getUnit());
-                        saldoAkhirEntity.setPeriode(jurnalDetail.getBulan()+"-"+jurnalDetail.getTahun());
-                        saldoAkhirEntity.setRekeningId(jurnalDetail.getRekeningId());
-                        saldoAkhirEntity.setJumlahDebit(jurnalDetail.getJumlahDebit());
-                        saldoAkhirEntity.setJumlahKredit(jurnalDetail.getJumlahKredit());
-                        saldoAkhirEntity.setFlag("Y");
-                        saldoAkhirEntity.setAction("C");
-                        saldoAkhirEntity.setCreatedDate(bean.getCreatedDate());
-                        saldoAkhirEntity.setCreatedWho(bean.getCreatedWho());
-                        saldoAkhirEntity.setLastUpdate(bean.getLastUpdate());
-                        saldoAkhirEntity.setLastUpdateWho(bean.getLastUpdateWho());
-
-                        // mendapatkan data saldo akhir periode sebelumnya dengan rekening_id dan unit
-                        SaldoAkhir saldoAkhir = new SaldoAkhir();
-                        saldoAkhir.setPeriode(getPeriodeSebelum(jurnalDetail.getBulan(), jurnalDetail.getTahun()));
-                        saldoAkhir.setBranchId(jurnalDetail.getUnit());
-                        saldoAkhir.setRekeningId(jurnalDetail.getRekeningId());
-
-                        ItAkunSaldoAkhirEntity saldoAkhirLalu = new ItAkunSaldoAkhirEntity();
-                        List<ItAkunSaldoAkhirEntity> saldoAkhirEntities = getListEntitySaldoAkhir(saldoAkhir);
-                        if (saldoAkhirEntities.size() > 0){
-                            saldoAkhirLalu = saldoAkhirEntities.get(0);
-
-                            // jika posisi saldo akhir yang lalu dengan rekening_id yang dicari adalah debit maka akan menambah jumlah debit
-                            if ("D".equalsIgnoreCase(saldoAkhirLalu.getPosisi())){
-                                jurnalDetail.setJumlahDebit(jurnalDetail.getJumlahDebit().add(saldoAkhirLalu.getJumlahDebit()));
-                            } else {
-                                // jika saldo akhir lalu adalah kredit maka akan menambah jumlah kredit
-                                jurnalDetail.setJumlahKredit(jurnalDetail.getJumlahKredit().add(saldoAkhirLalu.getJumlahKredit()));
-                            }
-                        }
-                        // end
-
-                        if (jurnalDetail.getJumlahDebit().compareTo(jurnalDetail.getJumlahKredit()) == 1){
-
-                            // jika debit lebih besar maka debit - kredit = saldo, posisi = debit
-                            saldoAkhirEntity.setPosisi("D");
-                            saldoAkhirEntity.setSaldo(jurnalDetail.getJumlahDebit().subtract(jurnalDetail.getJumlahKredit()));
-                        } else {
-
-                            // jika kredit lebih besar maka kredit - debit = saldo, posisi = kredit
-                            saldoAkhirEntity.setPosisi("K");
-                            saldoAkhirEntity.setSaldo(jurnalDetail.getJumlahKredit().subtract(jurnalDetail.getJumlahDebit()));
-                        }
-
-                        try {
-                            saldoAkhirDao.addAndSave(saldoAkhirEntity);
-                        } catch (HibernateException e){
-                            logger.error("[TutupPeriodBoImpl.saveUpdateTutupPeriod] ERROR. ",e);
-                            throw new GeneralBOException("[TutupPeriodBoImpl.saveUpdateTutupPeriod] ERROR. ",e);
-                        }
-                    }
-
-                    // mengambil parent dari rekening diatasnya sekaligus insert ke saldo akhir;
-                    List<TutupPeriod> tutupPeriods = prosesTutupPeriod(jurnalDatas, 5);
-                    if (tutupPeriods.size() == 0){
-                        isClear = true;
-                    }
-                }
-
-                if (isClear){
-                    try {
-                        batasTutupPeriodDao.addAndSave(batasEntity);
-                    } catch (HibernateException e){
-                        logger.error("[TutupPeriodBoImpl.saveUpdateTutupPeriod] ERROR. ",e);
-                        throw new GeneralBOException("[TutupPeriodBoImpl.saveUpdateTutupPeriod] ERROR. ",e);
-                    }
-                } else {
-                    logger.error("[TutupPeriodBoImpl.saveUpdateTutupPeriod] ERROR. gagal menyimpan tutup period");
-                    throw new GeneralBOException("[TutupPeriodBoImpl.saveUpdateTutupPeriod] ERROR. gagal menyimpan tutup period");
-                }
             }
         }
     }
 
-    @Override
-    public void saveUpdateLockPeriod(TutupPeriod bean) throws GeneralBOException {
 
-        BatasTutupPeriod batasTutupPeriod = new BatasTutupPeriod();
-        batasTutupPeriod.setTahun(bean.getTahun());
-        batasTutupPeriod.setBulan(bean.getBulan());
-        batasTutupPeriod.setUnit(bean.getUnit());
-
-        List<ItSimrsBatasTutupPeriodEntity> batasTutupPeriodEntities = getListEntityBatasTutupPeriode(batasTutupPeriod);
-        if (batasTutupPeriodEntities.size() > 0){
-
-            ItSimrsBatasTutupPeriodEntity batasTutupPeriodEntity = batasTutupPeriodEntities.get(0);
-
-            // jika ditemukan update
-            batasTutupPeriodEntity.setFlagTutup(bean.getFlagTutup());
-            batasTutupPeriodEntity.setAction("U");
-            batasTutupPeriodEntity.setLastUpdate(bean.getLastUpdate());
-            batasTutupPeriodEntity.setLastUpdateWho(bean.getLastUpdateWho());
-
-            try {
-                batasTutupPeriodDao.updateAndSave(batasTutupPeriodEntity);
-            } catch (HibernateException e){
-                logger.error("[TutupPeriodBoImpl.saveUpdateLockPeriod] ERROR. ",e);
-                throw new GeneralBOException("[TutupPeriodBoImpl.saveUpdateLockPeriod] ERROR. ",e);
-            }
-
-        } else {
-
-            ItSimrsBatasTutupPeriodEntity batasEntity = new ItSimrsBatasTutupPeriodEntity();
-            batasEntity.setId(getNextIdBatasPeriod());
-            batasEntity.setTahun(bean.getTahun());
-            batasEntity.setBulan(bean.getBulan());
-            batasEntity.setUnit(bean.getUnit());
-            batasEntity.setFlagTutup(bean.getFlagTutup());
-            batasEntity.setAction("C");
-            batasEntity.setFlag(bean.getFlag());
-            batasEntity.setCreatedDate(bean.getCreatedDate());
-            batasEntity.setCreatedWho(bean.getCreatedWho());
-            batasEntity.setLastUpdate(bean.getLastUpdate());
-            batasEntity.setLastUpdateWho(bean.getLastUpdateWho());
-
-            TutupPeriod tutupPeriod = new TutupPeriod();
-            tutupPeriod.setTahun(bean.getTahun());
-            tutupPeriod.setBulan(bean.getBulan());
-            tutupPeriod.setUnit(bean.getUnit());
-
-            try {
-                batasTutupPeriodDao.addAndSave(batasEntity);
-            } catch (HibernateException e){
-                logger.error("[TutupPeriodBoImpl.saveUpdateLockPeriod] ERROR. ",e);
-                throw new GeneralBOException("[TutupPeriodBoImpl.saveUpdateLockPeriod] ERROR. ",e);
-            }
-        }
-    }
-
-    public List<TutupPeriod> prosesTutupPeriod(List<TutupPeriod> periods, int level) throws GeneralBOException{
+    public List<TutupPeriod> prosesTutupPeriod(List<TutupPeriod> periods, TutupPeriod bean, Integer level) throws GeneralBOException{
 
         String userLogin = CommonUtil.userLogin();
         Timestamp time = new Timestamp(System.currentTimeMillis());
@@ -391,7 +262,7 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
 
         // jika parameter periods sebagai child tidak kosong
         // maka prosess untuk insert, sum, collecting data parrentPeriods;
-        if (periods.size() > 0){
+        if (level.compareTo(0) == 1){
 
             // pengulangan dari parameter periods sebagai child;
             // pengulangan untuk mencari parent dan menghitung jumlah debit kredit pada parent tersebut;
@@ -449,24 +320,30 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                 }
             }
 
-            // setelah data parent di collect kemudian di insert ke table tutup period
-            if (parentPeriods.size() > 0){
+            List<TutupPeriod> listOfMapingParents = new ArrayList<>();
 
-//                List<ImKodeRekeningEntity> kodeRekeningEntities = new ArrayList<>();
-//
-//                for (ImKodeRekeningEntity kodeRekeningEntity : kodeRekeningEntities){
-//                    List<TutupPeriod> tutupPeriods = parentPeriods.stream().filter(p -> p.getRekeningId().equalsIgnoreCase(kodeRekeningEntity.getKodeRekening())).collect(Collectors.toList());
-//                }
+            KodeRekening kodeRekening = new KodeRekening();
+            kodeRekening.setLevel(level.longValue());
+            List<ImKodeRekeningEntity> kodeRekeningEntities = getListEntityKodeRekening(kodeRekening);
+            if (kodeRekeningEntities.size() > 0){
+                for (ImKodeRekeningEntity kodeRekeningEntity : kodeRekeningEntities){
 
-                for (TutupPeriod parentPeriod : parentPeriods){
+                    TutupPeriod parentPeriod = new TutupPeriod();
+                    parentPeriod.setRekeningId(kodeRekeningEntity.getRekeningId());
+                    parentPeriod.setParentId(kodeRekeningEntity.getParentId());
+                    parentPeriod.setJumlahDebit(new BigDecimal(0));
+                    parentPeriod.setJumlahKredit(new BigDecimal(0));
+                    parentPeriod.setUnit(bean.getUnit());
+                    parentPeriod.setBulan(bean.getBulan());
+                    parentPeriod.setTahun(bean.getTahun());
 
                     ItAkunSaldoAkhirEntity saldoAkhirEntity = new ItAkunSaldoAkhirEntity();
                     saldoAkhirEntity.setSaldoAkhirId(getNextSaldoAkhirId());
-                    saldoAkhirEntity.setBranchId(parentPeriod.getUnit());
-                    saldoAkhirEntity.setPeriode(parentPeriod.getBulan()+"-"+parentPeriod.getTahun());
-                    saldoAkhirEntity.setRekeningId(parentPeriod.getRekeningId());
-                    saldoAkhirEntity.setJumlahDebit(parentPeriod.getJumlahDebit());
-                    saldoAkhirEntity.setJumlahKredit(parentPeriod.getJumlahKredit());
+                    saldoAkhirEntity.setBranchId(bean.getUnit());
+                    saldoAkhirEntity.setPeriode(bean.getBulan()+"-"+bean.getTahun());
+                    saldoAkhirEntity.setRekeningId(kodeRekeningEntity.getRekeningId());
+                    saldoAkhirEntity.setJumlahDebit(new BigDecimal(0));
+                    saldoAkhirEntity.setJumlahKredit(new BigDecimal(0));
                     saldoAkhirEntity.setFlag("Y");
                     saldoAkhirEntity.setAction("C");
                     saldoAkhirEntity.setCreatedDate(time);
@@ -474,11 +351,20 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                     saldoAkhirEntity.setLastUpdate(time);
                     saldoAkhirEntity.setLastUpdateWho(userLogin);
 
+                    if (parentPeriods.size() > 0){
+                        List<TutupPeriod> parents = parentPeriods.stream().filter(p -> p.getRekeningId().equalsIgnoreCase(kodeRekeningEntity.getRekeningId())).collect(Collectors.toList());
+                        if (parents.size() > 0){
+                            TutupPeriod parent = parents.get(0);
+                            saldoAkhirEntity.setJumlahDebit(parent.getJumlahDebit());
+                            saldoAkhirEntity.setJumlahKredit(parent.getJumlahKredit());
+                        }
+                    }
+
                     // mendapatkan data saldo akhir periode sebelumnya dengan rekening_id dan unit
                     SaldoAkhir saldoAkhir = new SaldoAkhir();
-                    saldoAkhir.setPeriode(getPeriodeSebelum(parentPeriod.getBulan(), parentPeriod.getTahun()));
-                    saldoAkhir.setBranchId(parentPeriod.getUnit());
-                    saldoAkhir.setRekeningId(parentPeriod.getRekeningId());
+                    saldoAkhir.setPeriode(getPeriodeSebelum(bean.getBulan(), bean.getTahun()));
+                    saldoAkhir.setBranchId(bean.getUnit());
+                    saldoAkhir.setRekeningId(saldoAkhirEntity.getRekeningId());
 
                     ItAkunSaldoAkhirEntity saldoAkhirLalu = new ItAkunSaldoAkhirEntity();
                     List<ItAkunSaldoAkhirEntity> saldoAkhirEntities = getListEntitySaldoAkhir(saldoAkhir);
@@ -487,25 +373,29 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
 
                         // jika posisi saldo akhir yang lalu dengan rekening_id yang dicari adalah debit maka akan menambah jumlah debit
                         if ("D".equalsIgnoreCase(saldoAkhirLalu.getPosisi())){
-                            parentPeriod.setJumlahDebit(parentPeriod.getJumlahDebit().add(saldoAkhirLalu.getJumlahDebit()));
+                            saldoAkhirEntity.setJumlahDebit(saldoAkhirEntity.getJumlahDebit().add(saldoAkhirLalu.getSaldo()));
+                            parentPeriod.setJumlahDebit(saldoAkhirEntity.getJumlahDebit().add(saldoAkhirLalu.getSaldo()));
                         } else {
                             // jika saldo akhir lalu adalah kredit maka akan menambah jumlah kredit
-                            parentPeriod.setJumlahKredit(parentPeriod.getJumlahKredit().add(saldoAkhirLalu.getJumlahKredit()));
+                            saldoAkhirEntity.setJumlahKredit(saldoAkhirEntity.getJumlahKredit().add(saldoAkhirLalu.getSaldo()));
+                            parentPeriod.setJumlahKredit(saldoAkhirEntity.getJumlahKredit().add(saldoAkhirLalu.getSaldo()));
                         }
                     }
                     // end
 
-                    if (parentPeriod.getJumlahDebit().compareTo(parentPeriod.getJumlahKredit()) == 1){
+                    if (saldoAkhirEntity.getJumlahDebit().compareTo(saldoAkhirEntity.getJumlahKredit()) == 1){
 
                         // jika debit lebih besar maka debit - kredit = saldo, posisi = debit
                         saldoAkhirEntity.setPosisi("D");
-                        saldoAkhirEntity.setSaldo(parentPeriod.getJumlahDebit().subtract(parentPeriod.getJumlahKredit()));
+                        saldoAkhirEntity.setSaldo(saldoAkhirEntity.getJumlahDebit().subtract(saldoAkhirEntity.getJumlahKredit()));
                     } else {
 
                         // jika kredit lebih besar maka kredit - debit = saldo, posisi = kredit
                         saldoAkhirEntity.setPosisi("K");
-                        saldoAkhirEntity.setSaldo(parentPeriod.getJumlahKredit().subtract(parentPeriod.getJumlahDebit()));
+                        saldoAkhirEntity.setSaldo(saldoAkhirEntity.getJumlahKredit().subtract(saldoAkhirEntity.getJumlahDebit()));
                     }
+
+                    listOfMapingParents.add(parentPeriod);
 
                     try {
                         saldoAkhirDao.addAndSave(saldoAkhirEntity);
@@ -517,10 +407,76 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
 
                 // prosess kembali dengan parameter parrent yang sudah di collect dan di insert;
                 // parameter parent diprosess kembali sebagai child;
-
                 level--;
-                prosesTutupPeriod(parentPeriods, level);
+                prosesTutupPeriod(parentPeriods, bean, level);
             }
+
+//            // setelah data parent di collect kemudian di insert ke table tutup period
+//            if (parentPeriods.size() > 0){
+//                for (TutupPeriod parentPeriod : parentPeriods){
+//
+//                    ItAkunSaldoAkhirEntity saldoAkhirEntity = new ItAkunSaldoAkhirEntity();
+//                    saldoAkhirEntity.setSaldoAkhirId(getNextSaldoAkhirId());
+//                    saldoAkhirEntity.setBranchId(parentPeriod.getUnit());
+//                    saldoAkhirEntity.setPeriode(parentPeriod.getBulan()+"-"+parentPeriod.getTahun());
+//                    saldoAkhirEntity.setRekeningId(parentPeriod.getRekeningId());
+//                    saldoAkhirEntity.setJumlahDebit(parentPeriod.getJumlahDebit());
+//                    saldoAkhirEntity.setJumlahKredit(parentPeriod.getJumlahKredit());
+//                    saldoAkhirEntity.setFlag("Y");
+//                    saldoAkhirEntity.setAction("C");
+//                    saldoAkhirEntity.setCreatedDate(time);
+//                    saldoAkhirEntity.setCreatedWho(userLogin);
+//                    saldoAkhirEntity.setLastUpdate(time);
+//                    saldoAkhirEntity.setLastUpdateWho(userLogin);
+//
+//                    // mendapatkan data saldo akhir periode sebelumnya dengan rekening_id dan unit
+//                    SaldoAkhir saldoAkhir = new SaldoAkhir();
+//                    saldoAkhir.setPeriode(getPeriodeSebelum(parentPeriod.getBulan(), parentPeriod.getTahun()));
+//                    saldoAkhir.setBranchId(parentPeriod.getUnit());
+//                    saldoAkhir.setRekeningId(parentPeriod.getRekeningId());
+//
+//                    ItAkunSaldoAkhirEntity saldoAkhirLalu = new ItAkunSaldoAkhirEntity();
+//                    List<ItAkunSaldoAkhirEntity> saldoAkhirEntities = getListEntitySaldoAkhir(saldoAkhir);
+//                    if (saldoAkhirEntities.size() > 0){
+//                        saldoAkhirLalu = saldoAkhirEntities.get(0);
+//
+//                        // jika posisi saldo akhir yang lalu dengan rekening_id yang dicari adalah debit maka akan menambah jumlah debit
+//                        if ("D".equalsIgnoreCase(saldoAkhirLalu.getPosisi())){
+//                            saldoAkhirEntity.setJumlahDebit(saldoAkhirEntity.getJumlahDebit().add(saldoAkhirLalu.getSaldo()));
+//                            parentPeriod.setJumlahDebit(saldoAkhirEntity.getJumlahDebit().add(saldoAkhirLalu.getSaldo()));
+//                        } else {
+//                            // jika saldo akhir lalu adalah kredit maka akan menambah jumlah kredit
+//                            saldoAkhirEntity.setJumlahKredit(saldoAkhirEntity.getJumlahKredit().add(saldoAkhirLalu.getSaldo()));
+//                            parentPeriod.setJumlahKredit(saldoAkhirEntity.getJumlahKredit().add(saldoAkhirLalu.getSaldo()));
+//                        }
+//                    }
+//                    // end
+//
+//                    if (saldoAkhirEntity.getJumlahDebit().compareTo(saldoAkhirEntity.getJumlahKredit()) == 1){
+//
+//                        // jika debit lebih besar maka debit - kredit = saldo, posisi = debit
+//                        saldoAkhirEntity.setPosisi("D");
+//                        saldoAkhirEntity.setSaldo(saldoAkhirEntity.getJumlahDebit().subtract(saldoAkhirEntity.getJumlahKredit()));
+//                    } else {
+//
+//                        // jika kredit lebih besar maka kredit - debit = saldo, posisi = kredit
+//                        saldoAkhirEntity.setPosisi("K");
+//                        saldoAkhirEntity.setSaldo(saldoAkhirEntity.getJumlahKredit().subtract(saldoAkhirEntity.getJumlahDebit()));
+//                    }
+//
+//                    try {
+//                        saldoAkhirDao.addAndSave(saldoAkhirEntity);
+//                    } catch (HibernateException e){
+//                        logger.error("[TutupPeriodBoImpl.saveUpdateTutupPeriod] ERROR. ",e);
+//                        throw new GeneralBOException("[TutupPeriodBoImpl.saveUpdateTutupPeriod] ERROR. ",e);
+//                    }
+//                }
+//
+//                // prosess kembali dengan parameter parrent yang sudah di collect dan di insert;
+//                // parameter parent diprosess kembali sebagai child;
+//                level--;
+//                prosesTutupPeriod(parentPeriods, bean, level);
+//            }
         }
 
         return new ArrayList<>();
@@ -535,7 +491,88 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
             intBulan = new Integer(12);
             intTahun = intTahun - 1;
         }
-        return intBulan+"_"+intTahun;
+        return intBulan+"-"+intTahun;
+    }
+
+    @Override
+    public void saveUpdateLockPeriod(TutupPeriod bean) throws GeneralBOException {
+
+        BatasTutupPeriod batasTutupPeriod = new BatasTutupPeriod();
+        batasTutupPeriod.setTahun(bean.getTahun());
+        batasTutupPeriod.setBulan(bean.getBulan());
+        batasTutupPeriod.setUnit(bean.getUnit());
+
+        List<ItSimrsBatasTutupPeriodEntity> batasTutupPeriodEntities = getListEntityBatasTutupPeriode(batasTutupPeriod);
+        if (batasTutupPeriodEntities.size() > 0){
+
+            ItSimrsBatasTutupPeriodEntity batasTutupPeriodEntity = batasTutupPeriodEntities.get(0);
+
+            // jika ditemukan update
+            batasTutupPeriodEntity.setFlagTutup(bean.getFlagTutup());
+            batasTutupPeriodEntity.setAction("U");
+            batasTutupPeriodEntity.setLastUpdate(bean.getLastUpdate());
+            batasTutupPeriodEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+            try {
+                batasTutupPeriodDao.updateAndSave(batasTutupPeriodEntity);
+            } catch (HibernateException e){
+                logger.error("[TutupPeriodBoImpl.saveUpdateLockPeriod] ERROR. ",e);
+                throw new GeneralBOException("[TutupPeriodBoImpl.saveUpdateLockPeriod] ERROR. ",e);
+            }
+
+        } else {
+
+            ItSimrsBatasTutupPeriodEntity batasEntity = new ItSimrsBatasTutupPeriodEntity();
+            batasEntity.setId(getNextIdBatasPeriod());
+            batasEntity.setTahun(bean.getTahun());
+            batasEntity.setBulan(bean.getBulan());
+            batasEntity.setUnit(bean.getUnit());
+            batasEntity.setFlagTutup(bean.getFlagTutup());
+            batasEntity.setAction("C");
+            batasEntity.setFlag(bean.getFlag());
+            batasEntity.setCreatedDate(bean.getCreatedDate());
+            batasEntity.setCreatedWho(bean.getCreatedWho());
+            batasEntity.setLastUpdate(bean.getLastUpdate());
+            batasEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+            TutupPeriod tutupPeriod = new TutupPeriod();
+            tutupPeriod.setTahun(bean.getTahun());
+            tutupPeriod.setBulan(bean.getBulan());
+            tutupPeriod.setUnit(bean.getUnit());
+
+            try {
+                batasTutupPeriodDao.addAndSave(batasEntity);
+            } catch (HibernateException e){
+                logger.error("[TutupPeriodBoImpl.saveUpdateLockPeriod] ERROR. ",e);
+                throw new GeneralBOException("[TutupPeriodBoImpl.saveUpdateLockPeriod] ERROR. ",e);
+            }
+        }
+    }
+
+    private List<ImKodeRekeningEntity> getListEntityKodeRekening(KodeRekening bean) throws GeneralBOException{
+
+        Map hsCriteria = new HashMap();
+        if (bean.getLevel() != null){
+            hsCriteria.put("level", bean.getLevel());
+        }
+        if (bean.getRekeningId() != null){
+            hsCriteria.put("rekening_id", bean.getRekeningId());
+        }
+        if (bean.getParentId() != null){
+            hsCriteria.put("parent_id", bean.getParentId());
+        }
+
+        hsCriteria.put("parent_order", "Y");
+        hsCriteria.put("flag", "Y");
+
+        List<ImKodeRekeningEntity> kodeRekeningEntities = new ArrayList<>();
+        try {
+            kodeRekeningEntities = kodeRekeningDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[TutupPeriodBoImpl.getListEntityKodeRekening] ERROR. ",e);
+            throw new GeneralBOException("[TutupPeriodBoImpl.getListEntityKodeRekening] ERROR. ",e);
+        }
+        return kodeRekeningEntities;
     }
 
     private List<ItAkunSaldoAkhirEntity> getListEntitySaldoAkhir(SaldoAkhir bean) throws GeneralBOException{
