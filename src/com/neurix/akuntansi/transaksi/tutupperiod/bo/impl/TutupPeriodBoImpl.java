@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by reza on 18/03/20.
@@ -193,7 +194,7 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                     }
 
                     // mengambil parent diatasnya sekaligus insert;
-                    List<TutupPeriod> tutupPeriods = prosesTutupPeriod(jurnalDatas);
+                    List<TutupPeriod> tutupPeriods = prosesTutupPeriod(jurnalDatas, 5);
                     if (tutupPeriods.size() == 0){
                         isClear = true;
                     }
@@ -305,7 +306,7 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                     }
 
                     // mengambil parent dari rekening diatasnya sekaligus insert ke saldo akhir;
-                    List<TutupPeriod> tutupPeriods = prosesTutupPeriod(jurnalDatas);
+                    List<TutupPeriod> tutupPeriods = prosesTutupPeriod(jurnalDatas, 5);
                     if (tutupPeriods.size() == 0){
                         isClear = true;
                     }
@@ -381,7 +382,7 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
         }
     }
 
-    public List<TutupPeriod> prosesTutupPeriod(List<TutupPeriod> periods) throws GeneralBOException{
+    public List<TutupPeriod> prosesTutupPeriod(List<TutupPeriod> periods, int level) throws GeneralBOException{
 
         String userLogin = CommonUtil.userLogin();
         Timestamp time = new Timestamp(System.currentTimeMillis());
@@ -451,6 +452,12 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
             // setelah data parent di collect kemudian di insert ke table tutup period
             if (parentPeriods.size() > 0){
 
+//                List<ImKodeRekeningEntity> kodeRekeningEntities = new ArrayList<>();
+//
+//                for (ImKodeRekeningEntity kodeRekeningEntity : kodeRekeningEntities){
+//                    List<TutupPeriod> tutupPeriods = parentPeriods.stream().filter(p -> p.getRekeningId().equalsIgnoreCase(kodeRekeningEntity.getKodeRekening())).collect(Collectors.toList());
+//                }
+
                 for (TutupPeriod parentPeriod : parentPeriods){
 
                     ItAkunSaldoAkhirEntity saldoAkhirEntity = new ItAkunSaldoAkhirEntity();
@@ -510,7 +517,9 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
 
                 // prosess kembali dengan parameter parrent yang sudah di collect dan di insert;
                 // parameter parent diprosess kembali sebagai child;
-                prosesTutupPeriod(parentPeriods);
+
+                level--;
+                prosesTutupPeriod(parentPeriods, level);
             }
         }
 

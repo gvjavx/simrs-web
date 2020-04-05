@@ -253,7 +253,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             detailCheckup.setNamaPerujuk(entity.getRujuk());
             detailCheckup.setNoRujukan(entity.getNoRujukan());
             detailCheckup.setNoPpk(entity.getNoPpkRujukan());
-            detailCheckup.setTglRujukan(entity.getTglRujukan().toString());
+            detailCheckup.setTglRujukan(entity.getTglRujukan() != null ? entity.getTglRujukan().toString() : "");
             detailCheckup.setIdKelas(entity.getKelasPasien());
             detailCheckup.setIdPelayananBpjs(entity.getIdPelayananBpjs());
             detailCheckup.setIdJenisPeriksaPasien(entity.getIdJenisPeriksaPasien());
