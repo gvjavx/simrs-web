@@ -43,7 +43,7 @@ public interface TransaksiObatBo {
     public TransaksiObatDetail getTarifApproveResep(String idApproval) throws GeneralBOException;
     public TransaksiObatDetail getTotalHargaResep(String idPermintaan) throws GeneralBOException;
 
-    public CheckResponse setTtdPasien(String idPermintaan, String ttdPasien) throws GeneralBOException;
+    public CheckResponse setTtdPasien(String idPermintaan, String ttdPasien, String ttdApoteker) throws GeneralBOException;
 
     public List<TransaksiObatDetail> listObatResepApprove(String idApprove) throws GeneralBOException;
 

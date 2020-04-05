@@ -1,6 +1,7 @@
 package com.neurix.simrs.master.pasien.model;
 
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 /**
@@ -45,6 +46,63 @@ public class Pasien {
     private String imgKtp;
 
     private Boolean disabledFingerData;
+
+    private String status;
+    private String msg;
+
+    private String idPaket;
+    private String idPelayanan;
+    private String namaPaket;
+
+    private BigDecimal tarif;
+
+    public BigDecimal getTarif() {
+        return tarif;
+    }
+
+    public void setTarif(BigDecimal tarif) {
+        this.tarif = tarif;
+    }
+
+    public String getNamaPaket() {
+        return namaPaket;
+    }
+
+    public void setNamaPaket(String namaPaket) {
+        this.namaPaket = namaPaket;
+    }
+
+    public String getIdPaket() {
+        return idPaket;
+    }
+
+    public void setIdPaket(String idPaket) {
+        this.idPaket = idPaket;
+    }
+
+    public String getIdPelayanan() {
+        return idPelayanan;
+    }
+
+    public void setIdPelayanan(String idPelayanan) {
+        this.idPelayanan = idPelayanan;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
 
     public Boolean getDisabledFingerData() {
         return disabledFingerData;

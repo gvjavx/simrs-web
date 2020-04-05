@@ -545,7 +545,7 @@ public class PasienAction extends BaseMasterAction {
         return null;
     }
 
-    public List getListComboPasien(String query){
+    public List getListComboPasien(String query, String tipe){
         logger.info("[PasienAction.getListComboPasien] start process >>>");
 
         List<Pasien> listOfPasien = new ArrayList();
@@ -553,10 +553,18 @@ public class PasienAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PasienBo pasienBo = (PasienBo) ctx.getBean("pasienBoProxy");
 
-        try {
-            listOfPasien = pasienBo.getListComboPasien(query);
-        } catch (GeneralBOException e) {
-            logger.error("[PasienAction.getListComboPasien] Error when get combo pasien, please inform to your admin.", e);
+        if("paket_perusahaan".equalsIgnoreCase(tipe)){
+            try {
+                listOfPasien = pasienBo.getListPasienWithPaket(query);
+            } catch (GeneralBOException e) {
+                logger.error("[PasienAction.getListComboPasien] Error when get combo pasien, please inform to your admin.", e);
+            }
+        }else{
+            try {
+                listOfPasien = pasienBo.getListComboPasien(query);
+            } catch (GeneralBOException e) {
+                logger.error("[PasienAction.getListComboPasien] Error when get combo pasien, please inform to your admin.", e);
+            }
         }
 
         logger.info("[PasienAction.getListComboPasien] end process <<<");

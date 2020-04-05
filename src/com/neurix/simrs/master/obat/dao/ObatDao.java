@@ -587,4 +587,37 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
 
         return list;
     }
+
+    public List<Obat> getSearchObat(String query, String branch){
+        List<Obat> obatList = new ArrayList<>();
+        if(query != null && branch != null){
+            String param = "%"+query+"%";
+            String SQL = "SELECT id_obat, nama_obat, id_pabrik\n" +
+                    "FROM im_simrs_obat\n" +
+                    "WHERE nama_obat ILIKE :id AND branch_id = :branchId\n" +
+                    "GROUP BY id_obat, nama_obat, id_pabrik\n" +
+                    "UNION\n" +
+                    "SELECT id_obat, nama_obat, id_pabrik\n" +
+                    "FROM im_simrs_obat\n" +
+                    "WHERE id_pabrik ILIKE :id AND branch_id = :branchId\n" +
+                    "GROUP BY id_obat, nama_obat, id_pabrik\n";
+
+            List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("id", param)
+                    .setParameter("branchId", branch)
+                    .list();
+
+            if (results.size() > 0){
+                for (Object[] obj : results){
+                    Obat obat = new Obat();
+                    obat.setIdObat(obj[0] == null ? "" : obj[0].toString());
+                    obat.setNamaObat(obj[1] == null ? "" : obj[1].toString());
+                    obat.setIdPabrik(obj[2] == null ? "" : obj[2].toString());
+                    obatList.add(obat);
+                }
+            }
+        }
+
+        return obatList;
+    }
 }

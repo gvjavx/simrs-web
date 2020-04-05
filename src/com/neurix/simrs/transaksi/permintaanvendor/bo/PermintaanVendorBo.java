@@ -1,9 +1,11 @@
 package com.neurix.simrs.transaksi.permintaanvendor.bo;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.permintaanvendor.model.BatchPermintaanObat;
+import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
 import com.neurix.simrs.transaksi.permintaanvendor.model.PermintaanVendor;
 import com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsTransaksiObatDetailEntity;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
@@ -19,9 +21,9 @@ import java.util.List;
 public interface PermintaanVendorBo {
     public List<PermintaanVendor> getByCriteria(PermintaanVendor bean) throws GeneralBOException;
     public CheckResponse saveListObatPo(PermintaanVendor bean) throws GeneralBOException;
-    public void saveNewPabrik(TransaksiObatDetail bean, List<String> idJenisObats) throws GeneralBOException;
-    public void saveUpdateTransObatDetail(TransaksiObatDetail bean) throws GeneralBOException;
-    public void saveConfirm(PermintaanVendor bean, List<TransaksiObatDetail> listObat, List<TransaksiObatDetail> listObatNew) throws GeneralBOException;
+    public CheckResponse saveNewPabrik(TransaksiObatDetail bean, List<String> idJenisObats) throws GeneralBOException;
+    public CheckObatResponse saveUpdateTransObatDetail(TransaksiObatDetail bean) throws GeneralBOException;
+    public CheckObatResponse saveConfirm(PermintaanVendor bean, List<TransaksiObatDetail> listObat, List<TransaksiObatDetail> listObatNew) throws GeneralBOException;
     public List<TransaksiObatDetail> getNewObatDetail(TransaksiObatDetail bean) throws GeneralBOException;
     public Integer getLastNoBatch(String idApproval) throws GeneralBOException;
     public List<BatchPermintaanObat> getListBatchObatByIdApproval(String idApproval) throws GeneralBOException;
@@ -34,4 +36,5 @@ public interface PermintaanVendorBo {
     public void saveUpoadDocPermintaanVendor(PermintaanVendor bean) throws GeneralBOException;
 
     public List<TransaksiObatDetail> getListObatByBatch(String idPermintaan, Integer noBatch) throws GeneralBOException;
+    public List<Obat> getSearchObat(String query, String branch) throws GeneralBOException;
 }

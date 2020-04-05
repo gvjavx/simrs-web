@@ -56,11 +56,35 @@
         <property name="diterimaFlag">
             <column name="diterima_flag" sql-type="varchar" length="1" not-null="false" />
         </property>
-
         <property name="flagObatBpjs">
             <column name="flag_obat_bpjs" sql-type="varchar" length="1" not-null="false" />
         </property>
 
+        <property name="noFaktur">
+            <column name="no_faktur" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="tanggalFaktur">
+            <column name="tanggal_faktur" sql-type="date" not-null="false" />
+        </property>
+        <property name="noInvoice">
+            <column name="no_invoice" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="noDo">
+            <column name="no_do" sql-type="varchar" length="100" not-null="false" />
+        </property>
+
+        <property name="diskon">
+            <column name="diskon" sql-type="numeric" not-null="false" />
+        </property>
+        <property name="bruto">
+            <column name="bruto" sql-type="numeric" not-null="false" />
+        </property>
+        <property name="netto">
+            <column name="netto" sql-type="numeric" not-null="false" />
+        </property>
+        <property name="urlDoc">
+            <column name="url_doc" sql-type="varchar" length="100" not-null="false" />
+        </property>
 
     </class>
 </hibernate-mapping>

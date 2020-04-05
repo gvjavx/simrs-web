@@ -144,10 +144,10 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     "e.nama_ruangan,\n" +
                     "f.nama_kelas_ruangan,\n" +
                     "f.id_kelas_ruangan,\n" +
-                    "a.no_sep,\n" +
+                    "b.no_sep,\n" +
                     "b.klaim_bpjs_flag, " +
                     "b.status_bayar, " +
-                    "a.id_jenis_periksa_pasien,\n" +
+                    "b.id_jenis_periksa_pasien,\n" +
                     "um.status_bayar AS status_bayar_uang_muka, \n" +
                     "um.id, " +
                     "um.id_detail_checkup\n" +
@@ -168,7 +168,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     "AND b.id_detail_checkup LIKE :idDetailCheckup\n" +
                     "AND b.is_kronis IS NULL\n" +
                     "AND a.branch_id LIKE :branchId\n" +
-                    "AND a.id_jenis_periksa_pasien LIKE :jenisPeriksa\n" +
+                    "AND b.id_jenis_periksa_pasien LIKE :jenisPeriksa\n" +
                     "AND a.flag = 'Y'\n " +statusBayar;
 
             List<Object[]> results = new ArrayList<>();
@@ -506,7 +506,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     "b.no_sep, " +
                     "b.klaim_bpjs_flag, " +
                     "b.status_bayar, " +
-                    "a.id_jenis_periksa_pasien\n" +
+                    "b.id_jenis_periksa_pasien\n" +
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN im_simrs_status_pasien c ON b.status_periksa = c.id_status_pasien\n" +
@@ -523,7 +523,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     "AND b.id_detail_checkup LIKE :idDetailCheckup\n" +
                     "AND b.is_kronis IS NULL\n" +
                     "AND a.branch_id LIKE :branchId\n" +
-                    "AND a.id_jenis_periksa_pasien LIKE :jenisPeriksa\n" +
+                    "AND b.id_jenis_periksa_pasien LIKE :jenisPeriksa\n" +
                     "AND a.flag = 'Y'\n";
 
             List<Object[]> results = new ArrayList<>();

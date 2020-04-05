@@ -33,7 +33,6 @@
     <section class="content-header">
         <h1>
             Pendaftaran Rawat Pasien
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -160,10 +159,18 @@
                                                 <span class="sr-only">Toggle Dropdown</span>
                                             </button>
                                             <ul class="dropdown-menu" role="menu">
-                                                <li><a href="/simrs/checkup/add_checkup.action?tipe=umum">
+                                                <li><a href="add_checkup.action?tipe=umum">
                                                     <i class="fa fa-user-plus"></i>Pasien Umum</a></li>
-                                                <li><a href="/simrs/checkup/add_checkup.action?tipe=bpjs">
-                                                    <i class="fa fa-user-plus"></i>Pasien Bpjs</a></li>
+                                                <li><a href="add_checkup.action?tipe=bpjs">
+                                                    <i class="fa fa-user-plus"></i>Pasien BPJS</a></li>
+                                                <li><a href="add_checkup.action?tipe=paket_perusahaan">
+                                                    <i class="fa fa-user-plus"></i>Pasien Paket Perusahaan</a></li>
+                                                <li><a href="add_checkup.action?tipe=paket_individu">
+                                                    <i class="fa fa-user-plus"></i>Pasien Paket Individu</a></li>
+                                                <li><a href="add_checkup.action?tipe=asuransi">
+                                                    <i class="fa fa-user-plus"></i>Pasien Asuransi</a></li>
+                                                <li><a href="add_checkup.action?tipe=ptpn">
+                                                    <i class="fa fa-user-plus"></i>Pasien PTPN</a></li>
                                             </ul>
                                         </div>
                                         <%--<a type="button" class="btn btn-primary" href="add_checkup.action"><i--%>
@@ -210,12 +217,19 @@
                                                  name="icon_success">
                                             Record has been saved successfully.
                                         </sj:dialog>
-                                        <sj:dialog id="view_dialog_user" openTopics="showDialogUser" modal="true"
-                                                   resizable="false" cssStyle="text-align:left;"
-                                                   height="650" width="900" autoOpen="false" title="View Detail"
+                                        <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true"
+                                                   resizable="false"
+                                                   height="250" width="600" autoOpen="false" title="Error Dialog"
+                                                   buttons="{
+                                                                                'OK':function() { $('#error_dialog').dialog('close'); }
+                                                                            }"
                                         >
-                                            <center><img border="0" src="<s:url value="/pages/images/spinner.gif"/>"
-                                                         alt="Loading..."/></center>
+                                            <div class="alert alert-danger alert-dismissible">
+                                                <label class="control-label" align="left">
+                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>"
+                                                         name="icon_error"> System Found : <p id="errorMessage"></p>
+                                                </label>
+                                            </div>
                                         </sj:dialog>
                                     </div>
                                 </div>
@@ -734,63 +748,67 @@
             CheckupAction.getDetailAntrianOnline(noAntrian, {callback: function (response) {
 
                     if (response.noCheckupOnline != null) {
-                        console.log(response);
                         var today = new Date();
                         var dd = String(today.getDate()).padStart(2, '0');
                         var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
                         var yyyy = today.getFullYear();
-                        var hh = today.getHours();
-                        var min = today.getMinutes();
-                        var sec = today.getSeconds();
-                        var time = hh + ':' + min;
-                        today = mm + '-' + dd + '-' + yyyy;
+                        var tglToday = mm + '-' + dd + '-' + yyyy;
 
-                        var today2 = new Date(response.stTglCheckup);
-                        var dd2 = String(today2.getDate()).padStart(2, '0');
-                        var mm2 = String(today2.getMonth() + 1).padStart(2, '0'); //January is 0!
-                        var yyyy2 = today2.getFullYear();
-                        today2 = mm2 + '-' + dd2 + '-' + yyyy2;
+                        var daftar = new Date(response.stTglCheckup);
+                        var dDaf = String(daftar.getDate()).padStart(2, '0');
+                        var mDaf = String(daftar.getMonth() + 1).padStart(2, '0'); //January is 0!
+                        var yDaf = daftar.getFullYear();
+                        var tglDaftar = mDaf + '-' + dDaf + '-' + yDaf;
+
+                        var tgl1 = new Date(tglToday);
+                        var tgl2 = new Date(tglDaftar);
+
+                        var tanggalToday = Math.abs(tgl1);
+                        var tanggalCheckup = Math.abs(tgl2);
 
                         var time = response.jamAwal;
                         var char = time.split(":");
                         var hh2 = char[0];
                         var min2 = char[1];
 
-                        var tglDaftar = new Date(yyyy2, mm2, dd2, hh2, min2);
-                        console.log(tglDaftar);
+                        var timeDaftar = new Date();
+                        timeDaftar.setHours(hh2, min2, 0);
+                        timeDaftar.setMinutes(timeDaftar.getMinutes() - 30);
 
-                        tglDaftar.setMinutes(tglDaftar.getMinutes() - 30);
+                        var timeToday = new Date();
 
-                        var tglToday = new Date(yyyy, mm, dd, hh, min);
+                        if (tanggalToday == tanggalCheckup) {
+                            if(Math.abs(timeToday) <= Math.abs(timeDaftar)){
+                                var tipe = "";
 
-                        console.log(tglDaftar);
-                        console.log(tglToday);
+                                if (response.idJenisPeriksaPasien == "bpjs") {
+                                    tipe = "bpjs";
+                                } else {
+                                    tipe = "umum";
+                                }
 
-                        if (tglToday <= tglDaftar) {
-                            console.log("true");
-                            var tipe = "";
-
-                            if (response.idJenisPeriksaPasien == "bpjs") {
-                                tipe = "bpjs";
-                            } else {
-                                tipe = "umum";
+                                window.location.href = 'add_checkup.action?tipe='+tipe+'&noCheckupOnline='+response.noCheckupOnline;
+                                $('#load_resep').hide();
+                                $('#save_resep').show();
+                            }else{
+                                $('#error_dialog').dialog('open');
+                                $('#errorMessage').text("Verifikasi sudah tidak bisa dilakukan, dikarenakan sudah lewat dari jam awal pelayanan...!, Silahkan lakukan pendaftaran manual.");
+                                $('#load_resep').hide();
+                                $('#save_resep').show();
                             }
-
-                            window.location.href = 'add_checkup.action?tipe='+tipe+'&noCheckupOnline='+response.noCheckupOnline;
-                            $('#load_resep').hide();
-                            $('#save_resep').show();
 
                         } else {
                             $('#id_antrian').val('');
                             $('#load_resep').hide();
                             $('#save_resep').show();
-                            $('#modal-validasi').modal('show');
-                            $('#msg_app').text("Verifikasi sudah tidak bisa dilakukan, dikarenakan sudah lewat dari jam awal pelayanan...!, Silahkan lakukan daftar manual.");
-                            console.log("false");
+                            $('#error_dialog').dialog('open');
+                            $('#errorMessage').text("Verifikasi sudah tidak bisa dilakukan, dikarenakan sudah lewat dari jam awal pelayanan...!, Silahkan lakukan pendaftaran manual.");
                         }
                     } else {
                         $('#load_resep').hide();
                         $('#save_resep').show();
+                        $('#error_dialog').dialog('open');
+                        $('#errorMessage').text("No Checkup online tidak dapat ditemukan. Silahkan lakukan pendaftaran manual");
                     }
                 }
             });

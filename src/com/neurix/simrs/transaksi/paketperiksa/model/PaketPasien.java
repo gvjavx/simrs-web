@@ -18,6 +18,15 @@ public class PaketPasien {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String idPerusahaan;
+
+    public String getIdPerusahaan() {
+        return idPerusahaan;
+    }
+
+    public void setIdPerusahaan(String idPerusahaan) {
+        this.idPerusahaan = idPerusahaan;
+    }
 
     public String getId() {
         return id;

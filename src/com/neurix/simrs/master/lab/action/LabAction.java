@@ -132,7 +132,7 @@ public class LabAction extends BaseMasterAction {
 
         List<Lab> labList = new ArrayList<>();
         Lab lab = new Lab();
-        lab.setIdKategoriLab("02");
+        lab.setIdKategoriLab("KAL00000002");
         try {
             labList = labBoProxy.getByCriteria(lab);
         }catch (GeneralBOException e){
@@ -151,7 +151,7 @@ public class LabAction extends BaseMasterAction {
 
         List<Lab> labList = new ArrayList<>();
         Lab lab = new Lab();
-        lab.setIdKategoriLab("01");
+        lab.setIdKategoriLab("KAL00000001");
 
         try {
             labList = labBoProxy.getByCriteria(lab);

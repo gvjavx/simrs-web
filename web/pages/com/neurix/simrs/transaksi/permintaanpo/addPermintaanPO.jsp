@@ -336,6 +336,22 @@
                                            id="cor_po_harga"><i class="fa fa-check"></i> correct</p>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label class="col-md-4" style="margin-top: 7px">Tanggal Penyerahan</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group" style="margin-top: 7px">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <input class="form-control datepicker2 datemask2" id="tgl_cair"
+                                                   oninput="var warn =$('#war_po_cair').is(':visible'); if (warn){$('#cor_po_cair').show().fadeOut(3000);$('#war_po_cair').hide()};"/>
+                                        </div>
+                                        <p style="color: red; display: none;"
+                                           id="war_po_cair"><i class="fa fa-times"></i> required</p>
+                                        <p style="color: green; display: none;"
+                                           id="cor_po_cair"><i class="fa fa-check"></i> correct</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -391,28 +407,28 @@
                     <div class="box-header with-border"></div>
                     <div class="box-body">
                         <div class="row">
-                            <s:form id="uploadForm" enctype="multipart/form-data" method="post" namespace="/permintaanpo" action="uploadImage_permintaanpo.action" theme="simple">
-                            <div class="col-md-4">
-                                <div class="input-group" id="img_file">
-                                                    <span class="input-group-btn">
-                                                        <span class="btn btn-default btn-file">
-                                                            Browse… <s:file id="imgInp" accept=".jpg" name="fileUpload"
-                                                                            onchange="$('#img_file').css('border','')" disabled="true" cssStyle="cursor: no-drop"></s:file>
-                                                        </span>
-                                                    </span>
-                                    <input type="text" class="form-control" readonly placeholder="Upload Dokumen PO">
-                                </div>
-                            </div>
-                                <s:hidden name="permintaanVendor.idVendor" id="id_vendor"></s:hidden>
-                                <div style="display: none">
-                                <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="uploadForm"
-                                           id="saveProfil" name="save" onCompleteTopics="loadfoto" onSuccessTopics="loadfoto">
-                                    <i class="fa fa-save"></i>
-                                </sj:submit>
-                                </div>
-                            </s:form>
+                            <%--<s:form id="uploadForm" enctype="multipart/form-data" method="post" namespace="/permintaanpo" action="uploadImage_permintaanpo.action" theme="simple">--%>
+                            <%--<div class="col-md-4">--%>
+                                <%--<div class="input-group" id="img_file">--%>
+                                                    <%--<span class="input-group-btn">--%>
+                                                        <%--<span class="btn btn-default btn-file">--%>
+                                                            <%--Browse… <s:file id="imgInp" accept=".jpg" name="fileUpload"--%>
+                                                                            <%--onchange="$('#img_file').css('border','')" disabled="true" cssStyle="cursor: no-drop"></s:file>--%>
+                                                        <%--</span>--%>
+                                                    <%--</span>--%>
+                                    <%--<input type="text" class="form-control" readonly placeholder="Upload Dokumen PO">--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                                <%--<s:hidden name="permintaanVendor.idVendor" id="id_vendor"></s:hidden>--%>
+                                <%--<div style="display: none">--%>
+                                <%--<sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="uploadForm"--%>
+                                           <%--id="saveProfil" name="save" onCompleteTopics="loadfoto" onSuccessTopics="loadfoto">--%>
+                                    <%--<i class="fa fa-save"></i>--%>
+                                <%--</sj:submit>--%>
+                                <%--</div>--%>
+                            <%--</s:form>--%>
 
-                            <div class="col-md-4">
+                            <div class="col-md-offset-4 col-md-4 text-center">
                                 <a type="button" class="btn btn-warning" href="initForm_permintaanpo.action"><i
                                         class="fa fa-arrow-left"></i>
                                     Back</a>
@@ -421,6 +437,7 @@
                             </div>
                         </div>
                     </div>
+                    <div class="box-header with-border"></div>
                 </div>
             </div>
         </div>
@@ -492,6 +509,7 @@
         var lembarPerBox = $('#lembar_perbox').val();
         var bijiPerLembar = $('#biji_perlembar').val();
         var tipe = $('#tipe_obat').val();
+        var tgl = $('#tgl_cair').val();
 
         var idObat = "";
         var namaObat = "";
@@ -533,6 +551,7 @@
 
                 $('#body_po').append(row);
                 $('#nama_vendor').attr('disabled', true);
+                $('#tgl_cair').attr('disabled',true);
             }
         } else {
             if (obat == '' || obat == null) {
@@ -558,6 +577,9 @@
             }
             if (tipe == '') {
                 $('#war_po_tipe').show();
+            }
+            if (tgl == '') {
+                $('#war_po_cair').show();
             }
 
             $('#warning_po').show().fadeOut(5000);
@@ -602,9 +624,12 @@
 
         var stringData = JSON.stringify(result);
         var vendor = $('#nama_vendor').val();
+        var tgLCair = $('#tgl_cair').val();
+        var tanggal = tgLCair.split("-").reverse().join("-");
+
         $('#waiting_dialog').dialog('open');
         dwr.engine.setAsync(true);
-        PermintaanVendorAction.savePermintaanPO(vendor, stringData, {
+        PermintaanVendorAction.savePermintaanPO(vendor, tanggal, stringData, {
             callback: function (response) {
                 if (response.status == "success") {
                     $('#waiting_dialog').dialog('close');

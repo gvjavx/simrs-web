@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -104,6 +105,175 @@ public class HeaderDetailCheckup extends BaseModel{
 
     private String diagnosa;
     private String namaDiagnosa;
+
+    private String idKelas;
+    private String idRuang;
+
+    private String idRawatInap;
+    private String namaKelasRuangan;
+
+    private String noBpjs;
+
+    private BigDecimal coverBiaya;
+    private String idAsuransi;
+    private String idPaket;
+    private String noKartuAsuransi;
+
+    private String noRujukan;
+    private String tglRujukan;
+    private String suratRujukan;
+    private String namaAsuransi;
+
+    private String noPpk;
+    private String perujuk;
+    private String namaPerujuk;
+
+    private String flagRefund;
+    private String idPelayananBpjs;
+
+    public String getIdPelayananBpjs() {
+        return idPelayananBpjs;
+    }
+
+    public void setIdPelayananBpjs(String idPelayananBpjs) {
+        this.idPelayananBpjs = idPelayananBpjs;
+    }
+
+    public String getFlagRefund() {
+        return flagRefund;
+    }
+
+    public void setFlagRefund(String flagRefund) {
+        this.flagRefund = flagRefund;
+    }
+
+    public String getPerujuk() {
+        return perujuk;
+    }
+
+    public void setPerujuk(String perujuk) {
+        this.perujuk = perujuk;
+    }
+
+    public String getNamaPerujuk() {
+        return namaPerujuk;
+    }
+
+    public void setNamaPerujuk(String namaPerujuk) {
+        this.namaPerujuk = namaPerujuk;
+    }
+
+    public String getNoPpk() {
+        return noPpk;
+    }
+
+    public void setNoPpk(String noPpk) {
+        this.noPpk = noPpk;
+    }
+
+    public String getNoRujukan() {
+        return noRujukan;
+    }
+
+    public void setNoRujukan(String noRujukan) {
+        this.noRujukan = noRujukan;
+    }
+
+    public String getTglRujukan() {
+        return tglRujukan;
+    }
+
+    public void setTglRujukan(String tglRujukan) {
+        this.tglRujukan = tglRujukan;
+    }
+
+    public String getSuratRujukan() {
+        return suratRujukan;
+    }
+
+    public void setSuratRujukan(String suratRujukan) {
+        this.suratRujukan = suratRujukan;
+    }
+
+    public String getNamaAsuransi() {
+        return namaAsuransi;
+    }
+
+    public void setNamaAsuransi(String namaAsuransi) {
+        this.namaAsuransi = namaAsuransi;
+    }
+
+    public String getNoKartuAsuransi() {
+        return noKartuAsuransi;
+    }
+
+    public void setNoKartuAsuransi(String noKartuAsuransi) {
+        this.noKartuAsuransi = noKartuAsuransi;
+    }
+
+    public BigDecimal getCoverBiaya() {
+        return coverBiaya;
+    }
+
+    public void setCoverBiaya(BigDecimal coverBiaya) {
+        this.coverBiaya = coverBiaya;
+    }
+
+    public String getIdAsuransi() {
+        return idAsuransi;
+    }
+
+    public void setIdAsuransi(String idAsuransi) {
+        this.idAsuransi = idAsuransi;
+    }
+
+    public String getIdPaket() {
+        return idPaket;
+    }
+
+    public void setIdPaket(String idPaket) {
+        this.idPaket = idPaket;
+    }
+
+    public String getNoBpjs() {
+        return noBpjs;
+    }
+
+    public void setNoBpjs(String noBpjs) {
+        this.noBpjs = noBpjs;
+    }
+
+    public String getIdRawatInap() {
+        return idRawatInap;
+    }
+
+    public void setIdRawatInap(String idRawatInap) {
+        this.idRawatInap = idRawatInap;
+    }
+
+    public String getNamaKelasRuangan() {
+        return namaKelasRuangan;
+    }
+
+    public void setNamaKelasRuangan(String namaKelasRuangan) {
+        this.namaKelasRuangan = namaKelasRuangan;
+    }
+
+    public String getIdKelas() {
+        return idKelas;
+    }
+
+    public void setIdKelas(String idKelas) {
+        this.idKelas = idKelas;
+    }
+
+    public String getIdRuang() {
+        return idRuang;
+    }
+
+    public void setIdRuang(String idRuang) {
+        this.idRuang = idRuang;
+    }
 
     public String getDiagnosa() {
         return diagnosa;
@@ -259,7 +429,7 @@ public class HeaderDetailCheckup extends BaseModel{
         this.typeTransaction = typeTransaction;
     }
 
-    private List<Tindakan> tindakanList;
+    private List<Tindakan> tindakanList = new ArrayList<>();
 
     public List<Tindakan> getTindakanList() {
         return tindakanList;

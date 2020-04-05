@@ -10,6 +10,8 @@
     <%@ include file="/pages/common/header.jsp" %>
     <style>
     </style>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/PaketPeriksaAction.js"/>'></script>
+
     <script type='text/javascript'>
 
         $( document ).ready(function() {
@@ -48,72 +50,22 @@
                         <div class="form-group">
                             <s:form id="paketperiksaForm" method="post" namespace="/paketperiksa" action="search_paketperiksa.action" theme="simple" cssClass="form-horizontal">
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4">ID Detail Checkup</label>
+                                    <label class="control-label col-sm-4">ID Paket</label>
                                     <div class="col-sm-4">
-                                        <s:textfield id="id_detail_checkup" cssStyle="margin-top: 7px"
-                                                     name="periksaLab.idDetailCheckup" required="false"
+                                        <s:textfield id="id_paket" cssStyle="margin-top: 7px"
+                                                     name="paketPeriksa.idPaket" required="false"
                                                      readonly="false" cssClass="form-control"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4">ID Pasien</label>
+                                    <label class="control-label col-sm-4">Nama Paket</label>
                                     <div class="col-sm-4">
-                                        <s:textfield id="id_pasien" cssStyle="margin-top: 7px"
-                                                     name="periksaLab.idPasien" required="false"
-                                                     readonly="false" cssClass="form-control"/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">Nama</label>
-                                    <div class="col-sm-4">
-                                        <s:textfield id="nama_pasien" name="periksaLab.nama"
+                                        <s:textfield id="nama_paket" name="paketPeriksa.namaPaket"
                                                      required="false" readonly="false"
                                                      cssClass="form-control" cssStyle="margin-top: 7px"/>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">Labotarium</label>
-                                    <div class="col-sm-4">
-                                        <s:action id="initLab" namespace="/lab"
-                                                  name="getListLab_lab"/>
-                                        <s:select cssStyle="margin-top: 7px; width: 100%"
-                                                  list="#initLab.listOfLab" id="lab"
-                                                  name="periksaLab.idLab" listKey="idLab"
-                                                  listValue="namaLab"
-                                                  headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control select2" theme="simple"/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">Status</label>
-                                    <div class="col-sm-4">
-                                        <s:select list="#{'0':'Antrian','1':'Periksa','2':'Rujuk','3':'Selesai'}" cssStyle="margin-top: 7px; width: 100%"
-                                                  id="status" name="periksaLab.statusPeriksa"
-                                                  headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control select2"/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">Tanggal Masuk</label>
-                                    <div class="col-sm-2">
-                                        <div class="input-group date" style="margin-top: 7px">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
-                                            </div>
-                                            <s:textfield id="tgl_from" name="periksaLab.stTglFrom" cssClass="form-control"
-                                                         required="false"/>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <div class="input-group date" style="margin-top: 7px">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
-                                            </div>
-                                            <s:textfield id="tgl_to" name="periksaLab.stTglTo" cssClass="form-control"
-                                                         required="false"/>
-                                        </div>
-                                    </div>
-                                </div>
+
                                 <br>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4"></label>
@@ -170,29 +122,19 @@
                         <table id="myTable" class="table table-bordered table-striped">
                             <thead >
                             <tr bgcolor="#90ee90">
+                                <td>ID Paket</td>
                                 <td>Nama Paket</td>
-                                <td>ID Detail Checkup</td>
-                                <td>Nama Pasien</td>
-                                <td>Pemeriksaan</td>
-                                <td align="center">Action</td>
+                                <td align="center" width="15%">Action</td>
                             </tr>
                             </thead>
                             <tbody>
-                            <s:iterator value="#session.listOfResult" status="listOfPeriksaLab">
+                            <s:iterator value="#session.listOfResult">
                                 <tr>
-                                    <td><s:property value="stCreatedDate"/></td>
-                                    <td><s:property value="idDetailCheckup"/></td>
-                                    <td><s:property value="namaPasien"/></td>
-                                    <td><s:property value="labName"/></td>
-                                    <%--<td><s:property value="idPeriksaLab"/></td>--%>
+                                    <td><s:property value="idPaket"/></td>
+                                    <td><s:property value="namaPaket"/></td>
                                     <td align="center">
-                                        <s:url var="add_periksa_lab" namespace="/periksalab" action="add_periksalab" escapeAmp="false">
-                                            <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
-                                            <s:param name="lab"><s:property value="idPeriksaLab"/></s:param>
-                                        </s:url>
-                                        <s:a href="%{add_periksa_lab}">
-                                            <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer; ">
-                                        </s:a>
+                                        <img onclick="detailPaket('<s:property value="idPaket"/>','<s:property value="namaPaket"/>', '<s:property value="tarif"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-search-25.png"/>" style="cursor: pointer; ">
+                                        <%--<img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer; ">--%>
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -205,8 +147,180 @@
     </section>
     <!-- /.content -->
 </div>
-<!-- /.content-wrapper -->
+
+<div class="modal fade" id="modal-detail">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-user"></i> Detail Paket</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_add">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_add"></p>
+                </div>
+                <table class="table table-striped">
+                    <tr>
+                        <td width="20%">ID paket</td>
+                        <td><p id="det_id_paket"></p></td>
+                    </tr>
+                    <tr>
+                        <td>Nama Paket</td>
+                        <td><p id="det_nama_paket"></p></td>
+                    </tr>
+                    <tr>
+                        <td>Tarif</td>
+                        <td><p id="det_tarif_paket"></p></td>
+                    </tr>
+                </table>
+                <div class="row">
+                    <div class="col-md-6">
+                       <p>Daftar Tindakan</p>
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                            <td>ID Tindakan</td>
+                            <td>Nama Tindakan</td>
+                            </thead>
+                            <tbody id="body_tindakan">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <p>Daftar Penunjang Medis</p>
+                        <table class="table table-striped table-bordered" id="tabel_medis">
+                            <thead>
+                            <td>Nama Lab</td>
+                            <td>Jenis Lab</td>
+                            <td align="center">Action</td>
+                            </thead>
+                            <tbody id="body_lab">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="temp_pemeriksaan"></div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type='text/javascript'>
+
+    function convertSentenceCase(myString){
+        if(myString != null && myString != ''){
+            var rg = /(^\w{1}|\ \s*\w{1})/gi;
+            myString = myString.replace(rg, function(toReplace) {
+                return toReplace.toUpperCase();
+            });
+            return myString;
+        }else{
+            return "";
+        }
+    }
+
+    function formatRupiah(angka) {
+        if(angka != "" && angka != null && parseInt(angka) > 0){
+            var reverse = angka.toString().split('').reverse().join(''),
+                ribuan = reverse.match(/\d{1,3}/g);
+            ribuan = ribuan.join('.').split('').reverse().join('');
+            return ribuan;
+        } else {
+            return "0";
+        }
+
+    }
+
+    function detailPaket(idpaket, namaPaket, tarif){
+        $('body_tindakan').html('');
+        $('body_lab').html('');
+        $('#modal-detail').modal({show:true, backdrop:'static'});
+        $('#det_id_paket').text(idpaket);
+        $('#det_nama_paket').text(namaPaket);
+        $('#det_tarif_paket').text("Rp. "+formatRupiah(tarif));
+        PaketPeriksaAction.detailPaket(idpaket, function (response) {
+            console.log(response);
+            if(response.length > 0){
+                var table1 = "";
+                var table2 = "";
+                var idLab1 = "";
+                var idLab2 = "";
+                var detailLab1 = [];
+                var detailLab2 = [];
+                var cekek = false;
+
+                $.each(response, function (i, item) {
+
+                   if(item.jenisItem == "tindakan"){
+                           table1 += '<tr>' +
+                               '<td>'+item.idItem+'</td>' +
+                               '<td>'+item.keterangan+'</td>' +
+                               '</tr>';
+
+                   }if(item.jenisItem == "laboratorium"){
+
+                        if(idLab1 != item.idLab){
+                            idLab1 = item.idLab;
+                            table2 += '<tr id="row'+item.idLab+'">' +
+                                '<td>'+item.namaLab+'</td>' +
+                                '<td>'+convertSentenceCase(item.jenisItem)+'</td>' +
+                                '<td align="center">'+'<img id="btn'+item.idLab+'" class="hvr-grow" onclick="detailLab(\''+item.idLab+'\',\''+item.idPaket+'\')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">'+'</td>' +
+                                '</tr>';
+                        }
+
+                   }if(item.jenisItem == "radiologi"){
+
+                        if(idLab2 != item.idLab){
+                            idLab2 = item.idLab;
+                            table2 += '<tr id="row'+item.idLab+'">' +
+                                '<td>'+item.namaLab+'</td>' +
+                                '<td>'+convertSentenceCase(item.jenisItem)+'<input type="hidden" id="det_radiologi'+item.idLab+'"></td>' +
+                                '<td align="center">'+'<img id="btn'+item.idLab+'" class="hvr-grow" onclick="detailLab(\''+item.idLab+'\',\''+item.idPaket+'\')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">'+'</td>' +
+                                '</tr>';
+                        }
+                    }
+                });
+                $('#body_tindakan').html(table1);
+                $('#body_lab').html(table2);
+           }
+        });
+    }
+
+    function detailLab(idLab, idPaket){
+        var table = "";
+        PaketPeriksaAction.detailItem(idLab, idPaket, function (response) {
+            if(response.length > 0){
+                $.each(response, function (i, item) {
+                    table += '<tr>' +
+                        '<td>'+item.keterangan+'</td>';
+                    '</tr>';
+                });
+            };
+        });
+        var rowIndex = document.getElementById("row"+idLab).rowIndex;
+        var table2 = '<table class="table table-bordered"><tr bgcolor="#ffebcd">' +
+            '<td>Nama Pemeriksaan</td>' +
+            '<tbody>'+table+'</tbody>'+
+            '</table>';
+        var newRow = $('<tr id="del'+idLab+'"><td colspan="3">'+table2+'</td></tr>');
+        var cancel = '<s:url value="/pages/images/icons8-cancel-25.png"/>';
+        $('#btn'+idLab).attr('src',cancel);
+        $('#btn'+idLab).attr('onclick', 'deleteRow(\''+idLab+'\',\''+idPaket+'\')');
+        newRow.insertAfter($('#tabel_medis tr:nth('+rowIndex+')'));
+    }
+
+    function deleteRow(idLab, idPaket){
+        $('#del'+idLab).remove();
+        var plus = '<s:url value="/pages/images/icons8-plus-25.png"/>';
+        $('#btn'+idLab).attr('src',plus);
+        $('#btn'+idLab).attr('onclick', 'detailLab(\''+idLab+'\',\''+idPaket+'\')');
+    }
+
 </script>
 
 <%@ include file="/pages/common/footer.jsp" %>

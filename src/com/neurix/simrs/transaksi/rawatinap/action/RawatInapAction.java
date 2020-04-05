@@ -1,5 +1,7 @@
 package com.neurix.simrs.transaksi.rawatinap.action;
 
+import com.neurix.authorization.company.bo.BranchBo;
+import com.neurix.authorization.company.model.Branch;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
@@ -14,6 +16,7 @@ import com.neurix.simrs.master.ruangan.model.Ruangan;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
+import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.moncairan.model.ItSimrsMonCairanEntity;
 import com.neurix.simrs.transaksi.moncairan.model.MonCairan;
@@ -21,6 +24,7 @@ import com.neurix.simrs.transaksi.monpemberianobat.model.ItSimrsMonPemberianObat
 import com.neurix.simrs.transaksi.monpemberianobat.model.MonPemberianObat;
 import com.neurix.simrs.transaksi.monvitalsign.model.ItSimrsMonVitalSignEntity;
 import com.neurix.simrs.transaksi.monvitalsign.model.MonVitalSign;
+import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
 import com.neurix.simrs.transaksi.riwayattindakan.bo.RiwayatTindakanBo;
@@ -56,6 +60,8 @@ public class RawatInapAction extends BaseMasterAction {
     private RuanganBo ruanganBoProxy;
     private RiwayatTindakanBo riwayatTindakanBoProxy;
     private DietGiziBo dietGiziBoProxy;
+    private CheckupDetailBo checkupDetailBoProxy;
+    private BranchBo branchBoProxy;
 
     private String id;
     private String idResep;
@@ -63,6 +69,13 @@ public class RawatInapAction extends BaseMasterAction {
 
     private List<DietGizi> listOfDietGizi = new ArrayList<>();
 
+    public void setBranchBoProxy(BranchBo branchBoProxy) {
+        this.branchBoProxy = branchBoProxy;
+    }
+
+    public void setCheckupDetailBoProxy(CheckupDetailBo checkupDetailBoProxy) {
+        this.checkupDetailBoProxy = checkupDetailBoProxy;
+    }
 
     public void setDietGiziBoProxy(DietGiziBo dietGiziBoProxy) {
         this.dietGiziBoProxy = dietGiziBoProxy;
@@ -149,10 +162,6 @@ public class RawatInapAction extends BaseMasterAction {
     @Override
     public String add() {
         logger.info("[RawatInapAction.add] start process >>>");
-
-        //get data from session
-//        HttpSession session = ServletActionContext.getRequest().getSession();
-//        List<RawatInap> listOfResult = (List) session.getAttribute("listOfResult");
 
         String id = getId();
         String jk = "";
@@ -241,7 +250,7 @@ public class RawatInapAction extends BaseMasterAction {
                     if ("P".equalsIgnoreCase(checkup.getJenisKelamin())) {
                         jk = "Perempuan";
                     } else {
-                        jk = "laki-Laki";
+                        jk = "Laki-Laki";
                     }
                 }
                 rawatInap.setJenisKelamin(jk);
@@ -261,105 +270,6 @@ public class RawatInapAction extends BaseMasterAction {
                 setRawatInap(new RawatInap());
             }
         }
-//        if (id != null && !"".equalsIgnoreCase(id)) {
-//
-//            if (listOfResult != null) {
-//
-//                for (RawatInap rawatInap : listOfResult) {
-//                    if (id.equalsIgnoreCase(rawatInap.getNoCheckup())) {
-//
-//                        HeaderCheckup headerCheckup = getHeaderCheckup(rawatInap.getNoCheckup());
-//                        rawatInap.setIdPasien(headerCheckup.getIdPasien());
-//                        rawatInap.setNamaPasien(headerCheckup.getNama());
-//                        rawatInap.setAlamat(headerCheckup.getJalan());
-//                        rawatInap.setDesa(headerCheckup.getNamaDesa());
-//                        rawatInap.setKecamatan(headerCheckup.getNamaKecamatan());
-//                        rawatInap.setKota(headerCheckup.getNamaKota());
-//                        rawatInap.setProvinsi(headerCheckup.getNamaProvinsi());
-//                        rawatInap.setIdPelayanan(headerCheckup.getIdPelayanan());
-//                        rawatInap.setNamaPelayanan(headerCheckup.getNamaPelayanan());
-//                        if (headerCheckup.getJenisKelamin() != null) {
-//                            if ("P".equalsIgnoreCase(headerCheckup.getJenisKelamin())) {
-//                                jk = "Perempuan";
-//                            } else {
-//                                jk = "laki-Laki";
-//                            }
-//                        }
-//                        rawatInap.setJenisKelamin(jk);
-//                        rawatInap.setTempatLahir(headerCheckup.getTempatLahir());
-//                        rawatInap.setTglLahir(headerCheckup.getTglLahir() == null ? null : headerCheckup.getTglLahir().toString());
-//                        String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(headerCheckup.getTglLahir());
-//                        rawatInap.setTempatTglLahir(headerCheckup.getTempatLahir() + ", " + formatDate);
-//                        rawatInap.setIdJenisPeriksa(headerCheckup.getIdJenisPeriksaPasien());
-//                        rawatInap.setNik(headerCheckup.getNoKtp());
-//                        rawatInap.setUrlKtp(headerCheckup.getUrlKtp());
-//                        rawatInap.setNoSep(headerCheckup.getNoSep());
-//
-//                        JenisPriksaPasien jenisPriksaPasien = getListJenisPeriksaPasien(headerCheckup.getIdJenisPeriksaPasien());
-//                        rawatInap.setJenisPeriksaPasien(jenisPriksaPasien.getKeterangan());
-//
-//                        List<RiwayatTindakan> riwayatTindakanList = new ArrayList<>();
-//
-//                        try {
-//                            riwayatTindakanList = riwayatTindakanBoProxy.cekTodayTarifKamar(rawatInap.getIdDetailCheckup());
-//                        }catch (GeneralBOException e){
-//                            logger.error("[RawatInapAction.add] Found Error when search tindakan riwayat >>>" +e);
-//                        }
-//
-//                        if(riwayatTindakanList.isEmpty()){
-//
-//                            List<Ruangan> ruanganList = new ArrayList<>();
-//                            Ruangan ruangan = new Ruangan();
-//                            ruangan.setIdRuangan(rawatInap.getIdRuangan());
-//
-//                            try {
-//                                ruanganList = ruanganBoProxy.getByCriteria(ruangan);
-//                            }catch (GeneralBOException e){
-//                                logger.error("[RawatInapAction.add] Found Error when search ruangan >>>" +e);
-//                            }
-//
-//                            if(!ruanganList.isEmpty()){
-//                                ruangan = ruanganList.get(0);
-//
-//                                if(ruanganList != null){
-//
-//                                    String user = CommonUtil.userLogin();
-//                                    Timestamp now = new Timestamp(System.currentTimeMillis());
-//
-//                                    RiwayatTindakan tindakan = new RiwayatTindakan();
-//                                    tindakan.setIdTindakan(ruangan.getIdRuangan());
-//                                    tindakan.setNamaTindakan("Tarif Kamar "+ruangan.getNamaRuangan()+ " No. " +ruangan.getNoRuangan());
-//                                    tindakan.setKeterangan("kamar");
-//                                    tindakan.setTotalTarif(new BigDecimal(ruangan.getTarif()));
-//                                    tindakan.setIdDetailCheckup(rawatInap.getIdDetailCheckup());
-//                                    tindakan.setJenisPasien(rawatInap.getIdJenisPeriksa());
-//                                    tindakan.setAction("C");
-//                                    tindakan.setFlag("Y");
-//                                    tindakan.setCreatedDate(now);
-//                                    tindakan.setCreatedWho(user);
-//                                    tindakan.setLastUpdate(now);
-//                                    tindakan.setLastUpdateWho(user);
-//                                    tindakan.setTanggalTindakan(now);
-//
-//                                    try {
-//                                        riwayatTindakanBoProxy.saveAdd(tindakan);
-//                                    }catch (GeneralBOException e){
-//                                        logger.error("[RawatInapAction] Found Error when save add riwayat tindakan "+e);
-//                                    }
-//                                }
-//                            }
-//                        }
-//                        setRawatInap(rawatInap);
-//                        break;
-//                    }
-//                }
-//
-//            } else {
-//                setRawatInap(new RawatInap());
-//            }
-//        } else {
-//            setRawatInap(new RawatInap());
-//        }
 
         logger.info("[RawatInapAction.add] end process <<<");
         return "init_add";
@@ -392,6 +302,7 @@ public class RawatInapAction extends BaseMasterAction {
 
         RawatInap rawatInap = getRawatInap();
         List<RawatInap> listOfRawatInap = new ArrayList();
+        rawatInap.setBranchId(CommonUtil.userBranchLogin());
 
         try {
             listOfRawatInap = rawatInapBoProxy.getSearchRawatInap(rawatInap);
@@ -488,56 +399,71 @@ public class RawatInapAction extends BaseMasterAction {
 
     public String printResepPasien() {
 
+        HeaderCheckup checkup = new HeaderCheckup();
         String idResep = getIdResep();
         String id = getId();
         String jk = "";
 
         String branch = CommonUtil.userBranchLogin();
         String logo = "";
-
-        switch (branch) {
-            case CommonConstant.BRANCH_RS01:
-                logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.LOGO_RS01;
-                break;
-            case CommonConstant.BRANCH_RS02:
-                logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.LOGO_RS02;
-                break;
-            case CommonConstant.BRANCH_RS03:
-                logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.LOGO_RS03;
-                break;
-        }
-
-        HeaderCheckup headerCheckup = getHeaderCheckup(id);
-        JenisPriksaPasien jenisPriksaPasien = getListJenisPeriksaPasien(headerCheckup.getIdJenisPeriksaPasien());
-        reportParams.put("unit", CommonUtil.userBranchNameLogin());
-        reportParams.put("petugas", CommonUtil.userLogin());
-        reportParams.put("area", CommonUtil.userAreaName());
-        reportParams.put("resepId", idResep);
-        reportParams.put("logo", logo);
-        reportParams.put("nik", headerCheckup.getNoKtp());
-        reportParams.put("idPasien", headerCheckup.getIdPasien());
-        reportParams.put("nama", headerCheckup.getNama());
-        reportParams.put("tglLahir", headerCheckup.getTempatLahir() + ", " + headerCheckup.getStTglLahir().toString());
-        if ("L".equalsIgnoreCase(headerCheckup.getJenisKelamin())) {
-            jk = "Laki-Laki";
-        } else {
-            jk = "Perempuan";
-        }
-        reportParams.put("jenisKelamin", jk);
-        reportParams.put("jenisPasien", jenisPriksaPasien.getKeterangan());
-        reportParams.put("poli", headerCheckup.getNamaPelayanan());
-        reportParams.put("provinsi", headerCheckup.getNamaProvinsi());
-        reportParams.put("kabupaten", headerCheckup.getNamaKota());
-        reportParams.put("kecamatan", headerCheckup.getNamaKecamatan());
-        reportParams.put("desa", headerCheckup.getNamaDesa());
-
+        Branch branches = new Branch();
+        PermintaanResep permintaanResep = new PermintaanResep();
 
         try {
-            preDownload();
-        } catch (SQLException e) {
-            logger.error("[ReportAction.printCard] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
-            return "search";
+            branches = branchBoProxy.getBranchById(branch, "Y");
+        } catch (GeneralBOException e) {
+            logger.error("Found Error when searhc branch logo");
+        }
+
+        if (branches != null) {
+            logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.RESOURCE_PATH_IMAGES + branches.getLogoName();
+        }
+
+        try {
+            checkup = checkupBoProxy.getDataDetailPasien(id);
+        } catch (GeneralBOException e) {
+            logger.error("Found Error when search data detail pasien " + e.getMessage());
+        }
+
+        try {
+            permintaanResep = checkupDetailBoProxy.getDataDokter(idResep);
+        }catch (HibernateException e){
+            logger.error("Found Error "+e.getMessage());
+        }
+
+        if (checkup != null) {
+
+            reportParams.put("dokter", permintaanResep.getNamaDokter());
+            reportParams.put("ttdDokter", CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_TTD_DOKTER+permintaanResep.getTtdDokter());
+            reportParams.put("area", CommonUtil.userAreaName());
+            reportParams.put("unit", CommonUtil.userBranchNameLogin());
+            reportParams.put("idPasien", checkup.getIdPasien());
+            reportParams.put("resepId", idResep);
+            reportParams.put("logo", logo);
+            reportParams.put("nik", checkup.getNoKtp());
+            reportParams.put("nama", checkup.getNama());
+            String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
+            reportParams.put("tglLahir", checkup.getTempatLahir() + ", " + formatDate);
+            if ("L".equalsIgnoreCase(checkup.getJenisKelamin())) {
+                jk = "Laki-Laki";
+            } else {
+                jk = "Perempuan";
+            }
+            reportParams.put("jenisKelamin", jk);
+            reportParams.put("jenisPasien", checkup.getStatusPeriksaName());
+            reportParams.put("poli", checkup.getNamaPelayanan());
+            reportParams.put("provinsi", checkup.getNamaProvinsi());
+            reportParams.put("kabupaten", checkup.getNamaKota());
+            reportParams.put("kecamatan", checkup.getNamaKecamatan());
+            reportParams.put("desa", checkup.getNamaDesa());
+
+            try {
+                preDownload();
+            } catch (SQLException e) {
+                logger.error("[ReportAction.printCard] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+                addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
+                return "search";
+            }
         }
 
         return "print_resep";

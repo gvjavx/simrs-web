@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printResepPasien" language="groovy" pageWidth="421" pageHeight="595" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
 	<property name="ireport.zoom" value="1.7715610000000144"/>
 	<property name="ireport.x" value="4"/>
-	<property name="ireport.y" value="16"/>
+	<property name="ireport.y" value="282"/>
 	<parameter name="reportParams.resepId" class="java.lang.String"/>
 	<parameter name="reportParams.logo" class="java.lang.String"/>
 	<parameter name="reportParams.nik" class="java.lang.String"/>
@@ -20,6 +20,8 @@
 	<parameter name="reportParams.idPasien" class="java.lang.String"/>
 	<parameter name="reportParams.petugas" class="java.lang.String"/>
 	<parameter name="reportParams.isKronis" class="java.lang.String"/>
+	<parameter name="reportParams.dokter" class="java.lang.String"/>
+	<parameter name="reportParams.ttdDokter" class="java.lang.String" isForPrompting="false"/>
 	<queryString>
 		<![CDATA[SELECT a.id_permintaan_resep, a.id_pasien, a.id_detail_checkup, b.id_obat, b.jenis_satuan, c.nama_obat, b.qty, b.keterangan FROM mt_simrs_permintaan_resep a
 INNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat
@@ -242,7 +244,7 @@ WHERE a.id_permintaan_resep LIKE $P{reportParams.resepId}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.isKronis} == "Y" ? "Resep Pasien Obat Kronis" : "Resep Pasien" ]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{reportParams.isKronis} == "Y" ? "Resep Pasien Obat Kronis" : "Resep Pasien"]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -391,7 +393,7 @@ WHERE a.id_permintaan_resep LIKE $P{reportParams.resepId}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[Perawat]]></text>
+				<text><![CDATA[Apoteker]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="1" y="57" width="100" height="12" uuid="ffda815e-c57d-4531-96c8-585f1bca7c43"/>
@@ -399,13 +401,6 @@ WHERE a.id_permintaan_resep LIKE $P{reportParams.resepId}]]>
 					<font size="8" isUnderline="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.nama} == null ? "" : $P{reportParams.nama}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="281" y="57" width="100" height="12" uuid="aabc716a-83cc-4ba3-9e2d-58e6fb9fffe1"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8" isUnderline="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.petugas} == null ? "" : $P{reportParams.petugas}]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="148" y="70" width="100" height="1" uuid="7580d518-3958-4d82-b075-b845ae7813c8"/>
@@ -416,6 +411,17 @@ WHERE a.id_permintaan_resep LIKE $P{reportParams.resepId}]]>
 			<line>
 				<reportElement x="279" y="70" width="100" height="1" uuid="d5313df2-f086-418b-b8dc-bc2d498f0656"/>
 			</line>
+			<textField>
+				<reportElement x="129" y="57" width="135" height="12" uuid="a2214fa4-47c0-45dc-a294-e25124a0c00d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.dokter} == null ? "" : $P{reportParams.dokter}]]></textFieldExpression>
+			</textField>
+			<image onErrorType="Blank">
+				<reportElement x="159" y="13" width="78" height="44" uuid="4a48a78f-1cec-4ccf-b85c-7b9794cac441"/>
+				<imageExpression><![CDATA[$P{reportParams.ttdDokter}]]></imageExpression>
+			</image>
 		</band>
 	</lastPageFooter>
 </jasperReport>

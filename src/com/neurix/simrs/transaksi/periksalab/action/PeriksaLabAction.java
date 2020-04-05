@@ -8,6 +8,7 @@ import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
 import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
+import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
@@ -98,10 +99,6 @@ public class PeriksaLabAction extends BaseMasterAction {
     public String add() {
         logger.info("[PeriksaLabAction.add] start process >>>");
 
-        //get data from session
-//        HttpSession session = ServletActionContext.getRequest().getSession();
-//        List<PeriksaLab> listOfResult = (List) session.getAttribute("listOfResult");
-
         String id = getId();
         String lab = getLab();
         String jk = "";
@@ -133,7 +130,7 @@ public class PeriksaLabAction extends BaseMasterAction {
                     if ("P".equalsIgnoreCase(checkup.getJenisKelamin())) {
                         jk = "Perempuan";
                     } else {
-                        jk = "laki-Laki";
+                        jk = "Laki-Laki";
                     }
                 }
                 periksaLab.setJenisKelamin(jk);
@@ -152,55 +149,6 @@ public class PeriksaLabAction extends BaseMasterAction {
             } else {
                 setPeriksaLab(new PeriksaLab());
             }
-
-//            if (listOfResult != null) {
-////
-////                for (PeriksaLab periksaLab : listOfResult) {
-////                    if (id.equalsIgnoreCase(periksaLab.getIdPeriksaLab())) {
-////
-////                        HeaderDetailCheckup headerDetailCheckup = getDetailCheckup(periksaLab.getIdDetailCheckup());
-////                        periksaLab.setNoCheckup(headerDetailCheckup.getNoCheckup());
-////
-////                        HeaderCheckup headerCheckup = getHeaderCheckup(headerDetailCheckup.getNoCheckup());
-////                        periksaLab.setIdPasien(headerCheckup.getIdPasien());
-////                        periksaLab.setNamaPasien(headerCheckup.getNama());
-////                        periksaLab.setAlamat(headerCheckup.getJalan());
-////                        periksaLab.setDesa(headerCheckup.getNamaDesa());
-////                        periksaLab.setKecamatan(headerCheckup.getNamaKecamatan());
-////                        periksaLab.setKota(headerCheckup.getNamaKota());
-////                        periksaLab.setProvinsi(headerCheckup.getNamaProvinsi());
-////                        periksaLab.setIdPelayanan(headerCheckup.getIdPelayanan());
-////                        periksaLab.setNamaPelayanan(headerCheckup.getNamaPelayanan());
-////                        if (headerCheckup.getJenisKelamin() != null) {
-////                            if ("P".equalsIgnoreCase(headerCheckup.getJenisKelamin())) {
-////                                jk = "Perempuan";
-////                            } else {
-////                                jk = "laki-Laki";
-////                            }
-////                        }
-////                        periksaLab.setJenisKelamin(jk);
-////                        periksaLab.setTempatLahir(headerCheckup.getTempatLahir());
-////                        periksaLab.setTglLahir(headerCheckup.getTglLahir() == null ? null : headerCheckup.getTglLahir().toString());
-////                        String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(headerCheckup.getTglLahir());
-////                        periksaLab.setTempatTglLahir(headerCheckup.getTempatLahir() + ", " + formatDate);
-////                        periksaLab.setIdJenisPeriksa(headerCheckup.getIdJenisPeriksaPasien());
-////                        periksaLab.setNik(headerCheckup.getNoKtp());
-////                        periksaLab.setUrlKtp(headerCheckup.getUrlKtp());
-////
-////                        JenisPriksaPasien jenisPriksaPasien = getListJenisPeriksaPasien(headerCheckup.getIdJenisPeriksaPasien());
-////                        periksaLab.setJenisPeriksaPasien(jenisPriksaPasien.getKeterangan());
-////
-////                        setPeriksaLab(periksaLab);
-////
-////                        break;
-////                    }
-////                }
-////
-////            } else {
-////                setPeriksaLab(new PeriksaLab());
-////            }
-////        } else {
-////            setPeriksaLab(new PeriksaLab());
         }
 
         logger.info("[PeriksaLabAction.add] end process <<<");
@@ -235,7 +183,8 @@ public class PeriksaLabAction extends BaseMasterAction {
         List<PeriksaLab> listPeriksaLabList = new ArrayList();
 
         // hanya kategori lab laboratorium saja
-        periksaLab.setIdKategoriLab("02");
+        periksaLab.setIdKategoriLab("KAL00000002");
+        periksaLab.setBranchId(CommonUtil.userBranchLogin());
 
         try {
             listPeriksaLabList = periksaLabBoProxy.getSearchLab(periksaLab);
@@ -264,8 +213,8 @@ public class PeriksaLabAction extends BaseMasterAction {
         String tglToday = new SimpleDateFormat("dd-MM-yyyy").format(date);
 
         PeriksaLab periksaLab = new PeriksaLab();
-        periksaLab.setStTglFrom(tglToday);
-        periksaLab.setStTglTo(tglToday);
+        periksaLab.setStDateFrom(tglToday);
+        periksaLab.setStDateTo(tglToday);
         setPeriksaLab(periksaLab);
 
         HttpSession session = ServletActionContext.getRequest().getSession();
@@ -509,9 +458,9 @@ public class PeriksaLabAction extends BaseMasterAction {
         return SUCCESS;
     }
 
-    public String saveEditDokterLab(String idPeriksaLab, String idDokter) {
+    public CheckResponse saveEditDokterLab(String idPeriksaLab, String idDokter) {
         logger.info("[PeriksaLabAction.saveEditDokterLab] start process >>>");
-
+        CheckResponse response = new CheckResponse();
         try {
             String userLogin = CommonUtil.userLogin();
             String userArea = CommonUtil.userBranchLogin();
@@ -530,14 +479,12 @@ public class PeriksaLabAction extends BaseMasterAction {
             periksaLabBo.saveDokterLab(periksaLab);
 
         } catch (GeneralBOException e) {
-            Long logId = null;
-            logger.error("[PeriksaLabAction.saveOrderLab] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            response.setStatus("error");
+            response.setMessage("Error"+e.getMessage());
         }
 
         logger.info("[PeriksaLabAction.saveOrderLab] End process >>>");
-        return SUCCESS;
+        return response;
     }
 
     public String printPeriksaLab() {

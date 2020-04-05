@@ -400,6 +400,13 @@
                 <value>sshconfig/com/neurix/akuntansi/master/settingReportUser/hibernate/ImSettingReportUserEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ItPayrollPttEntity.hbm.xml</value>
 
+                <value>sshconfig/com/neurix/simrs/master/tindakan/hibernate/ImSimrsKategoriTindakanPelayananEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/dokter/hibernate/ImSimrsDokterPelayananEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/jenisperiksapasien/hibernate/ImSimrsAsuransiEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/checkup/hibernate/ItSimrsHeaderCheckupEntityLog.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/obat/hibernate/ItSimrsReturObatEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/obat/hibernate/ItSimrsReturObatDetailEntity.hbm.xml</value>
+
             </list>
         </property>
     </bean>
