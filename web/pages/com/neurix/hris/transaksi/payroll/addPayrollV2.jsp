@@ -8,10 +8,8 @@
 <html>
 <head>
     <%@ include file="/pages/common/header.jsp" %>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/UserAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/BiodataAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PayrollAction.js"/>'></script>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/ProvinsiAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/MedicalRecordAction.js"/>'></script>
     <script type='text/javascript'>
         $.subscribe('successDialog', function (event, data) {
@@ -55,7 +53,6 @@
     <section class="content-header">
         <h1>
             Add Payroll
-            <small>GO-MEDSYS</small>
         </h1>
     </section>
     <!-- Main content -->
@@ -111,9 +108,9 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:select list="#{'2017':'2017', '2018' : '2018', '2019':'2019', '2020':'2020', '2021':'2021', '2022':'2022', '2023':'2023'}"
-                                                                  id="tahunPayroll" name="payroll.tahun" disabled="true"
-                                                                  headerKey="0" headerValue="Tahun" cssClass="form-control" />
+                                                        <s:action id="comboPeriode" namespace="/rekruitmen" name="initComboPeriodeTahunSekarang10_rekruitmen"/>
+                                                        <s:select cssClass="form-control" list="#comboPeriode.listOfComboPeriode" id="tahunPayroll" headerKey="" disabled="true"
+                                                                  headerValue="[Select one]" name="payroll.tahun"/>
                                                     </table>
                                                 </td>
                                             </tr>
@@ -127,6 +124,7 @@
                                                         <s:select list="#{'PR':'Payroll', 'T':'THR', 'PD':'Pendidikan', 'R':'Rapel',
                                         'JP':'Jasprod', 'JB':'Jubileum', 'PN':'Pensiun'}" id="tipe" name="payroll.tipe"
                                                                   cssClass="form-control" disabled="true" />
+                                                        <s:hidden name="payroll.tipe" />
                                                     </table>
 
                                                 </td>
@@ -216,6 +214,9 @@
                                                         <s:set name="listDataPayroll" value="#session.listDataPayrollSearch" scope="request" />
                                                         <display:table name="listDataPayroll" class="tablePayroll table table-condensed table-striped table-hover"
                                                                        requestURI="paging_displaytag_payroll.action" export="true" id="row" pagesize="40" style="font-size:10">
+                                                            <s:if test="%{payroll.adaCheckBox}">
+                                                            <display:column><s:checkbox theme="simple" name="payroll.checkedValue" fieldValue="%{#attr.row.nip}" cssClass="cekUserPensiun"/></display:column>
+                                                            </s:if>
                                                             <display:column property="nip" sortable="true" title="NIP"  />
                                                             <display:column property="nama" sortable="true" title="Nama" />
                                                             <display:column property="departmentName" sortable="true" title="Bidang" />
@@ -231,69 +232,63 @@
                                                 </tr>
                                             </table>
                                         </center>
-                                        <div id="actions" class="form-actions">
-                                            <table>
-                                                <tr>
-                                                    <div id="crud">
-                                                        <td>
-                                                            <table>
-                                                                <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"
-                                                                           resizable="false"
-                                                                           height="350" width="600" autoOpen="false" title="Saving ...">
-                                                                    Please don't close this window, server is processing your request ...
-                                                                    </br>
-                                                                    </br>
-                                                                    </br>
-                                                                    <center>
-                                                                        <img border="0" src="<s:url value="/pages/images/indicator-write.gif"/>" name="image_indicator_write">
-                                                                    </center>
-                                                                </sj:dialog>
+                                        <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"
+                                                   resizable="false"
+                                                   height="350" width="600" autoOpen="false" title="Saving ...">
+                                            Please don't close this window, server is processing your request ...
+                                            </br>
+                                            </br>
+                                            <center>
+                                                <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                     src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                     name="image_indicator_write">
+                                                <br>
+                                                <img class="spin" border="0"
+                                                     style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                     src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                     name="image_indicator_write">
+                                            </center>
+                                        </sj:dialog>
 
-                                                                <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false"
-                                                                           height="200" width="400" autoOpen="false" title="Infomation Dialog"
-                                                                           buttons="{
+                                        <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false"
+                                                   height="200" width="400" autoOpen="false" title="Infomation Dialog"
+                                                   buttons="{
                                                               'OK':function() {
                                                                       clos();
                                                                    }
                                                             }"
-                                                                >
-                                                                    <img border="0" src="<s:url value="/pages/images/icon_success.png"/>" name="icon_success">
-                                                                    Record has been saved successfully.
-                                                                </sj:dialog>
+                                        >
+                                            <img border="0" src="<s:url value="/pages/images/icon_success.png"/>" name="icon_success">
+                                            Record has been saved successfully.
+                                        </sj:dialog>
 
-                                                                <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
-                                                                           height="250" width="600" autoOpen="false" title="Error Dialog"
-                                                                           buttons="{
+                                        <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
+                                                   height="250" width="600" autoOpen="false" title="Error Dialog"
+                                                   buttons="{
                                                                         'OK':function() { $('#error_dialog').dialog('close'); }
                                                                     }"
-                                                                >
-                                                                    <div class="alert alert-error fade in">
-                                                                        <label class="control-label" align="left">
-                                                                            <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessage"></p>
-                                                                        </label>
-                                                                    </div>
-                                                                </sj:dialog>
+                                        >
+                                            <div class="alert alert-error fade in">
+                                                <label class="control-label" align="left">
+                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessage"></p>
+                                                </label>
+                                            </div>
+                                        </sj:dialog>
 
-                                                                <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog" modal="true" resizable="false"
-                                                                           height="280" width="500" autoOpen="false" title="Warning"
-                                                                           buttons="{
+                                        <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog" modal="true" resizable="false"
+                                                   height="280" width="500" autoOpen="false" title="Warning"
+                                                   buttons="{
                                                                         'OK':function() { $('#error_validation_dialog').dialog('close'); }
                                                                     }"
-                                                                >
-                                                                    <div class="alert alert-error fade in">
-                                                                        <label class="control-label" align="left">
-                                                                            <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> Please check this field :
-                                                                            <br/>
-                                                                            <center><div id="errorValidationMessage"></div></center>
-                                                                        </label>
-                                                                    </div>
-                                                                </sj:dialog>
-                                                            </table>
-                                                        </td>
-                                                    </div>
-                                                </tr>
-                                            </table>
-                                        </div>
+                                        >
+                                            <div class="alert alert-error fade in">
+                                                <label class="control-label" align="left">
+                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> Please check this field :
+                                                    <br/>
+                                                    <center><div id="errorValidationMessage"></div></center>
+                                                </label>
+                                            </div>
+                                        </sj:dialog>
                                     </s:form>
                                 </td>
                             </tr>
@@ -306,6 +301,19 @@
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
+<script>
+    $(document).ready(function(){
+        $(".cekUserPensiun").change(function() {
+            if(this.checked) {
+                PayrollAction.addUserCekToSession(this.value, function(){
+                });
+            }else{
+                PayrollAction.deleteUserCekToSession(this.value, function(){
+                });
+            }
+        });
+    })
 
+</script>
 <%@ include file="/pages/common/footer.jsp" %>
 <%@ include file="/pages/common/lastScript.jsp" %>

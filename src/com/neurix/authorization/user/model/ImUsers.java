@@ -222,6 +222,16 @@ public class ImUsers implements Serializable {
         this.idPelayanan = idPelayanan;
     }
 
+    private String idDevice;
+
+    public String getIdDevice() {
+        return idDevice;
+    }
+
+    public void setIdDevice(String idDevice) {
+        this.idDevice = idDevice;
+    }
+
     private ImBiodataEntity imBiodataEntity;
 
     public ImBiodataEntity getImBiodataEntity() {

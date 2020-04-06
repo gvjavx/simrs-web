@@ -301,6 +301,11 @@ public class PayrollBpjsBoImpl implements PayrollBpjsBo {
                     returnPayrollSkalaGaji.setMinBpjsTk(payrollSkalaGajiEntity.getMinBpjsTk());
                     returnPayrollSkalaGaji.setMaxBpjsTk(payrollSkalaGajiEntity.getMaxBpjsTk());
 
+                    returnPayrollSkalaGaji.setNumMinBpjsKs(CommonUtil.numbericFormat(payrollSkalaGajiEntity.getMinBpjsKs(), "###,###"));
+                    returnPayrollSkalaGaji.setNumMaxBpjsKs(CommonUtil.numbericFormat(payrollSkalaGajiEntity.getMaxBpjsKs(), "###,###"));
+                    returnPayrollSkalaGaji.setNumMinBpjsTk(CommonUtil.numbericFormat(payrollSkalaGajiEntity.getMinBpjsTk(), "###,###"));
+                    returnPayrollSkalaGaji.setNumMaxBpjsTk(CommonUtil.numbericFormat(payrollSkalaGajiEntity.getMaxBpjsTk(), "###,###"));
+
                     returnPayrollSkalaGaji.setIuranKary(payrollSkalaGajiEntity.getIuranKary());
                     returnPayrollSkalaGaji.setJpkKary(payrollSkalaGajiEntity.getJpkKary());
 
@@ -318,6 +323,7 @@ public class PayrollBpjsBoImpl implements PayrollBpjsBo {
                     returnPayrollSkalaGaji.setCreatedWho(payrollSkalaGajiEntity.getCreatedWho());
                     returnPayrollSkalaGaji.setCreatedDate(payrollSkalaGajiEntity.getCreatedDate());
                     returnPayrollSkalaGaji.setLastUpdate(payrollSkalaGajiEntity.getLastUpdate());
+                    returnPayrollSkalaGaji.setLastUpdateWho(payrollSkalaGajiEntity.getLastUpdateWho());
 
                     returnPayrollSkalaGaji.setAction(payrollSkalaGajiEntity.getAction());
                     returnPayrollSkalaGaji.setFlag(payrollSkalaGajiEntity.getFlag());

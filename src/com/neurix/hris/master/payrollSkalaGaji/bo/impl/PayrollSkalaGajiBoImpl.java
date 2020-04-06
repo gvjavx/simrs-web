@@ -271,11 +271,12 @@ public class PayrollSkalaGajiBoImpl implements PayrollSkalaGajiBo {
                     returnPayrollSkalaGaji.setAir(payrollSkalaGajiEntity.getAir());
                     returnPayrollSkalaGaji.setStAir(CommonUtil.numbericFormat(payrollSkalaGajiEntity.getAir(),"###,###"));
                     returnPayrollSkalaGaji.setBbm(payrollSkalaGajiEntity.getBbm());
-                    returnPayrollSkalaGaji.setStBbm(CommonUtil.numbericFormat(payrollSkalaGajiEntity.getNilai(),"###,###"));
+                    returnPayrollSkalaGaji.setStBbm(CommonUtil.numbericFormat(payrollSkalaGajiEntity.getBbm(),"###,###"));
 
                     returnPayrollSkalaGaji.setCreatedWho(payrollSkalaGajiEntity.getCreatedWho());
                     returnPayrollSkalaGaji.setCreatedDate(payrollSkalaGajiEntity.getCreatedDate());
                     returnPayrollSkalaGaji.setLastUpdate(payrollSkalaGajiEntity.getLastUpdate());
+                    returnPayrollSkalaGaji.setLastUpdateWho(payrollSkalaGajiEntity.getLastUpdateWho());
 
                     returnPayrollSkalaGaji.setAction(payrollSkalaGajiEntity.getAction());
                     returnPayrollSkalaGaji.setFlag(payrollSkalaGajiEntity.getFlag());

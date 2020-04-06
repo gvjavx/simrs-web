@@ -11,6 +11,8 @@
     <bean id="payrollTunjanganStrategisBo" class="com.neurix.hris.master.payrollTunjanganStrategis.bo.impl.PayrollTunjanganStrategisBoImpl"
           p:payrollTunjanganStrategisDao-ref="payrollTunjanganStrategisDao"
           p:branchDao-ref="branchDao"
+          p:positionDao-ref="positionDao"
+          p:golonganDao-ref="golonganDao"
     />
 
     <bean id="payrollTunjanganStrategisBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

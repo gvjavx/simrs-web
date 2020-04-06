@@ -37,6 +37,9 @@
         <property name="kirimList">
             <column name="kirim_list" sql-type="varchar" length="1" not-null="false" />
         </property>
+        <property name="divisiId">
+            <column name="divisi_id" sql-type="varchar" length="1" not-null="false" />
+        </property>
 
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />

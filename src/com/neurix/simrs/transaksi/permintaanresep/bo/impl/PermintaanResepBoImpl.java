@@ -177,6 +177,7 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
         permintaanEntity.setLastUpdateWho(bean.getCreatedWho());
         permintaanEntity.setBranchId(bean.getBranchId());
         permintaanEntity.setTujuanPelayanan(bean.getTujuanPelayanan());
+        permintaanEntity.setTtdPasien(bean.getTtdPasien());
         permintaanEntity.setTtdDokter(bean.getTtdDokter());
         permintaanEntity.setStatus("3");
         permintaanEntity.setIsUmum("N");

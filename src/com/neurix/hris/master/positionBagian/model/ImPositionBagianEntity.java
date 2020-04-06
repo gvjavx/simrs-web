@@ -20,6 +20,7 @@ public class ImPositionBagianEntity implements Serializable {
     private String kelompokId;
     private String divisiName;
     private String namaPegawai;
+    private String kodering;
     private String branchId;
     private String flag;
     private String action;
@@ -28,6 +29,13 @@ public class ImPositionBagianEntity implements Serializable {
     private String createdWho;
     private String lastUpdateWho;
 
+    public String getKodering() {
+        return kodering;
+    }
+
+    public void setKodering(String kodering) {
+        this.kodering = kodering;
+    }
 
     public String getDivisiId() {
         return divisiId;

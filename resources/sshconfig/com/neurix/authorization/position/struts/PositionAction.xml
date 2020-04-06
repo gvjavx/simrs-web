@@ -57,21 +57,34 @@
                 <param name="namespace">/</param>
                 <param name="redirectSession">true</param>
             </result>
+            <result name="global_error" type="httpheader">
+                <param name="status">500</param>
+                <param name="headers.message">${exception}</param>
+            </result>
         </global-results>
 
         <global-exception-mappings>
-            <exception-mapping exception="java.lang.Exception" result="error" />
+            <exception-mapping exception="java.lang.Exception" result="global_error" />
+            <exception-mapping exception="java.lang.Error" result="global_error" />
+            <exception-mapping exception="java.lang.RuntimeException" result="global_error" />
         </global-exception-mappings>
 
         <action name="*_position"
                 class="com.neurix.authorization.position.action.PositionAction" method="{1}">
             <interceptor-ref name="ivelinStack"/>
             <result name="input">/pages/com/neurix/authorization/position/position.jsp</result>
-            <result name="error">/pages/com/neurix/authorization/position/position.jsp</result>
-            <result name="success">/pages/com/neurix/authorization/position/position.jsp</result>
-            <result name="success_save" type="json">/pages/com/neurix/authorization/position/position.jsp</result>
-            <result name="failure">/pages/com/neurix/authorization/position/position.jsp</result>
+            <result name="error">/pages/com/neurix/authorization/position/addPosition.jsp</result>
+            <result name="success">/pages/com/neurix/authorization/position/searchPosition.jsp</result>
+            <result name="success_save">/pages/com/neurix/authorization/position/addPosition.jsp</result>
             <result name="init_add">/pages/com/neurix/authorization/position/addPosition.jsp</result>
+            <result name="input_position">/pages/com/neurix/authorization/position/searchPosition.jsp</result>
+
+            <result name="init_edit">/pages/com/neurix/authorization/position/editPosition.jsp</result>
+            <result name="success_save_edit">/pages/com/neurix/authorization/position/editPosition.jsp</result>
+            <result name="failure">/pages/com/neurix/authorization/position/editPosition.jsp</result>
+
+            <result name="success_save_delete">/pages/com/neurix/authorization/position/deletePosition.jsp</result>
+            <result name="init_delete">/pages/com/neurix/authorization/position/deletePosition.jsp</result>
 
             <!--<result name="error" type="httpheader">
                 <param name="status">504</param>
@@ -82,7 +95,7 @@
         <action name="paging_displaytag"
                 class="com.neurix.authorization.position.action.PositionAction" method="paging">
             <interceptor-ref name="defaultStack"/>
-            <result name="success">/pages/com/neurix/authorization/position/position.jsp</result>
+            <result name="success">/pages/com/neurix/authorization/position/searchPosition.jsp</result>
         </action>
 
     </package>

@@ -77,7 +77,7 @@ public class PayrollTunjanganJabatanStrukturalAction extends BaseMasterAction{
 
         if(kode != null && !"".equalsIgnoreCase(kode)){
             if(listOfResult != null){
-                for (PayrollTunjanganJabatanStruktural payrollTunjanganJabatanStruktural: listOfResult) {
+                for (PayrollTunjanganJabatanStruktural payrollTunjanganJabatanStruktural : listOfResult) {
                     if(kode.equalsIgnoreCase(payrollTunjanganJabatanStruktural.getTunjJabStrukturId()) && flag.equalsIgnoreCase(payrollTunjanganJabatanStruktural.getFlag())){
                         setPayrollTunjanganJabatanStruktural(payrollTunjanganJabatanStruktural);
                         break;
@@ -100,8 +100,8 @@ public class PayrollTunjanganJabatanStrukturalAction extends BaseMasterAction{
         setAddOrEdit(true);
         setAdd(true);
 
-        HttpSession session = ServletActionContext.getRequest().getSession();
-        session.removeAttribute("listOfResult");
+//        HttpSession session = ServletActionContext.getRequest().getSession();
+//        session.removeAttribute("listOfResult");
 
         logger.info("[PayrollTunjanganJabatanStrukturalAction.add] stop process >>>");
         return "init_add";

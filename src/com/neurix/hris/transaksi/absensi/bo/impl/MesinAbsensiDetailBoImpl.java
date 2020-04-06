@@ -237,12 +237,12 @@ public class MesinAbsensiDetailBoImpl implements MesinAbsensiDetailBo {
             if (searchBean.getStatus() != null && !"".equalsIgnoreCase(searchBean.getStatus())) {
                 hsCriteria.put("status", searchBean.getStatus());
             }
-            if (searchBean.getTanggalDari() != null) {
-                hsCriteria.put("tanggal_dari", searchBean.getTanggalDari());
-            }
-            if (searchBean.getTanggalSelesai() != null) {
-                hsCriteria.put("tanggal_selesai", searchBean.getTanggalSelesai());
-            }
+//            if (searchBean.getTanggalDari() != null) {
+//                hsCriteria.put("tanggal_dari", searchBean.getTanggalDari());
+//            }
+//            if (searchBean.getTanggalSelesai() != null) {
+//                hsCriteria.put("tanggal_selesai", searchBean.getTanggalSelesai());
+//            }
 //            if (searchBean.getScanDate() != null) {
 //                hsCriteria.put("scan_date", searchBean.getScanDate());
 //            }
@@ -310,7 +310,9 @@ public class MesinAbsensiDetailBoImpl implements MesinAbsensiDetailBo {
 
                     returnMesinAbsensiDetail.setAction(mesinAbsensiDetailEntity.getAction());
                     returnMesinAbsensiDetail.setFlag(mesinAbsensiDetailEntity.getFlag());
-                    listOfResult.add(returnMesinAbsensiDetail);
+                    if (returnMesinAbsensiDetail.getScanDate().after(searchBean.getTanggalDari())) {
+                        listOfResult.add(returnMesinAbsensiDetail);
+                    }
                 }
             }
         }

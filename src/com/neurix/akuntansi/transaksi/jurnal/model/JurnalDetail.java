@@ -23,6 +23,15 @@ public class JurnalDetail extends BaseModel {
     private String biaya;
     private String pasienId;
     private String nomorRekening;
+    private String divisiId;
+
+    public String getDivisiId() {
+        return divisiId;
+    }
+
+    public void setDivisiId(String divisiId) {
+        this.divisiId = divisiId;
+    }
 
     public String getNomorRekening() {
         return nomorRekening;

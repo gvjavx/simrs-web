@@ -51,6 +51,16 @@ public class PermintaanResepMobile {
 
     private String message;
 
+    private String ttdDokter;
+
+    public String getTtdDokter() {
+        return ttdDokter;
+    }
+
+    public void setTtdDokter(String ttdDokter) {
+        this.ttdDokter = ttdDokter;
+    }
+
     public String getMessage() {
         return message;
     }

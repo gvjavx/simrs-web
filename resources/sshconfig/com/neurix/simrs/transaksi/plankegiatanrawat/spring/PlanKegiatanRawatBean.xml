@@ -9,6 +9,10 @@
           p:planKegiatanRawatBoProxy-ref="planKegiatanRawatBo"
     />
 
+    <bean id="rawatInapController" class="com.neurix.simrs.mobileapi.RawatInapController"
+          p:planKegiatanRawatBoProxy-ref="planKegiatanRawatBo"
+    />
+
     <bean id="planKegiatanRawatBo" class="com.neurix.simrs.transaksi.plankegiatanrawat.bo.impl.PlanKegiatanRawatBoImpl"
           p:planKegiatanRawatDao-ref="planKegiatanRawatDao"
           p:pasienDao-ref="pasienDao"

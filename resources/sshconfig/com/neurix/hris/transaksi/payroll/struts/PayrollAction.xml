@@ -83,6 +83,7 @@
             <result name="reportTransferGaji_payroll">/pages/com/neurix/hris/transaksi/payroll/ReportTransferGaji.jsp</result>
             <result name="reportJubileum_payroll">/pages/com/neurix/hris/transaksi/payroll/ReportJubileum.jsp</result>
             <result name="reportPensiun_payroll">/pages/com/neurix/hris/transaksi/payroll/ReportPensiun.jsp</result>
+            <result name="reportEspt_payroll">/pages/com/neurix/hris/transaksi/payroll/ReportEspt.jsp</result>
 
             <!--<result name="error">/pages/com/neurix/hris/transaksi/payroll/addPayrollV2.jsp</result>-->
             <result name="init_add">/pages/com/neurix/hris/transaksi/payroll/addPayroll.jsp</result>
@@ -104,7 +105,7 @@
 
 
             <result name="success_print_report_payroll" type="jasper">
-                <param name="location">/pages/report/com/neurix/hris/reportPayroll.jasper</param>
+                <param name="location">/pages/report/com/neurix/hris/reportPayroll3.jasper</param>
                 <param name="connection">connection</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>
@@ -117,7 +118,7 @@
                 <param name="reportParameters">reportParams</param>
             </result>
             <result name="success_print_report_payroll_cuti_tahunan" type="jasper">
-                <param name="location">/pages/report/com/neurix/hris/reportPayrollCutiTahunanBranch.jasper</param>
+                <param name="location">/pages/report/com/neurix/hris/reportPayrollCutiTahunanBranch3.jasper</param>
                 <param name="connection">connection</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>
@@ -131,7 +132,7 @@
             </result>
 
             <result name="success_print_report_payroll_jasprod_branch" type="jasper">
-                <param name="location">/pages/report/com/neurix/hris/reportPayrollJasoprBranch.jasper</param>
+                <param name="location">/pages/report/com/neurix/hris/reportPayrollJasoprBranch3.jasper</param>
                 <param name="connection">connection</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>
@@ -145,7 +146,7 @@
             </result>
 
             <result name="success_print_report_payroll_jubileum" type="jasper">
-                <param name="location">/pages/report/com/neurix/hris/reportPayrollJubileum.jasper</param>
+                <param name="location">/pages/report/com/neurix/hris/reportPayrollJubileum3.jasper</param>
                 <param name="connection">connection</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>
@@ -205,27 +206,27 @@
                 <param name="reportParameters">reportParams</param>
             </result>
             <result name="success_print_report_payroll_Cuti_tahunan_branch" type="jasper">
-                <param name="location">/pages/report/com/neurix/hris/reportPayrollCutiTahunanBranch.jasper</param>
+                <param name="location">/pages/report/com/neurix/hris/reportPayrollCutiTahunanBranch3.jasper</param>
                 <param name="connection">connection</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>
             </result>
             <result name="success_print_report_payroll_Cuti_panjang_branch" type="jasper">
-                <param name="location">/pages/report/com/neurix/hris/reportPayrollCutiPanjangBranch.jasper</param>
+                <param name="location">/pages/report/com/neurix/hris/reportPayrollCutiPanjangBranch3.jasper</param>
                 <param name="connection">connection</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>
             </result>
 
             <result name="success_print_report_payroll_insentif_branch" type="jasper">
-                <param name="location">/pages/report/com/neurix/hris/reportPayrollInsentifBranch.jasper</param>
+                <param name="location">/pages/report/com/neurix/hris/reportPayrollInsentifBranch3.jasper</param>
                 <param name="connection">connection</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>
             </result>
 
             <result name="success_print_report_payroll_pensiun" type="jasper">
-                <param name="location">/pages/report/com/neurix/hris/reportPayrollPensiun.jasper</param>
+                <param name="location">/pages/report/com/neurix/hris/reportPayrollPensiun3.jasper</param>
                 <param name="connection">connection</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>

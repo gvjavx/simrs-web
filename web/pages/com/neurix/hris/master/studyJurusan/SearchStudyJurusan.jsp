@@ -50,7 +50,7 @@
     <section class="content-header">
         <h1>
             Study Jurusan
-            <small>e-HEALTH</small>
+            <small>GO-MEDSYS</small>
         </h1>
         <%--<ol class="breadcrumb">--%>
         <%--<li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>--%>
@@ -178,20 +178,25 @@
                                             </display:column>
 
                                             <display:column media="html" title="Delete" style="text-align:center;font-size:9">
-                                                <s:url var="urlViewDelete" namespace="/studyJurusan" action="delete_studyJurusan" escapeAmp="false">
-                                                    <s:param name="id"><s:property value="#attr.row.jurusanId" /></s:param>
-                                                    <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
-                                                </s:url>
-                                                <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
-                                                </sj:a>
-
+                                                <s:if test="#attr.row.flagYes">
+                                                    <s:url var="urlViewDelete" namespace="/studyJurusan" action="delete_studyJurusan" escapeAmp="false">
+                                                        <s:param name="id"><s:property value="#attr.row.jurusanId" /></s:param>
+                                                        <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
+                                                    </s:url>
+                                                    <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
+                                                        <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
+                                                    </sj:a>
+                                                </s:if>
                                             </display:column>
                                             <display:column property="jurusanId" sortable="true" title="Jurusan ID" />
                                             <display:column property="jurusanName" sortable="true" title="Name"  />
 
-                                            <display:column property="flag" sortable="true" title="Flag" />
-                                            <display:column property="createdWho" sortable="true" title="CreatedWho"/>
+                                            <display:column property="flag" sortable="true" title="Flag"  />
+                                            <display:column property="createdWho" sortable="true" title="Created who"  />
+                                            <display:column property="createdDate" sortable="true" title="Created date"  />
+                                            <display:column property="lastUpdateWho" sortable="true" title="Last update who"  />
+                                            <display:column property="lastUpdate" sortable="true" title="Last update"  />
+                                            <display:column property="action" sortable="true" title="Action"  />
 
                                         </display:table>
                                     </td>

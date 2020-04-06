@@ -43,6 +43,7 @@ public class CommonConstant {
     public final static String RESOURCE_PATH_DOC_RUJUK_PASIEN = "/upload/surat_rujuk/";
     public final static String RESOURCE_PATH_DOC_PO = "/upload/surat_po/";
     public final static String RESOURCE_PATH_TTD_PASIEN = "/upload/ttd_pasien/";
+    public final static String RESOURCE_PATH_DOC_FPK = "/upload/fpk/";
     public final static String RESOURCE_PATH_TTD_DOKTER = "/upload/ttd_dokter/";
     public final static String RESOURCE_PATH_TTD_APOTEKER = "/upload/ttd_apoteker/";
 
@@ -51,15 +52,18 @@ public class CommonConstant {
     public final static String RESOURCE_PATH_DEFAULT_MAP = "/pages/upload/map/";
     public final static String RESOURCE_PATH_SAVED_UPLOAD_PAYMENT_DIRECTORY = "C:\\xampp\\tomcat\\webapps\\";
 
+    public final static String RESOURCE_PATH_USER_UPLOAD_IJAZAH = "/pages/upload/image/ijazah/";
+
     //sodiq, 18 Nov 2019, Upload KTP pasien
 //    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = "C:\\Users\\user\\Pictures";
     public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = "C:\\Users\\pc001\\Pictures";
-    public final static String RESOURCE_PATH_IMG_ASSET = "C:\\apache-tomcat-8.5.40\\webapps";
+//    public final static String RESOURCE_PATH_IMG_ASSET = "C:\\apache-tomcat-8.5.40\\webapps";
 //    public final static String RESOURCE_PATH_IMG_ASSET = "/opt/tomcat/webapps";
-//    public final static String RESOURCE_PATH_IMG_ASSET = "C:\\tomcat-7-64x\\webapps";
+    public final static String RESOURCE_PATH_IMG_ASSET = "C:\\tomcat\\webapps";
 
 
     //    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY="C:\\Users\\Toshiba\\Pictures";
+
 //    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = "/mnt/image";
     public final static String EXTERNAL_IMG_URI = "/simrs/images";
 
@@ -112,14 +116,14 @@ public class CommonConstant {
 //    public final static String URL_IMAGE_LOGO_REPORT = "C:\\tomcat-7-64x\\webapps\\hris\\pages\\images\\LOGO-RW.png";
 //        public final static String URL_IMAGE_LOGO_REPORT = "/opt/tomcat/webapps/simrs/pages/images/LOGO-RW.png";
 
-//    public final static String URL_IMAGE_LOGO_REPORT = "C:\\tomcat-7-64x\\webapps\\simrs\\pages\\images\\LOGO-RW.png";
-//    public final static String URL_LOGO_REPORT = "C:\\tomcat-7-64x\\webapps\\simrs\\pages\\images\\";
+    public final static String URL_IMAGE_LOGO_REPORT = "C:\\tomcat\\webapps\\simrs\\pages\\images\\logo-nmu.png";
+    public final static String URL_LOGO_REPORT = "C:\\tomcat\\webapps\\simrs\\pages\\images\\";
 
 //    public final static String URL_IMAGE_LOGO_REPORT = "C:\\apache-tomcat-8.5.40\\webapps\\simrs\\pages\\images\\LOGO-RW.png";
 //    public final static String URL_LOGO_REPORT = "C:\\apache-tomcat-8.5.40\\webapps\\simrs\\pages\\images\\";
 
-    public final static String URL_IMAGE_LOGO_REPORT = "/opt/tomcat/webapps/simrs/pages/images/LOGO-RW.png";
-    public final static String URL_LOGO_REPORT = "/opt/tomcat/webapps/simrs/pages/images/";
+//    public final static String URL_IMAGE_LOGO_REPORT = "/opt/tomcat/webapps/simrs/pages/images/LOGO-RW.png";
+//    public final static String URL_LOGO_REPORT = "/opt/tomcat/webapps/simrs/pages/images/";
 
     public final static String RESOURCE_DOCUMENT_PAYROLL = "/opt/tomcat/webapps/mnt/documents/";
 
@@ -130,14 +134,14 @@ public class CommonConstant {
     public final static String NOTAPPROVE_CREDIT_NOTE = "NCN";
 
 
-    public final static String REPORT_PAYROLL = "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayroll.jrxml";
-    public final static String REPORT_PAYROLL_THR = "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayrollthr.jrxml";
-    public final static String REPORT_PAYROLL_JASPROD = "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayrollJasopr.jrxml";
-    public final static String REPORT_PAYROLL_PENSIUN = "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayrollPensiun.jrxml";
-    public final static String REPORT_PAYROLL_PMP = "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayrollJubileum.jrxml";
-    public final static String REPORT_PAYROLL_INSENTIF = "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayrollInsentif.jrxml";
-    public final static String REPORT_PAYROLL_CUTI_PANJANG = "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayrollCutiPanjang.jrxml";
-    public final static String REPORT_PAYROLL_CUTI_TAHUNAN = "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayrollCutiTahunan.jrxml";
+    public final static String REPORT_PAYROLL = "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayroll3.jrxml";
+    public final static String REPORT_PAYROLL_THR = "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayrollThrBranch3.jrxml";
+    public final static String REPORT_PAYROLL_JASPROD = "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayrollJasoprBranch3jrxml";
+    public final static String REPORT_PAYROLL_PENSIUN = "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayrollPensiun3.jrxml";
+    public final static String REPORT_PAYROLL_PMP = "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayrollJubileum3.jrxml";
+    public final static String REPORT_PAYROLL_INSENTIF = "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayrollInsentifBranch3.jrxml";
+    public final static String REPORT_PAYROLL_CUTI_PANJANG = "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayrollCutiPanjangBranch3.jrxml";
+    public final static String REPORT_PAYROLL_CUTI_TAHUNAN = "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayrollCutiTahunanBranch3.jrxml";
 
 
     //ptpnx e-farming

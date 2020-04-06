@@ -88,8 +88,8 @@ public class ShiftAction extends BaseMasterAction {
         setAddOrEdit(true);
         setAdd(true);
 
-        HttpSession session = ServletActionContext.getRequest().getSession();
-        session.removeAttribute("listOfResult");
+//        HttpSession session = ServletActionContext.getRequest().getSession();
+//        session.removeAttribute("listOfResult");
 
         logger.info("[ShiftAction.add] stop process >>>");
         return "init_add";

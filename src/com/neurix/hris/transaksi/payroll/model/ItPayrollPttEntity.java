@@ -9,12 +9,39 @@ public class ItPayrollPttEntity implements Serializable {
     private String payrollId;
     private String idPtt;
     private BigDecimal nilai;
+    private String tahun;
+    private String bulan;
+    private String nip;
     private String flag;
     private String action;
     private String createdWho;
     private String lastUpdateWho;
     private Timestamp createdDate;
     private Timestamp lastUpdate;
+
+    public String getTahun() {
+        return tahun;
+    }
+
+    public void setTahun(String tahun) {
+        this.tahun = tahun;
+    }
+
+    public String getBulan() {
+        return bulan;
+    }
+
+    public void setBulan(String bulan) {
+        this.bulan = bulan;
+    }
+
+    public String getNip() {
+        return nip;
+    }
+
+    public void setNip(String nip) {
+        this.nip = nip;
+    }
 
     public String getPayrollPttId() {
         return payrollPttId;

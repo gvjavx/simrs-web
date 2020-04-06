@@ -47,7 +47,7 @@ public class IjinDao extends GenericDao<ImIjinEntity, String> {
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
 
         // Order by
-        criteria.addOrder(Order.asc("ijinId"));
+        criteria.addOrder(Order.desc("ijinId"));
 
         List<ImIjinEntity> results = criteria.list();
 
@@ -106,6 +106,15 @@ public class IjinDao extends GenericDao<ImIjinEntity, String> {
                 .add(Restrictions.eq("flag", "Y"))
                 .addOrder(Order.asc("ijinId"))
                 .list();
+        return results;
+    }
+
+    public List<ImIjinEntity> getDataIjin(String ijinName, String flag)throws HibernateException{
+        List<ImIjinEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImIjinEntity.class)
+                .add(Restrictions.eq("ijinName", ijinName))
+                .add(Restrictions.eq("flag", flag))
+                .list();
+
         return results;
     }
 }

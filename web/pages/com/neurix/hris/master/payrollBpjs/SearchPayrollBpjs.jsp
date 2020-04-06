@@ -49,8 +49,8 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Payroll Bpjs
-            <small>e-HEALTH</small>
+            Payroll BPJS
+            <small>GO-MEDSYS</small>
         </h1>
     </section>
 
@@ -154,7 +154,7 @@
                                     <td align="center">
                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
                                                    height="900" width="550" autoOpen="false"
-                                                   title="Payroll Skala Gaji Pkwt">
+                                                   title="Payroll BPJS">
                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                         </sj:dialog>
 
@@ -174,21 +174,29 @@
                                             </display:column>
 
                                             <display:column media="html" title="Delete" style="text-align:center;font-size:9">
-                                                <s:url var="urlViewDelete" namespace="/payrollBpjs" action="delete_payrollBpjs" escapeAmp="false">
-                                                    <s:param name="id"><s:property value="#attr.row.bpjsId" /></s:param>
-                                                    <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
-                                                </s:url>
-                                                <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
-                                                </sj:a>
-
+                                                <s:if test="#attr.row.flagYes">
+                                                    <s:url var="urlViewDelete" namespace="/payrollBpjs" action="delete_payrollBpjs" escapeAmp="false">
+                                                        <s:param name="id"><s:property value="#attr.row.bpjsId" /></s:param>
+                                                        <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
+                                                    </s:url>
+                                                    <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
+                                                        <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
+                                                    </sj:a>
+                                                </s:if>
                                             </display:column>
+
                                             <display:column property="bpjsId" sortable="true" title="Skala Gaji ID" />
                                             <display:column property="branchName" sortable="true" title="Unit" />
-                                            <display:column property="minBpjsKs" sortable="true" title="Min Bpjs Ks" />
-                                            <display:column property="maxBpjsKs" sortable="true" title="Max Bpjs Ks" />
-                                            <display:column property="minBpjsTk" sortable="true" title="Min Bpjs Tk" />
-                                            <display:column property="maxBpjsTk" sortable="true" title="Max Bpjs Tk" />
+                                            <display:column property="numMinBpjsKs" sortable="true" title="Min Bpjs Ks" />
+                                            <display:column property="numMaxBpjsKs" sortable="true" title="Max Bpjs Ks" />
+                                            <display:column property="numMinBpjsTk" sortable="true" title="Min Bpjs Tk" />
+                                            <display:column property="numMaxBpjsTk" sortable="true" title="Max Bpjs Tk" />
+                                            <display:column property="createdWho" sortable="true" title="Created who"  />
+                                            <display:column property="lastUpdateWho" sortable="true" title="Last update who"  />
+                                            <display:column property="flag" sortable="true" title="flag"  />
+                                            <display:column property="action" sortable="true" title="action"  />
+                                            <display:column property="createdDate" sortable="true" title="Created date"  />
+                                            <display:column property="lastUpdate" sortable="true" title="Last update"  />
                                         </display:table>
                                     </td>
                                 </tr>

@@ -35,6 +35,7 @@ public class ItPayrollJasoprEntity implements Serializable {
     private BigDecimal totaljasopr;
     private BigDecimal pphJasopr;
     private BigDecimal nettojasopr;
+    private BigDecimal tunjPph;
 
     private String flag;
     private String action;
@@ -42,6 +43,14 @@ public class ItPayrollJasoprEntity implements Serializable {
     private String lastUpdateWho;
     private Timestamp createdDate;
     private Timestamp lastUpdate;
+
+    public BigDecimal getTunjPph() {
+        return tunjPph;
+    }
+
+    public void setTunjPph(BigDecimal tunjPph) {
+        this.tunjPph = tunjPph;
+    }
 
     public BigDecimal getNettojasopr() {
         return nettojasopr;

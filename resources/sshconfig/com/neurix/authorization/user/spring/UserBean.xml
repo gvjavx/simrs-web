@@ -13,7 +13,10 @@
 
     <bean id="loginMobileController" class="com.neurix.hris.mobileapi.LoginMobileController"
           p:userBoProxy-ref="userBoProxy"
-        p:notifikasiFcmBoProxy-ref="notifikasiFcmBoProxy"/>
+          p:notifikasiFcmBoProxy-ref="notifikasiFcmBoProxy"/>
+
+    <bean id="userController" class="com.neurix.hris.mobileapi.UserController"
+          p:userBoProxy-ref="userBoProxy"/>
 
     <bean id="userMasterAct" class="com.neurix.authorization.user.action.UserAction"
           p:userBoProxy-ref="userBoProxy"

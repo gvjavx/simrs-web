@@ -16,13 +16,12 @@
         };
 
         $.subscribe('beforeProcessSave', function (event, data) {
-            var id = document.getElementById("kelompokId1").value;
-            var tunjJab = document.getElementById("tunjJabatan1").value;
-            var tunjStruk = document.getElementById("tunjStruktural1").value;
+            var jabatan = document.getElementById("positionId1").value;
+            var nilai = document.getElementById("nilai1").value;
+            var golongan = document.getElementById("golonganId1").value;
 
-
-            if (id != '' && tunjJab != '' && tunjStruk !='' ) {
-                if(isNaN(tunjJab.replace('.','')) == false && isNaN(tunjStruk.replace('.','')) == false){
+            if (jabatan != '' && nilai !='' && golongan !='') {
+                if(isNaN(nilai) == false){
                     if (confirm('Do you want to save this record?')) {
                         event.originalEvent.options.submit = true;
                         $.publish('showDialog');
@@ -34,11 +33,8 @@
                     event.originalEvent.options.submit = false;
                     var msg = "";
 
-                    if (isNaN(tunjJab.replace('.',''))) {
-                        msg += 'Field <strong>Tunj. Jabatan</strong> Harus angka' + '<br/>';
-                    }
-                    if (isNaN(tunjStruk.replace('.',''))) {
-                        msg += 'Field <strong>Tunj. Struktural</strong> Harus angka' + '<br/>';
+                    if (isNaN(nilai)) {
+                        msg += 'Field <strong>Nilai </strong> Harus angka tanpa koma.' + '<br/>';
                     }
 
                     document.getElementById('errorValidationMessage').innerHTML = msg;
@@ -48,16 +44,16 @@
             } else {
                 event.originalEvent.options.submit = false;
                 var msg = "";
-                if (tunjJab == '') {
-                    msg += 'Field <strong>Tunj. Jabatan</strong> is required.' + '<br/>';
+                if (jabatan == '') {
+                    msg += 'Field <strong>Jabatan</strong> is required.' + '<br/>';
                 }
 
-                if (id == '') {
-                    msg += 'Field <strong> Kelompok Jabatan</strong> is required.' + '<br/>';
+                if (nilai == '') {
+                    msg += 'Field <strong>Nilai</strong> is required.' + '<br/>';
                 }
 
-                if (tunjStruk == '') {
-                    msg += 'Field <strong>Tunj. Struktural</strong> is required.' + '<br/>';
+                if (golongan == '') {
+                    msg += 'Field <strong>Golongan</strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
@@ -94,14 +90,13 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="addPayrollSkalaGajiForm" method="post" theme="simple" namespace="/payrollTunjanganStrategis" action="saveAdd_payrollTunjanganStrategis" cssClass="well form-horizontal">
-
+            <s:form id="addForm" method="post" theme="simple" namespace="/payrollTunjanganStrategis" action="saveAdd_payrollTunjanganStrategis" cssClass="well form-horizontal">
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
 
 
 
-                <legend align="left">Add Tunjangan Jabatan Struktural</legend>
+                <legend align="left">Add Tunjangan Strategis</legend>
 
 
                 <table>
@@ -115,47 +110,50 @@
                 <table >
                     <tr>
                         <td>
-                            <label class="control-label"><small>Kelompok Jabatan :</small></label>
+                            <label class="control-label"><small>Jabatan :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:action id="comboPosition" namespace="/kelompokPosition" name="searchKelompok_kelompokPosition"/>
-                                <s:select list="#comboPosition.comboListOfKelompokPosition" id="kelompokId1" name="payrollTunjanganStrategis.kelompokId"
-                                          listKey="kelompokId" listValue="kelompokName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                <s:action id="comboPosition" namespace="/admin/position"
+                                          name="searchPosition_position"/>
+                                <s:select list="#comboPosition.listOfComboPosition" id="positionId1"
+                                          name="payrollTunjanganStrategis.positionId"
+                                          listKey="positionId" listValue="positionName" headerKey=""
+                                          headerValue="[Select one]" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
 
                     <tr>
                         <td>
-                            <label class="control-label"><small>Tunj. Jabatan: </small></label>
+                            <label class="control-label"><small>Nilai :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="tunjJabatan1" name="payrollTunjanganStrategis.tunjJabatan" required="true"  cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Tunj. STruktural: </small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield  id="tunjStruktural1" name="payrollTunjanganStrategis.tunjStruktural" required="true"  cssClass="form-control"/>
+                                <s:textfield type="number" min="0" id="nilai1" name="payrollTunjanganStrategis.nilai" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
 
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Golongan :</small></label>
+                        </td>
+                        <td id="golongan1Group">
+                            <table>
+                                <s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>
+                                <s:select list="#initComboTipe.listComboGolongan" id="golonganId1" name="payrollTunjanganStrategis.golonganId"
+                                          listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
                 </table>
-
-
 
                 <br>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                             <%--<button type="submit" class="btn btn-default">Submit</button>--%>
-                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="addPayrollSkalaGajiForm" id="save" name="save"
+                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="addForm" id="save" name="save"
                                    onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
                                    onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
                             <i class="fa fa-check"></i>
@@ -173,15 +171,21 @@
                             <div id="crud">
                                 <td>
                                     <table>
-                                        <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"
+                                        <sj:dialog id="waiting_dialog" openTopics="showDialog"
+                                                   closeTopics="closeDialog" modal="true"
                                                    resizable="false"
-                                                   height="350" width="600" autoOpen="false" title="Saving ...">
+                                                   height="250" width="600" autoOpen="false"
+                                                   title="Searching ...">
                                             Please don't close this window, server is processing your request ...
-                                            </br>
-                                            </br>
-                                            </br>
+                                            <br>
                                             <center>
-                                                <img border="0" src="<s:url value="/pages/images/indicator-write.gif"/>" name="image_indicator_write">
+                                                <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                     src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                     name="image_indicator_write">
+                                                <br>
+                                                <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                     src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                     name="image_indicator_write">
                                             </center>
                                         </sj:dialog>
 

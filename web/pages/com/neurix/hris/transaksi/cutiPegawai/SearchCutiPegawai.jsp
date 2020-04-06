@@ -404,9 +404,9 @@
                                                                     <li id="btnInisialisasiCuti">
                                                                         <s:a href="#"><i class="fa fa-user-plus"></i> Perbaikan Data Cuti</s:a>
                                                                     </li>
-                                                                    <li id="btnCutiMinus">
-                                                                        <s:a href="#"><i class="fa fa-search"></i> Daftar Cuti Minus</s:a>
-                                                                    </li>
+                                                                    <%--<li id="btnCutiMinus">--%>
+                                                                        <%--<s:a href="#"><i class="fa fa-search"></i> Daftar Cuti Minus</s:a>--%>
+                                                                    <%--</li>--%>
                                                                     <li id="btnCetakSisaCuti">
                                                                         <s:a href="#"><i class="fa fa-search"></i> Cetak Sisa Cuti</s:a>
                                                                     </li>
@@ -423,15 +423,21 @@
                                             <table id="showdata" width="96%">
                                                 <tr>
                                                     <td align="center">
-                                                        <sj:dialog id="waiting_dialog_loading" openTopics="showDialogLoading" closeTopics="closeDialogLoading" modal="true"
+                                                        <sj:dialog id="waiting_dialog" openTopics="showDialogLoading"
+                                                                   closeTopics="closeDialogLoading" modal="true"
                                                                    resizable="false"
-                                                                   height="350" width="600" autoOpen="false" title="Loading ...">
+                                                                   height="250" width="600" autoOpen="false"
+                                                                   title="Save Data ...">
                                                             Please don't close this window, server is processing your request ...
-                                                            </br>
-                                                            </br>
-                                                            </br>
+                                                            <br>
                                                             <center>
-                                                                <img border="0" src="<s:url value="/pages/images/indicator-read.gif"/>" name="image_indicator_read">
+                                                                <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                                     src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                                     name="image_indicator_write">
+                                                                <br>
+                                                                <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                                     src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                                     name="image_indicator_write">
                                                             </center>
                                                         </sj:dialog>
                                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
@@ -514,7 +520,7 @@
                                                             <display:column property="strTanggalDari" sortable="true" title="Tanggal Dari" style="text-align:center"/>
                                                             <display:column property="strTanggalSelesai" sortable="true" title="Tanggal Selesai" style="text-align:center"/>
                                                             <display:column property="keterangan" sortable="true" title="Keterangan"/>
-                                                            <display:column property="pegawaiPenggantiSementara" sortable="true" title="Pegawai Pengganti"/>
+                                                            <%--<display:column property="pegawaiPenggantiSementara" sortable="true" title="Pegawai Pengganti"/>--%>
                                                             <s:if test="#attr.row.notApprove">
                                                                 <display:column media="html" title="Approve Atasan"  style="text-align:center">
                                                                     <img border="0" src="<s:url value="/pages/images/icon_failure.ico"/>" name="icon_edit">

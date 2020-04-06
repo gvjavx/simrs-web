@@ -80,6 +80,17 @@ public class KeluargaDao extends GenericDao<ImKeluargaEntity, String> {
         return results;
     }
 
+    public List<ImKeluargaEntity> getDataKeluarga(String term) throws HibernateException {
+
+        List<ImKeluargaEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImKeluargaEntity.class)
+                .add(Restrictions.eq("nip",term))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("keluargaId"))
+                .list();
+
+        return results;
+    }
+
     public List<ImKeluargaEntity> getListKeluargaById(String term, String id) throws HibernateException {
 
         List<ImKeluargaEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImKeluargaEntity.class)

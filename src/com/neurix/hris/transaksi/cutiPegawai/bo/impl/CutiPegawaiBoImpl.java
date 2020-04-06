@@ -239,6 +239,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                 itCutiPegawaiEntity.setCancelDate(bean.getCancelDate());
                 itCutiPegawaiEntity.setCancelPerson(bean.getCancelPerson());
                 itCutiPegawaiEntity.setCancelNote(bean.getCancelNote());
+                itCutiPegawaiEntity.setKeterangan(bean.getKeterangan());
                 
                 itCutiPegawaiEntity.setFlag(bean.getFlag());
                 itCutiPegawaiEntity.setAction(bean.getAction());
@@ -1556,6 +1557,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                     if (!"".equalsIgnoreCase(bean.getPegawaiPenggantiSementara())){
                         //Send notif ke orang yang mengajukan
                         Notifikasi notifElse= new Notifikasi();
+
                         notifElse.setNip(bean.getPegawaiPenggantiSementara());
                         notifElse.setNoRequest(bean.getCutiPegawaiId());
                         notifElse.setTipeNotifId("umum");

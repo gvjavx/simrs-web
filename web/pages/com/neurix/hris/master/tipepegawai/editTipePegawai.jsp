@@ -18,7 +18,7 @@
             var tipeLiburId = '<s:property value="tipePegawai.tipePegawaiId"/>';
             var tipeLiburName = '<s:property value="tipePegawai.tipePegawaiName"/>';
 
-
+            console.log(tipeLiburName);
             if (tipeLiburName != '' ) {
 
                 if (confirm('Do you want to save this record?')) {
@@ -123,14 +123,6 @@
         </div>
     </div>
 
-    <div class="form-group">
-        <label class="control-label col-sm-2">Flag :</label>
-        <div class="col-sm-8" align="left">
-            <s:select cssClass="form-control" list="#{'Y':'Active', 'N':'NonActive'}" id="flag" name="tipePegawai.flag"
-                      headerKey="" headerValue="[Select one]"/>
-        </div>
-    </div>
-
     <br>
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
@@ -154,15 +146,21 @@
                 <div id="crud">
                     <td>
                         <table>
-                            <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"
+                            <sj:dialog id="waiting_dialog" openTopics="showDialog"
+                                       closeTopics="closeDialog" modal="true"
                                        resizable="false"
-                                       height="350" width="600" autoOpen="false" title="Saving ...">
+                                       height="250" width="600" autoOpen="false"
+                                       title="Save Data ...">
                                 Please don't close this window, server is processing your request ...
-                                </br>
-                                </br>
-                                </br>
+                                <br>
                                 <center>
-                                    <img border="0" src="<s:url value="/pages/images/loading4.gif"/>" name="image_indicator_write">
+                                    <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                         src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                         name="image_indicator_write">
+                                    <br>
+                                    <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                         src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                         name="image_indicator_write">
                                 </center>
                             </sj:dialog>
 

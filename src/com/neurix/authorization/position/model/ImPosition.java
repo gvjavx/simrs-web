@@ -27,9 +27,23 @@ public class ImPosition implements Serializable {
     private String strataName;
     private String bagianId;
     private String flagDijabatSatuOrang;
+    private String branchId;
+    private String departmentName;
+    private String stPositionId;
+    private String bagianName;
+    private String kodering;
+
     private ImDepartmentEntity imDepartmentEntity;
     private ImKelompokPositionEntity imKelompokPositionEntity;
     private ImPositionBagianEntity imPositionBagianEntity;
+
+    public String getKodering() {
+        return kodering;
+    }
+
+    public void setKodering(String kodering) {
+        this.kodering = kodering;
+    }
 
     public ImPositionBagianEntity getImPositionBagianEntity() {
         return imPositionBagianEntity;
@@ -189,6 +203,38 @@ public class ImPosition implements Serializable {
         this.action = action;
     }
 
+
+    public String getBagianName() {
+        return bagianName;
+    }
+
+    public void setBagianName(String bagianName) {
+        this.bagianName = bagianName;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
+    }
+
+    public String getStPositionId() {
+        return stPositionId;
+    }
+
+    public void setStPositionId(String stPositionId) {
+        this.stPositionId = stPositionId;
+    }
 
     private Set<ImUsers> imUserses;
 

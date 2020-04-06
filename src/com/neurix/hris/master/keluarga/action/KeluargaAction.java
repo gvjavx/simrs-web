@@ -137,7 +137,7 @@ public class KeluargaAction extends BaseMasterAction{
         session.setAttribute("listKeluarga", listKeluarga);
     }
 
-    public void initEdit(String idLama, String Name, String statusKeluarga, String statusKeluargaName, String tanggalLahir){
+    public void initEdit(String idLama, String Name, String statusKeluarga, String statusKeluargaName, String tanggalLahir, String gender){
         logger.info("[KeluargaAction.init] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<Keluarga> listKeluarga = new ArrayList<>();
@@ -146,11 +146,12 @@ public class KeluargaAction extends BaseMasterAction{
         if(idLama != null && !"".equalsIgnoreCase(idLama)){
             if(listOfResult != null){
                 for (Keluarga keluarga: listOfResult) {
-                    if(idLama.equalsIgnoreCase(keluarga.getStatusKeluargaId())){
+                    if(idLama.equalsIgnoreCase(keluarga.getKeluargaId())){
                         keluarga.setName(Name);
                         keluarga.setStatusKeluargaId(statusKeluarga);
                         keluarga.setStatusKeluargaName(statusKeluargaName);
                         keluarga.setTanggalLahir(CommonUtil.convertToTimestamp(tanggalLahir));
+                        keluarga.setGender(gender);
 
                         listKeluarga.add(keluarga);
                     }else{
@@ -363,7 +364,7 @@ public class KeluargaAction extends BaseMasterAction{
         return "success_save_delete";
     }
 
-    public String saveAdd(String name, String statusKeluarga, String statusKeluargaName, String tanggalLahir){
+    public String saveAdd(String name, String statusKeluarga, String statusKeluargaName, String tanggalLahir, String gender){
         logger.info("[KeluargaAction.saveAdd] start process >>>");
 
         try {
@@ -376,6 +377,7 @@ public class KeluargaAction extends BaseMasterAction{
             keluarga.setStTanggalLahir(tanggalLahir);
             keluarga.setStatusKeluargaId(statusKeluarga);
             keluarga.setStatusKeluargaName(statusKeluargaName);
+            keluarga.setGender(gender);
 
             keluarga.setCreatedWho(userLogin);
             keluarga.setLastUpdate(updateTime);
@@ -391,13 +393,21 @@ public class KeluargaAction extends BaseMasterAction{
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             KeluargaBo keluargaBo = (KeluargaBo) ctx.getBean("keluargaBoProxy");
 
+            int id = 0;
             HttpSession session = ServletActionContext.getRequest().getSession();
             List<Keluarga> listOfResult = (List<Keluarga>) session.getAttribute("listKeluarga");
 
             if(listOfResult != null){
+                for(Keluarga keluarga1: listOfResult){
+                    id = Integer.parseInt(keluarga1.getKeluargaId());
+                }
+                id++;
+                keluarga.setKeluargaId(id +"");
+
                 listOfResult.add(keluarga);
             }else{
                 listOfResult = new ArrayList<>();
+                keluarga.setKeluargaId(id +"");
                 listOfResult.add(keluarga);
             }
             session.removeAttribute("listKeluarga");

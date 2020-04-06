@@ -36,10 +36,10 @@ public class ItPayrollCutiEntity extends BaseModel {
     private BigDecimal tunjListrik;
     private BigDecimal tunjAir;
     private BigDecimal tunjBbm;
+    private BigDecimal tunjPph;
 
     private String keterangan;
     private String tahunCutiPanjang;
-
 
     private String flag;
     private String action;
@@ -47,6 +47,14 @@ public class ItPayrollCutiEntity extends BaseModel {
     private String lastUpdateWho;
     private Timestamp createdDate;
     private Timestamp lastUpdate;
+
+    public BigDecimal getTunjPph() {
+        return tunjPph;
+    }
+
+    public void setTunjPph(BigDecimal tunjPph) {
+        this.tunjPph = tunjPph;
+    }
 
     public String getTahunCutiPanjang() {
         return tahunCutiPanjang;

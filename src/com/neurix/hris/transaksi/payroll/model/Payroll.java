@@ -124,6 +124,43 @@ public class Payroll extends BaseModel {
     private String pph11Bulan;
     private String selisihPph;
     private String totalLain11Bulan;
+    private String statusApprove;
+
+    private boolean kantorPusat =  false;
+    private boolean cetakSatuan = false;
+    private boolean adaCheckBox = false;
+
+    public boolean isAdaCheckBox() {
+        return adaCheckBox;
+    }
+
+    public void setAdaCheckBox(boolean adaCheckBox) {
+        this.adaCheckBox = adaCheckBox;
+    }
+
+    public boolean isCetakSatuan() {
+        return cetakSatuan;
+    }
+
+    public void setCetakSatuan(boolean cetakSatuan) {
+        this.cetakSatuan = cetakSatuan;
+    }
+
+    public boolean isKantorPusat() {
+        return kantorPusat;
+    }
+
+    public void setKantorPusat(boolean kantorPusat) {
+        this.kantorPusat = kantorPusat;
+    }
+
+    public String getStatusApprove() {
+        return statusApprove;
+    }
+
+    public void setStatusApprove(String statusApprove) {
+        this.statusApprove = statusApprove;
+    }
 
     public String getPph11Bulan() {
         return pph11Bulan;
@@ -882,6 +919,14 @@ public class Payroll extends BaseModel {
     private String ApprovalId;
     private Timestamp ApprovalDate;
     private String stApprovalDate;
+
+    //approve unit
+    private String ApprovalUnitFlag;
+    private String ApprovalUnitId;
+    private Timestamp ApprovalUnitDate;
+    private String stApprovalUnitDate;
+    private String approvalUnitName;
+
     private String flagPayroll;
 
     private String flagThr;
@@ -1125,6 +1170,46 @@ public class Payroll extends BaseModel {
     private BigDecimal rapelGajiGolongan;
     private BigDecimal rapelTunjangan;
     private BigDecimal kastPrs;
+
+    public String getApprovalUnitName() {
+        return approvalUnitName;
+    }
+
+    public void setApprovalUnitName(String approvalUnitName) {
+        this.approvalUnitName = approvalUnitName;
+    }
+
+    public String getApprovalUnitFlag() {
+        return ApprovalUnitFlag;
+    }
+
+    public void setApprovalUnitFlag(String approvalUnitFlag) {
+        ApprovalUnitFlag = approvalUnitFlag;
+    }
+
+    public String getApprovalUnitId() {
+        return ApprovalUnitId;
+    }
+
+    public void setApprovalUnitId(String approvalUnitId) {
+        ApprovalUnitId = approvalUnitId;
+    }
+
+    public Timestamp getApprovalUnitDate() {
+        return ApprovalUnitDate;
+    }
+
+    public void setApprovalUnitDate(Timestamp approvalUnitDate) {
+        ApprovalUnitDate = approvalUnitDate;
+    }
+
+    public String getStApprovalUnitDate() {
+        return stApprovalUnitDate;
+    }
+
+    public void setStApprovalUnitDate(String stApprovalUnitDate) {
+        this.stApprovalUnitDate = stApprovalUnitDate;
+    }
 
     public String getIdLainLain() {
         return idLainLain;

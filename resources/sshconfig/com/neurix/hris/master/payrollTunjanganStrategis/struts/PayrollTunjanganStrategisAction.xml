@@ -85,10 +85,6 @@
             <result name="success_save_edit">/pages/com/neurix/hris/master/payrollTunjanganStrategis/editPayrollTunjanganStrategis.jsp</result>
             <result name="failure">/pages/com/neurix/hris/master/payrollTunjanganStrategis/editPayrollTunjanganStrategis.jsp</result>
 
-
-
-
-
             <!--<result name="error" type="httpheader">-->
             <!--<param name="status">504</param>-->
             <!--<param name="headers.message">${actionErrors}</param>-->

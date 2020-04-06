@@ -50,7 +50,7 @@
     <section class="content-header">
         <h1>
             Payroll Tunjangan Jabatan Struktural
-            <small>e-HEALTH</small>
+            <small>GO-MEDSYS</small>
         </h1>
     </section>
 
@@ -186,19 +186,26 @@
                                             </display:column>
 
                                             <display:column media="html" title="Delete" style="text-align:center;font-size:9">
-                                                <s:url var="urlViewDelete" namespace="/payrollTunjanganJabatanStruktural" action="delete_payrollTunjanganJabatanStruktural" escapeAmp="false">
-                                                    <s:param name="id"><s:property value="#attr.row.tunjJabStrukturId" /></s:param>
-                                                    <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
-                                                </s:url>
-                                                <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
-                                                </sj:a>
-
+                                                <s:if test="#attr.row.flagYes">
+                                                    <s:url var="urlViewDelete" namespace="/payrollTunjanganJabatanStruktural" action="delete_payrollTunjanganJabatanStruktural" escapeAmp="false">
+                                                        <s:param name="id"><s:property value="#attr.row.tunjJabStrukturId" /></s:param>
+                                                        <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
+                                                    </s:url>
+                                                    <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
+                                                        <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
+                                                    </sj:a>
+                                                </s:if>
                                             </display:column>
                                             <display:column property="tunjJabStrukturId" sortable="true" title="T. Jab. Struktural ID" />
                                             <display:column property="kelompokName" sortable="true" title="Kelompok Jabatan"  />
-                                            <display:column property="tunjJabatan" sortable="true" title="Tunj. Jabatan"  />
-                                            <display:column property="tunjStruktural" sortable="true" title="Tunj. Struktural"  />
+                                            <display:column property="stTunjJabatan" sortable="true" title="Tunj. Jabatan"  />
+                                            <display:column property="stTunjStruktural" sortable="true" title="Tunj. Struktural"  />
+                                            <display:column property="flag" sortable="true" title="flag"  />
+                                            <display:column property="action" sortable="true" title="action"  />
+                                            <display:column property="stCreatedDate" sortable="true" title="Created date"  />
+                                            <display:column property="createdWho" sortable="true" title="Created who"  />
+                                            <display:column property="stLastUpdate" sortable="true" title="Last update"  />
+                                            <display:column property="lastUpdateWho" sortable="true" title="Last update who"  />
                                         </display:table>
                                     </td>
                                 </tr>

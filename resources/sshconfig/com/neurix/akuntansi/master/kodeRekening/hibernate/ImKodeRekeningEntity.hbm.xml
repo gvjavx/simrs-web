@@ -19,9 +19,6 @@
         <property name="parentId">
             <column name="parent_id" sql-type="varchar" length="15" not-null="false" />
         </property>
-        <property name="tipeRekeningId">
-            <column name="tipe_rekening_id" sql-type="varchar" length="5" not-null="false" />
-        </property>
         <property name="level">
             <column name="level" sql-type="bigint" not-null="false" />
         </property>

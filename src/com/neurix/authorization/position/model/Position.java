@@ -20,6 +20,15 @@ public class Position extends BaseModel implements Serializable, Comparable<Posi
     private String kelompokName;
     private String bagianName;
     private String flagDijabatSatuOrang;
+    private String kodering;
+
+    public String getKodering() {
+        return kodering;
+    }
+
+    public void setKodering(String kodering) {
+        this.kodering = kodering;
+    }
 
     public String getFlagDijabatSatuOrang() {
         return flagDijabatSatuOrang;

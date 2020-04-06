@@ -1084,24 +1084,24 @@ public class NotifikasiAction extends BaseMasterAction{
                 return ERROR;
             }
         }
-        if (ijinKeluarKantor != null) {
-            try {
-                setIjinKeluar(ijinKeluarKantor);
-                listOfResultIKK = notifikasiBoProxy.searchIjinKeluarPerson(ijinKeluarKantor);
-                function = "ijinKeluarKantor";
-            } catch (GeneralBOException e) {
-                Long logId = null;
-                try {
-                    logId = notifikasiBoProxy.saveErrorMessage(e.getMessage(), "PersonalBO.getByCriteria");
-                } catch (GeneralBOException e1) {
-                    logger.error("[NotifikasiAction.search] Error when saving error,", e1);
-                    return ERROR;
-                }
-                logger.error("[NotifikasiAction.save] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-                addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
-                return ERROR;
-            }
-        }
+//        if (ijinKeluarKantor != null) {
+//            try {
+//                setIjinKeluar(ijinKeluarKantor);
+//                listOfResultIKK = notifikasiBoProxy.searchIjinKeluarPerson(ijinKeluarKantor);
+//                function = "ijinKeluarKantor";
+//            } catch (GeneralBOException e) {
+//                Long logId = null;
+//                try {
+//                    logId = notifikasiBoProxy.saveErrorMessage(e.getMessage(), "PersonalBO.getByCriteria");
+//                } catch (GeneralBOException e1) {
+//                    logger.error("[NotifikasiAction.search] Error when saving error,", e1);
+//                    return ERROR;
+//                }
+//                logger.error("[NotifikasiAction.save] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+//                addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
+//                return ERROR;
+//            }
+//        }
         if (lembur != null) {
             try {
                 setLembur(lembur);

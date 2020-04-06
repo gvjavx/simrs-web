@@ -28,6 +28,8 @@ public class StrukturJabatan extends BaseModel {
     private String nip;
     private String name;
     private String statusPegawai;
+    private String cDate;
+    private String lUpdate;
 
     public String getBagianName() {
         return bagianName;
@@ -163,5 +165,21 @@ public class StrukturJabatan extends BaseModel {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getcDate() {
+        return cDate;
+    }
+
+    public void setcDate(String cDate) {
+        this.cDate = cDate;
+    }
+
+    public String getlUpdate() {
+        return lUpdate;
+    }
+
+    public void setlUpdate(String lUpdate) {
+        this.lUpdate = lUpdate;
     }
 }
