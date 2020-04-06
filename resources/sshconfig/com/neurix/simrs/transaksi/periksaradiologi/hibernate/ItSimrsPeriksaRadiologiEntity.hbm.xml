@@ -52,6 +52,13 @@
             <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
         </property>
 
+        <property name="idLabDetail">
+            <column name="id_lab_detail" sql-type="varchar" length="30" not-null="false" />
+        </property>
+        <property name="namaDetailPeriksa">
+            <column name="nama_detail_periksa" sql-type="varchar" length="100" not-null="false" />
+        </property>
+
 
     </class>
 </hibernate-mapping>

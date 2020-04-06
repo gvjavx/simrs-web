@@ -106,6 +106,54 @@ public class HeaderDetailCheckup extends BaseModel{
     private String diagnosa;
     private String namaDiagnosa;
 
+    private String idKelas;
+    private String idRuang;
+
+    private String idRawatInap;
+    private String namaKelasRuangan;
+
+    private String noBpjs;
+
+    public String getNoBpjs() {
+        return noBpjs;
+    }
+
+    public void setNoBpjs(String noBpjs) {
+        this.noBpjs = noBpjs;
+    }
+
+    public String getIdRawatInap() {
+        return idRawatInap;
+    }
+
+    public void setIdRawatInap(String idRawatInap) {
+        this.idRawatInap = idRawatInap;
+    }
+
+    public String getNamaKelasRuangan() {
+        return namaKelasRuangan;
+    }
+
+    public void setNamaKelasRuangan(String namaKelasRuangan) {
+        this.namaKelasRuangan = namaKelasRuangan;
+    }
+
+    public String getIdKelas() {
+        return idKelas;
+    }
+
+    public void setIdKelas(String idKelas) {
+        this.idKelas = idKelas;
+    }
+
+    public String getIdRuang() {
+        return idRuang;
+    }
+
+    public void setIdRuang(String idRuang) {
+        this.idRuang = idRuang;
+    }
+
     //for import
     private String noSlipBank;
     private String bank;

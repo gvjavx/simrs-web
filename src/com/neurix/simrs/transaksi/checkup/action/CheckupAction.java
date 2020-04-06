@@ -769,6 +769,26 @@ public class CheckupAction extends BaseMasterAction {
 
                         Pasien getPasien = pasienList.get(0);
 
+                        String kodeDpjs = "";
+                        String namaDokter = "";
+
+                        List<Dokter> dokterList = new ArrayList<>();
+                        Dokter dokter = new Dokter();
+                        dokter.setIdDokter(checkup.getIdDokter());
+                        dokter.setFlag("Y");
+
+                        try {
+                            dokterList = dokterBoProxy.getByCriteria(dokter);
+                        }catch (GeneralBOException e){
+                            throw new GeneralBOException("Error when search idDokter "+e.getMessage());
+                        }
+
+                        if(dokterList.size() > 0){
+                            Dokter dok = dokterList.get(0);
+                            kodeDpjs = dok.getKodeDpjp();
+                            namaDokter = dok.getNamaDokter();
+                        }
+
                         SepRequest sepRequest = new SepRequest();
                         sepRequest.setNoKartu(getPasien.getNoBpjs());
                         sepRequest.setTglSep(updateTime.toString());
@@ -798,7 +818,7 @@ public class CheckupAction extends BaseMasterAction {
                         sepRequest.setKdKecamatanLakaLantas("");
                         sepRequest.setKdKabupatenLakaLantas("");
                         sepRequest.setNoSuratSkdp(getBranch.getSuratSkdp()); // branch
-                        sepRequest.setKodeDpjp(checkup.getIdDokter());
+                        sepRequest.setKodeDpjp(kodeDpjs);
                         sepRequest.setNoTelp(getPasien.getNoTelp()); // pasien
                         sepRequest.setUserPembuatSep(userLogin);
 
@@ -901,24 +921,6 @@ public class CheckupAction extends BaseMasterAction {
                                 klaimDetailRequest.setTarifRsAlkes("");
                                 klaimDetailRequest.setTarifRsBmhp("");
                                 klaimDetailRequest.setTarifRsSewaAlat("");
-
-                                List<Dokter> dokterList = new ArrayList<>();
-                                Dokter dokter = new Dokter();
-                                dokter.setIdDokter(checkup.getIdDokter());
-                                dokter.setFlag("Y");
-                                try {
-                                    dokterList = dokterBoProxy.getByCriteria(dokter);
-                                } catch (GeneralBOException e) {
-                                    Long logId = null;
-                                    logger.error("[CheckupAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-                                    addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-                                    return ERROR;
-                                }
-
-                                String namaDokter = "";
-                                if (dokterList.size() > 0) {
-                                    namaDokter = dokterList.get(0).getNamaDokter();
-                                }
 
                                 klaimDetailRequest.setTarifPoliEks("");
                                 klaimDetailRequest.setNamaDokter(namaDokter);
@@ -1334,10 +1336,12 @@ public class CheckupAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         DokterBo dokterBo = (DokterBo) ctx.getBean("dokterBoProxy");
 
-        try {
-            dokterList = dokterBo.getByIdPelayanan(idPelayanan, "");
-        } catch (GeneralBOException e) {
-            logger.error("[CheckupAction.listOfDokter] Error when searching data, Found problem when searching data, please inform to your admin.", e);
+        if(idPelayanan != null && !"".equalsIgnoreCase(idPelayanan)){
+            try {
+                dokterList = dokterBo.getDokterByPelayanan(idPelayanan);
+            } catch (GeneralBOException e) {
+                logger.error("[CheckupAction.listOfDokter] Error when searching data, Found problem when searching data, please inform to your admin.", e);
+            }
         }
 
         logger.info("[CheckupAction.listOfDokter] end process >>>");
@@ -3019,6 +3023,7 @@ public class CheckupAction extends BaseMasterAction {
                 } else {
                     jk = "Perempuan";
                 }
+
                 reportParams.put("jenisKelamin", jk);
                 reportParams.put("jenisPasien", checkup.getStatusPeriksaName());
                 reportParams.put("poli", checkup.getNamaPelayanan());

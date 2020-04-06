@@ -369,6 +369,7 @@
                 <value>sshconfig/com/neurix/simrs/transaksi/checkupdetail/hibernate/ItSimrsUangMukaPendaftaranEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/checkup/hibernate/ItSimrsFpkEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/checkup/hibernate/ItSimrsAsesmen.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/plankegiatanrawat/hibernate/ItSImrsPlanKegiatanRawatEntity.hbm.xml</value>
 
 
                 <!--Hibernate Config For Acountant Feature SIMRS is HERE-->
@@ -385,6 +386,9 @@
                 <value>sshconfig/com/neurix/akuntansi/master/reportDetail/hibernate/ImReportDetailEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/master/mappingJurnal/hibernate/ImMappingJurnalEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/master/masterVendor/hibernate/ImMasterVendorEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/transaksi/tutupperiod/hibernate/ItSImrsBatasTutupPeriodEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/transaksi/tutupperiod/hibernate/ItAkunTutupPeriodEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/transaksi/saldoakhir/hibernate/ItAkunSaldoAkhirEntity.hbm.xml</value>
 
                 <!--Hibernate Config For PAKET SIMRS-->
                 <value>sshconfig/com/neurix/simrs/transaksi/paketperiksa/hiberanate/ImSimrsKelasPaketEntity.hbm.xml</value>
@@ -394,6 +398,9 @@
 
                 <value>sshconfig/com/neurix/akuntansi/master/settingReportUser/hibernate/ImSettingReportUserEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ItPayrollPttEntity.hbm.xml</value>
+
+                <value>sshconfig/com/neurix/simrs/master/tindakan/hibernate/ImSimrsKategoriTindakanPelayananEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/dokter/hibernate/ImSimrsDokterPelayananEntity.hbm.xml</value>
 
             </list>
         </property>

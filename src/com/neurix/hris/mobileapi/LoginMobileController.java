@@ -147,7 +147,9 @@ public class LoginMobileController extends ValidationAwareSupport implements Mod
                         model.setJenisKelamin(userDetailsLogin.getJenisKelamin());
                         model.setPhotoUrl(userDetailsLogin.getPhotoUserUrl());
                         model.setIdPelayanan(userDetailsLogin.getIdPleyanan());
-                        model.setIdDevice(idDevice);
+                        model.setIdDevice(userDetailsLogin.getIdDevice());
+
+                        model.setPin(userDetailsLogin.getPin());
 
                         String roleId="";
                         String roleName="";

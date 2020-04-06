@@ -15,9 +15,6 @@
         <property name="namaPaket">
             <column name="nama_paket" sql-type="text" not-null="false"/>
         </property>
-        <property name="idPerusahaan">
-            <column name="id_perusahaan" sql-type="varchar" length="30" not-null="false"/>
-        </property>
         <property name="idKelasPaket">
             <column name="id_kelas_paket" sql-type="varchar" length="30" not-null="false"/>
         </property>
@@ -42,6 +39,10 @@
 
         <property name="branchId">
             <column name="branch_id" sql-type="varchar" length="30" not-null="false" />
+        </property>
+
+        <property name="idPelayanan">
+            <column name="id_pelayanan" sql-type="varchar" length="30" not-null="false" />
         </property>
 
 

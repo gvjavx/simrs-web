@@ -24,6 +24,24 @@ public class MonVitalSign {
     private String stDate;
     private Integer tb;
     private Integer bb;
+    private String waktu;
+    private String catatanDokter;
+
+    public String getWaktu() {
+        return waktu;
+    }
+
+    public void setWaktu(String waktu) {
+        this.waktu = waktu;
+    }
+
+    public String getCatatanDokter() {
+        return catatanDokter;
+    }
+
+    public void setCatatanDokter(String catatanDokter) {
+        this.catatanDokter = catatanDokter;
+    }
 
     public String getStDate() {
         return stDate;

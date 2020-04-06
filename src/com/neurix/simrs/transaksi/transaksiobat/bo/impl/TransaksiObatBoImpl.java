@@ -1145,7 +1145,7 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
 
                 ImtSimrsApprovalTransaksiObatEntity approvalEntity = getApprovalTransaksiById(bean.getIdApprovalObat());
                 // update to approval permintaan resep
-                if (approvalEntity.getIdApprovalObat() != null) {
+                if (approvalEntity != null && approvalEntity.getIdApprovalObat() != null) {
 
                     approvalEntity.setApprovalFlag("Y");
                     approvalEntity.setFlag("N");

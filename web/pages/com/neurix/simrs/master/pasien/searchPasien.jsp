@@ -664,10 +664,8 @@
     }
 
     $('.tablePasien').on('click', '.item-register-finger', function() {
-
-
         var idPasien = $(this).attr('data');
-        var url=btoa('http://localhost:8080/simrs/registerFinger.action?userId='+idPasien);
+        var url=btoa('http://192.168.43.222:8080/simrs/registerFinger.action?userId='+idPasien);
         console.log(url);
         var href ='finspot:FingerspotReg;'+url;
         window.location.href =href ;
@@ -676,7 +674,7 @@
     function registrasiFinger(idPasien){
         if(idPasien != ''){
             console.log(idPasien);
-            var url=btoa('http://localhost:8080/simrs/registerFinger.action?userId='+idPasien);
+            var url=btoa('http://192.168.43.222:8080/simrs/registerFinger.action?userId='+idPasien);
             console.log(url);
             var href ='finspot:FingerspotReg;'+url;
             console.log(href);

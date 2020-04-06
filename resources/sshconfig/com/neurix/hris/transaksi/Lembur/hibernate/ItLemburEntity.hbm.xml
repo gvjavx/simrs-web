@@ -22,7 +22,7 @@
             <column name="divisi_name" sql-type="varchar" length="100" not-null="false" />
         </property>
         <property name="positionId">
-            <column name="position_id" sql-type="varchar" length="3" not-null="false" />
+            <column name="position_id" sql-type="varchar" length="4" not-null="false" />
         </property>
         <property name="positionName">
             <column name="position_name" sql-type="varchar" length="100" not-null="false" />
