@@ -14,6 +14,13 @@
     <bean id="statusPeriksaBo" class="com.neurix.simrs.transaksi.statusperiksa.bo.impl.StatusPeriksaBoImpl"
           p:checkupDetailDao-ref="checkupDetailDao"
           p:headerCheckupDao-ref="headerCheckupDao"
+          p:uangMukaDao-ref="uangMukaDao"
+          p:diagnosaRawatDao-ref="diagnosaRawatDao"
+          p:tindakanRawatDao-ref="tindakanRawatDao"
+          p:riwayatTindakanDao-ref="riwayatTindakanDao"
+          p:tindakanDao-ref="tindakanDao"
+          p:headerCheckupLogDao-ref="headerCheckupLogDao"
+          p:dokterTeamDao-ref="dokterTeamDao"
     />
 
     <bean id="statusPeriksaBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -32,11 +39,7 @@
         <property name="transactionAttributes">
             <props>
                 <prop key="getByCriteria">readOnly</prop>
-                <prop key="getListAllTindakan">readOnly</prop>
-                <prop key="getListVerifikasiRawatInap">readOnly</prop>
-                <prop key="getListVerifikasiRawatJalan">PROPAGATION_REQUIRED</prop>
-                <prop key="updateFlagKlaim">PROPAGATION_REQUIRED</prop>
-                <prop key="updateKlaimBpjsFlag">PROPAGATION_REQUIRED</prop>
+                <prop key="saveEditPerubahanStatus">PROPAGATION_REQUIRED</prop>
             </props>
         </property>
     </bean>

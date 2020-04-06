@@ -178,7 +178,10 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
         permintaanEntity.setBranchId(bean.getBranchId());
         permintaanEntity.setTujuanPelayanan(bean.getTujuanPelayanan());
         permintaanEntity.setTtdPasien(bean.getTtdPasien());
-
+        permintaanEntity.setTtdDokter(bean.getTtdDokter());
+        permintaanEntity.setStatus("3");
+        permintaanEntity.setIsUmum("N");
+        permintaanEntity.setTglAntrian(bean.getCreatedDate());
 
         try {
             permintaanResepDao.addAndSave(permintaanEntity);
@@ -208,25 +211,6 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
                 saveObatResep(detail);
             }
         }
-//        if(resep != null && !"".equalsIgnoreCase(resep)){
-//            JSONArray json = new JSONArray(resep);
-//            for (int i=0; i < json.length(); i++){
-//                TransaksiObatDetail detail = new TransaksiObatDetail();
-//                JSONObject obj = json.getJSONObject(i);
-//
-//                detail.setIdApprovalObat(approvalEntity.getIdApprovalObat());
-//                detail.setIdObat(obj.getString("ID"));
-//                detail.setQty(new BigInteger(obj.getString("Qty")));
-//                detail.setKeterangan(obj.getString("Keterangan"));
-//                detail.setCreatedDate(bean.getCreatedDate());
-//                detail.setCreatedWho(bean.getCreatedWho());
-//                detail.setLastUpdate(bean.getCreatedDate());
-//                detail.setLastUpdateWho(bean.getCreatedWho());
-//                saveObatResep(detail);
-//
-//                logger.info("[PermintaanResepAction.saveTindakanRawat] JSON OBJECT : "+obj.getString("Obat"));
-//            }
-//        }
         logger.info("[PermintaanResepBoImpl.saveAdd] END <<<<<<<");
     }
 

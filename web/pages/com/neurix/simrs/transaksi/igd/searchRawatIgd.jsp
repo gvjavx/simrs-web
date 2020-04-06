@@ -32,7 +32,6 @@
     <section class="content-header">
         <h1>
             Rawat IGD Pasien
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -49,7 +48,7 @@
                         <div class="form-group">
                             <s:form id="igdForm" method="post" namespace="/igd" action="search_igd.action" theme="simple" cssClass="form-horizontal">
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4">ID Pasien</label>
+                                    <label class="control-label col-sm-4">No RM</label>
                                     <div class="col-sm-4">
                                         <s:textfield id="id_pasien" cssStyle="margin-top: 7px"
                                                      name="headerDetailCheckup.idPasien" required="false"
@@ -71,7 +70,7 @@
                                         <s:action id="initComboPoli" namespace="/checkup"
                                                   name="getComboPelayanan_checkup"/>
                                         <s:select cssStyle="margin-top: 7px; width: 100%"
-                                                  list="#initComboPoli.listOfPelayanan" id="poli"
+                                                  list="#initComboPoli.listOfPelayanan"
                                                   name="headerDetailCheckup.idPelayanan" listKey="idPelayanan"
                                                   listValue="namaPelayanan"
                                                   headerKey="" headerValue="[Select one]"
@@ -148,11 +147,17 @@
                                                 <li><a href="addRawatIgd_igd.action?tipe=umum">
                                                     <i class="fa fa-user-plus"></i>Pasien Umum</a></li>
                                                 <li><a href="addRawatIgd_igd.action?tipe=bpjs">
-                                                    <i class="fa fa-user-plus"></i>Pasien Bpjs</a></li>
+                                                    <i class="fa fa-user-plus"></i>Pasien BPJS</a></li>
+                                                <li><a href="addRawatIgd_igd.action?tipe=paket_perusahaan">
+                                                    <i class="fa fa-user-plus"></i>Pasien Paket Perusahaan</a></li>
+                                                <li><a href="addRawatIgd_igd.action?tipe=paket_individu">
+                                                    <i class="fa fa-user-plus"></i>Pasien Paket Individu</a></li>
+                                                <li><a href="addRawatIgd_igd.action?tipe=asuransi">
+                                                    <i class="fa fa-user-plus"></i>Pasien Asuransi</a></li>
+                                                <li><a href="addRawatIgd_igd.action?tipe=ptpn">
+                                                    <i class="fa fa-user-plus"></i>Pasien PTPN</a></li>
                                             </ul>
                                         </div>
-                                            <%--<a type="button" class="btn btn-primary" href="add_checkup.action"><i--%>
-                                            <%--class="fa fa-plus"></i> Tambah Rawat Pasien</a>--%>
                                         <a type="button" class="btn btn-warning" id="btnFingerPrint"><i
                                                 class="fa fa-plus"></i> With Finger Print</a>
                                         <a type="button" class="btn btn-danger" href="initForm_igd.action">

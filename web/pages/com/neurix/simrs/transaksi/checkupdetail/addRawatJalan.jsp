@@ -9,7 +9,15 @@
 <head>
     <%@ include file="/pages/common/header.jsp" %>
     <style>
+        .paint-canvas {
+            border: 1px black solid;
+            display: block;
+            margin: 1rem;
+        }
 
+        .color-picker {
+            margin: 1rem 1rem 0 1rem;
+        }
     </style>
 
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
@@ -55,6 +63,29 @@
 
             rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
             return rupiah;
+        }
+
+        function formatRupiah(angka) {
+            if(angka != '' && angka != null && angka > 0){
+                var reverse = angka.toString().split('').reverse().join(''),
+                    ribuan = reverse.match(/\d{1,3}/g);
+                ribuan = ribuan.join('.').split('').reverse().join('');
+                return ribuan;
+            }else{
+                return 0;
+            }
+        }
+
+        function convertSentenceCase(myString){
+            if(myString != null && myString != ''){
+                var rg = /(^\w{1}|\ \s*\w{1})/gi;
+                myString = myString.replace(rg, function(toReplace) {
+                    return toReplace.toUpperCase();
+                });
+                return myString;
+            }else{
+                return "";
+            }
         }
 
     </script>
@@ -143,6 +174,13 @@
                                     <s:hidden id="id_pasien" name="headerDetailCheckup.idPasien"/>
                                     <s:hidden id="jenis_pasien" name="headerDetailCheckup.idJenisPeriksaPasien"/>
                                     <s:hidden id="jenis_bayar" name="headerDetailCheckup.metodePembayaran"/>
+                                    <s:hidden id="id_asuransi" name="headerDetailCheckup.idAsuransi"/>
+                                    <s:hidden id="nama_asuransi" name="headerDetailCheckup.namaAsuransi"/>
+
+                                    <s:hidden id="no_rujukan" name="headerDetailCheckup.noRujukan"/>
+                                    <s:hidden id="tgl_rujukan" name="headerDetailCheckup.tglRujukan"/>
+                                    <s:hidden id="surat_rujukan" name="headerDetailCheckup.suratRujukan"/>
+
                                     <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "bpjs"'>
                                         <tr>
                                             <td width="45%"><b>No SEP</b></td>
@@ -198,12 +236,21 @@
                                             <table><s:label name="headerDetailCheckup.tempatTglLahir"></s:label></table>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td><b>Metode Pembayaran</b></td>
-                                        <td>
-                                            <table><s:label name="headerDetailCheckup.metodePembayaran"></s:label></table>
-                                        </td>
-                                    </tr>
+                                    <s:if test='headerDetailCheckup.metodePembayaran != null && headerDetailCheckup.metodePembayaran != ""'>
+                                        <tr>
+                                            <td><b>Metode Pembayaran</b></td>
+                                            <td>
+                                                <table>
+                                                    <script>
+                                                        var metode = '<s:property value="headerDetailCheckup.metodePembayaran"/>';
+                                                        var met = metode.replace("_", " ");
+                                                        var meto = convertSentenceCase(met);
+                                                        document.write(meto);
+                                                    </script>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </s:if>
                                 </table>
                             </div>
                             <!-- /.col -->
@@ -225,6 +272,32 @@
                                             </table>
                                         </td>
                                     </tr>
+                                    <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "paket_perusahaan" || headerDetailCheckup.idJenisPeriksaPasien == "paket_individu"'>
+                                        <tr>
+                                            <td><b>Tarif Paket</b></td>
+                                            <td>
+                                                <table>
+                                                    <script>
+                                                        var tar = '<s:property value="headerDetailCheckup.coverBiaya"/>';
+                                                        if(tar != null){
+                                                            document.write("Rp. "+formatRupiah(tar));
+                                                        }
+                                                    </script>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </s:if>
+                                    <s:if test='headerDetailCheckup.namaAsuransi != null && headerDetailCheckup.namaAsuransi != ""'>
+                                        <tr>
+                                            <td><b>Nama Asuransi</b></td>
+                                            <td>
+                                                <table>
+                                                    <s:label id="nama_asuransi"
+                                                             name="headerDetailCheckup.namaAsuransi"></s:label>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </s:if>
                                     <tr>
                                         <td><b>Poli</b></td>
                                         <td>
@@ -239,15 +312,9 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><b>Provinsi</b></td>
+                                        <td><b>Desa</b></td>
                                         <td>
-                                            <table><s:label name="headerDetailCheckup.provinsi"></s:label></table>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><b>Kabupaten</b></td>
-                                        <td>
-                                            <table><s:label name="headerDetailCheckup.kota"></s:label></table>
+                                            <table><s:label name="headerDetailCheckup.desa"></s:label></table>
                                         </td>
                                     </tr>
                                     <tr>
@@ -257,9 +324,15 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><b>Desa</b></td>
+                                        <td><b>Kabupaten</b></td>
                                         <td>
-                                            <table><s:label name="headerDetailCheckup.desa"></s:label></table>
+                                            <table><s:label name="headerDetailCheckup.kota"></s:label></table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Provinsi</b></td>
+                                        <td>
+                                            <table><s:label name="headerDetailCheckup.provinsi"></s:label></table>
                                         </td>
                                     </tr>
                                 </table>
@@ -446,9 +519,11 @@
                                 </table>
                             </div>
                             <div class="col-md-6">
-                                <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
-                                        onclick="showModal(1)"><i class="fa fa-plus"></i> Tambah Dokter
-                                </button>
+                                <s:if test='headerDetailCheckup.idJenisPeriksaPasien != "paket_individu" && headerDetailCheckup.idJenisPeriksaPasien != "paket_perusahaan"'>
+                                    <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
+                                            onclick="showModal(1)"><i class="fa fa-plus"></i> Tambah Dokter
+                                    </button>
+                                </s:if>
                                 <table class="table table-bordered table-striped">
                                     <thead>
                                     <tr bgcolor="#90ee90">
@@ -546,32 +621,95 @@
                         </div>
                     </div>
 
+                    <div id="status_asuransi" style="display: none">
+                        <div class="box-header with-border">
+                        </div>
+                        <div class="box-header with-border">
+                            <h3 class="box-title"><i class="fa fa-line-chart"></i> Status Biaya Tindakan</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-offset-2 col-md-8">
+                                    <h5>
+                                        Cover Biaya Asuransi
+                                        <small class="pull-right" style="margin-top: 7px">Rp. <span id="b_asuransi"></span>
+                                        </small>
+                                    </h5>
+                                    <div class="progress">
+                                        <div id="sts_cover_biaya_asuransi">
+                                        </div>
+                                    </div>
+                                    <h5>
+                                        Total Biaya Tindakan
+                                        <small class="pull-right" style="margin-top: 7px">Rp. <span
+                                                id="b_tindakan_asuransi"></span></small>
+                                    </h5>
+                                    <div class="progress">
+                                        <div id="sts_biaya_tindakan_asuransi">
+                                        </div>
+                                    </div>
+                                    <ul style="list-style-type: none">
+                                        <li><i class="fa fa-square" style="color: #337ab7"></i> Total biaya cover Asuransi
+                                        </li>
+                                        <li><i class="fa fa-square" style="color: #5cb85c"></i> Total biaya tindakan <
+                                            50% dari cover biaya Asuransi
+                                        </li>
+                                        <li><i class="fa fa-square" style="color: #f0ad4e"></i> Total biaya tindakan >
+                                            50% dan < 70% dari cover biaya Asuransi
+                                        </li>
+                                        <li><i class="fa fa-square" style="color: #d9534f"></i> Total biaya tindakan >
+                                            70% dari cover biaya Asuransi
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-2">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="box-header with-border" id="pos_tin">
                     </div>
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-medkit"></i> Tindakan</h3>
                     </div>
                     <div class="box-body">
+                        <input type="hidden" id="tin_id_dokter">
+                        <s:if test='headerDetailCheckup.idJenisPeriksaPasien != "paket_individu" && headerDetailCheckup.idJenisPeriksaPasien != "paket_perusahaan"'>
                         <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
                                 onclick="showModal(2)"><i class="fa fa-plus"></i> Tambah Tindakan
                         </button>
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                            <tr bgcolor="#90ee90">
-                                <td>Tanggal</td>
-                                <td>Tindakan</td>
-                                <%--<td>Dokter</td>--%>
-                                <%--<td>Perawat</td>--%>
-                                <td align="center">Tarif (Rp.)</td>
-                                <td align="center">Qty</td>
-                                <td align="center">Total (Rp.)</td>
-                                <td align="center">Action</td>
-                                <input type="hidden" id="tin_id_dokter">
-                            </tr>
-                            </thead>
-                            <tbody id="body_tindakan">
-                            </tbody>
-                        </table>
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                <tr bgcolor="#90ee90">
+                                    <td>Tanggal</td>
+                                    <td>Tindakan</td>
+                                        <%--<td>Dokter</td>--%>
+                                        <%--<td>Perawat</td>--%>
+                                    <td align="center">Tarif (Rp.)</td>
+                                    <td align="center">Qty</td>
+                                    <td align="center">Total (Rp.)</td>
+                                    <td align="center">Action</td>
+                                </tr>
+                                </thead>
+                                <tbody id="body_tindakan">
+                                </tbody>
+                            </table>
+                        </s:if>
+                        <s:else>
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                <tr bgcolor="#90ee90">
+                                    <td>Tanggal</td>
+                                    <td>Tindakan</td>
+                                    <td align="center" width="10%">Action</td>
+                                </tr>
+                                </thead>
+                                <tbody id="body_tindakan_paket">
+                                </tbody>
+                            </table>
+                        </s:else>
                     </div>
                     <div class="box-header with-border" id="pos_lab">
                     </div>
@@ -579,9 +717,11 @@
                         <h3 class="box-title"><i class="fa fa-hospital-o"></i> Penunjang Medis</h3>
                     </div>
                     <div class="box-body">
+                        <s:if test='headerDetailCheckup.idJenisPeriksaPasien != "paket_individu" && headerDetailCheckup.idJenisPeriksaPasien != "paket_perusahaan"'>
                         <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
-                                onclick="showModal(4)"><i class="fa fa-plus"></i> Tambah Penunjang
+                                onclick="showModal(4)"><i class="fa fa-plus"></i> Penunjang Medis
                         </button>
+                        </s:if>
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr bgcolor="#90ee90">
@@ -589,7 +729,7 @@
                                 <td>Pemeriksaan</td>
                                 <td>Status</td>
                                 <td>Jenis Lab</td>
-                                <td align="center">Action</td>
+                                <td align="center" width="10%">Action</td>
                             </tr>
                             </thead>
                             <tbody id="body_lab">
@@ -662,11 +802,12 @@
                                     <label class="col-md-3" style="margin-top: 10px">Keterangan</label>
                                     <div class="col-md-9">
                                         <select class="form-control select2" id="keterangan" style="width: 100%"
-                                                onchange="var warn =$('#war_catatan').is(':visible'); if (warn){$('#cor_catatan').show().fadeOut(3000);$('#war_catatan').hide()}; selectKeterangan(this)">
+                                                onchange="var warn =$('#war_catatan').is(':visible'); if (warn){$('#cor_catatan').show().fadeOut(3000);$('#war_catatan').hide()}; selectKeterangan(this.value)">
                                             <option value=''>[Select One]</option>
                                             <option value='selesai'>Selesai</option>
                                             <option value='pindah'>Pindah Poli Lain</option>
                                             <%--<option value='rujuk'>Rujuk Rawat Inap</option>--%>
+                                            <option value='lanjut_biaya'>Lanjut Biaya</option>
                                         </select>
                                     </div>
                                 </div>
@@ -1566,17 +1707,31 @@
                         <td>Racik</td>
                         <td>Kronis</td>
                         <td>Pengambilan Berikutnya</td>
+                        <td>Harga</td>
                         <td align="center" width="5%">Action</td>
                         </thead>
                         <tbody id="body_detail">
                         </tbody>
                     </table>
                 </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-4">
+                            <label>Total Harga</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    Rp.
+                                </div>
+                                <input class="form-control" id="total_harga_obat" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_resep_head" onclick="saveResepObat()"><i
+                <button type="button" class="btn btn-success" id="save_resep_head" onclick="saveResepObatTtd()"><i
                         class="fa fa-arrow-right"></i> Buat Resep
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
@@ -1632,6 +1787,119 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-laka">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Data Asuransi</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_laka">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_laka"></p>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">No Polisi</label>
+                        <div class="col-md-7">
+                            <input class="form-control" id="laka_no_polisi"
+                                   oninput="var warn =$('#war_laka_no_polisi').is(':visible'); if (warn){$('#cor_laka_no_polisi').show().fadeOut(3000);$('#war_laka_no_polisi').hide()}">
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_laka_no_polisi"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_laka_no_polisi"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Tgl Kejadian</label>
+                        <div class="col-md-7">
+                            <input class="form-control datepicker" style="margin-top: 7px" id="laka_tgl_kejadian"
+                                   onchange="var warn =$('#war_laka_tgl_kejadian').is(':visible'); if (warn){$('#cor_laka_tgl_kejadian').show().fadeOut(3000);$('#war_laka_tgl_kejadian').hide()}">
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_laka_tgl_kejadian"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_laka_tgl_kejadian"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Foto Surat Polisi</label>
+                        <div class="col-md-7">
+                            <div class="input-group" style="margin-top: 7px" id="img_url">
+                                  <span class="input-group-btn">
+                                  <span class="btn btn-default btn-file">
+                                  Browse… <s:file id="url_do" accept=".jpg"
+                                  onchange="$('#img_file').css('border','')"></s:file>
+                                  </span>
+                                  </span>
+                                <input type="text" class="form-control" readonly id="laka_surat_rujukan">
+                            </div>
+                        </div>
+                        <div style="display: none;">
+                            <canvas id="temp_surat_rujuk"></canvas>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_laka_surat_polisi"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_laka_surat_polisi"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_laka"><i
+                class="fa fa-arrow-right"></i> Save
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_laka"><i
+                class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-ttd">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-pencil"></i> Tanda Tangan Dokter
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group" style="padding-top: 10px; padding-bottom: 10px">
+                    <div class="col-md-1">
+                        <input type="color" style="margin-left: -6px; margin-top: -8px" class="js-color-picker  color-picker pull-left">
+                    </div>
+                    <div class="col-md-9">
+                        <input type="range" style="margin-top: -8px" class="js-line-range" min="1" max="72" value="1">
+                    </div>
+                    <div class="col-md-2">
+                        <div style="margin-top: -8px;" class="js-range-value">1 px</div>
+                    </div>
+                </div>
+                <canvas class="js-paint  paint-canvas" id="ttd_canvas" width="550" height="300"></canvas>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-danger" onclick="clearConvas()"><i class="fa fa-pencil"></i> Clear
+                </button>
+                <button class="btn btn-success pull-right" onclick="saveResepObat()"><i class="fa fa-check"></i> Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="modal-confirm-dialog">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -1662,6 +1930,7 @@
     var idPasien = $('#id_pasien').val();
     var noCheckup = $('#no_checkup').val();
     var jenisPeriksa = $('#jenis_periksa').text();
+    var jenisPeriksaPasien = $('#jenis_pasien').val();
 
     $(document).ready(function () {
         $('#rawat_jalan').addClass('active');
@@ -1676,6 +1945,7 @@
         hitungStatusBiaya();
         hitungBmi();
         listSelectTindakanKategori();
+        hitungCoverBiaya()
 
         $('#img_ktp').on('click', function (e) {
             e.preventDefault();
@@ -1697,17 +1967,109 @@
 
         });
 
-        var nominal = document.getElementById('uang_muka');
-        nominal.addEventListener('keyup', function (e) {
-            nominal.value = formatRupiah2(this.value);
-            var valBayar = nominal.value.replace(/[.]/g, '');
+        const paintCanvas = document.querySelector(".js-paint");
+        const context = paintCanvas.getContext("2d");
+        context.lineCap = "round";
 
-            if(valBayar != ''){
-                $('#uang_muka_val').val(valBayar);
-            }else{
-                $('#uang_muka_val').val('');
-            }
+        const colorPicker = document.querySelector(".js-color-picker");
+
+        colorPicker.addEventListener("change", function (evt) {
+            context.strokeStyle = evt.target.value;
         });
+
+        const lineWidthRange = document.querySelector(".js-line-range");
+        const lineWidthLabel = document.querySelector(".js-range-value");
+
+        lineWidthRange.addEventListener("input", function (evt) {
+            const width = evt.target.value;
+            lineWidthLabel.innerHTML = width+" px";
+            context.lineWidth = width;
+        });
+
+        let x = 0,
+            y = 0;
+        let isMouseDown = false;
+
+        const stopDrawing = function () {
+            isMouseDown = false;
+        };
+
+        const startDrawing = function (evt) {
+            isMouseDown = true;
+            [x, y] = [evt.offsetX, evt.offsetY];
+        };
+
+        const drawLine = function (evt) {
+            if (isMouseDown) {
+                const newX = evt.offsetX;
+                const newY = evt.offsetY;
+                context.beginPath();
+                context.moveTo(x, y);
+                context.lineTo(newX, newY);
+                context.stroke();
+                x = newX;
+                y = newY;
+            }
+        };
+
+        paintCanvas.addEventListener("mousedown", startDrawing);
+        paintCanvas.addEventListener("mousemove", drawLine);
+        paintCanvas.addEventListener("mouseup", stopDrawing);
+        paintCanvas.addEventListener("mouseout", stopDrawing);
+
+        var nominal = document.getElementById('uang_muka');
+        if(nominal != ''){
+            nominal.addEventListener('keyup', function (e) {
+                nominal.value = formatRupiah2(this.value);
+                var valBayar = nominal.value.replace(/[.]/g, '');
+
+                if(valBayar != ''){
+                    $('#uang_muka_val').val(valBayar);
+                }else{
+                    $('#uang_muka_val').val('');
+                }
+            });
+        }
+
+        $(document).on('change', '.btn-file :file', function () {
+            var input = $(this),
+                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+            input.trigger('fileselect', [label]);
+        });
+
+        var canvas = document.getElementById('temp_surat_rujuk');
+        var ctx = canvas.getContext('2d');
+
+        $('.btn-file :file').on('fileselect', function (event, label) {
+
+            var input = $(this).parents('.input-group').find(':text'),
+                log = label;
+
+            if (input.length) {
+                var warn =$('#war_laka_surat_polisi').is(':visible');
+                if (warn){
+                    $('#cor_laka_surat_polisi').show().fadeOut(3000);
+                    $('#war_laka_surat_polisi').hide()
+                }
+                input.val(log);
+                var reader = new FileReader();
+                reader.onload = function(event){
+                    var img = new Image();
+                    img.onload = function(){
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        ctx.clearRect(0,0,canvas.width,canvas.height);
+                        ctx.drawImage(img,0,0);
+                    }
+                    img.src = event.target.result;
+                }
+                reader.readAsDataURL(event.target.files[0]);
+            } else {
+                if (log) alert(log);
+            }
+
+        });
+
 
     });
 
@@ -1729,23 +2091,6 @@
             bmi = (parseInt(berat) / (tom *  tom)).toFixed(2);
             console.log(bmi);
         }
-
-        // if (parseInt(bmi) < 17.0) {
-        //     barClass = 'progress-bar-info';
-        //     persen = 20;
-        // } else if (parseInt(bmi) <= 17.0 && parseInt(bmi) <= 18.4) {
-        //     barClass = 'progress-bar-primary';
-        //     persen = 40;
-        // } else if (parseInt(bmi) <= 18.5 && parseInt(bmi) <= 25.0) {
-        //     barClass = 'progress-bar-success';
-        //     persen = 60;
-        // } else if (parseInt(bmi) <= 25.1 && parseInt(bmi) <= 27.0) {
-        //     barClass = 'progress-bar-warning';
-        //     persen = 80;
-        // } else if (parseInt(bmi) > 27) {
-        //     barClass = 'progress-bar-danger';
-        //     persen = 100;
-        // }
 
         if (parseInt(bmi) < 18.5) {
             barClass = 'progress-bar-primary';
@@ -1770,53 +2115,104 @@
         window.open('printGelangPasien_checkupdetail.action?id=' + noCheckup, '_blank');
     }
 
-    function hitungStatusBiaya() {
-        CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, "", function (response) {
-            console.log(response);
-            if (response.idJenisPeriksaPasien == "bpjs") {
-                $('#status_bpjs').show();
-                if (response.tarifBpjs != null && response.tarifTindakan != null) {
+    function hitungCoverBiaya() {
+        var jenis = $('#jenis_pasien').val();
+        if("asuransi" == jenis){
+            CheckupDetailAction.getBiayaAsuransi(idDetailCheckup, function (response) {
+                console.log(response);
+                if (response.coverBiaya != null && response.coverBiaya != '') {
+                    $('#status_asuransi').show();
+                    if (response.coverBiaya != null) {
 
-                    var coverBiaya = response.tarifBpjs;
-                    var biayaTindakan = response.tarifTindakan;
-                    $('#kode_cbg').text(response.kodeCbg);
+                        var coverBiaya = response.coverBiaya;
+                        var biayaTindakan = response.tarifTindakan;
 
-                    var persen = "";
-                    if (coverBiaya != '' && biayaTindakan) {
-                        persen = ((parseInt(biayaTindakan) / parseInt(coverBiaya)) * 100).toFixed(2);
-                    } else {
-                        persen = 0;
+                        var persen = "";
+                        if (coverBiaya != '' && biayaTindakan) {
+                            persen = ((parseInt(biayaTindakan) / parseInt(coverBiaya)) * 100).toFixed(2);
+                        } else {
+                            persen = 0;
+                        }
+
+                        var barClass = "";
+                        var barLabel = "";
+
+                        if (parseInt(persen) > 70) {
+                            barClass = 'progress-bar-danger';
+                        } else if (parseInt(persen) > 50) {
+                            barClass = 'progress-bar-warning';
+                        } else {
+                            barClass = 'progress-bar-success';
+                        }
+
+                        var barBpjs = '<div class="progress-bar progress-bar-primary" style="width: 100%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">' + "100%" + '</div>';
+
+                        var barTindakan = '<div class="progress-bar ' + barClass + '" style="width: ' + persen + '%" role="progressbar" aria-valuenow="' + persen + '" aria-valuemin="0" aria-valuemax="100">' + persen + "%" + '</div>';
+
+                        if (coverBiaya != '') {
+                            $('#sts_cover_biaya_asuransi').html(barBpjs);
+                            $('#b_asuransi').html(formatRupiah(coverBiaya) + " (100%)");
+                        }
+
+                        if (biayaTindakan != '') {
+                            $('#sts_biaya_tindakan_asuransi').html(barTindakan);
+                            $('#b_tindakan_asuransi').html(formatRupiah(biayaTindakan) + " (" + persen + "%)");
+                        }
                     }
-
-                    var barClass = "";
-                    var barLabel = "";
-
-                    if (parseInt(persen) > 70) {
-                        barClass = 'progress-bar-danger';
-                    } else if (parseInt(persen) > 50) {
-                        barClass = 'progress-bar-warning';
-                    } else {
-                        barClass = 'progress-bar-success';
-                    }
-
-                    var barBpjs = '<div class="progress-bar progress-bar-primary" style="width: 100%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">' + "100.00%" + '</div>';
-
-                    var barTindakan = '<div class="progress-bar ' + barClass + '" style="width: ' + persen + '%" role="progressbar" aria-valuenow="' + persen + '" aria-valuemin="0" aria-valuemax="100">' + persen + "%" + '</div>';
-
-                    if (coverBiaya != '') {
-                        $('#sts_cover_biaya').html(barBpjs);
-                        $('#b_bpjs').html(formatRupiah(coverBiaya) + " (100%)");
-                    }
-
-                    if (biayaTindakan != '') {
-                        $('#sts_biaya_tindakan').html(barTindakan);
-                        $('#b_tindakan').html(formatRupiah(biayaTindakan) + " (" + persen + "%)");
-                    }
+                } else {
+                    $('#status_asuransi').hide();
                 }
-            } else {
-                $('#status_bpjs').hide();
-            }
-        });
+            });
+        }
+    }
+
+    function hitungStatusBiaya() {
+        var jenis = $('#jenis_pasien').val();
+        if("bpjs" == jenis){
+            CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, "RWJ", function (response) {
+                    $('#status_bpjs').show();
+                    if (response.tarifBpjs != null && response.tarifTindakan != null) {
+
+                        var coverBiaya = response.tarifBpjs;
+                        var biayaTindakan = response.tarifTindakan;
+                        $('#kode_cbg').text(response.kodeCbg);
+
+                        var persen = "";
+                        if (coverBiaya != '' && biayaTindakan) {
+                            persen = ((parseInt(biayaTindakan) / parseInt(coverBiaya)) * 100).toFixed(2);
+                        } else {
+                            persen = 0;
+                        }
+
+                        var barClass = "";
+                        var barLabel = "";
+
+                        if (parseInt(persen) > 70) {
+                            barClass = 'progress-bar-danger';
+                        } else if (parseInt(persen) > 50) {
+                            barClass = 'progress-bar-warning';
+                        } else {
+                            barClass = 'progress-bar-success';
+                        }
+
+                        var barBpjs = '<div class="progress-bar progress-bar-primary" style="width: 100%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">' + "100.00%" + '</div>';
+
+                        var barTindakan = '<div class="progress-bar ' + barClass + '" style="width: ' + persen + '%" role="progressbar" aria-valuenow="' + persen + '" aria-valuemin="0" aria-valuemax="100">' + persen + "%" + '</div>';
+
+                        if (coverBiaya != '') {
+                            $('#sts_cover_biaya').html(barBpjs);
+                            $('#b_bpjs').html(formatRupiah(coverBiaya) + " (100%)");
+                        }
+
+                        if (biayaTindakan != '') {
+                            $('#sts_biaya_tindakan').html(barTindakan);
+                            $('#b_tindakan').html(formatRupiah(biayaTindakan) + " (" + persen + "%)");
+                        }
+                    }
+            });
+        }else{
+            $('#status_bpjs').hide();
+        }
     }
 
     function saveAlergi(id) {
@@ -1898,42 +2294,56 @@
         $('#dok_id_dokter').html(option);
     }
 
-    function selectKeterangan(id) {
-        var idx = id.selectedIndex;
-        var idKtg = id.options[idx].value;
+    function selectKeterangan(idKtg) {
         var jenisPasien = $('#jenis_pasien').val();
 
-        if (idKtg == "pindah") {
-            $('#pembayaran').hide();
-            $("#form-poli").attr('style', 'display:block');
-            $("#kamar").attr('style', 'display:none');
-            $("#form-selesai").hide();
-            $("#form-cekup").hide();
-
-            if(jenisPasien == 'bpjs'){
+        if(idKtg != ''){
+            if (idKtg == "pindah") {
                 $('#pembayaran').hide();
-            }else{
-                $('#pembayaran').show();
-            }
-        }
-        if (idKtg == "rujuk") {
-            $("#kamar").attr('style', 'display:block');
-            $("#form-poli").attr('style', 'display:none');
-            $("#form-selesai").hide();
-            $("#form-cekup").hide();
+                $("#form-poli").attr('style', 'display:block');
+                $("#kamar").attr('style', 'display:none');
+                $("#form-selesai").hide();
+                $("#form-cekup").hide();
 
-            if(jenisPasien == 'bpjs'){
-                $('#pembayaran').hide();
-            }else{
-                $('#pembayaran').show();
+                if(jenisPasien == 'bpjs'){
+                    $('#pembayaran').hide();
+                }else{
+                    $('#pembayaran').show();
+                }
             }
-        }
-        if (idKtg == "selesai" || idKtg == "") {
-            $('#pembayaran').hide();
-            $("#kamar").attr('style', 'display:none');
-            $("#form-poli").attr('style', 'display:none');
-            $("#form-selesai").show();
-            $("#form-cekup").hide();
+            if (idKtg == "rujuk") {
+                $("#kamar").attr('style', 'display:block');
+                $("#form-poli").attr('style', 'display:none');
+                $("#form-selesai").hide();
+                $("#form-cekup").hide();
+
+                if(jenisPasien == 'bpjs'){
+                    $('#pembayaran').hide();
+                }else{
+                    $('#pembayaran').show();
+                }
+            }
+            if (idKtg == "selesai") {
+                $('#pembayaran').hide();
+                $("#kamar").attr('style', 'display:none');
+                $("#form-poli").attr('style', 'display:none');
+                $("#form-selesai").show();
+                $("#form-cekup").hide();
+            }
+            if (idKtg == "lanjut_biaya") {
+                $('#pembayaran').hide();
+                $("#kamar").attr('style', 'display:none');
+                $("#form-poli").attr('style', 'display:none');
+                $("#form-selesai").hide();
+                $("#form-cekup").hide();
+            }
+            if(idKtg == ""){
+                $('#pembayaran').hide();
+                $("#kamar").hide();
+                $("#form-poli").hide();
+                $("#form-selesai").hide();
+                $("#form-cekup").hide();
+            }
         }
     }
 
@@ -1970,7 +2380,10 @@
         var metodeBayar = "";
         var uangMuka = "";
         var idPasien = $('#id_pasien').val();
-
+        var namaAsuransi = $('#nama_asuransi').val();
+        var noRujukan = $('#no_rujukan').val();
+        var tglRujukan = $('#tgl_rujukan').val();
+        var suratRujukan = $('#surat_rujukan').val();
 
         if (idKtg != '') {
             if (idKtg == "pindah") {
@@ -1996,9 +2409,6 @@
                 metodeBayar = $("#metode_bayar").val();
                 uangMuka = $("#uang_muka_val").val();
 
-                console.log(metodeBayar);
-                console.log(uangMuka);
-
                 if (kelas != '' && kamar != '') {
                     $('#save_con').attr('onclick','saveKeterangan(\''+idKtg+'\', \''+poli+'\', \''+kelas+'\', \''+kamar+'\', \''+ket_selesai+'\', \''+tgl_cekup+'\', \''+ket_cekup+'\', \''+jenisPasien+'\',\''+idPasien+'\',\''+metodeBayar+'\', \''+uangMuka+'\')');
                     $('#modal-confirm-dialog').modal('show');
@@ -2021,16 +2431,130 @@
                 ket_cekup = $('#cekup_ket').val();
 
                 if (ket_selesai != '') {
-                    $('#save_con').attr('onclick','saveKeterangan(\''+idKtg+'\', \''+poli+'\', \''+kelas+'\', \''+kamar+'\', \''+ket_selesai+'\', \''+tgl_cekup+'\', \''+ket_cekup+'\', \''+jenisPasien+'\',\''+idPasien+'\',\''+metodeBayar+'\', \''+uangMuka+'\')');
-                    $('#modal-confirm-dialog').modal('show');
+
+                    if(namaAsuransi == "Jasa Raharja"){
+                        if(noRujukan != '' && tglRujukan != '' && suratRujukan != ''){
+                            $('#save_con').attr('onclick','saveKeterangan(\''+idKtg+'\', \''+poli+'\', \''+kelas+'\', \''+kamar+'\', \''+ket_selesai+'\', \''+tgl_cekup+'\', \''+ket_cekup+'\', \''+jenisPasien+'\',\''+idPasien+'\',\''+metodeBayar+'\', \''+uangMuka+'\')');
+                            $('#modal-confirm-dialog').modal('show');
+                        }else{
+                            $('#laka_no_polisi').val(noRujukan);
+                            $('#laka_tgl_kejadian').val(noRujukan);
+                            $('#laka_surat_rujukan').val(suratRujukan);
+                            $('#modal-laka').modal({show:true, backdrop:'static'});
+                            var data  = {
+                                'id_ktg':idKtg,
+                                'poli':poli,
+                                'kelas':kelas,
+                                'kamar':kamar,
+                                'ket_selesai':ket_selesai,
+                                'tgl_cekup':tgl_cekup,
+                                'ket_cekup':ket_cekup,
+                                'jenis':jenisPasien,
+                                'id_pasien':idPasien,
+                                'metode_bayar':metodeBayar,
+                                'uang_muka':uangMuka
+                            }
+                            var result = JSON.stringify(data);
+                            $('#save_laka').attr('onclick','saveDataAsuransi(\''+result+'\')');
+                        }
+                    }else{
+                        $('#save_con').attr('onclick','saveKeterangan(\''+idKtg+'\', \''+poli+'\', \''+kelas+'\', \''+kamar+'\', \''+ket_selesai+'\', \''+tgl_cekup+'\', \''+ket_cekup+'\', \''+jenisPasien+'\',\''+idPasien+'\',\''+metodeBayar+'\', \''+uangMuka+'\')');
+                        $('#modal-confirm-dialog').modal('show');
+                    }
                 } else {
                     $('#warning_ket').show().fadeOut(5000);
                     $('#war_kolom-2').show();
                 }
             }
+            if(idKtg == "lanjut_biaya"){
+
+                    if(namaAsuransi == "Jasa Raharja"){
+                        if(noRujukan != '' && tglRujukan != '' && suratRujukan != ''){
+                            $('#save_con').attr('onclick','saveKeterangan(\''+idKtg+'\', \''+poli+'\', \''+kelas+'\', \''+kamar+'\', \''+ket_selesai+'\', \''+tgl_cekup+'\', \''+ket_cekup+'\', \''+jenisPasien+'\',\''+idPasien+'\',\''+metodeBayar+'\', \''+uangMuka+'\')');
+                            $('#modal-confirm-dialog').modal('show');
+                        }else{
+                            $('#laka_no_polisi').val(noRujukan);
+                            $('#laka_tgl_kejadian').val(noRujukan);
+                            $('#laka_surat_rujukan').val(suratRujukan);
+                            $('#modal-laka').modal({show:true, backdrop:'static'});
+                            var data  = {
+                                'id_ktg':idKtg,
+                                'poli':poli,
+                                'kelas':kelas,
+                                'kamar':kamar,
+                                'ket_selesai':ket_selesai,
+                                'tgl_cekup':tgl_cekup,
+                                'ket_cekup':ket_cekup,
+                                'jenis':jenisPasien,
+                                'id_pasien':idPasien,
+                                'metode_bayar':metodeBayar,
+                                'uang_muka':uangMuka
+                            }
+                            var result = JSON.stringify(data);
+                            $('#save_laka').attr('onclick','saveDataAsuransi(\''+result+'\')');
+                        }
+                    }else{
+                        $('#save_con').attr('onclick','saveKeterangan(\''+idKtg+'\', \''+poli+'\', \''+kelas+'\', \''+kamar+'\', \''+ket_selesai+'\', \''+tgl_cekup+'\', \''+ket_cekup+'\', \''+jenisPasien+'\',\''+idPasien+'\',\''+metodeBayar+'\', \''+uangMuka+'\')');
+                        $('#modal-confirm-dialog').modal('show');
+                    }
+            }
         } else {
             $('#warning_ket').show().fadeOut(5000);
             $('#war_catatan').show();
+        }
+    }
+
+    function saveDataAsuransi(data){
+        var noPolisi = $('#laka_no_polisi').val();
+        var tglKejadian = $('#laka_tgl_kejadian').val();
+        var suratRujukan = $('#laka_surat_rujukan').val();
+        var canvas = document.getElementById('temp_surat_rujuk');
+        var dataURL = canvas.toDataURL("image/png"),
+            dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+        var obj = JSON.parse(data);
+        var idKtg = obj["id_ktg"];
+        var poli = obj["poli"];
+        var kelas = obj["kelas"];
+        var kamar = obj["kamar"];
+        var ket_selesai = obj["ket_selesai"];
+        var tgl_cekup = obj["tgl_cekup"];
+        var ket_cekup = obj["ket_cekup"];
+        var jenisPasien = obj["jenis"];
+        var idPasien = obj["id_pasien"];
+        var metodeBayar = obj["metode_bayar"];
+        var uangMuka = obj["uang_muka"];
+
+        if(noPolisi != '' && tglKejadian != '' && dataURL != ''){
+
+            $('#save_laka').hide();
+            $('#load_laka').show();
+            dwr.engine.setAsync(true);
+            CheckupDetailAction.saveUpdateDataAsuransi(idDetailCheckup, noPolisi, tglKejadian, dataURL, function (response) {
+                if(response.status == "success"){
+                    $('#save_laka').show();
+                    $('#load_laka').hide();
+                    $('#save_con').attr('onclick','saveKeterangan(\''+idKtg+'\', \''+poli+'\', \''+kelas+'\', \''+kamar+'\', \''+ket_selesai+'\', \''+tgl_cekup+'\', \''+ket_cekup+'\', \''+jenisPasien+'\',\''+idPasien+'\',\''+metodeBayar+'\', \''+uangMuka+'\')');
+                    $('#modal-confirm-dialog').modal('show');
+                }else {
+                    $('#warning_laka').show().fadeOut(5000);
+                    $('#msg_laka').text(response.message);
+                    $('#save_laka').show();
+                    $('#load_laka').hide();
+                }
+            });
+
+        }else{
+            $('#warning_laka').show().fadeOut(5000);
+            $('#msg_laka').text("Silahkan cek kembali inputan anda...!");
+            if(noPolisi == ''){
+                $('#war_laka_no_polisi').show();
+            }
+            if(tglKejadian == ''){
+                $('#war_laka_tgl_kejadian').show();
+            }
+            if(suratRujukan == ''){
+                $('#war_laka_surat_polisi').show();
+            }
         }
     }
 
@@ -2046,6 +2570,7 @@
             dwr.engine.setAsync(true);
             CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, jenisPasien, "", "", "", idPasien, metodeBayar, uangMuka, jenisBayar, function (response) {
                 if(response.status == "success"){
+                    $('#modal-laka').modal('hide');
                     $('#waiting_dialog').dialog('close');
                     $('#info_dialog').dialog('open');
                     $('#close_pos').val(6);
@@ -2067,6 +2592,7 @@
             dwr.engine.setAsync(true);
             CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, jenisPasien, "", "", "", idPasien, metodeBayar, uangMuka, jenisBayar, function (response) {
                 if(response.status == "success"){
+                    $('#modal-laka').modal('hide');
                     $('#waiting_dialog').dialog('close');
                     $('#info_dialog').dialog('open');
                     $('#close_pos').val(6);
@@ -2081,13 +2607,14 @@
                 }
             });
         }
-        if(idKtg == "selesai"){
+        if(idKtg == "selesai" || idKtg == "lanjut_biaya"){
             $('#save_ket').hide();
             $('#load_ket').show();
             $('#waiting_dialog').dialog('open');
             dwr.engine.setAsync(true);
             CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, jenisPasien, "", "", "", idPasien, metodeBayar, uangMuka, jenisBayar, function (response) {
                 if(response.status == "success"){
+                    $('#modal-laka').modal('hide');
                     $('#waiting_dialog').dialog('close');
                     $('#info_dialog').dialog('open');
                     $('#close_pos').val(6);
@@ -2232,13 +2759,6 @@
 
     }
 
-    function formatRupiah(angka) {
-        var reverse = angka.toString().split('').reverse().join(''),
-                ribuan = reverse.match(/\d{1,3}/g);
-        ribuan = ribuan.join('.').split('').reverse().join('');
-        return ribuan;
-    }
-
 
     function saveDokter(id) {
         var idDokter = $('#dok_id_dokter').val();
@@ -2339,6 +2859,7 @@
                             dwr.engine.setAsync(false);
                             listTindakan();
                             hitungStatusBiaya();
+                            hitungCoverBiaya();
                             $('#modal-tindakan').modal('hide');
                             $('#info_dialog').dialog('open');
                             $('#close_pos').val(2);
@@ -2357,6 +2878,7 @@
                             dwr.engine.setAsync(false);
                             listTindakan();
                             hitungStatusBiaya();
+                            hitungCoverBiaya();
                             $('#modal-tindakan').modal('hide');
                             $('#info_dialog').dialog('open');
                             $('#close_pos').val(2);
@@ -2407,6 +2929,7 @@
     function listTindakan() {
 
         var table = "";
+        var table2 = "";
         var data = [];
         var trfTtl = 0;
         TindakanRawatAction.listTindakanRawat(idDetailCheckup, function (response) {
@@ -2446,16 +2969,26 @@
                             "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editTindakan(\'' + item.idTindakanRawat + '\',\'' + item.idTindakan + '\',\'' + item.idKategoriTindakan + '\',\'' + item.idPerawat + '\',\'' + item.qty + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' + "</td>" +
                             "</tr>";
 
+                    table2 += "<tr>" +
+                        "<td>" + dateFormat + "</td>" +
+                        "<td>" + item.namaTindakan + "</td>" +
+                        "<td align='center'></td>" +
+                        "</tr>";
+
                 });
-                table = table + "<tr>" +
+
+                if("paket_perusahaan" == jenisPeriksaPasien || "paket_individu" == jenisPeriksaPasien){
+                    $('#body_tindakan_paket').html(table2);
+                }else{
+                    table = table + "<tr>" +
                         "<td colspan='4'>Total</td>" +
                         "<td align='right'>" + formatRupiah(trfTtl) + "</td>" +
                         "<td></td>" +
                         "</tr>";
+                    $('#body_tindakan').html(table);
+                }
             }
         });
-
-        $('#body_tindakan').html(table);
 
     }
 
@@ -2683,13 +3216,25 @@
                     if (item.labName != null) {
                         lab = item.labName;
                     }
-                    table += "<tr>" +
+
+                    if("paket_perusahaan" == jenisPeriksaPasien || "paket_individu" == jenisPeriksaPasien){
+                        table += "<tr>" +
+                            "<td>" + dateFormat + "</td>" +
+                            "<td>" + lab + "</td>" +
+                            "<td>" + status + "</td>" +
+                            "<td>" + item.kategoriLabName + "</td>" +
+                            "<td align='center'></td>" +
+                            "</tr>";
+                    }else{
+                        table += "<tr>" +
                             "<td>" + dateFormat + "</td>" +
                             "<td>" + lab + "</td>" +
                             "<td>" + status + "</td>" +
                             "<td>" + item.kategoriLabName + "</td>" +
                             "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editLab(\'' + item.idPeriksaLab + '\',\'' + item.idLab + '\',\'' + item.idKategoriLab + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' + "</td>" +
-                            "</tr>"
+                            "</tr>";
+                    }
+
                 });
             }
         });
@@ -3061,6 +3606,7 @@
         var jenisResep = $("#jenis_resep").val();
         var flagKronis = $("#val-kronis").val();
         var hariKronis = "";
+        var harga = "";
 
         if (flagKronis == "Y"){
             hariKronis = $("#hari-kronis").val();
@@ -3101,6 +3647,10 @@
             if (obat.split('|')[6] != 'null' && obat.split('|')[6] != '') {
                 bijiPerLembar = obat.split('|')[6];
             }
+            if (obat.split('|')[8] != 'null' && obat.split('|')[8] != '') {
+                harga = obat.split('|')[8];
+            }
+
 
             var stok = 0;
 
@@ -3115,6 +3665,7 @@
             }
 
             if (parseInt(qty) <= parseInt(stok)) {
+
                 $.each(data, function (i, item) {
                     if (item.ID == id) {
                         cek = true;
@@ -3124,6 +3675,7 @@
                 if (cek) {
                     $('#warning_data_exits').show().fadeOut(5000);
                 } else {
+                    var totalHarga = parseInt(qty) * parseInt(harga);
                     $('#resep_apotek').attr('disabled', true);
                     $('#desti_apotek').html(namaPelayanan);
                     var row = '<tr id=' + id + '>' +
@@ -3135,9 +3687,18 @@
                             '<td>' + jenisResep + '</td>' +
                             '<td>' + labelKronis(flagKronis) + '</td>' +
                             '<td aling="center">' + hariKronis + '</td>' +
-                            '<td align="center"><img border="0" onclick="delRowObat(\'' + id + '\')" class="hvr-grow" src="<s:url value="/pages/images/delete-flat.png"/>" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
+                            '<td aling="center">' + formatRupiah(totalHarga) + '</td>' +
+                            '<td align="center"><img border="0" onclick="delRowObat(\'' + id + '\',\''+totalHarga+'\')" class="hvr-grow" src="<s:url value="/pages/images/delete-flat.png"/>" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
                             '</tr>';
                     $('#body_detail').append(row);
+                    var total = $('#total_harga_obat').val();
+                    console.log(total);
+                    var tot = 0;
+                    if(total != ""){
+                        tot = total.replace(/[.]/g, '');
+                    }
+                    var jumlah = parseInt(totalHarga) + parseInt(tot);
+                    $('#total_harga_obat').val(formatRupiah(jumlah));
                 }
             } else {
                 $('#warning_resep_head').show().fadeOut(5000);
@@ -3165,11 +3726,19 @@
         }
     }
 
-    function delRowObat(id) {
+    function delRowObat(id, harga) {
         $('#' + id).remove();
+        var total = $('#total_harga_obat').val();
+        var tot = 0;
+        if(total != ""){
+            tot = total.replace(/[.]/g, '');
+        }
+        console.log(harga);
+        var jumlah = parseInt(tot) - parseInt(harga);
+        $('#total_harga_obat').val(formatRupiah(jumlah));
     }
 
-    function saveResepObat() {
+    function saveResepObatTtd() {
 
         var idDokter = $('#tin_id_dokter').val();
         var data = $('#tabel_rese_detail').tableToJSON();
@@ -3178,12 +3747,37 @@
         var apotek = $('#resep_apotek').val();
 
         if (stringData != '[]') {
+            $('#modal-ttd').modal({show:true, backdrop:'static'});
+        } else {
+            $('#warning_resep_head').show().fadeOut(5000);
+            $('#msg_resep').text("Silahkan cek kembali data inputan anda..!");
+        }
+    }
+
+    function clearConvas(){
+        var canvas = document.getElementById('ttd_canvas');
+        const context = canvas.getContext('2d');
+        context.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function saveResepObat() {
+        $('#modal-ttd').modal('hide');
+        var idDokter = $('#tin_id_dokter').val();
+        var data = $('#tabel_rese_detail').tableToJSON();
+        var stringData = JSON.stringify(data);
+        var idPelayanan = $('#resep_apotek').val();
+        var apotek = $('#resep_apotek').val();
+        var canvas = document.getElementById('ttd_canvas');
+        var dataURL = canvas.toDataURL("image/png"),
+            dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+        var ttd  = isBlank(canvas);
+        if (stringData != '[]' && !ttd) {
             var idPelayanan = apotek.split('|')[0];
             var namaPelayanan = apotek.split('|')[1];
             $('#save_resep_head').hide();
             $('#load_resep_head').show();
             dwr.engine.setAsync(true);
-            PermintaanResepAction.saveResepPasien(idDetailCheckup, idPoli, idDokter, idPasien, stringData, idPelayanan, {
+            PermintaanResepAction.saveResepPasien(idDetailCheckup, idPoli, idDokter, idPasien, stringData, idPelayanan, dataURL, {
                 callback: function (response) {
                     if (response == "success") {
                         dwr.engine.setAsync(false);
@@ -3195,6 +3789,7 @@
                         listResepPasien();
                     } else {
                         $('#warning_resep_head').show().fadeOut(5000);
+                        $('#msg_resep').text("Silahkan cek kembali data inputan anda..!");
                         $('#save_resep_head').show();
                         $('#load_resep_head').hide();
                     }
@@ -3202,7 +3797,15 @@
             });
         } else {
             $('#warning_resep_head').show().fadeOut(5000);
+            $('#msg_resep').text("Silahkan cek kembali data inputan anda..!");
         }
+    }
+
+    function isBlank(canvas){
+        const blank = document.createElement("canvas");
+        blank.width = canvas.width;
+        blank.height = canvas.height;
+        return canvas.toDataURL() === blank.toDataURL();
     }
 
     function listResepPasien() {
@@ -3238,7 +3841,7 @@
     }
 
     function printResep(id) {
-        window.open('printResepPasien_checkupdetail.action?id=' + noCheckup + '&idResep=' + id, '_blank');
+        window.open('printResepPasien_checkupdetail.action?id=' + idDetailCheckup + '&idResep=' + id, '_blank');
     }
 
     function detailResep(id) {
@@ -3464,7 +4067,7 @@
             ObatPoliAction.getSelectOptionObatByPoli(idPel, jenisPasien, function (response) {
                 if (response != null) {
                     $.each(response, function (i, item) {
-                        option += "<option value='" + item.idObat + "|" + item.namaObat + "|" + item.qtyBox + "|" + item.qtyLembar + "|" + item.qtyBiji + "|" + item.lembarPerBox + "|" + item.bijiPerLembar + "|" + item.flagKronis + "'>" + item.namaObat + "</option>";
+                        option += "<option value='" + item.idObat + "|" + item.namaObat + "|" + item.qtyBox + "|" + item.qtyLembar + "|" + item.qtyBiji + "|" + item.lembarPerBox + "|" + item.bijiPerLembar + "|" + item.flagKronis + "|" + item.harga + "'>" + item.namaObat + "</option>";
                     });
                     $('#resep_nama_obat').html(option);
                 }

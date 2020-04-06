@@ -7,10 +7,12 @@ import com.neurix.simrs.master.jenisobat.model.ImSimrsJenisObatEntity;
 import com.neurix.simrs.master.jenisobat.model.JenisObat;
 import com.neurix.simrs.master.obat.bo.ObatBo;
 import com.neurix.simrs.master.obat.dao.ObatDao;
-import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
-import com.neurix.simrs.master.obat.model.Obat;
+import com.neurix.simrs.master.obat.dao.ReturObatDao;
+import com.neurix.simrs.master.obat.dao.ReturObatDetailDao;
+import com.neurix.simrs.master.obat.model.*;
 import com.neurix.simrs.master.obatgejala.dao.ObatGejalaDao;
 import com.neurix.simrs.master.obatgejala.model.ImSimrsObatGejalaEntity;
+import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.hargaobat.dao.HargaObatDao;
 import com.neurix.simrs.transaksi.hargaobat.model.HargaObat;
 import com.neurix.simrs.transaksi.hargaobat.model.MtSimrsHargaObatEntity;
@@ -25,6 +27,7 @@ import org.apache.commons.collections.map.HashedMap;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,6 +42,16 @@ public class ObatBoImpl implements ObatBo {
     private ObatGejalaDao obatGejalaDao;
     private TransaksiObatDetailBatchDao batchDao;
     private HargaObatDao hargaObatDao;
+    private ReturObatDao returObatDao;
+    private ReturObatDetailDao returObatDetailDao;
+
+    public void setReturObatDao(ReturObatDao returObatDao) {
+        this.returObatDao = returObatDao;
+    }
+
+    public void setReturObatDetailDao(ReturObatDetailDao returObatDetailDao) {
+        this.returObatDetailDao = returObatDetailDao;
+    }
 
     public void setBatchDao(TransaksiObatDetailBatchDao batchDao) {
         this.batchDao = batchDao;
@@ -259,6 +272,9 @@ public class ObatBoImpl implements ObatBo {
         }
         if (bean.getIdObat() != null && !"".equalsIgnoreCase(bean.getIdObat())) {
             hsCriteria.put("id_obat", bean.getIdObat());
+        }
+        if (bean.getIdBarang() != null && !"".equalsIgnoreCase(bean.getIdBarang())) {
+            hsCriteria.put("id_barang", bean.getIdBarang());
         }
 
         hsCriteria.put("flag", "Y");
@@ -938,5 +954,232 @@ public class ObatBoImpl implements ObatBo {
 
         }
         return obatList;
+    }
+
+    @Override
+    public CheckResponse saveReturObat(Obat bean, List<Obat> obatList) throws GeneralBOException {
+        CheckResponse response = new CheckResponse();
+
+        if(bean != null){
+
+            ItSimrsReturObatEntity returObatEntity = new ItSimrsReturObatEntity();
+            returObatEntity.setIdReturObat("RTO"+returObatDao.getNextId());
+            returObatEntity.setIdVendor(bean.getIdVendor());
+            returObatEntity.setJumlahRetur(bean.getQty());
+            returObatEntity.setTanggalRetur(bean.getTglRetur());
+            returObatEntity.setBranchId(bean.getBranchId());
+            returObatEntity.setAction("C");
+            returObatEntity.setFlag("Y");
+            returObatEntity.setCreatedWho(bean.getCreatedWho());
+            returObatEntity.setCreatedDate(bean.getCreatedDate());
+            returObatEntity.setLastUpdate(bean.getLastUpdate());
+            returObatEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+            try {
+                returObatDao.addAndSave(returObatEntity);
+                response.setStatus("success");
+            }catch (HibernateException e){
+                response.setStatus("error");
+                response.setMessage("Found Error "+e.getMessage());
+                logger.error("Found Errro "+e.getMessage());
+            }
+
+            if(obatList.size() > 0){
+
+                for (Obat obat: obatList){
+
+                    ItSimrsReturObatDetailEntity returObatDetailEntity = new ItSimrsReturObatDetailEntity();
+                    returObatDetailEntity.setIdReturDetail("RTD"+returObatDetailDao.getNextId());
+                    returObatDetailEntity.setIdReturObat(returObatEntity.getIdReturObat());
+                    returObatDetailEntity.setIdObat(obat.getIdObat());
+                    returObatDetailEntity.setIdBarang(obat.getIdBarang());
+                    returObatDetailEntity.setQtyRetur(obat.getQty());
+                    returObatDetailEntity.setAction("C");
+                    returObatDetailEntity.setFlag("Y");
+                    returObatDetailEntity.setCreatedWho(bean.getCreatedWho());
+                    returObatDetailEntity.setCreatedDate(bean.getCreatedDate());
+                    returObatDetailEntity.setLastUpdate(bean.getLastUpdate());
+                    returObatDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                    try {
+
+                        returObatDetailDao.addAndSave(returObatDetailEntity);
+
+                        Obat obt = new Obat();
+                        obt.setIdBarang(obat.getIdBarang());
+                        obt.setIdObat(obat.getIdObat());
+                        obt.setQtyApprove(obat.getQty());
+                        obt.setJenisSatuan("box");
+                        obt.setLastUpdate(bean.getLastUpdate());
+                        obt.setLastUpdateWho(bean.getLastUpdateWho());
+
+                        response = updateSubstractStockGudang(obt);
+
+                    }catch (HibernateException e){
+                        response.setStatus("error");
+                        response.setMessage("Found Error "+e.getMessage());
+                        logger.error("Found error "+e.getMessage());
+                    }
+                }
+            }
+        }
+        return response;
+    }
+
+    @Override
+    public List<Obat> searchReturObat(Obat bean) throws GeneralBOException {
+        List<Obat> obatList = new ArrayList<>();
+        if(bean != null){
+            try {
+                obatList = returObatDao.getListReturObat(bean);
+            }catch (HibernateException e){
+                logger.error("Found Error "+e.getMessage());
+            }
+        }
+        return obatList;
+    }
+
+    @Override
+    public List<Obat> detailReturObat(String idRetur) throws GeneralBOException {
+        List<Obat> obatList = new ArrayList<>();
+        if(idRetur != null){
+            try {
+                obatList = returObatDao.getListDetailReturObat(idRetur);
+            }catch (HibernateException e){
+                logger.error("Found Error "+e.getMessage());
+            }
+        }
+        return obatList;
+    }
+
+    @Override
+    public List<Obat> searchObatByVendor(String idVendor, String branchId) throws GeneralBOException {
+        List<Obat> obatList = new ArrayList<>();
+        if(idVendor != null && branchId != null){
+            try {
+                obatList = returObatDao.getListObatByVendor(idVendor, branchId);
+            }catch (HibernateException e){
+                logger.error("Found Error "+e.getMessage());
+            }
+        }
+        return obatList;
+    }
+
+    private CheckResponse updateSubstractStockGudang(Obat bean) {
+
+        CheckResponse response = new CheckResponse();
+
+        Obat obat = new Obat();
+        obat.setIdBarang(bean.getIdBarang());
+        obat.setIdObat(bean.getIdObat());
+
+        List<ImSimrsObatEntity> obatEntities = getListObatEntity(obat);
+
+        ImSimrsObatEntity obatEntity = new ImSimrsObatEntity();
+        if (obatEntities.size() > 0) {
+            obatEntity = obatEntities.get(0);
+        }
+
+        if (obatEntity != null) {
+
+            //sodiq, 09-01-2019, antisipasi nilai qtybox, lembar, biji sama dengan null
+            BigInteger qtyBox = new BigInteger(String.valueOf(0));
+            BigInteger qtyLembar = new BigInteger(String.valueOf(0));
+            BigInteger qtyBiji = new BigInteger(String.valueOf(0));
+
+            if (obatEntity.getQtyBox() != null) {
+                qtyBox = obatEntity.getQtyBox();
+            }
+            if (obatEntity.getQtyLembar() != null) {
+                qtyLembar = obatEntity.getQtyLembar();
+            }
+            if (obatEntity.getQtyBiji() != null) {
+                qtyBiji = obatEntity.getQtyBiji();
+            }
+
+            // BigInteger jmlh = obatEntity.getQty().subtract(transaksiObatDetail.getQtyApprove());
+            if ("box".equalsIgnoreCase(bean.getJenisSatuan())) {
+                BigInteger jml = qtyBox.subtract(bean.getQtyApprove());
+                obatEntity.setQtyBox(jml);
+            }
+            if ("lembar".equalsIgnoreCase(bean.getJenisSatuan())) {
+
+                // jika lembar permintaan lebih kecil dari pada jumlah lembar dalam stock maka langsung mengurangi stock lembar
+                if (qtyLembar.compareTo(bean.getQtyApprove()) == 1 || qtyLembar.compareTo(bean.getQtyApprove()) == 0) {
+                    BigInteger jml = qtyLembar.subtract(bean.getQtyApprove());
+                    obatEntity.setQtyLembar(jml);
+                } else {
+
+                    BigInteger jmlLembarStock = (obatEntity.getQtyBox().multiply(obatEntity.getLembarPerBox()))
+                            .add(qtyLembar);
+
+                    if (jmlLembarStock.compareTo(bean.getQtyApprove()) == 1) {
+                        BigInteger jmlLembarPengurangan = jmlLembarStock.subtract(bean.getQtyApprove());
+
+                        BigInteger lembarToBox = jmlLembarPengurangan.divide(obatEntity.getLembarPerBox());
+                        BigInteger sisaLembar = jmlLembarPengurangan.mod(obatEntity.getLembarPerBox());
+
+                        obatEntity.setQtyBox(lembarToBox);
+                        obatEntity.setQtyLembar(sisaLembar);
+
+                    } else {
+                        response.setStatus("error");
+                        response.setMessage("Found Error, jumlah yang diminta melebihi stock ");
+                        logger.error("[ObatPoliBoImpl.updateSubstractStockGudang] jumlah yang diminta melebihi stock");
+                        throw new GeneralBOException("[ObatPoliBoImpl.updateSubstractStockGudang] jumlah yang diminta melebihi stock");
+                    }
+                }
+            }
+            if ("biji".equalsIgnoreCase(bean.getJenisSatuan())) {
+
+                // jika jumlah stock obat bijian lebih besar atau sama dari jumlah permintaan
+                // maka hanya perlu mengurangi stock biji
+                if (qtyBiji.compareTo(bean.getQtyApprove()) == 1 || qtyBiji.compareTo(bean.getQtyApprove()) == 0) {
+                    obatEntity.setQtyBiji(qtyBiji.subtract(bean.getQtyApprove()));
+                } else {
+
+                    BigInteger cons = obatEntity.getLembarPerBox().multiply(obatEntity.getBijiPerLembar());
+
+                    BigInteger allStockBiji = (obatEntity.getQtyBox().multiply(cons))
+                            .add(qtyLembar.multiply(obatEntity.getBijiPerLembar()))
+                            .add(qtyBiji);
+
+                    if (allStockBiji.compareTo(bean.getQtyApprove()) == 1) {
+
+                        BigInteger sisaPenguranganAllBiji = allStockBiji.subtract(bean.getQtyApprove());
+
+                        BigInteger bijiToLembar = sisaPenguranganAllBiji.divide(obatEntity.getBijiPerLembar());
+                        BigInteger modBijiToLembar = sisaPenguranganAllBiji.mod(obatEntity.getBijiPerLembar());
+                        BigInteger lembarToBox = bijiToLembar.divide(obatEntity.getLembarPerBox());
+                        BigInteger modLembarToBox = bijiToLembar.mod(obatEntity.getLembarPerBox());
+
+                        obatEntity.setQtyBiji(modBijiToLembar);
+                        obatEntity.setQtyLembar(modLembarToBox);
+                        obatEntity.setQtyBox(lembarToBox);
+
+                    } else {
+                        response.setStatus("error");
+                        response.setMessage("Found Error, jumlah yang diminta melebihi stock ");
+                        logger.error("[ObatPoliBoImpl.updateSubstractStockGudang] jumlah yang diminta melebihi stock");
+                        throw new GeneralBOException("[ObatPoliBoImpl.updateSubstractStockGudang] jumlah yang diminta melebihi stock");
+                    }
+                }
+            }
+
+            obatEntity.setAction("U");
+            obatEntity.setLastUpdate(bean.getLastUpdate());
+            obatEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+            try {
+                obatDao.updateAndSave(obatEntity);
+                response.setStatus("success");
+            } catch (HibernateException e) {
+                response.setStatus("error");
+                response.setMessage("Found Error, update master obat"+e.getMessage());
+                logger.error("[ObatPoliBoImpl.saveApproveRequest] ERROR when update master obat. ", e);
+                throw new GeneralBOException("[ObatPoliBoImpl.saveApproveRequest] ERROR when update master obat. ", e);
+            }
+        }
+        return response;
     }
 }

@@ -10,6 +10,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.security.access.method.P;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -142,7 +143,9 @@ public class PasienDao extends GenericDao<ImSimrsPasienEntity, String> {
                 "a.no_telp,\n" +
                 "a.url_ktp,\n" +
                 "b.id_paket,\n" +
-                "c.id_pelayanan\n" +
+                "c.id_pelayanan,\n" +
+                "c.nama_paket,\n" +
+                "c.tarif\n" +
                 "FROM im_simrs_pasien a\n" +
                 "INNER JOIN it_simrs_paket_pasien b ON a.id_pasien = b.id_pasien\n" +
                 "INNER JOIN mt_simrs_paket c ON b.id_paket = c.id_paket\n" +
@@ -172,6 +175,8 @@ public class PasienDao extends GenericDao<ImSimrsPasienEntity, String> {
                 pasien.setUrlKtp(obj[13] == null ? "" : CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_KTP_PASIEN +obj[13].toString());
                 pasien.setIdPaket(obj[14] == null ? "" : obj[14].toString());
                 pasien.setIdPelayanan(obj[15] == null ? "" : obj[15].toString());
+                pasien.setNamaPaket(obj[16] == null ? "" : obj[16].toString());
+                pasien.setTarif(obj[17] != null ? new BigDecimal(obj[17].toString()) : null);
 
                 if(obj[0] != null && !"".equalsIgnoreCase(obj[0].toString())){
                     List<Object[]> objects = getListAlamat(obj[7].toString());

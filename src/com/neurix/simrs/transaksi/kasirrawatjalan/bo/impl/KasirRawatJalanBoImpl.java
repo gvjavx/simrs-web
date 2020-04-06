@@ -4,6 +4,7 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.dao.FpkDao;
+import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.Fpk;
 import com.neurix.simrs.transaksi.checkup.model.ItSImrsFpkEntity;
 import com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao;
@@ -238,6 +239,41 @@ public class KasirRawatJalanBoImpl implements KasirRawatJalanBo {
                 }
             }
         }
+        return response;
+    }
+
+    @Override
+    public CheckResponse saveRefund(String id) throws GeneralBOException {
+        CheckResponse response = new CheckResponse();
+
+        ItSimrsUangMukaPendaftaranEntity entity = new ItSimrsUangMukaPendaftaranEntity();
+
+        try {
+
+            entity = uangMukaDao.getById("id", id);
+
+            if(entity != null){
+
+                entity.setFlagRefund("Y");
+                entity.setLastUpdateWho(CommonUtil.userLogin());
+                entity.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+
+                try {
+                    uangMukaDao.updateAndSave(entity);
+                    response.setStatus("success");
+                }catch (HibernateException e){
+                    response.setStatus("error");
+                    response.setMessage("Found Error "+e.getMessage());
+                    logger.error("Found error "+e.getMessage());
+                }
+            }
+
+        }catch (HibernateException e){
+            response.setStatus("error");
+            response.setMessage("Found Error "+e.getMessage());
+            logger.error("Found error "+e.getMessage());
+        }
+
         return response;
     }
 

@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.permintaanresep.action;
 
 import com.neurix.common.action.BaseMasterAction;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.permintaanresep.bo.PermintaanResepBo;
@@ -16,11 +17,19 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
+import sun.misc.BASE64Decoder;
 
+import javax.imageio.ImageIO;
 import javax.persistence.Id;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -54,7 +63,7 @@ public class PermintaanResepAction extends BaseMasterAction{
         this.permintaanResepBoProxy = permintaanResepBoProxy;
     }
 
-    public String saveResepPasien(String idDetailCheckup, String idPelayanan, String idDokter, String idPasien, String resep, String tujuanApotek){
+    public String saveResepPasien(String idDetailCheckup, String idPelayanan, String idDokter, String idPasien, String resep, String tujuanApotek, String ttdDokter) throws IOException {
         logger.info("[PermintaanResepAction.saveResepPasien] start process >>>");
         try {
             String userLogin = CommonUtil.userLogin();
@@ -74,6 +83,25 @@ public class PermintaanResepAction extends BaseMasterAction{
             permintaanResep.setFlag("Y");
             permintaanResep.setBranchId(userArea);
             permintaanResep.setTujuanPelayanan(tujuanApotek);
+
+            if(ttdDokter != null && !"".equalsIgnoreCase(ttdDokter)){
+                BASE64Decoder decoder = new BASE64Decoder();
+                byte[] decodedBytes = decoder.decodeBuffer(ttdDokter);
+                logger.info("Decoded upload data : " + decodedBytes.length);
+                String fileName = idDokter+"-"+idDetailCheckup+"-"+dateFormater("MM")+dateFormater("yy")+".png";
+                String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_TTD_DOKTER+fileName;
+                logger.info("File save path : " + uploadFile);
+                BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+
+                if (image == null) {
+                    logger.error("Buffered Image is null");
+                }else{
+                    File f = new File(uploadFile);
+                    // write the image
+                    ImageIO.write(image, "png", f);
+                    permintaanResep.setTtdDokter(fileName);
+                }
+            }
 
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             PermintaanResepBo permintaanResepBo = (PermintaanResepBo) ctx.getBean("permintaanResepBoProxy");
@@ -118,6 +146,12 @@ public class PermintaanResepAction extends BaseMasterAction{
             return ERROR;
         }
         return SUCCESS;
+    }
+
+    private String dateFormater(String type) {
+        java.sql.Date date = new java.sql.Date(new java.util.Date().getTime());
+        DateFormat df = new SimpleDateFormat(type);
+        return df.format(date);
     }
 
     public List<PermintaanResep> listResepPasien(String IdChekupDetail){

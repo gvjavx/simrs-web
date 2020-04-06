@@ -3,6 +3,7 @@ package com.neurix.simrs.transaksi.statusperiksa.action;
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Branch;
 import com.neurix.common.action.BaseTransactionAction;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.bpjs.eklaim.bo.EklaimBo;
@@ -32,11 +33,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
+import sun.misc.BASE64Decoder;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,7 +80,12 @@ public class StatusPeriksaAction extends BaseTransactionAction {
     @Override
     public String initForm() {
 
+        long millis = System.currentTimeMillis();
+        java.util.Date date = new java.util.Date(millis);
+        String tglToday = new SimpleDateFormat("dd-MM-yyyy").format(date);
         HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+        detailCheckup.setStDateFrom(tglToday);
+        detailCheckup.setStDateTo(tglToday);
         setHeaderDetailCheckup(detailCheckup);
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
@@ -110,7 +123,7 @@ public class StatusPeriksaAction extends BaseTransactionAction {
                 if ("P".equalsIgnoreCase(checkup.getJenisKelamin())) {
                     jk = "Perempuan";
                 } else {
-                    jk = "laki-Laki";
+                    jk = "Laki-Laki";
                 }
             }
             detailCheckup.setJenisKelamin(jk);
@@ -132,6 +145,7 @@ public class StatusPeriksaAction extends BaseTransactionAction {
         } else {
             setHeaderDetailCheckup(new HeaderDetailCheckup());
         }
+
         return "init_edit";
     }
 
@@ -235,6 +249,7 @@ public class StatusPeriksaAction extends BaseTransactionAction {
 
                                             String namaDokter = "";
                                             String idDokter = "";
+                                            String kodeDpjp = "";
 
                                             List<DokterTeam> dokterList = new ArrayList<>();
                                             DokterTeam dokterTeam = new DokterTeam();
@@ -263,6 +278,7 @@ public class StatusPeriksaAction extends BaseTransactionAction {
                                                 if (dokterArrayList.size() > 0) {
                                                     namaDokter = dokterArrayList.get(0).getNamaDokter();
                                                     idDokter = dokterArrayList.get(0).getIdDokter();
+                                                    kodeDpjp = dokterArrayList.get(0).getKodeDpjp();
                                                 }
 
                                             }
@@ -294,7 +310,7 @@ public class StatusPeriksaAction extends BaseTransactionAction {
                                             sepRequest.setKdKecamatanLakaLantas("");
                                             sepRequest.setKdKabupatenLakaLantas("");
                                             sepRequest.setNoSuratSkdp(getBranch.getSuratSkdp());
-                                            sepRequest.setKodeDpjp(idDokter);
+                                            sepRequest.setKodeDpjp(kodeDpjp);
                                             sepRequest.setNoTelp(getPasien.getNoTelp());
                                             sepRequest.setUserPembuatSep(userLogin);
 
@@ -337,7 +353,7 @@ public class StatusPeriksaAction extends BaseTransactionAction {
 
                                                 List<Tindakan> tindakanList = new ArrayList<>();
                                                 Tindakan tindakan = new Tindakan();
-                                                tindakan.setIdTindakan("03");
+                                                tindakan.setIdTindakan("TDK0000787");
 
                                                 try {
                                                     tindakanList = tindakanBo.getByCriteria(tindakan);
@@ -495,14 +511,66 @@ public class StatusPeriksaAction extends BaseTransactionAction {
                             }
                         }
 
-                        headerDetailCheckup.setDiagnosa(obj.getString("id_diagnosa"));
-                        headerDetailCheckup.setNamaDiagnosa(obj.getString("nama_diagnosa"));
+                        if("bpjs".equalsIgnoreCase(jenisPasien)){
+
+                            headerDetailCheckup.setDiagnosa(obj.getString("id_diagnosa"));
+                            headerDetailCheckup.setNamaDiagnosa(obj.getString("nama_diagnosa"));
+                            headerDetailCheckup.setNoRujukan(obj.getString("no_rujukan"));
+                            headerDetailCheckup.setPerujuk(obj.getString("perujuk"));
+                            headerDetailCheckup.setNamaPerujuk(obj.getString("nama_perujuk"));
+                            headerDetailCheckup.setIdPelayanan(obj.getString("id_pelayanan"));
+                            headerDetailCheckup.setNoPpk(obj.getString("no_ppk"));
+                            headerDetailCheckup.setIdKelas(obj.getString("id_kelas"));
+                            headerDetailCheckup.setTglRujukan(obj.getString("tanggal_rujukan"));
+
+                            if(obj.getString("foto_surat") != null && !"".equalsIgnoreCase(obj.getString("foto_surat"))){
+                                BASE64Decoder decoder = new BASE64Decoder();
+                                byte[] decodedBytes = decoder.decodeBuffer(obj.getString("foto_surat"));
+                                logger.info("Decoded upload data : " + decodedBytes.length);
+                                String fileName = detailCheckup.getNoCheckup()+"-"+dateFormater("MM")+dateFormater("yy")+".png";
+                                String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_DOC_RUJUK_PASIEN+fileName;
+                                logger.info("File save path : " + uploadFile);
+                                BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+
+                                if (image == null) {
+                                    logger.error("Buffered Image is null");
+                                }else{
+                                    File f = new File(uploadFile);
+                                    // write the image
+                                    ImageIO.write(image, "png", f);
+                                    headerDetailCheckup.setSuratRujukan(fileName);
+                                }
+                            }
+
+                            Tindakan tindakan = new Tindakan();
+                            tindakan.setIdTindakan("TDK0000787");
+
+                            List<Tindakan> tindakans = new ArrayList<>();
+                            tindakans.add(tindakan);
+                            headerDetailCheckup.setTindakanList(tindakans);
+
+                        }
+
+                        if("asuransi".equalsIgnoreCase(jenisPasien)){
+                            headerDetailCheckup.setIdAsuransi(obj.getString("id_asuransi"));
+                            headerDetailCheckup.setNoKartuAsuransi(obj.getString("no_kartu"));
+                            headerDetailCheckup.setCoverBiaya(new BigDecimal(obj.getString("cover_biaya")));
+                        }
+
+                        if("umum".equalsIgnoreCase(jenisPasien)){
+                            headerDetailCheckup.setMetodePembayaran(obj.getString("metode_pembayaran"));
+                            headerDetailCheckup.setJumlahUangMuka(new BigInteger(obj.getString("uang_muka")));
+                        }
+
+                        headerDetailCheckup.setIdJenisPeriksaPasien(jenisPasien);
                         headerDetailCheckup.setIdDetailCheckup(detailCheckup.getIdDetailCheckup());
                         headerDetailCheckup.setNoCheckup(detailCheckup.getNoCheckup());
                         headerDetailCheckup.setLastUpdate(time);
                         headerDetailCheckup.setLastUpdateWho(userLogin);
                         headerDetailCheckup.setNoSep(genNoSep);
-                        headerDetailCheckup.setIdJenisPeriksaPasien(checkup.getIdJenisPeriksaPasien());
+                        headerDetailCheckup.setCreatedWho(userLogin);
+                        headerDetailCheckup.setCreatedDate(time);
+                        headerDetailCheckup.setBranchId(branchId);
 
                         try {
                             finalResponse = statusPeriksaBo.saveEditPerubahanStatus(headerDetailCheckup);
@@ -517,6 +585,12 @@ public class StatusPeriksaAction extends BaseTransactionAction {
         }
 
         return finalResponse;
+    }
+
+    private String dateFormater(String type) {
+        java.sql.Date date = new java.sql.Date(new java.util.Date().getTime());
+        DateFormat df = new SimpleDateFormat(type);
+        return df.format(date);
     }
 
     public static Logger getLogger() {

@@ -80,7 +80,6 @@
     <section class="content-header">
         <h1>
             Tambah Paket Periksa
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -167,9 +166,9 @@
                                         <label class="col-md-3" style="margin-top: 7px">Poli</label>
                                         <div class="col-md-7">
                                     <s:action id="initComboPoli" namespace="/checkup"
-                                              name="getComboPelayanan_checkup"/>
+                                              name="getComboPelayananPaketPeriksa_checkup"/>
                                     <s:select cssStyle="margin-top: 7px; width: 100%"
-                                              list="#initComboPoli.listOfPelayanan" id="poli"
+                                              list="#initComboPoli.listOfPelayananPaket" id="poli"
                                               name="headerCheckup.idPelayanan" listKey="idPelayanan"
                                               listValue="namaPelayanan"
                                               onchange="$(this).css('border',''); listKategori(this.value); var warn =$('#war_poli').is(':visible'); if (warn){$('#cor_poli').show().fadeOut(3000);$('#war_poli').hide()}"
@@ -186,16 +185,6 @@
                                     <div class="form-group">
                                         <label class="col-md-3" style="margin-top: 7px">Kategori</label>
                                         <div class="col-md-7">
-                                            <%--<s:action id="initComboKategoriTindakan" namespace="/checkupdetail"--%>
-                                                      <%--name="getListComboKategoriTindakan_checkupdetail"/>--%>
-                                            <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
-                                                      <%--onchange="listSelectTindakan(this); var warn =$('#war_kategori').is(':visible'); if (warn){$('#cor_kategori').show().fadeOut(3000);$('#war_kategori').hide()}"--%>
-                                                      <%--list="#initComboKategoriTindakan.listOfKategoriTindakan"--%>
-                                                      <%--id="tin_id_ketgori_tindakan"--%>
-                                                      <%--listKey="idKategoriTindakan"--%>
-                                                      <%--listValue="kategoriTindakan"--%>
-                                                      <%--headerKey="" headerValue="[Select one]"--%>
-                                                      <%--cssClass="form-control select2"/>--%>
                                             <select style="margin-top: 7px" class="form-control select2" id="tin_id_ketgori_tindakan" onchange="listSelectTindakan(this); var warn =$('#war_kategori').is(':visible'); if (warn){$('#cor_kategori').show().fadeOut(3000);$('#war_kategori').hide()}">
                                                 <option value="">[Select One]</option>
                                             </select>
@@ -351,7 +340,7 @@
                                 <p id="msg_paket"></p>
                             </div>
                                 <div class="form-group">
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <label>Nama Paket</label>
                                         <input class="form-control" id="nama_paket" oninput="var warn =$('#war_paket').is(':visible'); if (warn){$('#cor_paket').show().fadeOut(3000);$('#war_paket').hide()}">
                                         <p style="color: red; display: none;"
@@ -359,9 +348,23 @@
                                         <p style="color: green; display: none;"
                                            id="cor_paket"><i class="fa fa-check"></i> correct</p>
                                     </div>
+                                    <div class="col-md-3">
+                                        <label>Tarif Paket</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                Rp.
+                                            </div>
+                                            <input type="hidden" id="tarif_paket">
+                                            <input class="form-control" id="nominal_tarif_paket" oninput="var warn =$('#war_tarif_paket').is(':visible'); if (warn){$('#cor_tarif_paket').show().fadeOut(3000);$('#war_tarif_paket').hide()}">
+                                        </div>
+                                        <p style="color: red; display: none;"
+                                           id="war_tarif_paket"><i class="fa fa-times"></i> required</p>
+                                        <p style="color: green; display: none;"
+                                           id="cor_tarif_paket"><i class="fa fa-check"></i> correct</p>
+                                    </div>
                                     <div class="col-md-4">
                                         <div style="margin-top: 23px">
-                                            <a class="btn btn-warning" href="initForm_checkupdetail.action"><i
+                                            <a class="btn btn-warning" href="initForm_paketperiksa.action"><i
                                                     class="fa fa-arrow-left"></i> Back</a>
                                             <a class="btn btn-success" id="save_paket"
                                                onclick="savePaket()"><i class="fa fa-check"></i> Save</a>
@@ -414,7 +417,34 @@
     $(document).ready(function () {
         $('#paket_periksa').addClass('active');
 
+        var tarif = document.getElementById('nominal_tarif_paket');
+        tarif.addEventListener('keyup', function (e) {
+            tarif.value = formatRupiah2(this.value);
+            var val = tarif.value.replace(/[.]/g, '');
+
+            if(val != ''){
+                $('#tarif_paket').val(val);
+            }else{
+                $('#tarif_paket').val('');
+            }
+        });
     });
+
+    function formatRupiah2(angka) {
+        var number_string = angka.replace(/[^,\d]/g, '').toString(),
+            split = number_string.split(','),
+            sisa = split[0].length % 3,
+            rupiah = split[0].substr(0, sisa),
+            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+        if (ribuan) {
+            separator = sisa ? '.' : '';
+            rupiah += separator + ribuan.join('.');
+        }
+
+        rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+        return rupiah;
+    }
 
     function toContent(){
         window.location.href = 'initForm_paketperiksa.action';
@@ -663,6 +693,7 @@
     function savePaket(){
         var idPelayanan = $('#poli').val();
         var namaPaket = $('#nama_paket').val();
+        var tarifPaket = $('#tarif_paket').val();
 
         var tindakan = $('#table_tindakan').tableToJSON();
         var lab = $('#table_lab').tableToJSON();
@@ -692,10 +723,10 @@
 
         var jsonStinng = JSON.stringify(result);
 
-        if(jsonStinng != '[]' && namaPaket != ''){
+        if(result.length > 0 && namaPaket != '' && tarifPaket != ''){
             $("#waiting_dialog").dialog('open');
             dwr.engine.setAsync(true);
-            PaketPeriksaAction.savePaket(idPelayanan, namaPaket, jsonStinng, {callback: function (response) {
+            PaketPeriksaAction.savePaket(idPelayanan, namaPaket, tarifPaket, jsonStinng, {callback: function (response) {
                     if(response.status == "success"){
                         $("#waiting_dialog").dialog('close');
                         $('#info_dialog').dialog('open');
@@ -711,6 +742,9 @@
             $('#msg_paket').text("Silahkan cek kembali data inputan anda..!");
             if(namaPaket == ''){
                 $('#war_paket').show();
+            }
+            if(tarifPaket == ''){
+                $('#war_tarif_paket').show();
             }
         }
     }

@@ -46,7 +46,6 @@
     <section class="content-header">
         <h1>
             Periksa Radiologi Pasien
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -139,15 +138,9 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><b>Provinsi</b></td>
+                                        <td><b>Desa</b></td>
                                         <td>
-                                            <table><s:label name="periksaLab.provinsi"></s:label></table>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><b>Kabupaten</b></td>
-                                        <td>
-                                            <table><s:label name="periksaLab.kota"></s:label></table>
+                                            <table><s:label name="periksaLab.desa"></s:label></table>
                                         </td>
                                     </tr>
                                     <tr>
@@ -157,9 +150,15 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><b>Desa</b></td>
+                                        <td><b>Kabupaten</b></td>
                                         <td>
-                                            <table><s:label name="periksaLab.desa"></s:label></table>
+                                            <table><s:label name="periksaLab.kota"></s:label></table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Provinsi</b></td>
+                                        <td>
+                                            <table><s:label name="periksaLab.provinsi"></s:label></table>
                                         </td>
                                     </tr>
                                     <tr>
@@ -178,7 +177,7 @@
                                            buttons="{
                                                                                 'OK':function() {
                                                                                          $('#info_dialog').dialog('close');
-                                                                                         window.location.href = 'initForm_radiologi.action';
+                                                                                         toContent();
                                                                                      }
                                                                             }"
                                 >
@@ -203,6 +202,10 @@
 
                             </div>
                         </div>
+                        <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_rad">
+                            <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                            <p id="msg_rad"></p>
+                        </div>
                     </div>
                     <div class="box-header with-border" id="pos_lab">
                     </div>
@@ -210,53 +213,79 @@
                         <h3 class="box-title"><i class="fa fa-hospital-o"></i> Catatan Pemeriksaan</h3>
                     </div>
                     <div class="box-body">
-                        <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_radiologi">
-                            <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                            <p id="isi_eror"></p>
-                        </div>
-                        <div class="alert alert-success alert-dismissible" style="display: none" id="info_radiologi">
-                            <h4><i class="icon fa fa-info"></i> Info!</h4>
-                            Data Berhasil Disimpan!
-                        </div>
-                        <div class="form-group">
+                        <%--<div class="alert alert-danger alert-dismissible" style="display: none" id="warning_radiologi">--%>
+                        <%--<h4><i class="icon fa fa-ban"></i> Warning!</h4>--%>
+                        <%--<p id="isi_eror"></p>--%>
+                        <%--</div>--%>
+                        <%--<div class="alert alert-success alert-dismissible" style="display: none" id="info_radiologi">--%>
+                            <%--<h4><i class="icon fa fa-info"></i> Info!</h4>--%>
+                            <%--Data Berhasil Disimpan!--%>
+                        <%--</div>--%>
+                        <%--<div class="form-group">--%>
+                            <%--<div class="row">--%>
+                                <%--<div class="col-md-4">--%>
+                                    <%--<div class="form-group">--%>
+                                        <%--<label style="margin-bottom: -2px">Dokter Radiologi</label>--%>
+                                        <%--<select class="form-control select2" id="id_dokter" style="width: 100%"--%>
+                                                <%--onchange="var warn =$('#war_catatan').is(':visible'); if (warn){$('#cor_catatan').show().fadeOut(3000);$('#war_catatan').hide()};">--%>
+                                            <%--<option value=''>[Select One]</option>--%>
+                                        <%--</select>--%>
+                                    <%--</div>--%>
+                                    <%--<input type="hidden" id="id_radiologi">--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                            <%--<div class="row">--%>
+                                <%--<div class="col-md-7">--%>
+                                    <%--<div class="form-group">--%>
+                                        <%--<label style="margin-top: 7px">Kesimpulan Periksa</label>--%>
+                                        <%--<textarea class="form-control" rows="4" id="kesimpulan"></textarea>--%>
+                                    <%--</div>--%>
+                                    <%--<div class="form-group">--%>
+                                        <%--<button class="btn btn-success" style="margin-top: 15px;" id="save_ket" onclick="saveRadiologi()"><i--%>
+                                                <%--class="fa fa-arrow-right"></i> Save--%>
+                                        <%--</button>--%>
+                                        <%--<button style="display: none; cursor: no-drop; margin-top: 15px;" type="button"--%>
+                                                <%--class="btn btn-success" id="load_ket"><i class="fa fa-spinner fa-spin"></i>--%>
+                                            <%--Sedang Menyimpan...--%>
+                                        <%--</button>--%>
+                                        <%--<a href="initForm_radiologi.action" class="btn btn-warning" onclick=""--%>
+                                           <%--style="margin-top: 15px;" id="back_ket"><i--%>
+                                                <%--class="fa fa-arrow-left"></i> Back--%>
+                                        <%--</a>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                            <table class="table table-bordered table-striped" id="tabel_radiologi">
+                                <thead>
+                                <tr bgcolor="#90ee90">
+                                    <td>Pemeriksaan</td>
+                                    <td>Hasil</td>
+                                    <td align="center" width="10%">Action</td>
+                                </tr>
+                                </thead>
+                                <tbody id="body_parameter">
+
+                                </tbody>
+                            </table>
+                    </div>
+                    <div class="box-body">
                         <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label style="margin-bottom: -2px">Dokter Radiologi</label>
-                                <select class="form-control select2" id="id_dokter" style="width: 100%"
-                                        onchange="var warn =$('#war_catatan').is(':visible'); if (warn){$('#cor_catatan').show().fadeOut(3000);$('#war_catatan').hide()};">
-                                    <option value=''>[Select One]</option>
-                                </select>
-                            </div>
-                            <input type="hidden" id="id_radiologi">
-                            </div>
-                            </div>
-                        <div class="row">
-                            <div class="col-md-7">
-                            <div class="form-group">
-                                <label style="margin-top: 7px">Kesimpulan Periksa</label>
-                               <textarea class="form-control" rows="4" id="kesimpulan"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <button class="btn btn-success" style="margin-top: 15px;" id="save_ket" onclick="saveRadiologi()"><i
-                                        class="fa fa-arrow-right"></i> Save
-                                </button>
-                                <button style="display: none; cursor: no-drop; margin-top: 15px;" type="button"
-                                        class="btn btn-success" id="load_ket"><i class="fa fa-spinner fa-spin"></i>
-                                    Sedang Menyimpan...
-                                </button>
-                                <%--<button class="btn btn-primary" onclick=""--%>
-                                        <%--style="margin-top: 15px;" id="print_ket"><i--%>
-                                        <%--class="fa fa-print"></i> Print--%>
-                                <%--</button>--%>
-                                <a href="initForm_radiologi.action" class="btn btn-warning" onclick=""
-                                        style="margin-top: 15px;" id="back_ket"><i
-                                        class="fa fa-arrow-left"></i> Back
-                                </a>
-                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label style="margin-bottom: -2px">Dokter Radiologi</label>
+                                    <select class="form-control select2" id="id_dokter" style="width: 100%"
+                                            onchange="var warn =$('#war_catatan').is(':visible'); if (warn){$('#cor_catatan').show().fadeOut(3000);$('#war_catatan').hide()};">
+                                        <option value=''>[Select One]</option>
+                                    </select>
                                 </div>
-                        </div>
+                                <input type="hidden" id="id_radiologi">
                             </div>
+                            <div class="col-md-4">
+                                <a href="initForm_radiologi.action" style="margin-top: 25px" class="btn btn-warning"><i class="fa fa-times"></i> Cancel</a>
+                                <button onclick="conSavePeriksaLab()" style="margin-top: 25px" class="btn btn-success"><i class="fa fa-check"></i> Save</button>
+                            </div>
+                        </div>
                     </div>
                     <div class="box-header with-border">
                     </div>
@@ -267,6 +296,71 @@
     <!-- /.content -->
 </div>
 <div class="mask"></div>
+
+
+<div class="modal fade" id="modal-edit-parameter">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-user-md"></i> Edit Parameter Pemeriksaan</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_par">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_par"></p>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-3">Hasil</label>
+                        <div class="col-md-7">
+                            <input type="text" class="form-control" id="par_hasil" oninput="var warn =$('#war_hasil').is(':visible'); if (warn){$('#cor_hasil').show().fadeOut(3000);$('#war_hasil').hide()}">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_hasil"><i
+                                class="fa fa-times"></i> required</p>
+                        <p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_hasil">
+                            <i class="fa fa-check"></i> correct</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_par"><i
+                        class="fa fa-arrow-right"></i> Save
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_par"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-confirm-dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Confirmation
+                </h4>
+            </div>
+            <div class="modal-body">
+                <h4 class="text-center">Do you want save this record?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
+                </button>
+                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
 
@@ -300,6 +394,13 @@
         });
     });
 
+    function toContent(){
+        var ref = $('#close_pos').val();
+        if(ref == 1){
+            window.location.href = 'initForm_radiologi.action';
+        }
+    }
+
     function listSelectDokter() {
         var option = "";
         PeriksaLabAction.getListDokterTeamByNoDetail(idDetailCheckup, function (response) {
@@ -315,25 +416,28 @@
         $('#id_dokter').html(option);
     }
 
-    function saveRadiologi() {
+    function saveRadiologi(id) {
 
         var idDokter    = $('#id_dokter').val();
-        var kesimpulan  = $('#kesimpulan').val();
-        if (idPeriksaRadiologi != '' && idDokter != '' && kesimpulan != '') {
+        var kesimpulan  = $('#par_hasil').val();
+
+        if (id != '' && kesimpulan != '') {
             $('#save_ket').hide();
             $('#load_ket').show();
             dwr.engine.setAsync(true);
-            PeriksaRadiologiAction.saveRadiologi(idPeriksaRadiologi, idDokter, kesimpulan, {
+            PeriksaRadiologiAction.saveRadiologi(id, kesimpulan, {
                 callback: function (response) {
-                    if (response == "success") {
+                    if (response.status == "success") {
                         dwr.engine.setAsync(false);
+                        $('#modal-edit-parameter').modal('hide');
                         $('#info_radiologi').show().fadeOut(5000);
                         $('#save_ket').show();
                         $('#load_ket').hide();
                         $('#info_dialog').dialog('open');
+                        getIdRadiologi();
                     } else {
-                        $('#warning_radiologi').show().fadeOut(5000);
-                        $('#isi_eror').text('Terjadi kesalahan!');
+                        $('#warning_par').show().fadeOut(5000);
+                        $('#msg_par').text(response.getMessage);
                         $('#save_ket').show();
                         $('#load_ket').hide();
 
@@ -341,60 +445,77 @@
                 }
             })
         } else {
-            $('#warning_radiologi').show().fadeOut(5000);
-            $('#isi_eror').text('Silahkan cek kembali data inputan!');
-            if (idDokter == '') {
-//                $('#lab_kategori').css('border', 'red solid 1px');
-            }
-            if (kesimpulan == '') {
-//                $('#lab_lab').css('border', 'red solid 1px');
-            }
+            $('#warning_par').show().fadeOut(5000);
+            $('#msg_par').text("Silahkan cek kembali data inputan!");
+            $('#war_hasil').show();
         }
     }
 
     function getIdRadiologi() {
 
-        var table       = "";
-        var data        = [];
-        var id_periksa  = "";
-        var id_dokter   = "";
-        var kesimpulan  = "";
-        var periksa     = "";
-
         PeriksaRadiologiAction.getIdPemeriksaRadiologi(idPeriksaLab, function (response) {
             data = response;
-            console.log(data);
-            if (data != null) {
+            if (data.length > 0) {
+                var table = "";
                 $.each(data, function (i, item) {
-                    if(item.idPeriksaRadiologi != null){
-                        id_periksa = item.idPeriksaRadiologi;
+                    var hasil = "";
+                    if(item.kesimpulan != null && item.kesimpulan != ''){
+                        hasil = item.kesimpulan;
                     }
-                    if(item.idDokterRadiologi != null){
-                        id_dokter = item.idDokterRadiologi;
-                    }
-                    if(item.kesimpulan != null){
-                        kesimpulan = item.kesimpulan;
-                    }
-                    if(item.pemeriksaan != null){
-                        periksa = item.pemeriksaan;
-                    }
-
+                    table += '<tr>' +
+                        '<td>'+item.namaDetailPeriksa+'</td>' +
+                        '<td>'+hasil+'</td>' +
+                        "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editParameter(\''+item.idPeriksaRadiologi+'\',\''+hasil+'\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' + "</td>" +
+                        '</tr>';
                 });
+                $('#body_parameter').html(table);
             }
         });
-
-        idPeriksaRadiologi = id_periksa;
-        $('#id_radiologi').val(id_periksa);
-        $('#id_dokter').val(id_dokter).trigger('change');
-        $('#kesimpulan').val(kesimpulan);
-        $('#pemeriksa').html(periksa);
     }
-    function editParameter(id){
+
+    function editParameter(id, hasil){
         $('#save_par').show();
         $('#load_par').hide();
-        $('#par_hasil, #par_ket');
-        $('#save_par').attr('onclick','saveEditParameter(\''+id+'\')');
+        $('#par_hasil').val(hasil);
+        $('#save_par').attr('onclick','saveRadiologi(\''+id+'\')');
         $('#modal-edit-parameter').modal('show');
+    }
+
+    function conSavePeriksaLab(){
+        var idDokter = $('#id_dokter').val();
+        var data = $('#tabel_radiologi').tableToJSON();
+        var cek  = false;
+        $.each(data, function (i, item) {
+            var hasil = data[i]["Hasil"];
+            if(hasil == ""){
+                cek = true;
+            }
+        });
+        if(!cek && idDokter != ''){
+            $('#modal-confirm-dialog').modal('show');
+            $('#save_con').attr('onclick', 'savePeriksaLab(\''+idDokter+'\')');
+        }else{
+            $('#warning_rad').show().fadeOut(5000);
+            $('#msg_rad').text("Silahkan cek kembali data hasil radiologi dan nama dokter...!");
+        }
+    }
+
+    function savePeriksaLab(idDokter){
+        $('#modal-confirm-dialog').modal('hide');
+        var idPeriksaLab = '<s:property value="periksaLab.idPeriksaLab"/>';
+        dwr.engine.setAsync(true);
+        PeriksaRadiologiAction.saveDokterRadiologi(idPeriksaLab, idDokter, {
+            callback:function (res) {
+                if(res.status == "success"){
+                    $('#save_ket').show();
+                    $('#load_ket').hide();
+                    $('#info_dialog').dialog('open');
+                    $('#close_pos').val(1);
+                }else{
+                    $('#warning_rad').show().fadeOut(5000);
+                    $('#msg_rad').text(res.message);
+                }
+        }});
     }
 
 </script>

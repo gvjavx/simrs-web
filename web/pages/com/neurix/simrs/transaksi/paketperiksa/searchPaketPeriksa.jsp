@@ -133,8 +133,8 @@
                                     <td><s:property value="idPaket"/></td>
                                     <td><s:property value="namaPaket"/></td>
                                     <td align="center">
-                                        <img onclick="detailPaket('<s:property value="idPaket"/>','<s:property value="namaPaket"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-search-25.png"/>" style="cursor: pointer; ">
-                                        <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer; ">
+                                        <img onclick="detailPaket('<s:property value="idPaket"/>','<s:property value="namaPaket"/>', '<s:property value="tarif"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-search-25.png"/>" style="cursor: pointer; ">
+                                        <%--<img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer; ">--%>
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -170,6 +170,10 @@
                         <td>Nama Paket</td>
                         <td><p id="det_nama_paket"></p></td>
                     </tr>
+                    <tr>
+                        <td>Tarif</td>
+                        <td><p id="det_tarif_paket"></p></td>
+                    </tr>
                 </table>
                 <div class="row">
                     <div class="col-md-6">
@@ -185,25 +189,21 @@
                     </div>
                     <div class="col-md-6">
                         <p>Daftar Penunjang Medis</p>
-                        <table class="table table-striped table-bordered">
+                        <table class="table table-striped table-bordered" id="tabel_medis">
                             <thead>
-                            <td>Pemeriksaan</td>
+                            <td>Nama Lab</td>
                             <td>Jenis Lab</td>
+                            <td align="center">Action</td>
                             </thead>
                             <tbody id="body_lab">
                             </tbody>
                         </table>
                     </div>
+                    <div id="temp_pemeriksaan"></div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
-                </button>
-                <button type="button" class="btn btn-success" id="save_add" onclick="saveNewPasien()"><i class="fa fa-arrow-right"></i> Save
-                </button>
-                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
-                        id="load_add"><i
-                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
             </div>
         </div>
@@ -211,29 +211,116 @@
 </div>
 
 <script type='text/javascript'>
-    function detailPaket(idpaket, namaPaket){
+
+    function convertSentenceCase(myString){
+        if(myString != null && myString != ''){
+            var rg = /(^\w{1}|\ \s*\w{1})/gi;
+            myString = myString.replace(rg, function(toReplace) {
+                return toReplace.toUpperCase();
+            });
+            return myString;
+        }else{
+            return "";
+        }
+    }
+
+    function formatRupiah(angka) {
+        if(angka != "" && angka != null && parseInt(angka) > 0){
+            var reverse = angka.toString().split('').reverse().join(''),
+                ribuan = reverse.match(/\d{1,3}/g);
+            ribuan = ribuan.join('.').split('').reverse().join('');
+            return ribuan;
+        } else {
+            return "0";
+        }
+
+    }
+
+    function detailPaket(idpaket, namaPaket, tarif){
+        $('body_tindakan').html('');
+        $('body_lab').html('');
         $('#modal-detail').modal({show:true, backdrop:'static'});
         $('#det_id_paket').text(idpaket);
         $('#det_nama_paket').text(namaPaket);
+        $('#det_tarif_paket').text("Rp. "+formatRupiah(tarif));
         PaketPeriksaAction.detailPaket(idpaket, function (response) {
-
+            console.log(response);
             if(response.length > 0){
                 var table1 = "";
                 var table2 = "";
+                var idLab1 = "";
+                var idLab2 = "";
+                var detailLab1 = [];
+                var detailLab2 = [];
+                var cekek = false;
 
                 $.each(response, function (i, item) {
-                   if(item.jenisItem == "tindakan"){
-                       table1 += '<tr><td>'+item.idItem+'</td><td>'+item.keterangan+'</td></tr>';
-                   } else{
-                       table2 += '<tr><td>'+item.keterangan+'</td><td>'+item.jenisItem+'</td></tr>';
-                   }
-                });
 
+                   if(item.jenisItem == "tindakan"){
+                           table1 += '<tr>' +
+                               '<td>'+item.idItem+'</td>' +
+                               '<td>'+item.keterangan+'</td>' +
+                               '</tr>';
+
+                   }if(item.jenisItem == "laboratorium"){
+
+                        if(idLab1 != item.idLab){
+                            idLab1 = item.idLab;
+                            table2 += '<tr id="row'+item.idLab+'">' +
+                                '<td>'+item.namaLab+'</td>' +
+                                '<td>'+convertSentenceCase(item.jenisItem)+'</td>' +
+                                '<td align="center">'+'<img id="btn'+item.idLab+'" class="hvr-grow" onclick="detailLab(\''+item.idLab+'\',\''+item.idPaket+'\')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">'+'</td>' +
+                                '</tr>';
+                        }
+
+                   }if(item.jenisItem == "radiologi"){
+
+                        if(idLab2 != item.idLab){
+                            idLab2 = item.idLab;
+                            table2 += '<tr id="row'+item.idLab+'">' +
+                                '<td>'+item.namaLab+'</td>' +
+                                '<td>'+convertSentenceCase(item.jenisItem)+'<input type="hidden" id="det_radiologi'+item.idLab+'"></td>' +
+                                '<td align="center">'+'<img id="btn'+item.idLab+'" class="hvr-grow" onclick="detailLab(\''+item.idLab+'\',\''+item.idPaket+'\')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">'+'</td>' +
+                                '</tr>';
+                        }
+                    }
+                });
                 $('#body_tindakan').html(table1);
                 $('#body_lab').html(table2);
            }
         });
     }
+
+    function detailLab(idLab, idPaket){
+        var table = "";
+        PaketPeriksaAction.detailItem(idLab, idPaket, function (response) {
+            if(response.length > 0){
+                $.each(response, function (i, item) {
+                    table += '<tr>' +
+                        '<td>'+item.keterangan+'</td>';
+                    '</tr>';
+                });
+            };
+        });
+        var rowIndex = document.getElementById("row"+idLab).rowIndex;
+        var table2 = '<table class="table table-bordered"><tr bgcolor="#ffebcd">' +
+            '<td>Nama Pemeriksaan</td>' +
+            '<tbody>'+table+'</tbody>'+
+            '</table>';
+        var newRow = $('<tr id="del'+idLab+'"><td colspan="3">'+table2+'</td></tr>');
+        var cancel = '<s:url value="/pages/images/icons8-cancel-25.png"/>';
+        $('#btn'+idLab).attr('src',cancel);
+        $('#btn'+idLab).attr('onclick', 'deleteRow(\''+idLab+'\',\''+idPaket+'\')');
+        newRow.insertAfter($('#tabel_medis tr:nth('+rowIndex+')'));
+    }
+
+    function deleteRow(idLab, idPaket){
+        $('#del'+idLab).remove();
+        var plus = '<s:url value="/pages/images/icons8-plus-25.png"/>';
+        $('#btn'+idLab).attr('src',plus);
+        $('#btn'+idLab).attr('onclick', 'detailLab(\''+idLab+'\',\''+idPaket+'\')');
+    }
+
 </script>
 
 <%@ include file="/pages/common/footer.jsp" %>

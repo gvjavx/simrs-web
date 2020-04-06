@@ -534,10 +534,12 @@
       <convert converter="bean" match="com.neurix.simrs.master.kategoritindakan.model.KategoriTindakan"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.paketperiksa.model.PaketPeriksa"/>
 
-      <!--Paket Periksa-->
+      <!--StatusPeriksaAction-->
       <create creator="new">
           <param name="class" value="com.neurix.simrs.transaksi.statusperiksa.action.StatusPeriksaAction"/>
       </create>
+      <convert converter="bean" match="com.neurix.simrs.master.jenisperiksapasien.model.Asuransi"/>
+
       <!--Setting Batas Tutup Period-->
       <create creator="new">
           <param name="class" value="com.neurix.akuntansi.transaksi.tutupperiod.action.SettingTutupPeriodAction"/>
@@ -549,6 +551,11 @@
       <convert converter="bean" match="com.neurix.akuntansi.transaksi.tutupperiod.model.BatasTutupPeriod"/>
       <convert converter="bean" match="com.neurix.hris.transaksi.payroll.model.Ptt"/>
 
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.daftarulang.action.DaftarUlangAction"/>
+      </create>
+
+      <convert converter="bean" match="com.neurix.simrs.transaksi.permintaanvendor.model.BatchPermintaanObat"/>
   </allow>
 
 </dwr>

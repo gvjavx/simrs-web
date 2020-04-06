@@ -9,7 +9,15 @@
 <head>
     <%@ include file="/pages/common/header.jsp" %>
     <style>
+        .paint-canvas {
+            border: 1px black solid;
+            display: block;
+            margin: 1rem;
+        }
 
+        .color-picker {
+            margin: 1rem 1rem 0 1rem;
+        }
     </style>
 
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
@@ -42,6 +50,17 @@
             document.getElementById('errorMessage').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
             $.publish('showErrorDialog');
         });
+
+        function formatRupiah(angka) {
+            if(angka != '' && angka != null && angka > 0){
+                var reverse = angka.toString().split('').reverse().join(''),
+                    ribuan = reverse.match(/\d{1,3}/g);
+                ribuan = ribuan.join('.').split('').reverse().join('');
+                return ribuan;
+            }else{
+                return 0;
+            }
+        }
 
         function formatRupiah2(angka) {
             var number_string = angka.replace(/[^,\d]/g, '').toString(),
@@ -142,7 +161,6 @@
     <section class="content-header">
         <h1>
             Rawat IGD Pasien
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -223,11 +241,10 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><b>Jenis Pasien</b></td>
+                                        <td><b>Poli</b></td>
                                         <td>
                                             <table>
-                                                <s:label name="headerDetailCheckup.jenisPeriksaPasien"></s:label>
-                                            </table>
+                                                <s:label name="headerDetailCheckup.namaPelayanan"></s:label></table>
                                         </td>
                                     </tr>
                                 </table>
@@ -239,16 +256,40 @@
                                     <img border="2" id="img_ktp" src="<s:property value="headerDetailCheckup.urlKtp"/>"
                                          style="cursor: pointer; height: 90px; width: 190px; margin-top: 4px">
                                 </div>
-                                <%--<img border="2" class="card card-4 pull-right" src="<s:url value="/pages/images/ktp-tes.jpg"/>"--%>
-                                <%--style="cursor: pointer; margin-top: -90px; height: 100px; width: 200px;">--%>
                                 <table class="table table-striped">
                                     <tr>
-                                        <td><b>Poli</b></td>
+                                        <td><b>Jenis Pasien</b></td>
                                         <td>
                                             <table>
-                                                <s:label name="headerDetailCheckup.namaPelayanan"></s:label></table>
+                                                <s:label name="headerDetailCheckup.jenisPeriksaPasien"></s:label>
+                                            </table>
                                         </td>
                                     </tr>
+                                    <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "paket_perusahaan" || headerDetailCheckup.idJenisPeriksaPasien == "paket_individu"'>
+                                        <tr>
+                                            <td><b>Tarif Paket</b></td>
+                                            <td>
+                                                <table>
+                                                    <script>
+                                                        var tar = '<s:property value="headerDetailCheckup.coverBiaya"/>';
+                                                        if(tar != null){
+                                                            document.write("Rp. "+formatRupiah(tar));
+                                                        }
+                                                    </script>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </s:if>
+                                    <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "asuransi"'>
+                                        <tr>
+                                            <td><b>Nama Asuransi</b></td>
+                                            <td>
+                                                <table>
+                                                    <s:label name="headerDetailCheckup.namaAsuransi"></s:label>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </s:if>
                                     <tr>
                                         <td><b>Alamat</b></td>
                                         <td>
@@ -256,9 +297,9 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><b>Provinsi</b></td>
+                                        <td><b>Desa</b></td>
                                         <td>
-                                            <table><s:label name="headerDetailCheckup.provinsi"></s:label></table>
+                                            <table><s:label name="headerDetailCheckup.desa"></s:label></table>
                                         </td>
                                     </tr>
                                     <tr>
@@ -274,9 +315,9 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><b>Desa</b></td>
+                                        <td><b>Provinsi</b></td>
                                         <td>
-                                            <table><s:label name="headerDetailCheckup.desa"></s:label></table>
+                                            <table><s:label name="headerDetailCheckup.provinsi"></s:label></table>
                                         </td>
                                     </tr>
 
@@ -403,9 +444,11 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="box-body">
-                                    <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
-                                            onclick="showModal(1)"><i class="fa fa-plus"></i> Tambah Dokter
-                                    </button>
+                                    <s:if test='headerDetailCheckup.idJenisPeriksaPasien != "paket_individu" && headerDetailCheckup.idJenisPeriksaPasien != "paket_perusahaan"'>
+                                        <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
+                                                onclick="showModal(1)"><i class="fa fa-plus"></i> Tambah Dokter
+                                        </button>
+                                    </s:if>
                                     <table class="table table-bordered table-striped">
                                         <thead>
                                         <tr bgcolor="#90ee90">
@@ -503,26 +546,41 @@
                             <h3 class="box-title"><i class="fa fa-medkit"></i> Tindakan</h3>
                         </div>
                         <div class="box-body">
-                            <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
-                                    onclick="showModal(2)"><i class="fa fa-plus"></i> Tambah Tindakan
-                            </button>
-                            <table class="table table-bordered table-striped">
-                                <thead>
-                                <tr bgcolor="#90ee90">
-                                    <td>Tanggal</td>
-                                    <td>Tindakan</td>
-                                    <%--<td>Dokter</td>--%>
-                                    <%--<td>Perawat</td>--%>
-                                    <td align="right">Tarif (Rp.)</td>
-                                    <td align="center">Qty</td>
-                                    <td align="right">Total (Rp.)</td>
-                                    <td align="center">Action</td>
-                                    <input type="hidden" id="tin_id_dokter">
-                                </tr>
-                                </thead>
-                                <tbody id="body_tindakan">
-                                </tbody>
-                            </table>
+                            <input type="hidden" id="tin_id_dokter">
+                            <s:if test='headerDetailCheckup.idJenisPeriksaPasien != "paket_individu" && headerDetailCheckup.idJenisPeriksaPasien != "paket_perusahaan"'>
+                                <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
+                                        onclick="showModal(2)"><i class="fa fa-plus"></i> Tambah Tindakan
+                                </button>
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr bgcolor="#90ee90">
+                                        <td>Tanggal</td>
+                                        <td>Tindakan</td>
+                                            <%--<td>Dokter</td>--%>
+                                            <%--<td>Perawat</td>--%>
+                                        <td align="center">Tarif (Rp.)</td>
+                                        <td align="center">Qty</td>
+                                        <td align="center">Total (Rp.)</td>
+                                        <td align="center">Action</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="body_tindakan">
+                                    </tbody>
+                                </table>
+                            </s:if>
+                            <s:else>
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr bgcolor="#90ee90">
+                                        <td>Tanggal</td>
+                                        <td>Tindakan</td>
+                                        <td align="center" width="10%">Action</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="body_tindakan_paket">
+                                    </tbody>
+                                </table>
+                            </s:else>
                         </div>
 
                         <div class="box-header with-border" id="pos_lab">
@@ -531,9 +589,11 @@
                             <h3 class="box-title"><i class="fa fa-hospital-o"></i> Penunjang Medis</h3>
                         </div>
                         <div class="box-body">
-                            <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
-                                    onclick="showModal(4)"><i class="fa fa-plus"></i> Penunjang
-                            </button>
+                            <s:if test='headerDetailCheckup.idJenisPeriksaPasien != "paket_individu" && headerDetailCheckup.idJenisPeriksaPasien != "paket_perusahaan"'>
+                                <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
+                                        onclick="showModal(4)"><i class="fa fa-plus"></i> Penunjang Medis
+                                </button>
+                            </s:if>
                             <table class="table table-bordered table-striped">
                                 <thead>
                                 <tr bgcolor="#90ee90">
@@ -1493,11 +1553,24 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-4">
+                            <label>Total Harga</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    Rp.
+                                </div>
+                                <input class="form-control" id="total_harga_obat" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_resep_head" onclick="saveResepObat()"><i
+                <button type="button" class="btn btn-success" id="save_resep_head" onclick="saveResepObatTtd()"><i
                         class="fa fa-arrow-right"></i> Buat Resep
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
@@ -2160,6 +2233,40 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-ttd">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-pencil"></i> Tanda Tangan Dokter
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group" style="padding-top: 10px; padding-bottom: 10px">
+                    <div class="col-md-1">
+                        <input type="color" style="margin-left: -6px; margin-top: -8px" class="js-color-picker  color-picker pull-left">
+                    </div>
+                    <div class="col-md-9">
+                        <input type="range" style="margin-top: -8px" class="js-line-range" min="1" max="72" value="1">
+                    </div>
+                    <div class="col-md-2">
+                        <div style="margin-top: -8px;" class="js-range-value">1 px</div>
+                    </div>
+                </div>
+                <canvas class="js-paint  paint-canvas" id="ttd_canvas" width="550" height="300"></canvas>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-danger" onclick="clearConvas()"><i class="fa fa-pencil"></i> Clear
+                </button>
+                <button class="btn btn-success pull-right" onclick="saveResepObat()"><i class="fa fa-check"></i> Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="modal-confirm-dialog">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -2191,6 +2298,7 @@
     var idPoli = $('#id_palayanan').val();
     var idPasien = $('#id_pasien').val();
     var noCheckup = $('#no_checkup').val();
+    var jenisPeriksaPasien = $('#jenis_pasien').val();
 
     $(document).ready(function () {
         $('#igd').addClass('active');
@@ -2235,13 +2343,63 @@
             }
         });
 
+        const paintCanvas = document.querySelector(".js-paint");
+        const context = paintCanvas.getContext("2d");
+        context.lineCap = "round";
+
+        const colorPicker = document.querySelector(".js-color-picker");
+
+        colorPicker.addEventListener("change", function (evt) {
+            context.strokeStyle = evt.target.value;
+        });
+
+        const lineWidthRange = document.querySelector(".js-line-range");
+        const lineWidthLabel = document.querySelector(".js-range-value");
+
+        lineWidthRange.addEventListener("input", function (evt) {
+            const width = evt.target.value;
+            lineWidthLabel.innerHTML = width+" px";
+            context.lineWidth = width;
+        });
+
+        let x = 0,
+            y = 0;
+        let isMouseDown = false;
+
+        const stopDrawing = function () {
+            isMouseDown = false;
+        };
+
+        const startDrawing = function (evt) {
+            isMouseDown = true;
+            [x, y] = [evt.offsetX, evt.offsetY];
+        };
+
+        const drawLine = function (evt) {
+            if (isMouseDown) {
+                const newX = evt.offsetX;
+                const newY = evt.offsetY;
+                context.beginPath();
+                context.moveTo(x, y);
+                context.lineTo(newX, newY);
+                context.stroke();
+                x = newX;
+                y = newY;
+            }
+        };
+
+        paintCanvas.addEventListener("mousedown", startDrawing);
+        paintCanvas.addEventListener("mousemove", drawLine);
+        paintCanvas.addEventListener("mouseup", stopDrawing);
+        paintCanvas.addEventListener("mouseout", stopDrawing);
+
         hitungStatusBiaya();
     });
 
     function hitungStatusBiaya() {
-        CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, "", function (response) {
-            console.log(response);
-            if (response.idJenisPeriksaPasien == "bpjs") {
+        var jenis = $('#jenis_pasien').val();
+        if("bpjs" == jenis){
+            CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, "RWJ", function (response) {
                 $('#status_bpjs').show();
                 if (response.tarifBpjs != null && response.tarifTindakan != null) {
 
@@ -2281,10 +2439,10 @@
                         $('#b_tindakan').html(formatRupiah(biayaTindakan) + " (" + persen + "%)");
                     }
                 }
-            } else {
-                $('#status_bpjs').hide();
-            }
-        });
+            });
+        }else{
+            $('#status_bpjs').hide();
+        }
     }
 
     function saveAlergi(id) {
@@ -2684,12 +2842,13 @@
         var idPel = poli.split('|')[0];
         var namePel = poli.split('|')[1];
         var option = "<option value=''>[Select One]</option>";
+        var jenisPasien = $('#jenis_pasien').val();
 
         if (poli != '') {
-            ObatPoliAction.getSelectOptionObatByPoli(idPel, function (response) {
+            ObatPoliAction.getSelectOptionObatByPoli(idPel, jenisPasien, function (response) {
                 if (response != null) {
                     $.each(response, function (i, item) {
-                        option += "<option value='" + item.idObat + "|" + item.namaObat + "|" + item.qtyBox + "|" + item.qtyLembar + "|" + item.qtyBiji + "|" + item.lembarPerBox + "|" + item.bijiPerLembar + "|" + item.flagKronis + "'>" + item.namaObat + "</option>";
+                        option += "<option value='" + item.idObat + "|" + item.namaObat + "|" + item.qtyBox + "|" + item.qtyLembar + "|" + item.qtyBiji + "|" + item.lembarPerBox + "|" + item.bijiPerLembar + "|" + item.flagKronis + "|" + item.harga + "'>" + item.namaObat + "</option>";
                     });
                     $('#resep_nama_obat').html(option);
                 }
@@ -2878,6 +3037,7 @@
     function listTindakan() {
 
         var table = "";
+        var table2 = "";
         var data = [];
         var trfTtl = 0;
         TindakanRawatAction.listTindakanRawat(idDetailCheckup, function (response) {
@@ -2891,6 +3051,7 @@
                     var tarifTotal = "-";
                     var trfTotal = 0;
                     var qtyTotal = 0;
+                    var perawat = "";
 
                     if (item.tarif != null) {
                         tarif = formatRupiah(item.tarif);
@@ -2903,28 +3064,39 @@
                     if (item.qty != null) {
                         qtyTotal += item.qty;
                     }
+                    if (item.idPerawat != null) {
+                        perawat = item.idPerawat;
+                    }
 
                     table += "<tr>" +
                         "<td>" + dateFormat + "</td>" +
                         "<td>" + item.namaTindakan + "</td>" +
-                        // "<td>" + item.namaDokter + "</td>" +
-                        // "<td>" + item.idPerawat + "</td>" +
-                        "<td align='right'>"+ tarif +"</td>" +
+                        "<td align='right'>" + tarif + "</td>" +
                         "<td align='center'>" + item.qty + "</td>" +
                         "<td align='right'>" + tarifTotal + "</td>" +
                         "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editTindakan(\'' + item.idTindakanRawat + '\',\'' + item.idTindakan + '\',\'' + item.idKategoriTindakan + '\',\'' + item.idPerawat + '\',\'' + item.qty + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' + "</td>" +
                         "</tr>";
 
+                    table2 += "<tr>" +
+                        "<td>" + dateFormat + "</td>" +
+                        "<td>" + item.namaTindakan + "</td>" +
+                        "<td align='center'></td>" +
+                        "</tr>";
+
                 });
-                table = table + "<tr>" +
-                    "<td colspan='4'>Total</td>" +
-                    "<td align='right'>" + formatRupiah(trfTtl) + "</td>" +
-                    "<td></td>" +
-                    "</tr>";
+
+                if("paket_perusahaan" == jenisPeriksaPasien || "paket_individu" == jenisPeriksaPasien){
+                    $('#body_tindakan_paket').html(table2);
+                }else{
+                    table = table + "<tr>" +
+                        "<td colspan='4'>Total</td>" +
+                        "<td align='right'>" + formatRupiah(trfTtl) + "</td>" +
+                        "<td></td>" +
+                        "</tr>";
+                    $('#body_tindakan').html(table);
+                }
             }
         });
-
-        $('#body_tindakan').html(table);
 
     }
 
@@ -3146,13 +3318,25 @@
                     if (item.labName != null) {
                         lab = item.labName;
                     }
-                    table += "<tr>" +
-                        "<td>" + dateFormat + "</td>" +
-                        "<td>" + lab + "</td>" +
-                        "<td>" + status + "</td>" +
-                        "<td>" + item.kategoriLabName + "</td>" +
-                        "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editLab(\'' + item.idPeriksaLab + '\',\'' + item.idLab + '\',\'' + item.idKategoriLab + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' + "</td>" +
-                        "</tr>"
+
+                    if("paket_perusahaan" == jenisPeriksaPasien || "paket_individu" == jenisPeriksaPasien){
+                        table += "<tr>" +
+                            "<td>" + dateFormat + "</td>" +
+                            "<td>" + lab + "</td>" +
+                            "<td>" + status + "</td>" +
+                            "<td>" + item.kategoriLabName + "</td>" +
+                            "<td align='center'></td>" +
+                            "</tr>";
+                    }else{
+                        table += "<tr>" +
+                            "<td>" + dateFormat + "</td>" +
+                            "<td>" + lab + "</td>" +
+                            "<td>" + status + "</td>" +
+                            "<td>" + item.kategoriLabName + "</td>" +
+                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editLab(\'' + item.idPeriksaLab + '\',\'' + item.idLab + '\',\'' + item.idKategoriLab + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' + "</td>" +
+                            "</tr>";
+                    }
+
                 });
             }
         });
@@ -3427,6 +3611,7 @@
         var jenisResep = $("#jenis_resep").val();
         var flagKronis = $("#val-kronis").val();
         var hariKronis = "";
+        var harga = "";
 
         if (flagKronis == "Y"){
             hariKronis = $("#hari-kronis").val();
@@ -3467,6 +3652,10 @@
             if (obat.split('|')[6] != 'null' && obat.split('|')[6] != '') {
                 bijiPerLembar = obat.split('|')[6];
             }
+            if (obat.split('|')[8] != 'null' && obat.split('|')[8] != '') {
+                harga = obat.split('|')[8];
+            }
+
 
             var stok = 0;
 
@@ -3481,6 +3670,7 @@
             }
 
             if (parseInt(qty) <= parseInt(stok)) {
+
                 $.each(data, function (i, item) {
                     if (item.ID == id) {
                         cek = true;
@@ -3490,6 +3680,7 @@
                 if (cek) {
                     $('#warning_data_exits').show().fadeOut(5000);
                 } else {
+                    var totalHarga = parseInt(qty) * parseInt(harga);
                     $('#resep_apotek').attr('disabled', true);
                     $('#desti_apotek').html(namaPelayanan);
                     var row = '<tr id=' + id + '>' +
@@ -3501,9 +3692,18 @@
                         '<td>' + jenisResep + '</td>' +
                         '<td>' + labelKronis(flagKronis) + '</td>' +
                         '<td aling="center">' + hariKronis + '</td>' +
-                        '<td align="center"><img border="0" onclick="delRowObat(\'' + id + '\')" class="hvr-grow" src="<s:url value="/pages/images/delete-flat.png"/>" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
+                        '<td aling="center">' + formatRupiah(totalHarga) + '</td>' +
+                        '<td align="center"><img border="0" onclick="delRowObat(\'' + id + '\',\''+totalHarga+'\')" class="hvr-grow" src="<s:url value="/pages/images/delete-flat.png"/>" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
                         '</tr>';
                     $('#body_detail').append(row);
+                    var total = $('#total_harga_obat').val();
+                    console.log(total);
+                    var tot = 0;
+                    if(total != ""){
+                        tot = total.replace(/[.]/g, '');
+                    }
+                    var jumlah = parseInt(totalHarga) + parseInt(tot);
+                    $('#total_harga_obat').val(formatRupiah(jumlah));
                 }
             } else {
                 $('#warning_resep_head').show().fadeOut(5000);
@@ -3531,9 +3731,38 @@
         }
     }
 
-
-    function delRowObat(id) {
+    function delRowObat(id, harga) {
         $('#' + id).remove();
+        var total = $('#total_harga_obat').val();
+        var tot = 0;
+        if(total != ""){
+            tot = total.replace(/[.]/g, '');
+        }
+        console.log(harga);
+        var jumlah = parseInt(tot) - parseInt(harga);
+        $('#total_harga_obat').val(formatRupiah(jumlah));
+    }
+
+    function saveResepObatTtd() {
+
+        var idDokter = $('#tin_id_dokter').val();
+        var data = $('#tabel_rese_detail').tableToJSON();
+        var stringData = JSON.stringify(data);
+        var idPelayanan = $('#resep_apotek').val();
+        var apotek = $('#resep_apotek').val();
+
+        if (stringData != '[]') {
+            $('#modal-ttd').modal({show:true, backdrop:'static'});
+        } else {
+            $('#warning_resep_head').show().fadeOut(5000);
+            $('#msg_resep').text("Silahkan cek kembali data inputan anda..!");
+        }
+    }
+
+    function clearConvas(){
+        var canvas = document.getElementById('ttd_canvas');
+        const context = canvas.getContext('2d');
+        context.clearRect(0, 0, canvas.width, canvas.height);
     }
 
     function saveResepObat() {
@@ -3543,14 +3772,18 @@
         var stringData = JSON.stringify(data);
         var idPelayanan = $('#resep_apotek').val();
         var apotek = $('#resep_apotek').val();
+        var canvas = document.getElementById('ttd_canvas');
+        var dataURL = canvas.toDataURL("image/png"),
+            dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+        var ttd  = isBlank(canvas);
 
-        if (stringData != '[]') {
+        if (stringData != '[]' && !ttd) {
             var idPelayanan = apotek.split('|')[0];
             var namaPelayanan = apotek.split('|')[1];
             $('#save_resep_head').hide();
             $('#load_resep_head').show();
             dwr.engine.setAsync(true);
-            PermintaanResepAction.saveResepPasien(idDetailCheckup, idPoli, idDokter, idPasien, stringData, idPelayanan, {
+            PermintaanResepAction.saveResepPasien(idDetailCheckup, idPoli, idDokter, idPasien, stringData, idPelayanan, dataURL,{
                 callback: function (response) {
                     if (response == "success") {
                         dwr.engine.setAsync(false);
@@ -3570,6 +3803,13 @@
         } else {
             $('#warning_resep_head').show().fadeOut(5000);
         }
+    }
+
+    function isBlank(canvas){
+        const blank = document.createElement("canvas");
+        blank.width = canvas.width;
+        blank.height = canvas.height;
+        return canvas.toDataURL() === blank.toDataURL();
     }
 
     function listResepPasien() {
@@ -3605,7 +3845,7 @@
     }
 
     function printResep(id) {
-        window.open('printResepPasien_igd.action?id=' + noCheckup + '&idResep=' + id, '_blank');
+        window.open('printResepPasien_igd.action?id=' + idDetailCheckup + '&idResep=' + id, '_blank');
     }
 
     function detailResep(id) {

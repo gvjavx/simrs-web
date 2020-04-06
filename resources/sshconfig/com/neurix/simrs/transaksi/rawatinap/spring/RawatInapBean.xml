@@ -10,6 +10,8 @@
           p:jenisPriksaPasienBoProxy-ref="jenisPriksaPasienBoProxy"
           p:ruanganBoProxy-ref="ruanganBoProxy"
           p:riwayatTindakanBoProxy-ref="riwayatTindakanBoProxy"
+          p:checkupDetailBoProxy-ref="checkupDetailBoProxy"
+          p:branchBoProxy-ref="branchBoProxy"
     />
 
     <bean id="rawatInapController" class="com.neurix.simrs.mobileapi.RawatInapController"

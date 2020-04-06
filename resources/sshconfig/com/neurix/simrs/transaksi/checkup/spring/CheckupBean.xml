@@ -18,6 +18,7 @@
           p:branchBoProxy-ref="branchBoProxy"
           p:billingSystemBoProxy-ref="billingSystemBoProxy"
           p:permintaanResepBoProxy-ref="permintaanResepBoProxy"
+          p:asuransiBoProxy-ref="asuransiBoProxy"
 
     />
     <bean id="rawatInapController" class="com.neurix.simrs.mobileapi.RawatInapController"
@@ -137,5 +138,8 @@
     <bean id="asesmenDao" class="com.neurix.simrs.transaksi.checkup.dao.AsesmenDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="transaksiTindakanBpjsDao" class="com.neurix.simrs.transaksi.transaksitindakanbpjs.dao.TransaksiTindakanBpjsDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+    <bean id="headerCheckupLogDao" class="com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupLogDao"
           p:sessionFactory-ref="sessionFactory" />
 </beans>

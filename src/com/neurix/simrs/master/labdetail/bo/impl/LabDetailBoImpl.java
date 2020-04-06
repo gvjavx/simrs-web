@@ -26,7 +26,6 @@ public class LabDetailBoImpl implements LabDetailBo {
         this.labDetailDao = labDetailDao;
     }
 
-
     @Override
     public List<LabDetail> getByCriteria(LabDetail bean) throws GeneralBOException {
         logger.info("[LabDetailBoImpl.getByCriteria] Start >>>>>>>");

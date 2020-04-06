@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.paketperiksa.model;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 /**
@@ -34,6 +35,53 @@ public class PaketPeriksa {
     private String idPaketPasien;
 
     private String keterangan;
+
+    private String idItemPaket;
+
+    private BigDecimal tarif;
+    private String namaLab;
+    private String idLab;
+    private String namaPelayanan;
+
+    public String getNamaPelayanan() {
+        return namaPelayanan;
+    }
+
+    public void setNamaPelayanan(String namaPelayanan) {
+        this.namaPelayanan = namaPelayanan;
+    }
+
+    public String getNamaLab() {
+        return namaLab;
+    }
+
+    public void setNamaLab(String namaLab) {
+        this.namaLab = namaLab;
+    }
+
+    public String getIdLab() {
+        return idLab;
+    }
+
+    public void setIdLab(String idLab) {
+        this.idLab = idLab;
+    }
+
+    public BigDecimal getTarif() {
+        return tarif;
+    }
+
+    public void setTarif(BigDecimal tarif) {
+        this.tarif = tarif;
+    }
+
+    public String getIdItemPaket() {
+        return idItemPaket;
+    }
+
+    public void setIdItemPaket(String idItemPaket) {
+        this.idItemPaket = idItemPaket;
+    }
 
     public String getKeterangan() {
         return keterangan;

@@ -87,9 +87,9 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Status</label>
                                     <div class="col-sm-4">
-                                        <s:select list="#{'0':'Antrian','1':'Periksa','2':'Rujuk','3':'Selesai'}" cssStyle="margin-top: 7px"
+                                        <s:select list="#{'1':'Periksa','3':'Selesai'}" cssStyle="margin-top: 7px"
                                                   id="status" name="periksaLab.statusPeriksa"
-                                                  headerKey="" headerValue="[Select one]"
+                                                  headerKey="0" headerValue="Antrian"
                                                   cssClass="form-control select2"/>
                                     </div>
                                 </div>
@@ -100,7 +100,7 @@
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </div>
-                                            <s:textfield id="tgl_from" name="periksaLab.stTglFrom" cssClass="form-control"
+                                            <s:textfield id="tgl_from" name="periksaLab.stDateFrom" cssClass="form-control"
                                                          required="false"/>
                                         </div>
                                     </div>
@@ -109,7 +109,7 @@
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </div>
-                                            <s:textfield id="tgl_to" name="periksaLab.stTglTo" cssClass="form-control"
+                                            <s:textfield id="tgl_to" name="periksaLab.stDateTo" cssClass="form-control"
                                                          required="false"/>
                                         </div>
                                     </div>

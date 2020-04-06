@@ -244,7 +244,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div style="margin-top: 30px">
-                                        <a class="btn btn-warning" href="initForm_checkupdetail.action"><i
+                                        <a class="btn btn-warning" href="initForm_daftarpaket.action"><i
                                                 class="fa fa-arrow-left"></i> Back</a>
                                         <a class="btn btn-success" id="save_paket"
                                            onclick="savePaketPasien()"><i class="fa fa-check"></i> Save</a>

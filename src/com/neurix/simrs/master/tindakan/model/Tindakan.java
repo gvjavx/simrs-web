@@ -1,5 +1,6 @@
 package com.neurix.simrs.master.tindakan.model;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 
@@ -20,6 +21,24 @@ public class Tindakan {
     private String lastUpdateWho;
 
     private String idPelayanan;
+    private String branchId;
+    private BigDecimal diskon;
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
+    public BigDecimal getDiskon() {
+        return diskon;
+    }
+
+    public void setDiskon(BigDecimal diskon) {
+        this.diskon = diskon;
+    }
 
     public String getIdPelayanan() {
         return idPelayanan;

@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.checkup.dao;
 
+import com.neurix.akuntansi.master.masterVendor.model.MasterVendor;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.transaksi.checkup.model.AlertPasien;
@@ -359,7 +360,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "b.tgl_antrian,  \n" +
                 "b.no_checkup, \n" +
                 "b.id_detail_checkup,\n" +
-                "a.id_jenis_periksa_pasien,\n" +
+                "b.id_jenis_periksa_pasien,\n" +
                 "f.id,\n" +
                 "f.id_detail_checkup,\n" +
                 "f.status_bayar\n" +
@@ -388,17 +389,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 headerCheckup.setIdJenisPeriksaPasien(obj[11] == null ? "" : obj[11].toString());
                 headerCheckup.setStatusBayar(obj[14] == null ? "" : obj[14].toString());
 
-                if ("bpjs".equalsIgnoreCase(headerCheckup.getIdJenisPeriksaPasien())) {
-                    HeaderCheckup checkup = new HeaderCheckup();
-                    checkup.setIdPasien(obj[0].toString());
-                    checkup.setNama(obj[1].toString());
-                    checkup.setNamaDesa(obj[3].toString());
-                    checkup.setNamaPelayanan(obj[5].toString());
-                    checkup.setNamaKecamatan(obj[7].toString());
-                    checkup.setNoCheckup(obj[9].toString());
-                    checkup.setIdDetailCheckup(obj[10].toString());
-                    listOfResult.add(checkup);
-                } else {
+                if ("umum".equalsIgnoreCase(headerCheckup.getIdJenisPeriksaPasien())) {
                     if ("Y".equalsIgnoreCase(headerCheckup.getStatusBayar())) {
                         HeaderCheckup checkup = new HeaderCheckup();
                         checkup.setIdPasien(obj[0].toString());
@@ -410,6 +401,16 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                         checkup.setIdDetailCheckup(obj[10].toString());
                         listOfResult.add(checkup);
                     }
+                } else {
+                    HeaderCheckup checkup = new HeaderCheckup();
+                    checkup.setIdPasien(obj[0].toString());
+                    checkup.setNama(obj[1].toString());
+                    checkup.setNamaDesa(obj[3].toString());
+                    checkup.setNamaPelayanan(obj[5].toString());
+                    checkup.setNamaKecamatan(obj[7].toString());
+                    checkup.setNoCheckup(obj[9].toString());
+                    checkup.setIdDetailCheckup(obj[10].toString());
+                    listOfResult.add(checkup);
                 }
             }
         }
@@ -672,7 +673,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "a.no_telp,\n" +
                     "a.agama,\n" +
                     "j.url_ktp,\n" +
-                    "a.id_jenis_periksa_pasien,\n" +
+                    "b.id_jenis_periksa_pasien,\n" +
                     "b.id_detail_checkup,\n" +
                     "b.id_pelayanan,\n" +
                     "b.no_sep,\n" +
@@ -688,21 +689,30 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "i.nama_ruangan,\n" +
                     "b.metode_pembayaran,\n" +
                     "b.no_jurnal,\n" +
-                    "a.url_doc_rujuk,\n" +
+                    "b.url_doc_rujuk,\n" +
                     "b.url_ttd, \n" +
                     "a.tinggi, \n" +
                     "a.berat_badan, \n" +
-                    "j.no_bpjs \n" +
+                    "j.no_bpjs, \n" +
+                    "b.no_rujukan, \n" +
+                    "b.tgl_rujukan, \n" +
+                    "k.id_asuransi, \n" +
+                    "k.nama_asuransi, \n" +
+                    "b.no_kartu_asuransi, \n" +
+                    "b.tgl_cekup, \n" +
+                    "b.keterangan_cekup_ulang, \n" +
+                    "b.cover_biaya \n" +
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
-                    "INNER JOIN im_simrs_jenis_periksa_pasien d ON a.id_jenis_periksa_pasien = d.id_jenis_periksa_pasien\n" +
+                    "INNER JOIN im_simrs_jenis_periksa_pasien d ON b.id_jenis_periksa_pasien = d.id_jenis_periksa_pasien\n" +
                     "INNER JOIN im_hris_desa e ON CAST(a.desa_id AS VARCHAR) = e.desa_id \n" +
                     "INNER JOIN im_hris_kecamatan f ON e.kecamatan_id = f.kecamatan_id\n" +
                     "INNER JOIN im_hris_kota g ON f.kota_id = g.kota_id\n" +
                     "INNER JOIN im_hris_provinsi h ON g.provinsi_id = h.provinsi_id\n" +
                     "INNER JOIN im_simrs_pasien j ON a.id_pasien = j.id_pasien\n" +
                     "LEFT JOIN it_simrs_rawat_inap i ON b.id_detail_checkup = i.id_detail_checkup\n" +
+                    "LEFT JOIN im_simrs_asuransi k ON b.id_asuransi = k.id_asuransi\n" +
                     "WHERE b.id_detail_checkup = :id";
 
             List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -754,7 +764,14 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     checkup.setTinggi(obj[32] == null ? "" : obj[32].toString());
                     checkup.setBerat(obj[33] == null ? "" : obj[33].toString());
                     checkup.setNoBpjs(obj[34] == null ? "" : obj[34].toString());
-
+                    checkup.setNoRujukan(obj[35] == null ? "" : obj[35].toString());
+                    checkup.setTglRujukan(obj[36] == null ? "" : obj[36].toString());
+                    checkup.setIdAsuransi(obj[37] == null ? "" : obj[37].toString());
+                    checkup.setNamaAsuransi(obj[38] == null ? "" : obj[38].toString());
+                    checkup.setNoKartuAsuransi(obj[39] == null ? "" : obj[39].toString());
+                    checkup.setTglCheckup(obj[40] != null ? Date.valueOf(obj[40].toString()) : null);
+                    checkup.setKeterangan(obj[41] == null ? "" : obj[41].toString());
+                    checkup.setCoverBiaya(obj[42] == null ? new BigDecimal(String.valueOf("0")) : new BigDecimal(obj[42].toString()));
                 }
             }
         }
@@ -817,6 +834,27 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         }
 
         return transaksiObatDetailList;
+    }
+
+    public List<MasterVendor> getComboListPtpn(){
+        List<MasterVendor> vendorList = new ArrayList<>();
+        String SQL = "SELECT nomor_master, nama \n" +
+                "FROM im_akun_master\n" +
+                "WHERE is_ptpn = 'Y'";
+
+        List<Object[]> result = new ArrayList<>();
+        result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .list();
+
+        if(result.size() > 0){
+            for (Object[] obj: result){
+                MasterVendor masterVendor = new MasterVendor();
+                masterVendor.setNomorMaster(obj[0] == null ? "" : obj[0].toString());
+                masterVendor.setNama(obj[1] == null ? "" : obj[1].toString());
+                vendorList.add(masterVendor);
+            }
+        }
+        return vendorList;
     }
 
     public String getNextSeq() {

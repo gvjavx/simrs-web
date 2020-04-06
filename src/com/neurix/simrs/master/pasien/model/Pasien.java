@@ -1,6 +1,7 @@
 package com.neurix.simrs.master.pasien.model;
 
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 /**
@@ -51,6 +52,25 @@ public class Pasien {
 
     private String idPaket;
     private String idPelayanan;
+    private String namaPaket;
+
+    private BigDecimal tarif;
+
+    public BigDecimal getTarif() {
+        return tarif;
+    }
+
+    public void setTarif(BigDecimal tarif) {
+        this.tarif = tarif;
+    }
+
+    public String getNamaPaket() {
+        return namaPaket;
+    }
+
+    public void setNamaPaket(String namaPaket) {
+        this.namaPaket = namaPaket;
+    }
 
     public String getIdPaket() {
         return idPaket;

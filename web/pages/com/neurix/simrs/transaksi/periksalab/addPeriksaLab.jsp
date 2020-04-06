@@ -47,7 +47,6 @@
     <section class="content-header">
         <h1>
             Periksa Lab Pasien
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -140,15 +139,9 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><b>Provinsi</b></td>
+                                        <td><b>Desa</b></td>
                                         <td>
-                                            <table><s:label name="periksaLab.provinsi"></s:label></table>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><b>Kabupaten</b></td>
-                                        <td>
-                                            <table><s:label name="periksaLab.kota"></s:label></table>
+                                            <table><s:label name="periksaLab.desa"></s:label></table>
                                         </td>
                                     </tr>
                                     <tr>
@@ -158,9 +151,15 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><b>Desa</b></td>
+                                        <td><b>Kabupaten</b></td>
                                         <td>
-                                            <table><s:label name="periksaLab.desa"></s:label></table>
+                                            <table><s:label name="periksaLab.kota"></s:label></table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Provinsi</b></td>
+                                        <td>
+                                            <table><s:label name="periksaLab.provinsi"></s:label></table>
                                         </td>
                                     </tr>
                                     <tr>
@@ -191,6 +190,10 @@
 
                             </div>
                         </div>
+                        <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_dok">
+                        <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                        <p id="msg_dok"></p>
+                        </div>
                     </div>
                     <div class="box-header with-border" id="pos_lab">
                     </div>
@@ -200,7 +203,7 @@
                     <div class="box-body">
                         <%--<button class="btn btn-success btn-outline" onclick="showModal(1)" style="margin-bottom: 10px"><i class="fa fa-plus"></i> Tambah Parameter--%>
                         <%--</button>--%>
-                        <table class="table table-bordered table-striped">
+                        <table class="table table-bordered table-striped" id="tabel_lab">
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>Pemeriksaan</td>
@@ -216,21 +219,7 @@
                             </tbody>
                         </table>
                     </div>
-
-                    <div class="box-header with-border">
-                    </div>
-                    <div class="box-header with-border">
-                    <h3 class="box-title"><i class="fa fa-user-md"></i> Dokter Lab</h3>
-                    </div>
                     <div class="box-body">
-                        <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_dok">
-                            <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                            Silahkan cek kembali data inputan!
-                        </div>
-                        <div class="alert alert-success alert-dismissible" style="display: none" id="success_dok">
-                            <h4><i class="icon fa fa-info"></i> Info!</h4>
-                            Data berhasil disimpan!
-                        </div>
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
@@ -240,28 +229,71 @@
                                         <option value=''>[Select One]</option>
                                     </select>
                                 </div>
+                            </div>
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <div class="form-group">
-                                        <button class="btn btn-success" style="margin-top: 15px;" id="save_ket" onclick="saveDokterLab()"><i
+                                        <a href="initForm_periksalab.action" class="btn btn-warning" onclick=""
+                                           style="margin-top: 25px;" id="back_ket"><i
+                                                class="fa fa-arrow-left"></i> Back
+                                        </a>
+                                        <button class="btn btn-success" style="margin-top: 25px;" id="save_ket" onclick="saveDokterLab()"><i
                                                 class="fa fa-arrow-right"></i> Save
                                         </button>
-                                        <button style="display: none; cursor: no-drop; margin-top: 15px;" type="button"
+                                        <button style="display: none; cursor: no-drop; margin-top: 25px;" type="button"
                                                 class="btn btn-success" id="load_ket"><i class="fa fa-spinner fa-spin"></i>
                                             Sedang Menyimpan...
                                         </button>
-                                        <%--<button class="btn btn-primary" onclick="printPeriksaLab()"--%>
-                                                <%--style="margin-top: 15px;"><i--%>
-                                                <%--class="fa fa-print"></i> Print--%>
-                                        <%--</button>--%>
-                                        <a href="initForm_periksalab.action" class="btn btn-warning" onclick=""
-                                           style="margin-top: 15px;" id="back_ket"><i
-                                                class="fa fa-arrow-left"></i> Back
-                                        </a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <%--<div class="box-header with-border">--%>
+                    <%--</div>--%>
+                    <%--<div class="box-header with-border">--%>
+                    <%--<h3 class="box-title"><i class="fa fa-user-md"></i> Dokter Lab</h3>--%>
+                    <%--</div>--%>
+                    <%--<div class="box-body">--%>
+                        <%--<div class="alert alert-danger alert-dismissible" style="display: none" id="warning_dok">--%>
+                            <%--<h4><i class="icon fa fa-ban"></i> Warning!</h4>--%>
+                            <%--Silahkan cek kembali data inputan!--%>
+                        <%--</div>--%>
+                        <%--<div class="alert alert-success alert-dismissible" style="display: none" id="success_dok">--%>
+                            <%--<h4><i class="icon fa fa-info"></i> Info!</h4>--%>
+                            <%--Data berhasil disimpan!--%>
+                        <%--</div>--%>
+                        <%--<div class="row">--%>
+                            <%--<div class="col-md-4">--%>
+                                <%--<div class="form-group">--%>
+                                    <%--<label style="margin-bottom: -2px; width: 100%">Dokter</label>--%>
+                                    <%--<select id="list_dokter" class="form-control select2"--%>
+                                            <%--onchange="$(this).css('border','')">--%>
+                                        <%--<option value=''>[Select One]</option>--%>
+                                    <%--</select>--%>
+                                <%--</div>--%>
+                                <%--<div class="form-group">--%>
+                                    <%--<div class="form-group">--%>
+                                        <%--<button class="btn btn-success" style="margin-top: 15px;" id="save_ket" onclick="saveDokterLab()"><i--%>
+                                                <%--class="fa fa-arrow-right"></i> Save--%>
+                                        <%--</button>--%>
+                                        <%--<button style="display: none; cursor: no-drop; margin-top: 15px;" type="button"--%>
+                                                <%--class="btn btn-success" id="load_ket"><i class="fa fa-spinner fa-spin"></i>--%>
+                                            <%--Sedang Menyimpan...--%>
+                                        <%--</button>--%>
+                                        <%--&lt;%&ndash;<button class="btn btn-primary" onclick="printPeriksaLab()"&ndash;%&gt;--%>
+                                                <%--&lt;%&ndash;style="margin-top: 15px;"><i&ndash;%&gt;--%>
+                                                <%--&lt;%&ndash;class="fa fa-print"></i> Print&ndash;%&gt;--%>
+                                        <%--&lt;%&ndash;</button>&ndash;%&gt;--%>
+                                        <%--<a href="initForm_periksalab.action" class="btn btn-warning" onclick=""--%>
+                                           <%--style="margin-top: 15px;" id="back_ket"><i--%>
+                                                <%--class="fa fa-arrow-left"></i> Back--%>
+                                        <%--</a>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
                     <div class="box-header with-border">
                     </div>
                 </div>
@@ -450,17 +482,21 @@
     }
 
     function saveDokterLab(){
-
+        var data = $('#tabel_lab').tableToJSON();
+        var cek = false;
+        $.each(data, function (i, item) {
+            if(data[i]["Hasil"] == ""){
+                cek = true;
+            }
+        });
         var idDokter = $('#list_dokter').val();
-
-        if (idPeriksaLab != '' && idDokter != '') {
-
+        if (idPeriksaLab != '' && idDokter != '' && !cek) {
             $('#save_ket').hide();
             $('#load_ket').show();
             dwr.engine.setAsync(true);
             PeriksaLabAction.saveEditDokterLab(idPeriksaLab, idDokter, {
                 callback: function (response) {
-                    if (response == "success") {
+                    if (response.status == "success") {
                         dwr.engine.setAsync(false);
                         $('#success_dok').show().fadeOut(5000);
                         $('#save_ket').show();
@@ -470,14 +506,14 @@
                     } else {
                         $('#save_ket').show();
                         $('#load_ket').hide();
+                        $('#warning_dok').show().fadeOut(5000);
+                        $('#msg_dok').text(response.message);
                     }
                 }
             })
         } else {
             $('#warning_dok').show().fadeOut(5000);
-            if (idDokter == '') {
-
-            }
+            $('#msg_dok').text("Silahkan kembali cek kembali hasil pemeriksaan lad dan data dokter..!");
         }
     }
 
@@ -540,7 +576,7 @@
             if (data != null) {
                 var idPeriksaLab = "";
                 $.each(data, function (i, item) {
-                    if(item.idKategoriLab == "02"){
+                    if(item.idKategoriLab == "KAL00000002"){
                         if (item.labName != null) {
                             lab = item.labName;
                         }

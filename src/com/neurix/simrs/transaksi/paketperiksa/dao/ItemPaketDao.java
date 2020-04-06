@@ -26,18 +26,21 @@ public class ItemPaketDao extends GenericDao<MtSimrsItemPaketEntity, String> {
 
         Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(MtSimrsItemPaketEntity.class);
 
-        if (mapCriteria.get("id_item_paket") != null)
+        if (mapCriteria.get("id_item_paket") != null){
             criteria.add(Restrictions.eq("idItemPaket", mapCriteria.get("id_item_paket").toString()));
-        if (mapCriteria.get("id_paket") != null)
+        }
+        if (mapCriteria.get("id_paket") != null){
             criteria.add(Restrictions.eq("idPaket", mapCriteria.get("id_paket").toString()));
-        if (mapCriteria.get("id_item") != null)
+        }
+        if (mapCriteria.get("id_item") != null){
             criteria.add(Restrictions.eq("idItem", mapCriteria.get("id_item").toString()));
-        if (mapCriteria.get("id_kategori_item") != null)
+        }
+        if (mapCriteria.get("id_kategori_item") != null){
             criteria.add(Restrictions.eq("idKategoriItem", mapCriteria.get("id_kategori_item").toString()));
-        if (mapCriteria.get("jenis_item") != null)
+        }
+        if (mapCriteria.get("jenis_item") != null){
             criteria.add(Restrictions.eq("jenisItem", mapCriteria.get("jenis_item").toString()));
-//        if (mapCriteria.get("branch_id") != null)
-//            criteria.add(Restrictions.eq("branchId", mapCriteria.get("branch_id").toString()));
+        }
 
         return criteria.list();
     }
