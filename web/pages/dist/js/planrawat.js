@@ -86,8 +86,8 @@ function viewPlanDetail(idDetail, tglMasuk){
                     "<td align='left'><strong>" + setWaktuDikerjakan(item.flag, item.lastupdatewho) + "</strong></td>" +
                     "<td align='left'><strong>" + setWaktuDikerjakan(item.flag, item.lastupdate) + "</strong></td>" +
                     "<td align='right'>" +
-                    "<button class='btn btn-sm btn-primary' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','view');\"><i class='fa fa-search'></i> View Detail</button>" +
-                    "<button class='btn btn-sm btn-info' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','edit');\"><i class='fa fa-edit'></i> Action</button>" +
+                    "<button class='btn btn-sm btn-primary' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','view');\"><i class='fa fa-search'></i></button>" +
+                    "<button class='btn btn-sm btn-info' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','edit');\"><i class='fa fa-edit'></i></button>" +
                     "</td>" +
                     "</tr>";
             });
@@ -102,8 +102,8 @@ function viewPlanDetail(idDetail, tglMasuk){
                     "<td align='left'><strong>" + setWaktuDikerjakan(item.flag, item.lastupdatewho) + "</strong></td>" +
                     "<td align='left'><strong>" + setWaktuDikerjakan(item.flag, item.lastupdate) + "</strong></td>" +
                     "<td align='right'>" +
-                    "<button class='btn btn-sm btn-primary' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','view');\"><i class='fa fa-search'></i> View Detail</button>" +
-                    "<button class='btn btn-sm btn-info' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','edit');\"><i class='fa fa-edit'></i> Action</button>" +
+                    "<button class='btn btn-sm btn-primary' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','view');\"><i class='fa fa-search'></i></button>" +
+                    "<button class='btn btn-sm btn-info' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','edit');\"><i class='fa fa-edit'></i></button>" +
                     "</td>" +
                     "</tr>";
             });
@@ -118,8 +118,8 @@ function viewPlanDetail(idDetail, tglMasuk){
                     "<td align='left'><strong>" + setWaktuDikerjakan(item.flag, item.lastupdatewho) + "</strong></td>" +
                     "<td align='left'><strong>" + setWaktuDikerjakan(item.flag, item.lastupdate) + "</strong></td>" +
                     "<td align='right'>" +
-                    "<button class='btn btn-sm btn-primary' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','view');\"><i class='fa fa-search'></i> View Detail</button>" +
-                    "<button class='btn btn-sm btn-info' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','edit');\"><i class='fa fa-edit'></i> Action</button>" +
+                    "<button class='btn btn-sm btn-primary' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','view');\"><i class='fa fa-search'></i></button>" +
+                    "<button class='btn btn-sm btn-info' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','edit');\"><i class='fa fa-edit'></i></button>" +
                     "</td>" +
                     "</tr>";
             });
@@ -133,7 +133,7 @@ function viewPlanDetail(idDetail, tglMasuk){
                 "<td>Status</td>" +
                 "<td>Last Update Who</td>" +
                 "<td>Last Update</td>" +
-                "<td>Action</td>" +
+                "<td style='width: 100px;' align='center'>Action</td>" +
                 "</tr>" +
                 "</thead>";
 
