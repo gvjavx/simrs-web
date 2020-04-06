@@ -277,6 +277,7 @@
                     "<th style='text-align: center; background-color:  #90ee90'>Master</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Bukti</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Kode Barang</th>"+
+                    "<th style='text-align: center; background-color:  #90ee90'>Divisi ID</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>List Kirim</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Parameter</th>"+
                     "</tr></thead>";
@@ -290,6 +291,7 @@
                         '<td align="center">' + item.masterId+ '</td>' +
                         '<td align="center">' + item.bukti + '</td>' +
                         '<td align="center">' + item.kodeBarang + '</td>' +
+                        '<td align="center">' + item.divisiId + '</td>' +
                         '<td align="center">' + item.kirimList + '</td>' +
                         '<td align="center">' + item.keterangan + '</td>' +
                         "</tr>";

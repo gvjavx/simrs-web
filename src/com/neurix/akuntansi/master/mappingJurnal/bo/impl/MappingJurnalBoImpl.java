@@ -287,6 +287,7 @@ public class MappingJurnalBoImpl implements MappingJurnalBo {
                     returnMappingJurnal.setKodeBarang(mappingJurnalEntity.getKodeBarang());
                     returnMappingJurnal.setPosisi(mappingJurnalEntity.getPosisi());
                     returnMappingJurnal.setBukti(mappingJurnalEntity.getBukti());
+                    returnMappingJurnal.setDivisiId(mappingJurnalEntity.getDivisiId());
                     returnMappingJurnal.setCreatedWho(mappingJurnalEntity.getCreatedWho());
                     returnMappingJurnal.setCreatedDate(mappingJurnalEntity.getCreatedDate());
                     returnMappingJurnal.setLastUpdate(mappingJurnalEntity.getLastUpdate());
