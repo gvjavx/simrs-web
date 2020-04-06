@@ -1172,6 +1172,233 @@
         })
     }
 
+    function viewAddPlan(idDetail, idPoli) {
+        setAllListNull();
+        $("#idDetailCheckup").val(idDetail);
+        $("#tgl").val(formatDate(Date.now()));
+        $("#idPoli").val(idPoli);
+        $("#modal-add-plan").modal('show');
+    }
+
+    function setAllListNull() {
+        listOfCairan = [];
+        listOfVitalSign = [];
+        listOfParenteral = [];
+        listOfNonParenteral = [];
+        $("#body-list-vital-sign").html("");
+        $("#body-list-cairan").html("");
+        $("#body-list-perenteral").html("");
+        $("#body-list-nonparenteral").html("");
+    }
+
+    function showModalAdd(param) {
+        if (param == "vitalsign")
+            $("#modal-add-vital-sign").modal('show');
+        if (param == "cairan"){
+
+            $("#mcr_mulai").timepicker();
+            $("#mcr_selesai").timepicker();
+            $("#mcr_buang").timepicker();
+
+            $("#modal-add-cairan").modal('show');
+        }
+        if (param == "parenteral"){
+
+            var idPoli = $("#idPoli").val();
+
+            RawatInapAction.getListObatParenteral(idPoli, function(response){
+                var str = "";
+                $.each(response, function(i, item) {
+                    str += "<option val=\'"+item.namaObat+"\'>"+item.namaObat+"</option>";
+                });
+                $("#select_obat_par").html(str);
+            });
+
+            $("#modal-add-pemberian-parenteral").modal('show');
+        }
+        if (param == "nonparenteral"){
+
+            var idDetail = $("#idDetailCheckup").val();
+
+            RawatInapAction.getListObatNonParenteral(idDetail, "%",  function(response){
+                var str = "";
+                $.each(response, function(i, item) {
+                    str += "<option val=\'"+item.namaObat+"\'>"+item.namaObat+"</option>";
+                });
+                $("#select_obat_nonpar").html(str);
+            });
+
+            $("#modal-add-pemberian-non-parenteral").modal('show');
+        }
+    }
+
+    function saveToList(param) {
+        if(param == "vitalsign"){
+
+            var jam = $("#mvs_jam").val();
+            var waktu = $("#mvs_waktu").val();
+            var ket = $("#mvs_ket").val();
+
+            listOfVitalSign.push({"jam":jam, "waktu":waktu, "ket":ket});
+            setToListTable(param);
+        }
+        if (param == "cairan"){
+
+            var waktu = $("#mcr_waktu").val();
+            var macam = $("#mcr_macam").val();
+            var melalui = $("#mcr_melalui").val();
+            var jumlah = $("#mcr_jumlah").val();
+            var mulai = $("#mcr_mulai").val();
+            var selesai = $("#mcr_selesai").val();
+            var cek = $("#mcr_cek").val();
+            var sisa = $("#mcr_sisa").val();
+            var buang = $("#mcr_buang").val();
+            var dari = $("#mcr_dari").val();
+            var balance = $("#mcr_balance").val();
+            var ket = $("#mcr_ket").val();
+
+            listOfCairan.push({
+                "waktu":waktu,
+                "macam":macam,
+                "melalui":melalui,
+                "jumlah":jumlah,
+                "mulai":mulai,
+                "selesai":selesai,
+                "cek":cek,
+                "sisa":sisa,
+                "buang":buang,
+                "dari":dari,
+                "balance":balance,
+                "ket":ket
+            });
+            setToListTable(param);
+        }
+        if (param == "parenteral"){
+
+            var waktu = $("#par_waktu").val();
+            var obat = $("#select_obat_par").val();
+            var nama = $("#select_obat_par").text();
+            var cara = $("#par_cara").val();
+            var dosis = $("#par_dosis").val();
+            var skintes = $("#par_skintes").val();
+            var waktupemberian = $("#select_waktu_par").val();
+            var ket = $("#par_keterangan").val();
+
+            listOfParenteral.push({
+                "waktu":waktu,
+                "obat":obat,
+                "nama":nama,
+                "cara":cara,
+                "dosis":dosis,
+                "skintes":skintes,
+                "waktupemberian":waktupemberian,
+                "ket":ket,
+                "kat":param
+            });
+            setToListTable(param);
+        }
+        if (param == "nonparenteral"){
+
+            var waktu = $("#nonpar_waktu").val();
+            var obat = $("#select_obat_nonpar").val();
+            var nama = $("#select_obat_nonpar").text();
+            var dosis = $("#nonpar_dosis").val();
+            var waktupemberian = $("#select_waktu_nonpar").val();
+            var ket = $("#nonpar_keterangan").val();
+
+            listOfNonParenteral.push({
+                "waktu":waktu,
+                "obat":obat,
+                "nama":nama,
+                "dosis":dosis,
+                "waktupemberian":waktupemberian,
+                "ket":ket,
+                "kat":param
+            });
+            setToListTable(param);
+        }
+    }
+
+    function setToListTable(param) {
+
+        if(param == "vitalsign"){
+
+            console.log(listOfVitalSign);
+
+            $("#body-list-vital-sign").html("");
+            if(listOfVitalSign.length > 0) {
+                var str = "";
+                $.each(listOfVitalSign, function (i, item) {
+                    str += "<tr>" +
+                        "<td>"+ item.waktu +"</td>" +
+                        "<td>"+ item.jam +"</td>" +
+                        "<td>"+ item.ket +"</td>" +
+                        "</tr>"
+                });
+                $("#modal-add-vital-sign").modal('hide');
+                $("#body-list-vital-sign").html(str);
+            }
+        }
+
+        if(param == "cairan"){
+            $("#body-list-cairan").html("");
+            if(listOfCairan.length > 0) {
+                var str = "";
+                $.each(listOfCairan, function (i, item) {
+                    str += "<tr>" +
+                        "<td>"+ item.waktu +"</td>" +
+                        "<td>"+ item.macam +"</td>" +
+                        "<td>"+ item.melalui +"</td>" +
+                        "<td>"+ item.jumlah +"</td>" +
+                        "<td>"+ item.mulai +"</td>" +
+                        "<td>"+ item.selesai +"</td>" +
+                        "<td>"+ item.cek +"</td>" +
+                        "<td>"+ item.sisa +"</td>" +
+                        "<td>"+ item.buang +"</td>" +
+                        "<td>"+ item.dari +"</td>" +
+                        "<td>"+ item.balance +"</td>" +
+                        "<td>"+ item.ket +"</td>" +
+                        "</tr>"
+                });
+                $("#modal-add-cairan").modal('hide');
+                $("#body-list-cairan").html(str);
+            }
+        }
+        if(param == "parenteral"){
+            $("#body-list-perenteral").html("");
+            var str = "";
+            $.each(listOfParenteral, function(i, item){
+                str += "<tr>" +
+                    "<td>"+ item.waktu +"</td>" +
+                    "<td>"+ item.nama +"</td>" +
+                    "<td>"+ item.cara +"</td>" +
+                    "<td>"+ item.dosis +"</td>" +
+                    "<td>"+ item.skintest +"</td>" +
+                    "<td>"+ item.waktupemberian +"</td>" +
+                    "<td>"+ item.ket +"</td>" +
+                    "</tr>"
+            });
+            $("#modal-add-pemberian-parenteral").hide();
+            $("#body-list-perenteral").html(str);
+        }
+
+        if(param == "nonparenteral"){
+            $("#body-list-nonparenteral").html("");
+            var str = "";
+            $.each(listOfNonParenteral, function(i, item){
+                str += "<tr>" +
+                    "<td>"+ item.waktu +"</td>" +
+                    "<td>"+ item.nama +"</td>" +
+                    "<td>"+ item.dosis +"</td>" +
+                    "<td>"+ item.waktupemberian +"</td>" +
+                    "<td>"+ item.ket +"</td>" +
+                    "</tr>"
+            });
+            $("#modal-add-pemberian-non-parenteral").hide();
+            $("#body-list-nonparenteral").html(str);
+        }
+    }
+
     function savePlan(){
 
         var idDetail = $("#idDetailCheckup").val();
