@@ -138,6 +138,11 @@ public class DaftarUlangAction extends BaseTransactionAction {
             detailCheckup.setJenisPeriksaPasien(checkup.getStatusPeriksaName());
             detailCheckup.setMetodePembayaran(checkup.getMetodePembayaran());
             detailCheckup.setNoBpjs(checkup.getNoBpjs());
+            if(checkup.getIdRawatInap() != null && !"".equalsIgnoreCase(checkup.getIdRawatInap())){
+                detailCheckup.setRawatInap(true);
+            }else{
+                detailCheckup.setRawatInap(false);
+            }
             setHeaderDetailCheckup(detailCheckup);
 
         } else {
@@ -173,6 +178,7 @@ public class DaftarUlangAction extends BaseTransactionAction {
 
             String idDetail = obj.getString("id_detail_checkup");
             String jenisPasien = obj.getString("jenis_periksa");
+            Boolean rawatInap = Boolean.valueOf(obj.getString("rawat_inap"));
 
             List<Branch> branchList = new ArrayList<>();
             List<HeaderDetailCheckup> detailCheckupList = new ArrayList<>();
@@ -284,7 +290,11 @@ public class DaftarUlangAction extends BaseTransactionAction {
                                             sepRequest.setNoKartu(obj.getString("no_bpjs"));
                                             sepRequest.setTglSep(time.toString());
                                             sepRequest.setPpkPelayanan(getBranch.getPpkPelayanan());//cons id rumah sakit
-                                            sepRequest.setJnsPelayanan("2");//jenis rawat inap, apa jalan 2 rawat jalan, 1 rawat inap
+                                            if(rawatInap){
+                                                sepRequest.setJnsPelayanan("1");//jenis rawat inap, apa jalan 2 rawat jalan, 1 rawat inap
+                                            }else{
+                                                sepRequest.setJnsPelayanan("2");//jenis rawat inap, apa jalan 2 rawat jalan, 1 rawat inap
+                                            }
                                             sepRequest.setKlsRawat(obj.getString("id_kelas"));//kelas rawat dari bpjs
                                             sepRequest.setNoMr(getPasien.getIdPasien());//id pasien
                                             sepRequest.setAsalRujukan(obj.getString("perujuk"));//
@@ -368,7 +378,11 @@ public class DaftarUlangAction extends BaseTransactionAction {
                                                     klaimDetailRequest.setNomorKartu(obj.getString("no_bpjs"));
                                                     klaimDetailRequest.setTglMasuk(checkup.getCreatedDate().toString());
                                                     klaimDetailRequest.setTglPulang(time.toString());
-                                                    klaimDetailRequest.setJenisRawat("2");
+                                                    if(rawatInap){
+                                                        klaimDetailRequest.setJenisRawat("1");
+                                                    }else{
+                                                        klaimDetailRequest.setJenisRawat("2");
+                                                    }
                                                     klaimDetailRequest.setKelasRawat("");
                                                     klaimDetailRequest.setAdlChronic("");
                                                     klaimDetailRequest.setIcuIndikator("");
@@ -568,6 +582,7 @@ public class DaftarUlangAction extends BaseTransactionAction {
                         headerDetailCheckup.setLastUpdate(time);
                         headerDetailCheckup.setLastUpdateWho(userLogin);
                         headerDetailCheckup.setBranchId(branchId);
+                        headerDetailCheckup.setRawatInap(rawatInap);
 
                         try {
                             finalResponse = daftarUlangBo.saveDaftarUlang(headerDetailCheckup);

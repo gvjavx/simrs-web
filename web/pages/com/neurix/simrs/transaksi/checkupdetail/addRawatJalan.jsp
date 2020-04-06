@@ -150,7 +150,6 @@
     <section class="content-header">
         <h1>
             Rawat Jalan Pasien
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -391,6 +390,7 @@
                             </div>
                             <!-- /.col -->
                         </div>
+                        <a href="initRekamMedik_checkupdetail.action" class="btn btn-primary"><i class="fa fa-user"></i> E-Rekam Medik</a>
                     </div>
                     <div class="box-header with-border" id="pos_alergi">
                     </div>

@@ -3173,6 +3173,10 @@ public class CheckupDetailAction extends BaseMasterAction {
         return detailCheckup;
     }
 
+    public String initRekamMedik(){
+        return "init_rekam_medik";
+    }
+
 
     @Override
     public String downloadPdf() {
