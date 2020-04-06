@@ -11062,264 +11062,308 @@ public class PayrollAction extends BaseMasterAction{
                 CellDetail cellDetail = new CellDetail();
 
                 //masa Pajak
+                cellDetail = new CellDetail();
                 cellDetail.setCellID(0);
                 cellDetail.setValueCell(data.getMasaPajak());
                 cellDetail.setAlignmentCell(2);
                 listOfCell.add(cellDetail);
 
                 //Tahun Pajak
+                cellDetail = new CellDetail();
                 cellDetail.setCellID(1);
                 cellDetail.setValueCell(data.getTahunPajak());
                 cellDetail.setAlignmentCell(2);
                 listOfCell.add(cellDetail);
 
                 //Pembetulan
+                cellDetail = new CellDetail();
                 cellDetail.setCellID(2);
                 cellDetail.setValueCell(data.getPembetulan());
                 cellDetail.setAlignmentCell(2);
                 listOfCell.add(cellDetail);
 
                 //Nomor Bukti Potong
+                cellDetail = new CellDetail();
                 cellDetail.setCellID(3);
                 cellDetail.setValueCell(data.getNomorBuktiPotong());
                 cellDetail.setAlignmentCell(2);
                 listOfCell.add(cellDetail);
 
                 //Masa Perolehan Awal
+                cellDetail = new CellDetail();
                 cellDetail.setCellID(4);
                 cellDetail.setValueCell(data.getMasaPerolehanAwal());
                 cellDetail.setAlignmentCell(2);
                 listOfCell.add(cellDetail);
 
                 //Masa Perolehan Akhir
+                cellDetail = new CellDetail();
                 cellDetail.setCellID(5);
                 cellDetail.setValueCell(data.getMasaPerolehanAkhir());
                 cellDetail.setAlignmentCell(2);
                 listOfCell.add(cellDetail);
 
                 //NPWP
+                cellDetail = new CellDetail();
                 cellDetail.setCellID(6);
                 cellDetail.setValueCell(data.getNpwp());
                 cellDetail.setAlignmentCell(2);
                 listOfCell.add(cellDetail);
 
                 //NIK
+                cellDetail = new CellDetail();
                 cellDetail.setCellID(7);
                 cellDetail.setValueCell(data.getNik());
                 cellDetail.setAlignmentCell(1);
                 listOfCell.add(cellDetail);
 
                 //Nama
+                cellDetail = new CellDetail();
                 cellDetail.setCellID(8);
                 cellDetail.setValueCell(data.getNama());
                 cellDetail.setAlignmentCell(1);
                 listOfCell.add(cellDetail);
 
                 //Alamat
+                cellDetail = new CellDetail();
                 cellDetail.setCellID(9);
                 cellDetail.setValueCell(data.getAlamat());
                 cellDetail.setAlignmentCell(1);
                 listOfCell.add(cellDetail);
 
                 //Jenis Kelamin
+                cellDetail = new CellDetail();
                 cellDetail.setCellID(10);
                 cellDetail.setValueCell(data.getJenisKelamin());
                 cellDetail.setAlignmentCell(2);
                 listOfCell.add(cellDetail);
 
                 //Status PTKP
+                cellDetail = new CellDetail();
                 cellDetail.setCellID(11);
                 cellDetail.setValueCell(data.getStatusPtkp());
                 cellDetail.setAlignmentCell(2);
                 listOfCell.add(cellDetail);
 
                 //Jumlah Tanggungan
+                cellDetail = new CellDetail();
                 cellDetail.setCellID(12);
                 cellDetail.setValueCell(data.getJumlahTanggungan());
                 cellDetail.setAlignmentCell(2);
                 listOfCell.add(cellDetail);
 
                 //Nama Jabatan
+                cellDetail = new CellDetail();
                 cellDetail.setCellID(13);
                 cellDetail.setValueCell(data.getNamaJabatan());
                 cellDetail.setAlignmentCell(2);
                 listOfCell.add(cellDetail);
 
                 //WP luar Negeri
+                cellDetail = new CellDetail();
                 cellDetail.setCellID(14);
                 cellDetail.setValueCell(data.getWpLuarNegeri());
                 cellDetail.setAlignmentCell(2);
                 listOfCell.add(cellDetail);
 
                 //Kode Luar Negeri
+                cellDetail = new CellDetail();
                 cellDetail.setCellID(15);
                 cellDetail.setValueCell(data.getKodeLuarNegeri());
                 cellDetail.setAlignmentCell(2);
                 listOfCell.add(cellDetail);
 
                 //Kode Pajak
+                cellDetail = new CellDetail();
                 cellDetail.setCellID(16);
                 cellDetail.setValueCell(data.getKodePajak());
                 cellDetail.setAlignmentCell(2);
                 listOfCell.add(cellDetail);
 
                 //Jumlah 1 Gaji/pensiun/tht/jht
+                cellDetail = new CellDetail();
                 cellDetail.setCellID(17);
                 cellDetail.setValueCell(data.getJumlah1().doubleValue());
                 cellDetail.setAlignmentCell(3);
                 listOfCell.add(cellDetail);
 
                 //Jumlah 2 Tunj. PPh
+                cellDetail = new CellDetail();
                 cellDetail.setCellID(18);
                 cellDetail.setValueCell(data.getJumlah2().doubleValue());
                 cellDetail.setAlignmentCell(3);
                 listOfCell.add(cellDetail);
 
                 //Jumlah 3 Tunj. Lainnya , lembur, dll
+                cellDetail = new CellDetail();
                 cellDetail.setCellID(19);
                 cellDetail.setValueCell(data.getJumlah3().doubleValue());
                 cellDetail.setAlignmentCell(3);
                 listOfCell.add(cellDetail);
 
                 //Jumlah 4 Honorarium,imbalan,lain sejenis
+                cellDetail = new CellDetail();
                 cellDetail.setCellID(20);
                 cellDetail.setValueCell(data.getJumlah4().doubleValue());
                 cellDetail.setAlignmentCell(3);
                 listOfCell.add(cellDetail);
 
                 //Jumlah 5 Premi Asuransi yang dibayarkan pemberi kerja
+                cellDetail = new CellDetail();
                 cellDetail.setCellID(21);
                 cellDetail.setValueCell(data.getJumlah5().doubleValue());
                 cellDetail.setAlignmentCell(3);
                 listOfCell.add(cellDetail);
 
                 //Jumlah 6 Penerimaan dalam bentuk natura dan kenikmatan lainnya
+                cellDetail = new CellDetail();
                 cellDetail.setCellID(22);
                 cellDetail.setValueCell(data.getJumlah6().doubleValue());
                 cellDetail.setAlignmentCell(3);
                 listOfCell.add(cellDetail);
 
                 //Jumlah 7 Tantiem , Bonus , THR , dll
+                cellDetail = new CellDetail();
                 cellDetail.setCellID(23);
                 cellDetail.setValueCell(data.getJumlah7().doubleValue());
                 cellDetail.setAlignmentCell(3);
                 listOfCell.add(cellDetail);
 
                 //Jumlah 8 Jml Penghasilan Bruto
+                cellDetail = new CellDetail();
                 cellDetail.setCellID(24);
                 cellDetail.setValueCell(data.getJumlah8().doubleValue());
                 cellDetail.setAlignmentCell(3);
                 listOfCell.add(cellDetail);
 
                 //Jumlah 9 Biaya jabatan / Biaya pensiun
+                cellDetail = new CellDetail();
                 cellDetail.setCellID(25);
                 cellDetail.setValueCell(data.getJumlah9().doubleValue());
                 cellDetail.setAlignmentCell(3);
                 listOfCell.add(cellDetail);
 
                 //Jumlah 10 Iuran Pensiun , iuran THT / JHT
+                cellDetail = new CellDetail();
                 cellDetail.setCellID(26);
                 cellDetail.setValueCell(data.getJumlah10().doubleValue());
                 cellDetail.setAlignmentCell(3);
                 listOfCell.add(cellDetail);
 
                 //Jumlah 11 Jumlah Pengurang ( 9+10 )
+                cellDetail = new CellDetail();
                 cellDetail.setCellID(27);
                 cellDetail.setValueCell(data.getJumlah11().doubleValue());
                 cellDetail.setAlignmentCell(3);
                 listOfCell.add(cellDetail);
 
                 //Jumlah 12 Jumlah Penghasilan Netto
+                cellDetail = new CellDetail();
                 cellDetail.setCellID(28);
                 cellDetail.setValueCell(data.getJumlah12().doubleValue());
                 cellDetail.setAlignmentCell(3);
                 listOfCell.add(cellDetail);
 
                 //Jumlah 13 Penghasilan Netto Masa Sebelumnya
+                cellDetail = new CellDetail();
                 cellDetail.setCellID(29);
                 cellDetail.setValueCell(data.getJumlah13().doubleValue());
                 cellDetail.setAlignmentCell(3);
                 listOfCell.add(cellDetail);
 
                 //Jumlah 14 Jumlah Penghasilan Netto Setahun /  Disetahunkan
+                cellDetail = new CellDetail();
                 cellDetail.setCellID(30);
                 cellDetail.setValueCell(data.getJumlah14().doubleValue());
                 cellDetail.setAlignmentCell(3);
                 listOfCell.add(cellDetail);
 
                 //Jumlah 15 PTKP
+                cellDetail = new CellDetail();
                 cellDetail.setCellID(31);
                 cellDetail.setValueCell(data.getJumlah15().doubleValue());
                 cellDetail.setAlignmentCell(3);
                 listOfCell.add(cellDetail);
 
                 //Jumlah 16 Penghasilan PKP setahun ( 14-15 )
+                cellDetail = new CellDetail();
                 cellDetail.setCellID(32);
                 cellDetail.setValueCell(data.getJumlah16().doubleValue());
                 cellDetail.setAlignmentCell(3);
                 listOfCell.add(cellDetail);
 
                 //Jumlah 17 PPH 21 Atas Penghasilan setahun / disetahunkan
+                cellDetail = new CellDetail();
                 cellDetail.setCellID(33);
                 cellDetail.setValueCell(data.getJumlah17().doubleValue());
                 cellDetail.setAlignmentCell(3);
                 listOfCell.add(cellDetail);
 
                 //Jumlah 18 PPh 21 Yang tlh Dipotong masa sebelumnya
+                cellDetail = new CellDetail();
                 cellDetail.setCellID(34);
                 cellDetail.setValueCell(data.getJumlah18().doubleValue());
                 cellDetail.setAlignmentCell(3);
                 listOfCell.add(cellDetail);
 
                 //Jumlah 19 PPh 21 Terutang
+                cellDetail = new CellDetail();
                 cellDetail.setCellID(35);
                 cellDetail.setValueCell(data.getJumlah19().doubleValue());
                 cellDetail.setAlignmentCell(3);
                 listOfCell.add(cellDetail);
 
                 //Jumlah 20 PPh 21 Yang telah dipotong / dilunasi
+                cellDetail = new CellDetail();
                 cellDetail.setCellID(36);
                 cellDetail.setValueCell(data.getJumlah20().doubleValue());
                 cellDetail.setAlignmentCell(3);
                 listOfCell.add(cellDetail);
 
                 //Selisih PPh 21
+                cellDetail = new CellDetail();
                 cellDetail.setCellID(37);
                 cellDetail.setValueCell(data.getSelisih21().doubleValue());
                 cellDetail.setAlignmentCell(3);
                 listOfCell.add(cellDetail);
 
                 // Kurang Bayar PPh 21
+                cellDetail = new CellDetail();
                 cellDetail.setCellID(38);
                 cellDetail.setValueCell(data.getKurangBayar21().doubleValue());
                 cellDetail.setAlignmentCell(3);
                 listOfCell.add(cellDetail);
 
                 // Status Pindah
+                cellDetail = new CellDetail();
                 cellDetail.setCellID(39);
                 cellDetail.setValueCell(data.getStatusPindah());
                 cellDetail.setAlignmentCell(2);
                 listOfCell.add(cellDetail);
 
                 // NPWP Pemotong
+                cellDetail = new CellDetail();
                 cellDetail.setCellID(40);
                 cellDetail.setValueCell(data.getNpwpPemotong());
                 cellDetail.setAlignmentCell(1);
                 listOfCell.add(cellDetail);
 
                 // Nama Pemotong
+                cellDetail = new CellDetail();
                 cellDetail.setCellID(41);
                 cellDetail.setValueCell(data.getNamaPemotong());
                 cellDetail.setAlignmentCell(1);
                 listOfCell.add(cellDetail);
 
                 //Tanggal Bukti Potong
+                cellDetail = new CellDetail();
                 cellDetail.setCellID(42);
                 cellDetail.setValueCell(data.getTanggalBuktiPotong());
                 cellDetail.setAlignmentCell(2);
                 listOfCell.add(cellDetail);
 
                 //Status berhenti
+                cellDetail = new CellDetail();
                 cellDetail.setCellID(43);
                 cellDetail.setValueCell(data.getStatusBerhenti());
                 cellDetail.setAlignmentCell(2);

@@ -14,6 +14,15 @@ public class positionBagian extends BaseModel {
     private String bagianName;
     private String flag;
     private String branchId;
+    private String kodering;
+
+    public String getKodering() {
+        return kodering;
+    }
+
+    public void setKodering(String kodering) {
+        this.kodering = kodering;
+    }
 
     @Override
     public String getFlag() {

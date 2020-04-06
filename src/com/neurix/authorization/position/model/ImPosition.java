@@ -31,10 +31,19 @@ public class ImPosition implements Serializable {
     private String departmentName;
     private String stPositionId;
     private String bagianName;
+    private String kodering;
 
     private ImDepartmentEntity imDepartmentEntity;
     private ImKelompokPositionEntity imKelompokPositionEntity;
     private ImPositionBagianEntity imPositionBagianEntity;
+
+    public String getKodering() {
+        return kodering;
+    }
+
+    public void setKodering(String kodering) {
+        this.kodering = kodering;
+    }
 
     public ImPositionBagianEntity getImPositionBagianEntity() {
         return imPositionBagianEntity;

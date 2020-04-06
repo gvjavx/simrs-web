@@ -22,6 +22,7 @@ public class ImMappingJurnalEntity implements Serializable {
     private String kodeBarang;
     private String keterangan;
     private String kirimList;
+    private String divisiId;
 
     private String flag;
     private String action;
@@ -29,6 +30,14 @@ public class ImMappingJurnalEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+    public String getDivisiId() {
+        return divisiId;
+    }
+
+    public void setDivisiId(String divisiId) {
+        this.divisiId = divisiId;
+    }
 
     public String getKirimList() {
         return kirimList;

@@ -1,6 +1,8 @@
-package com.neurix.hris.master.department.model;
+package com.neurix.akuntansi.transaksi.jurnal.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
@@ -10,11 +12,13 @@ import java.sql.Timestamp;
  * Time: 14:05
  * To change this template use File | Settings | File Templates.
  */
-public class ImDepartmentEntity implements Serializable {
+public class ItJurnalDetailActivityEntity implements Serializable {
+    private String jurnalDetailActivityId;
+    private String jurnalDetailId;
+    private String activityId;
+    private BigDecimal jumlah;
+    private  String personId;
 
-    private String departmentId;
-    private String departmentName;
-    private String kodering;
     private String flag;
     private String action;
     private Timestamp createdDate;
@@ -22,28 +26,44 @@ public class ImDepartmentEntity implements Serializable {
     private String createdWho;
     private String lastUpdateWho;
 
-    public String getKodering() {
-        return kodering;
+    public String getJurnalDetailActivityId() {
+        return jurnalDetailActivityId;
     }
 
-    public void setKodering(String kodering) {
-        this.kodering = kodering;
+    public void setJurnalDetailActivityId(String jurnalDetailActivityId) {
+        this.jurnalDetailActivityId = jurnalDetailActivityId;
     }
 
-    public String getDepartmentId() {
-        return departmentId;
+    public String getJurnalDetailId() {
+        return jurnalDetailId;
     }
 
-    public void setDepartmentId(String departmentId) {
-        this.departmentId = departmentId;
+    public void setJurnalDetailId(String jurnalDetailId) {
+        this.jurnalDetailId = jurnalDetailId;
     }
 
-    public String getDepartmentName() {
-        return departmentName;
+    public String getActivityId() {
+        return activityId;
     }
 
-    public void setDepartmentName(String departmentName) {
-        this.departmentName = departmentName;
+    public void setActivityId(String activityId) {
+        this.activityId = activityId;
+    }
+
+    public BigDecimal getJumlah() {
+        return jumlah;
+    }
+
+    public void setJumlah(BigDecimal jumlah) {
+        this.jumlah = jumlah;
+    }
+
+    public String getPersonId() {
+        return personId;
+    }
+
+    public void setPersonId(String personId) {
+        this.personId = personId;
     }
 
     public String getFlag() {

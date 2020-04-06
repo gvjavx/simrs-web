@@ -190,7 +190,7 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
             if (row[33]!=null){
                 result.setUmr(BigDecimal.valueOf(Double.parseDouble(row[33].toString())));
             }
-            result.setGolonganDapenId(row[34].toString());
+            result.setGolonganDapenId((String) row[34]);
             result.setMasaKerjaGol((Integer)row[35]);
             if (row[36]!=null){
                 result.setTanggalAkhirKontrak((Date)row[36]);
