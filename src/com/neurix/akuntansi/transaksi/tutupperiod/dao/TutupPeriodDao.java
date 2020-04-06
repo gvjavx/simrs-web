@@ -56,6 +56,10 @@ public class TutupPeriodDao extends GenericDao<ItAkunTutupPeriodEntity, String> 
 
         BigDecimal dcBulan = new BigDecimal(bean.getBulan());
         BigDecimal dcTahun = new BigDecimal(bean.getTahun());
+        String rekenigId = "%";
+        if (bean.getRekeningId() != null && !"".equalsIgnoreCase(bean.getRekeningId())){
+            rekenigId = bean.getRekeningId();
+        }
 
         String SQL = "SELECT \n" +
                 "dt.rekening_id,\n" +
@@ -71,6 +75,7 @@ public class TutupPeriodDao extends GenericDao<ItAkunTutupPeriodEntity, String> 
                 "AND EXTRACT(MONTH FROM h.tanggal_jurnal) = :bulan \n" +
                 "AND EXTRACT(YEAR FROM h.tanggal_jurnal) = :tahun \n" +
                 "AND h.branch_id = :unit \n" +
+                "AND dt.rekening_id LIKE :rekening\n" +
                 "GROUP\n" +
                 "BY \n" +
                 "dt.rekening_id,\n" +
@@ -83,6 +88,7 @@ public class TutupPeriodDao extends GenericDao<ItAkunTutupPeriodEntity, String> 
                 .setParameter("unit", bean.getUnit())
                 .setParameter("bulan", dcBulan)
                 .setParameter("tahun", dcTahun)
+                .setParameter("rekening", rekenigId)
                 .list();
 
         List<TutupPeriod> tutupPeriods = new ArrayList<>();
@@ -101,5 +107,23 @@ public class TutupPeriodDao extends GenericDao<ItAkunTutupPeriodEntity, String> 
         }
 
         return tutupPeriods;
+    }
+
+    public Integer getLowestLevelKodeRekening(){
+
+        String SQL = "SELECT rekening_id, MAX(level) FROM im_akun_kode_rekening \n" +
+                "GROUP BY rekening_id LIMIT 1";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        Integer result = new Integer(0);
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                BigInteger bigresult = obj[1] == null ? new BigInteger(String.valueOf(0)) : (BigInteger) obj[1];
+                result = new Integer(bigresult.intValue());
+            }
+        }
+
+        return result;
     }
 }
