@@ -47,6 +47,9 @@
         <property name="tunjLain">
             <column name="tunjangan_lain" sql-type="numeric" length="15" precision="2" not-null="true" />
         </property>
+        <property name="tunjPph">
+            <column name="tunjangan_pph" sql-type="numeric" length="15" precision="2" not-null="true" />
+        </property>
         <property name="tunjTambahan">
             <column name="tunjangan_tambahan" sql-type="numeric" length="15" precision="2" not-null="true" />
         </property>

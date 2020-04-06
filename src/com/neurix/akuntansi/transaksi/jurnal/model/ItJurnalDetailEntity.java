@@ -23,6 +23,7 @@ public class ItJurnalDetailEntity implements Serializable {
     private String kdBarang;
     private String pasienId;
     private String nomorRekening;
+    private String divisiId;
 
     private String flag;
     private String action;
@@ -30,6 +31,14 @@ public class ItJurnalDetailEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+    public String getDivisiId() {
+        return divisiId;
+    }
+
+    public void setDivisiId(String divisiId) {
+        this.divisiId = divisiId;
+    }
 
     public String getNomorRekening() {
         return nomorRekening;

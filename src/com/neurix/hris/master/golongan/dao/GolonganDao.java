@@ -52,7 +52,7 @@ public class GolonganDao extends GenericDao<ImGolonganEntity, String> {
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
 
         // Order by
-        criteria.addOrder(Order.asc("golonganId"));
+        criteria.addOrder(Order.desc("golonganId"));
 
         List<ImGolonganEntity> results = criteria.list();
 
@@ -130,6 +130,14 @@ public class GolonganDao extends GenericDao<ImGolonganEntity, String> {
             listOfResult.add(golongan);
         }
         return listOfResult;
+    }
+
+    public List<ImGolonganEntity> getDataGolongan(Integer level, String flag) throws HibernateException{
+        List<ImGolonganEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImGolonganEntity.class)
+                .add(Restrictions.eq("level", level))
+                .add(Restrictions.eq("flag", flag))
+                .list();
+        return results;
     }
 
     public String getStatus(Integer level){

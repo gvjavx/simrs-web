@@ -102,7 +102,7 @@
 
         </action>
 
-        <action name="paging_displaytag"
+        <action name="paging_displaytag_tipepegawai"
                 class="com.neurix.hris.master.tipepegawai.action.TipePegawaiAction" method="paging">
             <interceptor-ref name="defaultStack"/>
             <result name="success">/pages/com/neurix/hris/master/tipepegawai/searchTipePegawai.jsp</result>

@@ -108,7 +108,6 @@
     <section class="content-header">
         <h1>
             Edit Mapping Jurnal
-            <small>e-HEALTH</small>
         </h1>
     </section>
     <!-- Main content -->
@@ -207,10 +206,15 @@
                                                    height="350" width="600" autoOpen="false" title="Saving ...">
                                             Please don't close this window, server is processing your request ...
                                             </br>
-                                            </br>
-                                            </br>
                                             <center>
-                                                <img border="0" src="<s:url value="/pages/images/indicator-write.gif"/>" name="image_indicator_write">
+                                                <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                     src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                     name="image_indicator_write">
+                                                <br>
+                                                <img class="spin" border="0"
+                                                     style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                     src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                     name="image_indicator_write">
                                             </center>
                                         </sj:dialog>
 
@@ -369,6 +373,15 @@
                         </div>
                         <div class="row" style="margin-top: 7px">
                             <div class="col-sm-offset-2 col-sm-3">
+                                <label class="control-label">Divisi ID</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <s:select list="#{'Y':'Y'}" id="modDivisi"
+                                          headerKey="N" headerValue="N" cssClass="form-control" />
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top: 7px">
+                            <div class="col-sm-offset-2 col-sm-3">
                                 <label class="control-label">List Kirim</label>
                             </div>
                             <div class="col-sm-4">
@@ -411,6 +424,7 @@
                     "<th style='text-align: center; background-color:  #90ee90'>Master</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Bukti</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Kode Barang</th>"+
+                    "<th style='text-align: center; background-color:  #90ee90'>Divisi ID</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>List Kirim</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Parameter</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Delete</th>"+
@@ -425,6 +439,7 @@
                         '<td align="center">' + item.masterId+ '</td>' +
                         '<td align="center">' + item.bukti + '</td>' +
                         '<td align="center">' + item.kodeBarang + '</td>' +
+                        '<td align="center">' + item.divisiId + '</td>' +
                         '<td align="center">' + item.kirimList + '</td>' +
                         '<td align="center">' + item.keterangan + '</td>' +
                         '<td align="center">' +
@@ -455,11 +470,12 @@
             var master =$('#modMasterId').val();
             var bukti = $('#modBukti').val();
             var kodeBarang = $('#modKdBarang').val();
+            var divisiId = $('#modDivisi').val();
             var listKirim = $('#modListKirim').val();
             var keterangan = $('#modKeterangan').val();
             dwr.engine.setAsync(false);
-            if(kodeRekening!=''&&posisi!=''&&master!=''&&bukti!=''&&kodeBarang!=''&&listKirim!=''&&keterangan!=''&&kodeRekeningname!=''){
-                MappingJurnalAction.saveKodeRekeningSession(kodeRekening,posisi,master,bukti,kodeBarang,listKirim,keterangan,kodeRekeningname,function() {
+            if(kodeRekening!=''&&posisi!=''&&master!=''&&bukti!=''&&kodeBarang!=''&&listKirim!=''&&keterangan!=''&&kodeRekeningname!=''&&divisiId!=''){
+                MappingJurnalAction.saveKodeRekeningSession(kodeRekening,posisi,master,bukti,kodeBarang,listKirim,keterangan,kodeRekeningname,divisiId,function() {
                     listResult();
                 });
                 $('#modal-edit').modal('hide');
@@ -488,6 +504,9 @@
                 }
                 if (keterangan==""){
                     msg+="Parameter masih kosong \n";
+                }
+                if (divisiId==""){
+                    msg+="Divisi ID masih kosong \n";
                 }
                 alert(msg);
             }

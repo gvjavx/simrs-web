@@ -51,6 +51,9 @@
         <property name="idPelayanan">
             <column name="id_pelayanan" sql-type="varchar" length="30"/>
         </property>
+        <property name="idDevice">
+            <column name="id_device" sql-type="varchar" length="100"/>
+        </property>
 
         <many-to-one name="imPosition" class="com.neurix.authorization.position.model.ImPosition"
                      insert="false" update="false" fetch="select" cascade="all">

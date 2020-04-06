@@ -12,6 +12,8 @@ public interface DokterBo {
     public List<Dokter> getByCriteria(Dokter bean) throws GeneralBOException;
     public List<Dokter> getByIdPelayanan(String idPelayanan, String branchId) throws GeneralBOException;
     public boolean editKuota(String idDokter, String kuota) throws GeneralBOException;
+    public boolean editLatLon(String idDokter, String lat, String lon) throws GeneralBOException;
+
 
     public List<Dokter> getDokterByPelayanan(String idPelayanan) throws GeneralBOException;
 }

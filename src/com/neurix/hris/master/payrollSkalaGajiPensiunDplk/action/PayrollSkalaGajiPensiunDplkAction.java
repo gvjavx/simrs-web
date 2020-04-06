@@ -99,8 +99,8 @@ public class PayrollSkalaGajiPensiunDplkAction extends BaseMasterAction{
         setAddOrEdit(true);
         setAdd(true);
 
-        HttpSession session = ServletActionContext.getRequest().getSession();
-        session.removeAttribute("listOfResult");
+//        HttpSession session = ServletActionContext.getRequest().getSession();
+//        session.removeAttribute("listOfResult");
 
         logger.info("[PayrollSkalaGajiPensiunAction.add] stop process >>>");
         return "init_add";
@@ -342,8 +342,8 @@ public class PayrollSkalaGajiPensiunDplkAction extends BaseMasterAction{
     public String searchPayrollSkalaGajiPensiun() {
         logger.info("[PayrollSkalaGajiPensiunAction.search] start process >>>");
 
-        payrollSkalaGajiPensiunDplk searchPayrollSkalaGajiPensiun = new payrollSkalaGajiPensiunDplk();
-        searchPayrollSkalaGajiPensiun.setFlag("Y");
+        payrollSkalaGajiPensiunDplk searchPayrollSkalaGajiPensiun = getPayrollSkalaGajiPensiunDplk();
+//        searchPayrollSkalaGajiPensiun.setFlag("Y");
         List<payrollSkalaGajiPensiunDplk> listOfsearchPayrollSkalaGajiPensiun = new ArrayList();
 
         try {

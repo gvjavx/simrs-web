@@ -35,6 +35,12 @@
         <property name="kuota">
             <column name="kuota" sql-type="varchar" length="5" not-null="false" />
         </property>
+        <property name="lat">
+            <column name="lat" sql-type="varchar" length="200" not-null="false" />
+        </property>
+        <property name="lon">
+            <column name="lon" sql-type="varchar" length="200" not-null="false" />
+        </property>
 
         <property name="kodeDpjp">
             <column name="kode_dpjp" sql-type="varchar" length="100" not-null="false" />

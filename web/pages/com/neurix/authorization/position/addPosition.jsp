@@ -1,154 +1,265 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: thinkpad
-  Date: 19/02/2018
-  Time: 06.07
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="sb" uri="/struts-bootstrap-tags" %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib prefix="sj" uri="/struts-jquery-tags" %>
-<%@ taglib prefix="ivelincloud" uri="/WEB-INF/tld/mainmenu.tld" %>
 <%@ taglib prefix="display" uri="/WEB-INF/tld/displaytag-el.tld" %>
-
 <html>
 <head>
-    <%@ include file="/pages/common/header.jsp" %>
-    <script>
+    <script type="text/javascript">
 
-        function validateForm() {
-//            var kodeAlat = document.forms["addForm"]["kodeAlat"].value;
-            var namaPosition    = document.forms["addForm"]["positionName"].value;
-            var idPosition      = document.forms["addForm"]["positionId"].value;
+        function callSearch2() {
+            //$('#waiting_dialog').dialog('close');
+            $('#view_dialog_menu').dialog('close');
+            $('#info_dialog').dialog('close');
+            window.location.reload(true);
+        };
 
-            if (namaPosition == ""){
-                alert("Name Position is Required");
-                return false;
+        $.subscribe('beforeProcessSave', function (event, data) {
+            var namePosition = document.getElementById("positionName1").value;
+            var department = document.getElementById("departmentId1").value;
+            var bagian = document.getElementById("bagianId1").value;
+            var kelompok = document.getElementById("kelompokId1").value;
+
+            console.log(namePosition);
+            console.log(department);
+            console.log(bagian);
+            console.log(kelompok);
+
+            if (namePosition != '' && department!='' && bagian!='' && kelompok!='') {
+                if (confirm('Do you want to save this record?')) {
+                    event.originalEvent.options.submit = true;
+                    $.publish('showDialog');
+
+                } else {
+                    // Cancel Submit comes with 1.8.0
+                    event.originalEvent.options.submit = false;
+                }
+
+
+            } else {
+
+                event.originalEvent.options.submit = false;
+
+                var msg = "";
+
+                if (namePosition == '') {
+                    msg += 'Field <strong>Nama Posisi</strong> is required.' + '<br/>';
+                }
+                if (department == '') {
+                    msg += 'Field <strong>Bidang/Devisi</strong> is required.' + '<br/>';
+                }
+                if (bagian == '') {
+                    msg += 'Field <strong>Bagian</strong> is required.' + '<br/>';
+                }
+                if (kelompok == '') {
+                    msg += 'Field <strong>Kelompok Jabatan</strong> is required.' + '<br/>';
+                }
+
+                document.getElementById('errorValidationMessage').innerHTML = msg;
+
+                $.publish('showErrorValidationDialog');
+
             }
-            else {
-                showSaveDialog();
-                return true;
+        });
+
+        $.subscribe('beforeProcessDelete', function (event, data) {
+            if (confirm('Do you want to delete this record ?')) {
+                event.originalEvent.options.submit = true;
+                $.publish('showDialog');
+
+            } else {
+                // Cancel Submit comes with 1.8.0
+                event.originalEvent.options.submit = false;
             }
-        }
+        });
 
-        function showSaveDialog(){
-            $('#myModalSave').modal('show');
-        }
 
-        function closeModal(){
-            document.alatForm.action='search_position.action';
-            document.alatForm.submit();
-        }
+        $.subscribe('successDialog', function (event, data) {
+            if (event.originalEvent.request.status == 200) {
+                jQuery(".ui-dialog-titlebar-close").hide();
+                $.publish('showInfoDialog');
+            }
+        });
+
+        $.subscribe('errorDialog', function (event, data) {
+
+//            alert(event.originalEvent.request.getResponseHeader('message'));
+            document.getElementById('errorMessage').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
+            $.publish('showErrorDialog');
+        });
+
+        function cancelBtn() {
+            $('#view_dialog_menu').dialog('close');
+        };
+
+
     </script>
+
 </head>
 
-<body class="hold-transition skin-blue sidebar-mini">
-<section class="content-header">
-    <h1>
-        Alat
-        <small>e-HEALTH</small>
-    </h1>
-</section>
+<body bgcolor="#FFFFFF">
 
-<!-- Main content -->
-<section class="content">
+<table width="100%" align="center">
+    <tr>
+        <td align="center">
+            <s:form id="addForm" method="post" theme="simple" namespace="/admin/position" action="save_position" cssClass="well form-horizontal">
 
-    <!-- Your Page Content Here -->
-    <div class="row">
-        <div class="col-md-12">
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Add Form</h3>
-                </div>
-                <form role="form" method="post" id="addForm" action="save_position.action" onsubmit="return validateForm()">
-                    <div class="box-body">
-                        <div class="form-group">
-                            <table align="center">
+                <s:hidden name="addOrEdit"/>
+                <s:hidden name="delete"/>
 
-                                <tr>
-                                    <td>
-                                        <label>Position Id :</label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <s:textfield readonly="true" id="positionId" name="position.positionId" cssClass="form-control" cssStyle="margin-top: -30px; margin-left: 20px" />
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <label>Position Name :</label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <s:textfield id="positionName" name="position.positionName" cssClass="form-control" cssStyle="margin-top: -30px; margin-left: 20px" />
-                                    </td>
-                                </tr>
+                <legend align="left">Add Posisi</legend>
 
 
+                <table>
+                    <tr>
+                        <td width="10%" align="center">
+                            <%@ include file="/pages/common/message.jsp" %>
+                        </td>
+                    </tr>
+                </table>
+
+                <table >
+
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Nama Posisi :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield id="positionName1" name="position.positionName" required="false" readonly="false" cssClass="form-control" />
                             </table>
-                        </div>
-
-                        <!-- Modal -->
-                        <div class="modal fade" id="myModalSave" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <center>
-                                            <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
-                                            <span> Saving...</span>
-                                        </center>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="box-footer">
-                            <table align="center">
-                                <tr>
-                                    <td>
-                                        <sj:submit type="button" cssClass="btn btn-primary" formIds="addForm" id="search" name="search"
-                                                   onClickTopics="showDialog" onCompleteTopics="closeDialog">
-                                            <i class="fa fa-check"></i> Save
-                                        </sj:submit>
-                                    </td>
-                                    <td>
-                                        <%--<button type="button" class="btn btn-default" data-dismiss="modal"> <i class="fa fa-close"></i> Close</button>--%>
-                                        <%--<button type="button" class="btn btn-default"  data-dismiss="modal" onclick="closeModal()"><i class="fa fa-close"></i> Close</button>--%>
-
-                                        <button type="button" class="btn btn-default" onclick="window.location.href='<s:url action="initForm_position.action"/>'">
-                                        <i class="fa fa-close"></i> Close
-                                        </button>
-                                    </td>
-                                </tr>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Bidang/Devisi :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:action id="comboMasaTanam1" namespace="/department" name="initDepartment_department"/>
+                                <s:select list="#session.listOfResultDepartment" id="departmentId1" name="position.departmentId"
+                                          listKey="departmentId" listValue="departmentName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                             </table>
-                        </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Bagian :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:action id="comboBagian" namespace="/positionBagian" name="searchPositionBagian_positionBagian"/>
+                                <s:select list="#comboBagian.comboListOfPositionBagian" id="bagianId1" name="position.bagianId"
+                                          listKey="bagianId" listValue="bagianName" headerKey="" headerValue="[Select one]"
+                                          cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Kelompok Jabatan :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:action id="comboKelompok" namespace="/kelompokPosition" name="searchKelompok_kelompokPosition"/>
+                                <s:select list="#comboKelompok.comboListOfKelompokPosition" id="kelompokId1" name="position.kelompokId"
+                                          listKey="kelompokId" listValue="kelompokName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+
+                <br>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                            <%--<button type="submit" class="btn btn-default">Submit</button>--%>
+                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="addForm" id="save" name="save"
+                                   onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
+                                   onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
+                            <i class="fa fa-check"></i>
+                            Save
+                        </sj:submit>
+                        <button type="button" id="cancel" class="btn btn-danger"  onclick="cancelBtn();">
+                            <i class="fa fa-refresh"/> Cancel
+                        </button>
                     </div>
-                </form>
-                <%--<s:form role="form" id="alatForm" method="post"  namespace="/alat" action="search_alat">--%>
-
-                <%--</s:form>--%>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-
-        </div>
-    </div>
-</section>
-<!-- /.content -->
+                </div>
 
 
-<%@ include file="/pages/common/lastScript.jsp" %>
+                <div id="actions" class="form-actions">
+                    <table>
+                        <tr>
+                            <div id="crud">
+                                <td>
+                                    <table>
+                                        <sj:dialog id="waiting_dialog" openTopics="showDialog"
+                                                   closeTopics="closeDialog" modal="true"
+                                                   resizable="false"
+                                                   height="250" width="600" autoOpen="false"
+                                                   title="Save Data ...">
+                                            Please don't close this window, server is processing your request ...
+                                            <br>
+                                            <center>
+                                                <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                     src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                     name="image_indicator_write">
+                                                <br>
+                                                <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                     src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                     name="image_indicator_write">
+                                            </center>
+                                        </sj:dialog>
 
+                                        <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false"
+                                                   height="200" width="400" autoOpen="false" title="Infomation Dialog"
+                                                   buttons="{
+                                                              'OK':function() {
+                                                                    //$(this).dialog('close');
+                                                                      callSearch2();
+                                                                      link();
+                                                                   }
+                                                            }"
+                                        >
+                                            <img border="0" src="<s:url value="/pages/images/icon_success.png"/>" name="icon_success">
+                                            Record has been saved successfully.
+                                        </sj:dialog>
+
+                                        <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
+                                                   height="250" width="600" autoOpen="false" title="Error Dialog"
+                                                   buttons="{
+                                                                        'OK':function() { $('#error_dialog').dialog('close'); }
+                                                                    }"
+                                        >
+                                            <div class="alert alert-error fade in">
+                                                <label class="control-label" align="left">
+                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessage"></p>
+                                                </label>
+                                            </div>
+                                        </sj:dialog>
+
+                                        <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog" modal="true" resizable="false"
+                                                   height="280" width="500" autoOpen="false" title="Warning"
+                                                   buttons="{
+                                                                        'OK':function() { $('#error_validation_dialog').dialog('close'); }
+                                                                    }"
+                                        >
+                                            <div class="alert alert-error fade in">
+                                                <label class="control-label" align="left">
+                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> Please check this field :
+                                                    <br/>
+                                                    <center><div id="errorValidationMessage"></div></center>
+                                                </label>
+                                            </div>
+                                        </sj:dialog>
+                                    </table>
+                                </td>
+                            </div>
+                        </tr>
+                    </table>
+                </div>
+            </s:form>
+        </td>
+    </tr>
+</table>
 </body>
 </html>
-

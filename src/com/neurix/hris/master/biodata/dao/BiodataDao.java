@@ -585,6 +585,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             result.setDesaId((String) row[18]);
             result.setKecamatanId((String) row[19]);
             result.setNoTelp((String) row[20]);
+
             result.setKotaId((String) row[21]);
             result.setProvinsiId((String) row[22]);
             result.setTanggalLahir((Date) row[23]);
@@ -595,6 +596,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             result.setKeterangan((String) row[28]);
             result.setFlag((String) row[29]);
             result.setAction((String) row[30]);
+
             result.setCreatedWho((String) row[31]);
             result.setLastUpdateWho((String) row[32]);
             result.setTanggalAktif((Date) row[33]);
@@ -605,9 +607,12 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             result.setGender((String) row[38]);
             result.setStatusGiling((String) row[39]);
             result.setNoSkAktif((String) row[40]);
+
             result.setPin((String) row[41]);
             result.setPoint((int) row[42]);
             result.setZakatProfesi((String) row[43]);
+            result.setLastUpdate((Timestamp)row[44]);
+            result.setCreatedDate((Timestamp) row[45]);
             result.setTanggalPensiun((Date) row[46]);
             result.setDanaPensiun((String) row[47]);
             result.setStrukturGaji((String) row[48]);
@@ -615,6 +620,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 result.setGaji(BigDecimal.valueOf(Double.parseDouble(row[49].toString())));
             }
             result.setPoinLebih((int) row[50]);
+
             result.setAgama((String) row[51]);
             result.setTanggalMenikah((Date) row[52]);
             result.setNpwp((String) row[53]);
@@ -629,17 +635,24 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             result.setNoRekBank((String) row[64]);
             result.setCabangBank((String) row[66]);
 
-            result.setTanggalMasuk((Date) row[68]);
+            if (row[68] != null){
+                result.setTanggalMasuk((Date) row[68]);
+            }
             if (row[69]!=null){
                 result.setGolonganDapenId(row[69].toString());
             }
             result.setMasaKerjaGolongan((Integer) row[70]);
+
             if(row[71] != null){
                 result.setTanggalAkhirKontrak((Date)row[71]);
             }
-            result.setBagianId((String) row[72]);
-            result.setBagianName((String) row[73]);
-            result.setProfesiId((String)row[74]);
+
+            if (row[74] != null){
+                result.setTanggalPraPensiun((Date) row[74]);
+            }
+            result.setBagianId((String) row[75]);
+            result.setBagianName((String) row[76]);
+            result.setProfesiId((String)row[77]);
 
             listOfResult.add(result);
         }

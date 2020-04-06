@@ -48,7 +48,6 @@
     <section class="content-header">
         <h1>
             Mapping Jurnal
-            <small>e-HEALTH</small>
         </h1>
     </section>
     <!-- Main content -->
@@ -188,6 +187,7 @@
                                                             <display:column property="masterId" title="Master"  />
                                                             <display:column property="bukti" title="Bukti"  />
                                                             <display:column property="kodeBarang" title="Kode Barang"  />
+                                                            <display:column property="divisiId" title="Divisi ID"  />
                                                             <display:column property="kirimList" title="List Kirim"  />
                                                             <display:column property="keterangan" sortable="true" title="Parameter"  />
                                                             <%--<display:column property="lastUpdate" sortable="true" title="Last Update"/>--%>

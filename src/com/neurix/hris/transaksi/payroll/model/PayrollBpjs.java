@@ -47,6 +47,11 @@ public class PayrollBpjs extends BaseModel {
     private String branchId;
     private String branchName;
 
+    private String numMinBpjsKs;
+    private String numMaxBpjsKs;
+    private String numMinBpjsTk;
+    private String numMaxBpjsTk;
+
     public Double getIuranKary() {
         return iuranKary;
     }
@@ -277,5 +282,37 @@ public class PayrollBpjs extends BaseModel {
 
     public void setBpjsJhtPersen(double bpjsJhtPersen) {
         this.bpjsJhtPersen = bpjsJhtPersen;
+    }
+
+    public String getNumMinBpjsKs() {
+        return numMinBpjsKs;
+    }
+
+    public void setNumMinBpjsKs(String numMinBpjsKs) {
+        this.numMinBpjsKs = numMinBpjsKs;
+    }
+
+    public String getNumMaxBpjsKs() {
+        return numMaxBpjsKs;
+    }
+
+    public void setNumMaxBpjsKs(String numMaxBpjsKs) {
+        this.numMaxBpjsKs = numMaxBpjsKs;
+    }
+
+    public String getNumMinBpjsTk() {
+        return numMinBpjsTk;
+    }
+
+    public void setNumMinBpjsTk(String numMinBpjsTk) {
+        this.numMinBpjsTk = numMinBpjsTk;
+    }
+
+    public String getNumMaxBpjsTk() {
+        return numMaxBpjsTk;
+    }
+
+    public void setNumMaxBpjsTk(String numMaxBpjsTk) {
+        this.numMaxBpjsTk = numMaxBpjsTk;
     }
 }

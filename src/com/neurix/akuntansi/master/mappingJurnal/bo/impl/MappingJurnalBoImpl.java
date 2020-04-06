@@ -133,6 +133,7 @@ public class MappingJurnalBoImpl implements MappingJurnalBo {
                 imMappingJurnalEntity.setKodeBarang(bean.getKodeBarang());
                 imMappingJurnalEntity.setKirimList(bean.getKirimList());
                 imMappingJurnalEntity.setKeterangan(bean.getKeterangan());
+                imMappingJurnalEntity.setDivisiId(bean.getDivisiId());
                 imMappingJurnalEntity.setFlag(bean.getFlag());
                 imMappingJurnalEntity.setAction(bean.getAction());
                 imMappingJurnalEntity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -173,6 +174,7 @@ public class MappingJurnalBoImpl implements MappingJurnalBo {
             imMappingJurnalEntity.setPosisi(bean.getPosisi());
             imMappingJurnalEntity.setMasterId(bean.getMasterId());
             imMappingJurnalEntity.setBukti(bean.getBukti());
+            imMappingJurnalEntity.setDivisiId(bean.getDivisiId());
             imMappingJurnalEntity.setKodeBarang(bean.getKodeBarang());
             imMappingJurnalEntity.setKirimList(bean.getKirimList());
             imMappingJurnalEntity.setKeterangan(bean.getKeterangan());
@@ -285,6 +287,7 @@ public class MappingJurnalBoImpl implements MappingJurnalBo {
                     returnMappingJurnal.setKodeBarang(mappingJurnalEntity.getKodeBarang());
                     returnMappingJurnal.setPosisi(mappingJurnalEntity.getPosisi());
                     returnMappingJurnal.setBukti(mappingJurnalEntity.getBukti());
+                    returnMappingJurnal.setDivisiId(mappingJurnalEntity.getDivisiId());
                     returnMappingJurnal.setCreatedWho(mappingJurnalEntity.getCreatedWho());
                     returnMappingJurnal.setCreatedDate(mappingJurnalEntity.getCreatedDate());
                     returnMappingJurnal.setLastUpdate(mappingJurnalEntity.getLastUpdate());

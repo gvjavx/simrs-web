@@ -55,6 +55,36 @@ public class UserDetailsLogin implements UserDetails, Serializable {
     private String customerEmail;
 
     private String idPleyanan;
+    private String idDevice;
+    private String pin;
+
+    public String getPin() {
+        return pin;
+    }
+
+    public void setPin(String pin) {
+        this.pin = pin;
+    }
+
+    public boolean isNonExpired() {
+        return isNonExpired;
+    }
+
+    public boolean isNonBlocked() {
+        return isNonBlocked;
+    }
+
+    public boolean isUserCredentialsNonExpired() {
+        return isUserCredentialsNonExpired;
+    }
+
+    public String getIdDevice() {
+        return idDevice;
+    }
+
+    public void setIdDevice(String idDevice) {
+        this.idDevice = idDevice;
+    }
 
     public String getIdPleyanan() {
         return idPleyanan;

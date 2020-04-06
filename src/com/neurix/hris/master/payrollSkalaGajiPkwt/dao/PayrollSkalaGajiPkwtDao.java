@@ -40,10 +40,10 @@ public class PayrollSkalaGajiPkwtDao extends GenericDao<ImPayrollSkalaGajiPkwtEn
                 criteria.add(Restrictions.eq("golonganPkwtId", (String) mapCriteria.get("golongan_pkwt_id")));
             }
 
-            criteria.add(Restrictions.eq("flag", "Y"));
+            criteria.add(Restrictions.eq("flag", (String) mapCriteria.get("flag")));
         }
         // Order by
-        criteria.addOrder(Order.desc("skalaGajiPkwtId"));
+        criteria.addOrder(Order.desc("createdDate"));
 
         List<ImPayrollSkalaGajiPkwtEntity> results = criteria.list();
 

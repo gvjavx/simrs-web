@@ -490,7 +490,7 @@
     <section class="content-header">
         <h1>
             Biodata
-            <small>e-HEALTH</small>
+            <small>GO-MEDSYS</small>
         </h1>
     </section>
 
@@ -685,13 +685,15 @@
                                                 </s:if>
                                             </display:column>
 
-                                            <display:column media="html" title="Delete" style="text-align:center;font-size:9">
-                                                <s:a action="delete_biodata.action">
-                                                    <s:param name="id"><s:property value="#attr.row.nip" /></s:param>
-                                                    <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
-                                                    <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
-                                                </s:a>
-                                            </display:column>
+                                            <%--<display:column media="html" title="Delete" style="text-align:center;font-size:9">--%>
+                                                <%--<s:if test="#attr.row.flagYes">--%>
+                                                    <%--<s:a action="delete_biodata.action">--%>
+                                                        <%--<s:param name="id"><s:property value="#attr.row.nip" /></s:param>--%>
+                                                        <%--<s:param name="flag"><s:property value="#attr.row.flag" /></s:param>--%>
+                                                        <%--<img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">--%>
+                                                    <%--</s:a>--%>
+                                                <%--</s:if>--%>
+                                            <%--</display:column>--%>
 
                                             <display:column style="text-align:center;" media="html" title="Jabatan">
                                                 <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-jabatan">
@@ -730,10 +732,20 @@
                                             </display:column>
 
                                             <display:column style="text-align:center;" media="html" title="Detail">
-                                                <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-detail">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">
-                                                </a>
+                                                <s:if test="#attr.row.flagYes">
+                                                    <s:a action="delete_biodata.action">
+                                                        <s:param name="id"><s:property value="#attr.row.nip"/> </s:param>
+                                                        <s:param name="flag"><s:property value="#attr.row.flag"/> </s:param>
+                                                        <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">
+                                                    </s:a>
+                                                </s:if>
                                             </display:column>
+
+                                            <%--<display:column style="text-align:center;" media="html" title="Detail">--%>
+                                                <%--<a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-detail">--%>
+                                                    <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">--%>
+                                                <%--</a>--%>
+                                            <%--</display:column>--%>
 
                                             <display:column style="text-align:center;" media="html" title="Print">
                                                 <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-print">
@@ -750,10 +762,8 @@
                                             <display:column property="stTanggalAktif" sortable="true" title="Tanggal Aktif"/>
                                             <display:column property="stTanggalPensiun" sortable="true" title="Tanggal Pensiun"/>
 
-
-
-                                            <display:column property="flag" sortable="true" title="Aktif" />
-
+                                            <display:column property="lastUpdate" sortable="true" title="Last update"  />
+                                            <display:column property="lastUpdateWho" sortable="true" title="Last update who"/>
 
                                         </display:table>
                                     </td>
@@ -857,12 +867,14 @@
         var tmp_table = "";
         BiodataAction.historyJabatan(nip, function(listdata) {
             tmp_table = "<thead style='color: white; font-size: 15px'><tr class='active'>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc'>Bidang</th>"+
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Bidang/Divisi</th>"+
                     "<th style='text-align: center; background-color:  #3c8dbc''>Unit</th>"+
                     "<th style='text-align: center; background-color:  #3c8dbc''>Jabatan</th>"+
                     "<th style='text-align: center; background-color:  #3c8dbc''>Status</th>"+
                     "<th style='text-align: center; background-color:  #3c8dbc''>PJS</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Tahun</th>"+
+//                    "<th style='text-align: center; background-color:  #3c8dbc''>Tahun</th>"+
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Masuk</th>"+
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Keluar</th>"+
                     "</tr></thead>";
             var i = i ;
             var totalPoin = 0;
@@ -872,14 +884,24 @@
                 var positionName = "-";
                 var status = "-";
                 var pjs = "-";
-                var tahun = "-";
+//                var tahun = "-";
+                var tglMasuk = "-";
+                var tglKeluar = "-";
 
-                if(item.bidang!= null){
-                    bidang = item.bidang;
+                if(item.bidangName!= null){
+                    bidang = item.bidangName;
                 }
-                if(item.tahun != null){
-                    tahun = item.tahun;
+
+//                if(item.tahun != null){
+//                    tahun = item.tahun;
+//                }
+                if(item.tanggal != null){
+                    tglMasuk = item.tanggal;
                 }
+                if (item.tanggalKeluar != null){
+                    tglKeluar = item.tanggalKeluar;
+                }
+
                 if(item.branchName!= null){
                     branchName = item.branchName;
                 }
@@ -902,7 +924,9 @@
                         '<td >' + positionName+ '</td>' +
                         '<td >' + status+ '</td>' +
                         '<td >' + pjs+ '</td>' +
-                        '<td >' + tahun+ '</td>' +
+//                        '<td >' + tahun+ '</td>' +
+                        '<td >' + tglMasuk+ '</td>' +
+                        '<td >' + tglKeluar+ '</td>' +
                         "</tr>";
             });
             $('.tabelDetailJabatan').append(tmp_table);

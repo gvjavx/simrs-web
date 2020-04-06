@@ -49,8 +49,8 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Golongan Pkwt
-            <small>e-HEALTH</small>
+            Golongan PKWT
+            <small>GO-MEDSYS</small>
         </h1>
         <%--<ol class="breadcrumb">--%>
         <%--<li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>--%>
@@ -163,7 +163,7 @@
 
                                         <s:set name="listOfGolonganPkwt" value="#session.listOfResult" scope="request" />
                                         <display:table name="listOfGolonganPkwt" class="table table-condensed table-striped table-hover"
-                                                       requestURI="paging_displaytag_golonganPkwt.action" export="true" id="row" pagesize="14" style="font-size:10">
+                                                       requestURI="paging_displaytag_pkwt_golongan.action" export="true" id="row" pagesize="14" style="font-size:10">
                                             <display:column media="html" title="Edit">
                                                 <s:if test="#attr.row.flagYes">
                                                     <s:url var="urlEdit" namespace="/golongan" action="editPkwt_golongan" escapeAmp="false">
@@ -177,17 +177,24 @@
                                             </display:column>
 
                                             <display:column media="html" title="Delete" style="text-align:center;font-size:9">
-                                                <s:url var="urlViewDelete" namespace="/golongan" action="deletePkwt_golongan" escapeAmp="false">
-                                                    <s:param name="id"><s:property value="#attr.row.golonganPkwtId" /></s:param>
-                                                    <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
-                                                </s:url>
-                                                <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
-                                                </sj:a>
-
+                                                <s:if test="#attr.row.flagYes">
+                                                    <s:url var="urlViewDelete" namespace="/golongan" action="deletePkwt_golongan" escapeAmp="false">
+                                                        <s:param name="id"><s:property value="#attr.row.golonganPkwtId" /></s:param>
+                                                        <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
+                                                    </s:url>
+                                                    <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
+                                                        <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
+                                                    </sj:a>
+                                                </s:if>
                                             </display:column>
                                             <%--<display:column property="golonganPkwtId" sortable="true" title="GolonganPkwt ID" />--%>
                                             <display:column property="golonganPkwtName" sortable="true" title="Nama"  />
+                                            <display:column property="flag" sortable="true" title="flag"  />
+                                            <display:column property="createdWho" sortable="true" title="Created who"  />
+                                            <display:column property="lastUpdateWho" sortable="true" title="Last update who"  />
+                                            <display:column property="action" sortable="true" title="action"  />
+                                            <display:column property="createdDate" sortable="true" title="Created date"  />
+                                            <display:column property="lastUpdate" sortable="true" title="Last update"  />
                                             <%--<display:column property="flag" sortable="true" title="Flag" />
                                             <display:column property="createdWho" sortable="true" title="CreatedWho"/>--%>
 

@@ -242,6 +242,7 @@
       <convert converter="bean" match="com.neurix.hris.transaksi.payroll.model.PayrollUpahHarian"/>
       <convert converter="bean" match="com.neurix.hris.transaksi.payroll.model.PayrollKonsistensi"/>
       <convert converter="bean" match="com.neurix.hris.transaksi.payroll.model.PayrollTunjanganLain"/>
+      <convert converter="bean" match="com.neurix.hris.transaksi.payroll.model.PayrollModalDTO"/>
       <create creator="new">
           <param name="class" value="com.neurix.hris.master.tipepegawai.action.TipePegawaiAction"/>
       </create>
@@ -522,6 +523,7 @@
       </create>
 
       <convert converter="bean" match="com.neurix.hris.master.payrollSkalaGaji.model.PayrollSkalaGaji"/>
+      <convert converter="bean" match="com.neurix.hris.transaksi.payroll.model.Ptt"/>
       <convert converter="bean" match="com.neurix.akuntansi.master.masterVendor.model.MasterVendor"/>
 
       <!--Paket Periksa-->
@@ -554,7 +556,6 @@
       </create>
 
       <convert converter="bean" match="com.neurix.simrs.transaksi.permintaanvendor.model.BatchPermintaanObat"/>
-
   </allow>
 
 </dwr>

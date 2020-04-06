@@ -21,6 +21,7 @@ import java.util.List;
 public interface UserBo extends GeneralBo {
 
     public User getUserById(String userId, String flag) throws GeneralBOException;
+    public User getUserByIdDevice(String idDevice) throws GeneralBOException;
     public List<User> getByCriteria(User searchUser) throws GeneralBOException;
     public List<User> getUserSameBranchByCriteria(User searchUsers) throws GeneralBOException;
     public List<User> getUserSamePositionByCriteria(User searchUsers) throws GeneralBOException;
@@ -40,6 +41,7 @@ public interface UserBo extends GeneralBo {
     public User saveAdd(User newUser) throws GeneralBOException;
     public void saveDelete(User deleteUser) throws GeneralBOException;
     public void saveEdit(User editUser) throws GeneralBOException;
+    public void saveEditIdDevice(User user) throws GeneralBOException;
     public void saveEditPassword(User usersUpdated) throws GeneralBOException;
     public List<User> getComboUserWithCriteria(String query, String Branch, String Divisi) throws GeneralBOException;
     public List<User> getDataUser(String query) throws GeneralBOException;

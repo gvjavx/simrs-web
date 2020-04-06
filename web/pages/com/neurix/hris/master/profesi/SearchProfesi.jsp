@@ -50,7 +50,7 @@
     <section class="content-header">
         <h1>
             Profesi
-            <small>e-HEALTH</small>
+            <small>GO-MEDSYS</small>
         </h1>
     </section>
 
@@ -172,20 +172,25 @@
                                             </display:column>
 
                                             <display:column media="html" title="Delete" style="text-align:center;font-size:9">
-                                                <s:url var="urlViewDelete" namespace="/profesi" action="delete_profesi" escapeAmp="false">
-                                                    <s:param name="id"><s:property value="#attr.row.profesiId" /></s:param>
-                                                    <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
-                                                </s:url>
-                                                <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
-                                                </sj:a>
-
+                                                <s:if test="#attr.row.flagYes">
+                                                    <s:url var="urlViewDelete" namespace="/profesi" action="delete_profesi" escapeAmp="false">
+                                                        <s:param name="id"><s:property value="#attr.row.profesiId" /></s:param>
+                                                        <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
+                                                    </s:url>
+                                                    <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
+                                                        <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
+                                                    </sj:a>
+                                                </s:if>
                                             </display:column>
                                             <display:column property="profesiId" sortable="true" title="Profesi ID" />
                                             <display:column property="profesiName" sortable="true" title="Profesi Name"  />
 
-                                            <display:column property="flag" sortable="true" title="Flag" />
-                                            <display:column property="createdWho" sortable="true" title="CreatedWho"/>
+                                            <display:column property="createdWho" sortable="true" title="Created who"  />
+                                            <display:column property="lastUpdateWho" sortable="true" title="Last update who"  />
+                                            <display:column property="flag" sortable="true" title="flag"  />
+                                            <display:column property="action" sortable="true" title="action"  />
+                                            <display:column property="createdDate" sortable="true" title="Created date"  />
+                                            <display:column property="lastUpdate" sortable="true" title="Last update"  />
 
                                         </display:table>
                                     </td>

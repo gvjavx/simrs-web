@@ -5,6 +5,7 @@ import com.neurix.authorization.company.model.ImBranches;
 import com.neurix.authorization.position.dao.PositionDao;
 import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.kelompokPosition.dao.KelompokPositionDao;
 import com.neurix.hris.master.kelompokPosition.model.ImKelompokPositionEntity;
 import com.neurix.hris.master.payrollTunjanganJabatanStruktural.bo.PayrollTunjanganJabatanStrukturalBo;
@@ -15,6 +16,7 @@ import com.neurix.hris.transaksi.payroll.model.PayrollTunjanganJabatanStruktural
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -262,10 +264,14 @@ public class PayrollTunjanganJabatanStrukturalBoImpl implements PayrollTunjangan
                 // Looping from dao to object and save in collection
                 for(ImPayrollTunjanganJabatanStrukturalEntity payrollTunjanganJabatanStrukturalEntity : imPayrollTunjanganJabatanStrukturalEntity){
                     returnPayrollTunjanganJabatanStruktural = new PayrollTunjanganJabatanStruktural();
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+
                     returnPayrollTunjanganJabatanStruktural.setTunjJabStrukturId(payrollTunjanganJabatanStrukturalEntity.getTunjJabStrukturId());
                     returnPayrollTunjanganJabatanStruktural.setKelompokId(payrollTunjanganJabatanStrukturalEntity.getKelompokId());
                     returnPayrollTunjanganJabatanStruktural.setTunjJabatan(payrollTunjanganJabatanStrukturalEntity.getTunjJabatan());
                     returnPayrollTunjanganJabatanStruktural.setTunjStruktural(payrollTunjanganJabatanStrukturalEntity.getTunjStruktural());
+                    returnPayrollTunjanganJabatanStruktural.setStTunjJabatan(CommonUtil.numbericFormat(payrollTunjanganJabatanStrukturalEntity.getTunjJabatan(),"###,###"));
+                    returnPayrollTunjanganJabatanStruktural.setStTunjStruktural(CommonUtil.numbericFormat(payrollTunjanganJabatanStrukturalEntity.getTunjStruktural(),"###,###"));
 
 
                     if(returnPayrollTunjanganJabatanStruktural.getKelompokId() != null){
@@ -280,9 +286,20 @@ public class PayrollTunjanganJabatanStrukturalBoImpl implements PayrollTunjangan
                         }
                     }
 
-                    returnPayrollTunjanganJabatanStruktural.setCreatedWho(payrollTunjanganJabatanStrukturalEntity.getCreatedWho());
+                    if (payrollTunjanganJabatanStrukturalEntity.getCreatedDate() != null){
+                        String createdDate = dateFormat.format(payrollTunjanganJabatanStrukturalEntity.getCreatedDate());
+                        returnPayrollTunjanganJabatanStruktural.setStCreatedDate(createdDate);
+                    }
                     returnPayrollTunjanganJabatanStruktural.setCreatedDate(payrollTunjanganJabatanStrukturalEntity.getCreatedDate());
+                    returnPayrollTunjanganJabatanStruktural.setCreatedWho(payrollTunjanganJabatanStrukturalEntity.getCreatedWho());
+
                     returnPayrollTunjanganJabatanStruktural.setLastUpdate(payrollTunjanganJabatanStrukturalEntity.getLastUpdate());
+                    if (payrollTunjanganJabatanStrukturalEntity.getLastUpdate() != null){
+                        String lastUpdate = dateFormat.format(payrollTunjanganJabatanStrukturalEntity.getLastUpdate());
+                        returnPayrollTunjanganJabatanStruktural.setStCreatedDate(lastUpdate);
+                    }
+
+                    returnPayrollTunjanganJabatanStruktural.setLastUpdateWho(payrollTunjanganJabatanStrukturalEntity.getLastUpdateWho());
 
                     returnPayrollTunjanganJabatanStruktural.setAction(payrollTunjanganJabatanStrukturalEntity.getAction());
                     returnPayrollTunjanganJabatanStruktural.setFlag(payrollTunjanganJabatanStrukturalEntity.getFlag());

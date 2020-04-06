@@ -96,52 +96,59 @@ public class DepartmentBoImpl implements DepartmentBo {
 //        String condition = null;
 
         if (bean!=null) {
-            String historyId = "";
-            String departmentId = bean.getDepartmentId();
+            String status = cekStatus(bean.getDepartmentName());
+            if (!status.equalsIgnoreCase("Exist")){
 
-            ImDepartmentEntity imDepartmentEntity = null;
-            ImDepartmentHistoryEntity imDepartmentHistoryEntity = new ImDepartmentHistoryEntity();
-            try {
-                // Get data from database by ID
-                imDepartmentEntity = departmentDao.getById("departmentId", departmentId);
-                historyId = departmentDao.getNextDepartmentHistoryId();
-            } catch (HibernateException e) {
-                logger.error("[DepartmentBoImpl.saveEdit] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when searching data Department by Kode Department, please inform to your admin...," + e.getMessage());
-            }
+                String historyId = "";
+                String departmentId = bean.getDepartmentId();
 
-            if (imDepartmentEntity != null) {
-                imDepartmentHistoryEntity.setId(historyId);
-                imDepartmentHistoryEntity.setDepartmentId(imDepartmentEntity.getDepartmentId());
-                imDepartmentHistoryEntity.setDepartmentName(imDepartmentEntity.getDepartmentName());
-                imDepartmentHistoryEntity.setFlag(imDepartmentEntity.getFlag());
-                imDepartmentHistoryEntity.setAction(imDepartmentEntity.getAction());
-                imDepartmentHistoryEntity.setLastUpdateWho(imDepartmentEntity.getLastUpdateWho());
-                imDepartmentHistoryEntity.setLastUpdate(imDepartmentEntity.getLastUpdate());
-                imDepartmentHistoryEntity.setCreatedWho(imDepartmentEntity.getLastUpdateWho());
-                imDepartmentHistoryEntity.setCreatedDate(imDepartmentEntity.getLastUpdate());
-
-                imDepartmentEntity.setDepartmentId(bean.getDepartmentId());
-                imDepartmentEntity.setDepartmentName(bean.getDepartmentName());
-                imDepartmentEntity.setFlag(bean.getFlag());
-                imDepartmentEntity.setAction(bean.getAction());
-                imDepartmentEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                imDepartmentEntity.setLastUpdate(bean.getLastUpdate());
-
-                String flag;
+                ImDepartmentEntity imDepartmentEntity = null;
+                ImDepartmentHistoryEntity imDepartmentHistoryEntity = new ImDepartmentHistoryEntity();
                 try {
-                    // Update into database
-                    departmentDao.updateAndSave(imDepartmentEntity);
-                    departmentDao.addAndSaveHistory(imDepartmentHistoryEntity);
-//                    condition = "Data SuccessFully Updated";
+                    // Get data from database by ID
+                    imDepartmentEntity = departmentDao.getById("departmentId", departmentId);
+                    historyId = departmentDao.getNextDepartmentHistoryId();
                 } catch (HibernateException e) {
                     logger.error("[DepartmentBoImpl.saveEdit] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving update data Department, please info to your admin..." + e.getMessage());
+                    throw new GeneralBOException("Found problem when searching data Department by Kode Department, please inform to your admin...," + e.getMessage());
                 }
-            } else {
-                logger.error("[DepartmentBoImpl.saveEdit] Error, not found data Department with request id, please check again your data ...");
-                throw new GeneralBOException("Error, not found data Department with request id, please check again your data ...");
+
+                if (imDepartmentEntity != null) {
+                    imDepartmentHistoryEntity.setId(historyId);
+                    imDepartmentHistoryEntity.setDepartmentId(imDepartmentEntity.getDepartmentId());
+                    imDepartmentHistoryEntity.setDepartmentName(imDepartmentEntity.getDepartmentName());
+                    imDepartmentHistoryEntity.setFlag(imDepartmentEntity.getFlag());
+                    imDepartmentHistoryEntity.setAction(imDepartmentEntity.getAction());
+                    imDepartmentHistoryEntity.setLastUpdateWho(imDepartmentEntity.getLastUpdateWho());
+                    imDepartmentHistoryEntity.setLastUpdate(imDepartmentEntity.getLastUpdate());
+                    imDepartmentHistoryEntity.setCreatedWho(imDepartmentEntity.getLastUpdateWho());
+                    imDepartmentHistoryEntity.setCreatedDate(imDepartmentEntity.getLastUpdate());
+
+                    imDepartmentEntity.setDepartmentId(bean.getDepartmentId());
+                    imDepartmentEntity.setDepartmentName(bean.getDepartmentName());
+                    imDepartmentEntity.setFlag(bean.getFlag());
+                    imDepartmentEntity.setAction(bean.getAction());
+                    imDepartmentEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    imDepartmentEntity.setLastUpdate(bean.getLastUpdate());
+
+                    String flag;
+                    try {
+                        // Update into database
+                        departmentDao.updateAndSave(imDepartmentEntity);
+                        departmentDao.addAndSaveHistory(imDepartmentHistoryEntity);
+//                    condition = "Data SuccessFully Updated";
+                    } catch (HibernateException e) {
+                        logger.error("[DepartmentBoImpl.saveEdit] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving update data Department, please info to your admin..." + e.getMessage());
+                    }
+                } else {
+                    logger.error("[DepartmentBoImpl.saveEdit] Error, not found data Department with request id, please check again your data ...");
+                    throw new GeneralBOException("Error, not found data Department with request id, please check again your data ...");
 //                condition = "Error, not found data Department with request id, please check again your data ...";
+                }
+
+            }else {
+                throw new GeneralBOException("Maaf Devisi Tersebut Sudah Ada");
             }
         }
         logger.info("[DepartmentBoImpl.saveEdit] end process <<<");
@@ -183,7 +190,7 @@ public class DepartmentBoImpl implements DepartmentBo {
                     throw new GeneralBOException("Found problem when saving new data Department, please info to your admin..." + e.getMessage());
                 }
             }else{
-                throw new GeneralBOException("Maaf Data Sudah Ada");
+                throw new GeneralBOException("Maaf Devisi Tersebut Sudah Ada");
             }
         }
 
@@ -239,6 +246,7 @@ public class DepartmentBoImpl implements DepartmentBo {
                     returnDepartment.setCreatedWho(departmentEntity.getCreatedWho());
                     returnDepartment.setCreatedDate(departmentEntity.getCreatedDate());
                     returnDepartment.setLastUpdate(departmentEntity.getLastUpdate());
+                    returnDepartment.setLastUpdateWho(departmentEntity.getLastUpdateWho());
 
                     returnDepartment.setAction(departmentEntity.getAction());
                     returnDepartment.setFlag(departmentEntity.getFlag());
