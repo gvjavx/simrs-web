@@ -8,6 +8,7 @@
     <bean id="laporanAkuntansiAction" class="com.neurix.akuntansi.transaksi.laporanAkuntansi.action.LaporanAkuntansiAction"
           p:laporanAkuntansiBoProxy-ref="laporanAkuntansiBoProxy"
           p:settingReportUserBoProxy-ref="settingReportUserBoProxy"
+          p:branchBoProxy-ref="branchBoProxy"
     />
 
     <bean id="laporanAkuntansiBo" class="com.neurix.akuntansi.transaksi.laporanAkuntansi.bo.impl.LaporanAkuntansiBoImpl"
