@@ -48,7 +48,6 @@
     <section class="content-header">
         <h1>
             Mapping Jurnal
-            <small>e-HEALTH</small>
         </h1>
     </section>
     <!-- Main content -->

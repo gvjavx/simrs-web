@@ -67,7 +67,6 @@
                         document.getElementById('errorValidationMessage').innerHTML = status;
                         $.publish('showErrorValidationDialog');
                     }
-
                 } else {
                     event.originalEvent.options.submit = false;
                     var msg = "";
@@ -91,24 +90,17 @@
                 }
             });
         });
-
-
     </script>
 </head>
-
 <body class="hold-transition skin-blue sidebar-mini" >
-
 <%@ include file="/pages/common/headerNav.jsp" %>
-
 <ivelincloud:mainMenu/>
-
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
             View Mapping Jurnal
-            <small>e-HEALTH</small>
         </h1>
     </section>
     <!-- Main content -->
