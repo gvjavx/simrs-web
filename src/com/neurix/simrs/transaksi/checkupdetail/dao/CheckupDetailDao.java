@@ -51,6 +51,14 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
         return result;
     }
 
+    public List<ItSimrsHeaderDetailCheckupEntity> getSearchCheckupBySep (String noSep){
+        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ItSimrsHeaderDetailCheckupEntity.class);
+        criteria.add(Restrictions.eq("noSep", noSep));
+        criteria.add(Restrictions.eq("flag", "Y"));
+
+        return (List<ItSimrsHeaderDetailCheckupEntity>) criteria.list();
+    }
+
     public List<HeaderDetailCheckup> getSearchRawatJalan(HeaderDetailCheckup bean) {
         List<HeaderDetailCheckup> checkupList = new ArrayList<>();
         if (bean != null) {
