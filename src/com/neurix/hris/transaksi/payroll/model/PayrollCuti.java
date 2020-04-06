@@ -35,6 +35,7 @@ public class PayrollCuti extends BaseModel {
     private String tunjAir;
     private String tunjBbm;
     private String tunjTambahan;
+    private String tunjPph;
 
     private BigDecimal totalCutiNilai;
     private BigDecimal pphCutiNilai;
@@ -50,8 +51,33 @@ public class PayrollCuti extends BaseModel {
     private BigDecimal tunjListrikNilai;
     private BigDecimal tunjAirNilai;
     private BigDecimal tunjBbmNilai;
+    private BigDecimal tunjPphNilai;
     private String keterangan;
     private String tahunCutiPanjang;
+
+    public String getTunjTambahan() {
+        return tunjTambahan;
+    }
+
+    public void setTunjTambahan(String tunjTambahan) {
+        this.tunjTambahan = tunjTambahan;
+    }
+
+    public String getTunjPph() {
+        return tunjPph;
+    }
+
+    public void setTunjPph(String tunjPph) {
+        this.tunjPph = tunjPph;
+    }
+
+    public BigDecimal getTunjPphNilai() {
+        return tunjPphNilai;
+    }
+
+    public void setTunjPphNilai(BigDecimal tunjPphNilai) {
+        this.tunjPphNilai = tunjPphNilai;
+    }
 
     public String getTahunCutiPanjang() {
         return tahunCutiPanjang;

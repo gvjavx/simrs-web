@@ -41,7 +41,7 @@
                 var msg = "";
 
                 if (nameDepartment == '') {
-                    msg += 'Field <strong>Department Name</strong> is required.' + '<br/>';
+                    msg += 'Field <strong>Nama Devisi</strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
@@ -112,7 +112,7 @@
                 <table >
                     <tr>
                         <td>
-                            <label class="control-label"><small>Department Id :</small></label>
+                            <label class="control-label"><small>Devisi Id :</small></label>
                         </td>
                         <td>
                             <table>
@@ -123,7 +123,7 @@
 
                     <tr>
                         <td>
-                            <label class="control-label"><small>Department Name :</small></label>
+                            <label class="control-label"><small>Nama Devisi :</small></label>
                         </td>
                         <td>
                             <table>

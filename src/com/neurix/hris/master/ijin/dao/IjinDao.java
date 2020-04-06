@@ -47,7 +47,7 @@ public class IjinDao extends GenericDao<ImIjinEntity, String> {
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
 
         // Order by
-        criteria.addOrder(Order.asc("ijinId"));
+        criteria.addOrder(Order.desc("ijinId"));
 
         List<ImIjinEntity> results = criteria.list();
 

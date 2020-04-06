@@ -4,6 +4,7 @@ import com.neurix.authorization.company.dao.BranchDao;
 import com.neurix.authorization.position.dao.PositionDao;
 import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.golongan.dao.GolonganDao;
 import com.neurix.hris.master.golongan.model.ImGolonganEntity;
 import com.neurix.hris.master.kelompokPosition.dao.KelompokPositionDao;
@@ -284,6 +285,7 @@ public class PayrollTunjanganStrategisBoImpl implements PayrollTunjanganStrategi
                     returnPayrollTunjanganStrategis.setTunjStrategisId(payrollTunjanganStrategisEntity.getTunjStrategisId());
                     returnPayrollTunjanganStrategis.setGolonganId(payrollTunjanganStrategisEntity.getGolonganId());
                     returnPayrollTunjanganStrategis.setNilai(payrollTunjanganStrategisEntity.getNilai());
+                    returnPayrollTunjanganStrategis.setStNilai(CommonUtil.numbericFormat(payrollTunjanganStrategisEntity.getNilai(), "###,###"));
                     returnPayrollTunjanganStrategis.setPositionId(payrollTunjanganStrategisEntity.getPositionId());
                     if (payrollTunjanganStrategisEntity.getPositionId()!=null){
                         ImPosition position = positionDao.getById("positionId",payrollTunjanganStrategisEntity.getPositionId());

@@ -50,7 +50,7 @@
     <section class="content-header">
         <h1>
             Position Bagian
-            <small>e-HEALTH</small>
+            <small>GO-MEDSYS</small>
         </h1>
         <%--<ol class="breadcrumb">--%>
         <%--<li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>--%>
@@ -128,7 +128,7 @@
                                 <tr>
                                     <td>
                                         <sj:submit type="button" cssClass="btn btn-primary" formIds="positionBagianForm" id="search" name="search"
-                                                   onClickTopics="showDialog" onCompleteTopics="closeDialog" >
+                                                   onClickTopics="showDialog" onCompleteTopics="closeDialog" onclick="showLoadingDialog();">
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
@@ -178,14 +178,15 @@
                                             </display:column>
 
                                             <display:column media="html" title="Delete" style="text-align:center;font-size:9">
-                                                <s:url var="urlViewDelete" namespace="/positionBagian" action="delete_positionBagian" escapeAmp="false">
-                                                    <s:param name="id"><s:property value="#attr.row.bagianId" /></s:param>
-                                                    <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
-                                                </s:url>
-                                                <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
-                                                </sj:a>
-
+                                                <s:if test="#attr.row.flagYes">
+                                                    <s:url var="urlViewDelete" namespace="/positionBagian" action="delete_positionBagian" escapeAmp="false">
+                                                        <s:param name="id"><s:property value="#attr.row.bagianId" /></s:param>
+                                                        <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
+                                                    </s:url>
+                                                    <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
+                                                        <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
+                                                    </sj:a>
+                                                </s:if>
                                             </display:column>
                                             <display:column property="bagianId" sortable="true" title="Bagian Id" />
                                             <display:column property="bagianName" sortable="true" title="Bagian Name"  />

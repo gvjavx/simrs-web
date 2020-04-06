@@ -40,14 +40,12 @@ public class KelompokPositionDao extends GenericDao<ImKelompokPositionEntity, St
             if (mapCriteria.get("kelompok_name")!=null) {
                 criteria.add(Restrictions.ilike("kelompokName", "%" + (String)mapCriteria.get("kelompok_name") + "%"));
             }
-
-
         }
 
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
 
         // Order by
-        criteria.addOrder(Order.asc("kelompokId"));
+        criteria.addOrder(Order.desc("kelompokId"));
 
         List<ImKelompokPositionEntity> results = criteria.list();
 

@@ -191,6 +191,19 @@
         <property name="approvalName">
             <column name="approval_name" sql-type="varchar" length="100" not-null="false" />
         </property>
+        <property name="approvalUnitFlag">
+            <column name="approval_unit_flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="approvalUnitDate">
+            <column name="approval_unit_date" sql-type="date" not-null="false" />
+        </property>
+        <property name="approvalUnitId">
+            <column name="approval_unit_id" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="approvalUnitName">
+            <column name="approval_unit_name" sql-type="varchar" length="100" not-null="false" />
+        </property>
+
         <property name="flagPayroll">
             <column name="flag_payroll" sql-type="varchar" length="1" not-null="false" />
         </property>

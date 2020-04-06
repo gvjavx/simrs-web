@@ -539,57 +539,58 @@
 
     });
 
+//    $('.sppdPersonTable').on('click', '.item-edit', function(){
+//        var nip = $(this).attr('data');
+//        console.log("Tes "+nip);
+//        MutasiAction.searchMutasiPersonEdit(nip ,function(listdata) {
+//            $.each(listdata, function (i, item) {
+//                $('#statusMutasi').val(item.status);
+//                $('#statusMutasi').prop("disabled", false);
+//                $('#nip1').val(item.nip);
+//                $('#nipOld').val(item.nip);
+//                $('#nip').val(item.nama);
+//
+//                $('#branchLamaId1').val(item.branchLamaId).change();
+//                $('#positionLamaId1').val(item.positionLamaId).change();
+//                $('#divisiLamaId1').val(item.divisiLamaId).change();
+//
+//                if(item.status == "R"){
+//                    $("#branchBaruId1").prop("disabled", true);
+//                    $("#positionBaruId1").prop("disabled", true);
+//                    $("#divisiBaruId1").prop("disabled", true);
+//                }else{
+//                    $('#branchBaruId1').val(item.branchBaruId).change();
+//                    $('#positionBaruId1').val(item.positionBaruId).change();
+//                    $('#divisiBaruId1').val(item.divisiBaruId).change();
+//                }
+//
+//                if(item.pjsLama == 'Y'){
+//                    document.getElementById("pjsLama").checked = true;
+//                    $("#txtPjsLama").val('Y');
+//                }else{
+//                    document.getElementById("pjsLama").checked = false;
+//                    $("#txtPjsLama").val('N');
+//                }
+//
+//                if(item.pjs == 'Y'){
+//                    document.getElementById("pjsBaru").checked = true;
+//                    $("#txtPjsBaru").val('Y');
+//                }else{
+//                    document.getElementById("pjsBaru").checked = false;
+//                    $("#txtPjsBaru").val('N');
+//                }
+//
+//                //document.getElementById("Check1").checked = item.pjs;
+//            });
+//        });
+//
+//        $("#btnSave").html('Save');
+//        $('#modal-edit').find('.modal-title').text('Edit Data');
+//        $('#modal-edit').modal('show');
+//        $('#myForm').attr('action', 'editPerson');
+//    });
+
     $('.sppdPersonTable').on('click', '.item-edit', function(){
-        var nip = $(this).attr('data');
-        MutasiAction.searchMutasiPersonEdit(nip ,function(listdata) {
-            $.each(listdata, function (i, item) {
-                $('#statusMutasi').val(item.status);
-                $('#statusMutasi').prop("disabled", false);
-                $('#nip1').val(item.nip);
-                $('#nipOld').val(item.nip);
-                $('#nip').val(item.nama);
-
-                $('#branchLamaId1').val(item.branchLamaId).change();
-                $('#positionLamaId1').val(item.positionLamaId).change();
-                $('#divisiLamaId1').val(item.divisiLamaId).change();
-
-                if(item.status == "R"){
-                    $("#branchBaruId1").prop("disabled", true);
-                    $("#positionBaruId1").prop("disabled", true);
-                    $("#divisiBaruId1").prop("disabled", true);
-                }else{
-                    $('#branchBaruId1').val(item.branchBaruId).change();
-                    $('#positionBaruId1').val(item.positionBaruId).change();
-                    $('#divisiBaruId1').val(item.divisiBaruId).change();
-                }
-
-                if(item.pjsLama == 'Y'){
-                    document.getElementById("pjsLama").checked = true;
-                    $("#txtPjsLama").val('Y');
-                }else{
-                    document.getElementById("pjsLama").checked = false;
-                    $("#txtPjsLama").val('N');
-                }
-
-                if(item.pjs == 'Y'){
-                    document.getElementById("pjsBaru").checked = true;
-                    $("#txtPjsBaru").val('Y');
-                }else{
-                    document.getElementById("pjsBaru").checked = false;
-                    $("#txtPjsBaru").val('N');
-                }
-
-                //document.getElementById("Check1").checked = item.pjs;
-            });
-        });
-
-        $("#btnSave").html('Save');
-        $('#modal-edit').find('.modal-title').text('Edit Data');
-        $('#modal-edit').modal('show');
-        $('#myForm').attr('action', 'editPerson');
-    });
-
-    $('.sppdPersonTable').on('click', '.item-delete', function(){
         var id = $(this).attr('data');
 
         MutasiAction.searchMutasiPersonEdit(id ,function(listdata) {

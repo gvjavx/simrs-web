@@ -35,6 +35,8 @@ public class PayrollJasopr extends BaseModel {
     private BigDecimal totaljasoprNilai;
     private BigDecimal pphJasoprNilai;
     private BigDecimal nettojasoprNilai;
+    private BigDecimal tunjPphNilai ;
+
 
     private String totalThp;
     private String gaji;
@@ -51,6 +53,23 @@ public class PayrollJasopr extends BaseModel {
     private String totaljasopr;
     private String pphJasopr;
     private String nettojasopr;
+    private String tunjPph ;
+
+    public BigDecimal getTunjPphNilai() {
+        return tunjPphNilai;
+    }
+
+    public void setTunjPphNilai(BigDecimal tunjPphNilai) {
+        this.tunjPphNilai = tunjPphNilai;
+    }
+
+    public String getTunjPph() {
+        return tunjPph;
+    }
+
+    public void setTunjPph(String tunjPph) {
+        this.tunjPph = tunjPph;
+    }
 
     public String getNettojasopr() {
         return nettojasopr;

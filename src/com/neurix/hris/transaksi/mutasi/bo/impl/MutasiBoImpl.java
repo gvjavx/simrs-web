@@ -367,6 +367,7 @@ public class MutasiBoImpl implements MutasiBo {
                             if (!HistoryJabatanId.equalsIgnoreCase("")){
                                 pengalamanLama = historyJabatanPegawaiDao.getById("historyJabatanId", HistoryJabatanId);
                                 pengalamanLama.setTanggalKeluar(bean.getStTanggalEfektif());
+                                pengalamanLama.setJabatanFlag("N");
                                 historyJabatanPegawaiDao.updateAndSave(pengalamanLama);
                             }else{
                                 String status = "ERROR : history jabatan terakhir tidak ditemukan ";
@@ -406,6 +407,10 @@ public class MutasiBoImpl implements MutasiBo {
                         historyJabatanPegawai.setNilaiSmk(BigDecimal.valueOf(0));
                         historyJabatanPegawai.setTahun(tgl[2]);
                         historyJabatanPegawai.setGradeSmk("-");
+
+                        //update reza (02-04-2020) penambahan flagmutasi di history jabatan
+                        historyJabatanPegawai.setJabatanFlag("Y");
+                        historyJabatanPegawai.setMutasiFlag("Y");
 
                         //isi pjs flag
                         if(mutasi.getPjs()!=null){

@@ -20,6 +20,9 @@ public class Study extends BaseModel {
     private String fakultasId;
     private String fakultasName;
 
+    private byte[] contentFile;
+    private String fotoUpload;
+
     public String getProgramStudy() {
         return programStudy;
     }
@@ -90,5 +93,21 @@ public class Study extends BaseModel {
 
     public void setTahunAkhir(String tahunAkhir) {
         this.tahunAkhir = tahunAkhir;
+    }
+
+    public byte[] getContentFile() {
+        return contentFile;
+    }
+
+    public void setContentFile(byte[] contentFile) {
+        this.contentFile = contentFile;
+    }
+
+    public String getFotoUpload() {
+        return fotoUpload;
+    }
+
+    public void setFotoUpload(String fotoUpload) {
+        this.fotoUpload = fotoUpload;
     }
 }

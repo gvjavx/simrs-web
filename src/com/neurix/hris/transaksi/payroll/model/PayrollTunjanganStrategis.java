@@ -22,6 +22,7 @@ public class PayrollTunjanganStrategis extends BaseModel {
     private String positionName;
     private String golonganName;
     private BigDecimal nilai;
+    private String stNilai;
 
     public String getPositionName() {
         return positionName;
@@ -96,5 +97,13 @@ public class PayrollTunjanganStrategis extends BaseModel {
 
     public void setGolonganName(String golonganName) {
         this.golonganName = golonganName;
+    }
+
+    public String getStNilai() {
+        return stNilai;
+    }
+
+    public void setStNilai(String stNilai) {
+        this.stNilai = stNilai;
     }
 }

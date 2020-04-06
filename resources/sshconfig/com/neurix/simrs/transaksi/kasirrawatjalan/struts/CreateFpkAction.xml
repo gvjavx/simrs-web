@@ -74,6 +74,8 @@
             <interceptor-ref name="ivelinStack" />
 
             <result name="search">/pages/com/neurix/simrs/transaksi/kasirrawatjalan/searchFPK.jsp</result>
+            <result name="import_csv">/pages/com/neurix/simrs/transaksi/kasirrawatjalan/importCsv.jsp</result>
+            <result name="hasil_import_csv">/pages/com/neurix/simrs/transaksi/kasirrawatjalan/hasilImportCsv.jsp</result>
 
             <result name="print_uang_muka" type="jasper">
                 <param name="location">/pages/report/com/neurix/simrs/printUangMuka.jasper</param>
