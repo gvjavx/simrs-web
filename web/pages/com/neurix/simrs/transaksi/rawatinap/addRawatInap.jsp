@@ -3231,6 +3231,7 @@
 <div class="mask"></div>
 
 <script type='text/javascript' src='<s:url value="/pages/dist/js/rekammedic.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/planrawat.js"/>'></script>
 <script type='text/javascript'>
 
     var idDetailCheckup = $('#no_detail_checkup').val();
@@ -6195,7 +6196,6 @@
             $('#war_keterangan_cancel').show();
         }
     }
-
 </script>
 
 <%@ include file="/pages/common/footer.jsp" %>
