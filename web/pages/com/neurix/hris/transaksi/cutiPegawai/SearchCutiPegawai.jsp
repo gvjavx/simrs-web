@@ -423,7 +423,7 @@
                                             <table id="showdata" width="96%">
                                                 <tr>
                                                     <td align="center">
-                                                        <sj:dialog id="waiting_dialog" openTopics="showDialogLoading"
+                                                        <sj:dialog id="waiting_dialog2" openTopics="showDialogLoading"
                                                                    closeTopics="closeDialogLoading" modal="true"
                                                                    resizable="false"
                                                                    height="250" width="600" autoOpen="false"

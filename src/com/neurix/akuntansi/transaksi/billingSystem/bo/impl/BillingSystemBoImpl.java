@@ -11,6 +11,7 @@ import com.neurix.akuntansi.master.trans.model.ImTransEntity;
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDao;
 import com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDetailDao;
+import com.neurix.akuntansi.transaksi.jurnal.model.ItJurnalDetailActivityEntity;
 import com.neurix.akuntansi.transaksi.jurnal.model.ItJurnalDetailEntity;
 import com.neurix.akuntansi.transaksi.jurnal.model.ItJurnalEntity;
 import com.neurix.common.exception.GeneralBOException;
@@ -243,6 +244,8 @@ public class BillingSystemBoImpl implements BillingSystemBo {
         if (mappingJurnal.size()!=0){
             //Membuat jurnal berdasarkan mapping kemudian dimasukkan di List
             List<ItJurnalDetailEntity> jurnalDetailEntityList = new ArrayList<>();
+            List<ItJurnalDetailActivityEntity> jurnalDetailActivityEntityList = new ArrayList<>();
+
             BigDecimal totalDebit= new BigDecimal(0);
             BigDecimal totalKredit= new BigDecimal(0);
             for (ImMappingJurnalEntity mapping : mappingJurnal){
@@ -433,6 +436,24 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                                         totalDebit = totalDebit.add(jurnalDetailEntity.getJumlahDebit());
                                         totalKredit = totalKredit.add(jurnalDetailEntity.getJumlahKredit());
                                         jurnalDetailEntityList.add(jurnalDetailEntity);
+
+                                        if (mapList.get(i).get("activity")!=null){
+                                            try{
+                                                List<Map> activityList = (List<Map>) mapList.get(i).get("activity");
+                                                for (int x=0;x<activityList.size();x++){
+                                                    ItJurnalDetailActivityEntity saveActivity = new ItJurnalDetailActivityEntity();
+                                                    if (activityList.get(i).get("activity_id")!=null){
+                                                    }else{
+                                                        status="ERROR : Activity ID tidak ditemukan";
+                                                        logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
+                                                        throw new GeneralBOException("Found problem "+status+", please info to your admin...");
+                                                    }
+                                                }
+                                            }catch (Exception e){
+                                                logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+e.getMessage());
+                                                throw new GeneralBOException("Found problem "+e.getMessage()+", please info to your admin...");
+                                            }
+                                        }
                                     }
                                 }else{
                                     status="ERROR : Tidak bisa mendapat map list";
