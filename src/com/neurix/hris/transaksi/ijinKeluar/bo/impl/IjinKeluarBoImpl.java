@@ -254,12 +254,8 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
     public void saveEdit(IjinKeluar bean) throws GeneralBOException {
         logger.info("[IjinKeluarBoImpl.saveEdit] start process >>>");
 
-//        String condition = null;
-
         if (bean!=null) {
-
             String ijinKeluarId = bean.getIjinKeluarId();
-
             IjinKeluarEntity imIjinKeluarEntity = null;
 
             try {

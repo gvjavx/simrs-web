@@ -21,8 +21,6 @@
         $.subscribe('beforeProcessSave', function (event, data) {
             var nip = document.getElementById("nip").value;
 
-
-
             if (nip != '' ) {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
