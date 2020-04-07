@@ -331,7 +331,6 @@
     <section class="content-header">
         <h1>
             Struktur Jabatan
-            <small>GO-MEDSYS</small>
         </h1>
 
     </section>

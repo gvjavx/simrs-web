@@ -490,7 +490,6 @@
     <section class="content-header">
         <h1>
             Biodata
-            <small>GO-MEDSYS</small>
         </h1>
     </section>
 

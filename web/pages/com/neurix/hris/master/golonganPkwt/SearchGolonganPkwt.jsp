@@ -50,7 +50,6 @@
     <section class="content-header">
         <h1>
             Golongan PKWT
-            <small>GO-MEDSYS</small>
         </h1>
         <%--<ol class="breadcrumb">--%>
         <%--<li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>--%>
@@ -190,11 +189,11 @@
                                             <%--<display:column property="golonganPkwtId" sortable="true" title="GolonganPkwt ID" />--%>
                                             <display:column property="golonganPkwtName" sortable="true" title="Nama"  />
                                             <display:column property="flag" sortable="true" title="flag"  />
-                                            <display:column property="createdWho" sortable="true" title="Created who"  />
-                                            <display:column property="lastUpdateWho" sortable="true" title="Last update who"  />
                                             <display:column property="action" sortable="true" title="action"  />
                                             <display:column property="createdDate" sortable="true" title="Created date"  />
+                                            <display:column property="createdWho" sortable="true" title="Created who"  />
                                             <display:column property="lastUpdate" sortable="true" title="Last update"  />
+                                            <display:column property="lastUpdateWho" sortable="true" title="Last update who"  />
                                             <%--<display:column property="flag" sortable="true" title="Flag" />
                                             <display:column property="createdWho" sortable="true" title="CreatedWho"/>--%>
 

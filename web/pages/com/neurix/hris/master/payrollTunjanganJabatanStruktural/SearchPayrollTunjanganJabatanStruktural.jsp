@@ -50,7 +50,6 @@
     <section class="content-header">
         <h1>
             Payroll Tunjangan Jabatan Struktural
-            <small>GO-MEDSYS</small>
         </h1>
     </section>
 
