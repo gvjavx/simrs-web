@@ -299,6 +299,26 @@ public class RawatInapBoImpl implements RawatInapBo {
                     monVitalSign.setTb(entity.getTb());
                     monVitalSign.setBb(entity.getBb());
                     monVitalSigns.add(monVitalSign);
+                } else if (bean.getIsMobile().equalsIgnoreCase("Y")) {
+                    monVitalSign = new MonVitalSign();
+                    monVitalSign.setId(entity.getId());
+                    monVitalSign.setNoCheckup(entity.getNoCheckup());
+                    monVitalSign.setIdDetailCheckup(entity.getIdDetailCheckup());
+                    monVitalSign.setNadi(entity.getNadi());
+                    monVitalSign.setNafas(entity.getNafas());
+                    monVitalSign.setSuhu(entity.getSuhu());
+                    monVitalSign.setTensi(entity.getTensi());
+                    monVitalSign.setJam(entity.getJam());
+                    monVitalSign.setFlag(entity.getFlag());
+                    monVitalSign.setAction(entity.getAction());
+                    monVitalSign.setCreatedDate(entity.getCreatedDate());
+                    monVitalSign.setCreatedWho(entity.getCreatedWho());
+                    monVitalSign.setLastUpdate(entity.getLastUpdate());
+                    monVitalSign.setLastUpdateWho(entity.getLastUpdateWho());
+                    monVitalSign.setStDate(stringDate(entity.getCreatedDate()));
+                    monVitalSign.setTb(entity.getTb());
+                    monVitalSign.setBb(entity.getBb());
+                    monVitalSigns.add(monVitalSign);
                 }
             }
         }

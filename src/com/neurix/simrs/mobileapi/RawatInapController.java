@@ -1043,6 +1043,7 @@ public class RawatInapController implements ModelDriven<Object> {
             MonVitalSign monVitalSign = new MonVitalSign();
             monVitalSign.setIdDetailCheckup(idDetailCheckup);
             monVitalSign.setId(idMonVitalSign);
+            monVitalSign.setIsMobile("Y");
 
             try {
                 result = rawatInapBoProxy.getListMonVitalSign(monVitalSign);
@@ -1056,13 +1057,27 @@ public class RawatInapController implements ModelDriven<Object> {
                     monVitalSignMobile.setIdDetailCheckup(item.getIdDetailCheckup());
                     monVitalSignMobile.setId(item.getId());
                     monVitalSignMobile.setJam(item.getJam().toString());
-                    monVitalSignMobile.setNadi(item.getNadi().toString());
-                    monVitalSignMobile.setNafas(item.getNafas().toString());
-                    monVitalSignMobile.setBb(item.getBb().toString());
-                    monVitalSignMobile.setTb(item.getTb().toString());
-                    monVitalSignMobile.setTensi(item.getTensi().toString());
-                    monVitalSignMobile.setStDate(item.getStDate());
-                    monVitalSignMobile.setSuhu(item.getSuhu().toString());
+                    if  (item.getNadi() != null) {
+                        monVitalSignMobile.setNadi(item.getNadi().toString());
+                    }
+                    if (item.getNafas() != null) {
+                        monVitalSignMobile.setNafas(item.getNafas().toString());
+                    }
+                    if (item.getBb() != null) {
+                        monVitalSignMobile.setBb(item.getBb().toString());
+                    }
+                    if (item.getTb() != null) {
+                        monVitalSignMobile.setTb(item.getTb().toString());
+                    }
+                    if (item.getTensi() != null) {
+                        monVitalSignMobile.setTensi(item.getTensi().toString());
+                    }
+                    if (item.getStDate() != null) {
+                        monVitalSignMobile.setStDate(item.getStDate());
+                    }
+                    if (item.getSuhu() != null) {
+                        monVitalSignMobile.setSuhu(item.getSuhu().toString());
+                    }
                     monVitalSignMobile.setCreatedWho(item.getCreatedWho());
 
                     listOfMonVitalSign.add(monVitalSignMobile);
