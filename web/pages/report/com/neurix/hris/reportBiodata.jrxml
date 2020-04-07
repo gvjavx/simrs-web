@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="7" uuid="439178ee-4584-4e86-b765-559a2351e7e6">
 	<property name="ireport.zoom" value="1.4641000000000133"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="680"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -291,7 +291,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell height="12" rowSpan="1">
-							<textField>
+							<textField isBlankWhenNull="true">
 								<reportElement x="0" y="0" width="133" height="12" uuid="04cf8207-cfc7-4d96-aa1f-3099d1bfe405"/>
 								<textElement verticalAlignment="Middle">
 									<font size="8"/>
@@ -314,7 +314,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell height="12" rowSpan="1">
-							<textField>
+							<textField isBlankWhenNull="true">
 								<reportElement x="0" y="0" width="130" height="12" uuid="93e71e3c-24d1-499e-aabc-ee340c577040"/>
 								<textElement verticalAlignment="Middle">
 									<font size="8"/>
@@ -337,7 +337,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell height="12" rowSpan="1">
-							<textField>
+							<textField isBlankWhenNull="true">
 								<reportElement x="0" y="0" width="165" height="12" uuid="1f4aa202-a2ad-4649-b47c-5812eda7936f"/>
 								<textElement verticalAlignment="Middle">
 									<font size="8"/>
@@ -360,7 +360,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell height="12" rowSpan="1">
-							<textField>
+							<textField isBlankWhenNull="true">
 								<reportElement x="0" y="0" width="120" height="12" uuid="1b7faf63-05c5-486d-94ae-274e63c937ed"/>
 								<textElement>
 									<font size="8"/>
@@ -482,7 +482,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="109" y="21" width="61" height="12" uuid="312f4488-3815-4710-8df7-9bbd0f18c45b"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -513,7 +513,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="109" y="32" width="130" height="12" uuid="2ee944bd-8e5b-4133-8fe6-6d5cfcb2673a"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -584,14 +584,14 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
-			<textField pattern="dd-MM-yyyy">
+			<textField pattern="dd-MM-yyyy" isBlankWhenNull="true">
 				<reportElement x="181" y="43" width="58" height="12" uuid="fd0f6b15-1b8e-4652-9719-b660132cf5d8"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{tanggal_lahir}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="109" y="43" width="61" height="12" uuid="9930e815-1189-4335-9391-d42093c74a73"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -606,14 +606,14 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</textElement>
 				<text><![CDATA[,]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="109" y="65" width="61" height="12" uuid="95d5df9f-98bb-4698-b259-7953391d77aa"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{agama}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement stretchType="RelativeToBandHeight" x="109" y="76" width="239" height="26" uuid="f73a32fc-1254-41bb-ae76-d0e50fc8c971"/>
 				<box topPadding="2"/>
 				<textElement verticalAlignment="Top">
@@ -621,14 +621,14 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{alamat}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="109" y="102" width="130" height="11" uuid="ff44563f-9fae-4c12-89fe-db2a09630f91"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{no_telp}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="109" y="113" width="130" height="12" uuid="6ab7cfe1-3402-4d3b-bab9-1bd35d34562b"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -651,14 +651,14 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="109" y="54" width="61" height="12" uuid="d88712b4-3bbc-489c-afb3-beda80e99dc8"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{gender}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="109" y="213" width="14" height="12" uuid="7b92a26e-a519-4106-8948-3b93e5cdc025"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -681,7 +681,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
-			<textField pattern="">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement x="109" y="224" width="156" height="12" uuid="11ce00e8-fbe7-4d92-b42b-5dc7378a8728"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -704,7 +704,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="109" y="179" width="156" height="12" uuid="5f947313-f4b5-42e2-9e9b-53fc12e844a9"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -803,7 +803,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</textElement>
 				<text><![CDATA[/]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="123" y="213" width="142" height="12" uuid="bed929b2-e9a6-4bd2-9819-7b6d6284462d"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -830,7 +830,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 							</staticText>
 						</jr:tableHeader>
 						<jr:detailCell height="12" rowSpan="1">
-							<textField>
+							<textField isBlankWhenNull="true">
 								<reportElement x="0" y="0" width="61" height="12" uuid="0abb9777-277d-4efa-bbdd-c779a3f087cf"/>
 								<textElement verticalAlignment="Middle">
 									<font size="8"/>
@@ -853,7 +853,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 							</staticText>
 						</jr:tableHeader>
 						<jr:detailCell height="12" rowSpan="1">
-							<textField>
+							<textField isBlankWhenNull="true">
 								<reportElement x="0" y="0" width="124" height="12" uuid="fcb731d3-7897-424f-bd42-5b16ba787de3"/>
 								<textElement verticalAlignment="Middle">
 									<font size="8"/>
@@ -876,7 +876,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 							</staticText>
 						</jr:tableHeader>
 						<jr:detailCell height="12" rowSpan="1">
-							<textField>
+							<textField isBlankWhenNull="true">
 								<reportElement x="0" y="0" width="63" height="12" uuid="55ae06c6-774c-45fb-8423-ad75bb37ed27"/>
 								<textElement verticalAlignment="Middle">
 									<font size="8"/>
@@ -905,7 +905,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 								<bottomPen lineWidth="0.0"/>
 								<rightPen lineWidth="0.0"/>
 							</box>
-							<textField>
+							<textField isBlankWhenNull="true">
 								<reportElement x="0" y="0" width="158" height="12" uuid="609496e3-13ca-4487-9997-76c98b1bde9e"/>
 								<textElement verticalAlignment="Middle">
 									<font size="8"/>
@@ -928,7 +928,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 							</staticText>
 						</jr:tableHeader>
 						<jr:detailCell height="12" rowSpan="1">
-							<textField>
+							<textField isBlankWhenNull="true">
 								<reportElement x="0" y="0" width="141" height="12" uuid="769a4593-b2ed-41b8-a7d2-f5ba35eefca5"/>
 								<textElement verticalAlignment="Middle">
 									<font size="8"/>
@@ -959,7 +959,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 							</staticText>
 						</jr:tableHeader>
 						<jr:detailCell height="12" rowSpan="1">
-							<textField>
+							<textField isBlankWhenNull="true">
 								<reportElement x="0" y="0" width="54" height="12" uuid="d8e49780-9969-4b32-9dbc-f421cd831077"/>
 								<textElement verticalAlignment="Middle">
 									<font size="8"/>
@@ -982,7 +982,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 							</staticText>
 						</jr:tableHeader>
 						<jr:detailCell height="12" rowSpan="1">
-							<textField>
+							<textField isBlankWhenNull="true">
 								<reportElement x="0" y="0" width="147" height="12" uuid="2e7cf502-79f9-4065-8ce3-5963166163e7"/>
 								<textElement verticalAlignment="Middle">
 									<font size="8"/>
@@ -1005,7 +1005,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 							</staticText>
 						</jr:tableHeader>
 						<jr:detailCell height="12" rowSpan="1">
-							<textField>
+							<textField isBlankWhenNull="true">
 								<reportElement x="0" y="0" width="62" height="12" uuid="ceb3becb-8220-407f-a226-5838285f267d"/>
 								<textElement>
 									<font size="8"/>
@@ -1028,7 +1028,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 							</staticText>
 						</jr:tableHeader>
 						<jr:detailCell height="12" rowSpan="1">
-							<textField>
+							<textField isBlankWhenNull="true">
 								<reportElement x="0" y="0" width="173" height="12" uuid="0af18728-2a77-4718-8659-c9a52204f9cd"/>
 								<textElement>
 									<font size="8"/>
@@ -1051,7 +1051,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 							</staticText>
 						</jr:tableHeader>
 						<jr:detailCell height="12" rowSpan="1">
-							<textField>
+							<textField isBlankWhenNull="true">
 								<reportElement x="0" y="0" width="117" height="12" uuid="ad1a218d-4ba9-4a77-8990-87058fa57a43"/>
 								<textElement>
 									<font size="8"/>
@@ -1083,21 +1083,21 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</textElement>
 				<text><![CDATA[Riwayat Pekerjaan]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="109" y="146" width="156" height="12" uuid="6754f6ac-9209-450b-a5d1-20f0e8e5ab48"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{position_name}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="109" y="157" width="156" height="12" uuid="e3b175cd-9928-41ad-9083-e801603cb8a8"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nama_bagian}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="109" y="168" width="14" height="12" uuid="836ef20c-7490-490a-ab59-0df628013453"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -1112,56 +1112,56 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</textElement>
 				<text><![CDATA[/]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="133" y="168" width="26" height="12" uuid="a6df0c98-67e0-440d-b2fb-b1bd0a4b8ab2"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{point}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="410" y="183" width="133" height="12" uuid="8b37ebe1-a22e-4738-a4ea-be07a0aa3a03"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{no_bpjs_kesehatan}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="410" y="171" width="133" height="12" uuid="c4639cde-fc83-4aea-a8a0-12838b722d54"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{no_bpjs_ketenagakerjaan_pensiun}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="410" y="159" width="133" height="12" uuid="3393055f-da5f-4849-9c62-a9925d91aef1"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{no_bpjs_ketenagakerjaan}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="109" y="201" width="156" height="12" uuid="7bce1ee3-dde7-4926-86b4-a71add44aadf"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{no_anggota_dapen}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="109" y="190" width="156" height="12" uuid="be7bf57a-47fd-466b-8d19-06ba0752b17e"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{dapen_name}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="109" y="124" width="22" height="12" uuid="fcde93b5-48fc-492b-ba63-d65a73c9c708"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{type_study}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="131" y="124" width="134" height="12" uuid="8e3f8452-d7c1-4a7e-b4a1-be94d2d71f5a"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -1200,14 +1200,14 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="410" y="195" width="128" height="12" uuid="4cfb9303-6677-4ddc-a8d3-3c0d527a4056"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{bank_name}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="410" y="207" width="141" height="12" uuid="08b17b25-8f71-4c4f-927f-45a3fd0ac549"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -1230,7 +1230,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</textElement>
 				<text><![CDATA[No. Rekening BANK]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="410" y="219" width="128" height="12" uuid="94e553c1-b699-4b49-b327-1bd273801ad3"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -1253,7 +1253,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="109" y="135" width="156" height="12" uuid="e546f042-ff42-4aa6-8834-6704d9223dab"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>

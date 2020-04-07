@@ -108,7 +108,6 @@
     <section class="content-header">
         <h1>
             Delete Mapping Jurnal
-            <small>e-HEALTH</small>
         </h1>
     </section>
     <!-- Main content -->
@@ -200,10 +199,15 @@
                                                    height="350" width="600" autoOpen="false" title="Saving ...">
                                             Please don't close this window, server is processing your request ...
                                             </br>
-                                            </br>
-                                            </br>
                                             <center>
-                                                <img border="0" src="<s:url value="/pages/images/indicator-write.gif"/>" name="image_indicator_write">
+                                                <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                     src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                     name="image_indicator_write">
+                                                <br>
+                                                <img class="spin" border="0"
+                                                     style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                     src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                     name="image_indicator_write">
                                             </center>
                                         </sj:dialog>
 
@@ -277,6 +281,7 @@
                     "<th style='text-align: center; background-color:  #90ee90'>Master</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Bukti</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Kode Barang</th>"+
+                    "<th style='text-align: center; background-color:  #90ee90'>Divisi ID</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>List Kirim</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Parameter</th>"+
                     "</tr></thead>";
@@ -290,6 +295,7 @@
                         '<td align="center">' + item.masterId+ '</td>' +
                         '<td align="center">' + item.bukti + '</td>' +
                         '<td align="center">' + item.kodeBarang + '</td>' +
+                        '<td align="center">' + item.divisiId + '</td>' +
                         '<td align="center">' + item.kirimList + '</td>' +
                         '<td align="center">' + item.keterangan + '</td>' +
                         "</tr>";
