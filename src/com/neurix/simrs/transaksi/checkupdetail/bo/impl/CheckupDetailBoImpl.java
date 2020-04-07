@@ -1308,6 +1308,13 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         return dokterList;
     }
 
+    @Override
+    public ItSimrsHeaderDetailCheckupEntity getDetailCheckupById(String id) throws GeneralBOException {
+        logger.info("[CheckupDetailBoImpl.getDetailCheckupById] START >>>>");
+        logger.info("[CheckupDetailBoImpl.getDetailCheckupById] END <<<");
+        return checkupDetailDao.getById("idDetailCheckup", id);
+    }
+
     private String getNextIdDiagnosa() {
         String id = "";
         try {

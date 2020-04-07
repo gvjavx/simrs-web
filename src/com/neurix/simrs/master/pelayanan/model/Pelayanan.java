@@ -24,6 +24,16 @@ public class Pelayanan extends BaseModel implements Serializable {
     private String tipePelayanan;
     private String branchId;
 
+    private String kodering;
+
+    public String getKodering() {
+        return kodering;
+    }
+
+    public void setKodering(String kodering) {
+        this.kodering = kodering;
+    }
+
     public String getTipePelayanan() {
         return tipePelayanan;
     }

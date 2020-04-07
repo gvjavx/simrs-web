@@ -9,6 +9,9 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
 import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
+import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
+import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
+import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
@@ -645,7 +648,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
         KasirRawatJalanBo kasirRawatJalanBo = (KasirRawatJalanBo) ctx.getBean("kasirRawatJalanBoProxy");
 
-        String transId = "01";
+        String transId = "04";
         String noNota = "";
 
         String branchId = CommonUtil.userBranchLogin();
@@ -658,7 +661,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         }
 
         Map hsCriteria = new HashMap();
-        hsCriteria.put("pasien_id", idPasien);
+        hsCriteria.put("master_id", idPasien);
         hsCriteria.put("metode_bayar", metodeBayar);
         hsCriteria.put("bank", kodeBank);
 
@@ -702,8 +705,45 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
     public CrudResponse savePembayaranTagihan(String jsonString, String idPasien, String noNota, String withObat, String idDetailCheckup, String metodeBayar, String kodeBank, String type, String jenis, String noRekening) throws JSONException {
 
+        CrudResponse response = new CrudResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+        PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
+
+        HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+        detailCheckup.setIdDetailCheckup(idDetailCheckup);
+
+        String divisiId = "";
+        ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailBo.getDetailCheckupById(idDetailCheckup);
+        if (detailCheckupEntity != null && detailCheckupEntity.getIdPelayanan() != null){
+            try {
+                ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(detailCheckupEntity.getIdPelayanan());
+                if (pelayananEntity != null){
+                    divisiId = pelayananEntity.getKodering();
+                }
+            } catch (GeneralBOException e){
+                response.setStatus("error");
+                response.setMsg("[KasirRawatJalanAction.savePembayaranTagihan] ERROR " + e);
+                return response;
+            }
+        } else {
+            response.setStatus("error");
+            response.setMsg("[KasirRawatJalanAction.savePembayaranTagihan] ERROR gagal mendapakatkan divisi_id atau data detail checkup");
+            return response;
+        }
+
+
         Map hsCriteria = new HashMap();
-        hsCriteria.put("pasien_id", idPasien);
+
+        // master_id
+        if ("bpjs".equalsIgnoreCase(jenis)){
+            hsCriteria.put("master_id", "02.018");
+        } else {
+            hsCriteria.put("master_id", "01.000");
+        }
+
+        hsCriteria.put("divisi_id", divisiId);
         hsCriteria.put("metode_bayar", metodeBayar);
         hsCriteria.put("bank", kodeBank);
         if (!"".equalsIgnoreCase(noRekening)) {
@@ -730,25 +770,18 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             }
         }
 
-
-        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-        BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
-        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
-
-        CrudResponse response = new CrudResponse();
-
         String ketTerangan = "";
         String transId = "";
         if ("tunai".equalsIgnoreCase(jenis) && "JRJ".equalsIgnoreCase(type) && !"Y".equalsIgnoreCase(withObat)) {
-            transId = "18";
+            transId = "12";
             ketTerangan = "Closing Pasien Rawat Jalan Umum Tunai tanpa Obat ";
         }
         if ("tunai".equalsIgnoreCase(jenis) && "JRJ".equalsIgnoreCase(type) && "Y".equalsIgnoreCase(withObat)) {
-            transId = "19";
+            transId = "15";
             ketTerangan = "Closing Pasien Rawat Jalan Umum Tunai dengan Obat ";
         }
         if ("tunai".equalsIgnoreCase(jenis) && "JRI".equalsIgnoreCase(type)) {
-            transId = "20";
+            transId = "22";
             ketTerangan = "Closing Pasien Rawat Inap Umum Tunai ";
         }
 
@@ -756,13 +789,12 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         String invNumber = "";
         if ("non_tunai".equalsIgnoreCase(jenis) || "bpjs".equalsIgnoreCase(jenis)) {
 
-            HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
-            detailCheckup.setIdDetailCheckup(idDetailCheckup);
-            List<HeaderDetailCheckup> detailCheckups = checkupDetailBo.getByCriteria(detailCheckup);
-            if (detailCheckups.size() > 0) {
-                for (HeaderDetailCheckup data : detailCheckups) {
-                    invNumber = data.getInvoice();
-                }
+            if (detailCheckupEntity != null && detailCheckupEntity.getInvoice() != null){
+                invNumber = detailCheckupEntity.getInvoice();
+            } else {
+                response.setStatus("error");
+                response.setMsg("[KasirRawatJalanAction.savePembayaranTagihan] ERROR gagal mendapakatkan no_invoice atau data detail checkup");
+                return response;
             }
 
             // map piutang
@@ -775,7 +807,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 ketTerangan = "Pembayaran Piutang Pasien BPJS";
                 hsCriteria.put("piutang_pasien_bpjs", mapPiutang);
             } else {
-                transId = "11";
+                transId = "02";
                 ketTerangan = "Pembayaran Piutang Pasien Umum";
                 hsCriteria.put("piutang_pasien_non_bpjs", mapPiutang);
             }
@@ -803,8 +835,6 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
                 String noJurnal = billingSystemBo.createJurnal(transId, hsCriteria, branchId, catatan, "Y");
 
-                HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
-                detailCheckup.setIdDetailCheckup(idDetailCheckup);
                 detailCheckup.setLastUpdate(new Timestamp(System.currentTimeMillis()));
                 detailCheckup.setLastUpdateWho(CommonUtil.userLogin());
                 detailCheckup.setNoJurnal(noJurnal);

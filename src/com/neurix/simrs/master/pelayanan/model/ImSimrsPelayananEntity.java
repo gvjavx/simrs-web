@@ -20,6 +20,7 @@ public class ImSimrsPelayananEntity implements Serializable {
 
     private String tipePelayanan;
     private String branchId;
+    private String kodering;
 
     public String getTipePelayanan() {
         return tipePelayanan;
@@ -117,6 +118,14 @@ public class ImSimrsPelayananEntity implements Serializable {
         this.lastUpdateWho = lastUpdateWho;
     }
 
+    public String getKodering() {
+        return kodering;
+    }
+
+    public void setKodering(String kodering) {
+        this.kodering = kodering;
+    }
+
     @Override
     public String toString() {
         return "ImSimrsPelayananEntity{" +
@@ -128,6 +137,11 @@ public class ImSimrsPelayananEntity implements Serializable {
                 ", createdWho='" + createdWho + '\'' +
                 ", lastUpdate=" + lastUpdate +
                 ", lastUpdateWho='" + lastUpdateWho + '\'' +
+                ", isPoli='" + isPoli + '\'' +
+                ", isEksekutif='" + isEksekutif + '\'' +
+                ", tipePelayanan='" + tipePelayanan + '\'' +
+                ", branchId='" + branchId + '\'' +
+                ", kodering='" + kodering + '\'' +
                 '}';
     }
 }

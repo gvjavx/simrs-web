@@ -15,6 +15,7 @@ function formatDate(date) {
 }
 
 function showModalPlan(idDetail){
+    $("#modal-view-plan-detail").modal('show');
     viewPlanDetail(idDetail, formatDate(Date.now()));
 }
 
@@ -146,8 +147,6 @@ function viewPlanDetail(idDetail, tglMasuk){
             $("#body-list-plan-malam").html("");
         }
     });
-
-    $("#modal-view-plan-detail").modal('show');
 }
 
 function setIconDikerjakan(param) {

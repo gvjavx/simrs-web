@@ -129,6 +129,7 @@ public class PelayananBoImpl implements PelayananBo{
                     pelayanan.setNotPoli(entity.getIsPoli());
                     pelayanan.setBranchId(entity.getBranchId());
                     pelayanan.setTipePelayanan(entity.getTipePelayanan());
+                    pelayanan.setKodering(entity.getKodering());
                     result.add(pelayanan);
                 }
             }
@@ -136,6 +137,13 @@ public class PelayananBoImpl implements PelayananBo{
 
         logger.info("[PelayananBoImpl.getByCriteria] End <<<<<<");
         return result;
+    }
+
+    @Override
+    public ImSimrsPelayananEntity getPelayananById(String id) throws GeneralBOException {
+        logger.info("[PelayananBoImpl.getByCriteria] Start >>>>>>");
+        logger.info("[PelayananBoImpl.getByCriteria] End <<<<<<");
+        return pelayananDao.getById("idPelayanan", id);
     }
 
     @Override
