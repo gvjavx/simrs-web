@@ -755,6 +755,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         BigDecimal uangMuka = new BigDecimal(0);
         BigDecimal uangPiutang = new BigDecimal(0);
         BigDecimal uangPendapatan = new BigDecimal(0);
+        BigDecimal ppnObat = new BigDecimal(0);
 
         // maping untuk parameter lainnua
         JSONArray json = new JSONArray(jsonString);
@@ -765,10 +766,15 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 uangMuka = new BigDecimal(obj.getLong("nilai"));
             } else if ("piutang_pasien_non_bpjs".equalsIgnoreCase(obj.getString("type").toString())) {
                 uangPiutang = new BigDecimal(obj.getLong("nilai"));
+            } else if ("ppn_keluaran".equalsIgnoreCase(obj.getString("type").toString())) {
+                ppnObat = new BigDecimal(obj.getLong("nilai"));
             } else {
                 hsCriteria.put(obj.getString("type").toString(), new BigDecimal(obj.getLong("nilai")));
             }
         }
+
+        String invoiceNumber = billingSystemBo.createInvoiceNumber(type, branchId);
+        Map mapPajakObat = new HashMap();
 
         String ketTerangan = "";
         String transId = "";
@@ -777,6 +783,11 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             ketTerangan = "Closing Pasien Rawat Jalan Umum Tunai tanpa Obat ";
         }
         if ("tunai".equalsIgnoreCase(jenis) && "JRJ".equalsIgnoreCase(type) && "Y".equalsIgnoreCase(withObat)) {
+
+            mapPajakObat.put("bukti", invoiceNumber);
+            mapPajakObat.put("nilai", ppnObat);
+            hsCriteria.put("ppn_keluaran", mapPajakObat);
+
             transId = "15";
             ketTerangan = "Closing Pasien Rawat Jalan Umum Tunai dengan Obat ";
         }

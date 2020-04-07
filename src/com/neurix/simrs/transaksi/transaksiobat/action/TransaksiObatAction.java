@@ -22,6 +22,7 @@ import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
+import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
 import com.neurix.simrs.transaksi.hargaobat.model.HargaObat;
 import com.neurix.simrs.transaksi.hargaobat.model.MtSimrsHargaObatEntity;
 import com.neurix.simrs.transaksi.obatpoli.bo.ObatPoliBo;
@@ -902,6 +903,7 @@ public class TransaksiObatAction extends BaseMasterAction {
         PermintaanResepBo permintaanResepBo = (PermintaanResepBo) ctx.getBean("permintaanResepBoProxy");
         ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
         PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
 
         String namaApotek = "";
         String divisiId = "";
@@ -911,26 +913,32 @@ public class TransaksiObatAction extends BaseMasterAction {
         if (permintaanReseps.size() > 0){
             for (PermintaanResep dataPermintaan : permintaanReseps){
 
-                if (!"".equalsIgnoreCase(dataPermintaan.getIdPelayanan())){
+                if (dataPermintaan.getIdDetailCheckup() != null){
 
-                    try {
-                        ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(dataPermintaan.getIdPelayanan());
-                        if (pelayananEntity != null && pelayananEntity.getKodering() != null){
-                            divisiId = pelayananEntity.getKodering();
-                        } else {
+                    ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailBo.getDetailCheckupById(dataPermintaan.getIdDetailCheckup());
+                    if (detailCheckupEntity != null){
+                        try {
+                            ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(detailCheckupEntity.getIdPelayanan());
+                            if (pelayananEntity != null && pelayananEntity.getKodering() != null){
+                                divisiId = pelayananEntity.getKodering();
+                            } else {
+                                response.setStatus("error");
+                                response.setMsg("[TransaksiObatAction.createJurnalPengeluaranObatApotik] tidak ditemukan data kodering");
+                                return response;
+                            }
+                        } catch (GeneralBOException e){
                             response.setStatus("error");
-                            response.setMsg("[TransaksiObatAction.createJurnalPengeluaranObatApotik] tidak ditemukan data kodering");
+                            response.setMsg("[TransaksiObatAction.createJurnalPengeluaranObatApotik] tidak ditemukan idPelayanan");
                             return response;
                         }
-                    } catch (GeneralBOException e){
+                    } else {
                         response.setStatus("error");
-                        response.setMsg("[TransaksiObatAction.createJurnalPengeluaranObatApotik] tidak ditemukan idPelayanan");
+                        response.setMsg("[TransaksiObatAction.createJurnalPengeluaranObatApotik] tidak ditemukan idDetailCheckup");
                         return response;
                     }
-
                 } else {
                     response.setStatus("error");
-                    response.setMsg("[TransaksiObatAction.createJurnalPengeluaranObatApotik] tidak ditemukan idPelayanan");
+                    response.setMsg("[TransaksiObatAction.createJurnalPengeluaranObatApotik] tidak ditemukan idDetailCheckup");
                     return response;
                 }
 

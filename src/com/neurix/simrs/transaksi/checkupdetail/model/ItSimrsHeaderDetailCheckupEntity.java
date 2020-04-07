@@ -61,6 +61,18 @@ public class ItSimrsHeaderDetailCheckupEntity implements Serializable{
     private String noPpkRujukan;
     private Date tglRujukan;
 
+    private String noJurnalTrans;
+    private String transDate;
+    private String transPeriode;
+
+    public String getTransPeriode() {
+        return transPeriode;
+    }
+
+    public void setTransPeriode(String transPeriode) {
+        this.transPeriode = transPeriode;
+    }
+
     public String getIdJenisPeriksaPasien() {
         return idJenisPeriksaPasien;
     }
@@ -413,6 +425,22 @@ public class ItSimrsHeaderDetailCheckupEntity implements Serializable{
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    public String getNoJurnalTrans() {
+        return noJurnalTrans;
+    }
+
+    public void setNoJurnalTrans(String noJurnalTrans) {
+        this.noJurnalTrans = noJurnalTrans;
+    }
+
+    public String getTransDate() {
+        return transDate;
+    }
+
+    public void setTransDate(String transDate) {
+        this.transDate = transDate;
     }
 
     @Override
