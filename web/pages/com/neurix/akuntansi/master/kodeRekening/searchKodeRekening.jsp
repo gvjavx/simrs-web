@@ -138,14 +138,14 @@
                                         </script>
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <%--<div class="form-group">
                                     <label class="control-label col-sm-4">Tipe Rekening</label>
                                     <div class="col-sm-4">
                                         <s:action id="initComboTipeRekening" namespace="/tipeRekening" name="initComboTipeRekening_tipeRekening"/>
                                         <s:select list="#initComboTipeRekening.listOfComboTipeRekening" id="tipeRekeningId" name="kodeRekening.tipeRekeningId"
                                                   listKey="tipeRekeningId" listValue="tipeRekeningName"  headerKey="" headerValue="[Select one]" cssClass="form-control" cssStyle="margin-top: 7px"/>
                                     </div>
-                                </div>
+                                </div>--%>
                                 <br>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4"></label>
@@ -443,7 +443,7 @@
                 "<th style='text-align: center; background-color:  #30d196'>COA ( Chart of Account )</th>"+
                 "<th style='text-align: center; background-color:  #30d196''>Nama Kode Rekening</th>"+
                 "<th style='text-align: center; background-color:  #30d196''>Level</th>"+
-                "<th style='text-align: center; background-color:  #30d196''>Tipe Rekening </th>"+
+                // "<th style='text-align: center; background-color:  #30d196''>Tipe Rekening </th>"+
                 "<th style='text-align: center; background-color:  #30d196'>Edit</th>"+
                 "<th style='text-align: center; background-color:  #30d196'>Delete</th>"+
                 "</tr></thead>";
@@ -453,7 +453,7 @@
                         '<td >' + data2[i].coa + '</td>' +
                         '<td >' + data2[i].nama + '</td>' +
                         '<td align="center" class="ceknull">' + data2[i].level+ '</td>' +
-                        '<td align="center" class="ceknull">' + data2[i].tipeRekeningName + '</td>' +
+                        // '<td align="center" class="ceknull">' + data2[i].tipeRekeningName + '</td>' +
                         '<td align="center">' +
                         "<a href='javascript:;' class ='item-edit' data ='"+data2[i]._id+"' >" +
                         "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>"+
@@ -471,7 +471,7 @@
                         '<td >' + data2[i].coa + '</td>' +
                         '<td >' + data2[i].nama + '</td>' +
                         '<td align="center" class="ceknull">' + data2[i].level + '</td>' +
-                        '<td align="center" class="ceknull">' + data2[i].tipeRekeningName + '</td>' +
+                        // '<td align="center" class="ceknull">' + data2[i].tipeRekeningName + '</td>' +
                         '<td align="center">' +
                         "<a href='javascript:;' class ='item-edit' data ='"+data2[i]._id+"' >" +
                         "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>"+

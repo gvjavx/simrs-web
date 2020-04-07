@@ -80,7 +80,6 @@
     <section class="content-header">
         <h1>
             Lembur
-            <small>HRIS</small>
         </h1>
     </section>
 

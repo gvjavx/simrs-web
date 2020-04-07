@@ -161,7 +161,6 @@
     <section class="content-header">
         <h1>
             Proses Absensi
-            <small>HRIS</small>
         </h1>
     </section>
     <section class="content">
@@ -278,28 +277,64 @@
                                                 <div id="crud">
                                                     <td>
                                                         <table>
-                                                            <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"
+                                                            <sj:dialog id="waiting_dialog" openTopics="showDialog"
+                                                                       closeTopics="closeDialog" modal="true"
                                                                        resizable="false"
-                                                                       height="350" width="600" autoOpen="false" title="Saving ...">
+                                                                       height="250" width="600" autoOpen="false"
+                                                                       title="Processing ...">
                                                                 Please don't close this window, server is processing your request ...
-                                                                </br>
-                                                                </br>
-                                                                </br>
+                                                                <br>
                                                                 <center>
-                                                                    <img border="0" src="<s:url value="/pages/images/indicator-write.gif"/>" name="image_indicator_write">
+                                                                    <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                                         src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                                         name="image_indicator_write">
+                                                                    <br>
+                                                                    <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                                         src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                                         name="image_indicator_write">
                                                                 </center>
                                                             </sj:dialog>
-                                                            <sj:dialog id="waiting_dialog_inquiry" openTopics="showDialogInquiry" closeTopics="closeDialogInquiry" modal="true"
+
+                                                            <%--<sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"--%>
+                                                                       <%--resizable="false"--%>
+                                                                       <%--height="350" width="600" autoOpen="false" title="Saving ...">--%>
+                                                                <%--Please don't close this window, server is processing your request ...--%>
+                                                                <%--</br>--%>
+                                                                <%--</br>--%>
+                                                                <%--</br>--%>
+                                                                <%--<center>--%>
+                                                                    <%--<img border="0" src="<s:url value="/pages/images/indicator-write.gif"/>" name="image_indicator_write">--%>
+                                                                <%--</center>--%>
+                                                            <%--</sj:dialog>--%>
+                                                            <sj:dialog id="waiting_dialog_inquiry" openTopics="showDialogInquiry"
+                                                                       closeTopics="closeDialogInquiry" modal="true"
                                                                        resizable="false"
-                                                                       height="350" width="600" autoOpen="false" title="Inquiring ...">
+                                                                       height="250" width="600" autoOpen="false"
+                                                                       title="Inquiring ...">
                                                                 Please don't close this window, server is processing your request ...
-                                                                </br>
-                                                                </br>
-                                                                </br>
+                                                                <br>
                                                                 <center>
-                                                                    <img border="0" src="<s:url value="/pages/images/indicator-write.gif"/>" name="image_indicator_write">
+                                                                    <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                                         src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                                         name="image_indicator_write">
+                                                                    <br>
+                                                                    <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                                         src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                                         name="image_indicator_write">
                                                                 </center>
                                                             </sj:dialog>
+
+                                                            <%--<sj:dialog id="waiting_dialog_inquiry" openTopics="showDialogInquiry" closeTopics="closeDialogInquiry" modal="true"--%>
+                                                                       <%--resizable="false"--%>
+                                                                       <%--height="350" width="600" autoOpen="false" title="Inquiring ...">--%>
+                                                                <%--Please don't close this window, server is processing your request ...--%>
+                                                                <%--</br>--%>
+                                                                <%--</br>--%>
+                                                                <%--</br>--%>
+                                                                <%--<center>--%>
+                                                                    <%--<img border="0" src="<s:url value="/pages/images/indicator-write.gif"/>" name="image_indicator_write">--%>
+                                                                <%--</center>--%>
+                                                            <%--</sj:dialog>--%>
                                                             <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false"
                                                                        height="200" width="400" autoOpen="false" title="Infomation Dialog"
                                                                        buttons="{

@@ -10,9 +10,12 @@ import com.neurix.akuntansi.master.trans.dao.TransDao;
 import com.neurix.akuntansi.master.trans.model.ImTransEntity;
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDao;
+import com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDetailActivityDao;
 import com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDetailDao;
+import com.neurix.akuntansi.transaksi.jurnal.model.ItJurnalDetailActivityEntity;
 import com.neurix.akuntansi.transaksi.jurnal.model.ItJurnalDetailEntity;
 import com.neurix.akuntansi.transaksi.jurnal.model.ItJurnalEntity;
+import com.neurix.akuntansi.transaksi.jurnal.model.JurnalDetailActivity;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import org.apache.log4j.Logger;
@@ -29,12 +32,21 @@ public class BillingSystemBoImpl implements BillingSystemBo {
 
     private JurnalDao jurnalDao;
     private JurnalDetailDao jurnalDetailDao;
+    private JurnalDetailActivityDao jurnalDetailActivityDao;
     private MappingJurnalDao mappingJurnalDao;
     private KodeRekeningDao kodeRekeningDao;
     private String userLogin;
     private Timestamp updateTime;
     private TipeJurnalDao tipeJurnalDao;
     private TransDao transDao;
+
+    public JurnalDetailActivityDao getJurnalDetailActivityDao() {
+        return jurnalDetailActivityDao;
+    }
+
+    public void setJurnalDetailActivityDao(JurnalDetailActivityDao jurnalDetailActivityDao) {
+        this.jurnalDetailActivityDao = jurnalDetailActivityDao;
+    }
 
     public TransDao getTransDao() {
         return transDao;
@@ -227,7 +239,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                 }
             }else if (("tunai").equalsIgnoreCase(metodeBayar)){
                 try {
-                    rekeningIdKas = kodeRekeningDao.searchRekeningIdTunaiLikeName("Kas Tunai");
+                    rekeningIdKas = kodeRekeningDao.searchRekeningIdTunaiLikeName("KAS BESAR/TUNAI");
                 } catch (HibernateException e) {
                     logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
@@ -243,10 +255,13 @@ public class BillingSystemBoImpl implements BillingSystemBo {
         if (mappingJurnal.size()!=0){
             //Membuat jurnal berdasarkan mapping kemudian dimasukkan di List
             List<ItJurnalDetailEntity> jurnalDetailEntityList = new ArrayList<>();
+            List<ItJurnalDetailActivityEntity> jurnalDetailActivityEntityList = new ArrayList<>();
+
             BigDecimal totalDebit= new BigDecimal(0);
             BigDecimal totalKredit= new BigDecimal(0);
             for (ImMappingJurnalEntity mapping : mappingJurnal){
                 if (mapping.getKeterangan()!=null){
+                    String jurnalDetailId=jurnalDetailDao.getNextJurnalDetailId();
                     String rekeningId = null;
                     String nomorRekening = null;
                     if (data.get("master_id")!=null){
@@ -255,8 +270,8 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                     if (data.get("pasien_id")!=null){
                         pasienId = (String) data.get("pasien_id");
                     }
-                    if (data.get("divisi")!=null){
-                        divisiId = (String) data.get("divisi");
+                    if (data.get("divisi_id")!=null){
+                        divisiId = (String) data.get("divisi_id");
                     }
                     ///////////////////////DIGUNAKAN UNTUK PENGECEKAN KAS  //////////////////////////////
                     if (("kas").equalsIgnoreCase(mapping.getKeterangan())){
@@ -300,7 +315,6 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                     }else{
                         divisiId=null;
                     }
-
                     ///////////////////////DIGUNAKAN UNTUK PENGECEKAN DAN PENGAMBILAN BUKTI DAN NILAI UNTUK JURNAL BUKAN LIST  //////////////////////////////
                     if (rekeningId !=null){
                         if (data.get(mapping.getKeterangan())!=null){
@@ -343,6 +357,56 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                                         throw new GeneralBOException("Found problem "+status+", please info to your admin...");
                                     }
                                 }
+                                //mendapatkan nilai activity jika bukan list
+                                if (data.get("activity")!=null){
+                                    try{
+                                        List<Map> activityList = (List<Map>) data.get("activity");
+                                        BigDecimal nilaiActivity = BigDecimal.ZERO;
+                                        for (int x=0;x<activityList.size();x++){
+                                            ItJurnalDetailActivityEntity saveActivity = new ItJurnalDetailActivityEntity();
+                                            if (activityList.get(x).get("activity_id")!=null){
+                                                saveActivity.setActivityId((String)activityList.get(x).get("activity_id"));
+                                            }else{
+                                                status="ERROR : Activity ID tidak ditemukan";
+                                                logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
+                                                throw new GeneralBOException("Found problem "+status+", please info to your admin...");
+                                            }
+                                            if (activityList.get(x).get("person_id")!=null){
+                                                saveActivity.setPersonId((String)activityList.get(x).get("person_id"));
+                                            }else{
+                                                status="ERROR : Person ID tidak ditemukan";
+                                                logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
+                                                throw new GeneralBOException("Found problem "+status+", please info to your admin...");
+                                            }
+                                            if (activityList.get(x).get("nilai")!=null){
+                                                saveActivity.setJumlah((BigDecimal)activityList.get(x).get("nilai"));
+                                            }else{
+                                                status="ERROR : nilai tidak ditemukan";
+                                                logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
+                                                throw new GeneralBOException("Found problem "+status+", please info to your admin...");
+                                            }
+                                            saveActivity.setJurnalDetailActivityId(jurnalDetailActivityDao.getNextJurnalActivityId());
+                                            saveActivity.setJurnalDetailId(jurnalDetailId);
+                                            saveActivity.setFlag("Y");
+                                            saveActivity.setAction("C");
+                                            saveActivity.setCreatedDate(updateTime);
+                                            saveActivity.setLastUpdate(updateTime);
+                                            saveActivity.setCreatedWho(userLogin);
+                                            saveActivity.setLastUpdateWho(userLogin);
+
+                                            nilaiActivity = nilaiActivity.add(saveActivity.getJumlah());
+                                            jurnalDetailActivityEntityList.add(saveActivity);
+                                        }
+                                        if (nilaiActivity.compareTo(nilai)!=0){
+                                            status="ERROR : Total Nilai Activity dan nilai yang dikirim tidak sesuai";
+                                            logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
+                                            throw new GeneralBOException("Found problem "+status+", please info to your admin...");
+                                        }
+                                    }catch (Exception e){
+                                        logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+e.getMessage());
+                                        throw new GeneralBOException("Found problem "+e.getMessage()+", please info to your admin...");
+                                    }
+                                }
                             }
 
                             ///////////////////////MEMASUKKAN KE ENTITY  //////////////////////////////
@@ -367,8 +431,8 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                                             }
                                         }
                                         if (("Y").equalsIgnoreCase(mapping.getDivisiId())){
-                                            if (mapList.get(i).get("divisi")!=null){
-                                                divisiIdLoop=(String)mapList.get(i).get("divisi");
+                                            if (mapList.get(i).get("divisi_id")!=null){
+                                                divisiIdLoop=(String)mapList.get(i).get("divisi_id");
                                             }else{
                                                 status="ERROR : ada divisi belum di kirim";
                                                 logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
@@ -395,15 +459,15 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                                         }
 
                                         ///////////////////////MEMASUKKAN KE ENTITY  //////////////////////////////
-                                        String jurnalDetailId="";
+                                        String jurnalDetailIdLoop="";
                                         ItJurnalDetailEntity jurnalDetailEntity = new ItJurnalDetailEntity();
                                         try {
-                                            jurnalDetailId=jurnalDetailDao.getNextJurnalDetailId();
+                                            jurnalDetailIdLoop=jurnalDetailDao.getNextJurnalDetailId();
                                         } catch (HibernateException e) {
                                             logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail] Error, " + e.getMessage());
                                             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
                                         }
-                                        jurnalDetailEntity.setJurnalDetailId(jurnalDetailId);
+                                        jurnalDetailEntity.setJurnalDetailId(jurnalDetailIdLoop);
                                         jurnalDetailEntity.setRekeningId(rekeningId);
                                         jurnalDetailEntity.setBiaya(null);
                                         jurnalDetailEntity.setMasterId(masterIdLoop);
@@ -433,6 +497,56 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                                         totalDebit = totalDebit.add(jurnalDetailEntity.getJumlahDebit());
                                         totalKredit = totalKredit.add(jurnalDetailEntity.getJumlahKredit());
                                         jurnalDetailEntityList.add(jurnalDetailEntity);
+
+                                        if (mapList.get(i).get("activity")!=null){
+                                            try{
+                                                List<Map> activityList = (List<Map>) mapList.get(i).get("activity");
+                                                BigDecimal nilaiActivity = BigDecimal.ZERO;
+                                                for (int x=0;x<activityList.size();x++){
+                                                    ItJurnalDetailActivityEntity saveActivity = new ItJurnalDetailActivityEntity();
+                                                    if (activityList.get(i).get("activity_id")!=null){
+                                                        saveActivity.setActivityId((String)activityList.get(i).get("activity_id"));
+                                                    }else{
+                                                        status="ERROR : Activity ID tidak ditemukan";
+                                                        logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
+                                                        throw new GeneralBOException("Found problem "+status+", please info to your admin...");
+                                                    }
+                                                    if (activityList.get(i).get("person_id")!=null){
+                                                        saveActivity.setPersonId((String)activityList.get(i).get("person_id"));
+                                                    }else{
+                                                        status="ERROR : Person ID tidak ditemukan";
+                                                        logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
+                                                        throw new GeneralBOException("Found problem "+status+", please info to your admin...");
+                                                    }
+                                                    if (activityList.get(i).get("nilai")!=null){
+                                                        saveActivity.setJumlah((BigDecimal)activityList.get(i).get("nilai"));
+                                                    }else{
+                                                        status="ERROR : nilai tidak ditemukan";
+                                                        logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
+                                                        throw new GeneralBOException("Found problem "+status+", please info to your admin...");
+                                                    }
+                                                    saveActivity.setJurnalDetailActivityId(jurnalDetailActivityDao.getNextJurnalActivityId());
+                                                    saveActivity.setJurnalDetailId(jurnalDetailId);
+                                                    saveActivity.setFlag("Y");
+                                                    saveActivity.setAction("C");
+                                                    saveActivity.setCreatedDate(updateTime);
+                                                    saveActivity.setLastUpdate(updateTime);
+                                                    saveActivity.setCreatedWho(userLogin);
+                                                    saveActivity.setLastUpdateWho(userLogin);
+
+                                                    nilaiActivity = nilaiActivity.add(saveActivity.getJumlah());
+                                                    jurnalDetailActivityEntityList.add(saveActivity);
+                                                }
+                                                if (nilaiActivity.compareTo(nilaiLoop)!=0){
+                                                    status="ERROR : Total Nilai Activity dan nilai yang dikirim tidak sesuai";
+                                                    logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
+                                                    throw new GeneralBOException("Found problem "+status+", please info to your admin...");
+                                                }
+                                            }catch (Exception e){
+                                                logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+e.getMessage());
+                                                throw new GeneralBOException("Found problem "+e.getMessage()+", please info to your admin...");
+                                            }
+                                        }
                                     }
                                 }else{
                                     status="ERROR : Tidak bisa mendapat map list";
@@ -471,8 +585,8 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                                             masterId=null;
                                         }
                                         if (("Y").equalsIgnoreCase(mapping.getDivisiId())){
-                                            if (mapList.get(i).get("divisi")!=null){
-                                                divisiId=(String)mapList.get(i).get("divisi");
+                                            if (mapList.get(i).get("divisi_id")!=null){
+                                                divisiId=(String)mapList.get(i).get("divisi_id");
                                             }else{
                                                 status="ERROR : ada divisi belum di kirim";
                                                 logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
@@ -519,7 +633,58 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                                         totalDebit = totalDebit.add(jurnalBarang.getJumlahDebit());
                                         totalKredit = totalKredit.add(jurnalBarang.getJumlahKredit());
                                         jurnalDetailEntityList.add(jurnalBarang);
+
+                                        if (mapList.get(i).get("activity")!=null){
+                                            try{
+                                                List<Map> activityList = (List<Map>) mapList.get(i).get("activity");
+                                                BigDecimal nilaiActivity = BigDecimal.ZERO;
+                                                for (int x=0;x<activityList.size();x++){
+                                                    ItJurnalDetailActivityEntity saveActivity = new ItJurnalDetailActivityEntity();
+                                                    if (activityList.get(i).get("activity_id")!=null){
+                                                        saveActivity.setActivityId((String)activityList.get(i).get("activity_id"));
+                                                    }else{
+                                                        status="ERROR : Activity ID tidak ditemukan";
+                                                        logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
+                                                        throw new GeneralBOException("Found problem "+status+", please info to your admin...");
+                                                    }
+                                                    if (activityList.get(i).get("person_id")!=null){
+                                                        saveActivity.setPersonId((String)activityList.get(i).get("person_id"));
+                                                    }else{
+                                                        status="ERROR : Person ID tidak ditemukan";
+                                                        logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
+                                                        throw new GeneralBOException("Found problem "+status+", please info to your admin...");
+                                                    }
+                                                    if (activityList.get(i).get("nilai")!=null){
+                                                        saveActivity.setJumlah((BigDecimal)activityList.get(i).get("nilai"));
+                                                    }else{
+                                                        status="ERROR : nilai tidak ditemukan";
+                                                        logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
+                                                        throw new GeneralBOException("Found problem "+status+", please info to your admin...");
+                                                    }
+                                                    saveActivity.setJurnalDetailActivityId(jurnalDetailActivityDao.getNextJurnalActivityId());
+                                                    saveActivity.setJurnalDetailId(jurnalDetailBarangId);
+                                                    saveActivity.setFlag("Y");
+                                                    saveActivity.setAction("C");
+                                                    saveActivity.setCreatedDate(updateTime);
+                                                    saveActivity.setLastUpdate(updateTime);
+                                                    saveActivity.setCreatedWho(userLogin);
+                                                    saveActivity.setLastUpdateWho(userLogin);
+
+                                                    nilaiActivity = nilaiActivity.add(saveActivity.getJumlah());
+                                                    jurnalDetailActivityEntityList.add(saveActivity);
+                                                }
+                                                if (nilaiActivity.compareTo(biayaPembayaranBarang)!=0){
+                                                    status="ERROR : Total Nilai Activity dan nilai yang dikirim tidak sesuai";
+                                                    logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
+                                                    throw new GeneralBOException("Found problem "+status+", please info to your admin...");
+                                                }
+                                            }catch (Exception e){
+                                                logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+e.getMessage());
+                                                throw new GeneralBOException("Found problem "+e.getMessage()+", please info to your admin...");
+                                            }
+                                        }
                                     }
+
                                 }else{
                                     status="ERROR : Tidak bisa mendapat map list";
                                     logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
@@ -544,7 +709,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                                 jurnalDetailEntity.setCreatedWho(userLogin);
                                 jurnalDetailEntity.setLastUpdateWho(userLogin);
 
-                                jurnalDetailEntity.setJurnalDetailId(jurnalDetailDao.getNextJurnalDetailId());
+                                jurnalDetailEntity.setJurnalDetailId(jurnalDetailId);
                                 if (("D").equalsIgnoreCase(mapping.getPosisi())){
                                     jurnalDetailEntity.setJumlahDebit(nilai);
                                     jurnalDetailEntity.setJumlahKredit(BigDecimal.ZERO);
@@ -568,6 +733,8 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                                 // Total dari pembayaran debet dan kredit untuk nanti disamakan
                                 totalDebit = totalDebit.add(jurnalDetailEntity.getJumlahDebit());
                                 totalKredit = totalKredit.add(jurnalDetailEntity.getJumlahKredit());
+
+
                                 jurnalDetailEntityList.add(jurnalDetailEntity);
                             }
                         }else{

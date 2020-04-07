@@ -4127,7 +4127,7 @@ public class BiodataBoImpl implements BiodataBo {
                 }else{
                     historyJabatanPegawai.setBranchName("-");
                 }
-
+                historyJabatanPegawai.setStatus(imtHistory.getStatus());
                 historyJabatanPegawai.setTahun(imtHistory.getTahun());
                 historyJabatanPegawai.setTanggal(imtHistory.getTanggal());
                 historyJabatanPegawai.setPjsFlag(imtHistory.getPjsFlag());

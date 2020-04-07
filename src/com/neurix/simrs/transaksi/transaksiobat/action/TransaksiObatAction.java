@@ -13,6 +13,7 @@ import com.neurix.simrs.master.obat.bo.ObatBo;
 import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
 import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
+import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.JurnalResponse;
@@ -903,11 +904,35 @@ public class TransaksiObatAction extends BaseMasterAction {
         PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
 
         String namaApotek = "";
+        String divisiId = "";
         PermintaanResep permintaanResep = new PermintaanResep();
         permintaanResep.setIdApprovalObat(idApprove);
         List<PermintaanResep> permintaanReseps = permintaanResepBo.getByCriteria(permintaanResep);
         if (permintaanReseps.size() > 0){
             for (PermintaanResep dataPermintaan : permintaanReseps){
+
+                if (!"".equalsIgnoreCase(dataPermintaan.getIdPelayanan())){
+
+                    try {
+                        ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(dataPermintaan.getIdPelayanan());
+                        if (pelayananEntity != null && pelayananEntity.getKodering() != null){
+                            divisiId = pelayananEntity.getKodering();
+                        } else {
+                            response.setStatus("error");
+                            response.setMsg("[TransaksiObatAction.createJurnalPengeluaranObatApotik] tidak ditemukan data kodering");
+                            return response;
+                        }
+                    } catch (GeneralBOException e){
+                        response.setStatus("error");
+                        response.setMsg("[TransaksiObatAction.createJurnalPengeluaranObatApotik] tidak ditemukan idPelayanan");
+                        return response;
+                    }
+
+                } else {
+                    response.setStatus("error");
+                    response.setMsg("[TransaksiObatAction.createJurnalPengeluaranObatApotik] tidak ditemukan idPelayanan");
+                    return response;
+                }
 
                 Pelayanan pelayanan = new Pelayanan();
                 pelayanan.setIdPelayanan(dataPermintaan.getTujuanPelayanan());
@@ -954,6 +979,7 @@ public class TransaksiObatAction extends BaseMasterAction {
         }
 
         Map mapJurnal = new HashMap();
+        mapJurnal.put("divisi_id", divisiId);
         mapJurnal.put("biaya_persediaan_obat", biayaPersediaan);
         mapJurnal.put("persediaan_apotik", listMapPersediaan);
 
@@ -966,7 +992,7 @@ public class TransaksiObatAction extends BaseMasterAction {
         String noJurnal = "";
 
         try {
-            noJurnal = billingSystemBo.createJurnal("17", mapJurnal, branchId, catatan, "Y");
+            noJurnal = billingSystemBo.createJurnal("30", mapJurnal, branchId, catatan, "Y");
             response.setNoJurnal(noJurnal);
             response.setStatus("success");
         } catch (GeneralBOException e) {

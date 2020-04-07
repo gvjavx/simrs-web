@@ -68,7 +68,7 @@
                         <%--&lt;%&ndash;<img src="/hris/pages/images/logo-nmu.webp" width="10%" alt="User Image" width="125px">&ndash;%&gt;--%>
                     <%--</div>--%>
                 <div style="color: #000;">
-                    <strong>Welcome to <span style="color: #50d4a3">GO-HEALTH PT. Nusantara Medika Utama</span></strong><br/>
+                    <strong>Welcome to <span style="color: #50d4a3">GO-MEDSYS PT. Nusantara Medika Utama</span></strong><br/>
                     You in Cloud now and simplify your work
                 </div>
                 </div>
