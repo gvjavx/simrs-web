@@ -14,12 +14,21 @@ public class ImDepartmentEntity implements Serializable {
 
     private String departmentId;
     private String departmentName;
+    private String kodering;
     private String flag;
     private String action;
     private Timestamp createdDate;
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+    public String getKodering() {
+        return kodering;
+    }
+
+    public void setKodering(String kodering) {
+        this.kodering = kodering;
+    }
 
     public String getDepartmentId() {
         return departmentId;

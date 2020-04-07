@@ -21,6 +21,15 @@ public class LoginMobile implements Serializable {
     private String photoUrl;
     private String idPelayanan;
     private String idDevice;
+    private String pin;
+
+    public String getPin() {
+        return pin;
+    }
+
+    public void setPin(String pin) {
+        this.pin = pin;
+    }
 
     public String getIdDevice() {
         return idDevice;

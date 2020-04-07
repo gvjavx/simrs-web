@@ -22,6 +22,16 @@ public class UangMuka extends BaseModel {
     private BigInteger dibayar;
     private String noJurnal;
 
+    private String flagRefund;
+
+    public String getFlagRefund() {
+        return flagRefund;
+    }
+
+    public void setFlagRefund(String flagRefund) {
+        this.flagRefund = flagRefund;
+    }
+
     public String getNoJurnal() {
         return noJurnal;
     }

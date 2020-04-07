@@ -197,15 +197,19 @@
     <include file="sshconfig/com/neurix/simrs/transaksi/verifikator/struts/VerifRawatInapAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/verifikator/struts/VerifRawatJalanAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/permintaangizi/struts/PermintaanGiziAction.xml"/>
-
     <include file="sshconfig/com/neurix/simrs/transaksi/kasirrawatinap/struts/KasirRawatInapAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/kasirrawatjalan/struts/KasirRawatJalanAction.xml"/>
-
     <include file="sshconfig/com/neurix/simrs/transaksi/monitorruangan/struts/MonitorRuanganAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/kasirrawatjalan/struts/UangMukaAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/master/obat/struts/HargaObatAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/kasirrawatjalan/struts/CreateFpkAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/master/vendor/struts/VendorAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/paketperiksa/struts/PaketPeriksaAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/paketperiksa/struts/DaftarPaketPeriksaAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/statusperiksa/struts/StatusPeriksaAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/daftarulang/struts/DaftarUlangAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/master/obat/struts/ReturObatAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/plankegiatanrawat/struts/PlanKegiatanRawatAction.xml"/>
 
     <!--AKUNTANSI-->
     <!--MASTER -->
@@ -221,5 +225,7 @@
     <include file="sshconfig/com/neurix/akuntansi/master/mappingJurnal/struts/MappingJurnalAction.xml"/>
     <include file="sshconfig/com/neurix/akuntansi/master/masterVendor/struts/MasterVendorAction.xml"/>
     <include file="sshconfig/com/neurix/akuntansi/master/settingReportUser/struts/SettingReportUserAction.xml"/>
+    <include file="sshconfig/com/neurix/akuntansi/transaksi/tutupperiod/struts/SettingTutupPeriodAction.xml"/>
+    <include file="sshconfig/com/neurix/akuntansi/transaksi/tutupperiod/struts/TutupPeriodAction.xml"/>
 
 </struts>

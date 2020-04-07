@@ -12,6 +12,15 @@ import com.neurix.common.model.BaseModel;
 public class Department extends BaseModel {
     private String departmentId;
     private String departmentName;
+    private String kodering;
+
+    public String getKodering() {
+        return kodering;
+    }
+
+    public void setKodering(String kodering) {
+        this.kodering = kodering;
+    }
 
     public String getDepartmentId() {
         return departmentId;

@@ -8,6 +8,7 @@
     <bean id="permintaanVendorAction" class="com.neurix.simrs.transaksi.permintaanvendor.action.PermintaanVendorAction"
           p:permintaanVendorBoProxy-ref="permintaanVendorBoProxy"
           p:vendorBoProxy-ref="vendorBoProxy"
+          p:branchBoProxy-ref="branchBoProxy"
     />
 
     <bean id="purchaseOrderContoller" class="com.neurix.simrs.mobileapi.PurchaseOrderController"
@@ -19,9 +20,10 @@
          p:approvalTransaksiObatDao-ref="approvalTransaksiObatDao"
          p:transaksiObatDetailDao-ref="transaksiObatDetailDao"
          p:obatDao-ref="obatDao"
-          p:tempObatGejalaDao-ref="tempObatGejalaDao"
-          p:transaksiObatDetailBatchDao-ref="transaksiObatDetailBatchDao"
-          p:vendorDao-ref="vendorDao"
+         p:tempObatGejalaDao-ref="tempObatGejalaDao"
+         p:transaksiObatDetailBatchDao-ref="transaksiObatDetailBatchDao"
+         p:vendorDao-ref="vendorDao"
+         p:obatGejalaDao-ref="obatGejalaDao"
     />
 
     <bean id="permintaanVendorBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

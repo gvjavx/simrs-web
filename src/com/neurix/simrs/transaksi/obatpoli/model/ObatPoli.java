@@ -34,6 +34,16 @@ public class ObatPoli {
     private Date expiredDate;
     private String flagKronis;
 
+    private String harga;
+
+    public String getHarga() {
+        return harga;
+    }
+
+    public void setHarga(String harga) {
+        this.harga = harga;
+    }
+
     public String getExp() {
         return exp;
     }

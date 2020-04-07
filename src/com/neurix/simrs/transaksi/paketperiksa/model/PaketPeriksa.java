@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.paketperiksa.model;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 /**
@@ -19,6 +20,148 @@ public class PaketPeriksa {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+
+    private String idPelayanan;
+    private String branchId;
+    private String jumlah;
+
+    private String idPasien;
+    private String namaPasien;
+
+    private String idKategoriItem;
+    private String idItem;
+    private String jenisItem;
+
+    private String idPaketPasien;
+
+    private String keterangan;
+
+    private String idItemPaket;
+
+    private BigDecimal tarif;
+    private String namaLab;
+    private String idLab;
+    private String namaPelayanan;
+
+    public String getNamaPelayanan() {
+        return namaPelayanan;
+    }
+
+    public void setNamaPelayanan(String namaPelayanan) {
+        this.namaPelayanan = namaPelayanan;
+    }
+
+    public String getNamaLab() {
+        return namaLab;
+    }
+
+    public void setNamaLab(String namaLab) {
+        this.namaLab = namaLab;
+    }
+
+    public String getIdLab() {
+        return idLab;
+    }
+
+    public void setIdLab(String idLab) {
+        this.idLab = idLab;
+    }
+
+    public BigDecimal getTarif() {
+        return tarif;
+    }
+
+    public void setTarif(BigDecimal tarif) {
+        this.tarif = tarif;
+    }
+
+    public String getIdItemPaket() {
+        return idItemPaket;
+    }
+
+    public void setIdItemPaket(String idItemPaket) {
+        this.idItemPaket = idItemPaket;
+    }
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
+    public String getIdPaketPasien() {
+        return idPaketPasien;
+    }
+
+    public void setIdPaketPasien(String idPaketPasien) {
+        this.idPaketPasien = idPaketPasien;
+    }
+
+    public String getIdKategoriItem() {
+        return idKategoriItem;
+    }
+
+    public void setIdKategoriItem(String idKategoriItem) {
+        this.idKategoriItem = idKategoriItem;
+    }
+
+    public String getIdItem() {
+        return idItem;
+    }
+
+    public void setIdItem(String idItem) {
+        this.idItem = idItem;
+    }
+
+    public String getJenisItem() {
+        return jenisItem;
+    }
+
+    public void setJenisItem(String jenisItem) {
+        this.jenisItem = jenisItem;
+    }
+
+    public String getNamaPasien() {
+        return namaPasien;
+    }
+
+    public void setNamaPasien(String namaPasien) {
+        this.namaPasien = namaPasien;
+    }
+
+    public String getIdPasien() {
+        return idPasien;
+    }
+
+    public void setIdPasien(String idPasien) {
+        this.idPasien = idPasien;
+    }
+
+    public String getJumlah() {
+        return jumlah;
+    }
+
+    public void setJumlah(String jumlah) {
+        this.jumlah = jumlah;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
+    public String getIdPelayanan() {
+        return idPelayanan;
+    }
+
+    public void setIdPelayanan(String idPelayanan) {
+        this.idPelayanan = idPelayanan;
+    }
 
     public String getIdPaket() {
         return idPaket;

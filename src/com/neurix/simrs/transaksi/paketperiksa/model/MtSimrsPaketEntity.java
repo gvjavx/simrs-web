@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.paketperiksa.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 /**
@@ -11,7 +12,6 @@ public class MtSimrsPaketEntity implements Serializable {
     private String idPaket;
     private String namaPaket;
     private String idKelasPaket;
-    private String idPerusahaan;
     private String flag;
     private String action;
     private Timestamp createdDate;
@@ -19,6 +19,25 @@ public class MtSimrsPaketEntity implements Serializable {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String branchId;
+
+    private String idPelayanan;
+    private BigDecimal tarif;
+
+    public BigDecimal getTarif() {
+        return tarif;
+    }
+
+    public void setTarif(BigDecimal tarif) {
+        this.tarif = tarif;
+    }
+
+    public String getIdPelayanan() {
+        return idPelayanan;
+    }
+
+    public void setIdPelayanan(String idPelayanan) {
+        this.idPelayanan = idPelayanan;
+    }
 
     public String getIdPaket() {
         return idPaket;
@@ -44,13 +63,6 @@ public class MtSimrsPaketEntity implements Serializable {
         this.idKelasPaket = idKelasPaket;
     }
 
-    public String getIdPerusahaan() {
-        return idPerusahaan;
-    }
-
-    public void setIdPerusahaan(String idPerusahaan) {
-        this.idPerusahaan = idPerusahaan;
-    }
 
     public String getFlag() {
         return flag;

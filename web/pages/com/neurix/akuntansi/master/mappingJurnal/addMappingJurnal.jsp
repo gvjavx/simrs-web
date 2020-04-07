@@ -367,6 +367,15 @@
                         </div>
                         <div class="row" style="margin-top: 7px">
                             <div class="col-sm-offset-2 col-sm-3">
+                                <label class="control-label">Divisi ID</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <s:select list="#{'Y':'Y'}" id="modDivisi"
+                                          headerKey="N" headerValue="N" cssClass="form-control" />
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top: 7px">
+                            <div class="col-sm-offset-2 col-sm-3">
                                 <label class="control-label">List Kirim</label>
                             </div>
                             <div class="col-sm-4">
@@ -409,6 +418,7 @@
                     "<th style='text-align: center; background-color:  #90ee90'>Master</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Bukti</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Kode Barang</th>"+
+                    "<th style='text-align: center; background-color:  #90ee90'>Divisi ID</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>List Kirim</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Parameter</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Delete</th>"+
@@ -423,6 +433,7 @@
                         '<td align="center">' + item.masterId+ '</td>' +
                         '<td align="center">' + item.bukti + '</td>' +
                         '<td align="center">' + item.kodeBarang + '</td>' +
+                        '<td align="center">' + item.divisiId + '</td>' +
                         '<td align="center">' + item.kirimList + '</td>' +
                         '<td align="center">' + item.keterangan + '</td>' +
                         '<td align="center">' +
@@ -452,11 +463,12 @@
             var master =$('#modMasterId').val();
             var bukti = $('#modBukti').val();
             var kodeBarang = $('#modKdBarang').val();
+            var divisiId = $('#modDivisi').val();
             var listKirim = $('#modListKirim').val();
             var keterangan = $('#modKeterangan').val();
             dwr.engine.setAsync(false);
-            if(kodeRekening!=''&&posisi!=''&&master!=''&&bukti!=''&&kodeBarang!=''&&listKirim!=''&&keterangan!=''&&kodeRekeningname!=''){
-                MappingJurnalAction.saveKodeRekeningSession(kodeRekening,posisi,master,bukti,kodeBarang,listKirim,keterangan,kodeRekeningname,function() {
+            if(kodeRekening!=''&&posisi!=''&&master!=''&&bukti!=''&&kodeBarang!=''&&listKirim!=''&&keterangan!=''&&kodeRekeningname!=''&&divisiId!=''){
+                MappingJurnalAction.saveKodeRekeningSession(kodeRekening,posisi,master,bukti,kodeBarang,listKirim,keterangan,kodeRekeningname,divisiId,function() {
                     listResult();
                 });
                 $('#modal-edit').modal('hide');
@@ -485,6 +497,9 @@
                 }
                 if (keterangan==""){
                     msg+="Parameter masih kosong \n";
+                }
+                if (divisiId==""){
+                    msg+="Divisi ID masih kosong \n";
                 }
                 alert(msg);
             }

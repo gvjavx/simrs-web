@@ -191,7 +191,7 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
             flag = bean.getFlag();
         }
 
-        String SQL = "SELECT a.id_permintaan_resep, a.id_detail_checkup, c.nama, d.keterangan, a.id_approval_obat, c.id_jenis_periksa_pasien FROM mt_simrs_permintaan_resep a\n" +
+        String SQL = "SELECT a.id_permintaan_resep, a.id_detail_checkup, c.nama, d.keterangan, a.id_approval_obat, b.id_jenis_periksa_pasien FROM mt_simrs_permintaan_resep a\n" +
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.id_detail_checkup = b.id_detail_checkup\n" +
                 "INNER JOIN it_simrs_header_checkup c ON b.no_checkup = c.no_checkup\n" +
                 "INNER JOIN im_simrs_status_pasien d ON a.status = d.id_status_pasien\n" +
@@ -410,7 +410,7 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                     "\te.id_pelayanan,\n" +
                     "\tf.no_checkup,\n" +
                     "\tf.id_pasien,\n" +
-                    "\tf.id_jenis_periksa_pasien\n" +
+                    "\te.id_jenis_periksa_pasien\n" +
                     "\tFROM mt_simrs_permintaan_resep a\n" +
                     "\tINNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat\n" +
                     "\tINNER JOIN (SELECT id_transaksi_obat_detail, SUM(qty_approve) as qty FROM mt_simrs_transaksi_obat_detail_batch GROUP BY id_transaksi_obat_detail)c ON b.id_transaksi_obat_detail = c.id_transaksi_obat_detail\n" +
@@ -475,7 +475,7 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                     "\te.id_pelayanan,\n" +
                     "\tf.no_checkup,\n" +
                     "\tf.id_pasien,\n" +
-                    "\tf.id_jenis_periksa_pasien\n" +
+                    "\te.id_jenis_periksa_pasien\n" +
                     "\tFROM mt_simrs_permintaan_resep a\n" +
                     "\tINNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat\n" +
                     "\tINNER JOIN (SELECT id_transaksi_obat_detail, SUM(qty_approve) as qty FROM mt_simrs_transaksi_obat_detail_batch WHERE approve_flag = 'Y'  GROUP BY id_transaksi_obat_detail)c ON b.id_transaksi_obat_detail = c.id_transaksi_obat_detail\n" +
@@ -532,7 +532,7 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                     "e.id_pelayanan,\n" +
                     "f.no_checkup,\n" +
                     "f.id_pasien,\n" +
-                    "f.id_jenis_periksa_pasien\n" +
+                    "e.id_jenis_periksa_pasien\n" +
                     "FROM mt_simrs_permintaan_resep a\n" +
                     "INNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat\n" +
                     "INNER JOIN (SELECT id_transaksi_obat_detail, SUM(qty_approve) as qty FROM mt_simrs_transaksi_obat_detail_batch WHERE approve_flag = 'Y'  GROUP BY id_transaksi_obat_detail)c ON b.id_transaksi_obat_detail = c.id_transaksi_obat_detail\n" +

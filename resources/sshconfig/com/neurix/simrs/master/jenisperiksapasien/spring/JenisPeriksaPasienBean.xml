@@ -38,6 +38,4 @@
     <bean id="jenisPeriksaPasienDao" class="com.neurix.simrs.master.jenisperiksapasien.dao.JenisPeriksaPasienDao"
           p:sessionFactory-ref="sessionFactory" />
 
-
-
 </beans>

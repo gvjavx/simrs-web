@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.permintaanvendor.model;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
@@ -19,6 +20,15 @@ public class MtSimrsPermintaanVendorEntity implements Serializable {
     private String urlDocPo;
     private String branchId;
     private String notaVendor;
+    private Date tglCair;
+
+    public Date getTglCair() {
+        return tglCair;
+    }
+
+    public void setTglCair(Date tglCair) {
+        this.tglCair = tglCair;
+    }
 
     public String getNotaVendor() {
         return notaVendor;

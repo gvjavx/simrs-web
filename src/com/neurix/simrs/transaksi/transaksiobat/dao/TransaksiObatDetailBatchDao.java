@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.transaksiobat.dao;
 
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.transaksi.permintaanvendor.model.BatchPermintaanObat;
 import com.neurix.simrs.transaksi.transaksiobat.model.MtSimrsTransaksiObatDetailBatchEntity;
@@ -103,11 +104,16 @@ public class TransaksiObatDetailBatchDao extends GenericDao<MtSimrsTransaksiObat
         String SQL = "SELECT\n" +
                 "no_batch,\n" +
                 "od.id_approval_obat,\n" +
-                "max(odb.last_update) as last_update\n" +
+                "max(odb.last_update) as last_update,\n" +
+                "url_doc,\n" +
+                "no_faktur,\n" +
+                "tanggal_faktur,\n" +
+                "no_invoice,\n" +
+                "no_do\n" +
                 "FROM mt_simrs_transaksi_obat_detail_batch odb\n" +
                 "INNER JOIN mt_simrs_transaksi_obat_detail od ON od.id_transaksi_obat_detail = odb.id_transaksi_obat_detail\n" +
                 "WHERE od.id_approval_obat = :idApproval\n" +
-                "GROUP BY no_batch, od.id_approval_obat";
+                "GROUP BY no_batch, od.id_approval_obat, url_doc, no_faktur, tanggal_faktur, no_invoice, no_do";
 
         List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("idApproval", idApproval)
@@ -123,6 +129,11 @@ public class TransaksiObatDetailBatchDao extends GenericDao<MtSimrsTransaksiObat
                 String formatDate = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format((Timestamp) obj[2]);
                 batchPermintaanObat.setStLastUpdateWho(formatDate);
                 batchPermintaanObat.setLastUpdate((Timestamp) obj[2]);
+                batchPermintaanObat.setUrlDoc(obj[3] == null ? "" : CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_DOC_PO+obj[3].toString());
+                batchPermintaanObat.setNoFaktur(obj[4] == null ? "" : obj[4].toString());
+                batchPermintaanObat.setTanggalFaktur(obj[5] != null ? Date.valueOf(obj[5].toString()) : null);
+                batchPermintaanObat.setNoInvoice(obj[6] == null ? "" : obj[6].toString());
+                batchPermintaanObat.setNoDo(obj[7] == null ? "" : obj[7].toString());
                 results.add(batchPermintaanObat);
             }
         }

@@ -27,6 +27,16 @@ public class ImMasterVendorEntity implements Serializable {
     private String createdWho;
     private String lastUpdateWho;
 
+    private String isPtpn;
+
+    public String getIsPtpn() {
+        return isPtpn;
+    }
+
+    public void setIsPtpn(String isPtpn) {
+        this.isPtpn = isPtpn;
+    }
+
     public String getVendorObat() {
         return vendorObat;
     }

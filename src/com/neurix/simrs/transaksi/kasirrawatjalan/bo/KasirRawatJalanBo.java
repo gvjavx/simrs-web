@@ -2,6 +2,7 @@ package com.neurix.simrs.transaksi.kasirrawatjalan.bo;
 
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.transaksi.CrudResponse;
+import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.Fpk;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
@@ -21,4 +22,5 @@ public interface KasirRawatJalanBo {
     public CrudResponse pembayaranFPK (List<Fpk> listData) throws GeneralBOException;
 
     List<ItSimrsHeaderDetailCheckupEntity> getSearchCheckupBySep(String noSep) throws GeneralBOException;
+    public CheckResponse saveRefund(String id) throws GeneralBOException;
 }

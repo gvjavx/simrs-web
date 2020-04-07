@@ -78,14 +78,14 @@ public class PayrolController implements ModelDriven<PayrollPayment> {
 
         switch (tipePayroll){
             case "payroll" :
-                reportParams.put("reportParams.urlLogo", logo);
+                reportParams.put("reportParams.urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
                 reportParams.put("reportParams.payrollId", idPayroll);
                 reportParams.put("reportParams.branchId", payroll.getBranchId());
-                reportParams.put("reportParams.branchName", branch.getBranchName());
-                reportParams.put("reportParams.alamatSurat", branch.getAlamatSurat()+","+stTanggal);
                 reportParams.put("reportParams.bulan", payroll.getBulan());
                 reportParams.put("reportParams.tahun", payroll.getTahun());
                 reportParams.put("reportParams.titleReport", "Slip Gaji");
+                reportParams.put("reportParams.date", stTanggal);
+                reportParams.put("reportParams.areaId","PT. Nusantara Medika Utama");
 
                 path = generateJasper(reportParams, idPayroll, CommonConstant.REPORT_PAYROLL);
                 model = new PayrollPayment();
@@ -94,14 +94,14 @@ public class PayrolController implements ModelDriven<PayrollPayment> {
                 break;
 
             case "thr":
-                reportParams.put("reportParams.urlLogo", logo);
+                reportParams.put("reportParams.urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
+                reportParams.put("reportParams.payrollId", idPayroll);
                 reportParams.put("reportParams.branchId", payroll.getBranchId());
-                reportParams.put("reportParams.branchName", branch.getBranchName());
-                reportParams.put("reportParams.alamatSurat", branch.getAlamatSurat()+","+stTanggal);
                 reportParams.put("reportParams.bulan", payroll.getBulan());
                 reportParams.put("reportParams.tahun", payroll.getTahun());
                 reportParams.put("reportParams.titleReport", "Slip Gaji");
-                reportParams.put("reportParams.payrollId", idPayroll);
+                reportParams.put("reportParams.date", stTanggal);
+                reportParams.put("reportParams.areaId","PT. Nusantara Medika Utama");
 
                 path = generateJasper(reportParams, idPayroll, CommonConstant.REPORT_PAYROLL_THR);
                 model = new PayrollPayment();
@@ -111,14 +111,14 @@ public class PayrolController implements ModelDriven<PayrollPayment> {
 
             case "cutiTahunan":
 
-                reportParams.put("reportParams.urlLogo", logo);
+                reportParams.put("reportParams.urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
+                reportParams.put("reportParams.payrollId", idPayroll);
                 reportParams.put("reportParams.branchId", payroll.getBranchId());
-                reportParams.put("reportParams.branchName", branch.getBranchName());
-                reportParams.put("reportParams.alamatSurat", branch.getAlamatSurat()+","+stTanggal);
                 reportParams.put("reportParams.bulan", payroll.getBulan());
                 reportParams.put("reportParams.tahun", payroll.getTahun());
                 reportParams.put("reportParams.titleReport", "Slip Gaji");
-                reportParams.put("reportParams.payrollId", idPayroll);
+                reportParams.put("reportParams.date", stTanggal);
+                reportParams.put("reportParams.areaId","PT. Nusantara Medika Utama");
 
                 path = generateJasper(reportParams, idPayroll, CommonConstant.REPORT_PAYROLL_CUTI_TAHUNAN);
                 model = new PayrollPayment();
@@ -128,14 +128,14 @@ public class PayrolController implements ModelDriven<PayrollPayment> {
 
             case "cutiPanjang":
 
-                reportParams.put("reportParams.urlLogo", logo);
+                reportParams.put("reportParams.urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
+                reportParams.put("reportParams.payrollId", idPayroll);
                 reportParams.put("reportParams.branchId", payroll.getBranchId());
-                reportParams.put("reportParams.branchName", branch.getBranchName());
-                reportParams.put("reportParams.alamatSurat", branch.getAlamatSurat()+","+stTanggal);
                 reportParams.put("reportParams.bulan", payroll.getBulan());
                 reportParams.put("reportParams.tahun", payroll.getTahun());
                 reportParams.put("reportParams.titleReport", "Slip Gaji");
-                reportParams.put("reportParams.payrollId", idPayroll);
+                reportParams.put("reportParams.date", stTanggal);
+                reportParams.put("reportParams.areaId","PT. Nusantara Medika Utama");
 
                 path = generateJasper(reportParams, idPayroll, CommonConstant.REPORT_PAYROLL_CUTI_PANJANG);
                 model = new PayrollPayment();
@@ -145,14 +145,14 @@ public class PayrolController implements ModelDriven<PayrollPayment> {
 
             case "insentif":
 
-                reportParams.put("reportParams.urlLogo", logo);
+                reportParams.put("reportParams.urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
+                reportParams.put("reportParams.payrollId", idPayroll);
                 reportParams.put("reportParams.branchId", payroll.getBranchId());
-                reportParams.put("reportParams.branchName", branch.getBranchName());
-                reportParams.put("reportParams.alamatSurat", branch.getAlamatSurat()+","+stTanggal);
                 reportParams.put("reportParams.bulan", payroll.getBulan());
                 reportParams.put("reportParams.tahun", payroll.getTahun());
                 reportParams.put("reportParams.titleReport", "Slip Gaji");
-                reportParams.put("reportParams.payrollId", idPayroll);
+                reportParams.put("reportParams.date", stTanggal);
+                reportParams.put("reportParams.areaId","PT. Nusantara Medika Utama");
 
                 path = generateJasper(reportParams, idPayroll, CommonConstant.REPORT_PAYROLL_INSENTIF);
                 model = new PayrollPayment();
@@ -161,14 +161,14 @@ public class PayrolController implements ModelDriven<PayrollPayment> {
                 break;
 
             case "jasprod":
-                reportParams.put("reportParams.urlLogo", logo);
+                reportParams.put("reportParams.urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
+                reportParams.put("reportParams.payrollId", idPayroll);
                 reportParams.put("reportParams.branchId", payroll.getBranchId());
-                reportParams.put("reportParams.branchName", branch.getBranchName());
-                reportParams.put("reportParams.alamatSurat", branch.getAlamatSurat()+","+stTanggal);
                 reportParams.put("reportParams.bulan", payroll.getBulan());
                 reportParams.put("reportParams.tahun", payroll.getTahun());
                 reportParams.put("reportParams.titleReport", "Slip Gaji");
-                reportParams.put("reportParams.payrollId", idPayroll);
+                reportParams.put("reportParams.date", stTanggal);
+                reportParams.put("reportParams.areaId","PT. Nusantara Medika Utama");
 
                 path = generateJasper(reportParams, idPayroll, CommonConstant.REPORT_PAYROLL_JASPROD);
                 model = new PayrollPayment();

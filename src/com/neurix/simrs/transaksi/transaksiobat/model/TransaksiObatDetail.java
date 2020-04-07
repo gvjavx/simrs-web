@@ -74,6 +74,53 @@ public class TransaksiObatDetail extends BaseModel {
     private String noCheckup;
 
     private String tipeObat;
+    private BigInteger minStok;
+
+    private BigDecimal diskon;
+    private BigDecimal bruto;
+    private BigDecimal netto;
+
+    private String namaObatBaru;
+
+    public String getNamaObatBaru() {
+        return namaObatBaru;
+    }
+
+    public void setNamaObatBaru(String namaObatBaru) {
+        this.namaObatBaru = namaObatBaru;
+    }
+
+    public BigDecimal getDiskon() {
+        return diskon;
+    }
+
+    public void setDiskon(BigDecimal diskon) {
+        this.diskon = diskon;
+    }
+
+    public BigDecimal getBruto() {
+        return bruto;
+    }
+
+    public void setBruto(BigDecimal bruto) {
+        this.bruto = bruto;
+    }
+
+    public BigDecimal getNetto() {
+        return netto;
+    }
+
+    public void setNetto(BigDecimal netto) {
+        this.netto = netto;
+    }
+
+    public BigInteger getMinStok() {
+        return minStok;
+    }
+
+    public void setMinStok(BigInteger minStok) {
+        this.minStok = minStok;
+    }
 
     public String getTipeObat() {
         return tipeObat;

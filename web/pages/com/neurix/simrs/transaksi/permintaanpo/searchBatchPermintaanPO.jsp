@@ -150,31 +150,6 @@
                             <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                             <p id="msg_po"></p>
                         </div>
-                        <%--<div class="row">--%>
-                            <%--<div class="col-md-offset-2 col-md-8" >--%>
-                                <%--<div class="box-header with-border">--%>
-                                    <%--<div class="row">--%>
-                                        <%--<div class="col-md-6">--%>
-                                            <%--<h3 class="box-title"><i class="fa fa-file-text-o"></i> Dokumen Vendor</h3>--%>
-                                        <%--</div>--%>
-                                        <%--<div class="col-md-6">--%>
-                                            <%--<a class="btn btn-success pull-right" onclick="upload()"><i class="fa fa-upload"></i> Upload</a>--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-                                <%--<table class="table table-bordered table-striped" id="tabel_doc">--%>
-                                    <%--<thead>--%>
-                                    <%--<tr bgcolor="#90ee90">--%>
-                                        <%--<td>Nota Vendor</td>--%>
-                                        <%--<td>Action</td>--%>
-                                    <%--</tr>--%>
-                                    <%--</thead>--%>
-                                    <%--<tbody id="body-doc">--%>
-
-                                    <%--</tbody>--%>
-                                <%--</table>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
                         <div class="row">
                             <div class="col-md-offset-2 col-md-8" >
                                 <div class="box-header with-border">
@@ -183,12 +158,6 @@
                                             <h3 class="box-title"><i class="fa fa-file-text-o"></i> Daftar Batch</h3>
                                         </div>
                                         <div class="col-md-6">
-                                            <%--<s:url var="selesai" namespace="/permintaanpo" action="initForm_permintaanpo"--%>
-                                                   <%--escapeAmp="false">--%>
-                                            <%--</s:url>--%>
-                                            <%--<s:a href="%{selesai}">--%>
-                                                <%--<button class="btn btn-warning pull-right"><i class="fa fa-arrow-left"></i> Back</button>--%>
-                                            <%--</s:a>--%>
                                             <a class="btn btn-success pull-right" onclick="addBatch()"><i class="fa fa-plus"></i> Tambah Batch</a>
                                             <a href="initForm_permintaanpo.action" class="btn btn-warning pull-right" style="margin-right: 5px"><i class="fa fa-arrow-left"></i> Back</a>
                                         </div>
@@ -226,7 +195,7 @@
                                                     </a>
                                                 </s:if>
                                                 <s:else>
-                                                    <img onclick="showDetailListObat('<s:property value="noBatch"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">
+                                                    <img onclick="showDetailListObat('<s:property value="noBatch"/>','<s:property value="urlDoc"/>','<s:property value="noFaktur"/>','<s:property value="tanggalFaktur"/>','<s:property value="noInvoice"/>','<s:property value="noDo"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">
                                                 </s:else>
                                                 <img id='load<s:property value="noBatch"/>' src="<s:url value="/pages/images/spinner.gif"/>" style="height: 35px; width: 35px; display: none">
                                             </td>
@@ -259,8 +228,6 @@
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                     <p id="msg_app"></p>
                 </div>
-                <div class="box-header with-border"><i class="fa fa-file-o"></i> Detail Permintaan Po
-                </div>
                 <div class="box">
                     <table class="table table-striped table-bordered" id="tabel_approve">
                         <thead>
@@ -276,6 +243,53 @@
                         <input id="app_no_batch" type="hidden">
                     </table>
                     <p id="loading_data" style="color: #00a65a; display: none"><img src="<s:url value="/pages/images/spinner.gif"/>" style="height: 40px; width: 40px;"> Sedang mengambil data...</p>
+                </div>
+                <div class="box-header with-border"></div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-md-4">No Faktur</label>
+                                <div class="col-md-8">
+                                    <input class="form-control" id="app_no_faktur">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4" style="margin-top: 7px">Tanggal Faktur</label>
+                                <div class="col-md-8">
+                                    <input style="margin-top: 7px" class="form-control datepicker2 datemask2" id="app_tgl_faktur">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4" style="margin-top: 7px">Foto Doc PO</label>
+                                <div class="col-md-8">
+                                    <div class="input-group" style="margin-top: 7px" id="app_doc">
+                                    <span class="input-group-btn">
+                                    <span class="btn btn-default btn-file">
+                                    Browse… <input type="file" id="imgInp" accept=".jpg" onchange="$('#img_file').css('border','')">
+                                    </span>
+                                    </span>
+                                    <input type="text" class="form-control" readonly>
+                                    </div>
+                                </div>
+                                <canvas id="img_canvas" style="border: solid 1px #ccc; display: none"></canvas>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-md-4">No Invoice</label>
+                                <div class="col-md-8">
+                                    <input class="form-control" id="app_no_invoice">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4" style="margin-top: 7px">No DO</label>
+                                <div class="col-md-8">
+                                    <input style="margin-top: 7px" class="form-control" id="app_no_do">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
@@ -305,6 +319,38 @@
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                     <p id="msg_detail"></p>
                 </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="table table-striped">
+                                <tr>
+                                    <td width="40%">Nomor Faktur</td>
+                                    <td><p id="det_no_faktur"></p></td>
+                                </tr>
+                                <tr>
+                                    <td>Tanggal Faktur</td>
+                                    <td><p id="det_tlg_faktur"></p></td>
+                                </tr>
+                                <tr>
+                                    <td>Foto Doc</td>
+                                    <td><button id="det_img" class="btn btn-primary"><i class="fa fa-image"></i></button></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <table class="table table-striped">
+                                <tr>
+                                    <td width="40%">Nomor Invoice</td>
+                                    <td><p id="det_no_invoice"></p></td>
+                                </tr>
+                                <tr>
+                                    <td>No DO</td>
+                                    <td><p id="det_no_do"></p></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
                 <div class="box">
                     <table class="table table-striped table-bordered" id="tabel_detail">
                         <thead>
@@ -318,6 +364,27 @@
                         </tbody>
                     </table>
                     <p id="loading_detail" style="color: #00a65a; display: none"><img src="<s:url value="/pages/images/spinner.gif"/>" style="height: 40px; width: 40px;"> Sedang mengambil data...</p>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-doc">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-file-archive-o"></i> Surat PO</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <img id="img_surat_po" style="height: 500px; width: 100%">
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
@@ -343,7 +410,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
                 </button>
-                <button type="button" class="btn btn-sm btn-default" id="save_con" onclick="approveBatch()"><i class="fa fa-arrow-right"></i> Yes            </button>
+                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes            </button>
             </div>
         </div>
     </div>
@@ -393,6 +460,41 @@
     $(document).ready(function () {
         $('#permintaan_po').addClass('active');
         listDocument();
+
+        var canvas = document.getElementById('img_canvas');
+        var ctx = canvas.getContext('2d');
+
+        $(document).on('change', '.btn-file :file', function () {
+            var input = $(this),
+                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+            input.trigger('fileselect', [label]);
+        });
+
+        $('.btn-file :file').on('fileselect', function (event, label) {
+
+            var input = $(this).parents('.input-group').find(':text'),
+                log = label;
+
+            if (input.length) {
+                input.val(log);
+                var reader = new FileReader();
+                reader.onload = function(event){
+                    var img = new Image();
+                    img.onload = function(){
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        ctx.clearRect(0,0,canvas.width,canvas.height);
+                        ctx.drawImage(img,0,0);
+                    }
+                    img.src = event.target.result;
+                }
+                reader.readAsDataURL(event.target.files[0]);
+            } else {
+                if (log) alert(log);
+            }
+
+        });
+
     });
 
     function formatRupiah(angka) {
@@ -478,16 +580,42 @@
     }
 
     function confirmDialog(){
-        $('#modal-confirm-dialog').modal('show');
+        var noBatch     = $('#app_no_batch').val();
+        var noFaktur    = $('#app_no_faktur').val();
+        var tgl         = $('#app_tgl_faktur').val();
+        var tglFaktur   = tgl.split("-").reverse().join("-");
+        var noInvoice   = $('#app_no_invoice').val();
+        var noDo        = $('#app_no_do').val();
+        var canvas = document.getElementById('img_canvas');
+        var dataURL = canvas.toDataURL("image/png"),
+            dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+        var data = "";
+
+        if(noFaktur != '' && tglFaktur != '' && noInvoice != '' && noDo != '' && dataURL){
+            data = {
+                'no_batch':noBatch,
+                'no_faktur':noFaktur,
+                'tgl_faktur':tglFaktur,
+                'no_invoice':noInvoice,
+                'no_do':noDo,
+                'img_url':dataURL
+            }
+            var result = JSON.stringify(data);
+            $('#modal-confirm-dialog').modal('show');
+            $('#save_con').attr('onclick', 'approveBatch(\''+result+'\')');
+        }else{
+            $('#warning_app').show().fadeOut(5000);
+            $('#msg_app').text("Silahkan cek kembali data inputan anda...!");
+        }
+
     }
-    function approveBatch(){
+    function approveBatch(data){
         $('#modal-confirm-dialog').modal('hide');
-        var noBatch = $('#app_no_batch').val();
         $('#save_approve').hide();
         $('#load_approve').show();
 
         dwr.engine.setAsync(true);
-        PermintaanVendorAction.saveApproveBatch(idpermintaanPo, noBatch, {
+        PermintaanVendorAction.saveApproveBatch(idpermintaanPo, data, {
             callback: function (response) {
                 if(response.status = "success"){
                     $('#info_dialog').dialog('open');
@@ -503,13 +631,23 @@
             }});
     }
 
-    function showDetailListObat(noBatch){
+    function showDetailListObat(noBatch, img, noFaktur, tglFaktur, noInvoice, noDo){
 
+        console.log(img);
+        $('#det_img').attr('onclick','showDoc(\''+img+'\')');
+        $('#det_no_faktur').text(noFaktur);
+        var tgl = $.datepicker.formatDate('dd-mm-yy', new Date(tglFaktur));
+        console.log(tgl);
+        $('#det_tlg_faktur').text(tgl);
+        $('#det_no_invoice').text(noInvoice);
+        $('#det_no_do').text(noDo);
         $('#modal-detail').modal({show:true, backdrop:'static'});
         $('#loading_detail').show();
         $('#detail_batch').text(noBatch);
+
         dwr.engine.setAsync(true);
         var table = "";
+        $('#det_img').val(img);
         PermintaanVendorAction.getListDetailObatApproved(idpermintaanPo, noBatch, {
             callback: function (response) {
                 if (response != null) {
@@ -531,6 +669,12 @@
                 $('#body_detail').html(table);
             }
         });
+    }
+
+    function showDoc(img){
+        console.log(img);
+        $('#img_surat_po').attr('src',img);
+        $('#modal-doc').modal('show');
     }
 
 </script>

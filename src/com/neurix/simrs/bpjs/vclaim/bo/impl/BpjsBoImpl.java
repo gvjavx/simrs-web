@@ -1202,13 +1202,18 @@ public class BpjsBoImpl extends BpjsService implements BpjsBo {
         if (resultBranch != null){
             try {
                 result = GETRequest(feature,request,resultBranch.getConstId(),resultBranch.getSecretKey());
-                JSONObject myResponseCheck = new JSONObject(result);
-                if (myResponseCheck.isNull("response")) {
-                    JSONObject response = myResponseCheck.getJSONObject("metaData");
-                    logger.error("[BPJSBoImpl.deleteSepBpjs] : " + response.getString("message"));
+                if (!"method not allowed".equalsIgnoreCase(result)){
+                    JSONObject myResponseCheck = new JSONObject(result);
+                    if (myResponseCheck.isNull("response")) {
+                        JSONObject response = myResponseCheck.getJSONObject("metaData");
+                        logger.error("[BPJSBoImpl.deleteSepBpjs] : " + response.getString("message"));
+                    } else {
+                        sepResponse.setNoSep(myResponseCheck.getString("response"));
+                    }
                 } else {
-                    sepResponse.setNoSep(myResponseCheck.getString("response"));
+                    logger.error("[BPJSBoImpl.deleteSepBpjs] : Method Not Allowed");
                 }
+
 
             } catch (IOException | JSONException | GeneralSecurityException e) {
                 e.printStackTrace();

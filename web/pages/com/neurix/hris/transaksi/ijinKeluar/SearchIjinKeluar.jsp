@@ -97,7 +97,6 @@
     <section class="content-header">
         <h1>
             Dispensasi
-            <small>e-HEALTH</small>
         </h1>
     </section>
     <!-- Main content -->
@@ -275,7 +274,7 @@
                                                             <i class="fa fa-refresh"></i> Reset
                                                         </button>
                                                     </td>
-                                                    <s:if test="isAdmin()">
+                                                    <%--<s:if test="isAdmin()">
                                                         <td>
                                                             <div class="btn-group">
                                                                 <button class="btn btn-warning dropdown-toggle" data-toggle="dropdown">
@@ -290,7 +289,7 @@
                                                                 </ul>
                                                             </div>
                                                         </td>
-                                                    </s:if>
+                                                    </s:if>--%>
                                                 </tr>
                                             </table>
                                         </div>
@@ -301,17 +300,35 @@
                                             <table id="showdata" width="80%">
                                                 <tr>
                                                     <td align="center">
-                                                        <sj:dialog id="waiting_dialog_loading" openTopics="showDialogLoading" closeTopics="closeDialogLoading" modal="true"
+                                                        <sj:dialog id="waiting_dialog2" openTopics="showDialogLoading"
+                                                                   closeTopics="closeDialogLoading" modal="true"
                                                                    resizable="false"
-                                                                   height="350" width="600" autoOpen="false" title="Loading ...">
+                                                                   height="250" width="600" autoOpen="false"
+                                                                   title="Save Data ...">
                                                             Please don't close this window, server is processing your request ...
-                                                            </br>
-                                                            </br>
-                                                            </br>
+                                                            <br>
                                                             <center>
-                                                                <img border="0" src="<s:url value="/pages/images/indicator-read.gif"/>" name="image_indicator_read">
+                                                                <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                                     src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                                     name="image_indicator_write">
+                                                                <br>
+                                                                <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                                     src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                                     name="image_indicator_write">
                                                             </center>
                                                         </sj:dialog>
+
+                                                        <%--<sj:dialog id="waiting_dialog_loading" openTopics="showDialogLoading" closeTopics="closeDialogLoading" modal="true"--%>
+                                                                   <%--resizable="false"--%>
+                                                                   <%--height="350" width="600" autoOpen="false" title="Loading ...">--%>
+                                                            <%--Please don't close this window, server is processing your request ...--%>
+                                                            <%--</br>--%>
+                                                            <%--</br>--%>
+                                                            <%--</br>--%>
+                                                            <%--<center>--%>
+                                                                <%--<img border="0" src="<s:url value="/pages/images/indicator-read.gif"/>" name="image_indicator_read">--%>
+                                                            <%--</center>--%>
+                                                        <%--</sj:dialog>--%>
                                                         <sj:dialog id="dialog_menu_ijin_keluar" openTopics="showDialogMenuIjinKeluar" modal="true"
                                                                    height="700" width="700" autoOpen="false"
                                                                    title="Dispensasi ">
@@ -356,15 +373,15 @@
                                                                     </s:a>
                                                                 </s:elseif>
                                                             </display:column>
-                                                            <display:column media="html" title="Edit" style="text-align:center;font-size:9">
-                                                                <s:url var="urlViewDelete" namespace="/ijinKeluar" action="edit_ijinKeluar" escapeAmp="false">
-                                                                    <s:param name="id"><s:property value="#attr.row.ijinKeluarId" /></s:param>
-                                                                    <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
-                                                                </s:url>
-                                                                <sj:a onClickTopics="showDialogMenuView" href="%{urlViewDelete}">
-                                                                    <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_trash">
-                                                                </sj:a>
-                                                            </display:column>
+                                                            <%--<display:column media="html" title="Edit" style="text-align:center;font-size:9">--%>
+                                                                <%--<s:url var="urlViewDelete" namespace="/ijinKeluar" action="edit_ijinKeluar" escapeAmp="false">--%>
+                                                                    <%--<s:param name="id"><s:property value="#attr.row.ijinKeluarId" /></s:param>--%>
+                                                                    <%--<s:param name="flag"><s:property value="#attr.row.flag" /></s:param>--%>
+                                                                <%--</s:url>--%>
+                                                                <%--<sj:a onClickTopics="showDialogMenuView" href="%{urlViewDelete}">--%>
+                                                                    <%--<img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_trash">--%>
+                                                                <%--</sj:a>--%>
+                                                            <%--</display:column>--%>
                                                             <display:column media="html" title="View" style="text-align:center;font-size:9">
                                                                 <s:url var="urlViewDelete" namespace="/ijinKeluar" action="delete_ijinKeluar" escapeAmp="false">
                                                                     <s:param name="id"><s:property value="#attr.row.ijinKeluarId" /></s:param>

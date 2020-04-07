@@ -2936,11 +2936,20 @@ public class BiodataAction extends BaseMasterAction{
             List<Study> listPendidikan = new ArrayList<>();
 
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
             BiodataBo biodataBo = (BiodataBo) ctx.getBean("biodataBoProxy");
             listKeluarga = biodataBo.listKeluarga(getId());
             listRiwayatPekerjaan = biodataBo.listRiwayatPekerjaan(getId());
             listPendidikan = biodataBo.listStudy(getId());
-
+            Biodata search = new Biodata();
+            search.setNip(getId());
+            search.setFlag("Y");
+            List<Biodata> biodataList = biodataBo.getByCriteria(search);
+            String branchId ="";
+            for (Biodata biodata:biodataList){
+                branchId=biodata.getBranch();
+            }
+            Branch branch = branchBo.getBranchById(branchId,"Y");
             JRBeanCollectionDataSource itemKeluarga = new JRBeanCollectionDataSource(listKeluarga);
             JRBeanCollectionDataSource itemRiwayatPekerjaan = new JRBeanCollectionDataSource(listRiwayatPekerjaan);
             JRBeanCollectionDataSource itemPendidikan = new JRBeanCollectionDataSource(listPendidikan);
@@ -2954,7 +2963,7 @@ public class BiodataAction extends BaseMasterAction{
                         CommonConstant.RESOURCE_PATH_USER_UPLOAD + "img_avatar.png";
             }
 
-            reportParams.put("urlLogo", CommonConstant.URL_IMAGE_LOGO_REPORT);
+            reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
             reportParams.put("urlFoto", foto);
             reportParams.put("nip", getId());
             reportParams.put("titleReport", "CURICULUM VITAE");

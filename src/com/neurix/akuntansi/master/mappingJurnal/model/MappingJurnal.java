@@ -22,9 +22,18 @@ public class MappingJurnal extends BaseModel {
     private String tipeJurnalName;
     private String transName;
     private String kirimList;
+    private String divisiId;
 
     private String kodeRekeningName;
     private boolean transBaru=false;
+
+    public String getDivisiId() {
+        return divisiId;
+    }
+
+    public void setDivisiId(String divisiId) {
+        this.divisiId = divisiId;
+    }
 
     public boolean isTransBaru() {
         return transBaru;

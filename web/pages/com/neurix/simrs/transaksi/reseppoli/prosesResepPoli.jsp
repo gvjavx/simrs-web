@@ -14,9 +14,9 @@
             width: 100%;
             height: 350px;
         }
+
         .paint-canvas {
             border: 1px black solid;
-            display: block;
             margin: 1rem;
         }
 
@@ -59,31 +59,47 @@
 
         function uploadCanvas() {
             var idResep = $('#id_resep').val();
-            var canvas = document.getElementById('ttd_canvas');
-            var dataURL = canvas.toDataURL("image/png"),
-                dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
-
-            $('#waiting_dialog').dialog('open');
-            dwr.engine.setAsync(true);
-            TransaksiObatAction.saveTtdPasien(dataURL, idResep, {callback: function (response) {
-                if(response.status == "success"){
-                    $('#waiting_dialog').dialog('close');
-                    $('#info_dialog').dialog('open');
-                    $('#ref').val(1);
-                    $('#modal-ttd').modal('hide');
-                }else{
-                    $('#waiting_dialog').dialog('close');
-                    $('#error_dialog').dialog('open');
-                    $('#errorMessage').text(response.message);
-                    $('#modal-ttd').modal('hide');
-                }
-            }});
+            var canvas1 = document.getElementById('ttd_pasien');
+            var canvas2 = document.getElementById('ttd_apoteker');
+            var dataURL1 = canvas1.toDataURL("image/png"),
+                dataURL1 = dataURL1.replace(/^data:image\/(png|jpg);base64,/, "");
+            var dataURL2 = canvas2.toDataURL("image/png"),
+                dataURL2 = dataURL2.replace(/^data:image\/(png|jpg);base64,/, "");
+            var cek1 = isBlank(canvas1);
+            var cek2 = isBlank(canvas2);
+            if(!cek1 && !cek2){
+                $('#waiting_dialog').dialog('open');
+                dwr.engine.setAsync(true);
+                TransaksiObatAction.saveTtdPasien(dataURL1, idResep, dataURL2, {callback: function (response) {
+                        if(response.status == "success"){
+                            $('#waiting_dialog').dialog('close');
+                            $('#info_dialog').dialog('open');
+                            $('#ref').val(1);
+                            $('#modal-ttd').modal('hide');
+                        }else{
+                            $('#waiting_dialog').dialog('close');
+                            $('#error_dialog').dialog('open');
+                            $('#errorMessage').text(response.message);
+                            $('#modal-ttd').modal('hide');
+                        }
+                    }});
+            }else{
+                $('#warning_ttd').show().fadeOut(5000);
+                $('#msg_ttd').text("Silahkan lakukan ttd pada canvas berikut...!");
+            }
         }
 
-        function clearConvas(){
-            var canvas = document.getElementById('ttd_canvas');
+        function clearConvas(id){
+            var canvas = document.getElementById(id);
             const context = canvas.getContext('2d');
             context.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function isBlank(canvas){
+            const blank = document.createElement("canvas");
+            blank.width = canvas.width;
+            blank.height = canvas.height;
+            return canvas.toDataURL() === blank.toDataURL();
         }
 
         $(document).ready(function () {
@@ -92,9 +108,12 @@
 
             cekListObat();
 
-            const paintCanvas = document.querySelector(".js-paint");
-            const context = paintCanvas.getContext("2d");
-            context.lineCap = "round";
+            const paintCanvas1 = document.querySelector("#ttd_pasien");
+            const paintCanvas2 = document.querySelector("#ttd_apoteker");
+            const context1 = paintCanvas1.getContext("2d");
+            const context2 = paintCanvas2.getContext("2d");
+            context1.lineCap = "round";
+            context2.lineCap = "round";
 
             const colorPicker = document.querySelector(".js-color-picker");
 
@@ -108,7 +127,8 @@
             lineWidthRange.addEventListener("input", function (evt) {
                 const width = evt.target.value;
                 lineWidthLabel.innerHTML = width+" px";
-                context.lineWidth = width;
+                context1.lineWidth = width;
+                context2.lineWidth = width;
             });
 
             let x = 0,
@@ -124,23 +144,41 @@
                 [x, y] = [evt.offsetX, evt.offsetY];
             };
 
-            const drawLine = function (evt) {
+            const drawLine1 = function (evt) {
                 if (isMouseDown) {
                     const newX = evt.offsetX;
                     const newY = evt.offsetY;
-                    context.beginPath();
-                    context.moveTo(x, y);
-                    context.lineTo(newX, newY);
-                    context.stroke();
+                    context1.beginPath();
+                    context1.moveTo(x, y);
+                    context1.lineTo(newX, newY);
+                    context1.stroke();
                     x = newX;
                     y = newY;
                 }
             };
 
-            paintCanvas.addEventListener("mousedown", startDrawing);
-            paintCanvas.addEventListener("mousemove", drawLine);
-            paintCanvas.addEventListener("mouseup", stopDrawing);
-            paintCanvas.addEventListener("mouseout", stopDrawing);
+            const drawLine2 = function (evt) {
+                if (isMouseDown) {
+                    const newX = evt.offsetX;
+                    const newY = evt.offsetY;
+                    context2.beginPath();
+                    context2.moveTo(x, y);
+                    context2.lineTo(newX, newY);
+                    context2.stroke();
+                    x = newX;
+                    y = newY;
+                }
+            };
+
+            paintCanvas1.addEventListener("mousedown", startDrawing);
+            paintCanvas1.addEventListener("mousemove", drawLine1);
+            paintCanvas1.addEventListener("mouseup", stopDrawing);
+            paintCanvas1.addEventListener("mouseout", stopDrawing);
+
+            paintCanvas2.addEventListener("mousedown", startDrawing);
+            paintCanvas2.addEventListener("mousemove", drawLine2);
+            paintCanvas2.addEventListener("mouseup", stopDrawing);
+            paintCanvas2.addEventListener("mouseout", stopDrawing);
 
         });
 
@@ -287,15 +325,9 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><b>Provinsi</b></td>
+                                        <td><b>Desa</b></td>
                                         <td>
-                                            <table><s:label name="permintaanResep.provinsi"></s:label></table>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><b>Kabupaten</b></td>
-                                        <td>
-                                            <table><s:label name="permintaanResep.kota"></s:label></table>
+                                            <table><s:label name="permintaanResep.desa"></s:label></table>
                                         </td>
                                     </tr>
                                     <tr>
@@ -305,9 +337,15 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><b>Desa</b></td>
+                                        <td><b>Kabupaten</b></td>
                                         <td>
-                                            <table><s:label name="permintaanResep.desa"></s:label></table>
+                                            <table><s:label name="permintaanResep.kota"></s:label></table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Provinsi</b></td>
+                                        <td>
+                                            <table><s:label name="permintaanResep.provinsi"></s:label></table>
                                         </td>
                                     </tr>
                                 </table>
@@ -531,32 +569,55 @@
 </div>
 
 <div class="modal fade" id="modal-ttd">
-    <div class="modal-dialog modal-md">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a; color: white">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-pencil"></i> Tanda Tangan Pasien
+                <h4 class="modal-title"><i class="fa fa-pencil"></i> Tanda Tangan
                 </h4>
             </div>
             <div class="modal-body">
-                <div class="form-group" style="padding-top: 10px; padding-bottom: 10px">
-                    <div class="col-md-1">
-                        <input type="color" style="margin-left: -6px; margin-top: -8px" class="js-color-picker  color-picker pull-left">
-                    </div>
-                    <div class="col-md-9">
-                        <input type="range" style="margin-top: -8px" class="js-line-range" min="1" max="72" value="1">
-                    </div>
-                    <div class="col-md-2">
-                        <div style="margin-top: -8px;" class="js-range-value">1 px</div>
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_ttd">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_ttd"></p>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-7">
+                            <div class="form-group" style="padding-top: 10px; padding-bottom: 10px">
+                                <div class="col-md-1">
+                                    <input type="color" style="margin-left: -6px; margin-top: -8px" class="js-color-picker  color-picker pull-left">
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="range" style="margin-top: -8px" class="js-line-range" min="1" max="72" value="1">
+                                </div>
+                                <div class="col-md-2">
+                                    <div style="margin-top: -8px;" class="js-range-value">1 px</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                    <canvas class="js-paint  paint-canvas" id="ttd_canvas" width="550" height="300"></canvas>
+                <div class="row" style="margin-top: 10px">
+                    <div class="col-md-12">
+                        <div class="col-md-6">
+                            <b style="margin-left: 8px">Tanda Tangan Pasien</b>
+                            <canvas class="js-paint  paint-canvas" id="ttd_pasien" width="380" height="300"></canvas>
+                            <button style="margin-left: 8px" type="button" class="btn btn-danger" onclick="clearConvas('ttd_pasien')"><i class="fa fa-trash"></i> Clear
+                            </button>
+                        </div>
+                        <div class="col-md-6">
+                            <b style="margin-left: 8px">Tanda Tangan Apoteker</b>
+                            <canvas class="js-paint  paint-canvas" id="ttd_apoteker" width="380" height="300"></canvas>
+                            <button style="margin-left: 8px" type="button" class="btn btn-danger" onclick="clearConvas('ttd_apoteker')"><i class="fa fa-trash"></i> Clear
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
-                </button>
-                <button type="button" class="btn btn-danger" onclick="clearConvas()"><i class="fa fa-pencil"></i> Clear
                 </button>
                 <button class="btn btn-success pull-right" onclick="uploadCanvas()"><i class="fa fa-check"></i> Save</button>
             </div>
@@ -619,6 +680,10 @@
     }
     function printStrukResep(){
         window.open('printStrukResepPasien_reseppoli.action?id='+idDetailCheckup+'&idResep='+idResep+'&idApprove='+id_approve, "_blank");
+    }
+
+    function show(){
+        $('#modal-ttd').modal({show:true, backdrop:'static'});
     }
 
     function cekListObat() {

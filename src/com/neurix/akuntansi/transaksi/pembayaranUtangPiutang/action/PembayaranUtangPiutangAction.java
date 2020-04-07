@@ -693,7 +693,7 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
 
         //menambah printCount
         pembayaranUtangPiutangBo.addPrintCount(data.getNoJurnal());
-        String kodeRekeningKasJurnal = pembayaranUtangPiutangBo.getKodeRekeningKasJurnal(data.getNoJurnal());
+        String kodeRekeningKasJurnal = pembayaranUtangPiutangBo.getNamaRekeningKasJurnal(data.getNoJurnal());
 
         for (PembayaranUtangPiutang result : pembayaranUtangPiutangList){
             reportParams.put("terbilang", CommonUtil.angkaToTerbilang(result.getBayar().longValue()));

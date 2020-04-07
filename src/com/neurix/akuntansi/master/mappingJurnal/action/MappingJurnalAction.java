@@ -253,6 +253,7 @@ public class MappingJurnalAction extends BaseMasterAction {
                     //jika sama hanya diupdate
                     if (dataBaru.getKodeRekening().equalsIgnoreCase(dataLama.getKodeRekening())){
                         dataBaru.setMappingJurnalId(dataLama.getMappingJurnalId());
+                        dataBaru.setDivisiId(dataLama.getDivisiId());
                         dataBaru.setCreatedWho(dataLama.getCreatedWho());
                         dataBaru.setCreatedDate(dataLama.getCreatedDate());
                         dataBaru.setTransId(dataLama.getTransId());
@@ -463,7 +464,7 @@ public class MappingJurnalAction extends BaseMasterAction {
         return SUCCESS;
     }
 
-    public void saveKodeRekeningSession(String kodeRekening , String posisi,String master,String bukti, String kodeBarang,String listKirim,String parameter,String kodeRekeningName) {
+    public void saveKodeRekeningSession(String kodeRekening , String posisi,String master,String bukti, String kodeBarang,String listKirim,String parameter,String kodeRekeningName,String divisiId) {
         logger.info("[MappingJurnalAction.savePegawaiShift] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<MappingJurnal> listOfResult = (List<MappingJurnal>) session.getAttribute("listOfResultMapping");
@@ -487,6 +488,7 @@ public class MappingJurnalAction extends BaseMasterAction {
             result.setKodeBarang(kodeBarang);
             result.setKirimList(listKirim);
             result.setKeterangan(parameter);
+            result.setDivisiId(divisiId);
             listOfResult.add(result);
         }
 

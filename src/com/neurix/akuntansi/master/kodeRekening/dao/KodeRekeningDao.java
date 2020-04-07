@@ -44,11 +44,21 @@ public class KodeRekeningDao extends GenericDao<ImKodeRekeningEntity, String> {
             if (mapCriteria.get("tipe_rekening_id")!=null) {
                 criteria.add(Restrictions.eq("tipeRekeningId", (String) mapCriteria.get("tipe_rekening_id")));
             }
+            if (mapCriteria.get("parent_id")!=null) {
+                criteria.add(Restrictions.eq("parentId", (String) mapCriteria.get("parent_id")));
+            }
+            if (mapCriteria.get("level")!=null) {
+                criteria.add(Restrictions.eq("level", (Long) mapCriteria.get("level")));
+            }
         }
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
 
         // Order by
-        criteria.addOrder(Order.asc("kodeRekening"));
+        if (mapCriteria.get("parent_order") != null){
+            criteria.addOrder(Order.asc("parentId"));
+        } else {
+            criteria.addOrder(Order.asc("kodeRekening"));
+        }
 
         List<ImKodeRekeningEntity> results = criteria.list();
 
@@ -166,6 +176,27 @@ public class KodeRekeningDao extends GenericDao<ImKodeRekeningEntity, String> {
         String kodeRekeningKas=getKodeRekeningKas();
         String query = "select \n" +
                 "  kode_rekening\n" +
+                "from \n" +
+                "  it_akun_jurnal_detail jd INNER JOIN \n" +
+                "  im_akun_kode_rekening kr ON jd.rekening_id=kr.rekening_id\n" +
+                "where \n" +
+                "  no_jurnal='"+noJurnal+"'\n" +
+                "  and kode_rekening ilike '"+kodeRekeningKas+"%'\n";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            result = results.toString();
+        }else {
+            result=null;
+        }
+        return result;
+    }
+    //untuk mendapat kode rekening kas dari jurnal
+    public String getNamaRekeningKasForJurnal(String noJurnal){
+        String result="";
+        String kodeRekeningKas=getKodeRekeningKas();
+        String query = "select \n" +
+                "  nama_kode_rekening\n" +
                 "from \n" +
                 "  it_akun_jurnal_detail jd INNER JOIN \n" +
                 "  im_akun_kode_rekening kr ON jd.rekening_id=kr.rekening_id\n" +

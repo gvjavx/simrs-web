@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.checkup.bo;
 
+import com.neurix.akuntansi.master.masterVendor.model.MasterVendor;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.pasien.model.RekamMedicLama;
 import com.neurix.simrs.transaksi.CrudResponse;
@@ -83,4 +84,6 @@ public interface CheckupBo {
                                                   ImSimrsPermintaanResepEntity resepEntity,
                                                   List<ItSimrsDokterTeamEntity> dokterTeamEntities,
                                                   List<ImtSimrsTransaksiObatDetailEntity> obatDetailEntities ) throws GeneralBOException;
+
+    public List<MasterVendor> getComboListPtpn() throws GeneralBOException;
 }

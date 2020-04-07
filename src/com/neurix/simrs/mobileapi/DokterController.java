@@ -30,6 +30,24 @@ public class DokterController implements ModelDriven<Object> {
     private String namaSpesialis;
     private String action;
     private String kuota;
+    private String lat;
+    private String lon;
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLon() {
+        return lon;
+    }
+
+    public void setLon(String lon) {
+        this.lon = lon;
+    }
 
     public String getKuota() {
         return kuota;
@@ -132,12 +150,22 @@ public class DokterController implements ModelDriven<Object> {
             model.setNamaDokter(result.get(0).getNamaDokter());
             model.setNamaSpesialis(result.get(0).getNamaSpesialis());
             model.setKuota(result.get(0).getKuota());
+            model.setLat(result.get(0).getLat());
+            model.setLon(result.get(0).getLon());
         }
 
         if (action.equalsIgnoreCase("kuota")) {
 
             try {
                 dokterBoProxy.editKuota(idDokter, kuota);
+            } catch (GeneralBOException e) {
+                logger.error("[DokterController.create] Error, " + e.getMessage());
+            }
+        }
+
+        if (action.equalsIgnoreCase("saveEditLoc")){
+            try {
+                dokterBoProxy.editLatLon(idDokter, lat, lon);
             } catch (GeneralBOException e) {
                 logger.error("[DokterController.create] Error, " + e.getMessage());
             }

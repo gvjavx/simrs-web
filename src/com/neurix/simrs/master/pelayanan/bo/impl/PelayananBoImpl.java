@@ -72,11 +72,11 @@ public class PelayananBoImpl implements PelayananBo{
     }
 
     @Override
-    public List<Pelayanan> getListApotek() throws GeneralBOException {
+    public List<Pelayanan> getListApotek(String branch) throws GeneralBOException {
 
         List<Pelayanan> listApotek = new ArrayList<>();
         try {
-            listApotek =  pelayananDao.getListApotek();
+            listApotek =  pelayananDao.getListApotek(branch);
         }catch (HibernateException e){
             logger.error("[pelayananBoImpl.getListAllPelayanan] Error get pelayanan data apotek "+e.getMessage());
         }
@@ -136,5 +136,18 @@ public class PelayananBoImpl implements PelayananBo{
 
         logger.info("[PelayananBoImpl.getByCriteria] End <<<<<<");
         return result;
+    }
+
+    @Override
+    public List<Pelayanan> getListPelayananPaketPeriksa(String branch) throws GeneralBOException {
+        List<Pelayanan> pelayananList = new ArrayList<>();
+        if(branch != null){
+            try {
+                pelayananList = pelayananDao.getListPelayananPaket(branch);
+            }catch (HibernateException e){
+                logger.error("Found Error "+e.getMessage());
+            }
+        }
+        return pelayananList;
     }
 }

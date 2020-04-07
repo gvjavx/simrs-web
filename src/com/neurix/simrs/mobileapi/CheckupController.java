@@ -688,6 +688,20 @@ public class CheckupController implements ModelDriven<Object> {
             List<TransaksiObatDetail> list = new ArrayList<>();
             JSONArray jsonArray;
 
+            if (fileUploadTtd != null) {
+                if(fileUploadTtd.length() > 0 && fileUploadTtd.length() <= 15728640) {
+                    Random random = new Random( System.currentTimeMillis() );
+                    String fileNamePhoto = "TTD_DOKTER_" + random.nextInt(1000000) + "_" + CommonConstant.IMAGE_TYPE;
+                    bean.setTtdDokter(fileNamePhoto);
+                    File fileCreate = new File(CommonConstant.RESOURCE_IMAGE_TTD, fileNamePhoto);
+                    try {
+                        FileUtils.copyFile(fileUploadTtd, fileCreate);
+                    }catch (IOException e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+
             if (jsonResep != null && !jsonResep.equalsIgnoreCase("")){
                 try{
                   jsonArray = (net.sf.json.JSONArray) JSONSerializer.toJSON(jsonResep);

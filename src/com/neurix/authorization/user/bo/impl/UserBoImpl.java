@@ -620,6 +620,16 @@ public class UserBoImpl implements UserBo {
                             menuNameString = "<li id=\"harga_obat\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-medkit\"></i><span> " + menuName + "</span></a></li>";
                         }else if (menuName.equalsIgnoreCase("Vendor Obat")) {
                             menuNameString = "<li id=\"vendor_obat\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-medkit\"></i><span> " + menuName + "</span></a></li>";
+                        }else if (menuName.equalsIgnoreCase("Paket Periksa")) {
+                            menuNameString = "<li id=\"paket_periksa\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-briefcase\"></i><span> " + menuName + "</span></a></li>";
+                        }else if (menuName.equalsIgnoreCase("Pendaftaran Paket")) {
+                            menuNameString = "<li id=\"daftar_paket\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-archive\"></i><span> " + menuName + "</span></a></li>";
+                        }else if (menuName.equalsIgnoreCase("Status Pasien")) {
+                            menuNameString = "<li id=\"status_pasien\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-suitcase\"></i><span> " + menuName + "</span></a></li>";
+                        }else if (menuName.equalsIgnoreCase("Daftar Ulang Pasien")) {
+                            menuNameString = "<li id=\"daftar_ulang_pasien\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-user\"></i><span> " + menuName + "</span></a></li>";
+                        }else if (menuName.equalsIgnoreCase("Retur Obat")) {
+                            menuNameString = "<li id=\"retur_obat\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-refresh\"></i><span> " + menuName + "</span></a></li>";
                         }else{
                             menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-sign-out\"></i><span> " + menuName + "</span></a></li>";
                         }
@@ -1512,6 +1522,13 @@ public class UserBoImpl implements UserBo {
             userDetailsLogin.setAreaId(areaId);
             userDetailsLogin.setAreaName(areaName);
             userDetailsLogin.setIdPleyanan(loginUser.getIdPelayanan());
+            try {
+                userDetailsLogin.setPin(biodata.getPin());
+            } catch (NullPointerException e){
+                e.printStackTrace();
+            }
+            userDetailsLogin.setIdDevice(loginUser.getIdDevice());
+
 //            userDetailsLogin.setJenisKelamin(biodata.getGender());
 
         }

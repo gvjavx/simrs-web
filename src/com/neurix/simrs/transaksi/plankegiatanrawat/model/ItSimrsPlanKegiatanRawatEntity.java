@@ -21,6 +21,11 @@ public class ItSimrsPlanKegiatanRawatEntity implements Serializable {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String idDetailCheckup;
+    private String branchId;
+    private String flagDikerjakan;
+    private String keterangan;
+    private String waktu;
+    private String jenisKegiatan;
 
     public String getId() {
         return id;
@@ -124,5 +129,45 @@ public class ItSimrsPlanKegiatanRawatEntity implements Serializable {
 
     public void setIdDetailCheckup(String idDetailCheckup) {
         this.idDetailCheckup = idDetailCheckup;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
+    public String getFlagDikerjakan() {
+        return flagDikerjakan;
+    }
+
+    public void setFlagDikerjakan(String flagDikerjakan) {
+        this.flagDikerjakan = flagDikerjakan;
+    }
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
+    public String getWaktu() {
+        return waktu;
+    }
+
+    public void setWaktu(String waktu) {
+        this.waktu = waktu;
+    }
+
+    public String getJenisKegiatan() {
+        return jenisKegiatan;
+    }
+
+    public void setJenisKegiatan(String jenisKegiatan) {
+        this.jenisKegiatan = jenisKegiatan;
     }
 }

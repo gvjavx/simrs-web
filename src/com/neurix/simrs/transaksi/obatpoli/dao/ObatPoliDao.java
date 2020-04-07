@@ -180,19 +180,21 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
 
             String SQL = "SELECT\n" +
                     "a.id_pelayanan,\n" +
-                    "b.id_obat,  \n" +
+                    "b.id_obat,\n" +
                     "b.nama_obat,\n" +
                     "SUM(a.qty_box) as box,\n" +
                     "SUM(a.qty_lembar) as lembar,\n" +
                     "SUM(a.qty_biji) as biji,\n" +
                     "b.lembar_per_box,\n" +
                     "b.biji_per_lembar,\n" +
-                    "b.flag_kronis\n" +
+                    "b.flag_kronis,\n" +
+                    "c.harga_jual\n" +
                     "FROM mt_simrs_obat_poli a\n" +
                     "INNER JOIN (\n" +
-                    "\tSELECT id_obat, nama_obat, lembar_per_box, biji_per_lembar, flag_kronis\n" +
-                    "\tFROM im_simrs_obat WHERE flag_bpjs LIKE :flag GROUP BY id_obat, nama_obat, lembar_per_box, biji_per_lembar, flag_kronis\n" +
+                    "SELECT id_obat, nama_obat, lembar_per_box, biji_per_lembar, flag_kronis\n" +
+                    "FROM im_simrs_obat WHERE flag_bpjs LIKE :flag GROUP BY id_obat, nama_obat, lembar_per_box, biji_per_lembar, flag_kronis\n" +
                     ") b ON a.id_obat = b.id_obat\n" +
+                    "INNER JOIN mt_simrs_harga_obat c ON a.id_obat = c.id_obat\n" +
                     "WHERE a.id_pelayanan = :idPelayanan \n" +
                     "AND a.branch_id = :branchId \n" +
                     "GROUP BY a.id_pelayanan,\n" +
@@ -200,7 +202,8 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
                     "b.nama_obat,\n" +
                     "b.lembar_per_box,\n" +
                     "b.biji_per_lembar,\n" +
-                    "b.flag_kronis";
+                    "b.flag_kronis,\n" +
+                    "c.harga_jual\n";
 
             List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("idPelayanan", idPelayanan)
@@ -220,6 +223,7 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
                     obatPoli.setLembarPerBox(obj[6] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[6].toString()));
                     obatPoli.setBijiPerLembar(obj[7] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[7].toString()));
                     obatPoli.setFlagKronis(obj[8] == null ? "" : obj[8].toString());
+                    obatPoli.setHarga(obj[9] == null ? "" : obj[9].toString());
                     obatPoliList.add(obatPoli);
                 }
             }

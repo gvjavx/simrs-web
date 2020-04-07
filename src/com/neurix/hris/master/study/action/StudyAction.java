@@ -10,6 +10,8 @@ import com.neurix.hris.master.study.model.Study;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
@@ -380,6 +382,70 @@ public class StudyAction extends BaseMasterAction{
         return getStudy();
     }
 
+//    public String saveAdd(String jsonString) throws JSONException {
+//        logger.info("[StudyAction.saveAdd] start process >>>");
+//
+//        JSONObject obj = new JSONObject(jsonString);
+//
+//        if (obj != null){
+//            try {
+//                Study study = new Study();
+//                study.setTypeStudy(obj.getString("typeStudy"));
+//                study.setStudyName(obj.getString("studyName"));
+//                study.setTahunAwal(obj.getString("tahunAwal"));
+//                study.setTahunAkhir(obj.getString("tahunAkhir"));
+//                study.setProgramStudy(obj.getString("programStudy"));
+//                study.setFakultasId(obj.getString("fakultasId"));
+//
+//                String userLogin = CommonUtil.userLogin();
+//                Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+//
+//                study.setCreatedWho(userLogin);
+//                study.setLastUpdate(updateTime);
+//                study.setCreatedDate(updateTime);
+//                study.setLastUpdateWho(userLogin);
+//                study.setAction("C");
+//                study.setFlag("Y");
+//
+//                ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+//                StudyBo studyBo = (StudyBo) ctx.getBean("studyBoProxy");
+//
+//                int id = 0;
+//                HttpSession session = ServletActionContext.getRequest().getSession();
+//                List<Study> listOfResult = (List<Study>) session.getAttribute("listStudy");
+//                if(listOfResult != null){
+//                    for(Study study1: listOfResult){
+//                        id = Integer.parseInt(study1.getStudyId());
+//                    }
+//                    id++;
+//                    study.setStudyId(id + "");
+//                    listOfResult.add(study);
+//                }else{
+//                    listOfResult = new ArrayList<>();
+//                    study.setStudyId(id + "");
+//                    listOfResult.add(study);
+//                }
+//                session.removeAttribute("listStudy");
+//                session.setAttribute("listStudy", listOfResult);
+//
+//                //studyBo.saveAdd(study);
+//            }catch (GeneralBOException e) {
+//                Long logId = null;
+//                try {
+//                    logId = studyBoProxy.saveErrorMessage(e.getMessage(), "liburBO.saveAdd");
+//                } catch (GeneralBOException e1) {
+//                    logger.error("[liburAction.saveAdd] Error when saving error,", e1);
+//                    return ERROR;
+//                }
+//                logger.error("[liburAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+//                addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+//                return ERROR;
+//            }
+//        }
+//
+//        return "";
+//    }
+
     public String saveAdd(String typeStudy, String studyName, String tahunAwal, String tahunAkhir, String programStudy){
         logger.info("[StudyAction.saveAdd] start process >>>");
 
@@ -402,33 +468,33 @@ public class StudyAction extends BaseMasterAction{
             study.setAction("C");
             study.setFlag("Y");
 
-            if (this.fileUploadIjazah != null){
-                String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY + ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_USER_UPLOAD_IJAZAH;
-                String fileName = typeStudy + ".jpg";
-                File fileToCreate = new File(filePath, fileName);
-
-                //create file to save to folder '/upload'
-                byte[] contentFile = null;
-                try {
-                    FileUtils.copyFile(this.fileUploadIjazah, fileToCreate);
-                    contentFile = FileUtils.readFileToByteArray(this.fileUploadIjazah);
-                } catch (IOException e) {
-                    Long logId = null;
-                    try {
-                        logId = studyBoProxy.saveErrorMessage(e.getMessage(), "UserAction.save");
-                    } catch (GeneralBOException e1) {
-                        logger.error("[UserAction.save] Error when saving error,", e1);
-                    }
-                    logger.error("[UserAction.save] Error when uploading and saving user," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
-                    addActionError("Error, " + "[code=" + logId + "] Found problem when uploading and saving user, please inform to your admin. Cause : " + e.getMessage());
-                    return ERROR;
-                }
-
-                if (contentFile!=null) {
-                    study.setContentFile(contentFile);
-                    study.setFotoUpload(fileName);
-                }
-            }
+//            if (this.fileUploadIjazah != null){
+//                String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY + ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_USER_UPLOAD_IJAZAH;
+//                String fileName = typeStudy + ".jpg";
+//                File fileToCreate = new File(filePath, fileName);
+//
+//                //create file to save to folder '/upload'
+//                byte[] contentFile = null;
+//                try {
+//                    FileUtils.copyFile(this.fileUploadIjazah, fileToCreate);
+//                    contentFile = FileUtils.readFileToByteArray(this.fileUploadIjazah);
+//                } catch (IOException e) {
+//                    Long logId = null;
+//                    try {
+//                        logId = studyBoProxy.saveErrorMessage(e.getMessage(), "UserAction.save");
+//                    } catch (GeneralBOException e1) {
+//                        logger.error("[UserAction.save] Error when saving error,", e1);
+//                    }
+//                    logger.error("[UserAction.save] Error when uploading and saving user," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+//                    addActionError("Error, " + "[code=" + logId + "] Found problem when uploading and saving user, please inform to your admin. Cause : " + e.getMessage());
+//                    return ERROR;
+//                }
+//
+//                if (contentFile!=null) {
+//                    study.setContentFile(contentFile);
+//                    study.setFotoUpload(fileName);
+//                }
+//            }
 
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             StudyBo studyBo = (StudyBo) ctx.getBean("studyBoProxy");

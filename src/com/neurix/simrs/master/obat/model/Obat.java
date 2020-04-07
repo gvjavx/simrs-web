@@ -57,6 +57,71 @@ public class Obat extends BaseModel {
 
     private String flagBpjs;
 
+    private String idPermintaanVendor;
+    private String idApprovalObat;
+    private String idVendor;
+    private Timestamp tglRetur;
+    private String namaVendor;
+    private String idRetureObat;
+
+    private String stTglRetur;
+
+    public String getStTglRetur() {
+        return stTglRetur;
+    }
+
+    public void setStTglRetur(String stTglRetur) {
+        this.stTglRetur = stTglRetur;
+    }
+
+    public String getIdRetureObat() {
+        return idRetureObat;
+    }
+
+    public void setIdRetureObat(String idRetureObat) {
+        this.idRetureObat = idRetureObat;
+    }
+
+    public String getNamaVendor() {
+        return namaVendor;
+    }
+
+    public void setNamaVendor(String namaVendor) {
+        this.namaVendor = namaVendor;
+    }
+
+    public Timestamp getTglRetur() {
+        return tglRetur;
+    }
+
+    public void setTglRetur(Timestamp tglRetur) {
+        this.tglRetur = tglRetur;
+    }
+
+    public String getIdPermintaanVendor() {
+        return idPermintaanVendor;
+    }
+
+    public void setIdPermintaanVendor(String idPermintaanVendor) {
+        this.idPermintaanVendor = idPermintaanVendor;
+    }
+
+    public String getIdApprovalObat() {
+        return idApprovalObat;
+    }
+
+    public void setIdApprovalObat(String idApprovalObat) {
+        this.idApprovalObat = idApprovalObat;
+    }
+
+    public String getIdVendor() {
+        return idVendor;
+    }
+
+    public void setIdVendor(String idVendor) {
+        this.idVendor = idVendor;
+    }
+
     public String getFlagBpjs() {
         return flagBpjs;
     }

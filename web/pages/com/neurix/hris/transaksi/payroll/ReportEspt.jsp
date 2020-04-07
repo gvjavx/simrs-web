@@ -82,7 +82,7 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:select list="#{'1721':'Tarikan 1721', 'pdppph' : 'Tarikan Pendapatan + PPH'}"
+                                                        <s:select list="#{'1721':'Tarikan 1721'}"
                                                                   id="tipeTarikan"
                                                                   headerKey="" headerValue="[Pilih Tipe Tarikan]" cssClass="form-control" />
                                                     </table>

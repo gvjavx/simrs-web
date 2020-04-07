@@ -20,6 +20,8 @@
           p:obatGejalaDao-ref="obatGejalaDao"
           p:batchDao-ref="transaksiObatDetailBatchDao"
           p:hargaObatDao-ref="hargaObatDao"
+          p:returObatDao-ref="returObatDao"
+          p:returObatDetailDao-ref="returObatDetailDao"
     />
 
     <bean id="obatBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -48,6 +50,12 @@
           p:sessionFactory-ref="sessionFactory" />
 
     <bean id="obatGejalaDao" class="com.neurix.simrs.master.obatgejala.dao.ObatGejalaDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+    <bean id="returObatDao" class="com.neurix.simrs.master.obat.dao.ReturObatDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+    <bean id="returObatDetailDao" class="com.neurix.simrs.master.obat.dao.ReturObatDetailDao"
           p:sessionFactory-ref="sessionFactory" />
 
 </beans>

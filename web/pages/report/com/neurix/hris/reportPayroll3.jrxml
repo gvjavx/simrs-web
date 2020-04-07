@@ -96,8 +96,7 @@ and payroll.payroll_id = $P{reportParams.payrollId}]]>
 	<field name="lain_lain" class="java.math.BigDecimal"/>
 	<field name="approval_id" class="java.lang.String"/>
 	<field name="approval_date" class="java.sql.Timestamp">
-		<fieldDescription><![CDATA[
-]]></fieldDescription>
+		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="flag_payroll" class="java.lang.String"/>
 	<field name="flag_thr" class="java.lang.String"/>

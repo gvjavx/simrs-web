@@ -1725,22 +1725,22 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                     for (ImGolonganPkwtEntity golonganPkwtLoop: listGolonganPkwt){
                         golonganPkwt.setGolonganPkwtName(golonganPkwtLoop.getGolonganPkwtName());
                     }
-                    if(payrollEntity.getGolonganName()!=null){
-                        if (!payrollEntity.getGolonganName().equalsIgnoreCase("")){
-                            payroll.setGolonganName(payrollEntity.getGolonganName());
-                        }else{
-                            payroll.setGolonganName(golonganPkwt.getGolonganPkwtName());
-                        }
-                    }else{
+
+                    if (("TP03").equalsIgnoreCase(payrollEntity.getTipePegawai())){
                         payroll.setGolonganName(golonganPkwt.getGolonganPkwtName());
+                    }else{
+                        payroll.setGolonganName(payrollEntity.getGolonganName());
                     }
+
                     payroll.setStatusKeluarga(payrollEntity.getStatusKeluarga());
                     payroll.setMasaKerjaGol(payrollEntity.getMasaKerjaGol());
                     payroll.setStMasaKerjaGol(String.valueOf(payrollEntity.getMasaKerjaGol()));
                     payroll.setGolonganDapenId(payrollEntity.getGolonganDapenId());
                     ImGolonganDapenEntity golonganDapen = new ImGolonganDapenEntity();
                     golonganDapen = golonganDapenDao.getById("golonganDapenId",payrollEntity.getGolonganDapenId());
-                    payroll.setGolonganDapenName(golonganDapen.getGolonganDapenName());
+                    if (golonganDapen!=null){
+                        payroll.setGolonganDapenName(golonganDapen.getGolonganDapenName());
+                    }
                     // cek apakah anak > 25 tahun
                     payrollEntity.setJumlahAnak(cekJumlahAnak(payrollEntity.getNip(), payrollEntity.getBranchId()));
                     payroll.setJumlahAnak(payrollEntity.getJumlahAnak());
@@ -2114,6 +2114,10 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
 
                             pphSeharusnya = pph12Bulan.getHutangPphNilai();
                             selisihPph = pph12Bulan.getPphGajiNilai();
+
+                            if(selisihPph.compareTo(BigDecimal.ZERO)<0){
+                                selisihPph=BigDecimal.ZERO;
+                            }
 
                             payrollPph.setPphGajiNilai(selisihPph);
                             payrollPph.setPphGaji(CommonUtil.numbericFormat(selisihPph,"###,###"));
@@ -8780,6 +8784,10 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
 
                         BigDecimal pphSeharusnya = pph12Bulan.getHutangPphNilai();
                         BigDecimal selisihPph = pph12Bulan.getPphGajiNilai();
+
+                        if (selisihPph.compareTo(BigDecimal.ZERO)<0){
+                            selisihPph = BigDecimal.ZERO;
+                        }
 
                         payrollPerson.setPphGajiNilai(selisihPph);
                         payrollPerson.setPphGaji(CommonUtil.numbericFormat(selisihPph,"###,###"));
@@ -22170,6 +22178,8 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
             if (itPayrollEntities.size() > 0) {
                 for (PayrollEsptDTO data : itPayrollEntities) {
                     data.setTahunPajak(tahun);
+                    //jumlah2 jumlah tunj pph + tunj pph bonus
+                    data.setJumlah2(data.getJumlah2().add(payrollDao.getTunjanganPPhGajiBonusSetahun(tahun,data.getNip())));
                     //jumlah4 belum tau
                     data.setJumlah4(BigDecimal.ZERO);
                     //jumlah5 belum tau
@@ -22209,14 +22219,14 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                     // pajak setahun aslinya
                     data.setJumlah19(data.getJumlah19().subtract(data.getJumlah18()));
                     //pajak yang telah dipotong / dilunasi
-                    data.setJumlah20(payrollDao.getPPhGaji12Bulan(tahun,data.getNip()));
+                    data.setJumlah20(payrollDao.getPPhGaji12Bulan(tahun,data.getNip()).add(payrollDao.getPPhGajiBonusSetahun(tahun,data.getNip())));
                     //selisih
                     data.setSelisih21(data.getJumlah20().subtract(data.getJumlah19()));
                     //kurang bayar
                     if (data.getSelisih21().compareTo(BigDecimal.ZERO)<0){
                         data.setKurangBayar21(BigDecimal.ZERO);
                     }else{
-                        data.setKurangBayar21(data.getSelisih21());
+                        data.setKurangBayar21(data.getSelisih21().subtract(data.getJumlah20()));
                     }
                     listOfResult.add(data);
                 }
@@ -22784,14 +22794,14 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
         PayrollModalDTO result = new PayrollModalDTO();
         BigDecimal pphSeharusnya ,pphGaji,tunjPph = BigDecimal.ZERO;
         Integer selisih ;
-        BigDecimal totalANilai = new BigDecimal(totalA.replace(",",""));
-        BigDecimal totalRlabNilai = new BigDecimal(totalRlab.replace(",",""));
-        BigDecimal iuranDapenNilai = new BigDecimal(iuranDapen.replace(",",""));
-        BigDecimal iuranBpjsKsNilai = new BigDecimal(iuranBpjsKs.replace(",",""));
-        BigDecimal iuranBpjsTkNilai = new BigDecimal(iuranBpjsTk.replace(",",""));
-        BigDecimal tunjDapenNilai = new BigDecimal(tunjDapen.replace(",",""));
-        BigDecimal tunjBpjsKsNilai = new BigDecimal(tunjBpjsKs.replace(",",""));
-        BigDecimal tunjBpjsTkNilai = new BigDecimal(tunjBpjsTk.replace(",",""));
+        BigDecimal totalANilai = new BigDecimal(totalA.replace(".",""));
+        BigDecimal totalRlabNilai = new BigDecimal(totalRlab.replace(".",""));
+        BigDecimal iuranDapenNilai = new BigDecimal(iuranDapen.replace(".",""));
+        BigDecimal iuranBpjsKsNilai = new BigDecimal(iuranBpjsKs.replace(".",""));
+        BigDecimal iuranBpjsTkNilai = new BigDecimal(iuranBpjsTk.replace(".",""));
+        BigDecimal tunjDapenNilai = new BigDecimal(tunjDapen.replace(".",""));
+        BigDecimal tunjBpjsKsNilai = new BigDecimal(tunjBpjsKs.replace(".",""));
+        BigDecimal tunjBpjsTkNilai = new BigDecimal(tunjBpjsTk.replace(".",""));
         BigDecimal iuranPegawai = iuranDapenNilai.add(iuranBpjsKsNilai.add(iuranBpjsTkNilai));
         BigDecimal tunjLain = totalRlabNilai.add(tunjDapenNilai).add(tunjBpjsTkNilai).add(tunjBpjsKsNilai);
 

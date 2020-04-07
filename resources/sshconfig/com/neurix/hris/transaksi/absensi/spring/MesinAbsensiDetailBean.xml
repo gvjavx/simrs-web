@@ -11,6 +11,10 @@
     <bean id="mesinAbsensiDetailBo" class="com.neurix.hris.transaksi.absensi.bo.impl.MesinAbsensiDetailBoImpl"
           p:mesinAbsensiDetailDao-ref="mesinAbsensiDetailDao" />
 
+    <bean id="absensiOnline" class="com.neurix.hris.mobileapi.AbsensiOnlineController"
+          p:mesinAbsensiDetailBoProxy-ref="mesinAbsensiDetailBoProxy" />
+
+
     <bean id="mesinAbsensiDetailBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="mesinAbsensiDetailBo">
         <property name="interceptorNames">
