@@ -517,7 +517,7 @@
                                                         <s:set name="listOfAbsensi" value="#session.listOfResultAbsensi" scope="request" />
                                                         <display:table name="listOfAbsensi" class="tableAbsensi table table-condensed table-striped table-hover"
                                                                        requestURI="paging_displaytag_absensi.action" export="true" id="row" pagesize="30" style="font-size:10">
-                                                            <display:column media="html" title="Refresh">
+                                                            <%--<display:column media="html" title="Refresh">
                                                                 <s:if test="#attr.row.cekAdmin">
                                                                     <s:if test="#attr.row.cekMangkir">
                                                                         <a href="javascript:;"  tanggal="<s:property value="%{#attr.row.stTanggal}"/>" nip="<s:property value="%{#attr.row.nip}"/>" href="javascript:;" class="item-refresh" cssClass="item-refresh">
@@ -525,7 +525,7 @@
                                                                         </a>
                                                                     </s:if>
                                                                 </s:if>
-                                                            </display:column>
+                                                            </display:column>--%>
                                                             <display:column media="html" title="Delete" style="text-align:center;font-size:9">
                                                                 <s:if test="#attr.row.cekAdmin">
                                                                     <s:url var="urlDelete" namespace="/absensi" action="delete_absensi" escapeAmp="false">
@@ -564,7 +564,7 @@
                                                             <display:column property="jamMasuk" sortable="true" title="Jam Masuk" style="text-align:center" />
                                                             <display:column property="jamKeluar" sortable="true" title="Jam Pulang" style="text-align:center" />
                                                             <display:column property="statusName" sortable="true" title="status" style="text-align:left" />
-                                                            <display:column property="ijin" sortable="true" title="ijin" style="text-align:center" />
+                                                            <%--<display:column property="ijin" sortable="true" title="ijin" style="text-align:center" />--%>
                                                             <display:column property="lembur" sortable="true" title="lembur" style="text-align:center" />
                                                             <display:column property="realisasiJamLembur" sortable="true" title="Realisasi Lembur" style="text-align:center" />
                                                             <%--<display:column media="html" title="Keterangan" style="text-align:center;font-size:9">

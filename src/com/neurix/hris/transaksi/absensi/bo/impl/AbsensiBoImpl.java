@@ -2425,19 +2425,16 @@ public class AbsensiBoImpl implements AbsensiBo {
 
         Map hsCriteriaMesin = new HashMap();
         hsCriteriaMesin.put("flag", "Y");
-
         List<ImMesinAbsensiEntity> imMesinAbsensiEntityList = new ArrayList<>();
         imMesinAbsensiEntityList = mesinDao.getByCriteria(hsCriteriaMesin);
         for (ImMesinAbsensiEntity mesin : imMesinAbsensiEntityList) {
             urlParameters = mesin.getMesinSn();
             url = mesin.getMesinName();
-        }
-        // CODING ASLI //
-        boolean isSession;
-        String inputLine;
-        StringBuffer response = new StringBuffer();
-        List<MesinAbsensiDetail> mesinAbsensiDetailList = new ArrayList<>();
-        do {
+
+            // CODING ASLI //
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+            List<MesinAbsensiDetail> mesinAbsensiDetailList = new ArrayList<>();
             byte[] postData = urlParameters.getBytes( StandardCharsets.UTF_8 );
             int postDataLength = postData.length;
             URL obj = new URL(url);
@@ -2460,8 +2457,8 @@ public class AbsensiBoImpl implements AbsensiBo {
                 responseTemp.append(inputLine);
             }
             in.close();
+            //GET DATA
             JSONObject myResponseCheck = new JSONObject(responseTemp.toString());
-            isSession = myResponseCheck.getBoolean("IsSession");
             JSONArray ja_data = myResponseCheck.getJSONArray("Data");
             int length = ja_data.length();
             for(int i=0; i<length; i++) {
@@ -2475,38 +2472,37 @@ public class AbsensiBoImpl implements AbsensiBo {
                 mesinAbsensiDetailList.add(mesinAbsensiDetail);
             }
             response.append(responseTemp);
-        }
-        while (isSession);
 
-        //Save To mesin Absensi Detail List
-        for (MesinAbsensiDetail mesinAbsensiDetail : mesinAbsensiDetailList) {
-            List<MesinAbsensiDetailEntity> mesinAbsensiDetailEntityList = new ArrayList<>();
-            Map hsCriteria = new HashMap();
-            hsCriteria.put("pin", mesinAbsensiDetail.getPin());
-            hsCriteria.put("status", mesinAbsensiDetail.getStatus());
-            hsCriteria.put("scan_date", mesinAbsensiDetail.getScanDate());
-            hsCriteria.put("verify_mode", mesinAbsensiDetail.getVerifyMode());
-            hsCriteria.put("work_code", mesinAbsensiDetail.getWorkCode());
-            hsCriteria.put("flag", "Y");
-            mesinAbsensiDetailEntityList = mesinAbsensiDetailDao.getByCriteria(hsCriteria);
-            if (mesinAbsensiDetailEntityList.size() == 0) {
-                MesinAbsensiDetailEntity mesinAbsensiDetailEntity = new MesinAbsensiDetailEntity();
-                String mesinAbsensiDetailId = mesinAbsensiDetailDao.getNextMesinAbsensiDetailId();
-                String userLogin = CommonUtil.userLogin();
-                Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-                mesinAbsensiDetailEntity.setMesinAbsensiDetailId(mesinAbsensiDetailId);
-                mesinAbsensiDetailEntity.setPin(mesinAbsensiDetail.getPin());
-                mesinAbsensiDetailEntity.setStatus(mesinAbsensiDetail.getStatus());
-                mesinAbsensiDetailEntity.setScanDate(mesinAbsensiDetail.getScanDate());
-                mesinAbsensiDetailEntity.setVerifyMode(mesinAbsensiDetail.getVerifyMode());
-                mesinAbsensiDetailEntity.setWorkCode(mesinAbsensiDetail.getWorkCode());
-                mesinAbsensiDetailEntity.setAction("C");
-                mesinAbsensiDetailEntity.setFlag("Y");
-                mesinAbsensiDetailEntity.setLastUpdate(updateTime);
-                mesinAbsensiDetailEntity.setCreatedDate(updateTime);
-                mesinAbsensiDetailEntity.setLastUpdateWho(userLogin);
-                mesinAbsensiDetailEntity.setCreatedWho(userLogin);
-                mesinAbsensiDetailDao.addAndSave(mesinAbsensiDetailEntity);
+            //Save To mesin Absensi Detail List
+            for (MesinAbsensiDetail mesinAbsensiDetail : mesinAbsensiDetailList) {
+                List<MesinAbsensiDetailEntity> mesinAbsensiDetailEntityList = new ArrayList<>();
+                Map hsCriteria = new HashMap();
+                hsCriteria.put("pin", mesinAbsensiDetail.getPin());
+                hsCriteria.put("status", mesinAbsensiDetail.getStatus());
+                hsCriteria.put("scan_date", mesinAbsensiDetail.getScanDate());
+                hsCriteria.put("verify_mode", mesinAbsensiDetail.getVerifyMode());
+                hsCriteria.put("work_code", mesinAbsensiDetail.getWorkCode());
+                hsCriteria.put("flag", "Y");
+                mesinAbsensiDetailEntityList = mesinAbsensiDetailDao.getByCriteria(hsCriteria);
+                if (mesinAbsensiDetailEntityList.size() == 0) {
+                    MesinAbsensiDetailEntity mesinAbsensiDetailEntity = new MesinAbsensiDetailEntity();
+                    String mesinAbsensiDetailId = mesinAbsensiDetailDao.getNextMesinAbsensiDetailId();
+                    String userLogin = CommonUtil.userLogin();
+                    Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+                    mesinAbsensiDetailEntity.setMesinAbsensiDetailId(mesinAbsensiDetailId);
+                    mesinAbsensiDetailEntity.setPin(mesinAbsensiDetail.getPin());
+                    mesinAbsensiDetailEntity.setStatus(mesinAbsensiDetail.getStatus());
+                    mesinAbsensiDetailEntity.setScanDate(mesinAbsensiDetail.getScanDate());
+                    mesinAbsensiDetailEntity.setVerifyMode(mesinAbsensiDetail.getVerifyMode());
+                    mesinAbsensiDetailEntity.setWorkCode(mesinAbsensiDetail.getWorkCode());
+                    mesinAbsensiDetailEntity.setAction("C");
+                    mesinAbsensiDetailEntity.setFlag("Y");
+                    mesinAbsensiDetailEntity.setLastUpdate(updateTime);
+                    mesinAbsensiDetailEntity.setCreatedDate(updateTime);
+                    mesinAbsensiDetailEntity.setLastUpdateWho(userLogin);
+                    mesinAbsensiDetailEntity.setCreatedWho(userLogin);
+                    mesinAbsensiDetailDao.addAndSave(mesinAbsensiDetailEntity);
+                }
             }
         }
         // END OF CODING ASLI //
@@ -2869,7 +2865,6 @@ public class AbsensiBoImpl implements AbsensiBo {
                 throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
             }
             if (absensiPegawaiEntityList.size()==0){
-                daftarTidakInquiry=cekDaftarTidakInquiry(pegawai.getPin());
                 if (!("Y").equalsIgnoreCase(daftarTidakInquiry)){
                     MesinAbsensi hasilInquiry = new MesinAbsensi();
                     hasilInquiry.setNip(pegawai.getNip());
@@ -3237,7 +3232,6 @@ public class AbsensiBoImpl implements AbsensiBo {
                 throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
             }
             if (absensiPegawaiEntityList.size()==0){
-                daftarTidakInquiry=cekDaftarTidakInquiry(pegawai.getPin());
                 if (!("Y").equalsIgnoreCase(daftarTidakInquiry)){
                     MesinAbsensi hasilInquiry = new MesinAbsensi();
                     hasilInquiry.setNip(pegawai.getNip());
@@ -5287,45 +5281,6 @@ public class AbsensiBoImpl implements AbsensiBo {
             hasil=SubtractJamAwalDanJamAkhir (jamAwal,jamAkhir,"positif");
         }
         return hasil;
-    }
-    private String cekDaftarTidakInquiry(String pin){
-        String status="N";
-        switch (pin){
-            case "1007":
-                status="Y";
-                break;
-            case "1004":
-                status="Y";
-                break;
-            case "1005":
-                status="Y";
-                break;
-            case "1002":
-                status="Y";
-                break;
-            case "1006":
-                status="Y";
-                break;
-            case "1008":
-                status="Y";
-                break;
-            case "1009":
-                status="Y";
-                break;
-            case "1010":
-                status="Y";
-                break;
-            case "1011":
-                status="Y";
-                break;
-            case "1001":
-                status="Y";
-                break;
-            case "0":
-                status="Y";
-                break;
-        }
-        return status;
     }
 
     @Override

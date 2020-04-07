@@ -518,7 +518,7 @@
                                 </tr>
                             </table>
 
-                            <table style="width: 80%;" class="tree table table-bordered">
+                            <table style="width: 90%;" class="tree table table-bordered">
                             </table>
                         </center>
                     </s:form>

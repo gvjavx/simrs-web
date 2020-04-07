@@ -309,7 +309,7 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
         List<ItCutiPegawaiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItCutiPegawaiEntity.class)
                 .add(Restrictions.eq("nip", nip))
                 .add(Restrictions.eq("approvalFlag", "Y"))
-//                .add(Restrictions.eq("flagPerbaikan", "Y"))
+                .add(Restrictions.ne("flagPerbaikan", "Y"))
                 .add(Restrictions.ne("cancelFlag","Y"))
                 .add(Restrictions.ge("tanggalSelesai",tanggal))
                 .add(Restrictions.le("tanggalDari",tanggal))

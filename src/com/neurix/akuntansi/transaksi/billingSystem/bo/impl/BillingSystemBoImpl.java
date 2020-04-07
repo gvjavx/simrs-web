@@ -10,10 +10,12 @@ import com.neurix.akuntansi.master.trans.dao.TransDao;
 import com.neurix.akuntansi.master.trans.model.ImTransEntity;
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDao;
+import com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDetailActivityDao;
 import com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDetailDao;
 import com.neurix.akuntansi.transaksi.jurnal.model.ItJurnalDetailActivityEntity;
 import com.neurix.akuntansi.transaksi.jurnal.model.ItJurnalDetailEntity;
 import com.neurix.akuntansi.transaksi.jurnal.model.ItJurnalEntity;
+import com.neurix.akuntansi.transaksi.jurnal.model.JurnalDetailActivity;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import org.apache.log4j.Logger;
@@ -30,12 +32,21 @@ public class BillingSystemBoImpl implements BillingSystemBo {
 
     private JurnalDao jurnalDao;
     private JurnalDetailDao jurnalDetailDao;
+    private JurnalDetailActivityDao jurnalDetailActivityDao;
     private MappingJurnalDao mappingJurnalDao;
     private KodeRekeningDao kodeRekeningDao;
     private String userLogin;
     private Timestamp updateTime;
     private TipeJurnalDao tipeJurnalDao;
     private TransDao transDao;
+
+    public JurnalDetailActivityDao getJurnalDetailActivityDao() {
+        return jurnalDetailActivityDao;
+    }
+
+    public void setJurnalDetailActivityDao(JurnalDetailActivityDao jurnalDetailActivityDao) {
+        this.jurnalDetailActivityDao = jurnalDetailActivityDao;
+    }
 
     public TransDao getTransDao() {
         return transDao;
@@ -443,11 +454,34 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                                                 for (int x=0;x<activityList.size();x++){
                                                     ItJurnalDetailActivityEntity saveActivity = new ItJurnalDetailActivityEntity();
                                                     if (activityList.get(i).get("activity_id")!=null){
+                                                        saveActivity.setActivityId((String)activityList.get(i).get("activity_id"));
                                                     }else{
                                                         status="ERROR : Activity ID tidak ditemukan";
                                                         logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
                                                         throw new GeneralBOException("Found problem "+status+", please info to your admin...");
                                                     }
+                                                    if (activityList.get(i).get("person_id")!=null){
+                                                        saveActivity.setPersonId((String)activityList.get(i).get("person_id"));
+                                                    }else{
+                                                        status="ERROR : Person ID tidak ditemukan";
+                                                        logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
+                                                        throw new GeneralBOException("Found problem "+status+", please info to your admin...");
+                                                    }
+                                                    if (activityList.get(i).get("nilai")!=null){
+                                                        saveActivity.setJumlah((BigDecimal)activityList.get(i).get("nilai"));
+                                                    }else{
+                                                        status="ERROR : nilai tidak ditemukan";
+                                                        logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
+                                                        throw new GeneralBOException("Found problem "+status+", please info to your admin...");
+                                                    }
+                                                    saveActivity.setJurnalDetailActivityId(jurnalDetailActivityDao.getNextJurnalActivityId());
+                                                    saveActivity.setJurnalDetailId(jurnalDetailId);
+                                                    saveActivity.setFlag("Y");
+                                                    saveActivity.setAction("C");
+                                                    saveActivity.setCreatedDate(updateTime);
+                                                    saveActivity.setLastUpdate(updateTime);
+                                                    saveActivity.setCreatedWho(userLogin);
+                                                    saveActivity.setLastUpdateWho(userLogin);
                                                 }
                                             }catch (Exception e){
                                                 logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+e.getMessage());
