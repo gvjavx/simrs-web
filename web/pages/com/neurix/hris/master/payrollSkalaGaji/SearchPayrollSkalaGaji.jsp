@@ -49,7 +49,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Payroll Skala Gaji
+            Payroll Skala Gaji II
         </h1>
     </section>
 
