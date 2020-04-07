@@ -127,6 +127,22 @@
             }
         });
 
+        $.subscribe('beforeProcessSaveStudy', function (event, data){
+            if (confirm('Do you want to save this record?')){
+                event.originalEvent.options.submit = true;
+                $('#modal-edit-document').modal('hide');
+                $('#myFormDocument')[0].reset();
+                alert('Record has been Saved successfully.');
+
+            } else{
+                event.originalEvent.options.submit = false;
+            }
+        });
+
+        $.subscribe('successDialogDocument', function(event, data)){
+
+        }
+
         $.subscribe('beforeProcessDelete', function (event, data) {
             if (confirm('Do you want to delete this record ?')) {
                 event.originalEvent.options.submit = true;
@@ -1462,7 +1478,10 @@
                 <h4 class="modal-title">Edit Study</h4>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" id="myForm">
+                <s:url id="urlProcess" namespace="/study" action="addBiodata_study"
+                       includeContext="false"/>
+                <s:form id="myFormDocument" enctype="multipart/form-data" method="post" action="%{urlProcess}"
+                        theme="simple" cssClass="form-horizontal">
 
                     <div style="display: none" class="form-group">
                         <label class="control-label col-sm-3" >Id : </label>
@@ -1474,7 +1493,7 @@
                     <div class="form-group">
                         <label class="control-label col-sm-4" for="gender">Type Study :</label>
                         <div class="col-sm-8">
-                            <select class="form-control" id="studyTypeStudy" name="txtGender">
+                            <select class="form-control" id="studyTypeStudy" name="study.studyTypeStudy">
                                 <option value="SD">SD</option>
                                 <option value="SMP">SMP</option>
                                 <option value="SMA">SMA</option>
@@ -1491,14 +1510,14 @@
                     <div class="form-group">
                         <label class="control-label col-sm-4" >Study Name : </label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="studyName" name="txtStdudyName">
+                            <input type="text" class="form-control" id="studyName" name="study.studyName">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="control-label col-sm-4" for="gender">Fakultas :</label>
                         <div class="col-sm-8">
-                            <select class="form-control" id="studyFakultas" >
+                            <select class="form-control" id="studyFakultas" name="study.studyFakultas" >
                             </select>
                         </div>
                     </div>
@@ -1506,29 +1525,29 @@
                     <div class="form-group">
                         <label class="control-label col-sm-4" >Program Studi : </label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="pendidikanProgramStudi" name="txtStdudyName">
+                            <input type="text" class="form-control" id="pendidikanProgramStudi" name="study.pendidikanProgramStudy">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="control-label col-sm-4" >Tahun Awal : </label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="studyTahunAwal" name="txtStdudyName">
+                            <input type="text" class="form-control" id="studyTahunAwal" name="study.studyTahunAwal">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="control-label col-sm-4" >Tahun Lulus : </label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="studyTahunAkhir" name="txtStdudyName">
+                            <input type="text" class="form-control" id="studyTahunAkhir" name="study.studyTahunAkhir">
                         </div>
                     </div>
 
                     <%--<div class="form-group">--%>
-                        <%--<label class="control-label col-sm-4" >Ijazah (Jpg): </label>--%>
-                        <%--<div class="col-sm-8">--%>
-                            <%--<s:file id="fileUploadIjazah" name="fileUploadIjazah" cssClass="form-control" />--%>
-                        <%--</div>--%>
+                    <%--<label class="control-label col-sm-4" >Ijazah (Jpg): </label>--%>
+                    <%--<div class="col-sm-8">--%>
+                    <%--<s:file id="fileUploadIjazah" name="fileUploadIjazah" cssClass="form-control" />--%>
+                    <%--</div>--%>
                     <%--</div>--%>
 
                     <div class="form-group">
@@ -1537,16 +1556,30 @@
                         <div class="col-sm-8">
                             <input type="file" id="file" class="form-control" name="fileUpload"/>
                             <input type="text" id="cpiddoc" class="form-control" accept="application/pdf,image/jpeg"
-                                   name="fileUploadIjazah" readonly style="display: none;"/>
+                                   name="study.fileUploadIjazah" readonly style="display: none;"/>
                         </div>
                     </div>
 
-                </form>
+                    <div class="modal-footer">
+                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="myFormDocument"
+                                   id="saveDocument" name="save" onBeforeTopics="beforeProcessSaveStudy"
+                                   onCompleteTopics="closeDialog,successDialogDocument"
+                                   onSuccessTopics="successDialogDocument" onErrorTopics="errorDialog">
+                            <i class="fa fa-check"></i>
+                            Save
+                        </sj:submit>
+                        <a type="button" class="btn btn-default" data-dismiss="modal">Close</a>
+                    </div>
+                </s:form>
+
+                <%--<form class="form-horizontal" id="myForm">--%>
+
+                <%--</form>--%>
             </div>
-            <div class="modal-footer">
-                <button id="btnSave" type="button" class="btn btn-default btn-success">Simpan</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
+            <%--<div class="modal-footer">--%>
+                <%--<button id="btnSave" type="button" class="btn btn-default btn-success">Simpan</button>--%>
+                <%--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>--%>
+            <%--</div>--%>
         </div>
     </div>
 </div>
@@ -4234,7 +4267,7 @@
         $('#btnAdd').click(function () {
             listPendidikanFakultas();
 
-            $('#myForm')[0].reset();
+//            $('#myForm')[0].reset();
             $('#modal-edit').modal('show');
             $('#myForm').attr('action', 'addStudy');
             $('#modal-edit').find('.modal-title').text('Add Pendidikan');
