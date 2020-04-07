@@ -509,13 +509,6 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
     //case 3
     // untuk pembayaran yang masuk ke divisi
     public void createJurnalBillingCase3 (){
-        List<Map> activityList = new ArrayList<>();
-        Map activity = new HashMap();
-        activity.put("bukti","1111");
-        activity.put("master_id","VN00011");
-        activity.put("nilai",new BigDecimal(20000));
-        activityList.add(activity);
-
         Map piutangPasienNonBpjs = new HashMap();
         piutangPasienNonBpjs.put("bukti","INVHU000003");
         piutangPasienNonBpjs.put("nilai",new BigDecimal(110000));
@@ -534,28 +527,73 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
     }
 
     // case 4 ada detail pembayaran activity
-    public void createJurnalBillingCase8 (){
+    public void createJurnalBillingCase4 (){
+        List<Map> activityList = new ArrayList<>();
+        Map activity = new HashMap();
+        activity.put("activity_id","1111");
+        activity.put("person_id","88888888");
+        activity.put("nilai",new BigDecimal(20000));
+        activityList.add(activity);
+
         Map piutangPasienNonBpjs = new HashMap();
         piutangPasienNonBpjs.put("bukti","INVHU000003");
-        piutangPasienNonBpjs.put("nilai",new BigDecimal(110000));
-
-        Map uangMuka = new HashMap();
-        uangMuka.put("bukti","INVHU000005");
-        uangMuka.put("nilai",new BigDecimal(90000));
+        piutangPasienNonBpjs.put("nilai",new BigDecimal(20000));
+        piutangPasienNonBpjs.put("activity",activityList);
 
         Map data = new HashMap();
         data.put("pasien_id","00000006");
         data.put("bukti","IV000001111");
-        data.put("uang_muka", uangMuka);
+        data.put("kas", new BigDecimal(20000));
+        data.put("metode_bayar", "tunai");
         data.put("piutang_pasien_non_bpjs", piutangPasienNonBpjs);
-        data.put("pendapatan_rawat_jalan_non_bpjs", new BigDecimal(200000));
 
         try {
-            billingSystemBoProxy.createJurnal("04",data,"RS01","TEST 2 : Closing Pasien Rawat Jalan Umum Piutang tanpa Obat pasien sigit","Y");
+            billingSystemBoProxy.createJurnal("02",data,"KP","TEST 4 : pembayaran piutang pasien non bpjs","Y");
         }catch (Exception e){
             logger.error("[BpjsController.createJurnalBillingCase1] Error : " + "[" + e + "]");
         }
     }
+
+    //case 5
+    // untuk pengiriman barang
+    public void createJurnalBillingCase5 (){
+        //list barang
+        List<Map> barangList = new ArrayList<>();
+        Map dataBarang = new HashMap();
+        dataBarang.put("kd_barang","09111112422");
+        dataBarang.put("nilai",new BigDecimal(20000));
+        barangList.add(dataBarang);
+        dataBarang = new HashMap();
+        dataBarang.put("kd_barang","80800800");
+        dataBarang.put("nilai",new BigDecimal(20000));
+        barangList.add(dataBarang);
+        dataBarang.put("kd_barang","1234567");
+        dataBarang.put("nilai",new BigDecimal(20000));
+        barangList.add(dataBarang);
+
+        // map yang memiliki bukti
+        Map hutangVendor = new HashMap();
+        hutangVendor.put("bukti","INV000921234");
+        hutangVendor.put("nilai",new BigDecimal(160000));
+
+        // map yang memiliki bukti
+        Map ppnMasukan = new HashMap();
+        ppnMasukan.put("bukti","INV000921233");
+        ppnMasukan.put("nilai",new BigDecimal(100000));
+
+        Map data = new HashMap();
+        data.put("master_id","VN00011");
+        data.put("persediaan_gudang", barangList);
+        data.put("hutang_farmasi_vendor", hutangVendor);
+        data.put("ppn_masukan",ppnMasukan);
+
+        try {
+            billingSystemBoProxy.createJurnal("27",data,"KP","TEST 5 : Pengiriman Barang Gudang ke Apotik","Y");
+        }catch (Exception e){
+            logger.error("[BpjsController.createJurnalBillingCase3] Error : " + "[" + e + "]");
+        }
+    }
+
     //case 3
     // untuk pembayaran yang masuk ke dalam kas
     public void createJurnalBillingCase7 (){
@@ -579,7 +617,7 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
 
     //case 4
     // untuk Pembuatan Hutang Usaha
-    public void createJurnalBillingCase4 (){
+    public void createJurnalBillingCase8 (){
         Map piutangPasienBpjs = new HashMap();
         piutangPasienBpjs.put("bukti","INVHU000001");
         piutangPasienBpjs.put("nilai",new BigDecimal(10000000));
@@ -598,40 +636,6 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
         }
     }
 
-    //case 4
-    // untuk pengiriman barang
-    public void createJurnalBillingCase5 (){
-        //list barang
-        List<Map> barangList = new ArrayList<>();
-        Map dataBarang = new HashMap();
-        dataBarang.put("kd_barang","09111112422");
-        dataBarang.put("nilai",new BigDecimal(20000));
-        barangList.add(dataBarang);
-        dataBarang = new HashMap();
-        dataBarang.put("kd_barang","80800800");
-        dataBarang.put("nilai",new BigDecimal(20000));
-        barangList.add(dataBarang);
-        dataBarang.put("kd_barang","1234567");
-        dataBarang.put("nilai",new BigDecimal(20000));
-        barangList.add(dataBarang);
-
-        // map yang memiliki bukti
-        Map hutangVendor = new HashMap();
-        hutangVendor.put("bukti","INV000921234");
-        hutangVendor.put("nilai",new BigDecimal(100000));
-
-        Map data = new HashMap();
-        data.put("master_id","VN00011");
-        data.put("persediaan_gudang", barangList);
-        data.put("hutang_vendor", hutangVendor);
-        data.put("ppn_masukan", new BigDecimal(40000));
-
-        try {
-            billingSystemBoProxy.createJurnal("13",data,"RS01","TEST 5 : Untuk Persediaan Barang","Y");
-        }catch (Exception e){
-            logger.error("[BpjsController.createJurnalBillingCase3] Error : " + "[" + e + "]");
-        }
-    }
     public void createJurnalBillingCase6 (){
         //list barang
         List<Map> detailJurnal = new ArrayList<>();

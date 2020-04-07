@@ -3,7 +3,9 @@ package com.neurix.akuntansi.transaksi.tutupperiod.dao;
 import com.neurix.akuntansi.transaksi.tutupperiod.model.ItSimrsBatasTutupPeriodEntity;
 import com.neurix.common.dao.GenericDao;
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
@@ -40,5 +42,17 @@ public class BatasTutupPeriodDao extends GenericDao<ItSimrsBatasTutupPeriodEntit
         Iterator<BigInteger> iter = query.list().iterator();
         String sId = String.format("%08d", iter.next());
         return sId;
+    }
+
+    public List<ItSimrsBatasTutupPeriodEntity> getBatasTutupPeriod(String unit,String bulan,String tahun) throws HibernateException {
+
+        List<ItSimrsBatasTutupPeriodEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItSimrsBatasTutupPeriodEntity.class)
+                .add(Restrictions.eq("unit", unit))
+                .add(Restrictions.eq("bulan", bulan))
+                .add(Restrictions.eq("tahun",tahun))
+                .addOrder(Order.desc("createdDate"))
+                .list();
+
+        return results;
     }
 }
