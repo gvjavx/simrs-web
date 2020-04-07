@@ -1510,12 +1510,12 @@
                         </div>
                     </div>
 
-                    <%--<div class="form-group">
+                    <div class="form-group">
                         <label class="control-label col-sm-4" >Tahun Awal : </label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control" id="studyTahunAwal" name="txtStdudyName">
                         </div>
-                    </div>--%>
+                    </div>
 
                     <div class="form-group">
                         <label class="control-label col-sm-4" >Tahun Lulus : </label>
@@ -1530,18 +1530,15 @@
                             <%--<s:file id="fileUploadIjazah" name="fileUploadIjazah" cssClass="form-control" />--%>
                         <%--</div>--%>
                     <%--</div>--%>
+
                     <div class="form-group">
-                        <label style="margin-top: 7px">Ijazah (Jpg): </label>
-                        <div class="input-group" id="img_file">
-                              <span class="input-group-btn">
-                              <span class="btn btn-default btn-file">
-                               Browse… <s:file id="imgInp" accept=".jpg" name="fileUploadIjazah"
-                                               onchange="$('#img_file').css('border','')"></s:file>
-                                                    </span>
-                                                    </span>
-                            <input type="text" class="form-control" readonly>
+                        <label class="control-label col-sm-4">Ijazah (Jpeg) : </label>
+
+                        <div class="col-sm-8">
+                            <input type="file" id="file" class="form-control" name="fileUpload"/>
+                            <input type="text" id="cpiddoc" class="form-control" accept="application/pdf,image/jpeg"
+                                   name="fileUploadIjazah" readonly style="display: none;"/>
                         </div>
-                        <canvas id="img_ijazah_canvas" style="border: solid 1px #ccc"></canvas>
                     </div>
 
                 </form>
@@ -2376,12 +2373,12 @@
                         </div>
                     </div>
 
-                    <%--<div class="form-group">
+                    <div class="form-group">
                         <label class="control-label col-sm-4" >Tahun Awal : </label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control" id="studyTahunAwalDelete" readonly name="txtStdudyName">
                         </div>
-                    </div>--%>
+                    </div>
 
                     <div class="form-group">
                         <label class="control-label col-sm-4" >Tahun Lulus : </label>
@@ -3483,7 +3480,7 @@
                 } else {
                     if (confirm('Are you sure you want to save this Record?')) {
                         dwr.engine.setAsync(false);
-                        StudyAction.saveAdd(typeStudy, studyName, tahunAwal, tahunAkhir, function (listdata) {
+                        StudyAction.saveAdd(typeStudy, studyName, tahunAwal, tahunAkhir, programStudy, function (listdata) {
                             alert('Data Successfully Added');
                             $('#modal-edit').modal('hide');
                             $('#myForm')[0].reset();
