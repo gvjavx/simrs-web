@@ -374,7 +374,7 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
                 .add(Restrictions.le("tanggalDari",tanggal))
                 .add(Restrictions.ge("tanggalSelesai",tanggal))
                 .add(Restrictions.eq("approvalFlag","Y"))
-                .add(Restrictions.eq("flagPerbaikan","Y"))
+                .add(Restrictions.ne("flagPerbaikan","Y"))
                 .add(Restrictions.ne("cancelFlag","Y"))
                 .addOrder(Order.asc("nip"))
                 .list();
