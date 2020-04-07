@@ -17,7 +17,10 @@ import com.neurix.akuntansi.transaksi.tutupperiod.model.ItSimrsBatasTutupPeriodE
 import com.neurix.akuntansi.transaksi.tutupperiod.model.TutupPeriod;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao;
+import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
 import com.neurix.simrs.transaksi.riwayattindakan.dao.RiwayatTindakanDao;
+import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsRiwayatTindakanEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -43,6 +46,7 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
     private SaldoAkhirDao saldoAkhirDao;
     private KodeRekeningDao kodeRekeningDao;
     private TutupPeriodDao tutupPeriodDao;
+    private CheckupDetailDao checkupDetailDao;
 
     @Override
     public void saveSettingPeriod(List<ItSimrsBatasTutupPeriodEntity> batasList) throws GeneralBOException {
@@ -432,7 +436,25 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
 
         if (bean != null){
 
+            Map hsCriteria = new HashMap();
+            hsCriteria.put("branch_id", bean.getUnit());
+            hsCriteria.put("status_periksa", "1");
 
+            List<ItSimrsHeaderDetailCheckupEntity> detailCheckupEntities = new ArrayList<>();
+            try {
+                detailCheckupEntities = checkupDetailDao.getByCriteria(hsCriteria);
+            } catch (HibernateException e){
+                logger.error("[TutupPeriodBoImpl.createTransitoris] Data Is Null. ",e);
+                throw new GeneralBOException("[TutupPeriodBoImpl.createTransitoris] Data Is Null. "+e);
+            }
+
+            if (detailCheckupEntities.size() > 0){
+                for (ItSimrsHeaderDetailCheckupEntity detailCheckupEntity : detailCheckupEntities){
+
+                    Map mapTransitoris = new HashMap();
+
+                }
+            }
 
         } else {
             logger.error("[TutupPeriodBoImpl.createTransitoris] Data Is Null.");
@@ -649,5 +671,9 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
 
     public void setTutupPeriodDao(TutupPeriodDao tutupPeriodDao) {
         this.tutupPeriodDao = tutupPeriodDao;
+    }
+
+    public void setCheckupDetailDao(CheckupDetailDao checkupDetailDao) {
+        this.checkupDetailDao = checkupDetailDao;
     }
 }
