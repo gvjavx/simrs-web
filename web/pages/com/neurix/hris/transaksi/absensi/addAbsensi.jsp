@@ -183,7 +183,7 @@
                                                 </table>
                                             </td>
                                         </tr>
-                                        <tr>
+                                        <tr style="display: none">
                                             <td>
                                                 <label class="control-label"><small>Status Pegawai :</small></label>
                                             </td>
