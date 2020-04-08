@@ -1308,6 +1308,20 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         return dokterList;
     }
 
+    @Override
+    public ItSimrsHeaderDetailCheckupEntity getDetailCheckupById(String id) throws GeneralBOException {
+        logger.info("[CheckupDetailBoImpl.getDetailCheckupById] START >>>>");
+        logger.info("[CheckupDetailBoImpl.getDetailCheckupById] END <<<");
+        return checkupDetailDao.getById("idDetailCheckup", id);
+    }
+
+    @Override
+    public List<HeaderDetailCheckup> getListRawatInapExisiting(String branchId) throws GeneralBOException {
+        logger.info("[CheckupDetailBoImpl.getListRawatInapExisiting] START >>>>");
+        logger.info("[CheckupDetailBoImpl.getListRawatInapExisiting] END <<<");
+        return checkupDetailDao.getListRawatInapExisting(branchId);
+    }
+
     private String getNextIdDiagnosa() {
         String id = "";
         try {

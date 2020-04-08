@@ -389,7 +389,7 @@
                         <h3 class="box-title"><i class="fa fa-laptop"></i> Monitoring</h3>
                     </div>
                     <div class="box-body">
-                        <button class="btn btn-danger" onclick="showModalPlan('<s:property value="rawatInap.idDetailCheckup"/>')">
+                        <button class="btn btn-danger" onclick="showModalPlan('<s:property value="rawatInap.idDetailCheckup"/>','','suster')">
                             <i class="fa fa-edit"></i> Schedule Rawat
                         </button>
                         <br>
@@ -2869,6 +2869,9 @@
                 <br>
                 <div id="body-list-plan-malam"></div>
             </div>
+            <input type="hidden" id="id-detail">
+            <input type="hidden" id="tgl-plan">
+            <input type="hidden" id="jenis-plan">
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
@@ -3518,7 +3521,7 @@
                 if (response.length > 0) {
                     $.each(response, function (i, item) {
                         option += "<option value='" + item.idTindakan + "'>" + item.tindakan + "</option>";
-                    });
+                    });asd
                     $('#tin_id_tindakan').html(option);
                 } else {
                     $('#tin_id_tindakan').html(option);

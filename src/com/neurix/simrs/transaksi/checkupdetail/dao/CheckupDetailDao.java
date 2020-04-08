@@ -1789,6 +1789,39 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
         return detailCheckup;
     }
 
+    public List<HeaderDetailCheckup> getListRawatInapExisting(String branchId){
+
+        String SQL = "SELECT \n" +
+                "a.id_detail_checkup,\n" +
+                "a.id_jenis_periksa_pasien,\n" +
+                "a.id_pelayanan,\n" +
+                "b.tipe_pelayanan\n" +
+                "FROM it_simrs_header_detail_checkup a\n" +
+                "INNER JOIN im_simrs_pelayanan b ON b.id_pelayanan = a.id_pelayanan\n" +
+                "WHERE b.tipe_pelayanan = 'rawat_inap'\n" +
+                "AND a.status_periksa = '1'\n" +
+                "AND a.branch_id = :branchId ";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("branchId", branchId)
+                .list();
+
+        List<HeaderDetailCheckup> headerDetailCheckups = new ArrayList<>();
+        if (results.size() > 0){
+            HeaderDetailCheckup detailCheckup;
+            for (Object[] obj : results){
+                detailCheckup = new HeaderDetailCheckup();
+                detailCheckup.setIdDetailCheckup(obj[0].toString());
+                detailCheckup.setIdJenisPeriksaPasien(obj[1].toString());
+                detailCheckup.setIdPelayanan(obj[2].toString());
+                detailCheckup.setTipePelayanan(obj[3].toString());
+                headerDetailCheckups.add(detailCheckup);
+            }
+        }
+
+        return headerDetailCheckups;
+    }
+
     public String getNextId() {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_detail_checkup')");
         Iterator<BigInteger> iter = query.list().iterator();

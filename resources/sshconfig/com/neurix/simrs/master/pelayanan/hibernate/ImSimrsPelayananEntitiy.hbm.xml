@@ -39,10 +39,13 @@
             <column name="is_eksekutif" sql-type="varchar" length="1" not-null="false" />
         </property>
         <property name="tipePelayanan">
-            <column name="tipe_pelayanan" sql-type="varchar" length="1" not-null="false" />
+            <column name="tipe_pelayanan" sql-type="varchar" length="100" not-null="false" />
         </property>
         <property name="branchId">
-            <column name="branch_id" sql-type="varchar" length="1" not-null="false" />
+            <column name="branch_id" sql-type="varchar" length="5" not-null="false" />
+        </property>
+        <property name="kodering">
+            <column name="kodering" sql-type="varchar" length="100" not-null="false" />
         </property>
 
 

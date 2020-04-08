@@ -86,4 +86,5 @@ public interface CheckupBo {
                                                   List<ImtSimrsTransaksiObatDetailEntity> obatDetailEntities ) throws GeneralBOException;
 
     public List<MasterVendor> getComboListPtpn() throws GeneralBOException;
+    public ItSimrsHeaderChekupEntity getEntityCheckupById(String id) throws GeneralBOException;
 }

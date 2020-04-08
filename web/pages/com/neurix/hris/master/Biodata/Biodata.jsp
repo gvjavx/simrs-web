@@ -1523,12 +1523,24 @@
                             <input type="text" class="form-control" id="studyTahunAkhir" name="txtStdudyName">
                         </div>
                     </div>
-
+                    <%--<div class="form-group">--%>
+                        <%--<label class="control-label col-sm-4" >Ijazah (Jpg): </label>--%>
+                        <%--<div class="col-sm-8">--%>
+                            <%--<s:file id="fileUploadIjazah" name="fileUploadIjazah" cssClass="form-control" />--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Ijazah (Jpg): </label>
-                        <div class="col-sm-8">
-                            <s:file id="fileUploadIjazah" name="fileUploadIjazah" cssClass="form-control" />
+                        <label style="margin-top: 7px">Ijazah (Jpg): </label>
+                        <div class="input-group" id="img_file">
+                              <span class="input-group-btn">
+                              <span class="btn btn-default btn-file">
+                               Browse… <s:file id="imgInp" accept=".jpg" name="fileUploadIjazah"
+                                               onchange="$('#img_file').css('border','')"></s:file>
+                                                    </span>
+                                                    </span>
+                            <input type="text" class="form-control" readonly>
                         </div>
+                        <canvas id="img_ijazah_canvas" style="border: solid 1px #ccc"></canvas>
                     </div>
 
                 </form>
@@ -3436,18 +3448,32 @@
             var url = $('#myForm').attr('action');
             var data = $('#myForm').serialize();
 
+            var dataStudy = "";
             var id = document.getElementById("studyId").value;
             var nip = document.getElementById("nip1").value;
             var typeStudy = document.getElementById("studyTypeStudy").value;
             var studyName = document.getElementById("studyName").value;
             var programStudy = document.getElementById("pendidikanProgramStudi").value;
             var fakultasId = document.getElementById("studyFakultas").value;
-            //var tahunAwal = document.getElementById("studyTahunAwal").value;
-            var tahunAwal = "";
+            var tahunAwal = document.getElementById("studyTahunAwal").value;
+//            var tahunAwal = "";
             var tahunAkhir = document.getElementById("studyTahunAkhir").value;
-            var uploadIjazah = document.getElementById("fileUploadIjazah").value;
+//            var uploadIjazah = document.getElementById("img_ijazah_canvas");
+//            var dataURL = uploadIjazah.toDataURL("image/png"),
+//                dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
 
+//            dataStudy = {
+//                'nip':nip,
+//                'typeStudy':typeStudy,
+//                'studyName':studyName,
+//                'programStudy':programStudy,
+//                'fakultasId':fakultasId,
+//                'tahunAwal':tahunAwal,
+//                'tahunAkhir':tahunAkhir,
+//                'img_ijazah':dataURL
+//            };
 
+//            var objectString = JSON.stringify(dataStudy);
             var result = '';
             <s:if test="isAdd()">
             if (url == 'addStudy') {
@@ -3462,6 +3488,14 @@
                             $('#myForm')[0].reset();
                             loadSessionStudy();
                         });
+//                        StudyAction.saveAdd(objectString, {callback: function (response) {
+//                            if (response.status == "success"){
+//                                alert('Data Successfully Added');
+//                                $('#modal-edit').modal('hide');
+//                                $('#myForm')[0].reset();
+//                                loadSessionStudy();
+//                            }
+//                        }});
                     }
                 }
             } else {

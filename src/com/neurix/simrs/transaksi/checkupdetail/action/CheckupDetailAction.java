@@ -3091,7 +3091,6 @@ public class CheckupDetailAction extends BaseMasterAction {
 
         logger.info("[CheckupDetailAction.saveAddToRiwayatTindakan] END process >>>");
         return SUCCESS;
-
     }
 
     private BigInteger hitungTotalBayar(List<TransaksiObatDetail> transaksiObatDetails) {

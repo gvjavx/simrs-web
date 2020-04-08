@@ -1,6 +1,7 @@
 package com.neurix.akuntansi.transaksi.jurnal.dao;
 
 import com.neurix.akuntansi.transaksi.jurnal.model.ItJurnalDetailEntity;
+import com.neurix.akuntansi.transaksi.jurnal.model.ItJurnalDetailPendingEntity;
 import com.neurix.common.dao.GenericDao;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -104,5 +105,8 @@ public class JurnalDetailDao extends GenericDao<ItJurnalDetailEntity, String> {
                 .addOrder(Order.asc("jurnalDetailId"))
                 .list();
         return results;
+    }
+    public void addAndSavePending(ItJurnalDetailPendingEntity entity) throws HibernateException {
+        this.sessionFactory.getCurrentSession().save(entity);
     }
 }

@@ -3,6 +3,7 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib prefix="sj" uri="/struts-jquery-tags" %>
 <%@ taglib prefix="display" uri="/WEB-INF/tld/displaytag-el.tld" %>
+<%@ taglib prefix="S" uri="/struts-tags" %>
 
 <html>
 <head>
@@ -295,7 +296,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Tgl. Awal Cuti :</small></label>
+                            <label class="control-label"><small>Tgl. Awal Cuti:</small></label>
                         </td>
                         <td>
                             <table>
@@ -311,7 +312,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Tgl. Selesai Cuti :</small></label>
+                            <label class="control-label"><small>Tgl. Selesai Cuti:</small></label>
                         </td>
                         <td>
                             <table>
@@ -358,6 +359,7 @@
                         <td>
                             <s:textarea rows="2" id="keterangan12" name="cutiPegawai.keterangan" required="true" cssClass="form-control"/>                        </td>
                     </tr>
+                    <S:hidden name="cutiPegawai.pegawaiPenggantiSementara" />
                     <%--<tr>
                         <td>
                             <label class="control-label"><small>Pegawai Pengganti Sementara :</small></label>

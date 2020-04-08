@@ -631,14 +631,14 @@
                             //rawat jalan dengan obat
                             mapBiaya.push({"type": "uang_muka", "nilai": uangMuka});
                             mapBiaya.push({"type": "kas", "nilai": ((total - uangMuka) + ppnObat) });
-                            mapBiaya.push({"type": "pendapatan_rawat_jalan_non_bpjs", "nilai": total-totalObat});
-                            mapBiaya.push({"type": "pendapatan_obat_non_bpjs", "nilai": totalObat});
+                            mapBiaya.push({"type": "pendapatan_rawat_jalan_umum", "nilai": total-totalObat});
+                            mapBiaya.push({"type": "pendapatan_obat_umum", "nilai": totalObat});
                             mapBiaya.push({"type": "ppn_keluaran", "nilai": ppnObat });
                         } else {
                             //rawat jalan tanpa obat
                             mapBiaya.push({"type": "uang_muka", "nilai": uangMuka});
                             mapBiaya.push({"type": "kas", "nilai": total - uangMuka});
-                            mapBiaya.push({"type": "pendapatan_rawat_jalan_non_bpjs", "nilai": total});
+                            mapBiaya.push({"type": "pendapatan_rawat_jalan_umum", "nilai": total});
                         }
                     //non_tunai
                     } else {

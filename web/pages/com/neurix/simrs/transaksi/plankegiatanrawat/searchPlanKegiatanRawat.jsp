@@ -201,6 +201,9 @@
                 <br>
                 <div id="body-list-plan-malam"></div>
             </div>
+            <input type="hidden" id="id-detail">
+            <input type="hidden" id="tgl-plan">
+            <input type="hidden" id="jenis-plan">
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
@@ -1163,7 +1166,7 @@
             $.each(response, function (i, item) {
                 str += "<tr>" +
                     "<td>"+ item.stTglMulai +"</td>" +
-                    "<td align='center'><button class='btn btn-primary' onclick=\"viewPlanDetail('"+item.idDetailCheckup+"','"+item.stTglMulai+"')\"><i class='fa fa-search'></i></button></td>" +
+                    "<td align='center'><button class='btn btn-primary' onclick=\"showModalPlan('"+item.idDetailCheckup+"','"+item.stTglMulai+"', 'admin')\"><i class='fa fa-search'></i></button></td>" +
                     "</tr>";
             })
 

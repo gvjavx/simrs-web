@@ -131,6 +131,9 @@ public class HeaderDetailCheckup extends BaseModel{
 
     private String flagRefund;
     private String idPelayananBpjs;
+    private String kodering;
+
+
 
     public String getIdPelayananBpjs() {
         return idPelayananBpjs;
