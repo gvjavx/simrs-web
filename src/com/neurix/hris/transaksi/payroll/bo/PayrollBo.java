@@ -11,6 +11,7 @@ import com.neurix.hris.transaksi.smk.model.SmkHistoryEvaluasiPegawai;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -50,6 +51,9 @@ public interface PayrollBo extends BaseMasterBo<Payroll>{
     public PayrollInsentif getDetailEditInsentifSys(String payrollId) throws GeneralBOException;
     public PayrollJubileum getDetailEditJubileumSys(String payrollId) throws GeneralBOException;
     public PayrollPensiun getDetailEditPensiunSys(String payrollId) throws GeneralBOException;
+
+    public Map getDataForBilling(Payroll bean) throws GeneralBOException;
+
     public void approvePayroll(Payroll bean) throws GeneralBOException;
     public List<Payroll> copyDataPayroll(List<Payroll> bean) throws GeneralBOException;
     public void saveEditDataSessionSys(Payroll payroll) throws GeneralBOException;

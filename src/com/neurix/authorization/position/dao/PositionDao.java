@@ -335,4 +335,43 @@ public class PositionDao extends GenericDao<ImPosition,String> {
         }
         return listOfResult;
     }
+
+    public List<ImPosition> getListPositionDekom () throws HibernateException {
+        List<ImPosition> results = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class)
+                .add(Restrictions.eq("bagianId", "PB02"))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("positionId"))
+                .list();
+        return results;
+    }
+
+    public List<ImPosition> getListPositionSelainDekomDanDirkom () throws HibernateException {
+        List<ImPosition> results = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class)
+                .add(
+                        Restrictions.or(
+                                Restrictions.or(
+                                        Restrictions.ne("bagianId", "PB01"),
+                                        Restrictions.ne("bagianId", "PB02")
+                                ),
+                                Restrictions.ne("bagianId", "PB03")
+                                )
+                )
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("positionId"))
+                .list();
+        return results;
+    }
+    public List<ImPosition> getListPositionDireksi () throws HibernateException {
+        List<ImPosition> results = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class)
+                .add(
+                        Restrictions.or(
+                                Restrictions.eq("bagianId", "PB01"),
+                                Restrictions.eq("bagianId", "PB03")
+                        )
+                )
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("positionId"))
+                .list();
+        return results;
+    }
 }
