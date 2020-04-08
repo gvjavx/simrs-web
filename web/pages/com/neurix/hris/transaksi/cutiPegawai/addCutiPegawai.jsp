@@ -3,6 +3,7 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib prefix="sj" uri="/struts-jquery-tags" %>
 <%@ taglib prefix="display" uri="/WEB-INF/tld/displaytag-el.tld" %>
+<%@ taglib prefix="S" uri="/struts-tags" %>
 
 <html>
 <head>
@@ -78,55 +79,94 @@
 
             }
             else{
-                CutiPegawaiAction.cekStatusTanggal(tanggalAwal, function(data){
-                    if (data=='Boleh'){
-                        if ( nipid != ''&& cutiid != ''&& tanggalAkhir != '' && tanggalAwal != ''&&ket==""&&unitid!=""&&cek=="") {
-                            if (confirm('Do you want to save this record?')) {
-                                event.originalEvent.options.submit = true;
-                                $.publish('showDialog');
+                if ( nipid != ''&& cutiid != ''&& tanggalAkhir != '' && tanggalAwal != ''&&ket==""&&unitid!=""&&cek=="") {
+                    if (confirm('Do you want to save this record?')) {
+                        event.originalEvent.options.submit = true;
+                        $.publish('showDialog');
 
-                            } else {
-                                // Cancel Submit comes with 1.8.0
-                                event.originalEvent.options.submit = false;
-                            }
-                        } else {
-                            event.originalEvent.options.submit = false;
-                            var msg = "";
-                            if ( unitid == '') {
-                                msg += 'Field <strong>Unit</strong> is required.' + '<br/>';
-                            }
-                            if ( nipid == '') {
-                                msg += 'Field <strong>NIP</strong> is required.' + '<br/>';
-                            }
-                            if ( cutiid == '') {
-                                msg += 'Field <strong>Cuti</strong> is required.' + '<br/>';
-                            }
-                            if ( tanggalAwal == '') {
-                                msg += 'Field <strong>Tanggal awal</strong> is required.' + '<br/>';
-                            }
-                            if ( tanggalAkhir == '') {
-                                msg += 'Field <strong>Tanggal Akhir</strong> is required.' + '<br/>';
-                            }
-                            if (ket != "") {
-                                $('#tgl1').val("");
-                                $('#tgl2').val("");
-                                $('#lamaCuti').val("");
-                                msg += '<strong>'+ket+'</strong>' + '<br/>';
-                            }
-                            if ( cek != '') {
-                                msg += 'Ada cuti yang masih di ajukan<br/>';
-                            }
-                            document.getElementById('errorMessageAddCuti').innerHTML = msg;
-                            $.publish('showErrorValidationDialog');
-                        }
-                    }else{
-                        var msg2 ='Maaf, Tanggal Pengajuan Cuti Harus Kurang Dari Tanggal Awal Cuti';
-                        document.getElementById('errorMessageAddCuti').innerHTML = msg2;
-                        $.publish('showErrorValidationDialog');
+                    } else {
+                        // Cancel Submit comes with 1.8.0
                         event.originalEvent.options.submit = false;
                     }
-                });
+                } else {
+                    event.originalEvent.options.submit = false;
+                    var msg = "";
+                    if ( unitid == '') {
+                        msg += 'Field <strong>Unit</strong> is required.' + '<br/>';
+                    }
+                    if ( nipid == '') {
+                        msg += 'Field <strong>NIP</strong> is required.' + '<br/>';
+                    }
+                    if ( cutiid == '') {
+                        msg += 'Field <strong>Cuti</strong> is required.' + '<br/>';
+                    }
+                    if ( tanggalAwal == '') {
+                        msg += 'Field <strong>Tanggal awal</strong> is required.' + '<br/>';
+                    }
+                    if ( tanggalAkhir == '') {
+                        msg += 'Field <strong>Tanggal Akhir</strong> is required.' + '<br/>';
+                    }
+                    if (ket != "") {
+                        $('#tgl1').val("");
+                        $('#tgl2').val("");
+                        $('#lamaCuti').val("");
+                        msg += '<strong>'+ket+'</strong>' + '<br/>';
+                    }
+                    if ( cek != '') {
+                        msg += 'Ada cuti yang masih di ajukan<br/>';
+                    }
+                    document.getElementById('errorMessageAddCuti').innerHTML = msg;
+                    $.publish('showErrorValidationDialog');
+                }
 
+//                CutiPegawaiAction.cekStatusTanggal(tanggalAwal, function(data){
+//                    if (data=='Boleh'){
+//                        if ( nipid != ''&& cutiid != ''&& tanggalAkhir != '' && tanggalAwal != ''&&ket==""&&unitid!=""&&cek=="") {
+//                            if (confirm('Do you want to save this record?')) {
+//                                event.originalEvent.options.submit = true;
+//                                $.publish('showDialog');
+//
+//                            } else {
+//                                // Cancel Submit comes with 1.8.0
+//                                event.originalEvent.options.submit = false;
+//                            }
+//                        } else {
+//                            event.originalEvent.options.submit = false;
+//                            var msg = "";
+//                            if ( unitid == '') {
+//                                msg += 'Field <strong>Unit</strong> is required.' + '<br/>';
+//                            }
+//                            if ( nipid == '') {
+//                                msg += 'Field <strong>NIP</strong> is required.' + '<br/>';
+//                            }
+//                            if ( cutiid == '') {
+//                                msg += 'Field <strong>Cuti</strong> is required.' + '<br/>';
+//                            }
+//                            if ( tanggalAwal == '') {
+//                                msg += 'Field <strong>Tanggal awal</strong> is required.' + '<br/>';
+//                            }
+//                            if ( tanggalAkhir == '') {
+//                                msg += 'Field <strong>Tanggal Akhir</strong> is required.' + '<br/>';
+//                            }
+//                            if (ket != "") {
+//                                $('#tgl1').val("");
+//                                $('#tgl2').val("");
+//                                $('#lamaCuti').val("");
+//                                msg += '<strong>'+ket+'</strong>' + '<br/>';
+//                            }
+//                            if ( cek != '') {
+//                                msg += 'Ada cuti yang masih di ajukan<br/>';
+//                            }
+//                            document.getElementById('errorMessageAddCuti').innerHTML = msg;
+//                            $.publish('showErrorValidationDialog');
+//                        }
+//                    }else{
+//                        var msg2 ='Maaf, Tanggal Pengajuan Cuti Harus Kurang Dari Tanggal Awal Cuti';
+//                        document.getElementById('errorMessageAddCuti').innerHTML = msg2;
+//                        $.publish('showErrorValidationDialog');
+//                        event.originalEvent.options.submit = false;
+//                    }
+//                });
             }
 
         });
@@ -295,7 +335,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Tgl. Awal Cuti :</small></label>
+                            <label class="control-label"><small>Tgl. Awal Cuti:</small></label>
                         </td>
                         <td>
                             <table>
@@ -311,7 +351,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Tgl. Selesai Cuti :</small></label>
+                            <label class="control-label"><small>Tgl. Selesai Cuti:</small></label>
                         </td>
                         <td>
                             <table>
@@ -358,6 +398,7 @@
                         <td>
                             <s:textarea rows="2" id="keterangan12" name="cutiPegawai.keterangan" required="true" cssClass="form-control"/>                        </td>
                     </tr>
+                    <S:hidden name="cutiPegawai.pegawaiPenggantiSementara" />
                     <%--<tr>
                         <td>
                             <label class="control-label"><small>Pegawai Pengganti Sementara :</small></label>

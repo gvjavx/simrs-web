@@ -50,7 +50,6 @@
     <section class="content-header">
         <h1>
             Study Jurusan
-            <small>GO-MEDSYS</small>
         </h1>
         <%--<ol class="breadcrumb">--%>
         <%--<li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>--%>
@@ -192,11 +191,11 @@
                                             <display:column property="jurusanName" sortable="true" title="Name"  />
 
                                             <display:column property="flag" sortable="true" title="Flag"  />
-                                            <display:column property="createdWho" sortable="true" title="Created who"  />
-                                            <display:column property="createdDate" sortable="true" title="Created date"  />
-                                            <display:column property="lastUpdateWho" sortable="true" title="Last update who"  />
-                                            <display:column property="lastUpdate" sortable="true" title="Last update"  />
                                             <display:column property="action" sortable="true" title="Action"  />
+                                            <display:column property="createdDate" sortable="true" title="Created date"  />
+                                            <display:column property="createdWho" sortable="true" title="Created who"  />
+                                            <display:column property="lastUpdate" sortable="true" title="Last update"  />
+                                            <display:column property="lastUpdateWho" sortable="true" title="Last update who"  />
 
                                         </display:table>
                                     </td>

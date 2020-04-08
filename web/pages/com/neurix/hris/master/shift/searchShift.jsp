@@ -82,7 +82,6 @@
     <section class="content-header">
         <h1>
             Shift
-            <small>GO-MEDSYS</small>
         </h1>
     </section>
     <!-- Main content -->

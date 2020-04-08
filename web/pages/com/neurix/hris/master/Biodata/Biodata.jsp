@@ -308,22 +308,35 @@
                                     </td>
                                 </tr>
 
-                                <tr>
-                                    <td>
-                                        <label class="control-label"><small>Jumlah Anak * :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:if test="isDelete()">
+                                <s:if test="isDelete()">
+                                    <tr>
+                                        <td>
+                                            <label class="control-label"><small>Jumlah Anak :</small></label>
+                                        </td>
+                                        <td>
+                                            <table>
                                                 <s:textfield type="number" id="jumlahAnak" name="biodata.jumlahAnak" readonly="true" required="true" disabled="false" cssClass="form-control"/>
-                                            </s:if>
-                                            <s:else>
-                                                <s:textfield type="number" id="jumlahAnak" name="biodata.jumlahAnak" readonly="false" required="true" disabled="false" cssClass="form-control"/>
-                                            </s:else>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </s:if>
 
-                                        </table>
-                                    </td>
-                                </tr>
+                                <%--<tr>--%>
+                                    <%--<td>--%>
+                                        <%--<label class="control-label"><small>Jumlah Anak * :</small></label>--%>
+                                    <%--</td>--%>
+                                    <%--<td>--%>
+                                        <%--<table>--%>
+                                            <%--<s:if test="isDelete()">--%>
+                                                <%--<s:textfield type="number" id="jumlahAnak" name="biodata.jumlahAnak" readonly="true" required="true" disabled="false" cssClass="form-control"/>--%>
+                                            <%--</s:if>--%>
+                                            <%--<s:else>--%>
+                                                <%--<s:textfield type="number" id="jumlahAnak" name="biodata.jumlahAnak" readonly="false" required="true" disabled="false" cssClass="form-control"/>--%>
+                                            <%--</s:else>--%>
+
+                                        <%--</table>--%>
+                                    <%--</td>--%>
+                                <%--</tr>--%>
 
                                 <tr>
                                     <td>
@@ -1510,12 +1523,12 @@
                         </div>
                     </div>
 
-                    <%--<div class="form-group">
+                    <div class="form-group">
                         <label class="control-label col-sm-4" >Tahun Awal : </label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control" id="studyTahunAwal" name="txtStdudyName">
                         </div>
-                    </div>--%>
+                    </div>
 
                     <div class="form-group">
                         <label class="control-label col-sm-4" >Tahun Lulus : </label>
@@ -1524,10 +1537,20 @@
                         </div>
                     </div>
 
+                    <%--<div class="form-group">--%>
+                        <%--<label class="control-label col-sm-4" >Ijazah (Jpg): </label>--%>
+                        <%--<div class="col-sm-8">--%>
+                            <%--<s:file id="fileUploadIjazah" name="fileUploadIjazah" cssClass="form-control" />--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Ijazah (Jpg): </label>
+                        <label class="control-label col-sm-4">Ijazah (Jpeg) : </label>
+
                         <div class="col-sm-8">
-                            <s:file id="fileUploadIjazah" name="fileUploadIjazah" cssClass="form-control" />
+                            <input type="file" id="file" class="form-control" name="fileUpload"/>
+                            <input type="text" id="cpiddoc" class="form-control" accept="application/pdf,image/jpeg"
+                                   name="fileUploadIjazah" readonly style="display: none;"/>
                         </div>
                     </div>
 
@@ -2363,12 +2386,12 @@
                         </div>
                     </div>
 
-                    <%--<div class="form-group">
+                    <div class="form-group">
                         <label class="control-label col-sm-4" >Tahun Awal : </label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control" id="studyTahunAwalDelete" readonly name="txtStdudyName">
                         </div>
-                    </div>--%>
+                    </div>
 
                     <div class="form-group">
                         <label class="control-label col-sm-4" >Tahun Lulus : </label>
@@ -3379,7 +3402,7 @@
                     tmp_table += '<tr style="font-size: 12px;" ">' +
                             '<td >' + (i + 1 ) + '</td>' +
                             '<td >' + item.name + '</td>' +
-                            '<td align="center">' + item.statusKeluarga + '</td>' +
+                            '<td align="center">' + item.statusKeluargaName + '</td>' +
                             '<td align="center">' + item.gender + '</td>' +
                             '<td align="center">' + (myDate.getDate()) + ' - ' + ("0" + (myDate.getMonth() + 1)).slice(-2) + ' - ' + myDate.getFullYear() + '</td>' +
                                 /*'<td align="center">' + myDate.toTimeString("dd-mm-yy") + '</td>' +*/
@@ -3436,18 +3459,32 @@
             var url = $('#myForm').attr('action');
             var data = $('#myForm').serialize();
 
+            var dataStudy = "";
             var id = document.getElementById("studyId").value;
             var nip = document.getElementById("nip1").value;
             var typeStudy = document.getElementById("studyTypeStudy").value;
             var studyName = document.getElementById("studyName").value;
             var programStudy = document.getElementById("pendidikanProgramStudi").value;
             var fakultasId = document.getElementById("studyFakultas").value;
-            //var tahunAwal = document.getElementById("studyTahunAwal").value;
-            var tahunAwal = "";
+            var tahunAwal = document.getElementById("studyTahunAwal").value;
+//            var tahunAwal = "";
             var tahunAkhir = document.getElementById("studyTahunAkhir").value;
-            var uploadIjazah = document.getElementById("fileUploadIjazah").value;
+//            var uploadIjazah = document.getElementById("img_ijazah_canvas");
+//            var dataURL = uploadIjazah.toDataURL("image/png"),
+//                dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
 
+//            dataStudy = {
+//                'nip':nip,
+//                'typeStudy':typeStudy,
+//                'studyName':studyName,
+//                'programStudy':programStudy,
+//                'fakultasId':fakultasId,
+//                'tahunAwal':tahunAwal,
+//                'tahunAkhir':tahunAkhir,
+//                'img_ijazah':dataURL
+//            };
 
+//            var objectString = JSON.stringify(dataStudy);
             var result = '';
             <s:if test="isAdd()">
             if (url == 'addStudy') {
@@ -3456,12 +3493,20 @@
                 } else {
                     if (confirm('Are you sure you want to save this Record?')) {
                         dwr.engine.setAsync(false);
-                        StudyAction.saveAdd(typeStudy, studyName, tahunAwal, tahunAkhir, function (listdata) {
+                        StudyAction.saveAdd(typeStudy, studyName, tahunAwal, tahunAkhir, programStudy, function (listdata) {
                             alert('Data Successfully Added');
                             $('#modal-edit').modal('hide');
                             $('#myForm')[0].reset();
                             loadSessionStudy();
                         });
+//                        StudyAction.saveAdd(objectString, {callback: function (response) {
+//                            if (response.status == "success"){
+//                                alert('Data Successfully Added');
+//                                $('#modal-edit').modal('hide');
+//                                $('#myForm')[0].reset();
+//                                loadSessionStudy();
+//                            }
+//                        }});
                     }
                 }
             } else {

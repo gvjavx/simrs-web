@@ -79,7 +79,6 @@
     <section class="content-header">
         <h1>
             Absensi
-            <small>HRIS</small>
         </h1>
     </section>
     <!-- Main content -->

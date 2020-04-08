@@ -41,7 +41,17 @@
                 <!--<prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs_nmu_08042020</prop>-->
                 <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
                 <!--<prop key="hibernate.connection.username">postgres</prop>-->
-                <!--<prop key="hibernate.connection.password">postgres</prop>-->
+                <!--<prop key="hibernate.connection.password">123456</prop>-->
+
+                <!--<prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs-sementara</prop>-->
+                <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
+                <!--<prop key="hibernate.connection.username">postgres</prop>-->
+                <!--<prop key="hibernate.connection.password">123456</prop>-->
+
+                <!--<prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs-20032020</prop>-->
+                <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
+                <!--<prop key="hibernate.connection.username">postgres</prop>-->
+                <!--<prop key="hibernate.connection.password">123456</prop>-->
 
             </props>
         </property>
@@ -382,7 +392,11 @@
                 <value>sshconfig/com/neurix/akuntansi/transaksi/pembayaranUtangPiutang/hibernate/ImPembayaranUtangPiutangEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/pembayaranUtangPiutang/hibernate/ImPembayaranUtangPiutangDetailEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/jurnal/hibernate/ItJurnalEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/transaksi/jurnal/hibernate/ItJurnalPendingEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/jurnal/hibernate/ItJurnalDetailEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/transaksi/jurnal/hibernate/ItJurnalDetailPendingEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/transaksi/jurnal/hibernate/ItJurnalDetailActivityEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/transaksi/jurnal/hibernate/ItJurnalDetailActivityPendingEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/master/reportDetail/hibernate/ImReportDetailEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/master/mappingJurnal/hibernate/ImMappingJurnalEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/master/masterVendor/hibernate/ImMasterVendorEntity.hbm.xml</value>

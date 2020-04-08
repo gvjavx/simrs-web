@@ -457,51 +457,146 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
     //case 1 jika hanya 1 parameter
     //untuk membuat uang muka
     public void createJurnalBillingCase1(){
-        Map uangMuka = new HashMap();
-        uangMuka.put("bukti","INVHU000005");
-        uangMuka.put("nilai",new BigDecimal(90000));
+        Map piutangTerverif = new HashMap();
+        piutangTerverif.put("bukti","INVHU000005");
+        piutangTerverif.put("nilai",new BigDecimal(90000));
 
         Map data = new HashMap();
         data.put("pasien_id","00000006");
         data.put("bukti","IV000001111");
-        data.put("uang_muka", uangMuka);
+        data.put("piutang_terverif", piutangTerverif);
         data.put("kas", new BigDecimal(90000));
         data.put("metode_bayar", "tunai");
 
         try {
-            billingSystemBoProxy.createJurnal("01",data,"RS01","TEST 1 : untuk pembayaran uang muka pasien sigit","Y");
+            billingSystemBoProxy.createJurnal("01",data,"KP","TEST 1 : pembayaran piutang pasien bpjs atas NO FPK","Y");
         }catch (Exception e){
             logger.error("[BpjsController.createJurnalBillingCase1] Error : " + "[" + e + "]");
         }
     }
-
-    //case 2 jika ada 2 debit parameter
-    // case 2 untuk Closing Pasien Rawat Jalan Umum Piutang tanpa Obat
+    //case 2
+    // untuk Case ada list
     public void createJurnalBillingCase2 (){
+        List<Map> detailJurnal = new ArrayList<>();
+        Map dataJurnal = new HashMap();
+        dataJurnal.put("bukti","1111");
+        dataJurnal.put("master_id","VN00011");
+        dataJurnal.put("nilai",new BigDecimal(20000));
+        detailJurnal.add(dataJurnal);
+        dataJurnal = new HashMap();
+        dataJurnal.put("bukti","2222");
+        dataJurnal.put("master_id","VN00011");
+        dataJurnal.put("nilai",new BigDecimal(30000));
+        detailJurnal.add(dataJurnal);
+        dataJurnal = new HashMap();
+        dataJurnal.put("bukti","3333");
+        dataJurnal.put("master_id","VN00011");
+        dataJurnal.put("nilai",new BigDecimal(40000));
+        detailJurnal.add(dataJurnal);
+
+        Map data = new HashMap();
+        data.put("piutang_rekanan", detailJurnal);
+        data.put("kas",new BigDecimal(90000) );
+        data.put("metode_bayar","tunai" );
+
+        try {
+            billingSystemBoProxy.createJurnal("03",data,"KP","TEST 2 : pembayaran piutang rekanan","Y");
+        }catch (Exception e){
+            logger.error("[BpjsController.createJurnalBillingCase3] Error : " + "[" + e + "]");
+        }
+    }
+
+    //case 3
+    // untuk pembayaran yang masuk ke divisi
+    public void createJurnalBillingCase3 (){
         Map piutangPasienNonBpjs = new HashMap();
         piutangPasienNonBpjs.put("bukti","INVHU000003");
         piutangPasienNonBpjs.put("nilai",new BigDecimal(110000));
 
-        Map uangMuka = new HashMap();
-        uangMuka.put("bukti","INVHU000005");
-        uangMuka.put("nilai",new BigDecimal(90000));
+        Map data = new HashMap();
+        data.put("pasien_id","00000006");
+        data.put("pendapatan_rawat_jalan_bpjs", new BigDecimal(110000));
+        data.put("piutang_pasien_non_bpjs", piutangPasienNonBpjs);
+        data.put("divisi_id","01.01.01");
+
+        try {
+            billingSystemBoProxy.createJurnal("06",data,"KP","TEST 3 : Closing Pasien Rawat Jalan BPJS tanpa Obat","Y");
+        }catch (Exception e){
+            logger.error("[BpjsController.createJurnalBillingCase3] Error : " + "[" + e + "]");
+        }
+    }
+
+    // case 4 ada detail pembayaran activity
+    public void createJurnalBillingCase4 (){
+        List<Map> activityList = new ArrayList<>();
+        Map activity = new HashMap();
+        activity.put("activity_id","1111");
+        activity.put("person_id","88888888");
+        activity.put("nilai",new BigDecimal(20000));
+        activityList.add(activity);
+
+        Map piutangPasienNonBpjs = new HashMap();
+        piutangPasienNonBpjs.put("bukti","INVHU000003");
+        piutangPasienNonBpjs.put("nilai",new BigDecimal(20000));
+        piutangPasienNonBpjs.put("activity",activityList);
 
         Map data = new HashMap();
         data.put("pasien_id","00000006");
         data.put("bukti","IV000001111");
-        data.put("uang_muka", uangMuka);
+        data.put("kas", new BigDecimal(20000));
+        data.put("metode_bayar", "tunai");
         data.put("piutang_pasien_non_bpjs", piutangPasienNonBpjs);
-        data.put("pendapatan_rawat_jalan_non_bpjs", new BigDecimal(200000));
 
         try {
-            billingSystemBoProxy.createJurnal("04",data,"RS01","TEST 2 : Closing Pasien Rawat Jalan Umum Piutang tanpa Obat pasien sigit","Y");
+            billingSystemBoProxy.createJurnal("02",data,"KP","TEST 4 : pembayaran piutang pasien non bpjs","Y");
         }catch (Exception e){
             logger.error("[BpjsController.createJurnalBillingCase1] Error : " + "[" + e + "]");
         }
     }
+
+    //case 5
+    // untuk pengiriman barang
+    public void createJurnalBillingCase5 (){
+        //list barang
+        List<Map> barangList = new ArrayList<>();
+        Map dataBarang = new HashMap();
+        dataBarang.put("kd_barang","09111112422");
+        dataBarang.put("nilai",new BigDecimal(20000));
+        barangList.add(dataBarang);
+        dataBarang = new HashMap();
+        dataBarang.put("kd_barang","80800800");
+        dataBarang.put("nilai",new BigDecimal(20000));
+        barangList.add(dataBarang);
+        dataBarang.put("kd_barang","1234567");
+        dataBarang.put("nilai",new BigDecimal(20000));
+        barangList.add(dataBarang);
+
+        // map yang memiliki bukti
+        Map hutangVendor = new HashMap();
+        hutangVendor.put("bukti","INV000921234");
+        hutangVendor.put("nilai",new BigDecimal(160000));
+
+        // map yang memiliki bukti
+        Map ppnMasukan = new HashMap();
+        ppnMasukan.put("bukti","INV000921233");
+        ppnMasukan.put("nilai",new BigDecimal(100000));
+
+        Map data = new HashMap();
+        data.put("master_id","VN00011");
+        data.put("persediaan_gudang", barangList);
+        data.put("hutang_farmasi_vendor", hutangVendor);
+        data.put("ppn_masukan",ppnMasukan);
+
+        try {
+            billingSystemBoProxy.createJurnal("27",data,"KP","TEST 5 : Pengiriman Barang Gudang ke Apotik","Y");
+        }catch (Exception e){
+            logger.error("[BpjsController.createJurnalBillingCase3] Error : " + "[" + e + "]");
+        }
+    }
+
     //case 3
     // untuk pembayaran yang masuk ke dalam kas
-    public void createJurnalBillingCase3 (){
+    public void createJurnalBillingCase7 (){
         Map piutangPasienNonBpjs = new HashMap();
         piutangPasienNonBpjs.put("bukti","INVHU000003");
         piutangPasienNonBpjs.put("nilai",new BigDecimal(110000));
@@ -522,7 +617,7 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
 
     //case 4
     // untuk Pembuatan Hutang Usaha
-    public void createJurnalBillingCase4 (){
+    public void createJurnalBillingCase8 (){
         Map piutangPasienBpjs = new HashMap();
         piutangPasienBpjs.put("bukti","INVHU000001");
         piutangPasienBpjs.put("nilai",new BigDecimal(10000000));
@@ -541,40 +636,6 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
         }
     }
 
-    //case 4
-    // untuk pengiriman barang
-    public void createJurnalBillingCase5 (){
-        //list barang
-        List<Map> barangList = new ArrayList<>();
-        Map dataBarang = new HashMap();
-        dataBarang.put("kd_barang","09111112422");
-        dataBarang.put("nilai",new BigDecimal(20000));
-        barangList.add(dataBarang);
-        dataBarang = new HashMap();
-        dataBarang.put("kd_barang","80800800");
-        dataBarang.put("nilai",new BigDecimal(20000));
-        barangList.add(dataBarang);
-        dataBarang.put("kd_barang","1234567");
-        dataBarang.put("nilai",new BigDecimal(20000));
-        barangList.add(dataBarang);
-
-        // map yang memiliki bukti
-        Map hutangVendor = new HashMap();
-        hutangVendor.put("bukti","INV000921234");
-        hutangVendor.put("nilai",new BigDecimal(100000));
-
-        Map data = new HashMap();
-        data.put("master_id","VN00011");
-        data.put("persediaan_gudang", barangList);
-        data.put("hutang_vendor", hutangVendor);
-        data.put("ppn_masukan", new BigDecimal(40000));
-
-        try {
-            billingSystemBoProxy.createJurnal("13",data,"RS01","TEST 5 : Untuk Persediaan Barang","Y");
-        }catch (Exception e){
-            logger.error("[BpjsController.createJurnalBillingCase3] Error : " + "[" + e + "]");
-        }
-    }
     public void createJurnalBillingCase6 (){
         //list barang
         List<Map> detailJurnal = new ArrayList<>();
@@ -606,37 +667,7 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
             logger.error("[BpjsController.createJurnalBillingCase3] Error : " + "[" + e + "]");
         }
     }
-    //case 7
-    // untuk Case ada pembuatan mapping
-    public void createJurnalBillingCase7 (){
-        List<Map> detailJurnal = new ArrayList<>();
-        Map dataJurnal = new HashMap();
-        dataJurnal.put("bukti","1111");
-        dataJurnal.put("master_id","VN00011");
-        dataJurnal.put("nilai",new BigDecimal(20000));
-        detailJurnal.add(dataJurnal);
-        dataJurnal = new HashMap();
-        dataJurnal.put("bukti","2222");
-        dataJurnal.put("master_id","VN00011");
-        dataJurnal.put("nilai",new BigDecimal(30000));
-        detailJurnal.add(dataJurnal);
-        dataJurnal = new HashMap();
-        dataJurnal.put("bukti","3333");
-        dataJurnal.put("master_id","VN00011");
-        dataJurnal.put("nilai",new BigDecimal(40000));
-        detailJurnal.add(dataJurnal);
 
-        Map data = new HashMap();
-        data.put("hutang_pembelian", detailJurnal);
-        data.put("kas",new BigDecimal(90000) );
-        data.put("metode_bayar","tunai" );
-
-        try {
-            billingSystemBoProxy.createJurnal("26",data,"RS01","TEST 7 : Dimulai dari pembuatan mapping","Y");
-        }catch (Exception e){
-            logger.error("[BpjsController.createJurnalBillingCase3] Error : " + "[" + e + "]");
-        }
-    }
     @Override
     public Object getModel() {
         switch (data){

@@ -146,6 +146,7 @@ public class CutiFormPegawaiController implements ModelDriven<Object> {
             cutiPegawai.setStTanggalSelesai(model.getStTanggalSelesaiCuti());
             cutiPegawai.setTanggalDari(CommonUtil.convertToDate(model.getStTanggalAwalCuti()));
             cutiPegawai.setTanggalSelesai(CommonUtil.convertToDate(model.getStTanggalSelesaiCuti()));
+            cutiPegawai.setFlagPerbaikan("N");
             cutiPegawai.setApprovalFlag("-");
             cutiPegawai.setSelf("");
             cutiPegawai.setLamaHariCuti(model.getLamaCuti());

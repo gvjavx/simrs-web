@@ -90,7 +90,6 @@
     <section class="content-header">
         <h1>
             Tipe Pegawai
-            <small>GO-MEDSYS</small>
         </h1>
     </section>
 
@@ -218,12 +217,12 @@
                                                 </display:column>
                                                 <display:column property="tipePegawaiId" sortable="true" title="Tipe Pegawai Id" />
                                                 <display:column property="tipePegawaiName" sortable="true" title="Tipe Pegawai Name"  />
-                                                <display:column property="createdWho" sortable="true" title="Created who"  />
-                                                <display:column property="lastUpdateWho" sortable="true" title="Last update who"  />
                                                 <display:column property="flag" sortable="true" title="flag"  />
                                                 <display:column property="action" sortable="true" title="action"  />
                                                 <display:column property="createdDate" sortable="true" title="Created date"  />
+                                                <display:column property="createdWho" sortable="true" title="Created who"  />
                                                 <display:column property="lastUpdate" sortable="true" title="Last update"  />
+                                                <display:column property="lastUpdateWho" sortable="true" title="Last update who"  />
                                                 <%--<display:column property="action" sortable="true" title="CreatedWho"/>--%>
 
                                             </display:table>

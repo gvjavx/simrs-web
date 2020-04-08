@@ -332,12 +332,12 @@
                         <table id="sortTable2" class="table table-bordered table-striped">
                             <thead>
                             <tr bgcolor="#90ee90">
-                                <td align="center" width="7%">
-                                    <div class="form-check">
-                                        <input type="checkbox" id="selectall">
-                                        <label for="selectall"></label>
-                                    </div>
-                                </td>
+                                <%--<td align="center" width="7%">--%>
+                                    <%--<div class="form-check">--%>
+                                        <%--<input type="checkbox" id="selectall">--%>
+                                        <%--<label for="selectall"></label>--%>
+                                    <%--</div>--%>
+                                <%--</td>--%>
                                 <td>ID Pasien</td>
                                 <td>ID Detail Checkup</td>
                                 <td>No Sep</td>
@@ -351,7 +351,7 @@
                             <tbody>
                             <s:iterator value="#session.listOfResult" var="row">
                                 <tr>
-                                    <td align="center">
+                                    <%--<td align="center">
                                         <s:if test='#row.statusFPK == "Y"'>
 
                                         </s:if>
@@ -361,7 +361,7 @@
                                                 <label for="check_<s:property value="NoSep"/>"></label>
                                             </div>
                                         </s:else>
-                                    </td>
+                                    </td>--%>
                                     <td>
                                         <input type="hidden" value="<s:property value="idFpk"/>" id="id_fpk<s:property value="NoSep"/>">
                                         <s:property value="idPasien"/>

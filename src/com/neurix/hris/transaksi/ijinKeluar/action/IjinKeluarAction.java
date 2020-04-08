@@ -270,13 +270,7 @@ public class IjinKeluarAction extends BaseMasterAction {
         String itemId = getId();
         String itemFlag = getFlag();
 
-
         IjinKeluar editIjinKeluar = new IjinKeluar();
-
-
-
-
-
 
         if(itemFlag != null){
             try {
@@ -450,9 +444,7 @@ public class IjinKeluarAction extends BaseMasterAction {
             editIjinKeluar.setLastUpdate(updateTime);
             editIjinKeluar.setAction("U");
             editIjinKeluar.setFlag("Y");
-
 //            String condition;
-
             ijinKeluarBoProxy.saveEdit(editIjinKeluar);
 
         } catch (GeneralBOException e) {

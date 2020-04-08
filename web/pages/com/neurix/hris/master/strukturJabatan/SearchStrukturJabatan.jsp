@@ -331,7 +331,6 @@
     <section class="content-header">
         <h1>
             Struktur Jabatan
-            <small>GO-MEDSYS</small>
         </h1>
 
     </section>
@@ -518,7 +517,7 @@
                                 </tr>
                             </table>
 
-                            <table style="width: 80%;" class="tree table table-bordered">
+                            <table style="width: 90%;" class="tree table table-bordered">
                             </table>
                         </center>
                     </s:form>
