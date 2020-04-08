@@ -308,22 +308,35 @@
                                     </td>
                                 </tr>
 
-                                <tr>
-                                    <td>
-                                        <label class="control-label"><small>Jumlah Anak * :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:if test="isDelete()">
+                                <s:if test="isDelete()">
+                                    <tr>
+                                        <td>
+                                            <label class="control-label"><small>Jumlah Anak :</small></label>
+                                        </td>
+                                        <td>
+                                            <table>
                                                 <s:textfield type="number" id="jumlahAnak" name="biodata.jumlahAnak" readonly="true" required="true" disabled="false" cssClass="form-control"/>
-                                            </s:if>
-                                            <s:else>
-                                                <s:textfield type="number" id="jumlahAnak" name="biodata.jumlahAnak" readonly="false" required="true" disabled="false" cssClass="form-control"/>
-                                            </s:else>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </s:if>
 
-                                        </table>
-                                    </td>
-                                </tr>
+                                <%--<tr>--%>
+                                    <%--<td>--%>
+                                        <%--<label class="control-label"><small>Jumlah Anak * :</small></label>--%>
+                                    <%--</td>--%>
+                                    <%--<td>--%>
+                                        <%--<table>--%>
+                                            <%--<s:if test="isDelete()">--%>
+                                                <%--<s:textfield type="number" id="jumlahAnak" name="biodata.jumlahAnak" readonly="true" required="true" disabled="false" cssClass="form-control"/>--%>
+                                            <%--</s:if>--%>
+                                            <%--<s:else>--%>
+                                                <%--<s:textfield type="number" id="jumlahAnak" name="biodata.jumlahAnak" readonly="false" required="true" disabled="false" cssClass="form-control"/>--%>
+                                            <%--</s:else>--%>
+
+                                        <%--</table>--%>
+                                    <%--</td>--%>
+                                <%--</tr>--%>
 
                                 <tr>
                                     <td>
@@ -3389,7 +3402,7 @@
                     tmp_table += '<tr style="font-size: 12px;" ">' +
                             '<td >' + (i + 1 ) + '</td>' +
                             '<td >' + item.name + '</td>' +
-                            '<td align="center">' + item.statusKeluarga + '</td>' +
+                            '<td align="center">' + item.statusKeluargaName + '</td>' +
                             '<td align="center">' + item.gender + '</td>' +
                             '<td align="center">' + (myDate.getDate()) + ' - ' + ("0" + (myDate.getMonth() + 1)).slice(-2) + ' - ' + myDate.getFullYear() + '</td>' +
                                 /*'<td align="center">' + myDate.toTimeString("dd-mm-yy") + '</td>' +*/

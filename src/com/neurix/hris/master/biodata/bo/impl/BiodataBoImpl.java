@@ -432,6 +432,8 @@ public class BiodataBoImpl implements BiodataBo {
                         String historyId = "";
                         String personalId = bean.getNip();
 
+                        int jumlahAnak = cekJumlahAnak(bean.getNip());
+
                         ImBiodataEntity imBiodataEntity = null;
                         List<ItPersonilPositionEntity> itPersonilPositionEntity = null;
                         ImBiodataHistoryEntity imBiodataHistoryEntity = new ImBiodataHistoryEntity();
@@ -450,7 +452,8 @@ public class BiodataBoImpl implements BiodataBo {
                             imBiodataEntity.setGender(bean.getGender());
                             imBiodataEntity.setAgama(bean.getAgama());
                             imBiodataEntity.setStatusKeluarga(bean.getStatusKeluarga());
-                            imBiodataEntity.setJumlahAnak(bean.getJumlahAnak());
+//                            imBiodataEntity.setJumlahAnak(bean.getJumlahAnak());
+                            imBiodataEntity.setJumlahAnak(BigInteger.valueOf(jumlahAnak));
                             imBiodataEntity.setTempatLahir(bean.getTempatLahir());
                             imBiodataEntity.setTanggalLahir(bean.getTanggalLahir());
                             imBiodataEntity.setTanggalPensiun(bean.getTanggalPensiun());
@@ -750,6 +753,11 @@ public class BiodataBoImpl implements BiodataBo {
             if (!status.equalsIgnoreCase("Exist")){
                 String personPosition;
 
+                //get session keluarga
+                int jumlahAnak = 0;
+                HttpSession session = ServletActionContext.getRequest().getSession();
+                List<Keluarga> listKeluarga = (List<Keluarga>) session.getAttribute("listKeluarga");
+
                 personPosition =  personilPositionDao.getNextPersonilPositionId();
                 // creating object entity serializable
                 ImBiodataEntity imBiodataEntity = new ImBiodataEntity();
@@ -805,7 +813,17 @@ public class BiodataBoImpl implements BiodataBo {
             imBiodataEntity.setTanggalPensiun(CommonUtil.convertStringToDate((strTglLahir[0]) + "-" + strTglLahir[1] + "-" + strTglLahir[2]));*/
 
                 imBiodataEntity.setGender(bean.getGender());
-                imBiodataEntity.setJumlahAnak(bean.getJumlahAnak());
+
+                if (listKeluarga != null){
+                    for (Keluarga keluarga : listKeluarga){
+                        if (!"I".equalsIgnoreCase(keluarga.getStatusKeluargaId()) && !"S".equalsIgnoreCase(keluarga.getStatusKeluargaId())){
+                            jumlahAnak += 1;
+                        }
+                    }
+                }
+//                imBiodataEntity.setJumlahAnak(bean.getJumlahAnak());
+                imBiodataEntity.setJumlahAnak(BigInteger.valueOf(jumlahAnak));
+
                 imBiodataEntity.setNpwp(bean.getNpwp());
                 imBiodataEntity.setDanaPensiun(bean.getDanaPensiun());
                 imBiodataEntity.setNoAnggotaDapen(bean.getNoAnggotaDapen());
@@ -882,8 +900,8 @@ public class BiodataBoImpl implements BiodataBo {
                 }
 
 
-                HttpSession session = ServletActionContext.getRequest().getSession();
-                List<Keluarga> listKeluarga = (List<Keluarga>) session.getAttribute("listKeluarga");
+//                HttpSession session = ServletActionContext.getRequest().getSession();
+//                List<Keluarga> listKeluarga = (List<Keluarga>) session.getAttribute("listKeluarga");
 //                if(listKeluarga != null){
 //                    for(Keluarga keluarga: listKeluarga){
 //                        ImKeluargaEntity imKeluargaEntity = new ImKeluargaEntity();
@@ -4277,6 +4295,28 @@ public class BiodataBoImpl implements BiodataBo {
             }
         }
         return status;
+    }
+
+    private int cekJumlahAnak(String nip){
+        int jumlahAnak = 0;
+
+        List<ImKeluargaEntity> imKeluargaEntity = new ArrayList<>();
+        try{
+            imKeluargaEntity = keluargaDao.getDataKeluarga(nip);
+        }catch (HibernateException e){
+            logger.error("[BiodataBoImpl.cekJumlahAnak] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+
+        if (imKeluargaEntity != null){
+            for (ImKeluargaEntity entity : imKeluargaEntity){
+                if (!"I".equalsIgnoreCase(entity.getStatusKeluarga()) && !"S".equalsIgnoreCase(entity.getStatusKeluarga())){
+                    jumlahAnak += 1;
+                }
+            }
+        }
+
+        return jumlahAnak;
     }
 
     public String cekStatusPgw(String nip, String tipePegawai){
