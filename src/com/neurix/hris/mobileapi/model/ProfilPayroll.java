@@ -32,6 +32,142 @@ public class ProfilPayroll implements Serializable {
     private String flagCutiTahunan;
     private String flagCutiPanjang;
 
+    private String iurDpPegawai;
+    private String iurBpjsTkPegawai;
+    private String iurBpjsKsPegawai;
+    private String potPph;
+    private String totalC;
+    private String kopkar;
+    private String iuranSp;
+    private String iuranPIIKB;
+    private String bankBri;
+    private String bankMandiri;
+    private String infaq;
+    private String perkesDanObat;
+    private String listrik;
+    private String iuranProfesi;
+    private String potonganLain;
+
+    public String getIurDpPegawai() {
+        return iurDpPegawai;
+    }
+
+    public void setIurDpPegawai(String iurDpPegawai) {
+        this.iurDpPegawai = iurDpPegawai;
+    }
+
+    public String getIurBpjsTkPegawai() {
+        return iurBpjsTkPegawai;
+    }
+
+    public void setIurBpjsTkPegawai(String iurBpjsTkPegawai) {
+        this.iurBpjsTkPegawai = iurBpjsTkPegawai;
+    }
+
+    public String getIurBpjsKsPegawai() {
+        return iurBpjsKsPegawai;
+    }
+
+    public void setIurBpjsKsPegawai(String iurBpjsKsPegawai) {
+        this.iurBpjsKsPegawai = iurBpjsKsPegawai;
+    }
+
+    public String getPotPph() {
+        return potPph;
+    }
+
+    public void setPotPph(String potPph) {
+        this.potPph = potPph;
+    }
+
+    public String getTotalC() {
+        return totalC;
+    }
+
+    public void setTotalC(String totalC) {
+        this.totalC = totalC;
+    }
+
+    public String getKopkar() {
+        return kopkar;
+    }
+
+    public void setKopkar(String kopkar) {
+        this.kopkar = kopkar;
+    }
+
+    public String getIuranSp() {
+        return iuranSp;
+    }
+
+    public void setIuranSp(String iuranSp) {
+        this.iuranSp = iuranSp;
+    }
+
+    public String getIuranPIIKB() {
+        return iuranPIIKB;
+    }
+
+    public void setIuranPIIKB(String iuranPIIKB) {
+        this.iuranPIIKB = iuranPIIKB;
+    }
+
+    public String getBankBri() {
+        return bankBri;
+    }
+
+    public void setBankBri(String bankBri) {
+        this.bankBri = bankBri;
+    }
+
+    public String getBankMandiri() {
+        return bankMandiri;
+    }
+
+    public void setBankMandiri(String bankMandiri) {
+        this.bankMandiri = bankMandiri;
+    }
+
+    public String getInfaq() {
+        return infaq;
+    }
+
+    public void setInfaq(String infaq) {
+        this.infaq = infaq;
+    }
+
+    public String getPerkesDanObat() {
+        return perkesDanObat;
+    }
+
+    public void setPerkesDanObat(String perkesDanObat) {
+        this.perkesDanObat = perkesDanObat;
+    }
+
+    public String getListrik() {
+        return listrik;
+    }
+
+    public void setListrik(String listrik) {
+        this.listrik = listrik;
+    }
+
+    public String getIuranProfesi() {
+        return iuranProfesi;
+    }
+
+    public void setIuranProfesi(String iuranProfesi) {
+        this.iuranProfesi = iuranProfesi;
+    }
+
+    public String getPotonganLain() {
+        return potonganLain;
+    }
+
+    public void setPotonganLain(String potonganLain) {
+        this.potonganLain = potonganLain;
+    }
+
     public String getFlagCutiTahunan() {
         return flagCutiTahunan;
     }
