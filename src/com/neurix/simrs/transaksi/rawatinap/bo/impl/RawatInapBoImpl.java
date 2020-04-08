@@ -859,6 +859,11 @@ public class RawatInapBoImpl implements RawatInapBo {
         return skorRanaps;
     }
 
+    @Override
+    public RawatInap getLastUsedRoom(String id) throws GeneralBOException {
+        return rawatInapDao.getLastRuanganById(id);
+    }
+
     private String getNextSkorRanap(){
         String id = "";
         try {

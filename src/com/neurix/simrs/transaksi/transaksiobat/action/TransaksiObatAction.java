@@ -930,7 +930,11 @@ public class TransaksiObatAction extends BaseMasterAction {
                         try {
                             ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(detailCheckupEntity.getIdPelayanan());
 
+
                             if (pelayananEntity != null && pelayananEntity.getTipePelayanan() != null){
+
+                                // jika poli selain rawat inap maka mengambil kodering dari pelayanan
+                                // jika poli rawat rawat inap maka mengambil kodering dari kelas ruangan , Sigit
                                 if ("rawat_inap".equalsIgnoreCase(pelayananEntity.getTipePelayanan())){
 
                                     RawatInap rawatInap = new RawatInap();
@@ -949,7 +953,6 @@ public class TransaksiObatAction extends BaseMasterAction {
                                             }
                                         }
                                     }
-
                                 } else {
                                     if (pelayananEntity != null && pelayananEntity.getKodering() != null){
                                         divisiId = pelayananEntity.getKodering();

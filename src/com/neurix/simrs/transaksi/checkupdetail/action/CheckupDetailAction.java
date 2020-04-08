@@ -22,6 +22,7 @@ import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
 import com.neurix.simrs.master.kategoritindakan.bo.KategoriTindakanBo;
 import com.neurix.simrs.master.kategoritindakan.model.KategoriTindakan;
 import com.neurix.simrs.master.kelasruangan.bo.KelasRuanganBo;
+import com.neurix.simrs.master.kelasruangan.model.ImSimrsKelasRuanganEntity;
 import com.neurix.simrs.master.kelasruangan.model.KelasRuangan;
 import com.neurix.simrs.master.keterangankeluar.bo.KeteranganKeluarBo;
 import com.neurix.simrs.master.keterangankeluar.model.KeteranganKeluar;
@@ -33,6 +34,7 @@ import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.ruangan.bo.RuanganBo;
+import com.neurix.simrs.master.ruangan.model.MtSimrsRuanganEntity;
 import com.neurix.simrs.master.ruangan.model.Ruangan;
 import com.neurix.simrs.master.tindakan.bo.TindakanBo;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
@@ -53,6 +55,7 @@ import com.neurix.simrs.transaksi.periksalab.model.PeriksaLab;
 import com.neurix.simrs.transaksi.permintaanresep.bo.PermintaanResepBo;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
+import com.neurix.simrs.transaksi.rawatinap.model.ItSimrsRawatInapEntity;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
 import com.neurix.simrs.transaksi.riwayattindakan.bo.RiwayatTindakanBo;
 import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
@@ -903,14 +906,43 @@ public class CheckupDetailAction extends BaseMasterAction {
         CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
         PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
         BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
+        KelasRuanganBo kelasRuanganBo = (KelasRuanganBo) ctx.getBean("kelasRuanganBoProxy");
+        RuanganBo ruanganBo = (RuanganBo) ctx.getBean("ruanganBoProxy");
+        RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
 
 
         String kode = "";
         String transId = "";
         String ketPoli = "";
         String ketResep = "";
+        String divisiId = "";
         ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(idPoli);
         if (pelayananEntity != null){
+
+
+            // jika poli selain rawat inap maka mengambil kodering dari pelayanan
+            // jika poli rawat rawat inap maka mengambil kodering dari kelas ruangan , Sigit
+            if (!"rawat_inap".equalsIgnoreCase(pelayananEntity.getTipePelayanan())){
+                divisiId = pelayananEntity.getKodering();
+            } else {
+                RawatInap rawatInap = new RawatInap();
+                rawatInap.setIdDetailCheckup(idDetailCheckup);
+                rawatInap.setFlag("Y");
+
+                List<ItSimrsRawatInapEntity> rawatInapEntities = rawatInapBo.getListEntityByCriteria(rawatInap);
+                if (rawatInapEntities.size() > 0){
+                    for (ItSimrsRawatInapEntity rawatInapEntity : rawatInapEntities){
+                        MtSimrsRuanganEntity ruanganEntity = ruanganBo.getEntityRuanganById(rawatInapEntity.getIdRuangan());
+                        if (ruanganEntity != null){
+                            ImSimrsKelasRuanganEntity kelasRuanganEntity = kelasRuanganBo.getKelasRuanganById(ruanganEntity.getIdKelasRuangan());
+                            if (kelasRuanganEntity != null){
+                                divisiId = kelasRuanganEntity.getKodering();
+                            }
+                        }
+                    }
+                }
+
+            }
 
             HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
             headerDetailCheckup.setIdDetailCheckup(idDetailCheckup);
@@ -945,7 +977,8 @@ public class CheckupDetailAction extends BaseMasterAction {
             mapUangMuka.put("nilai", jumlahUm);
 
             Map hsCriteria = new HashMap();
-            hsCriteria.put("pasien_id", idPasien);
+            hsCriteria.put("master_id", idPasien);
+            hsCriteria.put("divisi_id", divisiId);
             // jumlah debit uang muka
             hsCriteria.put("uang_muka", mapUangMuka);
 
@@ -955,9 +988,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                 ketResep = "Dengan Obat";
 
                 // kredit jumlah obat
-                hsCriteria.put("pendapatan_obat_non_bpjs", jumlahResep);
-                // kredit ppn
-                hsCriteria.put("ppn_keluaran", ppnObat);
+                hsCriteria.put("pendapatan_obat_umum", jumlahResep);
 
                 // jika ada resep dan ppn untuk debit piutang
                 jumlah = jumlah.add(jumlahResep.add(ppnObat));
@@ -987,17 +1018,16 @@ public class CheckupDetailAction extends BaseMasterAction {
                 mapPiutang.put("nilai", jumlah.subtract(jumlahUm));
 
                 // debit piutang pasien
-                hsCriteria.put("piutang_pasien_non_bpjs", mapPiutang);
+                hsCriteria.put("piutang_pasien_umum", mapPiutang);
 
                 // kredit jumlah tindakan
-                hsCriteria.put("pendapatan_rawat_jalan_non_bpjs", jumlahTindakan);
+                hsCriteria.put("pendapatan_rawat_jalan_umum", jumlahTindakan);
 
                 if ("Y".equalsIgnoreCase(isResep)) {
-                    transId = "05";
+                    transId = "07";
                 } else {
-                    transId = "04";
+                    transId = "14";
                 }
-
             }
             if ("JRI".equalsIgnoreCase(kode)) {
 
@@ -1007,11 +1037,11 @@ public class CheckupDetailAction extends BaseMasterAction {
                 mapPiutang.put("nilai", jumlah.subtract(jumlahUm));
 
                 // debit piutang pasien
-                hsCriteria.put("piutang_pasien_non_bpjs", mapPiutang);
+                hsCriteria.put("piutang_pasien_umum", mapPiutang);
 
                 // kredit jumlah tindakan
-                hsCriteria.put("pendapatan_rawat_inap_non_bpjs", jumlahTindakan);
-                transId = "07";
+                hsCriteria.put("pendapatan_rawat_inap_umum", jumlahTindakan);
+                transId = "21";
             }
 
             String catatan = "Closing Pasien " + ketPoli + " Umum " + ketResep + " Piutang No Pasien " + idPasien;

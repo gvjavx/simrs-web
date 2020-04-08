@@ -47,4 +47,5 @@ public interface RawatInapBo {
     public MonVitalSign getMonVitalSignById(String id) throws GeneralBOException;
     public MonCairan getMonCairanById(String id) throws GeneralBOException;
     public MonPemberianObat getMonPemberianObatById(String id) throws GeneralBOException;
+    public RawatInap getLastUsedRoom(String id) throws GeneralBOException;
 }
