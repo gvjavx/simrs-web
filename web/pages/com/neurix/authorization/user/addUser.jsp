@@ -249,7 +249,7 @@
                                     <div class="form-group" style="display: none" id="form-pelayanan">
                                         <label class="control-label col-sm-5" for="users.roleId">Pelayanan :</label>
                                         <div class="col-sm-3">
-                                            <select class="form-control select2" name="users.idPelayanan" id="pelayananId">
+                                            <select style="width: 100%" class="form-control select2" name="users.idPelayanan" id="pelayananId">
                                                 <option value="">[Select One]</option>
                                             </select>
                                         </div>
