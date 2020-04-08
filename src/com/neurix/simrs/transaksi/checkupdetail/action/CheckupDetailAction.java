@@ -46,6 +46,7 @@ import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 
+import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
 import com.neurix.simrs.transaksi.diagnosarawat.bo.DiagnosaRawatBo;
 import com.neurix.simrs.transaksi.diagnosarawat.model.DiagnosaRawat;
 import com.neurix.simrs.transaksi.ordergizi.bo.OrderGiziBo;
@@ -916,9 +917,18 @@ public class CheckupDetailAction extends BaseMasterAction {
         String ketPoli = "";
         String ketResep = "";
         String divisiId = "";
+        String masterId = "";
         ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(idPoli);
         if (pelayananEntity != null){
 
+            ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailBo.getEntityDetailCheckupByIdDetail(idDetailCheckup);
+            if ("asuransi".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())){
+                masterId = "";
+            } else if ("ptpn".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())){
+                masterId = "";
+            } else {
+                masterId = idPasien;
+            }
 
             // jika poli selain rawat inap maka mengambil kodering dari pelayanan
             // jika poli rawat rawat inap maka mengambil kodering dari kelas ruangan , Sigit
