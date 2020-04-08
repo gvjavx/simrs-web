@@ -130,7 +130,7 @@
         $.subscribe('beforeProcessSaveStudy', function (event, data){
             if (confirm('Do you want to save this record?')){
                 event.originalEvent.options.submit = true;
-                $('#modal-edit-document').modal('hide');
+                $('#modal-edit').modal('hide');
                 $('#myFormDocument')[0].reset();
                 alert('Record has been Saved successfully.');
                 loadSessionStudy();
@@ -139,9 +139,9 @@
             }
         });
 
-        $.subscribe('successDialogDocument', function(event, data)){
+        $.subscribe('successDialogDocument', function(event, data){
             loadSessionStudy();
-        }
+        });
 
         $.subscribe('beforeProcessDelete', function (event, data) {
             if (confirm('Do you want to delete this record ?')) {
@@ -1480,7 +1480,7 @@
             <div class="modal-body">
                 <s:url id="urlProcess" namespace="/study" action="addStudy_study"
                        includeContext="false"/>
-                <s:form id="myFormDocument" enctype="multipart/form-data" method="post" action="%{urlProcess}"
+                <s:form id="myFormDocument" enctype="multipart/form-data" method="post" action="%{urlProcess}" proses="addStudy"
                         theme="simple" cssClass="form-horizontal">
 
                     <div style="display: none" class="form-group">
@@ -1551,7 +1551,7 @@
                     <%--</div>--%>
 
                     <div class="form-group">
-                        <label class="control-label col-sm-4">Ijazah (Jpeg) : </label>
+                        <label class="control-label col-sm-4">Ijazah (Jpeg/PDF) : </label>
 
                         <div class="col-sm-8">
                             <input type="file" id="file" class="form-control" name="fileUpload"/>
@@ -1580,6 +1580,25 @@
                 <%--<button id="btnSave" type="button" class="btn btn-default btn-success">Simpan</button>--%>
                 <%--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>--%>
             <%--</div>--%>
+        </div>
+    </div>
+</div>
+
+<div id="modal-view-document" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">View Document</h4>
+            </div>
+            <div class="modal-body">
+                <img src="" class="img-responsive" id="my-image">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
         </div>
     </div>
 </div>
@@ -3159,6 +3178,53 @@
             });
 
         }
+        window.loadSessionStudy= function(){
+            $('.studyTable').find('tbody').remove();
+            $('.studyTable').find('thead').remove();
+            dwr.engine.setAsync(false);
+            var tmp_table = "";
+            StudyAction.searchDataSession(function (listdata) {
+
+                tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc'>Type Study</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc''>Study Name</th>" +
+                            /*"<th style='text-align: center; background-color:  #3c8dbc''>Tahun Awal</th>" +*/
+                        "<th style='text-align: center; background-color:  #3c8dbc''>Tahun Lulus</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc''>Ijazah</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
+                        "</tr></thead>";
+                var i = i;
+                $.each(listdata, function (i, item) {
+                    tmp_table += '<tr style="font-size: 12px;" ">' +
+                            '<td >' + (i + 1) + '</td>' +
+                            '<td >' + item.typeStudy + '</td>' +
+                            '<td align="center">' + item.studyName + '</td>' +
+                                /*'<td align="center">' + item.tahunAwal + '</td>' +*/
+                            '<td align="center">' + item.tahunAkhir + '</td>' +
+
+                            '<td align="center">' +
+                            "<a href='javascript:;' class ='item-view-document' data ='" + item.uploadFile + "' judul ='" + item.studyName + "' >" +
+                            "<img border='0' src='<s:url value='/pages/images/view.png'/>' name='icon_view'>" +
+                            '</a>' +
+                            '</td>' +
+
+                            '<td align="center">' +
+                            "<a href='javascript:;' class ='item-edit' data ='" + item.studyId + "' >" +
+                            "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
+                            '</a>' +
+                            '</td>' +
+                            '<td align="center">' +
+                            "<a href='javascript:;' class ='item-delete' data ='" + item.studyId + "' >" +
+                            "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>" +
+                            '</a>' +
+                            '</td>' +
+                            "</tr>";
+                });
+                $('.studyTable').append(tmp_table);
+            });
+        };
 
         function loadSessionStudy() {
             $('.studyTable').find('tbody').remove();
@@ -3171,7 +3237,7 @@
                         "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc'>Type Study</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc''>Study Name</th>" +
-                        /*"<th style='text-align: center; background-color:  #3c8dbc''>Tahun Awal</th>" +*/
+                        "<th style='text-align: center; background-color:  #3c8dbc''>Tahun Awal</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc''>Tahun Lulus</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc''>Ijazah</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
@@ -3183,11 +3249,10 @@
                             '<td >' + (i + 1) + '</td>' +
                             '<td >' + item.typeStudy + '</td>' +
                             '<td align="center">' + item.studyName + '</td>' +
-                            /*'<td align="center">' + item.tahunAwal + '</td>' +*/
+                            '<td align="center">' + item.tahunAwal + '</td>' +
                             '<td align="center">' + item.tahunAkhir + '</td>' +
-
                             '<td align="center">' +
-                            "<a href='javascript:;' class ='item-view-document' data ='" + item.uploadFile + "' judul ='" + item.documentName + "' >" +
+                            "<a href='javascript:;' class ='item-view-document' data ='" + item.uploadFile + "' judul ='" + item.studyName + "' >" +
                             "<img border='0' src='<s:url value='/pages/images/view.png'/>' name='icon_view'>" +
                             '</a>' +
                             '</td>' +
@@ -4277,7 +4342,7 @@
 
 //            $('#myForm')[0].reset();
             $('#modal-edit').modal('show');
-            $('#myForm').attr('action', 'addStudy');
+            $('#myFormDocument').attr('proses', 'addStudy');
             $('#modal-edit').find('.modal-title').text('Add Pendidikan');
         });
 
@@ -4320,6 +4385,16 @@
             $('#modal-editKeluarga').find('.modal-title').text('Add Keluarga');
         });
 
+        $('.studyTable').on('click', '.item-view-document', function(){
+            var id = $(this).attr('data');
+            var judul = $(this).attr('judul');
+            dwr.engine.setAsync(false);
+            $("#my-image").attr("src","/simrs//pages/upload/image/ijazah/" + id);
+            $('#modal-view-document').find('.modal-title').text(judul);
+            $('#modal-view-document').modal('show');
+            $('#ViewDocument').attr('action', 'editPerson');
+        })
+
         $('.studyTable').on('click', '.item-edit', function () {
             var id = $(this).attr('data');
             listPendidikanFakultas();
@@ -4329,6 +4404,8 @@
                 $('#studyName').val(listdata.studyName);
                 $('#studyTahunAwal').val(listdata.tahunAwal);
                 $('#studyTahunAkhir').val(listdata.tahunAkhir);
+                $('#pendidikanProgramStudi').val(item.programStudy);
+                $('#studyFakultas').val(item.fakultasId).change();
                 $('#studyTypeStudy').val(listdata.typeStudy).change();
                 $('#studyId').val(listdata.studyId);
             });
