@@ -30,6 +30,7 @@ import com.neurix.simrs.master.lab.model.Lab;
 import com.neurix.simrs.master.pasien.bo.PasienBo;
 import com.neurix.simrs.master.pasien.model.Pasien;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
+import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.ruangan.bo.RuanganBo;
 import com.neurix.simrs.master.ruangan.model.Ruangan;
@@ -903,22 +904,13 @@ public class CheckupDetailAction extends BaseMasterAction {
         PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
         BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
 
-        Pelayanan pelayanan = new Pelayanan();
-        pelayanan.setIdPelayanan(idPoli);
-
-        List<Pelayanan> pelayanans = new ArrayList<>();
-        try {
-            pelayanans = pelayananBo.getByCriteria(pelayanan);
-        } catch (GeneralBOException e) {
-            logger.error("[CheckupDetailAction.closingJurnalNonTunai] Error when pelayanan, ", e);
-        }
 
         String kode = "";
         String transId = "";
         String ketPoli = "";
         String ketResep = "";
-        if (pelayanans.size() > 0) {
-            Pelayanan pelayananData = pelayanans.get(0);
+        ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(idPoli);
+        if (pelayananEntity != null){
 
             HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
             headerDetailCheckup.setIdDetailCheckup(idDetailCheckup);
@@ -959,7 +951,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
             BigDecimal jumlah = new BigDecimal(0);
 
-            if ("Y".equalsIgnoreCase(isResep) || "rawat_inap".equalsIgnoreCase(pelayananData.getTipePelayanan())) {
+            if ("Y".equalsIgnoreCase(isResep) || "rawat_inap".equalsIgnoreCase(pelayananEntity.getTipePelayanan())) {
                 ketResep = "Dengan Obat";
 
                 // kredit jumlah obat
@@ -973,11 +965,11 @@ public class CheckupDetailAction extends BaseMasterAction {
                 ketResep = "Tanpa Obat";
             }
 
-            if ("rawat_jalan".equalsIgnoreCase(pelayananData.getTipePelayanan()) || "igd".equalsIgnoreCase(pelayananData.getTipePelayanan())) {
+            if ("rawat_jalan".equalsIgnoreCase(pelayananEntity.getTipePelayanan()) || "igd".equalsIgnoreCase(pelayananEntity.getTipePelayanan())) {
                 kode = "JRJ";
                 ketPoli = "Rawat Jalan";
             }
-            if ("rawat_inap".equalsIgnoreCase(pelayananData.getTipePelayanan())) {
+            if ("rawat_inap".equalsIgnoreCase(pelayananEntity.getTipePelayanan())) {
                 kode = "JRI";
                 ketPoli = "Rawat Inap";
             }

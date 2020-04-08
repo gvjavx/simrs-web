@@ -56,10 +56,10 @@ public class CommonConstant {
 
     //sodiq, 18 Nov 2019, Upload KTP pasien
 //    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = "C:\\Users\\user\\Pictures";
-    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = "C:\\Users\\pc001\\Pictures";
-//    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = "/opt/tomcat/webapps";
-    public final static String RESOURCE_PATH_IMG_ASSET = "C:\\apache-tomcat-8.5.40\\webapps";
-//    public final static String RESOURCE_PATH_IMG_ASSET = "/mnt/images";
+//    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = "C:\\Users\\pc001\\Pictures";
+    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = "/mnt/images";
+//    public final static String RESOURCE_PATH_IMG_ASSET = "C:\\apache-tomcat-8.5.40\\webapps";
+    public final static String RESOURCE_PATH_IMG_ASSET = "/mnt/images";
 
 //    public final static String RESOURCE_PATH_IMG_ASSET = "C:\\tomcat\\webapps";
 
@@ -118,14 +118,14 @@ public class CommonConstant {
 //    public final static String URL_IMAGE_LOGO_REPORT = "C:\\tomcat-7-64x\\webapps\\hris\\pages\\images\\LOGO-RW.png";
 //        public final static String URL_IMAGE_LOGO_REPORT = "/opt/tomcat/webapps/simrs/pages/images/LOGO-RW.png";
 
-    public final static String URL_IMAGE_LOGO_REPORT = "C:\\tomcat\\webapps\\simrs\\pages\\images\\logo-nmu.png";
-    public final static String URL_LOGO_REPORT = "C:\\tomcat\\webapps\\simrs\\pages\\images\\";
+//    public final static String URL_IMAGE_LOGO_REPORT = "C:\\tomcat\\webapps\\simrs\\pages\\images\\logo-nmu.png";
+//    public final static String URL_LOGO_REPORT = "C:\\tomcat\\webapps\\simrs\\pages\\images\\";
 
 //    public final static String URL_IMAGE_LOGO_REPORT = "C:\\apache-tomcat-8.5.40\\webapps\\simrs\\pages\\images\\LOGO-RW.png";
 //    public final static String URL_LOGO_REPORT = "C:\\apache-tomcat-8.5.40\\webapps\\simrs\\pages\\images\\";
 
-//    public final static String URL_IMAGE_LOGO_REPORT = "/opt/tomcat/webapps/simrs/pages/images/LOGO-RW.png";
-//    public final static String URL_LOGO_REPORT = "/opt/tomcat/webapps/simrs/pages/images/";
+    public final static String URL_IMAGE_LOGO_REPORT = "/opt/tomcat/webapps/simrs/pages/images/LOGO-RW.png";
+    public final static String URL_LOGO_REPORT = "/opt/tomcat/webapps/simrs/pages/images/";
 
     public final static String RESOURCE_DOCUMENT_PAYROLL = "/opt/tomcat/webapps/mnt/documents/";
 
@@ -212,8 +212,8 @@ public class CommonConstant {
     public final static String RESOURCE_PATH_JRXML_QRCODE_ALAT = "/opt/tomcat/webapps/pmsapb/pages/report/com/neurix/apbpln/printQRCode.jrxml/";
     public final static String RESOURCE_DOCUMENT_APB = "/opt/tomcat/webapps/mnt/documents/simrs/";
     public final static String RESOURCE_IMAGE_APB = "/opt/tomcat/webapps/mnt/images/simrs/";
-    //    public static final String RESOURCE_IMAGE_TTD = "/opt/tomcat/webapps/mnt/images/";
-    public static final String RESOURCE_IMAGE_TTD = "C:/Users/pc001/Pictures/";
+    public static final String RESOURCE_IMAGE_TTD = "/mnt/images/";
+//    public static final String RESOURCE_IMAGE_TTD = "C:/Users/pc001/Pictures/";
     public final static String IMAGE_TYPE = ".png";
     public final static String DOC_TYPE = ".pdf";
 

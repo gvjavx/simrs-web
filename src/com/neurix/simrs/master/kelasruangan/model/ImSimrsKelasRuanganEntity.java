@@ -13,6 +13,15 @@ public class ImSimrsKelasRuanganEntity implements Serializable {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String kodering;
+
+    public String getKodering() {
+        return kodering;
+    }
+
+    public void setKodering(String kodering) {
+        this.kodering = kodering;
+    }
 
     public String getIdKelasRuangan() {
         return idKelasRuangan;

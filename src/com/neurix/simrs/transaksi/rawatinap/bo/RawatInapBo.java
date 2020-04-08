@@ -9,6 +9,7 @@ import com.neurix.simrs.transaksi.monpemberianobat.model.ItSimrsMonPemberianObat
 import com.neurix.simrs.transaksi.monpemberianobat.model.MonPemberianObat;
 import com.neurix.simrs.transaksi.monvitalsign.model.ItSimrsMonVitalSignEntity;
 import com.neurix.simrs.transaksi.monvitalsign.model.MonVitalSign;
+import com.neurix.simrs.transaksi.rawatinap.model.ItSimrsRawatInapEntity;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
 import com.neurix.simrs.transaksi.skorrawatinap.model.ImSimrsKategoriSkorRanapEntity;
 import com.neurix.simrs.transaksi.skorrawatinap.model.ImSimrsSkorRanapEntity;
@@ -21,6 +22,7 @@ import java.util.List;
  * Created by Toshiba on 13/11/2019.
  */
 public interface RawatInapBo {
+    public List<ItSimrsRawatInapEntity> getListEntityByCriteria(RawatInap bean) throws GeneralBOException;
     public List<RawatInap> getSearchRawatInap(RawatInap bean) throws GeneralBOException;
     public List<SkorRanap> getListSkorRanap(SkorRanap bean) throws GeneralBOException;
     public List<ImSimrsSkorRanapEntity> getListMasterSkor(String id) throws GeneralBOException;
