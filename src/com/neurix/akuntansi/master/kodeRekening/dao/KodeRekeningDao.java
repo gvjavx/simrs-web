@@ -126,17 +126,12 @@ public class KodeRekeningDao extends GenericDao<ImKodeRekeningEntity, String> {
     //for search bank in billing
     public String searchRekeningIdBankLikeName(String namaBank){
         String result="";
-        String kodeRekeningKas=getKodeRekeningKas();
-        String query = "select  \n" +
-                "                  rekening_id  \n" +
-                "                from  \n" +
-                "                im_akun_kode_rekening  \n" +
-                "                where  \n" +
-                "                nama_kode_rekening ilike '%"+namaBank+"%'  \n" +
-                "                and kode_rekening ilike '"+kodeRekeningKas+"%' \n" +
-                "                and length(kode_rekening)=12 \n" +
-                "                order by rekening_id \n" +
-                "                limit 1";
+        String query = "select \n" +
+                "\trekening_id \n" +
+                "from \n" +
+                "\tim_akun_kode_rekening \n" +
+                "where \n" +
+                "\tkode_rekening = '"+namaBank+"'";
         Object results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query).uniqueResult();
         if (results!=null){

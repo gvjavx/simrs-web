@@ -7573,15 +7573,20 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
         payroll.setStatusPegawai(itPayrollEntity2.getImBiodataEntity().getStatusPegawai());
         payroll.setGolonganDapenId(itPayrollEntity2.getGolonganDapenId());
         //mengambil golongan dapen name
-        List<ImGolonganDapenEntity> golonganDapenEntity = new ArrayList<>();
-        try{
-            golonganDapenEntity = golonganDapenDao.getGolonganById(itPayrollEntity2.getImBiodataEntity().getGolonganDapenId());
-            for (ImGolonganDapenEntity golonganDapenLoop: golonganDapenEntity){
-                payroll.setGolonganDapenName(golonganDapenLoop.getGolonganDapenName());
-            }
-        }catch(GeneralBOException e){
+        if (!("TP03").equalsIgnoreCase(payroll.getTipePegawai())){
+            List<ImGolonganDapenEntity> golonganDapenEntity = new ArrayList<>();
+            try{
+                golonganDapenEntity = golonganDapenDao.getGolonganById(itPayrollEntity2.getImBiodataEntity().getGolonganDapenId());
+                for (ImGolonganDapenEntity golonganDapenLoop: golonganDapenEntity){
+                    payroll.setGolonganDapenName(golonganDapenLoop.getGolonganDapenName());
+                }
+            }catch(GeneralBOException e){
 
+            }
+        }else{
+            payroll.setGolonganDapenName("");
         }
+
         payroll.setGajiPensiun(CommonUtil.numbericFormat(itPayrollEntity2.getGajiPensiun(), "###,###")); //Gaji
         payroll.setGajiPensiunNilai(itPayrollEntity2.getGajiPensiun()); //Gaji Nilai
 
