@@ -292,7 +292,8 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                     nomorRekeningPembayaran = (String) data.get("nomor_rekening");
                 }
                 try {
-                    rekeningIdKas = kodeRekeningDao.searchRekeningIdBankLikeName(bank);
+                    rekeningIdKas = bank;
+//                    rekeningIdKas = kodeRekeningDao.searchRekeningIdBankLikeName(bank);
                 } catch (HibernateException e) {
                     logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
@@ -362,26 +363,27 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                             logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
                             throw new GeneralBOException("Found problem "+status+", please info to your admin...");
                         }
+                        if (("Y").equalsIgnoreCase(mapping.getDivisiId())){
+                            if (divisiId==null){
+                                status="ERROR : Membutuhkan Divisi ID";
+                                logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
+                                throw new GeneralBOException("Found problem "+status+", please info to your admin...");
+                            }
+                        }else{
+                            divisiId=null;
+                        }
                     }else{
                         masterId=null;
                         pasienId=null;
                     }
-                    if (("Y").equalsIgnoreCase(mapping.getDivisiId())){
-                        if (divisiId==null){
-                            status="ERROR : Membutuhkan Divisi ID";
-                            logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
-                            throw new GeneralBOException("Found problem "+status+", please info to your admin...");
-                        }
-                    }else{
-                        divisiId=null;
-                    }
+
                     ///////////////////////DIGUNAKAN UNTUK PENGECEKAN DAN PENGAMBILAN BUKTI DAN NILAI UNTUK JURNAL BUKAN LIST  //////////////////////////////
                     if (rekeningId !=null){
                         if (data.get(mapping.getKeterangan())!=null){
                             String noNota = null;
                             BigDecimal nilai= null;
                             //JIKA YANG DIKIRIM BUKAN LIST
-                            if (("N").equalsIgnoreCase(mapping.getKirimList())){
+                            if (("N").equalsIgnoreCase(mapping.getKirimList())&&("N").equalsIgnoreCase(mapping.getKodeBarang())){
                                 //untuk mendapatkan bukti dan nilai di masing masing parameter mapping
                                 if (("Y").equalsIgnoreCase(mapping.getBukti())){
                                     Map listOfMap = (Map) data.get(mapping.getKeterangan());
@@ -770,19 +772,25 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                 if (!periodSudahTutup){
                     for (ItJurnalDetailEntity jurnalDetailEntity : jurnalDetailEntityList){
                         /////////////////////// Save data ///////////////////////
-                        try {
-                            jurnalDetailDao.addAndSave(jurnalDetailEntity);
-                        } catch (HibernateException e) {
-                            logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail] Error, " + e.getMessage());
-                            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                        if (jurnalDetailEntity.getJumlahDebit().compareTo(BigDecimal.ZERO)==0&&jurnalDetailEntity.getJumlahDebit().compareTo(BigDecimal.ZERO)==0){
+
+                        }else{
+                            try {
+                                jurnalDetailDao.addAndSave(jurnalDetailEntity);
+                            } catch (HibernateException e) {
+                                logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail] Error, " + e.getMessage());
+                                throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                            }
                         }
                     }
                     for (ItJurnalDetailActivityEntity jurnalDetailActivityEntity : jurnalDetailActivityEntityList){
-                        try {
-                            jurnalDetailActivityDao.addAndSave(jurnalDetailActivityEntity);
-                        } catch (HibernateException e) {
-                            logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail] Error, " + e.getMessage());
-                            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                        if (jurnalDetailActivityEntity.getJumlah().compareTo(BigDecimal.ZERO)>0){
+                            try {
+                                jurnalDetailActivityDao.addAndSave(jurnalDetailActivityEntity);
+                            } catch (HibernateException e) {
+                                logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail] Error, " + e.getMessage());
+                                throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                            }
                         }
                     }
                 }else{
@@ -807,11 +815,15 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                         detailPending.setPasienId(jurnalDetailEntity.getPasienId());
                         detailPending.setNomorRekening(jurnalDetailEntity.getNomorRekening());
                         detailPending.setDivisiId(jurnalDetailEntity.getDivisiId());
-                        try {
-                            jurnalDetailDao.addAndSavePending(detailPending);
-                        } catch (HibernateException e) {
-                            logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail] Error, " + e.getMessage());
-                            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                        if (detailPending.getJumlahDebit().compareTo(BigDecimal.ZERO)==0&&detailPending.getJumlahDebit().compareTo(BigDecimal.ZERO)==0){
+
+                        }else{
+                            try {
+                                jurnalDetailDao.addAndSavePending(detailPending);
+                            } catch (HibernateException e) {
+                                logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail] Error, " + e.getMessage());
+                                throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                            }
                         }
                     }
                     for (ItJurnalDetailActivityEntity jurnalDetailActivityEntity : jurnalDetailActivityEntityList){
@@ -827,12 +839,15 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                         activityPending.setLastUpdate(jurnalDetailActivityEntity.getLastUpdate());
                         activityPending.setCreatedWho(jurnalDetailActivityEntity.getCreatedWho());
                         activityPending.setLastUpdateWho(jurnalDetailActivityEntity.getLastUpdateWho());
-                        try {
-                            jurnalDetailActivityDao.addAndSavePending(activityPending);
-                        } catch (HibernateException e) {
-                            logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail] Error, " + e.getMessage());
-                            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                        if (activityPending.getJumlah().compareTo(BigDecimal.ZERO)>0){
+                            try {
+                                jurnalDetailActivityDao.addAndSavePending(activityPending);
+                            } catch (HibernateException e) {
+                                logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail] Error, " + e.getMessage());
+                                throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                            }
                         }
+
                     }
                 }
 

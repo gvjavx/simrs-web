@@ -934,7 +934,7 @@ public class TransaksiObatAction extends BaseMasterAction {
                             if (pelayananEntity != null && pelayananEntity.getTipePelayanan() != null){
 
                                 // jika poli selain rawat inap maka mengambil kodering dari pelayanan
-                                // jika poli rawat rawat inap maka mengambil kodering dari kelas ruangan , Sigit
+                                // jika poli rawat rawat inap maka mengambil koderBing dari kelas ruangan , Sigit
                                 if ("rawat_inap".equalsIgnoreCase(pelayananEntity.getTipePelayanan())){
 
                                     RawatInap rawatInap = new RawatInap();

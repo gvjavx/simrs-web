@@ -880,6 +880,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 checkupDetailBo.updateStatusBayarDetailCheckup(detailCheckup);
                 response.setStatus("success");
             } catch (GeneralBOException e) {
+                logger.error("[KasirRawatJalanAction.savePembayaranTagihan] ERROR ",e);
                 response.setStatus("error");
                 response.setMsg("[KasirRawatJalanAction.savePembayaranTagihan] ERROR " + e);
             }
@@ -957,7 +958,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                         logger.info("[CheckupAction.uploadImages] SUCCES PINDAH");
                     } catch (IOException e) {
                         logger.error("[CheckupAction.uploadImages] error, " + e.getMessage());
-                        throw new GeneralBOException("Found Error when upload images rujukan " + e.getMessage());
+                        throw new GeneralBOException("Found Error when upload CSV " + e.getMessage());
                     }
 
                     BufferedReader br = null;

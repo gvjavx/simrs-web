@@ -918,17 +918,19 @@ public class CheckupDetailAction extends BaseMasterAction {
         String ketResep = "";
         String divisiId = "";
         String masterId = "";
-        ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(idPoli);
+
+        ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailBo.getEntityDetailCheckupByIdDetail(idDetailCheckup);
+        if ("asuransi".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())){
+            masterId = "";
+        } else if ("ptpn".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())){
+            masterId = "";
+        } else {
+            masterId = idPasien;
+        }
+
+        ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(detailCheckupEntity.getIdPelayanan());
         if (pelayananEntity != null){
 
-            ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailBo.getEntityDetailCheckupByIdDetail(idDetailCheckup);
-            if ("asuransi".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())){
-                masterId = "";
-            } else if ("ptpn".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())){
-                masterId = "";
-            } else {
-                masterId = idPasien;
-            }
 
             // jika poli selain rawat inap maka mengambil kodering dari pelayanan
             // jika poli rawat rawat inap maka mengambil kodering dari kelas ruangan , Sigit
@@ -987,7 +989,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             mapUangMuka.put("nilai", jumlahUm);
 
             Map hsCriteria = new HashMap();
-            hsCriteria.put("master_id", idPasien);
+            hsCriteria.put("master_id", masterId);
             hsCriteria.put("divisi_id", divisiId);
             // jumlah debit uang muka
             hsCriteria.put("uang_muka", mapUangMuka);
@@ -1034,9 +1036,15 @@ public class CheckupDetailAction extends BaseMasterAction {
                 hsCriteria.put("pendapatan_rawat_jalan_umum", jumlahTindakan);
 
                 if ("Y".equalsIgnoreCase(isResep)) {
-                    transId = "07";
-                } else {
+
+                    Map mapPajakObat = new HashMap();
+                    mapPajakObat.put("bukti", invoice);
+                    mapPajakObat.put("nilai", ppnObat);
+                    hsCriteria.put("ppn_keluaran", mapPajakObat);
+
                     transId = "14";
+                } else {
+                    transId = "07";
                 }
             }
             if ("JRI".equalsIgnoreCase(kode)) {
