@@ -770,7 +770,6 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             hsCriteria.put("master_id", "01.000");
         }
 
-        hsCriteria.put("divisi_id", divisiId);
         hsCriteria.put("metode_bayar", metodeBayar);
         hsCriteria.put("bank", kodeBank);
         if (!"".equalsIgnoreCase(noRekening)) {
@@ -805,23 +804,30 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
         String ketTerangan = "";
         String transId = "";
-        if ("tunai".equalsIgnoreCase(jenis) && "JRJ".equalsIgnoreCase(type) && !"Y".equalsIgnoreCase(withObat)) {
-            transId = "12";
-            ketTerangan = "Closing Pasien Rawat Jalan Umum Tunai tanpa Obat ";
-        }
-        if ("tunai".equalsIgnoreCase(jenis) && "JRJ".equalsIgnoreCase(type) && "Y".equalsIgnoreCase(withObat)) {
 
-            mapPajakObat.put("bukti", invoiceNumber);
-            mapPajakObat.put("nilai", ppnObat);
-            hsCriteria.put("ppn_keluaran", mapPajakObat);
+        if ("tunai".equalsIgnoreCase(jenis)){
+            hsCriteria.put("divisi_id", divisiId);
 
-            transId = "15";
-            ketTerangan = "Closing Pasien Rawat Jalan Umum Tunai dengan Obat ";
+            if ("JRJ".equalsIgnoreCase(type) && !"Y".equalsIgnoreCase(withObat)) {
+                transId = "12";
+                ketTerangan = "Closing Pasien Rawat Jalan Umum Tunai tanpa Obat ";
+            }
+            if ("JRJ".equalsIgnoreCase(type) && "Y".equalsIgnoreCase(withObat)) {
+
+                mapPajakObat.put("bukti", invoiceNumber);
+                mapPajakObat.put("nilai", ppnObat);
+                hsCriteria.put("ppn_keluaran", mapPajakObat);
+
+                transId = "15";
+                ketTerangan = "Closing Pasien Rawat Jalan Umum Tunai dengan Obat ";
+            }
+            if ("JRI".equalsIgnoreCase(type)) {
+                transId = "22";
+                ketTerangan = "Closing Pasien Rawat Inap Umum Tunai ";
+            }
         }
-        if ("tunai".equalsIgnoreCase(jenis) && "JRI".equalsIgnoreCase(type)) {
-            transId = "22";
-            ketTerangan = "Closing Pasien Rawat Inap Umum Tunai ";
-        }
+
+
 
         // jika piutang
         String invNumber = "";
