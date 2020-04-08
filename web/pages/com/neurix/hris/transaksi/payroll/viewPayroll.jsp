@@ -2822,7 +2822,7 @@
                 $('#tunjStruktural').val(listdata.tunjanganStruktural);
                 $('#tunjStrategis').val(listdata.tunjanganStrategis);
                 $('#tunjPeralihan').val(listdata.tunjanganPeralihan);
-                $('#tunjTambahan').val(listdata.tunjanganPeralihan);
+                $('#tunjTambahan').val(listdata.tunjanganTambahan);
                 $('#tunjLain').val(listdata.tunjanganLain);
                 $('#pemondokan').val(listdata.pemondokan);
                 $('#komunikasi').val(listdata.komunikasi);

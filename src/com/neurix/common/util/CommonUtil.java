@@ -384,7 +384,31 @@ public class CommonUtil {
 
         return selisih;
     }
-
+    public static String getPropertyParams(String key) {
+        Properties prop = new Properties();
+        InputStream input = null;
+        String value = "null";
+        try {
+            input = CommonUtil.class.getClassLoader().getResourceAsStream("simrs.properties");
+            // load a properties file
+            prop.load(input);
+            // get the property value and print it out
+            value = prop.getProperty(key);
+            input.close();
+            logger.info("success to load simrs.properties");
+        } catch (IOException ex) {
+            logger.error("Found error," + ex.getMessage());
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    logger.error("Found error," + e.getMessage());
+                }
+            }
+        }
+        return value;
+    }
     public static String getUploadFolderValue() {
 
         Properties prop = new Properties();
