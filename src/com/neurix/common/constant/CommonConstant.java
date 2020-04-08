@@ -11,6 +11,8 @@ import com.neurix.common.util.CommonUtil;
  */
 public class CommonConstant {
 
+
+
     public final static String PREV_TAG_BTN = "<img src=\"";
 //    public final static String EDIT_BTN  = "/pages/images/edit.gif\" border=\"none\" cursor:hand;\" >";
 //    public final static String VIEW_BTN = "/pages/images/lup.gif\" border=\"none\" cursor:hand;\" >";
