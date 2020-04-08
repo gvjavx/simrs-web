@@ -10,6 +10,7 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.lab.bo.LabBo;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.JurnalResponse;
+import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
@@ -35,9 +36,7 @@ import org.springframework.web.context.ContextLoader;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by reza on 18/03/20.
@@ -187,6 +186,17 @@ public class TutuPeriodAction extends BaseTransactionAction {
         logger.info("[TutuPeriodAction.createJurnalTransitoris] START >>>");
         JurnalResponse response = new JurnalResponse();
 
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        TutupPeriodBo tutupPeriodBo = (TutupPeriodBo) ctx.getBean("tutupPeriodBoProxy");
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+
+        ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailBo.getEntityDetailCheckupByIdDetail(bean.getIdDetailCheckup());
+        if (detailCheckupEntity != null){
+
+        }
+
+        Map mapJurnal = new HashMap();
 
 
         logger.info("[TutuPeriodAction.createJurnalTransitoris] END <<<");

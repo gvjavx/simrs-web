@@ -2370,6 +2370,14 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
         return response;
     }
 
+
+    @Override
+    public ItSimrsHeaderChekupEntity getEntityCheckupById(String id) throws GeneralBOException {
+        logger.info("[CheckupBoImpl.getEntityCheckupById] START >>>");
+        logger.info("[CheckupBoImpl.getEntityCheckupById] END <<<");
+        return headerCheckupDao.getById("noCheckup", id);
+    }
+
     @Override
     public List<MasterVendor> getComboListPtpn() throws GeneralBOException {
         List<MasterVendor> vendorList = new ArrayList<>();
