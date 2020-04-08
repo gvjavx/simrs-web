@@ -292,7 +292,8 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                     nomorRekeningPembayaran = (String) data.get("nomor_rekening");
                 }
                 try {
-                    rekeningIdKas = kodeRekeningDao.searchRekeningIdBankLikeName(bank);
+                    rekeningIdKas = bank;
+//                    rekeningIdKas = kodeRekeningDao.searchRekeningIdBankLikeName(bank);
                 } catch (HibernateException e) {
                     logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
