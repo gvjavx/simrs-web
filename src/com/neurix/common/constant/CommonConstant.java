@@ -23,7 +23,6 @@ public class CommonConstant {
 
     public final static String ID = "id";
 
-    //    public final static String RESOURCE_PATH_USER_PHOTO="/pages/images/";
     public final static String RESOURCE_PATH_IMAGES = "/pages/images/";
     public final static String RESOURCE_PATH_USER_PHOTO = "/pages/upload/image/profile/";
     public final static String RESOURCE_PATH_UNKNOWN_PHOTO = "unknown-person.png";
@@ -60,7 +59,7 @@ public class CommonConstant {
 
     public final static String URL_IMAGE_LOGO_REPORT = CommonUtil.getPropertyParams("base.dir")+"pages/images/logo-nmu.png";
     public final static String URL_LOGO_REPORT = CommonUtil.getPropertyParams("base.dir")+"pages/images/";
-    public final static String RESOURCE_DOCUMENT_PAYROLL = CommonUtil.getPropertyParams("resource.dir")+"/mnt/documents/";
+    public final static String RESOURCE_DOCUMENT_PAYROLL = CommonUtil.getPropertyParams("resource.dir")+"mnt/documents/";
 
     public final static String REPORT_PAYROLL = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayroll3.jrxml";
     public final static String REPORT_PAYROLL_THR = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayrollThrBranch3.jrxml";
@@ -114,7 +113,7 @@ public class CommonConstant {
     public final static String BRANCH_RS02 = "RS02";
     public final static String BRANCH_RS03 = "RS03";
 
-        public static final String RESOURCE_IMAGE_TTD = CommonUtil.getPropertyParams("resource.dir")+"mnt/images/";
+    public static final String RESOURCE_IMAGE_TTD = CommonUtil.getPropertyParams("resource.dir")+"mnt/images/";
     public final static String IMAGE_TYPE = ".png";
 
     public final static String URL_IMG = "/images/";
