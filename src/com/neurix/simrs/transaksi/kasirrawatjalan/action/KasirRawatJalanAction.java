@@ -1,5 +1,7 @@
 package com.neurix.simrs.transaksi.kasirrawatjalan.action;
 
+import com.neurix.akuntansi.master.pembayaran.model.ImAkunPembayaranEntity;
+import com.neurix.akuntansi.master.pembayaran.model.Pembayaran;
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Branch;
@@ -1122,10 +1124,10 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
             try {
                 response = kasirRawatJalanBo.saveNoFPK(fpkList);
-            }catch (GeneralBOException e){
+            } catch (GeneralBOException e) {
                 logger.error("Found Error");
                 response.setStatus("error");
-                response.setMsg("Found error "+e);
+                response.setMsg("Found error " + e);
             }
         }
         return response;
@@ -1164,8 +1166,8 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 detailCheckup.setIdDetailCheckup(fpk.getIdDetailCheckup());
 
                 List<HeaderDetailCheckup> details = checkupDetailBo.getByCriteria(detailCheckup);
-                if (details.size() > 0){
-                    for (HeaderDetailCheckup detail : details){
+                if (details.size() > 0) {
+                    for (HeaderDetailCheckup detail : details) {
                         BigDecimal nilai = checkupDetailBo.getSumJumlahTindakan(detail.getIdDetailCheckup(), "");
                         BigDecimal nilaiObat = checkupDetailBo.getSumJumlahTindakan(detail.getIdDetailCheckup(), "resep");
 
@@ -1194,12 +1196,12 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             mapJurnal.put("bank", bank);
 
             String noJurnal = "";
-            String catatan = "Pembayaran Piutang BPJS Bank "+bank+" No. FPK "+fpkId+" No. Referensi "+noSlip;
+            String catatan = "Pembayaran Piutang BPJS Bank " + bank + " No. FPK " + fpkId + " No. Referensi " + noSlip;
             try {
 
                 noJurnal = billingSystemBo.createJurnal("10", mapJurnal, branchId, catatan, "Y");
-                if (!"".equalsIgnoreCase(noJurnal)){
-                    for (Fpk fpk : fpkList){
+                if (!"".equalsIgnoreCase(noJurnal)) {
+                    for (Fpk fpk : fpkList) {
                         HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
                         detailCheckup.setIdDetailCheckup(fpk.getIdDetailCheckup());
                         detailCheckup.setNoJurnal(noJurnal);
@@ -1210,20 +1212,20 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
                         try {
                             checkupDetailBo.saveUpdateNoJuran(detailCheckup);
-                        } catch (GeneralBOException e){
+                        } catch (GeneralBOException e) {
                             logger.error("Found Error");
                             response.setStatus("error");
-                            response.setMsg("Found error "+e);
+                            response.setMsg("Found error " + e);
                             return response;
                         }
                     }
                 }
 
                 response = kasirRawatJalanBo.pembayaranFPK(fpkList);
-            }catch (GeneralBOException e){
+            } catch (GeneralBOException e) {
                 logger.error("Found Error");
                 response.setStatus("error");
-                response.setMsg("Found error "+e);
+                response.setMsg("Found error " + e);
                 return response;
             }
         }
@@ -1241,15 +1243,29 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         KasirRawatJalanBo kasirRawatJalanBo = (KasirRawatJalanBo) ctx.getBean("kasirRawatJalanBoProxy");
 
-        if(id != null && !"".equalsIgnoreCase(id)){
+        if (id != null && !"".equalsIgnoreCase(id)) {
             try {
                 response = kasirRawatJalanBo.saveRefund(id);
-            }catch (GeneralBOException e){
+            } catch (GeneralBOException e) {
                 response.setStatus("error");
-                response.setMessage("Found Error "+e.getMessage());
-                logger.error("Found Error when save refund"+e.getMessage());
+                response.setMessage("Found Error " + e.getMessage());
+                logger.error("Found Error when save refund" + e.getMessage());
             }
         }
+        return response;
+    }
+
+    public List<ImAkunPembayaranEntity> getListPembayaran() {
+        List<ImAkunPembayaranEntity> response = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        KasirRawatJalanBo kasirRawatJalanBo = (KasirRawatJalanBo) ctx.getBean("kasirRawatJalanBoProxy");
+
+        try {
+            response = kasirRawatJalanBo.getListPembayaran();
+        } catch (GeneralBOException e) {
+            logger.error("Found Error when save refund" + e.getMessage());
+        }
+
         return response;
     }
 

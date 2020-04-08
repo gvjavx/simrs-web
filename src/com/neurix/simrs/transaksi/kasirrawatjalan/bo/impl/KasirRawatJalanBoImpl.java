@@ -1,5 +1,8 @@
 package com.neurix.simrs.transaksi.kasirrawatjalan.bo.impl;
 
+import com.neurix.akuntansi.master.pembayaran.dao.PembayaranDao;
+import com.neurix.akuntansi.master.pembayaran.model.ImAkunPembayaranEntity;
+import com.neurix.akuntansi.master.pembayaran.model.Pembayaran;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.CrudResponse;
@@ -36,6 +39,11 @@ public class KasirRawatJalanBoImpl implements KasirRawatJalanBo {
     private UangMukaDao uangMukaDao;
     private CheckupDetailDao checkupDetailDao;
     private FpkDao fpkDao;
+    private PembayaranDao pembayaranDao;
+
+    public void setPembayaranDao(PembayaranDao pembayaranDao) {
+        this.pembayaranDao = pembayaranDao;
+    }
 
     public void setFpkDao(FpkDao fpkDao) {
         this.fpkDao = fpkDao;
@@ -275,6 +283,19 @@ public class KasirRawatJalanBoImpl implements KasirRawatJalanBo {
         }
 
         return response;
+    }
+
+    @Override
+    public List<ImAkunPembayaranEntity> getListPembayaran() throws GeneralBOException {
+        List<ImAkunPembayaranEntity> list = new ArrayList<>();
+        Map hscriteria = new HashMap();
+        hscriteria.put("flag", "Y");
+        try {
+            list = pembayaranDao.getByCriteria(hscriteria);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return list;
     }
 
     private String getNextIdFpk() {

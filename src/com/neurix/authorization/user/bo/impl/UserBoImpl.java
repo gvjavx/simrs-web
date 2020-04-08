@@ -2114,11 +2114,7 @@ public class UserBoImpl implements UserBo {
                 imUsersNew.setFlag("Y");
 
                 //sodiq, 10/12/2019, penambahan id pelayanan
-                if("35".equalsIgnoreCase(addUsers.getRoleId())){
-                    imUsersNew.setIdPelayanan("007");
-                }else{
-                    imUsersNew.setIdPelayanan(addUsers.getIdPelayanan());
-                }
+                imUsersNew.setIdPelayanan(addUsers.getIdPelayanan());
 
                 String userid = addUsers.getUserId();
                 boolean isAda ;

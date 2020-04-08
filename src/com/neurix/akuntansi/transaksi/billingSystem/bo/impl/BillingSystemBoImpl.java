@@ -491,6 +491,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                                             }
                                         }
                                         if (("Y").equalsIgnoreCase(mapping.getDivisiId())){
+
                                             if (mapList.get(i).get("divisi_id")!=null){
                                                 divisiIdLoop=(String)mapList.get(i).get("divisi_id");
                                             }else{

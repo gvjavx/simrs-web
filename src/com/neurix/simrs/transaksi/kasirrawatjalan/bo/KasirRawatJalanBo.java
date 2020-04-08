@@ -1,5 +1,7 @@
 package com.neurix.simrs.transaksi.kasirrawatjalan.bo;
 
+import com.neurix.akuntansi.master.pembayaran.model.ImAkunPembayaranEntity;
+import com.neurix.akuntansi.master.pembayaran.model.Pembayaran;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
@@ -23,4 +25,5 @@ public interface KasirRawatJalanBo {
 
     List<ItSimrsHeaderDetailCheckupEntity> getSearchCheckupBySep(String noSep) throws GeneralBOException;
     public CheckResponse saveRefund(String id) throws GeneralBOException;
+    public List<ImAkunPembayaranEntity> getListPembayaran() throws GeneralBOException;
 }
