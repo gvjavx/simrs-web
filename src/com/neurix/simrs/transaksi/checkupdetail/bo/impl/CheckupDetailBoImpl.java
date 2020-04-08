@@ -1254,9 +1254,18 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             if (details.size() > 0){
                 for (ItSimrsHeaderDetailCheckupEntity detailCheckupEntity : details){
                     detailCheckupEntity.setAction(bean.getAction());
-                    detailCheckupEntity.setNoJurnal(bean.getNoJurnal());
                     detailCheckupEntity.setLastUpdate(bean.getLastUpdate());
                     detailCheckupEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                    // for transitoris or jurnal rawat
+                    if (bean.getNoJurnalTrans() != null && !"".equalsIgnoreCase(bean.getNoJurnalTrans())){
+                        detailCheckupEntity.setNoJurnalTrans(bean.getNoJurnalTrans());
+                        detailCheckupEntity.setTransPeriode(bean.getTransPeriode());
+                        detailCheckupEntity.setTransDate(bean.getTransDate());
+                    } else {
+                        detailCheckupEntity.setNoJurnal(bean.getNoJurnal());
+                    }
+
                     try {
                         checkupDetailDao.updateAndSave(detailCheckupEntity);
                     } catch (HibernateException e){
