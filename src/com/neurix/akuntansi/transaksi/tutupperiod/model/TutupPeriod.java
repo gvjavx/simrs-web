@@ -29,6 +29,15 @@ public class TutupPeriod {
     private String lastUpdateWho;
     private String flagTutup;
     private String idDetailCheckup;
+    private String idJenisPeriksaPasien;
+
+    public String getIdJenisPeriksaPasien() {
+        return idJenisPeriksaPasien;
+    }
+
+    public void setIdJenisPeriksaPasien(String idJenisPeriksaPasien) {
+        this.idJenisPeriksaPasien = idJenisPeriksaPasien;
+    }
 
     public String getIdDetailCheckup() {
         return idDetailCheckup;

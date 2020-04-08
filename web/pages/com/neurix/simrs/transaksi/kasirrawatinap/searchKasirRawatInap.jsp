@@ -610,16 +610,24 @@
                     //tunai
                     if (metode == "tunai") {
                             //rawat jalan dengan obat
-                            mapBiaya.push({"type": "uang_muka", "nilai": uangMuka});
-                            mapBiaya.push({"type": "kas", "nilai": ((total - uangMuka) + totalPpn) });
-                            mapBiaya.push({"type": "pendapatan_rawat_inap_non_bpjs", "nilai": total-totalObat});
-                            mapBiaya.push({"type": "pendapatan_obat_non_bpjs", "nilai": totalObat});
-                            mapBiaya.push({"type": "ppn_keluaran", "nilai": totalPpn });
+//                            mapBiaya.push({"type": "uang_muka", "nilai": uangMuka});
+//                            mapBiaya.push({"type": "kas", "nilai": ((total - uangMuka) + totalPpn) });
+//                            mapBiaya.push({"type": "pendapatan_rawat_inap_umum", "nilai": total-totalObat});
+//                            mapBiaya.push({"type": "pendapatan_obat_umum", "nilai": totalObat});
+//                            mapBiaya.push({"type": "ppn_keluaran", "nilai": totalPpn });
+
+                        mapBiaya.push({"type": "uang_muka", "nilai": uangMuka});
+                        mapBiaya.push({"type": "kas", "nilai": total - uangMuka });
+                        mapBiaya.push({"type": "pendapatan_rawat_inap_umum", "nilai": total-totalObat});
+                        mapBiaya.push({"type": "pendapatan_obat_umum", "nilai": totalObat});
 
                         //non_tunai
                     } else {
-                        mapBiaya.push({"type": "kas", "nilai": ((total - uangMuka) + totalPpn)  });
-                        mapBiaya.push({"type": "piutang_pasien_non_bpjs", "nilai": ((total - uangMuka) + totalPpn) });
+//                        mapBiaya.push({"type": "kas", "nilai": ((total - uangMuka) + totalPpn)  });
+//                        mapBiaya.push({"type": "piutang_pasien_umum", "nilai": ((total - uangMuka) + totalPpn) });
+
+                        mapBiaya.push({"type": "kas", "nilai": ((total - uangMuka))  });
+                        mapBiaya.push({"type": "piutang_pasien_umum", "nilai": ((total - uangMuka)) });
                     }
                 }
             });

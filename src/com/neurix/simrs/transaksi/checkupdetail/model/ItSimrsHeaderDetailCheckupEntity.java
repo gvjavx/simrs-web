@@ -62,7 +62,7 @@ public class ItSimrsHeaderDetailCheckupEntity implements Serializable{
     private Date tglRujukan;
 
     private String noJurnalTrans;
-    private String transDate;
+    private Timestamp transDate;
     private String transPeriode;
 
     public String getTransPeriode() {
@@ -435,11 +435,11 @@ public class ItSimrsHeaderDetailCheckupEntity implements Serializable{
         this.noJurnalTrans = noJurnalTrans;
     }
 
-    public String getTransDate() {
+    public Timestamp getTransDate() {
         return transDate;
     }
 
-    public void setTransDate(String transDate) {
+    public void setTransDate(Timestamp transDate) {
         this.transDate = transDate;
     }
 

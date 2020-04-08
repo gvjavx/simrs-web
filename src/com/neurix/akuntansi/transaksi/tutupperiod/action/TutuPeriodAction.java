@@ -9,6 +9,7 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.lab.bo.LabBo;
 import com.neurix.simrs.transaksi.CrudResponse;
+import com.neurix.simrs.transaksi.JurnalResponse;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
@@ -132,29 +133,7 @@ public class TutuPeriodAction extends BaseTransactionAction {
         TutupPeriodBo tutupPeriodBo = (TutupPeriodBo) ctx.getBean("tutupPeriodBoProxy");
         CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
 
-        HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
-        detailCheckup.setStatusPeriksa("1");
-        detailCheckup.setBranchId(unit);
-
-        try {
-            List<ItSimrsHeaderDetailCheckupEntity> detailCheckupEntities = checkupDetailBo.getListEntityByCriteria(detailCheckup);
-            if (detailCheckupEntities.size() > 0){
-                for (ItSimrsHeaderDetailCheckupEntity detailCheckupEntity : detailCheckupEntities){
-                    CrudResponse responseRiwayat =  saveAddToRiwayatTindakan(detailCheckupEntity.getIdDetailCheckup(), detailCheckupEntity.getIdJenisPeriksaPasien());
-                    if ("error".equalsIgnoreCase(responseRiwayat.getStatus())){
-                        response.setStatus("error");
-                        response.setMsg(responseRiwayat.getMsg());
-                        return response;
-                    }
-                }
-            }
-        } catch (GeneralBOException e){
-            logger.error("[TutupPeriodAction.saveTutupPeriod] ERROR. ", e);
-            response.setStatus("error");
-            response.setMsg("[TutupPeriodAction.saveTutupPeriod] ERROR. "+e);
-            return response;
-        }
-
+        // set object tutup period
         TutupPeriod tutupPeriod = new TutupPeriod();
         tutupPeriod.setUnit(unit);
         tutupPeriod.setTahun(tahun);
@@ -166,6 +145,32 @@ public class TutuPeriodAction extends BaseTransactionAction {
         tutupPeriod.setLastUpdate(time);
         tutupPeriod.setLastUpdateWho(userLogin);
 
+
+        try {
+            List<HeaderDetailCheckup> detailCheckups = checkupDetailBo.getListRawatInapExisiting(unit);
+            if (detailCheckups.size() > 0){
+                for (HeaderDetailCheckup detailCheckup : detailCheckups){
+                    CrudResponse responseRiwayat =  saveAddToRiwayatTindakan(detailCheckup.getIdDetailCheckup(), detailCheckup.getIdJenisPeriksaPasien());
+                    if ("error".equalsIgnoreCase(responseRiwayat.getStatus())){
+                        response.setStatus("error");
+                        response.setMsg(responseRiwayat.getMsg());
+                        return response;
+                    }
+
+                    // create jurnal transitoris
+                    tutupPeriod.setIdDetailCheckup(detailCheckup.getIdDetailCheckup());
+                    tutupPeriod.setIdJenisPeriksaPasien(detailCheckup.getIdJenisPeriksaPasien());
+                    createJurnalTransitoris(tutupPeriod);
+                }
+            }
+        } catch (GeneralBOException e){
+            logger.error("[TutupPeriodAction.saveTutupPeriod] ERROR. ", e);
+            response.setStatus("error");
+            response.setMsg("[TutupPeriodAction.saveTutupPeriod] ERROR. "+e);
+            return response;
+        }
+
+
         try {
             tutupPeriodBo.saveUpdateTutupPeriod(tutupPeriod);
             response.setStatus("success");
@@ -175,6 +180,16 @@ public class TutuPeriodAction extends BaseTransactionAction {
             response.setMsg("[TutupPeriodAction.saveTutupPeriod] ERROR. "+e);
             return response;
         }
+        return response;
+    }
+
+    private JurnalResponse createJurnalTransitoris(TutupPeriod bean){
+        logger.info("[TutuPeriodAction.createJurnalTransitoris] START >>>");
+        JurnalResponse response = new JurnalResponse();
+
+
+
+        logger.info("[TutuPeriodAction.createJurnalTransitoris] END <<<");
         return response;
     }
 

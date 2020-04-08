@@ -14,12 +14,20 @@ function formatDate(date) {
     return [year, month, day].join('-');
 }
 
-function showModalPlan(idDetail){
+function showModalPlan(idDetail, tgl, jenis){
     $("#modal-view-plan-detail").modal('show');
-    viewPlanDetail(idDetail, formatDate(Date.now()));
+    $("#id-detail").val(idDetail);
+    $("#jenis-plan").val(jenis);
+    if (tgl == ''){
+        viewPlanDetail(idDetail, formatDate(Date.now()), jenis);
+    } else {
+        viewPlanDetail(idDetail, tgl, jenis);
+    }
 }
 
-function viewPlanDetail(idDetail, tglMasuk){
+function viewPlanDetail(idDetail, tglMasuk, jenis){
+
+    $("#tgl-plan").val(tglMasuk);
 
     var listPagi = [];
     var listSiang = [];
@@ -75,7 +83,6 @@ function viewPlanDetail(idDetail, tglMasuk){
                 }
             });
 
-
             var strPagi = "";
             $.each(listPagi, function (i, item){
                 strPagi += "<tr>" +
@@ -85,13 +92,30 @@ function viewPlanDetail(idDetail, tglMasuk){
                     "<td style='width:15%'>" + item.ket + "</td>" +
                     "<td align='center'>" + setIconDikerjakan(item.flag) + "</td>" +
                     "<td align='left'><strong>" + setWaktuDikerjakan(item.flag, item.lastupdatewho) + "</strong></td>" +
-                    "<td align='left'><strong>" + setWaktuDikerjakan(item.flag, item.lastupdate) + "</strong></td>" +
-                    "<td align='right'>" +
-                    "<button class='btn btn-sm btn-primary' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','view');\"><i class='fa fa-search'></i></button>" +
-                    "<button class='btn btn-sm btn-info' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','edit');\"><i class='fa fa-edit'></i></button>" +
-                    "</td>" +
-                    "</tr>";
+                    "<td align='left'><strong>" + setWaktuDikerjakan(item.flag, item.lastupdate) + "</strong></td>";
+
+                if (jenis == 'suster'){
+                    if (item.flag == "Y"){
+                        strPagi += "<td align='right'>" +
+                            "<button class='btn btn-sm btn-primary' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','view');\"><i class='fa fa-search'></i></button>" +
+                            "</td>" +
+                            "</tr>";
+                    } else {
+                        strPagi += "<td align='right'>" +
+                            "<button class='btn btn-sm btn-primary' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','view');\"><i class='fa fa-search'></i></button>" +
+                            "<button class='btn btn-sm btn-info' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','edit');\"><i class='fa fa-edit'></i></button>" +
+                            "</td>" +
+                            "</tr>";
+                    }
+                } else {
+                    strPagi += "<td align='right'>" +
+                        "<button class='btn btn-sm btn-primary' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','view');\"><i class='fa fa-search'></i></button>" +
+                        "<button class='btn btn-sm btn-info' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','edit');\"><i class='fa fa-edit'></i></button>" +
+                        "</td>" +
+                        "</tr>";
+                }
             });
+
             var strSiang = "";
             $.each(listSiang, function (i, item){
                 strSiang += "<tr>" +
@@ -101,13 +125,31 @@ function viewPlanDetail(idDetail, tglMasuk){
                     "<td style='width:15%'>" + item.ket + "</td>" +
                     "<td align='center'>" + setIconDikerjakan(item.flag) + "</td>" +
                     "<td align='left'><strong>" + setWaktuDikerjakan(item.flag, item.lastupdatewho) + "</strong></td>" +
-                    "<td align='left'><strong>" + setWaktuDikerjakan(item.flag, item.lastupdate) + "</strong></td>" +
-                    "<td align='right'>" +
-                    "<button class='btn btn-sm btn-primary' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','view');\"><i class='fa fa-search'></i></button>" +
-                    "<button class='btn btn-sm btn-info' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','edit');\"><i class='fa fa-edit'></i></button>" +
-                    "</td>" +
-                    "</tr>";
+                    "<td align='left'><strong>" + setWaktuDikerjakan(item.flag, item.lastupdate) + "</strong></td>";
+
+                if (jenis == "suster"){
+                    if (item.flag == "Y"){
+                        strSiang += "<td align='right'>" +
+                            "<button class='btn btn-sm btn-primary' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','view');\"><i class='fa fa-search'></i></button>" +
+                            "</td>" +
+                            "</tr>";
+                    } else {
+                        strSiang += "<td align='right'>" +
+                            "<button class='btn btn-sm btn-primary' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','view');\"><i class='fa fa-search'></i></button>" +
+                            "<button class='btn btn-sm btn-info' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','edit');\"><i class='fa fa-edit'></i></button>" +
+                            "</td>" +
+                            "</tr>";
+                    }
+
+                } else {
+                    strSiang += "<td align='right'>" +
+                        "<button class='btn btn-sm btn-primary' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','view');\"><i class='fa fa-search'></i></button>" +
+                        "<button class='btn btn-sm btn-info' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','edit');\"><i class='fa fa-edit'></i></button>" +
+                        "</td>" +
+                        "</tr>";
+                }
             });
+
             var strMalam = "";
             $.each(listMalam, function (i, item){
                 strMalam += "<tr>" +
@@ -117,12 +159,28 @@ function viewPlanDetail(idDetail, tglMasuk){
                     "<td style='width:15%'>" + item.ket + "</td>" +
                     "<td align='center'>" + setIconDikerjakan(item.flag) + "</td>" +
                     "<td align='left'><strong>" + setWaktuDikerjakan(item.flag, item.lastupdatewho) + "</strong></td>" +
-                    "<td align='left'><strong>" + setWaktuDikerjakan(item.flag, item.lastupdate) + "</strong></td>" +
-                    "<td align='right'>" +
-                    "<button class='btn btn-sm btn-primary' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','view');\"><i class='fa fa-search'></i></button>" +
-                    "<button class='btn btn-sm btn-info' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','edit');\"><i class='fa fa-edit'></i></button>" +
-                    "</td>" +
-                    "</tr>";
+                    "<td align='left'><strong>" + setWaktuDikerjakan(item.flag, item.lastupdate) + "</strong></td>";
+
+                if (jenis == 'suster'){
+                    if (item.flag == "Y"){
+                        strMalam += "<td align='right'>" +
+                            "<button class='btn btn-sm btn-primary' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','view');\"><i class='fa fa-search'></i></button>" +
+                            "</td>" +
+                            "</tr>";
+                    } else {
+                        strMalam += "<td align='right'>" +
+                            "<button class='btn btn-sm btn-primary' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','view');\"><i class='fa fa-search'></i></button>" +
+                            "<button class='btn btn-sm btn-info' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','edit');\"><i class='fa fa-edit'></i></button>" +
+                            "</td>" +
+                            "</tr>";
+                    }
+                } else {
+                    strMalam += "<td align='right'>" +
+                        "<button class='btn btn-sm btn-primary' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','view');\"><i class='fa fa-search'></i></button>" +
+                        "<button class='btn btn-sm btn-info' onclick=\"viewKegiatan('"+item.id+"','"+item.jenis+"','edit');\"><i class='fa fa-edit'></i></button>" +
+                        "</td>" +
+                        "</tr>";
+                }
             });
 
             var header = "<thead style='color: white;background-color: grey'>" +
@@ -372,6 +430,10 @@ function saveUpdatePlan(tipe){
 
 function saveUpdateVitalSign() {
 
+    var idDetail = $("#id-detail").val();
+    var tglPlan = $("#tgl-plan").val();
+    var jenisPlan = $("#jenis-plan").val();
+
     var id = $("#edit_mvs_id").val();
     var jam = $("#edit_mvs_jam").val();
     var nafas = $("#edit_mvs_nafas").val();
@@ -401,6 +463,8 @@ function saveUpdateVitalSign() {
         if (response.status == "success"){
             $("#success_save_vitalsign").show().fadeOut(5000);
             $("#load_vitalsign").hide();
+
+            viewPlanDetail(idDetail, tglPlan, jenisPlan);
         } else {
             $("#success_save_vitalsign").hide();
             $("#error_save_vitalsign").show().fadeOut(5000);
@@ -410,6 +474,10 @@ function saveUpdateVitalSign() {
 }
 
 function saveUpdateCairan() {
+
+    var idDetail = $("#id-detail").val();
+    var tglPlan = $("#tgl-plan").val();
+    var jenisPlan = $("#jenis-plan").val();
 
     var id = $("#edit_mcr_id").val();
     var macam = $("#edit_mcr_macam").val();
@@ -448,6 +516,8 @@ function saveUpdateCairan() {
         if (response.status == "success"){
             $("#success_save_cairan").show().fadeOut(5000);
             $("#load_cairan").hide();
+
+            viewPlanDetail(idDetail, tglPlan, jenisPlan);
         } else {
             $("#success_save_cairan").hide();
             $("#error_save_cairan").show().fadeOut(5000);
@@ -457,6 +527,10 @@ function saveUpdateCairan() {
 }
 
 function saveUpdatePemberianObat() {
+
+    var idDetail = $("#id-detail").val();
+    var tglPlan = $("#tgl-plan").val();
+    var jenisPlan = $("#jenis-plan").val();
 
     var id = $("#edit_nonpar_id").val();
     var obat = $("#select_obat_edit_nonpar").val();
@@ -485,6 +559,8 @@ function saveUpdatePemberianObat() {
         if (response.status == "success"){
             $("#success_save_nonpar").show().fadeOut(5000);
             $("#load_nonpar").hide();
+
+            viewPlanDetail(idDetail, tglPlan, jenisPlan);
         } else {
             $("#success_save_nonpar").hide();
             $("#error_save_nonpar").show().fadeOut(5000);

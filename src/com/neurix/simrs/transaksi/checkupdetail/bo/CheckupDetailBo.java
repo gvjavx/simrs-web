@@ -58,4 +58,5 @@ public interface CheckupDetailBo {
     public HeaderDetailCheckup getCoverBiayaAsuransi(String idDetailCheckup) throws GeneralBOException;
     public HeaderDetailCheckup getTotalBiayaTindakanBpjs(String idDetailCheckup) throws GeneralBOException;
     public ItSimrsHeaderDetailCheckupEntity getDetailCheckupById(String id) throws GeneralBOException;
+    public List<HeaderDetailCheckup> getListRawatInapExisiting(String branchId) throws GeneralBOException;
 }
