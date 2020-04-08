@@ -33,8 +33,11 @@ public class ProfilPayroll implements Serializable {
     private String flagCutiPanjang;
 
     private String iurDpPegawai;
+    private String iurDpPerush;
     private String iurBpjsTkPegawai;
+    private String iurBpjsTkPerush;
     private String iurBpjsKsPegawai;
+    private String iurBpjsKsPerush;
     private String potPph;
     private String totalC;
     private String kopkar;
@@ -47,6 +50,30 @@ public class ProfilPayroll implements Serializable {
     private String listrik;
     private String iuranProfesi;
     private String potonganLain;
+
+    public String getIurDpPerush() {
+        return iurDpPerush;
+    }
+
+    public void setIurDpPerush(String iurDpPerush) {
+        this.iurDpPerush = iurDpPerush;
+    }
+
+    public String getIurBpjsTkPerush() {
+        return iurBpjsTkPerush;
+    }
+
+    public void setIurBpjsTkPerush(String iurBpjsTkPerush) {
+        this.iurBpjsTkPerush = iurBpjsTkPerush;
+    }
+
+    public String getIurBpjsKsPerush() {
+        return iurBpjsKsPerush;
+    }
+
+    public void setIurBpjsKsPerush(String iurBpjsKsPerush) {
+        this.iurBpjsKsPerush = iurBpjsKsPerush;
+    }
 
     public String getIurDpPegawai() {
         return iurDpPegawai;

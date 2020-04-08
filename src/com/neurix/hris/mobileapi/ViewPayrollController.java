@@ -67,6 +67,9 @@ public class ViewPayrollController implements ModelDriven<Object> {
             logger.error("[ViewPayrollController.isFoundOtherSessionActiveUserSessionLog] Error when saving error,", e);
         }
 
+
+        BigDecimal gajiKotor = payrollEntity.getTotalA().add(payrollEntity.getTotalB().add(payrollEntity.getLainLain().add(payrollEntity.getTambahanLain())));
+
         if(payroll != null){
             ProfilPayroll returnPayroll;
             for(Payroll personal : payroll){
@@ -77,8 +80,8 @@ public class ViewPayrollController implements ModelDriven<Object> {
                 returnPayroll.setNip(personal.getNip());
                 returnPayroll.setBulan(personal.getBulan());
                 returnPayroll.setTahun(personal.getTahun());
-                returnPayroll.setGajiKotor(personal.getTotalA());
-                returnPayroll.setPotongan(personal.getTotalB());
+                returnPayroll.setGajiKotor(CommonUtil.numbericFormat(gajiKotor, "###,###"));
+                returnPayroll.setPotongan(CommonUtil.numbericFormat(payrollEntity.getTotalC(), "###,###"));
                 returnPayroll.setPphGaji(personal.getPphGaji());
                 returnPayroll.setGajiBersih(personal.getTotalGajiBersih());
                 returnPayroll.setRapel(personal.getTotalRapel());
@@ -104,6 +107,9 @@ public class ViewPayrollController implements ModelDriven<Object> {
                 returnPayroll.setListrik(CommonUtil.numbericFormat(payrollEntity.getPerkesDanObat(), "###,###"));
                 returnPayroll.setIuranProfesi(CommonUtil.numbericFormat(payrollEntity.getIuranProfesi(), "###,###"));
                 returnPayroll.setPotonganLain(CommonUtil.numbericFormat(payrollEntity.getPotonganLain(), "###,###"));
+                returnPayroll.setIurDpPerush(CommonUtil.numbericFormat(payrollEntity.getIuranDapenPersh(), "###,###"));
+                returnPayroll.setIurBpjsTkPerush(CommonUtil.numbericFormat(payrollEntity.getIuranBpjsTkPers(), "###,###"));
+                returnPayroll.setIurBpjsKsPerush(CommonUtil.numbericFormat(payrollEntity.getIuranBpjsKsPers(), "###,###"));
 
                 listOfPayroll.add(returnPayroll);
             }
