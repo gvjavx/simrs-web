@@ -1,5 +1,7 @@
 package com.neurix.simrs.transaksi.kasirrawatjalan.action;
 
+import com.neurix.akuntansi.master.pembayaran.model.ImAkunPembayaranEntity;
+import com.neurix.akuntansi.master.pembayaran.model.Pembayaran;
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Branch;
@@ -900,13 +902,13 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                         br = new BufferedReader(new FileReader(this.fileUpload));
                         while ((line = br.readLine()) != null) {
                             //melewatkan judul nomor 1
-                            if (x!=1){
+                            if (x != 1) {
                                 // use comma as separator
                                 String[] data = line.split(cvsSplitBy);
 
-                                if (data.length!=2){
-                                    String status="ERROR : file CSV tidak sesuai";
-                                    logger.error("[CheckupAction.uploadImages] "+status );
+                                if (data.length != 2) {
+                                    String status = "ERROR : file CSV tidak sesuai";
+                                    logger.error("[CheckupAction.uploadImages] " + status);
                                     throw new GeneralBOException(status);
                                 }
 
@@ -919,24 +921,24 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                                 HeaderDetailCheckup search = new HeaderDetailCheckup();
                                 search.setNoSep(data[0]);
                                 List<ItSimrsHeaderDetailCheckupEntity> resultList = kasirRawatJalanBoProxy.getSearchCheckupBySep(data[0]);
-                                for (ItSimrsHeaderDetailCheckupEntity headerDetailCheckup : resultList){
+                                for (ItSimrsHeaderDetailCheckupEntity headerDetailCheckup : resultList) {
                                     result.setTotalBiaya(headerDetailCheckup.getTotalBiaya());
                                     result.setStatus(headerDetailCheckup.getStatusBayar());
                                     result.setIdDetailCheckup(headerDetailCheckup.getIdDetailCheckup());
                                 }
                                 String statusBayar;
-                                if (("Y").equalsIgnoreCase(result.getStatus())){
-                                    statusBayar="SB";
-                                }else if (result.getTotalBiaya()==null){
-                                    statusBayar="N";
-                                }else if (result.getTotalBiayaDariBpjs().compareTo(result.getTotalBiaya())<0){
-                                    statusBayar="KB";
-                                }else if (result.getTotalBiaya().compareTo(result.getTotalBiayaDariBpjs())<0){
-                                    statusBayar="LB";
-                                }else if (result.getTotalBiaya().compareTo(result.getTotalBiayaDariBpjs())==0){
-                                    statusBayar="P";
-                                }else{
-                                    statusBayar="UK";
+                                if (("Y").equalsIgnoreCase(result.getStatus())) {
+                                    statusBayar = "SB";
+                                } else if (result.getTotalBiaya() == null) {
+                                    statusBayar = "N";
+                                } else if (result.getTotalBiayaDariBpjs().compareTo(result.getTotalBiaya()) < 0) {
+                                    statusBayar = "KB";
+                                } else if (result.getTotalBiaya().compareTo(result.getTotalBiayaDariBpjs()) < 0) {
+                                    statusBayar = "LB";
+                                } else if (result.getTotalBiaya().compareTo(result.getTotalBiayaDariBpjs()) == 0) {
+                                    statusBayar = "P";
+                                } else {
+                                    statusBayar = "UK";
                                 }
                                 result.setStatusBayar(statusBayar);
 
@@ -949,17 +951,17 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                }else{
+                } else {
                     String status = "ERROR : Ukuran file terlalu besar";
                     logger.error("[CheckupAction.uploadImages] " + status);
                     throw new GeneralBOException(status);
                 }
-            }else{
+            } else {
                 String status = "ERROR : file yang diupload tidak sesuai ( Gunakan CSV )";
                 logger.error("[CheckupAction.uploadImages] " + status);
                 throw new GeneralBOException(status);
             }
-        }else{
+        } else {
             String status = "ERROR : file yang diupload tidak ada";
             logger.error("[CheckupAction.uploadImages] " + status);
             throw new GeneralBOException(status);
@@ -982,7 +984,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
         BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
 
-        for (HeaderDetailCheckup detailCheckup : listCsvImport){
+        for (HeaderDetailCheckup detailCheckup : listCsvImport) {
             Fpk fpk = new Fpk();
             fpk.setNoFpk(data.getNoFpk());
             fpk.setNoSep(detailCheckup.getNoSep());
@@ -996,13 +998,13 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         // create map jurnal
         List<Map> mapListKlaim = new ArrayList<>();
         BigDecimal total = new BigDecimal(0);
-        for (Fpk fpk : fpkList){
+        for (Fpk fpk : fpkList) {
             HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
             detailCheckup.setIdDetailCheckup(fpk.getIdDetailCheckup());
 
             List<HeaderDetailCheckup> details = checkupDetailBo.getByCriteria(detailCheckup);
-            if (details.size() > 0){
-                for (HeaderDetailCheckup detail : details){
+            if (details.size() > 0) {
+                for (HeaderDetailCheckup detail : details) {
                     BigDecimal nilai = checkupDetailBo.getSumJumlahTindakan(detail.getIdDetailCheckup(), "");
                     BigDecimal nilaiObat = checkupDetailBo.getSumJumlahTindakan(detail.getIdDetailCheckup(), "resep");
 
@@ -1031,11 +1033,11 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         mapJurnal.put("bank", data.getBank());
 
         String noJurnal = "";
-        String catatan = "Pembayaran Piutang BPJS Bank "+data.getBank()+" No. FPK "+data.getNoFpk()+" No. Referensi "+data.getNoSlipBank();
+        String catatan = "Pembayaran Piutang BPJS Bank " + data.getBank() + " No. FPK " + data.getNoFpk() + " No. Referensi " + data.getNoSlipBank();
         try {
             noJurnal = billingSystemBo.createJurnal("10", mapJurnal, branchId, catatan, "Y");
-            if (!"".equalsIgnoreCase(noJurnal)){
-                for (Fpk fpk : fpkList){
+            if (!"".equalsIgnoreCase(noJurnal)) {
+                for (Fpk fpk : fpkList) {
                     HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
                     detailCheckup.setIdDetailCheckup(fpk.getIdDetailCheckup());
                     detailCheckup.setNoJurnal(noJurnal);
@@ -1046,14 +1048,14 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
                     try {
                         checkupDetailBo.saveUpdateNoJuran(detailCheckup);
-                    } catch (GeneralBOException e){
+                    } catch (GeneralBOException e) {
                         logger.error("Found Error");
                         throw new GeneralBOException(e.getMessage());
                     }
                 }
             }
             kasirRawatJalanBo.pembayaranFPK(fpkList);
-        }catch (GeneralBOException e){
+        } catch (GeneralBOException e) {
             logger.error("Found Error");
             throw new GeneralBOException(e.getMessage());
         }
@@ -1081,10 +1083,10 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
             try {
                 response = kasirRawatJalanBo.saveNoFPK(fpkList);
-            }catch (GeneralBOException e){
+            } catch (GeneralBOException e) {
                 logger.error("Found Error");
                 response.setStatus("error");
-                response.setMsg("Found error "+e);
+                response.setMsg("Found error " + e);
             }
         }
         return response;
@@ -1118,13 +1120,13 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             // create map jurnal
             List<Map> mapListKlaim = new ArrayList<>();
             BigDecimal total = new BigDecimal(0);
-            for (Fpk fpk : fpkList){
+            for (Fpk fpk : fpkList) {
                 HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
                 detailCheckup.setIdDetailCheckup(fpk.getIdDetailCheckup());
 
                 List<HeaderDetailCheckup> details = checkupDetailBo.getByCriteria(detailCheckup);
-                if (details.size() > 0){
-                    for (HeaderDetailCheckup detail : details){
+                if (details.size() > 0) {
+                    for (HeaderDetailCheckup detail : details) {
                         BigDecimal nilai = checkupDetailBo.getSumJumlahTindakan(detail.getIdDetailCheckup(), "");
                         BigDecimal nilaiObat = checkupDetailBo.getSumJumlahTindakan(detail.getIdDetailCheckup(), "resep");
 
@@ -1153,12 +1155,12 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             mapJurnal.put("bank", bank);
 
             String noJurnal = "";
-            String catatan = "Pembayaran Piutang BPJS Bank "+bank+" No. FPK "+fpkId+" No. Referensi "+noSlip;
+            String catatan = "Pembayaran Piutang BPJS Bank " + bank + " No. FPK " + fpkId + " No. Referensi " + noSlip;
             try {
 
                 noJurnal = billingSystemBo.createJurnal("10", mapJurnal, branchId, catatan, "Y");
-                if (!"".equalsIgnoreCase(noJurnal)){
-                    for (Fpk fpk : fpkList){
+                if (!"".equalsIgnoreCase(noJurnal)) {
+                    for (Fpk fpk : fpkList) {
                         HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
                         detailCheckup.setIdDetailCheckup(fpk.getIdDetailCheckup());
                         detailCheckup.setNoJurnal(noJurnal);
@@ -1169,20 +1171,20 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
                         try {
                             checkupDetailBo.saveUpdateNoJuran(detailCheckup);
-                        } catch (GeneralBOException e){
+                        } catch (GeneralBOException e) {
                             logger.error("Found Error");
                             response.setStatus("error");
-                            response.setMsg("Found error "+e);
+                            response.setMsg("Found error " + e);
                             return response;
                         }
                     }
                 }
 
                 response = kasirRawatJalanBo.pembayaranFPK(fpkList);
-            }catch (GeneralBOException e){
+            } catch (GeneralBOException e) {
                 logger.error("Found Error");
                 response.setStatus("error");
-                response.setMsg("Found error "+e);
+                response.setMsg("Found error " + e);
                 return response;
             }
         }
@@ -1195,20 +1197,34 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         return df.format(date);
     }
 
-    public CheckResponse saveRefund(String id){
+    public CheckResponse saveRefund(String id) {
         CheckResponse response = new CheckResponse();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         KasirRawatJalanBo kasirRawatJalanBo = (KasirRawatJalanBo) ctx.getBean("kasirRawatJalanBoProxy");
 
-        if(id != null && !"".equalsIgnoreCase(id)){
+        if (id != null && !"".equalsIgnoreCase(id)) {
             try {
                 response = kasirRawatJalanBo.saveRefund(id);
-            }catch (GeneralBOException e){
+            } catch (GeneralBOException e) {
                 response.setStatus("error");
-                response.setMessage("Found Error "+e.getMessage());
-                logger.error("Found Error when save refund"+e.getMessage());
+                response.setMessage("Found Error " + e.getMessage());
+                logger.error("Found Error when save refund" + e.getMessage());
             }
         }
+        return response;
+    }
+
+    public List<ImAkunPembayaranEntity> getListPembayaran() {
+        List<ImAkunPembayaranEntity> response = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        KasirRawatJalanBo kasirRawatJalanBo = (KasirRawatJalanBo) ctx.getBean("kasirRawatJalanBoProxy");
+
+        try {
+            response = kasirRawatJalanBo.getListPembayaran();
+        } catch (GeneralBOException e) {
+            logger.error("Found Error when save refund" + e.getMessage());
+        }
+
         return response;
     }
 

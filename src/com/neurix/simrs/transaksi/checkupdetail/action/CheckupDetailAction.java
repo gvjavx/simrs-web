@@ -3174,7 +3174,337 @@ public class CheckupDetailAction extends BaseMasterAction {
     }
 
     public String initRekamMedik(){
+        String id = getId();
+        String tipe = getTipe();
+        String jk = "";
+        HeaderCheckup checkup = new HeaderCheckup();
+
+        try {
+            checkup = checkupBoProxy.getDataDetailPasien(id);
+        } catch (GeneralBOException e) {
+            logger.error("Found error when detail pasien " + e.getMessage());
+        }
+
+        if (checkup != null) {
+
+            HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+            detailCheckup.setNoCheckup(checkup.getNoCheckup());
+            detailCheckup.setIdDetailCheckup(checkup.getIdDetailCheckup());
+            detailCheckup.setStatusPeriksa("1");
+            detailCheckup.setFlag("Y");
+            detailCheckup.setAction("U");
+            detailCheckup.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+            detailCheckup.setLastUpdateWho(CommonUtil.userLogin());
+
+            try {
+                checkupDetailBoProxy.saveEdit(detailCheckup);
+            } catch (GeneralBOException e) {
+                logger.error("[CheckupDetailAction.add] Error when update checkup detail");
+            }
+
+            detailCheckup.setIdPasien(checkup.getIdPasien());
+            detailCheckup.setNamaPasien(checkup.getNama());
+            detailCheckup.setAlamat(checkup.getJalan());
+            detailCheckup.setDesa(checkup.getNamaDesa());
+            detailCheckup.setKecamatan(checkup.getNamaKecamatan());
+            detailCheckup.setKota(checkup.getNamaKota());
+            detailCheckup.setProvinsi(checkup.getNamaProvinsi());
+            detailCheckup.setIdPelayanan(checkup.getIdPelayanan());
+            detailCheckup.setNamaPelayanan(checkup.getNamaPelayanan());
+            if (checkup.getJenisKelamin() != null) {
+                if ("P".equalsIgnoreCase(checkup.getJenisKelamin())) {
+                    jk = "Perempuan";
+                } else {
+                    jk = "Laki-Laki";
+                }
+            }
+            detailCheckup.setJenisKelamin(jk);
+            detailCheckup.setTempatLahir(checkup.getTempatLahir());
+            detailCheckup.setTglLahir(checkup.getTglLahir() == null ? null : checkup.getTglLahir().toString());
+            String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
+            detailCheckup.setTempatTglLahir(checkup.getTempatLahir() + ", " + formatDate);
+            detailCheckup.setNik(checkup.getNoKtp());
+            detailCheckup.setIdJenisPeriksaPasien(checkup.getIdJenisPeriksaPasien());
+            detailCheckup.setUrlKtp(checkup.getUrlKtp());
+            detailCheckup.setTinggi(checkup.getTinggi());
+            detailCheckup.setBerat(checkup.getBerat());
+            detailCheckup.setNoSep(checkup.getNoSep());
+            detailCheckup.setJenisPeriksaPasien(checkup.getStatusPeriksaName());
+            detailCheckup.setMetodePembayaran(checkup.getMetodePembayaran());
+            detailCheckup.setNoRujukan(checkup.getNoRujukan());
+            detailCheckup.setTglRujukan(checkup.getTglRujukan());
+            detailCheckup.setSuratRujukan(checkup.getUrlDocRujuk());
+            detailCheckup.setIdAsuransi(checkup.getIdAsuransi());
+            detailCheckup.setNamaAsuransi(checkup.getNamaAsuransi());
+            detailCheckup.setCoverBiaya(checkup.getCoverBiaya());
+            detailCheckup.setTipePelayanan(tipe);
+            setHeaderDetailCheckup(detailCheckup);
+
+        } else {
+            setHeaderDetailCheckup(new HeaderDetailCheckup());
+        }
+
         return "init_rekam_medik";
+    }
+
+    public String printGeneralConcent() {
+
+        HeaderCheckup checkup = new HeaderCheckup();
+        String id = getId();
+        String jk = "";
+
+        String branch = CommonUtil.userBranchLogin();
+        String branchName = CommonUtil.userBranchNameLogin();
+        String logo = "";
+        Branch branches = new Branch();
+
+        try {
+            branches = branchBoProxy.getBranchById(branch, "Y");
+        } catch (GeneralBOException e) {
+            logger.error("Found Error when searhc branch logo");
+        }
+
+        if (branches != null) {
+            logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.RESOURCE_PATH_IMAGES + branches.getLogoName();
+        }
+
+        try {
+            checkup = checkupBoProxy.getDataDetailPasien(id);
+        } catch (GeneralBOException e) {
+            logger.error("Found Error when search data detail pasien " + e.getMessage());
+        }
+
+        if (checkup != null) {
+
+            reportParams.put("dokter", "");
+            reportParams.put("area", CommonUtil.userAreaName());
+            reportParams.put("unit", branchName);
+            reportParams.put("idPasien", checkup.getIdPasien());
+            reportParams.put("logo", logo);
+            reportParams.put("nik", checkup.getNoKtp());
+            reportParams.put("nama", checkup.getNama());
+            String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
+            reportParams.put("tglLahir", checkup.getTempatLahir() + ", " + formatDate);
+            if ("L".equalsIgnoreCase(checkup.getJenisKelamin())) {
+                jk = "Laki-Laki";
+            } else {
+                jk = "Perempuan";
+            }
+            reportParams.put("jenisKelamin", jk);
+            reportParams.put("jenisPasien", checkup.getStatusPeriksaName());
+            reportParams.put("poli", checkup.getNamaPelayanan());
+            reportParams.put("provinsi", checkup.getNamaProvinsi());
+            reportParams.put("kabupaten", checkup.getNamaKota());
+            reportParams.put("kecamatan", checkup.getNamaKecamatan());
+            reportParams.put("desa", checkup.getNamaDesa());
+            if(checkup.getTglCheckup() != null && !"".equalsIgnoreCase(checkup.getTglCheckup().toString())){
+                String formatCheckup = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglCheckup());
+                reportParams.put("tglCheckup", formatCheckup);
+            }
+            reportParams.put("ketCheckup", checkup.getKeterangan());
+            reportParams.put("idDetailCheckup", id);
+
+            String content1 = "<b>I.\tPersetujuan Untuk Perawatan dan Pengobatan</b>\n" +
+                    "a. Saya mengetahui bahwa Saya memiliki kondisi yang membutuhkan perawatan medis, Saya memberi izin kepada dokter dan profesi kesehatan lainnya untuk melakukan prosedur diagnostik dan untuk memberi pengobatan medis seperti yang diperlukan untuk penilaian secara profesional. Prosedur diagnostik dan perawatan medis termasuk tetapi tidak terbatas pada ECG, X Ray, Tes Darah, terapi fisik dan pemberiaan obat.\n" +
+                    "b. Saya sadar bahwa praktek kedokteran dan ilmu bedah bukanlah ilmu pasti dan Saya mengakui bahwa tidak ada jaminan atas hal apapun, terhadap perawatan prosedur atau pemeriksaan apapun yang dilakukan kepada saya\n" +
+                    "c. Saya mengerti dan memahami bahwa:\n" +
+                    "1. Saya memiliki hak untuk menanyakan tentang pengobatan yang diusulkan termasuk identitas setiap orang yang memberikan atau mengamati pengobatan setiap saat\n" +
+                    "2. Saya memiliki hak untuk persetujuan, atau menolak persetujuan untuk setiap prosedur atau terapi (injeksi, rawat luka, pemasangan gips, infus, pemeriksaan penunjang lain)\n" +
+                    "d. Privasi:\n" +
+                    "Saya memberi kuasa kepada "+branchName+" untuk menjaga privasi dan kerahasiaan penyakit saya selama dalam perawatan\n" +
+                    "e. Rahasia Kedokteran:\n" +
+                    "Saya setuju kepada [RS Gatoel(parameter)] wajib menjamin rahasia kedokteran Saya baik untuk kepentingan perawatan atau pengobatan, pendidikan maupun penelitian, kecuali saya mengucapkan sendiri atau orang lain yang saya beri kuasa sebagai penjamin, Saya setuju untuk membuka rahasia kedokteran terkait dengan kondisi kesehatan, asuhan dan pengobatan yang saya terima kepada:\n" +
+                    "a. Dokter atau tenaga kesehatan yang memberikan asuhan kesehatan kepada saya\n" +
+                    "b. Perusahaan asuransi kesehatan BPJS atau perusahaan lainnya atau pihak lain yang menjamin pembiayaan saya\n" +
+                    "c. Pihak lain yang saya kehendaki\n" +
+                    "<b>II.\tBarang-Barang Milik Pasien</b>\n" +
+                    "a. Saya telah mengerti bahwa rumah sakit tidak bertanggung jawab atas semua kehilangan barang-barang milik saya, dan saya secara pribadi bertanggung jawab terhadap barang berharga yang saya miliki diantaranya uang, perhiasan, buku, cek, handphone, kartu kredit serta barang-barang berharga lainnya. dan apabila saya membutuhkan maka saya dapat menitipkan barang-barang saya kepada rumah sakit\n" +
+                    "<b>III.Hak Pasien</b>\n" +
+                    "(Sesuai Permenkes No 4 Tahun 2018)\n" +
+                    "1. Memperoleh informasi mengenai tata tertib dan peraturan yang berlaku di rumah sakit \n" +
+                    "2. Memperoleh informasi tentang hak dan kewajiban pasien \n" +
+                    "3. Memperoleh pelayanan yang manusiawi, adil, jujur, dan tanpa diskriminasi\n" +
+                    "4. Memperoleh layanan kesehatan yang bermutu sesuai dengan standar profesi dan prosedur operasional (SPO)\n" +
+                    "5. Memperoleh layanan yang efektif dan efisien sehingga pasien terhindar dari kerugian fisik\n" +
+                    "6. Mengajukan pengaduan atas kualitas pelayanan yang didapatkan\n" +
+                    "7. Memilih dokter dan kelas perawatan sesuai dengan keinginan dan peraturan yang berlaku di Rumah Sakit\n" +
+                    "8. Meminta konsultasi tentang penyakit yang dideritanya kepada dokter lain yang mempunyai surat izin praktek (SIP) baik didalam maupun diluar rumah sakit\n" +
+                    "9. Mendapatkan privasi dan kerahasiaan penyakit yang diderita termasuk data-data medisnya\n" +
+                    "10. Mendapatkan informasi yang meliputi diagnosis dan tata cara tindakan medis, tujuan tindakan medis, alternatif tindakan, resiko dan komplikasi yang mungkin terjadi, dan prognosis terhadap tindakan yang dilakukan serta perkiraan biaya pengobatan\n" +
+                    "11. Memberikan persetujuan atau menolak atas tindakan yang akan dilakukan oleh tenaga kesehatan terhadap penyakit yang dideritanya\n" +
+                    "12. Didampingi keluarga dalam keadaan kritis\n" +
+                    "13. Menjalankan ibadah sesuai agama atau kepercayaan yang dianutnya selama itu tidak mengganggu pasien lainnya\n" +
+                    "14. Memperoleh keamanan dan keselamatan dirinya selama dalam perawatan di rumah sakit\n" +
+                    "15. Mengajukan usul, saran perbaikan atas perlakukan rumah sakit terhadap dirinya\n" +
+                    "16. Menolak bimbingan rohani yang tidak sesuai dengan agama dan kepercayaan yang dianutnya\n" +
+                    "17. Menggugat atau menuntut rumah sakit apabila rumah sakit diduga memberikan pelayanan yang tidak sesuai dengan standart baik secara perdata maupun pidana\n" +
+                    "18. Mengeluhkan pelayanan rumah sakit yang tidak sesuai dengan stardar pelayanan melalui media\n";
+
+            String content2 = "<b>IV. Kewajiban Pasien dan Keluarga Pasien</b>\n" +
+                    "1. Mematuhi peraturan yang berlaku di Rumah Sakit Gatoel\n" +
+                    "2. Menggunakan fasilitas rumah sakit "+branchName+" secara bertanggung jawab\n" +
+                    "3. Menghormati hask pasien lain, pengunjung dan hak tenaga kesehatan serta petugas lainnya yang bekerja di rumah sakit\n" +
+                    "4. Memberikan informasi yang jujur, lengkap dan akurat sesuai dengan kemampuan tetang masalah kesehatan\n" +
+                    "5. Memberikan informasi tentang kemampuan finansial dan jaminan kesehatan yang dimiliki\n" +
+                    "6. Mematuhi rencana terapi yang direkomendasikan oelh tenaga kesehatanan di rumah sakit dan di setujui oleh pasien yang bersangkutan setelah mendapatkan penjelasan sesuai dengan ketentuan peraturan perundang udangan\n" +
+                    "7. Menerima segala kesalahan atas keputusan pribadinya untuk menolak rencana terapi yang di rekomendasikan oleh tenaga kesehatan dan/tidak mematuhi petunjuk yang diberikan oleh tenaga kesehatan untuk penyembuhan penyakit atau masalah kesehatannya\n" +
+                    "8. Memberikan imbalan jasa atas pelayanan yang diterima\n" +
+                    "<b>Saya telah membaca dan sepenuhnya setuju</b> dengan setiap pernyataan yang tersebut diatas dan menandatangani tanpa paksaan dan dengan kesadaran penuh\n";
+
+            reportParams.put("data1", content1);
+            reportParams.put("data2", content2);
+
+            try {
+                preDownload();
+            } catch (SQLException e) {
+                logger.error("[ReportAction.printCard] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+                addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
+                return "search";
+            }
+        }
+
+        return "print_general_concent";
+    }
+
+    public String printPelepasanInformasi() {
+
+        HeaderCheckup checkup = new HeaderCheckup();
+        String id = getId();
+        String jk = "";
+
+        String branch = CommonUtil.userBranchLogin();
+        String branchName = CommonUtil.userBranchNameLogin();
+        String logo = "";
+        Branch branches = new Branch();
+
+        try {
+            branches = branchBoProxy.getBranchById(branch, "Y");
+        } catch (GeneralBOException e) {
+            logger.error("Found Error when searhc branch logo");
+        }
+
+        if (branches != null) {
+            logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.RESOURCE_PATH_IMAGES + branches.getLogoName();
+        }
+
+        try {
+            checkup = checkupBoProxy.getDataDetailPasien(id);
+        } catch (GeneralBOException e) {
+            logger.error("Found Error when search data detail pasien " + e.getMessage());
+        }
+
+        if (checkup != null) {
+
+            reportParams.put("dokter", "");
+            reportParams.put("area", CommonUtil.userAreaName());
+            reportParams.put("unit", branchName);
+            reportParams.put("idPasien", checkup.getIdPasien());
+            reportParams.put("logo", logo);
+            reportParams.put("nik", checkup.getNoKtp());
+            reportParams.put("nama", checkup.getNama());
+            String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
+            reportParams.put("tglLahir", checkup.getTempatLahir() + ", " + formatDate);
+            if ("L".equalsIgnoreCase(checkup.getJenisKelamin())) {
+                jk = "Laki-Laki";
+            } else {
+                jk = "Perempuan";
+            }
+            reportParams.put("jenisKelamin", jk);
+            reportParams.put("jenisPasien", checkup.getStatusPeriksaName());
+            reportParams.put("poli", checkup.getNamaPelayanan());
+            reportParams.put("provinsi", checkup.getNamaProvinsi());
+            reportParams.put("kabupaten", checkup.getNamaKota());
+            reportParams.put("kecamatan", checkup.getNamaKecamatan());
+            reportParams.put("desa", checkup.getNamaDesa());
+            if(checkup.getTglCheckup() != null && !"".equalsIgnoreCase(checkup.getTglCheckup().toString())){
+                String formatCheckup = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglCheckup());
+                reportParams.put("tglCheckup", formatCheckup);
+            }
+            reportParams.put("ketCheckup", checkup.getKeterangan());
+            reportParams.put("idDetailCheckup", id);
+            reportParams.put("namaRuang", checkup.getNamaRuangan());
+
+            try {
+                preDownload();
+            } catch (SQLException e) {
+                logger.error("[ReportAction.printCard] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+                addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
+                return "search";
+            }
+        }
+
+        return "print_pelepasan_informasi";
+    }
+
+    public String printLembarkonsultasi() {
+
+        HeaderCheckup checkup = new HeaderCheckup();
+        String id = getId();
+        String jk = "";
+
+        String branch = CommonUtil.userBranchLogin();
+        String branchName = CommonUtil.userBranchNameLogin();
+        String logo = "";
+        Branch branches = new Branch();
+
+        try {
+            branches = branchBoProxy.getBranchById(branch, "Y");
+        } catch (GeneralBOException e) {
+            logger.error("Found Error when searhc branch logo");
+        }
+
+        if (branches != null) {
+            logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.RESOURCE_PATH_IMAGES + branches.getLogoName();
+        }
+
+        try {
+            checkup = checkupBoProxy.getDataDetailPasien(id);
+        } catch (GeneralBOException e) {
+            logger.error("Found Error when search data detail pasien " + e.getMessage());
+        }
+
+        if (checkup != null) {
+
+            reportParams.put("dokter", "");
+            reportParams.put("area", CommonUtil.userAreaName());
+            reportParams.put("unit", branchName);
+            reportParams.put("idPasien", checkup.getIdPasien());
+            reportParams.put("logo", logo);
+            reportParams.put("nik", checkup.getNoKtp());
+            reportParams.put("nama", checkup.getNama());
+            String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
+            reportParams.put("tglLahir", checkup.getTempatLahir() + ", " + formatDate);
+            if ("L".equalsIgnoreCase(checkup.getJenisKelamin())) {
+                jk = "Laki-Laki";
+            } else {
+                jk = "Perempuan";
+            }
+            reportParams.put("jenisKelamin", jk);
+            reportParams.put("jenisPasien", checkup.getStatusPeriksaName());
+            reportParams.put("poli", checkup.getNamaPelayanan());
+            reportParams.put("provinsi", checkup.getNamaProvinsi());
+            reportParams.put("kabupaten", checkup.getNamaKota());
+            reportParams.put("kecamatan", checkup.getNamaKecamatan());
+            reportParams.put("desa", checkup.getNamaDesa());
+            if(checkup.getTglCheckup() != null && !"".equalsIgnoreCase(checkup.getTglCheckup().toString())){
+                String formatCheckup = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglCheckup());
+                reportParams.put("tglCheckup", formatCheckup);
+            }
+            reportParams.put("ketCheckup", checkup.getKeterangan());
+            reportParams.put("idDetailCheckup", id);
+            reportParams.put("namaRuang", checkup.getNamaRuangan());
+            reportParams.put("namaPelayanan", checkup.getNamaPelayanan());
+
+            try {
+                preDownload();
+            } catch (SQLException e) {
+                logger.error("[ReportAction.printCard] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+                addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
+                return "search";
+            }
+        }
+
+        return "print_lembar_konsultasi";
     }
 
 

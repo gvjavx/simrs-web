@@ -556,6 +556,8 @@
       </create>
 
       <convert converter="bean" match="com.neurix.simrs.transaksi.permintaanvendor.model.BatchPermintaanObat"/>
+      <convert converter="bean" match="com.neurix.akuntansi.master.pembayaran.model.ImAkunPembayaranEntity"/>
+
   </allow>
 
 </dwr>

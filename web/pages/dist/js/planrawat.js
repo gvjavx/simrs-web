@@ -400,11 +400,11 @@ function saveUpdateVitalSign() {
     dwr.engine.setAsync(true);
     RawatInapAction.saveUpdateMonVitalSign(id, stJson, function(response){
         if (response.status == "success"){
-            $("#success_save_vitalsign").show();
+            $("#success_save_vitalsign").show().fadeOut(5000);
             $("#load_vitalsign").hide();
         } else {
-            $("#success_save_vitalsign").show();
-            $("#error_save_vitalsign").show();
+            $("#success_save_vitalsign").hide();
+            $("#error_save_vitalsign").show().fadeOut(5000);
             $("#error_ket_vitalsign").text(response.msg);
         }
     });
@@ -447,11 +447,11 @@ function saveUpdateCairan() {
     dwr.engine.setAsync(true);
     RawatInapAction.saveUpdateMonCairan(id, stJson, function(response){
         if (response.status == "success"){
-            $("#success_save_cairan").show();
+            $("#success_save_cairan").show().fadeOut(5000);
             $("#load_cairan").hide();
         } else {
-            $("#success_save_cairan").show();
-            $("#error_save_cairan").show();
+            $("#success_save_cairan").hide();
+            $("#error_save_cairan").show().fadeOut(5000);
             $("#error_ket_cairan").text(response.msg);
         }
     });
@@ -484,11 +484,11 @@ function saveUpdatePemberianObat() {
     dwr.engine.setAsync(true);
     RawatInapAction.saveUpdateMonPemberianObat(id, stJson, function(response){
         if (response.status == "success"){
-            $("#success_save_nonpar").show();
+            $("#success_save_nonpar").show().fadeOut(5000);
             $("#load_nonpar").hide();
         } else {
-            $("#success_save_nonpar").show();
-            $("#error_save_nonpar").show();
+            $("#success_save_nonpar").hide();
+            $("#error_save_nonpar").show().fadeOut(5000);
             $("#error_ket_nonpar").text(response.msg);
         }
     });
