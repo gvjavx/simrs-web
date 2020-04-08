@@ -133,14 +133,14 @@
                 $('#modal-edit-document').modal('hide');
                 $('#myFormDocument')[0].reset();
                 alert('Record has been Saved successfully.');
-
+                loadSessionStudy();
             } else{
                 event.originalEvent.options.submit = false;
             }
         });
 
         $.subscribe('successDialogDocument', function(event, data)){
-
+            loadSessionStudy();
         }
 
         $.subscribe('beforeProcessDelete', function (event, data) {
@@ -1478,7 +1478,7 @@
                 <h4 class="modal-title">Edit Study</h4>
             </div>
             <div class="modal-body">
-                <s:url id="urlProcess" namespace="/study" action="addBiodata_study"
+                <s:url id="urlProcess" namespace="/study" action="addStudy_study"
                        includeContext="false"/>
                 <s:form id="myFormDocument" enctype="multipart/form-data" method="post" action="%{urlProcess}"
                         theme="simple" cssClass="form-horizontal">
@@ -1493,7 +1493,7 @@
                     <div class="form-group">
                         <label class="control-label col-sm-4" for="gender">Type Study :</label>
                         <div class="col-sm-8">
-                            <select class="form-control" id="studyTypeStudy" name="study.studyTypeStudy">
+                            <select class="form-control" id="studyTypeStudy" name="study.typeStudy">
                                 <option value="SD">SD</option>
                                 <option value="SMP">SMP</option>
                                 <option value="SMA">SMA</option>
@@ -1525,21 +1525,21 @@
                     <div class="form-group">
                         <label class="control-label col-sm-4" >Program Studi : </label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="pendidikanProgramStudi" name="study.pendidikanProgramStudy">
+                            <input type="text" class="form-control" id="pendidikanProgramStudi" name="study.programStudy">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="control-label col-sm-4" >Tahun Awal : </label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="studyTahunAwal" name="study.studyTahunAwal">
+                            <input type="text" class="form-control" id="studyTahunAwal" name="study.tahunAwal">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="control-label col-sm-4" >Tahun Lulus : </label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="studyTahunAkhir" name="study.studyTahunAkhir">
+                            <input type="text" class="form-control" id="studyTahunAkhir" name="study.tahunAkhir">
                         </div>
                     </div>
 
@@ -3173,6 +3173,7 @@
                         "<th style='text-align: center; background-color:  #3c8dbc''>Study Name</th>" +
                         /*"<th style='text-align: center; background-color:  #3c8dbc''>Tahun Awal</th>" +*/
                         "<th style='text-align: center; background-color:  #3c8dbc''>Tahun Lulus</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc''>Ijazah</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
                         "</tr></thead>";
@@ -3184,6 +3185,13 @@
                             '<td align="center">' + item.studyName + '</td>' +
                             /*'<td align="center">' + item.tahunAwal + '</td>' +*/
                             '<td align="center">' + item.tahunAkhir + '</td>' +
+
+                            '<td align="center">' +
+                            "<a href='javascript:;' class ='item-view-document' data ='" + item.uploadFile + "' judul ='" + item.documentName + "' >" +
+                            "<img border='0' src='<s:url value='/pages/images/view.png'/>' name='icon_view'>" +
+                            '</a>' +
+                            '</td>' +
+
                             '<td align="center">' +
                             "<a href='javascript:;' class ='item-edit' data ='" + item.studyId + "' >" +
                             "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +

@@ -318,4 +318,16 @@ public class StudyBoImpl implements StudyBo {
         logger.info("[UserBoImpl.getComboUserWithCriteria] end process <<<");
         return listComboStudy;
     }
+
+    @Override
+    public String getNextStudyId() throws GeneralBOException {
+        String studyId;
+        try{
+            studyId = studyDao.getNextStudyId();
+        }catch (HibernateException e){
+            logger.error("[StudyBoImpl.saveAdd] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when getting sequence studyId, please info to your admin..." + e.getMessage());
+        }
+        return studyId;
+    }
 }

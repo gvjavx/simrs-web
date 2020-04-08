@@ -32,7 +32,9 @@ public class StudyAction extends BaseMasterAction{
     private StudyBo studyBoProxy;
     private Study study;
 
-    private File fileUploadIjazah;
+    private File fileUpload;
+    private String fileUploadContentType;
+    private String fileUploadFileName;
 
     private List<Study> listComboStudy = new ArrayList<Study>();
 
@@ -79,12 +81,28 @@ public class StudyAction extends BaseMasterAction{
         this.initComboStudy = initComboStudy;
     }
 
-    public File getFileUploadIjazah() {
-        return fileUploadIjazah;
+    public File getFileUpload() {
+        return fileUpload;
     }
 
-    public void setFileUploadIjazah(File fileUploadIjazah) {
-        this.fileUploadIjazah = fileUploadIjazah;
+    public void setFileUpload(File fileUpload) {
+        this.fileUpload = fileUpload;
+    }
+
+    public String getFileUploadContentType() {
+        return fileUploadContentType;
+    }
+
+    public void setFileUploadContentType(String fileUploadContentType) {
+        this.fileUploadContentType = fileUploadContentType;
+    }
+
+    public String getFileUploadFileName() {
+        return fileUploadFileName;
+    }
+
+    public void setFileUploadFileName(String fileUploadFileName) {
+        this.fileUploadFileName = fileUploadFileName;
     }
 
     public Study init(String kode, String flag){
@@ -446,6 +464,95 @@ public class StudyAction extends BaseMasterAction{
 //        return "";
 //    }
 
+    public String addStudy(){
+        String path = null;
+        try{
+            Study study = getStudy();
+            String idIjazah = studyBoProxy.getNextStudyId();
+            String userLogin = CommonUtil.userLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+            if (this.fileUpload != null){
+                String fileName = idIjazah+"_"+this.fileUploadFileName;
+                String fileContentType = this.fileUploadContentType;
+                String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY + ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_USER_UPLOAD_IJAZAH;
+                File fileToCreate = new File(filePath, fileName);
+                path = filePath+fileName;
+
+                byte[] contentFile = null;
+                try{
+                    FileUtils.copyFile(this.fileUpload, fileToCreate);
+                    contentFile = FileUtils.readFileToByteArray(this.fileUpload);
+                } catch (IOException e) {
+                    Long logId = null;
+                    try{
+                        logId = studyBoProxy.saveErrorMessage(e.getMessage(), "Study.save");
+                    }catch (GeneralBOException e1){
+                        logger.error("[Study.addStudy] Error when saving error, ", e1);
+                    }
+                    logger.error("[Study.addStudy] Error when uploading and saving Study," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+                    addActionError("Error, " + "[code=" + logId + "] Found problem when uploading and saving user, please inform to your admin. Cause : " + e.getMessage());
+                    return ERROR;
+                }
+
+                if (contentFile != null){
+                    study.setUploadFile(fileName);
+                    if ("image/jpeg".equalsIgnoreCase(fileContentType)) {
+                        study.setFileType("IMG");
+                    }else if ("application/pdf".equalsIgnoreCase(fileContentType)){
+                        study.setFileType("PDF");
+                    }
+                }
+            }
+
+            study.setTypeStudy(study.getTypeStudy());
+            study.setStudyName(study.getStudyName());
+            study.setTahunAwal(study.getTahunAwal());
+            study.setTahunAkhir(study.getTahunAkhir());
+            study.setStudyFakultas(study.getStudyFakultas());
+            study.setProgramStudy(study.getProgramStudy());
+            study.setFilePath(path);
+
+            study.setCreatedWho(userLogin);
+            study.setLastUpdate(updateTime);
+            study.setCreatedDate(updateTime);
+            study.setLastUpdateWho(userLogin);
+            study.setAction("C");
+            study.setFlag("Y");
+
+            int id = 0;
+            HttpSession session = ServletActionContext.getRequest().getSession();
+            List<Study> listOfResult = (List<Study>) session.getAttribute("listStudy");
+            if(listOfResult != null){
+                for(Study study1: listOfResult){
+                    id = Integer.parseInt(study1.getStudyId());
+                }
+                id++;
+                study.setStudyId(id + "");
+                listOfResult.add(study);
+            }else{
+                listOfResult = new ArrayList<>();
+                study.setStudyId(id + "");
+                listOfResult.add(study);
+            }
+            session.removeAttribute("listStudy");
+            session.setAttribute("listStudy", listOfResult);
+        }catch (GeneralBOException e){
+            Long logId = null;
+            try {
+                logId = studyBoProxy.saveErrorMessage(e.getMessage(), "liburBO.saveAdd");
+            } catch (GeneralBOException e1) {
+                logger.error("[liburAction.saveAdd] Error when saving error,", e1);
+                return ERROR;
+            }
+            logger.error("[liburAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+            return ERROR;
+        }
+
+        return null;
+    }
+
     public String saveAdd(String typeStudy, String studyName, String tahunAwal, String tahunAkhir, String programStudy){
         logger.info("[StudyAction.saveAdd] start process >>>");
 
@@ -459,7 +566,6 @@ public class StudyAction extends BaseMasterAction{
 
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-
 
             study.setCreatedWho(userLogin);
             study.setLastUpdate(updateTime);

@@ -18,4 +18,5 @@ public interface StudyBo extends BaseMasterBo<Study>{
 
     public List<Study> getComboStudyWithCriteria(String query) throws GeneralBOException;
 
+    public String getNextStudyId()throws GeneralBOException;
 }
