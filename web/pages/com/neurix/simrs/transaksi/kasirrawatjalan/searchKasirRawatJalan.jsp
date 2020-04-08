@@ -394,12 +394,8 @@
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">Bank</label>
                             <div class="col-md-8">
-                                <select class="form-control" id="bank">
-                                    <option value="" >[Select One]</option>
-                                    <option value="bri">BRI</option>
-                                    <option value="bni">BNI</option>
-                                    <option value="bca">BCA</option>
-                                    <option value="mandiri">Mandiri</option>
+                                <select class="form-control select2" id="bank" style="width: 100%">
+                                    <option value="">[Select One]</option>
                                 </select>
                             </div>
                         </div>
@@ -463,6 +459,7 @@
             }
         }
     }
+
     function formatRupiah(angka) {
         if(angka != "" && angka != null && parseInt(angka) > 0){
             var reverse = angka.toString().split('').reverse().join(''),
@@ -478,6 +475,7 @@
     var mapBiaya = [];
     var noNota = "";
     function showInvoice(idCheckup, idDetailCheckup) {
+        selectPembayaran();
         $('#pilih_bank').hide();
         mapBiaya = [];
         var table = "";
@@ -780,6 +778,20 @@
                     $('#msg_fin').text(response.msg);
                 }
             }
+        });
+    }
+
+    function selectPembayaran(){
+        var option = '<option value="">[Select One]</option>';
+        KasirRawatJalanAction.getListPembayaran(function (res) {
+           if(res.length > 0){
+               $.each(res, function (i, item) {
+                   option += '<option value="'+item.coa+'">'+item.pembayaranName+'</option>';
+               });
+               $('#bank').html(option);
+           }else{
+               $('#bank').html(option);
+           }
         });
     }
 

@@ -52,6 +52,18 @@
             $.publish('showErrorDialog');
         });
 
+        function convertSentenceCase(myString){
+            if(myString != null && myString != ''){
+                var rg = /(^\w{1}|\ \s*\w{1})/gi;
+                myString = myString.replace(rg, function(toReplace) {
+                    return toReplace.toUpperCase();
+                });
+                return myString;
+            }else{
+                return "";
+            }
+        }
+
 
     </script>
     <style>
@@ -207,12 +219,21 @@
                                             <table><s:label name="rawatInap.tempatTglLahir"></s:label></table>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td><b>Metode Pembayaran</b></td>
-                                        <td>
-                                            <table><s:label name="rawatInap.metodePembayaran"></s:label></table>
-                                        </td>
-                                    </tr>
+                                    <s:if test='rawatInap.metodePembayaran != null && rawatInap.metodePembayaran != ""'>
+                                        <tr>
+                                            <td><b>Metode Pembayaran</b></td>
+                                            <td>
+                                                <table>
+                                                    <script>
+                                                        var metode = '<s:property value="rawatInap.metodePembayaran"/>';
+                                                        var met = metode.replace("_", " ");
+                                                        var meto = convertSentenceCase(met);
+                                                        document.write(meto);
+                                                    </script>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </s:if>
                                 </table>
                             </div>
                             <!-- /.col -->
@@ -3513,6 +3534,7 @@
     }
 
     function listSelectTindakan(idKtg) {
+        console.log(idKtg)
         // var idx = idKategori.selectedIndex;
         // var idKtg = idKategori.options[idx].value;
         var option = "<option value=''>[Select One]</option>";
@@ -3521,7 +3543,7 @@
                 if (response.length > 0) {
                     $.each(response, function (i, item) {
                         option += "<option value='" + item.idTindakan + "'>" + item.tindakan + "</option>";
-                    });asd
+                    });
                     $('#tin_id_tindakan').html(option);
                 } else {
                     $('#tin_id_tindakan').html(option);
