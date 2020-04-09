@@ -88,7 +88,7 @@
         <action name="paging_displaytag"
                 class="com.neurix.authorization.company.action.BranchAction" method="paging">
             <interceptor-ref name="defaultStack"/>
-            <result name="success">/pages/com/neurix/authorization/company/branch.jsp</result>
+            <result name="success">/pages/com/neurix/authorization/company/branch/branch.jsp</result>
         </action>
 
     </package>

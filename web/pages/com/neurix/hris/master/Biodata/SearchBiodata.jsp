@@ -938,9 +938,9 @@
     $('.listOfbiodata').on('click', '.item-payroll', function(){
         var nip = $(this).attr('data');
 
-        $('.tablePayroll').find('tbody').remove();
-        $('.tablePayroll').find('thead').remove();
-        $('.tablePayroll').find('tfoot').remove();
+        $('.tabelPayroll').find('tbody').remove();
+        $('.tabelPayroll').find('thead').remove();
+        $('.tabelPayroll').find('tfoot').remove();
         dwr.engine.setAsync(false);
         var tmp_table = "";
         BiodataAction.searchPayroll(nip, function(listdata) {
@@ -951,15 +951,10 @@
                     "<th style='text-align: center; background-color:  #3c8dbc''>Gaji Kotor</th>"+
                     "<th style='text-align: center; background-color:  #3c8dbc''>Potongan</th>"+
                     "<th style='text-align: center; background-color:  #3c8dbc''>Pph</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Gaji Bersih</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Thr</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Jasopr</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>SHT</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>PMP</th>"+
                     "</tr></thead>";
             var i = i ;
             $.each(listdata, function (i, item) {
-                var link = "/hris/payroll/printReportPayroll_payroll.action?id=" + item.payrollId + "&flag=Y";
+                var link = "<s:property value="appname" />payroll/printReportPayroll_payroll.action?id=" + item.payrollId + "&tipe=PR";
                 tmp_table += '<tr  style="font-size: 12px">' +
                         '<td ><a href="'+link+'" >Download</a></td>' +
                         '<td >' + item.bulan+ '</td>' +
@@ -967,11 +962,6 @@
                         '<td >' + item.totalA+ '</td>' +
                         '<td >' + item.totalB+ '</td>' +
                         '<td >' + item.pphGaji+ '</td>' +
-                        '<td >' + item.totalGajiBersih+ '</td>' +
-                        '<td >' + item.totalThr+ '</td>' +
-                        '<td >' + item.totalJasProd+ '</td>' +
-                        '<td >' + item.totalPensiun+ '</td>' +
-                        '<td >' + item.totalJubileum+ '</td>' +
                         "</tr>";
             });
             $('.tabelPayroll').append(tmp_table);
