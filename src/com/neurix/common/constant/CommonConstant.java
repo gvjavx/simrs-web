@@ -42,8 +42,8 @@ public class CommonConstant {
     public final static String RESOURCE_PATH_USER_UPLOAD = "/pages/upload/image/profile/";
 
     //sodiq, 18 Nov 2019, Upload KTP pasien
-    public final static String RESOURCE_PATH_IMG_ASSET = "/mnt/images";
-    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = "/mnt/images";
+    public final static String RESOURCE_PATH_IMG_ASSET = CommonUtil.getPropertyParams("resource.dir");
+    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = CommonUtil.getPropertyParams("upload.folder");
 
 //    public final static String RESOURCE_PATH_IMG_ASSET = "C:\\apache-tomcat-8.5.40\\webapps";
 //    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = "C:\\Users\\pc001\\Pictures";
@@ -124,7 +124,7 @@ public class CommonConstant {
     public final static String BRANCH_RS02 = "RS02";
     public final static String BRANCH_RS03 = "RS03";
 
-    public static final String RESOURCE_IMAGE_TTD = "/mnt/images/";
+    public static final String RESOURCE_IMAGE_TTD = CommonUtil.getPropertyParams("upload.folder");
 //    public static final String RESOURCE_IMAGE_TTD = "C:/Users/pc001/Pictures/";
 //    public static final String RESOURCE_IMAGE_TTD = CommonUtil.getPropertyParams("resource.dir")+"mnt/images/";
     public final static String IMAGE_TYPE = ".png";
