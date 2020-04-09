@@ -38,5 +38,7 @@
           p:sessionFactory-ref="sessionFactory" />
     <bean id="jurnalDetailDao" class="com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDetailDao"
           p:sessionFactory-ref="sessionFactory" />
+    <bean id="jurnalDetailActivityDao" class="com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDetailActivityDao"
+          p:sessionFactory-ref="sessionFactory" />
 
 </beans>

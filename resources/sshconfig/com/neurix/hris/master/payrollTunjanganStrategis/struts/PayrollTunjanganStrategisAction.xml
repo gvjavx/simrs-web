@@ -90,13 +90,10 @@
             <!--<param name="headers.message">${actionErrors}</param>-->
             <!--</result>-->
         </action>
-
-
         <action name="paging_displaytag_payrollTunjanganStrategis"
                 class="com.neurix.hris.master.payrollTunjanganStrategis.action.PayrollTunjanganStrategisAction" method="paging">
             <interceptor-ref name="defaultStack"/>
             <result name="success">/pages/com/neurix/hris/master/payrollTunjanganStrategis/SearchPayrollTunjanganStrategis.jsp</result>
         </action>
-
     </package>
 </struts>

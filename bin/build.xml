@@ -3,8 +3,8 @@
 
     <!-- General properties -->
     <property environment="env"/>
-    <property name="app.name" value="simrs"/>
-    <property name="package.name" value="simrs"/>
+    <property name="app.name" value="go-medsys"/>
+    <property name="package.name" value="go-medsys"/>
     <property name="app.version" value="1.0"/>
     <property name="src.home" value="${basedir}/src"/>
     <property name="build" value="${basedir}/build"/>

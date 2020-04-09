@@ -237,6 +237,90 @@ public class MesinAbsensiDetailBoImpl implements MesinAbsensiDetailBo {
             if (searchBean.getStatus() != null && !"".equalsIgnoreCase(searchBean.getStatus())) {
                 hsCriteria.put("status", searchBean.getStatus());
             }
+            if (searchBean.getTanggalDari() != null) {
+                hsCriteria.put("tanggal_dari", searchBean.getTanggalDari());
+            }
+            if (searchBean.getTanggalSelesai() != null) {
+                hsCriteria.put("tanggal_selesai", searchBean.getTanggalSelesai());
+            }
+            if (searchBean.getScanDate() != null) {
+                hsCriteria.put("scan_date", searchBean.getScanDate());
+            }
+
+            if (searchBean.getVerifyMode() != null && !"".equalsIgnoreCase(searchBean.getVerifyMode())) {
+                hsCriteria.put("verify_mode", searchBean.getVerifyMode());
+            }
+            if (searchBean.getWorkCode() != null && !"".equalsIgnoreCase(searchBean.getWorkCode())) {
+                hsCriteria.put("work_code", searchBean.getWorkCode());
+            }
+
+            if (searchBean.getFlag() != null && !"".equalsIgnoreCase(searchBean.getFlag())) {
+                if ("N".equalsIgnoreCase(searchBean.getFlag())) {
+                    hsCriteria.put("flag", "N");
+                } else {
+                    hsCriteria.put("flag", searchBean.getFlag());
+                }
+            } else {
+                hsCriteria.put("flag", "Y");
+            }
+
+
+            List<MesinAbsensiDetailEntity> itMesinAbsensiDetailEntity = null;
+            try {
+
+                itMesinAbsensiDetailEntity = mesinAbsensiDetailDao.getByCriteria(hsCriteria);
+            } catch (HibernateException e) {
+                logger.error("[MesinAbsensiDetailBoImpl.getSearchMesinAbsensiDetailByCriteria] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+            }
+
+            if(itMesinAbsensiDetailEntity != null){
+                MesinAbsensiDetail returnMesinAbsensiDetail;
+                // Looping from dao to object and save in collection
+                for(MesinAbsensiDetailEntity mesinAbsensiDetailEntity : itMesinAbsensiDetailEntity){
+                    returnMesinAbsensiDetail = new MesinAbsensiDetail();
+                    returnMesinAbsensiDetail.setMesinAbsensiDetailId(mesinAbsensiDetailEntity.getMesinAbsensiDetailId());
+                    returnMesinAbsensiDetail.setPin(mesinAbsensiDetailEntity.getPin());
+                    returnMesinAbsensiDetail.setStatus(mesinAbsensiDetailEntity.getStatus());
+                    returnMesinAbsensiDetail.setScanDate(mesinAbsensiDetailEntity.getScanDate());
+                    returnMesinAbsensiDetail.setVerifyMode(mesinAbsensiDetailEntity.getWorkCode());
+                    returnMesinAbsensiDetail.setWorkCode(mesinAbsensiDetailEntity.getWorkCode());
+                    returnMesinAbsensiDetail.setCreatedWho(mesinAbsensiDetailEntity.getCreatedWho());
+                    returnMesinAbsensiDetail.setCreatedDate(mesinAbsensiDetailEntity.getCreatedDate());
+                    returnMesinAbsensiDetail.setLastUpdate(mesinAbsensiDetailEntity.getLastUpdate());
+
+                    returnMesinAbsensiDetail.setAction(mesinAbsensiDetailEntity.getAction());
+                    returnMesinAbsensiDetail.setFlag(mesinAbsensiDetailEntity.getFlag());
+
+                    listOfResult.add(returnMesinAbsensiDetail);
+                }
+            }
+        }
+        logger.info("[MesinAbsensiDetailBoImpl.getByCriteria] end process <<<");
+
+        return listOfResult;
+    }
+
+    @Override
+    public List<MesinAbsensiDetail> getByCriteriaMobile(MesinAbsensiDetail searchBean) throws GeneralBOException {
+        logger.info("[MesinAbsensiDetailBoImpl.getByCriteria] start process >>>");
+
+        // Mapping with collection and put
+        List<MesinAbsensiDetail> listOfResult = new ArrayList();
+
+        if (searchBean != null) {
+            Map hsCriteria = new HashMap();
+
+            if (searchBean.getMesinAbsensiDetailId() != null && !"".equalsIgnoreCase(searchBean.getMesinAbsensiDetailId())) {
+                hsCriteria.put("mesin_Absensi_Detail_id", searchBean.getMesinAbsensiDetailId());
+            }
+            if (searchBean.getPin() != null && !"".equalsIgnoreCase(searchBean.getPin())) {
+                hsCriteria.put("pin", searchBean.getPin());
+            }
+
+            if (searchBean.getStatus() != null && !"".equalsIgnoreCase(searchBean.getStatus())) {
+                hsCriteria.put("status", searchBean.getStatus());
+            }
 //            if (searchBean.getTanggalDari() != null) {
 //                hsCriteria.put("tanggal_dari", searchBean.getTanggalDari());
 //            }

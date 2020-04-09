@@ -2966,6 +2966,8 @@ public class BiodataAction extends BaseMasterAction{
             reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
             reportParams.put("urlFoto", foto);
             reportParams.put("nip", getId());
+            reportParams.put("kota",branch.getBranchName());
+            reportParams.put("areaId", CommonUtil.userAreaName());
             reportParams.put("titleReport", "CURICULUM VITAE");
             reportParams.put("itemKeluarga", itemKeluarga);
             reportParams.put("itemRiwayatPekerjaan", itemRiwayatPekerjaan);

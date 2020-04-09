@@ -1,12 +1,10 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib prefix="sj" uri="/struts-jquery-tags" %>
-
 <script type='text/javascript' src='<s:url value="/dwr/interface/NotifikasiAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/NotifAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/CutiPegawaiAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/UserAction.js"/>'></script>
 <script type="text/javascript">
-
     function loadDataLogin() {
         dwr.engine.setAsync(false);
         UserAction.getUserData(function(item){
@@ -54,45 +52,45 @@
                 }
                 if (item.tipeNotifId == "TN23"){
                     tmp_data_approve += "<li>"+
-                            "<a href='/simrs/notifikasi/viewNotifikasi_notifikasi.action?id="+item.fromPerson+"&request="+item.noRequest+"&tipeNotif="+item.tipeNotifId+"&notif="+item.notifId+"' onclick='readNotif("+item.notifId+");'>"+
+                            "<a href='<s:property value="appname" />notifikasi/viewNotifikasi_notifikasi.action?id="+item.fromPerson+"&request="+item.noRequest+"&tipeNotif="+item.tipeNotifId+"&notif="+item.notifId+"' onclick='readNotif("+item.notifId+");'>"+
                             "<span class='label label-success'>Training</span> "+item.note+""+
                             "</a>"+
                             "</li>";
                 } else if (item.typeNotif == "TN22"){
                     tmp_data_approve += "<li>"+
-                            "<a href='/simrs/notifikasi/viewNotifikasi_notifikasi.action?id="+item.fromPerson+"&request="+item.noRequest+"&tipeNotif="+item.tipeNotifId+"&notif="+item.notifId+"' onclick='readNotif("+item.notifId+");'>"+
+                            "<a href='<s:property value="appname" />notifikasi/viewNotifikasi_notifikasi.action?id="+item.fromPerson+"&request="+item.noRequest+"&tipeNotif="+item.tipeNotifId+"&notif="+item.notifId+"' onclick='readNotif("+item.notifId+");'>"+
                             "<span class='label label-warning'>Medical Record</span> "+item.note+""+
                             "</a>"+
                             "</li>";
 
                 } else if (item.tipeNotifId == "TI"){
                     tmp_data_approve += "<li>"+
-                            "<a href='/simrs/notifikasi/viewNotifikasi_notifikasi.action?id="+item.fromPerson+"&request="+item.noRequest+"&tipeNotif="+item.tipeNotifId+"&notif="+item.notifId+"' onclick='readNotif("+item.notifId+");'>"+
+                            "<a href='<s:property value="appname" />notifikasi/viewNotifikasi_notifikasi.action?id="+item.fromPerson+"&request="+item.noRequest+"&tipeNotif="+item.tipeNotifId+"&notif="+item.notifId+"' onclick='readNotif("+item.notifId+");'>"+
                             "<span class='label label-success'>SPPD</span> "+item.note+""+
                             "</a>"+
                             "</li>";
                 }else if (item.tipeNotifId == "TN33"){
                     tmp_data_approve += "<li>"+
-                        "<a href='/simrs/notifikasi/viewNotifikasi_notifikasi.action?id="+item.fromPerson+"&request="+item.noRequest+"&tipeNotif="+item.tipeNotifId+"&notif="+item.notifId+"' onclick='readNotif("+item.notifId+");'>"+
+                        "<a href='<s:property value="appname" />notifikasi/viewNotifikasi_notifikasi.action?id="+item.fromPerson+"&request="+item.noRequest+"&tipeNotif="+item.tipeNotifId+"&notif="+item.notifId+"' onclick='readNotif("+item.notifId+");'>"+
                         "<span class='label label-success'>Absensi</span> "+item.note+""+
                         "</a>"+
                         "</li>";
                 }else if (item.tipeNotifId == "TN44"){
                     tmp_data_approve += "<li>"+
-                        "<a href='/simrs/notifikasi/viewNotifikasi_notifikasi.action?id="+item.fromPerson+"&request="+item.noRequest+"&tipeNotif="+item.tipeNotifId+"&notif="+item.notifId+"' onclick='readNotif("+item.notifId+");'>"+
+                        "<a href='<s:property value="appname" />notifikasi/viewNotifikasi_notifikasi.action?id="+item.fromPerson+"&request="+item.noRequest+"&tipeNotif="+item.tipeNotifId+"&notif="+item.notifId+"' onclick='readNotif("+item.notifId+");'>"+
                         "<span class='label label-success'>Indisipliner</span> "+item.note+""+
                         "</a>"+
                         "</li>";
                 }else if (item.tipeNotifId == "TN55"){
                     tmp_data_approve += "<li>"+
-                            "<a href='/simrs/notifikasi/viewNotifikasi_notifikasi.action?id="+item.fromPerson+"&request="+item.noRequest+"&tipeNotif="+item.tipeNotifId+"&notif="+item.notifId+"' onclick='readNotif("+item.notifId+");'>"+
+                            "<a href='<s:property value="appname" />notifikasi/viewNotifikasi_notifikasi.action?id="+item.fromPerson+"&request="+item.noRequest+"&tipeNotif="+item.tipeNotifId+"&notif="+item.notifId+"' onclick='readNotif("+item.notifId+");'>"+
                             "<span class='label label-success'>Dispensasi</span> "+item.note+""+
                             "</a>"+
                             "</li>";
                 }
                 else if (item.tipeNotifId == "TN66"){
                     tmp_data_approve += "<li>"+
-                            "<a href='/simrs/notifikasi/viewNotifikasi_notifikasi.action?id="+item.fromPerson+"&request="+item.noRequest+"&tipeNotif="+item.tipeNotifId+"&notif="+item.notifId+"' onclick='readNotif("+item.notifId+");'>"+
+                            "<a href='<s:property value="appname" />notifikasi/viewNotifikasi_notifikasi.action?id="+item.fromPerson+"&request="+item.noRequest+"&tipeNotif="+item.tipeNotifId+"&notif="+item.notifId+"' onclick='readNotif("+item.notifId+");'>"+
                             "<span class='label label-success'>Cuti Pegawai</span> "+item.note+""+
                             "</a>"+
                             "</a>"+
@@ -100,19 +98,19 @@
                             "</li>";
                 }else if (item.tipeNotifId == "TN77"){
                     tmp_data_approve += "<li>"+
-                            "<a href='/simrs/notifikasi/viewNotifikasi_notifikasi.action?id="+item.fromPerson+"&request="+item.noRequest+"&tipeNotif="+item.tipeNotifId+"&notif="+item.notifId+"' onclick='readNotif("+item.notifId+");'>"+
+                            "<a href='<s:property value="appname" />notifikasi/viewNotifikasi_notifikasi.action?id="+item.fromPerson+"&request="+item.noRequest+"&tipeNotif="+item.tipeNotifId+"&notif="+item.notifId+"' onclick='readNotif("+item.notifId+");'>"+
                             "<span class='label label-success'>Lembur</span> "+item.note+""+
                             "</a>"+
                             "</li>";
                 }else if (item.tipeNotifId == "TN88"){
                     tmp_data_approve += "<li>"+
-                            "<a href='/simrs/notifikasi/viewNotifikasi_notifikasi.action?id="+item.fromPerson+"&request="+item.noRequest+"&tipeNotif="+item.tipeNotifId+"&notif="+item.notifId+"' onclick='readNotif("+item.notifId+");'>"+
+                            "<a href='<s:property value="appname" />notifikasi/viewNotifikasi_notifikasi.action?id="+item.fromPerson+"&request="+item.noRequest+"&tipeNotif="+item.tipeNotifId+"&notif="+item.notifId+"' onclick='readNotif("+item.notifId+");'>"+
                             "<span class='label label-success'>Ijin Keluar Kantor</span> "+item.note+""+
                             "</a>"+
                             "</li>";
                 }else if (item.tipeNotifId == "TN99"){
                     tmp_data_approve += "<li>"+
-                            "<a href='/simrs/notifikasi/viewNotifikasi_notifikasi.action?id="+item.fromPerson+"&request="+item.noRequest+"&tipeNotif="+item.tipeNotifId+"&notif="+item.notifId+"' onclick='readNotif("+item.notifId+");'>"+
+                            "<a href='<s:property value="appname" />notifikasi/viewNotifikasi_notifikasi.action?id="+item.fromPerson+"&request="+item.noRequest+"&tipeNotif="+item.tipeNotifId+"&notif="+item.notifId+"' onclick='readNotif("+item.notifId+");'>"+
                             "<span class='label label-success'>Rekruitmen Pabrik</span> "+item.note+""+
                             "</a>"+
                             "</li>";
@@ -333,13 +331,14 @@
 <div class="wrapper">
 <header class="main-header">
     <!-- Logo -->
-    <a href="/simrs" class="logo" style="background-color: #3bb387 !important; text-decoration: none;">
+
+    <s:a href="%{appname}" cssClass="logo" cssStyle="background-color: #3bb387 !important; text-decoration: none;">
         <!-- mini logo for sidebar mini 50x50 pixels -->
         <span class="logo-mini"><b>NMU</b></span>
         <!-- logo for regular state and mobile devices -->
         <%--<img border="0" class="hvr-grow" src="<s:url value="/pages/images/RS01.png"/>" style="cursor: pointer; height: 25px; width: 35px;">--%>
         <span class="logo-lg" > <b>GO-MEDSYS NMU</b></span>
-    </a>
+    </s:a>
 
     <!-- Header Navbar -->
     <nav class="navbar navbar-static-top" role="navigation" style="background-color: #30d196 !important;">
@@ -447,8 +446,8 @@
                             <%--<div class="pull-left">--%>
                                 <%--<a href="#" class="btn btn-default btn-flat">Profile</a>--%>
                             <%--</div>--%>
-                            <div onclick="logout()" style="cursor: pointer" class="pull-right">
-                                <a  class="btn btn-danger"><i class="fa fa-sign-out"></i> Sign out</a>
+                            <div style="cursor: pointer" class="pull-right">
+                                <a href="<s:property value="appname" />j_spring_security_logout" class="btn btn-danger"><i class="fa fa-sign-out"></i> Sign out</a>
                             </div>
                         </li>
                     </ul>
