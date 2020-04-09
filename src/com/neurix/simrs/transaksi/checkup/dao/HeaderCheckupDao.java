@@ -841,7 +841,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         List<MasterVendor> vendorList = new ArrayList<>();
         String SQL = "SELECT nomor_master, nama \n" +
                 "FROM im_akun_master\n" +
-                "WHERE is_ptpn = 'Y'";
+                "WHERE nama ilike 'PTP%'";
 
         List<Object[]> result = new ArrayList<>();
         result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
