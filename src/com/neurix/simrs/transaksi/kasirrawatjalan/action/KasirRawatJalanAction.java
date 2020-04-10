@@ -850,6 +850,10 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 transId = "10";
                 ketTerangan = "Pembayaran Piutang Pasien BPJS";
                 hsCriteria.put("piutang_pasien_bpjs", mapPiutang);
+            } else if ("asuransi".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien()) || "ptpn".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())) {
+                transId = "03";
+                ketTerangan = "Pembayaran Piutang Rekanan";
+                hsCriteria.put("piutang_rekanan", mapPiutang);
             } else {
                 transId = "02";
                 ketTerangan = "Pembayaran Piutang Pasien Umum";

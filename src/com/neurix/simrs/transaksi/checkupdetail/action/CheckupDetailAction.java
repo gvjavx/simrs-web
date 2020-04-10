@@ -924,10 +924,12 @@ public class CheckupDetailAction extends BaseMasterAction {
         String divisiId = "";
         String masterId = "";
         String jenisPasien = "Umum";
-
+        boolean denganTunai = false;
+        BigDecimal biayaCover = new BigDecimal(0);
         ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailBo.getEntityDetailCheckupByIdDetail(idDetailCheckup);
         if ("asuransi".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())){
 
+            biayaCover = detailCheckupEntity.getCoverBiaya();
 
             ImSimrsAsuransiEntity asuransiEntity = asuransiBo.getEntityAsuransiById(detailCheckupEntity.getIdAsuransi());
             if (asuransiEntity != null){
@@ -941,6 +943,8 @@ public class CheckupDetailAction extends BaseMasterAction {
             }
 
         } else if ("ptpn".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())){
+
+            biayaCover = detailCheckupEntity.getCoverBiaya();
 
             ImMasterEntity masterEntity = masterBo.getEntityMasterById(detailCheckupEntity.getIdAsuransi());
             if (masterEntity != null) {
@@ -1056,6 +1060,13 @@ public class CheckupDetailAction extends BaseMasterAction {
                     // kredit jumlah tindakan asuransi
                     hsCriteria.put("pendapatan_rawat_jalan_asuransi", jumlahTindakan);
 
+                    // dengan pembayaran tunai di luar cover asuransi
+                    if (jumlahTindakan.compareTo(biayaCover) == 1){
+                        BigDecimal jumlahTunai = jumlah.subtract(biayaCover);
+                        hsCriteria.put("pendapatan_rawat_jalan_umum", jumlahTunai);
+                        denganTunai = true;
+                    }
+
                     if ("Y".equalsIgnoreCase(isResep)) {
 
                         // kredit jumlah obat asuransi
@@ -1075,6 +1086,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                         hsCriteria.put("piutang_pasien_asuransi", mapPiutang);
 
                         transId = "17";
+
                     } else {
 
                         // create list map piutang
@@ -1085,7 +1097,13 @@ public class CheckupDetailAction extends BaseMasterAction {
                         // debit piutang pasien asuransi
                         hsCriteria.put("piutang_pasien_asuransi", mapPiutang);
 
-                        transId = "09";
+
+                        if (denganTunai){
+                            jenisPasien = jenisPasien + "dan Tunai ";
+                            transId = "11";
+                        } else {
+                            transId = "09";
+                        }
                     }
 
                 } else if ("ptpn".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())){
@@ -1140,20 +1158,49 @@ public class CheckupDetailAction extends BaseMasterAction {
             // Untuk Rawat Inap
             if ("JRI".equalsIgnoreCase(kode)) {
 
-                // create map piutang
-                Map mapPiutang = new HashMap();
-                mapPiutang.put("bukti", invoice);
-                mapPiutang.put("nilai", jumlah.subtract(jumlahUm));
+                if ("asuransi".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())){
 
-                // debit piutang pasien
-                hsCriteria.put("piutang_pasien_umum", mapPiutang);
+                    //**** ASURANSI ***//
 
-                // kredit jumlah pendapatan obat
-                hsCriteria.put("pendapatan_obat_umum", jumlahResep);
+                    // kredit jumlah pendapatan obat asuransi
+                    hsCriteria.put("pendapatan_obat_asuransi", jumlahResep);
 
-                // kredit jumlah tindakan
-                hsCriteria.put("pendapatan_rawat_inap_umum", jumlahTindakan);
-                transId = "21";
+                    // kredit jumlah tindakan asuransi
+                    hsCriteria.put("pendapatan_rawat_inap_asuransi", jumlahTindakan);
+
+                    // create map piutang asuransi
+                    Map mapPiutang = new HashMap();
+                    mapPiutang.put("bukti", invoice);
+                    mapPiutang.put("nilai", jumlah.subtract(jumlahUm));
+
+                    // debit piutang pasien asuransi
+                    hsCriteria.put("piutang_pasien_asuransi", mapPiutang);
+                    transId = "24";
+
+                } else if ("ptpn".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())){
+
+                    //**** PTPN ***//
+
+
+                } else {
+
+                    //**** UMUM ***//
+
+                    // kredit jumlah pendapatan obat
+                    hsCriteria.put("pendapatan_obat_umum", jumlahResep);
+
+                    // kredit jumlah tindakan
+                    hsCriteria.put("pendapatan_rawat_inap_umum", jumlahTindakan);
+
+                    // create map piutang
+                    Map mapPiutang = new HashMap();
+                    mapPiutang.put("bukti", invoice);
+                    mapPiutang.put("nilai", jumlah.subtract(jumlahUm));
+
+                    // debit piutang pasien
+                    hsCriteria.put("piutang_pasien_umum", mapPiutang);
+                    transId = "21";
+                }
             }
 
             String catatan = "Closing Pasien " + ketPoli + jenisPasien + ketResep + " Piutang No Pasien " + idPasien;
