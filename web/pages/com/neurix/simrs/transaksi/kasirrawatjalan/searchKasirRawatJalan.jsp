@@ -695,7 +695,7 @@
                             mapBiaya.push({"type": "kas", "nilai": total - cover});
                             mapBiaya.push({"type": "piutang_pasien_asuransi", "nilai": cover });
                             mapBiaya.push({"type": "pendapatan_rawat_jalan_asuransi", "nilai": cover });
-                            mapBiaya.push({"type": "pendapaatan_rawat_jalan_umum", "nilai": total- cover });
+                            mapBiaya.push({"type": "pendapatan_rawat_jalan_umum", "nilai": total- cover });
                         }
 
                         metode = "asuransi";
