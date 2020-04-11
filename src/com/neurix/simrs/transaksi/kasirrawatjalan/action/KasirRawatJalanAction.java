@@ -9,7 +9,10 @@ import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.jenisperiksapasien.bo.AsuransiBo;
 import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
+import com.neurix.simrs.master.jenisperiksapasien.model.Asuransi;
+import com.neurix.simrs.master.jenisperiksapasien.model.ImSimrsAsuransiEntity;
 import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
 import com.neurix.simrs.master.kelasruangan.bo.KelasRuanganBo;
 import com.neurix.simrs.master.kelasruangan.model.ImSimrsKelasRuanganEntity;
@@ -53,6 +56,7 @@ import java.io.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
+import java.security.PublicKey;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -722,6 +726,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         KelasRuanganBo kelasRuanganBo = (KelasRuanganBo) ctx.getBean("kelasRuanganBoProxy");
         RuanganBo ruanganBo = (RuanganBo) ctx.getBean("ruanganBoProxy");
         RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
+        AsuransiBo asuransiBo = (AsuransiBo) ctx.getBean("asuransiBoProxy");
 
         HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
         detailCheckup.setIdDetailCheckup(idDetailCheckup);
@@ -766,6 +771,20 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         // master_id
         if ("bpjs".equalsIgnoreCase(jenis)){
             hsCriteria.put("master_id", "02.018");
+        } else if ("asuransi".equalsIgnoreCase(jenis)){
+
+            // jika asuransi
+            ImSimrsAsuransiEntity asuransiEntity = asuransiBo.getEntityAsuransiById(detailCheckupEntity.getIdAsuransi());
+            if (asuransiEntity != null){
+                hsCriteria.put("master_id", asuransiEntity.getIdAsuransi());
+            } else {
+                response.setStatus("error");
+                response.setMsg("[KasirRawatJalanAction.savePembayaranTagihan] ERROR gagal mendapakatkan master_id pers. asuransi");
+                return response;
+            }
+
+        } else if ("ptpn".equalsIgnoreCase(jenis)){
+            hsCriteria.put("master_id", detailCheckupEntity.getIdAsuransi());
         } else {
             hsCriteria.put("master_id", "01.000");
         }
@@ -791,6 +810,8 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             if ("uang_muka".equalsIgnoreCase(obj.getString("type").toString())) {
                 uangMuka = new BigDecimal(obj.getLong("nilai"));
             } else if ("piutang_pasien_non_bpjs".equalsIgnoreCase(obj.getString("type").toString())) {
+                uangPiutang = new BigDecimal(obj.getLong("nilai"));
+            } else if ("piutang_pasien_asuransi".equalsIgnoreCase(obj.getString("type").toString())) {
                 uangPiutang = new BigDecimal(obj.getLong("nilai"));
             } else if ("ppn_keluaran".equalsIgnoreCase(obj.getString("type").toString())) {
                 ppnObat = new BigDecimal(obj.getLong("nilai"));
@@ -833,7 +854,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         String invNumber = "";
         if ("non_tunai".equalsIgnoreCase(jenis) || "bpjs".equalsIgnoreCase(jenis)) {
 
-            if (detailCheckupEntity != null && detailCheckupEntity.getInvoice() != null){
+            if (detailCheckupEntity != null && detailCheckupEntity.getInvoice() != null && !"asuransi".equalsIgnoreCase(jenis)){
                 invNumber = detailCheckupEntity.getInvoice();
             } else {
                 response.setStatus("error");
@@ -843,24 +864,52 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
             // map piutang
             Map mapPiutang = new HashMap();
-            mapPiutang.put("bukti", invNumber);
-            mapPiutang.put("nilai", uangPiutang);
+
 
             if ("bpjs".equalsIgnoreCase(jenis)) {
+
+                //** BPJS **//
+
+                mapPiutang.put("bukti", invNumber);
+                mapPiutang.put("nilai", uangPiutang);
+
                 transId = "10";
                 ketTerangan = "Pembayaran Piutang Pasien BPJS";
                 hsCriteria.put("piutang_pasien_bpjs", mapPiutang);
-            } else if ("asuransi".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien()) || "ptpn".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())) {
-                transId = "03";
-                ketTerangan = "Pembayaran Piutang Rekanan";
-                hsCriteria.put("piutang_rekanan", mapPiutang);
+
+            } else if ("asuransi".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())){
+
+                //** ASURANSI **//
+
+                mapPiutang.put("bukti", billingSystemBo.createInvoiceNumber(type, branchId));
+                mapPiutang.put("nilai", uangPiutang);
+
+                hsCriteria.put("piutang_pasien_asuransi", mapPiutang);
+
+                if ("Y".equalsIgnoreCase(withObat)){
+
+                    hsCriteria.put("ppn_keluaran", mapPajakObat);
+
+                    transId = "19";
+                    ketTerangan = "Closing pasien rawat jalan Asuransi piutang dan Tunai dengan obat";
+                } else {
+                    transId = "11";
+                    ketTerangan = "Closing pasien rawat jalan Asuransi piutang dan Tunai tanpa obat";
+                }
+
             } else {
+
+                mapPiutang.put("bukti", invNumber);
+                mapPiutang.put("nilai", uangPiutang);
+
+                //** UMUM **//
                 transId = "02";
                 ketTerangan = "Pembayaran Piutang Pasien Umum";
                 hsCriteria.put("piutang_pasien_non_bpjs", mapPiutang);
             }
 
         } else {
+
             // jika bukan piutang maka pakai map uang muka
             Map mapUangMuka = new HashMap();
             mapUangMuka.put("bukti", noNota);
@@ -1303,6 +1352,18 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         }
 
         return response;
+    }
+
+    public String getCoverAsuransi(String idDetailCheckup){
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+
+        ItSimrsHeaderDetailCheckupEntity headerDetailCheckupEntity = checkupDetailBo.getDetailCheckupById(idDetailCheckup);
+        if (headerDetailCheckupEntity != null){
+            return headerDetailCheckupEntity.getCoverBiaya().toString();
+        }
+        return  "0";
     }
 
     @Override

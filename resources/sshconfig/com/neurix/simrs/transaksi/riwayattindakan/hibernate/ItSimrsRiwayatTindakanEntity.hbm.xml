@@ -60,6 +60,9 @@
         <property name="tanggalTindakan">
             <column name="tanggal_tindakan" sql-type="timestamp" not-null="false" />
         </property>
+        <property name="rekanan">
+            <column name="rekanan" sql-type="varchar" length="30" not-null="false" />
+        </property>
 
 
     </class>
