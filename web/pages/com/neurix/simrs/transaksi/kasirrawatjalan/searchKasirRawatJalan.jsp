@@ -697,6 +697,8 @@
                             mapBiaya.push({"type": "pendapatan_rawat_jalan_asuransi", "nilai": cover });
                             mapBiaya.push({"type": "pendapaatan_rawat_jalan_umum", "nilai": total- cover });
                         }
+
+                        metode = "asuransi";
                     } else {
                         //non_tunai umum
                         mapBiaya.push({"type": "kas", "nilai": ((total - uangMuka) + ppnObat)  });
@@ -821,7 +823,7 @@
         dwr.engine.setAsync(true);
         var jsonString =  JSON.stringify(mapBiaya);
 
-        KasirRawatJalanAction.savePembayaranTagihan(jsonString, idPasien, bukti, isResep, idDetailCheckup, metodeBayarDiAkhir, kodeBank, "JRJ",metodeBayarDiAwal, noRekening, {
+        KasirRawatJalanAction.savePembayaranTagihan(jsonString, idPasien, bukti, isResep, idDetailCheckup, metodeBayarDiAkhir, kodeBank, "JRJ", metodeBayarDiAwal, noRekening, {
             callback: function (response) {
                 console.log(response.msg);
                 if (response.status == "success") {

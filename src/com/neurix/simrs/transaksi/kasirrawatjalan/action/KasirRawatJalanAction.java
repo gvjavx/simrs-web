@@ -776,7 +776,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             // jika asuransi
             ImSimrsAsuransiEntity asuransiEntity = asuransiBo.getEntityAsuransiById(detailCheckupEntity.getIdAsuransi());
             if (asuransiEntity != null){
-                hsCriteria.put("master_id", asuransiEntity.getIdAsuransi());
+                hsCriteria.put("master_id", asuransiEntity.getNoMaster());
             } else {
                 response.setStatus("error");
                 response.setMsg("[KasirRawatJalanAction.savePembayaranTagihan] ERROR gagal mendapakatkan master_id pers. asuransi");
@@ -826,8 +826,9 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         String ketTerangan = "";
         String transId = "";
 
+        hsCriteria.put("divisi_id", divisiId);
+
         if ("tunai".equalsIgnoreCase(jenis)){
-            hsCriteria.put("divisi_id", divisiId);
 
             if ("JRJ".equalsIgnoreCase(type) && !"Y".equalsIgnoreCase(withObat)) {
                 transId = "12";
@@ -852,15 +853,18 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
         // jika piutang
         String invNumber = "";
-        if ("non_tunai".equalsIgnoreCase(jenis) || "bpjs".equalsIgnoreCase(jenis)) {
+        if ("non_tunai".equalsIgnoreCase(jenis) || "bpjs".equalsIgnoreCase(jenis) || "asuransi".equalsIgnoreCase(jenis)) {
 
-            if (detailCheckupEntity != null && detailCheckupEntity.getInvoice() != null && !"asuransi".equalsIgnoreCase(jenis)){
-                invNumber = detailCheckupEntity.getInvoice();
-            } else {
-                response.setStatus("error");
-                response.setMsg("[KasirRawatJalanAction.savePembayaranTagihan] ERROR gagal mendapakatkan no_invoice atau data detail checkup");
-                return response;
+            if (!"asuransi".equalsIgnoreCase(jenis)){
+                if (detailCheckupEntity != null && detailCheckupEntity.getInvoice() != null){
+                    invNumber = detailCheckupEntity.getInvoice();
+                } else {
+                    response.setStatus("error");
+                    response.setMsg("[KasirRawatJalanAction.savePembayaranTagihan] ERROR gagal mendapakatkan no_invoice atau data detail checkup");
+                    return response;
+                }
             }
+
 
             // map piutang
             Map mapPiutang = new HashMap();

@@ -659,6 +659,9 @@ public class PermintaanVendorAction extends BaseMasterAction {
         permintaanVendor.setLastUpdateWho(CommonUtil.userLogin());
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PermintaanVendorBo permintaanVendorBo = (PermintaanVendorBo) ctx.getBean("permintaanVendorBoProxy");
+        TransaksiObatBo transaksiObatBo = (TransaksiObatBo) ctx.getBean("transaksiObatBoProxy");
+        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+        BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
 
         Integer noBatch = null;
         String noFaktur = "";
@@ -696,6 +699,30 @@ public class PermintaanVendorAction extends BaseMasterAction {
             }
         }
 
+//        List<TransaksiObatDetail> transaksiObatDetails = transaksiObatBo.getListPermintaanBatch(idApproval, "Y");
+//        List<Map> listMapPersediaan = new ArrayList<>();
+//        BigDecimal hutangUsaha = new BigDecimal(0);
+//        BigDecimal ppn = new BigDecimal(0);
+//        if (transaksiObatDetails.size() > 0) {
+//            for (TransaksiObatDetail trans : transaksiObatDetails) {
+//
+//                BigDecimal hargaRata = new BigDecimal(trans.getHarga());
+//                BigDecimal hargaTotal = hargaRata.multiply(new BigDecimal(trans.getQtyApprove()));
+//                BigDecimal hargaPpn = hargaTotal.multiply(new BigDecimal(0.1)).setScale(2, BigDecimal.ROUND_HALF_UP);
+//
+//                // hutang usaha
+//                hutangUsaha = hutangUsaha.add(hargaTotal);
+//
+//                //ppn
+//                ppn = ppn.add(hargaPpn);
+//
+//                Map mapHutangUsaha = new HashMap();
+//                mapHutangUsaha.put("kd_barang", trans.getIdBarang());
+//                mapHutangUsaha.put("nilai", hargaTotal.subtract(hargaPpn));
+//                listMapPersediaan.add(mapHutangUsaha);
+//            }
+//        }
+
         permintaanVendor.setNoFaktur(noFaktur);
         permintaanVendor.setTanggalFaktur(Date.valueOf(tglFaktur));
         permintaanVendor.setNoInvoice(noInvoice);
@@ -729,6 +756,55 @@ public class PermintaanVendorAction extends BaseMasterAction {
                 addActionError(" Error when save data approve PO" + e.getMessage());
             }
 
+
+
+            List<Map> listMapPersediaan = new ArrayList<>();
+            BigDecimal hutangUsaha = new BigDecimal(0);
+            BigDecimal ppn = new BigDecimal(0);
+            if (transaksiObatDetails.size() > 0) {
+                for (TransaksiObatDetail trans : transaksiObatDetails) {
+
+                    BigDecimal hargaRata = new BigDecimal(trans.getHarga());
+                    BigDecimal hargaTotal = hargaRata.multiply(new BigDecimal(trans.getQtyApprove()));
+                    BigDecimal hargaPpn = hargaTotal.multiply(new BigDecimal(0.1)).setScale(2, BigDecimal.ROUND_HALF_UP);
+
+                    // hutang usaha
+                    hutangUsaha = hutangUsaha.add(hargaTotal);
+
+                    //ppn
+                    ppn = ppn.add(hargaPpn);
+
+                    Map mapHutangUsaha = new HashMap();
+                    mapHutangUsaha.put("kd_barang", trans.getIdBarang());
+                    mapHutangUsaha.put("nilai", hargaTotal.subtract(hargaPpn));
+                    listMapPersediaan.add(mapHutangUsaha);
+                }
+            }
+
+            Map mapPajakObat = new HashMap();
+            mapPajakObat.put("bukti", noDo);
+            mapPajakObat.put("nilai", ppn);
+
+            Map mapHutangVendor = new HashMap();
+            mapHutangVendor.put("bukti", noDo);
+            mapHutangVendor.put("nilai", hutangUsaha);
+
+            Map jurnalMap = new HashMap();
+            jurnalMap.put("master_id", requestVendor.getIdVendor());
+            jurnalMap.put("persediaan_gudang", listMapPersediaan);
+            jurnalMap.put("ppn_masukan", mapPajakObat);
+            jurnalMap.put("hutang_farmasi_vendor", mapHutangVendor);
+
+            String namaVendor = "";
+            String catatan = "Penerimaan Barang Gudang dari Vendor " + requestVendor.getIdVendor() + " - " + namaVendor;
+
+            String noJurnal = "";
+            try {
+                noJurnal = billingSystemBo.createJurnal("27", jurnalMap, CommonUtil.userBranchLogin(), catatan, "Y");
+            } catch (GeneralBOException e) {
+                logger.error("Found Error when search permintaan vendor " + e.getMessage());
+                addActionError(" Error when save data approve PO" + e.getMessage());
+            }
         }
 
         logger.info("[PermintaanVendorAction.saveApproveBatch] START >>>>>>>");
