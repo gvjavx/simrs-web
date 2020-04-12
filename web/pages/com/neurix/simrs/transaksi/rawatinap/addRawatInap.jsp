@@ -1737,6 +1737,14 @@
                                id="cor_rep_racik"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
+                    <div class="form-group" id="form-jenis-resep">
+                        <label class="col-md-3" style="margin-top: 7px">Jenis Resep</label>
+                        <div class="col-md-7">
+                            <select class="form-control" style="margin-top: 7px;width: 40%" id="select-jenis-resep">
+
+                            </select>
+                        </div>
+                    </div>
                     <%--<div class="form-group">--%>
                     <%--<label class="col-md-3" style="margin-top: 7px">Keterangan</label>--%>
                     <%--<div class="col-md-7">--%>
@@ -3380,6 +3388,122 @@
 
     });
 
+    function getJenisResep(){
+
+        strSelect = "";
+        var arBodyJenisResep = [];
+        if(jenisPeriksaPasien == "ptpn"){
+            arBodyJenisResep.push({"nilai":"ptptn", "label":"PTPN"},{"nilai": "umum", "label":"UMUM"});
+        } else if (jenisPeriksaPasien == "asuransi"){
+            arBodyJenisResep.push({"nilai":"asuransi", "label":"ASURANSI"},{"nilai": "umum", "label":"UMUM"});
+        } else if (jenisPeriksaPasien == "bpjs") {
+            arBodyJenisResep.push({"nilai": "bpjs", "label": "BPJS"});
+        } else {
+            arBodyJenisResep.push({"nilai": "umum", "label": "UMUM"});
+        }
+
+        var strSelect = "";
+        $.each(arBodyJenisResep, function (i, item) {
+            strSelect += "<option value='" + item.nilai + "'>" + item.label + "</option>";
+        });
+        $("#select-jenis-resep").html(strSelect);
+    }
+
+    function hitungBmi(){
+
+        var berat = $('#berat').val();
+        var tinggi = $('#tinggi').val();
+        var persen = "";
+        var bmi = "";
+        var barClass = "";
+        var barLabel = "";
+
+        if (berat != '' && tinggi != '') {
+            var tom = (parseInt(tinggi) * 0.01);
+            console.log(tom);
+            var tes = (parseFloat(tom)) *  parseFloat(tom);
+            console.log(berat);
+            console.log(tes);
+            bmi = (parseInt(berat) / (tom *  tom)).toFixed(2);
+            console.log(bmi);
+        }
+
+        if (parseInt(bmi) < 18.5) {
+            barClass = 'progress-bar-primary';
+            persen = 25;
+        } else if (parseInt(bmi) >= 18.5 && parseInt(bmi) <= 22.9) {
+            barClass = 'progress-bar-success';
+            persen = 50;
+        } else if (parseInt(bmi) >= 23 && parseInt(bmi) <= 29.9) {
+            barClass = 'progress-bar-warning';
+            persen = 75;
+        } else if (parseInt(bmi) > 30) {
+            barClass = 'progress-bar-danger';
+            persen = 100;
+        }
+
+        var barBmi = '<div class="progress-bar ' + barClass + '" style="width: ' + persen + '%" role="progressbar" aria-valuenow="' + persen + '" aria-valuemin="0" aria-valuemax="100">' + bmi +'</div>';
+
+        $('#bar_bmi').html(barBmi);
+    }
+
+    function printGelangPasien() {
+        window.open('printGelangPasien_checkupdetail.action?id=' + noCheckup, '_blank');
+    }
+
+    function hitungCoverBiaya() {
+        var jenis = $('#jenis_pasien').val();
+        console.log("hitungCoverBiaya.jenis -> "+jenis);
+        if("asuransi" == jenis){
+            CheckupDetailAction.getBiayaAsuransi(idDetailCheckup, function (response) {
+                console.log("hitungCoverBiaya.response -> "+response);
+                console.log(response);
+                if (response.coverBiaya != null && response.coverBiaya != '') {
+                    $('#status_asuransi').show();
+                    if (response.coverBiaya != null) {
+
+                        var coverBiaya = response.coverBiaya;
+                        var biayaTindakan = response.tarifTindakan;
+
+                        var persen = "";
+                        if (coverBiaya != '' && biayaTindakan) {
+                            persen = ((parseInt(biayaTindakan) / parseInt(coverBiaya)) * 100).toFixed(2);
+                        } else {
+                            persen = 0;
+                        }
+
+                        var barClass = "";
+                        var barLabel = "";
+
+                        if (parseInt(persen) > 70) {
+                            barClass = 'progress-bar-danger';
+                        } else if (parseInt(persen) > 50) {
+                            barClass = 'progress-bar-warning';
+                        } else {
+                            barClass = 'progress-bar-success';
+                        }
+
+                        var barBpjs = '<div class="progress-bar progress-bar-primary" style="width: 100%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">' + "100%" + '</div>';
+
+                        var barTindakan = '<div class="progress-bar ' + barClass + '" style="width: ' + persen + '%" role="progressbar" aria-valuenow="' + persen + '" aria-valuemin="0" aria-valuemax="100">' + persen + "%" + '</div>';
+
+                        if (coverBiaya != '') {
+                            $('#sts_cover_biaya_asuransi').html(barBpjs);
+                            $('#b_asuransi').html(formatRupiah(coverBiaya) + " (100%)");
+                        }
+
+                        if (biayaTindakan != '') {
+                            $('#sts_biaya_tindakan_asuransi').html(barTindakan);
+                            $('#b_tindakan_asuransi').html(formatRupiah(biayaTindakan) + " (" + persen + "%)");
+                        }
+                    }
+                } else {
+                    $('#status_asuransi').hide();
+                }
+            });
+        }
+    }
+
     function hitungStatusBiaya() {
         var jenis = $("#id_jenis_pasien").val();
         CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, "RI", function (response) {
@@ -4886,6 +5010,7 @@
     function saveResepObat() {
         $('#modal-ttd').modal('hide');
         var idDokter = $('#tin_id_dokter').val();
+        var jenisResep = $('#select-jenis-resep').val();
         var data = $('#tabel_rese_detail').tableToJSON();
         var stringData = JSON.stringify(data);
         var idPelayanan = $('#resep_apotek').val();
@@ -4900,7 +5025,7 @@
             $('#save_resep_head').hide();
             $('#load_resep_head').show();
             dwr.engine.setAsync(true);
-            PermintaanResepAction.saveResepPasien(idDetailCheckup, idPoli, idDokter, idPasien, stringData, idPelayanan, dataURL, {
+            PermintaanResepAction.saveResepPasien(idDetailCheckup, idPoli, idDokter, idPasien, stringData, idPelayanan, dataURL, jenisResep, {
                 callback: function (response) {
                     if (response == "success") {
                         dwr.engine.setAsync(false);
