@@ -894,6 +894,9 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
                 if ("Y".equalsIgnoreCase(withObat)){
 
+                    mapPajakObat.put("bukti", invoiceNumber);
+                    mapPajakObat.put("nilai", ppnObat);
+
                     hsCriteria.put("ppn_keluaran", mapPajakObat);
 
                     transId = "19";
