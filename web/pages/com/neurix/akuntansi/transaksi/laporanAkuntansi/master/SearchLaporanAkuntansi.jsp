@@ -69,7 +69,6 @@
     <section class="content-header">
         <h1>
             Laporan Akuntansi
-            <small>e-HEALTH</small>
         </h1>
     </section>
     <!-- Main content -->

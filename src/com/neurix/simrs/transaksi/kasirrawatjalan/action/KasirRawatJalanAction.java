@@ -32,6 +32,7 @@ import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsUangMukaPendaftaranEntity;
 import com.neurix.simrs.transaksi.checkupdetail.model.UangMuka;
+import com.neurix.simrs.transaksi.checkupdetail.model.*;
 import com.neurix.simrs.transaksi.kasirrawatjalan.bo.KasirRawatJalanBo;
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
 import com.neurix.simrs.transaksi.rawatinap.model.ItSimrsRawatInapEntity;
@@ -87,6 +88,15 @@ public class KasirRawatJalanAction extends BaseMasterAction {
     private File fileUpload;
     private String fileUploadFileName;
     private String fileUploadContentType;
+    private KlaimFpkDTO klaimFpkDTO;
+
+    public KlaimFpkDTO getKlaimFpkDTO() {
+        return klaimFpkDTO;
+    }
+
+    public void setKlaimFpkDTO(KlaimFpkDTO klaimFpkDTO) {
+        this.klaimFpkDTO = klaimFpkDTO;
+    }
 
     public String getFileUploadFileName() {
         return fileUploadFileName;
@@ -1001,6 +1011,14 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
     public String goToHasilCsv() {
         logger.info("[KasirRawatJalanAction.goToHasilCsv] start process >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+
+        KlaimFpkDTO dataFpk = (KlaimFpkDTO) session.getAttribute("summaryFpk");
+        long millis = System.currentTimeMillis();
+        java.util.Date date = new java.util.Date(millis);
+        String tglToday = new SimpleDateFormat("dd-MM-yyyy").format(date);
+        dataFpk.setStTanggalFpk(tglToday);
+        setKlaimFpkDTO(dataFpk);
 
         logger.info("[KasirRawatJalanAction.goToHasilCsv] end process <<<");
         return "hasil_import_csv";
@@ -1008,7 +1026,8 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
     public String prosesImportCsv() {
         logger.info("[KasirRawatJalanAction.prosesImportCsv] start process >>>");
-        List<HeaderDetailCheckup> listOfResult = new ArrayList<>();
+        List<KlaimFpkDTO> listOfResult = new ArrayList<>();
+        KlaimFpkDTO dataFpk = new KlaimFpkDTO();
         HttpSession session = ServletActionContext.getRequest().getSession();
 
         if (this.fileUpload != null) {
@@ -1040,6 +1059,12 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                     int x = 1;
                     try {
                         br = new BufferedReader(new FileReader(this.fileUpload));
+                        Integer jumlahSudahDiKlaim=0;
+                        Integer jumlahSepTidakAda=0;
+                        Integer jumlahBiayaBpjsKurangDariRs=0;
+                        Integer jumlahBiayaBpjsLebihDariRs=0;
+                        Integer jumlahBiayaBpjsSamaDenganRs=0;
+                        Integer jumlahSalah=0;
                         while ((line = br.readLine()) != null) {
                             //melewatkan judul nomor 1
                             if (x!=1){
@@ -1053,41 +1078,59 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                                 }
 
                                 //hasilnya
-                                HeaderDetailCheckup result = new HeaderDetailCheckup();
+                                KlaimFpkDTO result = new KlaimFpkDTO();
                                 result.setNoSep(data[0]);
-                                result.setTotalBiayaDariBpjs(new BigInteger(data[1]));
+                                result.setTotalBiayaBpjs(new BigInteger(data[1]));
 
                                 //dicari di tabel
                                 HeaderDetailCheckup search = new HeaderDetailCheckup();
                                 search.setNoSep(data[0]);
-                                List<ItSimrsHeaderDetailCheckupEntity> resultList = kasirRawatJalanBoProxy.getSearchCheckupBySep(data[0]);
-                                for (ItSimrsHeaderDetailCheckupEntity headerDetailCheckup : resultList){
-                                    result.setTotalBiaya(headerDetailCheckup.getTotalBiaya());
-                                    result.setStatus(headerDetailCheckup.getStatusBayar());
-                                    result.setIdDetailCheckup(headerDetailCheckup.getIdDetailCheckup());
+                                List<KlaimFpkDTO> resultList = kasirRawatJalanBoProxy.getSearchCheckupBySep(data[0]);
+                                for (KlaimFpkDTO dataKlaim : resultList){
+                                    result.setTotalBiaya(dataKlaim.getTotalBiaya());
+                                    result.setStatus(dataKlaim.getStatusBayar());
+                                    result.setIdDetailCheckup(dataKlaim.getIdDetailCheckup());
+                                    result.setNamaPasien(dataKlaim.getNamaPasien());
+                                    result.setIdPasien(dataKlaim.getIdPasien());
                                 }
+
                                 String statusBayar;
                                 if (("Y").equalsIgnoreCase(result.getStatus())){
                                     statusBayar="SB";
+                                    jumlahSudahDiKlaim=jumlahSudahDiKlaim+1;
                                 }else if (result.getTotalBiaya()==null){
                                     statusBayar="N";
-                                }else if (result.getTotalBiayaDariBpjs().compareTo(result.getTotalBiaya())<0){
+                                    jumlahSepTidakAda=jumlahSepTidakAda+1;
+                                }else if (result.getTotalBiayaBpjs().compareTo(result.getTotalBiaya())<0){
                                     statusBayar="KB";
-                                }else if (result.getTotalBiaya().compareTo(result.getTotalBiayaDariBpjs())<0){
+                                    jumlahBiayaBpjsKurangDariRs=jumlahBiayaBpjsKurangDariRs+1;
+                                }else if (result.getTotalBiaya().compareTo(result.getTotalBiayaBpjs())<0){
                                     statusBayar="LB";
-                                }else if (result.getTotalBiaya().compareTo(result.getTotalBiayaDariBpjs())==0){
+                                    jumlahBiayaBpjsLebihDariRs=jumlahBiayaBpjsLebihDariRs+1;
+                                }else if (result.getTotalBiaya().compareTo(result.getTotalBiayaBpjs())==0){
                                     statusBayar="P";
+                                    jumlahBiayaBpjsSamaDenganRs=jumlahBiayaBpjsSamaDenganRs+1;
                                 }else{
                                     statusBayar="UK";
+                                    jumlahSalah=jumlahSalah+1;
                                 }
                                 result.setStatusBayar(statusBayar);
-
+                                result.setStTotalBiayaBpjs(CommonUtil.numbericFormat(new BigDecimal(result.getTotalBiayaBpjs()),"###,###"));
+                                if (result.getTotalBiaya()==null){
+                                    result.setStTotalBiaya("0");
+                                }else{
+                                    result.setStTotalBiaya(CommonUtil.numbericFormat(new BigDecimal(result.getTotalBiaya()),"###,###"));
+                                }
                                 listOfResult.add(result);
                             }
                             x++;
                         }
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
+                        dataFpk.setJumlahSudahDiKlaim(jumlahSudahDiKlaim);
+                        dataFpk.setJumlahSepTidakAda(jumlahSepTidakAda);
+                        dataFpk.setJumlahBiayaBpjsKurangDariRs(jumlahBiayaBpjsKurangDariRs);
+                        dataFpk.setJumlahBiayaBpjsLebihDariRs(jumlahBiayaBpjsLebihDariRs);
+                        dataFpk.setJumlahBiayaBpjsSamaDenganRs(jumlahBiayaBpjsSamaDenganRs);
+                        dataFpk.setJumlahSalah(jumlahSalah);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -1109,97 +1152,25 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
         session.removeAttribute("listOfImportCsv");
         session.setAttribute("listOfImportCsv", listOfResult);
+        session.removeAttribute("summaryFpk");
+        session.setAttribute("summaryFpk", dataFpk);
 
         logger.info("[KasirRawatJalanAction.prosesImportCsv] end process <<<");
         return "hasil_import_csv";
     }
 
     public String saveImportCsv() {
+        logger.info("[KasirRawatJalanAction.saveImportCsv] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
-        HeaderDetailCheckup data = getHeaderDetailCheckup();
-        List<HeaderDetailCheckup> listCsvImport = (List<HeaderDetailCheckup>) session.getAttribute("listOfImportCsv");
-        List<Fpk> fpkList = new ArrayList<>();
-        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-        KasirRawatJalanBo kasirRawatJalanBo = (KasirRawatJalanBo) ctx.getBean("kasirRawatJalanBoProxy");
-        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
-        BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
 
-        for (HeaderDetailCheckup detailCheckup : listCsvImport){
-            Fpk fpk = new Fpk();
-            fpk.setNoFpk(data.getNoFpk());
-            fpk.setNoSep(detailCheckup.getNoSep());
-            fpk.setIdDetailCheckup(detailCheckup.getIdDetailCheckup());
-            fpk.setIdPasien(detailCheckup.getIdPasien());
-            fpk.setNoSlip(data.getNoSlipBank());
+        List<KlaimFpkDTO> listOfResult = (List<KlaimFpkDTO>) session.getAttribute("listOfImportCsv");
+        KlaimFpkDTO klaimFpkDTO = getKlaimFpkDTO();
 
-            fpkList.add(fpk);
-        }
+        Map mapping = kasirRawatJalanBoProxy.setMappingJurnalFpk(klaimFpkDTO,listOfResult);
+        kasirRawatJalanBoProxy.saveFpk(klaimFpkDTO,listOfResult);
+        billingSystemBoProxy.createJurnal("31",mapping,CommonUtil.userBranchLogin(),"Klaim BPJS dengan nomor FPK : "+klaimFpkDTO.getNoFpk()+" pada tanggal :" +klaimFpkDTO.getStTanggalFpk(),"Y");
 
-        // create map jurnal
-        List<Map> mapListKlaim = new ArrayList<>();
-        BigDecimal total = new BigDecimal(0);
-        for (Fpk fpk : fpkList){
-            HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
-            detailCheckup.setIdDetailCheckup(fpk.getIdDetailCheckup());
-
-            List<HeaderDetailCheckup> details = checkupDetailBo.getByCriteria(detailCheckup);
-            if (details.size() > 0){
-                for (HeaderDetailCheckup detail : details){
-                    BigDecimal nilai = checkupDetailBo.getSumJumlahTindakan(detail.getIdDetailCheckup(), "");
-                    BigDecimal nilaiObat = checkupDetailBo.getSumJumlahTindakan(detail.getIdDetailCheckup(), "resep");
-
-                    BigDecimal ppn = nilaiObat.multiply(new BigDecimal(0.1)).setScale(2, BigDecimal.ROUND_HALF_UP);
-                    BigDecimal totalNilai = nilai.add(ppn);
-
-                    total = total.add(totalNilai);
-
-                    Map mapKlaim = new HashMap();
-                    mapKlaim.put("bukti", detail.getInvoice());
-                    mapKlaim.put("pasien_id", fpk.getIdPasien());
-                    mapKlaim.put("nilai", totalNilai);
-                    mapListKlaim.add(mapKlaim);
-                }
-            }
-        }
-
-        String branchId = CommonUtil.userBranchLogin();
-        String userLogin = CommonUtil.userLogin();
-        Timestamp time = new Timestamp(System.currentTimeMillis());
-
-        Map mapJurnal = new HashMap();
-        mapJurnal.put("kas", total);
-        mapJurnal.put("piutang_pasien_bpjs", mapListKlaim);
-        mapJurnal.put("metode_bayar", "transfer");
-        mapJurnal.put("bank", data.getBank());
-
-        String noJurnal = "";
-        String catatan = "Pembayaran Piutang BPJS Bank "+data.getBank()+" No. FPK "+data.getNoFpk()+" No. Referensi "+data.getNoSlipBank();
-        try {
-            noJurnal = billingSystemBo.createJurnal("10", mapJurnal, branchId, catatan, "Y");
-            if (!"".equalsIgnoreCase(noJurnal)){
-                for (Fpk fpk : fpkList){
-                    HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
-                    detailCheckup.setIdDetailCheckup(fpk.getIdDetailCheckup());
-                    detailCheckup.setNoJurnal(noJurnal);
-                    detailCheckup.setBranchId(branchId);
-                    detailCheckup.setAction("U");
-                    detailCheckup.setLastUpdate(time);
-                    detailCheckup.setLastUpdateWho(userLogin);
-
-                    try {
-                        checkupDetailBo.saveUpdateNoJuran(detailCheckup);
-                    } catch (GeneralBOException e){
-                        logger.error("Found Error");
-                        throw new GeneralBOException(e.getMessage());
-                    }
-                }
-            }
-            kasirRawatJalanBo.pembayaranFPK(fpkList);
-        }catch (GeneralBOException e){
-            logger.error("Found Error");
-            throw new GeneralBOException(e.getMessage());
-        }
-
+        logger.info("[KasirRawatJalanAction.saveImportCsv] end process <<<");
         return "success_save_import_fpk";
     }
 
@@ -1425,6 +1396,15 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             return headerDetailCheckupEntity.getCoverBiaya().toString();
         }
         return  "0";
+    }
+
+    public List<RiwayatTindakanDTO> getRiwayatTindakanDanDokter (String idDetailCheckup){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+
+        List<RiwayatTindakanDTO> riwayatTindakanList  = checkupDetailBo.getRiwayatTindakanDanDokter(idDetailCheckup);
+
+        return riwayatTindakanList;
     }
 
     @Override

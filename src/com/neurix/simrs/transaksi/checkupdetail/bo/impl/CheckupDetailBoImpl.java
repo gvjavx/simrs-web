@@ -27,6 +27,7 @@ import com.neurix.simrs.transaksi.checkupdetail.dao.UangMukaDao;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsUangMukaPendaftaranEntity;
+import com.neurix.simrs.transaksi.checkupdetail.model.RiwayatTindakanDTO;
 import com.neurix.simrs.transaksi.diagnosarawat.dao.DiagnosaRawatDao;
 import com.neurix.simrs.transaksi.diagnosarawat.model.DiagnosaRawat;
 import com.neurix.simrs.transaksi.diagnosarawat.model.ItSimrsDiagnosaRawatEntity;
@@ -1417,6 +1418,13 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             logger.info("[CheckupDetailBoImpl.saveTtd] End >>>>>>>");
 
         }
+    }
+
+    @Override
+    public List<RiwayatTindakanDTO> getRiwayatTindakanDanDokter(String idDetailCheckup) throws GeneralBOException {
+        logger.info("[CheckupDetailBoImpl.getRiwayatTindakanDanDokter] START >>>>");
+        logger.info("[CheckupDetailBoImpl.getRiwayatTindakanDanDokter] END <<<");
+        return checkupDetailDao.getRiwayatTindakanDanDokter(idDetailCheckup);
     }
 
     public void setCheckupDetailDao(CheckupDetailDao checkupDetailDao) {

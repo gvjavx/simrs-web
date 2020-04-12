@@ -390,16 +390,16 @@
                     </div>
                     <div class="col-md-6">
                         <div style="display: none" id="pilih_bank">
-                            <div class="row">
-                        <div class="form-group">
-                            <label class="col-md-3" style="margin-top: 7px">Bank</label>
-                            <div class="col-md-8">
-                                <select class="form-control select2" id="bank" style="width: 100%">
-                                    <option value="">[Select One]</option>
-                                </select>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-md-3" style="margin-top: 7px">Bank</label>
+                                <div class="col-md-8">
+                                    <select class="form-control select2" id="bank" style="width: 100%">
+                                        <option value="">[Select One]</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                            </div>
                             <div class="row">
                                 <div class="form-group">
                                     <label class="col-md-3" style="margin-top: 7px">No Kartu</label>
