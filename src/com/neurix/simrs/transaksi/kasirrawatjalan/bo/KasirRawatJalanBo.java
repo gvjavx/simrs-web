@@ -14,6 +14,7 @@ import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
 import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
 
 import java.util.List;
+import java.util.Map;
 
 public interface KasirRawatJalanBo {
     public List<RiwayatTindakan> getListAllTindakan(RiwayatTindakan bean) throws GeneralBOException;
@@ -27,4 +28,8 @@ public interface KasirRawatJalanBo {
     List<KlaimFpkDTO> getSearchCheckupBySep(String noSep) throws GeneralBOException;
     public CheckResponse saveRefund(String id) throws GeneralBOException;
     public List<ImAkunPembayaranEntity> getListPembayaran() throws GeneralBOException;
+
+    Map setMappingJurnalFpk(KlaimFpkDTO data,List<KlaimFpkDTO> listOfKlaim);
+
+    void saveFpk(KlaimFpkDTO klaimFpkDTO, List<KlaimFpkDTO> listData) throws GeneralBOException;
 }

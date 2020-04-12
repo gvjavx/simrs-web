@@ -10,6 +10,33 @@ public class RiwayatTindakanDTO {
     private String ketTindakan;
     private BigInteger totalTarif;
     private String stTotalTarif;
+    private String idPoli;
+    private String koderingPoli;
+    private String namaPoli;
+
+    public String getIdPoli() {
+        return idPoli;
+    }
+
+    public void setIdPoli(String idPoli) {
+        this.idPoli = idPoli;
+    }
+
+    public String getKoderingPoli() {
+        return koderingPoli;
+    }
+
+    public void setKoderingPoli(String koderingPoli) {
+        this.koderingPoli = koderingPoli;
+    }
+
+    public String getNamaPoli() {
+        return namaPoli;
+    }
+
+    public void setNamaPoli(String namaPoli) {
+        this.namaPoli = namaPoli;
+    }
 
     public String getStTotalTarif() {
         return stTotalTarif;

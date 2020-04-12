@@ -110,11 +110,16 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 "\trt.id_tindakan as idtindakan,\n" +
                 "\trt.nama_tindakan as namatindakan,\n" +
                 "\trt.keterangan as kettindakan,\n" +
-                "\trt.total_tarif as total\n" +
+                "\trt.total_tarif as total,\n" +
+                "\tdc.id_pelayanan as idpoli,\n" +
+                "\tp.nama_pelayanan as namapelayanan,\n" +
+                "\tp.kodering\n" +
                 "from \n" +
                 "\tit_simrs_riwayat_tindakan rt\n" +
                 "\tLEFT JOIN it_simrs_dokter_team dt ON rt.id_detail_checkup = dt.id_detail_checkup\n" +
                 "\tLEFT JOIN im_simrs_dokter d ON d.id_dokter = dt.id_dokter\n" +
+                "\tLEFT JOIN it_simrs_header_detail_checkup dc ON dc.id_detail_checkup=rt.id_detail_checkup\n" +
+                "\tLEFT JOIN im_simrs_pelayanan p ON p.id_pelayanan = dc.id_pelayanan\n" +
                 "WHERE\n" +
                 "\trt.id_detail_checkup='"+id+"'\n" +
                 "\tAND rt.flag='Y'\n" +
@@ -132,6 +137,10 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
             riwayatTindakanDTO.setKetTindakan((String) row[4]);
             riwayatTindakanDTO.setTotalTarif(BigInteger.valueOf(Long.parseLong((row[5].toString()))));
             riwayatTindakanDTO.setStTotalTarif(CommonUtil.numbericFormat(new BigDecimal(riwayatTindakanDTO.getTotalTarif()),"###,###"));
+            riwayatTindakanDTO.setIdPoli((String) row[6]);
+            riwayatTindakanDTO.setNamaPoli((String) row[7]);
+            riwayatTindakanDTO.setKoderingPoli((String) row[8]);
+
 
             listOfResult.add(riwayatTindakanDTO);
         }

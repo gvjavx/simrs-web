@@ -10107,7 +10107,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
 
         dataPayroll.put("kas",total);
         dataPayroll.put("metode_bayar","transfer");
-        dataPayroll.put("bank","mandiri");
+        dataPayroll.put("bank","1.1.01.02.03");
         return dataPayroll;
     }
 

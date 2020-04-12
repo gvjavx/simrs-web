@@ -9,15 +9,15 @@
     <%@ include file="/pages/common/header.jsp" %>
     <script type='text/javascript' src='<s:url value="/dwr/interface/KasirRawatJalanAction.js"/>'></script>
     <script type="text/javascript">
-        $(document).ready(function () {
-            function callSearch2() {
-                $('#view_dialog_menu').dialog('close');
-                $('#info_dialog').dialog('close');
-            }
-            function link(){
-                window.location.href="<s:url action='initForm_createfpk'/>";
-            }
+        function callSearch2() {
+            $('#view_dialog_menu').dialog('close');
+            $('#info_dialog').dialog('close');
+        }
+        function link(){
+            window.location.href="<s:url action='initForm_createfpk'/>";
+        }
 
+        $(document).ready(function () {
             $('#sortTable2').DataTable({
                 "order": [[1, "desc"]],
                 "columnDefs": [
@@ -35,12 +35,34 @@
                 $('#info_dialog').dialog('close');
             };
             $.subscribe('beforeProcessSave', function (event, data) {
-                if (confirm('Do you want to proses this record?')) {
-                    event.originalEvent.options.submit = true;
-                    $.publish('showDialog');
-                } else {
+                var noFpk = $('#noFpk').val();
+                var tanggal = $('#tanggal_fpk').val();
+                var jumlahbiayabpjskurangrs=parseInt($('#jumlah_bpjs_kd_rs').val());
+                var jumlahbiayabpjslebihrs=parseInt($('#jumlah_bpjs_ld_rs').val());
+                var jumlahbiayabpjssdrs=parseInt($('#jumlah_bpjs_sd_rs').val());
+                if (noFpk!=''&&tanggal!='') {
+                    if (jumlahbiayabpjskurangrs==0&&jumlahbiayabpjslebihrs==0&&jumlahbiayabpjssdrs==0){
+                        event.originalEvent.options.submit = false;
+                        var msg='<strong>Tidak ada data yang valid</strong>' + '<br/>';
+                        document.getElementById('errorValidationMessage').innerHTML = msg;
+                        $.publish('showErrorValidationDialog');
+                    } else{
+                        if (confirm('Do you want to proses this record?')) {
+                            event.originalEvent.options.submit = true;
+                            $.publish('showDialog');
+                        } else {
+                            event.originalEvent.options.submit = false;
+                        }
+                    }
+                }else{
                     event.originalEvent.options.submit = false;
                     var msg="";
+                    if ( noFpk == '') {
+                        msg += 'Field <strong>No. FPK</strong> is required.' + '<br/>';
+                    }
+                    if ( tanggal == '') {
+                        msg += 'Field <strong>Tanggal</strong> is required.' + '<br/>';
+                    }
                     document.getElementById('errorValidationMessage').innerHTML = msg;
                     $.publish('showErrorValidationDialog');
                 }
@@ -89,30 +111,10 @@
                         <div class="box-body">
                             <div class="row">
                                 <div class="form-group">
-                                    <label class="col-sm-offset-2 col-sm-3" style="margin-top: 7px">Bank</label>
-                                    <div class="col-sm-4">
-                                        <select class="form-control select2" name="headerDetailCheckup.bank" id="bank" style="width: 100%">
-                                            <option value="">[Select One]</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group">
                                     <label class="control-label col-sm-offset-2 col-sm-3" style="margin-top: 7px">No. FPK</label>
                                     <div class="col-sm-4">
-                                        <s:textfield id="npFpk" cssStyle="margin-top: 7px"
-                                                     name="headerDetailCheckup.noFpk" required="false"
-                                                     readonly="false" cssClass="form-control"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group">
-                                    <label class="control-label col-sm-offset-2 col-sm-3" style="margin-top: 7px">No. Slip</label>
-                                    <div class="col-sm-4">
-                                        <s:textfield id="noSlipBank" cssStyle="margin-top: 7px"
-                                                     name="headerDetailCheckup.noSlipBank" required="false"
+                                        <s:textfield id="noFpk" cssStyle="margin-top: 7px"
+                                                     name="klaimFpkDTO.noFpk" required="false"
                                                      readonly="false" cssClass="form-control"/>
                                     </div>
                                 </div>
@@ -125,7 +127,7 @@
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </div>
-                                            <input class="form-control datepicker" id="tanggal_fpk" name="headerDetailCheckup.stTanggalFpk">
+                                            <input class="form-control datepicker2" id="tanggal_fpk" name="klaimFpkDTO.stTanggalFpk">
                                         </div>
                                     </div>
                                 </div>
@@ -141,7 +143,7 @@
                                             <div class="form-group">
                                                 <label class="control-label col-sm-offset-2 col-sm-3" style="margin-top: 7px">Jumlah SEP Sudah Di Klam </label>
                                                 <div class="col-sm-4">
-                                                    <s:textfield name="klaimFpkDTO.jumlahSudahDiKlaim"
+                                                    <s:textfield name="klaimFpkDTO.jumlahSudahDiKlaim" id="sep_sudah_diklaim"
                                                                  readonly="true" cssClass="form-control" />
                                                 </div>
                                             </div>
@@ -150,7 +152,7 @@
                                             <div class="form-group">
                                                 <label class="control-label col-sm-offset-2 col-sm-3" style="margin-top: 7px">Jumlah Data Tidak Ada</label>
                                                 <div class="col-sm-4">
-                                                    <s:textfield name="klaimFpkDTO.jumlahSepTidakAda" cssStyle="margin-top: 7px"
+                                                    <s:textfield name="klaimFpkDTO.jumlahSepTidakAda" cssStyle="margin-top: 7px" id="data_sudah_ada"
                                                                  readonly="true" cssClass="form-control" />
                                                 </div>
                                             </div>
@@ -159,7 +161,7 @@
                                             <div class="form-group">
                                                 <label class="control-label col-sm-offset-2 col-sm-3" style="margin-top: 7px">Jumlah Biaya BPJS < Biaya RS </label>
                                                 <div class="col-sm-4">
-                                                    <s:textfield name="klaimFpkDTO.jumlahBiayaBpjsKurangDariRs" cssStyle="margin-top: 7px"
+                                                    <s:textfield name="klaimFpkDTO.jumlahBiayaBpjsKurangDariRs" cssStyle="margin-top: 7px" id="jumlah_bpjs_kd_rs"
                                                                  readonly="true" cssClass="form-control" />
                                                 </div>
                                             </div>
@@ -168,7 +170,7 @@
                                             <div class="form-group">
                                                 <label class="control-label col-sm-offset-2 col-sm-3" style="margin-top: 7px">Jumlah Biaya BPJS > Biaya RS </label>
                                                 <div class="col-sm-4">
-                                                    <s:textfield name="klaimFpkDTO.jumlahBiayaBpjsLebihDariRs" cssStyle="margin-top: 7px"
+                                                    <s:textfield name="klaimFpkDTO.jumlahBiayaBpjsLebihDariRs" cssStyle="margin-top: 7px" id="jumlah_bpjs_ld_rs"
                                                                  readonly="true" cssClass="form-control" />
                                                 </div>
                                             </div>
@@ -177,7 +179,7 @@
                                             <div class="form-group">
                                                 <label class="control-label col-sm-offset-2 col-sm-3" style="margin-top: 7px">Jumlah Biaya BPJS = Biaya RS </label>
                                                 <div class="col-sm-4">
-                                                    <s:textfield name="klaimFpkDTO.jumlahBiayaBpjsSamaDenganRs" cssStyle="margin-top: 7px"
+                                                    <s:textfield name="klaimFpkDTO.jumlahBiayaBpjsSamaDenganRs" cssStyle="margin-top: 7px" id="jumlah_bpjs_sd_rs"
                                                                  readonly="true" cssClass="form-control" />
                                                 </div>
                                             </div>
@@ -186,7 +188,7 @@
                                             <div class="form-group">
                                                 <label class="control-label col-sm-offset-2 col-sm-3" style="margin-top: 7px">Jumlah Data Salah </label>
                                                 <div class="col-sm-4">
-                                                    <s:textfield name="klaimFpkDTO.jumlahSalah" cssStyle="margin-top: 7px"
+                                                    <s:textfield name="klaimFpkDTO.jumlahSalah" cssStyle="margin-top: 7px" id="jumlah_data_salah"
                                                                  readonly="true" cssClass="form-control" />
                                                 </div>
                                             </div>
@@ -194,9 +196,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <br>
-                            <br>
-                            <div class="form-group col-md-offset-4">
+                            <div class="form-group col-md-offset-5">
                                 <br>
                                 <sj:submit targets="crud" type="button" cssClass="btn btn-primary"
                                            formIds="saveImportCsv" id="save" name="save"
@@ -211,8 +211,6 @@
                                     <i class="fa fa-arrow-left"></i> Go Back
                                 </a>
                             </div>
-                            <br>
-                            <br>
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="box-header with-border"></div>
@@ -264,7 +262,7 @@
                                                     </td>
                                                     <td  align="center">
                                                         <s:if test='#row.statusBayar != "N"'>
-                                                            <img onclick="detailCheckup('<s:property value="idDetailCheckup"/>','<s:property value="noSep"/>','<s:property value="idPasien"/>','<s:property value="namaPasien"/>','<s:property value="stTotalBiaya"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-search-25.png"/>" style="cursor: pointer;">
+                                                            <img onclick="detailCheckup('<s:property value="idDetailCheckup"/>','<s:property value="noSep"/>','<s:property value="idPasien"/>','<s:property value="namaPasien"/>','<s:property value="stTotalBiaya"/>','<s:property value="stTotalBiayaBpjs"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-search-25.png"/>" style="cursor: pointer;">
                                                         </s:if>
                                                     </td>
                                                 </tr>
@@ -291,17 +289,17 @@
                                         </center>
                                     </sj:dialog>
 
-                                    <sj:dialog id="info_dialog" openTopics="showInfoDialog45" modal="true" resizable="false"
+                                    <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false"
                                                height="200" width="400" autoOpen="false" title="Infomation Dialog"
                                                buttons="{
                                                               'OK':function() {
-                                                                      callSearch2();
+                                                                        callSearch2();
                                                                       link();
                                                                    }
                                                             }"
                                     >
                                         <img border="0" src="<s:url value="/pages/images/icon_success.png"/>" name="icon_success">
-                                        Inquiring has been successfully.
+                                        FPK has been successfully created.
                                     </sj:dialog>
 
                                     <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
@@ -347,7 +345,7 @@
 </body>
 </html>
 <div class="modal fade" id="modal-detail-checkup">
-    <div class="modal-dialog modal-md">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -378,11 +376,16 @@
                                 <td><b>Total Biaya RS</b></td>
                                 <td><span id="det_total_biaya_rs"></span></td>
                             </tr>
+                            <tr>
+                                <td><b>Total Biaya BPJS</b></td>
+                                <td><span id="det_total_biaya_bpjs"></span></td>
+                            </tr>
                         </table>
                     </div>
                 </div>
                 <table class="table table-bordered">
                     <thead>
+                    <td>Poli</td>
                     <td>Nama Dokter</td>
                     <td>Nama Tindakan</td>
                     <td>Biaya</td>
@@ -400,12 +403,13 @@
 </div>
 
 <script>
-    function detailCheckup(idDetailCheckup,noSep,idPasien,namaPasien,totalBiayaRs){
+    function detailCheckup(idDetailCheckup,noSep,idPasien,namaPasien,totalBiayaRs,totalBiayaBpjs){
         $('#det_id_detail_checkup').text(idDetailCheckup);
         $('#det_id_pasien').text(idPasien);
         $('#det_nama_pasien').text(namaPasien);
         $('#det_no_sep').text(noSep);
         $('#det_total_biaya_rs').text(totalBiayaRs);
+        $('#det_total_biaya_bpjs').text(totalBiayaBpjs);
         $('#body_detail').html('');
 
         var table = "";
@@ -413,6 +417,7 @@
             if(response.length > 0){
                 $.each(response, function (i, item) {
                     table += '<tr>' +
+                        '<td>'+item.namaPoli+'</td>'+
                         '<td>'+item.namaDokter+'</td>'+
                         '<td>'+item.namaTindakan+'</td>'+
                         '<td>'+item.stTotalTarif+'</td>'+

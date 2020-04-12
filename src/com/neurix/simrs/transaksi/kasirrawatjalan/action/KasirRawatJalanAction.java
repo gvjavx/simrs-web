@@ -1001,6 +1001,10 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
 
         KlaimFpkDTO dataFpk = (KlaimFpkDTO) session.getAttribute("summaryFpk");
+        long millis = System.currentTimeMillis();
+        java.util.Date date = new java.util.Date(millis);
+        String tglToday = new SimpleDateFormat("dd-MM-yyyy").format(date);
+        dataFpk.setStTanggalFpk(tglToday);
         setKlaimFpkDTO(dataFpk);
 
         logger.info("[KasirRawatJalanAction.goToHasilCsv] end process <<<");
@@ -1143,91 +1147,17 @@ public class KasirRawatJalanAction extends BaseMasterAction {
     }
 
     public String saveImportCsv() {
+        logger.info("[KasirRawatJalanAction.saveImportCsv] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
-        HeaderDetailCheckup data = getHeaderDetailCheckup();
-        List<HeaderDetailCheckup> listCsvImport = (List<HeaderDetailCheckup>) session.getAttribute("listOfImportCsv");
-        List<Fpk> fpkList = new ArrayList<>();
-        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-        KasirRawatJalanBo kasirRawatJalanBo = (KasirRawatJalanBo) ctx.getBean("kasirRawatJalanBoProxy");
-        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
-        BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
 
-        for (HeaderDetailCheckup detailCheckup : listCsvImport){
-            Fpk fpk = new Fpk();
-            fpk.setNoFpk(data.getNoFpk());
-            fpk.setNoSep(detailCheckup.getNoSep());
-            fpk.setIdDetailCheckup(detailCheckup.getIdDetailCheckup());
-            fpk.setIdPasien(detailCheckup.getIdPasien());
-            fpk.setNoSlip(data.getNoSlipBank());
+        List<KlaimFpkDTO> listOfResult = (List<KlaimFpkDTO>) session.getAttribute("listOfImportCsv");
+        KlaimFpkDTO klaimFpkDTO = getKlaimFpkDTO();
 
-            fpkList.add(fpk);
-        }
+        Map mapping = kasirRawatJalanBoProxy.setMappingJurnalFpk(klaimFpkDTO,listOfResult);
+        kasirRawatJalanBoProxy.saveFpk(klaimFpkDTO,listOfResult);
+        billingSystemBoProxy.createJurnal("31",mapping,CommonUtil.userBranchLogin(),"Klaim BPJS dengan nomor FPK : "+klaimFpkDTO.getNoFpk()+" pada tanggal :" +klaimFpkDTO.getStTanggalFpk(),"Y");
 
-        // create map jurnal
-        List<Map> mapListKlaim = new ArrayList<>();
-        BigDecimal total = new BigDecimal(0);
-        for (Fpk fpk : fpkList){
-            HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
-            detailCheckup.setIdDetailCheckup(fpk.getIdDetailCheckup());
-
-            List<HeaderDetailCheckup> details = checkupDetailBo.getByCriteria(detailCheckup);
-            if (details.size() > 0){
-                for (HeaderDetailCheckup detail : details){
-                    BigDecimal nilai = checkupDetailBo.getSumJumlahTindakan(detail.getIdDetailCheckup(), "");
-                    BigDecimal nilaiObat = checkupDetailBo.getSumJumlahTindakan(detail.getIdDetailCheckup(), "resep");
-
-                    BigDecimal ppn = nilaiObat.multiply(new BigDecimal(0.1)).setScale(2, BigDecimal.ROUND_HALF_UP);
-                    BigDecimal totalNilai = nilai.add(ppn);
-
-                    total = total.add(totalNilai);
-
-                    Map mapKlaim = new HashMap();
-                    mapKlaim.put("bukti", detail.getInvoice());
-                    mapKlaim.put("pasien_id", fpk.getIdPasien());
-                    mapKlaim.put("nilai", totalNilai);
-                    mapListKlaim.add(mapKlaim);
-                }
-            }
-        }
-
-        String branchId = CommonUtil.userBranchLogin();
-        String userLogin = CommonUtil.userLogin();
-        Timestamp time = new Timestamp(System.currentTimeMillis());
-
-        Map mapJurnal = new HashMap();
-        mapJurnal.put("kas", total);
-        mapJurnal.put("piutang_pasien_bpjs", mapListKlaim);
-        mapJurnal.put("metode_bayar", "transfer");
-        mapJurnal.put("bank", data.getBank());
-
-        String noJurnal = "";
-        String catatan = "Pembayaran Piutang BPJS Bank "+data.getBank()+" No. FPK "+data.getNoFpk()+" No. Referensi "+data.getNoSlipBank();
-        try {
-            noJurnal = billingSystemBo.createJurnal("10", mapJurnal, branchId, catatan, "Y");
-            if (!"".equalsIgnoreCase(noJurnal)){
-                for (Fpk fpk : fpkList){
-                    HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
-                    detailCheckup.setIdDetailCheckup(fpk.getIdDetailCheckup());
-                    detailCheckup.setNoJurnal(noJurnal);
-                    detailCheckup.setBranchId(branchId);
-                    detailCheckup.setAction("U");
-                    detailCheckup.setLastUpdate(time);
-                    detailCheckup.setLastUpdateWho(userLogin);
-
-                    try {
-                        checkupDetailBo.saveUpdateNoJuran(detailCheckup);
-                    } catch (GeneralBOException e){
-                        logger.error("Found Error");
-                        throw new GeneralBOException(e.getMessage());
-                    }
-                }
-            }
-            kasirRawatJalanBo.pembayaranFPK(fpkList);
-        }catch (GeneralBOException e){
-            logger.error("Found Error");
-            throw new GeneralBOException(e.getMessage());
-        }
-
+        logger.info("[KasirRawatJalanAction.saveImportCsv] end process <<<");
         return "success_save_import_fpk";
     }
 

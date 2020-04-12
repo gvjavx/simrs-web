@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.checkupdetail.model;
 
 import java.math.BigInteger;
+import java.sql.Date;
 
 public class KlaimFpkDTO {
     private String idDetailCheckup;
@@ -13,6 +14,8 @@ public class KlaimFpkDTO {
     private String stTotalBiayaBpjs;
     private String statusBayar;
     private String status;
+    private String koderingPoli;
+    private String poliName;
 
     private Integer jumlahSudahDiKlaim;
     private Integer jumlahSepTidakAda;
@@ -20,6 +23,87 @@ public class KlaimFpkDTO {
     private Integer jumlahBiayaBpjsLebihDariRs;
     private Integer jumlahBiayaBpjsSamaDenganRs;
     private Integer jumlahSalah;
+
+    //for save
+    private String noFpk;
+    private String stTanggalFpk;
+    private Date tanggalFpk;
+    private Integer jumlahSeluruhnya;
+    private Integer jumlahSelisih;
+    private String stJumlahSelisih;
+    private String stJumlahSeluruhnya;
+
+    public Integer getJumlahSelisih() {
+        return jumlahSelisih;
+    }
+
+    public void setJumlahSelisih(Integer jumlahSelisih) {
+        this.jumlahSelisih = jumlahSelisih;
+    }
+
+    public String getStJumlahSelisih() {
+        return stJumlahSelisih;
+    }
+
+    public void setStJumlahSelisih(String stJumlahSelisih) {
+        this.stJumlahSelisih = stJumlahSelisih;
+    }
+
+    public Integer getJumlahSeluruhnya() {
+        return jumlahSeluruhnya;
+    }
+
+    public void setJumlahSeluruhnya(Integer jumlahSeluruhnya) {
+        this.jumlahSeluruhnya = jumlahSeluruhnya;
+    }
+
+    public String getStJumlahSeluruhnya() {
+        return stJumlahSeluruhnya;
+    }
+
+    public void setStJumlahSeluruhnya(String stJumlahSeluruhnya) {
+        this.stJumlahSeluruhnya = stJumlahSeluruhnya;
+    }
+
+    public String getKoderingPoli() {
+        return koderingPoli;
+    }
+
+    public void setKoderingPoli(String koderingPoli) {
+        this.koderingPoli = koderingPoli;
+    }
+
+    public String getPoliName() {
+        return poliName;
+    }
+
+    public void setPoliName(String poliName) {
+        this.poliName = poliName;
+    }
+
+    public String getNoFpk() {
+        return noFpk;
+    }
+
+    public void setNoFpk(String noFpk) {
+        this.noFpk = noFpk;
+    }
+
+    public String getStTanggalFpk() {
+        return stTanggalFpk;
+    }
+
+    public void setStTanggalFpk(String stTanggalFpk) {
+        this.stTanggalFpk = stTanggalFpk;
+    }
+
+    public Date getTanggalFpk() {
+        return tanggalFpk;
+    }
+
+    public void setTanggalFpk(Date tanggalFpk) {
+        this.tanggalFpk = tanggalFpk;
+    }
 
     public String getStatusBayar() {
         return statusBayar;
