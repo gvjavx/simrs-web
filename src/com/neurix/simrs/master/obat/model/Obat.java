@@ -65,6 +65,15 @@ public class Obat extends BaseModel {
     private String idRetureObat;
 
     private String stTglRetur;
+    private String noJurnal;
+
+    public String getNoJurnal() {
+        return noJurnal;
+    }
+
+    public void setNoJurnal(String noJurnal) {
+        this.noJurnal = noJurnal;
+    }
 
     public String getStTglRetur() {
         return stTglRetur;

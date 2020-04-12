@@ -974,6 +974,7 @@ public class ObatBoImpl implements ObatBo {
             returObatEntity.setCreatedDate(bean.getCreatedDate());
             returObatEntity.setLastUpdate(bean.getLastUpdate());
             returObatEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            returObatEntity.setNoJurnal(bean.getNoJurnal());
 
             try {
                 returObatDao.addAndSave(returObatEntity);
