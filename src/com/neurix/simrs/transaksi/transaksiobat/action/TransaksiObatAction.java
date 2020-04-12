@@ -1394,7 +1394,7 @@ public class TransaksiObatAction extends BaseMasterAction {
         String branchId = CommonUtil.userBranchLogin();
         String pelayananId = CommonUtil.userPelayananIdLogin();
 
-        BigDecimal pendapatan = new BigDecimal(trans.getTotalBayar().subtract(trans.getPpnBayar()).toString());
+        BigDecimal pendapatan = new BigDecimal(trans.getTotalBayar().add(trans.getPpnBayar()).toString());
         BigDecimal ppn = new BigDecimal(trans.getPpnBayar().toString());
 
         JurnalResponse jurnalResponse = new JurnalResponse();
@@ -1412,10 +1412,10 @@ public class TransaksiObatAction extends BaseMasterAction {
 
         // create jurnal
         Map hsCriteria = new HashMap();
-        hsCriteria.put("master_id", "");
+        hsCriteria.put("master_id", masterId);
         hsCriteria.put("divisi_id", divisiId);
-        hsCriteria.put("kas", new BigDecimal(trans.getTotalBayar()));
-        hsCriteria.put("pendapatan_obat_umum", pendapatan);
+        hsCriteria.put("kas",  pendapatan);
+        hsCriteria.put("pendapatan_obat_umum",new BigDecimal(trans.getTotalBayar()));
         hsCriteria.put("ppn_keluaran", ppn);
 
         String noJurnal = "";

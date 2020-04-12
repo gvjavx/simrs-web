@@ -892,18 +892,23 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
                 hsCriteria.put("piutang_pasien_asuransi", mapPiutang);
 
-                if ("Y".equalsIgnoreCase(withObat)){
-
-                    mapPajakObat.put("bukti", invoiceNumber);
-                    mapPajakObat.put("nilai", ppnObat);
-
-                    hsCriteria.put("ppn_keluaran", mapPajakObat);
-
-                    transId = "19";
-                    ketTerangan = "Closing pasien rawat jalan Asuransi piutang dan Tunai dengan obat";
+                if ("JRI".equalsIgnoreCase(type)){
+                    transId = "26";
+                    ketTerangan = "Closing pasien rawat Inap Asuransi piutang dan Tunai";
                 } else {
-                    transId = "11";
-                    ketTerangan = "Closing pasien rawat jalan Asuransi piutang dan Tunai tanpa obat";
+                    if ("Y".equalsIgnoreCase(withObat)){
+
+                        mapPajakObat.put("bukti", invoiceNumber);
+                        mapPajakObat.put("nilai", ppnObat);
+
+                        hsCriteria.put("ppn_keluaran", mapPajakObat);
+
+                        transId = "19";
+                        ketTerangan = "Closing pasien rawat jalan Asuransi piutang dan Tunai dengan obat";
+                    } else {
+                        transId = "11";
+                        ketTerangan = "Closing pasien rawat jalan Asuransi piutang dan Tunai tanpa obat";
+                    }
                 }
 
             } else {
