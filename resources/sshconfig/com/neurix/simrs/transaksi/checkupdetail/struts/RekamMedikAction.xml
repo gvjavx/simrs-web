@@ -96,6 +96,83 @@
                 <param name="reportParameters">reportParams</param>
             </result>
 
+            <result name="print_gagal_sep" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/printSuratGagalCetakSEP.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+
+            <result name="print_selisih_bayar" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/printSuratSelisihBiaya.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+
+            <result name="print_penolakan_tindakan" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/printSuratPenolakanTindakan.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+
+            <result name="print_surat_kematian" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/printSuratKematian.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+
+            <result name="print_pengantar_jensah" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/printSuratPengantarJenasah.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+
+            <result name="print_non_bpjs" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/printPenyataanNonBpjs.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+
+            <result name="print_kronologi" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/printSuratKronologi.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+
+            <result name="print_rawat_inap" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/printPermintaanRawatInap.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+
+            <result name="print_keterangan_dokter" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/printSuratKeteranganDokter.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+
+            <result name="print_kamar_penuh" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/printKeteranganKamarPenuh.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+
+            <result name="print_keterangan_kesehatan" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/printSuratSehat.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+
         </action>
 
     </package>

@@ -558,6 +558,16 @@
       <convert converter="bean" match="com.neurix.simrs.transaksi.permintaanvendor.model.BatchPermintaanObat"/>
       <convert converter="bean" match="com.neurix.akuntansi.master.pembayaran.model.ImAkunPembayaranEntity"/>
 
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.fisioterapi.action.FisioterapiAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.fisioterapi.model.Fisioterapi"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.fisioterapi.model.MonitoringFisioterapi"/>
+
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.asesmenugd.action.AsesmenUgdAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.asesmenugd.model.AsesmenUgd"/>
   </allow>
 
 </dwr>

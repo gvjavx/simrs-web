@@ -412,6 +412,10 @@
 
                 <value>sshconfig/com/neurix/akuntansi/master/pembayaran/hibernate/ImAkunPembayaranEntity.hbm.xml</value>
 
+                <value>sshconfig/com/neurix/simrs/transaksi/fisioterapi/hibernate/ItSimrsFisioterapiEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/fisioterapi/hibernate/ItSimrsMonitoringFisioterapiEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/asesmenugd/hibernate/ItSimrsAsesmenUgdEntity.hbm.xml</value>
+
             </list>
         </property>
     </bean>
