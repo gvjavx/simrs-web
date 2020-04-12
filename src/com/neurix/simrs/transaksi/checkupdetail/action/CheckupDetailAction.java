@@ -1109,6 +1109,16 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                         //**** PTPN ***//
 
+                        // kredit jumlah tindakan asuransi
+                        hsCriteria.put("pendapatan_rawat_jalan_bpjs", jumlahTindakan);
+
+                        // dengan pembayaran tunai di luar cover asuransi
+                        if (jumlahTindakan.compareTo(biayaCover) == 1){
+//                            BigDecimal jumlahTunai = jumlah.subtract(biayaCover);
+//                            hsCriteria.put("pendapatan_rawat_jalan_umum", jumlahTunai);
+                            response.setStatus("success");
+                            return response;
+                        }
 
                     } else {
 
@@ -1247,6 +1257,18 @@ public class CheckupDetailAction extends BaseMasterAction {
             logger.error("[CheckupDetailAction.closingJurnalNonTunai] Error when pelayanan, ", e);
         }
 
+        String noSep = "";
+        ItSimrsHeaderDetailCheckupEntity headerDetailCheckupEntity = checkupDetailBo.getDetailCheckupById(idDetailCheckup);
+        if (headerDetailCheckupEntity != null){
+            noSep = headerDetailCheckupEntity.getNoSep();
+        } else {
+            logger.error("[CheckupDetailAction.closingJurnalNonTunai] Error when pelayanan, ");
+            response.setStatus("error");
+            response.setMsg("[CheckupDetailAction.closingJurnalNonTunai] Error when pelayanan, ");
+            return response;
+        }
+
+
         String kode = "";
         String transId = "";
         String ketPoli = "";
@@ -1284,7 +1306,8 @@ public class CheckupDetailAction extends BaseMasterAction {
 
 
             Map hsCriteria = new HashMap();
-            hsCriteria.put("pasien_id", idPasien);
+            hsCriteria.put("master_id", "02.018");
+            hsCriteria.put("divisi_id", pelayananData.getKodering());
 
             BigDecimal jumlah = new BigDecimal(0);
 
@@ -1293,11 +1316,9 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                 // kredit jumlah obat
                 hsCriteria.put("pendapatan_obat_bpjs", jumlahResep);
-                // kredit ppn
-                hsCriteria.put("ppn_keluaran", ppnObat);
 
                 // jika ada resep dan ppn untuk debit piutang
-                jumlah = jumlah.add(jumlahResep.add(ppnObat));
+                jumlah = jumlah.add(jumlahResep);
             } else {
                 ketResep = "Tanpa Obat";
             }
@@ -1320,7 +1341,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                 // create list map piutang
                 Map mapPiutang = new HashMap();
-                mapPiutang.put("bukti", invoice);
+                mapPiutang.put("bukti", noSep);
                 mapPiutang.put("nilai", jumlah.subtract(jumlahUm));
 
                 // debit piutang pasien
@@ -1332,7 +1353,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                 if ("Y".equalsIgnoreCase(isResep)) {
                     transId = "03";
                 } else {
-                    transId = "02";
+                    transId = "13";
                 }
 
             }
@@ -1348,7 +1369,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                 // kredit jumlah tindakan
                 hsCriteria.put("pendapatan_rawat_inap_bpjs", jumlahTindakan);
-                transId = "06";
+                transId = "20";
             }
 
             String catatan = "Closing Pasien " + ketPoli + " BPJS " + ketResep + " Piutang No Pasien " + idPasien;

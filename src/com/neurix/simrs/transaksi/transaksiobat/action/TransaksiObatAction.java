@@ -88,10 +88,15 @@ public class TransaksiObatAction extends BaseMasterAction {
     private BillingSystemBo billingSystemBoProxy;
     private ObatPoliBo obatPoliBoProxy;
     private BranchBo branchBoProxy;
+    private PelayananBo pelayananBoProxy;
     private String id;
     private String idResep;
     private String idApprove;
     private String idPermintaan;
+
+    public void setPelayananBoProxy(PelayananBo pelayananBoProxy) {
+        this.pelayananBoProxy = pelayananBoProxy;
+    }
 
     public String getIdPermintaan() {
         return idPermintaan;
@@ -1387,21 +1392,35 @@ public class TransaksiObatAction extends BaseMasterAction {
     private JurnalResponse createJurnalPembayaranObatbaru(TransaksiObatDetail trans) {
 
         String branchId = CommonUtil.userBranchLogin();
+        String pelayananId = CommonUtil.userPelayananIdLogin();
 
         BigDecimal pendapatan = new BigDecimal(trans.getTotalBayar().subtract(trans.getPpnBayar()).toString());
         BigDecimal ppn = new BigDecimal(trans.getPpnBayar().toString());
 
         JurnalResponse jurnalResponse = new JurnalResponse();
 
+        String divisiId = "";
+        String masterId = "01.000";
+        ImSimrsPelayananEntity pelayananEntity = pelayananBoProxy.getPelayananById(pelayananId);
+        if (pelayananEntity != null && pelayananEntity.getKodering() != null){
+            divisiId = pelayananEntity.getKodering();
+        } else {
+            jurnalResponse.setStatus("error");
+            jurnalResponse.setMsg("[TransaksiObatAction.createJurnalPembayaranObatbaru] ERROR. tidak dapat divisi_id. ");
+            return jurnalResponse;
+        }
+
         // create jurnal
         Map hsCriteria = new HashMap();
+        hsCriteria.put("master_id", "");
+        hsCriteria.put("divisi_id", divisiId);
         hsCriteria.put("kas", new BigDecimal(trans.getTotalBayar()));
-        hsCriteria.put("pendapatan_obat_non_bpjs", pendapatan);
+        hsCriteria.put("pendapatan_obat_umum", pendapatan);
         hsCriteria.put("ppn_keluaran", ppn);
 
         String noJurnal = "";
         try {
-            noJurnal = billingSystemBoProxy.createJurnal("16", hsCriteria, branchId, "Penjualan Obat Apotik " + branchId, "Y");
+            noJurnal = billingSystemBoProxy.createJurnal("29", hsCriteria, branchId, "Penjualan Obat Apotik Langsung " + branchId, "Y");
             jurnalResponse.setStatus("success");
             jurnalResponse.setNoJurnal(noJurnal);
         } catch (GeneralBOException e) {
