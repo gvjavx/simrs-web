@@ -251,7 +251,7 @@ public class KasirRawatJalanBoImpl implements KasirRawatJalanBo {
     }
 
     @Override
-    public CheckResponse saveRefund(String id) throws GeneralBOException {
+    public CheckResponse saveRefund(String id, String noJurnal) throws GeneralBOException {
         CheckResponse response = new CheckResponse();
 
         ItSimrsUangMukaPendaftaranEntity entity = new ItSimrsUangMukaPendaftaranEntity();
@@ -265,6 +265,7 @@ public class KasirRawatJalanBoImpl implements KasirRawatJalanBo {
                 entity.setFlagRefund("Y");
                 entity.setLastUpdateWho(CommonUtil.userLogin());
                 entity.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+                entity.setNoJurnalRefund(noJurnal);
 
                 try {
                     uangMukaDao.updateAndSave(entity);
@@ -333,5 +334,10 @@ public class KasirRawatJalanBoImpl implements KasirRawatJalanBo {
             listOfResult.add(headerDetailCheckupEntity);
         }
         return listOfResult;
+    }
+
+    @Override
+    public ItSimrsUangMukaPendaftaranEntity getEnityUangMukaById(String id) throws GeneralBOException {
+        return uangMukaDao.getById("id", id);
     }
 }

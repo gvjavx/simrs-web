@@ -22,8 +22,17 @@ public class ItSimrsUangMukaPendaftaranEntity implements Serializable {
     private String lastUpdateWho;
     private String noNota;
     private String noJurnal;
+    private String noJurnalRefund;
 
     private String flagRefund;
+
+    public String getNoJurnalRefund() {
+        return noJurnalRefund;
+    }
+
+    public void setNoJurnalRefund(String noJurnalRefund) {
+        this.noJurnalRefund = noJurnalRefund;
+    }
 
     public String getFlagRefund() {
         return flagRefund;

@@ -656,7 +656,7 @@
 
                     var strBiaya = "";
                     if (jenisPasien == "asuransi"){
-                        strBiaya = '<tr><td colspan="3">Total Biaya</td><td align="right" style="padding-right: 20px">' + formatRupiah(((total-totalObat) - cover) + totalObatUmum + ppnObat ) + '</td></tr>';
+                        strBiaya = '<tr><td colspan="3">Total Biaya</td><td align="right" style="padding-right: 20px">' + formatRupiah((total - cover) + totalObatUmum + ppnObat ) + '</td></tr>';
                     } else {
                         strBiaya = '<tr><td colspan="3">Total Biaya</td><td align="right" style="padding-right: 20px">' + formatRupiah(total - uangMuka + ppnObat) + '</td></tr>';
                     }
@@ -684,10 +684,10 @@
                     } else if (jenisPasien == "asuransi"){
                         //non_tunai asuransi
                         if (cekResep){
-                            mapBiaya.push({"type": "kas", "nilai": ((total-totalObat) - cover) + totalObatUmum + ppnObat });
+                            mapBiaya.push({"type": "kas", "nilai": (total - cover) + totalObatUmum + ppnObat });
                             mapBiaya.push({"type": "piutang_pasien_asuransi", "nilai": cover });
-                            mapBiaya.push({"type": "pendapatan_rawat_jalan_asuransi", "nilai": total-totalObat });
-                            mapBiaya.push({"type": "pendapaatan_rawat_jalan_umum", "nilai": (total-totalObat ) - cover });
+                            mapBiaya.push({"type": "pendapatan_rawat_jalan_asuransi", "nilai": cover - totalObat });
+                            mapBiaya.push({"type": "pendapaatan_rawat_jalan_umum", "nilai": total - cover });
                             mapBiaya.push({"type": "pendapatan_obat_asuransi", "nilai": totalObat});
                             mapBiaya.push({"type": "pendapatan_obat_umum", "nilai": totalObatUmum});
                             mapBiaya.push({"type": "ppn_keluaran", "nilai": ppnObat });

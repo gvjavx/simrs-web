@@ -1656,15 +1656,19 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "\tINNER JOIN im_simrs_lab_detail c ON b.id_lab_detail = c.id_lab_detail\n" +
                     "\tGROUP BY a.id_detail_checkup\n" +
                     "\t) d ON a.id_detail_checkup = d.id_detail_checkup \n" +
-                    "LEFT JOIN (\n" +
-                    "\tSELECT a.id_detail_checkup, (c.qty * d.harga_jual) as total_resep FROM mt_simrs_permintaan_resep a\n" +
-                    "\tINNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat\n" +
-                    "\tINNER JOIN (SELECT id_transaksi_obat_detail, SUM(qty_approve) as qty FROM mt_simrs_transaksi_obat_detail_batch \n" +
-                    "\tWHERE approve_flag = 'Y'\n" +
-                    "\tAND a.jenis_resep != 'umum'\n" +
-                    "\tGROUP BY id_transaksi_obat_detail) c ON b.id_transaksi_obat_detail = c.id_transaksi_obat_detail\n" +
-                    "\tINNER JOIN mt_simrs_harga_obat d ON b.id_obat = d.id_obat\n" +
-                    "\t) e ON a.id_detail_checkup = e.id_detail_checkup \n" +
+                    "LEFT JOIN ( \n" +
+                    "\tSELECT \n" +
+                    "\ta.id_detail_checkup, (c.qty * d.harga_jual) as total_resep FROM mt_simrs_permintaan_resep a \n" +
+                    "\tINNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat \n" +
+                    "\tINNER JOIN (\n" +
+                    "\t\tSELECT id_transaksi_obat_detail, SUM(qty_approve) as qty \n" +
+                    "\t\tFROM mt_simrs_transaksi_obat_detail_batch  \n" +
+                    "\t\tWHERE approve_flag = 'Y' \n" +
+                    "\t\tGROUP BY id_transaksi_obat_detail\n" +
+                    "\t) c ON b.id_transaksi_obat_detail = c.id_transaksi_obat_detail \n" +
+                    "\tINNER JOIN mt_simrs_harga_obat d ON b.id_obat = d.id_obat \n" +
+                    "\tWHERE a.jenis_resep != 'umum'\n" +
+                    ") e ON a.id_detail_checkup = e.id_detail_checkup  \n" +
                     "WHERE a.id_detail_checkup = :id";
 
             List<Object[]> result = new ArrayList<>();

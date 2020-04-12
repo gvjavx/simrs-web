@@ -26,9 +26,11 @@ import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.Fpk;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
+import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
+import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsUangMukaPendaftaranEntity;
 import com.neurix.simrs.transaksi.checkupdetail.model.UangMuka;
 import com.neurix.simrs.transaksi.kasirrawatjalan.bo.KasirRawatJalanBo;
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
@@ -1331,10 +1333,57 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         CheckResponse response = new CheckResponse();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         KasirRawatJalanBo kasirRawatJalanBo = (KasirRawatJalanBo) ctx.getBean("kasirRawatJalanBoProxy");
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+        BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
+
+        String noNota = "";
+        String noPasien = "";
+        BigDecimal uangMuka = new BigDecimal(0);
+        ItSimrsUangMukaPendaftaranEntity uangMukaPendaftaranEntity = kasirRawatJalanBo.getEnityUangMukaById(id);
+        if (uangMukaPendaftaranEntity != null){
+
+            uangMuka = new BigDecimal(uangMukaPendaftaranEntity.getJumlahDibayar());
+            noNota = uangMukaPendaftaranEntity.getId();
+
+            ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailBo.getEntityDetailCheckupByIdDetail(uangMukaPendaftaranEntity.getIdDetailCheckup());
+            if (detailCheckupEntity != null){
+
+                ItSimrsHeaderChekupEntity headerChekupEntity = checkupBo.getEntityCheckupById(detailCheckupEntity.getNoCheckup());
+                if (headerChekupEntity != null){
+                    noPasien = headerChekupEntity.getIdPasien();
+                }
+            }
+
+        } else {
+            response.setStatus("error");
+            response.setMessage("[KasirRawatJalanAction.saveRefund] Tidak Dapat Data Uang Muka.");
+            logger.error("[KasirRawatJalanAction.saveRefund] Tidak Dapat Data Uang Muka.");
+        }
+
+        Map mapUangMuka = new HashMap();
+        mapUangMuka.put("bukti", noNota);
+        mapUangMuka.put("nilai", uangMuka);
+
+        Map mapJurnal = new HashMap();
+        mapJurnal.put("master_id", noPasien);
+        mapJurnal.put("uang_muka", mapUangMuka);
+        mapJurnal.put("kas", uangMuka);
+
+        String catatan = "pembayaran kembali uang muka. No. RM " + noPasien;
+
+        String noJurnal = "";
+        try {
+            noJurnal = billingSystemBo.createJurnal("34", mapJurnal, CommonUtil.userBranchLogin(), catatan, "Y" );
+        } catch (GeneralBOException e){
+            response.setStatus("error");
+            response.setMessage("[KasirRawatJalanAction.saveRefund] ERROR. " + e.getMessage());
+            logger.error("[KasirRawatJalanAction.saveRefund] ERROR. " + e.getMessage());
+        }
 
         if (id != null && !"".equalsIgnoreCase(id)) {
             try {
-                response = kasirRawatJalanBo.saveRefund(id);
+                response = kasirRawatJalanBo.saveRefund(id , noJurnal);
             } catch (GeneralBOException e) {
                 response.setStatus("error");
                 response.setMessage("Found Error " + e.getMessage());
