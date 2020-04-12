@@ -1372,7 +1372,7 @@ public class TransaksiObatAction extends BaseMasterAction {
         if ("error".equalsIgnoreCase(jurnalResponse.getStatus())) {
             logger.error(jurnalResponse.getMsg());
             addActionError(jurnalResponse.getMsg());
-            return "search";
+            return "init_pembelian_obat";
         } else {
             transaksiObatDetail.setNoJurnal(jurnalResponse.getNoJurnal());
         }
@@ -1382,7 +1382,7 @@ public class TransaksiObatAction extends BaseMasterAction {
         } catch (GeneralBOException e) {
             logger.error("[TransaksiObatAction.pembayaranObatBaru] ERROR error when save pembayaran. ", e);
             addActionError("[TransaksiObatAction.pembayaranObatBaru] ERROR error when save pembayaran. " + e.getMessage());
-            return "search";
+            return "init_pembelian_obat";
         }
 
         logger.info("[TransaksiObatAction.pembayaranObatBaru] END <<<<<<<");
