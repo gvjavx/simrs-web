@@ -9,10 +9,7 @@ import com.neurix.simrs.transaksi.checkup.model.Fpk;
 import com.neurix.simrs.transaksi.checkup.model.ItSImrsFpkEntity;
 import com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao;
 import com.neurix.simrs.transaksi.checkupdetail.dao.UangMukaDao;
-import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
-import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
-import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsUangMukaPendaftaranEntity;
-import com.neurix.simrs.transaksi.checkupdetail.model.UangMuka;
+import com.neurix.simrs.transaksi.checkupdetail.model.*;
 import com.neurix.simrs.transaksi.kasirrawatjalan.bo.KasirRawatJalanBo;
 import com.neurix.simrs.transaksi.rawatinap.dao.RawatInapDao;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
@@ -288,28 +285,20 @@ public class KasirRawatJalanBoImpl implements KasirRawatJalanBo {
     }
 
     @Override
-    public List<ItSimrsHeaderDetailCheckupEntity> getSearchCheckupBySep(String noSep) throws GeneralBOException {
-        List<ItSimrsHeaderDetailCheckupEntity> list = new ArrayList<>();
-        List<ItSimrsHeaderDetailCheckupEntity> listOfResult = new ArrayList<>();
+    public List<KlaimFpkDTO> getSearchCheckupBySep(String noSep) throws GeneralBOException {
+        List<KlaimFpkDTO> list = new ArrayList<>();
+        List<KlaimFpkDTO> listOfResult = new ArrayList<>();
         try {
             list = checkupDetailDao.getSearchCheckupBySep(noSep);
         }catch (HibernateException e){
             logger.error("Found Error "+e.getMessage());
         }
 
-        for (ItSimrsHeaderDetailCheckupEntity headerDetailCheckupEntity : list){
-            Map hscriteria = new HashMap();
-            hscriteria.put("no_sep",noSep);
-            hscriteria.put("flag","Y");
-            List<ItSImrsFpkEntity> fpkEntityList = fpkDao.getByCriteria(hscriteria);
-
-            headerDetailCheckupEntity.setStatusBayar(null);
-            for (ItSImrsFpkEntity fpkEntity : fpkEntityList){
-                if (("Y").equalsIgnoreCase(fpkEntity.getStatusBayar())){
-                    headerDetailCheckupEntity.setStatusBayar("Y");
-                }
+        for (KlaimFpkDTO data : list){
+            if (("Y").equalsIgnoreCase(data.getStatusBayar())){
+                data.setStatus("Y");
             }
-            listOfResult.add(headerDetailCheckupEntity);
+            listOfResult.add(data);
         }
         return listOfResult;
     }

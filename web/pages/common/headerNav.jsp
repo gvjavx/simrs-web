@@ -1,11 +1,12 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib prefix="sj" uri="/struts-jquery-tags" %>
-<s:url value="/" var="appname" />
+
 <script type='text/javascript' src='<s:url value="/dwr/interface/NotifikasiAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/NotifAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/CutiPegawaiAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/UserAction.js"/>'></script>
 <script type="text/javascript">
+
     function loadDataLogin() {
         dwr.engine.setAsync(false);
         UserAction.getUserData(function(item){
@@ -332,14 +333,13 @@
 <div class="wrapper">
 <header class="main-header">
     <!-- Logo -->
-
-    <s:a href="%{appname}" cssClass="logo" cssStyle="background-color: #3bb387 !important; text-decoration: none;">
+    <a href="/simrs" class="logo" style="background-color: #3bb387 !important; text-decoration: none;">
         <!-- mini logo for sidebar mini 50x50 pixels -->
         <span class="logo-mini"><b>NMU</b></span>
         <!-- logo for regular state and mobile devices -->
         <%--<img border="0" class="hvr-grow" src="<s:url value="/pages/images/RS01.png"/>" style="cursor: pointer; height: 25px; width: 35px;">--%>
         <span class="logo-lg" > <b>GO-MEDSYS NMU</b></span>
-    </s:a>
+    </a>
 
     <!-- Header Navbar -->
     <nav class="navbar navbar-static-top" role="navigation" style="background-color: #30d196 !important;">

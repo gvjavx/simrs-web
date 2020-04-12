@@ -31,7 +31,7 @@
     <script type='text/javascript'>
         function getReportURL(selectReport) {
             var reportId = selectReport.value;
-            document.reportForm.action= "/simrs" + reportId;
+            document.reportForm.action= "<s:property value="%{appname}">" + reportId;
             document.reportForm.submit();
         }
     </script>

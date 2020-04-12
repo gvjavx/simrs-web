@@ -132,6 +132,25 @@ public class HeaderDetailCheckup extends BaseModel{
     private String flagRefund;
     private String idPelayananBpjs;
 
+    private String stTotalBiayaBpjs;
+    private String stTotalBiaya;
+
+    public String getStTotalBiayaBpjs() {
+        return stTotalBiayaBpjs;
+    }
+
+    public void setStTotalBiayaBpjs(String stTotalBiayaBpjs) {
+        this.stTotalBiayaBpjs = stTotalBiayaBpjs;
+    }
+
+    public String getStTotalBiaya() {
+        return stTotalBiaya;
+    }
+
+    public void setStTotalBiaya(String stTotalBiaya) {
+        this.stTotalBiaya = stTotalBiaya;
+    }
+
     public String getIdPelayananBpjs() {
         return idPelayananBpjs;
     }

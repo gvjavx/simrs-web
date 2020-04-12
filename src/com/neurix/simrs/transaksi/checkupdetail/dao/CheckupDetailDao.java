@@ -3,6 +3,7 @@ package com.neurix.simrs.transaksi.checkupdetail.dao;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
+import com.neurix.simrs.transaksi.checkupdetail.model.KlaimFpkDTO;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
 import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
@@ -51,12 +52,51 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
         return result;
     }
 
-    public List<ItSimrsHeaderDetailCheckupEntity> getSearchCheckupBySep (String noSep){
-        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ItSimrsHeaderDetailCheckupEntity.class);
-        criteria.add(Restrictions.eq("noSep", noSep));
-        criteria.add(Restrictions.eq("flag", "Y"));
+    public List<KlaimFpkDTO> getSearchCheckupBySep (String noSep){
+        List<KlaimFpkDTO> listOfResult = new ArrayList<KlaimFpkDTO>();
+        List<Object[]> result = new ArrayList<Object[]>();
 
-        return (List<ItSimrsHeaderDetailCheckupEntity>) criteria.list();
+        String query1 = "SELECT\n" +
+                "\tdc.id_detail_checkup AS id,\n" +
+                "\tdc.no_sep AS sep,\n" +
+                "\tc.id_pasien AS idpasien,\n" +
+                "\tc.nama AS nama,\n" +
+                "\tSUM(rt.total_tarif) AS total,\n" +
+                "\tf.status_bayar AS status\n" +
+                "FROM \n" +
+                "\tit_simrs_header_detail_checkup dc \n" +
+                "\tLEFT JOIN it_simrs_header_checkup c ON dc.no_checkup=c.no_checkup\n" +
+                "\tLEFT JOIN it_simrs_riwayat_tindakan rt ON dc.id_detail_checkup=rt.id_detail_checkup\n" +
+                "\tLEFT JOIN it_simrs_fpk f ON f.no_sep=dc.no_sep\n" +
+                "WHERE\n" +
+                "\tdc.no_sep='"+noSep+"'\n" +
+                "\tAND dc.flag='Y'\n" +
+                "GROUP BY\n" +
+                "\tdc.id_detail_checkup,\n" +
+                "\tdc.no_sep,\n" +
+                "\tc.id_pasien,\n" +
+                "\tc.nama,\n" +
+                "\tf.status_bayar";
+        result = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query1)
+                .list();
+
+        for (Object[] row : result) {
+            KlaimFpkDTO klaimFpkDTO  = new KlaimFpkDTO();
+            klaimFpkDTO.setIdDetailCheckup((String) row[0]);
+            klaimFpkDTO.setNoSep((String) row[1]);
+            klaimFpkDTO.setIdPasien((String) row[2]);
+            klaimFpkDTO.setNamaPasien((String) row[3]);
+            if (row[4]!=null){
+                klaimFpkDTO.setTotalBiaya(BigInteger.valueOf(Long.parseLong((row[4].toString()))));
+            }
+            if (row[5]!=null){
+                klaimFpkDTO.setStatusBayar((String) row[5]);
+            }
+
+            listOfResult.add(klaimFpkDTO);
+        }
+        return listOfResult;
     }
 
     public List<HeaderDetailCheckup> getSearchRawatJalan(HeaderDetailCheckup bean) {

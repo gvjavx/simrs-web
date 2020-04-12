@@ -17,6 +17,7 @@ import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
+import com.neurix.simrs.transaksi.checkupdetail.model.KlaimFpkDTO;
 import com.neurix.simrs.transaksi.checkupdetail.model.UangMuka;
 import com.neurix.simrs.transaksi.kasirrawatjalan.bo.KasirRawatJalanBo;
 import com.neurix.simrs.transaksi.riwayattindakan.bo.RiwayatTindakanBo;
@@ -69,6 +70,24 @@ public class KasirRawatJalanAction extends BaseMasterAction {
     private File fileUpload;
     private String fileUploadFileName;
     private String fileUploadContentType;
+    private KlaimFpkDTO klaimFpkDTO;
+    private Integer jumlahSepTidakAdaM ;
+
+    public Integer getJumlahSepTidakAdaM() {
+        return jumlahSepTidakAdaM;
+    }
+
+    public void setJumlahSepTidakAdaM(Integer jumlahSepTidakAdaM) {
+        this.jumlahSepTidakAdaM = jumlahSepTidakAdaM;
+    }
+
+    public KlaimFpkDTO getKlaimFpkDTO() {
+        return klaimFpkDTO;
+    }
+
+    public void setKlaimFpkDTO(KlaimFpkDTO klaimFpkDTO) {
+        this.klaimFpkDTO = klaimFpkDTO;
+    }
 
     public String getFileUploadFileName() {
         return fileUploadFileName;
@@ -859,6 +878,10 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
     public String goToHasilCsv() {
         logger.info("[KasirRawatJalanAction.goToHasilCsv] start process >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+
+        KlaimFpkDTO dataFpk = (KlaimFpkDTO) session.getAttribute("summaryFpk");
+        setKlaimFpkDTO(dataFpk);
 
         logger.info("[KasirRawatJalanAction.goToHasilCsv] end process <<<");
         return "hasil_import_csv";
@@ -866,7 +889,8 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
     public String prosesImportCsv() {
         logger.info("[KasirRawatJalanAction.prosesImportCsv] start process >>>");
-        List<HeaderDetailCheckup> listOfResult = new ArrayList<>();
+        List<KlaimFpkDTO> listOfResult = new ArrayList<>();
+        KlaimFpkDTO dataFpk = new KlaimFpkDTO();
         HttpSession session = ServletActionContext.getRequest().getSession();
 
         if (this.fileUpload != null) {
@@ -898,6 +922,12 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                     int x = 1;
                     try {
                         br = new BufferedReader(new FileReader(this.fileUpload));
+                        Integer jumlahSudahDiKlaim=0;
+                        Integer jumlahSepTidakAda=0;
+                        Integer jumlahBiayaBpjsKurangDariRs=0;
+                        Integer jumlahBiayaBpjsLebihDariRs=0;
+                        Integer jumlahBiayaBpjsSamaDenganRs=0;
+                        Integer jumlahSalah=0;
                         while ((line = br.readLine()) != null) {
                             //melewatkan judul nomor 1
                             if (x!=1){
@@ -911,41 +941,59 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                                 }
 
                                 //hasilnya
-                                HeaderDetailCheckup result = new HeaderDetailCheckup();
+                                KlaimFpkDTO result = new KlaimFpkDTO();
                                 result.setNoSep(data[0]);
-                                result.setTotalBiayaDariBpjs(new BigInteger(data[1]));
+                                result.setTotalBiayaBpjs(new BigInteger(data[1]));
 
                                 //dicari di tabel
                                 HeaderDetailCheckup search = new HeaderDetailCheckup();
                                 search.setNoSep(data[0]);
-                                List<ItSimrsHeaderDetailCheckupEntity> resultList = kasirRawatJalanBoProxy.getSearchCheckupBySep(data[0]);
-                                for (ItSimrsHeaderDetailCheckupEntity headerDetailCheckup : resultList){
-                                    result.setTotalBiaya(headerDetailCheckup.getTotalBiaya());
-                                    result.setStatus(headerDetailCheckup.getStatusBayar());
-                                    result.setIdDetailCheckup(headerDetailCheckup.getIdDetailCheckup());
+                                List<KlaimFpkDTO> resultList = kasirRawatJalanBoProxy.getSearchCheckupBySep(data[0]);
+                                for (KlaimFpkDTO dataKlaim : resultList){
+                                    result.setTotalBiaya(dataKlaim.getTotalBiaya());
+                                    result.setStatus(dataKlaim.getStatusBayar());
+                                    result.setIdDetailCheckup(dataKlaim.getIdDetailCheckup());
+                                    result.setNamaPasien(dataKlaim.getNamaPasien());
+                                    result.setIdPasien(dataKlaim.getNamaPasien());
                                 }
+
                                 String statusBayar;
                                 if (("Y").equalsIgnoreCase(result.getStatus())){
                                     statusBayar="SB";
+                                    jumlahSudahDiKlaim=jumlahSudahDiKlaim+1;
                                 }else if (result.getTotalBiaya()==null){
                                     statusBayar="N";
-                                }else if (result.getTotalBiayaDariBpjs().compareTo(result.getTotalBiaya())<0){
+                                    jumlahSepTidakAda=jumlahSepTidakAda+1;
+                                }else if (result.getTotalBiayaBpjs().compareTo(result.getTotalBiaya())<0){
                                     statusBayar="KB";
-                                }else if (result.getTotalBiaya().compareTo(result.getTotalBiayaDariBpjs())<0){
+                                    jumlahBiayaBpjsKurangDariRs=jumlahBiayaBpjsKurangDariRs+1;
+                                }else if (result.getTotalBiaya().compareTo(result.getTotalBiayaBpjs())<0){
                                     statusBayar="LB";
-                                }else if (result.getTotalBiaya().compareTo(result.getTotalBiayaDariBpjs())==0){
+                                    jumlahBiayaBpjsLebihDariRs=jumlahBiayaBpjsLebihDariRs+1;
+                                }else if (result.getTotalBiaya().compareTo(result.getTotalBiayaBpjs())==0){
                                     statusBayar="P";
+                                    jumlahBiayaBpjsSamaDenganRs=jumlahBiayaBpjsSamaDenganRs+1;
                                 }else{
                                     statusBayar="UK";
+                                    jumlahSalah=jumlahSalah+1;
                                 }
                                 result.setStatusBayar(statusBayar);
-
+                                result.setStTotalBiayaBpjs(CommonUtil.numbericFormat(new BigDecimal(result.getTotalBiayaBpjs()),"###,###"));
+                                if (result.getTotalBiaya()==null){
+                                    result.setStTotalBiaya("0");
+                                }else{
+                                    result.setStTotalBiaya(CommonUtil.numbericFormat(new BigDecimal(result.getTotalBiaya()),"###,###"));
+                                }
                                 listOfResult.add(result);
                             }
                             x++;
                         }
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
+                        dataFpk.setJumlahSudahDiKlaim(jumlahSudahDiKlaim);
+                        dataFpk.setJumlahSepTidakAda(jumlahSepTidakAda);
+                        dataFpk.setJumlahBiayaBpjsKurangDariRs(jumlahBiayaBpjsKurangDariRs);
+                        dataFpk.setJumlahBiayaBpjsLebihDariRs(jumlahBiayaBpjsLebihDariRs);
+                        dataFpk.setJumlahBiayaBpjsSamaDenganRs(jumlahBiayaBpjsSamaDenganRs);
+                        dataFpk.setJumlahSalah(jumlahSalah);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -967,6 +1015,8 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
         session.removeAttribute("listOfImportCsv");
         session.setAttribute("listOfImportCsv", listOfResult);
+        session.removeAttribute("summaryFpk");
+        session.setAttribute("summaryFpk", dataFpk);
 
         logger.info("[KasirRawatJalanAction.prosesImportCsv] end process <<<");
         return "hasil_import_csv";
