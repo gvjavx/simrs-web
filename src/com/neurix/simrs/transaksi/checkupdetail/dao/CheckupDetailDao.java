@@ -1810,7 +1810,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 "INNER JOIN im_simrs_pelayanan b ON b.id_pelayanan = a.id_pelayanan\n" +
                 "WHERE b.tipe_pelayanan = 'rawat_inap'\n" +
                 "AND a.status_periksa = '1'\n" +
-                "AND a.id_jenis_periksa_pasien = 'bpjs' \n" +
+//                "AND a.id_jenis_periksa_pasien = 'bpjs' \n" +
                 "AND a.branch_id = :branchId ";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
