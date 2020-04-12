@@ -974,6 +974,7 @@ public class ObatBoImpl implements ObatBo {
             returObatEntity.setCreatedDate(bean.getCreatedDate());
             returObatEntity.setLastUpdate(bean.getLastUpdate());
             returObatEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            returObatEntity.setNoJurnal(bean.getNoJurnal());
 
             try {
                 returObatDao.addAndSave(returObatEntity);
@@ -1181,5 +1182,10 @@ public class ObatBoImpl implements ObatBo {
             }
         }
         return response;
+    }
+
+    @Override
+    public ImSimrsObatEntity getObatEntityByKodeBarang(String id) throws GeneralBOException {
+        return obatDao.getById("idBarang", id);
     }
 }

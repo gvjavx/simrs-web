@@ -57,6 +57,15 @@ public class PermintaanResep{
 
     private String ttdApoteker;
     private String namaApoteker;
+    private String jenisResep;
+
+    public String getJenisResep() {
+        return jenisResep;
+    }
+
+    public void setJenisResep(String jenisResep) {
+        this.jenisResep = jenisResep;
+    }
 
     public String getTtdApoteker() {
         return ttdApoteker;

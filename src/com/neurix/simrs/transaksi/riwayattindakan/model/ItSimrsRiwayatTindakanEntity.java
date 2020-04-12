@@ -24,6 +24,15 @@ public class ItSimrsRiwayatTindakanEntity implements Serializable {
 
     private String flagUpdateKlaim;
     private Timestamp tanggalTindakan;
+    private String rekanan;
+
+    public String getRekanan() {
+        return rekanan;
+    }
+
+    public void setRekanan(String rekanan) {
+        this.rekanan = rekanan;
+    }
 
     public Timestamp getTanggalTindakan() {
         return tanggalTindakan;

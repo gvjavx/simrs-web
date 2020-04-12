@@ -254,6 +254,11 @@ public class RuanganBoImpl implements RuanganBo {
         return response;
     }
 
+    @Override
+    public MtSimrsRuanganEntity getEntityRuanganById(String id) throws GeneralBOException {
+        return ruanganDao.getById("idRuangan", id);
+    }
+
     public String getIdRuangan() {
         logger.info("[RuanganBoImpl.getIdRuangan] Start >>>>>>>");
         String id = "";

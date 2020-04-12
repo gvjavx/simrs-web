@@ -115,6 +115,11 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 statusBayar = "\n AND dt.status_bayar is null \n";
             }
 
+            String forRekanan = "";
+            if ("asuransi".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "ptpn".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
+                forRekanan = "\n AND dt.invoice is null OR dt.invoice = '' \n";
+            }
+
 //            if(bean.getNotLike() != null && !"".equalsIgnoreCase(bean.getNotLike())){
 //                notLike = "\n AND hd.id_jenis_periksa_pasien NOT LIKE '"+bean.getNotLike()+"' \n";
 //            }
@@ -156,7 +161,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "AND dt.id_pelayanan LIKE :idPelayanan \n" +
                     "AND dt.id_jenis_periksa_pasien LIKE :jenisPasien \n" +
                     "AND dt.is_kronis IS NULL \n" +
-                    "AND dt.status_periksa LIKE :status " + statusBayar;
+                    "AND dt.status_periksa LIKE :status " + statusBayar + forRekanan;
 
 
             String order = "\n ORDER BY dt.tgl_antrian ASC";
@@ -1656,6 +1661,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "\tINNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat\n" +
                     "\tINNER JOIN (SELECT id_transaksi_obat_detail, SUM(qty_approve) as qty FROM mt_simrs_transaksi_obat_detail_batch \n" +
                     "\tWHERE approve_flag = 'Y'\n" +
+                    "\tAND a.jenis_resep != 'umum'\n" +
                     "\tGROUP BY id_transaksi_obat_detail) c ON b.id_transaksi_obat_detail = c.id_transaksi_obat_detail\n" +
                     "\tINNER JOIN mt_simrs_harga_obat d ON b.id_obat = d.id_obat\n" +
                     "\t) e ON a.id_detail_checkup = e.id_detail_checkup \n" +
@@ -1800,6 +1806,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 "INNER JOIN im_simrs_pelayanan b ON b.id_pelayanan = a.id_pelayanan\n" +
                 "WHERE b.tipe_pelayanan = 'rawat_inap'\n" +
                 "AND a.status_periksa = '1'\n" +
+                "AND a.id_jenis_periksa_pasien = 'bpjs' \n" +
                 "AND a.branch_id = :branchId ";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)

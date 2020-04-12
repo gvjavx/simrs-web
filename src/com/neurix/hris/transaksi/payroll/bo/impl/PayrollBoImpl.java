@@ -7573,15 +7573,20 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
         payroll.setStatusPegawai(itPayrollEntity2.getImBiodataEntity().getStatusPegawai());
         payroll.setGolonganDapenId(itPayrollEntity2.getGolonganDapenId());
         //mengambil golongan dapen name
-        List<ImGolonganDapenEntity> golonganDapenEntity = new ArrayList<>();
-        try{
-            golonganDapenEntity = golonganDapenDao.getGolonganById(itPayrollEntity2.getImBiodataEntity().getGolonganDapenId());
-            for (ImGolonganDapenEntity golonganDapenLoop: golonganDapenEntity){
-                payroll.setGolonganDapenName(golonganDapenLoop.getGolonganDapenName());
-            }
-        }catch(GeneralBOException e){
+        if (!("TP03").equalsIgnoreCase(payroll.getTipePegawai())){
+            List<ImGolonganDapenEntity> golonganDapenEntity = new ArrayList<>();
+            try{
+                golonganDapenEntity = golonganDapenDao.getGolonganById(itPayrollEntity2.getImBiodataEntity().getGolonganDapenId());
+                for (ImGolonganDapenEntity golonganDapenLoop: golonganDapenEntity){
+                    payroll.setGolonganDapenName(golonganDapenLoop.getGolonganDapenName());
+                }
+            }catch(GeneralBOException e){
 
+            }
+        }else{
+            payroll.setGolonganDapenName("");
         }
+
         payroll.setGajiPensiun(CommonUtil.numbericFormat(itPayrollEntity2.getGajiPensiun(), "###,###")); //Gaji
         payroll.setGajiPensiunNilai(itPayrollEntity2.getGajiPensiun()); //Gaji Nilai
 
@@ -9456,87 +9461,666 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
     }
 
     @Override
+    public Map getDataForBilling(Payroll bean) throws GeneralBOException {
+        Map dataPayroll = new HashMap();
+        List<ItPayrollEntity> payrollEntityList;
+        List<ImPosition> positionDekom = new ArrayList<>();
+        List<ImPosition> positionDireksi = new ArrayList<>();
+        List<ImPosition> positionSelainDekomDanDirkom = new ArrayList<>();
+
+        List<Map> penghasilandekomlist = new ArrayList<>();
+        List<Map> tunjpphdekomlist = new ArrayList<>();
+        List<Map> tunjtransportkomdekomlist = new ArrayList<>();
+        List<Map> tunjrumahdekomlist = new ArrayList<>();
+        List<Map> tunjpelaksanatugasdekomlist = new ArrayList<>();
+        List<Map> tunjharirayadekomlist = new ArrayList<>();
+        List<Map> tunjcutidekomlist = new ArrayList<>();
+        List<Map> tunjtantiemdekomlist = new ArrayList<>();
+        List<Map> tunjasuransidekomlist = new ArrayList<>();
+        List<Map> tunjlainlaindekomlist = new ArrayList<>();
+        List<Map> penghasilandireksilist = new ArrayList<>();
+        List<Map> tunjpphdireksilist = new ArrayList<>();
+        List<Map> tunjtransportkomdireksilist = new ArrayList<>();
+        List<Map> tunjrumahdireksilist = new ArrayList<>();
+        List<Map> tunjpelaksanatugasdireksilist = new ArrayList<>();
+        List<Map> tunjharirayadireksilist = new ArrayList<>();
+        List<Map> tunjcutidireksilist = new ArrayList<>();
+        List<Map> tunjtantiemdireksilist = new ArrayList<>();
+        List<Map> tunjasuransidireksilist = new ArrayList<>();
+        List<Map> tunjlainlaindireksilist = new ArrayList<>();
+        List<Map> gajikaryawantetaplist = new ArrayList<>();
+        List<Map> tunjjabatankaryawantetaplist = new ArrayList<>();
+        List<Map> tunjstrukturalkaryawantetaplist = new ArrayList<>();
+        List<Map> tunjpajakkaryawantetaplist = new ArrayList<>();
+        List<Map> tunjRLABkaryawantetaplist = new ArrayList<>();
+        List<Map> tunjpensiunkaryawantetaplist = new ArrayList<>();
+        List<Map> tunjbpjstkkaryawantetaplist = new ArrayList<>();
+        List<Map> tunjbpjskskaryawantetaplist = new ArrayList<>();
+        List<Map> tunjkhususkaryawantetaplist = new ArrayList<>();
+        List<Map> tunjlemburkaryawantetaplist = new ArrayList<>();
+        List<Map> tunjperalihankaryawantetaplist = new ArrayList<>();
+        List<Map> tunjsupervisikaryawantetaplist = new ArrayList<>();
+        List<Map> tunjfungsionalkaryawantetaplist = new ArrayList<>();
+        List<Map> tunjlainnyakaryawantetaplist = new ArrayList<>();
+        List<Map> gajikaryawantidaktetaplist = new ArrayList<>();
+        List<Map> tunjfungsionalkaryawantidaktetaplist = new ArrayList<>();
+        List<Map> tunjtambahankaryawantidaktetaplist = new ArrayList<>();
+        List<Map> tunjpajakkaryawantidaktetaplist = new ArrayList<>();
+        List<Map> tunjbpjstkkaryawantidaktetaplist = new ArrayList<>();
+        List<Map> tunjbpjskskaryawantidaktetaplist = new ArrayList<>();
+        List<Map> tunjkhususkaryawantidaktetaplist = new ArrayList<>();
+        List<Map> tunjlemburkaryawantidaktetaplist = new ArrayList<>();
+        List<Map> tunjlainnyakaryawantidaktetaplist = new ArrayList<>();
+
+        try {
+            payrollEntityList = payrollDao.getDataView(bean.getBranchId(),bean.getBulan(),bean.getTahun(),bean.getTipe());
+            positionDekom = positionDao.getListPositionDekom();
+            positionDireksi = positionDao.getListPositionDireksi();
+            positionSelainDekomDanDirkom = positionDao.getListPositionSelainDekomDanDirkom();
+        }catch (HibernateException e){
+            logger.error("[PayrollBoImpl.approvePayroll] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when saving update data Payroll, please info to your admin..." + e.getMessage());
+        }
+
+        BigDecimal total = BigDecimal.ZERO;
+        //untuk Dekom
+        for (ImPosition posisi : positionDekom){
+            int jumlahdata = 0;
+            for (ItPayrollEntity payrollEntity : payrollEntityList){
+                if (posisi.getPositionId().equalsIgnoreCase(payrollEntity.getPositionId())){
+                    Map penghasilandekom = new HashMap();
+                    penghasilandekom.put("nilai",payrollEntity.getGajiGolongan());
+                    penghasilandekom.put("divisi_id",posisi.getKodering());
+                    penghasilandekomlist.add(penghasilandekom);
+                    total = total.add(payrollEntity.getGajiGolongan());
+
+                    Map tunjpphdekom = new HashMap();
+                    tunjpphdekom.put("nilai",payrollEntity.getTunjanganPph());
+                    tunjpphdekom.put("divisi_id",posisi.getKodering());
+                    tunjpphdekomlist.add(tunjpphdekom);
+                    total = total.add(payrollEntity.getTunjanganPph());
+
+                    Map tunjtransportkomdekom = new HashMap();
+                    tunjtransportkomdekom.put("nilai",BigDecimal.ZERO);
+                    tunjtransportkomdekom.put("divisi_id",posisi.getKodering());
+                    tunjtransportkomdekomlist.add(tunjtransportkomdekom);
+
+                    Map tunjrumahdekom = new HashMap();
+                    tunjrumahdekom.put("nilai",payrollEntity.getTunjanganRumah());
+                    tunjrumahdekom.put("divisi_id",posisi.getKodering());
+                    tunjrumahdekomlist.add(tunjrumahdekom);
+                    total = total.add(payrollEntity.getTunjanganRumah());
+
+                    Map tunjpelaksanatugasdekom = new HashMap();
+                    tunjpelaksanatugasdekom.put("nilai",BigDecimal.ZERO);
+                    tunjpelaksanatugasdekom.put("divisi_id",posisi.getKodering());
+                    tunjpelaksanatugasdekomlist.add(tunjpelaksanatugasdekom);
+
+                    if (("T").equalsIgnoreCase(bean.getTipe())){
+                        Map tunjharirayadekom = new HashMap();
+                        tunjharirayadekom.put("nilai",payrollEntity.getTambahanLain());
+                        tunjharirayadekom.put("divisi_id",posisi.getKodering());
+                        tunjharirayadekomlist.add(tunjharirayadekom);
+                        total = total.add(payrollEntity.getTambahanLain());
+                    }else{
+                        Map tunjharirayadekom = new HashMap();
+                        tunjharirayadekom.put("nilai",BigDecimal.ZERO);
+                        tunjharirayadekom.put("divisi_id",posisi.getKodering());
+                        tunjharirayadekomlist.add(tunjharirayadekom);
+                    }
+
+                    if (("CT").equalsIgnoreCase(bean.getTipe())||("CP").equalsIgnoreCase(bean.getTipe())){
+                        Map tunjcutidekom = new HashMap();
+                        tunjcutidekom.put("nilai",payrollEntity.getTambahanLain());
+                        tunjcutidekom.put("divisi_id",posisi.getKodering());
+                        tunjcutidekomlist.add(tunjcutidekom);
+                        total = total.add(payrollEntity.getTambahanLain());
+                    }else{
+                        Map tunjcutidekom = new HashMap();
+                        tunjcutidekom.put("nilai",BigDecimal.ZERO);
+                        tunjcutidekom.put("divisi_id",posisi.getKodering());
+                        tunjcutidekomlist.add(tunjcutidekom);
+                    }
+
+                    Map tunjtantiemdekom = new HashMap();
+                    tunjtantiemdekom.put("nilai",payrollEntity.getTambahanLain());
+                    tunjtantiemdekom.put("divisi_id",posisi.getKodering());
+                    tunjtantiemdekomlist.add(tunjtantiemdekom);
+                    total = total.add(payrollEntity.getTambahanLain());
+
+                    Map tunjasuransidekom = new HashMap();
+                    tunjasuransidekom.put("nilai",BigDecimal.ZERO);
+                    tunjasuransidekom.put("divisi_id",posisi.getKodering());
+                    tunjasuransidekomlist.add(tunjasuransidekom);
+
+                    Map tunjlainlaindekom = new HashMap();
+                    tunjlainlaindekom.put("nilai",BigDecimal.ZERO);
+                    tunjlainlaindekom.put("divisi_id",posisi.getKodering());
+                    tunjlainlaindekomlist.add(tunjlainlaindekom);
+
+                    jumlahdata=jumlahdata+1;
+                }
+            }
+            if (jumlahdata==0){
+                Map penghasilandekom = new HashMap();
+                penghasilandekom.put("nilai",BigDecimal.ZERO);
+                penghasilandekom.put("divisi_id",posisi.getKodering());
+                penghasilandekomlist.add(penghasilandekom);
+
+                Map tunjpphdekom = new HashMap();
+                tunjpphdekom.put("nilai",BigDecimal.ZERO);
+                tunjpphdekom.put("divisi_id",posisi.getKodering());
+                tunjpphdekomlist.add(tunjpphdekom);
+
+                Map tunjtransportkomdekom = new HashMap();
+                tunjtransportkomdekom.put("nilai",BigDecimal.ZERO);
+                tunjtransportkomdekom.put("divisi_id",posisi.getKodering());
+                tunjtransportkomdekomlist.add(tunjtransportkomdekom);
+
+                Map tunjrumahdekom = new HashMap();
+                tunjrumahdekom.put("nilai",BigDecimal.ZERO);
+                tunjrumahdekom.put("divisi_id",posisi.getKodering());
+                tunjrumahdekomlist.add(tunjrumahdekom);
+
+                Map tunjpelaksanatugasdekom = new HashMap();
+                tunjpelaksanatugasdekom.put("nilai",BigDecimal.ZERO);
+                tunjpelaksanatugasdekom.put("divisi_id",posisi.getKodering());
+                tunjpelaksanatugasdekomlist.add(tunjpelaksanatugasdekom);
+
+                Map tunjharirayadekom = new HashMap();
+                tunjharirayadekom.put("nilai",BigDecimal.ZERO);
+                tunjharirayadekom.put("divisi_id",posisi.getKodering());
+                tunjharirayadekomlist.add(tunjharirayadekom);
+
+                Map tunjcutidekom = new HashMap();
+                tunjcutidekom.put("nilai",BigDecimal.ZERO);
+                tunjcutidekom.put("divisi_id",posisi.getKodering());
+                tunjcutidekomlist.add(tunjcutidekom);
+
+                Map tunjtantiemdekom = new HashMap();
+                tunjtantiemdekom.put("nilai",BigDecimal.ZERO);
+                tunjtantiemdekom.put("divisi_id",posisi.getKodering());
+                tunjtantiemdekomlist.add(tunjtantiemdekom);
+
+                Map tunjasuransidekom = new HashMap();
+                tunjasuransidekom.put("nilai",BigDecimal.ZERO);
+                tunjasuransidekom.put("divisi_id",posisi.getKodering());
+                tunjasuransidekomlist.add(tunjasuransidekom);
+
+                Map tunjlainlaindekom = new HashMap();
+                tunjlainlaindekom.put("nilai",BigDecimal.ZERO);
+                tunjlainlaindekom.put("divisi_id",posisi.getKodering());
+                tunjlainlaindekomlist.add(tunjlainlaindekom);
+            }
+        }
+
+        //untuk Direksi
+        for (ImPosition posisi : positionDireksi){
+            int jumlahdata = 0;
+            for (ItPayrollEntity payrollEntity : payrollEntityList){
+                if (posisi.getPositionId().equalsIgnoreCase(payrollEntity.getPositionId())){
+                    Map penghasilandireksi = new HashMap();
+                    penghasilandireksi.put("nilai",payrollEntity.getGajiGolongan());
+                    penghasilandireksi.put("divisi_id",posisi.getKodering());
+                    penghasilandireksilist.add(penghasilandireksi);
+                    total = total.add(payrollEntity.getGajiGolongan());
+
+                    Map tunjpphdireksi = new HashMap();
+                    tunjpphdireksi.put("nilai",payrollEntity.getTunjanganPph());
+                    tunjpphdireksi.put("divisi_id",posisi.getKodering());
+                    tunjpphdireksilist.add(tunjpphdireksi);
+                    total = total.add(payrollEntity.getTunjanganPph());
+
+                    Map tunjtransportkomdireksi = new HashMap();
+                    tunjtransportkomdireksi.put("nilai",BigDecimal.ZERO);
+                    tunjtransportkomdireksi.put("divisi_id",posisi.getKodering());
+                    tunjtransportkomdireksilist.add(tunjtransportkomdireksi);
+
+                    Map tunjrumahdireksi = new HashMap();
+                    tunjrumahdireksi.put("nilai",payrollEntity.getTunjanganRumah());
+                    tunjrumahdireksi.put("divisi_id",posisi.getKodering());
+                    tunjrumahdireksilist.add(tunjrumahdireksi);
+                    total = total.add(payrollEntity.getTunjanganRumah());
+
+                    Map tunjpelaksanatugasdireksi = new HashMap();
+                    tunjpelaksanatugasdireksi.put("nilai",BigDecimal.ZERO);
+                    tunjpelaksanatugasdireksi.put("divisi_id",posisi.getKodering());
+                    tunjpelaksanatugasdireksilist.add(tunjpelaksanatugasdireksi);
+
+                    if (("T").equalsIgnoreCase(bean.getTipe())){
+                        Map tunjharirayadireksi = new HashMap();
+                        tunjharirayadireksi.put("nilai",payrollEntity.getTambahanLain());
+                        tunjharirayadireksi.put("divisi_id",posisi.getKodering());
+                        tunjharirayadireksilist.add(tunjharirayadireksi);
+                        total = total.add(payrollEntity.getTambahanLain());
+                    }else{
+                        Map tunjharirayadireksi = new HashMap();
+                        tunjharirayadireksi.put("nilai",BigDecimal.ZERO);
+                        tunjharirayadireksi.put("divisi_id",posisi.getKodering());
+                        tunjharirayadireksilist.add(tunjharirayadireksi);
+                    }
+
+                    if (("CP").equalsIgnoreCase(bean.getTipe())||("CT").equalsIgnoreCase(bean.getTipe())){
+                        Map tunjcutidireksi = new HashMap();
+                        tunjcutidireksi.put("nilai",payrollEntity.getTambahanLain());
+                        tunjcutidireksi.put("divisi_id",posisi.getKodering());
+                        tunjcutidireksilist.add(tunjcutidireksi);
+                        total = total.add(payrollEntity.getTambahanLain());
+                    }else{
+                        Map tunjcutidireksi = new HashMap();
+                        tunjcutidireksi.put("nilai",BigDecimal.ZERO);
+                        tunjcutidireksi.put("divisi_id",posisi.getKodering());
+                        tunjcutidireksilist.add(tunjcutidireksi);
+                    }
+
+                    Map tunjtantiemdireksi = new HashMap();
+                    tunjtantiemdireksi.put("nilai",BigDecimal.ZERO);
+                    tunjtantiemdireksi.put("divisi_id",posisi.getKodering());
+                    tunjtantiemdireksilist.add(tunjtantiemdireksi);
+
+                    Map tunjasuransidireksi = new HashMap();
+                    tunjasuransidireksi.put("nilai",BigDecimal.ZERO);
+                    tunjasuransidireksi.put("divisi_id",posisi.getKodering());
+                    tunjasuransidireksilist.add(tunjasuransidireksi);
+
+                    Map tunjlainlaindireksi = new HashMap();
+                    tunjlainlaindireksi.put("nilai",BigDecimal.ZERO);
+                    tunjlainlaindireksi.put("divisi_id",posisi.getKodering());
+                    tunjlainlaindireksilist.add(tunjlainlaindireksi);
+
+                    jumlahdata=jumlahdata+1;
+                }
+            }
+            if (jumlahdata==0){
+                Map penghasilandireksi = new HashMap();
+                penghasilandireksi.put("nilai",BigDecimal.ZERO);
+                penghasilandireksi.put("divisi_id",posisi.getKodering());
+                penghasilandireksilist.add(penghasilandireksi);
+
+                Map tunjpphdireksi = new HashMap();
+                tunjpphdireksi.put("nilai",BigDecimal.ZERO);
+                tunjpphdireksi.put("divisi_id",posisi.getKodering());
+                tunjpphdireksilist.add(tunjpphdireksi);
+
+                Map tunjtransportkomdireksi = new HashMap();
+                tunjtransportkomdireksi.put("nilai",BigDecimal.ZERO);
+                tunjtransportkomdireksi.put("divisi_id",posisi.getKodering());
+                tunjtransportkomdireksilist.add(tunjtransportkomdireksi);
+
+                Map tunjrumahdireksi = new HashMap();
+                tunjrumahdireksi.put("nilai",BigDecimal.ZERO);
+                tunjrumahdireksi.put("divisi_id",posisi.getKodering());
+                tunjrumahdireksilist.add(tunjrumahdireksi);
+
+                Map tunjpelaksanatugasdireksi = new HashMap();
+                tunjpelaksanatugasdireksi.put("nilai",BigDecimal.ZERO);
+                tunjpelaksanatugasdireksi.put("divisi_id",posisi.getKodering());
+                tunjpelaksanatugasdireksilist.add(tunjpelaksanatugasdireksi);
+
+                Map tunjharirayadireksi = new HashMap();
+                tunjharirayadireksi.put("nilai",BigDecimal.ZERO);
+                tunjharirayadireksi.put("divisi_id",posisi.getKodering());
+                tunjharirayadireksilist.add(tunjharirayadireksi);
+
+                Map tunjcutidireksi = new HashMap();
+                tunjcutidireksi.put("nilai",BigDecimal.ZERO);
+                tunjcutidireksi.put("divisi_id",posisi.getKodering());
+                tunjcutidireksilist.add(tunjcutidireksi);
+
+                Map tunjtantiemdireksi = new HashMap();
+                tunjtantiemdireksi.put("nilai",BigDecimal.ZERO);
+                tunjtantiemdireksi.put("divisi_id",posisi.getKodering());
+                tunjtantiemdireksilist.add(tunjtantiemdireksi);
+
+                Map tunjasuransidireksi = new HashMap();
+                tunjasuransidireksi.put("nilai",BigDecimal.ZERO);
+                tunjasuransidireksi.put("divisi_id",posisi.getKodering());
+                tunjasuransidireksilist.add(tunjasuransidireksi);
+
+                Map tunjlainlaindireksi = new HashMap();
+                tunjlainlaindireksi.put("nilai",BigDecimal.ZERO);
+                tunjlainlaindireksi.put("divisi_id",posisi.getKodering());
+                tunjlainlaindireksilist.add(tunjlainlaindireksi);
+            }
+        }
+
+        //untuk Posisi Selain dekom dan direksi
+        for (ImPosition posisi : positionSelainDekomDanDirkom){
+            int jumlahdataPt = 0;
+            int jumlahdataPtt = 0;
+            for (ItPayrollEntity payrollEntity : payrollEntityList){
+                if (posisi.getPositionId().equalsIgnoreCase(payrollEntity.getPositionId())){
+                    ImBiodataEntity biodataEntity = biodataDao.getById("nip",payrollEntity.getNip());
+                    //jika karyawan tetap
+                    if (("TP01").equalsIgnoreCase(biodataEntity.getTipePegawai())){
+                        Map gajikaryawantetap = new HashMap();
+                        gajikaryawantetap.put("nilai",payrollEntity.getGajiGolongan());
+                        gajikaryawantetap.put("divisi_id",posisi.getKodering());
+                        gajikaryawantetaplist.add(gajikaryawantetap);
+                        total = total.add(payrollEntity.getGajiGolongan());
+
+                        Map tunjjabatankaryawantetap = new HashMap();
+                        tunjjabatankaryawantetap.put("nilai",payrollEntity.getTunjanganJabatanStruktural());
+                        tunjjabatankaryawantetap.put("divisi_id",posisi.getKodering());
+                        tunjjabatankaryawantetaplist.add(tunjjabatankaryawantetap);
+                        total = total.add(payrollEntity.getTunjanganJabatanStruktural());
+
+                        Map tunjstrukturalkaryawantetap = new HashMap();
+                        tunjstrukturalkaryawantetap.put("nilai",payrollEntity.getTunjanganStruktural());
+                        tunjstrukturalkaryawantetap.put("divisi_id",posisi.getKodering());
+                        tunjstrukturalkaryawantetaplist.add(tunjstrukturalkaryawantetap);
+                        total = total.add(payrollEntity.getTunjanganStruktural());
+
+                        Map tunjpajakkaryawantetap = new HashMap();
+                        tunjpajakkaryawantetap.put("nilai",payrollEntity.getTunjanganPph());
+                        tunjpajakkaryawantetap.put("divisi_id",posisi.getKodering());
+                        tunjpajakkaryawantetaplist.add(tunjpajakkaryawantetap);
+                        total = total.add(payrollEntity.getTunjanganPph());
+
+                        Map tunjRLABkaryawantetap = new HashMap();
+                        tunjRLABkaryawantetap.put("nilai",payrollEntity.getTotalRlab());
+                        tunjRLABkaryawantetap.put("divisi_id",posisi.getKodering());
+                        tunjRLABkaryawantetaplist.add(tunjRLABkaryawantetap);
+                        total = total.add(payrollEntity.getTotalRlab());
+
+                        Map tunjpensiunkaryawantetap = new HashMap();
+                        tunjpensiunkaryawantetap.put("nilai",payrollEntity.getTunjanganDapen());
+                        tunjpensiunkaryawantetap.put("divisi_id",posisi.getKodering());
+                        tunjpensiunkaryawantetaplist.add(tunjpensiunkaryawantetap);
+                        total = total.add(payrollEntity.getTunjanganDapen());
+
+                        Map tunjbpjstkkaryawantetap = new HashMap();
+                        tunjbpjstkkaryawantetap.put("nilai",payrollEntity.getTunjanganBpjsTk());
+                        tunjbpjstkkaryawantetap.put("divisi_id",posisi.getKodering());
+                        tunjbpjstkkaryawantetaplist.add(tunjbpjstkkaryawantetap);
+                        total = total.add(payrollEntity.getTunjanganBpjsTk());
+
+                        Map tunjbpjskskaryawantetap = new HashMap();
+                        tunjbpjskskaryawantetap.put("nilai",payrollEntity.getTunjanganBpjsKs());
+                        tunjbpjskskaryawantetap.put("divisi_id",posisi.getKodering());
+                        tunjbpjskskaryawantetaplist.add(tunjbpjskskaryawantetap);
+                        total = total.add(payrollEntity.getTunjanganBpjsKs());
+
+                        Map tunjkhususkaryawantetap = new HashMap();
+                        tunjkhususkaryawantetap.put("nilai",payrollEntity.getTunjanganUmk());
+                        tunjkhususkaryawantetap.put("divisi_id",posisi.getKodering());
+                        tunjkhususkaryawantetaplist.add(tunjkhususkaryawantetap);
+                        total = total.add(payrollEntity.getTunjanganUmk());
+
+                        Map tunjlemburkaryawantetap = new HashMap();
+                        tunjlemburkaryawantetap.put("nilai",payrollEntity.getTunjanganLembur());
+                        tunjlemburkaryawantetap.put("divisi_id",posisi.getKodering());
+                        tunjlemburkaryawantetaplist.add(tunjlemburkaryawantetap);
+                        total = total.add(payrollEntity.getTunjanganLembur());
+
+                        Map tunjperalihankaryawantetap = new HashMap();
+                        tunjperalihankaryawantetap.put("nilai",payrollEntity.getTunjanganPeralihan());
+                        tunjperalihankaryawantetap.put("divisi_id",posisi.getKodering());
+                        tunjperalihankaryawantetaplist.add(tunjperalihankaryawantetap);
+                        total = total.add(payrollEntity.getTunjanganPeralihan());
+
+                        Map tunjsupervisikaryawantetap = new HashMap();
+                        tunjsupervisikaryawantetap.put("nilai",BigDecimal.ZERO);
+                        tunjsupervisikaryawantetap.put("divisi_id",posisi.getKodering());
+                        tunjsupervisikaryawantetaplist.add(tunjsupervisikaryawantetap);
+
+                        Map tunjfungsionalkaryawantetap = new HashMap();
+                        tunjfungsionalkaryawantetap.put("nilai",payrollEntity.getTunjanganStrategis());
+                        tunjfungsionalkaryawantetap.put("divisi_id",posisi.getKodering());
+                        tunjfungsionalkaryawantetaplist.add(tunjfungsionalkaryawantetap);
+                        total = total.add(payrollEntity.getTunjanganStrategis());
+
+                        Map tunjlainnyakaryawantetap = new HashMap();
+                        tunjlainnyakaryawantetap.put("nilai",BigDecimal.ZERO);
+                        tunjlainnyakaryawantetap.put("divisi_id",posisi.getKodering());
+                        tunjlainnyakaryawantetaplist.add(tunjlainnyakaryawantetap);
+
+                        jumlahdataPt=jumlahdataPt+1;
+                    }else
+                        //jika karyawan tidak tetap
+                        if (("TP03").equalsIgnoreCase(biodataEntity.getTipePegawai())){
+                        Map gajikaryawantidaktetap = new HashMap();
+                        gajikaryawantidaktetap.put("nilai",payrollEntity.getGajiGolongan());
+                        gajikaryawantidaktetap.put("divisi_id",posisi.getKodering());
+                        gajikaryawantidaktetaplist.add(gajikaryawantidaktetap);
+                        total = total.add(payrollEntity.getGajiGolongan());
+
+                        Map tunjfungsionalkaryawantidaktetap = new HashMap();
+                        tunjfungsionalkaryawantidaktetap.put("nilai",payrollEntity.getTunjanganStrategis());
+                        tunjfungsionalkaryawantidaktetap.put("divisi_id",posisi.getKodering());
+                        tunjfungsionalkaryawantidaktetaplist.add(tunjfungsionalkaryawantidaktetap);
+                        total = total.add(payrollEntity.getTunjanganStrategis());
+
+                        Map tunjtambahankaryawantidaktetap = new HashMap();
+                        tunjtambahankaryawantidaktetap.put("nilai",payrollEntity.getTunjanganTambahan());
+                        tunjtambahankaryawantidaktetap.put("divisi_id",posisi.getKodering());
+                        tunjtambahankaryawantidaktetaplist.add(tunjtambahankaryawantidaktetap);
+                        total = total.add(payrollEntity.getTunjanganTambahan());
+
+                        Map tunjpajakkaryawantidaktetap = new HashMap();
+                        tunjpajakkaryawantidaktetap.put("nilai",payrollEntity.getTunjanganPph());
+                        tunjpajakkaryawantidaktetap.put("divisi_id",posisi.getKodering());
+                        tunjpajakkaryawantidaktetaplist.add(tunjpajakkaryawantidaktetap);
+                        total = total.add(payrollEntity.getTunjanganPph());
+
+                        Map tunjbpjstkkaryawantidaktetap = new HashMap();
+                        tunjbpjstkkaryawantidaktetap.put("nilai",payrollEntity.getTunjanganBpjsTk());
+                        tunjbpjstkkaryawantidaktetap.put("divisi_id",posisi.getKodering());
+                        tunjbpjstkkaryawantidaktetaplist.add(tunjbpjstkkaryawantidaktetap);
+                        total = total.add(payrollEntity.getTunjanganBpjsTk());
+
+                        Map tunjbpjskskaryawantidaktetap = new HashMap();
+                        tunjbpjskskaryawantidaktetap.put("nilai",payrollEntity.getTunjanganBpjsKs());
+                        tunjbpjskskaryawantidaktetap.put("divisi_id",posisi.getKodering());
+                        tunjbpjskskaryawantidaktetaplist.add(tunjbpjskskaryawantidaktetap);
+                        total = total.add(payrollEntity.getTunjanganBpjsKs());
+
+                        Map tunjkhususkaryawantidaktetap = new HashMap();
+                        tunjkhususkaryawantidaktetap.put("nilai",payrollEntity.getTambahanLain());
+                        tunjkhususkaryawantidaktetap.put("divisi_id",posisi.getKodering());
+                        tunjkhususkaryawantidaktetaplist.add(tunjkhususkaryawantidaktetap);
+                        total = total.add(payrollEntity.getTambahanLain());
+
+                        Map tunjlemburkaryawantidaktetap = new HashMap();
+                        tunjlemburkaryawantidaktetap.put("nilai",payrollEntity.getTunjanganLembur());
+                        tunjlemburkaryawantidaktetap.put("divisi_id",posisi.getKodering());
+                        tunjlemburkaryawantidaktetaplist.add(tunjlemburkaryawantidaktetap);
+                        total = total.add(payrollEntity.getTunjanganLembur());
+
+                        Map tunjlainnyakaryawantidaktetap = new HashMap();
+                        tunjlainnyakaryawantidaktetap.put("nilai",payrollEntity.getTunjanganLain());
+                        tunjlainnyakaryawantidaktetap.put("divisi_id",posisi.getKodering());
+                        tunjlainnyakaryawantidaktetaplist.add(tunjlainnyakaryawantidaktetap);
+                        total = total.add(payrollEntity.getTunjanganLain());
+
+                        jumlahdataPtt=jumlahdataPtt+1;
+                    }
+
+                }
+            }
+
+            if (jumlahdataPt==0){
+                Map gajikaryawantetap = new HashMap();
+                gajikaryawantetap.put("nilai",BigDecimal.ZERO);
+                gajikaryawantetap.put("divisi_id",posisi.getKodering());
+                gajikaryawantetaplist.add(gajikaryawantetap);
+
+                Map tunjjabatankaryawantetap = new HashMap();
+                tunjjabatankaryawantetap.put("nilai",BigDecimal.ZERO);
+                tunjjabatankaryawantetap.put("divisi_id",posisi.getKodering());
+                tunjjabatankaryawantetaplist.add(tunjjabatankaryawantetap);
+
+                Map tunjstrukturalkaryawantetap = new HashMap();
+                tunjstrukturalkaryawantetap.put("nilai",BigDecimal.ZERO);
+                tunjstrukturalkaryawantetap.put("divisi_id",posisi.getKodering());
+                tunjstrukturalkaryawantetaplist.add(tunjstrukturalkaryawantetap);
+
+                Map tunjpajakkaryawantetap = new HashMap();
+                tunjpajakkaryawantetap.put("nilai",BigDecimal.ZERO);
+                tunjpajakkaryawantetap.put("divisi_id",posisi.getKodering());
+                tunjpajakkaryawantetaplist.add(tunjpajakkaryawantetap);
+
+                Map tunjRLABkaryawantetap = new HashMap();
+                tunjRLABkaryawantetap.put("nilai",BigDecimal.ZERO);
+                tunjRLABkaryawantetap.put("divisi_id",posisi.getKodering());
+                tunjRLABkaryawantetaplist.add(tunjRLABkaryawantetap);
+
+                Map tunjpensiunkaryawantetap = new HashMap();
+                tunjpensiunkaryawantetap.put("nilai",BigDecimal.ZERO);
+                tunjpensiunkaryawantetap.put("divisi_id",posisi.getKodering());
+                tunjpensiunkaryawantetaplist.add(tunjpensiunkaryawantetap);
+
+                Map tunjbpjstkkaryawantetap = new HashMap();
+                tunjbpjstkkaryawantetap.put("nilai",BigDecimal.ZERO);
+                tunjbpjstkkaryawantetap.put("divisi_id",posisi.getKodering());
+                tunjbpjstkkaryawantetaplist.add(tunjbpjstkkaryawantetap);
+
+                Map tunjbpjskskaryawantetap = new HashMap();
+                tunjbpjskskaryawantetap.put("nilai",BigDecimal.ZERO);
+                tunjbpjskskaryawantetap.put("divisi_id",posisi.getKodering());
+                tunjbpjskskaryawantetaplist.add(tunjbpjskskaryawantetap);
+
+                Map tunjkhususkaryawantetap = new HashMap();
+                tunjkhususkaryawantetap.put("nilai",BigDecimal.ZERO);
+                tunjkhususkaryawantetap.put("divisi_id",posisi.getKodering());
+                tunjkhususkaryawantetaplist.add(tunjkhususkaryawantetap);
+
+                Map tunjlemburkaryawantetap = new HashMap();
+                tunjlemburkaryawantetap.put("nilai",BigDecimal.ZERO);
+                tunjlemburkaryawantetap.put("divisi_id",posisi.getKodering());
+                tunjlemburkaryawantetaplist.add(tunjlemburkaryawantetap);
+
+                Map tunjperalihankaryawantetap = new HashMap();
+                tunjperalihankaryawantetap.put("nilai",BigDecimal.ZERO);
+                tunjperalihankaryawantetap.put("divisi_id",posisi.getKodering());
+                tunjperalihankaryawantetaplist.add(tunjperalihankaryawantetap);
+
+                Map tunjsupervisikaryawantetap = new HashMap();
+                tunjsupervisikaryawantetap.put("nilai",BigDecimal.ZERO);
+                tunjsupervisikaryawantetap.put("divisi_id",posisi.getKodering());
+                tunjsupervisikaryawantetaplist.add(tunjsupervisikaryawantetap);
+
+                Map tunjfungsionalkaryawantetap = new HashMap();
+                tunjfungsionalkaryawantetap.put("nilai",BigDecimal.ZERO);
+                tunjfungsionalkaryawantetap.put("divisi_id",posisi.getKodering());
+                tunjfungsionalkaryawantetaplist.add(tunjfungsionalkaryawantetap);
+
+                Map tunjlainnyakaryawantetap = new HashMap();
+                tunjlainnyakaryawantetap.put("nilai",BigDecimal.ZERO);
+                tunjlainnyakaryawantetap.put("divisi_id",posisi.getKodering());
+                tunjlainnyakaryawantetaplist.add(tunjlainnyakaryawantetap);
+
+            }else if (jumlahdataPtt==0){
+                Map gajikaryawantidaktetap = new HashMap();
+                gajikaryawantidaktetap.put("nilai",BigDecimal.ZERO);
+                gajikaryawantidaktetap.put("divisi_id",posisi.getKodering());
+                gajikaryawantidaktetaplist.add(gajikaryawantidaktetap);
+
+                Map tunjfungsionalkaryawantidaktetap = new HashMap();
+                tunjfungsionalkaryawantidaktetap.put("nilai",BigDecimal.ZERO);
+                tunjfungsionalkaryawantidaktetap.put("divisi_id",posisi.getKodering());
+                tunjfungsionalkaryawantidaktetaplist.add(tunjfungsionalkaryawantidaktetap);
+
+                Map tunjtambahankaryawantidaktetap = new HashMap();
+                tunjtambahankaryawantidaktetap.put("nilai",BigDecimal.ZERO);
+                tunjtambahankaryawantidaktetap.put("divisi_id",posisi.getKodering());
+                tunjtambahankaryawantidaktetaplist.add(tunjtambahankaryawantidaktetap);
+
+                Map tunjpajakkaryawantidaktetap = new HashMap();
+                tunjpajakkaryawantidaktetap.put("nilai",BigDecimal.ZERO);
+                tunjpajakkaryawantidaktetap.put("divisi_id",posisi.getKodering());
+                tunjpajakkaryawantidaktetaplist.add(tunjpajakkaryawantidaktetap);
+
+                Map tunjbpjstkkaryawantidaktetap = new HashMap();
+                tunjbpjstkkaryawantidaktetap.put("nilai",BigDecimal.ZERO);
+                tunjbpjstkkaryawantidaktetap.put("divisi_id",posisi.getKodering());
+                tunjbpjstkkaryawantidaktetaplist.add(tunjbpjstkkaryawantidaktetap);
+
+                Map tunjbpjskskaryawantidaktetap = new HashMap();
+                tunjbpjskskaryawantidaktetap.put("nilai",BigDecimal.ZERO);
+                tunjbpjskskaryawantidaktetap.put("divisi_id",posisi.getKodering());
+                tunjbpjskskaryawantidaktetaplist.add(tunjbpjskskaryawantidaktetap);
+
+                Map tunjkhususkaryawantidaktetap = new HashMap();
+                tunjkhususkaryawantidaktetap.put("nilai",BigDecimal.ZERO);
+                tunjkhususkaryawantidaktetap.put("divisi_id",posisi.getKodering());
+                tunjkhususkaryawantidaktetaplist.add(tunjkhususkaryawantidaktetap);
+
+                Map tunjlemburkaryawantidaktetap = new HashMap();
+                tunjlemburkaryawantidaktetap.put("nilai",BigDecimal.ZERO);
+                tunjlemburkaryawantidaktetap.put("divisi_id",posisi.getKodering());
+                tunjlemburkaryawantidaktetaplist.add(tunjlemburkaryawantidaktetap);
+
+                Map tunjlainnyakaryawantidaktetap = new HashMap();
+                tunjlainnyakaryawantidaktetap.put("nilai",BigDecimal.ZERO);
+                tunjlainnyakaryawantidaktetap.put("divisi_id",posisi.getKodering());
+                tunjlainnyakaryawantidaktetaplist.add(tunjlainnyakaryawantidaktetap);
+            }
+        }
+
+        dataPayroll.put("penghasilan_dekom", penghasilandekomlist);
+        dataPayroll.put("tunj_pph_dekom", tunjpphdekomlist);
+        dataPayroll.put("tunj_transport_kom_dekom", tunjtransportkomdekomlist);
+        dataPayroll.put("tunj_rumah_dekom", tunjrumahdekomlist);
+        dataPayroll.put("tunj_pelaksana_tugas_dekom", tunjpelaksanatugasdekomlist);
+        dataPayroll.put("tunj_hariraya_dekom", tunjharirayadekomlist);
+        dataPayroll.put("tunj_cuti_dekom", tunjcutidekomlist);
+        dataPayroll.put("tunj_tantiem_dekom", tunjtantiemdekomlist);
+        dataPayroll.put("tunj_asuransi_dekom", tunjasuransidekomlist);
+        dataPayroll.put("tunj_lain_lain_dekom", tunjlainlaindekomlist);
+
+        dataPayroll.put("penghasilan_direksi", penghasilandireksilist);
+        dataPayroll.put("tunj_pph_direksi", tunjpphdireksilist);
+        dataPayroll.put("tunj_transport_kom_direksi", tunjtransportkomdireksilist);
+        dataPayroll.put("tunj_rumah_direksi", tunjrumahdireksilist);
+        dataPayroll.put("tunj_pelaksana_tugas_direksi", tunjpelaksanatugasdireksilist);
+        dataPayroll.put("tunj_hariraya_direksi", tunjharirayadireksilist);
+        dataPayroll.put("tunj_cuti_direksi", tunjcutidireksilist);
+        dataPayroll.put("tunj_tantiem_direksi", tunjtantiemdireksilist);
+        dataPayroll.put("tunj_asuransi_direksi", tunjasuransidireksilist);
+        dataPayroll.put("tunj_lain_lain_direksi", tunjlainlaindireksilist);
+
+        dataPayroll.put("gaji_karyawan_tetap", gajikaryawantetaplist);
+        dataPayroll.put("tunj_jabatan_karyawan_tetap", tunjjabatankaryawantetaplist);
+        dataPayroll.put("tunj_struktural_karyawan_tetap", tunjstrukturalkaryawantetaplist);
+        dataPayroll.put("tunj_pajak_karyawan_tetap", tunjpajakkaryawantetaplist);
+        dataPayroll.put("tunj_RLAB_karyawan_tetap", tunjRLABkaryawantetaplist);
+        dataPayroll.put("tunj_pensiun_karyawan_tetap", tunjpensiunkaryawantetaplist);
+        dataPayroll.put("tunj_bpjs_tk_karyawan_tetap", tunjbpjstkkaryawantetaplist);
+        dataPayroll.put("tunj_bpjs_ks_karyawan_tetap", tunjbpjskskaryawantetaplist);
+        dataPayroll.put("tunj_khusus_karyawan_tetap", tunjkhususkaryawantetaplist);
+        dataPayroll.put("tunj_lembur_karyawan_tetap", tunjlemburkaryawantetaplist);
+        dataPayroll.put("tunj_peralihan_karyawan_tetap", tunjperalihankaryawantetaplist);
+        dataPayroll.put("tunj_supervisi_karyawan_tetap", tunjsupervisikaryawantetaplist);
+        dataPayroll.put("tunj_fungsional_karyawan_tetap", tunjfungsionalkaryawantetaplist);
+        dataPayroll.put("tunj_lainnya_karyawan_tetap", tunjlainnyakaryawantetaplist);
+
+        dataPayroll.put("gaji_karyawan_tidak_tetap", gajikaryawantidaktetaplist);
+        dataPayroll.put("tunj_fungsional_karyawan_tidak_tetap", tunjfungsionalkaryawantidaktetaplist);
+        dataPayroll.put("tunj_tambahan_karyawan_tidak_tetap", tunjtambahankaryawantidaktetaplist);
+        dataPayroll.put("tunj_pajak_karyawan_tidak_tetap", tunjpajakkaryawantidaktetaplist);
+        dataPayroll.put("tunj_bpjs_tk_karyawan_tidak_tetap", tunjbpjstkkaryawantidaktetaplist);
+        dataPayroll.put("tunj_bpjs_ks_karyawan_tidak_tetap", tunjbpjskskaryawantidaktetaplist);
+        dataPayroll.put("tunj_khusus_karyawan_tidak_tetap", tunjkhususkaryawantidaktetaplist);
+        dataPayroll.put("tunj_lembur_karyawan_tidak_tetap", tunjlemburkaryawantidaktetaplist);
+        dataPayroll.put("tunj_lainnya_karyawan_tidak_tetap", tunjlainnyakaryawantidaktetaplist);
+
+        dataPayroll.put("kas",total);
+        dataPayroll.put("metode_bayar","transfer");
+        dataPayroll.put("bank","mandiri");
+        return dataPayroll;
+    }
+
+    @Override
     public void approvePayroll(Payroll bean) throws GeneralBOException {
         if(bean.getApprovalFlag().equalsIgnoreCase("Y")){
-            payrollDao.approvePayroll(bean.getBranchId(), bean.getBulan(), bean.getTahun(), bean.getApprovalFlag(), bean.getTipe());
-
-
-            // disini ada method untuk memposting ke jurnal
-
-
-
+            try {
+                payrollDao.approvePayroll(bean.getBranchId(), bean.getBulan(), bean.getTahun(), bean.getApprovalFlag(), bean.getTipe());
+            }catch (HibernateException e){
+                logger.error("[PayrollBoImpl.approvePayroll] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when saving update data Payroll, please info to your admin..." + e.getMessage());
+            }
         }else{
-            /*List<ItPayrollEntity> itPayrollEntity = null;
-            itPayrollEntity = payrollDao.getDataView(bean.getBranchId(), bean.getBulan(), bean.getTahun(), bean.getTipe());
-            if(itPayrollEntity.size() > 0){
-                for(ItPayrollEntity itPayrollEntity1: itPayrollEntity){
-                    //Rapel
-                    List<ItPayrollRapelEntity> itRapel = null;
-                    itRapel = payrollRapelDao.getRapel(itPayrollEntity1.getPayrollId());
-                    if(itRapel.size() > 0){
-                        for(ItPayrollRapelEntity itPayrollRapelEntity: itRapel){
-                            itPayrollRapelEntity.setFlag("N");
-                            payrollRapelDao.updateAndSave(itPayrollRapelEntity);
-                            break;
-                        }
-                    }
-
-                    //Thr
-                    List<ItPayrollThrEntity> itThr = null;
-                    itThr = payrollThrDao.getThr(itPayrollEntity1.getPayrollId());
-                    if(itThr.size() > 0){
-                        for(ItPayrollThrEntity itPayrollThrEntity: itThr){
-                            itPayrollThrEntity.setFlag("N");
-                            payrollThrDao.updateAndSave(itPayrollThrEntity);
-                            break;
-                        }
-                    }
-
-                    //Pendidikan
-                    List<ItPayrollPendidikanEntity> itPendidikan = null;
-                    itPendidikan = payrollPendidikanDao.getPendidikan(itPayrollEntity1.getPayrollId());
-                    if(itPendidikan.size() > 0){
-                        for(ItPayrollPendidikanEntity itPayrollPendidikanEntity: itPendidikan){
-                            itPayrollPendidikanEntity.setFlag("N");
-                            payrollPendidikanDao.updateAndSave(itPayrollPendidikanEntity);
-                            break;
-                        }
-                    }
-
-                    //Jasprod
-                    List<ItPayrollJasprodEntity> itJasprod = null;
-                    itJasprod = payrollJasprodDao.getJasprod(itPayrollEntity1.getPayrollId());
-                    if(itJasprod.size() > 0){
-                        for(ItPayrollJasprodEntity itPayrollJasprodEntity: itJasprod){
-                            itPayrollJasprodEntity.setFlag("N");
-                            payrollJasprodDao.updateAndSave(itPayrollJasprodEntity);
-                            break;
-                        }
-                    }
-
-                    //Pensiun
-                    List<ItPayrollPensiunEntity> itPensiun = null;
-                    itPensiun = payrollPensiunDao.getPensiun(itPayrollEntity1.getPayrollId());
-                    if(itPensiun.size() > 0){
-                        for(ItPayrollPensiunEntity itPayrollPensiunEntity: itPensiun){
-                            itPayrollPensiunEntity.setFlag("N");
-                            payrollPensiunDao.updateAndSave(itPayrollPensiunEntity);
-                            break;
-                        }
-                    }
-
-//                    //Jubileum
-//                    List<ItPayrollJubileumEntity> itJubileum= null;
-//                    itJubileum = payrollJubileumDao.getJubileum(itPayrollEntity1.getPayrollId());
-//                    if(itJubileum.size() > 0){
-//                        for(ItPayrollJubileumEntity itPayrollJubileumEntity: itJubileum){
-//                            itPayrollJubileumEntity.setFlag("N");
-//                            payrollJubileumDao.updateAndSave(itPayrollJubileumEntity);
-//                            break;
-//                        }
-//                    }
-                }*/
-//            }
             payrollDao.approvePayroll(bean.getBranchId(), bean.getBulan(), bean.getTahun(), bean.getApprovalFlag(), bean.getTipe());
             payrollDao.approvePayrollUnit(bean.getBranchId(), bean.getBulan(), bean.getTahun(), bean.getApprovalFlag(), bean.getTipe());
             HttpSession session = ServletActionContext.getRequest().getSession();
@@ -9548,77 +10132,6 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
         if(bean.getApprovalUnitFlag().equalsIgnoreCase("Y")){
             payrollDao.approvePayrollUnit(bean.getBranchId(), bean.getBulan(), bean.getTahun(), bean.getApprovalUnitFlag(), bean.getTipe());
         }else{
-            /*List<ItPayrollEntity> itPayrollEntity = null;
-            itPayrollEntity = payrollDao.getDataView(bean.getBranchId(), bean.getBulan(), bean.getTahun(), bean.getTipe());
-            if(itPayrollEntity.size() > 0){
-                for(ItPayrollEntity itPayrollEntity1: itPayrollEntity){
-                    //Rapel
-                    List<ItPayrollRapelEntity> itRapel = null;
-                    itRapel = payrollRapelDao.getRapel(itPayrollEntity1.getPayrollId());
-                    if(itRapel.size() > 0){
-                        for(ItPayrollRapelEntity itPayrollRapelEntity: itRapel){
-                            itPayrollRapelEntity.setFlag("N");
-                            payrollRapelDao.updateAndSave(itPayrollRapelEntity);
-                            break;
-                        }
-                    }
-
-                    //Thr
-                    List<ItPayrollThrEntity> itThr = null;
-                    itThr = payrollThrDao.getThr(itPayrollEntity1.getPayrollId());
-                    if(itThr.size() > 0){
-                        for(ItPayrollThrEntity itPayrollThrEntity: itThr){
-                            itPayrollThrEntity.setFlag("N");
-                            payrollThrDao.updateAndSave(itPayrollThrEntity);
-                            break;
-                        }
-                    }
-
-                    //Pendidikan
-                    List<ItPayrollPendidikanEntity> itPendidikan = null;
-                    itPendidikan = payrollPendidikanDao.getPendidikan(itPayrollEntity1.getPayrollId());
-                    if(itPendidikan.size() > 0){
-                        for(ItPayrollPendidikanEntity itPayrollPendidikanEntity: itPendidikan){
-                            itPayrollPendidikanEntity.setFlag("N");
-                            payrollPendidikanDao.updateAndSave(itPayrollPendidikanEntity);
-                            break;
-                        }
-                    }
-
-                    //Jasprod
-                    List<ItPayrollJasprodEntity> itJasprod = null;
-                    itJasprod = payrollJasprodDao.getJasprod(itPayrollEntity1.getPayrollId());
-                    if(itJasprod.size() > 0){
-                        for(ItPayrollJasprodEntity itPayrollJasprodEntity: itJasprod){
-                            itPayrollJasprodEntity.setFlag("N");
-                            payrollJasprodDao.updateAndSave(itPayrollJasprodEntity);
-                            break;
-                        }
-                    }
-
-                    //Pensiun
-                    List<ItPayrollPensiunEntity> itPensiun = null;
-                    itPensiun = payrollPensiunDao.getPensiun(itPayrollEntity1.getPayrollId());
-                    if(itPensiun.size() > 0){
-                        for(ItPayrollPensiunEntity itPayrollPensiunEntity: itPensiun){
-                            itPayrollPensiunEntity.setFlag("N");
-                            payrollPensiunDao.updateAndSave(itPayrollPensiunEntity);
-                            break;
-                        }
-                    }
-
-//                    //Jubileum
-//                    List<ItPayrollJubileumEntity> itJubileum= null;
-//                    itJubileum = payrollJubileumDao.getJubileum(itPayrollEntity1.getPayrollId());
-//                    if(itJubileum.size() > 0){
-//                        for(ItPayrollJubileumEntity itPayrollJubileumEntity: itJubileum){
-//                            itPayrollJubileumEntity.setFlag("N");
-//                            payrollJubileumDao.updateAndSave(itPayrollJubileumEntity);
-//                            break;
-//                        }
-//                    }
-                }*/
-//            }
             payrollDao.approvePayrollUnit(bean.getBranchId(), bean.getBulan(), bean.getTahun(), bean.getApprovalUnitFlag(), bean.getTipe());
             HttpSession session = ServletActionContext.getRequest().getSession();
             session.removeAttribute("listOfResult");
@@ -9648,40 +10161,6 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
     @Override
     public Long saveErrorMessage(String message, String moduleMethod) throws GeneralBOException {
         return null;
-    }
-
-    public List<Payroll> getComboPayrollWithCriteria(String query) throws GeneralBOException {
-        return null;
-    }
-
-    private boolean konsistensiGaji(String nip, String bulan, String tahun, BigDecimal gajiSekarang){
-        boolean hasil = true;
-        int bulanSebelum = Integer.parseInt(bulan);
-        int tahunSebelumnya = Integer.parseInt(tahun);
-        String strBlnSebelumnya = bulan;
-        String strTahunSebelumnya = tahun ;
-        BigDecimal gajiSebelum = new BigDecimal(0);
-
-        if(bulanSebelum - 1 < 1){
-            strTahunSebelumnya = (tahunSebelumnya - 1) + "";
-            strBlnSebelumnya = "12";
-        }else{
-            strBlnSebelumnya = (bulanSebelum-1) + "";
-        }
-
-        List<ItPayrollEntity> listPayroll = payrollDao.getLastPayroll(nip, strBlnSebelumnya, strTahunSebelumnya);
-
-        if(listPayroll != null){
-            for(ItPayrollEntity payrollEntity : listPayroll){
-                gajiSebelum = payrollEntity.getGajiBersih();
-            }
-        }
-
-        if(gajiSekarang.compareTo(gajiSebelum) != 0){
-            hasil = false;
-        }
-
-        return hasil;
     }
 
     @Override

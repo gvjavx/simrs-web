@@ -9,12 +9,16 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
 import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
+import com.neurix.simrs.master.kelasruangan.bo.KelasRuanganBo;
+import com.neurix.simrs.master.kelasruangan.model.ImSimrsKelasRuanganEntity;
 import com.neurix.simrs.master.obat.bo.ObatBo;
 import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
 import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
+import com.neurix.simrs.master.ruangan.bo.RuanganBo;
+import com.neurix.simrs.master.ruangan.model.MtSimrsRuanganEntity;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.JurnalResponse;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
@@ -31,6 +35,9 @@ import com.neurix.simrs.transaksi.obatpoli.model.PermintaanObatPoli;
 import com.neurix.simrs.transaksi.permintaanresep.bo.PermintaanResepBo;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
+import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
+import com.neurix.simrs.transaksi.rawatinap.model.ItSimrsRawatInapEntity;
+import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
 import com.neurix.simrs.transaksi.riwayattindakan.bo.RiwayatTindakanBo;
 import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
 import com.neurix.simrs.transaksi.transaksiobat.bo.TransaksiObatBo;
@@ -81,10 +88,15 @@ public class TransaksiObatAction extends BaseMasterAction {
     private BillingSystemBo billingSystemBoProxy;
     private ObatPoliBo obatPoliBoProxy;
     private BranchBo branchBoProxy;
+    private PelayananBo pelayananBoProxy;
     private String id;
     private String idResep;
     private String idApprove;
     private String idPermintaan;
+
+    public void setPelayananBoProxy(PelayananBo pelayananBoProxy) {
+        this.pelayananBoProxy = pelayananBoProxy;
+    }
 
     public String getIdPermintaan() {
         return idPermintaan;
@@ -904,6 +916,9 @@ public class TransaksiObatAction extends BaseMasterAction {
         ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
         PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
         CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+        KelasRuanganBo kelasRuanganBo = (KelasRuanganBo) ctx.getBean("kelasRuanganBoProxy");
+        RuanganBo ruanganBo = (RuanganBo) ctx.getBean("ruanganBoProxy");
+        RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
 
         String namaApotek = "";
         String divisiId = "";
@@ -919,11 +934,42 @@ public class TransaksiObatAction extends BaseMasterAction {
                     if (detailCheckupEntity != null){
                         try {
                             ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(detailCheckupEntity.getIdPelayanan());
-                            if (pelayananEntity != null && pelayananEntity.getKodering() != null){
-                                divisiId = pelayananEntity.getKodering();
+
+
+                            if (pelayananEntity != null && pelayananEntity.getTipePelayanan() != null){
+
+                                // jika poli selain rawat inap maka mengambil kodering dari pelayanan
+                                // jika poli rawat rawat inap maka mengambil koderBing dari kelas ruangan , Sigit
+                                if ("rawat_inap".equalsIgnoreCase(pelayananEntity.getTipePelayanan())){
+
+                                    RawatInap rawatInap = new RawatInap();
+                                    rawatInap.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
+                                    rawatInap.setFlag("Y");
+
+                                    List<ItSimrsRawatInapEntity> rawatInapEntities = rawatInapBo.getListEntityByCriteria(rawatInap);
+                                    if (rawatInapEntities.size() > 0){
+                                        for (ItSimrsRawatInapEntity rawatInapEntity : rawatInapEntities){
+                                            MtSimrsRuanganEntity ruanganEntity = ruanganBo.getEntityRuanganById(rawatInapEntity.getIdRuangan());
+                                            if (ruanganEntity != null){
+                                                ImSimrsKelasRuanganEntity kelasRuanganEntity = kelasRuanganBo.getKelasRuanganById(ruanganEntity.getIdKelasRuangan());
+                                                if (kelasRuanganEntity != null){
+                                                    divisiId = kelasRuanganEntity.getKodering();
+                                                }
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    if (pelayananEntity != null && pelayananEntity.getKodering() != null){
+                                        divisiId = pelayananEntity.getKodering();
+                                    } else {
+                                        response.setStatus("error");
+                                        response.setMsg("[TransaksiObatAction.createJurnalPengeluaranObatApotik] tidak ditemukan data kodering");
+                                        return response;
+                                    }
+                                }
                             } else {
                                 response.setStatus("error");
-                                response.setMsg("[TransaksiObatAction.createJurnalPengeluaranObatApotik] tidak ditemukan data kodering");
+                                response.setMsg("[TransaksiObatAction.createJurnalPengeluaranObatApotik] tidak ditemukan data tipePelayanan");
                                 return response;
                             }
                         } catch (GeneralBOException e){
@@ -1346,21 +1392,35 @@ public class TransaksiObatAction extends BaseMasterAction {
     private JurnalResponse createJurnalPembayaranObatbaru(TransaksiObatDetail trans) {
 
         String branchId = CommonUtil.userBranchLogin();
+        String pelayananId = CommonUtil.userPelayananIdLogin();
 
         BigDecimal pendapatan = new BigDecimal(trans.getTotalBayar().subtract(trans.getPpnBayar()).toString());
         BigDecimal ppn = new BigDecimal(trans.getPpnBayar().toString());
 
         JurnalResponse jurnalResponse = new JurnalResponse();
 
+        String divisiId = "";
+        String masterId = "01.000";
+        ImSimrsPelayananEntity pelayananEntity = pelayananBoProxy.getPelayananById(pelayananId);
+        if (pelayananEntity != null && pelayananEntity.getKodering() != null){
+            divisiId = pelayananEntity.getKodering();
+        } else {
+            jurnalResponse.setStatus("error");
+            jurnalResponse.setMsg("[TransaksiObatAction.createJurnalPembayaranObatbaru] ERROR. tidak dapat divisi_id. ");
+            return jurnalResponse;
+        }
+
         // create jurnal
         Map hsCriteria = new HashMap();
+        hsCriteria.put("master_id", "");
+        hsCriteria.put("divisi_id", divisiId);
         hsCriteria.put("kas", new BigDecimal(trans.getTotalBayar()));
-        hsCriteria.put("pendapatan_obat_non_bpjs", pendapatan);
+        hsCriteria.put("pendapatan_obat_umum", pendapatan);
         hsCriteria.put("ppn_keluaran", ppn);
 
         String noJurnal = "";
         try {
-            noJurnal = billingSystemBoProxy.createJurnal("16", hsCriteria, branchId, "Penjualan Obat Apotik " + branchId, "Y");
+            noJurnal = billingSystemBoProxy.createJurnal("29", hsCriteria, branchId, "Penjualan Obat Apotik Langsung " + branchId, "Y");
             jurnalResponse.setStatus("success");
             jurnalResponse.setNoJurnal(noJurnal);
         } catch (GeneralBOException e) {

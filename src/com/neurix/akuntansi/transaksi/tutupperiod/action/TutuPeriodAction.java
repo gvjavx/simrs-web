@@ -1,5 +1,6 @@
 package com.neurix.akuntansi.transaksi.tutupperiod.action;
 
+import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.akuntansi.transaksi.tutupperiod.bo.TutupPeriodBo;
 import com.neurix.akuntansi.transaksi.tutupperiod.model.BatasTutupPeriod;
 import com.neurix.akuntansi.transaksi.tutupperiod.model.ItSimrsBatasTutupPeriodEntity;
@@ -11,6 +12,7 @@ import com.neurix.simrs.master.lab.bo.LabBo;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.JurnalResponse;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
+import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
@@ -132,7 +134,7 @@ public class TutuPeriodAction extends BaseTransactionAction {
         TutupPeriodBo tutupPeriodBo = (TutupPeriodBo) ctx.getBean("tutupPeriodBoProxy");
         CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
 
-        // set object tutup period
+        // set object tutup period, Sigit
         TutupPeriod tutupPeriod = new TutupPeriod();
         tutupPeriod.setUnit(unit);
         tutupPeriod.setTahun(tahun);
@@ -149,6 +151,8 @@ public class TutuPeriodAction extends BaseTransactionAction {
             List<HeaderDetailCheckup> detailCheckups = checkupDetailBo.getListRawatInapExisiting(unit);
             if (detailCheckups.size() > 0){
                 for (HeaderDetailCheckup detailCheckup : detailCheckups){
+
+                    // save all tindakan existing, Sigit
                     CrudResponse responseRiwayat =  saveAddToRiwayatTindakan(detailCheckup.getIdDetailCheckup(), detailCheckup.getIdJenisPeriksaPasien());
                     if ("error".equalsIgnoreCase(responseRiwayat.getStatus())){
                         response.setStatus("error");
@@ -156,10 +160,15 @@ public class TutuPeriodAction extends BaseTransactionAction {
                         return response;
                     }
 
-                    // create jurnal transitoris
+                    // create jurnal transitoris, Sigit
                     tutupPeriod.setIdDetailCheckup(detailCheckup.getIdDetailCheckup());
                     tutupPeriod.setIdJenisPeriksaPasien(detailCheckup.getIdJenisPeriksaPasien());
-                    createJurnalTransitoris(tutupPeriod);
+                    JurnalResponse jurnalResponse = createJurnalTransitoris(tutupPeriod);
+                    if ("error".equalsIgnoreCase(jurnalResponse.getStatus())){
+                        response.setStatus("error");
+                        response.setMsg(jurnalResponse.getMsg());
+                        return response;
+                    }
                 }
             }
         } catch (GeneralBOException e){
@@ -170,6 +179,7 @@ public class TutuPeriodAction extends BaseTransactionAction {
         }
 
 
+        // tutup period, sigit
         try {
             tutupPeriodBo.saveUpdateTutupPeriod(tutupPeriod);
             response.setStatus("success");
@@ -190,14 +200,73 @@ public class TutuPeriodAction extends BaseTransactionAction {
         TutupPeriodBo tutupPeriodBo = (TutupPeriodBo) ctx.getBean("tutupPeriodBoProxy");
         CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
         CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+        BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
 
+        String masterId = "";
+        String divisiId = "";
+        String jenisPasien = "";
+        String bukti = "";
+        String invoiceNumber = billingSystemBo.createInvoiceNumber("JRI", bean.getUnit());
         ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailBo.getEntityDetailCheckupByIdDetail(bean.getIdDetailCheckup());
         if (detailCheckupEntity != null){
 
+            divisiId = detailCheckupEntity.getIdPelayanan();
+
+            if ("bpjs".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())){
+
+                bukti = detailCheckupEntity.getNoSep();
+                jenisPasien = "No. SEP : "+detailCheckupEntity.getNoSep();
+                masterId = "02.018";
+            } else if ("umum".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())){
+                ItSimrsHeaderChekupEntity headerChekupEntity = checkupBo.getEntityCheckupById(detailCheckupEntity.getNoCheckup());
+                if (headerChekupEntity != null){
+
+                    bukti = invoiceNumber;
+                    jenisPasien = "No. RM : "+headerChekupEntity.getIdPasien();
+                    masterId = headerChekupEntity.getIdPasien();
+                }
+            }
         }
 
-        Map mapJurnal = new HashMap();
+        BigDecimal jumlahResep = checkupDetailBo.getSumJumlahTindakan(bean.getIdDetailCheckup(), "resep");
+        BigDecimal jumlahAllTindakan = checkupDetailBo.getSumJumlahTindakan(bean.getIdDetailCheckup(), "");
+        BigDecimal jumlahTindakan = jumlahAllTindakan.subtract(jumlahResep);
 
+        Map mapJurnal = new HashMap();
+        mapJurnal.put("master_id", masterId);
+        mapJurnal.put("divisi_id", divisiId);
+        mapJurnal.put("pendapatan_rawat_inap", jumlahTindakan);
+        mapJurnal.put("pendapatan_obat", jumlahResep);
+
+        Map mapPiutang = new HashMap();
+        mapPiutang.put("bukti", bukti);
+        mapPiutang.put("nilai", jumlahAllTindakan);
+
+        mapJurnal.put("piutang_transistoris_pasien_rawat_inap", mapPiutang);
+
+        String catatan = "Transitoris Rawat Inap saat tutup periode "+jenisPasien;
+
+        try {
+
+            String noJurnal = billingSystemBo.createJurnal("32", mapJurnal, bean.getUnit(), catatan, "Y");
+
+            HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+            detailCheckup.setIdDetailCheckup(bean.getIdDetailCheckup());
+            detailCheckup.setTransPeriode(bean.getBulan()+"-"+bean.getTahun());
+            detailCheckup.setTransDate(bean.getCreatedDate());
+            detailCheckup.setNoJurnalTrans(noJurnal);
+            detailCheckup.setInvoice(invoiceNumber);
+            detailCheckup.setAction("U");
+            detailCheckup.setLastUpdate(bean.getCreatedDate());
+            detailCheckup.setLastUpdateWho(bean.getCreatedWho());
+
+            checkupDetailBo.saveUpdateNoJuran(detailCheckup);
+
+        } catch (GeneralBOException e){
+            logger.error("[TutupPeriodAction.createJurnalTransitoris] ERROR. ", e);
+            response.setStatus("error");
+            response.setMsg("[TutupPeriodAction.createJurnalTransitoris] ERROR. "+e);
+        }
 
         logger.info("[TutuPeriodAction.createJurnalTransitoris] END <<<");
         return response;

@@ -1,5 +1,6 @@
 package com.neurix.hris.transaksi.payroll.action;
 
+import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Branch;
 import com.neurix.common.action.BaseMasterAction;
@@ -36,6 +37,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Ferdi on 05/02/2015.
@@ -2639,6 +2641,12 @@ public class PayrollAction extends BaseMasterAction{
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PayrollBo payrollBo = (PayrollBo) ctx.getBean("payrollBoProxy");
+        BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
+
+        Map data = payrollBo.getDataForBilling(searchPayroll);
+
+        billingSystemBo.createJurnal("37",data,"KP","Pembayaran gaji unit "+branchId+" bulan "+bulan+" tahun "+tahun+"Tipe Payroll "+tipe,"Y");
+
         payrollBo.approvePayroll(searchPayroll);
     }
 

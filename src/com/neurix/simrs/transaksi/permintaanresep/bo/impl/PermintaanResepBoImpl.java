@@ -182,6 +182,7 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
         permintaanEntity.setStatus("3");
         permintaanEntity.setIsUmum("N");
         permintaanEntity.setTglAntrian(bean.getCreatedDate());
+        permintaanEntity.setJenisResep(bean.getJenisResep());
 
         try {
             permintaanResepDao.addAndSave(permintaanEntity);
