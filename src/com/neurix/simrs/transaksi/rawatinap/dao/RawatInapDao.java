@@ -709,4 +709,30 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
 
         return results;
     }
+
+    public RawatInap getLastRuanganById(String idDetail){
+
+        String SQL = "SELECT\n" +
+                "id_detail_checkup,\n" +
+                "id_ruangan\n" +
+                "FROM\n" +
+                "it_simrs_rawat_inap\n" +
+                "WHERE id_detail_checkup = :idDetail \n" +
+                "ORDER BY created_date LIMIT 1";
+
+        List<Object[]> objects = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("idDetail", idDetail)
+                .list();
+
+        RawatInap rawatInap = new RawatInap();
+        if (objects.size() > 0){
+            for (Object[] obj : objects){
+                rawatInap.setIdDetailCheckup(obj[0].toString());
+                rawatInap.setIdRuang(obj[1].toString());
+            }
+            return rawatInap;
+        }
+
+        return null;
+    }
 }

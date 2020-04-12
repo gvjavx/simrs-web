@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printGeneralConsent" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
-	<property name="ireport.zoom" value="1.3636363636363658"/>
+	<property name="ireport.zoom" value="0.7697371773460616"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="512"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -23,66 +23,49 @@
 			<pen lineWidth="0.5" lineColor="#000000"/>
 		</box>
 	</style>
-	<subDataset name="dataSet1" uuid="bf18294e-df6e-4a26-83f4-1735dd269112">
-		<field name="namaObat" class="java.lang.String"/>
-		<field name="qty" class="java.lang.String"/>
-		<field name="qtyApprove" class="java.lang.String"/>
-		<field name="jenisSatuan" class="java.lang.String"/>
-	</subDataset>
-	<parameter name="reportParams.permintaanId" class="java.lang.String"/>
+	<parameter name="reportParams.idDetailCheckup" class="java.lang.String"/>
 	<parameter name="reportParams.logo" class="java.lang.String"/>
 	<parameter name="reportParams.nama" class="java.lang.String"/>
-	<parameter name="reportParams.tanggalLahir" class="java.lang.String"/>
-	<parameter name="reportParams.noRm" class="java.lang.String"/>
-	<parameter name="reportParams.noTelp" class="java.lang.String"/>
+	<parameter name="reportParams.tglLahir" class="java.lang.String"/>
+	<parameter name="reportParams.idPasien" class="java.lang.String"/>
 	<parameter name="reportParams.alamat" class="java.lang.String"/>
 	<parameter name="reportParams.petugas" class="java.lang.String"/>
-	<parameter name="reportParams.listNewObat" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
 	<parameter name="reportParams.unit" class="java.lang.String"/>
 	<parameter name="reportParams.area" class="java.lang.String"/>
-	<parameter name="reportParams.tglCair" class="java.lang.String"/>
-	<parameter name="reportParams.noBatch" class="java.lang.Integer"/>
+	<parameter name="reportParams.data1" class="java.lang.String"/>
+	<parameter name="reportParams.data2" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[SELECT
-a.id_approval_obat,
-b.id_permintaan_obat_vendor,
-c.id_obat,
-d.nama_obat,
-c.qty,
-e.qty_approve,
-c.jenis_satuan,
-e.no_faktur,
-TO_CHAR(e.tanggal_faktur, 'DD-MM-YYYY') as tgl_faktur,
-e.no_invoice,
-e.no_do,
-e.no_batch,
-TO_CHAR(b.tanggal_pencairan, 'DD-MM-YYYY') as tgl_cair
-FROM mt_simrs_approval_transaksi_obat a
-INNER JOIN mt_simrs_permintaan_obat_vendor b ON a.id_approval_obat = b.id_approval_obat
-INNER JOIN mt_simrs_transaksi_obat_detail c ON a.id_approval_obat = c.id_approval_obat
-INNER JOIN (SELECT id_obat, nama_obat FROM im_simrs_obat GROUP BY id_obat, nama_obat) d ON c.id_obat = d.id_obat
-INNER JOIN (SELECT id_transaksi_obat_detail, SUM(qty_approve) as qty_approve, no_faktur, tanggal_faktur, no_invoice, no_do, no_batch FROM mt_simrs_transaksi_obat_detail_batch
-GROUP BY id_transaksi_obat_detail, no_faktur, tanggal_faktur, no_invoice, no_do, no_batch) e ON c.id_transaksi_obat_detail = e.id_transaksi_obat_detail
-WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId} AND e.no_batch = $P{reportParams.noBatch}]]>
+		<![CDATA[SELECT * FROM im_simrs_pasien LIMIT 1]]>
 	</queryString>
-	<field name="id_approval_obat" class="java.lang.String"/>
-	<field name="id_permintaan_obat_vendor" class="java.lang.String"/>
-	<field name="id_obat" class="java.lang.String"/>
-	<field name="nama_obat" class="java.lang.String"/>
-	<field name="qty" class="java.lang.Long"/>
-	<field name="qty_approve" class="java.math.BigDecimal"/>
-	<field name="jenis_satuan" class="java.lang.String"/>
-	<field name="no_faktur" class="java.lang.String"/>
-	<field name="tgl_faktur" class="java.lang.String"/>
-	<field name="no_invoice" class="java.lang.String"/>
-	<field name="no_do" class="java.lang.String"/>
-	<field name="no_batch" class="java.lang.Integer"/>
-	<field name="tgl_cair" class="java.lang.String"/>
+	<field name="id_pasien" class="java.lang.String"/>
+	<field name="nama" class="java.lang.String">
+		<fieldDescription><![CDATA[Nama Master]]></fieldDescription>
+	</field>
+	<field name="jenis_kelamin" class="java.lang.String"/>
+	<field name="no_ktp" class="java.lang.String"/>
+	<field name="no_bpjs" class="java.lang.String"/>
+	<field name="tempat_lahir" class="java.lang.String"/>
+	<field name="tgl_lahir" class="java.sql.Date"/>
+	<field name="desa_id" class="java.lang.Long"/>
+	<field name="jalan" class="java.lang.String"/>
+	<field name="suku" class="java.lang.String"/>
+	<field name="agama" class="java.lang.String"/>
+	<field name="profesi" class="java.lang.String"/>
+	<field name="no_telp" class="java.lang.String"/>
+	<field name="url_ktp" class="java.lang.String"/>
+	<field name="flag" class="java.lang.String"/>
+	<field name="action" class="java.lang.String"/>
+	<field name="created_date" class="java.sql.Timestamp"/>
+	<field name="created_who" class="java.lang.String"/>
+	<field name="last_update" class="java.sql.Timestamp"/>
+	<field name="last_update_who" class="java.lang.String"/>
+	<field name="email" class="java.lang.String"/>
+	<field name="password" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="672" splitType="Stretch">
+		<band height="187" splitType="Stretch">
 			<line>
 				<reportElement x="0" y="60" width="555" height="1" uuid="2c08112b-c50d-4893-862a-474998eb7574"/>
 			</line>
@@ -142,7 +125,7 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId} AND e.no_ba
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.tanggalLahir} == null ? "" : $P{reportParams.tanggalLahir}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{reportParams.tglLahir} == null ? "" : $P{reportParams.tglLahir}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="98" y="141" width="457" height="20" uuid="6ea987d3-b994-439c-849a-28abc91b7a06"/>
@@ -150,7 +133,7 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId} AND e.no_ba
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.noRm} == null ? "" : $P{reportParams.noRm}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{reportParams.idPasien} == null ? "" : $P{reportParams.idPasien}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="31" width="173" height="20" uuid="7c5f8646-c682-47f4-96ff-a3c3cc2dd1d9"/>
@@ -163,7 +146,7 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId} AND e.no_ba
 			<componentElement>
 				<reportElement x="435" y="0" width="120" height="32" uuid="6a2de382-dadd-4d81-bb84-315f70cece67"/>
 				<jr:Code128 xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" textPosition="bottom">
-					<jr:codeExpression><![CDATA[$P{reportParams.permintaanId}]]></jr:codeExpression>
+					<jr:codeExpression><![CDATA[$P{reportParams.idDetailCheckup}]]></jr:codeExpression>
 				</jr:Code128>
 			</componentElement>
 			<staticText>
@@ -213,33 +196,60 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId} AND e.no_ba
 				</textElement>
 				<text><![CDATA[Yang bertanda tangan di bawah ini:]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="2" y="171" width="553" height="16" uuid="3e9ac4ec-0632-4ee7-a3b7-efb5f4a94102"/>
-				<textElement verticalAlignment="Middle">
-					<font size="9"/>
-				</textElement>
-				<text><![CDATA[Pasien dan atau wali diminta membaca, memahami, dan mengerti format berikutnya]]></text>
-			</staticText>
 		</band>
 	</title>
+	<detail>
+		<band height="520">
+			<textField>
+				<reportElement x="0" y="0" width="555" height="520" uuid="cc401598-13e7-4c1e-a1f7-63ffb7ce35cd"/>
+				<box leftPadding="1"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.data1} == null ? "" : $P{reportParams.data1}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="287">
+			<textField>
+				<reportElement x="2" y="0" width="553" height="287" uuid="59b446a0-c891-4be4-8fe4-5b18f75e5bb9"/>
+				<box leftPadding="1"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.data2} == null ? "" : $P{reportParams.data2}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
 	<lastPageFooter>
-		<band height="78">
+		<band height="107">
 			<staticText>
-				<reportElement x="375" y="0" width="120" height="20" uuid="d3e125c9-26ad-42f4-ad47-ad847b93236d"/>
-				<textElement verticalAlignment="Middle"/>
-				<text><![CDATA[Petugas Gudang]]></text>
+				<reportElement x="375" y="20" width="180" height="20" uuid="d3e125c9-26ad-42f4-ad47-ad847b93236d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Pemberi Informasi]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="375" y="58" width="180" height="20" uuid="e01ac0fe-3c84-4a49-bbb1-cb3f78374680"/>
+				<reportElement x="375" y="84" width="180" height="20" uuid="e01ac0fe-3c84-4a49-bbb1-cb3f78374680"/>
 				<box leftPadding="1"/>
-				<textElement verticalAlignment="Middle">
-					<font isUnderline="true"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isUnderline="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.petugas} == null ? "" : $P{reportParams.petugas}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="2" y="20" width="180" height="20" uuid="03281768-8cff-4668-b3dc-4fc8aee84189"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Pasien/Keluarga/Penanggung Jawab]]></text>
+			</staticText>
+			<line>
+				<reportElement x="2" y="103" width="180" height="1" uuid="b6420050-f477-4750-b89a-6e3f11d187a3"/>
+			</line>
+			<line>
+				<reportElement x="375" y="104" width="180" height="1" uuid="0a9403e5-a35e-44d8-a5e7-9fd44b93efaf"/>
+			</line>
 		</band>
 	</lastPageFooter>
-	<summary>
-		<band height="114" splitType="Stretch"/>
-	</summary>
 </jasperReport>

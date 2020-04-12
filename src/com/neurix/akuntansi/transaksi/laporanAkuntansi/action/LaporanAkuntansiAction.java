@@ -29,9 +29,9 @@ import org.springframework.web.context.ContextLoader;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.math.BigDecimal;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.util.*;
+import java.util.Date;
 
 /**
  * Created by Ferdi on 05/02/2015.
@@ -41,10 +41,15 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
     protected static transient Logger logger = Logger.getLogger(LaporanAkuntansiAction.class);
     private LaporanAkuntansiBo laporanAkuntansiBoProxy;
     private SettingReportUserBo settingReportUserBoProxy;
+    private BranchBo branchBoProxy;
     private LaporanAkuntansi laporanAkuntansi;
     private String tipeLaporan;
     private JRBeanCollectionDataSource dataPrint;
     List<Aging> myList = new ArrayList<>() ;
+
+    public void setBranchBoProxy(BranchBo branchBoProxy) {
+        this.branchBoProxy = branchBoProxy;
+    }
 
     public SettingReportUserBo getSettingReportUserBoProxy() {
         return settingReportUserBoProxy;
@@ -1487,6 +1492,40 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         laporanAkuntansiList.add(laporanAkuntansi);
 
         return laporanAkuntansiList;
+    }
+
+    public String printLaporanArusKas(){
+        logger.info("[LaporanAkuntansiAction.printLaporanArusKas] start process >>>");
+
+        LaporanAkuntansi laporanAkuntansi = getLaporanAkuntansi();
+        String branchId = laporanAkuntansi.getUnit();
+
+        Branch branch = branchBoProxy.getBranchById(branchId,"Y");
+        java.sql.Date date = new java.sql.Date(System.currentTimeMillis());
+        String areaId = CommonUtil.userAreaName();
+
+        reportParams.put("kota", "Surabaya");
+        reportParams.put("areaId", areaId);
+        reportParams.put("periodeTitle", date.toString());
+        reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
+        reportParams.put("areaId", areaId);
+
+        logger.info("[LaporanAkuntansiAction.printLaporanArusKas] end process <<<");
+        return "print_arus_kas";
+    }
+
+    public String searchLaporanArusKas(){
+        logger.info("[LaporanAkuntansiAction.searchLaporanArusKas] start process >>>");
+
+        String branchId = CommonUtil.userBranchLogin();
+
+        LaporanAkuntansi laporanAkuntansi = new LaporanAkuntansi();
+        laporanAkuntansi.setUnit(branchId);
+
+        setLaporanAkuntansi(laporanAkuntansi);
+
+        logger.info("[LaporanAkuntansiAction.searchLaporanArusKas] end process <<<");
+        return "search_arus_kas";
     }
 
     private String getMataUangKurs(String mataUangId) {

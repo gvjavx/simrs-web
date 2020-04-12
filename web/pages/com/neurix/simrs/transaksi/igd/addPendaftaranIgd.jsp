@@ -254,10 +254,11 @@
                 }
 
                 if (tipe == "bpjs") {
-                    if (diagnosaBpjs != '' && perujuk != '' && ketPerujuk != ''
-                        && noRujukan != '' && ppkRujukan != '' && tglRujukan != '' && fotoRujukan != '' ) {
+                    if (diagnosaBpjs != '') {
+                        // if (diagnosaBpjs != '' && perujuk != '' && ketPerujuk != ''
+                        //     && noRujukan != '' && ppkRujukan != '' && tglRujukan != '' && fotoRujukan != '' ) {
 
-                        if(statusBpjs != '' && statusRujukan != ''){
+                        if(statusBpjs != ''){
 
                             if(statusBpjs == "aktif" && statusRujukan == "aktif"){
                                 $('#confirm_dialog').dialog('open');
@@ -269,20 +270,17 @@
                                 if(statusBpjs != "aktif"){
                                     msg1 = "No BPJS Tidak Aktif";
                                 }
-                                if(statusRujukan != "aktif"){
-                                    msg2 = "No Rujukan Tidak Aktif";
-                                }
-                                $('#msg_pasien').text("Mohon maaf transaksi gagal, dikarenakan "+msg1+". "+msg2+"...!");
+                                $('#msg_pasien').text("Mohon maaf transaksi gagal, dikarenakan "+msg1+"...!");
                             }
                         }else{
                             $("html, body").animate({scrollTop: 0}, 600);
                             $('#warning_pasien').show().fadeOut(10000);
-                            $('#msg_pasien').text("Silahkan klik tombol check untuk melakukan validasi No BPJS dan No Rujukan...!");
+                            $('#msg_pasien').text("Silahkan klik tombol check untuk melakukan validasi No BPJS...!");
                         }
                     } else {
                         $("html, body").animate({scrollTop: 0}, 600);
                         $('#warning_pasien').show().fadeOut(10000);
-                        $('#msg_pasien').text("Silahkan cek kembali data diagnosa awal dan data rujukan...!");
+                        $('#msg_pasien').text("Silahkan cek kembali data diagnosa awal...!");
                         if(diagnosaBpjs == ''){
                             $('#diagnosa_awal').css('border','solid 1px red');
                         }
@@ -537,7 +535,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Tambah Rawat Pasien
+            Tambah Rawat Pasien IGD
         </h1>
     </section>
 

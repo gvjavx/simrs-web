@@ -98,6 +98,7 @@
             <result name="search_laporan_aging">/pages/com/neurix/akuntansi/transaksi/laporanAkuntansi/report/searchAgingLaporanAkuntansi.jsp</result>
             <result name="search_laporan_mutasi_jurnal">/pages/com/neurix/akuntansi/transaksi/laporanAkuntansi/report/searchMutasiJurnalLaporanAkuntansi.jsp</result>
             <result name="search_closing_kasir">/pages/com/neurix/akuntansi/transaksi/laporanAkuntansi/report/searchClosingKasir.jsp</result>
+            <result name="search_arus_kas">/pages/com/neurix/akuntansi/transaksi/laporanAkuntansi/report/searchArusKasLaporanAkuntansi.jsp</result>
 
             <!-- HASIL LAPORAN -->
             <result name="print_report_akuntansi_neraca_saldo" type="jasper">
@@ -168,6 +169,12 @@
             </result>
             <result name="print_report_closing_kasir" type="jasper">
                 <param name="location">/pages/report/com/neurix/akuntansi/ClosingKasir.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+            <result name="print_arus_kas" type="jasper">
+                <param name="location">/pages/report/com/neurix/akuntansi/arusKas.jasper</param>
                 <param name="connection">connection</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>

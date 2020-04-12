@@ -715,6 +715,7 @@
             dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
         var statusBpjs      = $('#status_bpjs').val();
         var statusRujukan   = $('#status_rujukan').val();
+        var rawatInap = '<s:property value="headerDetailCheckup.rawatInap"/>';
 
         if(jenisPeriksa != ''){
 
@@ -736,7 +737,8 @@
                         'id_detail_checkup':idDetail,
                         'id_kelas':idkelas,
                         'id_pelayanan':idPelayananBpjs,
-                        'foto_surat':dataURL
+                        'foto_surat':dataURL,
+                        'rawat_inap':rawatInap
                     }
 
                     if(statusBpjs != '' && statusRujukan != ''){
@@ -800,7 +802,8 @@
                         'uang_muka':uang,
                         'jenis_periksa':jenisPeriksa,
                         'id_pasien':idPasien,
-                        'id_detail_checkup':idDetail
+                        'id_detail_checkup':idDetail,
+                        'rawat_inap':rawatInap
                     }
 
                     var result = JSON.stringify(data);
@@ -831,7 +834,8 @@
                         'cover_biaya':coverBiaya,
                         'jenis_periksa':jenisPeriksa,
                         'id_pasien':idPasien,
-                        'id_detail_checkup':idDetail
+                        'id_detail_checkup':idDetail,
+                        'rawat_inap':rawatInap
                     }
 
                     var result = JSON.stringify(data);

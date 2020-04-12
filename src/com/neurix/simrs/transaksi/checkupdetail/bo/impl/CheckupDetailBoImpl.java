@@ -27,6 +27,7 @@ import com.neurix.simrs.transaksi.checkupdetail.dao.UangMukaDao;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsUangMukaPendaftaranEntity;
+import com.neurix.simrs.transaksi.checkupdetail.model.RiwayatTindakanDTO;
 import com.neurix.simrs.transaksi.diagnosarawat.dao.DiagnosaRawatDao;
 import com.neurix.simrs.transaksi.diagnosarawat.model.DiagnosaRawat;
 import com.neurix.simrs.transaksi.diagnosarawat.model.ItSimrsDiagnosaRawatEntity;
@@ -1254,9 +1255,18 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             if (details.size() > 0){
                 for (ItSimrsHeaderDetailCheckupEntity detailCheckupEntity : details){
                     detailCheckupEntity.setAction(bean.getAction());
-                    detailCheckupEntity.setNoJurnal(bean.getNoJurnal());
                     detailCheckupEntity.setLastUpdate(bean.getLastUpdate());
                     detailCheckupEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                    // for transitoris or jurnal rawat
+                    if (bean.getNoJurnalTrans() != null && !"".equalsIgnoreCase(bean.getNoJurnalTrans())){
+                        detailCheckupEntity.setNoJurnalTrans(bean.getNoJurnalTrans());
+                        detailCheckupEntity.setTransPeriode(bean.getTransPeriode());
+                        detailCheckupEntity.setTransDate(bean.getTransDate());
+                    } else {
+                        detailCheckupEntity.setNoJurnal(bean.getNoJurnal());
+                    }
+
                     try {
                         checkupDetailDao.updateAndSave(detailCheckupEntity);
                     } catch (HibernateException e){
@@ -1306,6 +1316,20 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             }
         }
         return dokterList;
+    }
+
+    @Override
+    public ItSimrsHeaderDetailCheckupEntity getDetailCheckupById(String id) throws GeneralBOException {
+        logger.info("[CheckupDetailBoImpl.getDetailCheckupById] START >>>>");
+        logger.info("[CheckupDetailBoImpl.getDetailCheckupById] END <<<");
+        return checkupDetailDao.getById("idDetailCheckup", id);
+    }
+
+    @Override
+    public List<HeaderDetailCheckup> getListRawatInapExisiting(String branchId) throws GeneralBOException {
+        logger.info("[CheckupDetailBoImpl.getListRawatInapExisiting] START >>>>");
+        logger.info("[CheckupDetailBoImpl.getListRawatInapExisiting] END <<<");
+        return checkupDetailDao.getListRawatInapExisting(branchId);
     }
 
     private String getNextIdDiagnosa() {
@@ -1394,6 +1418,13 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             logger.info("[CheckupDetailBoImpl.saveTtd] End >>>>>>>");
 
         }
+    }
+
+    @Override
+    public List<RiwayatTindakanDTO> getRiwayatTindakanDanDokter(String idDetailCheckup) throws GeneralBOException {
+        logger.info("[CheckupDetailBoImpl.getRiwayatTindakanDanDokter] START >>>>");
+        logger.info("[CheckupDetailBoImpl.getRiwayatTindakanDanDokter] END <<<");
+        return checkupDetailDao.getRiwayatTindakanDanDokter(idDetailCheckup);
     }
 
     public void setCheckupDetailDao(CheckupDetailDao checkupDetailDao) {

@@ -7,6 +7,7 @@
 <html>
 <head>
     <%@ include file="/pages/common/header.jsp" %>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/KasirRawatJalanAction.js"/>'></script>
     <script type="text/javascript">
         $(document).ready(function () {
             function callSearch2() {
@@ -88,14 +89,10 @@
                         <div class="box-body">
                             <div class="row">
                                 <div class="form-group">
-                                    <label class="control-label col-sm-offset-2 col-sm-3" style="margin-top: 7px">Bank</label>
-                                    <div class="col-md-4">
-                                        <select class="form-control" id="bank" name="headerDetailCheckup.bank">
-                                            <option value="" >[Select One]</option>
-                                            <option value="bri">BRI</option>
-                                            <option value="bni">BNI</option>
-                                            <option value="bca">BCA</option>
-                                            <option value="mandiri">Mandiri</option>
+                                    <label class="col-sm-offset-2 col-sm-3" style="margin-top: 7px">Bank</label>
+                                    <div class="col-sm-4">
+                                        <select class="form-control select2" name="headerDetailCheckup.bank" id="bank" style="width: 100%">
+                                            <option value="">[Select One]</option>
                                         </select>
                                     </div>
                                 </div>
@@ -267,7 +264,7 @@
                                                     </td>
                                                     <td  align="center">
                                                         <s:if test='#row.statusBayar != "N"'>
-                                                            <img onclick="detailCheckup('<s:property value="idDetailCheckup"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-search-25.png"/>" style="cursor: pointer;">
+                                                            <img onclick="detailCheckup('<s:property value="idDetailCheckup"/>','<s:property value="noSep"/>','<s:property value="idPasien"/>','<s:property value="namaPasien"/>','<s:property value="stTotalBiaya"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-search-25.png"/>" style="cursor: pointer;">
                                                         </s:if>
                                                     </td>
                                                 </tr>
@@ -365,9 +362,34 @@
                                 <td><b>ID Checkup</b></td>
                                 <td><span id="det_id_detail_checkup"></span></td>
                             </tr>
+                            <tr>
+                                <td><b>ID Pasien</b></td>
+                                <td><span id="det_id_pasien"></span></td>
+                            </tr>
+                            <tr>
+                                <td><b>Nama Pasien</b></td>
+                                <td><span id="det_nama_pasien"></span></td>
+                            </tr>
+                            <tr>
+                                <td><b>No. SEP</b></td>
+                                <td><span id="det_no_sep"></span></td>
+                            </tr>
+                            <tr>
+                                <td><b>Total Biaya RS</b></td>
+                                <td><span id="det_total_biaya_rs"></span></td>
+                            </tr>
                         </table>
                     </div>
                 </div>
+                <table class="table table-bordered">
+                    <thead>
+                    <td>Nama Dokter</td>
+                    <td>Nama Tindakan</td>
+                    <td>Biaya</td>
+                    </thead>
+                    <tbody id="body_detail">
+                    </tbody>
+                </table>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
@@ -378,13 +400,48 @@
 </div>
 
 <script>
-    function detailCheckup(idDetailCheckup){
+    function detailCheckup(idDetailCheckup,noSep,idPasien,namaPasien,totalBiayaRs){
+        $('#det_id_detail_checkup').text(idDetailCheckup);
+        $('#det_id_pasien').text(idPasien);
+        $('#det_nama_pasien').text(namaPasien);
+        $('#det_no_sep').text(noSep);
+        $('#det_total_biaya_rs').text(totalBiayaRs);
         $('#body_detail').html('');
 
-        if(idDetailCheckup != null ){
-            $('#det_id_detail_checkup').text(idDetailCheckup);
+        var table = "";
+        KasirRawatJalanAction.getRiwayatTindakanDanDokter(idDetailCheckup, function (response) {
+            if(response.length > 0){
+                $.each(response, function (i, item) {
+                    table += '<tr>' +
+                        '<td>'+item.namaDokter+'</td>'+
+                        '<td>'+item.namaTindakan+'</td>'+
+                        '<td>'+item.stTotalTarif+'</td>'+
+                        '</tr>'
+                });
 
-            $('#modal-detail-checkup').modal({show:true, backdrop:'static'});
-        }
+                $('#body_detail').html(table);
+            }else{
+
+            }
+        });
+
+        $('#modal-detail-checkup').modal({show:true, backdrop:'static'});
     }
+    function selectPembayaran(){
+        var option = '<option value="">[Select One]</option>';
+        KasirRawatJalanAction.getListPembayaran(function (res) {
+            if(res.length > 0){
+                $.each(res, function (i, item) {
+                    option += '<option value="'+item.coa+'">'+item.pembayaranName+'</option>';
+                });
+                $('#bank').html(option);
+            }else{
+                $('#bank').html(option);
+            }
+        });
+    }
+
+    $('document').ready(function () {
+        selectPembayaran();
+    })
 </script>

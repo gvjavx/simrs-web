@@ -131,6 +131,43 @@ public class HeaderDetailCheckup extends BaseModel{
 
     private String flagRefund;
     private String idPelayananBpjs;
+    private String kodering;
+
+    private String noJurnalTrans;
+    private Timestamp transDate;
+    private String transPeriode;
+
+    public String getKodering() {
+        return kodering;
+    }
+
+    public void setKodering(String kodering) {
+        this.kodering = kodering;
+    }
+
+    public String getNoJurnalTrans() {
+        return noJurnalTrans;
+    }
+
+    public void setNoJurnalTrans(String noJurnalTrans) {
+        this.noJurnalTrans = noJurnalTrans;
+    }
+
+    public Timestamp getTransDate() {
+        return transDate;
+    }
+
+    public void setTransDate(Timestamp transDate) {
+        this.transDate = transDate;
+    }
+
+    public String getTransPeriode() {
+        return transPeriode;
+    }
+
+    public void setTransPeriode(String transPeriode) {
+        this.transPeriode = transPeriode;
+    }
 
     private String stTotalBiayaBpjs;
     private String stTotalBiaya;

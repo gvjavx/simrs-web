@@ -15,6 +15,9 @@ import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
 import com.neurix.simrs.master.kategoritindakan.bo.KategoriTindakanBo;
 import com.neurix.simrs.master.kelasruangan.bo.KelasRuanganBo;
 import com.neurix.simrs.master.keterangankeluar.bo.KeteranganKeluarBo;
+import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
+import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
+import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.ruangan.bo.RuanganBo;
 import com.neurix.simrs.master.tindakan.bo.TindakanBo;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
@@ -22,6 +25,7 @@ import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
+import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
 import com.neurix.simrs.transaksi.riwayattindakan.bo.RiwayatTindakanBo;
@@ -707,6 +711,7 @@ public class VerifikatorAction extends BaseMasterAction {
         VerifikatorBo verifikatorBo = (VerifikatorBo) ctx.getBean("verifikatorBoProxy");
         BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
         BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+        PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
 
         HeaderDetailCheckup detail = new HeaderDetailCheckup();
         detail.setIdDetailCheckup(idDetailCheckup);
@@ -770,12 +775,36 @@ public class VerifikatorAction extends BaseMasterAction {
                 }
             }
 
+            String noSep = "";
+            ItSimrsHeaderDetailCheckupEntity headerDetailCheckupEntity = checkupDetailBo.getDetailCheckupById(idDetailCheckup);
+            if (headerDetailCheckupEntity != null){
+                noSep = headerDetailCheckupEntity.getNoSep();
+            } else {
+                logger.error("[VerifikatorAction.finalClaim] Error tidak dapat no_sep, ");
+                response.setStatus("error");
+                response.setMessage("[VerifikatorAction.finalClaim] Error tidak dapat no_sep, ");
+                return response;
+            }
+
+            String divisiId = "";
+            ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(CommonUtil.userPelayananIdLogin());
+            if (pelayananEntity != null){
+                divisiId = pelayananEntity.getKodering();
+            } else {
+                logger.error("[VerifikatorAction.finalClaim] Error tidak dapat divisi_id, ");
+                response.setStatus("error");
+                response.setMessage("[VerifikatorAction.finalClaim] Error tidak dapat divisi_id, ");
+                return response;
+            }
+
             // create jurnal
 
             String typePelayanan = detail.getTipePelayanan();
+            String branchId = CommonUtil.userBranchLogin();
 
             Map hsCriteria = new HashMap();
-            hsCriteria.put("pasien_id", idPasien);
+            hsCriteria.put("master_id", "02.018");
+            hsCriteria.put("divisi_id", divisiId);
 
             String kode = "";
             String transId = "";
@@ -803,7 +832,12 @@ public class VerifikatorAction extends BaseMasterAction {
 
                 // kredit pendapatan obat dan ppn obat
                 hsCriteria.put("pendapatan_obat_bpjs", jmlResep);
-                hsCriteria.put("ppn_keluaran", ppn);
+
+                // kredit ppn
+                Map mapPPN = new HashMap();
+                mapPPN.put("bukti", billingSystemBo.createInvoiceNumber(kode, branchId));
+                mapPPN.put("nilai", ppn);
+                hsCriteria.put("ppn_keluaran", mapPPN);
 
                 // debit jumlah untuk piutang pasien bpjs
                 jumlah = jumlah.add(jmlAllTindakan.add(ppn));
@@ -816,7 +850,7 @@ public class VerifikatorAction extends BaseMasterAction {
 
             String invNumber = billingSystemBo.createInvoiceNumber(kode, unitId);
             Map mapPiutang = new HashMap();
-            mapPiutang.put("bukti", invNumber);
+            mapPiutang.put("bukti", noSep);
             mapPiutang.put("nilai", jumlah );
 
             if ("JRJ".equalsIgnoreCase(kode)){
@@ -833,15 +867,14 @@ public class VerifikatorAction extends BaseMasterAction {
                 // kredit jumlah tindakan
                 hsCriteria.put("pendapatan_rawat_inap_bpjs", jmlOnlyTindakan);
 
-                transId = "06";
+                transId = "20";
                 ketPoli = "Rawat Inap";
+            } else {
+                if ("Y".equalsIgnoreCase(isResep) && "JRJ".equalsIgnoreCase(kode))
+                    transId = "13";
+                if ("N".equalsIgnoreCase(isResep) && "JRJ".equalsIgnoreCase(kode))
+                    transId = "06";
             }
-
-            if ("Y".equalsIgnoreCase(isResep) && "JRJ".equalsIgnoreCase(kode))
-                transId = "03";
-            if ("N".equalsIgnoreCase(isResep) && "JRJ".equalsIgnoreCase(kode))
-                transId = "02";
-
 
             String catatan = "Closing Pasien "+ketPoli+" BPJS "+ketObat+" No Pasien "+idPasien;
 

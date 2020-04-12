@@ -35,8 +35,17 @@ public class RiwayatTindakan extends BaseModel {
 
     private String stTglTindakan;
     private String kategoriInaBpjs;
+    private String rekanan;
 
     private BigDecimal ppnObat;
+
+    public String getRekanan() {
+        return rekanan;
+    }
+
+    public void setRekanan(String rekanan) {
+        this.rekanan = rekanan;
+    }
 
     public BigDecimal getPpnObat() {
         return ppnObat;

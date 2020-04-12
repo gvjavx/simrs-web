@@ -6,8 +6,10 @@ import com.neurix.simrs.master.statuspasien.bo.StatusPasienBo;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
+import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
+import com.neurix.simrs.transaksi.checkupdetail.model.RiwayatTindakanDTO;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
 
@@ -56,5 +58,8 @@ public interface CheckupDetailBo {
     public PermintaanResep getDataDokter(String id) throws GeneralBOException;
     public HeaderDetailCheckup getCoverBiayaAsuransi(String idDetailCheckup) throws GeneralBOException;
     public HeaderDetailCheckup getTotalBiayaTindakanBpjs(String idDetailCheckup) throws GeneralBOException;
+    public ItSimrsHeaderDetailCheckupEntity getDetailCheckupById(String id) throws GeneralBOException;
+    public List<HeaderDetailCheckup> getListRawatInapExisiting(String branchId) throws GeneralBOException;
 
+    List<RiwayatTindakanDTO> getRiwayatTindakanDanDokter(String idDetailCheckup) throws GeneralBOException;
 }

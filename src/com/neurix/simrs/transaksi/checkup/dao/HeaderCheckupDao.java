@@ -34,30 +34,31 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
     @Override
     public List<ItSimrsHeaderChekupEntity> getByCriteria(Map mapCriteria) {
         Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ItSimrsHeaderChekupEntity.class);
-        if (mapCriteria != null)
+        if (mapCriteria != null) {
             if (mapCriteria.get("no_checkup") != null) {
                 criteria.add(Restrictions.eq("noCheckup", mapCriteria.get("no_checkup").toString()));
             }
-        if (mapCriteria.get("id_pasien") != null) {
-            criteria.add(Restrictions.eq("idPasien", mapCriteria.get("id_pasien").toString()));
-        }
-        if (mapCriteria.get("branch_id") != null) {
-            criteria.add(Restrictions.eq("branchId", mapCriteria.get("id_branch").toString()));
-        }
-        if (mapCriteria.get("desa_id") != null) {
-            criteria.add(Restrictions.eq("desaId", mapCriteria.get("desa_id").toString()));
-        }
-        if (mapCriteria.get("no_ktp") != null) {
-            criteria.add(Restrictions.eq("noKtp", mapCriteria.get("no_ktp").toString()));
-        }
-        if (mapCriteria.get("list_no_checkup") != null) {
-            criteria.add(Restrictions.in("noCheckup", (List<String>) mapCriteria.get("list_no_checkup")));
-        }
-        if (mapCriteria.get("flag") != null) {
-            criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
-        }
-        if (mapCriteria.get("tgl_keluar_not_null") != null) {
-            criteria.add(Restrictions.isNotNull("tglKeluar"));
+            if (mapCriteria.get("id_pasien") != null) {
+                criteria.add(Restrictions.eq("idPasien", mapCriteria.get("id_pasien").toString()));
+            }
+            if (mapCriteria.get("branch_id") != null) {
+                criteria.add(Restrictions.eq("branchId", mapCriteria.get("id_branch").toString()));
+            }
+            if (mapCriteria.get("desa_id") != null) {
+                criteria.add(Restrictions.eq("desaId", mapCriteria.get("desa_id").toString()));
+            }
+            if (mapCriteria.get("no_ktp") != null) {
+                criteria.add(Restrictions.eq("noKtp", mapCriteria.get("no_ktp").toString()));
+            }
+            if (mapCriteria.get("list_no_checkup") != null) {
+                criteria.add(Restrictions.in("noCheckup", (List<String>) mapCriteria.get("list_no_checkup")));
+            }
+            if (mapCriteria.get("flag") != null) {
+                criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
+            }
+            if (mapCriteria.get("tgl_keluar_not_null") != null) {
+                criteria.add(Restrictions.isNotNull("tglKeluar"));
+            }
         }
 
         List<ItSimrsHeaderChekupEntity> result = criteria.list();
@@ -840,7 +841,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         List<MasterVendor> vendorList = new ArrayList<>();
         String SQL = "SELECT nomor_master, nama \n" +
                 "FROM im_akun_master\n" +
-                "WHERE is_ptpn = 'Y'";
+                "WHERE nama ilike 'PTP%'";
 
         List<Object[]> result = new ArrayList<>();
         result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
