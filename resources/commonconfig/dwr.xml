@@ -570,6 +570,11 @@
           <param name="class" value="com.neurix.simrs.transaksi.asesmenugd.action.AsesmenUgdAction"/>
       </create>
       <convert converter="bean" match="com.neurix.simrs.transaksi.asesmenugd.model.AsesmenUgd"/>
+
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.asesmenoperasi.action.AsesmenOperasiAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.asesmenoperasi.model.AsesmenOperasi"/>
   </allow>
 
 </dwr>

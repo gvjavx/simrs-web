@@ -36,7 +36,7 @@ public class FisioterapiDao extends GenericDao<ItSimrsFisioterapiEntity, String>
         }
 
         criteria.add(Restrictions.eq("flag", "Y"));
-        criteria.addOrder(Order.desc("idFisioterapi"));
+        criteria.addOrder(Order.asc("idFisioterapi"));
 
         List<ItSimrsFisioterapiEntity> results = criteria.list();
         return results;

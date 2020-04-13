@@ -917,6 +917,7 @@ function detailAud(jenis) {
         var cekSkor = false;
         var rowTotal = "";
         var kesimpulan = "";
+        var isKesimpulan = false;
         var list = "";
         AsesmenUgdAction.getListAsesmenUgd(idDetailCheckup, jenis, function (res) {
             if (res.length > 0) {
@@ -948,8 +949,9 @@ function detailAud(jenis) {
                                 '</tr>';
                         }
                     }
-
                 });
+
+                isKesimpulan = true;
             } else {
                 body = '<tr>' +
                     '<td>Data belum ada</td>' +
@@ -967,7 +969,10 @@ function detailAud(jenis) {
                 }else{
                     jwb = "Ya";
                 }
-                kesimpulan = '<tr style="font-weight: bold" bgcolor="#ffebcd"><td>Resiko Nutrisi</td><td colspan="2">'+jwb+'</td></tr>';
+
+                if(isKesimpulan){
+                    kesimpulan = '<tr style="font-weight: bold" bgcolor="#ffebcd"><td>Resiko Nutrisi</td><td colspan="2">'+jwb+'</td></tr>';
+                }
             }
 
             if("jatuh" == jenis){
@@ -979,7 +984,10 @@ function detailAud(jenis) {
                 }else if (totalSkor >= 45) {
                     jwb = "Tinggi";
                 }
-                kesimpulan = '<tr style="font-weight: bold" bgcolor="#ffebcd"><td>Resiko Nutrisi</td><td colspan="2">'+jwb+'</td></tr>';
+
+                if(isKesimpulan){
+                    kesimpulan = '<tr style="font-weight: bold" bgcolor="#ffebcd"><td>Resiko Jatuh</td><td colspan="2">'+jwb+'</td></tr>';
+                }
             }
 
             var table = '<table style="font-size: 12px" class="table table-bordered"><tr bgcolor="#ffebcd">' +

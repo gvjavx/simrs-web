@@ -134,7 +134,242 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-user"></i> Data Pasien</h3>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                <table class="table table-striped" style="margin-top: 20px">
+                                    <s:hidden id="no_checkup" name="headerDetailCheckup.noCheckup"></s:hidden>
+                                    <s:hidden id="id_palayanan" name="headerDetailCheckup.idPelayanan"></s:hidden>
+                                    <s:hidden id="no_detail_checkup" name="headerDetailCheckup.idDetailCheckup"/>
+                                    <s:hidden id="id_pasien" name="headerDetailCheckup.idPasien"/>
+                                    <s:hidden id="jenis_pasien" name="headerDetailCheckup.idJenisPeriksaPasien"/>
+                                    <s:hidden id="jenis_bayar" name="headerDetailCheckup.metodePembayaran"/>
+                                    <s:hidden id="id_asuransi" name="headerDetailCheckup.idAsuransi"/>
+                                    <s:hidden id="nama_asuransi" name="headerDetailCheckup.namaAsuransi"/>
+
+                                    <s:hidden id="no_rujukan" name="headerDetailCheckup.noRujukan"/>
+                                    <s:hidden id="tgl_rujukan" name="headerDetailCheckup.tglRujukan"/>
+                                    <s:hidden id="surat_rujukan" name="headerDetailCheckup.suratRujukan"/>
+
+                                    <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "bpjs"'>
+                                        <tr>
+                                            <td width="45%"><b>No SEP</b></td>
+                                            <td style="vertical-align: middle;">
+                                                <table>
+                                                    <s:label cssClass="label label-success" name="headerDetailCheckup.noSep"></s:label>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </s:if>
+                                    <tr>
+                                        <td><b>No RM</b></td>
+                                        <td>
+                                            <table><s:label
+                                                    name="headerDetailCheckup.idPasien"></s:label></table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="45%"><b>No Checkup</b></td>
+                                        <td>
+                                            <table>
+                                                <s:label name="headerDetailCheckup.noCheckup"></s:label></table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>No Checkup Detail</b></td>
+                                        <td>
+                                            <table><s:label
+                                                    name="headerDetailCheckup.idDetailCheckup"></s:label></table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>NIK</b></td>
+                                        <td>
+                                            <table><s:label name="headerDetailCheckup.nik"></s:label></table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Nama</b></td>
+                                        <td>
+                                            <table><s:label name="headerDetailCheckup.namaPasien"></s:label></table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Jenis Kelamin</b></td>
+                                        <td>
+                                            <table><s:label name="headerDetailCheckup.jenisKelamin"></s:label></table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Tempat, Tanggal Lahir</b></td>
+                                        <td>
+                                            <table><s:label name="headerDetailCheckup.tempatTglLahir"></s:label></table>
+                                        </td>
+                                    </tr>
+                                    <s:if test='headerDetailCheckup.metodePembayaran != null && headerDetailCheckup.metodePembayaran != ""'>
+                                        <tr>
+                                            <td><b>Metode Pembayaran</b></td>
+                                            <td>
+                                                <table>
+                                                    <script>
+                                                        var metode = '<s:property value="headerDetailCheckup.metodePembayaran"/>';
+                                                        var met = metode.replace("_", " ");
+                                                        var meto = convertSentenceCase(met);
+                                                        document.write(meto);
+                                                    </script>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </s:if>
+                                </table>
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-md-6">
+                                <div style="cursor: pointer; margin-top: -90px; height: 100px; width: 200px; text-align: center"
+                                     class="card card-4 pull-right">
+                                    <img border="2" id="img_ktp" src="<s:property value="headerDetailCheckup.urlKtp"/>"
+                                         style="cursor: pointer; height: 90px; width: 190px; margin-top: 4px">
+                                </div>
+                                <%--<img border="2" class="card card-4 pull-right" src="<s:url value="/pages/images/ktp-tes.jpg"/>"--%>
+                                <%--style="cursor: pointer; margin-top: -90px; height: 100px; width: 200px;">--%>
+                                <table class="table table-striped">
+                                    <tr>
+                                        <td><b>Jenis Pasien</b></td>
+                                        <td>
+                                            <table>
+                                                <s:label id="jenis_periksa"
+                                                         name="headerDetailCheckup.jenisPeriksaPasien"></s:label>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "paket_perusahaan" || headerDetailCheckup.idJenisPeriksaPasien == "paket_individu"'>
+                                        <tr>
+                                            <td><b>Tarif Paket</b></td>
+                                            <td>
+                                                <table>
+                                                    <script>
+                                                        var tar = '<s:property value="headerDetailCheckup.coverBiaya"/>';
+                                                        if(tar != null){
+                                                            document.write("Rp. "+formatRupiah(tar));
+                                                        }
+                                                    </script>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </s:if>
+                                    <s:if test='headerDetailCheckup.namaAsuransi != null && headerDetailCheckup.namaAsuransi != ""'>
+                                        <tr>
+                                            <td><b>Nama Asuransi</b></td>
+                                            <td>
+                                                <table>
+                                                    <s:label id="nama_asuransi"
+                                                             name="headerDetailCheckup.namaAsuransi"></s:label>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </s:if>
+                                    <tr>
+                                        <td><b>Poli</b></td>
+                                        <td>
+                                            <table>
+                                                <s:label name="headerDetailCheckup.namaPelayanan"></s:label></table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Alamat</b></td>
+                                        <td>
+                                            <table><s:label name="headerDetailCheckup.alamat"></s:label></table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Desa</b></td>
+                                        <td>
+                                            <table><s:label name="headerDetailCheckup.desa"></s:label></table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Kecamatan</b></td>
+                                        <td>
+                                            <table><s:label name="headerDetailCheckup.kecamatan"></s:label></table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Kabupaten</b></td>
+                                        <td>
+                                            <table><s:label name="headerDetailCheckup.kota"></s:label></table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Provinsi</b></td>
+                                        <td>
+                                            <table><s:label name="headerDetailCheckup.provinsi"></s:label></table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div class="form-group" style="display: none">
+                                <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false"
+                                           closeOnEscape="false"
+                                           height="200" width="400" autoOpen="false" title="Infomation Dialog"
+                                           buttons="{
+                                                                                'OK':function() {
+                                                                                         $('#info_dialog').dialog('close');
+                                                                                         toContent();
+                                                                                     }
+                                                                            }"
+                                >
+                                    <s:hidden id="close_pos"></s:hidden>
+                                    <img border="0" src="<s:url value="/pages/images/icon_success.png"/>"
+                                         name="icon_success">
+                                    Record has been saved successfully.
+                                </sj:dialog>
+
+                                <sj:dialog id="waiting_dialog" openTopics="showDialogLoading"
+                                           closeTopics="closeDialog" modal="true"
+                                           resizable="false"
+                                           height="250" width="600" autoOpen="false"
+                                           title="Saving ...">
+                                    Please don't close this window, server is processing your request ...
+                                    <br>
+                                    <center>
+                                        <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                             src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                             name="image_indicator_write">
+                                        <br>
+                                        <img class="spin" border="0"
+                                             style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                             src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                             name="image_indicator_write">
+                                    </center>
+                                </sj:dialog>
+
+                                <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true"
+                                           resizable="false"
+                                           height="250" width="600" autoOpen="false" title="Error Dialog"
+                                           buttons="{
+                                                                                'OK':function() { $('#error_dialog').dialog('close'); }
+                                                                            }"
+                                >
+                                    <div class="alert alert-danger alert-dismissible">
+                                        <label class="control-label" align="left">
+                                            <img border="0" src="<s:url value="/pages/images/icon_error.png"/>"
+                                                 name="icon_error"> System Found : <p id="errorMessage"></p>
+                                        </label>
+                                    </div>
+                                </sj:dialog>
+                            </div>
+                            <!-- /.col -->
+                        </div>
+                    </div>
                     <s:hidden name="headerDetailCheckup.idDetailCheckup" id="id_detail_checkup"></s:hidden>
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-user"></i> Rekam Medik</h3>
+                    </div>
                     <div class="box-body">
                         <div class="col-md-4">
                             <div class="box-header with-border">
@@ -466,8 +701,7 @@
                                         <span class="sr-only">Toggle Dropdown</span>
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a target="_blank"
-                                               href="printGeneralConcent_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
+                                        <li><a style="cursor: pointer" onclick="showModalOperasi('ceklist_operasi')">
                                             <i class="fa fa-print"></i>Ceklist Serah Terima Pasien Pre Operasi</a></li>
                                         <li><a href="#" onclick="penandaAreaOperasi()">
                                             <i class="fa fa-print"></i>Penandaan Area Operasi Pasien Laki - Laki</a></li>
@@ -511,11 +745,11 @@
                             </div>
                             <div class="box-header with-border"></div>
                             <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-print"></i> UGD </h3>
+                                <h3 class="box-title"><i class="fa fa-plus-square"></i> UGD </h3>
                             </div>
                             <div class="box-body">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-primary"><i class="fa fa-print"></i> Action
+                                    <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Action
                                     </button>
                                     <button type="button" class="btn btn-primary dropdown-toggle"
                                             data-toggle="dropdown" style="height: 34px">
@@ -523,7 +757,7 @@
                                         <span class="sr-only">Toggle Dropdown</span>
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a href="#" onclick="showAsesmenUgd()"><i class="fa fa-print"></i>Asesmen Awal Gawat Darurat Dewasa</a></li>
+                                        <li><a href="#" onclick="showAsesmenUgd()"><i class="fa fa-user-plus"></i>Asesmen Awal Gawat Darurat</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -542,6 +776,7 @@
 
 <script type='text/javascript' src='<s:url value="/dwr/interface/FisioterapiAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenUgdAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenOperasiAction.js"/>'></script>
 
 <script type='text/javascript' src='<s:url value="/pages/dist/js/operasi.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/fisioterapi.js"/>'></script>
