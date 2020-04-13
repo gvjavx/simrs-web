@@ -771,7 +771,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                 if (!periodSudahTutup){
                     for (ItJurnalDetailEntity jurnalDetailEntity : jurnalDetailEntityList){
                         /////////////////////// Save data ///////////////////////
-                        if (jurnalDetailEntity.getJumlahDebit().compareTo(BigDecimal.ZERO)==0&&jurnalDetailEntity.getJumlahDebit().compareTo(BigDecimal.ZERO)==0){
+                        if (jurnalDetailEntity.getJumlahDebit().compareTo(BigDecimal.ZERO)==0&&jurnalDetailEntity.getJumlahKredit().compareTo(BigDecimal.ZERO)==0){
 
                         }else{
                             try {
@@ -814,7 +814,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                         detailPending.setPasienId(jurnalDetailEntity.getPasienId());
                         detailPending.setNomorRekening(jurnalDetailEntity.getNomorRekening());
                         detailPending.setDivisiId(jurnalDetailEntity.getDivisiId());
-                        if (detailPending.getJumlahDebit().compareTo(BigDecimal.ZERO)==0&&detailPending.getJumlahDebit().compareTo(BigDecimal.ZERO)==0){
+                        if (detailPending.getJumlahDebit().compareTo(BigDecimal.ZERO)==0&&detailPending.getJumlahKredit().compareTo(BigDecimal.ZERO)==0){
 
                         }else{
                             try {

@@ -25,6 +25,8 @@ import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
 import com.neurix.simrs.transaksi.riwayattindakan.bo.RiwayatTindakanBo;
+import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsRiwayatTindakanEntity;
+import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsTindakanTransitorisEntity;
 import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
 import com.neurix.simrs.transaksi.tindakanrawat.bo.TindakanRawatBo;
 import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
@@ -206,17 +208,36 @@ public class TutuPeriodAction extends BaseTransactionAction {
         String divisiId = "";
         String jenisPasien = "";
         String bukti = "";
+        String transId = "";
         String invoiceNumber = billingSystemBo.createInvoiceNumber("JRI", bean.getUnit());
+
+        Map mapJurnal = new HashMap();
         ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailBo.getEntityDetailCheckupByIdDetail(bean.getIdDetailCheckup());
         if (detailCheckupEntity != null){
 
             divisiId = detailCheckupEntity.getIdPelayanan();
+
+            BigDecimal jumlahResep = checkupDetailBo.getSumJumlahTindakan(bean.getIdDetailCheckup(), "resep");
+            BigDecimal jumlahAllTindakan = checkupDetailBo.getSumJumlahTindakan(bean.getIdDetailCheckup(), "");
+            BigDecimal jumlahTindakan = jumlahAllTindakan.subtract(jumlahResep);
 
             if ("bpjs".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())){
 
                 bukti = detailCheckupEntity.getNoSep();
                 jenisPasien = "No. SEP : "+detailCheckupEntity.getNoSep();
                 masterId = "02.018";
+                transId = "33";
+
+
+                Map mapPiutang = new HashMap();
+                mapPiutang.put("bukti", bukti);
+                mapPiutang.put("nilai", jumlahAllTindakan);
+
+                mapJurnal.put("piutang_pasien_bpjs", jumlahAllTindakan);
+                mapJurnal.put("piutang_transistoris_pasien_rawat_inap", mapPiutang);
+
+                mapJurnal.put("pendapatan_rawat_inap_bpjs", jumlahTindakan);
+                mapJurnal.put("pendapatan_obat_bpjs", jumlahResep);
             } else if ("umum".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())){
                 ItSimrsHeaderChekupEntity headerChekupEntity = checkupBo.getEntityCheckupById(detailCheckupEntity.getNoCheckup());
                 if (headerChekupEntity != null){
@@ -224,31 +245,30 @@ public class TutuPeriodAction extends BaseTransactionAction {
                     bukti = invoiceNumber;
                     jenisPasien = "No. RM : "+headerChekupEntity.getIdPasien();
                     masterId = headerChekupEntity.getIdPasien();
+                    transId = "32";
+
+                    Map mapPiutang = new HashMap();
+                    mapPiutang.put("bukti", bukti);
+                    mapPiutang.put("nilai", jumlahAllTindakan);
+
+                    mapJurnal.put("piutang_transistoris_pasien_rawat_inap", mapPiutang);
+
+                    mapJurnal.put("pendapatan_rawat_inap", jumlahTindakan);
+                    mapJurnal.put("pendapatan_obat", jumlahResep);
                 }
             }
         }
 
-        BigDecimal jumlahResep = checkupDetailBo.getSumJumlahTindakan(bean.getIdDetailCheckup(), "resep");
-        BigDecimal jumlahAllTindakan = checkupDetailBo.getSumJumlahTindakan(bean.getIdDetailCheckup(), "");
-        BigDecimal jumlahTindakan = jumlahAllTindakan.subtract(jumlahResep);
 
-        Map mapJurnal = new HashMap();
+
         mapJurnal.put("master_id", masterId);
         mapJurnal.put("divisi_id", divisiId);
-        mapJurnal.put("pendapatan_rawat_inap", jumlahTindakan);
-        mapJurnal.put("pendapatan_obat", jumlahResep);
-
-        Map mapPiutang = new HashMap();
-        mapPiutang.put("bukti", bukti);
-        mapPiutang.put("nilai", jumlahAllTindakan);
-
-        mapJurnal.put("piutang_transistoris_pasien_rawat_inap", mapPiutang);
-
+  ;
         String catatan = "Transitoris Rawat Inap saat tutup periode "+jenisPasien;
 
         try {
 
-            String noJurnal = billingSystemBo.createJurnal("32", mapJurnal, bean.getUnit(), catatan, "Y");
+            String noJurnal = billingSystemBo.createJurnal(transId, mapJurnal, bean.getUnit(), catatan, "Y");
 
             HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
             detailCheckup.setIdDetailCheckup(bean.getIdDetailCheckup());
@@ -270,6 +290,25 @@ public class TutuPeriodAction extends BaseTransactionAction {
 
         logger.info("[TutuPeriodAction.createJurnalTransitoris] END <<<");
         return response;
+    }
+
+    private CrudResponse updateToDetailCheckup(HeaderDetailCheckup bean){
+
+        CrudResponse response = new CrudResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+
+        try {
+
+        } catch (GeneralBOException e){
+
+        }
+
+        return response;
+    }
+
+    private void moveToTransitoris(String idDetailCheckup){
+
     }
 
     public CrudResponse saveLockPeriod(String unit, String tahun, String bulan){

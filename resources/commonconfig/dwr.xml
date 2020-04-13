@@ -300,6 +300,8 @@
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkup.model.HeaderCheckup"/>
       <convert converter="bean" match="com.neurix.simrs.master.dokter.model.Dokter"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.checkupdetail.model.KlaimFpkDTO"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.checkupdetail.model.RiwayatTindakanDTO"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkup.model.ItSImrsCheckupAlergiEntity"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkup.model.CheckupAlergi"/>
 

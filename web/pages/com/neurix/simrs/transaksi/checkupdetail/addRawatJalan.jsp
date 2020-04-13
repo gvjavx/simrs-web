@@ -2145,8 +2145,10 @@
 
     function hitungCoverBiaya() {
         var jenis = $('#jenis_pasien').val();
+        console.log("hitungCoverBiaya.jenis -> "+jenis);
         if("asuransi" == jenis){
             CheckupDetailAction.getBiayaAsuransi(idDetailCheckup, function (response) {
+                console.log("hitungCoverBiaya.response -> "+response);
                 console.log(response);
                 if (response.coverBiaya != null && response.coverBiaya != '') {
                     $('#status_asuransi').show();

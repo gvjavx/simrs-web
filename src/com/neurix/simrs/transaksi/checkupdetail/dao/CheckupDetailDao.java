@@ -1,8 +1,11 @@
 package com.neurix.simrs.transaksi.checkupdetail.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
+import com.neurix.simrs.transaksi.checkupdetail.model.KlaimFpkDTO;
+import com.neurix.simrs.transaksi.checkupdetail.model.RiwayatTindakanDTO;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
 import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
@@ -51,12 +54,97 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
         return result;
     }
 
-    public List<ItSimrsHeaderDetailCheckupEntity> getSearchCheckupBySep (String noSep){
-        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ItSimrsHeaderDetailCheckupEntity.class);
-        criteria.add(Restrictions.eq("noSep", noSep));
-        criteria.add(Restrictions.eq("flag", "Y"));
+    public List<KlaimFpkDTO> getSearchCheckupBySep (String noSep){
+        List<KlaimFpkDTO> listOfResult = new ArrayList<KlaimFpkDTO>();
+        List<Object[]> result = new ArrayList<Object[]>();
 
-        return (List<ItSimrsHeaderDetailCheckupEntity>) criteria.list();
+        String query1 = "SELECT\n" +
+                "\tdc.id_detail_checkup AS id,\n" +
+                "\tdc.no_sep AS sep,\n" +
+                "\tc.id_pasien AS idpasien,\n" +
+                "\tc.nama AS nama,\n" +
+                "\tSUM(rt.total_tarif) AS total,\n" +
+                "\tf.status_bayar AS status\n" +
+                "FROM \n" +
+                "\tit_simrs_header_detail_checkup dc \n" +
+                "\tLEFT JOIN it_simrs_header_checkup c ON dc.no_checkup=c.no_checkup\n" +
+                "\tLEFT JOIN it_simrs_riwayat_tindakan rt ON dc.id_detail_checkup=rt.id_detail_checkup\n" +
+                "\tLEFT JOIN it_simrs_fpk f ON f.no_sep=dc.no_sep\n" +
+                "WHERE\n" +
+                "\tdc.no_sep='"+noSep+"'\n" +
+                "\tAND dc.flag='Y'\n" +
+                "GROUP BY\n" +
+                "\tdc.id_detail_checkup,\n" +
+                "\tdc.no_sep,\n" +
+                "\tc.id_pasien,\n" +
+                "\tc.nama,\n" +
+                "\tf.status_bayar";
+        result = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query1)
+                .list();
+
+        for (Object[] row : result) {
+            KlaimFpkDTO klaimFpkDTO  = new KlaimFpkDTO();
+            klaimFpkDTO.setIdDetailCheckup((String) row[0]);
+            klaimFpkDTO.setNoSep((String) row[1]);
+            klaimFpkDTO.setIdPasien((String) row[2]);
+            klaimFpkDTO.setNamaPasien((String) row[3]);
+            if (row[4]!=null){
+                klaimFpkDTO.setTotalBiaya(BigInteger.valueOf(Long.parseLong((row[4].toString()))));
+            }
+            if (row[5]!=null){
+                klaimFpkDTO.setStatusBayar((String) row[5]);
+            }
+
+            listOfResult.add(klaimFpkDTO);
+        }
+        return listOfResult;
+    }
+
+    public List<RiwayatTindakanDTO> getRiwayatTindakanDanDokter (String id){
+        List<RiwayatTindakanDTO> listOfResult = new ArrayList<>();
+
+        String query1 = "select \n" +
+                "\tdt.id_dokter as iddokter,\n" +
+                "\td.nama_dokter as namadokter,\n" +
+                "\trt.id_tindakan as idtindakan,\n" +
+                "\trt.nama_tindakan as namatindakan,\n" +
+                "\trt.keterangan as kettindakan,\n" +
+                "\trt.total_tarif as total,\n" +
+                "\tdc.id_pelayanan as idpoli,\n" +
+                "\tp.nama_pelayanan as namapelayanan,\n" +
+                "\tp.kodering\n" +
+                "from \n" +
+                "\tit_simrs_riwayat_tindakan rt\n" +
+                "\tLEFT JOIN it_simrs_dokter_team dt ON rt.id_detail_checkup = dt.id_detail_checkup\n" +
+                "\tLEFT JOIN im_simrs_dokter d ON d.id_dokter = dt.id_dokter\n" +
+                "\tLEFT JOIN it_simrs_header_detail_checkup dc ON dc.id_detail_checkup=rt.id_detail_checkup\n" +
+                "\tLEFT JOIN im_simrs_pelayanan p ON p.id_pelayanan = dc.id_pelayanan\n" +
+                "WHERE\n" +
+                "\trt.id_detail_checkup='"+id+"'\n" +
+                "\tAND rt.flag='Y'\n" +
+                "\tAND dt.flag='Y'";
+        List<Object[]> result = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query1)
+                .list();
+
+        for (Object[] row : result) {
+            RiwayatTindakanDTO riwayatTindakanDTO  = new RiwayatTindakanDTO();
+            riwayatTindakanDTO.setIdDokter((String) row[0]);
+            riwayatTindakanDTO.setNamaDokter((String) row[1]);
+            riwayatTindakanDTO.setIdTindakan((String) row[2]);
+            riwayatTindakanDTO.setNamaTindakan((String) row[3]);
+            riwayatTindakanDTO.setKetTindakan((String) row[4]);
+            riwayatTindakanDTO.setTotalTarif(BigInteger.valueOf(Long.parseLong((row[5].toString()))));
+            riwayatTindakanDTO.setStTotalTarif(CommonUtil.numbericFormat(new BigDecimal(riwayatTindakanDTO.getTotalTarif()),"###,###"));
+            riwayatTindakanDTO.setIdPoli((String) row[6]);
+            riwayatTindakanDTO.setNamaPoli((String) row[7]);
+            riwayatTindakanDTO.setKoderingPoli((String) row[8]);
+
+
+            listOfResult.add(riwayatTindakanDTO);
+        }
+        return listOfResult;
     }
 
     public List<HeaderDetailCheckup> getSearchRawatJalan(HeaderDetailCheckup bean) {
@@ -932,6 +1020,36 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
         return jumlah;
     }
 
+    public BigDecimal getSumAllTarifTransitoris(String idDetail, String ket) {
+
+        String keterangan = "%";
+        if (!"".equalsIgnoreCase(ket)) {
+            keterangan = ket;
+        }
+        String SQL = "SELECT \n" +
+                "id_detail_checkup,\n" +
+                "SUM(total_tarif) as total_tarif\n" +
+                "FROM\n" +
+                "it_simrs_tindakan_transitoris\n" +
+                "WHERE \n" +
+                "id_detail_checkup = :idDetail\n" +
+                "AND keterangan LIKE :ket\n" +
+                "GROUP BY id_detail_checkup";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("idDetail", idDetail)
+                .setParameter("ket", keterangan)
+                .list();
+
+        BigDecimal jumlah = new BigDecimal(0);
+        if (results.size() > 0) {
+            for (Object[] obj : results) {
+                jumlah = (BigDecimal) obj[1];
+            }
+        }
+        return jumlah;
+    }
+
     public String getFindResepInRiwayatTrans(String idDetail) {
 
         String SQL = "SELECT id_detail_checkup, keterangan\n" +
@@ -1656,15 +1774,19 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "\tINNER JOIN im_simrs_lab_detail c ON b.id_lab_detail = c.id_lab_detail\n" +
                     "\tGROUP BY a.id_detail_checkup\n" +
                     "\t) d ON a.id_detail_checkup = d.id_detail_checkup \n" +
-                    "LEFT JOIN (\n" +
-                    "\tSELECT a.id_detail_checkup, (c.qty * d.harga_jual) as total_resep FROM mt_simrs_permintaan_resep a\n" +
-                    "\tINNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat\n" +
-                    "\tINNER JOIN (SELECT id_transaksi_obat_detail, SUM(qty_approve) as qty FROM mt_simrs_transaksi_obat_detail_batch \n" +
-                    "\tWHERE approve_flag = 'Y'\n" +
-                    "\tAND a.jenis_resep != 'umum'\n" +
-                    "\tGROUP BY id_transaksi_obat_detail) c ON b.id_transaksi_obat_detail = c.id_transaksi_obat_detail\n" +
-                    "\tINNER JOIN mt_simrs_harga_obat d ON b.id_obat = d.id_obat\n" +
-                    "\t) e ON a.id_detail_checkup = e.id_detail_checkup \n" +
+                    "LEFT JOIN ( \n" +
+                    "\tSELECT \n" +
+                    "\ta.id_detail_checkup, (c.qty * d.harga_jual) as total_resep FROM mt_simrs_permintaan_resep a \n" +
+                    "\tINNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat \n" +
+                    "\tINNER JOIN (\n" +
+                    "\t\tSELECT id_transaksi_obat_detail, SUM(qty_approve) as qty \n" +
+                    "\t\tFROM mt_simrs_transaksi_obat_detail_batch  \n" +
+                    "\t\tWHERE approve_flag = 'Y' \n" +
+                    "\t\tGROUP BY id_transaksi_obat_detail\n" +
+                    "\t) c ON b.id_transaksi_obat_detail = c.id_transaksi_obat_detail \n" +
+                    "\tINNER JOIN mt_simrs_harga_obat d ON b.id_obat = d.id_obat \n" +
+                    "\tWHERE a.jenis_resep != 'umum'\n" +
+                    ") e ON a.id_detail_checkup = e.id_detail_checkup  \n" +
                     "WHERE a.id_detail_checkup = :id";
 
             List<Object[]> result = new ArrayList<>();
@@ -1806,7 +1928,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 "INNER JOIN im_simrs_pelayanan b ON b.id_pelayanan = a.id_pelayanan\n" +
                 "WHERE b.tipe_pelayanan = 'rawat_inap'\n" +
                 "AND a.status_periksa = '1'\n" +
-                "AND a.id_jenis_periksa_pasien = 'bpjs' \n" +
+//                "AND a.id_jenis_periksa_pasien = 'bpjs' \n" +
                 "AND a.branch_id = :branchId ";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)

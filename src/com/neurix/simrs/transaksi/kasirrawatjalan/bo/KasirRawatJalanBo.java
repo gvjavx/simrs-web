@@ -8,11 +8,14 @@ import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.Fpk;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
+import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsUangMukaPendaftaranEntity;
+import com.neurix.simrs.transaksi.checkupdetail.model.KlaimFpkDTO;
 import com.neurix.simrs.transaksi.checkupdetail.model.UangMuka;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
 import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
 
 import java.util.List;
+import java.util.Map;
 
 public interface KasirRawatJalanBo {
     public List<RiwayatTindakan> getListAllTindakan(RiwayatTindakan bean) throws GeneralBOException;
@@ -23,7 +26,13 @@ public interface KasirRawatJalanBo {
     public CrudResponse saveNoFPK (List<Fpk> listData) throws GeneralBOException;
     public CrudResponse pembayaranFPK (List<Fpk> listData) throws GeneralBOException;
 
-    List<ItSimrsHeaderDetailCheckupEntity> getSearchCheckupBySep(String noSep) throws GeneralBOException;
-    public CheckResponse saveRefund(String id) throws GeneralBOException;
+    List<KlaimFpkDTO> getSearchCheckupBySep(String noSep) throws GeneralBOException;
+    public CheckResponse saveRefund(String id, String noJurnal) throws GeneralBOException;
     public List<ImAkunPembayaranEntity> getListPembayaran() throws GeneralBOException;
+    public ItSimrsUangMukaPendaftaranEntity getEnityUangMukaById(String id) throws GeneralBOException;
+
+
+    Map setMappingJurnalFpk(KlaimFpkDTO data,List<KlaimFpkDTO> listOfKlaim);
+
+    void saveFpk(KlaimFpkDTO klaimFpkDTO, List<KlaimFpkDTO> listData) throws GeneralBOException;
 }
