@@ -848,6 +848,10 @@ public class CheckupDetailAction extends BaseMasterAction {
             headerDetailCheckup.setKeteranganSelesai("Lanjut Biaya");
             cekRawatInap(idDetailCheckup);
         }
+        if("rujuk_rs_lain".equalsIgnoreCase(idKtg)){
+            headerDetailCheckup.setKeteranganSelesai("Rujuk Rumah Sakit Lain");
+            cekRawatInap(idDetailCheckup);
+        }
 
         if ("pindah".equalsIgnoreCase(idKtg)) {
             headerDetailCheckup.setKeteranganSelesai("Pindah ke Poli Lain");
@@ -883,7 +887,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
         try {
 
-            if("success".equalsIgnoreCase(response.getStatus()) || "selesai".equalsIgnoreCase(idKtg) || "lanjut_biaya".equalsIgnoreCase(idKtg)){
+            if("success".equalsIgnoreCase(response.getStatus()) || "selesai".equalsIgnoreCase(idKtg) || "lanjut_biaya".equalsIgnoreCase(idKtg) || "rujuk_rs_lain".equalsIgnoreCase(idKtg)){
                 headerDetailCheckup.setLastUpdate(new Timestamp(System.currentTimeMillis()));
                 headerDetailCheckup.setLastUpdateWho(CommonUtil.userLogin());
                 response = checkupDetailBo.saveEdit(headerDetailCheckup);
@@ -3174,22 +3178,6 @@ public class CheckupDetailAction extends BaseMasterAction {
                     }
 
                     if (riwayatTindakanList.isEmpty()) {
-//                        List<Lab> labList = new ArrayList<>();
-//                        Lab lab = new Lab();
-//                        lab.setIdLab(entity.getIdLab());
-//
-//                        try {
-//                            labList = labBo.getByCriteria(lab);
-//                        } catch (GeneralBOException e) {
-//                            logger.error("[CheckupDetailAction.saveAddToRiwayatTindakan] Found error when search tarif tindakan :" + e.getMessage());
-//                        }
-//
-//                        if (labList.size() > 0) {
-//                            lab = labList.get(0);
-//
-//                            if (lab != null) {
-//                            }
-//                        }
 
                         PeriksaLab lab = new PeriksaLab();
 
@@ -3515,7 +3503,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         return "init_rekam_medik";
     }
 
-    public String printGeneralConcent() {
+    public String printFormulirPindahRS() {
 
         HeaderCheckup checkup = new HeaderCheckup();
         String id = getId();
@@ -3581,78 +3569,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                 return "search";
             }
         }
-
-        return "";
-    }
-
-    public String printPelepasanInformasi() {
-
-        HeaderCheckup checkup = new HeaderCheckup();
-        String id = getId();
-        String jk = "";
-
-        String branch = CommonUtil.userBranchLogin();
-        String branchName = CommonUtil.userBranchNameLogin();
-        String logo = "";
-        Branch branches = new Branch();
-
-        try {
-            branches = branchBoProxy.getBranchById(branch, "Y");
-        } catch (GeneralBOException e) {
-            logger.error("Found Error when searhc branch logo");
-        }
-
-        if (branches != null) {
-            logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.RESOURCE_PATH_IMAGES + branches.getLogoName();
-        }
-
-        try {
-            checkup = checkupBoProxy.getDataDetailPasien(id);
-        } catch (GeneralBOException e) {
-            logger.error("Found Error when search data detail pasien " + e.getMessage());
-        }
-
-        if (checkup != null) {
-
-            reportParams.put("dokter", "");
-            reportParams.put("area", CommonUtil.userAreaName());
-            reportParams.put("unit", branchName);
-            reportParams.put("idPasien", checkup.getIdPasien());
-            reportParams.put("logo", logo);
-            reportParams.put("nik", checkup.getNoKtp());
-            reportParams.put("nama", checkup.getNama());
-            String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
-            reportParams.put("tglLahir", checkup.getTempatLahir() + ", " + formatDate);
-            if ("L".equalsIgnoreCase(checkup.getJenisKelamin())) {
-                jk = "Laki-Laki";
-            } else {
-                jk = "Perempuan";
-            }
-            reportParams.put("jenisKelamin", jk);
-            reportParams.put("jenisPasien", checkup.getStatusPeriksaName());
-            reportParams.put("poli", checkup.getNamaPelayanan());
-            reportParams.put("provinsi", checkup.getNamaProvinsi());
-            reportParams.put("kabupaten", checkup.getNamaKota());
-            reportParams.put("kecamatan", checkup.getNamaKecamatan());
-            reportParams.put("desa", checkup.getNamaDesa());
-            if(checkup.getTglCheckup() != null && !"".equalsIgnoreCase(checkup.getTglCheckup().toString())){
-                String formatCheckup = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglCheckup());
-                reportParams.put("tglCheckup", formatCheckup);
-            }
-            reportParams.put("ketCheckup", checkup.getKeterangan());
-            reportParams.put("idDetailCheckup", id);
-            reportParams.put("namaRuang", checkup.getNamaRuangan());
-
-            try {
-                preDownload();
-            } catch (SQLException e) {
-                logger.error("[ReportAction.printCard] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
-                addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
-                return "search";
-            }
-        }
-
-        return "";
+        return "print_pindah_rs";
     }
 
     public String printSuratPernyataan() {
@@ -3816,6 +3733,9 @@ public class CheckupDetailAction extends BaseMasterAction {
         }
         if("SK03".equalsIgnoreCase(tipe)){
             return "print_keterangan_kesehatan";
+        }
+        if("HV01".equalsIgnoreCase(tipe)){
+            return "print_persetujuan_hiv";
         }
 
         return null;

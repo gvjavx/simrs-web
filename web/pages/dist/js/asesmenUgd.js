@@ -252,14 +252,14 @@ function saveAsesmenUgd(jenis) {
                 });
                 data.push({
                     'parameter': 'RR',
-                    'jawaban': rr2,
+                    'jawaban': rr2 + ' x/menit',
                     'keterangan': jenis,
                     'jenis': 'breathing',
                     'id_detail_checkup': idDetailCheckup
                 });
                 data.push({
                     'parameter': 'SpO2',
-                    'jawaban': spo2,
+                    'jawaban': spo2 + ' %',
                     'keterangan': jenis,
                     'jenis': 'breathing',
                     'id_detail_checkup': idDetailCheckup
@@ -301,7 +301,7 @@ function saveAsesmenUgd(jenis) {
                 });
                 data.push({
                     'parameter': 'Nadi',
-                    'jawaban': nadi2,
+                    'jawaban': nadi2 + ' x/menit',
                     'keterangan': jenis,
                     'jenis': 'circulation',
                     'id_detail_checkup': idDetailCheckup

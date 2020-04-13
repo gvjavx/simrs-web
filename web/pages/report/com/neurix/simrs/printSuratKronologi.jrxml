@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printSuratGagalCetakSEP" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
-	<property name="ireport.zoom" value="1.3636363636363722"/>
-	<property name="ireport.x" value="80"/>
-	<property name="ireport.y" value="662"/>
+	<property name="ireport.zoom" value="1.3636363636363729"/>
+	<property name="ireport.x" value="20"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -128,7 +128,7 @@
 			<componentElement>
 				<reportElement x="435" y="0" width="120" height="32" uuid="6a2de382-dadd-4d81-bb84-315f70cece67"/>
 				<jr:Code128 xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" textPosition="bottom">
-					<jr:codeExpression><![CDATA[$P{reportParams.idDetailCheckup}]]></jr:codeExpression>
+					<jr:codeExpression><![CDATA[$P{reportParams.idPasien}]]></jr:codeExpression>
 				</jr:Code128>
 			</componentElement>
 			<staticText>
@@ -398,7 +398,7 @@
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.profesi} == null ? "" : $P{reportParams.profesi} ]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{reportParams.profesi} == null ? "" : $P{reportParams.profesi}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="118" y="285" width="430" height="20" uuid="ecc27724-9c9f-4669-89ca-d1230b6de1d6"/>
@@ -439,7 +439,7 @@
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.unitKota} == null ? "" : $P{reportParams.unitKota} ]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{reportParams.unitKota} == null ? "" : $P{reportParams.unitKota}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="333" y="57" width="78" height="28" uuid="8d3ce691-9ac1-4279-b29b-0b355593c033"/>

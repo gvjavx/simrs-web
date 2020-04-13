@@ -310,7 +310,7 @@
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
                                         <li><a target="_blank"
-                                               href="printGeneralConcent_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
+                                               href="printSuratPernyataan_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>&tipe=HV01">
                                             <i class="fa fa-edit"></i>Persetujuan Test HIV</a></li>
                                     </ul>
                                 </div>

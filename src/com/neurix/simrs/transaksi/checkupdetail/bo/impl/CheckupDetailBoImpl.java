@@ -337,7 +337,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             }
 
             // update tgl kluar if selesai
-            if ("selesai".equalsIgnoreCase(bean.getStatus())) {
+            if ("selesai".equalsIgnoreCase(bean.getStatus()) || "rujuk_rs_lain".equalsIgnoreCase(bean.getStatus())) {
                 HeaderCheckup headerCheckup = new HeaderCheckup();
                 headerCheckup.setNoCheckup(entity.getNoCheckup());
                 List<ItSimrsHeaderChekupEntity> headerChekupEntities = getListEntityCheckup(headerCheckup);

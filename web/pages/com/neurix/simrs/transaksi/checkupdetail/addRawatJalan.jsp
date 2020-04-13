@@ -808,6 +808,7 @@
                                             <option value='pindah'>Pindah Poli Lain</option>
                                             <%--<option value='rujuk'>Rujuk Rawat Inap</option>--%>
                                             <option value='lanjut_biaya'>Lanjut Biaya</option>
+                                            <option value='rujuk_rs_lain'>Rujuk RS Lain</option>
                                         </select>
                                     </div>
                                 </div>
@@ -2357,7 +2358,7 @@
                 $("#form-selesai").show();
                 $("#form-cekup").hide();
             }
-            if (idKtg == "lanjut_biaya") {
+            if (idKtg == "lanjut_biaya" || idKtg == "rujuk_rs_lain") {
                 $('#pembayaran').hide();
                 $("#kamar").attr('style', 'display:none');
                 $("#form-poli").attr('style', 'display:none');
@@ -2493,7 +2494,7 @@
                     $('#war_kolom-2').show();
                 }
             }
-            if(idKtg == "lanjut_biaya"){
+            if(idKtg == "lanjut_biaya" || idKtg == "rujuk_rs_lain"){
 
                     if(namaAsuransi == "Jasa Raharja"){
                         if(noRujukan != '' && tglRujukan != '' && suratRujukan != ''){
@@ -2634,7 +2635,7 @@
                 }
             });
         }
-        if(idKtg == "selesai" || idKtg == "lanjut_biaya"){
+        if(idKtg == "selesai" || idKtg == "lanjut_biaya" || idKtg == "rujuk_rs_lain"){
             $('#save_ket').hide();
             $('#load_ket').show();
             $('#waiting_dialog').dialog('open');

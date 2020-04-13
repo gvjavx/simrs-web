@@ -2200,6 +2200,7 @@
     function listSelectAsuransi() {
         var option = "<option value=''>[Select One]</option>";
         CheckupAction.getComboAsuransi(function (response) {
+            console.log(response);
             if (response.length > 0) {
                 $.each(response, function (i, item) {
                     option += '<option value="' + item.idAsuransi + '">' + item.namaAsuransi + '</option>';
