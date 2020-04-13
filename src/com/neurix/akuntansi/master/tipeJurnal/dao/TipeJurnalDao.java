@@ -34,7 +34,7 @@ public class TipeJurnalDao extends GenericDao<ImTipeJurnalEntity, String> {
         // Get Collection and sorting
         if (mapCriteria!=null) {
             if (mapCriteria.get("tipe_jurnal_id")!=null) {
-                criteria.add(Restrictions.eq("tipeJurnalId", (String) mapCriteria.get("tipeJurnal_id")));
+                criteria.add(Restrictions.eq("tipeJurnalId", (String) mapCriteria.get("tipe_jurnal_id")));
             }
             if (mapCriteria.get("tipe_jurnal_name")!=null) {
                 criteria.add(Restrictions.ilike("tipeJurnalName", "%" + (String)mapCriteria.get("tipe_jurnal_name") + "%"));

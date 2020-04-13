@@ -1052,6 +1052,8 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                         Integer jumlahBiayaBpjsLebihDariRs=0;
                         Integer jumlahBiayaBpjsSamaDenganRs=0;
                         Integer jumlahSalah=0;
+                        BigInteger jumlahBiayaBpjs=BigInteger.ZERO;
+                        BigInteger jumlahBiayaRs=BigInteger.ZERO;
                         while ((line = br.readLine()) != null) {
                             //melewatkan judul nomor 1
                             if (x!=1){
@@ -1091,12 +1093,15 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                                 }else if (result.getTotalBiayaBpjs().compareTo(result.getTotalBiaya())<0){
                                     statusBayar="KB";
                                     jumlahBiayaBpjsKurangDariRs=jumlahBiayaBpjsKurangDariRs+1;
+                                    jumlahBiayaBpjs=jumlahBiayaBpjs.add(result.getTotalBiayaBpjs());
                                 }else if (result.getTotalBiaya().compareTo(result.getTotalBiayaBpjs())<0){
                                     statusBayar="LB";
                                     jumlahBiayaBpjsLebihDariRs=jumlahBiayaBpjsLebihDariRs+1;
+                                    jumlahBiayaBpjs=jumlahBiayaBpjs.add(result.getTotalBiayaBpjs());
                                 }else if (result.getTotalBiaya().compareTo(result.getTotalBiayaBpjs())==0){
                                     statusBayar="P";
                                     jumlahBiayaBpjsSamaDenganRs=jumlahBiayaBpjsSamaDenganRs+1;
+                                    jumlahBiayaBpjs=jumlahBiayaBpjs.add(result.getTotalBiayaBpjs());
                                 }else{
                                     statusBayar="UK";
                                     jumlahSalah=jumlahSalah+1;
@@ -1107,6 +1112,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                                     result.setStTotalBiaya("0");
                                 }else{
                                     result.setStTotalBiaya(CommonUtil.numbericFormat(new BigDecimal(result.getTotalBiaya()),"###,###"));
+                                    jumlahBiayaRs=jumlahBiayaRs.add(result.getTotalBiaya());
                                 }
                                 listOfResult.add(result);
                             }
@@ -1118,6 +1124,10 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                         dataFpk.setJumlahBiayaBpjsLebihDariRs(jumlahBiayaBpjsLebihDariRs);
                         dataFpk.setJumlahBiayaBpjsSamaDenganRs(jumlahBiayaBpjsSamaDenganRs);
                         dataFpk.setJumlahSalah(jumlahSalah);
+                        dataFpk.setJumlahSeluruhnyaBpjs(jumlahBiayaBpjs);
+                        dataFpk.setJumlahSeluruhnya(jumlahBiayaRs);
+                        dataFpk.setStJumlahSeluruhnya((CommonUtil.numbericFormat(new BigDecimal(dataFpk.getJumlahSeluruhnya()),"###,###")));
+                        dataFpk.setStJumlahSeluruhnyaBpjs((CommonUtil.numbericFormat(new BigDecimal(dataFpk.getJumlahSeluruhnyaBpjs()),"###,###")));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

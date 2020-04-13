@@ -104,7 +104,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-save"></i> Hasil Import CSV BPJS Kesehatan</h3>
+                        <h3 class="box-title"><i class="fa fa-save"></i> FPK</h3>
                     </div>
                     <s:form id="saveImportCsv" enctype="multipart/form-data" method="post" namespace="/createfpk"
                             action="saveImportCsv_createfpk.action" theme="simple">
@@ -136,7 +136,7 @@
                                 <div class="col-md-12">
                                     <div class="box-header with-border"></div>
                                     <div class="box-header with-border">
-                                        <h3 class="box-title"><i class="fa fa-th-list"></i> Summary</h3>
+                                        <h3 class="box-title"><i class="fa fa-th-list"></i> Data Summary</h3>
                                     </div>
                                     <div class="box-body">
                                         <div class="row">
@@ -190,6 +190,25 @@
                                                 <div class="col-sm-4">
                                                     <s:textfield name="klaimFpkDTO.jumlahSalah" cssStyle="margin-top: 7px" id="jumlah_data_salah"
                                                                  readonly="true" cssClass="form-control" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-offset-2 col-sm-3" style="margin-top: 7px">Jumlah Biaya Dari BPJS </label>
+                                                <div class="col-sm-4">
+                                                    <s:textfield name="klaimFpkDTO.stJumlahSeluruhnyaBpjs" id="jumlah_biaya_dari_bpjs"
+                                                                 readonly="true" cssClass="form-control" cssStyle="text-align: right" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-offset-2 col-sm-3" style="margin-top: 7px">Jumlah Biaya Dari RS </label>
+                                                <div class="col-sm-4">
+                                                    <s:textfield name="klaimFpkDTO.stJumlahSeluruhnya" cssStyle="margin-top: 7px;text-align: right" id="jumlah_biaya_dari_rs"
+                                                                 readonly="true" cssClass="form-control"  />
                                                 </div>
                                             </div>
                                         </div>

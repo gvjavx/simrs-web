@@ -3,6 +3,8 @@ package com.neurix.akuntansi.transaksi.laporanAkuntansi.action;
 //import com.neurix.authorization.company.bo.AreaBo;
 import com.neurix.akuntansi.master.settingReportUser.bo.SettingReportUserBo;
 import com.neurix.akuntansi.master.settingReportUser.model.SettingReportUser;
+import com.neurix.akuntansi.master.tipeJurnal.bo.TipeJurnalBo;
+import com.neurix.akuntansi.master.tipeJurnal.model.TipeJurnal;
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.akuntansi.transaksi.jurnal.model.Jurnal;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.bo.LaporanAkuntansiBo;
@@ -811,9 +813,11 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         LaporanAkuntansiBo laporanAkuntansiBo = (LaporanAkuntansiBo) ctx.getBean("laporanAkuntansiBoProxy");
         BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+        TipeJurnalBo tipeJurnalBo= (TipeJurnalBo) ctx.getBean("tipeJurnalBoProxy");
         LaporanAkuntansi data = getLaporanAkuntansi();
         LaporanAkuntansi dataAtasan = laporanAkuntansiBo.getNipDanNamaManagerKeuanganDanGeneralManager(data.getUnit());
         Branch branch = branchBo.getBranchById(data.getUnit(),"Y");
+        TipeJurnal tipeJurnal= tipeJurnalBo.getTipeJurnalById(data.getTipeJurnalId());
         String titleReport="";
         String unit = "";
         if (("KP").equalsIgnoreCase(data.getUnit())){
@@ -831,29 +835,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         }else{
             unit="'"+data.getUnit()+"'";
         }
-
-        switch (data.getTipeJurnalId()){
-            case ("JKM"):
-                titleReport="MUTASI JURNAL KAS MASUK";
-                break;
-            case ("JKK"):
-                titleReport="MUTASI JURNAL KAS KELUAR";
-                break;
-            case ("JPD"):
-                titleReport="MUTASI JURNAL PERSEDIAAN";
-                break;
-            case ("JRI"):
-                titleReport="MUTASI JURNAL RAWAT INAP";
-                break;
-            case ("JRJ"):
-                titleReport="MUTASI JURNAL RAWAT JALAN";
-                break;
-            case ("JJO"):
-                titleReport="MUTASI JURNAL JUAL OBAT";
-                break;
-                default:
-                    titleReport="";
-        }
+        titleReport="MUTASI "+tipeJurnal.getTipeJurnalName().toUpperCase();
 
         reportParams.put("reportTitle", titleReport);
         reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
