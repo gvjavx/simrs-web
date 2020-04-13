@@ -25,6 +25,8 @@ import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
 import com.neurix.simrs.transaksi.riwayattindakan.bo.RiwayatTindakanBo;
+import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsRiwayatTindakanEntity;
+import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsTindakanTransitorisEntity;
 import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
 import com.neurix.simrs.transaksi.tindakanrawat.bo.TindakanRawatBo;
 import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
@@ -288,6 +290,25 @@ public class TutuPeriodAction extends BaseTransactionAction {
 
         logger.info("[TutuPeriodAction.createJurnalTransitoris] END <<<");
         return response;
+    }
+
+    private CrudResponse updateToDetailCheckup(HeaderDetailCheckup bean){
+
+        CrudResponse response = new CrudResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+
+        try {
+
+        } catch (GeneralBOException e){
+
+        }
+
+        return response;
+    }
+
+    private void moveToTransitoris(String idDetailCheckup){
+
     }
 
     public CrudResponse saveLockPeriod(String unit, String tahun, String bulan){

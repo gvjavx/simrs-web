@@ -1414,6 +1414,7 @@ public class TransaksiObatAction extends BaseMasterAction {
         Map hsCriteria = new HashMap();
         hsCriteria.put("master_id", masterId);
         hsCriteria.put("divisi_id", divisiId);
+        hsCriteria.put("metode_bayar", "tunai");
         hsCriteria.put("kas",  pendapatan);
         hsCriteria.put("pendapatan_obat_umum",new BigDecimal(trans.getTotalBayar()));
         hsCriteria.put("ppn_keluaran", ppn);

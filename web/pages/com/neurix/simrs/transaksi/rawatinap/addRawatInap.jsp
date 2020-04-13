@@ -3315,6 +3315,7 @@
         listResepPasien();
         listSelectTindakanKategori();
         hitungStatusBiaya();
+        getJenisResep();
 
         $('#img_ktp').on('click', function(e){
             e.preventDefault();
@@ -3390,6 +3391,8 @@
 
     function getJenisResep(){
 
+        var jenisPeriksaPasien = $("#id_jenis_pasien").val();
+
         strSelect = "";
         var arBodyJenisResep = [];
         if(jenisPeriksaPasien == "ptpn"){
@@ -3401,6 +3404,8 @@
         } else {
             arBodyJenisResep.push({"nilai": "umum", "label": "UMUM"});
         }
+
+        console.log(strSelect);
 
         var strSelect = "";
         $.each(arBodyJenisResep, function (i, item) {
