@@ -1,5 +1,7 @@
 package com.neurix.akuntansi.transaksi.tutupperiod.action;
 
+import com.neurix.akuntansi.master.master.bo.MasterBo;
+import com.neurix.akuntansi.master.master.model.ImMasterEntity;
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.akuntansi.transaksi.tutupperiod.bo.TutupPeriodBo;
 import com.neurix.akuntansi.transaksi.tutupperiod.model.BatasTutupPeriod;
@@ -8,6 +10,8 @@ import com.neurix.akuntansi.transaksi.tutupperiod.model.TutupPeriod;
 import com.neurix.common.action.BaseTransactionAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.jenisperiksapasien.bo.AsuransiBo;
+import com.neurix.simrs.master.jenisperiksapasien.model.ImSimrsAsuransiEntity;
 import com.neurix.simrs.master.lab.bo.LabBo;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.JurnalResponse;
@@ -203,12 +207,15 @@ public class TutuPeriodAction extends BaseTransactionAction {
         CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
         CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
         BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
+        MasterBo masterBo = (MasterBo) ctx.getBean("masterBoProxy");
+        AsuransiBo asuransiBo = (AsuransiBo) ctx.getBean("asuransiBoProxy");
 
         String masterId = "";
         String divisiId = "";
         String jenisPasien = "";
         String bukti = "";
         String transId = "";
+        String idPasien = "";
         String invoiceNumber = billingSystemBo.createInvoiceNumber("JRI", bean.getUnit());
 
         Map mapJurnal = new HashMap();
@@ -221,48 +228,54 @@ public class TutuPeriodAction extends BaseTransactionAction {
             BigDecimal jumlahAllTindakan = checkupDetailBo.getSumJumlahTindakan(bean.getIdDetailCheckup(), "");
             BigDecimal jumlahTindakan = jumlahAllTindakan.subtract(jumlahResep);
 
+            bukti = invoiceNumber;
             if ("bpjs".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())){
 
                 bukti = detailCheckupEntity.getNoSep();
                 jenisPasien = "No. SEP : "+detailCheckupEntity.getNoSep();
                 masterId = "02.018";
-                transId = "33";
 
+            } else if ("asuransi".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())){
 
-                Map mapPiutang = new HashMap();
-                mapPiutang.put("bukti", bukti);
-                mapPiutang.put("nilai", jumlahAllTindakan);
+                ImSimrsAsuransiEntity asuransiEntity = asuransiBo.getEntityAsuransiById(detailCheckupEntity.getIdAsuransi());
+                jenisPasien = "Asuransi "+asuransiEntity.getNamaAsuransi();
+                masterId = asuransiEntity.getNoMaster();
+            } else if ("ptpn".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())){
 
-                mapJurnal.put("piutang_pasien_bpjs", jumlahAllTindakan);
-                mapJurnal.put("piutang_transistoris_pasien_rawat_inap", mapPiutang);
-
-                mapJurnal.put("pendapatan_rawat_inap_bpjs", jumlahTindakan);
-                mapJurnal.put("pendapatan_obat_bpjs", jumlahResep);
-            } else if ("umum".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())){
+                ImMasterEntity masterEntity = masterBo.getEntityMasterById(detailCheckupEntity.getIdAsuransi());
+                jenisPasien = masterEntity.getNama();
+                masterId = detailCheckupEntity.getIdAsuransi();
+            } else {
                 ItSimrsHeaderChekupEntity headerChekupEntity = checkupBo.getEntityCheckupById(detailCheckupEntity.getNoCheckup());
-                if (headerChekupEntity != null){
-
-                    bukti = invoiceNumber;
-                    jenisPasien = "No. RM : "+headerChekupEntity.getIdPasien();
-                    masterId = headerChekupEntity.getIdPasien();
-                    transId = "32";
-
-                    Map mapPiutang = new HashMap();
-                    mapPiutang.put("bukti", bukti);
-                    mapPiutang.put("nilai", jumlahAllTindakan);
-
-                    mapJurnal.put("piutang_transistoris_pasien_rawat_inap", mapPiutang);
-
-                    mapJurnal.put("pendapatan_rawat_inap", jumlahTindakan);
-                    mapJurnal.put("pendapatan_obat", jumlahResep);
+                if (headerChekupEntity == null){
+                    logger.error("[TutupPeriodAction.createJurnalTransitoris] ERROR. data header is null");
+                    response.setStatus("error");
+                    response.setMsg("[TutupPeriodAction.createJurnalTransitoris] ERROR. data header is null");
+                    return response;
+                }
+                jenisPasien = "No. RM "+idPasien;
+                if ("non_tunai".equalsIgnoreCase(detailCheckupEntity.getMetodePembayaran())){
+                        masterId = headerChekupEntity.getIdPasien();
+                } else {
+                        masterId = "01.000";
                 }
             }
+
+            transId = "32";
+
+            Map mapPiutang = new HashMap();
+            mapPiutang.put("bukti", bukti);
+            mapPiutang.put("nilai", jumlahAllTindakan);
+
+            mapJurnal.put("master_id", masterId);
+            mapJurnal.put("divisi_id", divisiId);
+            mapJurnal.put("piutang_transistoris_pasien_rawat_inap", mapPiutang);
+            mapJurnal.put("pendapatan_rawat_inap", jumlahTindakan);
+            mapJurnal.put("pendapatan_obat", jumlahResep);
+
         }
 
 
-
-        mapJurnal.put("master_id", masterId);
-        mapJurnal.put("divisi_id", divisiId);
   ;
         String catatan = "Transitoris Rawat Inap saat tutup periode "+jenisPasien;
 
@@ -286,6 +299,7 @@ public class TutuPeriodAction extends BaseTransactionAction {
             logger.error("[TutupPeriodAction.createJurnalTransitoris] ERROR. ", e);
             response.setStatus("error");
             response.setMsg("[TutupPeriodAction.createJurnalTransitoris] ERROR. "+e);
+            return response;
         }
 
         logger.info("[TutuPeriodAction.createJurnalTransitoris] END <<<");
