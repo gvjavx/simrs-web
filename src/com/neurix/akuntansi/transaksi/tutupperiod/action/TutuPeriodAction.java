@@ -139,6 +139,7 @@ public class TutuPeriodAction extends BaseTransactionAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         TutupPeriodBo tutupPeriodBo = (TutupPeriodBo) ctx.getBean("tutupPeriodBoProxy");
         CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+        RiwayatTindakanBo riwayatTindakanBo = (RiwayatTindakanBo) ctx.getBean("riwayatTindakanBoProxy");
 
         // set object tutup period, Sigit
         TutupPeriod tutupPeriod = new TutupPeriod();
@@ -151,7 +152,6 @@ public class TutuPeriodAction extends BaseTransactionAction {
         tutupPeriod.setCreatedWho(userLogin);
         tutupPeriod.setLastUpdate(time);
         tutupPeriod.setLastUpdateWho(userLogin);
-
 
         try {
             List<HeaderDetailCheckup> detailCheckups = checkupDetailBo.getListRawatInapExisiting(unit);
@@ -176,7 +176,14 @@ public class TutuPeriodAction extends BaseTransactionAction {
                         return response;
                     }
 
-
+                    // insert into table tindakan transitoris, Sigit
+                    try {
+                        riwayatTindakanBo.saveTindakanTransitoris(detailCheckup.getIdDetailCheckup(), time, userLogin);
+                    } catch (GeneralBOException e){
+                        response.setStatus("error");
+                        response.setMsg("[TutuPeriodAction.saveTutupPeriod] ERROR. " + e);
+                        return response;
+                    }
                 }
             }
         } catch (GeneralBOException e){

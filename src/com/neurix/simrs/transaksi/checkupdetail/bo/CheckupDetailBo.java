@@ -63,4 +63,5 @@ public interface CheckupDetailBo {
     public List<HeaderDetailCheckup> getListRawatInapExisiting(String branchId) throws GeneralBOException;
 
     List<RiwayatTindakanDTO> getRiwayatTindakanDanDokter(String idDetailCheckup) throws GeneralBOException;
+    public Boolean checkAdaTransitoris(String idDetailCheckup) throws GeneralBOException;
 }

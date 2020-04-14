@@ -201,7 +201,24 @@ public class RiwayatTindakanDao extends GenericDao<ItSimrsRiwayatTindakanEntity,
             }
         }
         return riwayatTindakanList;
+    }
 
+    public Boolean checkIsTransitoris(String id){
+        Boolean found = false;
+
+        String SQL = "SELECT id_riwayat_tindakan, id_detail_checkup, id_tindakan \n" +
+                "FROM it_simrs_tindakan_transitoris \n" +
+                "WHERE id_detail_checkup = :id \n" +
+                "LIMIT 1";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", id)
+                .list();
+
+        if (results.size() > 0){
+            found = true;
+        }
+        return found;
     }
 
     public String getNextSeq() {

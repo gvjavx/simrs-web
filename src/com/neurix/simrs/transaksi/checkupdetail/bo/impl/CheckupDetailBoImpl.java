@@ -1323,6 +1323,11 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     }
 
     @Override
+    public Boolean checkAdaTransitoris(String idDetailCheckup) throws GeneralBOException {
+        return riwayatTindakanDao.checkIsTransitoris(idDetailCheckup);
+    }
+
+    @Override
     public ItSimrsHeaderDetailCheckupEntity getDetailCheckupById(String id) throws GeneralBOException {
         logger.info("[CheckupDetailBoImpl.getDetailCheckupById] START >>>>");
         logger.info("[CheckupDetailBoImpl.getDetailCheckupById] END <<<");

@@ -200,13 +200,13 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
                 transitorisEntity.setLastUpdateWho(user);
 
                 try {
-
+                    tindakanTransitorisDao.addAndSave(transitorisEntity);
                 } catch (HibernateException e){
-
+                    logger.error("[RiwayatTindakanBoImpl.saveTindakanTransitoris] ERROR. ", e);
+                    throw new GeneralBOException("[RiwayatTindakanBoImpl.saveTindakanTransitoris] ERROR. ", e);
                 }
             }
         }
-
     }
 
     private String getNextIdRiwayatTindakan(){
