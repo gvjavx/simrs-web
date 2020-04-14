@@ -948,7 +948,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
             } else if ("ptpn".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())){
 
-                biayaCover = detailCheckupEntity.getCoverBiaya();
+                biayaCover = detailCheckupEntity.getTarifBpjs();
 
                 ImMasterEntity masterEntity = masterBo.getEntityMasterById(detailCheckupEntity.getIdAsuransi());
                 if (masterEntity != null) {
