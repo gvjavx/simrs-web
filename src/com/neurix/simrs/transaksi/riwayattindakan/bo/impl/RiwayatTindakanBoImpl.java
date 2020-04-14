@@ -4,8 +4,10 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.transaksi.riwayattindakan.bo.RiwayatTindakanBo;
 import com.neurix.simrs.transaksi.riwayattindakan.dao.RiwayatTindakanDao;
 import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsRiwayatTindakanEntity;
+import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsTindakanTransitorisEntity;
 import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
 import com.neurix.simrs.transaksi.teamdokter.bo.impl.TeamDokterBoImpl;
+import com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -160,6 +162,36 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
 
         logger.info("[RiwayatTindakanBoImpl.getListEntityRiwayatTindakan] End <<<<<<<<");
         return entities;
+    }
+
+    @Override
+    public void saveTindakanTransitoris(String idDetailCheckup) throws GeneralBOException {
+
+        RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
+        riwayatTindakan.setIdDetailCheckup(idDetailCheckup);
+
+        List<ItSimrsRiwayatTindakanEntity> tindakanEntities = getListEntityRiwayatTindakan(riwayatTindakan);
+        if (tindakanEntities.size() > 0){
+            for (ItSimrsRiwayatTindakanEntity tindakanEntity : tindakanEntities){
+
+                ItSimrsTindakanTransitorisEntity transitorisEntity = new ItSimrsTindakanTransitorisEntity();
+                transitorisEntity.setIdRiwayatTindakan(tindakanEntity.getIdRiwayatTindakan());
+                transitorisEntity.setIdTindakan(tindakanEntity.getIdRiwayatTindakan());
+                transitorisEntity.setIdRiwayatTindakan(tindakanEntity.getIdRiwayatTindakan());
+                transitorisEntity.setIdRiwayatTindakan(tindakanEntity.getIdRiwayatTindakan());
+                transitorisEntity.setIdRiwayatTindakan(tindakanEntity.getIdRiwayatTindakan());
+                transitorisEntity.setIdRiwayatTindakan(tindakanEntity.getIdRiwayatTindakan());
+                transitorisEntity.setIdRiwayatTindakan(tindakanEntity.getIdRiwayatTindakan());
+                transitorisEntity.setIdRiwayatTindakan(tindakanEntity.getIdRiwayatTindakan());
+                transitorisEntity.setIdRiwayatTindakan(tindakanEntity.getIdRiwayatTindakan());
+                transitorisEntity.setIdRiwayatTindakan(tindakanEntity.getIdRiwayatTindakan());
+                transitorisEntity.setIdRiwayatTindakan(tindakanEntity.getIdRiwayatTindakan());
+                transitorisEntity.setIdRiwayatTindakan(tindakanEntity.getIdRiwayatTindakan());
+                transitorisEntity.setIdRiwayatTindakan(tindakanEntity.getIdRiwayatTindakan());
+
+            }
+        }
+
     }
 
     private String getNextIdRiwayatTindakan(){

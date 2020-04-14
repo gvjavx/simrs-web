@@ -175,6 +175,8 @@ public class TutuPeriodAction extends BaseTransactionAction {
                         response.setMsg(jurnalResponse.getMsg());
                         return response;
                     }
+
+
                 }
             }
         } catch (GeneralBOException e){
@@ -274,9 +276,6 @@ public class TutuPeriodAction extends BaseTransactionAction {
             mapJurnal.put("pendapatan_obat", jumlahResep);
 
         }
-
-
-  ;
         String catatan = "Transitoris Rawat Inap saat tutup periode "+jenisPasien;
 
         try {

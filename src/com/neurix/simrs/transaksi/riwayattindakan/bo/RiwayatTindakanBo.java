@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.riwayattindakan.bo;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsTindakanTransitorisEntity;
 import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
 
 import java.util.List;
@@ -11,5 +12,6 @@ public interface RiwayatTindakanBo {
     public void saveAdd(RiwayatTindakan bean) throws GeneralBOException;
     public void saveEdit(RiwayatTindakan bean) throws GeneralBOException;
     public List<RiwayatTindakan> cekTodayTarifKamar(String idDetail) throws GeneralBOException;
+    public void saveTindakanTransitoris(String  idDetailCheckup) throws GeneralBOException;
 
 }
