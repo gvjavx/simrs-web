@@ -3103,6 +3103,12 @@ public class CheckupDetailAction extends BaseMasterAction {
             TransaksiObatBo transaksiObatBo = (TransaksiObatBo) ctx.getBean("transaksiObatBoProxy");
             RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
             OrderGiziBo orderGiziBo = (OrderGiziBo) ctx.getBean("orderGiziBoProxy");
+            String jenPasien = "";
+            if("ptpn".equalsIgnoreCase(jenisPasien)){
+                jenPasien = "bpjs";
+            }else{
+                jenPasien = jenisPasien;
+            }
 
             List<TindakanRawat> listTindakan = new ArrayList<>();
             TindakanRawat tindakanRawat = new TindakanRawat();
@@ -3135,7 +3141,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                         riwayatTindakan.setNamaTindakan(entity.getNamaTindakan());
                         riwayatTindakan.setTotalTarif(new BigDecimal(entity.getTarifTotal()));
                         riwayatTindakan.setKeterangan("tindakan");
-                        riwayatTindakan.setJenisPasien(jenisPasien);
+                        riwayatTindakan.setJenisPasien(jenPasien);
                         riwayatTindakan.setAction("C");
                         riwayatTindakan.setFlag("Y");
                         riwayatTindakan.setCreatedWho(user);
@@ -3193,7 +3199,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                         riwayatTindakan.setNamaTindakan("Periksa Lab " + entity.getLabName());
                         riwayatTindakan.setTotalTarif(lab.getTarif());
                         riwayatTindakan.setKeterangan(lab.getKategoriLabName());
-                        riwayatTindakan.setJenisPasien(jenisPasien);
+                        riwayatTindakan.setJenisPasien(jenPasien);
                         riwayatTindakan.setAction("C");
                         riwayatTindakan.setFlag("Y");
                         riwayatTindakan.setCreatedWho(user);
@@ -3255,8 +3261,8 @@ public class CheckupDetailAction extends BaseMasterAction {
                             riwayatTindakan.setIdDetailCheckup(entity.getIdDetailCheckup());
                             riwayatTindakan.setNamaTindakan("Tarif Resep dengan No. Resep " + entity.getIdPermintaanResep());
                             riwayatTindakan.setTotalTarif(new BigDecimal(obatDetailList.getTotalHarga()));
-                            riwayatTindakan.setKeterangan("resep");
-                            riwayatTindakan.setJenisPasien(obatDetailList.getJenisResep());
+                            riwayatTindakan.setKeterangan(obatDetailList.getJenisResep());
+                            riwayatTindakan.setJenisPasien(jenPasien);
                             riwayatTindakan.setAction("C");
                             riwayatTindakan.setFlag("Y");
                             riwayatTindakan.setCreatedWho(user);
@@ -3324,7 +3330,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                                 riwayatTindakan.setNamaTindakan("Tarif Gizi dengan No. Gizi " + gizi.getIdOrderGizi());
                                 riwayatTindakan.setTotalTarif(gizi.getTarifTotal());
                                 riwayatTindakan.setKeterangan("gizi");
-                                riwayatTindakan.setJenisPasien(jenisPasien);
+                                riwayatTindakan.setJenisPasien(jenPasien);
                                 riwayatTindakan.setAction("C");
                                 riwayatTindakan.setFlag("Y");
                                 riwayatTindakan.setCreatedWho(user);

@@ -363,6 +363,7 @@
                             <td>Nama Tindakan</td>
                             <td align="center">Total Tarif (Rp.)</td>
                             <td align="center">Kategori</td>
+                            <td align="center" id="jp" style="display: none">Jenis Cover</td>
                             <td align="center">Action</td>
                         </tr>
                         </thead>
@@ -518,6 +519,7 @@
                             <td width="20%">Tanggal</td>
                             <td>Nama Tindakan</td>
                             <td>Kategori</td>
+                            <td align="center" id="jp2" style="display: none">Jenis Cover</td>
                             <td align="center">Total Tarif (Rp.)</td>
                         </tr>
                         </thead>
@@ -646,20 +648,17 @@
         var noSep;
         var total = 0;
         var cekTindakan = false;
+        var jenisPasien = "";
 
         var url = '<s:url value="/pages/images/spinner.gif"/>';
         $('#v_'+idCheckup).attr('src',url).css('width', '30px', 'height', '40px');
 
-
         setTimeout(function () {
-
             var url = '<s:url value="/pages/images/icons8-create-25.png"/>';
             $('#v_'+idCheckup).attr('src',url).css('width', '', 'height', '');
 
             CheckupAction.listDataPasien(idDetailCheckup, function (response) {
-                // dataPasien = response;
                 if (response != null) {
-                    // $.each(dataPasien, function (i, item) {
                         var tanggal = response.tglLahir;
                         var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
                         noCheckup = response.noCheckup;
@@ -682,13 +681,12 @@
                         desa = response.namaDesa;
                         noSep = response.noSep;
                         $('#det_no_rm').html(response.idPasien);
-                    // });
+                        jenisPasien = response.idJenisPeriksaPasien;
                 }
             });
 
             VerifikatorAction.getListTindakanRawat(idCheckup, idDetailCheckup, function (response) {
                 dataTindakan = response;
-                console.log(dataTindakan);
                 if (dataTindakan != null) {
                     $.each(dataTindakan, function (i, item) {
                         var tarif = "";
@@ -696,7 +694,7 @@
                         var tindakan    = "";
                         var statusVal   = "";
                         var btn         = "<s:url value="/pages/images/icons8-edit-25.png"/>";
-                        var onclick     = 'onclick="updateApproveFlag(\''+item.idRiwayatTindakan+'\',\''+i+'\')"';
+                        var onclick     = 'onclick="updateApproveFlag(\''+item.idRiwayatTindakan+'\',\''+i+'\', \''+idDetailCheckup+'\')"';
 
                         var tindakanina = "";
                         VerifikatorAction.getListKategoriTindakanBpjs(function (restindakanina) {
@@ -712,26 +710,6 @@
                         var kategori =
                             '<select class="form-control" id="kategori'+i+'">' +
                             '<option value="">[Select One]</option>'+ tindakanina +
-//                            '<option value="prosedur_non_bedah">Prosedur Non Bedah</option>'+
-//                            '<option value="tenaga_ahli">Tenaga Ahli</option>'+
-//                            '<option value="radiologi">Radiologi</option>'+
-//                            '<option value="rehabilitasi">Rehabilitasi</option>'+
-//                            '<option value="obat">Obat</option>'+
-//                            '<option value="alkes">Alkes</option>'+
-//
-//                            '<option value="prosedur_bedah">Prosedur Bedah</option>'+
-//                            '<option value="keperawatan">Keperawatan</option>'+
-//                            '<option value="laboratorium">Laboratorium</option>'+
-//                            '<option value="kamar_akomodasi">Kamar / Akomodasi</option>'+
-//                            '<option value="obat_kronis">Obat Kronis</option>'+
-//                            '<option value="bmhp">BMHP</option>'+
-//
-//                            '<option value="konsultasi">Konsultasi</option>'+
-//                            '<option value="penunjang">Penunjang</option>'+
-//                            '<option value="pelayanan_darah">Pelayanan Darah</option>'+
-//                            '<option value="rawat_intensif">Rawat Intensif</option>'+
-//                            '<option value="obat_kemoterapi">Obat Kemoterapi</option>'+
-//                            '<option value="sewa_alat">Sewa Alat</option>'+
                             '</select>';
 
                         if (item.namaTindakan != null && item.namaTindakan !=  '') {
@@ -760,16 +738,56 @@
                             total = (parseInt(total) + parseInt(tarif));
                         }
 
-                        table += "<tr>" +
-                            "<td>" + tgl + "</td>" +
-                            "<td>" + tindakan + "</td>" +
-                            "<td align='right'>" + formatRupiah(tarif) + "</td>" +
-                            "<td>" + kategori + "</td>" +
-                            "<td align='center'>" +'<input value="'+statusVal+'" type="hidden" id="status'+i+'">'+ '<img id="btn'+i+'" class="hvr-grow" style="cursor: pointer" '+onclick+' src="'+btn+'">' + "</td>" +
-                            "</tr>";
+                        // table += "<tr>" +
+                        //     "<td>" + tgl + "</td>" +
+                        //     "<td>" + tindakan + "</td>" +
+                        //     "<td align='right'>" + formatRupiah(tarif) + "</td>" +
+                        //     "<td>" + kategori + "</td>" +
+                        //     "<td align='center'>" +'<input value="'+statusVal+'" type="hidden" id="status'+i+'">'+ '<img id="btn'+i+'" class="hvr-grow" style="cursor: pointer" '+onclick+' src="'+btn+'">' + "</td>" +
+                        //     "</tr>";
+                        if(jenisPasien == "ptpn"){
+                            $('#jp').show();
+                            var choice1 = "";
+                            var choice2 = "";
+                            if(item.jenisPasien == "ptpn"){
+                                choice1 = "selected";
+                            }
+                            if(item.jenisPasien == "bpjs"){
+                                choice2 = "selected";
+                            }
+                            table += "<tr>" +
+                                "<td>" + tgl + "</td>" +
+                                "<td>" + tindakan + "</td>" +
+                                "<td align='right'>" + formatRupiah(tarif) + "</td>" +
+                                "<td>" + kategori + "</td>" +
+                                "<td>" +
+                                '<select class="form-control" id="jen'+i+'">' +
+                                '<option value="bpjs" '+choice2+'>BPJS</option>' +
+                                '<option value="ptpn" '+choice1+'>PTPN</option>' +
+                                '</select>' +
+                                "</td>" +
+                                "<td align='center'>" +'<input value="'+statusVal+'" type="hidden" id="status'+i+'">'+ '<img id="btn'+i+'" class="hvr-grow" style="cursor: pointer" '+onclick+' src="'+btn+'">' + "</td>" +
+                                "</tr>";
+                        }else{
+                            $('#jp').hide();
+                            table += "<tr>" +
+                                "<td>" + tgl + "</td>" +
+                                "<td>" + tindakan + "</td>" +
+                                "<td align='right'>" + formatRupiah(tarif) + "</td>" +
+                                "<td>" + kategori + "</td>" +
+                                "<td align='center'>" +'<input value="'+statusVal+'" type="hidden" id="status'+i+'">'+ '<img id="btn'+i+'" class="hvr-grow" style="cursor: pointer" '+onclick+' src="'+btn+'">' + "</td>" +
+                                "</tr>";
+                        }
                     });
 
-                    table = table + '<tr><td colspan="2">Total</td><td align="right">'+formatRupiah(total)+'</td><td></td><td></td></tr>'
+                    // table = table + '<tr><td colspan="2">Total</td><td align="right">'+formatRupiah(total)+'</td><td></td><td></td></tr>'
+                    if(jenisPasien == "ptpn"){
+                        table = table + '<tr><td colspan="2">Total</td><td align="right">'+formatRupiah(total)+'</td><td></td><td></td><td></td></tr>'
+                    }else{
+                        table = table + '<tr><td colspan="2">Total</td><td align="right">'+formatRupiah(total)+'</td><td></td><td></td></tr>'
+                    }
+
+                    $('#body_tindakan').html(table);
                 }
             });
 
@@ -786,7 +804,6 @@
             $('#det_kabupaten').html(kabupaten);
             $('#det_kecamatan').html(kecamatan);
             $('#det_desa').html(desa);
-            $('#body_tindakan').html(table);
             $('#tin_id_detail_checkup').val(idDetailCheckup);
             if(cekTindakan){
                 $('#save_verif').show();
@@ -802,16 +819,18 @@
         $('#ts'+i).select2();
     }
 
-    function updateApproveFlag(idTindakan, i){
+    function updateApproveFlag(idTindakan, i, idDetailCheckup){
         var kategoriBpjs = $('#kategori'+i).val();
+        var jenisPasien = $('#jen'+i).val();
 
-        if(kategoriBpjs != ''){
+        if(kategoriBpjs != '' && jenisPasien != ''){
             var url = '<s:url value="/pages/images/spinner.gif"/>'
             $('#btn'+i).attr('src',url).css('width', '30px', 'height', '40px');
             dwr.engine.setAsync(true);
-            VerifikatorAction.updateApproveBpjsFlag(idTindakan, kategoriBpjs, {
+            VerifikatorAction.updateApproveBpjsFlag(idTindakan, kategoriBpjs, jenisPasien, {
                 callback: function (response) {
                     if (response.status == "success"){
+                        hitungStatusBiaya(idDetailCheckup);
                         var url = "<s:url value="/pages/images/icon_success.ico"/>";
                         $('#btn'+i).attr('src',url).css('width', '', 'height', '');
                         $('#btn'+i).removeAttr("class");
@@ -903,10 +922,10 @@
         var noSep;
         var total = 0;
         var cekTindakan = false;
+        var jenisPasien = "";
 
         var url = '<s:url value="/pages/images/spinner.gif"/>';
         $('#t_'+idCheckup).attr('src',url).css('width', '30px', 'height', '40px');
-
 
         setTimeout(function () {
 
@@ -914,9 +933,7 @@
             $('#t_'+idCheckup).attr('src',url).css('width', '', 'height', '');
 
             CheckupAction.listDataPasien(idDetailCheckup, function (response) {
-                // dataPasien = response;
                 if (response != null) {
-                    // $.each(dataPasien, function (i, item) {
                         var tanggal = response.tglLahir;
                         var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
                         noCheckup = response.noCheckup;
@@ -939,19 +956,23 @@
                         desa = response.namaDesa;
                         noSep = response.noSep;
                         $('#fin_no_rm').html(response.idPasien);
-                    // });
+                    jenisPasien = response.idJenisPeriksaPasien;
                 }
             });
 
             VerifikatorAction.getListTindakanRawat(idCheckup, idDetailCheckup, function (response) {
                 dataTindakan = response;
                 var ppnObat = 0;
+                var bpjs = 0;
+                var ptpn = 0;
+
                 if (dataTindakan != null) {
                     $.each(dataTindakan, function (i, item) {
                         var tindakan = "";
                         var tarif    = "";
                         var kategori = "";
                         var tgl = "";
+                        var jenisCover = "";
 
 
                         if (item.namaTindakan != null && item.namaTindakan !=  '') {
@@ -959,12 +980,23 @@
                         }
 
                         if (item.kategoriTindakanBpjs != null && item.kategoriTindakanBpjs != '') {
-                            kategori = item.kategoriTindakanBpjs;
+                            var kat = item.kategoriTindakanBpjs.replace(/[_]/g, " ");
+                            kategori = convertSentenceCase(kat);
                         }
 
                         if(item.totalTarif != null && item.totalTarif != ''){
                             tarif = item.totalTarif;
                             total = (parseInt(total) + parseInt(tarif));
+                        }
+
+                        if (item.jenisPasien != null && item.jenisPasien != '') {
+                            jenisCover = item.jenisPasien.toUpperCase();
+
+                            if(item.jenisPasien == "ptpn"){
+                                ptpn = parseInt(ptpn) + parseInt(item.totalTarif);
+                            }else{
+                                bpjs = parseInt(bpjs) + parseInt(item.totalTarif);
+                            }
                         }
 
                         if(item.stTglTindakan != null){
@@ -975,16 +1007,37 @@
                             ppnObat = parseInt(ppnObat) + parseInt(item.totalTarif * 0.1);
                         }
 
-                        table += "<tr>" +
-                            "<td>" + tgl + "</td>" +
-                            "<td>" + tindakan + "</td>" +
-                            "<td >" + kategori + "</td>" +
-                            "<td align='right'>" +formatRupiah(tarif) + "</td>" +
-                            "</tr>";
+                        if(jenisPasien == "ptpn"){
+                            $('#jp2').show();
+                            table += "<tr>" +
+                                "<td>" + tgl + "</td>" +
+                                "<td>" + tindakan + "</td>" +
+                                "<td >" + kategori + "</td>" +
+                                "<td align='center'>" + jenisCover + "</td>" +
+                                "<td align='right'>" +formatRupiah(tarif) + "</td>" +
+                                "</tr>";
+                        }else{
+                            $('#jp2').hide();
+                            table += "<tr>" +
+                                "<td>" + tgl + "</td>" +
+                                "<td>" + tindakan + "</td>" +
+                                "<td >" + kategori + "</td>" +
+                                "<td align='right'>" +formatRupiah(tarif) + "</td>" +
+                                "</tr>";
+                        }
                     });
 
-                    table = table +'<tr><td colspan="3">PPN Obat</td><td align="right">'+formatRupiah(ppnObat)+'</td></tr>'+
-                        '<tr><td colspan="3">Total Jasa</td><td align="right">'+formatRupiah(total + ppnObat)+'</td></tr>';
+                    if(jenisPasien == "ptpn"){
+                        table = table +'<tr><td colspan="4">PPN Obat</td><td align="right">'+formatRupiah(ppnObat)+'</td></tr>'+
+                            '<tr><td colspan="4">Total Biaya BPJS</td><td align="right">'+formatRupiah(bpjs)+'</td></tr>'+
+                            '<tr><td colspan="4">Total Biaya PTPN</td><td align="right">'+formatRupiah(ptpn)+'</td></tr>'+
+                            '<tr><td colspan="4">Total Jasa</td><td align="right">'+formatRupiah(total + ppnObat)+'</td></tr>';
+                    }else{
+                        table = table +'<tr><td colspan="3">PPN Obat</td><td align="right">'+formatRupiah(ppnObat)+'</td></tr>'+
+                            '<tr><td colspan="3">Total Jasa</td><td align="right">'+formatRupiah(total + ppnObat)+'</td></tr>';
+                    }
+
+                    $('#body_tindakan_fin').html(table);
                 }
             });
 
@@ -1001,7 +1054,6 @@
             $('#fin_kabupaten').html(kabupaten);
             $('#fin_kecamatan').html(kecamatan);
             $('#fin_desa').html(desa);
-            $('#body_tindakan_fin').html(table);
             $('#fin_id_detail_checkup').val(idDetailCheckup);
             $('#save_fin').attr('onclick','confirmSaveFinalClaim(\''+idDetailCheckup+'\',\''+idPasien+'\')');
             $('#modal-final-claim').modal({show:true, backdrop:'static'});
@@ -1038,6 +1090,18 @@
             }
 
         });
+    }
+
+    function convertSentenceCase(myString){
+        if(myString != null && myString != ''){
+            var rg = /(^\w{1}|\ \s*\w{1})/gi;
+            myString = myString.replace(rg, function(toReplace) {
+                return toReplace.toUpperCase();
+            });
+            return myString;
+        }else{
+            return "";
+        }
     }
 
 </script>

@@ -87,6 +87,9 @@ public class VerifikatorBoImpl implements VerifikatorBo {
                 entity.setAction("U");
                 entity.setLastUpdate(bean.getLastUpdate());
                 entity.setLastUpdateWho(bean.getLastUpdateWho());
+                if(!"".equalsIgnoreCase(bean.getJenisPasien()) && bean.getJenisPasien() != null){
+                    entity.setJenisPasien(bean.getJenisPasien());
+                }
 
                 try {
                     riwayatTindakanDao.updateAndSave(entity);

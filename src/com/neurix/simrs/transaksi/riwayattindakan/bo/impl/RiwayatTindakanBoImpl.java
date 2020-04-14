@@ -42,6 +42,7 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
                     riwayatTindakan.setNamaTindakan(entity.getNamaTindakan());
                     riwayatTindakan.setKeterangan(entity.getKeterangan());
                     riwayatTindakan.setTotalTarif(entity.getTotalTarif());
+                    riwayatTindakan.setJenisPasien(entity.getJenisPasien());
                     riwayatTindakan.setKategoriTindakanBpjs(entity.getKategoriTindakanBpjs());
                     riwayatTindakan.setApproveBpjsFlag(entity.getApproveBpjsFlag());
                     riwayatTindakan.setAction(entity.getAction());
