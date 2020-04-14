@@ -17,7 +17,6 @@ import com.neurix.simrs.master.kelasruangan.bo.KelasRuanganBo;
 import com.neurix.simrs.master.keterangankeluar.bo.KeteranganKeluarBo;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
-import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.ruangan.bo.RuanganBo;
 import com.neurix.simrs.master.tindakan.bo.TindakanBo;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
@@ -286,7 +285,7 @@ public class VerifikatorAction extends BaseMasterAction {
         return result;
     }
 
-    public CheckResponse updateApproveBpjsFlag(String idTindakan, String kategoriTindakanBpjs) {
+    public CheckResponse updateApproveBpjsFlag(String idTindakan, String kategoriTindakanBpjs, String jenisPasien) {
         logger.info("[VerifikatorAction.updateApproveBpjsFlag] START process <<<");
 
         CheckResponse response = new CheckResponse();
@@ -301,6 +300,7 @@ public class VerifikatorAction extends BaseMasterAction {
         tindakanRawat.setKategoriTindakanBpjs(kategoriTindakanBpjs);
         tindakanRawat.setLastUpdate(time);
         tindakanRawat.setLastUpdateWho(userLogin);
+        tindakanRawat.setJenisPasien(jenisPasien);
 
         if (!"".equalsIgnoreCase(idTindakan) && idTindakan != null) {
 
@@ -496,7 +496,7 @@ public class VerifikatorAction extends BaseMasterAction {
                                         tarifTotal = ppnObat.toBigInteger().add(tarifTotal);
                                     }
 
-                                    if ("Y".equalsIgnoreCase(tindakan.getApproveBpjsFlag()) && tindakan.getTotalTarif() != null && !"Y".equalsIgnoreCase(tindakan.getFlagUpdateKlaim())) {
+                                    if ("Y".equalsIgnoreCase(tindakan.getApproveBpjsFlag()) && tindakan.getTotalTarif() != null && !"Y".equalsIgnoreCase(tindakan.getFlagUpdateKlaim()) && "bpjs".equalsIgnoreCase(tindakan.getJenisPasien())) {
 
                                         if ("prosedur_non_bedah".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
                                             tarifRsProsedurNonBedah = tarifRsProsedurNonBedah.add(new BigInteger(tarifTotal.toString()));

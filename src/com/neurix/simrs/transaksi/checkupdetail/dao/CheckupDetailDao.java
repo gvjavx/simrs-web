@@ -509,8 +509,6 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
             String dateFrom = "";
             String dateTo = "";
 
-            String jenisPasien = "%";
-
             if (bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())) {
                 idPasien = bean.getIdPasien();
             }
@@ -539,10 +537,6 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 branchId = bean.getBranchId();
             }
 
-            if (bean.getIdJenisPeriksaPasien() != null && !"".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
-                jenisPasien = bean.getIdJenisPeriksaPasien();
-            }
-
             String SQL = "\n" +
                     "SELECT \n" +
                     "dt.id_detail_checkup,\n" +
@@ -567,7 +561,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "AND hd.nama LIKE :nama \n" +
                     "AND dt.id_pelayanan LIKE :idPelayanan \n" +
                     "AND dt.is_kronis IS NULL \n" +
-                    "AND dt.id_jenis_periksa_pasien LIKE :jenisPasien \n" +
+                    "AND dt.id_jenis_periksa_pasien IN ('bpjs', 'ptpn') \n" +
                     "AND dt.status_periksa LIKE :status";
 
             List<Object[]> results = new ArrayList<>();
@@ -583,7 +577,6 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                         .setParameter("status", statusPeriksa)
                         .setParameter("dateFrom", dateFrom)
                         .setParameter("dateTo", dateTo)
-                        .setParameter("jenisPasien", jenisPasien)
                         .setParameter("branchId", branchId)
                         .list();
 
@@ -596,7 +589,6 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                         .setParameter("nama", nama)
                         .setParameter("idPelayanan", idPelayanan)
                         .setParameter("status", statusPeriksa)
-                        .setParameter("jenisPasien", jenisPasien)
                         .setParameter("branchId", branchId)
                         .list();
             }
@@ -1004,6 +996,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 "WHERE \n" +
                 "id_detail_checkup = :idDetail\n" +
                 "AND keterangan LIKE :ket\n" +
+                "AND jenis_pasien = 'bpjs'\n" +
                 "GROUP BY id_detail_checkup";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -1089,6 +1082,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.id_detail_checkup = b.id_detail_checkup\n" +
                     "INNER JOIN it_simrs_header_checkup c ON b.no_checkup = c.no_checkup\n" +
                     "WHERE a.id_detail_checkup = :idDetail\n" +
+                    "AND a.jenis_pasien = 'bpjs'\n" +
                     "GROUP BY \n" +
                     "a.id_detail_checkup, \n" +
                     "b.tarif_bpjs, \n" +

@@ -972,7 +972,7 @@
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Diagnosa Awal</label>
                                             <div class="col-md-8">
-                                                    <s:if test='tipe == "bpjs"'>
+                                                <s:if test='tipe == "bpjs" || tipe == "ptpn"'>
                                                         <s:textfield id="diagnosa_awal" style="margin-top: 7px"
                                                                      name="headerCheckup.diagnosa"
                                                                      onkeypress="$(this).css('border','')"

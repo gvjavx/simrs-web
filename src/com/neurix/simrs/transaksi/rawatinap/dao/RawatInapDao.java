@@ -434,9 +434,6 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
             String dateFrom     = "";
             String dateTo       = "";
             String branchId = "%";
-            String jenisPeriksa = "%";
-            String notLike = "";
-            String statusBayar = "";
 
             if (bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())){
                 idPasien = bean.getIdPasien();
@@ -482,10 +479,6 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                 branchId = bean.getBranchId();
             }
 
-            if (bean.getIdJenisPeriksa() != null && !"".equalsIgnoreCase(bean.getIdJenisPeriksa())){
-                jenisPeriksa = bean.getIdJenisPeriksa();
-            }
-
             String SQL = "SELECT\n" +
                     "b.id_detail_checkup,\n" +
                     "a.no_checkup,\n" +
@@ -523,7 +516,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     "AND b.id_detail_checkup LIKE :idDetailCheckup\n" +
                     "AND b.is_kronis IS NULL\n" +
                     "AND a.branch_id LIKE :branchId\n" +
-                    "AND b.id_jenis_periksa_pasien LIKE :jenisPeriksa\n" +
+                    "AND b.id_jenis_periksa_pasien IN ('bpjs', 'ptpn')\n" +
                     "AND a.flag = 'Y'\n";
 
             List<Object[]> results = new ArrayList<>();
@@ -545,7 +538,6 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                         .setParameter("dateFrom", dateFrom)
                         .setParameter("dateTo", dateTo)
                         .setParameter("branchId", branchId)
-                        .setParameter("jenisPeriksa", jenisPeriksa)
                         .list();
 
             } else {
@@ -566,7 +558,6 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                             .setParameter("idDetailCheckup", idDetailCheckup)
                             .setParameter("dateFrom", dateFrom)
                             .setParameter("branchId", branchId)
-                            .setParameter("jenisPeriksa", jenisPeriksa)
                             .list();
                 }else if (!"".equalsIgnoreCase(bean.getStTglTo())){
 
@@ -584,7 +575,6 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                             .setParameter("idDetailCheckup", idDetailCheckup)
                             .setParameter("dateTo", dateTo)
                             .setParameter("branchId", branchId)
-                            .setParameter("jenisPeriksa", jenisPeriksa)
                             .list();
                 }else{
 
@@ -600,7 +590,6 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                             .setParameter("idRuang", idRuang)
                             .setParameter("idDetailCheckup", idDetailCheckup)
                             .setParameter("branchId", branchId)
-                            .setParameter("jenisPeriksa", jenisPeriksa)
                             .list();
                 }
             }
@@ -661,6 +650,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                 }
             }
         }
+
         return rawatInapList;
     }
 
