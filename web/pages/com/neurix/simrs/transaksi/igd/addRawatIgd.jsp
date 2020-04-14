@@ -2723,10 +2723,10 @@
             $("#form-selesai").hide();
             $("#form-cekup").hide();
 
-            if(jenisPasien == 'bpjs'){
-                $('#pembayaran').hide();
-            }else{
+            if(jenisPasien == 'umum'){
                 $('#pembayaran').show();
+            }else{
+                $('#pembayaran').hide();
             }
         }
         if (idKtg == "selesai" || idKtg == "") {

@@ -260,7 +260,7 @@
 
                         if(statusBpjs != ''){
 
-                            if(statusBpjs == "aktif" && statusRujukan == "aktif"){
+                            if(statusBpjs == "aktif"){
                                 $('#confirm_dialog').dialog('open');
                             }else{
                                 var msg1 = "";
@@ -284,24 +284,24 @@
                         if(diagnosaBpjs == ''){
                             $('#diagnosa_awal').css('border','solid 1px red');
                         }
-                        if(perujuk == ''){
-                            $('#war_perujuk').show();
-                        }
-                        if(ketPerujuk == ''){
-                            $('#war_ket_perujuk').show();
-                        }
-                        if(noRujukan == ''){
-                            $('#war_no_rujukan').show();
-                        }
-                        if(ppkRujukan == ''){
-                            $('#war_ppk_rujukan').show();
-                        }
-                        if(tglRujukan == ''){
-                            $('#war_tgl_rujukan').show();
-                        }
-                        if(fotoRujukan == ''){
-                            $('#war_foto_rujukan').show();
-                        }
+                        // if(perujuk == ''){
+                        //     $('#war_perujuk').show();
+                        // }
+                        // if(ketPerujuk == ''){
+                        //     $('#war_ket_perujuk').show();
+                        // }
+                        // if(noRujukan == ''){
+                        //     $('#war_no_rujukan').show();
+                        // }
+                        // if(ppkRujukan == ''){
+                        //     $('#war_ppk_rujukan').show();
+                        // }
+                        // if(tglRujukan == ''){
+                        //     $('#war_tgl_rujukan').show();
+                        // }
+                        // if(fotoRujukan == ''){
+                        //     $('#war_foto_rujukan').show();
+                        // }
                     }
                 }
 
@@ -2200,6 +2200,7 @@
     function listSelectAsuransi() {
         var option = "<option value=''>[Select One]</option>";
         CheckupAction.getComboAsuransi(function (response) {
+            console.log(response);
             if (response.length > 0) {
                 $.each(response, function (i, item) {
                     option += '<option value="' + item.idAsuransi + '">' + item.namaAsuransi + '</option>';
