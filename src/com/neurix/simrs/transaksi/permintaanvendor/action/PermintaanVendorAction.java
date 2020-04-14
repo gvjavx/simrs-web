@@ -72,18 +72,18 @@ public class PermintaanVendorAction extends BaseMasterAction {
     private String isBatch;
     private Integer noBatch;
     private String newBatch;
-    private String isVerif;
+    private String tipe;
 
     public void setBranchBoProxy(BranchBo branchBoProxy) {
         this.branchBoProxy = branchBoProxy;
     }
 
-    public String getIsVerif() {
-        return isVerif;
+    public String getTipe() {
+        return tipe;
     }
 
-    public void setIsVerif(String isVerif) {
-        this.isVerif = isVerif;
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
     }
 
     public String getNewBatch() {
@@ -203,7 +203,8 @@ public class PermintaanVendorAction extends BaseMasterAction {
         String id = getId();
         String isBatch = getIsBatch();
         String newBatch = getNewBatch();
-        String isVerif = getIsVerif();
+        String tipe = getTipe();
+        setTipe(tipe);
 
         PermintaanVendor permintaanVendor = new PermintaanVendor();
         permintaanVendor.setIdPermintaanVendor(id);
@@ -387,6 +388,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
         PermintaanVendor permintaanVendor = getPermintaanVendor();
         List<PermintaanVendor> listOfPemintaanVendor = new ArrayList();
         permintaanVendor.setBranchId(CommonUtil.userBranchLogin());
+        permintaanVendor.setTipeTransaksi("request");
 
         try {
             listOfPemintaanVendor = permintaanVendorBoProxy.getByCriteria(permintaanVendor);

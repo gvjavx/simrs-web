@@ -40,6 +40,9 @@ public class PermintaanVendorDao extends GenericDao<MtSimrsPermintaanVendorEntit
         if (mapCriteria.get("flag") != null) {
             criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
         }
+        if (mapCriteria.get("tipe_transaksi") != null) {
+            criteria.add(Restrictions.eq("tipeTransaksi", mapCriteria.get("tipe_transaksi").toString()));
+        }
 
         List<MtSimrsPermintaanVendorEntity> list = criteria.list();
         return list;

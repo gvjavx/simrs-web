@@ -66,6 +66,34 @@ public class Obat extends BaseModel {
 
     private String stTglRetur;
     private String noJurnal;
+    private BigDecimal bruto;
+    private BigDecimal netto;
+
+    private String keterangan;
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
+    public BigDecimal getBruto() {
+        return bruto;
+    }
+
+    public void setBruto(BigDecimal bruto) {
+        this.bruto = bruto;
+    }
+
+    public BigDecimal getNetto() {
+        return netto;
+    }
+
+    public void setNetto(BigDecimal netto) {
+        this.netto = netto;
+    }
 
     public String getNoJurnal() {
         return noJurnal;

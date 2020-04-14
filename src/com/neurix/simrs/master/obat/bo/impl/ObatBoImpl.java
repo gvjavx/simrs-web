@@ -17,17 +17,21 @@ import com.neurix.simrs.transaksi.hargaobat.dao.HargaObatDao;
 import com.neurix.simrs.transaksi.hargaobat.model.HargaObat;
 import com.neurix.simrs.transaksi.hargaobat.model.MtSimrsHargaObatEntity;
 import com.neurix.simrs.transaksi.obatinap.model.ItSimrsObatInapEntity;
+import com.neurix.simrs.transaksi.permintaanvendor.dao.PermintaanVendorDao;
 import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
+import com.neurix.simrs.transaksi.permintaanvendor.model.MtSimrsPermintaanVendorEntity;
+import com.neurix.simrs.transaksi.permintaanvendor.model.PermintaanVendor;
+import com.neurix.simrs.transaksi.transaksiobat.dao.ApprovalTransaksiObatDao;
 import com.neurix.simrs.transaksi.transaksiobat.dao.TransaksiObatDetailBatchDao;
-import com.neurix.simrs.transaksi.transaksiobat.model.MtSimrsTransaksiObatDetailBatchEntity;
-import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatBatch;
-import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
+import com.neurix.simrs.transaksi.transaksiobat.dao.TransaksiObatDetailDao;
+import com.neurix.simrs.transaksi.transaksiobat.model.*;
 //import javafx.collections.ObservableList;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
 import java.math.BigInteger;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,6 +48,21 @@ public class ObatBoImpl implements ObatBo {
     private HargaObatDao hargaObatDao;
     private ReturObatDao returObatDao;
     private ReturObatDetailDao returObatDetailDao;
+    private ApprovalTransaksiObatDao approvalTransaksiObatDao;
+    private PermintaanVendorDao permintaanVendorDao;
+    private TransaksiObatDetailDao transaksiObatDetailDao;
+
+    public void setApprovalTransaksiObatDao(ApprovalTransaksiObatDao approvalTransaksiObatDao) {
+        this.approvalTransaksiObatDao = approvalTransaksiObatDao;
+    }
+
+    public void setPermintaanVendorDao(PermintaanVendorDao permintaanVendorDao) {
+        this.permintaanVendorDao = permintaanVendorDao;
+    }
+
+    public void setTransaksiObatDetailDao(TransaksiObatDetailDao transaksiObatDetailDao) {
+        this.transaksiObatDetailDao = transaksiObatDetailDao;
+    }
 
     public void setReturObatDao(ReturObatDao returObatDao) {
         this.returObatDao = returObatDao;
@@ -379,8 +398,8 @@ public class ObatBoImpl implements ObatBo {
             obat.setIdObat(bean.getIdObat());
             List<ImSimrsObatEntity> entityList = getListObatEntity(obat);
 
-            if(entityList.size()>0){
-                for (ImSimrsObatEntity obatEntity: entityList){
+            if (entityList.size() > 0) {
+                for (ImSimrsObatEntity obatEntity : entityList) {
 
                     obatEntity.setNamaObat(bean.getNamaObat());
                     obatEntity.setLastUpdate(bean.getLastUpdate());
@@ -398,7 +417,7 @@ public class ObatBoImpl implements ObatBo {
                         response.setMessage("Berhasil");
                     } catch (HibernateException e) {
                         response.setStatus("error");
-                        response.setMessage("Found Error when update obat "+e.getMessage());
+                        response.setMessage("Found Error when update obat " + e.getMessage());
                         logger.error("[ObatBoImpl.saveEdit] error when update data obat " + e.getMessage());
                         throw new GeneralBOException("[ObatBoImpl.saveEdit] error when update data obat " + e.getMessage());
                     }
@@ -960,10 +979,59 @@ public class ObatBoImpl implements ObatBo {
     public CheckResponse saveReturObat(Obat bean, List<Obat> obatList) throws GeneralBOException {
         CheckResponse response = new CheckResponse();
 
-        if(bean != null){
+        if (bean != null) {
+
+
+            ImtSimrsApprovalTransaksiObatEntity approvalEntity = new ImtSimrsApprovalTransaksiObatEntity();
+            approvalEntity.setIdApprovalObat("INV" + approvalTransaksiObatDao.getNextId());
+            approvalEntity.setIdPelayanan("");
+            approvalEntity.setBranchId(bean.getBranchId());
+            approvalEntity.setFlag(bean.getFlag());
+            approvalEntity.setAction(bean.getAction());
+            approvalEntity.setTipePermintaan("004");
+            approvalEntity.setLastUpdate(bean.getCreatedDate());
+            approvalEntity.setLastUpdateWho(bean.getCreatedWho());
+            approvalEntity.setCreatedDate(bean.getCreatedDate());
+            approvalEntity.setCreatedWho(bean.getCreatedWho());
+
+            try {
+                approvalTransaksiObatDao.addAndSave(approvalEntity);
+                response.setStatus("success");
+                response.setMessage("Berhasil");
+            } catch (HibernateException e) {
+                response.setStatus("error");
+                response.setMessage("Found Error when insert into approval transaksi " + e.getMessage());
+                logger.error("[PermintaanVendorBoImpl.saveListObatPo] ERROR when insert into approval transaksi. ", e);
+                throw new GeneralBOException("[PermintaanVendorBoImpl.saveListObatPo] ERROR when insert into approval transaksi. ", e);
+            }
+
+            MtSimrsPermintaanVendorEntity permintaanVendorEntity = new MtSimrsPermintaanVendorEntity();
+            permintaanVendorEntity.setIdPermintaanVendor("PVM" + permintaanVendorDao.getNextSeq());
+            permintaanVendorEntity.setIdApprovalObat(approvalEntity.getIdApprovalObat());
+            permintaanVendorEntity.setIdVendor(bean.getIdVendor());
+            permintaanVendorEntity.setBranchId(bean.getBranchId());
+            permintaanVendorEntity.setFlag("Y");
+            permintaanVendorEntity.setAction("C");
+            permintaanVendorEntity.setCreatedDate(bean.getCreatedDate());
+            permintaanVendorEntity.setCreatedWho(bean.getCreatedWho());
+            permintaanVendorEntity.setLastUpdate(bean.getLastUpdate());
+            permintaanVendorEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            permintaanVendorEntity.setTipeTransaksi("reture");
+//                  permintaanVendorEntity.setTglCair(Date.valueOf(bean.getTglCair()));
+
+            try {
+                permintaanVendorDao.addAndSave(permintaanVendorEntity);
+                response.setStatus("success");
+                response.setMessage("Berhasil");
+            } catch (HibernateException e) {
+                response.setStatus("error");
+                response.setMessage("Found Error when create permintaan vendor " + e.getMessage());
+                logger.error("[PermintaanVendorBoImpl.saveListObatPo] ERROR when create permintaan vendor. " + e.getMessage());
+                throw new GeneralBOException("[PermintaanVendorBoImpl.saveListObatPo] ERROR when create permintaan vendor. " + e.getMessage());
+            }
 
             ItSimrsReturObatEntity returObatEntity = new ItSimrsReturObatEntity();
-            returObatEntity.setIdReturObat("RTO"+returObatDao.getNextId());
+            returObatEntity.setIdReturObat("RTO" + returObatDao.getNextId());
             returObatEntity.setIdVendor(bean.getIdVendor());
             returObatEntity.setJumlahRetur(bean.getQty());
             returObatEntity.setTanggalRetur(bean.getTglRetur());
@@ -975,26 +1043,65 @@ public class ObatBoImpl implements ObatBo {
             returObatEntity.setLastUpdate(bean.getLastUpdate());
             returObatEntity.setLastUpdateWho(bean.getLastUpdateWho());
             returObatEntity.setNoJurnal(bean.getNoJurnal());
+            returObatEntity.setIdApprovalObat(approvalEntity.getIdApprovalObat());
 
             try {
                 returObatDao.addAndSave(returObatEntity);
                 response.setStatus("success");
-            }catch (HibernateException e){
+            } catch (HibernateException e) {
                 response.setStatus("error");
-                response.setMessage("Found Error "+e.getMessage());
-                logger.error("Found Errro "+e.getMessage());
+                response.setMessage("Found Error " + e.getMessage());
+                logger.error("Found Errro " + e.getMessage());
             }
 
-            if(obatList.size() > 0){
+            if (obatList.size() > 0) {
+                for (Obat obatDetail : obatList) {
 
-                for (Obat obat: obatList){
+                    Obat obatEntity = new Obat();
+                    try{
+                        obatEntity = obatDao.getObatByIdBarang(obatDetail.getIdBarang(), bean.getBranchId());
+                    }catch (HibernateException e){
+                        response.setStatus("error");
+                        response.setMessage("Found Error when save add vendor " + e.getMessage());
+                        logger.error(e.getMessage());
+                    }
+
+                    ImtSimrsTransaksiObatDetailEntity obatDetailEntity = new ImtSimrsTransaksiObatDetailEntity();
+                    obatDetailEntity.setIdTransaksiObatDetail("ODT" + transaksiObatDetailDao.getNextId());
+                    obatDetailEntity.setIdApprovalObat(permintaanVendorEntity.getIdApprovalObat());
+                    obatDetailEntity.setQtyBox(obatDetail.getQtyBox());
+                    obatDetailEntity.setIdObat(obatEntity.getIdObat());
+                    obatDetailEntity.setLembarPerBox(obatEntity.getLembarPerBox());
+                    obatDetailEntity.setBijiPerLembar(obatEntity.getBijiPerLembar());
+                    obatDetailEntity.setQty(obatDetail.getQty());
+                    obatDetailEntity.setAverageHargaBox(obatEntity.getHargaTerakhir());
+                    obatDetailEntity.setFlag("Y");
+                    obatDetailEntity.setAction("C");
+                    obatDetailEntity.setCreatedDate(bean.getCreatedDate());
+                    obatDetailEntity.setCreatedWho(bean.getCreatedWho());
+                    obatDetailEntity.setLastUpdate(bean.getLastUpdate());
+                    obatDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    obatDetailEntity.setJenisSatuan("box");
+                    obatDetailEntity.setKeterangan("Reture Obat");
+                    obatDetailEntity.setFlagObatBpjs(obatEntity.getFlagBpjs());
+
+                    try {
+                        transaksiObatDetailDao.addAndSave(obatDetailEntity);
+                        response.setStatus("success");
+                        response.setMessage("Berhasil");
+                    } catch (HibernateException e) {
+                        response.setStatus("error");
+                        response.setMessage("Found Error when save add vendor " + e.getMessage());
+                        logger.error("[PermintaanVendorBoImpl.saveListObatPo] ERROR when create obat detail. " + e.getMessage());
+                        throw new GeneralBOException("[PermintaanVendorBoImpl.saveListObatPo] ERROR when create obat detail. " + e.getMessage());
+                    }
 
                     ItSimrsReturObatDetailEntity returObatDetailEntity = new ItSimrsReturObatDetailEntity();
-                    returObatDetailEntity.setIdReturDetail("RTD"+returObatDetailDao.getNextId());
+                    returObatDetailEntity.setIdReturDetail("RTD" + returObatDetailDao.getNextId());
                     returObatDetailEntity.setIdReturObat(returObatEntity.getIdReturObat());
-                    returObatDetailEntity.setIdObat(obat.getIdObat());
-                    returObatDetailEntity.setIdBarang(obat.getIdBarang());
-                    returObatDetailEntity.setQtyRetur(obat.getQty());
+                    returObatDetailEntity.setIdObat(obatDetail.getIdObat());
+                    returObatDetailEntity.setIdBarang(obatDetail.getIdBarang());
+                    returObatDetailEntity.setQtyRetur(obatDetail.getQty());
                     returObatDetailEntity.setAction("C");
                     returObatDetailEntity.setFlag("Y");
                     returObatDetailEntity.setCreatedWho(bean.getCreatedWho());
@@ -1007,19 +1114,19 @@ public class ObatBoImpl implements ObatBo {
                         returObatDetailDao.addAndSave(returObatDetailEntity);
 
                         Obat obt = new Obat();
-                        obt.setIdBarang(obat.getIdBarang());
-                        obt.setIdObat(obat.getIdObat());
-                        obt.setQtyApprove(obat.getQty());
+                        obt.setIdBarang(obatDetail.getIdBarang());
+                        obt.setIdObat(obatDetail.getIdObat());
+                        obt.setQtyApprove(obatDetail.getQty());
                         obt.setJenisSatuan("box");
                         obt.setLastUpdate(bean.getLastUpdate());
                         obt.setLastUpdateWho(bean.getLastUpdateWho());
 
                         response = updateSubstractStockGudang(obt);
 
-                    }catch (HibernateException e){
+                    } catch (HibernateException e) {
                         response.setStatus("error");
-                        response.setMessage("Found Error "+e.getMessage());
-                        logger.error("Found error "+e.getMessage());
+                        response.setMessage("Found Error " + e.getMessage());
+                        logger.error("Found error " + e.getMessage());
                     }
                 }
             }
@@ -1030,11 +1137,11 @@ public class ObatBoImpl implements ObatBo {
     @Override
     public List<Obat> searchReturObat(Obat bean) throws GeneralBOException {
         List<Obat> obatList = new ArrayList<>();
-        if(bean != null){
+        if (bean != null) {
             try {
                 obatList = returObatDao.getListReturObat(bean);
-            }catch (HibernateException e){
-                logger.error("Found Error "+e.getMessage());
+            } catch (HibernateException e) {
+                logger.error("Found Error " + e.getMessage());
             }
         }
         return obatList;
@@ -1043,11 +1150,11 @@ public class ObatBoImpl implements ObatBo {
     @Override
     public List<Obat> detailReturObat(String idRetur) throws GeneralBOException {
         List<Obat> obatList = new ArrayList<>();
-        if(idRetur != null){
+        if (idRetur != null) {
             try {
                 obatList = returObatDao.getListDetailReturObat(idRetur);
-            }catch (HibernateException e){
-                logger.error("Found Error "+e.getMessage());
+            } catch (HibernateException e) {
+                logger.error("Found Error " + e.getMessage());
             }
         }
         return obatList;
@@ -1056,11 +1163,11 @@ public class ObatBoImpl implements ObatBo {
     @Override
     public List<Obat> searchObatByVendor(String idVendor, String branchId) throws GeneralBOException {
         List<Obat> obatList = new ArrayList<>();
-        if(idVendor != null && branchId != null){
+        if (idVendor != null && branchId != null) {
             try {
                 obatList = returObatDao.getListObatByVendor(idVendor, branchId);
-            }catch (HibernateException e){
-                logger.error("Found Error "+e.getMessage());
+            } catch (HibernateException e) {
+                logger.error("Found Error " + e.getMessage());
             }
         }
         return obatList;
@@ -1176,7 +1283,7 @@ public class ObatBoImpl implements ObatBo {
                 response.setStatus("success");
             } catch (HibernateException e) {
                 response.setStatus("error");
-                response.setMessage("Found Error, update master obat"+e.getMessage());
+                response.setMessage("Found Error, update master obat" + e.getMessage());
                 logger.error("[ObatPoliBoImpl.saveApproveRequest] ERROR when update master obat. ", e);
                 throw new GeneralBOException("[ObatPoliBoImpl.saveApproveRequest] ERROR when update master obat. ", e);
             }
