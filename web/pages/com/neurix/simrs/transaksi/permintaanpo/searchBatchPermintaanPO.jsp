@@ -41,9 +41,8 @@
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-        <h1>
+        <h1 id="label-head">
             Batch Purchase Order (PO)
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -62,7 +61,7 @@
                                 <td width="17%"><b>No. PO</b></td>
                                 <td>
                                     <table>
-                                        <label id="no_po"></label>>
+                                        <label id="no_po"></label>
                                     </table>
                                 </td>
                             </tr>
@@ -469,11 +468,19 @@
 
     var idApprovalObat = $('#id_approval').val();
     var idpermintaanPo = $('#id_permintaan_vendor').val();
-    var jenis = '<s:property value="id" />';
+    var noPo = '<s:property value="id" />';
+    var jenis = '<s:property value="tipe" />';
+
 
     $(document).ready(function () {
 
-        $("#no_po").text(jenis);
+        if (jenis == "reture"){
+            $("#label-head").text("List Batch Pengganti Barang Reture");
+        } else {
+            jenis = "req";
+        }
+
+        $("#no_po").text(noPo);
 
         var tipe = '<s:property value="tipe"/>';
         if(tipe == "reture"){
@@ -648,7 +655,7 @@
         $('#load_approve').show();
 
         dwr.engine.setAsync(true);
-        PermintaanVendorAction.saveApproveBatch(idpermintaanPo, data, {
+        PermintaanVendorAction.saveApproveBatch(idpermintaanPo, data, jenis, {
             callback: function (response) {
                 if(response.status = "success"){
                     $('#info_dialog').dialog('open');
