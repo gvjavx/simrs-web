@@ -111,6 +111,11 @@
             margin-top: -7px;
             margin-left: 1px;
         }
+
+        .paint-canvas-ttd {
+            border: 1px black solid;
+            margin: 1rem;
+        }
     </style>
 </head>
 <body class="hold-transition skin-blue fixed sidebar-mini">
@@ -150,10 +155,10 @@
                                     <s:hidden id="jenis_bayar" name="headerDetailCheckup.metodePembayaran"/>
                                     <s:hidden id="id_asuransi" name="headerDetailCheckup.idAsuransi"/>
                                     <s:hidden id="nama_asuransi" name="headerDetailCheckup.namaAsuransi"/>
-
                                     <s:hidden id="no_rujukan" name="headerDetailCheckup.noRujukan"/>
                                     <s:hidden id="tgl_rujukan" name="headerDetailCheckup.tglRujukan"/>
                                     <s:hidden id="surat_rujukan" name="headerDetailCheckup.suratRujukan"/>
+                                    <s:hidden id="jenis_kelamin" name="headerDetailCheckup.jenisKelamin"></s:hidden>
 
                                     <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "bpjs"'>
                                         <tr>
@@ -210,21 +215,6 @@
                                             <table><s:label name="headerDetailCheckup.tempatTglLahir"></s:label></table>
                                         </td>
                                     </tr>
-                                    <s:if test='headerDetailCheckup.metodePembayaran != null && headerDetailCheckup.metodePembayaran != ""'>
-                                        <tr>
-                                            <td><b>Metode Pembayaran</b></td>
-                                            <td>
-                                                <table>
-                                                    <script>
-                                                        var metode = '<s:property value="headerDetailCheckup.metodePembayaran"/>';
-                                                        var met = metode.replace("_", " ");
-                                                        var meto = convertSentenceCase(met);
-                                                        document.write(meto);
-                                                    </script>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                    </s:if>
                                 </table>
                             </div>
                             <!-- /.col -->
@@ -234,8 +224,6 @@
                                     <img border="2" id="img_ktp" src="<s:property value="headerDetailCheckup.urlKtp"/>"
                                          style="cursor: pointer; height: 90px; width: 190px; margin-top: 4px">
                                 </div>
-                                <%--<img border="2" class="card card-4 pull-right" src="<s:url value="/pages/images/ktp-tes.jpg"/>"--%>
-                                <%--style="cursor: pointer; margin-top: -90px; height: 100px; width: 200px;">--%>
                                 <table class="table table-striped">
                                     <tr>
                                         <td><b>Jenis Pasien</b></td>
@@ -701,25 +689,12 @@
                                         <span class="sr-only">Toggle Dropdown</span>
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a style="cursor: pointer" onclick="showModalOperasi('ceklist_operasi')">
-                                            <i class="fa fa-print"></i>Ceklist Serah Terima Pasien Pre Operasi</a></li>
-                                        <li><a href="#" onclick="penandaAreaOperasi()">
-                                            <i class="fa fa-print"></i>Penandaan Area Operasi Pasien Laki - Laki</a></li>
-                                        <li><a target="_blank"
-                                               href="printPelepasanInformasi_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
-                                            <i class="fa fa-print"></i>Penandaan Area Operasi Pasien Perempuan</a></li>
-                                        <li><a target="_blank"
-                                               href="printPelepasanInformasi_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
-                                            <i class="fa fa-print"></i>Asesmen Pra Anestesi</a></li>
-                                        <li><a target="_blank"
-                                               href="printPelepasanInformasi_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
-                                            <i class="fa fa-print"></i>Edukasi dan Persetujuan General Anestesi</a></li>
-                                        <li><a target="_blank"
-                                               href="printPelepasanInformasi_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
-                                            <i class="fa fa-print"></i>Edukasi dan Persetujuan Regional Anestesi</a></li>
-                                        <li><a target="_blank"
-                                               href="printPelepasanInformasi_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
-                                            <i class="fa fa-print"></i>Kriteia Pindah dari RR</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalOperasi('ceklist_operasi')"><i class="fa fa-print"></i>Ceklist Serah Terima Pasien Pre Operasi</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalOperasi('penandaan_area')"><i class="fa fa-print"></i>Penandaan Area Operasi Pasien</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalOperasi('pra_anestesi')"><i class="fa fa-print"></i>Asesmen Pra Anestesi</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalOperasi('general_anestesi')"><i class="fa fa-print"></i>Edukasi dan Persetujuan General Anestesi</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalOperasi('regional_anestesi')"><i class="fa fa-print"></i>Edukasi dan Persetujuan Regional Anestesi</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalOperasi('pindah_rr')"><i class="fa fa-print"></i>Kriteia Pindah dari RR</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -798,8 +773,16 @@
         }
 
         const paintCanvas = document.querySelector(".js-paint");
+        const paintCanvas1 = document.querySelector(".js-paint-1");
+        const paintCanvas2 = document.querySelector(".js-paint-2");
+
         const context = paintCanvas.getContext("2d");
+        const context1 = paintCanvas1.getContext("2d");
+        const context2 = paintCanvas2.getContext("2d");
+
         context.lineCap = "round";
+        context1.lineCap = "round";
+        context2.lineCap = "round";
 
         const colorPicker = document.querySelector(".js-color-picker");
 
@@ -814,6 +797,8 @@
             const width = evt.target.value;
             lineWidthLabel.innerHTML = width+" px";
             context.lineWidth = width;
+            context1.lineWidth = width;
+            context2.lineWidth = width;
         });
 
         let x = 0,
@@ -842,10 +827,46 @@
             }
         };
 
+        const drawLine1 = function (evt) {
+            if (isMouseDown) {
+                const newX = evt.offsetX;
+                const newY = evt.offsetY;
+                context1.beginPath();
+                context1.moveTo(x, y);
+                context1.lineTo(newX, newY);
+                context1.stroke();
+                x = newX;
+                y = newY;
+            }
+        };
+
+        const drawLine2 = function (evt) {
+            if (isMouseDown) {
+                const newX = evt.offsetX;
+                const newY = evt.offsetY;
+                context2.beginPath();
+                context2.moveTo(x, y);
+                context2.lineTo(newX, newY);
+                context2.stroke();
+                x = newX;
+                y = newY;
+            }
+        };
+
         paintCanvas.addEventListener("mousedown", startDrawing);
         paintCanvas.addEventListener("mousemove", drawLine);
         paintCanvas.addEventListener("mouseup", stopDrawing);
         paintCanvas.addEventListener("mouseout", stopDrawing);
+
+        paintCanvas1.addEventListener("mousedown", startDrawing);
+        paintCanvas1.addEventListener("mousemove", drawLine1);
+        paintCanvas1.addEventListener("mouseup", stopDrawing);
+        paintCanvas1.addEventListener("mouseout", stopDrawing);
+
+        paintCanvas2.addEventListener("mousedown", startDrawing);
+        paintCanvas2.addEventListener("mousemove", drawLine2);
+        paintCanvas2.addEventListener("mouseup", stopDrawing);
+        paintCanvas2.addEventListener("mouseout", stopDrawing);
     });
 
 </script>
