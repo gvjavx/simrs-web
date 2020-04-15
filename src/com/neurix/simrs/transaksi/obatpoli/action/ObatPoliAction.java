@@ -8,6 +8,8 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.obat.bo.ObatBo;
 import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
 import com.neurix.simrs.master.obat.model.Obat;
+import com.neurix.simrs.transaksi.CrudResponse;
+import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.obatpoli.bo.ObatPoliBo;
 import com.neurix.simrs.transaksi.obatpoli.model.ObatPoli;
 import com.neurix.simrs.transaksi.obatpoli.model.PermintaanObatPoli;
@@ -221,8 +223,9 @@ public class ObatPoliAction extends BaseMasterAction {
         return SUCCESS;
     }
 
-    public String saveAddReture(String reture, String idTujuan, String idPermintaan) throws JSONException {
+    public CrudResponse saveAddReture(String reture, String idTujuan, String idPermintaan) throws JSONException {
         logger.info("[TindakanRawatAction.saveAdd] start process >>>");
+        CrudResponse response = new CrudResponse();
         try {
 
             String userLogin = CommonUtil.userLogin();
@@ -232,16 +235,9 @@ public class ObatPoliAction extends BaseMasterAction {
 
             PermintaanObatPoli obatPoli = new PermintaanObatPoli();
 
-            String tujuanPelayanan = "";
-            if ("GDG".equalsIgnoreCase(idPelayanan)){
-                tujuanPelayanan = idTujuan+"_"+userArea;
-            } else {
-                tujuanPelayanan = idTujuan;
-            }
-
             obatPoli.setIdPelayanan(idPelayanan);
             obatPoli.setBranchId(userArea);
-            obatPoli.setTujuanPelayanan(tujuanPelayanan);
+            obatPoli.setTujuanPelayanan(idTujuan);
             obatPoli.setCreatedWho(userLogin);
             obatPoli.setLastUpdate(updateTime);
             obatPoli.setCreatedDate(updateTime);
@@ -275,21 +271,26 @@ public class ObatPoliAction extends BaseMasterAction {
 
             try {
                 obatPoliBo.saveReture(obatPoli, obatDetailList);
+                response.setStatus("success");
+                response.setMsg("Oke");
             } catch (JSONException e) {
+                response.setStatus("error");
+                response.setMsg(e.getMessage());
                 logger.error("[PermintaanResepAction.saveResepPasien] Error when sabe resep obat", e);
             }
 
         } catch (GeneralBOException e) {
-            Long logId = null;
-            logger.error("[TindakanRawatAction.saveTindakanRawat] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            response.setStatus("error");
+            response.setMsg(e.getMessage());
+            logger.error("[TindakanRawatAction.saveTindakanRawat] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
         }
-        return SUCCESS;
+
+        return response;
     }
 
-    public String saveKonfirmasiDiterima(String idApproval, String idPermintaan, String request) {
+    public CheckResponse saveKonfirmasiDiterima(String idApproval, String idPermintaan, String request) {
         logger.info("[ObatPoliAction.saveKonfirmasiDiterima] START process >>>");
+        CheckResponse response = new CheckResponse();
         try {
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
@@ -355,23 +356,29 @@ public class ObatPoliAction extends BaseMasterAction {
                     String catatan = "Pengiriman Barang Gudang ke Apotik";
                     try {
                         billingSystemBo.createJurnal("28", jurnalMap, branchId, catatan, "Y");
+                        obatPoliBo.saveApproveDiterima(obatPoli, transaksiObatDetails);
+                        response.setStatus("success");
+                        response.setMessage("Oke");
                     } catch (GeneralBOException e){
                         logger.error("[PermintaanResepAction.saveResepPasien] Error when sabe resep obat", e);
-                        return e.getMessage();
+                        response.setStatus("error");
+                        response.setMessage("Found Error "+e.getMessage());
                     }
                 }
-                obatPoliBo.saveApproveDiterima(obatPoli, transaksiObatDetails);
             } catch (JSONException e) {
+                response.setStatus("error");
+                response.setMessage("Found Error "+e.getMessage());
                 logger.error("[PermintaanResepAction.saveResepPasien] Error when sabe resep obat", e);
             }
 
         } catch (GeneralBOException e) {
-            Long logId = null;
-            logger.error("[ObatPoliAction.saveKonfirmasiDiterima] ERROR when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-            return e.getMessage();
+            response.setStatus("error");
+            response.setMessage("Found Error "+e.getMessage());
+            logger.error("[ObatPoliAction.saveKonfirmasiDiterima] ERROR when adding item ," + "Found problem when saving add data, please inform to your admin."+e);
         }
+
         logger.info("[ObatPoliAction.saveKonfirmasiDiterima] END process <<<");
-        return SUCCESS;
+        return response;
     }
 
     public String searchStok() {
@@ -406,7 +413,7 @@ public class ObatPoliAction extends BaseMasterAction {
         PermintaanObatPoli permintaanObatPoli = getPermintaanObatPoli();
         permintaanObatPoli.setBranchId(CommonUtil.userBranchLogin());
         permintaanObatPoli.setIdPelayanan(CommonUtil.userPelayananIdLogin());
-        permintaanObatPoli.setTujuanPelayanan("GDG");
+//        permintaanObatPoli.setTujuanPelayanan("GDG");
         List<PermintaanObatPoli> permintaanObatPoliList = new ArrayList();
         boolean isPoli = true;
 
@@ -434,7 +441,7 @@ public class ObatPoliAction extends BaseMasterAction {
         PermintaanObatPoli permintaanObatPoli = getPermintaanObatPoli();
         permintaanObatPoli.setBranchId(CommonUtil.userBranchLogin());
         permintaanObatPoli.setIdPelayanan(CommonUtil.userPelayananIdLogin());
-        permintaanObatPoli.setTujuanPelayanan("GDG");
+//        permintaanObatPoli.setTujuanPelayanan("GDG");
         boolean isPoli = false;
         List<PermintaanObatPoli> permintaanObatPoliList = new ArrayList();
 

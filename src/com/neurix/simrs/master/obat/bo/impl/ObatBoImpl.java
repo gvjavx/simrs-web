@@ -688,6 +688,9 @@ public class ObatBoImpl implements ObatBo {
         if (bean.getIdPabrik() != null && !"".equalsIgnoreCase(bean.getIdPabrik())) {
             hsCriteria.put("id_pabrik", bean.getIdPabrik());
         }
+        if (bean.getIdBarang() != null && !"".equalsIgnoreCase(bean.getIdBarang())) {
+            hsCriteria.put("id_barang", bean.getIdBarang());
+        }
 
         hsCriteria.put("exp", "Y");
 
@@ -701,29 +704,36 @@ public class ObatBoImpl implements ObatBo {
 
         if (obatEntityList.size() > 0) {
 
-            Obat obat;
             for (ImSimrsObatEntity entity : obatEntityList) {
-                obat = new Obat();
-                obat.setIdSeqObat(entity.getIdSeqObat());
-                obat.setIdObat(entity.getIdObat());
-                obat.setNamaObat(entity.getNamaObat());
-                obat.setBranchId(entity.getBranchId());
-                obat.setMerk(entity.getMerk());
-                obat.setIdPabrik(entity.getIdPabrik());
-                obat.setQtyBox(entity.getQtyBox());
-                obat.setQtyLembar(entity.getQtyLembar());
-                obat.setQtyBiji(entity.getQtyBiji());
-                obat.setLembarPerBox(entity.getLembarPerBox());
-                obat.setBijiPerLembar(entity.getBijiPerLembar());
-                obat.setAverageHargaBox(entity.getAverageHargaBox());
-                obat.setAverageHargaLembar(entity.getAverageHargaLembar());
-                obat.setAverageHargaBiji(entity.getAverageHargaBiji());
-                obat.setHargaTerakhir(entity.getHargaTerakhir());
-                obat.setExpiredDate(entity.getExpiredDate());
-                obat.setIdBarang(entity.getIdBarang());
-                result.add(obat);
-            }
 
+                if(entity.getIdBarang() != null && !"".equalsIgnoreCase(entity.getIdBarang())){
+                    Integer box = Integer.valueOf(entity.getQtyBox().toString());
+                    Integer lembar = Integer.valueOf(entity.getQtyLembar().toString());
+                    Integer biji = Integer.valueOf(entity.getQtyBiji().toString());
+                    if(box > 0 || lembar > 0 || biji > 0){
+                        Obat obat = new Obat();
+                        obat.setIdSeqObat(entity.getIdSeqObat());
+                        obat.setIdObat(entity.getIdObat());
+                        obat.setNamaObat(entity.getNamaObat());
+                        obat.setBranchId(entity.getBranchId());
+                        obat.setMerk(entity.getMerk());
+                        obat.setIdPabrik(entity.getIdPabrik());
+                        obat.setQtyBox(entity.getQtyBox());
+                        obat.setQtyLembar(entity.getQtyLembar());
+                        obat.setQtyBiji(entity.getQtyBiji());
+                        obat.setLembarPerBox(entity.getLembarPerBox());
+                        obat.setBijiPerLembar(entity.getBijiPerLembar());
+                        obat.setAverageHargaBox(entity.getAverageHargaBox());
+                        obat.setAverageHargaLembar(entity.getAverageHargaLembar());
+                        obat.setAverageHargaBiji(entity.getAverageHargaBiji());
+                        obat.setHargaTerakhir(entity.getHargaTerakhir());
+                        obat.setExpiredDate(entity.getExpiredDate());
+                        obat.setIdBarang(entity.getIdBarang());
+                        obat.setFlagBpjs(entity.getFlagBpjs());
+                        result.add(obat);
+                    }
+                }
+            }
         }
 
         return result;

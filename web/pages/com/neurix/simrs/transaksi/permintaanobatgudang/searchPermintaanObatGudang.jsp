@@ -28,6 +28,7 @@
     </script>
 
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupDetailAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/ObatAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/ObatPoliAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PermintaanObatPoliAction.js"/>'></script>
@@ -48,7 +49,6 @@
     <section class="content-header">
         <h1>
             Permintaan Obat Gudang
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -264,6 +264,20 @@
                     <p id="msg_bentuk"></p>
                 </div>
                 <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Gudang Obat</label>
+                        <div class="col-md-7">
+                            <select class="form-control select2" id="req_gudang_obat" style="width: 100%"
+                            onchange="$('#war_gudang_obat').is(':visible'); if (warn){$('#cor_gudang_obat').show().fadeOut(3000);$('#war_gudang_obat').hide()}">
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_gudang_obat"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_gudang_obat"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Nama Obat</label>
                         <div class="col-md-7">
@@ -496,6 +510,7 @@
                         </div>
                     </div>
                     <input type="hidden" id="ret_id_approve">
+                    <input type="hidden" id="ret_tujuan_pelayanan">
                 </div>
                 <div class="box-header with-border"></div>
                 <div class="box-header with-border"><i class="fa fa-file-o"></i> Detail Request Obat
@@ -573,6 +588,7 @@
     }
 
     function showModal() {
+        getListGudangObat();
         $('#req_nama_obat').val('').trigger('change');
         $('#req_qty').val('');
         $('#req_stok').val('');
@@ -799,12 +815,16 @@
     function confirmSaveAddRequest() {
 
         var data = $('#tabel_request').tableToJSON();
+        var gudang = $('#req_gudang_obat').val();
         var stringData = JSON.stringify(data);
 
-        if (stringData != '[]') {
+        if (stringData != '[]' && gudang != '') {
             $('#modal-confirm-dialog').modal('show');
             $('#save_con').attr('onclick','saveAddRequest()');
         } else {
+            if(gudang == ''){
+                $('#war_gudang_obat').show();
+            }
             $('#warning_request').show().fadeOut(5000);
             $('#msg_request').text('Silahkan buat daftar list obat terlebih dahulu..!');
         }
@@ -813,13 +833,14 @@
     function saveAddRequest(){
 
         var data = $('#tabel_request').tableToJSON();
+        var gudang = $('#req_gudang_obat').val();
         var stringData = JSON.stringify(data);
 
         $('#modal-confirm-dialog').modal('hide');
         $('#save_request').hide();
         $('#load_request').show();
         dwr.engine.setAsync(true);
-        ObatPoliAction.saveAddRequest(stringData, "GDG", {
+        ObatPoliAction.saveAddRequest(stringData, gudang, {
             callback: function (response) {
                 if (response == "success") {
                     dwr.engine.setAsync(false);
@@ -926,17 +947,16 @@
         dwr.engine.setAsync(true);
         ObatPoliAction.saveKonfirmasiDiterima(idApp, idPermin, stringData, {
             callback: function (response) {
-                if (response == "success") {
-                    dwr.engine.setAsync(false);
+                if (response["status"] == "success") {
                     $('#modal-request-detail').modal('hide');
                     $('#info_dialog').dialog('open');
                     $('#save_req_detail').show();
                     $('#load_req_detail').hide();
                 } else {
-                    $('#warning_reture').show().fadeOut(5000);
-                    $('#msg_reture_detail').text("Terjadi kesalahan pada saat simpan ke database..!");
-                    $('#save_reture').show();
-                    $('#load_reture').hide();
+                    $('#save_req_detail').show();
+                    $('#load_req_detail').hide();
+                    $('#warning_request_detail').show().fadeOut(5000);
+                    $('#msg_request_detail').text(response["message"]);
                 }
             }
         });
@@ -1012,15 +1032,17 @@
         });
     }
 
-    function showReture(idPermin, tanggal, idPelayanan) {
+    function showReture(idPermin, tanggal, idPelayanan, tujuanPelayanan) {
         $('#ret_id_permintaan').val(idPermin);
         $('#ret_tanggal').val(tanggal);
+        $('#ret_tujuan_pelayanan').val(tujuanPelayanan);
         $('#modal-reture-detail').modal({show:true, backdrop : 'static'});
         $('#save_req_detail').show();
         $('#load_ret_detail').hide();
         var table = "";
         ObatPoliAction.listDetailOldPermintaan(idPermin, {
             callback: function (response) {
+                console.log(response);
                 if (response != null) {
                     $.each(response, function (i, item) {
                         var qtyBox = "";
@@ -1182,6 +1204,7 @@
         $('#modal-confirm-dialog').modal('hide');
         var data = $('#tabel_reture_head').tableToJSON();
         var idPermintaan = $('#ret_id_permintaan').val();
+        var tujuanPelayanan = $('#ret_tujuan_pelayanan').val();
         var result = [];
         $.each(data, function (i, item) {
             var idBarang = $('#id_barang'+i).val();
@@ -1198,9 +1221,9 @@
             $('#load_ret_detail').show();
 
             dwr.engine.setAsync(true);
-            ObatPoliAction.saveAddReture(stringData, "GDG", idPermintaan, {
+            ObatPoliAction.saveAddReture(stringData, tujuanPelayanan, idPermintaan, {
                 callback: function (response) {
-                    if (response == "success") {
+                    if (response.status == "success") {
                         dwr.engine.setAsync(false);
                         $('#modal-reture-detail').modal('hide');
                         $('#info_dialog').dialog('open');
@@ -1209,7 +1232,7 @@
                         $('#close_pos').val(1);
                     } else {
                         $('#warning_reture_detail').show().fadeOut(5000);
-                        $('#msg_reture_detail').text('Terjadi kesalahan saat menyimpan data...!');
+                        $('#msg_reture_detail').text(response.msg);
                         $('#save_ret_detail').show();
                         $('#load_ret_detail').hide();
                     }
@@ -1220,6 +1243,20 @@
             $('#warning_reture_detail').show().fadeOut(5000);
             $('#msg_reture_detail').text('Silahkan cek kembali data inputan berikut...!');
         }
+    }
+
+    function getListGudangObat(){
+        var option = "";
+        CheckupAction.getListComboGudang(function (res) {
+            if(res.length > 0){
+                $.each(res, function (i, item) {
+                    option += '<option value="'+item.idPelayanan+'">'+item.namaPelayanan+'</option>';
+                });
+                $('#req_gudang_obat').html(option);
+            }else{
+                $('#req_gudang_obat').html('');
+            }
+        });
     }
 
 </script>

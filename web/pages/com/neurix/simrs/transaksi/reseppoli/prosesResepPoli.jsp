@@ -369,7 +369,7 @@
                                 <%--<td align="center">Qty Approve</td>--%>
                                 <td align="center">Harga Satuan (Rp.)</td>
                                 <td align="center">Harga Total (Rp.)</td>
-                                <td width="21%">Scan ID Pabrikan</td>
+                                <td width="21%">Scan ID Obat</td>
                                 <td>Jenis Satuan</td>
                             </tr>
                             </thead>
@@ -714,7 +714,7 @@
         }
     }
 
-    function confirmObat(idPabrik, idObat, namaObat, qtyReq, jenisSatuan, idTransaksi) {
+    function confirmObat(idObatVal, idObat, namaObat, qtyReq, jenisSatuan, idTransaksi) {
 
         $('#load_app').hide();
         $('#save_app').show();
@@ -730,8 +730,8 @@
         today = mm + '/' + dd + '/' + yyyy;
         var lembarPerBox = "";
         var bijiPerLembar = "";
-        if (idPabrik != "") {
-            TransaksiObatAction.listObatPoliEntity(idObat, idPabrik, {
+        if (idObatVal != "") {
+            TransaksiObatAction.listObatPoliEntity(idObatVal, {
                 callback: function (response) {
                     if (response.length > 0) {
 

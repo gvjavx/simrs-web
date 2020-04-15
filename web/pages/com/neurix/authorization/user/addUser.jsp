@@ -407,6 +407,9 @@
             }else if ('36' == role){
                 $('#form-pelayanan').show();
                 listApotek(branch);
+            }else if ('37' == role){
+                $('#form-pelayanan').show();
+                listGudangObat(branch);
             }else{
                 $('#form-pelayanan').hide();
             }
@@ -446,7 +449,20 @@
     function listPelayananIgd(branch){
         var option = "";
         CheckupAction.getListComboPelayananIgd(branch, function (response) {
-            option = "<option value=''>[Select One]</option>";
+            if (response.length > 0) {
+                $.each(response, function (i, item) {
+                    option += "<option value='" + item.idPelayanan + "'>" + item.namaPelayanan + "</option>";
+                });
+            } else {
+                option = option;
+            }
+            $('#pelayananId').html(option);
+        });
+    }
+
+    function listGudangObat(branch){
+        var option = "";
+        CheckupAction.getListComboGudangByBranch(branch, function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {
                     option += "<option value='" + item.idPelayanan + "'>" + item.namaPelayanan + "</option>";

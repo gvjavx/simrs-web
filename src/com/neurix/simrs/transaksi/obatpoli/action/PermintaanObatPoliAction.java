@@ -394,27 +394,25 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
         return SUCCESS;
     }
 
-    public List<Obat> listObatEntity(String idObat, String idPabrik) {
+    public List<Obat> listObatEntity(String idObat) {
         logger.info("[PermintaanObatPoliAction.listObatEntity] START process >>>");
         List<Obat> obatList = new ArrayList<>();
 
         Obat obat = new Obat();
         obat.setIdObat(idObat);
-        obat.setIdPabrik(idPabrik);
         obat.setFlag("Y");
 
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
 
-        if(idObat != null && !"".equalsIgnoreCase(idObat) && idPabrik != null && !"".equalsIgnoreCase(idPabrik)){
+        if(idObat != null && !"".equalsIgnoreCase(idObat)){
             try {
                 obatList = obatBo.getEntityObatByCriteria(obat);
             } catch (GeneralBOException e) {
                 logger.error("[PermintaanObatPoliAction.listObatEntity] ERROR when get data list obat, ", e);
                 addActionError("[PermintaanObatPoliAction.listObatEntity] ERROR when get data list obat, " + e.getMessage());
             }
-
             logger.info("[PermintaanObatPoliAction.listObatEntity] END process <<<");
             return obatList;
         }else{

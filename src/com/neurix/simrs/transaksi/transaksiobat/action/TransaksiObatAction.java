@@ -693,13 +693,12 @@ public class TransaksiObatAction extends BaseMasterAction {
         return result;
     }
 
-    public List<ObatPoli> listObatPoliEntity(String idObat, String idPabrik) {
+    public List<ObatPoli> listObatPoliEntity(String idObat) {
         logger.info("[TransaksiObatAction.initApprovePermintaan] START process >>>");
         List<ObatPoli> obatPoliList = new ArrayList<>();
 
         ObatPoli obatPoli = new ObatPoli();
         obatPoli.setIdObat(idObat);
-        obatPoli.setIdPabrik(idPabrik);
         obatPoli.setBranchId(CommonUtil.userBranchLogin());
         obatPoli.setIdPelayanan(CommonUtil.userPelayananIdLogin());
         obatPoli.setExp("Y");
@@ -708,7 +707,7 @@ public class TransaksiObatAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         ObatPoliBo obatPoliBo = (ObatPoliBo) ctx.getBean("obatPoliBoProxy");
 
-        if (idObat != null && !"".equalsIgnoreCase(idObat) && idPabrik != null && !"".equalsIgnoreCase(idPabrik)) {
+        if (idObat != null && !"".equalsIgnoreCase(idObat)) {
             try {
                 obatPoliList = obatPoliBo.getObatPoliByCriteria(obatPoli);
             } catch (GeneralBOException e) {
