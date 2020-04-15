@@ -20,6 +20,15 @@ public class ItSimrsReturObatEntity implements Serializable{
     private String lastUpdateWho;
     private String branchId;
     private String noJurnal;
+    private String idApprovalObat;
+
+    public String getIdApprovalObat() {
+        return idApprovalObat;
+    }
+
+    public void setIdApprovalObat(String idApprovalObat) {
+        this.idApprovalObat = idApprovalObat;
+    }
 
     public String getNoJurnal() {
         return noJurnal;

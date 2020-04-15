@@ -72,18 +72,18 @@ public class PermintaanVendorAction extends BaseMasterAction {
     private String isBatch;
     private Integer noBatch;
     private String newBatch;
-    private String isVerif;
+    private String tipe;
 
     public void setBranchBoProxy(BranchBo branchBoProxy) {
         this.branchBoProxy = branchBoProxy;
     }
 
-    public String getIsVerif() {
-        return isVerif;
+    public String getTipe() {
+        return tipe;
     }
 
-    public void setIsVerif(String isVerif) {
-        this.isVerif = isVerif;
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
     }
 
     public String getNewBatch() {
@@ -203,7 +203,8 @@ public class PermintaanVendorAction extends BaseMasterAction {
         String id = getId();
         String isBatch = getIsBatch();
         String newBatch = getNewBatch();
-        String isVerif = getIsVerif();
+        String tipe = getTipe();
+        setTipe(tipe);
 
         PermintaanVendor permintaanVendor = new PermintaanVendor();
         permintaanVendor.setIdPermintaanVendor(id);
@@ -387,6 +388,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
         PermintaanVendor permintaanVendor = getPermintaanVendor();
         List<PermintaanVendor> listOfPemintaanVendor = new ArrayList();
         permintaanVendor.setBranchId(CommonUtil.userBranchLogin());
+        permintaanVendor.setTipeTransaksi("request");
 
         try {
             listOfPemintaanVendor = permintaanVendorBoProxy.getByCriteria(permintaanVendor);
@@ -764,7 +766,22 @@ public class PermintaanVendorAction extends BaseMasterAction {
             if (transaksiObatDetails.size() > 0) {
                 for (TransaksiObatDetail trans : transaksiObatDetails) {
 
-                    BigDecimal hargaRata = new BigDecimal(trans.getHarga());
+                    ImSimrsObatEntity obatEntity = obatBo.getObatByIdBarang(trans.getIdBarang());
+                    if (obatEntity == null){
+                        logger.error("Found Error when search master obat is null");
+                        checkObatResponse.setMessage("Found Error when search master obat is null");
+                        checkObatResponse.setStatus("error");
+                    }
+
+                    BigDecimal hargaRata = new BigDecimal(0);
+                    if ("box".equalsIgnoreCase(trans.getJenisSatuan())){
+                        hargaRata = hargaRata.add(obatEntity.getAverageHargaBox());
+                    } if ("lembar".equalsIgnoreCase(trans.getJenisSatuan())){
+                        hargaRata = hargaRata.add(obatEntity.getAverageHargaLembar());
+                    } if ("biji".equalsIgnoreCase(trans.getJenisSatuan())){
+                        hargaRata = hargaRata.add(obatEntity.getAverageHargaBiji());
+                    }
+
                     BigDecimal hargaTotal = hargaRata.multiply(new BigDecimal(trans.getQtyApprove()));
                     BigDecimal hargaPpn = hargaTotal.multiply(new BigDecimal(0.1)).setScale(2, BigDecimal.ROUND_HALF_UP);
 
@@ -803,7 +820,10 @@ public class PermintaanVendorAction extends BaseMasterAction {
                 noJurnal = billingSystemBo.createJurnal("27", jurnalMap, CommonUtil.userBranchLogin(), catatan, "Y");
             } catch (GeneralBOException e) {
                 logger.error("Found Error when search permintaan vendor " + e.getMessage());
+                checkObatResponse.setMessage("Found Error when search permintaan vendor " + e.getMessage());
+                checkObatResponse.setStatus("error");
                 addActionError(" Error when save data approve PO" + e.getMessage());
+                return checkObatResponse;
             }
         }
 

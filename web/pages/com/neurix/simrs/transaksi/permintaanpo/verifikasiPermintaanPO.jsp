@@ -281,10 +281,17 @@
                     <div class="box-header with-border"></div>
                     <div class="box-body">
                         <div class="form-group">
-
-                            <s:url var="selesai" namespace="/permintaanpo" action="edit_permintaanpo" escapeAmp="false">
-                                <s:param name="id"><s:property value="id"/></s:param>
-                            </s:url>
+                            <s:if test='tipe == "reture"'>
+                                <s:url var="selesai" namespace="/permintaanpo" action="edit_permintaanpo" escapeAmp="false">
+                                    <s:param name="id"><s:property value="id"/></s:param>
+                                    <s:param name="tipe"><s:property value="tipe"/></s:param>
+                                </s:url>
+                            </s:if>
+                            <s:else>
+                                <s:url var="selesai" namespace="/permintaanpo" action="edit_permintaanpo" escapeAmp="false">
+                                    <s:param name="id"><s:property value="id"/></s:param>
+                                </s:url>
+                            </s:else>
                             <s:a href="%{selesai}">
                                 <button class="btn btn-success"><i class="fa fa-check"></i> Selesai</button>
                             </s:a>
@@ -711,7 +718,14 @@
     var idApprovalObat = $('#id_approval').val();
 
     $(document).ready(function () {
-        $('#permintaan_po').addClass('active');
+
+        var tipe = '<s:property value="tipe"/>';
+        if(tipe == "reture"){
+            $('#retur_obat').addClass('active');
+        }else{
+            $('#permintaan_po').addClass('active');
+        }
+
         listNewObat(idApprovalObat);
 
         var nominal1 = document.getElementById('app_diskon');

@@ -68,52 +68,6 @@
         }
     </style>
 
-    <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/ObatAction.js"/>'></script>
-    <script type='text/javascript'>
-
-        $(document).ready(function () {
-
-            $('#retur_obat').addClass('active');
-
-            $('#sortTable2').DataTable({
-                "order": [[1, "desc"]],
-                "columnDefs": [
-                    { "orderable": false, "targets": 0 }
-                ]
-            })
-
-            $('#selectall').click(function () {
-                $('.selectedId').prop('checked', this.checked);
-
-                var checkbox = document.getElementsByName('selectedId');
-                var fpk = $('#no_fpk_search').val();
-
-                var ln = 0;
-                for(var i=0; i< checkbox.length; i++) {
-                    if(checkbox[i].checked)
-                        ln++
-                }
-            });
-
-            $('.selectedId').change(function () {
-                var check = ($('.selectedId').filter(":checked").length == $('.selectedId').length);
-                $('#selectall').prop("checked", check);
-
-                var checkbox = document.getElementsByName('selectedId');
-
-                var ln = 0;
-                for(var i=0; i< checkbox.length; i++) {
-                    if(checkbox[i].checked)
-                        ln++
-                }
-            });
-
-
-        });
-
-
-    </script>
 </head>
 
 <body class="hold-transition skin-blue fixed sidebar-mini">
@@ -273,7 +227,12 @@
                                 <div class="form-group">
                                     <label class="col-md-2">Tanggal Retur</label>
                                     <div class="col-md-3">
-                                        <input class="form-control datepicker2 datemask2" id="tgl_retur">
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <input class="form-control datepicker2 datemask2" id="tgl_retur">
+                                        </div>
                                     </div>
                                     <div class="col-md-4">
                                         <a href="initForm_returobat.action" class="btn btn-warning"><i class="fa fa-times"></i> Back</a>
@@ -313,7 +272,53 @@
     </div>
 </div>
 
+<script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/ObatAction.js"/>'></script>
+
 <script type='text/javascript'>
+
+    $(document).ready(function () {
+
+        $('#retur_obat').addClass('active');
+
+        $('#selectall').click(function () {
+            $('.selectedId').prop('checked', this.checked);
+
+            var checkbox = document.getElementsByName('selectedId');
+            var fpk = $('#no_fpk_search').val();
+
+            var ln = 0;
+            for(var i=0; i< checkbox.length; i++) {
+                if(checkbox[i].checked)
+                    ln++
+            }
+        });
+
+        $('.selectedId').change(function () {
+            var check = ($('.selectedId').filter(":checked").length == $('.selectedId').length);
+            $('#selectall').prop("checked", check);
+
+            var checkbox = document.getElementsByName('selectedId');
+
+            var ln = 0;
+            for(var i=0; i< checkbox.length; i++) {
+                if(checkbox[i].checked)
+                    ln++
+            }
+        });
+
+        setDate();
+
+    });
+
+    function setDate(){
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = today.getFullYear();
+        today = dd + '-' + mm + '-' + yyyy;
+        $('#tgl_retur').val(today);
+    }
 
     function toContent(){
         window.location.href = 'initForm_returobat.action';
@@ -431,6 +436,10 @@
                         '</tr>';
                 });
                 $('#body_retur').html(table);
+            }else {
+                $('#body_retur').html('');
+                $('#warning_retur').show().fadeOut(5000);
+                $('#msg_retur').text("Data obat tidak ditemukan...!");
             }
         });
     }
