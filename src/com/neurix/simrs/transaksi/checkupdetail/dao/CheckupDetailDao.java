@@ -1050,6 +1050,8 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
         return jumlah;
     }
 
+
+
     public String getFindResepInRiwayatTrans(String idDetail) {
 
         String SQL = "SELECT id_detail_checkup, keterangan\n" +
