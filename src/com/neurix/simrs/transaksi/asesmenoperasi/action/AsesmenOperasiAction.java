@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.asesmenoperasi.action;
 
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.CrudResponse;
@@ -11,8 +12,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
+import sun.misc.BASE64Decoder;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +29,7 @@ public class AsesmenOperasiAction {
 
     public static transient Logger logger = Logger.getLogger(AsesmenOperasiAction.class);
 
-    public CrudResponse saveAsesmenOperasi(String data) throws JSONException {
+    public CrudResponse saveAsesmenOperasi(String data) throws JSONException, IOException {
         CrudResponse response = new CrudResponse();
         String userLogin = CommonUtil.userLogin();
         Timestamp time = new Timestamp(System.currentTimeMillis());
@@ -34,17 +43,57 @@ public class AsesmenOperasiAction {
             AsesmenOperasi asesmenOperasi = new AsesmenOperasi();
             asesmenOperasi.setParameter(obj.getString("parameter"));
             asesmenOperasi.setIdDetailCheckup(obj.getString("id_detail_checkup"));
-            if(obj.has("jawaban1")){
-                if(!"".equalsIgnoreCase(obj.getString("jawaban1"))){
-                    asesmenOperasi.setJawaban1(obj.getString("jawaban1"));
+            asesmenOperasi.setKeterangan(obj.getString("keterangan"));
+
+            if("penandaan_area".equalsIgnoreCase(obj.getString("keterangan"))){
+                if(obj.has("jawaban1")){
+                    if(!"".equalsIgnoreCase(obj.getString("jawaban1"))){
+                        BASE64Decoder decoder = new BASE64Decoder();
+                        byte[] decodedBytes = decoder.decodeBuffer(obj.getString("jawaban1"));
+                        logger.info("Decoded upload data : " + decodedBytes.length);
+                        String wkt = time.toString();
+                        String patten = wkt.replace("-","").replace(":","").replace(" ","").replace(".","");
+                        logger.info("PATTERN :"+patten);
+                        String fileName = obj.getString("jenis")+"-"+obj.getString("id_detail_checkup")+"-"+patten+".png";
+                        String uploadFile = "";
+                        if("area_penanda".equalsIgnoreCase(obj.getString("jenis"))){
+                            uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_AREA_OPERASI+fileName;
+                        }
+                        if("ttd_pasien".equalsIgnoreCase(obj.getString("jenis"))){
+                            uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_TTD_PASIEN+fileName;
+                        }
+                        if("ttd_dokter".equalsIgnoreCase(obj.getString("jenis"))){
+                            uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_TTD_DOKTER+fileName;
+                        }
+                        logger.info("File save path : " + uploadFile);
+                        BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+
+                        if (image == null) {
+                            logger.error("Buffered Image is null");
+                            response.setStatus("error");
+                            response.setMsg("Buffered Image is null");
+                        }else{
+                            File f = new File(uploadFile);
+                            // write the image
+                            ImageIO.write(image, "png", f);
+                            asesmenOperasi.setJawaban1(fileName);
+                        }
+                    }
+                }
+            }else{
+                if(obj.has("jawaban1")){
+                    if(!"".equalsIgnoreCase(obj.getString("jawaban1"))){
+                        asesmenOperasi.setJawaban1(obj.getString("jawaban1"));
+                    }
                 }
             }
+
             if(obj.has("jawaban2")){
                 if(!"".equalsIgnoreCase(obj.getString("jawaban2"))){
                     asesmenOperasi.setJawaban2(obj.getString("jawaban2"));
                 }
             }
-            asesmenOperasi.setKeterangan(obj.getString("keterangan"));
+
             if(obj.has("jenis")){
                 if(!"".equalsIgnoreCase(obj.getString("jenis"))){
                     asesmenOperasi.setJenis(obj.getString("jenis"));
@@ -92,5 +141,11 @@ public class AsesmenOperasiAction {
     }
     public static Logger getLogger() {
         return logger;
+    }
+
+    private String dateFormater(String type) {
+        java.sql.Date date = new java.sql.Date(new java.util.Date().getTime());
+        DateFormat df = new SimpleDateFormat(type);
+        return df.format(date);
     }
 }

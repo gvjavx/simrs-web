@@ -1933,7 +1933,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                             pelayanan = pelayananList.get(0);
                         }
 
-                        if ("bpjs".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien())) {
+                        if ("bpjs".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien())) {
 
                             Branch branch = new Branch();
                             branch.setBranchId(branchId);
@@ -2014,15 +2014,15 @@ public class CheckupDetailAction extends BaseMasterAction {
                                             sepRequest.setTglSep(now.toString());
                                             sepRequest.setPpkPelayanan(getBranch.getPpkPelayanan());//cons id rumah sakit
                                             sepRequest.setJnsPelayanan("1");//jenis rawat inap, apa jalan 2 rawat jalan, 1 rawat inap
-                                            sepRequest.setKlsRawat(checkup.getKelasPasien());//kelas rawat dari bpjs
+                                            sepRequest.setKlsRawat(detailCheckup.getIdKelas());//kelas rawat dari bpjs
                                             sepRequest.setNoMr(getPasien.getIdPasien());//id pasien
                                             sepRequest.setAsalRujukan("2");//
                                             sepRequest.setTglRujukan(now.toString());
-                                            sepRequest.setNoRujukan(checkup.getNoSep());
+                                            sepRequest.setNoRujukan(detailCheckup.getNoSep());
                                             sepRequest.setPpkRujukan(noPPK);
                                             sepRequest.setCatatan("");
                                             sepRequest.setDiagAwal(diagnosaRawat.getIdDiagnosa());
-                                            sepRequest.setPoliTujuan(checkup.getIdPelayananBpjs());
+                                            sepRequest.setPoliTujuan(detailCheckup.getIdPelayananBpjs());
                                             sepRequest.setPoliEksekutif("0");
                                             sepRequest.setCob("0");
                                             sepRequest.setKatarak("0");
@@ -2799,6 +2799,12 @@ public class CheckupDetailAction extends BaseMasterAction {
             List<Tindakan> tindakans = new ArrayList<>();
             tindakans.add(tindakan);
             checkup.setTindakanList(tindakans);
+
+            if(checkup.getIdPelayananBpjs() != null && !"".equalsIgnoreCase(checkup.getIdPelayananBpjs())){
+                checkup.setIdPelayananBpjs(checkup.getIdPelayananBpjs());
+            }else{
+                checkup.setIdPelayananBpjs("IGD");
+            }
 
         }
 

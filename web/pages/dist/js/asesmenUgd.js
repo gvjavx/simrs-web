@@ -63,14 +63,12 @@ function addAsesmenUgd(jenis) {
 }
 
 function saveAsesmenUgd(jenis) {
-    console.log(jenis);
     if (jenis != '') {
 
         var data = [];
         var cek = false;
 
         if ("keluhan_utama" == jenis) {
-            console.log('tesssss');
             var triase = $('[name=radio_triase]:checked').val();
             var keadaanUmum = $('[name=radio_keadaan]:checked').val();
             var napas = $('[name=radio_napas]:checked').val();
@@ -876,8 +874,6 @@ function saveAsesmenUgd(jenis) {
                 cek = true;
             }
         }
-
-        console.log(data);
 
         var result = JSON.stringify(data);
         if (cek) {

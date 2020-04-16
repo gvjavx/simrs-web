@@ -7,40 +7,6 @@ $('[name=cek_list14]').click(function () {
     }
 });
 
-function penandaAreaOperasi() {
-    var url = '/simrs/pages/images/penanda-perempuan.jpg';
-    console.log(url);
-    var canvas = document.getElementById('area_canvas');
-    var ctx = canvas.getContext('2d');
-    var img = new Image();
-    img.src = url;
-    img.onload = function (ev) {
-        canvas.width = img.width;
-        canvas.height = img.height;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(img, 0, 0);
-    }
-    $('#modal-penanda-area').modal({show: true, backdrop: 'static'});
-}
-
-function clearConvas() {
-    var canvas = document.getElementById('area_canvas');
-    const context = canvas.getContext('2d');
-    context.clearRect(0, 0, canvas.width, canvas.height);
-    var url = '/simrs/pages/images/penanda-perempuan.jpg';
-    console.log(url);
-    var canvas = document.getElementById('area_canvas');
-    var ctx = canvas.getContext('2d');
-    var img = new Image();
-    img.src = url;
-    img.onload = function (ev) {
-        canvas.width = img.width;
-        canvas.height = img.height;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(img, 0, 0);
-    }
-}
-
 function showModalOperasi(jenis) {
     $('#modal-op-' + jenis).modal({show: true, backdrop: 'static'});
 }
@@ -48,7 +14,7 @@ function showModalOperasi(jenis) {
 function saveDataOperasi(jenis, ket) {
     var data = [];
     var cek = false;
-    console.log(jenis);
+    var mlt = false;
 
     if ("pre_operasi" == jenis) {
         var cekList1 = $('[name=cek_list1]:checked').val();
@@ -317,6 +283,337 @@ function saveDataOperasi(jenis, ket) {
         }
     }
 
+    if("ttd-penandaan" == jenis){
+        var canvasTtdPasien = document.getElementById("op_ttd_pasien");
+        var canvasTtdDokter = document.getElementById("op_ttd_dokter");
+        var canvasArea = document.getElementById('area_canvas');
+        var tes1 = isBlank(canvasTtdPasien);
+        var tes2 = isBlank(canvasTtdDokter);
+        if(!tes1 && !tes2){
+
+            var areaPenanda = canvasArea.toDataURL("image/png"),
+                areaPenanda = areaPenanda.replace(/^data:image\/(png|jpg);base64,/, "");
+
+            var ttdPasien = canvasTtdPasien.toDataURL("image/png"),
+                ttdPasien = ttdPasien.replace(/^data:image\/(png|jpg);base64,/, "");
+
+            var ttdDokter = canvasTtdDokter.toDataURL("image/png"),
+                ttdDokter = ttdDokter.replace(/^data:image\/(png|jpg);base64,/, "");
+
+            data.push({
+                'parameter': 'Pendanaad Area Operasi',
+                'jawaban1': areaPenanda,
+                'keterangan': 'penandaan_area',
+                'jenis': 'area_penanda',
+                'id_detail_checkup': idDetailCheckup
+            });
+
+            data.push({
+                'parameter': 'Tanda Tangan Pasien',
+                'jawaban1': ttdPasien,
+                'keterangan': 'penandaan_area',
+                'jenis': 'ttd_pasien',
+                'id_detail_checkup': idDetailCheckup
+            });
+
+            data.push({
+                'parameter': 'Tanda Tangan Dokter',
+                'jawaban1': ttdDokter,
+                'keterangan': 'penandaan_area',
+                'jenis': 'ttd_dokter',
+                'id_detail_checkup': idDetailCheckup
+            });
+
+            cek = true;
+            mlt = true;
+        }
+    }
+
+    if("anamnesa" == jenis){
+        var anme1 = $('[name=cek_anamnesa1]:checked').val();
+        var anme2 = $('[name=cek_anamnesa2]:checked').val();
+        var anme3 = $('[name=cek_anamnesa3]:checked').val();
+        var anme4 = $('[name=cek_anamnesa4]:checked').val();
+        var anme5 = $('#cek_anamnesa5').val();
+        var tAnme1 = "";
+        if(anme1 == "Ya"){
+            var t = $('#cek_ket_anamnesa2').val();
+            if(t != ''){
+                tAnme1 = "Ya, " +t;
+            }
+        }else {
+            tAnme1 = t;
+        }
+        if(anme1 && anme2 && anme3 && anme4 != undefined && anme5 != ''){
+            data.push({
+                'parameter': 'Alergi',
+                'jawaban1': tAnme1,
+                'keterangan': jenis,
+                'jenis': 'pra_anestesi',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Riwayat Asthma',
+                'jawaban1': anme2,
+                'keterangan': jenis,
+                'jenis': 'pra_anestesi',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Riwayat DM',
+                'jawaban1': anme3,
+                'keterangan': jenis,
+                'jenis': 'pra_anestesi',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Riwayat Hipertensi',
+                'jawaban1': anme4,
+                'keterangan': jenis,
+                'jenis': 'pra_anestesi',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Riwayat Penyakit Lain',
+                'jawaban1': anme5,
+                'keterangan': jenis,
+                'jenis': 'pra_anestesi',
+                'id_detail_checkup': idDetailCheckup
+            });
+            cek = true;
+        }
+    }
+
+    if("pemeriksaan_fisik" == jenis){
+        var pf1 = $('[name=cek_pf1]:checked').val();
+        var pf2 = $('[name=cek_pf2]:checked').val();
+        var pf3 = $('[name=cek_pf3]:checked').val();
+        var pf4 = $('[name=cek_pf4]:checked').val();
+        var pf5 = $('[name=cek_pf5]:checked').val();
+        var pf6 = $('[name=cek_pf6]:checked').val();
+        var pf7 = $('[name=cek_pf7]:checked').val();
+        var pf8 = $('[name=cek_pf8]:checked').val();
+        var pf9 = $('#cek_pf9').val();
+        var pf10 = $('#cek_pf10').val();
+        var pf11 = $('#cek_pf111').val();
+        var pf12 = $('#cek_pf122').val();
+        var pf13 = $('#cek_pf133').val();
+        var pf14 = $('#cek_pf144').val();
+        var pf15 = $('#cek_pf155').val();
+        var pf16 = $('#cek_pf166').val();
+        var pf17 = $('[name=cek_pf177]:checked').val();
+        if( pf1 && pf2 && pf3 && pf4 && pf5 && pf6 && pf7 && pf8 && pf17 != undefined
+            && pf9 && pf10 && pf11 && pf12 && pf13 && pf14 && pf15 && pf16 != ''){
+
+            data.push({
+                'parameter': 'Keadaan Umum',
+                'jawaban1': pf1,
+                'keterangan': jenis,
+                'jenis': 'pra_anestesi',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Nafas',
+                'jawaban1': pf2,
+                'keterangan': jenis,
+                'jenis': 'pra_anestesi',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Gigi Palsu',
+                'jawaban1': pf3,
+                'keterangan': jenis,
+                'jenis': 'pra_anestesi',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Jalan Nafas',
+                'jawaban1': pf4,
+                'keterangan': jenis,
+                'jenis': 'pra_anestesi',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Suara Nafas',
+                'jawaban1': pf5,
+                'keterangan': jenis,
+                'jenis': 'pra_anestesi',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Capillary Refill Time',
+                'jawaban1': pf6,
+                'keterangan': jenis,
+                'jenis': 'pra_anestesi',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Perfusi',
+                'jawaban1': pf7,
+                'keterangan': jenis,
+                'jenis': 'pra_anestesi',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Kesadaran',
+                'jawaban1': pf8,
+                'keterangan': jenis,
+                'jenis': 'pra_anestesi',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Tekanan Darah',
+                'jawaban1': pf9 +' mmHg',
+                'keterangan': jenis,
+                'jenis': 'pra_anestesi',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Nadi',
+                'jawaban1': pf10 +' x/menit',
+                'keterangan': jenis,
+                'jenis': 'pra_anestesi',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Suhu',
+                'jawaban1': pf11 +' C',
+                'keterangan': jenis,
+                'jenis': 'pra_anestesi',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Respirator Rate',
+                'jawaban1': pf12 +' x/menit',
+                'keterangan': jenis,
+                'jenis': 'pra_anestesi',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Berat Badan',
+                'jawaban1': pf13 +' kg',
+                'keterangan': jenis,
+                'jenis': 'pra_anestesi',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Tinggi Badan',
+                'jawaban1': pf14 +' cm',
+                'keterangan': jenis,
+                'jenis': 'pra_anestesi',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Kemampuan Buka Mulut',
+                'jawaban1': pf15,
+                'keterangan': jenis,
+                'jenis': 'pra_anestesi',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Skala Malampahty',
+                'jawaban1': pf16,
+                'keterangan': jenis,
+                'jenis': 'pra_anestesi',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Gerak Leher',
+                'jawaban1': pf17,
+                'keterangan': jenis,
+                'jenis': 'pra_anestesi',
+                'id_detail_checkup': idDetailCheckup
+            });
+
+            cek = true;
+        }
+    }
+
+    if("pemeriksaan_penunjang" == jenis){
+        var pp1 = $('#pp1').val();
+        if(pp1 != ''){
+            data.push({
+                'parameter': 'Pemeriksaan Penunjang',
+                'jawaban1': pp1,
+                'keterangan': jenis,
+                'jenis': 'pra_anestesi',
+                'id_detail_checkup': idDetailCheckup
+            });
+            cek = true;
+        }
+    }
+
+    if("status_fisik" == jenis){
+        var st1 = $('[name=cek_st1]:checked').val();
+        var st2 = $('[name=cek_st2]:checked').val();
+        var st3 = $('[name=cek_st3]');
+        var tSt3 = "";
+        $.each(st3, function (i, item) {
+            if(st3[i].checked){
+                if(tSt3 != ''){
+                    tSt3 = tSt3 +', '+st3[i].value;
+                }else{
+                    tSt3 = st3[i].value;
+                }
+            }
+        });
+
+        if(st1 && st2 != undefined && tSt3 != ''){
+            data.push({
+                'parameter': 'Status Fisik Anestesi',
+                'jawaban1': st1,
+                'keterangan': jenis,
+                'jenis': 'pra_anestesi',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'ASA',
+                'jawaban1': st2,
+                'keterangan': jenis,
+                'jenis': 'pra_anestesi',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Teknik Anestesi',
+                'jawaban1': tSt3,
+                'keterangan': jenis,
+                'jenis': 'pra_anestesi',
+                'id_detail_checkup': idDetailCheckup
+            });
+            cek = true;
+        }
+    }
+
+    if("persiapan_anestesi" == jenis){
+        var pa1 = $('#pa1').val();
+        var pa2 = $('#pa2').val();
+        var pa3 = $('#pa3').val();
+
+        if(pa1 && pa2 && pa3 != ''){
+            data.push({
+                'parameter': 'Makan minum terakhir',
+                'jawaban1': pa1,
+                'keterangan': jenis,
+                'jenis': 'pra_anestesi',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Infus',
+                'jawaban1': pa2,
+                'keterangan': jenis,
+                'jenis': 'pra_anestesi',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Obat pre medikasi',
+                'jawaban1': pa3,
+                'keterangan': jenis,
+                'jenis': 'pra_anestesi',
+                'id_detail_checkup': idDetailCheckup
+            });
+            cek = true;
+        }
+    }
 
     if (cek) {
         var result = JSON.stringify(data);
@@ -329,6 +626,9 @@ function saveDataOperasi(jenis, ket) {
                     $('#save_op_' + jenis).show();
                     $('#load_op_' + jenis).hide();
                     $('#modal-op-' + jenis).modal('hide');
+                    if(mlt){
+                        $('#modal-op-' + jenis + "-mlt").modal('hide');
+                    }
                     $('#warning_op_' + ket).show().fadeOut(5000);
                     $('#msg_op_' + ket).text("Berhasil menambahkan data operasi...");
                     $('#modal-op-' + jenis).scrollTop(0);
@@ -354,9 +654,9 @@ function detailOperasi(jenis) {
         var head = "";
         AsesmenOperasiAction.getListAsesmenOperasi(idDetailCheckup, jenis, function (res) {
             if (res.length > 0) {
+                console.log(res);
                 $.each(res, function (i, item) {
-
-                    if ("pre_operasi" == item.keterangan || "kondisi_pasien" == item.keterangan ) {
+                    if ("pre_operasi" == item.keterangan) {
                         var jwb1 = "";
                         var jwb2 = "";
                         if (item.jawaban1 != null) {
@@ -370,25 +670,75 @@ function detailOperasi(jenis) {
                             '<td align="center">' + checkIcon(jwb1) + '</td>' +
                             '<td align="center">' + checkIcon(jwb2) + '</td>' +
                             '</tr>';
-                    } else {
+                    } else if ("kondisi_pasien" == item.keterangan) {
+                        var jwb1 = "";
+                        var jwb2 = "";
+                        if (item.jawaban1 != null) {
+                            jwb1 = item.jawaban1;
+                        }
+                        if (item.jawaban2 != null) {
+                            jwb2 = item.jawaban2;
+                        }
                         body += '<tr>' +
                             '<td>' + item.parameter + '</td>' +
-                            '<td align="center">' + jwb1 + '</td>' +
+                            '<td>' + jwb1 + '</td>' +
+                            '<td>' + jwb2 + '</td>' +
+                            '</tr>';
+                    } else if("penandaan_area" == item.keterangan){
+                        if("area_penanda" == item.jenis){
+                            body += '<tr>' +
+                                '<td align="center">' +
+                                '<img src="'+item.jawaban1+'">' +
+                                '</td>' +
+                                '</tr>';
+                        }
+                        if("ttd_pasien" == item.jenis){
+                            body += '<tr>' +
+                                '<td align="left">' +
+                                '<p>TTD Pasien</p>'+
+                                '<img src="'+item.jawaban1+'" style="width: 100px; height: 70px">' +
+                                '</td>' +
+                                '</tr>';
+                        }
+                        if("ttd_dokter" == item.jenis){
+                            body += '<tr>' +
+                                '<td align="right">' +
+                                '<p style="margin-top: -113px">TTD Dokter</p>' +
+                                '<img src="'+item.jawaban1+'" style="width: 100px; height: 70px;">' +
+                                '</td>' +
+                                '</tr>';
+                        }
+                    }else {
+                        var jwb1 = "";
+                        if (item.jawaban1 != null) {
+                            jwb1 = item.jawaban1;
+                        }
+                        body += '<tr>' +
+                            '<td>' + item.parameter + '</td>' +
+                            '<td>' + jwb1 + '</td>' +
                             '</tr>';
                     }
 
                 });
+
+                if ("pre_operasi" == jenis) {
+                    head = '<tr>' +
+                        '<td><b>Persiapan Pasien Pre Operasi</b></td>' +
+                        '<td><b>Perawat Pengirim</b></td>' +
+                        '<td><b>Perawat OK</b></td>' +
+                        '</tr>';
+                }
+                if ("kondisi_pasien" == jenis) {
+                    head = '<tr>' +
+                        '<td><b>Pemeriksaan</b></td>' +
+                        '<td><b>Sebelum Ditransfer</b></td>' +
+                        '<td><b>Saat Diterima</b></td>' +
+                        '</tr>';
+                }
+
             } else {
                 body = '<tr>' +
                     '<td>Data belum ada</td>' +
-                    '</tr>';
-            }
-
-            if ("pre_operasi" == jenis) {
-                head = '<tr>' +
-                    '<td><b>Persiapan Pasien Pre Operasi</b></td>' +
-                    '<td><b>Perawat Pengirim</b></td>' +
-                    '<td><b>Perawat OK</b></td>' +
                     '</tr>';
             }
 
@@ -421,4 +771,95 @@ function checkIcon(val) {
     }
     return fa;
 }
+
+function penandaAreaOperasi() {
+    var jenisKelamin = $('#jenis_kelamin').val();
+    $('#jk_pasien').html(jenisKelamin);
+    var url = "";
+    if("Laki-Laki" == jenisKelamin){
+        url = '/simrs/pages/images/penanda-laki-laki.jpg';
+    }else{
+        url = '/simrs/pages/images/penanda-perempuan.jpg';
+    }
+    var canvas = document.getElementById('area_canvas');
+    var ctx = canvas.getContext('2d');
+    var img = new Image();
+    img.src = url;
+    img.onload = function (ev) {
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0);
+    }
+
+    var canvasCek = document.getElementById('area_cek');
+    var ctxCek = canvasCek.getContext('2d');
+    var imgCek = new Image();
+    imgCek.src = url;
+    imgCek.onload = function (ev) {
+        canvasCek.width = imgCek.width;
+        canvasCek.height = imgCek.height;
+        ctxCek.clearRect(0, 0, canvasCek.width, canvasCek.height);
+        ctxCek.drawImage(imgCek, 0, 0);
+    }
+    $('#modal-op-ttd-penandaan-mlt').modal({show: true, backdrop: 'static'});
+}
+
+function clearConvas(jenis) {
+    if("area_canvas" == jenis){
+        var canvas = document.getElementById('area_canvas');
+        const context = canvas.getContext('2d');
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        var jenisKelamin = $('#jenis_kelamin').val();
+        var url = "";
+        if("Laki-Laki" == jenisKelamin){
+            url = '/simrs/pages/images/penanda-laki-laki.jpg';
+        }else{
+            url = '/simrs/pages/images/penanda-perempuan.jpg';
+        }
+        var canvas = document.getElementById('area_canvas');
+        var ctx = canvas.getContext('2d');
+        var img = new Image();
+        img.src = url;
+        img.onload = function (ev) {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0);
+        }
+    }else{
+        var canvas = document.getElementById(jenis);
+        const context = canvas.getContext('2d');
+        context.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+}
+
+function confirmSavePenanda(){
+    var canvasArea = document.getElementById('area_canvas');
+    var canvasCek = document.getElementById('area_cek');
+    if(canvasArea.toDataURL() == canvasCek.toDataURL()){
+        $('#warning_op_penanda_area').show().fadeOut(5000);
+        $('#msg_op_penanda_area').text("Silahkan lakukan penandaan area operasi...!");
+        $('#modal-penanda-area').scrollTop(0);
+    }else{
+        $('#modal-op-ttd-penandaan').modal({show:true,backdrop:'static'});
+    }
+}
+
+function isBlank(canvas){
+    const blank = document.createElement("canvas");
+    blank.width = canvas.width;
+    blank.height = canvas.height;
+    return canvas.toDataURL() === blank.toDataURL();
+}
+
+$('[name=cek_anamnesa1]').click(function () {
+    var val = $('[name=cek_anamnesa1]:checked').val();
+    if(val == "Ya"){
+        $('#form-ket-alergi').show();
+    }else{
+        $('#form-ket-alergi').hide();
+    }
+});
 

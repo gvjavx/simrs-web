@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.asesmenoperasi.bo.impl;
 
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.asesmenoperasi.bo.AsesmenOperasiBo;
@@ -49,7 +50,19 @@ public class AsesmenOperasiBoImpl implements AsesmenOperasiBo {
                     operasi.setIdAsesmenOperasi(entity.getIdAsesmenOperasi());
                     operasi.setIdDetailCheckup(entity.getIdDetailCheckup());
                     operasi.setParameter(entity.getParameter());
-                    operasi.setJawaban1(entity.getJawaban1());
+                    if("penandaan_area".equalsIgnoreCase(entity.getKeterangan())){
+                        if("area_penanda".equalsIgnoreCase(entity.getJenis())){
+                            operasi.setJawaban1(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_AREA_OPERASI+entity.getJawaban1());
+                        }
+                        if("ttd_pasien".equalsIgnoreCase(entity.getJenis())){
+                            operasi.setJawaban1(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_TTD_PASIEN+entity.getJawaban1());
+                        }
+                        if("ttd_dokter".equalsIgnoreCase(entity.getJenis())){
+                            operasi.setJawaban1(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_TTD_DOKTER+entity.getJawaban1());
+                        }
+                    }else{
+                        operasi.setJawaban1(entity.getJawaban1());
+                    }
                     operasi.setJawaban2(entity.getJawaban2());
                     operasi.setKeterangan(entity.getKeterangan());
                     operasi.setJenis(entity.getJenis());

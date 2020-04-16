@@ -1404,6 +1404,44 @@ public class CheckupAction extends BaseMasterAction {
         return pelayananList;
     }
 
+    public List<Pelayanan> getListComboGudang(){
+
+        List<Pelayanan> pelayananList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
+        Pelayanan pelayanan = new Pelayanan();
+        pelayanan.setTipePelayanan("gudang_obat");
+        pelayanan.setBranchId(CommonUtil.userBranchLogin());
+
+        try {
+            pelayananList = pelayananBo.getByCriteria(pelayanan);
+        } catch (HibernateException e) {
+            logger.error("[CheckupAction.getComboPelayanan] Error when get data for combo listOfPelayanan", e);
+            addActionError(" Error when get data for combo listOfPelayanan" + e.getMessage());
+        }
+
+        return pelayananList;
+    }
+
+    public List<Pelayanan> getListComboGudangByBranch(String branchId){
+
+        List<Pelayanan> pelayananList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
+        Pelayanan pelayanan = new Pelayanan();
+        pelayanan.setTipePelayanan("gudang_obat");
+        pelayanan.setBranchId(branchId);
+
+        try {
+            pelayananList = pelayananBo.getByCriteria(pelayanan);
+        } catch (HibernateException e) {
+            logger.error("[CheckupAction.getComboPelayanan] Error when get data for combo listOfPelayanan", e);
+            addActionError(" Error when get data for combo listOfPelayanan" + e.getMessage());
+        }
+
+        return pelayananList;
+    }
+
     public HeaderCheckup listDataPasien(String idDetailCheckup) {
         logger.info("[CheckupAction.listDataPasien] start process >>>");
 //        List<HeaderCheckup> headerCheckupList = new ArrayList<>();

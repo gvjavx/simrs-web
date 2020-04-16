@@ -34,7 +34,6 @@
     <section class="content-header">
         <h1>
             Verifikasi Permintaan Obat
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -157,7 +156,7 @@
                                 <td>Nama Obat</td>
                                 <td align="center">Qty Request</td>
                                 <td align="center">Qty Approve</td>
-                                <td align="center">Scan ID Pabrik</td>
+                                <td align="center">Scan ID Obat</td>
                                 <td>Jenis Satuan</td>
                             </tr>
                             </thead>
@@ -165,11 +164,20 @@
                             <s:iterator value="#session.listOfObatDetail" status="listOfObatDetail">
                                 <tr>
                                     <td>
-                                        <s:property value="idObat"/>
-                                        <input type="hidden" id='idTrans<s:property value="idObat"/>'
+                                        <script>
+                                            var idObat = '<s:property value="idObat"/>';
+                                            var str = idObat.substring(3, 10);
+                                            var idObat2 = idObat.replace(str, '*******');
+                                            document.write(idObat2);
+                                        </script>
+                                    </td>
+                                    <td>
+                                        <s:property value="namaObat"/>
+                                        <input type="hidden" id='id_obat_<s:property value="%{#listOfObatDetail.index}"/>'
+                                               value='<s:property value="idObat"/>'>
+                                        <input type="hidden" id='idTrans<s:property value="%{#listOfObatDetail.index}"/>'
                                                value='<s:property value="idTransaksiObatDetail"/>'>
                                     </td>
-                                    <td><s:property value="namaObat"/></td>
                                     <td align="center"><s:property value="qty"/></td>
                                     <td align="center"><span id='qtyApp<s:property value="idObat"/>'><s:property
                                             value="qtyApprove"/></span></td>
@@ -200,9 +208,9 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <a href="initForm_permintaangudang.action" class="btn btn-warning"><i class="fa fa-arrow-left"></i> Back</a>
+                                    <a href="initForm_permintaangudang.action" class="btn btn-warning"><i class="fa fa-times"></i> Back</a>
                                     <button class="btn btn-success" onclick="confirm()"><i
-                                            class="fa fa-arrow-right"></i> Save
+                                            class="fa fa-check"></i> Save
                                     </button>
                                 </div>
                             </div>
@@ -334,7 +342,7 @@
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
 
-    function confirmObat(idObat, idPabrik, nama, qtyReq, satuan, idTransaksi) {
+    function confirmObat(idObat, idObatVal, nama, qtyReq, satuan, idTransaksi) {
 
         $('#load_app').hide();
         $('#save_app').show();
@@ -351,8 +359,9 @@
         var yyyy = today.getFullYear();
         today = mm + '-' + dd + '-' + yyyy;
 
-        if (idPabrik != "") {
-            PermintaanObatPoliAction.listObatEntity(idObat, idPabrik, function (response) {
+        if (idObatVal != "") {
+            PermintaanObatPoliAction.listObatEntity(idObatVal, function (response) {
+                console.log(response);
                 if (response.length > 0) {
                     $.each(response, function (i, item) {
                         $('#modal-approve').modal({show: true, backdrop: 'static'});
@@ -619,8 +628,8 @@
         var data = $('#tabel_request').tableToJSON();
         var qtyApp = 0;
         $.each(data, function (i, item) {
-            var id = data[i]["ID Obat"];
-            var idTransaksi = $('#idTrans' + id).val();
+            var id = $('#id_obat_' + i).val();
+            var idTransaksi = $('#idTrans' + i).val();
             var qty = data[i]["Qty Approve"];
             if (qty == "") {
                 qty = 0;
@@ -641,13 +650,13 @@
         $('#confirm_dialog').dialog('close');
         var data = $('#tabel_request').tableToJSON();
         var result = [];
-        var url_string = window.location.href;
-        var url = new URL(url_string);
-        var idApp = url.searchParams.get("idApproval");
+        // var url_string = window.location.href;
+        // var url = new URL(url_string);
+        var idApp = '<s:property value="permintaanObatPoli.idApprovalObat"/>';
 
         $.each(data, function (i, item) {
-            var id = data[i]["ID Obat"];
-            var idTransaksi = $('#idTrans' + id).val();
+            var id = $('#id_obat_' + i).val();
+            var idTransaksi = $('#idTrans' + i).val();
             var qty = data[i]["Qty Approve"];
             result.push({'ID Obat': id, 'ID Transkasi': idTransaksi, 'Qty Approve': qty});
         });
