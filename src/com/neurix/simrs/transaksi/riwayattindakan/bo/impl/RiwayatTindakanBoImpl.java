@@ -140,7 +140,8 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
         return riwayatTindakanList;
     }
 
-    private List<ItSimrsRiwayatTindakanEntity> getListEntityRiwayatTindakan(RiwayatTindakan bean) {
+    @Override
+    public List<ItSimrsRiwayatTindakanEntity> getListEntityRiwayatTindakan(RiwayatTindakan bean) {
         logger.info("[RiwayatTindakanBoImpl.getListEntityRiwayatTindakan] Start >>>>>>>>");
         List<ItSimrsRiwayatTindakanEntity> entities = new ArrayList<>();
         Map hsCriteria = new HashMap();
@@ -157,6 +158,9 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
             }
             if (bean.getApproveBpjsFlag() != null) {
                 hsCriteria.put("approve_bpjs_flag", bean.getApproveBpjsFlag());
+            }
+            if (bean.getKeterangan() != null) {
+                hsCriteria.put("keterangan", bean.getKeterangan());
             }
 
             hsCriteria.put("flag", "Y");
