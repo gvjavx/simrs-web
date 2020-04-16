@@ -39,6 +39,7 @@ public class CommonConstant {
     public final static String RESOURCE_PATH_TTD_DOKTER = "/upload/ttd_dokter/";
     public final static String RESOURCE_PATH_TTD_APOTEKER = "/upload/ttd_apoteker/";
     public final static String RESOURCE_PATH_AREA_OPERASI = "/upload/penanda_area_operasi/";
+    public final static String RESOURCE_PATH_TTD_RM = "/upload/ttd_rm/";
 
 
     public final static String RESOURCE_PATH_USER_UPLOAD = "/pages/upload/image/profile/";

@@ -1514,24 +1514,14 @@
                             <td>Tranfusi</td>
                             <td>
                                 <div class="row">
-                                    <%--<div class="form-group">--%>
-                                        <%--<div class="col-md-12">--%>
-                                            <%--<div class="custom02" style="margin-top: 7px; margin-left: 15px">--%>
-                                                <%--<input type="radio" value="Tidak" id="ga81" name="ga8" /><label for="ga81">Tidak</label>--%>
-                                            <%--</div>--%>
-                                            <%--<div class="custom02" style="margin-top: 7px; margin-left: 15px">--%>
-                                                <%--<input type="radio" value="Ya" id="ga82" name="ga8" /><label for="ga82">Ya</label>--%>
-                                            <%--</div>--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
                                         <div class="col-md-2">
                                             <div class="custom02" style="margin-top: 7px">
-                                                <input type="radio" value="Tidak" id="cek_pf31" name="cek_pf3" /><label for="cek_pf31">Tidak</label>
+                                                <input type="radio" value="Tidak" id="ga81" name="ga8" /><label for="ga81">Tidak</label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="custom02" style="margin-top: 7px">
-                                                <input type="radio" value="Ya" id="cek_pf32" name="cek_pf3" /><label for="cek_pf32">Ya</label>
+                                                <input type="radio" value="Ya" id="ga82" name="ga8" /><label for="ga82">Ya</label>
                                             </div>
                                         </div>
                                 </div>
@@ -1540,6 +1530,16 @@
                                 <div class="form-check" style="margin-top: 7px;">
                                     <input type="checkbox" name="ga9" id="ga91" value="Ya">
                                     <label for="ga91"></label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Komplikasi</td>
+                            <td>Reaksi tranfusi, penularan penyakit lewat darah</td>
+                            <td align="center">
+                                <div class="form-check" style="margin-top: 7px;">
+                                    <input type="checkbox" name="ga10" id="ga101" value="Ya">
+                                    <label for="ga101"></label>
                                 </div>
                             </td>
                         </tr>
@@ -1588,12 +1588,12 @@
 </div>
 
 <div class="modal fade" id="modal-op-general_penyataan">
-    <div class="modal-dialog modal-md">
+    <div class="modal-dialog modal-md" style="width: 55%">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a; color: white">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Informasi
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Pernyataan
                 </h4>
             </div>
             <div class="modal-body">
@@ -1602,7 +1602,28 @@
                     <p id="msg_op_general_penyataan"></p>
                 </div>
                 <div class="box-body">
-
+                    <div class="row">
+                        <table class="table">
+                            <tbody>
+                            <tr>
+                                <td style="text-align: justify">Dengan ini menyatakan bahwa saya telah menerangkan hal-hal di atas secara benar dan jelas dengan memberikan kesempatan bertanya dan atau berdiskusi</td>
+                                <td>
+                                    <canvas class="paint-canvas-ttd" id="general_penyataan1" onmouseover="paintTtd('general_penyataan1')"></canvas>
+                                    <button style="margin-left: 8px" type="button" class="btn btn-danger" onclick="clearConvas('general_penyataan1')"><i class="fa fa-trash"></i> Clear
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: justify">Dengan ini menyatakan bahwa saya telah menerima informasi sebagaimana di atas dan telah memahaminya</td>
+                                <td>
+                                    <canvas class="paint-canvas-ttd" id="general_penyataan2" onmouseover="paintTtd('general_penyataan2')"></canvas>
+                                    <button style="margin-left: 8px" type="button" class="btn btn-danger" onclick="clearConvas('general_penyataan2')"><i class="fa fa-trash"></i> Clear
+                                    </button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
@@ -1623,7 +1644,7 @@
             <div class="modal-header" style="background-color: #00a65a; color: white">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Informasi
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Persetujuan
                 </h4>
             </div>
             <div class="modal-body">
@@ -1632,7 +1653,74 @@
                     <p id="msg_op_general_persetujuan"></p>
                 </div>
                 <div class="box-body">
-
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4">Nama</label>
+                            <div class="col-md-6">
+                                <input class="form-control" id="perse1">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Tanggal Lahir</label>
+                            <div class="col-md-6">
+                                <div class="input-group" style="margin-top: 7px">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input class="form-control datepicker2 datemask2" id="perse2">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Jenis Kelamin</label>
+                            <div class="col-md-6">
+                                <select class="form-control" id="perse3" style="margin-top: 7px">
+                                    <option value="">[Select One]</option>
+                                    <option value="Laki-Laki">Laki-Laki</option>
+                                    <option value="Perempuan">Perempuan</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Tindakan</label>
+                            <div class="col-md-6">
+                                <input class="form-control" id="perse4" style="margin-top: 7px">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Nama Pasien</label>
+                            <div class="col-md-6">
+                                <input class="form-control" id="perse5" style="margin-top: 7px">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Tanggal Lahir</label>
+                            <div class="col-md-6">
+                                <div class="input-group" style="margin-top: 7px">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input class="form-control datepicker2 datemask2" id="perse6">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Jenis Kelamin</label>
+                            <div class="col-md-6">
+                                <select class="form-control" id="perse7" style="margin-top: 7px">
+                                    <option value="">[Select One]</option>
+                                    <option value="Laki-Laki">Laki-Laki</option>
+                                    <option value="Perempuan">Perempuan</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Alamat</label>
+                            <div class="col-md-6">
+                                <textarea class="form-control" id="perse8" style="margin-top: 7px"></textarea>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
@@ -1640,6 +1728,395 @@
                 </button>
                 <button id="save_op_general_persetujuan" class="btn btn-success pull-right" onclick="saveDataOperasi('general_persetujuan','general_anestesi')"><i class="fa fa-check"></i> Save</button>
                 <button id="load_op_general_persetujuan" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-op-regional_anestesi">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-md"></i> Edukasi Dan Persetujuan Regional Anestesi
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="alert alert-success alert-dismissible" style="display: none" id="warning_op_regional_anestesi">
+                        <h4><i class="icon fa fa-info"></i> Info!</h4>
+                        <p id="msg_op_regional_anestesi"></p>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Tambah
+                        </button>
+                        <button type="button" class="btn btn-success dropdown-toggle"
+                                data-toggle="dropdown" style="height: 34px">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a onclick="showModalOperasi('regional_informasi')" style="cursor: pointer"><i class="fa fa-plus"></i> Informasi</a></li>
+                            <li><a onclick="showModalOperasi('regional_penyataan')" style="cursor: pointer"><i class="fa fa-plus"></i> Pernyataan</a></li>
+                            <li><a onclick="showModalOperasi('regional_persetujuan')" style="cursor: pointer"><i class="fa fa-plus"></i> Persetujuan</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <table class="table" id="tabel_op_regional_anestesi">
+                        <tbody>
+                        <tr id="row_op_regional_informasi">
+                            <td>Informasi</td>
+                            <td width="20%" align="center">
+                                <img id="btn_op_regional_informasi" class="hvr-grow" onclick="detailOperasi('regional_informasi')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">
+                            </td>
+                        </tr>
+                        <tr id="row_op_regional_penyataan">
+                            <td>Pernyataan</td>
+                            <td width="20%" align="center">
+                                <img id="btn_op_regional_penyataan" class="hvr-grow" onclick="detailOperasi('regional_penyataan')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">
+                            </td>
+                        </tr>
+                        <tr id="row_op_regional_persetujuan">
+                            <td>Persetujuan</td>
+                            <td width="20%" align="center">
+                                <img id="btn_op_regional_persetujuan" class="hvr-grow" onclick="detailOperasi('regional_persetujuan')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-op-regional_informasi">
+    <div class="modal-dialog" style="width: 60%">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Informasi
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_op_regional_informasi">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_op_regional_informasi"></p>
+                </div>
+                <div class="box-body">
+                    <table class="table">
+                        <thead>
+                        <td><b>Jenis Informasi</b></td>
+                        <td><b>Isi Informasi</b></td>
+                        <td width="15%" align="center"><b>Check (<i class="fa fa-check"></i>)</b></td>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Teknik Anestesi</td>
+                            <td>
+                                <div class="row">
+                                    <div class="form-check" style="margin-top: 7px; margin-left: 15px">
+                                        <input type="checkbox" name="reg1" id="reg11" value="Sub Arachnoid Blok (SAB)">
+                                        <label for="reg11"></label> Sub Arachnoid Blok (SAB)
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-check" style="margin-top: 7px; margin-left: 15px">
+                                        <input type="checkbox" name="reg1" id="reg12" value="Epidural">
+                                        <label for="reg12"></label> Epidural
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-check" style="margin-top: 7px; margin-left: 15px">
+                                        <input type="checkbox" name="reg1" id="reg13" value="CSE/Block Syarat Mayor">
+                                        <label for="reg13"></label> CSE/Block Syarat Mayor
+                                    </div>
+                                </div>
+                            </td>
+                            <td align="center">
+                                <div class="form-check" style="margin-top: 7px;">
+                                    <input type="checkbox" name="reg2" id="reg21" value="Ya">
+                                    <label for="reg21"></label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Kondisi yang diharapkan</td>
+                            <td>Akan terjadi mati rasa pada bagian tubuh tertentu</td>
+                            <td align="center">
+                                <div class="form-check" style="margin-top: 7px;">
+                                    <input type="checkbox" name="reg3" id="reg31" value="Ya">
+                                    <label for="reg31"></label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Tata cara</td>
+                            <td>Obat diinjeksikan pada kanal tulang belakang posisi pasien tidur miring atau duduk</td>
+                            <td align="center">
+                                <div class="form-check" style="margin-top: 7px;">
+                                    <input type="checkbox" name="reg4" id="reg41" value="Ya">
+                                    <label for="reg41"></label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Resiko</td>
+                            <td>Sakit kepala, sakit panggung, infeksi ditempat injeksi total spinal</td>
+                            <td align="center">
+                                <div class="form-check" style="margin-top: 7px;">
+                                    <input type="checkbox" name="reg5" id="reg51" value="Ya">
+                                    <label for="reg51"></label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Tujuan</td>
+                            <td>Mengurangi rasa cemas, menghilangkan nyeri menjaga fungsi organ selama pembedahan</td>
+                            <td align="center">
+                                <div class="form-check" style="margin-top: 7px;">
+                                    <input type="checkbox" name="reg6" id="reg61" value="Ya">
+                                    <label for="reg61"></label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Komplikasi</td>
+                            <td>Reaksi alergi obat, stroke, serangan jantung kematian</td>
+                            <td align="center">
+                                <div class="form-check" style="margin-top: 7px;">
+                                    <input type="checkbox" name="reg7" id="reg71" value="Ya">
+                                    <label for="reg71"></label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Tranfusi</td>
+                            <td>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <div class="custom02" style="margin-top: 7px">
+                                            <input type="radio" value="Tidak" id="reg81" name="reg8" /><label for="reg81">Tidak</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="custom02" style="margin-top: 7px">
+                                            <input type="radio" value="Ya" id="reg82" name="reg8" /><label for="reg82">Ya</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td align="center">
+                                <div class="form-check" style="margin-top: 7px;">
+                                    <input type="checkbox" name="reg9" id="reg91" value="Ya">
+                                    <label for="reg91"></label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Komplikasi</td>
+                            <td>Reaksi tranfusi, penularan penyakit lewat darah</td>
+                            <td align="center">
+                                <div class="form-check" style="margin-top: 7px;">
+                                    <input type="checkbox" name="reg10" id="reg101" value="Ya">
+                                    <label for="reg101"></label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Prognosa</td>
+                            <td>
+                                <div class="row">
+                                    <input style="margin-left: 15px" class="form-control" id="reg10">
+                                </div>
+                            </td>
+                            <td align="center">
+                                <div class="form-check" style="margin-top: 7px;">
+                                    <input type="checkbox" name="reg11" id="reg111" value="Ya">
+                                    <label for="reg111"></label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Alternatif</td>
+                            <td>
+                                <div class="row">
+                                    <input style="margin-left: 15px" class="form-control" id="reg122">
+                                </div>
+                            </td>
+                            <td align="center">
+                                <div class="form-check" style="margin-top: 7px;">
+                                    <input type="checkbox" name="reg12" id="reg121" value="Ya">
+                                    <label for="reg121"></label>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button id="save_op_regional_informasi" class="btn btn-success pull-right" onclick="saveDataOperasi('regional_informasi','regional_anestesi')"><i class="fa fa-check"></i> Save</button>
+                <button id="load_op_regional_informasi" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-op-regional_penyataan">
+    <div class="modal-dialog modal-md" style="width: 55%">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Pernyataan
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_op_regional_penyataan">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_op_regional_penyataan"></p>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <table class="table">
+                            <tbody>
+                            <tr>
+                                <td style="text-align: justify">Dengan ini menyatakan bahwa saya telah menerangkan hal-hal di atas secara benar dan jelas dengan memberikan kesempatan bertanya dan atau berdiskusi</td>
+                                <td>
+                                    <canvas class="paint-canvas-ttd" id="regional_penyataan1" onmouseover="paintTtd('regional_penyataan1')"></canvas>
+                                    <button style="margin-left: 8px" type="button" class="btn btn-danger" onclick="clearConvas('regional_penyataan1')"><i class="fa fa-trash"></i> Clear
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: justify">Dengan ini menyatakan bahwa saya telah menerima informasi sebagaimana di atas dan telah memahaminya</td>
+                                <td>
+                                    <canvas class="paint-canvas-ttd" id="regional_penyataan2" onmouseover="paintTtd('regional_penyataan2')"></canvas>
+                                    <button style="margin-left: 8px" type="button" class="btn btn-danger" onclick="clearConvas('regional_penyataan2')"><i class="fa fa-trash"></i> Clear
+                                    </button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button id="save_op_regional_penyataan" class="btn btn-success pull-right" onclick="saveDataOperasi('regional_penyataan','regional_anestesi')"><i class="fa fa-check"></i> Save</button>
+                <button id="load_op_regional_penyataan" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-op-regional_persetujuan">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Persetujuan
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_op_regional_persetujuan">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_op_regional_persetujuan"></p>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4">Nama</label>
+                            <div class="col-md-6">
+                                <input class="form-control" id="reg_perse1">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Tanggal Lahir</label>
+                            <div class="col-md-6">
+                                <div class="input-group" style="margin-top: 7px">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input class="form-control datepicker2 datemask2" id="reg_perse2">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Jenis Kelamin</label>
+                            <div class="col-md-6">
+                                <select class="form-control" id="reg_perse3" style="margin-top: 7px">
+                                    <option value="">[Select One]</option>
+                                    <option value="Laki-Laki">Laki-Laki</option>
+                                    <option value="Perempuan">Perempuan</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Tindakan</label>
+                            <div class="col-md-6">
+                                <input class="form-control" id="reg_perse4" style="margin-top: 7px">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Nama Pasien</label>
+                            <div class="col-md-6">
+                                <input class="form-control" id="reg_perse5" style="margin-top: 7px">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Tanggal Lahir</label>
+                            <div class="col-md-6">
+                                <div class="input-group" style="margin-top: 7px">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input class="form-control datepicker2 datemask2" id="reg_perse6">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Jenis Kelamin</label>
+                            <div class="col-md-6">
+                                <select class="form-control" id="reg_perse7" style="margin-top: 7px">
+                                    <option value="">[Select One]</option>
+                                    <option value="Laki-Laki">Laki-Laki</option>
+                                    <option value="Perempuan">Perempuan</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Alamat</label>
+                            <div class="col-md-6">
+                                <textarea class="form-control" id="reg_perse8" style="margin-top: 7px"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button id="save_op_regional_persetujuan" class="btn btn-success pull-right" onclick="saveDataOperasi('regional_persetujuan','regional_anestesi')"><i class="fa fa-check"></i> Save</button>
+                <button id="load_op_regional_persetujuan" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
             </div>
