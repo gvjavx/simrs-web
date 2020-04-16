@@ -324,15 +324,6 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                     String jurnalDetailId=jurnalDetailDao.getNextJurnalDetailId();
                     String rekeningId = null;
                     String nomorRekening = null;
-                    if (data.get("master_id")!=null){
-                        masterId = (String) data.get("master_id");
-                    }
-                    if (data.get("pasien_id")!=null){
-                        pasienId = (String) data.get("pasien_id");
-                    }
-                    if (data.get("divisi_id")!=null){
-                        divisiId = (String) data.get("divisi_id");
-                    }
                     ///////////////////////DIGUNAKAN UNTUK PENGECEKAN KAS  //////////////////////////////
                     if (("kas").equalsIgnoreCase(mapping.getKeterangan())){
                         if (metodeBayar!=null){
@@ -355,27 +346,6 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                         rekeningId=getRekeningForMappingOtomatis(mapping.getKodeRekening());
                     }
 
-                    ///////////////////////DIGUNAKAN UNTUK PENGECEKAN MASTER / PASIEN JIKA BUKAN LIST //////////////////////////////
-                    if (("Y").equalsIgnoreCase(mapping.getMasterId())&&("N").equalsIgnoreCase(mapping.getKirimList())){
-                        if (masterId==null&&pasienId==null){
-                            status="ERROR : Membutuhkan master Id / Pasien Id";
-                            logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
-                            throw new GeneralBOException("Found problem "+status+", please info to your admin...");
-                        }
-                        if (("Y").equalsIgnoreCase(mapping.getDivisiId())){
-                            if (divisiId==null){
-                                status="ERROR : Membutuhkan Divisi ID";
-                                logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
-                                throw new GeneralBOException("Found problem "+status+", please info to your admin...");
-                            }
-                        }else{
-                            divisiId=null;
-                        }
-                    }else{
-                        masterId=null;
-                        pasienId=null;
-                    }
-
                     ///////////////////////DIGUNAKAN UNTUK PENGECEKAN DAN PENGAMBILAN BUKTI DAN NILAI UNTUK JURNAL BUKAN LIST  //////////////////////////////
                     if (rekeningId !=null){
                         if (data.get(mapping.getKeterangan())!=null){
@@ -384,11 +354,10 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                             //JIKA YANG DIKIRIM BUKAN LIST
                             if (("N").equalsIgnoreCase(mapping.getKirimList())&&("N").equalsIgnoreCase(mapping.getKodeBarang())){
                                 //untuk mendapatkan bukti dan nilai di masing masing parameter mapping
+                                Map listOfMap = (Map) data.get(mapping.getKeterangan());
                                 if (("Y").equalsIgnoreCase(mapping.getBukti())){
-                                    Map listOfMap = (Map) data.get(mapping.getKeterangan());
                                     if (listOfMap.get("bukti")!=null){
                                         noNota = (String) listOfMap.get("bukti");
-
                                         //untuk mengambil no invoice sebagai kode sumber dari jurnal header
                                         if (("uang_muka").equalsIgnoreCase(mapping.getKeterangan())){
                                             sumber=noNota;
@@ -402,7 +371,6 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                                         logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
                                         throw new GeneralBOException("Found problem "+status+", please info to your admin...");
                                     }
-
                                     //mendapatkan nilai activity jika bukan list
                                     if (listOfMap.get("activity")!=null){
                                         try{
@@ -454,19 +422,57 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                                         }
                                     }
                                 }else if (!("Y").equalsIgnoreCase(mapping.getKodeBarang())){
-                                    try {
-                                        nilai=(BigDecimal) data.get(mapping.getKeterangan());
-                                    } catch (GeneralBOException e) {
-                                        status="ERROR : ada masalah saat pengambilan biaya";
+                                    if (("N").equalsIgnoreCase(mapping.getDivisiId())&&("N").equalsIgnoreCase(mapping.getMasterId())){
+                                        try {
+                                            nilai=(BigDecimal) data.get(mapping.getKeterangan());
+                                        } catch (GeneralBOException e) {
+                                            status="ERROR : ada masalah saat pengambilan biaya";
+                                            logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
+                                            throw new GeneralBOException("Found problem "+status+", please info to your admin...");
+                                        }
+                                        // cek biaya pembayaran apakah null
+                                        if (nilai==null){
+                                            status="ERROR : Biaya yang dikirim tidak ada";
+                                            logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
+                                            throw new GeneralBOException("Found problem "+status+", please info to your admin...");
+                                        }
+                                    }else {
+                                        if (listOfMap.get("nilai")!=null) {
+                                            nilai=(BigDecimal) listOfMap.get("nilai");
+                                        }else{
+                                            status="ERROR : Biaya yang dikirim tidak ada";
+                                            logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
+                                            throw new GeneralBOException("Found problem "+status+", please info to your admin...");
+                                        }
+                                    }
+                                }
+
+                                ///////////////////////DIGUNAKAN UNTUK PENGECEKAN MASTER / PASIEN JIKA BUKAN LIST //////////////////////////////
+                                if (("Y").equalsIgnoreCase(mapping.getMasterId())){
+                                    if (listOfMap.get("master_id")!=null) {
+                                        masterId = (String) listOfMap.get("master_id");
+                                    }else if (listOfMap.get("pasien_id")!=null) {
+                                        pasienId = (String) listOfMap.get("pasien_id");
+                                    }
+
+                                    if (masterId==null&&pasienId==null){
+                                        status="ERROR : Membutuhkan master Id / Pasien Id";
                                         logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
                                         throw new GeneralBOException("Found problem "+status+", please info to your admin...");
                                     }
-                                    // cek biaya pembayaran apakah null
-                                    if (nilai==null){
-                                        status="ERROR : Biaya yang dikirim tidak ada";
+                                }else{
+                                    masterId=null;
+                                    pasienId=null;
+                                }
+                                if (("Y").equalsIgnoreCase(mapping.getDivisiId())){
+                                    divisiId = (String) listOfMap.get("divisi_id");
+                                    if (divisiId==null){
+                                        status="ERROR : Membutuhkan Divisi ID";
                                         logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
                                         throw new GeneralBOException("Found problem "+status+", please info to your admin...");
                                     }
+                                }else{
+                                    divisiId=null;
                                 }
                             }
 
