@@ -982,12 +982,18 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
         return detailCheckups;
     }
 
-    public BigDecimal getSumAllTarifTindakan(String idDetail, String ket) {
+    public BigDecimal getSumAllTarifTindakan(String idDetail, String jenis, String ket) {
 
         String keterangan = "%";
         if (!"".equalsIgnoreCase(ket)) {
             keterangan = ket;
         }
+
+        String jenisPasien = "%";
+        if (!"".equalsIgnoreCase(jenis)){
+            jenisPasien = jenis;
+        }
+
         String SQL = "SELECT \n" +
                 "id_detail_checkup,\n" +
                 "SUM(total_tarif) as total_tarif\n" +
@@ -996,12 +1002,13 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 "WHERE \n" +
                 "id_detail_checkup = :idDetail\n" +
                 "AND keterangan LIKE :ket\n" +
-                "AND jenis_pasien = 'bpjs'\n" +
+                "AND jenis_pasien = :jenis\n" +
                 "GROUP BY id_detail_checkup";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("idDetail", idDetail)
                 .setParameter("ket", keterangan)
+                .setParameter("jenis", jenisPasien)
                 .list();
 
         BigDecimal jumlah = new BigDecimal(0);

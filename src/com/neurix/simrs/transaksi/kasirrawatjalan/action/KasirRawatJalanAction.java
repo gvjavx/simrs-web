@@ -686,7 +686,6 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         }
 
         Map hsCriteria = new HashMap();
-        hsCriteria.put("master_id", idPasien);
         hsCriteria.put("metode_bayar", metodeBayar);
         hsCriteria.put("bank", kodeBank);
 
@@ -696,6 +695,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
         Map mapUangMuka = new HashMap();
         mapUangMuka.put("bukti", id);
+        mapUangMuka.put("master_id", idPasien);
         mapUangMuka.put("nilai", new BigDecimal(jumlahDibayar));
 
         hsCriteria.put("uang_muka", mapUangMuka);
@@ -792,14 +792,15 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         Map mapJurnal = new HashMap();
 
         // master_id
+        String masterId = "";
         if ("bpjs".equalsIgnoreCase(jenis)){
-            mapJurnal.put("master_id", "02.018");
+            masterId = "02.018";
         } else if ("asuransi".equalsIgnoreCase(jenis)){
 
             // jika asuransi
             ImSimrsAsuransiEntity asuransiEntity = asuransiBo.getEntityAsuransiById(detailCheckupEntity.getIdAsuransi());
             if (asuransiEntity != null){
-                mapJurnal.put("master_id", asuransiEntity.getNoMaster());
+                masterId = asuransiEntity.getNoMaster();
             } else {
                 response.setStatus("error");
                 response.setMsg("[KasirRawatJalanAction.savePembayaranTagihan] ERROR gagal mendapakatkan master_id pers. asuransi");
@@ -807,9 +808,9 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             }
 
         } else if ("ptpn".equalsIgnoreCase(jenis)){
-            mapJurnal.put("master_id", detailCheckupEntity.getIdAsuransi());
+            masterId =  detailCheckupEntity.getIdAsuransi();
         } else {
-            mapJurnal.put("master_id", "01.000");
+            masterId = "01.000";
         }
 
         mapJurnal.put("metode_bayar", metodeBayar);
@@ -825,6 +826,8 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         BigDecimal ppnObat = new BigDecimal(0);
         BigDecimal pendapatanRawat = new BigDecimal(0);
         BigDecimal pendapatanResep = new BigDecimal(0);
+        BigDecimal pendapatanResepUmum = new BigDecimal(0);
+        BigDecimal pendapatanRawatUmum = new BigDecimal(0);
 
         // maping untuk parameter lainnua
         JSONArray json = new JSONArray(jsonString);
@@ -839,10 +842,14 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 uangPiutang = new BigDecimal(obj.getLong("nilai"));
             } else if ("ppn_keluaran".equalsIgnoreCase(obj.getString("type").toString())) {
                 ppnObat = new BigDecimal(obj.getLong("nilai"));
-            } else if ("pendapatan_rawat_inap_asuransi".equalsIgnoreCase(obj.getString("type").toString()) || "pendapatan_rawat_inap_umum".equalsIgnoreCase(obj.getString("type").toString())) {
+            } else if ("pendapatan_rawat_inap_asuransi".equalsIgnoreCase(obj.getString("type").toString())) {
                 pendapatanRawat = new BigDecimal(obj.getLong("nilai"));
-            } else if ("pendapatan_obat_asuransi".equalsIgnoreCase(obj.getString("type").toString()) || "pendapatan_obat_umum".equalsIgnoreCase(obj.getString("type").toString())) {
+            } else if ("pendapatan_obat_asuransi".equalsIgnoreCase(obj.getString("type").toString())) {
                 pendapatanResep = new BigDecimal(obj.getLong("nilai"));
+            } else if ("pendapatan_rawat_jalan_umum".equalsIgnoreCase(obj.getString("type").toString()) || "pendapatan_rawat_inap_umum".equalsIgnoreCase(obj.getString("type").toString())) {
+                pendapatanRawatUmum = new BigDecimal(obj.getLong("nilai"));
+            } else if ("pendapatan_obat_umum".equalsIgnoreCase(obj.getString("type").toString())) {
+                pendapatanResepUmum = new BigDecimal(obj.getLong("nilai"));
             } else {
                 mapJurnal.put(obj.getString("type").toString(), new BigDecimal(obj.getLong("nilai")));
             }
@@ -857,15 +864,31 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         String ketTerangan = "";
         String transId = "";
 
-        mapJurnal.put("divisi_id", divisiId);
+//        mapJurnal.put("divisi_id", divisiId);
 
         if ("tunai".equalsIgnoreCase(jenis)){
 
+            Map mapPendapatanUmum = new HashMap();
+            mapPendapatanUmum.put("master_id", masterId);
+            mapPendapatanUmum.put("divisi_id", divisiId);
+            mapPendapatanUmum.put("nilai", pendapatanRawatUmum);
+
             if ("JRJ".equalsIgnoreCase(type) && !"Y".equalsIgnoreCase(withObat)) {
+
+                mapJurnal.put("pendapatan_rawat_jalan_umum", mapPendapatanUmum);
+
                 transId = "12";
                 ketTerangan = "Closing Pasien Rawat Jalan Umum Tunai tanpa Obat ";
             }
             if ("JRJ".equalsIgnoreCase(type) && "Y".equalsIgnoreCase(withObat)) {
+
+                Map mapResepUmum = new HashMap();
+                mapResepUmum.put("master_id", masterId);
+                mapResepUmum.put("divisi_id", divisiId);
+                mapResepUmum.put("nilai", pendapatanResepUmum);
+
+                mapJurnal.put("pendapatan_obat_umum", mapResepUmum);
+                mapJurnal.put("pendapatan_rawat_jalan_umum", mapPendapatanUmum);
 
                 mapPajakObat.put("bukti", invoiceNumber);
                 mapPajakObat.put("nilai", ppnObat);
@@ -876,8 +899,8 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             }
             if ("JRI".equalsIgnoreCase(type)) {
 
-                mapJurnal.put("pendapatan_rawat_inap_umum", pendapatanRawat);
-                mapJurnal.put("pendapatan_obat_umum", pendapatanResep);
+                mapJurnal.put("pendapatan_rawat_inap_umum", mapPendapatanUmum);
+                mapJurnal.put("pendapatan_obat_umum", mapPendapatanUmum);
 
                 transId = "22";
                 ketTerangan = "Closing Pasien Rawat Inap Umum Tunai ";
@@ -911,6 +934,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
                 mapPiutang.put("bukti", invNumber);
                 mapPiutang.put("nilai", uangPiutang);
+                mapPiutang.put("master_id", masterId);
 
                 transId = "10";
                 ketTerangan = "Pembayaran Piutang Pasien BPJS";
@@ -920,15 +944,38 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
                 //** ASURANSI **//
 
+
+                Map mapPendapatanAsuransi = new HashMap();
+                mapPendapatanAsuransi.put("master_id", masterId);
+                mapPendapatanAsuransi.put("divisi_id", divisiId);
+                mapPendapatanAsuransi.put("nilai", pendapatanRawat);
+
+                Map mapPendapatanUmum = new HashMap();
+                mapPendapatanUmum.put("master_id", masterId);
+                mapPendapatanUmum.put("divisi_id", divisiId);
+                mapPendapatanUmum.put("nilai", pendapatanRawatUmum);
+
                 mapPiutang.put("bukti", billingSystemBo.createInvoiceNumber(type, branchId));
                 mapPiutang.put("nilai", uangPiutang);
-
+                mapPiutang.put("master_id", masterId);
                 mapJurnal.put("piutang_pasien_asuransi", mapPiutang);
 
                 if ("JRI".equalsIgnoreCase(type)){
 
-                    mapJurnal.put("pendapatan_rawat_inap_asuransi", pendapatanRawat);
-                    mapJurnal.put("pendapatan_obat_asuransi", pendapatanResep);
+                    Map mapResepAsuransi = new HashMap();
+                    mapResepAsuransi.put("master_id", masterId);
+                    mapResepAsuransi.put("divisi_id", divisiId);
+                    mapResepAsuransi.put("nilai", pendapatanResep);
+
+                    Map mapResepUmum = new HashMap();
+                    mapResepUmum.put("master_id", masterId);
+                    mapResepUmum.put("divisi_id", divisiId);
+                    mapResepUmum.put("nilai", pendapatanResep);
+
+                    mapJurnal.put("pendapatan_rawat_inap_asuransi", mapPendapatanAsuransi);
+                    mapJurnal.put("pendapaatan_rawat_inap_umum", mapPendapatanUmum);
+                    mapJurnal.put("pendapatan_obat_asuransi", mapResepAsuransi);
+                    mapJurnal.put("pendapaatan_obat_umum", mapResepUmum);
 
                     transId = "26";
                     ketTerangan = "Closing pasien rawat Inap Asuransi piutang dan Tunai";
@@ -950,14 +997,32 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 } else {
                     if ("Y".equalsIgnoreCase(withObat)){
 
+                        Map mapResepAsuransi = new HashMap();
+                        mapResepAsuransi.put("master_id", masterId);
+                        mapResepAsuransi.put("divisi_id", divisiId);
+                        mapResepAsuransi.put("nilai", pendapatanResep);
+
+                        Map mapResepUmum = new HashMap();
+                        mapResepUmum.put("master_id", masterId);
+                        mapResepUmum.put("divisi_id", divisiId);
+                        mapResepUmum.put("nilai", pendapatanResepUmum);
+
                         mapPajakObat.put("bukti", invoiceNumber);
                         mapPajakObat.put("nilai", ppnObat);
 
                         mapJurnal.put("ppn_keluaran", mapPajakObat);
+                        mapJurnal.put("pendapatan_obat_umum", mapResepUmum);
+                        mapJurnal.put("pendapatan_obat_asuransi", mapResepAsuransi);
+                        mapJurnal.put("pendapatan_rawat_jalan_asuransi", mapPendapatanAsuransi);
+                        mapJurnal.put("pendapatan_rawat_jalan_umum", mapPendapatanUmum);
 
                         transId = "19";
                         ketTerangan = "Closing pasien rawat jalan Asuransi piutang dan Tunai dengan obat";
                     } else {
+
+                        mapJurnal.put("pendapatan_rawat_jalan_asuransi", mapPendapatanAsuransi);
+                        mapJurnal.put("pendapatan_rawat_jalan_umum", mapPendapatanUmum);
+
                         transId = "11";
                         ketTerangan = "Closing pasien rawat jalan Asuransi piutang dan Tunai tanpa obat";
                     }
@@ -967,6 +1032,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
                 mapPiutang.put("bukti", invNumber);
                 mapPiutang.put("nilai", uangPiutang);
+                mapPiutang.put("master_id", masterId);
 
                 //** UMUM **//
                 transId = "02";
@@ -980,6 +1046,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             Map mapUangMuka = new HashMap();
             mapUangMuka.put("bukti", noNota);
             mapUangMuka.put("nilai", uangMuka);
+            mapUangMuka.put("master_id", masterId);
 
             mapJurnal.put("uang_muka", mapUangMuka);
         }
@@ -1280,8 +1347,8 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 List<HeaderDetailCheckup> details = checkupDetailBo.getByCriteria(detailCheckup);
                 if (details.size() > 0) {
                     for (HeaderDetailCheckup detail : details) {
-                        BigDecimal nilai = checkupDetailBo.getSumJumlahTindakan(detail.getIdDetailCheckup(), "");
-                        BigDecimal nilaiObat = checkupDetailBo.getSumJumlahTindakan(detail.getIdDetailCheckup(), "resep");
+                        BigDecimal nilai = checkupDetailBo.getSumJumlahTindakanNonBpjs(detail.getIdDetailCheckup(), "");
+                        BigDecimal nilaiObat = checkupDetailBo.getSumJumlahTindakanNonBpjs(detail.getIdDetailCheckup(), "resep");
 
                         BigDecimal ppn = nilaiObat.multiply(new BigDecimal(0.1)).setScale(2, BigDecimal.ROUND_HALF_UP);
                         BigDecimal totalNilai = nilai.add(ppn);

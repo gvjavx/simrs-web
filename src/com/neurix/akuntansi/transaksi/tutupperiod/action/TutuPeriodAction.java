@@ -233,8 +233,8 @@ public class TutuPeriodAction extends BaseTransactionAction {
 
             divisiId = detailCheckupEntity.getIdPelayanan();
 
-            BigDecimal jumlahResep = checkupDetailBo.getSumJumlahTindakan(bean.getIdDetailCheckup(), "resep");
-            BigDecimal jumlahAllTindakan = checkupDetailBo.getSumJumlahTindakan(bean.getIdDetailCheckup(), "");
+            BigDecimal jumlahResep = checkupDetailBo.getSumJumlahTindakanNonBpjs(bean.getIdDetailCheckup(), "resep");
+            BigDecimal jumlahAllTindakan = checkupDetailBo.getSumJumlahTindakanNonBpjs(bean.getIdDetailCheckup(), "");
             BigDecimal jumlahTindakan = jumlahAllTindakan.subtract(jumlahResep);
 
             bukti = invoiceNumber;
@@ -275,12 +275,23 @@ public class TutuPeriodAction extends BaseTransactionAction {
             Map mapPiutang = new HashMap();
             mapPiutang.put("bukti", bukti);
             mapPiutang.put("nilai", jumlahAllTindakan);
+            mapPiutang.put("master_id", masterId);
+
+            Map mapPendapatan = new HashMap();
+            mapPendapatan.put("master_id", masterId);
+            mapPendapatan.put("divisi_id", divisiId);
+            mapPendapatan.put("nilai", jumlahTindakan);
+
+            Map mapResep = new HashMap();
+            mapResep.put("master_id", masterId);
+            mapResep.put("divisi_id", divisiId);
+            mapResep.put("nilai", jumlahResep);
 
             mapJurnal.put("master_id", masterId);
             mapJurnal.put("divisi_id", divisiId);
             mapJurnal.put("piutang_transistoris_pasien_rawat_inap", mapPiutang);
-            mapJurnal.put("pendapatan_rawat_inap", jumlahTindakan);
-            mapJurnal.put("pendapatan_obat", jumlahResep);
+            mapJurnal.put("pendapatan_rawat_inap", mapPendapatan);
+            mapJurnal.put("pendapatan_obat", mapResep);
 
         }
         String catatan = "Transitoris Rawat Inap saat tutup periode "+jenisPasien;

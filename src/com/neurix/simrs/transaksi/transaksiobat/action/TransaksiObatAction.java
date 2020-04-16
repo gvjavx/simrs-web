@@ -1031,9 +1031,13 @@ public class TransaksiObatAction extends BaseMasterAction {
             return response;
         }
 
+
+        Map mapBiaya = new HashMap();
+        mapBiaya.put("divisi_id", divisiId);
+        mapBiaya.put("nilai", biayaPersediaan);
+
         Map mapJurnal = new HashMap();
-        mapJurnal.put("divisi_id", divisiId);
-        mapJurnal.put("biaya_persediaan_obat", biayaPersediaan);
+        mapJurnal.put("biaya_persediaan_obat", mapBiaya);
         mapJurnal.put("persediaan_apotik", listMapPersediaan);
 
         String branchId = CommonUtil.userBranchLogin();
@@ -1102,8 +1106,8 @@ public class TransaksiObatAction extends BaseMasterAction {
 
             // get all sum tindakan, sum resep
             String isResep = checkupDetailBo.findResep(idDetailCheckup);
-            BigDecimal jumlahResep = checkupDetailBo.getSumJumlahTindakan(idDetailCheckup, "resep");
-            BigDecimal jumlahTindakan = checkupDetailBo.getSumJumlahTindakan(idDetailCheckup, "");
+            BigDecimal jumlahResep = checkupDetailBo.getSumJumlahTindakanNonBpjs(idDetailCheckup, "resep");
+            BigDecimal jumlahTindakan = checkupDetailBo.getSumJumlahTindakanNonBpjs(idDetailCheckup, "");
             BigDecimal ppnObat = new BigDecimal(0);
             if (jumlahResep.compareTo(new BigDecimal(0)) == 1) {
                 ppnObat = jumlahResep.multiply(new BigDecimal(0.1)).setScale(2, BigDecimal.ROUND_HALF_UP);
@@ -1415,11 +1419,15 @@ public class TransaksiObatAction extends BaseMasterAction {
 
         // create jurnal
         Map hsCriteria = new HashMap();
-        hsCriteria.put("master_id", masterId);
-        hsCriteria.put("divisi_id", divisiId);
         hsCriteria.put("metode_bayar", "tunai");
         hsCriteria.put("kas",  pendapatan);
-        hsCriteria.put("pendapatan_obat_umum",new BigDecimal(trans.getTotalBayar()));
+
+        Map mapPendapatan = new HashMap();
+        mapPendapatan.put("nilai", new BigDecimal(trans.getTotalBayar()));
+        mapPendapatan.put("master_id", masterId);
+        mapPendapatan.put("divisi_id", divisiId);
+
+        hsCriteria.put("pendapatan_obat_umum", mapPendapatan);
         hsCriteria.put("ppn_keluaran", mapPPN);
 
         String noJurnal = "";

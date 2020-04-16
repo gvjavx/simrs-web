@@ -43,6 +43,7 @@ public interface CheckupDetailBo {
     public void updateStatusBayarDetailCheckup(HeaderDetailCheckup bean) throws GeneralBOException;
 
     public BigDecimal getSumJumlahTindakan(String idDetailCheckup, String ket);
+    public BigDecimal getSumJumlahTindakanNonBpjs(String idDetailCheckup, String ket);
     public BigDecimal getSumJumlahTindakanTransitoris(String idDetailCheckup, String ket);
     public String findResep(String idDetailCheckup);
     public CheckResponse updateInvoiceBpjs(String idDetailCheckup, String invNumber);

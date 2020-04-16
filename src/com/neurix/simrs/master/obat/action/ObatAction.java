@@ -606,9 +606,12 @@ public class ObatAction extends BaseMasterAction {
                 return response;
             }
 
+            Map mapBiaya = new HashMap();
+            mapBiaya.put("divisi_id", divisiId);
+            mapBiaya.put("nilai", totalHarga);
+
             Map mapJurnal = new HashMap();
-            mapJurnal.put("divisi_id", divisiId);
-            mapJurnal.put("biaya_persediaan_obat", totalHarga);
+            mapJurnal.put("biaya_persediaan_obat", mapBiaya);
             mapJurnal.put("persediaan_gudang", listMapObat);
 
             String catatan = "Retur Barang Gudang ke Vendor. "+bean.getIdVendor()+" - "+ bean.getNamaVendor();

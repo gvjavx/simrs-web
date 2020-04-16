@@ -861,8 +861,6 @@ public class VerifikatorAction extends BaseMasterAction {
             response = closingPasienPtpnBpjs(idDetailCheckup, branchId);
         } else {
             Map hsCriteria = new HashMap();
-            hsCriteria.put("master_id", "02.018");
-            hsCriteria.put("divisi_id", divisiId);
 
             String kode = "";
             String transId = "";
@@ -888,8 +886,13 @@ public class VerifikatorAction extends BaseMasterAction {
                 // hitung ppn
                 BigDecimal ppn = jmlResep.multiply(new BigDecimal(0.1)).setScale(2, BigDecimal.ROUND_HALF_UP);
 
+                Map mapObat = new HashMap();
+                mapObat.put("master_id", "02.018");
+                mapObat.put("divisi_id", divisiId);
+                mapObat.put("nilai", jmlResep);
+
                 // kredit pendapatan obat dan ppn obat
-                hsCriteria.put("pendapatan_obat_bpjs", jmlResep);
+                hsCriteria.put("pendapatan_obat_bpjs", mapObat);
 
                 // kredit ppn
                 Map mapPPN = new HashMap();
@@ -910,12 +913,18 @@ public class VerifikatorAction extends BaseMasterAction {
             Map mapPiutang = new HashMap();
             mapPiutang.put("bukti", headerDetailCheckupEntity.getNoSep());
             mapPiutang.put("nilai", jumlah );
+            mapPiutang.put("master_id", "02.018");
+
+            Map mapTindakan = new HashMap();
+            hsCriteria.put("master_id", "02.018");
+            hsCriteria.put("divisi_id", divisiId);
+            hsCriteria.put("nilai", jmlOnlyTindakan);
 
             if ("JRJ".equalsIgnoreCase(kode)){
                 // debit jumlah untuk piutang pasien bpjs
                 hsCriteria.put("piutang_pasien_bpjs", mapPiutang);
                 // kredit jumlah tindakan
-                hsCriteria.put("pendapatan_rawat_jalan_bpjs", jmlOnlyTindakan);
+                hsCriteria.put("pendapatan_rawat_jalan_bpjs", mapTindakan);
                 ketPoli = "Rawat Jalan";
             }
 
@@ -1045,36 +1054,41 @@ public class VerifikatorAction extends BaseMasterAction {
         invoice = billingSystemBo.createInvoiceNumber(kode, branchId);
 
         Map hsCriteria = new HashMap();
-        hsCriteria.put("master_id", masterId);
-        hsCriteria.put("divisi_id", divisiId);
+//        hsCriteria.put("master_id", masterId);
+//        hsCriteria.put("divisi_id", divisiId);
 
         Map mapPajakObat = new HashMap();
         mapPajakObat.put("bukti", invoice);
         mapPajakObat.put("nilai", ppnObat);
         if ("murni".equalsIgnoreCase(jenisPtpn)){
 
+            Map mapTindakan = new HashMap();
+            mapTindakan.put("master_id", masterId);
+            mapTindakan.put("divisi_id", divisiId);
+            mapTindakan.put("nilai", jumlahTindakan);
+
             if ("JRJ".equalsIgnoreCase(kode)){
 
                 // kredit jumlah tindakan PTPN
-                hsCriteria.put("pendapatan_rawat_jalan_bpjs", jumlahTindakan);
+                hsCriteria.put("pendapatan_rawat_jalan_bpjs", mapTindakan);
 
                 if ("Y".equalsIgnoreCase(isResep)){
 
+                    Map mapObat = new HashMap();
+                    mapTindakan.put("master_id", masterId);
+                    mapTindakan.put("divisi_id", divisiId);
+                    mapTindakan.put("nilai",jumlahResep);
+
                     // kredit jumlah obat PTPN
-                    hsCriteria.put("pendapatan_obat_bpjs", jumlahResep);
+                    hsCriteria.put("pendapatan_obat_bpjs", mapObat);
                     // ppn obat PTPN
                     hsCriteria.put("ppn_keluaran", mapPajakObat);
 
                     // jika ada resep dan ppn untuk debit piutang
                     jumlahAllTindakan = jumlahAllTindakan.add(jumlahResep.add(ppnObat));
 
-                    // create list map PTPN
-                    Map mapPiutang = new HashMap();
-                    mapPiutang.put("bukti", detailCheckupEntity.getNoSep());
-                    mapPiutang.put("nilai", jumlahAllTindakan);
-
                     // debit piutang pasien PTPN
-                    hsCriteria.put("piutang_pasien_bpjs", mapPiutang);
+                    hsCriteria.put("piutang_pasien_bpjs", jumlahAllTindakan);
                     transId = "16";
                     jenisPasien = " Murni Dengan Obat ";
                 } else {
@@ -1083,6 +1097,7 @@ public class VerifikatorAction extends BaseMasterAction {
                     Map mapPiutang = new HashMap();
                     mapPiutang.put("bukti", detailCheckupEntity.getNoSep());
                     mapPiutang.put("nilai", jumlahAllTindakan);
+                    mapPiutang.put("master_id", masterId);
 
                     // debit piutang pasien PTPN
                     hsCriteria.put("piutang_pasien_bpjs", mapPiutang);
@@ -1093,11 +1108,16 @@ public class VerifikatorAction extends BaseMasterAction {
 
             if ("JRI".equalsIgnoreCase(kode)){
 
+                Map mapObat = new HashMap();
+                mapTindakan.put("master_id", masterId);
+                mapTindakan.put("divisi_id", divisiId);
+                mapTindakan.put("nilai",jumlahResep);
+
                 // kredit jumlah pendapatan obat PTPN
-                hsCriteria.put("pendapatan_obat_bpjs", jumlahResep);
+                hsCriteria.put("pendapatan_obat_bpjs", mapObat);
 
                 // kredit jumlah tindakan PTPN
-                hsCriteria.put("pendapatan_rawat_inap_bpjs", jumlahTindakan);
+                hsCriteria.put("pendapatan_rawat_inap_bpjs", mapTindakan);
 
                 // debit piutang pasien PTPN
                 hsCriteria.put("piutang_pasien_bpjs", jumlahTindakan.add(jumlahResep));

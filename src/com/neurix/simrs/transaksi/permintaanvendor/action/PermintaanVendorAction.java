@@ -831,9 +831,13 @@ public class PermintaanVendorAction extends BaseMasterAction {
                     divisiId = pelayananEntity.getKodering();
                 }
 
+                Map mapBiaya = new HashMap();
+                mapBiaya.put("divisi_id", divisiId);
+                mapBiaya.put("nilai", hutangUsaha);
+
                 jurnalMap.put("divisi_id", divisiId);
                 jurnalMap.put("persediaan_gudang", listMapPersediaan);
-                jurnalMap.put("biaya_persediaan_obat", hutangUsaha);
+                jurnalMap.put("biaya_persediaan_obat", mapBiaya);
 
                 catatan = "Pengganti Barang Retur Vendor ke Gudang dari Vendor " + requestVendor.getIdVendor() + " - " + namaVendor;
                 transId = "36";
@@ -842,12 +846,14 @@ public class PermintaanVendorAction extends BaseMasterAction {
                 Map mapPajakObat = new HashMap();
                 mapPajakObat.put("bukti", noDo);
                 mapPajakObat.put("nilai", ppn);
+                mapPajakObat.put("master_id", requestVendor.getIdVendor());
 
                 Map mapHutangVendor = new HashMap();
                 mapHutangVendor.put("bukti", noDo);
                 mapHutangVendor.put("nilai", hutangUsaha);
+                mapHutangVendor.put("master_id", requestVendor.getIdVendor());
+                mapHutangVendor.put("nidivisi_id", divisiId);
 
-                jurnalMap.put("master_id", requestVendor.getIdVendor());
                 jurnalMap.put("persediaan_gudang", listMapPersediaan);
                 jurnalMap.put("hutang_farmasi_vendor", mapHutangVendor);
                 jurnalMap.put("ppn_masukan", mapPajakObat);
