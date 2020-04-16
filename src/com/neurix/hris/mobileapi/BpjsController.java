@@ -512,12 +512,16 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
         Map piutangPasienNonBpjs = new HashMap();
         piutangPasienNonBpjs.put("bukti","INVHU000003");
         piutangPasienNonBpjs.put("nilai",new BigDecimal(110000));
+        piutangPasienNonBpjs.put("pasien_id","00000006");
+
+        Map pendapatanpasien = new HashMap();
+        pendapatanpasien.put("nilai",new BigDecimal(110000));
+        pendapatanpasien.put("pasien_id","00000006");
+        pendapatanpasien.put("divisi_id","01.01.01");
 
         Map data = new HashMap();
-        data.put("pasien_id","00000006");
-        data.put("pendapatan_rawat_jalan_bpjs", new BigDecimal(110000));
-        data.put("piutang_pasien_non_bpjs", piutangPasienNonBpjs);
-        data.put("divisi_id","01.01.01");
+        data.put("pendapatan_rawat_jalan_bpjs", pendapatanpasien);
+        data.put("piutang_pasien_bpjs", piutangPasienNonBpjs);
 
         try {
             billingSystemBoProxy.createJurnal("06",data,"KP","TEST 3 : Closing Pasien Rawat Jalan BPJS tanpa Obat","Y");

@@ -36,7 +36,7 @@
 
             if ( unit != '' && periodeTahun != ''&& periodeBulan != ''&&tipePendapatan!='') {
                 event.originalEvent.options.submit = false;
-                var url = "printReportIkhtisarPendapatan_laporanAkuntansi.action?laporanAkuntansi.unit="+unit+"&laporanAkuntansi.tahun="+periodeTahun+"&laporanAkuntansi.bulan="+periodeBulan+"&laporanAkuntansi.tipeLaporan="+tipePendapatan;
+                var url = "printReportBiaya_laporanAkuntansi.action?laporanAkuntansi.unit="+unit+"&laporanAkuntansi.tahun="+periodeTahun+"&laporanAkuntansi.bulan="+periodeBulan+"&laporanAkuntansi.tipeLaporan="+tipePendapatan;
                 window.open(url,'_blank');
             } else {
                 event.originalEvent.options.submit = false;
@@ -84,7 +84,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Laporan Ikhitisar Pendapatan
+            Laporan Biaya
         </h1>
     </section>
     <!-- Main content -->
@@ -93,7 +93,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Laporan Ikhtisar Pendapatan</h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Laporan Biaya</h3>
                     </div>
                     <div class="box-body">
                         <table width="100%" align="center">
@@ -157,11 +157,11 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Tipe Pendapatan :</small></label>
+                                                    <label class="control-label"><small>Tipe Biaya :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:select list="#{'PD':'Pendapatan', 'PDM' : 'Pendapatan Per Master', 'PDD':'Pendapatan Per Divisi'}"
+                                                        <s:select list="#{'B':'Biaya', 'BD' : 'Biaya Per Divisi'}"
                                                                   id="tipePendapatan" name="laporanAkuntansi.tipeLaporan"
                                                                   headerKey="" headerValue="[Select One]" cssClass="form-control" />
                                                     </table>

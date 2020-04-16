@@ -2645,7 +2645,7 @@ public class PayrollAction extends BaseMasterAction{
 
         Map data = payrollBo.getDataForBilling(searchPayroll);
 
-        billingSystemBo.createJurnal("37",data,branchId,"Pembayaran gaji unit "+branchId+" bulan "+bulan+" tahun "+tahun+"Tipe Payroll "+tipe,"Y");
+        billingSystemBo.createJurnal("37",data,branchId,"Pembayaran gaji unit "+branchId+" bulan "+bulan+" tahun "+tahun+" Tipe Payroll "+tipe,"Y");
 
         payrollBo.approvePayroll(searchPayroll);
     }
