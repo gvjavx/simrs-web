@@ -677,11 +677,11 @@
                             </div>
                             <div class="box-header with-border"></div>
                             <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-print"></i> Operasi </h3>
+                                <h3 class="box-title"><i class="fa fa-desktop"></i> Operasi </h3>
                             </div>
                             <div class="box-body">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-primary"><i class="fa fa-print"></i> Action
+                                    <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Action
                                     </button>
                                     <button type="button" class="btn btn-primary dropdown-toggle"
                                             data-toggle="dropdown" style="height: 34px">
@@ -689,12 +689,12 @@
                                         <span class="sr-only">Toggle Dropdown</span>
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a style="cursor: pointer" onclick="showModalOperasi('ceklist_operasi')"><i class="fa fa-print"></i>Ceklist Serah Terima Pasien Pre Operasi</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalOperasi('penandaan_area')"><i class="fa fa-print"></i>Penandaan Area Operasi Pasien</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalOperasi('pra_anestesi')"><i class="fa fa-print"></i>Asesmen Pra Anestesi</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalOperasi('general_anestesi')"><i class="fa fa-print"></i>Edukasi dan Persetujuan General Anestesi</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalOperasi('regional_anestesi')"><i class="fa fa-print"></i>Edukasi dan Persetujuan Regional Anestesi</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalOperasi('pindah_rr')"><i class="fa fa-print"></i>Kriteia Pindah dari RR</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalOperasi('ceklist_operasi')"><i class="fa fa-circle-o"></i>Ceklist Serah Terima Pasien Pre Operasi</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalOperasi('penandaan_area')"><i class="fa fa-circle-o"></i>Penandaan Area Operasi Pasien</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalOperasi('pra_anestesi')"><i class="fa fa-circle-o"></i>Asesmen Pra Anestesi</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalOperasi('general_anestesi')"><i class="fa fa-circle-o"></i>Edukasi dan Persetujuan General Anestesi</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalOperasi('regional_anestesi')"><i class="fa fa-circle-o"></i>Edukasi dan Persetujuan Regional Anestesi</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalOperasi('pindah_rr')"><i class="fa fa-circle-o"></i>Kriteia Pindah dari RR</a></li>
                                     </ul>
                                 </div>
                             </div>

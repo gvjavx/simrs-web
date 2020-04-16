@@ -1345,3 +1345,304 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modal-op-general_anestesi">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-md"></i> Edukasi Dan Persetujuan General Anestesi
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="alert alert-success alert-dismissible" style="display: none" id="warning_op_general_anestesi">
+                        <h4><i class="icon fa fa-info"></i> Info!</h4>
+                        <p id="msg_op_general_anestesi"></p>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Tambah
+                        </button>
+                        <button type="button" class="btn btn-success dropdown-toggle"
+                                data-toggle="dropdown" style="height: 34px">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a onclick="showModalOperasi('general_informasi')" style="cursor: pointer"><i class="fa fa-plus"></i> Informasi</a></li>
+                            <li><a onclick="showModalOperasi('general_penyataan')" style="cursor: pointer"><i class="fa fa-plus"></i> Pernyataan</a></li>
+                            <li><a onclick="showModalOperasi('general_persetujuan')" style="cursor: pointer"><i class="fa fa-plus"></i> Persetujuan</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <table class="table" id="tabel_op_general_anestesi">
+                        <tbody>
+                        <tr id="row_op_general_informasi">
+                            <td>Informasi</td>
+                            <td width="20%" align="center">
+                                <img id="btn_op_general_informasi" class="hvr-grow" onclick="detailOperasi('general_informasi')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">
+                            </td>
+                        </tr>
+                        <tr id="row_op_general_penyataan">
+                            <td>Pernyataan</td>
+                            <td width="20%" align="center">
+                                <img id="btn_op_general_penyataan" class="hvr-grow" onclick="detailOperasi('general_penyataan')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">
+                            </td>
+                        </tr>
+                        <tr id="row_op_general_persetujuan">
+                            <td>Persetujuan</td>
+                            <td width="20%" align="center">
+                                <img id="btn_op_general_persetujuan" class="hvr-grow" onclick="detailOperasi('general_persetujuan')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-op-general_informasi">
+    <div class="modal-dialog" style="width: 60%">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Informasi
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_op_general_informasi">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_op_general_informasi"></p>
+                </div>
+                <div class="box-body">
+                    <table class="table">
+                        <thead>
+                        <td><b>Jenis Informasi</b></td>
+                        <td><b>Isi Informasi</b></td>
+                        <td width="15%" align="center"><b>Check (<i class="fa fa-check"></i>)</b></td>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Teknik Anestesi</td>
+                            <td>
+                                <div class="row">
+                                    <div class="form-check" style="margin-top: 7px; margin-left: 15px">
+                                        <input type="checkbox" name="ga1" id="ga11" value="General Anestesi">
+                                        <label for="ga11"></label> General Anestesi
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-check" style="margin-top: 7px; margin-left: 15px">
+                                        <input type="checkbox" name="ga1" id="ga12" value="Sedasi Moderat">
+                                        <label for="ga12"></label> Sedasi Moderat
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-check" style="margin-top: 7px; margin-left: 15px">
+                                        <input type="checkbox" name="ga1" id="ga13" value="Sedasi Dalam">
+                                        <label for="ga13"></label> Sedasi Dalam
+                                    </div>
+                                </div>
+                            </td>
+                            <td align="center">
+                                <div class="form-check" style="margin-top: 7px;">
+                                    <input type="checkbox" name="ga2" id="ga21" value="Ya">
+                                    <label for="ga21"></label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Kondisi yang diharapkan</td>
+                            <td>Rasa Cemas berkurang, mengantuk s/d kesadaran hilang, tidak merasa nyeri</td>
+                            <td align="center">
+                                <div class="form-check" style="margin-top: 7px;">
+                                    <input type="checkbox" name="ga3" id="ga31" value="Ya">
+                                    <label for="ga31"></label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Tata cara</td>
+                            <td>Obat yang diinjeksikan ke pembuluh darah, obat dihirupkan keseluruh nafas</td>
+                            <td align="center">
+                                <div class="form-check" style="margin-top: 7px;">
+                                    <input type="checkbox" name="ga4" id="ga41" value="Ya">
+                                    <label for="ga41"></label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Resiko</td>
+                            <td>Aspirasi, udema pasru, cedera mulut (gigi, lidah, bibir), suara serak dan nteri tenggorokan</td>
+                            <td align="center">
+                                <div class="form-check" style="margin-top: 7px;">
+                                    <input type="checkbox" name="ga5" id="ga51" value="Ya">
+                                    <label for="ga51"></label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Tujuan</td>
+                            <td>Mengurangi rasa cemas, menghilangkan nyeri menjaga fungsi organ selama pembedahan</td>
+                            <td align="center">
+                                <div class="form-check" style="margin-top: 7px;">
+                                    <input type="checkbox" name="ga6" id="ga61" value="Ya">
+                                    <label for="ga61"></label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Komplikasi</td>
+                            <td>Reaksi alergi obat, stroke, serangan jantung kematian</td>
+                            <td align="center">
+                                <div class="form-check" style="margin-top: 7px;">
+                                    <input type="checkbox" name="ga7" id="ga71" value="Ya">
+                                    <label for="ga71"></label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Tranfusi</td>
+                            <td>
+                                <div class="row">
+                                    <%--<div class="form-group">--%>
+                                        <%--<div class="col-md-12">--%>
+                                            <%--<div class="custom02" style="margin-top: 7px; margin-left: 15px">--%>
+                                                <%--<input type="radio" value="Tidak" id="ga81" name="ga8" /><label for="ga81">Tidak</label>--%>
+                                            <%--</div>--%>
+                                            <%--<div class="custom02" style="margin-top: 7px; margin-left: 15px">--%>
+                                                <%--<input type="radio" value="Ya" id="ga82" name="ga8" /><label for="ga82">Ya</label>--%>
+                                            <%--</div>--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
+                                        <div class="col-md-2">
+                                            <div class="custom02" style="margin-top: 7px">
+                                                <input type="radio" value="Tidak" id="cek_pf31" name="cek_pf3" /><label for="cek_pf31">Tidak</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="custom02" style="margin-top: 7px">
+                                                <input type="radio" value="Ya" id="cek_pf32" name="cek_pf3" /><label for="cek_pf32">Ya</label>
+                                            </div>
+                                        </div>
+                                </div>
+                            </td>
+                            <td align="center">
+                                <div class="form-check" style="margin-top: 7px;">
+                                    <input type="checkbox" name="ga9" id="ga91" value="Ya">
+                                    <label for="ga91"></label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Prognosa</td>
+                            <td>
+                                <div class="row">
+                                    <input style="margin-left: 15px" class="form-control" id="ga10">
+                                </div>
+                            </td>
+                            <td align="center">
+                                <div class="form-check" style="margin-top: 7px;">
+                                    <input type="checkbox" name="ga11" id="ga111" value="Ya">
+                                    <label for="ga111"></label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Alternatif</td>
+                            <td>
+                                <div class="row">
+                                    <input style="margin-left: 15px" class="form-control" id="ga122">
+                                </div>
+                            </td>
+                            <td align="center">
+                                <div class="form-check" style="margin-top: 7px;">
+                                    <input type="checkbox" name="ga12" id="ga121" value="Ya">
+                                    <label for="ga121"></label>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button id="save_op_general_informasi" class="btn btn-success pull-right" onclick="saveDataOperasi('general_informasi','general_anestesi')"><i class="fa fa-check"></i> Save</button>
+                <button id="load_op_general_informasi" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-op-general_penyataan">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Informasi
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_op_general_penyataan">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_op_general_penyataan"></p>
+                </div>
+                <div class="box-body">
+
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button id="save_op_general_penyataan" class="btn btn-success pull-right" onclick="saveDataOperasi('general_penyataan','general_anestesi')"><i class="fa fa-check"></i> Save</button>
+                <button id="load_op_general_penyataan" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-op-general_persetujuan">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Informasi
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_op_general_persetujuan">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_op_general_persetujuan"></p>
+                </div>
+                <div class="box-body">
+
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button id="save_op_general_persetujuan" class="btn btn-success pull-right" onclick="saveDataOperasi('general_persetujuan','general_anestesi')"><i class="fa fa-check"></i> Save</button>
+                <button id="load_op_general_persetujuan" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
