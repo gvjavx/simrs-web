@@ -389,41 +389,93 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         pembayaranUtangPiutang.setFlag("Y");
 
         try {
-            //////////////////////////////////////////
-            ///////    MEMBUAT BILLING   /////////////
-            //////////////////////////////////////////
-
-
             //Jika pembayaran berhasil
             //MEMBUAT BILLING
-            List<Map> dataMap = new ArrayList<>();
-            String parameter = "";
-            for (PembayaranUtangPiutangDetail pembayaranUtangPiutangDetail : pembayaranUtangPiutangDetailList){
-                BigDecimal jumlahPembayaran = new BigDecimal(pembayaranUtangPiutangDetail.getStJumlahPembayaran().replace(".",""));
+            if (("01").equalsIgnoreCase(pembayaranUtangPiutang.getTipeTransaksi())){
+                //pembayaran piutang pasien bpjs atas NO FPK
+                List<Map> dataMap = new ArrayList<>();
+                for (PembayaranUtangPiutangDetail pembayaranUtangPiutangDetail : pembayaranUtangPiutangDetailList){
+                    BigDecimal jumlahPembayaran = new BigDecimal(pembayaranUtangPiutangDetail.getStJumlahPembayaran().replace(".",""));
 
-                Map hs = new HashMap();
-                hs.put("bukti",pembayaranUtangPiutangDetail.getNoNota());
-                hs.put("nilai",jumlahPembayaran);
-                hs.put("master_id", pembayaranUtangPiutangDetail.getMasterId());
-                dataMap.add(hs);
-            }
-            switch (pembayaranUtangPiutang.getTipeTransaksi()){
-                case ("12"):
-                    parameter="hutang_usaha";
-                    break;
-                case ("21"):
-                    parameter="piutang_rekanan";
-                    break;
-            }
-            Map data = new HashMap();
-            data.put(parameter,dataMap);
+                    Map hs = new HashMap();
+                    hs.put("bukti",pembayaranUtangPiutangDetail.getNoNota());
+                    hs.put("nilai",jumlahPembayaran);
+                    hs.put("master_id", pembayaranUtangPiutangDetail.getMasterId());
+                    dataMap.add(hs);
+                }
+                Map data = new HashMap();
+                data.put("piutang_terverif",dataMap);
+                data.put("kas",bayar);
+                data.put("metode_bayar",pembayaranUtangPiutang.getMetodePembayaran());
+                data.put("bank",pembayaranUtangPiutang.getBank());
+                noJurnal= billingSystemBoProxy.createJurnal(pembayaranUtangPiutang.getTipeTransaksi(),data,pembayaranUtangPiutang.getBranchId(),pembayaranUtangPiutang.getKeterangan(),"N");
+                pembayaranUtangPiutang.setNoJurnal(noJurnal);
+                pembayaranUtangPiutangBoProxy.saveAddPembayaran(pembayaranUtangPiutang,pembayaranUtangPiutangDetailList);
+            }else if(("02").equalsIgnoreCase(pembayaranUtangPiutang.getTipeTransaksi())){
+                //pembayaran piutang pasien non bpjs
+                List<Map> dataMap = new ArrayList<>();
+                for (PembayaranUtangPiutangDetail pembayaranUtangPiutangDetail : pembayaranUtangPiutangDetailList){
+                    BigDecimal jumlahPembayaran = new BigDecimal(pembayaranUtangPiutangDetail.getStJumlahPembayaran().replace(".",""));
 
-            data.put("kas",bayar);
-            data.put("metode_bayar",pembayaranUtangPiutang.getMetodePembayaran());
-            data.put("bank",pembayaranUtangPiutang.getBank());
-            noJurnal= billingSystemBoProxy.createJurnal(pembayaranUtangPiutang.getTipeTransaksi(),data,pembayaranUtangPiutang.getBranchId(),pembayaranUtangPiutang.getKeterangan(),"N");
-            pembayaranUtangPiutang.setNoJurnal(noJurnal);
-           pembayaranUtangPiutangBoProxy.saveAddPembayaran(pembayaranUtangPiutang,pembayaranUtangPiutangDetailList);
+                    Map hs = new HashMap();
+                    hs.put("bukti",pembayaranUtangPiutangDetail.getNoNota());
+                    hs.put("nilai",jumlahPembayaran);
+                    hs.put("master_id", pembayaranUtangPiutangDetail.getMasterId());
+                    dataMap.add(hs);
+                }
+                Map data = new HashMap();
+                data.put("piutang_pasien_non_bpjs",dataMap);
+                data.put("kas",bayar);
+                data.put("metode_bayar",pembayaranUtangPiutang.getMetodePembayaran());
+                data.put("bank",pembayaranUtangPiutang.getBank());
+                noJurnal= billingSystemBoProxy.createJurnal(pembayaranUtangPiutang.getTipeTransaksi(),data,pembayaranUtangPiutang.getBranchId(),pembayaranUtangPiutang.getKeterangan(),"N");
+                pembayaranUtangPiutang.setNoJurnal(noJurnal);
+                pembayaranUtangPiutangBoProxy.saveAddPembayaran(pembayaranUtangPiutang,pembayaranUtangPiutangDetailList);
+            }else if(("03").equalsIgnoreCase(pembayaranUtangPiutang.getTipeTransaksi())){
+                //pembayaran piutang pasien non bpjs
+                List<Map> dataMap = new ArrayList<>();
+                for (PembayaranUtangPiutangDetail pembayaranUtangPiutangDetail : pembayaranUtangPiutangDetailList){
+                    BigDecimal jumlahPembayaran = new BigDecimal(pembayaranUtangPiutangDetail.getStJumlahPembayaran().replace(".",""));
+
+                    Map hs = new HashMap();
+                    hs.put("bukti",pembayaranUtangPiutangDetail.getNoNota());
+                    hs.put("nilai",jumlahPembayaran);
+                    hs.put("master_id", pembayaranUtangPiutangDetail.getMasterId());
+                    dataMap.add(hs);
+                }
+                Map data = new HashMap();
+                data.put("piutang_rekanan",dataMap);
+                data.put("kas",bayar);
+                data.put("metode_bayar",pembayaranUtangPiutang.getMetodePembayaran());
+                data.put("bank",pembayaranUtangPiutang.getBank());
+                noJurnal= billingSystemBoProxy.createJurnal(pembayaranUtangPiutang.getTipeTransaksi(),data,pembayaranUtangPiutang.getBranchId(),pembayaranUtangPiutang.getKeterangan(),"N");
+                pembayaranUtangPiutang.setNoJurnal(noJurnal);
+                pembayaranUtangPiutangBoProxy.saveAddPembayaran(pembayaranUtangPiutang,pembayaranUtangPiutangDetailList);
+            }else if(("05").equalsIgnoreCase(pembayaranUtangPiutang.getTipeTransaksi())){
+                //pembayaran piutang pasien non bpjs
+                List<Map> dataMap = new ArrayList<>();
+                for (PembayaranUtangPiutangDetail pembayaranUtangPiutangDetail : pembayaranUtangPiutangDetailList){
+                    BigDecimal jumlahPembayaran = new BigDecimal(pembayaranUtangPiutangDetail.getStJumlahPembayaran().replace(".",""));
+
+                    Map hs = new HashMap();
+                    hs.put("bukti",pembayaranUtangPiutangDetail.getNoNota());
+                    hs.put("nilai",jumlahPembayaran);
+                    hs.put("master_id", pembayaranUtangPiutangDetail.getMasterId());
+                    dataMap.add(hs);
+                }
+                Map data = new HashMap();
+                data.put("hutang_usaha",dataMap);
+                data.put("kas",bayar);
+                data.put("metode_bayar",pembayaranUtangPiutang.getMetodePembayaran());
+                data.put("bank",pembayaranUtangPiutang.getBank());
+                noJurnal= billingSystemBoProxy.createJurnal(pembayaranUtangPiutang.getTipeTransaksi(),data,pembayaranUtangPiutang.getBranchId(),pembayaranUtangPiutang.getKeterangan(),"N");
+                pembayaranUtangPiutang.setNoJurnal(noJurnal);
+                pembayaranUtangPiutangBoProxy.saveAddPembayaran(pembayaranUtangPiutang,pembayaranUtangPiutangDetailList);
+            }else{
+                String status ="ERROR : belum bisa membuat jurnal pada tipe transaksi yang dipilih";
+                logger.error("[PembayaranUtangPiutangAction.saveAdd] "+status);
+                throw new GeneralBOException(status);
+            }
         }catch (GeneralBOException e) {
             Long logId = null;
             try {

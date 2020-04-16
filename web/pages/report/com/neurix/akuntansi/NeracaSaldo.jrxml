@@ -126,6 +126,7 @@ FROM
           INNER JOIN im_akun_report_detail rd ON rd.rekening_id = kode.rekening_id
         where
           rd.report_id = 'RPT01'
+	and rd.flag='Y'
         group by
           kode_rekening,
           kode.nama_kode_rekening,
@@ -168,6 +169,7 @@ FROM
                   INNER JOIN im_akun_kode_rekening kr ON rd.rekening_id = kr.rekening_id
                 WHERE
                   report_id = 'RPT01'
+		and rd.flag='Y'
               ) a ON kr.kode_rekening ilike CONCAT(a.kode_rekening_parent, '%')
           ) rek ON rek.rekening_id = y.rekening_id
         where

@@ -68,7 +68,6 @@
     <section class="content-header">
         <h1>
             Pembayaran Hutang Piutang
-            <small>e-HEALTH</small>
         </h1>
     </section>
     <!-- Main content -->
@@ -99,7 +98,7 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:if test='#pembayaranUtangPiutang.branchId == "KP"'>
+                                                        <s:if test='pembayaranUtangPiutang.branchId == "KP"'>
                                                             <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                                                             <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="pembayaranUtangPiutang.branchId"
                                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>

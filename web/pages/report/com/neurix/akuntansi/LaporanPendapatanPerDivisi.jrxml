@@ -3,8 +3,8 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.3310000000000015"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="17"/>
+	<property name="ireport.x" value="31"/>
+	<property name="ireport.y" value="44"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -25,18 +25,18 @@
 	<parameter name="parameter2" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
-  distinct a.kode_rekening as kodeRekening,
+  distinct a.divisi_id as divisi_id,
   a.grup as grup,
   $P{periode} as periode,
-  a.nama_kode_rekening as namaRekening,
+  a.position_name as divisi_name,
   (
-    CASE WHEN length(a.kode_rekening) = 12 THEN (b.jumlah_debit - b.jumlah_kredit) ELSE NULL END
+    CASE WHEN length(a.divisi_id) = 8 THEN (b.jumlah_debit - b.jumlah_kredit) ELSE NULL END
   ) as saldo,
   (
-    CASE WHEN length(a.kode_rekening) = 12 THEN (c.jumlah_debit - c.jumlah_kredit) ELSE NULL END
+    CASE WHEN length(a.divisi_id) = 8 THEN (c.jumlah_debit - c.jumlah_kredit) ELSE NULL END
   ) as saldoSekarang,
   (
-    CASE WHEN length(a.kode_rekening) = 12 THEN (
+    CASE WHEN length(a.divisi_id) = 8 THEN (
       CASE WHEN d.jumlah_debit IS NULL
       OR d.jumlah_kredit IS NULL THEN 0 ELSE (d.jumlah_debit - d.jumlah_kredit) END
     ) ELSE NULL END
@@ -45,44 +45,31 @@ FROM
   (
     SELECT
       x.*,
-      y.nama_kode_rekening as grup
+      y.nama_bagian as grup
     FROM
       (
         select
-          kode_rekening,
-          nama_kode_rekening,
-          rekening_id,
-          left(kode_rekening, 9) as grup_id
+          kodering as divisi_id,
+          position_name,
+          left(kodering, 5) as grup_id
         from
-          im_akun_kode_rekening
+          im_position
         where
-          rekening_id IN (
-            select
-              rekening_id
-            from
-              im_akun_report_detail
-            where
-              report_id = $P{reportId}
-	and flag='Y'
-          )
-        group by
-          kode_rekening,
-          nama_kode_rekening,
-          rekening_id
+          flag = 'Y'
         order by
-          kode_rekening
+          position_id
       ) x
-      INNER JOIN im_akun_kode_rekening y ON x.grup_id = y.kode_rekening
+      INNER JOIN im_hris_position_bagian y ON x.grup_id = y.kodering
   ) a
   left outer JOIN (
     select
-      rekening_id,
+      divisi_id,
       sum(jumlah_debit) as jumlah_debit,
       sum(jumlah_kredit) as jumlah_kredit
     from
       (
         select
-          y.rekening_id as rekening_id,
+          y.divisi_id as divisi_id,
           sum(y.jumlah_debit * x.kurs) as jumlah_debit,
           sum(y.jumlah_kredit * x.kurs) as jumlah_kredit
         from
@@ -94,11 +81,20 @@ FROM
               to_date($P{periode}, 'MM-yyyy') + Interval '1 month'
           )
           and x.branch_id IN ($P!{branchId})
+          AND y.rekening_id IN (
+            SELECT
+              rekening_id
+            FROM
+              im_akun_report_detail
+            WHERE
+              report_id =  $P{reportId}
+              AND flag = 'Y'
+          )
         group by
-          y.rekening_id
+          y.divisi_id
         union all
         select
-          i.kode_rekening,
+          i.divisi_id,
           i.jumlah_debit,
           i.jumlah_kredit
         from
@@ -106,14 +102,23 @@ FROM
           inner join it_akun_jurnal_akhir_tahun j on i.no_jurnal = j.no_jurnal
         where
           to_date(j.periode, 'MM-yyyy') = to_date($P{periode}, 'MM-yyyy') - Interval '1 month'
-          and j.branch_id IN ($P!{branchId})
+          and j.branch_id IN ($P{branchId})
+          AND i.rekening_id IN (
+            SELECT
+              rekening_id
+            FROM
+              im_akun_report_detail
+            WHERE
+              report_id = $P{reportId}
+              AND flag = 'Y'
+          )
       ) jurnal_gabungan
     group by
-      rekening_id
-  ) b ON b.rekening_id = a.rekening_id
+      divisi_id
+  ) b ON b.divisi_id = a.divisi_id
   left outer JOIN (
     select
-      y.rekening_id as rekening_id,
+      y.divisi_id as divisi_id,
       sum(y.jumlah_debit * x.kurs) as jumlah_debit,
       sum(y.jumlah_kredit * x.kurs) as jumlah_kredit
     from
@@ -121,15 +126,24 @@ FROM
       inner join it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal
       left outer join im_akun_mata_uang mu ON (x.mata_uang_id = mu.mata_uang_id)
     where
-      to_char(x.tanggal_jurnal, 'MM-yyyy') =  $P{periode}
+      to_char(x.tanggal_jurnal, 'MM-yyyy') = $P{periode}
       and x.registered_flag = 'Y'
       and x.branch_id IN ($P!{branchId})
+      AND y.rekening_id IN (
+        SELECT
+          rekening_id
+        FROM
+          im_akun_report_detail
+        WHERE
+          report_id = $P{reportId}
+          AND flag = 'Y'
+      )
     group by
-      y.rekening_id
-  ) c ON c.rekening_id = a.rekening_id
+      y.divisi_id
+  ) c ON c.divisi_id = a.divisi_id
   left outer JOIN (
     select
-      y.rekening_id as rekening_id,
+      y.divisi_id as divisi_id,
       sum(y.jumlah_debit * x.kurs) as jumlah_debit,
       sum(y.jumlah_kredit * x.kurs) as jumlah_kredit
     from
@@ -141,18 +155,29 @@ FROM
           to_date($P{periode}, 'MM-yyyy')
       )
       and x.branch_id IN ($P!{branchId})
+      AND y.rekening_id IN (
+        SELECT
+          rekening_id
+        FROM
+          im_akun_report_detail
+        WHERE
+          report_id =  $P{reportId}
+          AND flag = 'Y'
+      )
     group by
-      y.rekening_id
-  ) d ON d.rekening_id = a.rekening_id
+      y.divisi_id
+  ) d ON d.divisi_id = a.divisi_id
 where
-  b.jumlah_debit IS NOT NULL]]>
+  b.jumlah_debit IS NOT NULL
+]]>
 	</queryString>
-	<field name="koderekening" class="java.lang.String"/>
+	<field name="divisi_id" class="java.lang.String"/>
 	<field name="grup" class="java.lang.String"/>
 	<field name="periode" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+		<fieldDescription><![CDATA[
+]]></fieldDescription>
 	</field>
-	<field name="namarekening" class="java.lang.String"/>
+	<field name="divisi_name" class="java.lang.String"/>
 	<field name="saldo" class="java.math.BigDecimal"/>
 	<field name="saldosekarang" class="java.math.BigDecimal"/>
 	<field name="lastsaldo" class="java.math.BigDecimal"/>
@@ -178,7 +203,7 @@ where
 		<variableExpression><![CDATA[$V{SUM_saldo_2}.abs()]]></variableExpression>
 	</variable>
 	<variable name="saldoSekarangDisplay" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$F{saldosekarang}==null?($F{koderekening}.length()>3?BigDecimal.ZERO:null):$F{saldosekarang}.abs()]]></variableExpression>
+		<variableExpression><![CDATA[$F{saldosekarang}==null?($F{divisi_id}.length()>3?BigDecimal.ZERO:null):$F{saldosekarang}.abs()]]></variableExpression>
 		<initialValueExpression><![CDATA[BigDecimal.ZERO]]></initialValueExpression>
 	</variable>
 	<variable name="sumSaldoSekarang1Display" class="java.math.BigDecimal">
@@ -550,7 +575,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
-				<text><![CDATA[Kode Rekening]]></text>
+				<text><![CDATA[Divisi]]></text>
 			</staticText>
 			<staticText>
 				<reportElement key="staticText-16" mode="Transparent" x="429" y="2" width="138" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="25555b6b-efc3-49a9-981f-b8e42632b4d0"/>
@@ -588,7 +613,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
-				<text><![CDATA[Nama Rekening]]></text>
+				<text><![CDATA[Uraian]]></text>
 			</staticText>
 			<staticText>
 				<reportElement key="staticText-27" mode="Transparent" x="273" y="2" width="194" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="eb438bc5-d2f1-4f41-921f-c5ea8d5526ec"/>
@@ -644,7 +669,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{koderekening}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{divisi_id}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement key="textField" mode="Transparent" x="68" y="1" width="167" height="15" uuid="79fd5edc-7d17-4151-b4ed-103ab95422eb"/>
@@ -657,11 +682,11 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{namarekening}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{divisi_name}]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement key="line-1" isPrintRepeatedValues="false" x="0" y="15" width="235" height="1" isPrintInFirstWholeBand="true" printWhenGroupChanges="rekening" uuid="03ed574d-83d4-41e2-b914-c46f3797bd6e">
-					<printWhenExpression><![CDATA[new Boolean($F{koderekening}.length() == 3)]]></printWhenExpression>
+					<printWhenExpression><![CDATA[new Boolean($F{divisi_id}.length() == 5)]]></printWhenExpression>
 				</reportElement>
 				<graphicElement>
 					<pen lineWidth="1.0" lineStyle="Dashed"/>
