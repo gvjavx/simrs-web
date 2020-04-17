@@ -474,7 +474,7 @@ public class MappingJurnalAction extends BaseMasterAction {
         }else{
             for (MappingJurnal mappingJurnal : listOfResult){
                 if (kodeRekening.equalsIgnoreCase(mappingJurnal.getKodeRekening())){
-                    save=false;
+//                    save=false;
                 }
             }
         }
