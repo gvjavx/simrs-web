@@ -30,10 +30,12 @@
 
         $.subscribe('beforeProcessSave', function (event, data) {
             var unit    = document.getElementById("branchId").value;
+            var tanggal    = document.getElementById("tanggal").value;
+            var tipePendapatan = document.getElementById("tipePendapatan").value;
 
-            if ( unit != '') {
+            if ( unit != ''&&tanggal!=''&&tipePendapatan!='') {
                 event.originalEvent.options.submit = false;
-                var url = "printLaporanArusKas_laporanAkuntansi.action?laporanAkuntansi.unit="+unit;
+                var url = "printLaporanArusKas_laporanAkuntansi.action?laporanAkuntansi.unit="+unit+"&laporanAkuntansi.stTanggalAwal="+tanggal+"&laporanAkuntansi.tipeLaporan="+tipePendapatan;
                 window.open(url,'_blank');
             } else {
                 event.originalEvent.options.submit = false;
@@ -41,11 +43,8 @@
                 if ( unit == '') {
                     msg += 'Field <strong>Unit </strong> masih belum dipilih' + '<br/>';
                 }
-                if ( periodeTahun == '') {
-                    msg += 'Field <strong>Tahun </strong> masih belum dipilih' + '<br/>';
-                }
-                if ( periodeBulan == '') {
-                    msg += 'Field <strong>Bulan </strong> masih belum dipilih' + '<br/>';
+                if ( tanggal == '') {
+                    msg += 'Field <strong>Tanggal </strong> masih Kosong' + '<br/>';
                 }
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
@@ -79,7 +78,6 @@
     <section class="content-header">
         <h1>
             Laporan Arus Kas
-            <%--<small>e-HEALTH</small>--%>
         </h1>
     </section>
     <!-- Main content -->
@@ -109,7 +107,7 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:if test='#laporanAkuntansi.unit == "KP"'>
+                                                        <s:if test='laporanAkuntansi.unit == "KP"'>
                                                             <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                                                             <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="laporanAkuntansi.unit"
                                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
@@ -123,32 +121,39 @@
                                                     </table>
                                                 </td>
                                             </tr>
-                                            <%--<tr>--%>
-                                                <%--<td>--%>
-                                                    <%--<label class="control-label"><small>Periode :</small></label>--%>
-                                                <%--</td>--%>
-                                                <%--<td>--%>
-                                                    <%--<table>--%>
-                                                        <%--<s:select list="#{'01':'Januari', '02' : 'Februari', '03':'Maret', '04':'April', '05':'Mei', '06':'Juni', '07':'Juli',--%>
-                                <%--'08': 'Agustus', '09' : 'September', '10' : 'Oktober', '11' : 'November', '12' : 'Desember'}"--%>
-                                                                  <%--id="periodeBulan" name="laporanAkuntansi.bulan"--%>
-                                                                  <%--headerKey="" headerValue="[Select One]" cssClass="form-control" />--%>
-                                                    <%--</table>--%>
-                                                <%--</td>--%>
-                                                <%--<td>--%>
-                                                    <%--<table>--%>
-                                                        <%--<s:action id="comboPeriode" namespace="/rekruitmen" name="initComboPeriodeTahunSekarang10_rekruitmen"/>--%>
-                                                        <%--<s:select cssClass="form-control" list="#comboPeriode.listOfComboPeriode" id="periodeTahun"--%>
-                                                                  <%--name="laporanAkuntansi.tahun" required="true" headerKey=""--%>
-                                                                  <%--headerValue="[Select one]"/>--%>
-                                                    <%--</table>--%>
-                                                <%--</td>--%>
-                                                <%--<script>--%>
-                                                    <%--var dt = new Date();--%>
-                                                    <%--$('#periodeBulan').val(("0" + (dt.getMonth() + 1)).slice(-2));--%>
-                                                    <%--$('#periodeTahun').val(dt.getFullYear());--%>
-                                                <%--</script>--%>
-                                            <%--</tr>--%>
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label"><small>Tipe Pendapatan :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:select list="#{'AK':'Arus Kas', 'ARD' : 'Detail Arus Kas'}"
+                                                                  id="tipePendapatan" name="laporanAkuntansi.tipeLaporan"
+                                                                  headerKey="" headerValue="[Select One]" cssClass="form-control" />
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label"><small>Tanggal :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <div class="input-group date">
+                                                            <div class="input-group-addon">
+                                                                <i class="fa fa-calendar"></i>
+                                                            </div>
+                                                            <s:textfield id="tanggal" cssClass="form-control pull-right"
+                                                                         required="false" cssStyle=""/>
+                                                        </div>
+                                                        <script>
+                                                            $('#tanggal').datepicker({
+                                                                dateFormat: 'dd-mm-yy'
+                                                            });
+                                                        </script>
+                                                    </table>
+                                                </td>
+                                            </tr>
                                         </table>
                                         <br>
                                         <div id="actions" class="form-actions">

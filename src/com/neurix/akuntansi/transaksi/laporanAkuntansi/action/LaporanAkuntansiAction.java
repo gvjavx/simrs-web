@@ -1588,22 +1588,68 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
 
     public String printLaporanArusKas(){
         logger.info("[LaporanAkuntansiAction.printLaporanArusKas] start process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        LaporanAkuntansiBo laporanAkuntansiBo = (LaporanAkuntansiBo) ctx.getBean("laporanAkuntansiBoProxy");
+        BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+        LaporanAkuntansi data = getLaporanAkuntansi();
+        Branch branch = branchBo.getBranchById(data.getUnit(),"Y");
+        String titleReport="";
+        String reportId="RPT21";
+        String unit = "";
+        if (("KP").equalsIgnoreCase(data.getUnit())){
+            List<Branch> branchList = new ArrayList<>();
+            branchList = branchBo.getAll();
+            int i = 1;
+            for (Branch dataUnit : branchList){
+                if (i==1){
+                    unit="'"+dataUnit.getBranchId()+"'";
+                }else{
+                    unit=unit+",'"+dataUnit.getBranchId()+"'";
+                }
+                i++;
+            }
+        }else{
+            unit="'"+data.getUnit()+"'";
+        }
 
-        LaporanAkuntansi laporanAkuntansi = getLaporanAkuntansi();
-        String branchId = laporanAkuntansi.getUnit();
+        String result="";
 
-        Branch branch = branchBoProxy.getBranchById(branchId,"Y");
-        java.sql.Date date = new java.sql.Date(System.currentTimeMillis());
-        String areaId = CommonUtil.userAreaName();
+        switch (data.getTipeLaporan()){
+            case "AK":
+                titleReport="LAPORAN ARUS KAS";
+                result="print_report_arus_kas";
+                break;
+            case "ARD":
+                titleReport="LAPORAN ARUS KAS DETAIL";
+                result="print_report_arus_kas_detail";
+                break;
+        }
 
-        reportParams.put("kota", "Surabaya");
-        reportParams.put("areaId", areaId);
-        reportParams.put("periodeTitle", date.toString());
+        reportParams.put("reportTitle", titleReport);
+        reportParams.put("reportId", reportId);
         reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
-        reportParams.put("areaId", areaId);
-
+        reportParams.put("branchId", unit);
+        reportParams.put("periodeTitle", data.getStTanggalAwal());
+        Date now = new Date();
+        reportParams.put("tanggal", CommonUtil.convertDateToString(now));
+        reportParams.put("periode", data.getStTanggalAwal());
+        reportParams.put("kota",branch.getBranchName());
+        reportParams.put("alamatSurat",branch.getAlamatSurat());
+        reportParams.put("areaId",CommonUtil.userAreaName());
+        try {
+            preDownload();
+        } catch (SQLException e) {
+            Long logId = null;
+            try {
+                logId = laporanAkuntansiBo.saveErrorMessage(e.getMessage(), "printLaporanArusKas");
+            } catch (GeneralBOException e1) {
+                logger.error("[LaporanAkuntansiAction.printLaporanArusKas] Error when downloading ,", e1);
+            }
+            logger.error("[LaporanAkuntansiAction.printLaporanArusKas] Error when print report ," + "[" + logId + "] Found problem when downloading data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when downloading data, please inform to your admin.");
+        }
         logger.info("[LaporanAkuntansiAction.printLaporanArusKas] end process <<<");
-        return "print_arus_kas";
+        return result;
     }
 
     public String searchLaporanArusKas(){
