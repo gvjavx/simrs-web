@@ -47,6 +47,7 @@ import com.neurix.simrs.transaksi.JurnalResponse;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
+import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 
@@ -2876,6 +2877,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             String user = CommonUtil.userLogin();
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+            RiwayatTindakanBo riwayatTindakanBo = (RiwayatTindakanBo) ctx.getBean("riwayatTindakanBoProxy");
 
             HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
             headerDetailCheckup.setIdDetailCheckup(idDetailCheckup);
@@ -2892,6 +2894,52 @@ public class CheckupDetailAction extends BaseMasterAction {
                 saveAddToRiwayatTindakan(idDetailCheckup, jenisPasien);
             }
 
+            if ("asuransi".equalsIgnoreCase(jenisPasien)){
+
+                ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailBo.getEntityDetailCheckupByIdDetail(idDetailCheckup);
+                if (detailCheckupEntity != null){
+                    BigDecimal cover = detailCheckupEntity.getCoverBiaya();
+                    BigDecimal jumlahAllTindakanAsuransi = checkupDetailBo.getSumJumlahTindakanByJenis(idDetailCheckup, jenisPasien, "");
+                    BigDecimal jumlahResepAsuransi = checkupDetailBo.getSumJumlahTindakanByJenis(idDetailCheckup, jenisPasien, "resep");
+                    if (jumlahAllTindakanAsuransi.compareTo(cover) == 1){
+                        RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
+                        riwayatTindakan.setIdDetailCheckup(idDetailCheckup);
+                        riwayatTindakan.setJenisPasien(jenisPasien);
+                        riwayatTindakan.setNotResep("Y");
+                        List<ItSimrsRiwayatTindakanEntity> riwayatTindakanEntities = riwayatTindakanBo.getListEntityRiwayatTindakan(riwayatTindakan);
+
+                        if (riwayatTindakanEntities.size() > 0){
+                            BigDecimal jumlahBiaya = new BigDecimal(0);
+                            BigDecimal coverTanpaResepAsurasi = cover.subtract(jumlahResepAsuransi);
+                            for (ItSimrsRiwayatTindakanEntity riwayatTindakanEntity : riwayatTindakanEntities){
+
+                                BigDecimal perhitunganBiaya = jumlahBiaya.add(riwayatTindakanEntity.getTotalTarif());
+
+                                // jika jumlahBiaya Lebih besar dari pada yg di cover maka;
+                                // tindakan dialihkan ke umum;
+                                if (perhitunganBiaya.compareTo(coverTanpaResepAsurasi) == 1){
+
+                                    riwayatTindakanEntity.setJenisPasien("umum");
+                                    riwayatTindakanEntity.setAction("U");
+                                    riwayatTindakanEntity.setLastUpdate(updateTime);
+                                    riwayatTindakanEntity.setLastUpdateWho(user);
+
+                                    try {
+                                        riwayatTindakanBo.updateByEntity(riwayatTindakanEntity);
+                                    } catch (GeneralBOException e) {
+                                        logger.error("[CheckupDetailAction.saveApproveAllTindakanRawatJalan] ERROR. ", e);
+                                        response.setStatus("error");
+                                        response.setMessage("[CheckupDetailAction.saveApproveAllTindakanRawatJalan] ERROR. "+e);
+                                    }
+
+                                } else {
+                                    jumlahBiaya = jumlahBiaya.add(riwayatTindakanEntity.getTotalTarif());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         logger.info("[CheckupDetailAction.saveApproveAllTindakanRawatJalan] END process >>>");

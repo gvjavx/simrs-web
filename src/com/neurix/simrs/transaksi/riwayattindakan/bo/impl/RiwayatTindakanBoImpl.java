@@ -220,6 +220,16 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
         }
     }
 
+    @Override
+    public void updateByEntity(ItSimrsRiwayatTindakanEntity entity) throws GeneralBOException {
+        try {
+            riwayatTindakanDao.updateAndSave(entity);
+        } catch (HibernateException e){
+            logger.error("[RiwayatTindakanBoImpl.updateByEntity] ERROR When update tindakan", e);
+            throw new GeneralBOException("[RiwayatTindakanBoImpl.updateByEntity] ERROR When update tindakan", e);
+        }
+    }
+
     private String getNextIdRiwayatTindakan(){
         String id = "";
         try {

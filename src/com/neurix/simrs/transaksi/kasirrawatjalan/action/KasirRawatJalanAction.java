@@ -913,7 +913,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 uangPiutang = new BigDecimal(obj.getLong("nilai"));
             } else if ("ppn_keluaran".equalsIgnoreCase(obj.getString("type").toString())) {
                 ppnObat = new BigDecimal(obj.getLong("nilai"));
-            } else if ("pendapatan_rawat_inap_asuransi".equalsIgnoreCase(obj.getString("type").toString())) {
+            } else if ("pendapatan_rawat_inap_asuransi".equalsIgnoreCase(obj.getString("type").toString()) || "pendapatan_rawat_jalan_asuransi".equalsIgnoreCase(obj.getString("type").toString())) {
                 pendapatanRawat = new BigDecimal(obj.getLong("nilai"));
             } else if ("pendapatan_obat_asuransi".equalsIgnoreCase(obj.getString("type").toString())) {
                 pendapatanResep = new BigDecimal(obj.getLong("nilai"));
@@ -1549,9 +1549,9 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         Map mapUangMuka = new HashMap();
         mapUangMuka.put("bukti", noNota);
         mapUangMuka.put("nilai", uangMuka);
+        mapUangMuka.put("master_id", noPasien);
 
         Map mapJurnal = new HashMap();
-        mapJurnal.put("master_id", noPasien);
         mapJurnal.put("uang_muka", mapUangMuka);
         mapJurnal.put("kas", uangMuka);
 

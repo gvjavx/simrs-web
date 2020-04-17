@@ -1002,7 +1002,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 "WHERE \n" +
                 "id_detail_checkup = :idDetail\n" +
                 "AND keterangan LIKE :ket\n" +
-                "AND jenis_pasien = :jenis\n" +
+                "AND jenis_pasien LIKE :jenis\n" +
                 "GROUP BY id_detail_checkup";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
