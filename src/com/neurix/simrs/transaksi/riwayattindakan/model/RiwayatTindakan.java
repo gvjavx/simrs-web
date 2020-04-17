@@ -36,8 +36,11 @@ public class RiwayatTindakan extends BaseModel {
     private String stTglTindakan;
     private String kategoriInaBpjs;
     private String rekanan;
+    private String notResep;
 
     private BigDecimal ppnObat;
+
+
 
     public String getRekanan() {
         return rekanan;
@@ -249,5 +252,13 @@ public class RiwayatTindakan extends BaseModel {
     @Override
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    public String getNotResep() {
+        return notResep;
+    }
+
+    public void setNotResep(String notResep) {
+        this.notResep = notResep;
     }
 }

@@ -46,8 +46,14 @@ public class RiwayatTindakanDao extends GenericDao<ItSimrsRiwayatTindakanEntity,
             if (mapCriteria.get("approve_bpjs_flag") != null) {
                 criteria.add(Restrictions.eq("idRiwayatTindakan", (String) mapCriteria.get("approve_bpjs_flag")));
             }
+            if (mapCriteria.get("jenis_pasien") != null) {
+                criteria.add(Restrictions.eq("jenisPasien", (String) mapCriteria.get("jenis_pasien")));
+            }
             if (mapCriteria.get("flag") != null) {
                 criteria.add(Restrictions.eq("flag", (String) mapCriteria.get("flag")));
+            }
+            if (mapCriteria.get("not_resep") != null) {
+                criteria.add(Restrictions.ne("keterangan", "resep"));
             }
         }
 

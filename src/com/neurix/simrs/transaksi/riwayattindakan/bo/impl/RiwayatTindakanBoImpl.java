@@ -162,6 +162,12 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
             if (bean.getKeterangan() != null) {
                 hsCriteria.put("keterangan", bean.getKeterangan());
             }
+            if (bean.getJenisPasien() != null) {
+                hsCriteria.put("jenis_pasien", bean.getJenisPasien());
+            }
+            if (bean.getNotResep() != null) {
+                hsCriteria.put("not_resep", bean.getNotResep());
+            }
 
             hsCriteria.put("flag", "Y");
 
