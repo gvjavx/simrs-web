@@ -162,13 +162,11 @@ public class BillingSystemBoImpl implements BillingSystemBo {
 
         String bulanSekarang = String.valueOf(Integer.parseInt(datetime.toString("MM")));
         String tahunSekarang = datetime.toString("YYYY");
-        boolean periodSudahTutup = false;
+        String periodSudahTutup=null;
 
         List<ItSimrsBatasTutupPeriodEntity> batasTutupPeriodEntityList = batasTutupPeriodDao.getBatasTutupPeriod(branchId,bulanSekarang,tahunSekarang);
         for (ItSimrsBatasTutupPeriodEntity simrsBatasTutupPeriodEntity : batasTutupPeriodEntityList){
-            if (simrsBatasTutupPeriodEntity.getFlagTutup()!=null){
-                periodSudahTutup=true;
-            }
+            periodSudahTutup=simrsBatasTutupPeriodEntity.getFlagTutup();
         }
 
         if (tipeJurnalId!=null){
@@ -208,7 +206,15 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                 jurnalEntity.setLastUpdate(updateTime);
                 jurnalEntity.setAction("C");
 
-                if (!periodSudahTutup){
+                if (periodSudahTutup==null){
+                    try {
+                        jurnalDao.addAndSave(jurnalEntity);
+                    } catch (HibernateException e) {
+                        logger.error("[PembayaranUtangPiutangBoImpl.createJurnal] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                    }
+                }else if ("Y".equalsIgnoreCase(periodSudahTutup)){
+                    jurnalEntity.setTanggalJurnal(new java.sql.Date(bulanBerikutnya.getMillis()));
                     try {
                         jurnalDao.addAndSave(jurnalEntity);
                     } catch (HibernateException e) {
@@ -262,7 +268,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
     }
 
     //////////////////////////////////////// DETAIL BILLING PER TRANS //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private String createJurnalDetail ( Map data , String noJurnal ,String tipeJurnalId,String transId,boolean periodSudahTutup ){
+    private String createJurnalDetail ( Map data , String noJurnal ,String tipeJurnalId,String transId,String periodSudahTutup ){
         //MEMBUAT JURNAL DETAIL
         String status;
         String metodeBayar=null;
@@ -773,7 +779,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
             //Pengecekan apakah antara debet dan kredit sudah balance
             BigDecimal balance = totalDebit.subtract(totalKredit);
             if (balance.compareTo(new BigDecimal(0)) == 0){
-                if (!periodSudahTutup){
+                if (periodSudahTutup==null||("Y").equalsIgnoreCase(periodSudahTutup)){
                     for (ItJurnalDetailEntity jurnalDetailEntity : jurnalDetailEntityList){
                         /////////////////////// Save data ///////////////////////
                         if (jurnalDetailEntity.getJumlahDebit().compareTo(BigDecimal.ZERO)==0&&jurnalDetailEntity.getJumlahKredit().compareTo(BigDecimal.ZERO)==0){

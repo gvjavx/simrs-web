@@ -1665,7 +1665,81 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         logger.info("[LaporanAkuntansiAction.searchLaporanArusKas] end process <<<");
         return "search_arus_kas";
     }
+    public String searchReportKompilasi(){
+        logger.info("[LaporanAkuntansiAction.searchLaporanKompilasi] start process >>>");
 
+        String branchId = CommonUtil.userBranchLogin();
+
+        LaporanAkuntansi laporanAkuntansi = new LaporanAkuntansi();
+        laporanAkuntansi.setUnit(branchId);
+
+        setLaporanAkuntansi(laporanAkuntansi);
+
+        logger.info("[LaporanAkuntansiAction.searchLaporanKompilasi] end process <<<");
+        return "search_kompilasi";
+    }
+    public String printLaporanKompilasi(){
+        logger.info("[LaporanAkuntansiAction.printLaporanKompilasi] start process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        LaporanAkuntansiBo laporanAkuntansiBo = (LaporanAkuntansiBo) ctx.getBean("laporanAkuntansiBoProxy");
+        BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+        LaporanAkuntansi data = getLaporanAkuntansi();
+        String titleReport="";
+        String reportId="RPT24";
+        String result="";
+        if (("K").equalsIgnoreCase(data.getTipeLaporan())){
+            data.setUnit("KP");
+            titleReport="LAPORAN KEUANGAN KOMPILASI";
+            result="print_report_kompilasi_all";
+
+            //mencari semua branch dahulu
+            List<Branch> branchList = branchBo.getBranchList();
+            int i =1;
+            String unit="";
+            for (Branch dataUnit : branchList){
+                reportParams.put("branch_id_"+i, dataUnit.getBranchId());
+                reportParams.put("branch_name_"+i, dataUnit.getBranchName());
+
+                if (i==1){
+                    unit="'"+dataUnit.getBranchId()+"'";
+                }else{
+                    unit=unit+",'"+dataUnit.getBranchId()+"'";
+                }
+                i++;
+            }
+            reportParams.put("branch_id_all", unit);
+        }else{
+            titleReport="LAPORAN POSISI KEUANGAN";
+            result="print_report_kompilasi";
+        }
+
+        Branch branch = branchBo.getBranchById(data.getUnit(),"Y");
+        Date now = new Date();
+        reportParams.put("reportTitle", titleReport);
+        reportParams.put("reportId", reportId);
+        reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
+        reportParams.put("branchId", data.getUnit());
+        reportParams.put("periodeTitle", CommonUtil.convertNumberToStringBulan(data.getBulan())+" "+data.getTahun());
+        reportParams.put("tanggal", CommonUtil.convertDateToString(now));
+        reportParams.put("periode", data.getBulan()+"-"+data.getTahun());
+        reportParams.put("kota",branch.getBranchName());
+        reportParams.put("alamatSurat",branch.getAlamatSurat());
+        reportParams.put("areaId",CommonUtil.userAreaName());
+        try {
+            preDownload();
+        } catch (SQLException e) {
+            Long logId = null;
+            try {
+                logId = laporanAkuntansiBo.saveErrorMessage(e.getMessage(), "printLaporanKompilasi");
+            } catch (GeneralBOException e1) {
+                logger.error("[LaporanAkuntansiAction.printLaporanKompilasi] Error when downloading ,", e1);
+            }
+            logger.error("[LaporanAkuntansiAction.printLaporanKompilasi] Error when print report ," + "[" + logId + "] Found problem when downloading data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when downloading data, please inform to your admin.");
+        }
+        logger.info("[LaporanAkuntansiAction.printLaporanKompilasi] end process <<<");
+        return result;
+    }
     private String getMataUangKurs(String mataUangId) {
         return "0";
     }

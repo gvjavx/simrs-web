@@ -100,6 +100,15 @@ public class BranchDao extends GenericDao<ImBranches,ImBranchesPK> {
         return results;
     }
 
+    public List<ImBranches> getBranchList() throws HibernateException {
+
+        List<ImBranches> results = this.sessionFactory.getCurrentSession().createCriteria(ImBranches.class)
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("primaryKey.id"))
+                .list();
+
+        return results;
+    }
 
     public long getNextBranch() throws HibernateException {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_branch')");
