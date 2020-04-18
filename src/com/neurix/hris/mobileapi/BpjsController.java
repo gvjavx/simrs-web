@@ -598,22 +598,34 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
         }
     }
 
-    //case 3
+    //case 7
     // untuk pembayaran yang masuk ke dalam kas
     public void createJurnalBillingCase7 (){
-        Map piutangPasienNonBpjs = new HashMap();
-        piutangPasienNonBpjs.put("bukti","INVHU000003");
-        piutangPasienNonBpjs.put("nilai",new BigDecimal(110000));
+        List<Map> activityList = new ArrayList<>();
+        Map activity = new HashMap();
+        activity.put("activity_id","1111");
+        activity.put("person_id","88888888");
+        activity.put("no_trans","DCM11111");
+        activity.put("nilai",new BigDecimal(110000));
+        activityList.add(activity);
+
+        Map uangMuka = new HashMap();
+        uangMuka.put("pasien_id","P0000001");
+        uangMuka.put("bukti","INVHU000003");
+        uangMuka.put("nilai",new BigDecimal(110000));
+        uangMuka.put("activity",activityList);
+
+        Map kas = new HashMap();
+        kas.put("metode_bayar", "transfer");
+        kas.put("bank", "1.1.01.02.01");
+        kas.put("nilai",new BigDecimal(110000));
 
         Map data = new HashMap();
-        data.put("pasien_id","00000006");
-        data.put("kas", new BigDecimal(110000));
-        data.put("piutang_pasien_non_bpjs", piutangPasienNonBpjs);
-        data.put("metode_bayar", "transfer");
-        data.put("bank", "bri");
+        data.put("kas", kas);
+        data.put("uang_muka", uangMuka);
 
         try {
-            billingSystemBoProxy.createJurnal("11",data,"RS01","TEST 3 : untuk pembayaran yang masuk ke dalam bank","Y");
+            billingSystemBoProxy.createJurnal("04",data,"RS01","TEST 4 : pembayaran uang muka","Y");
         }catch (Exception e){
             logger.error("[BpjsController.createJurnalBillingCase3] Error : " + "[" + e + "]");
         }
@@ -634,7 +646,7 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
         data.put("bank", "mandiri");
 
         try {
-            billingSystemBoProxy.createJurnal("02",data,"RS01","TEST 4 : Closing Pasien Rawat Jalan BPJS tanpa Obat","Y");
+            billingSystemBoProxy.createJurnal("04",data,"RS01","TEST 7 : Pembayaran uang muka","Y");
         }catch (Exception e){
             logger.error("[BpjsController.createJurnalBillingCase3] Error : " + "[" + e + "]");
         }
