@@ -90,7 +90,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Jenis Pasien</label>
                                     <div class="col-sm-4">
-                                        <s:select list="#{'bpjs':'BPJS'}" cssStyle="margin-top: 7px"
+                                        <s:select list="#{'asuransi':'ASURANSI'}" cssStyle="margin-top: 7px"
                                                   headerKey="umum" headerValue="UMUM" name="rawatInap.idJenisPeriksa"
                                                   cssClass="form-control"/>
                                     </div>

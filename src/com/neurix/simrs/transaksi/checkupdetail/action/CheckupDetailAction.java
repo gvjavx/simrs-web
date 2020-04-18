@@ -1316,7 +1316,9 @@ public class CheckupDetailAction extends BaseMasterAction {
                 boolean nonTransitoris = true;
                 if ("JRI".equalsIgnoreCase(type)){
                     ItSimrsTindakanTransitorisEntity transitorisEntity = riwayatTindakanBo.getTindakanTransitorisById(riwayatTindakanEntity.getIdRiwayatTindakan());
-                    if (transitorisEntity == null){
+                    if (transitorisEntity != null){
+                        // jika ditemukan transitoris
+                        // maka transitoris;
                         nonTransitoris = false;
                     }
                 }
@@ -1817,7 +1819,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                             pelayanan = pelayananList.get(0);
                         }
 
-                        if ("bpjs".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien())) {
+                        if ("bpjs".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien()) || "ptpn".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien())) {
 
                             Branch branch = new Branch();
                             branch.setBranchId(branchId);
@@ -2117,6 +2119,11 @@ public class CheckupDetailAction extends BaseMasterAction {
                                     logger.error("Found Error when search branch id");
                                     return finalResponse;
                                 }
+                            }
+
+                            if ("ptpn".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien())){
+                                headerDetailCheckup.setIdAsuransi(detailCheckup.getIdAsuransi());
+                                headerDetailCheckup.setNoKartuAsuransi(detailCheckup.getNoKartuAsuransi());
                             }
                         } else if ("asuransi".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien())){
                             HeaderDetailCheckup biayaCover = getBiayaAsuransi(detailCheckup.getIdDetailCheckup());

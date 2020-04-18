@@ -136,6 +136,15 @@ public class HeaderDetailCheckup extends BaseModel{
     private String noJurnalTrans;
     private Timestamp transDate;
     private String transPeriode;
+    private String invoiceTrans;
+
+    public String getInvoiceTrans() {
+        return invoiceTrans;
+    }
+
+    public void setInvoiceTrans(String invoiceTrans) {
+        this.invoiceTrans = invoiceTrans;
+    }
 
     public String getKodering() {
         return kodering;

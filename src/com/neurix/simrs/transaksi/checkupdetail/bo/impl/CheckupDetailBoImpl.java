@@ -258,6 +258,9 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             detailCheckup.setIdKelas(entity.getKelasPasien());
             detailCheckup.setIdPelayananBpjs(entity.getIdPelayananBpjs());
             detailCheckup.setIdJenisPeriksaPasien(entity.getIdJenisPeriksaPasien());
+            detailCheckup.setNoKartuAsuransi(entity.getNoKartuAsuransi());
+            detailCheckup.setIdAsuransi(entity.getIdAsuransi());
+            detailCheckup.setCoverBiaya(entity.getCoverBiaya());
 
             if (detailCheckup.getStatusPeriksa() != null && !"".equalsIgnoreCase(detailCheckup.getStatusPeriksa())) {
                 StatusPasien statusPasien = new StatusPasien();
@@ -471,6 +474,9 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         detailCheckupEntity.setKodeCbg(bean.getKodeCbg());
         detailCheckupEntity.setBranchId(bean.getBranchId());
         detailCheckupEntity.setIdJenisPeriksaPasien(bean.getIdJenisPeriksaPasien());
+        detailCheckupEntity.setIdAsuransi(bean.getIdAsuransi());
+        detailCheckupEntity.setCoverBiaya(bean.getCoverBiaya());
+        detailCheckupEntity.setNoKartuAsuransi(bean.getNoKartuAsuransi());
 
         try {
             checkupDetailDao.addAndSave(detailCheckupEntity);
@@ -1263,6 +1269,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                         detailCheckupEntity.setNoJurnalTrans(bean.getNoJurnalTrans());
                         detailCheckupEntity.setTransPeriode(bean.getTransPeriode());
                         detailCheckupEntity.setTransDate(bean.getTransDate());
+                        detailCheckupEntity.setInvoiceTrans(bean.getInvoice());
                     } else {
                         detailCheckupEntity.setNoJurnal(bean.getNoJurnal());
                     }

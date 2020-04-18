@@ -396,7 +396,7 @@ public class TutuPeriodAction extends BaseTransactionAction {
                 boolean nonTransitoris = true;
                 if ("JRI".equalsIgnoreCase(type)){
                     ItSimrsTindakanTransitorisEntity transitorisEntity = riwayatTindakanBo.getTindakanTransitorisById(riwayatTindakanEntity.getIdRiwayatTindakan());
-                    if (transitorisEntity == null){
+                    if (transitorisEntity != null){
                         nonTransitoris = false;
                     }
                 }
