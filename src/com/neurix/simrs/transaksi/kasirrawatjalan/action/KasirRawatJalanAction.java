@@ -837,11 +837,11 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 // maka obat dikenakan PPN
                 BigDecimal ppn = new BigDecimal(0);
                 // mencari apakah tindakan transitoris
-                boolean nonTransitoris = false;
+                boolean nonTransitoris = true;
                 if ("JRI".equalsIgnoreCase(type)){
                     ItSimrsTindakanTransitorisEntity transitorisEntity = riwayatTindakanBo.getTindakanTransitorisById(riwayatTindakanEntity.getIdRiwayatTindakan());
                     if (transitorisEntity == null){
-                        nonTransitoris = true;
+                        nonTransitoris = false;
                     }
                 }
 
