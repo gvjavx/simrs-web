@@ -387,11 +387,11 @@
                             </div>
                             <div class="box-header with-border"></div>
                             <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-print"></i> MPP </h3><small> (Manajemen Pelayanan Pasien)</small>
+                                <h3 class="box-title"><i class="fa fa-file-o"></i> MPP </h3><small> (Manajemen Pelayanan Pasien)</small>
                             </div>
                             <div class="box-body">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-success"><i class="fa fa-print"></i> Action
+                                    <button type="button" class="btn btn-success"><i class="fa fa-edit"></i> Action
                                     </button>
                                     <button type="button" class="btn btn-success dropdown-toggle"
                                             data-toggle="dropdown" style="height: 34px">
@@ -399,12 +399,8 @@
                                         <span class="sr-only">Toggle Dropdown</span>
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a target="_blank"
-                                               href="printGeneralConcent_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
-                                            <i class="fa fa-print"></i>Form-A Evaluasi Awal</a></li>
-                                        <li><a target="_blank"
-                                               href="printPelepasanInformasi_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
-                                            <i class="fa fa-print"></i>Form-B Catatan Implementasi</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalMpp('evaluasi_awal')"><i class="fa fa-circle-o"></i>Form-A Evaluasi Awal</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalMpp('impementasi_mpp')"><i class="fa fa-circle-o"></i>Form-B Catatan Implementasi</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -507,7 +503,7 @@
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Action
                                     </button>
-                                    <button type="button" class="btn btn-primary dropdown-toggle"
+                                    <button onclick="loadModalRM('fisioterapi')" type="button" class="btn btn-primary dropdown-toggle"
                                             data-toggle="dropdown" style="height: 34px">
                                         <span class="caret"></span>
                                         <span class="sr-only">Toggle Dropdown</span>
@@ -683,7 +679,7 @@
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Action
                                     </button>
-                                    <button type="button" class="btn btn-primary dropdown-toggle"
+                                    <button onclick="loadModalRM('operasi')" type="button" class="btn btn-primary dropdown-toggle"
                                             data-toggle="dropdown" style="height: 34px">
                                         <span class="caret"></span>
                                         <span class="sr-only">Toggle Dropdown</span>
@@ -726,13 +722,13 @@
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Action
                                     </button>
-                                    <button type="button" class="btn btn-primary dropdown-toggle"
+                                    <button onclick="loadModalRM('ugd')" type="button" class="btn btn-primary dropdown-toggle"
                                             data-toggle="dropdown" style="height: 34px">
                                         <span class="caret"></span>
                                         <span class="sr-only">Toggle Dropdown</span>
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a href="#" onclick="showAsesmenUgd()"><i class="fa fa-user-plus"></i>Asesmen Awal Gawat Darurat</a></li>
+                                        <li><a style="cursor: pointer" onclick="showAsesmenUgd()"><i class="fa fa-user-plus"></i>Asesmen Awal Gawat Darurat</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -745,20 +741,36 @@
     <!-- /.content -->
 </div>
 
-<%@ include file="/pages/com/neurix/simrs/transaksi/rekammedik/modalOperasi.jsp" %>
-<%@ include file="/pages/com/neurix/simrs/transaksi/rekammedik/modalFisioterapi.jsp" %>
-<%@ include file="/pages/com/neurix/simrs/transaksi/rekammedik/modalAsesmenUGD.jsp" %>
+<div id="conten-modal"></div>
 
 <script type='text/javascript' src='<s:url value="/dwr/interface/FisioterapiAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenUgdAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenOperasiAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/MppAction.js"/>'></script>
 
 <script type='text/javascript' src='<s:url value="/pages/dist/js/paintTtd.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/operasi.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/fisioterapi.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/asesmenUgd.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/mpp.js"/>'></script>
 
 <script type='text/javascript'>
+
+    function loadModalRM(jenis){
+        var context = "";
+        if(jenis == "fisioterapi"){
+            context = '<%= request.getContextPath() %>/pages/modal/modalFisioterapi.jsp';
+        }
+        if(jenis == "operasi"){
+            context = '<%= request.getContextPath() %>/pages/modal/modalOperasi.jsp';
+        }
+        if(jenis == "ugd"){
+            context = '<%= request.getContextPath() %>/pages/modal/modalAsesmenUGD.jsp';
+        }
+        $('#conten-modal').load(context, function (res) {
+            console.log(res);
+        });
+    }
 
     $(document).ready(function () {
 
@@ -772,102 +784,6 @@
         if ("IGD" == tipe) {
             $('#igd').addClass('active');
         }
-
-        const paintCanvas = document.querySelector(".js-paint");
-        const paintCanvas1 = document.querySelector(".js-paint-1");
-        const paintCanvas2 = document.querySelector(".js-paint-2");
-
-        const context = paintCanvas.getContext("2d");
-        const context1 = paintCanvas1.getContext("2d");
-        const context2 = paintCanvas2.getContext("2d");
-
-        context.lineCap = "round";
-        context1.lineCap = "round";
-        context2.lineCap = "round";
-
-        const colorPicker = document.querySelector(".js-color-picker");
-
-        colorPicker.addEventListener("change", function (evt) {
-            context.strokeStyle = evt.target.value;
-        });
-
-        const lineWidthRange = document.querySelector(".js-line-range");
-        const lineWidthLabel = document.querySelector(".js-range-value");
-
-        lineWidthRange.addEventListener("input", function (evt) {
-            const width = evt.target.value;
-            lineWidthLabel.innerHTML = width+" px";
-            context.lineWidth = width;
-            context1.lineWidth = width;
-            context2.lineWidth = width;
-        });
-
-        let x = 0,
-            y = 0;
-        let isMouseDown = false;
-
-        const stopDrawing = function () {
-            isMouseDown = false;
-        };
-
-        const startDrawing = function (evt) {
-            isMouseDown = true;
-            [x, y] = [evt.offsetX, evt.offsetY];
-        };
-
-        const drawLine = function (evt) {
-            if (isMouseDown) {
-                const newX = evt.offsetX;
-                const newY = evt.offsetY;
-                context.beginPath();
-                context.moveTo(x, y);
-                context.lineTo(newX, newY);
-                context.stroke();
-                x = newX;
-                y = newY;
-            }
-        };
-
-        const drawLine1 = function (evt) {
-            if (isMouseDown) {
-                const newX = evt.offsetX;
-                const newY = evt.offsetY;
-                context1.beginPath();
-                context1.moveTo(x, y);
-                context1.lineTo(newX, newY);
-                context1.stroke();
-                x = newX;
-                y = newY;
-            }
-        };
-
-        const drawLine2 = function (evt) {
-            if (isMouseDown) {
-                const newX = evt.offsetX;
-                const newY = evt.offsetY;
-                context2.beginPath();
-                context2.moveTo(x, y);
-                context2.lineTo(newX, newY);
-                context2.stroke();
-                x = newX;
-                y = newY;
-            }
-        };
-
-        paintCanvas.addEventListener("mousedown", startDrawing);
-        paintCanvas.addEventListener("mousemove", drawLine);
-        paintCanvas.addEventListener("mouseup", stopDrawing);
-        paintCanvas.addEventListener("mouseout", stopDrawing);
-
-        paintCanvas1.addEventListener("mousedown", startDrawing);
-        paintCanvas1.addEventListener("mousemove", drawLine1);
-        paintCanvas1.addEventListener("mouseup", stopDrawing);
-        paintCanvas1.addEventListener("mouseout", stopDrawing);
-
-        paintCanvas2.addEventListener("mousedown", startDrawing);
-        paintCanvas2.addEventListener("mousemove", drawLine2);
-        paintCanvas2.addEventListener("mouseup", stopDrawing);
-        paintCanvas2.addEventListener("mouseout", stopDrawing);
     });
 
 </script>

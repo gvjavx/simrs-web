@@ -36,35 +36,35 @@
                             <td>Keadaan Umum</td>
                             <td width="20%" align="center"><img id="btn_keadaan_umum" class="hvr-grow"
                                                                 onclick="detailFisio('keadaan_umum')"
-                                                                src="<s:url value="/pages/images/icons8-plus-25.png"/>">
+                                                                src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
                         <tr id="row_psikologis">
                             <td>Riwayat Psikologis</td>
                             <td width="20%" align="center"><img id="btn_psikologis" class="hvr-grow"
                                                                 onclick="detailFisio('psikologis')"
-                                                                src="<s:url value="/pages/images/icons8-plus-25.png"/>">
+                                                                src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
                         <tr id="row_nyeri">
                             <td>Penilaian Tingkat Nyeri</td>
                             <td width="20%" align="center"><img id="btn_nyeri" class="hvr-grow"
                                                                 onclick="detailFisio('nyeri')"
-                                                                src="<s:url value="/pages/images/icons8-plus-25.png"/>">
+                                                                src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
                         <tr id="row_jatuh">
                             <td>Penilaian Resiko Jatuh</td>
                             <td width="20%" align="center"><img id="btn_jatuh" class="hvr-grow"
                                                                 onclick="detailFisio('jatuh')"
-                                                                src="<s:url value="/pages/images/icons8-plus-25.png"/>">
+                                                                src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
                         <tr id="row_pengkajian">
                             <td>Pengkajian Fisioterapi</td>
                             <td width="20%" align="center"><img id="btn_pengkajian" class="hvr-grow"
                                                                 onclick="detailFisio('pengkajian')"
-                                                                src="<s:url value="/pages/images/icons8-plus-25.png"/>">
+                                                                src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
                         </tbody>
@@ -294,7 +294,7 @@
                                     <input class="form-control" style="margin-top: 7px;" id="y_lokasi">
                                 </div>
                             </div>
-                            <img src="<s:url value="/pages/images/nyeri-1.jpg"/>" style="width: 100%; margin-top: 20px">
+                            <img src="<%= request.getContextPath() %>/pages/images/nyeri-1.jpg" style="width: 100%; margin-top: 20px">
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
@@ -313,7 +313,7 @@
                                 </div>
                             </div>
                             <br>
-                            <img src="<s:url value="/pages/images/nyeri-2.jpg"/>" style="width: 100%; margin-top: 30px">
+                            <img src="<%= request.getContextPath() %>/pages/images/nyeri-2.jpg" style="width: 100%; margin-top: 30px">
                         </div>
                     </div>
                 </div>

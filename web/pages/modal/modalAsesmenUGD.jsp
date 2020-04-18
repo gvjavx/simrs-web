@@ -22,16 +22,16 @@
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a onclick="addAsesmenUgd('keluhan_utama')" href="#"><i class="fa fa-plus"></i> Keluhan Utama</a></li>
-                            <li><a onclick="addAsesmenUgd('pre_hospital')" href="#"><i class="fa fa-plus"></i> Data Pre Hospital</a></li>
-                            <li><a onclick="addAsesmenUgd('keperawatan')" href="#"><i class="fa fa-plus"></i> Keperawatan</a></li>
-                            <li><a onclick="addAsesmenUgd('nyeri')" href="#"><i class="fa fa-plus"></i> Asesmen Nyeri</a></li>
-                            <li><a onclick="addAsesmenUgd('nutrisional')" href="#"><i class="fa fa-plus"></i> Skrining Risiko Nutrisional</a></li>
-                            <li><a onclick="addAsesmenUgd('jatuh')" href="#"><i class="fa fa-plus"></i> Asesmen Resiko Jatuh</a></li>
-                            <li><a onclick="addAsesmenUgd('status')" href="#"><i class="fa fa-plus"></i> Status Fungsional</a></li>
-                            <li><a onclick="addAsesmenUgd('kebutuhan')" href="#"><i class="fa fa-plus"></i> Kebutuhan Edukasi</a></li>
-                            <li><a onclick="addAsesmenUgd('diagnosis')" href="#"><i class="fa fa-plus"></i> Diagnosis Keperawatan</a></li>
-                            <li><a onclick="addAsesmenUgd('asuhan')" href="#"><i class="fa fa-plus"></i> Rencanan Asuhan Keperawatan</a></li>
+                            <li><a onclick="addAsesmenUgd('keluhan_utama')" style="cursor: pointer" ><i class="fa fa-plus"></i> Keluhan Utama</a></li>
+                            <li><a onclick="addAsesmenUgd('pre_hospital')" style="cursor: pointer"><i class="fa fa-plus"></i> Data Pre Hospital</a></li>
+                            <li><a onclick="addAsesmenUgd('keperawatan')" style="cursor: pointer"><i class="fa fa-plus"></i> Keperawatan</a></li>
+                            <li><a onclick="addAsesmenUgd('nyeri')" style="cursor: pointer"><i class="fa fa-plus"></i> Asesmen Nyeri</a></li>
+                            <li><a onclick="addAsesmenUgd('nutrisional')" style="cursor: pointer"><i class="fa fa-plus"></i> Skrining Risiko Nutrisional</a></li>
+                            <li><a onclick="addAsesmenUgd('jatuh')" style="cursor: pointer"><i class="fa fa-plus"></i> Asesmen Resiko Jatuh</a></li>
+                            <li><a onclick="addAsesmenUgd('status')" style="cursor: pointer"><i class="fa fa-plus"></i> Status Fungsional</a></li>
+                            <li><a onclick="addAsesmenUgd('kebutuhan')" style="cursor: pointer"><i class="fa fa-plus"></i> Kebutuhan Edukasi</a></li>
+                            <li><a onclick="addAsesmenUgd('diagnosis')" style="cursor: pointer"><i class="fa fa-plus"></i> Diagnosis Keperawatan</a></li>
+                            <li><a onclick="addAsesmenUgd('asuhan')" style="cursor: pointer"><i class="fa fa-plus"></i> Rencanan Asuhan Keperawatan</a></li>
                         </ul>
                     </div>
                 </div>
@@ -41,61 +41,61 @@
                         <tr id="row_aud_keluhan_utama">
                             <td>Keluhan Utama</td>
                             <td width="20%" align="center">
-                                <img id="btn_aud_keluhan_utama" class="hvr-grow" onclick="detailAud('keluhan_utama')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">
+                                <img id="btn_aud_keluhan_utama" class="hvr-grow" onclick="detailAud('keluhan_utama')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
                         <tr id="row_aud_pre_hospital">
                             <td>Data Pre Hospipal</td>
                             <td width="20%" align="center">
-                                <img id="btn_aud_pre_hospital" class="hvr-grow" onclick="detailAud('pre_hospital')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">
+                                <img id="btn_aud_pre_hospital" class="hvr-grow" onclick="detailAud('pre_hospital')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
                         <tr id="row_aud_keperawatan">
                             <td>Keperawatan</td>
                             <td width="20%" align="center">
-                                <img id="btn_aud_keperawatan" class="hvr-grow" onclick="detailAud('keperawatan')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">
+                                <img id="btn_aud_keperawatan" class="hvr-grow" onclick="detailAud('keperawatan')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
                         <tr id="row_aud_nyeri">
                             <td>Asesmen Nyeri</td>
                             <td width="20%" align="center">
-                                <img id="btn_aud_nyeri" class="hvr-grow" onclick="detailAud('nyeri')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">
+                                <img id="btn_aud_nyeri" class="hvr-grow" onclick="detailAud('nyeri')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
                         <tr id="row_aud_nutrisional">
                             <td>Skrining Risiko Nutrisional</td>
                             <td width="20%" align="center">
-                                <img id="btn_aud_nutrisional" class="hvr-grow" onclick="detailAud('nutrisional')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">
+                                <img id="btn_aud_nutrisional" class="hvr-grow" onclick="detailAud('nutrisional')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
                         <tr id="row_aud_jatuh">
                             <td>Asesmen Resiko Jatuh</td>
                             <td width="20%" align="center">
-                                <img id="btn_aud_jatuh" class="hvr-grow" onclick="detailAud('jatuh')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">
+                                <img id="btn_aud_jatuh" class="hvr-grow" onclick="detailAud('jatuh')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
                         <tr id="row_aud_status">
                             <td>Status Fungsional</td>
                             <td width="20%" align="center">
-                                <img id="btn_aud_status" class="hvr-grow" onclick="detailAud('status')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">
+                                <img id="btn_aud_status" class="hvr-grow" onclick="detailAud('status')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
                         <tr id="row_aud_kebutuhan">
                             <td>Kebutuhan Edukasi</td>
                             <td width="20%" align="center">
-                                <img id="btn_aud_kebutuhan" class="hvr-grow" onclick="detailAud('kebutuhan')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">
+                                <img id="btn_aud_kebutuhan" class="hvr-grow" onclick="detailAud('kebutuhan')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
                         <tr id="row_aud_diagnosis">
                             <td>Diagnosis Keperawatan</td>
                             <td width="20%" align="center">
-                                <img id="btn_aud_diagnosis" class="hvr-grow" onclick="detailAud('diagnosis')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">
+                                <img id="btn_aud_diagnosis" class="hvr-grow" onclick="detailAud('diagnosis')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
                         <tr id="row_aud_asuhan">
                             <td>Rencanan Asuhan Keperawatan</td>
                             <td width="20%" align="center">
-                                <img id="btn_aud_asuhan" class="hvr-grow" onclick="detailAud('asuhan')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">
+                                <img id="btn_aud_asuhan" class="hvr-grow" onclick="detailAud('asuhan')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
                         </tbody>
@@ -668,7 +668,7 @@
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">Tempat Tinggal</label>
                             <div class="col-md-8">
-                                <select onchange="audKeterangan(this.value, 'tempat_tinggal')" id="kep_tempat_tinggal" class="form-control select2" style="width: 100%">
+                                <select onchange="audKeterangan(this.value, 'tempat_tinggal')" id="kep_tempat_tinggal" class="form-control select2" style="width: 100%; margin-top: 7px">
                                     <option value="">[Select One]</option>
                                     <option value="Rumah Sendiri">Rumah Sendiri</option>
                                     <option value="Bermsama Orang Tua">Bermsama Orang Tua</option>
@@ -686,7 +686,7 @@
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">Status Emosional</label>
                             <div class="col-md-8">
-                                <select id="kep_emosional" class="form-control select2" style="width: 100%">
+                                <select id="kep_emosional" class="form-control select2" style="width: 100%; margin-top: 7px">
                                     <option value="">[Select One]</option>
                                     <option value="Tenang">Tenang</option>
                                     <option value="Cemas">Cemas</option>
@@ -700,7 +700,7 @@
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">Masalah Perilaku</label>
                             <div class="col-md-8">
-                                <select onchange="audKeterangan(this.value, 'perilaku')" id="kep_perilaku" class="form-control select2" style="width: 100%">
+                                <select onchange="audKeterangan(this.value, 'perilaku')" id="kep_perilaku" class="form-control select2" style="width: 100%; margin-top: 7px">
                                     <option value="">[Select One]</option>
                                     <option value="Tidak">Tidak</option>
                                     <option value="Ada">Ada</option>
@@ -715,7 +715,7 @@
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">Status Pernikahan</label>
                             <div class="col-md-8">
-                                <select id="kep_pernikahan" class="form-control select2" style="width: 100%">
+                                <select id="kep_pernikahan" class="form-control select2" style="width: 100%; margin-top: 7px">
                                     <option value="">[Select One]</option>
                                     <option value="Belum Menikah">Belum Menikah</option>
                                     <option value="Menikah">Menikah</option>
@@ -726,7 +726,7 @@
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">Hubungan pasien dengan keluarga</label>
                             <div class="col-md-8">
-                                <select id="kep_hubungan" class="form-control select2" style="width: 100%">
+                                <select id="kep_hubungan" class="form-control select2" style="width: 100%; margin-top: 7px">
                                     <option value="">[Select One]</option>
                                     <option value="Baik">Baik</option>
                                     <option value="Tidak">Tidak</option>
@@ -738,7 +738,7 @@
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">Agama</label>
                             <div class="col-md-8">
-                                <select id="kep_agama" class="form-control select2" style="width: 100%">
+                                <select id="kep_agama" class="form-control select2" style="width: 100%; margin-top: 7px">
                                     <option value="">[Select One]</option>
                                     <option value="Islam">Islam</option>
                                     <option value="Kristen">Kristen</option>
@@ -752,7 +752,7 @@
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">Perlu dibantu dalam ibadah</label>
                             <div class="col-md-8">
-                                <select id="kep_dibantu" class="form-control select2" style="width: 100%">
+                                <select id="kep_dibantu" class="form-control select2" style="width: 100%; margin-top: 7px">
                                     <option value="">[Select One]</option>
                                     <option value="Ya">Ya</option>
                                     <option value="Tidak">Tidak</option>
@@ -773,7 +773,7 @@
                             <label class="col-md-3" style="margin-top: 7px">Penanggung Jawab</label>
                             <div class="col-md-8">
                                 <div class="custom02" style="margin-top: 7px">
-                                    <select onchange="audKeterangan(this.value, 'penanggung')" id="kep_penanggung" class="form-control select2" style="width: 100%">
+                                    <select onchange="audKeterangan(this.value, 'penanggung')" id="kep_penanggung" class="form-control select2" style="width: 100%; margin-top: 7px">
                                         <option value="">[Select One]</option>
                                         <option value="Pribadi">Pribadi</option>
                                         <option value="Asuransi">Asuransi</option>
@@ -821,7 +821,7 @@
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Riwayat Alergi</label>
                         <div class="col-md-8">
-                            <select onchange="audKeterangan(this.value, 'alergi')" id="kep_alergi" class="form-control select2" style="width: 100%">
+                            <select onchange="audKeterangan(this.value, 'alergi')" id="kep_alergi" class="form-control select2" style="width: 100%; margin-top: 7px">
                                 <option value="">[Select One]</option>
                                 <option value="Tidak Ada">Tidak Ada</option>
                                 <option value="Obat">Obat</option>
@@ -897,7 +897,7 @@
                                     <input class="form-control" id="yer_lokasi">
                                 </div>
                             </div>
-                            <img src="<s:url value="/pages/images/asesmen-nyeri.jpg"/>" style="width: 100%; margin-top: 20px">
+                            <img src="<%= request.getContextPath() %>/pages/images/asesmen-nyeri.jpg" style="width: 100%; margin-top: 20px">
                         </div>
                     </div>
                 </div>
@@ -1204,7 +1204,7 @@
                         <div class="form-group">
                             <label class="col-md-6" style="margin-top: 7px">Mengendalikan rangsang defekasi</label>
                             <div class="col-md-6">
-                                <select id="status1" class="form-control select2" style="width: 100%">
+                                <select id="status1" class="form-control select2" style="width: 100%; margin-top: 7px">
                                     <option value="">[Select One]</option>
                                     <option value="Tak terkendali/tak teratur (perlu pencahar)|0">Tak terkendali/tak teratur (perlu pencahar)</option>
                                     <option value="Kadang-kadang tak terkendali|5">Kadang-kadang tak terkendali</option>
@@ -1217,7 +1217,7 @@
                         <div class="form-group">
                             <label class="col-md-6" style="margin-top: 7px">Mengendalikan rangsang berkemih</label>
                             <div class="col-md-6">
-                                <select id="status2" class="form-control select2" style="width: 100%">
+                                <select id="status2" class="form-control select2" style="width: 100%; margin-top: 7px">
                                     <option value="">[Select One]</option>
                                     <option value="Tak terkendali/pakai kateter|0">Tak terkendali/pakai kateter</option>
                                     <option value="Kadang-kadang tak terkendali (1x24 jam)|5">Tak terkendali/pakai kateter (1x24 jam)</option>
@@ -1230,7 +1230,7 @@
                         <div class="form-group">
                             <label class="col-md-6" style="margin-top: 7px">Membersihkan diri (cuci muka, sisir rambut, sikat gigi)</label>
                             <div class="col-md-6">
-                                <select id="status3" class="form-control select2" style="width: 100%">
+                                <select id="status3" class="form-control select2" style="width: 100%; margin-top: 7px">
                                     <option value="">[Select One]</option>
                                     <option value="Butuh pertolongan orang lain|0">Butuh pertolongan orang lain</option>
                                     <option value="Mandiri|5">Mandiri</option>
@@ -1242,7 +1242,7 @@
                         <div class="form-group">
                             <label class="col-md-6" style="margin-top: 7px">Penggunaan jamban masuk dan keluar (melepaskan, memakai celana, membersihkan, menyiram)</label>
                             <div class="col-md-6">
-                                <select id="status4" class="form-control select2" style="width: 100%">
+                                <select id="status4" class="form-control select2" style="width: 100%; margin-top: 7px">
                                     <option value="">[Select One]</option>
                                     <option value="Tergantung pertolongan orang lain|0">Tergantung pertolongan orang lain</option>
                                     <option value="Perlu pertolongan pada beberapa kegiatan tetapi dapat menegrjakan sendiri kegiataan yang lain|5">Perlu pertolongan pada beberapa kegiatan tetapi dapat menegrjakan sendiri kegiataan yang lain</option>
@@ -1255,7 +1255,7 @@
                         <div class="form-group">
                             <label class="col-md-6" style="margin-top: 7px">Makan</label>
                             <div class="col-md-6">
-                                <select id="status5" class="form-control select2" style="width: 100%">
+                                <select id="status5" class="form-control select2" style="width: 100%; margin-top: 7px">
                                     <option value="">[Select One]</option>
                                     <option value="Tidak mampu|0">Tidak mampu</option>
                                     <option value="Perlu pertolongan memotong makanan|5">Perlu pertolongan memotong makanan</option>
@@ -1268,7 +1268,7 @@
                         <div class="form-group">
                             <label class="col-md-6" style="margin-top: 7px">Berubah sikap dari berbaring ke duduk</label>
                             <div class="col-md-6">
-                                <select id="status6" class="form-control select2" style="width: 100%">
+                                <select id="status6" class="form-control select2" style="width: 100%; margin-top: 7px">
                                     <option value="">[Select One]</option>
                                     <option value="Tidak mampu|0">Tidak mampu</option>
                                     <option value="Perlu banyak bantuan untuk bisa duduk (2 orang)|5">Perlu banyak bantuan untuk bisa duduk (2 orang)</option>
@@ -1281,7 +1281,7 @@
                         <div class="form-group">
                             <label class="col-md-6" style="margin-top: 7px">Berpindah / Berjalan</label>
                             <div class="col-md-6">
-                                <select id="status7" class="form-control select2" style="width: 100%">
+                                <select id="status7" class="form-control select2" style="width: 100%; margin-top: 7px">
                                     <option value="">[Select One]</option>
                                     <option value="Tidak mampu|0">Tidak mampu</option>
                                     <option value="Bisa (pindah) dengan kursi roda|5">Bisa (pindah) dengan kursi roda</option>
@@ -1295,7 +1295,7 @@
                         <div class="form-group">
                             <label class="col-md-6" style="margin-top: 7px">Memakai baju</label>
                             <div class="col-md-6">
-                                <select id="status8" class="form-control select2" style="width: 100%">
+                                <select id="status8" class="form-control select2" style="width: 100%; margin-top: 7px">
                                     <option value="">[Select One]</option>
                                     <option value="Tergantung orang lain|0">Tergantung orang lain</option>
                                     <option value="Sebagian dibantu (misalnya mengancing baju)|5">Sebagian dibantu (misalnya mengancing baju)</option>
@@ -1308,7 +1308,7 @@
                         <div class="form-group">
                             <label class="col-md-6" style="margin-top: 7px">Naik turun tangga</label>
                             <div class="col-md-6">
-                                <select id="status9" class="form-control select2" style="width: 100%">
+                                <select id="status9" class="form-control select2" style="width: 100%; margin-top: 7px">
                                     <option value="">[Select One]</option>
                                     <option value="Tidak mampu|0">Tidak mampu</option>
                                     <option value="Kurang pertolongan|5">Kurang pertolongan</option>
@@ -1321,7 +1321,7 @@
                         <div class="form-group">
                             <label class="col-md-6" style="margin-top: 7px">Mandi</label>
                             <div class="col-md-6">
-                                <select id="status10" class="form-control select2" style="width: 100%">
+                                <select id="status10" class="form-control select2" style="width: 100%; margin-top: 7px">
                                     <option value="">[Select One]</option>
                                     <option value="Tergantung orang lain|0">Tergantung orang lain</option>
                                     <option value="Mandiri|10">Mandiri</option>

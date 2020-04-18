@@ -575,6 +575,11 @@
           <param name="class" value="com.neurix.simrs.transaksi.asesmenoperasi.action.AsesmenOperasiAction"/>
       </create>
       <convert converter="bean" match="com.neurix.simrs.transaksi.asesmenoperasi.model.AsesmenOperasi"/>
+
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.mpp.action.MppAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.mpp.model.Mpp"/>
   </allow>
 
 </dwr>

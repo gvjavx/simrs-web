@@ -22,8 +22,8 @@
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a onclick="showModalOperasi('pre_operasi')" href="#"><i class="fa fa-plus"></i> Keluhan Utama</a></li>
-                            <li><a onclick="showModalOperasi('kondisi_pasien')" href="#"><i class="fa fa-plus"></i> Data Pre Hospital</a></li>
+                            <li><a onclick="showModalOperasi('pre_operasi')" style="cursor: pointer;"><i class="fa fa-plus"></i> Keluhan Utama</a></li>
+                            <li><a onclick="showModalOperasi('kondisi_pasien')" style="cursor: pointer;"><i class="fa fa-plus"></i> Data Pre Hospital</a></li>
                         </ul>
                     </div>
                 </div>
@@ -33,13 +33,13 @@
                         <tr id="row_op_pre_operasi">
                             <td>Persiapan Pasien Pre Operasi</td>
                             <td width="20%" align="center">
-                                <img id="btn_op_pre_operasi" class="hvr-grow" onclick="detailOperasi('pre_operasi')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">
+                                <img id="btn_op_pre_operasi" class="hvr-grow" onclick="detailOperasi('pre_operasi')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
                         <tr id="row_op_kondisi_pasien">
                             <td>Kondisi Pasien Saat Serah Terima</td>
                             <td width="20%" align="center">
-                                <img id="btn_op_kondisi_pasien" class="hvr-grow" onclick="detailOperasi('kondisi_pasien')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">
+                                <img id="btn_op_kondisi_pasien" class="hvr-grow" onclick="detailOperasi('kondisi_pasien')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
                         </tbody>
@@ -564,7 +564,7 @@
                         <tr id="row_op_penandaan_area">
                             <td>Hasil Penandaan Area Operasi</td>
                             <td width="20%" align="center">
-                                <img id="btn_op_penandaan_area" class="hvr-grow" onclick="detailOperasi('penandaan_area')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">
+                                <img id="btn_op_penandaan_area" class="hvr-grow" onclick="detailOperasi('penandaan_area')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
                         </tbody>
@@ -605,7 +605,7 @@
                     </div>
                 </div>
                 <div class="text-center">
-                    <canvas class="js-paint  paint-canvas" id="area_canvas"></canvas>
+                    <canvas class="paint-canvas" id="area_canvas" onmouseover="paintTtd('area_canvas')"></canvas>
                 </div>
                 <canvas style="display: none" id="area_cek"></canvas>
             </div>
@@ -655,13 +655,13 @@
                     <div class="col-md-12">
                         <div class="col-md-6">
                             <b style="margin-left: 8px">Tanda Tangan Pasien</b>
-                            <canvas class="js-paint-1 paint-canvas-ttd" id="op_ttd_pasien" width="380" height="300"></canvas>
+                            <canvas onmouseover="paintTtd('op_ttd_pasien')" class="paint-canvas-ttd" id="op_ttd_pasien" width="380" height="300"></canvas>
                             <button style="margin-left: 8px" type="button" class="btn btn-danger" onclick="clearConvas('op_ttd_pasien')"><i class="fa fa-trash"></i> Clear
                             </button>
                         </div>
                         <div class="col-md-6">
                             <b style="margin-left: 8px">Tanda Tangan Dokter</b>
-                            <canvas class="js-paint-2 paint-canvas-ttd" id="op_ttd_dokter" width="380" height="300"></canvas>
+                            <canvas onmouseover="paintTtd('op_ttd_dokter')" class="paint-canvas-ttd" id="op_ttd_dokter" width="380" height="300"></canvas>
                             <button style="margin-left: 8px" type="button" class="btn btn-danger" onclick="clearConvas('op_ttd_dokter')"><i class="fa fa-trash"></i> Clear
                             </button>
                         </div>
@@ -704,11 +704,11 @@
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a onclick="showModalOperasi('anamnesa')" href="#"><i class="fa fa-plus"></i> Anamnesa</a></li>
-                            <li><a onclick="showModalOperasi('pemeriksaan_fisik')" href="#"><i class="fa fa-plus"></i> Pemeriksaan Fisik</a></li>
-                            <li><a onclick="showModalOperasi('pemeriksaan_penunjang')" href="#"><i class="fa fa-plus"></i> Pemeriksaan Penunjang</a></li>
-                            <li><a onclick="showModalOperasi('status_fisik')" href="#"><i class="fa fa-plus"></i> Status Fisik</a></li>
-                            <li><a onclick="showModalOperasi('persiapan_anestesi')" href="#"><i class="fa fa-plus"></i> Persiapan Anestesi</a></li>
+                            <li><a onclick="showModalOperasi('anamnesa')" style="cursor: pointer;"><i class="fa fa-plus"></i> Anamnesa</a></li>
+                            <li><a onclick="showModalOperasi('pemeriksaan_fisik')" style="cursor: pointer;"><i class="fa fa-plus"></i> Pemeriksaan Fisik</a></li>
+                            <li><a onclick="showModalOperasi('pemeriksaan_penunjang')" style="cursor: pointer;"><i class="fa fa-plus"></i> Pemeriksaan Penunjang</a></li>
+                            <li><a onclick="showModalOperasi('status_fisik')" style="cursor: pointer;"><i class="fa fa-plus"></i> Status Fisik</a></li>
+                            <li><a onclick="showModalOperasi('persiapan_anestesi')" style="cursor: pointer;"><i class="fa fa-plus"></i> Persiapan Anestesi</a></li>
                         </ul>
                     </div>
                 </div>
@@ -718,31 +718,31 @@
                         <tr id="row_op_anamnesa">
                             <td>Anamnesa</td>
                             <td width="20%" align="center">
-                                <img id="btn_op_anamnesa" class="hvr-grow" onclick="detailOperasi('anamnesa')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">
+                                <img id="btn_op_anamnesa" class="hvr-grow" onclick="detailOperasi('anamnesa')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
                         <tr id="row_op_pemeriksaan_fisik">
                             <td>Pemeriksaan Fisik</td>
                             <td width="20%" align="center">
-                                <img id="btn_op_pemeriksaan_fisik" class="hvr-grow" onclick="detailOperasi('pemeriksaan_fisik')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">
+                                <img id="btn_op_pemeriksaan_fisik" class="hvr-grow" onclick="detailOperasi('pemeriksaan_fisik')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
                         <tr id="row_op_pemeriksaan_penunjang">
                             <td>Pemeriksaan Penunjang</td>
                             <td width="20%" align="center">
-                                <img id="btn_op_pemeriksaan_penunjang" class="hvr-grow" onclick="detailOperasi('pemeriksaan_penunjang')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">
+                                <img id="btn_op_pemeriksaan_penunjang" class="hvr-grow" onclick="detailOperasi('pemeriksaan_penunjang')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
                         <tr id="row_op_status_fisik">
                             <td>Status Fisik</td>
                             <td width="20%" align="center">
-                                <img id="btn_op_status_fisik" class="hvr-grow" onclick="detailOperasi('status_fisik')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">
+                                <img id="btn_op_status_fisik" class="hvr-grow" onclick="detailOperasi('status_fisik')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
                         <tr id="row_op_persiapan_anestesi">
                             <td>Persiapan Anestesi</td>
                             <td width="20%" align="center">
-                                <img id="btn_op_persiapan_anestesi" class="hvr-grow" onclick="detailOperasi('persiapan_anestesi')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">
+                                <img id="btn_op_persiapan_anestesi" class="hvr-grow" onclick="detailOperasi('persiapan_anestesi')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
                         </tbody>
@@ -1382,19 +1382,19 @@
                         <tr id="row_op_general_informasi">
                             <td>Informasi</td>
                             <td width="20%" align="center">
-                                <img id="btn_op_general_informasi" class="hvr-grow" onclick="detailOperasi('general_informasi')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">
+                                <img id="btn_op_general_informasi" class="hvr-grow" onclick="detailOperasi('general_informasi')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
                         <tr id="row_op_general_penyataan">
                             <td>Pernyataan</td>
                             <td width="20%" align="center">
-                                <img id="btn_op_general_penyataan" class="hvr-grow" onclick="detailOperasi('general_penyataan')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">
+                                <img id="btn_op_general_penyataan" class="hvr-grow" onclick="detailOperasi('general_penyataan')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
                         <tr id="row_op_general_persetujuan">
                             <td>Persetujuan</td>
                             <td width="20%" align="center">
-                                <img id="btn_op_general_persetujuan" class="hvr-grow" onclick="detailOperasi('general_persetujuan')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">
+                                <img id="btn_op_general_persetujuan" class="hvr-grow" onclick="detailOperasi('general_persetujuan')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
                         </tbody>
@@ -1771,19 +1771,19 @@
                         <tr id="row_op_regional_informasi">
                             <td>Informasi</td>
                             <td width="20%" align="center">
-                                <img id="btn_op_regional_informasi" class="hvr-grow" onclick="detailOperasi('regional_informasi')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">
+                                <img id="btn_op_regional_informasi" class="hvr-grow" onclick="detailOperasi('regional_informasi')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
                         <tr id="row_op_regional_penyataan">
                             <td>Pernyataan</td>
                             <td width="20%" align="center">
-                                <img id="btn_op_regional_penyataan" class="hvr-grow" onclick="detailOperasi('regional_penyataan')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">
+                                <img id="btn_op_regional_penyataan" class="hvr-grow" onclick="detailOperasi('regional_penyataan')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
                         <tr id="row_op_regional_persetujuan">
                             <td>Persetujuan</td>
                             <td width="20%" align="center">
-                                <img id="btn_op_regional_persetujuan" class="hvr-grow" onclick="detailOperasi('regional_persetujuan')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">
+                                <img id="btn_op_regional_persetujuan" class="hvr-grow" onclick="detailOperasi('regional_persetujuan')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
                         </tbody>
@@ -2123,3 +2123,383 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modal-op-pindah_rr">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-md"></i> Kriteria Pindah Dari RR
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="alert alert-success alert-dismissible" style="display: none" id="warning_op_pindah_rr">
+                        <h4><i class="icon fa fa-info"></i> Info!</h4>
+                        <p id="msg_op_pindah_rr"></p>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Tambah
+                        </button>
+                        <button type="button" class="btn btn-success dropdown-toggle"
+                                data-toggle="dropdown" style="height: 34px">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a onclick="showModalOperasi('rr_dewasa')" style="cursor: pointer"><i class="fa fa-plus"></i> Anestesi Pasien Dewasa</a></li>
+                            <li><a onclick="showModalOperasi('rr_anak_anak')" style="cursor: pointer"><i class="fa fa-plus"></i> Anestesi Pasien Anak-Anak</a></li>
+                            <li><a onclick="showModalOperasi('rr_sab')" style="cursor: pointer"><i class="fa fa-plus"></i> Anestesi Pasien SAB/Epidural</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <table class="table" id="tabel_op_pindah_rr">
+                        <tbody>
+                        <tr id="row_op_rr_dewasa">
+                            <td>Penilain Pasca General Anestesi Pasien Dewasa (Aldrette Score)</td>
+                            <td width="20%" align="center">
+                                <img id="btn_op_rr_dewasa" class="hvr-grow" onclick="detailOperasi('rr_dewasa')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                            </td>
+                        </tr>
+                        <tr id="row_op_rr_anak_anak">
+                            <td>Penilain Pasca General Anestesi Pasien Anak-Anak (Stewart Score)</td>
+                            <td width="20%" align="center">
+                                <img id="btn_op_rr_anak_anak" class="hvr-grow" onclick="detailOperasi('rr_anak_anak')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                            </td>
+                        </tr>
+                        <tr id="row_op_rr_sab">
+                            <td>Penilain Pasca Regional Anestesi Pasien SAB/Epidural (Bromage Score)</td>
+                            <td width="20%" align="center">
+                                <img id="btn_op_rr_sab" class="hvr-grow" onclick="detailOperasi('rr_sab')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-op-rr_dewasa">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Penilain Pasca General Anestesi Pasien Dewasa
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_op_rr_dewasa">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_op_rr_dewasa"></p>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3" style="margin-top: 7px">Kesadaran</label>
+                            <div class="col-md-8">
+                                <div class="custom02" style="margin-top: 7px">
+                                    <input type="radio" value="Sadar baik, orientasi baik|2" id="rd11" name="rd1" /><label for="rd11">Sadar baik, orientasi baik</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-3 col-md-8">
+                                <div class="custom02" style="margin-top: 7px">
+                                    <input type="radio" value="Dapat dibangunkan, tapi cepat tidur|1" id="rd12" name="rd1" /><label for="rd12">Dapat dibangunkan, tapi cepat tidur</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-3 col-md-8">
+                                <div class="custom02" style="margin-top: 7px">
+                                    <input type="radio" value="Tidak ada respon|0" id="rd13" name="rd1" /><label for="rd13">Tidak ada respon</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-header with-border"></div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3" style="margin-top: 7px">Warna Kulit</label>
+                            <div class="col-md-8">
+                                <div class="custom02" style="margin-top: 7px">
+                                    <input type="radio" value="Merah, tanpa bantuan Oksigen sat O2 > 92%|2" id="rd21" name="rd2" /><label for="rd21">Merah, tanpa bantuan Oksigen sat O2 > 92%</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-3 col-md-8">
+                                <div class="custom02" style="margin-top: 7px">
+                                    <input type="radio" value="Pucat, perlu bantuan O2 agar sat O2 > 90%|1" id="rd22" name="rd2" /><label for="rd22">Pucat, perlu bantuan O2 agar sat O2 > 90%</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-3 col-md-8">
+                                <div class="custom02" style="margin-top: 7px">
+                                    <input type="radio" value="Sianosis|0" id="rd23" name="rd2" /><label for="rd23">Sianosis</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-header with-border"></div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3" style="margin-top: 7px">Aktifitas</label>
+                            <div class="col-md-8">
+                                <div class="custom02" style="margin-top: 7px">
+                                    <input type="radio" value="Gerak bertujuan, sesuai perintah verbal|2" id="rd31" name="rd3" /><label for="rd31">Gerak bertujuan, sesuai perintah verbal</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-3 col-md-8">
+                                <div class="custom02" style="margin-top: 7px">
+                                    <input type="radio" value="Bergerak, tak bertujuan|1" id="rd32" name="rd3" /><label for="rd32">Bergerak, tak bertujuan</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-3 col-md-8">
+                                <div class="custom02" style="margin-top: 7px">
+                                    <input type="radio" value="Tidak bergerak|0" id="rd33" name="rd3" /><label for="rd33">Tidak bergerak</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-header with-border"></div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3" style="margin-top: 7px">Respirasi</label>
+                            <div class="col-md-8">
+                                <div class="custom02" style="margin-top: 7px">
+                                    <input type="radio" value="Nafas spontan, mampu nafas dalam, ada reflek batuk|2" id="rd41" name="rd4" /><label for="rd41">Nafas spontan, mampu nafas dalam, ada reflek batuk</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-3 col-md-8">
+                                <div class="custom02" style="margin-top: 7px">
+                                    <input type="radio" value="Nafas dangkal, sesak|1" id="rd42" name="rd4" /><label for="rd42">Nafas dangkal, sesak</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-3 col-md-8">
+                                <div class="custom02" style="margin-top: 7px">
+                                    <input type="radio" value="Apneu atau obstruksi, nafas dibantu|0" id="rd43" name="rd4" /><label for="rd43">Apneu atau obstruksi, nafas dibantu</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-header with-border"></div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3" style="margin-top: 7px">Kardio Vaskuler</label>
+                            <div class="col-md-8">
+                                <div class="custom02" style="margin-top: 7px">
+                                    <input type="radio" value="Tekanan darah tetap atau berubah < 20%|2" id="rd51" name="rd5" /><label for="rd51">Tekanan darah tetap atau berubah < 20%</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-3 col-md-8">
+                                <div class="custom02" style="margin-top: 7px">
+                                    <input type="radio" value="Tekanan darah berubah 20-50%|1" id="rd52" name="rd5" /><label for="rd52">Tekanan darah berubah 20-50%</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-3 col-md-8">
+                                <div class="custom02" style="margin-top: 7px">
+                                    <input type="radio" value="Tekanan darah berubah > 50%|0" id="rd53" name="rd5" /><label for="rd53">Tekanan darah berubah > 50%</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button id="save_op_rr_dewasa" class="btn btn-success pull-right" onclick="saveDataOperasi('rr_dewasa','pindah_rr')"><i class="fa fa-check"></i> Save</button>
+                <button id="load_op_rr_dewasa" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-op-rr_anak_anak">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Penilain Pasca General Anestesi Pasien Anak-Anak
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_op_rr_anak_anak">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_op_rr_anak_anak"></p>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3" style="margin-top: 7px">Kesadaran</label>
+                            <div class="col-md-8">
+                                <div class="custom02" style="margin-top: 7px">
+                                    <input type="radio" value="Menangis|2" id="raa11" name="raa1" /><label for="raa11">Menangis</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-3 col-md-8">
+                                <div class="custom02" style="margin-top: 7px">
+                                    <input type="radio" value="Ada reaksi terhadap rangsangan|1" id="raa12" name="raa1" /><label for="raa12">Ada reaksi terhadap rangsangan</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-3 col-md-8">
+                                <div class="custom02" style="margin-top: 7px">
+                                    <input type="radio" value="Tidak ada respon|0" id="raa13" name="raa1" /><label for="raa13">Tidak ada respon</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-header with-border"></div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3" style="margin-top: 7px">Respirasi</label>
+                            <div class="col-md-8">
+                                <div class="custom02" style="margin-top: 7px">
+                                    <input type="radio" value="Batuk, menangis|2" id="raa21" name="raa2" /><label for="raa21">Batuk, menangis</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-3 col-md-8">
+                                <div class="custom02" style="margin-top: 7px">
+                                    <input type="radio" value="Pertahankan jalan nafas|1" id="raa22" name="raa2" /><label for="raa22">Pertahankan jalan nafas</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-3 col-md-8">
+                                <div class="custom02" style="margin-top: 7px">
+                                    <input type="radio" value="Perlu bantuan|0" id="raa23" name="raa2" /><label for="raa23">Perlu bantuan</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-header with-border"></div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3" style="margin-top: 7px">Aktifitas</label>
+                            <div class="col-md-8">
+                                <div class="custom02" style="margin-top: 7px">
+                                    <input type="radio" value="Gerak bertujuan|2" id="raa31" name="raa3" /><label for="raa31">Gerak bertujuan</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-3 col-md-8">
+                                <div class="custom02" style="margin-top: 7px">
+                                    <input type="radio" value="Gerak tak bertujuan|1" id="raa32" name="raa3" /><label for="raa32">Gerak tak bertujuan</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-3 col-md-8">
+                                <div class="custom02" style="margin-top: 7px">
+                                    <input type="radio" value="Tidak bergerak|0" id="raa33" name="raa3" /><label for="raa33">Tidak bergerak</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button id="save_op_rr_anak_anak" class="btn btn-success pull-right" onclick="saveDataOperasi('rr_anak_anak','pindah_rr')"><i class="fa fa-check"></i> Save</button>
+                <button id="load_op_rr_anak_anak" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-op-rr_sab">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Penilain Pasca Regional Anestesi Pasien SAB/Epidural
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_op_rr_sab">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_op_rr_sab"></p>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-offset-1 col-md-11">
+                                <div class="custom02" style="margin-top: 7px">
+                                    <input type="radio" value="Dapat menggerakan dan mengangkat tungkai bawah|0" id="sab11" name="sab1" /><label for="sab11">Dapat menggerakan dan mengangkat tungkai bawah</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-1 col-md-11">
+                                <div class="custom02" style="margin-top: 7px">
+                                    <input type="radio" value="Dapat menekuk lutut tetapi tidak bisa mengangkat tungkai bawah|1" id="sab12" name="sab1" /><label for="sab12">Dapat menekuk lutut tetapi tidak bisa mengangkat tungkai bawah</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-1 col-md-11">
+                                <div class="custom02" style="margin-top: 7px">
+                                    <input type="radio" value="Hanya dapat menggerakkan tungkai bawah, tidak mampu menekuk lutut|2" id="sab13" name="sab1" /><label for="sab13">Hanya dapat menggerakkan tungkai bawah, tidak mampu menekuk lutut</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-1 col-md-11">
+                                <div class="custom02" style="margin-top: 7px">
+                                    <input type="radio" value="Tidak mampu menggerakkan kaki|3" id="sab14" name="sab1" /><label for="sab14">Tidak mampu menggerakkan kaki</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button id="save_op_rr_sab" class="btn btn-success pull-right" onclick="saveDataOperasi('rr_sab','pindah_rr')"><i class="fa fa-check"></i> Save</button>
+                <button id="load_op_rr_sab" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+

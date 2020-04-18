@@ -992,7 +992,7 @@ function detailAud(jenis) {
 
             var newRow = $('<tr id="del_aud_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
             newRow.insertAfter($('table').find('#row_aud_' + jenis));
-            var url = '/simrs/pages/images/cancel-flat-new.png';
+            var url = '<%= request.getContextPath() %>/pages/images/cancel-flat-new.png';
             $('#btn_aud_' + jenis).attr('src', url);
             $('#btn_aud_' + jenis).attr('onclick', 'delRowAud(\'' + jenis + '\')');
         });
@@ -1001,7 +1001,7 @@ function detailAud(jenis) {
 
 function delRowAud(id) {
     $('#del_aud_' + id).remove();
-    var url = '/simrs/pages/images/icons8-plus-25.png';
+    var url = '<%= request.getContextPath() %>/pages/images/icons8-plus-25.png';
     $('#btn_aud_' + id).attr('src', url);
     $('#btn_aud_' + id).attr('onclick', 'detailAud(\'' + id + '\')');
 }

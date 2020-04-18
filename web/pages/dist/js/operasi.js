@@ -1051,6 +1051,140 @@ function saveDataOperasi(jenis, ket) {
         }
     }
 
+    if("rr_dewasa" == jenis){
+
+        var pe1 = $('[name=rd1]:checked').val();
+        var pe2 = $('[name=rd2]:checked').val();
+        var pe3 = $('[name=rd3]:checked').val();
+        var pe4 = $('[name=rd4]:checked').val();
+        var pe5 = $('[name=rd5]:checked').val();
+
+        if (pe1 && pe2 && pe3 && pe4 && pe5 != undefined) {
+
+            var isi1 = pe1.split("|")[0];
+            var isi2 = pe2.split("|")[0];
+            var isi3 = pe3.split("|")[0];
+            var isi4 = pe4.split("|")[0];
+            var isi5 = pe5.split("|")[0];
+
+            var skor1 = pe1.split("|")[1];
+            var skor2 = pe2.split("|")[1];
+            var skor3 = pe3.split("|")[1];
+            var skor4 = pe4.split("|")[1];
+            var skor5 = pe5.split("|")[1];
+
+            data.push({
+                'parameter': 'Kesadaran',
+                'jawaban1': isi1,
+                'skor':skor1,
+                'keterangan': jenis,
+                'jenis': 'pindah_rr',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Warna Kulit',
+                'jawaban1': isi2,
+                'skor':skor2,
+                'keterangan': jenis,
+                'jenis': 'pindah_rr',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Aktifitas',
+                'jawaban1': isi3,
+                'skor':skor3,
+                'keterangan': jenis,
+                'jenis': 'pindah_rr',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Respirasi',
+                'jawaban1': isi4,
+                'skor':skor4,
+                'keterangan': jenis,
+                'jenis': 'pindah_rr',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Kardio Vaskuler',
+                'jawaban1': isi5,
+                'skor':skor5,
+                'keterangan': jenis,
+                'jenis': 'pindah_rr',
+                'id_detail_checkup': idDetailCheckup
+            });
+
+            cek = true;
+        }
+    }
+
+    if("rr_anak_anak" == jenis){
+
+        var pe1 = $('[name=raa1]:checked').val();
+        var pe2 = $('[name=raa2]:checked').val();
+        var pe3 = $('[name=raa3]:checked').val();
+
+        if (pe1 && pe2 && pe3 != undefined) {
+
+            var isi1 = pe1.split("|")[0];
+            var isi2 = pe2.split("|")[0];
+            var isi3 = pe3.split("|")[0];
+
+            var skor1 = pe1.split("|")[1];
+            var skor2 = pe2.split("|")[1];
+            var skor3 = pe3.split("|")[1];
+
+            data.push({
+                'parameter': 'Kesadaran',
+                'jawaban1': isi1,
+                'skor':skor1,
+                'keterangan': jenis,
+                'jenis': 'pindah_rr',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Respirasi',
+                'jawaban1': isi2,
+                'skor':skor2,
+                'keterangan': jenis,
+                'jenis': 'pindah_rr',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Aktifitas',
+                'jawaban1': isi3,
+                'skor':skor3,
+                'keterangan': jenis,
+                'jenis': 'pindah_rr',
+                'id_detail_checkup': idDetailCheckup
+            });
+
+            cek = true;
+        }
+    }
+
+    if("rr_sab" == jenis){
+
+        var pe1 = $('[name=sab1]:checked').val();
+
+        if (pe1 != undefined) {
+
+            var isi1 = pe1.split("|")[0];
+
+            var skor1 = pe1.split("|")[1];
+
+            data.push({
+                'parameter': 'Penilaian',
+                'jawaban1': isi1,
+                'skor':skor1,
+                'keterangan': jenis,
+                'jenis': 'pindah_rr',
+                'id_detail_checkup': idDetailCheckup
+            });
+            cek = true;
+        }
+    }
+
     if (cek) {
         var result = JSON.stringify(data);
         $('#save_op_' + jenis).hide();
@@ -1091,6 +1225,8 @@ function detailOperasi(jenis) {
         var firt = "";
         var last = "";
         var tgl = "";
+        var totalSkor = 0;
+        var cekData = false;
         AsesmenOperasiAction.getListAsesmenOperasi(idDetailCheckup, jenis, function (res) {
             if (res.length > 0) {
                 $.each(res, function (i, item) {
@@ -1169,7 +1305,23 @@ function detailOperasi(jenis) {
                             '<td>' + item.parameter + '</td>' +
                             '<td align="center">' + '<img src="' + jwb1 + '" style="width: 150px">' + '</td>' +
                             '</tr>';
-                    } else {
+                    } else if("rr_dewasa" == item.keterangan || "rr_anak_anak" == item.keterangan || "rr_sab" == item.keterangan){
+                        var jwb1 = "";
+                        var skor = "";
+                        if (item.jawaban1 != null) {
+                            jwb1 = item.jawaban1;
+                        }
+                        if (item.skor != null) {
+                            skor = item.skor;
+                            totalSkor = parseInt(totalSkor) + parseInt(item.skor);
+                        }
+                        body += '<tr>' +
+                            '<td width="30%">' + item.parameter + '</td>' +
+                            '<td>' + jwb1 + '</td>' +
+                            '<td align="center" width="10%">' + skor + '</td>' +
+                            '</tr>';
+                        cekData = true;
+                    }else {
                         var jwb1 = "";
                         if (item.jawaban1 != null) {
                             jwb1 = item.jawaban1;
@@ -1212,6 +1364,41 @@ function detailOperasi(jenis) {
                         '<td colspan="2">Saya memahami perlunya dan manfaat tindakan tersebut sebagaimana telah dijelaskan seperti di atas kepada saya termasuk resiko dan komplikasi yang timbul. Saya juga menyadari bahwa oleh karena itu ilmu kedokteran bukan ilmu pasti. maka keberhasilan tindakan kedokteran bukan keniscayaan, tetapi bergantung kepada izin Tuhan Yang Maha Esa. Tanggal ' + formaterDate(tgl) + ', Jam ' + formaterTime(tgl) + '</td>' +
                         '</tr>';
                 }
+                if ("rr_dewasa" == jenis || "rr_anak_anak" == jenis || "rr_sab" == jenis) {
+                    var con = "";
+                    head = '<tr>' +
+                        '<td><b>Variabel</b></td>' +
+                        '<td><b>Penilaian</b></td>' +
+                        '<td align="center"><b>Skor</b></td>' +
+                        '</tr>';
+
+                    if("rr_dewasa" == jenis){
+                        if(totalSkor >= 8 && totalSkor <=10){
+                            con = "Ya";
+                        }else{
+                            con = "Tidak"
+                        }
+                    }
+                    if("rr_anak_anak" == jenis){
+                        if(totalSkor >= 5 && totalSkor <=6){
+                            con = "Ya";
+                        }else{
+                            con = "Tidak"
+                        }
+                    }
+                    if("rr_sab" == jenis){
+                        if(totalSkor <= 2){
+                            con = "Ya";
+                        }else{
+                            con = "Tidak"
+                        }
+                    }
+
+                    if(cekData){
+                        last =  '<tr style="font-weight: bold"><td colspan="2">Total</td><td align="center">'+totalSkor+'</td></tr>' +
+                                '<tr style="font-weight: bold" bgcolor="#ffebcd"><td colspan="2">Kriteria Pindah Ruang</td><td align="center">'+con+'</td></tr>';
+                    }
+                }
 
             } else {
                 body = '<tr>' +
@@ -1227,7 +1414,7 @@ function detailOperasi(jenis) {
 
             var newRow = $('<tr id="del_op_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
             newRow.insertAfter($('table').find('#row_op_' + jenis));
-            var url = '/simrs/pages/images/cancel-flat-new.png';
+            var url = '<%= request.getContextPath() %>/pages/images/cancel-flat-new.png';
             $('#btn_op_' + jenis).attr('src', url);
             $('#btn_op_' + jenis).attr('onclick', 'delRowOperasi(\'' + jenis + '\')');
         });
@@ -1236,7 +1423,7 @@ function detailOperasi(jenis) {
 
 function delRowOperasi(id) {
     $('#del_op_' + id).remove();
-    var url = '/simrs/pages/images/icons8-plus-25.png';
+    var url = '<%= request.getContextPath() %>/pages/images/icons8-plus-25.png';
     $('#btn_op_' + id).attr('src', url);
     $('#btn_op_' + id).attr('onclick', 'detailOperasi(\'' + id + '\')');
 }
@@ -1254,9 +1441,9 @@ function penandaAreaOperasi() {
     $('#jk_pasien').html(jenisKelamin);
     var url = "";
     if ("Laki-Laki" == jenisKelamin) {
-        url = '/simrs/pages/images/penanda-laki-laki.jpg';
+        url = '<%= request.getContextPath() %>/pages/images/penanda-laki-laki.jpg';
     } else {
-        url = '/simrs/pages/images/penanda-perempuan.jpg';
+        url = '<%= request.getContextPath() %>/pages/images/penanda-perempuan.jpg';
     }
     var canvas = document.getElementById('area_canvas');
     var ctx = canvas.getContext('2d');
@@ -1290,9 +1477,9 @@ function clearConvas(jenis) {
         var jenisKelamin = $('#jenis_kelamin').val();
         var url = "";
         if ("Laki-Laki" == jenisKelamin) {
-            url = '/simrs/pages/images/penanda-laki-laki.jpg';
+            url = '<%= request.getContextPath() %>/pages/images/penanda-laki-laki.jpg';
         } else {
-            url = '/simrs/pages/images/penanda-perempuan.jpg';
+            url = '<%= request.getContextPath() %>/pages/images/penanda-perempuan.jpg';
         }
         var canvas = document.getElementById('area_canvas');
         var ctx = canvas.getContext('2d');
@@ -1377,7 +1564,7 @@ function formaterTime(dateTime) {
         var hh = today.getHours();
         var min = today.getMinutes();
         var sec = today.getSeconds();
-        today = hh + ':' + min + ':' + sec;
+        today = hh + ':' + min;
     }
     return today;
 }

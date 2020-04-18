@@ -135,5 +135,8 @@ public class CommonConstant {
     public final static String URL_IMG = "/images/";
     public final static String URL_IMG_RM = "rekam_medic";
 
+    public final static String PATH_MODAL = "/simrs/pages/com/neurix/simrs/transaksi/rekammedik/modalOperasi.jsp";
+    public final static String PATH_TEXT = "/simrs/pages/com/neurix/simrs/transaksi/rekammedik/modal.txt";
+
 
 }
