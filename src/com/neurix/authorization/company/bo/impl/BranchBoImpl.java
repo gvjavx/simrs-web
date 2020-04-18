@@ -59,7 +59,51 @@ public class BranchBoImpl implements BranchBo {
                 resultBranch.setAlamatSurat(imBranches.getAlamatSurat());
                 resultBranch.setLogoName(imBranches.getLogoName());
 
-                listOfResultBranch.add(resultBranch);
+                if (("Y").equalsIgnoreCase(resultBranch.getFlag())){
+                    listOfResultBranch.add(resultBranch);
+                }
+            }
+        }
+
+        logger.info("[BranchBoImpl.getAll] end process <<<");
+
+        return listOfResultBranch;
+    }
+
+    @Override
+    public List<Branch> getBranchList() throws GeneralBOException {
+
+        logger.info("[BranchBoImpl.getAll] start process >>>");
+
+        List<Branch> listOfResultBranch = new ArrayList();
+        List<ImBranches> listOfBranch = null;
+        try {
+            listOfBranch = branchDao.getBranchList();
+        } catch (HibernateException e) {
+            logger.error("[BranchBoImpl.getAll] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when getting all data, please info to your admin..." + e.getMessage());
+        }
+
+        if ( listOfBranch != null) {
+            Branch resultBranch;
+            for (ImBranches imBranches : listOfBranch) {
+                resultBranch = new Branch();
+
+                resultBranch.setBranchId(imBranches.getPrimaryKey().getId());
+                resultBranch.setBranchName(imBranches.getBranchName());
+                resultBranch.setBranchAddress(imBranches.getBranchAddress());
+                resultBranch.setCreatedWho(imBranches.getCreatedWho());
+                resultBranch.setCreatedDate(imBranches.getCreatedDate());
+                resultBranch.setLastUpdateWho(imBranches.getLastUpdateWho());
+                resultBranch.setLastUpdate(imBranches.getLastUpdate());
+                resultBranch.setAction(imBranches.getAction());
+                resultBranch.setFlag(imBranches.getFlag());
+                resultBranch.setAlamatSurat(imBranches.getAlamatSurat());
+                resultBranch.setLogoName(imBranches.getLogoName());
+
+                if (("Y").equalsIgnoreCase(resultBranch.getFlag())){
+                    listOfResultBranch.add(resultBranch);
+                }
             }
         }
 
