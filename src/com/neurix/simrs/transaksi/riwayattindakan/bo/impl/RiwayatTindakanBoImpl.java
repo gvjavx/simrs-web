@@ -204,6 +204,7 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
                 transitorisEntity.setAction(tindakanEntity.getAction());
                 transitorisEntity.setFlag(tindakanEntity.getFlag());
                 transitorisEntity.setTanggalTindakan(tindakanEntity.getTanggalTindakan());
+                transitorisEntity.setIdDetailCheckup(idDetailCheckup);
 
                 transitorisEntity.setCreatedDate(time);
                 transitorisEntity.setCreatedWho(user);

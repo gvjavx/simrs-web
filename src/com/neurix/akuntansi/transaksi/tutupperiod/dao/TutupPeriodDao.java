@@ -112,7 +112,7 @@ public class TutupPeriodDao extends GenericDao<ItAkunTutupPeriodEntity, String> 
     public Integer getLowestLevelKodeRekening(){
 
         String SQL = "SELECT rekening_id, MAX(level) FROM im_akun_kode_rekening \n" +
-                "GROUP BY rekening_id LIMIT 1";
+                "GROUP BY rekening_id ORDER BY level DESC LIMIT 1";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
 
