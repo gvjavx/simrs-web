@@ -175,7 +175,7 @@ function detailFisio(jenis) {
 
             var newRow = $('<tr id="del_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
             newRow.insertAfter($('table').find('#row_' + jenis));
-            var url = '<%= request.getContextPath() %>/pages/images/cancel-flat-new.png';
+            var url = contextPath+'/pages/images/cancel-flat-new.png';
             $('#btn_' + jenis).attr('src', url);
             $('#btn_' + jenis).attr('onclick', 'delRow(\'' + jenis + '\')');
         });
@@ -184,7 +184,7 @@ function detailFisio(jenis) {
 
 function delRow(id) {
     $('#del_' + id).remove();
-    var url = '<%= request.getContextPath() %>/pages/images/icons8-plus-25.png';
+    var url = contextPath+'/pages/images/icons8-plus-25.png';
     $('#btn_' + id).attr('src', url);
     $('#btn_' + id).attr('onclick', 'detailFisio(\'' + id + '\')');
 }

@@ -1,21 +1,304 @@
 function showModalMpp(jenis) {
+    if ("identifikasi" == jenis) {
+        $('#idn0').val(formaterDate(new Date)).datepicker({
+            dateFormat:'dd-mm-yy'
+        });
+        $('#idn00').val(formaterTime(new Date)).timepicker();
+    }
+    if ("asesmen" == jenis) {
+        $('#ases0').val(formaterDate(new Date)).datepicker({
+            dateFormat:'dd-mm-yy'
+        });
+        $('#ases00').val(formaterTime(new Date)).timepicker();
+    }
     if ("identifikasi_resiko" == jenis) {
-        $('#ir1').val(formaterDate(new Date));
+        $('#ir1').val(formaterDate(new Date)).datepicker({
+            dateFormat:'dd-mm-yy'
+        });
         $('#ir2').val(formaterTime(new Date)).timepicker();
     }
     if ("perencanaan_mpp" == jenis) {
         $('#pm1').val(formaterDate(new Date));
         $('#pm2').val(formaterTime(new Date)).timepicker();
     }
+    if ("rencana_mpp" == jenis) {
+        $('#rc1').val(formaterDate(new Date)).datepicker({
+            dateFormat:'dd-mm-yy'
+        });
+        $('#rc2').val(formaterTime(new Date)).timepicker();
+    }
+    if ("monitoring_mpp" == jenis) {
+        $('#mm1').val(formaterDate(new Date)).datepicker({
+            dateFormat:'dd-mm-yy'
+        });
+        $('#mm2').val(formaterTime(new Date)).timepicker();
+    }
+    if ("fasilitas_pelayanan" == jenis) {
+        $('#fp1').val(formaterDate(new Date)).datepicker({
+            dateFormat:'dd-mm-yy'
+        });
+        $('#fp2').val(formaterTime(new Date)).timepicker();
+    }
+    if ("advokasi" == jenis) {
+        $('#ap1').val(formaterDate(new Date)).datepicker({
+            dateFormat:'dd-mm-yy'
+        });
+        $('#ap2').val(formaterTime(new Date)).timepicker();
+    }
+    if("hasil_pelayanan"){
+        $('#hp1').val(formaterDate(new Date)).datepicker({
+            dateFormat:'dd-mm-yy'
+        });
+        $('#hp2').val(formaterTime(new Date)).timepicker();
+    }
+    if("terminasi" == jenis){
+        $('#tp1').val(formaterDate(new Date)).datepicker({
+            dateFormat:'dd-mm-yy'
+        });
+        $('#tp2').val(formaterTime(new Date)).timepicker();
+    }
     $('#modal-mpp-' + jenis).modal({show: true, backdrop: 'static'});
 }
 
 function saveMpp(jenis, ket) {
-    var data = "";
+    var data = [];
     var cek = false;
     if ("identifikasi" == jenis) {
-
+        var va1 = $('#idn0').val();
+        var va2 = $('#idn00').val();
+        var va3 = $('[name=idn1]:checked').val();
+        var va4 = $('[name=idn2]:checked').val();
+        var va5 = $('[name=idn3]:checked').val();
+        var va6 = $('[name=idn4]:checked').val();
+        var va7 = $('[name=idn5]:checked').val();
+        var va8 = $('[name=idn6]:checked').val();
+        var va9 = $('[name=idn7]:checked').val();
+        var va10 = $('[name=idn8]:checked').val();
+        if(va1 && va2 != '' && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va10 != undefined){
+            data.push({
+                'parameter': 'Tanggal dan Jam',
+                'jawaban': va1+ ' ' + va2,
+                'keterangan': jenis,
+                'jenis': 'evaluasi_awal',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Usia',
+                'jawaban': va3,
+                'keterangan': jenis,
+                'jenis': 'evaluasi_awal',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Pasien dengan kognitif rendah (tidak sekolah, buta huruf, SD/sederajat)',
+                'jawaban': va4,
+                'keterangan': jenis,
+                'jenis': 'evaluasi_awal',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Berisiko tinggi',
+                'jawaban': va5,
+                'keterangan': jenis,
+                'jenis': 'evaluasi_awal',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Kasus komplek (penyakit kronis, penyakit yang memakan biaya tinggi)',
+                'jawaban': va6,
+                'keterangan': jenis,
+                'jenis': 'evaluasi_awal',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Status fungsional rendah',
+                'jawaban': va7,
+                'keterangan': jenis,
+                'jenis': 'evaluasi_awal',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Riwayat gangguan mental',
+                'jawaban': va8,
+                'keterangan': jenis,
+                'jenis': 'evaluasi_awal',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Riwayat perawatan pasien',
+                'jawaban': va9,
+                'keterangan': jenis,
+                'jenis': 'evaluasi_awal',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Membantu kontinuitas pelayanan sesuai rencana pemulangan pasien (Discharge planning)',
+                'jawaban': va10,
+                'keterangan': jenis,
+                'jenis': 'evaluasi_awal',
+                'id_detail_checkup': idDetailCheckup
+            });
+            cek = true;
+        }
     }
+
+    if ("asesmen" == jenis) {
+        var va1 = $('#ases0').val();
+        var va2 = $('#ases00').val();
+        var va3 = $('[name=ases1]:checked').val();
+        var va4 = $('[name=ases2]:checked').val();
+        var va5 = $('[name=ases3]:checked').val();
+        var va6 = $('[name=ases4]:checked').val();
+        var va7 = $('[name=ases5]:checked').val();
+        var va8 = $('[name=ases6]:checked').val();
+        var va9 = $('[name=ases7]:checked').val();
+        var va10 = $('[name=ases8]:checked').val();
+        var va11 = $('[name=ases9]:checked').val();
+        var va12 = $('[name=ases10]:checked').val();
+        var va13 = $('[name=ases11]:checked').val();
+        var va14 = $('[name=ases12]:checked').val();
+        if(va1 && va2 != '' && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va10 && va11 && va12 && va13 && va14 != undefined){
+            data.push({
+                'parameter': 'Tanggal dan Jam',
+                'jawaban': va1+ ' ' + va2,
+                'keterangan': jenis,
+                'jenis': 'evaluasi_awal',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Fisik, fungsional, kognitif, kemandirian',
+                'jawaban': va3,
+                'keterangan': jenis,
+                'jenis': 'evaluasi_awal',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Riwayat Kesehatan',
+                'jawaban': va4,
+                'keterangan': jenis,
+                'jenis': 'evaluasi_awal',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Perilaku psiko, spiritual, sosial, kultural',
+                'jawaban': va5,
+                'keterangan': jenis,
+                'jenis': 'evaluasi_awal',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Kesehatan mental dan kognitif',
+                'jawaban': va6,
+                'keterangan': jenis,
+                'jenis': 'evaluasi_awal',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Tersedianya dukungan keluarga, kemampuan merawat dari pemberiasuhan',
+                'jawaban': va7,
+                'keterangan': jenis,
+                'jenis': 'evaluasi_awal',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Finalsial / sumber keuangan',
+                'jawaban': va8,
+                'keterangan': jenis,
+                'jenis': 'evaluasi_awal',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Asuransi / penjaminan',
+                'jawaban': va9,
+                'keterangan': jenis,
+                'jenis': 'evaluasi_awal',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Riwayat penggunaan obat NAPSA',
+                'jawaban': va10,
+                'keterangan': jenis,
+                'jenis': 'evaluasi_awal',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Riwayat trauma / kekerasan',
+                'jawaban': va11,
+                'keterangan': jenis,
+                'jenis': 'evaluasi_awal',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Pemahaman tentang kesehatan',
+                'jawaban': va12,
+                'keterangan': jenis,
+                'jenis': 'evaluasi_awal',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Kemampuan menerima perubahan',
+                'jawaban': va13,
+                'keterangan': jenis,
+                'jenis': 'evaluasi_awal',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Aspek Legal',
+                'jawaban': va14,
+                'keterangan': jenis,
+                'jenis': 'evaluasi_awal',
+                'id_detail_checkup': idDetailCheckup
+            });
+            cek = true;
+        }
+    }
+
+    if ("identifikasi_resiko" == jenis) {
+        var va1 = $('#ir1').val();
+        var va2 = $('#ir2').val();
+        var va3 = $('#ir3').val();
+        if(va1 && va2 && va3 != ''){
+            data.push({
+                'parameter': 'Tanggal dan Jam',
+                'jawaban': va1+ ' ' + va2,
+                'keterangan': jenis,
+                'jenis': 'evaluasi_awal',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Identifikasi Masalah Resiko',
+                'jawaban': va3,
+                'keterangan': jenis,
+                'jenis': 'evaluasi_awal',
+                'id_detail_checkup': idDetailCheckup
+            });
+            cek = true;
+        }
+    }
+
+    if ("perencanaan_mpp" == jenis) {
+        var va1 = $('#pm1').val();
+        var va2 = $('#pm2').val();
+        var va3 = $('#pm3').val();
+        if(va1 && va2 && va3 != ''){
+            data.push({
+                'parameter': 'Tanggal dan Jam',
+                'jawaban': va1+ ' ' + va2,
+                'keterangan': jenis,
+                'jenis': 'evaluasi_awal',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Perencanaan MPP',
+                'jawaban': va3,
+                'keterangan': jenis,
+                'jenis': 'evaluasi_awal',
+                'id_detail_checkup': idDetailCheckup
+            });
+            cek = true;
+        }
+    }
+
     if (cek) {
         var result = JSON.stringify(data);
         $('#save_mpp_' + jenis).hide();
@@ -57,7 +340,7 @@ function detailFormMpp(jenis) {
                     if (item.jawaban != null) {
                         jwb = item.jawaban;
                     }
-                    body = '<tr>' +
+                    body += '<tr>' +
                         '<td>'+item.parameter+'</td>' +
                         '<td>'+jwb+'</td>' +
                         '</tr>';
@@ -67,25 +350,24 @@ function detailFormMpp(jenis) {
                     '<td>Data belum ada</td>' +
                     '</tr>';
             }
+
+            var table = '<table style="font-size: 12px" class="table table-bordered">' +
+                '<thead>' + head + '</thead>' +
+                '<tbody>' + body + '</tbody>' +
+                '</table>';
+
+            var newRow = $('<tr id="del_mpp_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
+            newRow.insertAfter($('table').find('#row_mpp_' + jenis));
+            var url = contextPath+'/pages/images/cancel-flat-new.png';
+            $('#btn_mpp_' + jenis).attr('src', url);
+            $('#btn_mpp_' + jenis).attr('onclick', 'delRowMpp(\'' + jenis + '\')');
         });
-
-        var table = '<table style="font-size: 12px" class="table table-bordered">' +
-            '<thead>' + head + '</thead>' +
-            '<tr bgcolor="#ffebcd">' +
-            '<tbody>' + body + '</tbody>' +
-            '</table>';
-
-        var newRow = $('<tr id="del_mpp_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
-        newRow.insertAfter($('table').find('#row_mpp_' + jenis));
-        var url = '<%= request.getContextPath() %>/pages/images/cancel-flat-new.png';
-        $('#btn_mpp_' + jenis).attr('src', url);
-        $('#btn_mpp_' + jenis).attr('onclick', 'delRowMpp(\'' + jenis + '\')');
     }
 }
 
 function delRowMpp(id) {
     $('#del_mpp_' + id).remove();
-    var url = '<%= request.getContextPath() %>/pages/images/icons8-plus-25.png';
+    var url = contextPath+'/pages/images/icons8-plus-25.png';
     $('#btn_mpp_' + id).attr('src', url);
     $('#btn_mpp_' + id).attr('onclick', 'detailFormMpp(\'' + id + '\')');
 }

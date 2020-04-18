@@ -1414,7 +1414,7 @@ function detailOperasi(jenis) {
 
             var newRow = $('<tr id="del_op_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
             newRow.insertAfter($('table').find('#row_op_' + jenis));
-            var url = '<%= request.getContextPath() %>/pages/images/cancel-flat-new.png';
+            var url = contextPath+'/pages/images/cancel-flat-new.png';
             $('#btn_op_' + jenis).attr('src', url);
             $('#btn_op_' + jenis).attr('onclick', 'delRowOperasi(\'' + jenis + '\')');
         });
@@ -1423,7 +1423,7 @@ function detailOperasi(jenis) {
 
 function delRowOperasi(id) {
     $('#del_op_' + id).remove();
-    var url = '<%= request.getContextPath() %>/pages/images/icons8-plus-25.png';
+    var url = contextPath+'/pages/images/icons8-plus-25.png';
     $('#btn_op_' + id).attr('src', url);
     $('#btn_op_' + id).attr('onclick', 'detailOperasi(\'' + id + '\')');
 }
@@ -1441,9 +1441,9 @@ function penandaAreaOperasi() {
     $('#jk_pasien').html(jenisKelamin);
     var url = "";
     if ("Laki-Laki" == jenisKelamin) {
-        url = '<%= request.getContextPath() %>/pages/images/penanda-laki-laki.jpg';
+        url = contextPath+'/pages/images/penanda-laki-laki.jpg';
     } else {
-        url = '<%= request.getContextPath() %>/pages/images/penanda-perempuan.jpg';
+        url = contextPath+'/pages/images/penanda-perempuan.jpg';
     }
     var canvas = document.getElementById('area_canvas');
     var ctx = canvas.getContext('2d');
@@ -1477,9 +1477,9 @@ function clearConvas(jenis) {
         var jenisKelamin = $('#jenis_kelamin').val();
         var url = "";
         if ("Laki-Laki" == jenisKelamin) {
-            url = '<%= request.getContextPath() %>/pages/images/penanda-laki-laki.jpg';
+            url = contextPath+'/pages/images/penanda-laki-laki.jpg';
         } else {
-            url = '<%= request.getContextPath() %>/pages/images/penanda-perempuan.jpg';
+            url = contextPath+'/pages/images/penanda-perempuan.jpg';
         }
         var canvas = document.getElementById('area_canvas');
         var ctx = canvas.getContext('2d');

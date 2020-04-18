@@ -35,25 +35,25 @@
                         <tr id="row_mpp_identifikasi">
                             <td>Identifikasi / Skrining</td>
                             <td width="20%" align="center">
-                                <img id="btn_mpp_identifikasi" class="hvr-grow" onclick="detailFormMpp('identifikasi')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">
+                                <img id="btn_mpp_identifikasi" class="hvr-grow" onclick="detailFormMpp('identifikasi')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
                         <tr id="row_mpp_asesmen">
                             <td>Asesmen</td>
                             <td width="20%" align="center">
-                                <img id="btn_mpp_asesmen" class="hvr-grow" onclick="detailFormMpp('asesmen')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">
+                                <img id="btn_mpp_asesmen" class="hvr-grow" onclick="detailFormMpp('asesmen')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
                         <tr id="row_mpp_identifikasi_resiko">
                             <td>Identifikasi Masalah Resiko</td>
                             <td width="20%" align="center">
-                                <img id="btn_mpp_identifikasi_resiko" class="hvr-grow" onclick="detailFormMpp('identifikasi_resiko')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">
+                                <img id="btn_mpp_identifikasi_resiko" class="hvr-grow" onclick="detailFormMpp('identifikasi_resiko')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
                         <tr id="row_mpp_perencanaan_mpp">
                             <td>Perencanaan Manajemen Pelaksanaan Pasien (MPP)</td>
                             <td width="20%" align="center">
-                                <img id="btn_mpp_perencanaan_mpp" class="hvr-grow" onclick="detailFormMpp('perencanaan_mpp')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">
+                                <img id="btn_mpp_perencanaan_mpp" class="hvr-grow" onclick="detailFormMpp('perencanaan_mpp')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
                         </tbody>
@@ -83,6 +83,29 @@
                         <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                         <p id="msg_mpp_identifikasi"></p>
                     </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-2">Tanggal</label>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input class="form-control datepicker2" id="idn0">
+                                </div>
+                            </div>
+                            <label class="col-md-2">Jam</label>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-clock-o"></i>
+                                    </div>
+                                    <input class="form-control time" id="idn00">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-header with-border"></div>
                     <div class="row">
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">Usia</label>
@@ -291,6 +314,29 @@
                         <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                         <p id="msg_mpp_asesmen"></p>
                     </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-2">Tanggal</label>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input class="form-control datepicker2" id="ases0">
+                                </div>
+                            </div>
+                            <label class="col-md-2">Jam</label>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-clock-o"></i>
+                                    </div>
+                                    <input class="form-control time" id="ases00">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-header with-border"></div>
                     <div class="row">
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">Fisik, fungsional, kognitif, kemandirian</label>
@@ -745,37 +791,37 @@
                         <tr id="row_mpp_rencana_mpp">
                             <td>Pelaksanaan Rencana MPP</td>
                             <td width="20%" align="center">
-                                <img id="btn_mpp_rencana_mpp" class="hvr-grow" onclick="detailFormMpp('rencana_mpp')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">
+                                <img id="btn_mpp_rencana_mpp" class="hvr-grow" onclick="detailFormMpp('rencana_mpp')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
                         <tr id="row_mpp_monitoring_mpp">
                             <td>Monitoring</td>
                             <td width="20%" align="center">
-                                <img id="btn_mpp_monitoring_mpp" class="hvr-grow" onclick="detailFormMpp('monitoring_mpp')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">
+                                <img id="btn_mpp_monitoring_mpp" class="hvr-grow" onclick="detailFormMpp('monitoring_mpp')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
                         <tr id="row_mpp_fasilitas_pelayanan">
                             <td>Memfasilitasi Pelayanan</td>
                             <td width="20%" align="center">
-                                <img id="btn_mpp_fasilitas_pelayanan" class="hvr-grow" onclick="detailFormMpp('fasilitas_pelayanan')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">
+                                <img id="btn_mpp_fasilitas_pelayanan" class="hvr-grow" onclick="detailFormMpp('fasilitas_pelayanan')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
                         <tr id="row_mpp_advokasi">
                             <td>Advokasi Pelayanan Pasien</td>
                             <td width="20%" align="center">
-                                <img id="btn_mpp_advokasi" class="hvr-grow" onclick="detailFormMpp('advokasi')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">
+                                <img id="btn_mpp_advokasi" class="hvr-grow" onclick="detailFormMpp('advokasi')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
                         <tr id="row_mpp_hasil_pelayanan">
                             <td>Hasil Pelayanan</td>
                             <td width="20%" align="center">
-                                <img id="btn_mpp_hasil_pelayanan" class="hvr-grow" onclick="detailFormMpp('hasil_pelayanan')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">
+                                <img id="btn_mpp_hasil_pelayanan" class="hvr-grow" onclick="detailFormMpp('hasil_pelayanan')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
                         <tr id="row_mpp_terminasi">
                             <td>Terminasi MPP</td>
                             <td width="20%" align="center">
-                                <img id="btn_mpp_terminasi" class="hvr-grow" onclick="detailFormMpp('terminasi')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">
+                                <img id="btn_mpp_terminasi" class="hvr-grow" onclick="detailFormMpp('terminasi')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
                         </tbody>
@@ -790,20 +836,20 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal-mpp-perencanaan_mpp">
+<div class="modal fade" id="modal-mpp-rencana_mpp">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a; color: white">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Asesmen
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Pelaksanaan Rencana MPP
                 </h4>
             </div>
             <div class="modal-body">
                 <div class="box-body">
-                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_mpp_perencanaan_mpp">
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_mpp_rencana_mpp">
                         <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                        <p id="msg_mpp_perencanaan_mpp"></p>
+                        <p id="msg_mpp_rencana_mpp"></p>
                     </div>
                     <div class="row">
                         <div class="form-group">
@@ -813,7 +859,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    <input class="form-control datepicker2" id="pm1">
+                                    <input class="form-control datepicker2" id="rc1">
                                 </div>
                             </div>
                         </div>
@@ -824,14 +870,14 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-clock-o"></i>
                                     </div>
-                                    <input class="form-control time" id="pm2">
+                                    <input class="form-control time" id="rc2">
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">Perencanaan</label>
                             <div class="col-md-8">
-                                <textarea class="form-control" style="margin-top: 7px" rows="6" id="pm3"></textarea>
+                                <textarea class="form-control" style="margin-top: 7px" rows="6" id="rc3"></textarea>
                             </div>
                         </div>
                     </div>
@@ -840,12 +886,420 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button id="save_mpp_perencanaan_mpp" class="btn btn-success pull-right" onclick="saveMpp('perencanaan_mpp','evaluasi_awal')"><i class="fa fa-check"></i> Save
+                <button id="save_mpp_rencana_mpp" class="btn btn-success pull-right" onclick="saveMpp('rencana_mpp','impementasi_mpp')"><i class="fa fa-check"></i> Save
                 </button>
-                <button id="load_mpp_perencanaan_mpp" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
+                <button id="load_mpp_rencana_mpp" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
             </div>
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modal-mpp-monitoring_mpp">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Monitoring
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_mpp_monitoring_mpp">
+                        <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                        <p id="msg_mpp_monitoring_mpp"></p>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3">Tanggal</label>
+                            <div class="col-md-8">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input class="form-control" id="mm1">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3" style="margin-top: 7px">Jam</label>
+                            <div class="col-md-8">
+                                <div class="input-group" style="margin-top: 7px">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-clock-o"></i>
+                                    </div>
+                                    <input class="form-control time" id="mm2">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3" style="margin-top: 7px">Monitoring</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control" style="margin-top: 7px" rows="6" id="mm3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button id="save_mpp_monitoring_mpp" class="btn btn-success pull-right" onclick="saveMpp('monitoring_mpp','impementasi_mpp')"><i class="fa fa-check"></i> Save
+                </button>
+                <button id="load_mpp_monitoring_mpp" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-mpp-fasilitas_pelayanan">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Memfasilitasi Pelayanan
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_mpp_fasilitas_pelayanan">
+                        <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                        <p id="msg_mpp_fasilitas_pelayanan"></p>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4">Tanggal</label>
+                            <div class="col-md-8">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input class="form-control" id="fp1">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Jam</label>
+                            <div class="col-md-8">
+                                <div class="input-group" style="margin-top: 7px">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-clock-o"></i>
+                                    </div>
+                                    <input class="form-control time" id="fp2">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Konsultasi / kolaborasi</label>
+                            <div class="col-md-8">
+                                <input class="form-control" id="fp3" style="margin-top: 7px">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Second opinion</label>
+                            <div class="col-md-8">
+                                <input class="form-control" id="fp4" style="margin-top: 7px">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Rawat bersama / alih rawat </label>
+                            <div class="col-md-8">
+                                <input class="form-control" id="fp5" style="margin-top: 7px">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Komunikasi / Edukasi</label>
+                            <div class="col-md-8">
+                                <input class="form-control" id="fp6" style="margin-top: 7px">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Rujukan</label>
+                            <div class="col-md-8">
+                                <input class="form-control" id="fp7" style="margin-top: 7px">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Lain Lain</label>
+                            <div class="col-md-8">
+                                <input class="form-control" id="fp8" style="margin-top: 7px">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button id="save_mpp_fasilitas_pelayanan" class="btn btn-success pull-right" onclick="saveMpp('fasilitas_pelayanan','impementasi_mpp')"><i class="fa fa-check"></i> Save
+                </button>
+                <button id="load_mpp_fasilitas_pelayanan" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-mpp-advokasi">
+    <div class="modal-dialog" style="width: 55%">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Advokasi pelayanan pasien
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_mpp_advokasi">
+                        <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                        <p id="msg_mpp_advokasi"></p>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-2">Tanggal</label>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input class="form-control" id="ap1">
+                                </div>
+                            </div>
+                            <label class="col-md-1">Jam</label>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-clock-o"></i>
+                                    </div>
+                                    <input class="form-control time" id="ap2">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-header with-border"></div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check" style="margin-top: 7px;">
+                                <input type="checkbox" name="ap3" id="ap31" value="Diskusi dengan PPA staf lain tenatng kebutuhan pasien agar sesuai dengan cp">
+                                <label for="ap31"></label> Diskusi dengan PPA staf lain tenatng kebutuhan pasien agar sesuai dengan cp
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check" style="margin-top: 7px;">
+                                <input type="checkbox" name="ap3" id="ap32" value="Diskusi dengan PPA untuk penanganan komplikasi">
+                                <label for="ap31"></label> Diskusi dengan PPA untuk penanganan komplikasi
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check" style="margin-top: 7px;">
+                                <input type="checkbox" name="ap3" id="ap33" value="Memberikan edukasi pasien dan keluarga tentang penyakit, kondisi terkini dan rencana pelayanan">
+                                <label for="ap31"></label> Memberikan edukasi pasien dan keluarga tentang penyakit, kondisi terkini dan rencana pelayanan
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check" style="margin-top: 7px;">
+                                <input type="checkbox" name="ap3" id="ap34" value="Meningkatkan kemandirian untuk menentukan pilihan/pengambilan keputusan">
+                                <label for="ap31"></label> Meningkatkan kemandirian untuk menentukan pilihan/pengambilan keputusan
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check" style="margin-top: 7px;">
+                                <input type="checkbox" name="ap3" id="ap35" value="Memberik edukasi mengenai kondisi pasien">
+                                <label for="ap31"></label> Memberik edukasi mengenai kondisi pasien
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check" style="margin-top: 7px;">
+                                <input type="checkbox" name="ap3" id="ap36" value="Mengenali, mencegah, menghinari disparitas untuk mengakses mutu dan hasil pelayanan terkait dengan ras, etnik, agama, gender, budaya, status, pernikahan, umur, politik, mental, kognitif">
+                                <label for="ap31"></label> Mengenali, mencegah, menghinari disparitas untuk mengakses mutu dan hasil pelayanan terkait dengan ras, etnik, agama, gender, budaya, status, pernikahan, umur, politik, mental, kognitif
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check" style="margin-top: 7px;">
+                                <input type="checkbox" name="ap3" id="ap37" value="Untuk memenuhi kebutuhan pelayanan yang berkembang/bertambah karena perbuatan kondisi">
+                                <label for="ap31"></label> Untuk memenuhi kebutuhan pelayanan yang berkembang/bertambah karena perbuatan kondisi
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check" style="margin-top: 7px;">
+                                <input type="checkbox" name="ap3" id="ap38" value="Membuat komunikasi dengan instansi terkait tentang upaya penyelsaian kendala keuangan">
+                                <label for="ap31"></label> Membuat komunikasi dengan instansi terkait tentang upaya penyelsaian kendala keuangan
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button id="save_mpp_advokasi" class="btn btn-success pull-right" onclick="saveMpp('advokasi','impementasi_mpp')"><i class="fa fa-check"></i> Save
+                </button>
+                <button id="load_mpp_advokasi" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-mpp-hasil_pelayanan">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Hasil Pelayanan
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_mpp_hasil_pelayanan">
+                        <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                        <p id="msg_mpp_hasil_pelayanan"></p>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3">Tanggal</label>
+                            <div class="col-md-8">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input class="form-control" id="hp1">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3" style="margin-top: 7px">Jam</label>
+                            <div class="col-md-8">
+                                <div class="input-group" style="margin-top: 7px">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-clock-o"></i>
+                                    </div>
+                                    <input class="form-control time" id="hp2">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3" style="margin-top: 7px">Hasil Pelayanan</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control" style="margin-top: 7px" rows="6" id="hp3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button id="save_mpp_hasil_pelayanan" class="btn btn-success pull-right" onclick="saveMpp('hasil_pelayanan','impementasi_mpp')"><i class="fa fa-check"></i> Save
+                </button>
+                <button id="load_mpp_hasil_pelayanan" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-mpp-terminasi">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Terminasi MPP
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_mpp_terminasi">
+                        <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                        <p id="msg_mpp_terminasi"></p>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3">Tanggal</label>
+                            <div class="col-md-8">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input class="form-control" id="tp1">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3" style="margin-top: 7px">Jam</label>
+                            <div class="col-md-8">
+                                <div class="input-group" style="margin-top: 7px">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-clock-o"></i>
+                                    </div>
+                                    <input class="form-control time" id="tp2">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3" style="margin-top: 7px">Terminasi MPP</label>
+                            <div class="col-md-8">
+                                <div class="custom02" style="margin-top: 7px">
+                                    <input type="radio" value="Perencanaan Pulang" id="tp31" name="tp3" /><label for="tp31">Perencanaan Pulang</label>
+                                </div>
+                            </div>
+                            <div class="col-md-offset-3 col-md-8">
+                                <input class="form-control" style="margin-top: 7px" id="tp_ket31">
+                            </div>
+                            <div class="col-md-offset-3 col-md-8">
+                                <div class="custom02" style="margin-top: 7px">
+                                    <input type="radio" value="Home Care" id="tp32" name="tp3" /><label for="tp32">Home Care</label>
+                                </div>
+                            </div>
+                            <div class="col-md-offset-3 col-md-8">
+                                <div class="custom02" style="margin-top: 7px">
+                                    <input type="radio" value="Lain-Lain" id="tp33" name="tp3" /><label for="tp33">Lain-Lain</label>
+                                </div>
+                            </div>
+                            <div class="col-md-offset-3 col-md-8">
+                                <input class="form-control" style="margin-top: 7px" id="tp_ket32">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button id="save_mpp_terminasi" class="btn btn-success pull-right" onclick="saveMpp('terminasi','impementasi_mpp')"><i class="fa fa-check"></i> Save
+                </button>
+                <button id="load_mpp_terminasi" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+

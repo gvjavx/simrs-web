@@ -393,7 +393,7 @@
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-success"><i class="fa fa-edit"></i> Action
                                     </button>
-                                    <button type="button" class="btn btn-success dropdown-toggle"
+                                    <button onclick="loadModalRM('mpp')" type="button" class="btn btn-success dropdown-toggle"
                                             data-toggle="dropdown" style="height: 34px">
                                         <span class="caret"></span>
                                         <span class="sr-only">Toggle Dropdown</span>
@@ -509,8 +509,8 @@
                                         <span class="sr-only">Toggle Dropdown</span>
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a href="#" onclick="pengkajianFisioterapi('<s:property value="headerDetailCheckup.idDetailCheckup"/>')"><i class="fa fa-edit"></i>Pengkajian Pasien Fisioterapi</a></li>
-                                        <li><a href="#" onclick="addMonitoringFisioterapi('<s:property value="headerDetailCheckup.idDetailCheckup"/>')"><i class="fa fa-television"></i>Kunjungan Fisioterapi</a></li>
+                                        <li><a style="cursor: pointer" onclick="pengkajianFisioterapi('<s:property value="headerDetailCheckup.idDetailCheckup"/>')"><i class="fa fa-edit"></i>Pengkajian Pasien Fisioterapi</a></li>
+                                        <li><a style="cursor: pointer" onclick="addMonitoringFisioterapi('<s:property value="headerDetailCheckup.idDetailCheckup"/>')"><i class="fa fa-television"></i>Kunjungan Fisioterapi</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -756,19 +756,23 @@
 
 <script type='text/javascript'>
 
+    var contextPath = '<%= request.getContextPath() %>';
+
     function loadModalRM(jenis){
         var context = "";
         if(jenis == "fisioterapi"){
-            context = '<%= request.getContextPath() %>/pages/modal/modalFisioterapi.jsp';
+            context = contextPath+'/pages/modal/modalFisioterapi.jsp';
         }
         if(jenis == "operasi"){
-            context = '<%= request.getContextPath() %>/pages/modal/modalOperasi.jsp';
+            context = contextPath+'/pages/modal/modalOperasi.jsp';
         }
         if(jenis == "ugd"){
-            context = '<%= request.getContextPath() %>/pages/modal/modalAsesmenUGD.jsp';
+            context = contextPath+'/pages/modal/modalAsesmenUGD.jsp';
+        }
+        if(jenis == "mpp"){
+            context = contextPath+'/pages/modal/modalMpp.jsp';
         }
         $('#conten-modal').load(context, function (res) {
-            console.log(res);
         });
     }
 
