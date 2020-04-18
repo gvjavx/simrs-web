@@ -38,6 +38,7 @@ import com.neurix.simrs.transaksi.rawatinap.model.ItSimrsRawatInapEntity;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
 import com.neurix.simrs.transaksi.riwayattindakan.bo.RiwayatTindakanBo;
 import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsRiwayatTindakanEntity;
+import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsTindakanTransitorisEntity;
 import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
 import com.neurix.simrs.transaksi.teamdokter.bo.TeamDokterBo;
 import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
@@ -1017,16 +1018,26 @@ public class VerifikatorAction extends BaseMasterAction {
                 // jika selain JRJ
                 // maka obat dikenakan PPN
                 BigDecimal ppn = new BigDecimal(0);
-//                if (!"JRI".equalsIgnoreCase(type) && "resep".equalsIgnoreCase(jenisPasien)){
-//                    ppn = hitungPPN(riwayatTindakanEntity.getTotalTarif());
-//                }
 
-                Map activityMap = new HashMap();
-                activityMap.put("activity_id", riwayatTindakanEntity.getIdTindakan());
-                activityMap.put("person_id", idDokter);
-                activityMap.put("nilai", riwayatTindakanEntity.getTotalTarif().add(ppn));
-                activityMap.put("tipe", jenisPasien);
-                activityList.add(activityMap);
+                // mencari apakah tindakan transitoris
+                boolean nonTransitoris = false;
+                if ("JRI".equalsIgnoreCase(type)){
+                    ItSimrsTindakanTransitorisEntity transitorisEntity = riwayatTindakanBo.getTindakanTransitorisById(riwayatTindakanEntity.getIdRiwayatTindakan());
+                    if (transitorisEntity == null){
+                        nonTransitoris = true;
+                    }
+                }
+
+                // jika bukan Transitoris
+                // maka ditambahkan activity
+                if (nonTransitoris){
+                    Map activityMap = new HashMap();
+                    activityMap.put("activity_id", riwayatTindakanEntity.getIdTindakan());
+                    activityMap.put("person_id", idDokter);
+                    activityMap.put("nilai", riwayatTindakanEntity.getTotalTarif().add(ppn));
+                    activityMap.put("no_trans", riwayatTindakanEntity.getIdDetailCheckup());
+                    activityList.add(activityMap);
+                }
             }
         }
         //** mencari tindakan dan dimasukan ke jurnal detail activity. END **//
@@ -1161,8 +1172,11 @@ public class VerifikatorAction extends BaseMasterAction {
                     // jika ada resep dan ppn untuk debit piutang
                     jumlahAllTindakan = jumlahAllTindakan.add(jumlahResep.add(ppnObat));
 
+                    Map mapPiutang = new HashMap();
+                    mapPiutang.put("nilai", jumlahAllTindakan);
+
                     // debit piutang pasien PTPN
-                    hsCriteria.put("piutang_pasien_bpjs", jumlahAllTindakan);
+                    hsCriteria.put("piutang_pasien_bpjs", mapPiutang);
                     transId = "16";
                     jenisPasien = " Murni Dengan Obat ";
                 } else {
@@ -1194,8 +1208,13 @@ public class VerifikatorAction extends BaseMasterAction {
                 // kredit jumlah tindakan PTPN
                 hsCriteria.put("pendapatan_rawat_inap_bpjs", mapTindakan);
 
+                BigDecimal jumlahPiutang = jumlahTindakan.add(jumlahResep);
+
+                Map mapPiutang = new HashMap();
+                mapPiutang.put("nilai", jumlahPiutang);
+
                 // debit piutang pasien PTPN
-                hsCriteria.put("piutang_pasien_bpjs", jumlahTindakan.add(jumlahResep));
+                hsCriteria.put("piutang_pasien_bpjs", mapPiutang);
                 transId = "23";
                 jenisPasien = " Murni ";
             }

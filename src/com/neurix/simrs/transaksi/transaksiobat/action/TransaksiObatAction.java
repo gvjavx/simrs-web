@@ -1417,10 +1417,14 @@ public class TransaksiObatAction extends BaseMasterAction {
         mapPPN.put("bukti", billingSystemBoProxy.createInvoiceNumber("JPD", branchId));
         mapPPN.put("nilai", ppn);
 
+        Map mapKas = new HashMap();
+        mapKas.put("metode_bayar", "tunai");
+        mapKas.put("nilai", pendapatan);
+
         // create jurnal
         Map hsCriteria = new HashMap();
         hsCriteria.put("metode_bayar", "tunai");
-        hsCriteria.put("kas",  pendapatan);
+        hsCriteria.put("kas",  mapKas);
 
         Map mapPendapatan = new HashMap();
         mapPendapatan.put("nilai", new BigDecimal(trans.getTotalBayar()));

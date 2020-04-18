@@ -19,5 +19,6 @@ public interface RiwayatTindakanBo {
     public void saveTindakanTransitoris(String  idDetailCheckup, Timestamp time, String user) throws GeneralBOException;
     public List<ItSimrsRiwayatTindakanEntity> getListEntityRiwayatTindakan(RiwayatTindakan bean);
     public void updateByEntity(ItSimrsRiwayatTindakanEntity entity) throws GeneralBOException;
+    public ItSimrsTindakanTransitorisEntity getTindakanTransitorisById(String id) throws GeneralBOException;
 
 }

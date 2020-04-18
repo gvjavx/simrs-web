@@ -65,6 +65,7 @@ import com.neurix.simrs.transaksi.rawatinap.model.ItSimrsRawatInapEntity;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
 import com.neurix.simrs.transaksi.riwayattindakan.bo.RiwayatTindakanBo;
 import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsRiwayatTindakanEntity;
+import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsTindakanTransitorisEntity;
 import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
 import com.neurix.simrs.transaksi.teamdokter.bo.TeamDokterBo;
 import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
@@ -1310,16 +1311,26 @@ public class CheckupDetailAction extends BaseMasterAction {
                 // jika selain JRJ
                 // maka obat dikenakan PPN
                 BigDecimal ppn = new BigDecimal(0);
-//                if (!"JRI".equalsIgnoreCase(type) && "resep".equalsIgnoreCase(jenisPasien)){
-//                    ppn = hitungPPN(riwayatTindakanEntity.getTotalTarif());
-//                }
 
-                Map activityMap = new HashMap();
-                activityMap.put("activity_id", riwayatTindakanEntity.getIdTindakan());
-                activityMap.put("person_id", idDokter);
-                activityMap.put("nilai", riwayatTindakanEntity.getTotalTarif().add(ppn));
-                activityMap.put("tipe", jenisPasien);
-                activityList.add(activityMap);
+                // mencari apakah tindakan transitoris
+                boolean nonTransitoris = false;
+                if ("JRI".equalsIgnoreCase(type)){
+                    ItSimrsTindakanTransitorisEntity transitorisEntity = riwayatTindakanBo.getTindakanTransitorisById(riwayatTindakanEntity.getIdRiwayatTindakan());
+                    if (transitorisEntity == null){
+                        nonTransitoris = true;
+                    }
+                }
+
+                // jika bukan Transitoris
+                // maka ditambahkan activity
+                if (nonTransitoris){
+                    Map activityMap = new HashMap();
+                    activityMap.put("activity_id", riwayatTindakanEntity.getIdTindakan());
+                    activityMap.put("person_id", idDokter);
+                    activityMap.put("nilai", riwayatTindakanEntity.getTotalTarif().add(ppn));
+                    activityMap.put("no_trans", riwayatTindakanEntity.getIdDetailCheckup());
+                    activityList.add(activityMap);
+                }
             }
         }
         //** mencari tindakan dan dimasukan ke jurnal detail activity. END **//
@@ -2107,6 +2118,11 @@ public class CheckupDetailAction extends BaseMasterAction {
                                     return finalResponse;
                                 }
                             }
+                        } else if ("asuransi".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien())){
+                            HeaderDetailCheckup biayaCover = getBiayaAsuransi(detailCheckup.getIdDetailCheckup());
+                            headerDetailCheckup.setIdAsuransi(biayaCover.getIdAsuransi());
+                            headerDetailCheckup.setNoKartuAsuransi(biayaCover.getNoKartuAsuransi());
+                            headerDetailCheckup.setCoverBiaya(biayaCover.getCoverBiaya().subtract(biayaCover.getTarifTindakan()));
                         }
 
                         Tindakan tindakan = new Tindakan();

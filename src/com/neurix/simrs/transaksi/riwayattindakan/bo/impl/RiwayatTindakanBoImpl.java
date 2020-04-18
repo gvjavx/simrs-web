@@ -221,6 +221,11 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
     }
 
     @Override
+    public ItSimrsTindakanTransitorisEntity getTindakanTransitorisById(String id) throws GeneralBOException {
+        return tindakanTransitorisDao.getById("idRiwayatTindakan", id);
+    }
+
+    @Override
     public void updateByEntity(ItSimrsRiwayatTindakanEntity entity) throws GeneralBOException {
         try {
             riwayatTindakanDao.updateAndSave(entity);

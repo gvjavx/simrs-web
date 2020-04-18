@@ -39,6 +39,7 @@ import com.neurix.simrs.transaksi.rawatinap.model.ItSimrsRawatInapEntity;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
 import com.neurix.simrs.transaksi.riwayattindakan.bo.RiwayatTindakanBo;
 import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsRiwayatTindakanEntity;
+import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsTindakanTransitorisEntity;
 import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
 import com.neurix.simrs.transaksi.teamdokter.bo.TeamDokterBo;
 import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
@@ -702,8 +703,13 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         mapUangMuka.put("master_id", idPasien);
         mapUangMuka.put("nilai", new BigDecimal(jumlahDibayar));
 
+        Map mapKas = new HashMap();
+        mapKas.put("nilai", new BigDecimal(jumlahDibayar));
+        mapKas.put("metode_bayar", metodeBayar);
+        mapKas.put("bank", kodeBank);
+
         hsCriteria.put("uang_muka", mapUangMuka);
-        hsCriteria.put("kas", new BigDecimal(jumlahDibayar));
+        hsCriteria.put("kas", mapKas);
 
         try {
 
@@ -830,30 +836,39 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 // jika selain JRJ
                 // maka obat dikenakan PPN
                 BigDecimal ppn = new BigDecimal(0);
-//                if (!"JRI".equalsIgnoreCase(type) && "resep".equalsIgnoreCase(riwayatTindakanEntity.getKeterangan())){
-//                    ppn = hitungPPN(riwayatTindakanEntity.getTotalTarif());
-//                }
-
-                Map activityMap = new HashMap();
-                activityMap.put("activity_id", riwayatTindakanEntity.getIdTindakan());
-                activityMap.put("person_id", idDokter);
-                activityMap.put("nilai", riwayatTindakanEntity.getTotalTarif().add(ppn));
-                activityMap.put("tipe", riwayatTindakanEntity.getJenisPasien());
-
-                if ("resep".equalsIgnoreCase(riwayatTindakanEntity.getKeterangan())){
-
-                    if ("umum".equalsIgnoreCase(riwayatTindakanEntity.getJenisPasien())){
-                        listActivityResepUmum.add(activityMap);
-                    } else {
-                        listActivityResep.add(activityMap);
+                // mencari apakah tindakan transitoris
+                boolean nonTransitoris = false;
+                if ("JRI".equalsIgnoreCase(type)){
+                    ItSimrsTindakanTransitorisEntity transitorisEntity = riwayatTindakanBo.getTindakanTransitorisById(riwayatTindakanEntity.getIdRiwayatTindakan());
+                    if (transitorisEntity == null){
+                        nonTransitoris = true;
                     }
+                }
 
-                } else {
+                // jika bukan Transitoris
+                // maka ditambahkan activity
+                if (nonTransitoris){
+                    Map activityMap = new HashMap();
+                    activityMap.put("activity_id", riwayatTindakanEntity.getIdTindakan());
+                    activityMap.put("person_id", idDokter);
+                    activityMap.put("nilai", riwayatTindakanEntity.getTotalTarif().add(ppn));
+                    activityMap.put("no_trans", riwayatTindakanEntity.getIdDetailCheckup());
 
-                    if ("umum".equalsIgnoreCase(riwayatTindakanEntity.getJenisPasien())){
-                        listActivityTindakanUmum.add(activityMap);
+                    if ("resep".equalsIgnoreCase(riwayatTindakanEntity.getKeterangan())){
+
+                        if ("umum".equalsIgnoreCase(riwayatTindakanEntity.getJenisPasien())){
+                            listActivityResepUmum.add(activityMap);
+                        } else {
+                            listActivityResep.add(activityMap);
+                        }
+
                     } else {
-                        listActivityTindakan.add(activityMap);
+
+                        if ("umum".equalsIgnoreCase(riwayatTindakanEntity.getJenisPasien())){
+                            listActivityTindakanUmum.add(activityMap);
+                        } else {
+                            listActivityTindakan.add(activityMap);
+                        }
                     }
                 }
             }
@@ -884,11 +899,6 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             masterId = "01.000";
         }
 
-        mapJurnal.put("metode_bayar", metodeBayar);
-        mapJurnal.put("bank", kodeBank);
-        if (!"".equalsIgnoreCase(noRekening)) {
-            mapJurnal.put("nomor_rekening", noRekening);
-        }
 
         String branchId = CommonUtil.userBranchLogin();
 
@@ -899,6 +909,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         BigDecimal pendapatanResep = new BigDecimal(0);
         BigDecimal pendapatanResepUmum = new BigDecimal(0);
         BigDecimal pendapatanRawatUmum = new BigDecimal(0);
+        BigDecimal kas = new BigDecimal(0);
 
         // maping untuk parameter lainnua
         JSONArray json = new JSONArray(jsonString);
@@ -921,6 +932,8 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 pendapatanRawatUmum = new BigDecimal(obj.getLong("nilai"));
             } else if ("pendapatan_obat_umum".equalsIgnoreCase(obj.getString("type").toString())) {
                 pendapatanResepUmum = new BigDecimal(obj.getLong("nilai"));
+            } else if ("kas".equalsIgnoreCase(obj.getString("type").toString())) {
+                kas = new BigDecimal(obj.getLong("nilai"));
             } else {
                 mapJurnal.put(obj.getString("type").toString(), new BigDecimal(obj.getLong("nilai")));
             }
@@ -935,7 +948,16 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         String ketTerangan = "";
         String transId = "";
 
-//        mapJurnal.put("divisi_id", divisiId);
+        Map mapKas = new HashMap();
+        mapKas.put("nilai", kas);
+        mapKas.put("metode_bayar", metodeBayar);
+        mapKas.put("bank", kodeBank);
+        if (!"".equalsIgnoreCase(noRekening)) {
+            mapKas.put("nomor_rekening", noRekening);
+        }
+
+        // kas
+        mapJurnal.put("kas", mapKas);
 
         if ("tunai".equalsIgnoreCase(jenis)){
 
@@ -1551,9 +1573,13 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         mapUangMuka.put("nilai", uangMuka);
         mapUangMuka.put("master_id", noPasien);
 
+        Map mapKas = new HashMap();
+        mapKas.put("nilai", uangMuka);
+        mapKas.put("metode_bayar", "tunai");
+
         Map mapJurnal = new HashMap();
         mapJurnal.put("uang_muka", mapUangMuka);
-        mapJurnal.put("kas", uangMuka);
+        mapJurnal.put("kas", mapKas);
 
         String catatan = "pembayaran kembali uang muka. No. RM " + noPasien;
 
