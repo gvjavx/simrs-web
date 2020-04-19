@@ -764,9 +764,23 @@
     }
 
     function confirmSaveUangMuka(id, idPasien, uangmuka){
-        if(id != '' && idPasien != '' && uangmuka > 0){
-            $('#modal-confirm-dialog').modal('show');
-            $('#save_con').attr('onclick','saveUangMuka(\''+id+'\',\''+idPasien+'\',\''+uangmuka+'\')');
+        var jumlah = $('#val_uang_muka').val();
+        var metodeBayar = $('#metode_bayar').val();
+        var kodeBank = $('#bank').val();
+        var noRekening = $('#no_rekening').val();
+        if(id != '' && idPasien != '' && uangmuka > 0 && parseInt(jumlah) >= parseInt(uangmuka) && metodeBayar != ''){
+            if("transfer" == metodeBayar){
+                if(kodeBank != '' && noRekening != ''){
+                    $('#modal-confirm-dialog').modal('show');
+                    $('#save_con').attr('onclick','saveUangMuka(\''+id+'\',\''+idPasien+'\',\''+uangmuka+'\')');
+                }else{
+                    $('#warning_fin').show().fadeOut(5000);
+                    $('#msg_fin').text("Silahkan cek data yang diinput");
+                }
+            }else {
+                $('#modal-confirm-dialog').modal('show');
+                $('#save_con').attr('onclick','saveUangMuka(\''+id+'\',\''+idPasien+'\',\''+uangmuka+'\')');
+            }
         }else{
             $('#warning_fin').show().fadeOut(5000);
             $('#msg_fin').text("Silahkan cek data yang diinput");

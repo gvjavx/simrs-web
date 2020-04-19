@@ -283,7 +283,7 @@ public class StatusPeriksaBoImpl implements StatusPeriksaBo {
                                 uangMuka.setIdDetailCheckup(bean.getIdDetailCheckup());
                                 ItSimrsUangMukaPendaftaranEntity entityUangMuka = getEntityUangMuka(uangMuka);
 
-                                if (entityUangMuka != null) {
+                                if (entityUangMuka.getId() != null) {
 
                                     entityUangMuka.setFlagRefund("R");
                                     entityUangMuka.setLastUpdate(bean.getLastUpdate());
@@ -367,7 +367,7 @@ public class StatusPeriksaBoImpl implements StatusPeriksaBo {
             logger.error("Found Error when search uang muka " + e.getMessage());
         }
 
-        if (entityList != null) {
+        if (entityList.size() > 0) {
             entityUangMuka = entityList.get(0);
         }
 

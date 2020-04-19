@@ -559,17 +559,17 @@ function delRowMpp(id) {
     $('#btn_mpp_' + id).attr('onclick', 'detailFormMpp(\'' + id + '\')');
 }
 
-function showKet(val){
-    if("Perencanaan Pulang" == val){
-        $('#tp_ket31').show();
-    }else if ("Lain-Lain" == val){
-        $('#tp_ket32').show();
-    } else{
-        $('#tp_ket31').hide();
-        $('#tp_ket32').hide();
-    }
-}
+// function showKet(val){
+//     if("Perencanaan Pulang" == val){
+//         $('#tp_ket31').show();
+//     }else if ("Lain-Lain" == val){
+//         $('#tp_ket32').show();
+//     } else{
+//         $('#tp_ket31').hide();
+//         $('#tp_ket32').hide();
+//     }
+// }
 
-$("input[name='tp3']").change(function () {
-    console.log('tessss');
-});
+// $("input[name='tp3']").change(function () {
+//     console.log('tessss');
+// });

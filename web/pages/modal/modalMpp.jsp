@@ -1267,7 +1267,7 @@
                             <label class="col-md-3" style="margin-top: 7px">Terminasi MPP</label>
                             <div class="col-md-8">
                                 <div class="custom02" style="margin-top: 7px">
-                                    <input onclick="showKet(this.value)" type="radio" value="Perencanaan Pulang" id="tp31" name="tp3" /><label for="tp31">Perencanaan Pulang</label>
+                                    <input type="radio" value="Perencanaan Pulang" id="tp31" name="tp3" /><label for="tp31">Perencanaan Pulang</label>
                                 </div>
                             </div>
                             <div class="col-md-offset-3 col-md-8">

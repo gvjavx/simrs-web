@@ -259,7 +259,8 @@
 
                         if(statusBpjs != '' && statusRujukan != ''){
 
-                            if(statusBpjs == "aktif" && statusRujukan == "aktif"){
+                            if(statusBpjs == "aktif"){
+                                // if(statusBpjs == "aktif" && statusRujukan == "aktif"){
                                 $('#confirm_dialog').dialog('open');
                             }else{
                                 var msg1 = "";
@@ -346,8 +347,8 @@
                             && noRujukan != '' && ppkRujukan != '' && tglRujukan != '' && fotoRujukan != '' ) {
 
                             if(statusBpjs != '' && statusRujukan != ''){
-
-                                if(statusBpjs == "aktif" && statusRujukan == "aktif"){
+                                //&& statusRujukan == "aktif"
+                                if(statusBpjs == "aktif" ){
                                     $('#confirm_dialog').dialog('open');
                                 }else{
                                     var msg1 = "";
