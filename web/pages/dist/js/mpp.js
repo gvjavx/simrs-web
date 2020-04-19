@@ -299,6 +299,172 @@ function saveMpp(jenis, ket) {
         }
     }
 
+    if("rencana_mpp" == jenis){
+        var va1 = $('#rc1').val();
+        var va2 = $('#rc2').val();
+        var va3 = $('#rc3').val();
+        if(va1 && va2 && va3 != ''){
+            data.push({
+                'parameter': 'Tanggal dan Jam',
+                'jawaban': va1+ ' ' + va2,
+                'keterangan': jenis,
+                'jenis': 'impementasi_mpp',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Pelaksanaan Rencana MPP',
+                'jawaban': va3,
+                'keterangan': jenis,
+                'jenis': 'impementasi_mpp',
+                'id_detail_checkup': idDetailCheckup
+            });
+            cek = true;
+        }
+    }
+    if("monitoring_mpp" == jenis){
+        var va1 = $('#mm1').val();
+        var va2 = $('#mm2').val();
+        var va3 = $('#mm3').val();
+        if(va1 && va2 && va3 != ''){
+            data.push({
+                'parameter': 'Tanggal dan Jam',
+                'jawaban': va1+ ' ' + va2,
+                'keterangan': jenis,
+                'jenis': 'impementasi_mpp',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Monitoring',
+                'jawaban': va3,
+                'keterangan': jenis,
+                'jenis': 'impementasi_mpp',
+                'id_detail_checkup': idDetailCheckup
+            });
+            cek = true;
+        }
+    }
+    if("fasilitas_pelayanan" == jenis){
+        var va1 = $('#fp1').val();
+        var va2 = $('#fp2').val();
+        var va3 = $('#fp3').val();
+        var va4 = $('#fp1').val();
+        var va5 = $('#fp2').val();
+        var va6 = $('#fp3').val();
+        var va7 = $('#fp2').val();
+        var va8 = $('#fp3').val();
+        if(va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 != ''){
+            data.push({
+                'parameter': 'Tanggal dan Jam',
+                'jawaban': va1+ ' ' + va2,
+                'keterangan': jenis,
+                'jenis': 'impementasi_mpp',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Konsultasi / kolaborasi',
+                'jawaban': va3,
+                'keterangan': jenis,
+                'jenis': 'impementasi_mpp',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Second opinion',
+                'jawaban': va4,
+                'keterangan': jenis,
+                'jenis': 'impementasi_mpp',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Rawat bersama / alih rawat',
+                'jawaban': va5,
+                'keterangan': jenis,
+                'jenis': 'impementasi_mpp',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Komunikasi / Edukasi',
+                'jawaban': va6,
+                'keterangan': jenis,
+                'jenis': 'impementasi_mpp',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Rujukan',
+                'jawaban': va7,
+                'keterangan': jenis,
+                'jenis': 'impementasi_mpp',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Lain-Lain',
+                'jawaban': va8,
+                'keterangan': jenis,
+                'jenis': 'impementasi_mpp',
+                'id_detail_checkup': idDetailCheckup
+            });
+            cek = true;
+        }
+    }
+    if("advokasi" == jenis){
+        var va1 = $('#ap1').val();
+        var va2 = $('#ap2').val();
+        var va3 = $('[name=ap3]');
+        var tVa3 = "";
+        $.each(va3, function (i, item) {
+            if(va3[i].checked){
+                if(tVa3 != ''){
+                    tVa3 = tVa3 + '|' + va3[i].value;
+                }else{
+                    tVa3 = va3[i].value;
+                }
+            }
+        });
+
+        if(va1 && va2 && tVa3 != ''){
+            data.push({
+                'parameter': 'Tanggal dan Jam',
+                'jawaban': va1+ ' ' + va2,
+                'keterangan': jenis,
+                'jenis': 'impementasi_mpp',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Advokasi pelayanan pasien',
+                'jawaban': tVa3,
+                'keterangan': jenis,
+                'jenis': 'impementasi_mpp',
+                'id_detail_checkup': idDetailCheckup
+            });
+            cek = true;
+        }
+    }
+    if("hasil_pelayanan" == jenis){
+        var va1 = $('#hp1').val();
+        var va2 = $('#hp2').val();
+        var va3 = $('#hp3').val();
+
+        if(va1 && va2 && va3 != ''){
+            data.push({
+                'parameter': 'Tanggal dan Jam',
+                'jawaban': va1+ ' ' + va2,
+                'keterangan': jenis,
+                'jenis': 'impementasi_mpp',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Hasil Pelayanan',
+                'jawaban': va3,
+                'keterangan': jenis,
+                'jenis': 'impementasi_mpp',
+                'id_detail_checkup': idDetailCheckup
+            });
+            cek = true;
+        }
+    }
+    if("terminasi" == jenis){
+
+    }
+
     if (cek) {
         var result = JSON.stringify(data);
         $('#save_mpp_' + jenis).hide();
@@ -340,10 +506,31 @@ function detailFormMpp(jenis) {
                     if (item.jawaban != null) {
                         jwb = item.jawaban;
                     }
-                    body += '<tr>' +
-                        '<td>'+item.parameter+'</td>' +
-                        '<td>'+jwb+'</td>' +
-                        '</tr>';
+                    if("advokasi" == item.keterangan){
+                        var li = "";
+                        var isi = jwb.split("|");
+                        console.log(isi);
+                        if("Advokasi pelayanan pasien" == item.parameter){
+                            $.each(isi, function (i, item) {
+                                li += '<li>'+item+'</li>';
+                            });
+                            body += '<tr>' +
+                                '<td>'+item.parameter+'</td>' +
+                                '<td>'+'<ul style="margin-left: 10px">'+li+'</ul>'+'</td>' +
+                                '</tr>';
+                        }else{
+                            body += '<tr>' +
+                                '<td>'+item.parameter+'</td>' +
+                                '<td>'+jwb+'</td>' +
+                                '</tr>';
+                        }
+
+                    }else{
+                        body += '<tr>' +
+                            '<td>'+item.parameter+'</td>' +
+                            '<td>'+jwb+'</td>' +
+                            '</tr>';
+                    }
                 });
             } else {
                 body = '<tr>' +
@@ -371,3 +558,18 @@ function delRowMpp(id) {
     $('#btn_mpp_' + id).attr('src', url);
     $('#btn_mpp_' + id).attr('onclick', 'detailFormMpp(\'' + id + '\')');
 }
+
+function showKet(val){
+    if("Perencanaan Pulang" == val){
+        $('#tp_ket31').show();
+    }else if ("Lain-Lain" == val){
+        $('#tp_ket32').show();
+    } else{
+        $('#tp_ket31').hide();
+        $('#tp_ket32').hide();
+    }
+}
+
+$("input[name='tp3']").change(function () {
+    console.log('tessss');
+});

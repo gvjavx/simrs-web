@@ -1098,7 +1098,7 @@
                         <div class="col-md-12">
                             <div class="form-check" style="margin-top: 7px;">
                                 <input type="checkbox" name="ap3" id="ap32" value="Diskusi dengan PPA untuk penanganan komplikasi">
-                                <label for="ap31"></label> Diskusi dengan PPA untuk penanganan komplikasi
+                                <label for="ap32"></label> Diskusi dengan PPA untuk penanganan komplikasi
                             </div>
                         </div>
                     </div>
@@ -1106,7 +1106,7 @@
                         <div class="col-md-12">
                             <div class="form-check" style="margin-top: 7px;">
                                 <input type="checkbox" name="ap3" id="ap33" value="Memberikan edukasi pasien dan keluarga tentang penyakit, kondisi terkini dan rencana pelayanan">
-                                <label for="ap31"></label> Memberikan edukasi pasien dan keluarga tentang penyakit, kondisi terkini dan rencana pelayanan
+                                <label for="ap33"></label> Memberikan edukasi pasien dan keluarga tentang penyakit, kondisi terkini dan rencana pelayanan
                             </div>
                         </div>
                     </div>
@@ -1114,7 +1114,7 @@
                         <div class="col-md-12">
                             <div class="form-check" style="margin-top: 7px;">
                                 <input type="checkbox" name="ap3" id="ap34" value="Meningkatkan kemandirian untuk menentukan pilihan/pengambilan keputusan">
-                                <label for="ap31"></label> Meningkatkan kemandirian untuk menentukan pilihan/pengambilan keputusan
+                                <label for="ap34"></label> Meningkatkan kemandirian untuk menentukan pilihan/pengambilan keputusan
                             </div>
                         </div>
                     </div>
@@ -1122,7 +1122,7 @@
                         <div class="col-md-12">
                             <div class="form-check" style="margin-top: 7px;">
                                 <input type="checkbox" name="ap3" id="ap35" value="Memberik edukasi mengenai kondisi pasien">
-                                <label for="ap31"></label> Memberik edukasi mengenai kondisi pasien
+                                <label for="ap35"></label> Memberik edukasi mengenai kondisi pasien
                             </div>
                         </div>
                     </div>
@@ -1130,7 +1130,7 @@
                         <div class="col-md-12">
                             <div class="form-check" style="margin-top: 7px;">
                                 <input type="checkbox" name="ap3" id="ap36" value="Mengenali, mencegah, menghinari disparitas untuk mengakses mutu dan hasil pelayanan terkait dengan ras, etnik, agama, gender, budaya, status, pernikahan, umur, politik, mental, kognitif">
-                                <label for="ap31"></label> Mengenali, mencegah, menghinari disparitas untuk mengakses mutu dan hasil pelayanan terkait dengan ras, etnik, agama, gender, budaya, status, pernikahan, umur, politik, mental, kognitif
+                                <label for="ap36"></label> Mengenali, mencegah, menghinari disparitas untuk mengakses mutu dan hasil pelayanan terkait dengan ras, etnik, agama, gender, budaya, status, pernikahan, umur, politik, mental, kognitif
                             </div>
                         </div>
                     </div>
@@ -1138,7 +1138,7 @@
                         <div class="col-md-12">
                             <div class="form-check" style="margin-top: 7px;">
                                 <input type="checkbox" name="ap3" id="ap37" value="Untuk memenuhi kebutuhan pelayanan yang berkembang/bertambah karena perbuatan kondisi">
-                                <label for="ap31"></label> Untuk memenuhi kebutuhan pelayanan yang berkembang/bertambah karena perbuatan kondisi
+                                <label for="ap37"></label> Untuk memenuhi kebutuhan pelayanan yang berkembang/bertambah karena perbuatan kondisi
                             </div>
                         </div>
                     </div>
@@ -1146,7 +1146,7 @@
                         <div class="col-md-12">
                             <div class="form-check" style="margin-top: 7px;">
                                 <input type="checkbox" name="ap3" id="ap38" value="Membuat komunikasi dengan instansi terkait tentang upaya penyelsaian kendala keuangan">
-                                <label for="ap31"></label> Membuat komunikasi dengan instansi terkait tentang upaya penyelsaian kendala keuangan
+                                <label for="ap38"></label> Membuat komunikasi dengan instansi terkait tentang upaya penyelsaian kendala keuangan
                             </div>
                         </div>
                     </div>
@@ -1267,11 +1267,11 @@
                             <label class="col-md-3" style="margin-top: 7px">Terminasi MPP</label>
                             <div class="col-md-8">
                                 <div class="custom02" style="margin-top: 7px">
-                                    <input type="radio" value="Perencanaan Pulang" id="tp31" name="tp3" /><label for="tp31">Perencanaan Pulang</label>
+                                    <input onclick="showKet(this.value)" type="radio" value="Perencanaan Pulang" id="tp31" name="tp3" /><label for="tp31">Perencanaan Pulang</label>
                                 </div>
                             </div>
                             <div class="col-md-offset-3 col-md-8">
-                                <input class="form-control" style="margin-top: 7px" id="tp_ket31">
+                                <input class="form-control" style="margin-top: 7px; display: none;" id="tp_ket31">
                             </div>
                             <div class="col-md-offset-3 col-md-8">
                                 <div class="custom02" style="margin-top: 7px">
@@ -1284,7 +1284,7 @@
                                 </div>
                             </div>
                             <div class="col-md-offset-3 col-md-8">
-                                <input class="form-control" style="margin-top: 7px" id="tp_ket32">
+                                <input class="form-control" style="margin-top: 7px; display: none" id="tp_ket32">
                             </div>
                         </div>
                     </div>
