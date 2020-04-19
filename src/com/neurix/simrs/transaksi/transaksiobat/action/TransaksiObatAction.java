@@ -1409,6 +1409,10 @@ public class TransaksiObatAction extends BaseMasterAction {
             return jurnalResponse;
         }
 
+        Map mapPPN = new HashMap();
+        mapPPN.put("bukti", billingSystemBoProxy.createInvoiceNumber("JPD", branchId));
+        mapPPN.put("nilai", ppn);
+
         // create jurnal
         Map hsCriteria = new HashMap();
         hsCriteria.put("master_id", masterId);
@@ -1416,7 +1420,7 @@ public class TransaksiObatAction extends BaseMasterAction {
         hsCriteria.put("metode_bayar", "tunai");
         hsCriteria.put("kas",  pendapatan);
         hsCriteria.put("pendapatan_obat_umum",new BigDecimal(trans.getTotalBayar()));
-        hsCriteria.put("ppn_keluaran", ppn);
+        hsCriteria.put("ppn_keluaran", mapPPN);
 
         String noJurnal = "";
         try {

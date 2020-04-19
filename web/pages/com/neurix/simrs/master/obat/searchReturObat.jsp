@@ -308,7 +308,9 @@
                                     <td align="center">
                                         <img onclick="detailRetur('<s:property value="idRetureObat"/>','<s:property value="namaVendor"/>','<s:property value="stTglRetur"/>','<s:property value="qty"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-search-25.png"/>" style="cursor: pointer">
                                         <s:if test='#row.keterangan == "Telah Dikonfirmasi"'>
-
+                                            <a href="/simrs/permintaanpo/edit_permintaanpo.action?id=<s:property value="idPermintaanVendor"/>&tipe=reture">
+                                                <img class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer">
+                                            </a>
                                         </s:if>
                                         <s:else>
                                             <a href="/simrs/permintaanpo/edit_permintaanpo.action?id=<s:property value="idPermintaanVendor"/>&tipe=reture">

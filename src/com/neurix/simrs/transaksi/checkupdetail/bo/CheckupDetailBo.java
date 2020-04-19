@@ -12,6 +12,7 @@ import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckup
 import com.neurix.simrs.transaksi.checkupdetail.model.RiwayatTindakanDTO;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
+import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsRiwayatTindakanEntity;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -63,4 +64,5 @@ public interface CheckupDetailBo {
     public List<HeaderDetailCheckup> getListRawatInapExisiting(String branchId) throws GeneralBOException;
 
     List<RiwayatTindakanDTO> getRiwayatTindakanDanDokter(String idDetailCheckup) throws GeneralBOException;
+    public Boolean checkAdaTransitoris(String idDetailCheckup) throws GeneralBOException;
 }

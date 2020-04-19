@@ -989,7 +989,6 @@ public class CheckupDetailAction extends BaseMasterAction {
                             }
                         }
                     }
-
                 }
 
                 HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
@@ -1245,7 +1244,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                         hsCriteria.put("pendapatan_rawat_inap_bpjs", jumlahTindakan);
 
                         // debit piutang pasien PTPN
-                        hsCriteria.put("piutang_pasien_asuransi", jumlah.subtract(jumlahUm));
+                        hsCriteria.put("piutang_pasien_bpjs", jumlah.subtract(jumlahUm));
                         transId = "24";
 
                         // dengan pembayaran tunai di luar cover PTPN
@@ -3267,8 +3266,8 @@ public class CheckupDetailAction extends BaseMasterAction {
                             riwayatTindakan.setIdDetailCheckup(entity.getIdDetailCheckup());
                             riwayatTindakan.setNamaTindakan("Tarif Resep dengan No. Resep " + entity.getIdPermintaanResep());
                             riwayatTindakan.setTotalTarif(new BigDecimal(obatDetailList.getTotalHarga()));
-                            riwayatTindakan.setKeterangan(obatDetailList.getJenisResep());
-                            riwayatTindakan.setJenisPasien(jenPasien);
+                            riwayatTindakan.setKeterangan("resep");
+                            riwayatTindakan.setJenisPasien(obatDetailList.getJenisResep());
                             riwayatTindakan.setAction("C");
                             riwayatTindakan.setFlag("Y");
                             riwayatTindakan.setCreatedWho(user);

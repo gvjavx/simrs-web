@@ -572,9 +572,10 @@ public class ObatAction extends BaseMasterAction {
                 bean.setLastUpdate(time);
             }
 
-            Map mapObat = new HashMap();
+            List<Map> listMapObat = new ArrayList<>();
             BigDecimal totalHarga = new BigDecimal(0);
             for (Obat obat : obatList){
+
 
                 ImSimrsObatEntity obatEntity = obatBo.getObatByIdBarang(obat.getIdBarang());
                 BigDecimal harga = new BigDecimal(0);
@@ -588,9 +589,10 @@ public class ObatAction extends BaseMasterAction {
                 }
                 totalHarga = totalHarga.add(harga);
 
+                Map mapObat = new HashMap();
                 mapObat.put("kd_barang", obat.getIdBarang());
                 mapObat.put("nilai", harga);
-
+                listMapObat.add(mapObat);
             }
 
             String divisiId = "";
@@ -607,7 +609,7 @@ public class ObatAction extends BaseMasterAction {
             Map mapJurnal = new HashMap();
             mapJurnal.put("divisi_id", divisiId);
             mapJurnal.put("biaya_persediaan_obat", totalHarga);
-            mapJurnal.put("persediaan_gudang", mapObat);
+            mapJurnal.put("persediaan_gudang", listMapObat);
 
             String catatan = "Retur Barang Gudang ke Vendor. "+bean.getIdVendor()+" - "+ bean.getNamaVendor();
             String branchId = CommonUtil.userBranchLogin();
