@@ -370,7 +370,7 @@ public class ObatPoliAction extends BaseMasterAction {
                     jurnalMap.put("persediaan_apotik", listOfObat);
                     jurnalMap.put("persediaan_gudang", listOfObat);
 
-                    String catatan = "Pengiriman Barang dari "+pelayananAsal+" ke "+pelayananTujuan+". No. Permintaan "+idPelayanan;
+                    String catatan = "Pengiriman Barang dari "+pelayananAsal+" ke "+pelayananTujuan+" No. Permintaan ";
                     try {
                         billingSystemBo.createJurnal("28", jurnalMap, branchId, catatan, "Y");
                         obatPoliBo.saveApproveDiterima(obatPoli, transaksiObatDetails);

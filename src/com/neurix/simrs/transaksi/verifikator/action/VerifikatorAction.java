@@ -12,6 +12,7 @@ import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.jenisperiksapasien.model.ImJenisPeriksaPasienEntity;
 import com.neurix.simrs.master.jenisperiksapasien.model.ImSimrsAsuransiEntity;
 import com.neurix.simrs.master.kategoritindakanina.model.ImSimrsKategoriTindakanInaEntity;
 import com.neurix.simrs.bpjs.eklaim.bo.EklaimBo;
@@ -849,11 +850,13 @@ public class VerifikatorAction extends BaseMasterAction {
         PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
         MasterBo masterBo = (MasterBo) ctx.getBean("masterBoProxy");
         PositionBo positionBo = (PositionBo) ctx.getBean("positionBoProxy");
+        JenisPriksaPasienBo jenisPriksaPasienBo = (JenisPriksaPasienBo) ctx.getBean("jenisPriksaPasienBoProxy");
 
         ItSimrsHeaderDetailCheckupEntity headerDetailCheckupEntity = checkupDetailBo.getEntityDetailCheckupByIdDetail(idDetailCheckup);
         ItSimrsHeaderChekupEntity headerChekupEntity = checkupBo.getEntityCheckupById(headerDetailCheckupEntity.getNoCheckup());
 
         String divisiId = "";
+        String masterId = "";
         String idPasien = headerChekupEntity.getIdPasien();
         ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(headerDetailCheckupEntity.getIdPelayanan());
         if (pelayananEntity != null) {
@@ -868,6 +871,11 @@ public class VerifikatorAction extends BaseMasterAction {
             response.setStatus("error");
             response.setMsg("[VerifikatorAction.closingJurnalPbjs] Error tidak dapat divisi_id, ");
             return response;
+        }
+
+        ImJenisPeriksaPasienEntity jenisPeriksaPasienEntity = jenisPriksaPasienBo.getJenisPerikasEntityById("bpjs");
+        if (jenisPeriksaPasienEntity != null){
+            masterId = jenisPeriksaPasienEntity.getMasterId();
         }
 
         // jika karyawan ptpn
@@ -901,7 +909,7 @@ public class VerifikatorAction extends BaseMasterAction {
                 BigDecimal ppn = jmlResep.multiply(new BigDecimal(0.1)).setScale(2, BigDecimal.ROUND_HALF_UP);
 
                 Map mapObat = new HashMap();
-                mapObat.put("master_id", "02.018");
+                mapObat.put("master_id", masterId);
                 mapObat.put("divisi_id", divisiId);
                 mapObat.put("nilai", jmlResep);
                 mapObat.put("activity", getAcitivityList(idDetailCheckup, "bpjs", "resep", kode));
@@ -930,10 +938,10 @@ public class VerifikatorAction extends BaseMasterAction {
             Map mapPiutang = new HashMap();
             mapPiutang.put("bukti", headerDetailCheckupEntity.getNoSep());
             mapPiutang.put("nilai", jumlah );
-            mapPiutang.put("master_id", "02.018");
+            mapPiutang.put("master_id", masterId);
 
             Map mapTindakan = new HashMap();
-            mapTindakan.put("master_id", "02.018");
+            mapTindakan.put("master_id", masterId);
             mapTindakan.put("divisi_id", divisiId);
             mapTindakan.put("nilai", jmlOnlyTindakan);
             mapTindakan.put("activity", getAcitivityList(idDetailCheckup, "bpjs", "", kode));
@@ -1066,6 +1074,7 @@ public class VerifikatorAction extends BaseMasterAction {
         RuanganBo ruanganBo = (RuanganBo) ctx.getBean("ruanganBoProxy");
         KelasRuanganBo kelasRuanganBo = (KelasRuanganBo) ctx.getBean("kelasRuanganBoProxy");
         PositionBo positionBo = (PositionBo) ctx.getBean("positionBoProxy");
+        JenisPriksaPasienBo jenisPriksaPasienBo = (JenisPriksaPasienBo) ctx.getBean("jenisPriksaPasienBoProxy");
 
         JurnalResponse response = new JurnalResponse();
         String kode = "";
@@ -1073,7 +1082,7 @@ public class VerifikatorAction extends BaseMasterAction {
         String ketPoli = "";
         String ketResep = "";
         String divisiId = "";
-        String masterId = "02.018";
+        String masterId = "";
         String jenisPasien = "";
         String noPtpn = "";
         String jenisPtpn = "murni";
@@ -1085,13 +1094,18 @@ public class VerifikatorAction extends BaseMasterAction {
         BigDecimal biayaCover = detailCheckupEntity.getTarifBpjs();
         ImMasterEntity masterEntity = masterBo.getEntityMasterById(detailCheckupEntity.getIdAsuransi());
         if (masterEntity != null) {
-            masterId = detailCheckupEntity.getIdAsuransi();
             company = " "+ masterEntity.getNama()+ " ";
         } else {
             logger.error("[VerivikatorAction.closingPasienPtpnBpjs] Error Master PTPN tidak ditemukan");
             response.setStatus("error");
             response.setMsg("[VerivikatorAction.closingPasienPtpnBpjs] Error Master PTPN tidak ditemukan");
             return response;
+        }
+
+        // get master id
+        ImJenisPeriksaPasienEntity jenisPeriksaPasienEntity = jenisPriksaPasienBo.getJenisPerikasEntityById("bpjs");
+        if (jenisPeriksaPasienEntity != null){
+            masterId = jenisPeriksaPasienEntity.getMasterId();
         }
 
         // jika poli selain rawat inap maka mengambil kodering dari pelayanan

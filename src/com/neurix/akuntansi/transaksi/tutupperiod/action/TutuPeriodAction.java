@@ -11,6 +11,8 @@ import com.neurix.common.action.BaseTransactionAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.jenisperiksapasien.bo.AsuransiBo;
+import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
+import com.neurix.simrs.master.jenisperiksapasien.model.ImJenisPeriksaPasienEntity;
 import com.neurix.simrs.master.jenisperiksapasien.model.ImSimrsAsuransiEntity;
 import com.neurix.simrs.master.kelasruangan.bo.KelasRuanganBo;
 import com.neurix.simrs.master.kelasruangan.model.ImSimrsKelasRuanganEntity;
@@ -232,6 +234,7 @@ public class TutuPeriodAction extends BaseTransactionAction {
         RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
         RuanganBo ruanganBo = (RuanganBo) ctx.getBean("ruanganBoProxy");
         KelasRuanganBo kelasRuanganBo = (KelasRuanganBo) ctx.getBean("kelasRuanganBoProxy");
+        JenisPriksaPasienBo jenisPriksaPasienBo = (JenisPriksaPasienBo) ctx.getBean("jenisPriksaPasienBoProxy");
 
         String masterId = "";
         String divisiId = "";
@@ -271,7 +274,11 @@ public class TutuPeriodAction extends BaseTransactionAction {
 
                 bukti = detailCheckupEntity.getNoSep();
                 jenisPasien = "No. SEP : "+detailCheckupEntity.getNoSep();
-                masterId = "02.018";
+
+                ImJenisPeriksaPasienEntity jenisPeriksaPasienEntity = jenisPriksaPasienBo.getJenisPerikasEntityById(detailCheckupEntity.getIdJenisPeriksaPasien());
+                if (jenisPeriksaPasienEntity != null){
+                    masterId = jenisPeriksaPasienEntity.getMasterId();
+                }
 
             } else if ("asuransi".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())){
 
@@ -295,9 +302,16 @@ public class TutuPeriodAction extends BaseTransactionAction {
                 if ("non_tunai".equalsIgnoreCase(detailCheckupEntity.getMetodePembayaran())){
                         masterId = headerChekupEntity.getIdPasien();
                 } else {
-                        masterId = "01.000";
+
+                    ImJenisPeriksaPasienEntity jenisPeriksaPasienEntity = jenisPriksaPasienBo.getJenisPerikasEntityById(detailCheckupEntity.getIdJenisPeriksaPasien());
+                    if (jenisPeriksaPasienEntity != null){
+                        masterId = jenisPeriksaPasienEntity.getMasterId();
+                    }
                 }
             }
+
+
+            jenisPasien = jenisPasien + " No. Detail Checkup "+detailCheckupEntity.getIdDetailCheckup();
 
             transId = "32";
             String jenis = detailCheckupEntity.getIdJenisPeriksaPasien();

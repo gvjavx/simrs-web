@@ -10,6 +10,7 @@ import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
+import com.neurix.simrs.master.jenisperiksapasien.model.ImJenisPeriksaPasienEntity;
 import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
 import com.neurix.simrs.master.kelasruangan.bo.KelasRuanganBo;
 import com.neurix.simrs.master.kelasruangan.model.ImSimrsKelasRuanganEntity;
@@ -1424,7 +1425,7 @@ public class TransaksiObatAction extends BaseMasterAction {
         JurnalResponse jurnalResponse = new JurnalResponse();
 
         String divisiId = "";
-        String masterId = "01.000";
+        String masterId = "";
         ImSimrsPelayananEntity pelayananEntity = pelayananBoProxy.getPelayananById(pelayananId);
         if (pelayananEntity != null){
 
@@ -1440,6 +1441,14 @@ public class TransaksiObatAction extends BaseMasterAction {
             jurnalResponse.setStatus("error");
             jurnalResponse.setMsg("[TransaksiObatAction.createJurnalPembayaranObatbaru] ERROR. tidak dapat divisi_id. ");
             return jurnalResponse;
+        }
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        JenisPriksaPasienBo jenisPriksaPasienBo = (JenisPriksaPasienBo) ctx.getBean("jenisPriksaPasienBoProxy");
+
+        ImJenisPeriksaPasienEntity jenisPeriksaPasienEntity = jenisPriksaPasienBo.getJenisPerikasEntityById("umum");
+        if (jenisPeriksaPasienEntity != null){
+            masterId = jenisPeriksaPasienEntity.getMasterId();
         }
 
         Map mapPPN = new HashMap();
