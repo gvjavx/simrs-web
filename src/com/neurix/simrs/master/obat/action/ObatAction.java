@@ -1,6 +1,8 @@
 package com.neurix.simrs.master.obat.action;
 
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
+import com.neurix.authorization.position.bo.PositionBo;
+import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
@@ -538,6 +540,7 @@ public class ObatAction extends BaseMasterAction {
         BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
         PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
         VendorBo vendorBo = (VendorBo) ctx.getBean("vendorBoProxy");
+        PositionBo positionBo = (PositionBo) ctx.getBean("positionBoProxy");
 
 
         if (jsonString != null && !"".equalsIgnoreCase(jsonString)) {
@@ -598,7 +601,12 @@ public class ObatAction extends BaseMasterAction {
             String divisiId = "";
             ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(CommonUtil.userPelayananIdLogin());
             if (pelayananEntity != null){
-                divisiId = pelayananEntity.getKodering();
+
+                ImPosition position = positionBo.getPositionEntityById(pelayananEntity.getDivisiId());
+                if (position != null){
+                    divisiId = position.getKodering();
+                }
+
             } else {
                 logger.error("[ObatAction.saveReturObat] Tidak ditemukan divisi_id.");
                 response.setStatus("error");

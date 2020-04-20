@@ -320,6 +320,10 @@
                                     <td><b>Jenis Pasien</b></td>
                                     <td><span id="fin_jenis_pasien"></span></td>
                                 </tr>
+                                <tr style="display: none;" id="label-asuransi">
+                                    <td><b>Asuransi</b></td>
+                                    <td><span id="fin_asuransi"></span></td>
+                                </tr>
                             </table>
                         </div>
 
@@ -498,6 +502,7 @@
         var uangMuka = 0;
         var metode="";
         var bukti = "";
+        var namaAsuransi = "";
 
         var url = '<s:url value="/pages/images/spinner.gif"/>';
         $('#t_'+idDetailCheckup).attr('src',url).css('width', '30px', 'height', '40px');
@@ -536,6 +541,7 @@
                         kecamatan = response.namaKecamatan;
                         desa = response.namaDesa;
                         noSep = response.noSep;
+                        namaAsuransi = response.namaAsuransi;
 
                         if(response.metodePembayaran == "tunai"){
                             metode = "tunai";
@@ -723,7 +729,10 @@
 
             if(jenisPasien == "bpjs"){
                 $('#no_sep_show').show();
-            }else {
+            }else if (jenisPasien == "asuransi"){
+                $('#label-asuransi').show();
+                $('#fin_asuransi').text(namaAsuransi);
+            } else {
                 $('#no_sep_show').hide();
             }
 

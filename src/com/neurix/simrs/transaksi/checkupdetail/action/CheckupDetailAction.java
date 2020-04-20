@@ -5,6 +5,9 @@ import com.neurix.akuntansi.master.master.model.ImMasterEntity;
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Branch;
+import com.neurix.authorization.position.bo.PositionBo;
+import com.neurix.authorization.position.model.ImPosition;
+import com.neurix.authorization.position.model.Position;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
@@ -933,6 +936,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         AsuransiBo asuransiBo = (AsuransiBo) ctx.getBean("asuransiBoProxy");
         MasterBo masterBo = (MasterBo) ctx.getBean("masterBoProxy");
         CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+        PositionBo positionBo = (PositionBo) ctx.getBean("positionBoProxy");
 
         String kode = "";
         String transId = "";
@@ -976,7 +980,12 @@ public class CheckupDetailAction extends BaseMasterAction {
                     // jika poli selain rawat inap maka mengambil kodering dari pelayanan
                     // jika poli rawat rawat inap maka mengambil kodering dari kelas ruangan , Sigit
                     if (!"rawat_inap".equalsIgnoreCase(pelayananEntity.getTipePelayanan())){
-                        divisiId = pelayananEntity.getKodering();
+
+                        ImPosition position = positionBo.getPositionEntityById(pelayananEntity.getDivisiId());
+                        if (position != null){
+                            divisiId = position.getKodering();
+                        }
+
                     } else {
                         RawatInap rawatInap = new RawatInap();
                         rawatInap.setIdDetailCheckup(idDetailCheckup);
@@ -989,7 +998,10 @@ public class CheckupDetailAction extends BaseMasterAction {
                                 if (ruanganEntity != null){
                                     ImSimrsKelasRuanganEntity kelasRuanganEntity = kelasRuanganBo.getKelasRuanganById(ruanganEntity.getIdKelasRuangan());
                                     if (kelasRuanganEntity != null){
-                                        divisiId = kelasRuanganEntity.getKodering();
+                                        ImPosition position = positionBo.getPositionEntityById(kelasRuanganEntity.getDivisiId());
+                                        if (position != null){
+                                            divisiId = position.getKodering();
+                                        }
                                     }
                                 }
                             }

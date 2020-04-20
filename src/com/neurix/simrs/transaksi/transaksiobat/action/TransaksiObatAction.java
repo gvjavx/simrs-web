@@ -3,6 +3,8 @@ package com.neurix.simrs.transaksi.transaksiobat.action;
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Branch;
+import com.neurix.authorization.position.bo.PositionBo;
+import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
@@ -920,6 +922,7 @@ public class TransaksiObatAction extends BaseMasterAction {
         RuanganBo ruanganBo = (RuanganBo) ctx.getBean("ruanganBoProxy");
         RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
         CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+        PositionBo positionBo = (PositionBo) ctx.getBean("positionBoProxy");
 
         String namaApotek = "";
         String divisiId = "";
@@ -962,14 +965,23 @@ public class TransaksiObatAction extends BaseMasterAction {
                                             if (ruanganEntity != null){
                                                 ImSimrsKelasRuanganEntity kelasRuanganEntity = kelasRuanganBo.getKelasRuanganById(ruanganEntity.getIdKelasRuangan());
                                                 if (kelasRuanganEntity != null){
-                                                    divisiId = kelasRuanganEntity.getKodering();
+
+                                                    ImPosition position = positionBo.getPositionEntityById(kelasRuanganEntity.getDivisiId());
+                                                    if (position != null){
+                                                        divisiId = position.getKodering();
+                                                    }
                                                 }
                                             }
                                         }
                                     }
                                 } else {
-                                    if (pelayananEntity != null && pelayananEntity.getKodering() != null){
-                                        divisiId = pelayananEntity.getKodering();
+                                    if (pelayananEntity != null && pelayananEntity.getDivisiId() != null){
+
+                                        ImPosition position = positionBo.getPositionEntityById(pelayananEntity.getDivisiId());
+                                        if (position != null){
+                                            divisiId = position.getKodering();
+                                        }
+
                                     } else {
                                         response.setStatus("error");
                                         response.setMsg("[TransaksiObatAction.createJurnalPengeluaranObatApotik] tidak ditemukan data kodering");
@@ -1414,8 +1426,16 @@ public class TransaksiObatAction extends BaseMasterAction {
         String divisiId = "";
         String masterId = "01.000";
         ImSimrsPelayananEntity pelayananEntity = pelayananBoProxy.getPelayananById(pelayananId);
-        if (pelayananEntity != null && pelayananEntity.getKodering() != null){
-            divisiId = pelayananEntity.getKodering();
+        if (pelayananEntity != null){
+
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            PositionBo positionBo = (PositionBo) ctx.getBean("positionBoProxy");
+            ImPosition position = positionBo.getPositionEntityById(pelayananEntity.getDivisiId());
+
+            if (position != null){
+                divisiId = position.getKodering();
+            }
+
         } else {
             jurnalResponse.setStatus("error");
             jurnalResponse.setMsg("[TransaksiObatAction.createJurnalPembayaranObatbaru] ERROR. tidak dapat divisi_id. ");

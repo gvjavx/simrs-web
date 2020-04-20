@@ -6,10 +6,13 @@ import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.akuntansi.transaksi.jurnal.model.Jurnal;
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Branch;
+import com.neurix.authorization.position.bo.PositionBo;
+import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.jenisperiksapasien.model.ImSimrsAsuransiEntity;
 import com.neurix.simrs.master.kategoritindakanina.model.ImSimrsKategoriTindakanInaEntity;
 import com.neurix.simrs.bpjs.eklaim.bo.EklaimBo;
 import com.neurix.simrs.bpjs.eklaim.model.*;
@@ -845,6 +848,7 @@ public class VerifikatorAction extends BaseMasterAction {
         BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
         PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
         MasterBo masterBo = (MasterBo) ctx.getBean("masterBoProxy");
+        PositionBo positionBo = (PositionBo) ctx.getBean("positionBoProxy");
 
         ItSimrsHeaderDetailCheckupEntity headerDetailCheckupEntity = checkupDetailBo.getEntityDetailCheckupByIdDetail(idDetailCheckup);
         ItSimrsHeaderChekupEntity headerChekupEntity = checkupBo.getEntityCheckupById(headerDetailCheckupEntity.getNoCheckup());
@@ -853,7 +857,12 @@ public class VerifikatorAction extends BaseMasterAction {
         String idPasien = headerChekupEntity.getIdPasien();
         ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(headerDetailCheckupEntity.getIdPelayanan());
         if (pelayananEntity != null) {
-            divisiId = pelayananEntity.getKodering();
+
+            ImPosition position = positionBo.getPositionEntityById(pelayananEntity.getDivisiId());
+            if (position != null){
+                divisiId = position.getKodering();
+            }
+
         } else {
             logger.error("[VerifikatorAction.closingJurnalPbjs] Error tidak dapat divisi_id, ");
             response.setStatus("error");
@@ -1056,6 +1065,7 @@ public class VerifikatorAction extends BaseMasterAction {
         RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
         RuanganBo ruanganBo = (RuanganBo) ctx.getBean("ruanganBoProxy");
         KelasRuanganBo kelasRuanganBo = (KelasRuanganBo) ctx.getBean("kelasRuanganBoProxy");
+        PositionBo positionBo = (PositionBo) ctx.getBean("positionBoProxy");
 
         JurnalResponse response = new JurnalResponse();
         String kode = "";
@@ -1075,7 +1085,7 @@ public class VerifikatorAction extends BaseMasterAction {
         BigDecimal biayaCover = detailCheckupEntity.getTarifBpjs();
         ImMasterEntity masterEntity = masterBo.getEntityMasterById(detailCheckupEntity.getIdAsuransi());
         if (masterEntity != null) {
-            divisiId = detailCheckupEntity.getIdAsuransi();
+            masterId = detailCheckupEntity.getIdAsuransi();
             company = " "+ masterEntity.getNama()+ " ";
         } else {
             logger.error("[VerivikatorAction.closingPasienPtpnBpjs] Error Master PTPN tidak ditemukan");
@@ -1088,7 +1098,12 @@ public class VerifikatorAction extends BaseMasterAction {
         // jika poli rawat rawat inap maka mengambil kodering dari kelas ruangan , Sigit
         ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(detailCheckupEntity.getIdPelayanan());
         if (!"rawat_inap".equalsIgnoreCase(pelayananEntity.getTipePelayanan())){
-            divisiId = pelayananEntity.getKodering();
+
+            ImPosition position = positionBo.getPositionEntityById(pelayananEntity.getDivisiId());
+            if (position != null){
+                divisiId = position.getKodering();
+            }
+
         } else {
             RawatInap rawatInap = new RawatInap();
             rawatInap.setIdDetailCheckup(idDetailCheckup);
@@ -1101,7 +1116,11 @@ public class VerifikatorAction extends BaseMasterAction {
                     if (ruanganEntity != null) {
                         ImSimrsKelasRuanganEntity kelasRuanganEntity = kelasRuanganBo.getKelasRuanganById(ruanganEntity.getIdKelasRuangan());
                         if (kelasRuanganEntity != null) {
-                            divisiId = kelasRuanganEntity.getKodering();
+
+                            ImPosition position = positionBo.getPositionEntityById(kelasRuanganEntity.getDivisiId());
+                            if (position != null){
+                                divisiId = position.getKodering();
+                            }
                         }
                     }
                 }

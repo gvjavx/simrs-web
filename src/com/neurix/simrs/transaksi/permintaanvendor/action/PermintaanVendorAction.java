@@ -3,6 +3,8 @@ package com.neurix.simrs.transaksi.permintaanvendor.action;
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Branch;
+import com.neurix.authorization.position.bo.PositionBo;
+import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
@@ -669,6 +671,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
         BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
         PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
         VendorBo vendorBo  = (VendorBo) ctx.getBean("vendorBoProxy");
+        PositionBo positionBo  = (PositionBo) ctx.getBean("positionBoProxy");
 
         Integer noBatch = null;
         String noFaktur = "";
@@ -705,30 +708,6 @@ public class PermintaanVendorAction extends BaseMasterAction {
                 }
             }
         }
-
-//        List<TransaksiObatDetail> transaksiObatDetails = transaksiObatBo.getListPermintaanBatch(idApproval, "Y");
-//        List<Map> listMapPersediaan = new ArrayList<>();
-//        BigDecimal hutangUsaha = new BigDecimal(0);
-//        BigDecimal ppn = new BigDecimal(0);
-//        if (transaksiObatDetails.size() > 0) {
-//            for (TransaksiObatDetail trans : transaksiObatDetails) {
-//
-//                BigDecimal hargaRata = new BigDecimal(trans.getHarga());
-//                BigDecimal hargaTotal = hargaRata.multiply(new BigDecimal(trans.getQtyApprove()));
-//                BigDecimal hargaPpn = hargaTotal.multiply(new BigDecimal(0.1)).setScale(2, BigDecimal.ROUND_HALF_UP);
-//
-//                // hutang usaha
-//                hutangUsaha = hutangUsaha.add(hargaTotal);
-//
-//                //ppn
-//                ppn = ppn.add(hargaPpn);
-//
-//                Map mapHutangUsaha = new HashMap();
-//                mapHutangUsaha.put("kd_barang", trans.getIdBarang());
-//                mapHutangUsaha.put("nilai", hargaTotal.subtract(hargaPpn));
-//                listMapPersediaan.add(mapHutangUsaha);
-//            }
-//        }
 
         permintaanVendor.setNoFaktur(noFaktur);
         permintaanVendor.setTanggalFaktur(Date.valueOf(tglFaktur));
@@ -828,7 +807,11 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
                 ImSimrsPelayananEntity pelayananEntity = pelayananEntity = pelayananBo.getPelayananById(pelayananId);
                 if (pelayananEntity != null){
-                    divisiId = pelayananEntity.getKodering();
+
+                    ImPosition position = positionBo.getPositionEntityById(pelayananEntity.getDivisiId());
+                    if (position != null){
+                        divisiId = position.getKodering();
+                    }
                 }
 
                 Map mapBiaya = new HashMap();
