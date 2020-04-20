@@ -226,7 +226,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
             permintaanObatPoli.setIdObat(obatDetail.getIdObat());
             permintaanObatPoli.setIdPelayanan(bean.getIdPelayanan());
             permintaanObatPoli.setBranchId(bean.getBranchId());
-            obatPoliEntity = getCekListEntityObatPoli(permintaanObatPoli);
+            obatPoliEntity = getCekRequestExist(permintaanObatPoli);
 
             PermintaanObatPoli permintaanEntity = new PermintaanObatPoli();
             if (!obatPoliEntity.isEmpty()) {
@@ -376,7 +376,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                 permintaanObatPoli.setIdPelayanan(obatDetail.getIdPelayanan());
                 permintaanObatPoli.setBranchId(obatDetail.getBranchId());
 
-                permintaanEntityList = getCekListEntityObatPoli(permintaanObatPoli);
+                permintaanEntityList = getCekRequestExist(permintaanObatPoli);
 
                 PermintaanObatPoli permintaanEntity = new PermintaanObatPoli();
                 if (!permintaanEntityList.isEmpty()) {
@@ -1597,6 +1597,22 @@ public class ObatPoliBoImpl implements ObatPoliBo {
         return results;
     }
 
+    @Override
+    public List<PermintaanObatPoli> getCekRequestExist(PermintaanObatPoli bean) throws GeneralBOException {
+        logger.info("[ObatPoliBoImpl.PermintaanObatPoli] START >>>>>>>>>>");
+        List<PermintaanObatPoli> results = new ArrayList<>();
+
+        try {
+            results = obatPoliDao.cekIdObatInTransaksiRequestGudang(bean);
+        } catch (HibernateException e) {
+            logger.error("[PermintaanResepBoImpl.PermintaanObatPoli] ERROR when get data obat poli entity by criteria. ", e);
+            throw new GeneralBOException("[PermintaanResepBoImpl.PermintaanObatPoli] ERROR when get data obat poli entity by criteria. ", e);
+        }
+
+        logger.info("[ObatPoliBoImpl.getListEntityObatPoli] END <<<<<<<<<<");
+        return results;
+    }
+
     private List<MtSimrsPermintaanObatPoliEntity> getListEntityPermintaanObat(PermintaanObatPoli bean) throws GeneralBOException {
         logger.info("[ObatPoliBoImpl.getListEntityPermintaanObat] START >>>>>>>>>>");
         List<MtSimrsPermintaanObatPoliEntity> obatPoliEntities = new ArrayList<>();
@@ -2069,6 +2085,11 @@ public class ObatPoliBoImpl implements ObatPoliBo {
 
         return obatPoliList;
 
+    }
+
+    @Override
+    public MtSimrsPermintaanObatPoliEntity getEntityPermintaanObatPoliById(String id) throws GeneralBOException {
+        return permintaanObatPoliDao.getById("idPermintaanObatPoli", id);
     }
 
     // list method seq

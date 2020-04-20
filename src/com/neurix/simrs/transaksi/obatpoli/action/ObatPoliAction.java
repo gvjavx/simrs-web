@@ -8,9 +8,12 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.obat.bo.ObatBo;
 import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
 import com.neurix.simrs.master.obat.model.Obat;
+import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
+import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.obatpoli.bo.ObatPoliBo;
+import com.neurix.simrs.transaksi.obatpoli.model.MtSimrsPermintaanObatPoliEntity;
 import com.neurix.simrs.transaksi.obatpoli.model.ObatPoli;
 import com.neurix.simrs.transaksi.obatpoli.model.PermintaanObatPoli;
 import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
@@ -300,6 +303,7 @@ public class ObatPoliAction extends BaseMasterAction {
             ObatPoliBo obatPoliBo = (ObatPoliBo) ctx.getBean("obatPoliBoProxy");
             ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
             BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
+            PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
 
             PermintaanObatPoli obatPoli = new PermintaanObatPoli();
             obatPoli.setIdApprovalObat(idApproval);
@@ -310,6 +314,19 @@ public class ObatPoliAction extends BaseMasterAction {
             obatPoli.setLastUpdateWho(userLogin);
             obatPoli.setAction("U");
 
+            String pelayananAsal = "";
+            String pelayananTujuan = "";
+            MtSimrsPermintaanObatPoliEntity permintaanObatPoliEntity = obatPoliBo.getEntityPermintaanObatPoliById(idPermintaan);
+            if (permintaanObatPoliEntity != null){
+                ImSimrsPelayananEntity pelayananPengirim = pelayananBo.getPelayananById(permintaanObatPoliEntity.getTujuanPelayanan());
+                if (pelayananPengirim != null){
+                    pelayananAsal = pelayananPengirim.getNamaPelayanan();
+                }
+                ImSimrsPelayananEntity pelayanan = pelayananBo.getPelayananById(permintaanObatPoliEntity.getIdPelayanan());
+                if (pelayanan != null){
+                    pelayananTujuan = pelayanan.getNamaPelayanan();
+                }
+            }
 
             List<Map> listOfObat = new ArrayList<>();
             try {
@@ -353,7 +370,7 @@ public class ObatPoliAction extends BaseMasterAction {
                     jurnalMap.put("persediaan_apotik", listOfObat);
                     jurnalMap.put("persediaan_gudang", listOfObat);
 
-                    String catatan = "Pengiriman Barang Gudang ke Apotik";
+                    String catatan = "Pengiriman Barang dari "+pelayananAsal+" ke "+pelayananTujuan+". No. Permintaan "+idPelayanan;
                     try {
                         billingSystemBo.createJurnal("28", jurnalMap, branchId, catatan, "Y");
                         obatPoliBo.saveApproveDiterima(obatPoli, transaksiObatDetails);
@@ -622,7 +639,8 @@ public class ObatPoliAction extends BaseMasterAction {
         if(!"".equalsIgnoreCase(idObat) && idObat != null){
 
             try {
-                listObatEntity = obatPoliBo.getCekListEntityObatPoli(permintaanObatPoli);
+                //listObatEntity = obatPoliBo.getCekListEntityObatPoli(permintaanObatPoli);
+                listObatEntity = obatPoliBo.getCekRequestExist(permintaanObatPoli);
             } catch (HibernateException e){
                 logger.error("[ObatPoliAction.checkTransaksiObat] Error when get transaksi obat ," + "Found problem when saving add data, please inform to your admin.", e);
             }
