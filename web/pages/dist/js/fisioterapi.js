@@ -1,5 +1,3 @@
-var idDetailCheckup = $('#id_detail_checkup').val();
-
 function pengkajianFisioterapi(idDetailCheckup) {
     $('#modal-pengkajian-fisioterapi').modal({show: true, backdrop: 'static'});
 }
@@ -157,10 +155,26 @@ function detailFisio(jenis) {
             if (res.length > 0) {
 
                 $.each(res, function (i, item) {
-                    body += '<tr>' +
-                        '<td>' + item.parameter + '</td>' +
-                        '<td>' + item.jawaban + '</td>' +
-                        '</tr>';
+
+                    if("psikologis" == item.keterangan){
+                        var jwb = "";
+                        var li = "";
+                        if(item.jawaban != null){
+                            jwb = item.jawaban.split(",");
+                            $.each(jwb, function (i, item) {
+                               li += '<li>'+item+'</li>'
+                            });
+                        }
+                        body += '<tr>' +
+                            '<td>' + item.parameter + '</td>' +
+                            '<td>' + '<ul style="margin-left: 10px;">'+li+'</ul>' + '</td>' +
+                            '</tr>';
+                    }else{
+                        body += '<tr>' +
+                            '<td>' + item.parameter + '</td>' +
+                            '<td>' + item.jawaban + '</td>' +
+                            '</tr>';
+                    }
                 });
 
             } else {

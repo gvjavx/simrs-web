@@ -1267,7 +1267,7 @@
                             <label class="col-md-3" style="margin-top: 7px">Terminasi MPP</label>
                             <div class="col-md-8">
                                 <div class="custom02" style="margin-top: 7px">
-                                    <input type="radio" value="Perencanaan Pulang" id="tp31" name="tp3" /><label for="tp31">Perencanaan Pulang</label>
+                                    <input type="radio" onclick="showKetTp3(this.value)" value="Perencanaan Pulang" id="tp31" name="tp3" /><label for="tp31">Perencanaan Pulang</label>
                                 </div>
                             </div>
                             <div class="col-md-offset-3 col-md-8">
@@ -1275,16 +1275,16 @@
                             </div>
                             <div class="col-md-offset-3 col-md-8">
                                 <div class="custom02" style="margin-top: 7px">
-                                    <input type="radio" value="Home Care" id="tp32" name="tp3" /><label for="tp32">Home Care</label>
+                                    <input type="radio" onclick="showKetTp3(this.value)" value="Home Care" id="tp32" name="tp3" /><label for="tp32">Home Care</label>
                                 </div>
                             </div>
                             <div class="col-md-offset-3 col-md-8">
                                 <div class="custom02" style="margin-top: 7px">
-                                    <input type="radio" value="Lain-Lain" id="tp33" name="tp3" /><label for="tp33">Lain-Lain</label>
+                                    <input type="radio" onclick="showKetTp3(this.value)" value="Lain-Lain" id="tp33" name="tp3" /><label for="tp33">Lain-Lain</label>
                                 </div>
                             </div>
                             <div class="col-md-offset-3 col-md-8">
-                                <input class="form-control" style="margin-top: 7px; display: none" id="tp_ket32">
+                                <input class="form-control"  style="margin-top: 7px; display: none" id="tp_ket32">
                             </div>
                         </div>
                     </div>

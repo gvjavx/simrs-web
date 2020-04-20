@@ -82,30 +82,6 @@ public class MppAction {
         return list;
     }
 
-    public String getModalRM(String jenis){
-        HttpSession session = ServletActionContext.getRequest().getSession();
-        session.setAttribute("jenis", jenis);
-        setJenis(jenis);
-//        String element = "";
-//        if("operasi".equalsIgnoreCase(jenis)){
-//            ModalOperasi operasi = new ModalOperasi();
-//            element = operasi.getElement();
-//        }
-//        if("ugd".equalsIgnoreCase(jenis)){
-//            ModalUgd ugd = new ModalUgd();
-//            element = ugd.getElement();
-//        }
-//        if("fisioterapi".equalsIgnoreCase(jenis)){
-//            ModalFisioterapi fisioterapi = new ModalFisioterapi();
-//            element = fisioterapi.getElement();
-//        }
-//        if("mpp".equalsIgnoreCase(jenis)){
-//            ModalMpp mpp = new ModalMpp();
-//            element = mpp.getElement();
-//        }
-        return "success";
-    }
-
     public String getJenis() {
         return jenis;
     }

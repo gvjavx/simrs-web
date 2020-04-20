@@ -116,6 +116,10 @@
             border: 1px black solid;
             margin: 1rem;
         }
+
+        .garis{
+            border: solid 0.5px #ddd;
+        }
     </style>
 </head>
 <body class="hold-transition skin-blue fixed sidebar-mini">
@@ -654,20 +658,21 @@
                             </div>
                             <div class="box-body">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-success"><i class="fa fa-print"></i> Action
+                                    <button type="button" class="btn btn-success"><i class="fa fa-edit"></i> Action
                                     </button>
-                                    <button type="button" class="btn btn-success dropdown-toggle"
+                                    <button onclick="loadModalRM('hd')" type="button" class="btn btn-success dropdown-toggle"
                                             data-toggle="dropdown" style="height: 34px">
                                         <span class="caret"></span>
                                         <span class="sr-only">Toggle Dropdown</span>
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a target="_blank"
-                                               href="printGeneralConcent_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
-                                            <i class="fa fa-print"></i>Form-A Evaluasi Awal</a></li>
-                                        <li><a target="_blank"
-                                               href="printPelepasanInformasi_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
-                                            <i class="fa fa-print"></i>Form-B Catatan Implementasi</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalHD('monitoring_hd')"><i class="fa fa-circle-o"></i>Monitoring HD</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalHD('perencanaan_hd')"><i class="fa fa-circle-o"></i>Perencanaan HD</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalHD('asesmen_hd')"><i class="fa fa-circle-o"></i>Asesmen Awal HD</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalHD('tranfusi_hd')"><i class="fa fa-circle-o"></i>Tindakan Medis Transfusi Darah</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalHD('monitoring')"><i class="fa fa-circle-o"></i>Catatan Pemantauan Tranfusi Darah</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalHD('monitoring')"><i class="fa fa-circle-o"></i>Persetujuan HD</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalHD('monitoring')"><i class="fa fa-circle-o"></i>Travelling Dialysis</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -747,15 +752,18 @@
 <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenUgdAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenOperasiAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/MppAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/HemodialisaAction.js"/>'></script>
 
 <script type='text/javascript' src='<s:url value="/pages/dist/js/paintTtd.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/operasi.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/fisioterapi.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/asesmenUgd.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/mpp.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/hd.js"/>'></script>
 
 <script type='text/javascript'>
 
+    var idDetailCheckup = $('#id_detail_checkup').val();
     var contextPath = '<%= request.getContextPath() %>';
 
     function loadModalRM(jenis){
@@ -771,6 +779,9 @@
         }
         if(jenis == "mpp"){
             context = contextPath+'/pages/modal/modalMpp.jsp';
+        }
+        if(jenis == "hd"){
+            context = contextPath+'/pages/modal/modalHD.jsp';
         }
         $('#conten-modal').load(context, function (res) {
         });

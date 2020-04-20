@@ -462,7 +462,41 @@ function saveMpp(jenis, ket) {
         }
     }
     if("terminasi" == jenis){
-
+        var va1 = $('#tp1').val();
+        var va2 = $('#tp2').val();
+        var va3 = $('[name=tp3]:checked').val();
+        var tVa3 = "";
+        if(va3 == "Perencanaan Pulang"){
+            var a = $('#tp_ket31').val();
+            if(a != ''){
+                tVa3 = va3 +', '+a;
+            }
+        }else if(va3 == "Lain-Lain"){
+            var b = $('#tp_ket32').val();
+            if(a != ''){
+                tVa3 = va3 +', '+b;
+            }
+        }else{
+            tVa3 = va3;
+        }
+        console.log(tVa3);
+        if(va1 && va2 && tVa3 != ''){
+            data.push({
+                'parameter': 'Tanggal dan Jam',
+                'jawaban': va1+ ' ' + va2,
+                'keterangan': jenis,
+                'jenis': 'impementasi_mpp',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Terminasi MPP',
+                'jawaban': tVa3,
+                'keterangan': jenis,
+                'jenis': 'impementasi_mpp',
+                'id_detail_checkup': idDetailCheckup
+            });
+            cek = true;
+        }
     }
 
     if (cek) {
@@ -509,7 +543,6 @@ function detailFormMpp(jenis) {
                     if("advokasi" == item.keterangan){
                         var li = "";
                         var isi = jwb.split("|");
-                        console.log(isi);
                         if("Advokasi pelayanan pasien" == item.parameter){
                             $.each(isi, function (i, item) {
                                 li += '<li>'+item+'</li>';
@@ -559,17 +592,13 @@ function delRowMpp(id) {
     $('#btn_mpp_' + id).attr('onclick', 'detailFormMpp(\'' + id + '\')');
 }
 
-// function showKet(val){
-//     if("Perencanaan Pulang" == val){
-//         $('#tp_ket31').show();
-//     }else if ("Lain-Lain" == val){
-//         $('#tp_ket32').show();
-//     } else{
-//         $('#tp_ket31').hide();
-//         $('#tp_ket32').hide();
-//     }
-// }
-
-// $("input[name='tp3']").change(function () {
-//     console.log('tessss');
-// });
+function showKetTp3(val){
+    if(val == "Perencanaan Pulang"){
+        $('#tp_ket31').show();
+    }else if(val == "Lain-Lain"){
+        $('#tp_ket32').show();
+    }else{
+        $('#tp_ket31').hide();
+        $('#tp_ket32').hide();
+    }
+}

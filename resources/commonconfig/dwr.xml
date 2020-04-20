@@ -580,6 +580,12 @@
           <param name="class" value="com.neurix.simrs.transaksi.mpp.action.MppAction"/>
       </create>
       <convert converter="bean" match="com.neurix.simrs.transaksi.mpp.model.Mpp"/>
+
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.hemodialisa.action.HemodialisaAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.hemodialisa.model.Hemodialisa"/>
+
   </allow>
 
 </dwr>
