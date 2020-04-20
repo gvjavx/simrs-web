@@ -713,7 +713,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
         try {
 
-            String catatan = "Uang Muka untuk No Pasien " + idPasien;
+            String catatan = "Uang Muka untuk No. RM " + idPasien;
             if (!"".equalsIgnoreCase(noRekening)) {
                 catatan = catatan + " No. Rekening " + noRekening;
             }

@@ -24,6 +24,7 @@ import com.neurix.simrs.transaksi.JurnalResponse;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
+import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
@@ -918,9 +919,12 @@ public class TransaksiObatAction extends BaseMasterAction {
         KelasRuanganBo kelasRuanganBo = (KelasRuanganBo) ctx.getBean("kelasRuanganBoProxy");
         RuanganBo ruanganBo = (RuanganBo) ctx.getBean("ruanganBoProxy");
         RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
 
         String namaApotek = "";
         String divisiId = "";
+        String idPasien = "";
+        String idDetailCheckup = "";
         PermintaanResep permintaanResep = new PermintaanResep();
         permintaanResep.setIdApprovalObat(idApprove);
         List<PermintaanResep> permintaanReseps = permintaanResepBo.getByCriteria(permintaanResep);
@@ -931,6 +935,12 @@ public class TransaksiObatAction extends BaseMasterAction {
 
                     ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailBo.getDetailCheckupById(dataPermintaan.getIdDetailCheckup());
                     if (detailCheckupEntity != null){
+
+                        idDetailCheckup = detailCheckupEntity.getIdDetailCheckup();
+                        ItSimrsHeaderChekupEntity chekupEntity = checkupBo.getEntityCheckupById(detailCheckupEntity.getNoCheckup());
+                        if (chekupEntity != null){
+                            idPasien = chekupEntity.getIdPasien();
+                        }
                         try {
                             ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(detailCheckupEntity.getIdPelayanan());
 
@@ -1043,8 +1053,7 @@ public class TransaksiObatAction extends BaseMasterAction {
         String branchId = CommonUtil.userBranchLogin();
         String branchName = CommonUtil.userBranchNameLogin();
 
-        String catatan = "Pengeluaran Obat "+namaApotek+" "+branchName;
-
+        String catatan = "Pengeluaran Obat "+namaApotek+" "+branchName+" No. Detail Checkup : "+idDetailCheckup+" No. RM "+idPasien;
 
         String noJurnal = "";
 

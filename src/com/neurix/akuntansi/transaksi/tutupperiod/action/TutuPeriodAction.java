@@ -291,7 +291,7 @@ public class TutuPeriodAction extends BaseTransactionAction {
                     response.setMsg("[TutupPeriodAction.createJurnalTransitoris] ERROR. data header is null");
                     return response;
                 }
-                jenisPasien = "No. RM "+idPasien;
+                jenisPasien = "No. RM "+headerChekupEntity.getIdPasien();
                 if ("non_tunai".equalsIgnoreCase(detailCheckupEntity.getMetodePembayaran())){
                         masterId = headerChekupEntity.getIdPasien();
                 } else {

@@ -78,6 +78,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
+import org.hibernate.annotations.Check;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 import sun.misc.BASE64Decoder;
@@ -931,6 +932,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
         AsuransiBo asuransiBo = (AsuransiBo) ctx.getBean("asuransiBoProxy");
         MasterBo masterBo = (MasterBo) ctx.getBean("masterBoProxy");
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
 
         String kode = "";
         String transId = "";
@@ -941,8 +943,10 @@ public class CheckupDetailAction extends BaseMasterAction {
         String jenisPasien = "Umum";
         BigDecimal biayaCover = new BigDecimal(0);
         ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailBo.getEntityDetailCheckupByIdDetail(idDetailCheckup);
-
-
+        ItSimrsHeaderChekupEntity checkupEntity = checkupBo.getEntityCheckupById(detailCheckupEntity.getNoCheckup());
+        if (checkupEntity != null){
+            idPasien = checkupEntity.getIdPasien();
+        }
 
         if (!"ptpn".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())){
             if (!"bpjs".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())){
@@ -1045,11 +1049,13 @@ public class CheckupDetailAction extends BaseMasterAction {
                     boolean isTransitoris = false;
                     BigDecimal resepTrans = new BigDecimal(0);
                     BigDecimal tindakanTrans = new BigDecimal(0);
+                    BigDecimal allTindakanTrans = new BigDecimal(0);
                     if (detailCheckupEntity.getNoJurnalTrans() != null && !"".equalsIgnoreCase(detailCheckupEntity.getNoJurnalTrans())){
 
                         BigDecimal tindakanAllTrans = checkupDetailBo.getSumJumlahTindakanTransitoris(idDetailCheckup, "");
                         resepTrans = checkupDetailBo.getSumJumlahTindakanTransitoris(idDetailCheckup, "resep");
                         tindakanTrans = tindakanAllTrans.subtract(resepTrans);
+                        allTindakanTrans = tindakanAllTrans;
 
                         Map mapTransitoris = new HashMap();
                         mapTransitoris.put("nilai", tindakanAllTrans);
@@ -1196,7 +1202,8 @@ public class CheckupDetailAction extends BaseMasterAction {
                         jumlahResep = jumlahResep.subtract(resepTrans);
 
                         // jumlah untuk piutang
-                        jumlah = jumlahTindakan.add(jumlahResep);
+                        jumlah = jumlah.add(allTindakanTrans);
+                        jumlah = jumlah.add(jumlahTindakan.add(jumlahResep));
 
                         Map mapTindakan = new HashMap();
                         mapTindakan.put("master_id", masterId);
@@ -1280,11 +1287,16 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                     String catatan = "Closing Pasien " + ketPoli + jenisPasien + ketResep + " Piutang No Pasien " + idPasien;
 
+
                     try {
                         billingSystemBo.createJurnal(transId, hsCriteria, branchId, catatan, "Y");
                         response.setStatus("success");
                         response.setMsg("[Berhasil]");
                     } catch (GeneralBOException e) {
+                        logger.info("pendapatan rawat K: " +jumlahTindakan);
+                        logger.info("pendapatan obat K: " +jumlahResep);
+                        logger.info("piutang transitoris K: " +allTindakanTrans);
+                        logger.info("piutang rawat inap D: " +jumlah);
                         logger.error("[CheckupDetailAction.closingJurnalNonTunai] Error, ", e);
                         response.setStatus("error");
                         response.setMsg("[CheckupDetailAction.closingJurnalNonTunai] Error, " + e);
