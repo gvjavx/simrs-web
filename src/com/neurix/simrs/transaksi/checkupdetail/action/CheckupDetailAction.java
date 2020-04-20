@@ -1059,7 +1059,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                     }
 
                     // tambahkan jumlah tindakan juga untuk debit piutang
-                    jumlah = jumlah.add(jumlahTindakan);
+                    //jumlah = jumlah.add(jumlahTindakan);
 
                     if ("Y".equalsIgnoreCase(isResep)){
                         ketResep = "Dengan Obat";
@@ -1076,8 +1076,10 @@ public class CheckupDetailAction extends BaseMasterAction {
                         mapTindakan.put("divisi_id", divisiId);
                         mapTindakan.put("nilai", jumlahTindakan);
 
-                        if ("asuransi".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())){
+                        // tambahkan tindakan
+                        jumlah = jumlah.add(jumlahTindakan);
 
+                        if ("asuransi".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())){
 
                             //**** ASURANSI ***//
                             mapTindakan.put("activity", getAcitivityList(idDetailCheckup, "asuransi", "", kode));
@@ -1190,10 +1192,16 @@ public class CheckupDetailAction extends BaseMasterAction {
                     // Untuk Rawat Inap
                     if ("JRI".equalsIgnoreCase(kode)) {
 
+                        jumlahTindakan = jumlahTindakan.subtract(tindakanTrans);
+                        jumlahResep = jumlahResep.subtract(resepTrans);
+
+                        // jumlah untuk piutang
+                        jumlah = jumlahTindakan.add(jumlahResep);
+
                         Map mapTindakan = new HashMap();
                         mapTindakan.put("master_id", masterId);
                         mapTindakan.put("divisi_id", divisiId);
-                        mapTindakan.put("nilai", jumlahTindakan.subtract(tindakanTrans));
+                        mapTindakan.put("nilai", jumlahTindakan);
 
                         if ("asuransi".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())){
 
@@ -1205,12 +1213,13 @@ public class CheckupDetailAction extends BaseMasterAction {
                                 return response;
                             }
 
+
                             mapTindakan.put("activity", getAcitivityList(idDetailCheckup, "asuransi", "", kode));
 
                             Map mapResep = new HashMap();
                             mapResep.put("master_id", masterId);
                             mapResep.put("divisi_id", divisiId);
-                            mapResep.put("nilai", jumlahResep.subtract(resepTrans));
+                            mapResep.put("nilai", jumlahResep);
                             mapResep.put("activity", getAcitivityList(idDetailCheckup, "asuransi", "resep", kode));
 
                             // kredit jumlah pendapatan obat asuransi
@@ -1218,9 +1227,6 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                             // kredit jumlah tindakan asuransi
                             hsCriteria.put("pendapatan_rawat_inap_asuransi", mapTindakan);
-
-                            // jumlah piutang
-                            jumlah = jumlah.add(jumlahResep.subtract(resepTrans));
 
                             // create map piutang asuransi
                             Map mapPiutang = new HashMap();
@@ -1246,11 +1252,8 @@ public class CheckupDetailAction extends BaseMasterAction {
                             Map mapResep = new HashMap();
                             mapResep.put("master_id", masterId);
                             mapResep.put("divisi_id", divisiId);
-                            mapResep.put("nilai", jumlahResep.subtract(resepTrans));
+                            mapResep.put("nilai", jumlahResep);
                             mapResep.put("activity", getAcitivityList(idDetailCheckup, "umum", "resep", kode));
-
-                            // jumlah piutang
-                            jumlah = jumlah.add(jumlahResep.subtract(resepTrans));
 
                             // create map piutang
                             Map mapPiutang = new HashMap();
