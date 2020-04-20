@@ -261,6 +261,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             detailCheckup.setNoKartuAsuransi(entity.getNoKartuAsuransi());
             detailCheckup.setIdAsuransi(entity.getIdAsuransi());
             detailCheckup.setCoverBiaya(entity.getCoverBiaya());
+            detailCheckup.setMetodePembayaran(entity.getMetodePembayaran());
 
             if (detailCheckup.getStatusPeriksa() != null && !"".equalsIgnoreCase(detailCheckup.getStatusPeriksa())) {
                 StatusPasien statusPasien = new StatusPasien();

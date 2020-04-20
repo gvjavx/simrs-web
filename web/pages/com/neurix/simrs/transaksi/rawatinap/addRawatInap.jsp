@@ -3693,8 +3693,10 @@
         $('#save_ket').hide();
         $('#load_ket').show();
         $('#waiting_dialog').dialog('open');
+
+        var metodBayar = '<s:property value="rawatInap.metodePembayaran"/>';
         dwr.engine.setAsync(true);
-        CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, jenisPasien, cara, pendamping, tujuan, function (response) {
+        CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, jenisPasien, cara, pendamping, tujuan, "", metodBayar, function (response) {
             if(response.status == "success"){
                 $('#waiting_dialog').dialog('close');
                 $('#info_dialog').dialog('open');

@@ -889,6 +889,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             masterId = "01.000";
         }
 
+        // untuk transitoris
         boolean isTransitoris = false;
         String branchId = CommonUtil.userBranchLogin();
         BigDecimal resepTrans = new BigDecimal(0);

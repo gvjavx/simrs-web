@@ -481,6 +481,7 @@
         var uangMuka = 0;
         var metode="";
         var bukti = "";
+        var cekResep = false;
 
         var url = '<s:url value="/pages/images/spinner.gif"/>';
         $('#t_'+idDetailCheckup).attr('src',url).css('width', '30px', 'height', '40px');
@@ -692,7 +693,7 @@
 //                        mapBiaya.push({"type": "piutang_pasien_umum", "nilai": ((total - uangMuka) + totalPpn) });
 
                             mapBiaya.push({"type": "kas", "nilai": ((total - uangMuka))  });
-                            mapBiaya.push({"type": "piutang_pasien_umum", "nilai": ((total - uangMuka)) });
+                            mapBiaya.push({"type": "piutang_pasien_non_bpjs", "nilai": ((total - uangMuka)) });
                         }
                     }
                 }

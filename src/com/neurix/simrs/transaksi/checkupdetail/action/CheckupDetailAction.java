@@ -814,6 +814,8 @@ public class CheckupDetailAction extends BaseMasterAction {
         logger.info("[CheckupDetailAction.saveKeterangan] start process >>>");
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+
         CrudResponse response = new CrudResponse();
 
         HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
@@ -868,8 +870,12 @@ public class CheckupDetailAction extends BaseMasterAction {
         // save approve tindakan
         saveApproveAllTindakanRawatJalan(idDetailCheckup, jenisPasien);
 
+        if ("asuransi".equalsIgnoreCase(jenisPasien) || "ptpn".equalsIgnoreCase(jenisPasien)){
+            metodeBayar = "non_tunai";
+        }
+
         // create jurnal if non tunai
-        if ("non_tunai".equalsIgnoreCase(jenisBayar)) {
+        if ("non_tunai".equalsIgnoreCase(metodeBayar)) {
             JurnalResponse jurnalResponse = closingJurnalNonTunai(idDetailCheckup, poli, idPasien);
             if (!"ptpn".equalsIgnoreCase(jurnalResponse.getStatus())){
                 if ("error".equalsIgnoreCase(jurnalResponse.getStatus())) {
@@ -881,7 +887,6 @@ public class CheckupDetailAction extends BaseMasterAction {
             }
         }
 
-        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
 
         if ("pindah".equalsIgnoreCase(idKtg)) {
             response = pindahPoli(noCheckup, idDetailCheckup, poli, idDokter);
@@ -936,6 +941,8 @@ public class CheckupDetailAction extends BaseMasterAction {
         String jenisPasien = "Umum";
         BigDecimal biayaCover = new BigDecimal(0);
         ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailBo.getEntityDetailCheckupByIdDetail(idDetailCheckup);
+
+
 
         if (!"ptpn".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())){
             if (!"bpjs".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())){
@@ -1018,14 +1025,11 @@ public class CheckupDetailAction extends BaseMasterAction {
                     mapUangMuka.put("nilai", jumlahUm);
                     mapUangMuka.put("master_id", masterId);
 
-                    Map hsCriteria = new HashMap();
-//                    hsCriteria.put("master_id", masterId);
-//                    hsCriteria.put("divisi_id", divisiId);
-
                     Map mapPajakObat = new HashMap();
                     mapPajakObat.put("bukti", invoice);
                     mapPajakObat.put("nilai", ppnObat);
 
+                    Map hsCriteria = new HashMap();
                     BigDecimal jumlah = new BigDecimal(0);
 
                     if ("rawat_jalan".equalsIgnoreCase(pelayananEntity.getTipePelayanan()) || "igd".equalsIgnoreCase(pelayananEntity.getTipePelayanan())) {
@@ -1035,6 +1039,23 @@ public class CheckupDetailAction extends BaseMasterAction {
                     if ("rawat_inap".equalsIgnoreCase(pelayananEntity.getTipePelayanan())) {
                         kode = "JRI";
                         ketPoli = "Rawat Inap";
+                    }
+
+                    // untuk transitoris
+                    boolean isTransitoris = false;
+                    BigDecimal resepTrans = new BigDecimal(0);
+                    BigDecimal tindakanTrans = new BigDecimal(0);
+                    if (detailCheckupEntity.getNoJurnalTrans() != null && !"".equalsIgnoreCase(detailCheckupEntity.getNoJurnalTrans())){
+
+                        BigDecimal tindakanAllTrans = checkupDetailBo.getSumJumlahTindakanTransitoris(idDetailCheckup, "");
+                        resepTrans = checkupDetailBo.getSumJumlahTindakanTransitoris(idDetailCheckup, "resep");
+                        tindakanTrans = tindakanAllTrans.subtract(resepTrans);
+
+                        Map mapTransitoris = new HashMap();
+                        mapTransitoris.put("nilai", tindakanAllTrans);
+                        mapTransitoris.put("bukti", billingSystemBo.createInvoiceNumber(kode, branchId));
+                        hsCriteria.put("piutang_transistoris_pasien_rawat_inap", mapTransitoris);
+                        isTransitoris = true;
                     }
 
                     // tambahkan jumlah tindakan juga untuk debit piutang
@@ -1168,28 +1189,28 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                     // Untuk Rawat Inap
                     if ("JRI".equalsIgnoreCase(kode)) {
-                        // dengan pembayaran tunai di luar cover asuransi
-                        if (jumlahTindakan.compareTo(biayaCover) == 1){
-                            response.setStatus("success");
-                            return response;
-                        }
-
 
                         Map mapTindakan = new HashMap();
                         mapTindakan.put("master_id", masterId);
                         mapTindakan.put("divisi_id", divisiId);
-                        mapTindakan.put("nilai", jumlahTindakan);
+                        mapTindakan.put("nilai", jumlahTindakan.subtract(tindakanTrans));
 
                         if ("asuransi".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())){
 
                             //**** ASURANSI ***//
+
+                            // dengan pembayaran tunai di luar cover asuransi
+                            if (jumlahTindakan.compareTo(biayaCover) == 1){
+                                response.setStatus("success");
+                                return response;
+                            }
 
                             mapTindakan.put("activity", getAcitivityList(idDetailCheckup, "asuransi", "", kode));
 
                             Map mapResep = new HashMap();
                             mapResep.put("master_id", masterId);
                             mapResep.put("divisi_id", divisiId);
-                            mapResep.put("nilai", jumlahResep);
+                            mapResep.put("nilai", jumlahResep.subtract(resepTrans));
                             mapResep.put("activity", getAcitivityList(idDetailCheckup, "asuransi", "resep", kode));
 
                             // kredit jumlah pendapatan obat asuransi
@@ -1197,6 +1218,9 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                             // kredit jumlah tindakan asuransi
                             hsCriteria.put("pendapatan_rawat_inap_asuransi", mapTindakan);
+
+                            // jumlah piutang
+                            jumlah = jumlah.add(jumlahResep.subtract(resepTrans));
 
                             // create map piutang asuransi
                             Map mapPiutang = new HashMap();
@@ -1206,14 +1230,13 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                             // debit piutang pasien asuransi
                             hsCriteria.put("piutang_pasien_asuransi", mapPiutang);
-                            transId = "24";
 
-                            // dengan pembayaran tunai di luar cover asuransi
-                            if (jumlahTindakan.compareTo(biayaCover) == 1){
-                                response.setStatus("success");
-                                return response;
+                            if (isTransitoris){
+                                jenisPasien = jenisPasien + "Terhadap Transitoris ";
+                                transId = "41";
+                            } else {
+                                transId = "24";
                             }
-
                         } else {
 
                             //**** UMUM ***//
@@ -1223,8 +1246,11 @@ public class CheckupDetailAction extends BaseMasterAction {
                             Map mapResep = new HashMap();
                             mapResep.put("master_id", masterId);
                             mapResep.put("divisi_id", divisiId);
-                            mapResep.put("nilai", jumlahResep);
+                            mapResep.put("nilai", jumlahResep.subtract(resepTrans));
                             mapResep.put("activity", getAcitivityList(idDetailCheckup, "umum", "resep", kode));
+
+                            // jumlah piutang
+                            jumlah = jumlah.add(jumlahResep.subtract(resepTrans));
 
                             // create map piutang
                             Map mapPiutang = new HashMap();
@@ -1239,7 +1265,13 @@ public class CheckupDetailAction extends BaseMasterAction {
                             hsCriteria.put("pendapatan_obat_umum", mapResep);
                             // kredit jumlah tindakan
                             hsCriteria.put("pendapatan_rawat_inap_umum", mapTindakan);
-                            transId = "21";
+
+                            if (isTransitoris){
+                                jenisPasien = jenisPasien + "Terhadap Transitoris ";
+                                transId = "39";
+                            } else {
+                                transId = "21";
+                            }
                         }
                     }
 
@@ -2124,12 +2156,16 @@ public class CheckupDetailAction extends BaseMasterAction {
                             if ("ptpn".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien())){
                                 headerDetailCheckup.setIdAsuransi(detailCheckup.getIdAsuransi());
                                 headerDetailCheckup.setNoKartuAsuransi(detailCheckup.getNoKartuAsuransi());
+                                headerDetailCheckup.setMetodePembayaran(detailCheckup.getMetodePembayaran());
                             }
                         } else if ("asuransi".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien())){
                             HeaderDetailCheckup biayaCover = getBiayaAsuransi(detailCheckup.getIdDetailCheckup());
                             headerDetailCheckup.setIdAsuransi(biayaCover.getIdAsuransi());
                             headerDetailCheckup.setNoKartuAsuransi(biayaCover.getNoKartuAsuransi());
                             headerDetailCheckup.setCoverBiaya(biayaCover.getCoverBiaya().subtract(biayaCover.getTarifTindakan()));
+                            headerDetailCheckup.setMetodePembayaran(detailCheckup.getMetodePembayaran());
+                        } else {
+                            headerDetailCheckup.setMetodePembayaran(metodeBayar);
                         }
 
                         Tindakan tindakan = new Tindakan();
@@ -2157,7 +2193,6 @@ public class CheckupDetailAction extends BaseMasterAction {
                             headerDetailCheckup.setJumlahUangMuka(new BigInteger(uangMuka));
                         }
 
-                        headerDetailCheckup.setMetodePembayaran(metodeBayar);
 
                         try {
                             finalResponse = checkupDetailBo.saveAdd(headerDetailCheckup);
