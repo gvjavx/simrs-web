@@ -999,9 +999,8 @@ public class CheckupDetailAction extends BaseMasterAction {
                                     ImSimrsKelasRuanganEntity kelasRuanganEntity = kelasRuanganBo.getKelasRuanganById(ruanganEntity.getIdKelasRuangan());
                                     if (kelasRuanganEntity != null){
                                         ImPosition position = positionBo.getPositionEntityById(kelasRuanganEntity.getDivisiId());
-                                        if (position != null){
-                                            divisiId = position.getKodering();
-                                        }
+                                        if
+                                        divisiId = kelasRuanganEntity.getKodering();
                                     }
                                 }
                             }

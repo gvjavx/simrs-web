@@ -1050,6 +1050,37 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
         return jumlah;
     }
 
+    public BigDecimal getSumAllTarifTransitorisByJenis(String idDetail, String jenis, String ket) {
+
+        String keterangan = "%";
+        if (!"".equalsIgnoreCase(ket)) {
+            keterangan = ket;
+        }
+        String SQL = "SELECT \n" +
+                "id_detail_checkup,\n" +
+                "SUM(total_tarif) as total_tarif\n" +
+                "FROM\n" +
+                "it_simrs_tindakan_transitoris\n" +
+                "WHERE \n" +
+                "id_detail_checkup = :idDetail \n" +
+                "AND keterangan LIKE :ket \n" +
+                "AND jenis_pasien LIKE :jenis \n" +
+                "GROUP BY id_detail_checkup";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("idDetail", idDetail)
+                .setParameter("ket", keterangan)
+                .setParameter("jenis", jenis)
+                .list();
+
+        BigDecimal jumlah = new BigDecimal(0);
+        if (results.size() > 0) {
+            for (Object[] obj : results) {
+                jumlah = (BigDecimal) obj[1];
+            }
+        }
+        return jumlah;
+    }
 
 
     public String getFindResepInRiwayatTrans(String idDetail) {

@@ -884,6 +884,25 @@ public class VerifikatorAction extends BaseMasterAction {
         } else {
             Map hsCriteria = new HashMap();
 
+            // untuk transitoris
+            boolean isTransitoris = false;
+            BigDecimal resepTransBpjs = new BigDecimal(0);
+            BigDecimal tindakanTransBpjs = new BigDecimal(0);
+            BigDecimal allTindakanTransBpjs = new BigDecimal(0);
+            if (headerDetailCheckupEntity.getNoJurnalTrans() != null && !"".equalsIgnoreCase(headerDetailCheckupEntity.getNoJurnalTrans())){
+
+                // for bpjs;
+                allTindakanTransBpjs = checkupDetailBo.getSumJumlahTindakanByJenis(idDetailCheckup, "bpjs","");
+                resepTransBpjs = checkupDetailBo.getSumJumlahTindakanByJenis(idDetailCheckup, "bpjs","resep");
+                tindakanTransBpjs = allTindakanTransBpjs.subtract(resepTransBpjs);
+
+                Map mapTransitoris = new HashMap();
+                mapTransitoris.put("nilai", allTindakanTransBpjs);
+                mapTransitoris.put("bukti", headerDetailCheckupEntity.getInvoiceTrans());
+                hsCriteria.put("piutang_transistoris_pasien_rawat_inap", mapTransitoris);
+                isTransitoris = true;
+            }
+
             String kode = "";
             String transId = "";
             String ketPoli = "";
@@ -903,10 +922,17 @@ public class VerifikatorAction extends BaseMasterAction {
             BigDecimal jmlResep = checkupDetailBo.getSumJumlahTindakan(idDetailCheckup, "resep");
             BigDecimal jmlOnlyTindakan = jmlAllTindakan.subtract(jmlResep);
 
+            // hitung jumlah tindakan jika ada transitoris
+            jmlOnlyTindakan = jmlOnlyTindakan.subtract(tindakanTransBpjs);
+
             // jika ada resep atau rawat inap
             if ("Y".equalsIgnoreCase(isResep) || "rawat_inap".equalsIgnoreCase(typePelayanan)) {
+
                 // hitung ppn
                 BigDecimal ppn = jmlResep.multiply(new BigDecimal(0.1)).setScale(2, BigDecimal.ROUND_HALF_UP);
+
+                // hitung jumlah resep dengan trasitoris
+                jmlResep = jmlResep.subtract(resepTransBpjs);
 
                 Map mapObat = new HashMap();
                 mapObat.put("master_id", masterId);
@@ -926,8 +952,9 @@ public class VerifikatorAction extends BaseMasterAction {
                 }
 
                 // debit jumlah untuk piutang pasien bpjs
-                jumlah = jumlah.add(jmlAllTindakan.add(ppn));
+                jumlah = jumlah.add(jmlAllTindakan.add(ppn).add(allTindakanTransBpjs));
                 ketObat = "dengan Obat";
+
             } else {
                 // debit jumlah untuk piutang pasien bpjs
                 jumlah = jumlah.add(jmlOnlyTindakan);
@@ -935,16 +962,17 @@ public class VerifikatorAction extends BaseMasterAction {
             }
 
             String invNumber = billingSystemBo.createInvoiceNumber(kode, branchId);
-            Map mapPiutang = new HashMap();
-            mapPiutang.put("bukti", headerDetailCheckupEntity.getNoSep());
-            mapPiutang.put("nilai", jumlah );
-            mapPiutang.put("master_id", masterId);
 
             Map mapTindakan = new HashMap();
             mapTindakan.put("master_id", masterId);
             mapTindakan.put("divisi_id", divisiId);
             mapTindakan.put("nilai", jmlOnlyTindakan);
             mapTindakan.put("activity", getAcitivityList(idDetailCheckup, "bpjs", "", kode));
+
+            Map mapPiutang = new HashMap();
+            mapPiutang.put("bukti", headerDetailCheckupEntity.getNoSep());
+            mapPiutang.put("nilai", jumlah );
+            mapPiutang.put("master_id", masterId);
 
             if ("JRJ".equalsIgnoreCase(kode)){
                 // debit jumlah untuk piutang pasien bpjs
@@ -955,6 +983,9 @@ public class VerifikatorAction extends BaseMasterAction {
             }
 
             if ("JRI".equalsIgnoreCase(kode)) {
+
+
+
                 // debit jumlah untuk piutang pasien bpjs
                 hsCriteria.put("piutang_pasien_bpjs", mapPiutang);
                 // kredit jumlah tindakan
@@ -962,6 +993,14 @@ public class VerifikatorAction extends BaseMasterAction {
 
                 transId = "20";
                 ketPoli = "Rawat Inap";
+
+                if (isTransitoris){
+                    transId = "33";
+                    ketPoli = "Rawat Inap Terhadap Transitoris";
+                } else {
+                    transId = "20";
+                    ketPoli = "Rawat Inap";
+                }
             } else {
                 if ("Y".equalsIgnoreCase(isResep) && "JRJ".equalsIgnoreCase(kode))
                     transId = "13";
@@ -1169,10 +1208,38 @@ public class VerifikatorAction extends BaseMasterAction {
         invoice = billingSystemBo.createInvoiceNumber(kode, branchId);
 
         Map hsCriteria = new HashMap();
-//        hsCriteria.put("master_id", masterId);
-//        hsCriteria.put("divisi_id", divisiId);
+
+        // untuk transitoris
+        boolean isTransitoris = false;
+        BigDecimal resepTransBpjs = new BigDecimal(0);
+        BigDecimal tindakanTransBpjs = new BigDecimal(0);
+        BigDecimal allTindakanTransBpjs = new BigDecimal(0);
+        BigDecimal resepTransPtpn = new BigDecimal(0);
+        BigDecimal tindakanTransPtpn = new BigDecimal(0);
+        BigDecimal allTindakanTransPtpn = new BigDecimal(0);
+        if (detailCheckupEntity.getNoJurnalTrans() != null && !"".equalsIgnoreCase(detailCheckupEntity.getNoJurnalTrans())){
+
+            // for bpjs;
+            allTindakanTransBpjs = checkupDetailBo.getSumJumlahTindakanByJenis(idDetailCheckup, "bpjs","");
+            resepTransBpjs = checkupDetailBo.getSumJumlahTindakanByJenis(idDetailCheckup, "bpjs","resep");
+            tindakanTransBpjs = allTindakanTransBpjs.subtract(resepTransBpjs);
+
+            // for ptpn;
+            allTindakanTransPtpn = checkupDetailBo.getSumJumlahTindakanByJenis(idDetailCheckup, "ptpn", "");
+            resepTransPtpn = checkupDetailBo.getSumJumlahTindakanByJenis(idDetailCheckup, "ptpn", "resep");
+            tindakanTransPtpn = allTindakanTransPtpn.subtract(resepTransPtpn);
+
+            Map mapTransitoris = new HashMap();
+            mapTransitoris.put("nilai", allTindakanTransBpjs.add(allTindakanTransPtpn));
+            mapTransitoris.put("bukti", detailCheckupEntity.getInvoiceTrans());
+            hsCriteria.put("piutang_transistoris_pasien_rawat_inap", mapTransitoris);
+            isTransitoris = true;
+        }
 
         if ("murni".equalsIgnoreCase(jenisPtpn)){
+
+            // jumlah tindakan dikurangin transitoris bpjs
+            jumlahTindakan = jumlahTindakan.subtract(tindakanTransBpjs);
 
             Map mapPajakObat = new HashMap();
             mapPajakObat.put("bukti", invoice);
@@ -1194,7 +1261,7 @@ public class VerifikatorAction extends BaseMasterAction {
                     Map mapObat = new HashMap();
                     mapObat.put("master_id", masterId);
                     mapObat.put("divisi_id", divisiId);
-                    mapObat.put("nilai",jumlahResep);
+                    mapObat.put("nilai", jumlahResep);
                     mapObat.put("activity", getAcitivityList(idDetailCheckup, "bpjs", "resep", kode));
 
                     // kredit jumlah obat PTPN
@@ -1202,11 +1269,9 @@ public class VerifikatorAction extends BaseMasterAction {
                     // ppn obat PTPN
                     hsCriteria.put("ppn_keluaran", mapPajakObat);
 
-                    // jika ada resep dan ppn untuk debit piutang
-                    jumlahAllTindakan = jumlahAllTindakan.add(jumlahResep.add(ppnObat));
-
+                    // reate map piutang
                     Map mapPiutang = new HashMap();
-                    mapPiutang.put("nilai", jumlahAllTindakan);
+                    mapPiutang.put("nilai", jumlahAllTindakan.add(ppnObat));
 
                     // debit piutang pasien PTPN
                     hsCriteria.put("piutang_pasien_bpjs", mapPiutang);
@@ -1214,7 +1279,7 @@ public class VerifikatorAction extends BaseMasterAction {
                     jenisPasien = " Murni Dengan Obat ";
                 } else {
 
-                    // create list map piutang
+                    // create map piutang
                     Map mapPiutang = new HashMap();
                     mapPiutang.put("bukti", detailCheckupEntity.getNoSep());
                     mapPiutang.put("nilai", jumlahAllTindakan);
@@ -1229,6 +1294,9 @@ public class VerifikatorAction extends BaseMasterAction {
 
             if ("JRI".equalsIgnoreCase(kode)){
 
+                // resep dikurangin transitoris bpjs
+                jumlahResep = jumlahResep.subtract(resepTransBpjs);
+
                 Map mapObat = new HashMap();
                 mapObat.put("master_id", masterId);
                 mapObat.put("divisi_id", divisiId);
@@ -1241,17 +1309,24 @@ public class VerifikatorAction extends BaseMasterAction {
                 // kredit jumlah tindakan PTPN
                 hsCriteria.put("pendapatan_rawat_inap_bpjs", mapTindakan);
 
-                BigDecimal jumlahPiutang = jumlahTindakan.add(jumlahResep);
-
                 Map mapPiutang = new HashMap();
-                mapPiutang.put("nilai", jumlahPiutang);
+                mapPiutang.put("nilai", jumlahAllTindakan);
 
                 // debit piutang pasien PTPN
                 hsCriteria.put("piutang_pasien_bpjs", mapPiutang);
-                transId = "23";
-                jenisPasien = " Murni ";
+
+                if (isTransitoris){
+                    transId = "40";
+                    jenisPasien = " Murni Terhadap Transitoris";
+                } else {
+                    transId = "23";
+                    jenisPasien = " Murni ";
+                }
+
             }
         } else {
+
+            // == NON MURNI PTPN == //
 
             jenisPasien = "  ";
 
@@ -1267,8 +1342,13 @@ public class VerifikatorAction extends BaseMasterAction {
                 ppnObtPtpn = jumlaTindakanPtpn.multiply(new BigDecimal(0.1)).setScale(2, BigDecimal.ROUND_HALF_UP);
             }
 
-            jumlahAllTindakan = jumlahAllTindakan.add(jumlahResep.add(ppnObat));
-            jumlahAllTindakanPtpn = jumlahAllTindakanPtpn.add(jumlahResepPtpn.add(ppnObtPtpn));
+            // jumlah tindakan dikurangi transitoris
+            jumlahTindakan = jumlahTindakan.subtract(tindakanTransBpjs);
+            jumlaTindakanPtpn = jumlaTindakanPtpn.subtract(tindakanTransPtpn);
+
+            // jumlah resep dikurangi transitoris
+            jumlahResep = jumlahResep.subtract(resepTransBpjs);
+            jumlahResepPtpn = jumlahResepPtpn.subtract(resepTransPtpn);
 
             Map mapPajakObat = new HashMap();
             mapPajakObat.put("bukti", invoice);
@@ -1291,25 +1371,25 @@ public class VerifikatorAction extends BaseMasterAction {
                 Map mapPiutangBpjs = new HashMap();
                 mapPiutangBpjs.put("bukti", detailCheckupEntity.getNoSep());
                 mapPiutangBpjs.put("master_id", masterId);
-                mapPiutangBpjs.put("nilai", jumlahAllTindakan);
+                mapPiutangBpjs.put("nilai", jumlahAllTindakan.add(ppnObat));
 
                 Map mapPiutangPtpn = new HashMap();
                 mapPiutangPtpn.put("bukti", billingSystemBo.createInvoiceNumber(kode, branchId));
                 mapPiutangPtpn.put("master_id", ptpnMasterId);
-                mapPiutangPtpn.put("nilai", jumlahAllTindakanPtpn);
+                mapPiutangPtpn.put("nilai", jumlahAllTindakanPtpn.add(ppnObtPtpn));
 
                 if ("Y".equalsIgnoreCase(isResep) || "Y".equalsIgnoreCase(isResepPtpn)){
 
                     Map mapResepBpjs = new HashMap();
                     mapResepBpjs.put("master_id", masterId);
                     mapResepBpjs.put("divisi_id", divisiId);
-                    mapResepBpjs.put("nilai",jumlahResep);
+                    mapResepBpjs.put("nilai", jumlahResep);
                     mapResepBpjs.put("activity", getAcitivityList(idDetailCheckup, "bpjs", "resep", kode));
 
                     Map mapResepPtpn = new HashMap();
                     mapResepPtpn.put("master_id", ptpnMasterId);
                     mapResepPtpn.put("divisi_id", divisiId);
-                    mapResepPtpn.put("nilai",jumlahResepPtpn);
+                    mapResepPtpn.put("nilai", jumlahResepPtpn);
                     mapResepPtpn.put("activity", getAcitivityList(idDetailCheckup, "ptpn", "resep", kode));
 
                     hsCriteria.put("piutang_pasien_bpjs", mapPiutangBpjs);
@@ -1335,14 +1415,14 @@ public class VerifikatorAction extends BaseMasterAction {
                 Map mapResepBpjs = new HashMap();
                 mapResepBpjs.put("master_id", masterId);
                 mapResepBpjs.put("divisi_id", divisiId);
-                mapResepBpjs.put("nilai",jumlahResep);
+                mapResepBpjs.put("nilai", jumlahResep);
                 mapResepBpjs.put("activity", getAcitivityList(idDetailCheckup, "bpjs", "resep", kode));
 
 
                 Map mapResepPtpn = new HashMap();
                 mapResepPtpn.put("master_id", ptpnMasterId);
                 mapResepPtpn.put("divisi_id", divisiId);
-                mapResepPtpn.put("nilai",jumlahResepPtpn);
+                mapResepPtpn.put("nilai", jumlahResepPtpn);
                 mapResepPtpn.put("activity", getAcitivityList(idDetailCheckup, "ptpn", "resep", kode));
 
                 Map mapPiutangBpjs = new HashMap();
@@ -1362,7 +1442,12 @@ public class VerifikatorAction extends BaseMasterAction {
                 hsCriteria.put("pendapatan_obat_bpjs", mapResepBpjs);
                 hsCriteria.put("pendapatan_obat_ptpn", mapResepBpjs);
 
-                transId = "25";
+                if (isTransitoris){
+                    jenisPasien = jenisPasien + "Terhadap Transitoris";
+                    transId = "42";
+                } else {
+                    transId = "25";
+                }
             }
         }
 

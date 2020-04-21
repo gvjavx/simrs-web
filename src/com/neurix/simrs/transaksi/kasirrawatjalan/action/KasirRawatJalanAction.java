@@ -914,23 +914,32 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
         // untuk transitoris
         boolean isTransitoris = false;
+
         String branchId = CommonUtil.userBranchLogin();
-        BigDecimal resepTrans = new BigDecimal(0);
-        BigDecimal tindakanTrans = new BigDecimal(0);
+        BigDecimal resepTransUmum = new BigDecimal(0);
+        BigDecimal tindakanTransUmum = new BigDecimal(0);
+        BigDecimal allTindakanTransUmum = new BigDecimal(0);
+        BigDecimal resepTransAsuransi = new BigDecimal(0);
+        BigDecimal tindakanTransAsuransi = new BigDecimal(0);
+        BigDecimal allTindakanTransAsuransi = new BigDecimal(0);
         if (detailCheckupEntity.getNoJurnalTrans() != null && !"".equalsIgnoreCase(detailCheckupEntity.getNoJurnalTrans())){
 
-            BigDecimal tindakanAllTrans = checkupDetailBo.getSumJumlahTindakanTransitoris(idDetailCheckup, "");
-            resepTrans = checkupDetailBo.getSumJumlahTindakanTransitoris(idDetailCheckup, "resep");
-            tindakanTrans = tindakanAllTrans.subtract(resepTrans);
+            // for bpjs;
+            allTindakanTransUmum = checkupDetailBo.getSumJumlahTindakanByJenis(idDetailCheckup, "umum","");
+            resepTransUmum = checkupDetailBo.getSumJumlahTindakanByJenis(idDetailCheckup, "umum","resep");
+            tindakanTransUmum = allTindakanTransUmum.subtract(resepTransUmum);
+
+            // for ptpn;
+            allTindakanTransAsuransi = checkupDetailBo.getSumJumlahTindakanByJenis(idDetailCheckup, "asuransi", "");
+            resepTransAsuransi = checkupDetailBo.getSumJumlahTindakanByJenis(idDetailCheckup, "asuransi", "resep");
+            tindakanTransAsuransi = allTindakanTransAsuransi.subtract(resepTransAsuransi);
 
             Map mapTransitoris = new HashMap();
-            mapTransitoris.put("nilai", tindakanAllTrans);
-            mapTransitoris.put("bukti", billingSystemBo.createInvoiceNumber(type, branchId));
+            mapTransitoris.put("nilai", allTindakanTransUmum.add(allTindakanTransAsuransi));
+            mapTransitoris.put("bukti", detailCheckupEntity.getInvoiceTrans());
             mapJurnal.put("piutang_transistoris_pasien_rawat_inap", mapTransitoris);
             isTransitoris = true;
         }
-
-
 
         BigDecimal uangMuka = new BigDecimal(0);
         BigDecimal uangPiutang = new BigDecimal(0);
@@ -992,7 +1001,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             Map mapPendapatanUmum = new HashMap();
             mapPendapatanUmum.put("master_id", masterId);
             mapPendapatanUmum.put("divisi_id", divisiId);
-            mapPendapatanUmum.put("nilai", pendapatanRawatUmum.subtract(tindakanTrans));
+            mapPendapatanUmum.put("nilai", pendapatanRawatUmum.subtract(tindakanTransUmum));
             mapPendapatanUmum.put("activity", listActivityTindakanUmum);
 
             if ("JRJ".equalsIgnoreCase(type) && !"Y".equalsIgnoreCase(withObat)) {
@@ -1026,7 +1035,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 Map mapResepUmum = new HashMap();
                 mapResepUmum.put("master_id", masterId);
                 mapResepUmum.put("divisi_id", divisiId);
-                mapResepUmum.put("nilai", pendapatanResepUmum.subtract(resepTrans));
+                mapResepUmum.put("nilai", pendapatanResepUmum.subtract(resepTransUmum));
                 mapResepUmum.put("activity", listActivityResepUmum);
 
                 mapJurnal.put("pendapatan_rawat_inap_umum", mapPendapatanUmum);
@@ -1084,6 +1093,14 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 if (jenisPeriksaPasienEntity != null){
                     masterUmum = jenisPeriksaPasienEntity.getMasterId();
                 }
+
+                // pendapatan rawat terhadap transitoris
+                pendapatanRawat = pendapatanRawat.add(tindakanTransAsuransi);
+                pendapatanRawatUmum = pendapatanResepUmum.add(tindakanTransUmum);
+
+                // pendapatan resep terhadap transitoris
+                pendapatanResep = pendapatanResep.add(resepTransAsuransi);
+                pendapatanResepUmum = pendapatanResepUmum.add(resepTransUmum);
 
                 Map mapPendapatanAsuransi = new HashMap();
                 mapPendapatanAsuransi.put("master_id", masterId);

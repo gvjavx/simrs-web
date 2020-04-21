@@ -1307,6 +1307,11 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     }
 
     @Override
+    public BigDecimal getSumJumlajTindakanTransitorisByJenis(String idDetailCheckup, String jenis, String ket) {
+        return checkupDetailDao.getSumAllTarifTransitorisByJenis(idDetailCheckup, jenis, ket);
+    }
+
+    @Override
     public String findResep(String idDetailCheckup) {
         return checkupDetailDao.getFindResepInRiwayatTrans(idDetailCheckup);
     }
