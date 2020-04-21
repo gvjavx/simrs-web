@@ -325,13 +325,13 @@ public class TutuPeriodAction extends BaseTransactionAction {
             mapPendapatan.put("master_id", masterId);
             mapPendapatan.put("divisi_id", divisiId);
             mapPendapatan.put("nilai", jumlahTindakan);
-            mapPendapatan.put("activity", getAcitivityList(detailCheckupEntity.getIdDetailCheckup(), jenis, "", "JRI"));
+            mapPendapatan.put("activity", getAcitivityList(detailCheckupEntity.getIdDetailCheckup(), "", "", "JRI"));
 
             Map mapResep = new HashMap();
             mapResep.put("master_id", masterId);
             mapResep.put("divisi_id", divisiId);
             mapResep.put("nilai", jumlahResep);
-            mapResep.put("activity", getAcitivityList(detailCheckupEntity.getIdDetailCheckup(), jenis, "resep", "JRI"));
+            mapResep.put("activity", getAcitivityList(detailCheckupEntity.getIdDetailCheckup(), "", "resep", "JRI"));
 
             mapJurnal.put("piutang_transistoris_pasien_rawat_inap", mapPiutang);
             mapJurnal.put("pendapatan_rawat_inap", mapPendapatan);
@@ -390,7 +390,10 @@ public class TutuPeriodAction extends BaseTransactionAction {
         // riwayat tindakan list
         RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
         riwayatTindakan.setIdDetailCheckup(idDetailCheckup);
-        riwayatTindakan.setJenisPasien(jenisPasien);
+
+        if (!"".equalsIgnoreCase(jenisPasien)){
+            riwayatTindakan.setJenisPasien(jenisPasien);
+        }
 
         if ("".equalsIgnoreCase(ket)){
             riwayatTindakan.setNotResep("Y");
