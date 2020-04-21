@@ -727,7 +727,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
             List<TransaksiObatDetail> transaksiObatDetails = new ArrayList<>();
             try {
-                transaksiObatDetails = permintaanVendorBo.getListTransByBatchSorted(requestVendor.getListOfTransaksiObatDetail(), noBatch, "N");
+                transaksiObatDetails = permintaanVendorBo.getListTransByBatchSorted(requestVendor.getListOfTransaksiObatDetail(), noBatch, "Y");
             } catch (GeneralBOException e) {
                 logger.error("[PermintaanVendorAction.saveApproveBatch] ERROR. ", e);
                 addActionError("[PermintaanVendorAction.saveApproveBatch] ERROR. " + e.getMessage());

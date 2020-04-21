@@ -31,6 +31,7 @@ public interface KasirRawatJalanBo {
     public List<ImAkunPembayaranEntity> getListPembayaran() throws GeneralBOException;
     public ItSimrsUangMukaPendaftaranEntity getEnityUangMukaById(String id) throws GeneralBOException;
 
+    public ImAkunPembayaranEntity getPembayaranEntityByCoa(String coa) throws GeneralBOException;
 
     Map setMappingJurnalFpk(KlaimFpkDTO data,List<KlaimFpkDTO> listOfKlaim);
 

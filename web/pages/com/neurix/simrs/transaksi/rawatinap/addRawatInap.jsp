@@ -3561,7 +3561,7 @@
     function hitungStatusBiaya() {
         var jenis = $("#id_jenis_pasien").val();
         CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, "RI", function (response) {
-            if (jenis == "bpjs") {
+            if (jenis == "bpjs" || jenis == "ptpn") {
                 $('#status_bpjs').show();
                 if (response.tarifBpjs != null && response.tarifTindakan != null) {
 

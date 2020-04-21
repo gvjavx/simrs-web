@@ -889,8 +889,6 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             if (jenisPeriksaPasienEntity != null){
                 masterId = jenisPeriksaPasienEntity.getMasterId();
             }
-
-            masterId = "02.018";
         } else if ("asuransi".equalsIgnoreCase(jenis)){
 
             // jika asuransi
@@ -907,7 +905,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             masterId =  detailCheckupEntity.getIdAsuransi();
         } else {
 
-            ImJenisPeriksaPasienEntity jenisPeriksaPasienEntity = jenisPriksaPasienBo.getJenisPerikasEntityById(jenis);
+            ImJenisPeriksaPasienEntity jenisPeriksaPasienEntity = jenisPriksaPasienBo.getJenisPerikasEntityById("umum");
             if (jenisPeriksaPasienEntity != null){
                 masterId = jenisPeriksaPasienEntity.getMasterId();
             }
@@ -1206,7 +1204,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             try {
                 String text = "";
                 if (("transfer").equalsIgnoreCase(metodeBayar)) {
-                    text = " pada Bank " + kodeBank;
+                    text = " pada Bank " + getNamaBank(kodeBank);
                 }
 
                 String catatan = ketTerangan + " untuk No Pasien " + idPasien + " menggunakan metode " + metodeBayar + text;
@@ -1679,6 +1677,18 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         List<RiwayatTindakanDTO> riwayatTindakanList  = checkupDetailBo.getRiwayatTindakanDanDokter(idDetailCheckup);
 
         return riwayatTindakanList;
+    }
+
+    public String getNamaBank(String coa){
+        String nama = "";
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        KasirRawatJalanBo kasirRawatJalanBo = (KasirRawatJalanBo) ctx.getBean("kasirRawatJalanBoProxy");
+
+        ImAkunPembayaranEntity pembayaranEntity = kasirRawatJalanBo.getPembayaranEntityByCoa(coa);
+        if (pembayaranEntity != null){
+            nama = pembayaranEntity.getPembayaranName();
+        }
+        return nama;
     }
 
     @Override
