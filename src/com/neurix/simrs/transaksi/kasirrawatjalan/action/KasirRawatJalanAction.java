@@ -856,6 +856,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                     activityMap.put("person_id", idDokter);
                     activityMap.put("nilai", riwayatTindakanEntity.getTotalTarif().add(ppn));
                     activityMap.put("no_trans", riwayatTindakanEntity.getIdDetailCheckup());
+                    activityMap.put("tipe", riwayatTindakanEntity.getJenisPasien());
 
                     if ("resep".equalsIgnoreCase(riwayatTindakanEntity.getKeterangan())){
 
