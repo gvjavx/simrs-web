@@ -1,5 +1,5 @@
 function paintTtd(id){
-
+    console.log(id);
     const paintCanvas = document.querySelector("#"+id);
     const context = paintCanvas.getContext("2d");
 

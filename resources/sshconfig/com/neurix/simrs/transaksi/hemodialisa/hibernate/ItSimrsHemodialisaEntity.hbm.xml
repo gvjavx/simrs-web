@@ -17,8 +17,11 @@
         <property name="parameter">
             <column name="parameter" sql-type="text" not-null="false"/>
         </property>
-        <property name="jawaban">
-            <column name="jawaban" sql-type="text" not-null="false"/>
+        <property name="jawaban1">
+            <column name="jawaban1" sql-type="text" not-null="false"/>
+        </property>
+        <property name="jawaban2">
+            <column name="jawaban2" sql-type="text" not-null="false"/>
         </property>
         <property name="keterangan">
             <column name="keterangan" sql-type="varchar" length="1000" not-null="false"/>

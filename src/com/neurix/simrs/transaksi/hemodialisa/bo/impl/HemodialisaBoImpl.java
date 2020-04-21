@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.hemodialisa.bo.impl;
 
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.hemodialisa.bo.HemodialisaBo;
@@ -51,7 +52,12 @@ public class HemodialisaBoImpl implements HemodialisaBo {
                     hemodialisa.setIdHemodialisa(entity.getIdHemodialisa());
                     hemodialisa.setIdDetailCheckup(entity.getIdDetailCheckup());
                     hemodialisa.setParameter(entity.getParameter());
-                    hemodialisa.setJawaban(entity.getJawaban());
+                    if("tranfusi_penyataan".equalsIgnoreCase(entity.getKeterangan()) || "persetujuan_hd_penyataan".equalsIgnoreCase(entity.getKeterangan())){
+                        hemodialisa.setJawaban1(CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_TTD_RM);
+                    }else{
+                        hemodialisa.setJawaban1(entity.getJawaban1());
+                    }
+                    hemodialisa.setJawaban2(entity.getJawaban2());
                     hemodialisa.setKeterangan(entity.getKeterangan());
                     hemodialisa.setJenis(entity.getJenis());
                     hemodialisa.setSkor(entity.getSkor());
@@ -78,7 +84,8 @@ public class HemodialisaBoImpl implements HemodialisaBo {
             hemodialisaEntity.setIdHemodialisa("HDL"+hemodialisaDao.getNextSeq());
             hemodialisaEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
             hemodialisaEntity.setParameter(bean.getParameter());
-            hemodialisaEntity.setJawaban(bean.getJawaban());
+            hemodialisaEntity.setJawaban1(bean.getJawaban1());
+            hemodialisaEntity.setJawaban2(bean.getJawaban2());
             hemodialisaEntity.setKeterangan(bean.getKeterangan());
             hemodialisaEntity.setJenis(bean.getJenis());
             hemodialisaEntity.setSkor(bean.getSkor());

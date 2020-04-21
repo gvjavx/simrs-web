@@ -418,6 +418,7 @@
                 <value>sshconfig/com/neurix/simrs/transaksi/asesmenoperasi/hibernate/ItSimrsAsesmenOperasiEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/mpp/hibernate/ItSimrsMppEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/hemodialisa/hibernate/ItSimrsHemodialisaEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/hemodialisa/hibernate/ItSimrsMonitoringTransfusiDarahEntity.hbm.xml</value>
 
             </list>
         </property>

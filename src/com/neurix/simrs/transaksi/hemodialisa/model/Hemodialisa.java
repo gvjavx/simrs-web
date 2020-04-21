@@ -9,7 +9,8 @@ public class Hemodialisa extends BaseModel {
     private String idHemodialisa;
     private String idDetailCheckup;
     private String parameter;
-    private String jawaban;
+    private String jawaban1;
+    private String jawaban2;
     private String keterangan;
     private String jenis;
     private Integer skor;
@@ -44,12 +45,20 @@ public class Hemodialisa extends BaseModel {
         this.parameter = parameter;
     }
 
-    public String getJawaban() {
-        return jawaban;
+    public String getJawaban1() {
+        return jawaban1;
     }
 
-    public void setJawaban(String jawaban) {
-        this.jawaban = jawaban;
+    public void setJawaban1(String jawaban1) {
+        this.jawaban1 = jawaban1;
+    }
+
+    public String getJawaban2() {
+        return jawaban2;
+    }
+
+    public void setJawaban2(String jawaban2) {
+        this.jawaban2 = jawaban2;
     }
 
     public String getKeterangan() {

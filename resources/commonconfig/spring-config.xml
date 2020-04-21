@@ -220,5 +220,6 @@
     <import resource="sshconfig/com/neurix/simrs/transaksi/asesmenoperasi/spring/AsesmenOperasiBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/mpp/spring/MppBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/hemodialisa/spring/HemodialisaBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/hemodialisa/spring/MonitoringTransfusiDarahBean.xml"/>
 
 </beans>

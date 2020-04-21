@@ -520,7 +520,7 @@
                             </div>
                             <div class="box-header with-border"></div>
                             <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-stethoscope"></i> HIV </h3><small> (Human Immunodeficiency Virus)</small>
+                                <h3 class="box-title"><i class="fa fa-certificate"></i> HIV </h3><small> (Human Immunodeficiency Virus)</small>
                             </div>
                             <div class="box-body">
                                 <div class="btn-group">
@@ -601,11 +601,11 @@
                         </div>
                         <div class="col-md-4">
                             <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-print"></i> Rawat Inap </h3>
+                                <h3 class="box-title"><i class="fa fa-hotel"></i> Rawat Inap </h3>
                             </div>
                             <div class="box-body">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-primary"><i class="fa fa-print"></i> Action
+                                    <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Action
                                     </button>
                                     <button type="button" class="btn btn-primary dropdown-toggle"
                                             data-toggle="dropdown" style="height: 34px">
@@ -654,7 +654,7 @@
                             </div>
                             <div class="box-header with-border"></div>
                             <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-print"></i> HD </h3><small> (Hemodialisa)</small>
+                                <h3 class="box-title"><i class="fa fa-heartbeat"></i> HD </h3><small> (Hemodialisa)</small>
                             </div>
                             <div class="box-body">
                                 <div class="btn-group">
@@ -670,9 +670,9 @@
                                         <li><a style="cursor: pointer" onclick="showModalHD('perencanaan_hd')"><i class="fa fa-circle-o"></i>Perencanaan HD</a></li>
                                         <li><a style="cursor: pointer" onclick="showModalHD('asesmen_hd')"><i class="fa fa-circle-o"></i>Asesmen Awal HD</a></li>
                                         <li><a style="cursor: pointer" onclick="showModalHD('tranfusi_hd')"><i class="fa fa-circle-o"></i>Tindakan Medis Transfusi Darah</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalHD('monitoring')"><i class="fa fa-circle-o"></i>Catatan Pemantauan Tranfusi Darah</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalHD('monitoring')"><i class="fa fa-circle-o"></i>Persetujuan HD</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalHD('monitoring')"><i class="fa fa-circle-o"></i>Travelling Dialysis</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalHD('catatan_tranfusi_darah')"><i class="fa fa-circle-o"></i>Catatan Pemantauan Tranfusi Darah</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalHD('persetujuan_hd')"><i class="fa fa-circle-o"></i>Persetujuan HD</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalHD('travelling')"><i class="fa fa-circle-o"></i>Travelling Dialysis</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -753,6 +753,7 @@
 <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenOperasiAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/MppAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/HemodialisaAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/MonitoringTransfusiDarahAction.js"/>'></script>
 
 <script type='text/javascript' src='<s:url value="/pages/dist/js/paintTtd.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/operasi.js"/>'></script>

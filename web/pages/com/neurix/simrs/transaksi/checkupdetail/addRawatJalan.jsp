@@ -390,7 +390,13 @@
                             </div>
                             <!-- /.col -->
                         </div>
-                        <a href="/simrs/rekammedik/initRekamMedik_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>&tipe=RJ" class="btn btn-primary"><i class="fa fa-user"></i> E-Rekam Medik</a>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <a href="<%= request.getContextPath() %>/rekammedik/initRekamMedik_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>&tipe=RJ" class="btn btn-primary pull-right"><i class="fa fa-user-plus"></i> E-Rekam Medik</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="box-header with-border" id="pos_alergi">
                     </div>
