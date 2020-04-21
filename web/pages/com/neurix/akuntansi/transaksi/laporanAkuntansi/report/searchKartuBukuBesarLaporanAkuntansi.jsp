@@ -42,7 +42,7 @@
             var tanggalAwal= document.getElementById("tglFrom").value;
             var tanggalAkhir= document.getElementById("tglTo").value;
 
-            if ( unit != ''&&masterId!=''&&kodeRekening!=''&&tipeTanggal!='') {
+            if ( unit != ''&&kodeRekening!=''&&tipeTanggal!='') {
                 if (tipeTanggal=='P'){
                     if (periodeTahun != ''&& periodeBulan != ''){
                         event.originalEvent.options.submit = false;
@@ -86,9 +86,6 @@
                 if ( unit == '') {
                     msg += 'Field <strong>Unit </strong> masih belum dipilih' + '<br/>';
                 }
-                if ( masterId == '') {
-                    msg += 'Field <strong>Kode Vendor </strong> masih belum dipilih' + '<br/>';
-                }
                 if ( kodeRekening == '') {
                     msg += 'Field <strong>Kode Rekening </strong> masih belum dipilih' + '<br/>';
                 }
@@ -127,7 +124,6 @@
     <section class="content-header">
         <h1>
             Kartu Buku Besar Per Buku Bantu
-            <small>e-HEALTH</small>
         </h1>
     </section>
     <!-- Main content -->
@@ -158,7 +154,7 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:if test='#laporanAkuntansi.unit == "KP"'>
+                                                        <s:if test='laporanAkuntansi.unit == "KP"'>
                                                             <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                                                             <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="laporanAkuntansi.unit"
                                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>

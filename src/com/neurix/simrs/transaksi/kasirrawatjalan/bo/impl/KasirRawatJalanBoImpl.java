@@ -344,6 +344,8 @@ public class KasirRawatJalanBoImpl implements KasirRawatJalanBo {
                 activity.put("activity_id",riwayattindakan.getIdTindakan());
                 activity.put("person_id",riwayattindakan.getIdDokter());
                 activity.put("nilai",new BigDecimal(riwayattindakan.getTotalTarif()));
+                activity.put("no_trans",dataKlaim.getIdDetailCheckup());
+                activity.put("tipe","bpjs");
                 activityList.add(activity);
 
                 divisiId=riwayattindakan.getKoderingPoli();
@@ -395,6 +397,7 @@ public class KasirRawatJalanBoImpl implements KasirRawatJalanBo {
         Map piutangTerverif = new HashMap();
         piutangTerverif.put("nilai",new BigDecimal(jumlahPiutangTerverif));
         piutangTerverif.put("bukti",data.getNoFpk());
+        piutangTerverif.put("master_id","02.000");
 
         //create zero value
         Map piutangPasien = new HashMap();
@@ -419,7 +422,6 @@ public class KasirRawatJalanBoImpl implements KasirRawatJalanBo {
         dataMap.put("piutang_terverif",piutangTerverif);
         dataMap.put("piutang_ekses_bpjs",piutangeksesbpjslist);
         dataMap.put("piutang_pasien_bpjs",piutangpasienbpjslist);
-        dataMap.put("master_id","02.000");
         dataMap.put("pendapatan_selisih_bpjs",pendapatanselisihbpjslist);
         return dataMap;
     }

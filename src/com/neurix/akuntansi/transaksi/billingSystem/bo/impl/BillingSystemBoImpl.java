@@ -431,7 +431,6 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                                 logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
                                 throw new GeneralBOException("Found problem "+status+", please info to your admin...");
                             }
-
                             //mendapatkan nilai activity jika bukan list
                             if (listOfMap.get("activity")!=null){
                                 try{
@@ -457,6 +456,20 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                                             saveActivity.setJumlah((BigDecimal)activityList.get(x).get("nilai"));
                                         }else{
                                             status="ERROR : nilai tidak ditemukan";
+                                            logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
+                                            throw new GeneralBOException("Found problem "+status+", please info to your admin...");
+                                        }
+                                        if (activityList.get(x).get("no_trans")!=null){
+                                            saveActivity.setNoTrans((String)activityList.get(x).get("no_trans"));
+                                        }else{
+                                            status="ERROR : No. Trans tidak ditemukan";
+                                            logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
+                                            throw new GeneralBOException("Found problem "+status+", please info to your admin...");
+                                        }
+                                        if (activityList.get(x).get("tipe")!=null){
+                                            saveActivity.setTipe((String)activityList.get(x).get("tipe"));
+                                        }else{
+                                            status="ERROR : Tipe tidak ditemukan";
                                             logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
                                             throw new GeneralBOException("Found problem "+status+", please info to your admin...");
                                         }
@@ -602,8 +615,22 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                                                     logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
                                                     throw new GeneralBOException("Found problem "+status+", please info to your admin...");
                                                 }
+                                                if (activityList.get(x).get("no_trans")!=null){
+                                                    saveActivity.setNoTrans((String)activityList.get(x).get("no_trans"));
+                                                }else{
+                                                    status="ERROR : No. Trans tidak ditemukan";
+                                                    logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
+                                                    throw new GeneralBOException("Found problem "+status+", please info to your admin...");
+                                                }
+                                                if (activityList.get(x).get("tipe")!=null){
+                                                    saveActivity.setTipe((String)activityList.get(x).get("tipe"));
+                                                }else{
+                                                    status="ERROR : Tipe tidak ditemukan";
+                                                    logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
+                                                    throw new GeneralBOException("Found problem "+status+", please info to your admin...");
+                                                }
                                                 saveActivity.setJurnalDetailActivityId(jurnalDetailActivityDao.getNextJurnalActivityId());
-                                                saveActivity.setJurnalDetailId(jurnalDetailId);
+                                                saveActivity.setJurnalDetailId(jurnalDetailIdLoop);
                                                 saveActivity.setFlag("Y");
                                                 saveActivity.setAction("C");
                                                 saveActivity.setCreatedDate(updateTime);
@@ -844,6 +871,8 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                         activityPending.setJumlah(jurnalDetailActivityEntity.getJumlah());
                         activityPending.setPersonId(jurnalDetailActivityEntity.getPersonId());
                         activityPending.setFlag(jurnalDetailActivityEntity.getFlag());
+                        activityPending.setTipe(jurnalDetailActivityEntity.getTipe());
+                        activityPending.setNoTrans(jurnalDetailActivityEntity.getNoTrans());
                         activityPending.setAction(jurnalDetailActivityEntity.getAction());
                         activityPending.setCreatedDate(jurnalDetailActivityEntity.getCreatedDate());
                         activityPending.setLastUpdate(jurnalDetailActivityEntity.getLastUpdate());
