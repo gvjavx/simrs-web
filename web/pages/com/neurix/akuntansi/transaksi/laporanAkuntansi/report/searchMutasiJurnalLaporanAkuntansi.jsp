@@ -88,7 +88,6 @@
     <section class="content-header">
         <h1>
             Mutasi Jurnal
-            <small>e-HEALTH</small>
         </h1>
     </section>
     <!-- Main content -->

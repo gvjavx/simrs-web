@@ -403,11 +403,16 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
                     hs.put("master_id", pembayaranUtangPiutangDetail.getMasterId());
                     dataMap.add(hs);
                 }
+
+                Map kas = new HashMap();
+                kas.put("metode_bayar",pembayaranUtangPiutang.getMetodePembayaran());
+                kas.put("bank",pembayaranUtangPiutang.getBank());
+                kas.put("nilai",bayar);
+
                 Map data = new HashMap();
                 data.put("piutang_terverif",dataMap);
-                data.put("kas",bayar);
-                data.put("metode_bayar",pembayaranUtangPiutang.getMetodePembayaran());
-                data.put("bank",pembayaranUtangPiutang.getBank());
+                data.put("kas",kas);
+
                 noJurnal= billingSystemBoProxy.createJurnal(pembayaranUtangPiutang.getTipeTransaksi(),data,pembayaranUtangPiutang.getBranchId(),pembayaranUtangPiutang.getKeterangan(),"N");
                 pembayaranUtangPiutang.setNoJurnal(noJurnal);
                 pembayaranUtangPiutangBoProxy.saveAddPembayaran(pembayaranUtangPiutang,pembayaranUtangPiutangDetailList);
@@ -423,11 +428,16 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
                     hs.put("master_id", pembayaranUtangPiutangDetail.getMasterId());
                     dataMap.add(hs);
                 }
+
+                Map kas = new HashMap();
+                kas.put("metode_bayar",pembayaranUtangPiutang.getMetodePembayaran());
+                kas.put("bank",pembayaranUtangPiutang.getBank());
+                kas.put("nilai",bayar);
+
                 Map data = new HashMap();
                 data.put("piutang_pasien_non_bpjs",dataMap);
-                data.put("kas",bayar);
-                data.put("metode_bayar",pembayaranUtangPiutang.getMetodePembayaran());
-                data.put("bank",pembayaranUtangPiutang.getBank());
+                data.put("kas",kas);
+
                 noJurnal= billingSystemBoProxy.createJurnal(pembayaranUtangPiutang.getTipeTransaksi(),data,pembayaranUtangPiutang.getBranchId(),pembayaranUtangPiutang.getKeterangan(),"N");
                 pembayaranUtangPiutang.setNoJurnal(noJurnal);
                 pembayaranUtangPiutangBoProxy.saveAddPembayaran(pembayaranUtangPiutang,pembayaranUtangPiutangDetailList);
@@ -443,11 +453,16 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
                     hs.put("master_id", pembayaranUtangPiutangDetail.getMasterId());
                     dataMap.add(hs);
                 }
+
+                Map kas = new HashMap();
+                kas.put("metode_bayar",pembayaranUtangPiutang.getMetodePembayaran());
+                kas.put("bank",pembayaranUtangPiutang.getBank());
+                kas.put("nilai",bayar);
+
                 Map data = new HashMap();
                 data.put("piutang_rekanan",dataMap);
-                data.put("kas",bayar);
-                data.put("metode_bayar",pembayaranUtangPiutang.getMetodePembayaran());
-                data.put("bank",pembayaranUtangPiutang.getBank());
+                data.put("kas",kas);
+
                 noJurnal= billingSystemBoProxy.createJurnal(pembayaranUtangPiutang.getTipeTransaksi(),data,pembayaranUtangPiutang.getBranchId(),pembayaranUtangPiutang.getKeterangan(),"N");
                 pembayaranUtangPiutang.setNoJurnal(noJurnal);
                 pembayaranUtangPiutangBoProxy.saveAddPembayaran(pembayaranUtangPiutang,pembayaranUtangPiutangDetailList);
@@ -463,11 +478,14 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
                     hs.put("master_id", pembayaranUtangPiutangDetail.getMasterId());
                     dataMap.add(hs);
                 }
+                Map kas = new HashMap();
+                kas.put("metode_bayar",pembayaranUtangPiutang.getMetodePembayaran());
+                kas.put("bank",pembayaranUtangPiutang.getBank());
+                kas.put("nilai",bayar);
+
                 Map data = new HashMap();
                 data.put("hutang_usaha",dataMap);
-                data.put("kas",bayar);
-                data.put("metode_bayar",pembayaranUtangPiutang.getMetodePembayaran());
-                data.put("bank",pembayaranUtangPiutang.getBank());
+                data.put("kas",kas);
                 noJurnal= billingSystemBoProxy.createJurnal(pembayaranUtangPiutang.getTipeTransaksi(),data,pembayaranUtangPiutang.getBranchId(),pembayaranUtangPiutang.getKeterangan(),"N");
                 pembayaranUtangPiutang.setNoJurnal(noJurnal);
                 pembayaranUtangPiutangBoProxy.saveAddPembayaran(pembayaranUtangPiutang,pembayaranUtangPiutangDetailList);

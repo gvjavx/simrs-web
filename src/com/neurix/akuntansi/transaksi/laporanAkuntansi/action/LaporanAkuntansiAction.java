@@ -820,11 +820,19 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
             reportParams.put("tanggalAwal",tanggalAwal );
             reportParams.put("tanggalAkhir", tanggalAkhirBaru);
             reportParams.put("periodeTitle", data.getStTanggalAwal()+" s/d "+data.getStTanggalAkhir());
-            return "print_report_akuntansi_kartu_buku_besar_tanggal";
+            if (!("").equalsIgnoreCase(data.getMasterId())){
+                return "print_report_akuntansi_kartu_buku_besar_tanggal";
+            }else{
+                return "print_report_akuntansi_kartu_buku_besar_tanggal_tanpa_master";
+            }
         }else if (("P").equalsIgnoreCase(data.getTipeTanggal())){
             reportParams.put("periode", data.getBulan()+"-"+data.getTahun());
             reportParams.put("periodeTitle", CommonUtil.convertNumberToStringBulan(data.getBulan())+" "+data.getTahun());
-            return "print_report_akuntansi_kartu_buku_besar";
+            if (!("").equalsIgnoreCase(data.getMasterId())){
+                return "print_report_akuntansi_kartu_buku_besar";
+            }else{
+                return "print_report_akuntansi_kartu_buku_besar_tanpa_master";
+            }
         }else{
             return ERROR;
         }

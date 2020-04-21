@@ -22,6 +22,12 @@
         <property name="jumlah">
             <column name="jumlah" sql-type="numeric" not-null="false" />
         </property>
+        <property name="tipe">
+            <column name="tipe" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="noTrans">
+            <column name="no_trans" sql-type="varchar" length="30" not-null="false" />
+        </property>
 
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />

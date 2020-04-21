@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="KartuBukuBesarPerBukuBantu" pageWidth="595" pageHeight="842" columnWidth="567" leftMargin="14" rightMargin="14" topMargin="28" bottomMargin="28" uuid="bdaf2a17-1aac-4e49-a61a-b8cd35b24766">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="2.5937424601000023"/>
-	<property name="ireport.x" value="559"/>
-	<property name="ireport.y" value="299"/>
+	<property name="ireport.zoom" value="1.0000000000000004"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -18,7 +18,7 @@
 		<defaultValueExpression><![CDATA["40023"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String">
-		<defaultValueExpression><![CDATA["C:\\apache-tomcat-8.5.40\\webapps\\simrs\\pages\\report\\com\\neurix\\akuntansi\\"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["C:\\tomcat\\webapps\\simrs\\pages\\report\\com\\neurix\\akuntansi\\"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="kota" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="periodeTitle" class="java.lang.String" isForPrompting="false"/>

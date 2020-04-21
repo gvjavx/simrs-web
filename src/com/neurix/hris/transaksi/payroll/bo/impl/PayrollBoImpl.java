@@ -10108,9 +10108,13 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
         dataPayroll.put("tunj_lembur_karyawan_tidak_tetap", tunjlemburkaryawantidaktetaplist);
         dataPayroll.put("tunj_lainnya_karyawan_tidak_tetap", tunjlainnyakaryawantidaktetaplist);
 
-        dataPayroll.put("kas",total);
-        dataPayroll.put("metode_bayar","transfer");
-        dataPayroll.put("bank","1.1.01.02.03");
+        Map kas = new HashMap();
+        kas.put("metode_bayar","transfer");
+        kas.put("bank","1.1.01.02.03");
+        kas.put("nilai",total);
+
+        dataPayroll.put("kas",kas);
+
         return dataPayroll;
     }
 

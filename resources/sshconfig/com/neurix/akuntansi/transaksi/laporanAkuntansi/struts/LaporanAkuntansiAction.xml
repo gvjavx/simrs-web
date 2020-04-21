@@ -121,18 +121,7 @@
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>
             </result>
-            <result name="print_report_akuntansi_kartu_buku_besar" type="jasper">
-                <param name="location">/pages/report/com/neurix/akuntansi/KartuBukuBesarPerBukuBantu.jasper</param>
-                <param name="connection">connection</param>
-                <param name="format">PDF</param>
-                <param name="reportParameters">reportParams</param>
-            </result>
-            <result name="print_report_akuntansi_kartu_buku_besar_tanggal" type="jasper">
-                <param name="location">/pages/report/com/neurix/akuntansi/KartuBukuBesarPerBukuBantuTanggal.jasper</param>
-                <param name="connection">connection</param>
-                <param name="format">PDF</param>
-                <param name="reportParameters">reportParams</param>
-            </result>
+
             <result name="print_report_akuntansi_ikhitisar_sub_buku_besar" type="jasper">
                 <param name="location">/pages/report/com/neurix/akuntansi/Ikhtisar.jasper</param>
                 <param name="connection">connection</param>
@@ -236,6 +225,33 @@
             </result>
             <result name="print_report_kompilasi" type="jasper">
                 <param name="location">/pages/report/com/neurix/akuntansi/LaporanKompilasiUnit.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+            <!-- END OF KOMPILASI -->
+
+            <!-- Kartu Buku Besar Per Buku Bantu -->
+            <result name="print_report_akuntansi_kartu_buku_besar" type="jasper">
+                <param name="location">/pages/report/com/neurix/akuntansi/KartuBukuBesarPerBukuBantu.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+            <result name="print_report_akuntansi_kartu_buku_besar_tanpa_master" type="jasper">
+                <param name="location">/pages/report/com/neurix/akuntansi/KartuBukuBesarPerBukuBantuTanpaMaster.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+            <result name="print_report_akuntansi_kartu_buku_besar_tanggal" type="jasper">
+                <param name="location">/pages/report/com/neurix/akuntansi/KartuBukuBesarPerBukuBantuTanggal.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+            <result name="print_report_akuntansi_kartu_buku_besar_tanggal_tanpa_master" type="jasper">
+                <param name="location">/pages/report/com/neurix/akuntansi/KartuBukuBesarPerBukuBantuTanggalTanpaMaster.jasper</param>
                 <param name="connection">connection</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>
