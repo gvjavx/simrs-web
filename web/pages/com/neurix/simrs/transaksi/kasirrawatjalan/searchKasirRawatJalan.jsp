@@ -37,7 +37,6 @@
     <section class="content-header">
         <h1>
             Kasir Rawat Jalan
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -321,6 +320,10 @@
                                     <td><b>Jenis Pasien</b></td>
                                     <td><span id="fin_jenis_pasien"></span></td>
                                 </tr>
+                                <tr style="display: none;" id="label-asuransi">
+                                    <td><b>Asuransi</b></td>
+                                    <td><span id="fin_asuransi"></span></td>
+                                </tr>
                             </table>
                         </div>
 
@@ -499,6 +502,7 @@
         var uangMuka = 0;
         var metode="";
         var bukti = "";
+        var namaAsuransi = "";
 
         var url = '<s:url value="/pages/images/spinner.gif"/>';
         $('#t_'+idDetailCheckup).attr('src',url).css('width', '30px', 'height', '40px');
@@ -514,7 +518,9 @@
                 console.log(response);
                 if (response != null) {
                     // $.each(dataPasien, function (i, item) {
-                        var tanggal = response.tglLahir;
+                    jenisPasien = response.idJenisPeriksaPasien;
+
+                    var tanggal = response.tglLahir;
                         var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
                         noCheckup = response.noCheckup;
                         nik = response.noKtp;
@@ -535,6 +541,7 @@
                         kecamatan = response.namaKecamatan;
                         desa = response.namaDesa;
                         noSep = response.noSep;
+                        namaAsuransi = response.namaAsuransi;
 
                         if(response.metodePembayaran == "tunai"){
                             metode = "tunai";
@@ -573,8 +580,11 @@
                     var cekResep = false;
                     var ppn = "";
                     var ppnObat= 0;
+                    var ppnObatAsuransi= 0;
                     var totalObatUmum = 0;
                     var cover = 0;
+                    var tindakanAsuransi = 0;
+                    var tindakanUmum = 0;
 
                     $.each(dataTindakan, function (i, item) {
                         var tindakan = "";
@@ -595,6 +605,11 @@
                         if (item.totalTarif != null && item.totalTarif != '') {
                             tarif = item.totalTarif;
                             total = (parseInt(total) + parseInt(tarif));
+                            if (item.jenisPasien == "asuransi"){
+                                tindakanAsuransi = parseInt(tindakanAsuransi) + parseInt(tarif);
+                            } else {
+                                tindakanUmum = parseInt(tindakanUmum) + parseInt(tarif);
+                            }
                         }
 
                         if (item.stTglTindakan != null) {
@@ -630,14 +645,16 @@
                             "<td>" + tindakan + "</td>" +
                             "<td align='right' style='padding-right: 20px'>" + formatRupiah(tarif) + "</td>" +
                             "</tr>";
-                        jenisPasien = item.jenisPasien;
                     });
+
 
                     if(cekResep){
 
                         if (jenisPasien == "asuransi"){
-                            ppn = '<tr><td colspan="3">PPN Obat</td><td align="right" style="padding-right: 20px">' + formatRupiah(totalObatUmum * 0.1) + '</td></tr>';
-                            ppnObat = (totalObatUmum * 0.1);
+                            ppnObat = (totalObatUmum* 0.1);
+                            ppnObatAsuransi = (totalObat * 0.1);
+                            var totalPpn = ppnObat + ppnObatAsuransi;
+                            ppn = '<tr><td colspan="3">PPN Obat</td><td align="right" style="padding-right: 20px">' + formatRupiah(totalPpn) + '</td></tr>';
                         } else {
                             ppn = '<tr><td colspan="3">PPN Obat</td><td align="right" style="padding-right: 20px">' + formatRupiah(totalObat * 0.1) + '</td></tr>';
                             ppnObat = (totalObat * 0.1);
@@ -647,18 +664,19 @@
 
                     var strCover = "";
                     if (jenisPasien == "asuransi"){
-                        KasirRawatJalanAction.getCoverAsuransi(idDetailCheckup, function (res) {
-                            cover = parseInt(res);
-                            console.log("Cover Biaya : "+cover);
-                            strCover = '<tr><td colspan="3">Cover </td><td align="right" style="padding-right: 20px">' + formatRupiah(cover) + '</td></tr>';
-                        });
+                        strCover = '<tr><td colspan="3">Potongan Cover Asuransi </td><td align="right" style="padding-right: 20px"> - ' + formatRupiah(tindakanAsuransi+totalObat) + '</td></tr>';
+//                        KasirRawatJalanAction.getCoverAsuransi(idDetailCheckup, function (res) {
+//                            cover = parseInt(res);
+//                            console.log("Cover Biaya : "+cover);
+//                            strCover = '<tr><td colspan="3">Cover </td><td align="right" style="padding-right: 20px">' + formatRupiah(cover) + '</td></tr>';
+//                        });
                     }
 
                     var strBiaya = "";
                     if (jenisPasien == "asuransi"){
-                        strBiaya = '<tr><td colspan="3">Total Biaya</td><td align="right" style="padding-right: 20px">' + formatRupiah((total - cover) + totalObatUmum + ppnObat ) + '</td></tr>';
+                        strBiaya = '<tr><td colspan="3">Total Biaya yang Dibayar</td><td align="right" style="padding-right: 20px">' + formatRupiah(tindakanUmum + totalObatUmum + ppnObat + ppnObatAsuransi) + '</td></tr>';
                     } else {
-                        strBiaya = '<tr><td colspan="3">Total Biaya</td><td align="right" style="padding-right: 20px">' + formatRupiah(total - uangMuka + ppnObat) + '</td></tr>';
+                        strBiaya = '<tr><td colspan="3">Total Biaya yang Dibayar</td><td align="right" style="padding-right: 20px">' + formatRupiah(total - uangMuka + ppnObat) + '</td></tr>';
                     }
 
 //                    table = table + '<tr><td colspan="3">Total</td><td align="right" style="padding-right: 20px">' + formatRupiah(total) + '</td></tr>' + strCover + ppn +
@@ -684,18 +702,18 @@
                     } else if (jenisPasien == "asuransi"){
                         //non_tunai asuransi
                         if (cekResep){
-                            mapBiaya.push({"type": "kas", "nilai": (total - cover) + totalObatUmum + ppnObat });
-                            mapBiaya.push({"type": "piutang_pasien_asuransi", "nilai": cover });
-                            mapBiaya.push({"type": "pendapatan_rawat_jalan_asuransi", "nilai": cover - totalObat });
-                            mapBiaya.push({"type": "pendapaatan_rawat_jalan_umum", "nilai": total - cover });
+                            mapBiaya.push({"type": "kas", "nilai": tindakanUmum + totalObatUmum + ppnObat + ppnObatAsuransi });
+                            mapBiaya.push({"type": "piutang_pasien_asuransi", "nilai": tindakanAsuransi + totalObat });
+                            mapBiaya.push({"type": "pendapatan_rawat_jalan_asuransi", "nilai": tindakanAsuransi});
+                            mapBiaya.push({"type": "pendapaatan_rawat_jalan_umum", "nilai": tindakanUmum });
                             mapBiaya.push({"type": "pendapatan_obat_asuransi", "nilai": totalObat});
                             mapBiaya.push({"type": "pendapatan_obat_umum", "nilai": totalObatUmum});
-                            mapBiaya.push({"type": "ppn_keluaran", "nilai": ppnObat });
+                            mapBiaya.push({"type": "ppn_keluaran", "nilai": ppnObat + ppnObatAsuransi });
                         } else {
-                            mapBiaya.push({"type": "kas", "nilai": total - cover});
-                            mapBiaya.push({"type": "piutang_pasien_asuransi", "nilai": cover });
-                            mapBiaya.push({"type": "pendapatan_rawat_jalan_asuransi", "nilai": cover });
-                            mapBiaya.push({"type": "pendapatan_rawat_jalan_umum", "nilai": total- cover });
+                            mapBiaya.push({"type": "kas", "nilai": tindakanUmum});
+                            mapBiaya.push({"type": "piutang_pasien_asuransi", "nilai": tindakanAsuransi });
+                            mapBiaya.push({"type": "pendapatan_rawat_jalan_asuransi", "nilai": tindakanAsuransi });
+                            mapBiaya.push({"type": "pendapatan_rawat_jalan_umum", "nilai":tindakanUmum });
                         }
 
                         metode = "asuransi";
@@ -711,7 +729,10 @@
 
             if(jenisPasien == "bpjs"){
                 $('#no_sep_show').show();
-            }else {
+            }else if (jenisPasien == "asuransi"){
+                $('#label-asuransi').show();
+                $('#fin_asuransi').text(namaAsuransi);
+            } else {
                 $('#no_sep_show').hide();
             }
 

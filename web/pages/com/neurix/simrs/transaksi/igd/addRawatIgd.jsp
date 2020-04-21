@@ -2465,7 +2465,7 @@
         strSelect = "";
         var arBodyJenisResep = [];
         if(jenisPeriksaPasien == "ptpn"){
-            arBodyJenisResep.push({"nilai":"ptptn", "label":"PTPN"},{"nilai": "umum", "label":"UMUM"});
+            arBodyJenisResep.push({"nilai":"bpjs", "label":"BPJS"},{"nilai": "ptpn", "label":"PTPN"});
         } else if (jenisPeriksaPasien == "asuransi"){
             arBodyJenisResep.push({"nilai":"asuransi", "label":"ASURANSI"},{"nilai": "umum", "label":"UMUM"});
         } else if (jenisPeriksaPasien == "bpjs") {

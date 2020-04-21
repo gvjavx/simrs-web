@@ -419,7 +419,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
         return rawatInapList;
     }
 
-    public List<RawatInap> getSearchVerifikasiRawatInap(RawatInap bean){
+    public List<RawatInap> getSearchVerifikasiRawatInap(RawatInap bean ,String type){
         List<RawatInap> rawatInapList = new ArrayList<>();
         if (bean != null){
 
@@ -434,6 +434,13 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
             String dateFrom     = "";
             String dateTo       = "";
             String branchId = "%";
+
+            String jenisPasien = "";
+            if (!"".equalsIgnoreCase(type)){
+                jenisPasien = "AND b.id_jenis_periksa_pasien = '"+type+"' \n";
+            } else {
+                jenisPasien = "AND b.id_jenis_periksa_pasien IN ('bpjs', 'ptpn') \n";
+            }
 
             if (bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())){
                 idPasien = bean.getIdPasien();
@@ -515,8 +522,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     "AND e.id_ruangan LIKE :idRuang\n" +
                     "AND b.id_detail_checkup LIKE :idDetailCheckup\n" +
                     "AND b.is_kronis IS NULL\n" +
-                    "AND a.branch_id LIKE :branchId\n" +
-                    "AND b.id_jenis_periksa_pasien IN ('bpjs', 'ptpn')\n" +
+                    "AND a.branch_id LIKE :branchId\n" + jenisPasien +
                     "AND a.flag = 'Y'\n";
 
             List<Object[]> results = new ArrayList<>();

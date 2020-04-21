@@ -28,18 +28,46 @@ public class KlaimFpkDTO {
     private String noFpk;
     private String stTanggalFpk;
     private Date tanggalFpk;
-    private Integer jumlahSeluruhnya;
-    private Integer jumlahSelisih;
+    private BigInteger jumlahSeluruhnyaBpjs;
+    private BigInteger jumlahSeluruhnya;
+    private BigInteger jumlahSelisih;
     private String stJumlahSelisih;
     private String stJumlahSeluruhnya;
+    private String stJumlahSeluruhnyaBpjs;
 
-    public Integer getJumlahSelisih() {
+
+    public BigInteger getJumlahSeluruhnyaBpjs() {
+        return jumlahSeluruhnyaBpjs;
+    }
+
+    public void setJumlahSeluruhnyaBpjs(BigInteger jumlahSeluruhnyaBpjs) {
+        this.jumlahSeluruhnyaBpjs = jumlahSeluruhnyaBpjs;
+    }
+
+    public BigInteger getJumlahSeluruhnya() {
+        return jumlahSeluruhnya;
+    }
+
+    public void setJumlahSeluruhnya(BigInteger jumlahSeluruhnya) {
+        this.jumlahSeluruhnya = jumlahSeluruhnya;
+    }
+
+    public BigInteger getJumlahSelisih() {
         return jumlahSelisih;
     }
 
-    public void setJumlahSelisih(Integer jumlahSelisih) {
+    public void setJumlahSelisih(BigInteger jumlahSelisih) {
         this.jumlahSelisih = jumlahSelisih;
     }
+
+    public String getStJumlahSeluruhnyaBpjs() {
+        return stJumlahSeluruhnyaBpjs;
+    }
+
+    public void setStJumlahSeluruhnyaBpjs(String stJumlahSeluruhnyaBpjs) {
+        this.stJumlahSeluruhnyaBpjs = stJumlahSeluruhnyaBpjs;
+    }
+
 
     public String getStJumlahSelisih() {
         return stJumlahSelisih;
@@ -49,13 +77,6 @@ public class KlaimFpkDTO {
         this.stJumlahSelisih = stJumlahSelisih;
     }
 
-    public Integer getJumlahSeluruhnya() {
-        return jumlahSeluruhnya;
-    }
-
-    public void setJumlahSeluruhnya(Integer jumlahSeluruhnya) {
-        this.jumlahSeluruhnya = jumlahSeluruhnya;
-    }
 
     public String getStJumlahSeluruhnya() {
         return stJumlahSeluruhnya;

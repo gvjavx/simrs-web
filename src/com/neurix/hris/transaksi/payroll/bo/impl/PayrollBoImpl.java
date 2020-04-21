@@ -9478,6 +9478,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
         List<Map> tunjtantiemdekomlist = new ArrayList<>();
         List<Map> tunjasuransidekomlist = new ArrayList<>();
         List<Map> tunjlainlaindekomlist = new ArrayList<>();
+
         List<Map> penghasilandireksilist = new ArrayList<>();
         List<Map> tunjpphdireksilist = new ArrayList<>();
         List<Map> tunjtransportkomdireksilist = new ArrayList<>();
@@ -9488,6 +9489,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
         List<Map> tunjtantiemdireksilist = new ArrayList<>();
         List<Map> tunjasuransidireksilist = new ArrayList<>();
         List<Map> tunjlainlaindireksilist = new ArrayList<>();
+
         List<Map> gajikaryawantetaplist = new ArrayList<>();
         List<Map> tunjjabatankaryawantetaplist = new ArrayList<>();
         List<Map> tunjstrukturalkaryawantetaplist = new ArrayList<>();
@@ -9502,6 +9504,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
         List<Map> tunjsupervisikaryawantetaplist = new ArrayList<>();
         List<Map> tunjfungsionalkaryawantetaplist = new ArrayList<>();
         List<Map> tunjlainnyakaryawantetaplist = new ArrayList<>();
+
         List<Map> gajikaryawantidaktetaplist = new ArrayList<>();
         List<Map> tunjfungsionalkaryawantidaktetaplist = new ArrayList<>();
         List<Map> tunjtambahankaryawantidaktetaplist = new ArrayList<>();
@@ -9916,10 +9919,10 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                         total = total.add(payrollEntity.getTunjanganBpjsKs());
 
                         Map tunjkhususkaryawantidaktetap = new HashMap();
-                        tunjkhususkaryawantidaktetap.put("nilai",payrollEntity.getTambahanLain());
+                        tunjkhususkaryawantidaktetap.put("nilai",payrollEntity.getTunjanganUmk());
                         tunjkhususkaryawantidaktetap.put("divisi_id",posisi.getKodering());
                         tunjkhususkaryawantidaktetaplist.add(tunjkhususkaryawantidaktetap);
-                        total = total.add(payrollEntity.getTambahanLain());
+                        total = total.add(payrollEntity.getTunjanganUmk());
 
                         Map tunjlemburkaryawantidaktetap = new HashMap();
                         tunjlemburkaryawantidaktetap.put("nilai",payrollEntity.getTunjanganLembur());
@@ -10105,9 +10108,13 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
         dataPayroll.put("tunj_lembur_karyawan_tidak_tetap", tunjlemburkaryawantidaktetaplist);
         dataPayroll.put("tunj_lainnya_karyawan_tidak_tetap", tunjlainnyakaryawantidaktetaplist);
 
-        dataPayroll.put("kas",total);
-        dataPayroll.put("metode_bayar","transfer");
-        dataPayroll.put("bank","1.1.01.02.03");
+        Map kas = new HashMap();
+        kas.put("metode_bayar","transfer");
+        kas.put("bank","1.1.01.02.03");
+        kas.put("nilai",total);
+
+        dataPayroll.put("kas",kas);
+
         return dataPayroll;
     }
 

@@ -162,6 +162,12 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
             if (bean.getKeterangan() != null) {
                 hsCriteria.put("keterangan", bean.getKeterangan());
             }
+            if (bean.getJenisPasien() != null) {
+                hsCriteria.put("jenis_pasien", bean.getJenisPasien());
+            }
+            if (bean.getNotResep() != null) {
+                hsCriteria.put("not_resep", bean.getNotResep());
+            }
 
             hsCriteria.put("flag", "Y");
 
@@ -198,6 +204,7 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
                 transitorisEntity.setAction(tindakanEntity.getAction());
                 transitorisEntity.setFlag(tindakanEntity.getFlag());
                 transitorisEntity.setTanggalTindakan(tindakanEntity.getTanggalTindakan());
+                transitorisEntity.setIdDetailCheckup(idDetailCheckup);
 
                 transitorisEntity.setCreatedDate(time);
                 transitorisEntity.setCreatedWho(user);
@@ -211,6 +218,21 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
                     throw new GeneralBOException("[RiwayatTindakanBoImpl.saveTindakanTransitoris] ERROR. ", e);
                 }
             }
+        }
+    }
+
+    @Override
+    public ItSimrsTindakanTransitorisEntity getTindakanTransitorisById(String id) throws GeneralBOException {
+        return tindakanTransitorisDao.getById("idRiwayatTindakan", id);
+    }
+
+    @Override
+    public void updateByEntity(ItSimrsRiwayatTindakanEntity entity) throws GeneralBOException {
+        try {
+            riwayatTindakanDao.updateAndSave(entity);
+        } catch (HibernateException e){
+            logger.error("[RiwayatTindakanBoImpl.updateByEntity] ERROR When update tindakan", e);
+            throw new GeneralBOException("[RiwayatTindakanBoImpl.updateByEntity] ERROR When update tindakan", e);
         }
     }
 

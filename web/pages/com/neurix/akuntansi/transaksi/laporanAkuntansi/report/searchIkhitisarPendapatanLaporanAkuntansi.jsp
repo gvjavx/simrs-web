@@ -32,10 +32,11 @@
             var unit    = document.getElementById("branchId").value;
             var periodeTahun = document.getElementById("periodeTahun").value;
             var periodeBulan = document.getElementById("periodeBulan").value;
+            var tipePendapatan = document.getElementById("tipePendapatan").value;
 
-            if ( unit != '' && periodeTahun != ''&& periodeBulan != '') {
+            if ( unit != '' && periodeTahun != ''&& periodeBulan != ''&&tipePendapatan!='') {
                 event.originalEvent.options.submit = false;
-                var url = "printReportIkhtisarPendapatan_laporanAkuntansi.action?laporanAkuntansi.unit="+unit+"&laporanAkuntansi.tahun="+periodeTahun+"&laporanAkuntansi.bulan="+periodeBulan;
+                var url = "printReportIkhtisarPendapatan_laporanAkuntansi.action?laporanAkuntansi.unit="+unit+"&laporanAkuntansi.tahun="+periodeTahun+"&laporanAkuntansi.bulan="+periodeBulan+"&laporanAkuntansi.tipeLaporan="+tipePendapatan;
                 window.open(url,'_blank');
             } else {
                 event.originalEvent.options.submit = false;
@@ -48,6 +49,9 @@
                 }
                 if ( periodeBulan == '') {
                     msg += 'Field <strong>Bulan </strong> masih belum dipilih' + '<br/>';
+                }
+                if ( tipePendapatan == '') {
+                    msg += 'Field <strong>Tipe Pendapatan</strong> masih belum dipilih' + '<br/>';
                 }
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
@@ -81,7 +85,6 @@
     <section class="content-header">
         <h1>
             Laporan Ikhitisar Pendapatan
-            <small>e-HEALTH</small>
         </h1>
     </section>
     <!-- Main content -->
@@ -112,7 +115,7 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:if test='#laporanAkuntansi.unit == "KP"'>
+                                                        <s:if test='laporanAkuntansi.unit == "KP"'>
                                                             <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                                                             <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="laporanAkuntansi.unit"
                                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
@@ -151,6 +154,18 @@
                                                     $('#periodeBulan').val(("0" + (dt.getMonth() + 1)).slice(-2));
                                                     $('#periodeTahun').val(dt.getFullYear());
                                                 </script>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label"><small>Tipe Pendapatan :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:select list="#{'PD':'Pendapatan', 'PDM' : 'Pendapatan Per Master', 'PDD':'Pendapatan Per Divisi'}"
+                                                                  id="tipePendapatan" name="laporanAkuntansi.tipeLaporan"
+                                                                  headerKey="" headerValue="[Select One]" cssClass="form-control" />
+                                                    </table>
+                                                </td>
                                             </tr>
                                         </table>
                                         <br>

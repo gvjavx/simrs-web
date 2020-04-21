@@ -214,7 +214,7 @@ public class VerifikatorBoImpl implements VerifikatorBo {
         List<RawatInap> result = new ArrayList<>();
         if(bean != null){
             try {
-                result = rawatInapDao.getSearchVerifikasiRawatInap(bean);
+                result = rawatInapDao.getSearchVerifikasiRawatInap(bean, "");
             }catch (HibernateException e){
 
                 logger.error("[VerifikatorBoImpl.getListVerifikasiRawatInap] Error when save update data flag approve tindakan rawat ", e);

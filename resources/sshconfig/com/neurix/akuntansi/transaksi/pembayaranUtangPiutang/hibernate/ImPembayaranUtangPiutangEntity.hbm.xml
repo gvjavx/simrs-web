@@ -26,7 +26,7 @@
             <column name="bayar" sql-type="numeric" not-null="false" />
         </property>
         <property name="keterangan">
-            <column name="keterangan" sql-type="varchar" length="100" not-null="false" />
+            <column name="keterangan" sql-type="varchar" length="300" not-null="false" />
         </property>
         <property name="noSlipBank">
             <column name="no_slip_bank" sql-type="varchar" length="20" not-null="false" />

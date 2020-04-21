@@ -15,6 +15,15 @@ public class ImJenisPeriksaPasienEntity implements Serializable{
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String masterId;
+
+    public String getMasterId() {
+        return masterId;
+    }
+
+    public void setMasterId(String masterId) {
+        this.masterId = masterId;
+    }
 
     public String getIdJenisPeriksaPasien() {
         return idJenisPeriksaPasien;

@@ -206,7 +206,7 @@
                 ReportDetailAction.deleteReportDetail(reportId,tipeLaporan,function (listData) {});
                 $.each(data, function (i, item) {
                     var rekId = data[i]["Rekening Id"];
-                    if ($('#check_' + i).prop("checked") == true) {
+                    if ($('#check_' + data[i]["Rekening Id"]).prop("checked") == true) {
                         ReportDetailAction.addReportDetail(reportId,rekId,tipeLaporan,function (listData) {
                         })
                     }
@@ -309,9 +309,9 @@
                     if (!data2[i].bisaCek){
                         cekbox='<td align="center" class="ceknull"></td>';
                     }else if (data2[i].adaCetak) {
-                        cekbox='<td align="center" class="ceknull">' + '<input type="checkbox" checked id="check_'+i+'">' + '</td>';
+                        cekbox='<td align="center" class="ceknull">' + '<input type="checkbox" value="'+data2[i]._id+'" checked id="check_'+data2[i]._id+'">' + '</td>';
                     }else{
-                        cekbox='<td align="center" class="ceknull">' + '<input type="checkbox" id="check_'+i+'">' + '</td>';
+                        cekbox='<td align="center" class="ceknull">' + '<input type="checkbox" id="check_'+data2[i]._id+'">' + '</td>';
                     }
 
                     if(data2[i].parent == "-"){

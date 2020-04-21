@@ -549,6 +549,54 @@
                         </div>
                     </div>
 
+                    <div id="status_asuransi" style="display: none">
+                        <div class="box-header with-border">
+                        </div>
+                        <div class="box-header with-border">
+                            <h3 class="box-title"><i class="fa fa-line-chart"></i> Status Biaya Tindakan</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-offset-2 col-md-8">
+                                    <h5>
+                                        Cover Biaya Asuransi
+                                        <small class="pull-right" style="margin-top: 7px">Rp. <span id="b_asuransi"></span>
+                                        </small>
+                                    </h5>
+                                    <div class="progress">
+                                        <div id="sts_cover_biaya_asuransi">
+                                        </div>
+                                    </div>
+                                    <h5>
+                                        Total Biaya Tindakan
+                                        <small class="pull-right" style="margin-top: 7px">Rp. <span
+                                                id="b_tindakan_asuransi"></span></small>
+                                    </h5>
+                                    <div class="progress">
+                                        <div id="sts_biaya_tindakan_asuransi">
+                                        </div>
+                                    </div>
+                                    <ul style="list-style-type: none">
+                                        <li><i class="fa fa-square" style="color: #337ab7"></i> Total biaya cover Asuransi
+                                        </li>
+                                        <li><i class="fa fa-square" style="color: #5cb85c"></i> Total biaya tindakan <
+                                            50% dari cover biaya Asuransi
+                                        </li>
+                                        <li><i class="fa fa-square" style="color: #f0ad4e"></i> Total biaya tindakan >
+                                            50% dan < 70% dari cover biaya Asuransi
+                                        </li>
+                                        <li><i class="fa fa-square" style="color: #d9534f"></i> Total biaya tindakan >
+                                            70% dari cover biaya Asuransi
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-2">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="box-header with-border" id="pos_tin">
                     </div>
                     <div class="box-header with-border">
@@ -3315,6 +3363,7 @@
         listResepPasien();
         listSelectTindakanKategori();
         hitungStatusBiaya();
+        hitungCoverBiaya();
         getJenisResep();
 
         $('#img_ktp').on('click', function(e){
@@ -3396,7 +3445,7 @@
         strSelect = "";
         var arBodyJenisResep = [];
         if(jenisPeriksaPasien == "ptpn"){
-            arBodyJenisResep.push({"nilai":"ptptn", "label":"PTPN"},{"nilai": "umum", "label":"UMUM"});
+            arBodyJenisResep.push({"nilai":"bpjs", "label":"BPJS"},{"nilai": "ptpn", "label":"PTPN"});
         } else if (jenisPeriksaPasien == "asuransi"){
             arBodyJenisResep.push({"nilai":"asuransi", "label":"ASURANSI"},{"nilai": "umum", "label":"UMUM"});
         } else if (jenisPeriksaPasien == "bpjs") {
@@ -3457,7 +3506,7 @@
     }
 
     function hitungCoverBiaya() {
-        var jenis = $('#jenis_pasien').val();
+        var jenis = $('#id_jenis_pasien').val();
         console.log("hitungCoverBiaya.jenis -> "+jenis);
         if("asuransi" == jenis){
             CheckupDetailAction.getBiayaAsuransi(idDetailCheckup, function (response) {
@@ -3512,7 +3561,7 @@
     function hitungStatusBiaya() {
         var jenis = $("#id_jenis_pasien").val();
         CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, "RI", function (response) {
-            if (jenis == "bpjs") {
+            if (jenis == "bpjs" || jenis == "ptpn") {
                 $('#status_bpjs').show();
                 if (response.tarifBpjs != null && response.tarifTindakan != null) {
 
@@ -3644,8 +3693,10 @@
         $('#save_ket').hide();
         $('#load_ket').show();
         $('#waiting_dialog').dialog('open');
+
+        var metodBayar = '<s:property value="rawatInap.metodePembayaran"/>';
         dwr.engine.setAsync(true);
-        CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, jenisPasien, cara, pendamping, tujuan, function (response) {
+        CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, jenisPasien, cara, pendamping, tujuan, "", metodBayar, function (response) {
             if(response.status == "success"){
                 $('#waiting_dialog').dialog('close');
                 $('#info_dialog').dialog('open');

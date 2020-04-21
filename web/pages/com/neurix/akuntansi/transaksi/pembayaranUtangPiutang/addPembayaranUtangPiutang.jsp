@@ -11,6 +11,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/KodeRekeningAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PembayaranUtangPiutangAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/MasterAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/KasirRawatJalanAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/pages/dist/js/akuntansi.js"/>'></script>
     <script type='text/javascript'>
         function confirm() {
@@ -73,8 +74,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Tambah Pembayaran Hutang Piutang
-            <small>e-HEALTH</small>
+            Pembayaran Hutang Piutang
         </h1>
     </section>
 
@@ -85,7 +85,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-user-plus"></i> Inputan Pembayaran Hutang Piutang</h3>
+                        <h3 class="box-title"><i class="fa fa-user-plus"></i> Input Pembayaran Hutang Piutang</h3>
                     </div>
                     <s:form id="addPembayaranUtangPiutangForm" enctype="multipart/form-data" method="post" namespace="/pembayaranUtangPiutang"
                             action="saveAdd_pembayaranUtangPiutang.action" theme="simple">
@@ -103,7 +103,7 @@
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Unit</label>
                                             <div class="col-md-8">
-                                                <s:if test='#pembayaranUtangPiutang.branchId == "KP"'>
+                                                <s:if test='pembayaranUtangPiutang.branchId == "KP"'>
                                                     <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
                                                     <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="branch_id"  onchange="isiKeteterangan()" name="pembayaranUtangPiutang.branchId" required="true"
                                                               listKey="branchId" listValue="branchName" headerKey="" headerValue="" />
@@ -113,8 +113,7 @@
                                                     <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="branch_id_view" name="pembayaranUtangPiutang.branchId" required="true" disabled="true"
                                                               listKey="branchId" listValue="branchName" headerKey="" headerValue="" />
 
-                                                    <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="branch_id" name="pembayaranUtangPiutang.branchId" required="true" cssStyle="display: none"
-                                                              listKey="branchId" listValue="branchName" headerKey="" headerValue="" />
+                                                    <s:hidden name="pembayaranUtangPiutang.branchId" id="branch_id" />
                                                 </s:else>
                                             </div>
                                         </div>
@@ -179,7 +178,6 @@
                                         </div>
                                             <script>
                                                 function pilihMetode(val){
-                                                    console.log(val);
                                                     if(val != ''){
                                                         if(val == 'transfer'){
                                                             $('#pilih_bank').show();
@@ -426,7 +424,22 @@
 </div>
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
+    function selectPembayaran(){
+        var option = '<option value=""></option>';
+        KasirRawatJalanAction.getListPembayaran(function (res) {
+            if(res.length > 0){
+                $.each(res, function (i, item) {
+                    option += '<option value="'+item.coa+'">'+item.pembayaranName+'</option>';
+                });
+                $('#bank').html(option);
+            }else{
+                $('#bank').html(option);
+            }
+        });
+    }
+
     $(document).ready(function () {
+        selectPembayaran();
         $('#btnSearchNota').click(function () {
             var masterId = $('#kode_vendor').val();
             var transaksiId = $('#tipe_transaksi').val();
@@ -658,11 +671,11 @@
         if (metodeBayar!=""){
             metodeBayar = "dengan metode bayar "+metodeBayar;
             if (bank!=""){
-                bank="pada bank "+bank;
+                bank="pada "+bank;
             }
         }
         if (noSlipBank!=""){
-            noSlipBank="dengan no slip bank "+noSlipBank;
+            noSlipBank="dengan no referensi bank "+noSlipBank;
         }
 
         keterangan= tipeTransaksi +" "+branchName+" "+metodeBayar+" "+bank+" "+noSlipBank;
@@ -692,3 +705,4 @@
 
 </body>
 </html>
+

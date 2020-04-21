@@ -32,6 +32,9 @@
         <property name="lastUpdateWho">
             <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
         </property>
+        <property name="masterId">
+            <column name="master_id" sql-type="varchar" length="100" not-null="false"/>
+        </property>
 
 
     </class>
