@@ -688,7 +688,7 @@
                             mapBiaya.push({"type": "kas", "nilai": tindakanUmum + totalObatUmum });
                             mapBiaya.push({"type": "piutang_pasien_asuransi", "nilai": tindakanAsuransi + totalObat });
                             mapBiaya.push({"type": "pendapatan_rawat_inap_asuransi", "nilai":tindakanAsuransi});
-                            mapBiaya.push({"type": "pendapaatan_rawat_inap_umum", "nilai": tindakanUmum });
+                            mapBiaya.push({"type": "pendapatan_rawat_inap_umum", "nilai": tindakanUmum });
                             mapBiaya.push({"type": "pendapatan_obat_asuransi", "nilai": totalObat});
                             mapBiaya.push({"type": "pendapatan_obat_umum", "nilai": totalObatUmum});
 

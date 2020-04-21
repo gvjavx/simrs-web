@@ -1096,12 +1096,12 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 }
 
                 // pendapatan rawat terhadap transitoris
-                pendapatanRawat = pendapatanRawat.add(tindakanTransAsuransi);
-                pendapatanRawatUmum = pendapatanResepUmum.add(tindakanTransUmum);
+                pendapatanRawat = pendapatanRawat.subtract(tindakanTransAsuransi);
+                pendapatanRawatUmum = pendapatanRawatUmum.subtract(tindakanTransUmum);
 
                 // pendapatan resep terhadap transitoris
-                pendapatanResep = pendapatanResep.add(resepTransAsuransi);
-                pendapatanResepUmum = pendapatanResepUmum.add(resepTransUmum);
+                pendapatanResep = pendapatanResep.subtract(resepTransAsuransi);
+                pendapatanResepUmum = pendapatanResepUmum.subtract(resepTransUmum);
 
                 Map mapPendapatanAsuransi = new HashMap();
                 mapPendapatanAsuransi.put("master_id", masterId);
@@ -1136,7 +1136,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                     mapResepUmum.put("activity", listActivityResepUmum);
 
                     mapJurnal.put("pendapatan_rawat_inap_asuransi", mapPendapatanAsuransi);
-                    mapJurnal.put("pendapaatan_rawat_inap_umum", mapPendapatanUmum);
+                    mapJurnal.put("pendapaatan_rawat_jalan_umum", mapPendapatanUmum);
                     mapJurnal.put("pendapatan_obat_asuransi", mapResepAsuransi);
                     mapJurnal.put("pendapaatan_obat_umum", mapResepUmum);
 
