@@ -344,15 +344,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "        from \n" +
                 "          (\n" +
                 "            select \n" +
-                "              concat(\n" +
-                "                split_part(kr.kode_rekening, '.', 1), \n" +
-                "                '.', \n" +
-                "                split_part(kr.kode_rekening, '.', 2), \n" +
-                "                '.', \n" +
-                "                split_part(kr.kode_rekening, '.', 3), \n" +
-                "                '.', \n" +
-                "                split_part(kr.kode_rekening, '.', 4)\n" +
-                "              ) AS kode_rekening, \n" +
+                "              kr.kode_rekening AS kode_rekening, \n" +
                 "              sum(y.jumlah_debit * x.kurs) as jumlah_debit, \n" +
                 "              sum(y.jumlah_kredit * x.kurs) as jumlah_kredit \n" +
                 "            from \n" +
@@ -363,15 +355,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "              to_char(x.created_date, 'MM-yyyy') = '"+periode+"' \n" +
                 "              and x.branch_id = '"+branchId1+"' \n" +
                 "            group by \n" +
-                "              concat(\n" +
-                "                split_part(kr.kode_rekening, '.', 1), \n" +
-                "                '.', \n" +
-                "                split_part(kr.kode_rekening, '.', 2), \n" +
-                "                '.', \n" +
-                "                split_part(kr.kode_rekening, '.', 3), \n" +
-                "                '.', \n" +
-                "                split_part(kr.kode_rekening, '.', 4)\n" +
-                "              )\n" +
+                "              kr.kode_rekening\n" +
                 "          ) jurnal \n" +
                 "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
                 "      ) junit1 ON junit1.rekening_id = a.rekening_id -- UNIT 2\n" +
@@ -382,15 +366,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "        from \n" +
                 "          (\n" +
                 "            select \n" +
-                "              concat(\n" +
-                "                split_part(kr.kode_rekening, '.', 1), \n" +
-                "                '.', \n" +
-                "                split_part(kr.kode_rekening, '.', 2), \n" +
-                "                '.', \n" +
-                "                split_part(kr.kode_rekening, '.', 3), \n" +
-                "                '.', \n" +
-                "                split_part(kr.kode_rekening, '.', 4)\n" +
-                "              ) AS kode_rekening, \n" +
+                "              kr.kode_rekening AS kode_rekening, \n" +
                 "              sum(y.jumlah_debit * x.kurs) as jumlah_debit, \n" +
                 "              sum(y.jumlah_kredit * x.kurs) as jumlah_kredit \n" +
                 "            from \n" +
@@ -401,15 +377,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "              to_char(x.created_date, 'MM-yyyy') = '"+periode+"' \n" +
                 "              and x.branch_id = '"+branchId2+"' \n" +
                 "            group by \n" +
-                "              concat(\n" +
-                "                split_part(kr.kode_rekening, '.', 1), \n" +
-                "                '.', \n" +
-                "                split_part(kr.kode_rekening, '.', 2), \n" +
-                "                '.', \n" +
-                "                split_part(kr.kode_rekening, '.', 3), \n" +
-                "                '.', \n" +
-                "                split_part(kr.kode_rekening, '.', 4)\n" +
-                "              )\n" +
+                "              kr.kode_rekening\n" +
                 "          ) jurnal \n" +
                 "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
                 "      ) junit2 ON junit2.rekening_id = a.rekening_id -- UNIT 3\n" +
@@ -420,15 +388,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "        from \n" +
                 "          (\n" +
                 "            select \n" +
-                "              concat(\n" +
-                "                split_part(kr.kode_rekening, '.', 1), \n" +
-                "                '.', \n" +
-                "                split_part(kr.kode_rekening, '.', 2), \n" +
-                "                '.', \n" +
-                "                split_part(kr.kode_rekening, '.', 3), \n" +
-                "                '.', \n" +
-                "                split_part(kr.kode_rekening, '.', 4)\n" +
-                "              ) AS kode_rekening, \n" +
+                "              kr.kode_rekening AS kode_rekening, \n" +
                 "              sum(y.jumlah_debit * x.kurs) as jumlah_debit, \n" +
                 "              sum(y.jumlah_kredit * x.kurs) as jumlah_kredit \n" +
                 "            from \n" +
@@ -439,15 +399,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "              to_char(x.created_date, 'MM-yyyy') = '"+periode+"' \n" +
                 "              and x.branch_id = '"+branchId3+"' \n" +
                 "            group by \n" +
-                "              concat(\n" +
-                "                split_part(kr.kode_rekening, '.', 1), \n" +
-                "                '.', \n" +
-                "                split_part(kr.kode_rekening, '.', 2), \n" +
-                "                '.', \n" +
-                "                split_part(kr.kode_rekening, '.', 3), \n" +
-                "                '.', \n" +
-                "                split_part(kr.kode_rekening, '.', 4)\n" +
-                "              )\n" +
+                "              kr.kode_rekening\n" +
                 "          ) jurnal \n" +
                 "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
                 "      ) junit3 ON junit3.rekening_id = a.rekening_id -- UNIT 4\n" +
@@ -458,15 +410,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "        from \n" +
                 "          (\n" +
                 "            select \n" +
-                "              concat(\n" +
-                "                split_part(kr.kode_rekening, '.', 1), \n" +
-                "                '.', \n" +
-                "                split_part(kr.kode_rekening, '.', 2), \n" +
-                "                '.', \n" +
-                "                split_part(kr.kode_rekening, '.', 3), \n" +
-                "                '.', \n" +
-                "                split_part(kr.kode_rekening, '.', 4)\n" +
-                "              ) AS kode_rekening, \n" +
+                "              kr.kode_rekening AS kode_rekening, \n" +
                 "              sum(y.jumlah_debit * x.kurs) as jumlah_debit, \n" +
                 "              sum(y.jumlah_kredit * x.kurs) as jumlah_kredit \n" +
                 "            from \n" +
@@ -477,15 +421,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "              to_char(x.created_date, 'MM-yyyy') = '"+periode+"' \n" +
                 "              and x.branch_id = '"+branchId4+"' \n" +
                 "            group by \n" +
-                "              concat(\n" +
-                "                split_part(kr.kode_rekening, '.', 1), \n" +
-                "                '.', \n" +
-                "                split_part(kr.kode_rekening, '.', 2), \n" +
-                "                '.', \n" +
-                "                split_part(kr.kode_rekening, '.', 3), \n" +
-                "                '.', \n" +
-                "                split_part(kr.kode_rekening, '.', 4)\n" +
-                "              )\n" +
+                "              kr.kode_rekening\n" +
                 "          ) jurnal \n" +
                 "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
                 "      ) junit4 ON junit4.rekening_id = a.rekening_id -- Total\n" +
@@ -496,15 +432,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "        from \n" +
                 "          (\n" +
                 "            select \n" +
-                "              concat(\n" +
-                "                split_part(kr.kode_rekening, '.', 1), \n" +
-                "                '.', \n" +
-                "                split_part(kr.kode_rekening, '.', 2), \n" +
-                "                '.', \n" +
-                "                split_part(kr.kode_rekening, '.', 3), \n" +
-                "                '.', \n" +
-                "                split_part(kr.kode_rekening, '.', 4)\n" +
-                "              ) AS kode_rekening, \n" +
+                "              kr.kode_rekening AS kode_rekening, \n" +
                 "              sum(y.jumlah_debit * x.kurs) as jumlah_debit, \n" +
                 "              sum(y.jumlah_kredit * x.kurs) as jumlah_kredit \n" +
                 "            from \n" +
@@ -517,15 +445,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "                "+branchIdAll+"\n" +
                 "              ) \n" +
                 "            group by \n" +
-                "              concat(\n" +
-                "                split_part(kr.kode_rekening, '.', 1), \n" +
-                "                '.', \n" +
-                "                split_part(kr.kode_rekening, '.', 2), \n" +
-                "                '.', \n" +
-                "                split_part(kr.kode_rekening, '.', 3), \n" +
-                "                '.', \n" +
-                "                split_part(kr.kode_rekening, '.', 4)\n" +
-                "              )\n" +
+                "              kr.kode_rekening\n" +
                 "          ) jurnal \n" +
                 "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
                 "      ) junitall ON junitall.rekening_id = a.rekening_id \n" +
@@ -533,7 +453,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "      a.kode_rekening\n" +
                 "  ) a \n" +
                 "ORDER BY \n" +
-                "  a.koderekening\n";
+                "  a.koderekening\n\n";
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
                 .list();
@@ -621,15 +541,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "        from \n" +
                 "          (\n" +
                 "            select \n" +
-                "              concat(\n" +
-                "                    split_part(kr.kode_rekening, '.', 1),\n" +
-                "                    '.',\n" +
-                "                    split_part(kr.kode_rekening, '.', 2),\n" +
-                "                    '.',\n" +
-                "                    split_part(kr.kode_rekening, '.', 3),\n" +
-                "                    '.',\n" +
-                "                    split_part(kr.kode_rekening, '.', 4)\n" +
-                "                  ) AS kode_rekening,\n" +
+                "              kr.kode_rekening AS kode_rekening,\n" +
                 "              sum(y.jumlah_debit * x.kurs) as jumlah_debit, \n" +
                 "              sum(y.jumlah_kredit * x.kurs) as jumlah_kredit \n" +
                 "            from \n" +
@@ -640,15 +552,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "              to_char(x.created_date, 'MM-yyyy') = '"+periode+"' \n" +
                 "              and x.branch_id = '"+branchId1+"' \n" +
                 "            group by \n" +
-                "              concat(\n" +
-                "                    split_part(kr.kode_rekening, '.', 1),\n" +
-                "                    '.',\n" +
-                "                    split_part(kr.kode_rekening, '.', 2),\n" +
-                "                    '.',\n" +
-                "                    split_part(kr.kode_rekening, '.', 3),\n" +
-                "                    '.',\n" +
-                "                    split_part(kr.kode_rekening, '.', 4)\n" +
-                "                  )\n" +
+                "              kr.kode_rekening\n" +
                 "          ) jurnal \n" +
                 "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
                 "      ) junit1 ON junit1.rekening_id = a.rekening_id \n" +
