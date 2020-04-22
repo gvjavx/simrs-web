@@ -1,6 +1,7 @@
 package com.neurix.akuntansi.transaksi.laporanAkuntansi.action;
 
 //import com.neurix.authorization.company.bo.AreaBo;
+import com.neurix.akuntansi.master.settingReportKeuanganKonsol.model.AkunSettingReportKeuanganKonsol;
 import com.neurix.akuntansi.master.settingReportUser.bo.SettingReportUserBo;
 import com.neurix.akuntansi.master.settingReportUser.model.SettingReportUser;
 import com.neurix.akuntansi.master.tipeJurnal.bo.TipeJurnalBo;
@@ -48,6 +49,19 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
     private String tipeLaporan;
     private JRBeanCollectionDataSource dataPrint;
     List<Aging> myList = new ArrayList<>() ;
+    List<AkunSettingReportKeuanganKonsol> listKonsol= new ArrayList<>() ;
+
+    public BranchBo getBranchBoProxy() {
+        return branchBoProxy;
+    }
+
+    public List<AkunSettingReportKeuanganKonsol> getListKonsol() {
+        return listKonsol;
+    }
+
+    public void setListKonsol(List<AkunSettingReportKeuanganKonsol> listKonsol) {
+        this.listKonsol = listKonsol;
+    }
 
     public void setBranchBoProxy(BranchBo branchBoProxy) {
         this.branchBoProxy = branchBoProxy;
@@ -1695,6 +1709,10 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         String titleReport="";
         String reportId="RPT24";
         String result="";
+        String periode= data.getBulan()+"-"+data.getTahun();
+        String periodeTitle = CommonUtil.convertNumberToStringBulan(data.getBulan())+" "+data.getTahun();
+        List<String> branchId = new ArrayList<>();
+
         if (("K").equalsIgnoreCase(data.getTipeLaporan())){
             data.setUnit("KP");
             titleReport="LAPORAN KEUANGAN KOMPILASI";
@@ -1702,34 +1720,34 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
 
             //mencari semua branch dahulu
             List<Branch> branchList = branchBo.getBranchList();
-            int i =1;
+            int i =0;
             String unit="";
             for (Branch dataUnit : branchList){
-                reportParams.put("branch_id_"+i, dataUnit.getBranchId());
-                reportParams.put("branch_name_"+i, dataUnit.getBranchName());
-
-                if (i==1){
+                branchId.add(dataUnit.getBranchId());
+                reportParams.put("branch_name_"+(i+1), dataUnit.getBranchName());
+                if (i==0){
                     unit="'"+dataUnit.getBranchId()+"'";
                 }else{
                     unit=unit+",'"+dataUnit.getBranchId()+"'";
                 }
                 i++;
             }
-            reportParams.put("branch_id_all", unit);
+            branchId.add(unit);
         }else{
             titleReport="LAPORAN POSISI KEUANGAN";
             result="print_report_kompilasi";
         }
 
+        listKonsol = laporanAkuntansiBo.getLaporanAkuntansiKonsol(periode,branchId.get(0),branchId.get(1),branchId.get(2),branchId.get(3),branchId.get(4));
         Branch branch = branchBo.getBranchById(data.getUnit(),"Y");
         Date now = new Date();
         reportParams.put("reportTitle", titleReport);
         reportParams.put("reportId", reportId);
         reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
         reportParams.put("branchId", data.getUnit());
-        reportParams.put("periodeTitle", CommonUtil.convertNumberToStringBulan(data.getBulan())+" "+data.getTahun());
+        reportParams.put("periodeTitle",periodeTitle);
         reportParams.put("tanggal", CommonUtil.convertDateToString(now));
-        reportParams.put("periode", data.getBulan()+"-"+data.getTahun());
+        reportParams.put("periode", periode);
         reportParams.put("kota",branch.getBranchName());
         reportParams.put("alamatSurat",branch.getAlamatSurat());
         reportParams.put("areaId",CommonUtil.userAreaName());

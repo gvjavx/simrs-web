@@ -213,5 +213,6 @@
     <import resource="sshconfig/com/neurix/akuntansi/master/settingReportUser/spring/SettingReportUserBean.xml"/>
     <import resource="sshconfig/com/neurix/akuntansi/transaksi/tutupperiod/spring/TutupPeriodBean.xml"/>
     <import resource="sshconfig/com/neurix/akuntansi/master/pembayaran/spring/PembayaranBean.xml"/>
+    <import resource="sshconfig/com/neurix/akuntansi/master/reportKeuanganKonsol/spring/ReportKeuanganKonsolBean.xml"/>
 
 </beans>
