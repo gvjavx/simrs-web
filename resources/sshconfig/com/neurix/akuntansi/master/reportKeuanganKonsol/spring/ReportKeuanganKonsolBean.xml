@@ -4,23 +4,16 @@
        xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+    
+    <bean id="reportKeuanganKonsolAction" class="com.neurix.akuntansi.master.settingReportKeuanganKonsol.action.SettingReportKeuanganKonsolAction"
+          p:akunSettingReportKeuanganKonsolBoProxy-ref="akunSettingReportKeuanganKonsolBoProxy"/>
 
-    <bean id="laporanAkuntansiAction" class="com.neurix.akuntansi.transaksi.laporanAkuntansi.action.LaporanAkuntansiAction"
-          p:laporanAkuntansiBoProxy-ref="laporanAkuntansiBoProxy"
-          p:settingReportUserBoProxy-ref="settingReportUserBoProxy"
-          p:branchBoProxy-ref="branchBoProxy"
-    />
-
-    <bean id="laporanAkuntansiBo" class="com.neurix.akuntansi.transaksi.laporanAkuntansi.bo.impl.LaporanAkuntansiBoImpl"
-          p:laporanAkuntansiDao-ref="laporanAkuntansiDao"
-          p:personilPositionDao-ref="personilPositionDao"
-          p:biodataDao-ref="biodataDao"
-          p:kodeRekeningDao-ref="kodeRekeningDao"
+    <bean id="akunSettingReportKeuanganKonsolBo" class="com.neurix.akuntansi.master.settingReportKeuanganKonsol.bo.impl.AkunSettingReportKeuanganKonsolBoImpl"
           p:settingReportKeuanganKonsolDao-ref="settingReportKeuanganKonsolDao"
     />
 
-    <bean id="laporanAkuntansiBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
-          p:target-ref="laporanAkuntansiBo">
+    <bean id="akunSettingReportKeuanganKonsolBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="akunSettingReportKeuanganKonsolBo">
         <property name="interceptorNames">
             <list>
                 <value>transactionUserInterceptor</value>
@@ -35,12 +28,11 @@
         <property name="transactionAttributes">
             <props>
                 <prop key="getByCriteria">readOnly</prop>
-                <prop key="saveAdd">PROPAGATION_REQUIRED</prop>
             </props>
         </property>
     </bean>
 
-    <bean id="laporanAkuntansiDao" class="com.neurix.akuntansi.transaksi.laporanAkuntansi.dao.LaporanAkuntansiDao"
+    <bean id="settingReportKeuanganKonsolDao" class="com.neurix.akuntansi.master.settingReportKeuanganKonsol.dao.SettingReportKeuanganKonsolDao"
           p:sessionFactory-ref="sessionFactory" />
 
 </beans>

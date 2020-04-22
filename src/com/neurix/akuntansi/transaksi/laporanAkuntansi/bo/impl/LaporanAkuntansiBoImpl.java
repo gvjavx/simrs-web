@@ -1,23 +1,22 @@
 package com.neurix.akuntansi.transaksi.laporanAkuntansi.bo.impl;
 
 import com.neurix.akuntansi.master.kodeRekening.dao.KodeRekeningDao;
+import com.neurix.akuntansi.master.settingReportKeuanganKonsol.dao.SettingReportKeuanganKonsolDao;
+import com.neurix.akuntansi.master.settingReportKeuanganKonsol.model.AkunSettingReportKeuanganKonsol;
+import com.neurix.akuntansi.master.settingReportKeuanganKonsol.model.AkunSettingReportKeuanganKonsolDetail;
+import com.neurix.akuntansi.master.settingReportKeuanganKonsol.model.ImAkunSettingReportKeuanganKonsol;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.bo.LaporanAkuntansiBo;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.dao.LaporanAkuntansiDao;
-import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.Aging;
-import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.ItLaporanAkuntansiEntity;
-import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.LaporanAkuntansi;
-import com.neurix.authorization.position.dao.PositionDao;
+import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.*;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.hris.master.biodata.dao.BiodataDao;
 import com.neurix.hris.master.biodata.model.ImBiodataEntity;
-import com.neurix.hris.master.strukturJabatan.dao.StrukturJabatanDao;
-import com.neurix.hris.transaksi.laporan.model.Laporan;
-import com.neurix.hris.transaksi.personilPosition.dao.HistoryJabatanPegawaiDao;
 import com.neurix.hris.transaksi.personilPosition.dao.PersonilPositionDao;
 import com.neurix.hris.transaksi.personilPosition.model.ItPersonilPositionEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +30,15 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
     private PersonilPositionDao personilPositionDao;
     private BiodataDao biodataDao;
     private KodeRekeningDao kodeRekeningDao;
+    private SettingReportKeuanganKonsolDao settingReportKeuanganKonsolDao;
+
+    public SettingReportKeuanganKonsolDao getSettingReportKeuanganKonsolDao() {
+        return settingReportKeuanganKonsolDao;
+    }
+
+    public void setSettingReportKeuanganKonsolDao(SettingReportKeuanganKonsolDao settingReportKeuanganKonsolDao) {
+        this.settingReportKeuanganKonsolDao = settingReportKeuanganKonsolDao;
+    }
 
     public KodeRekeningDao getKodeRekeningDao() {
         return kodeRekeningDao;
@@ -303,6 +311,112 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
         }
         return agingList;
+    }
+
+    @Override
+    public List<AkunSettingReportKeuanganKonsol> getLaporanAkuntansiKonsol(String periode, String branchId1, String branchId2, String branchId3, String branchId4, String branchIdAll){
+        List<AkunSettingReportKeuanganKonsol> result = new ArrayList<>();
+        List<ImAkunSettingReportKeuanganKonsol> konsolList = new ArrayList<>();
+        List<AkunSettingReportKeuanganKonsolDetail> keuanganKonsolDetailList = new ArrayList<>();
+
+        try {
+            konsolList = settingReportKeuanganKonsolDao.listReportKeuanganKonsol();
+            keuanganKonsolDetailList = laporanAkuntansiDao.getAllDataLaporanAkuntansiKonsol(periode,branchId1,branchId2,branchId3,branchId4,branchIdAll);
+        } catch (HibernateException e) {
+            logger.error("[LaporanAkuntansiBoImpl.getLaporanAkuntansiKonsol] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem , please info to your admin..." + e.getMessage());
+        }
+
+        for (ImAkunSettingReportKeuanganKonsol konsol : konsolList){
+            String[] coaSplit = konsol.getKodeRekeningAlias().split("\\.");
+            if (coaSplit.length==3){
+                AkunSettingReportKeuanganKonsol data = new AkunSettingReportKeuanganKonsol();
+
+                data.setLevel1(settingReportKeuanganKonsolDao.getCoaAliasNameByCoaAlias(coaSplit[0]));
+                data.setLevel2(settingReportKeuanganKonsolDao.getCoaAliasNameByCoaAlias(coaSplit[0]+"."+coaSplit[1]));
+
+                BigDecimal totalUnit1= BigDecimal.ZERO;
+                BigDecimal totalUnit2= BigDecimal.ZERO;
+                BigDecimal totalUnit3= BigDecimal.ZERO;
+                BigDecimal totalUnit4= BigDecimal.ZERO;
+                BigDecimal totalUnitAll= BigDecimal.ZERO;
+                for (AkunSettingReportKeuanganKonsolDetail konsolDetail : keuanganKonsolDetailList){
+                    if (konsolDetail.getSettingReportKonsolId().equalsIgnoreCase(konsol.getSettingReportKonsolId())){
+                        if ("T".equalsIgnoreCase(konsolDetail.getOperator())){
+                            totalUnit1 = totalUnit1.add(konsolDetail.getSaldoUnit1());
+                            totalUnit2 = totalUnit2.add(konsolDetail.getSaldoUnit2());
+                            totalUnit3 = totalUnit3.add(konsolDetail.getSaldoUnit3());
+                            totalUnit4 = totalUnit4.add(konsolDetail.getSaldoUnit4());
+                            totalUnitAll = totalUnitAll.add(konsolDetail.getSaldoUnitAll());
+                        }else if ("K".equalsIgnoreCase(konsolDetail.getOperator())){
+                            totalUnit1 = totalUnit1.subtract(konsolDetail.getSaldoUnit1());
+                            totalUnit2 = totalUnit2.subtract(konsolDetail.getSaldoUnit2());
+                            totalUnit3 = totalUnit3.subtract(konsolDetail.getSaldoUnit3());
+                            totalUnit4 = totalUnit4.subtract(konsolDetail.getSaldoUnit4());
+                            totalUnitAll = totalUnitAll.subtract(konsolDetail.getSaldoUnitAll());
+                        }
+                    }
+                }
+
+                data.setSettingReportKonsolId(konsol.getSettingReportKonsolId());
+                data.setKodeRekeningAlias(konsol.getKodeRekeningAlias());
+                data.setNamaKodeRekeningAlias(konsol.getNamaKodeRekeningAlias());
+                data.setFlagLabel(konsol.getFlagLabel());
+                data.setSaldoUnit1(totalUnit1);
+                data.setSaldoUnit2(totalUnit2);
+                data.setSaldoUnit3(totalUnit3);
+                data.setSaldoUnit4(totalUnit4);
+                data.setSaldoUnitAll(totalUnitAll);
+
+                result.add(data);
+            }
+        }
+
+        return result;
+    }
+    @Override
+    public List<AkunSettingReportKeuanganKonsol> getLaporanAkuntansiKonsolUnit(String periode, String branchId1){
+        List<AkunSettingReportKeuanganKonsol> result = new ArrayList<>();
+        List<ImAkunSettingReportKeuanganKonsol> konsolList = new ArrayList<>();
+        List<AkunSettingReportKeuanganKonsolDetail> keuanganKonsolDetailList = new ArrayList<>();
+
+        try {
+            konsolList = settingReportKeuanganKonsolDao.listReportKeuanganKonsol();
+            keuanganKonsolDetailList = laporanAkuntansiDao.getDataLaporanAkuntansiKonsolUnit(periode,branchId1);
+        } catch (HibernateException e) {
+            logger.error("[LaporanAkuntansiBoImpl.getLaporanAkuntansiKonsol] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem , please info to your admin..." + e.getMessage());
+        }
+
+        for (ImAkunSettingReportKeuanganKonsol konsol : konsolList){
+            String[] coaSplit = konsol.getKodeRekeningAlias().split("\\.");
+            if (coaSplit.length==3){
+                AkunSettingReportKeuanganKonsol data = new AkunSettingReportKeuanganKonsol();
+
+                data.setLevel1(settingReportKeuanganKonsolDao.getCoaAliasNameByCoaAlias(coaSplit[0]));
+                data.setLevel2(settingReportKeuanganKonsolDao.getCoaAliasNameByCoaAlias(coaSplit[0]+"."+coaSplit[1]));
+
+                BigDecimal totalUnit1= BigDecimal.ZERO;
+                for (AkunSettingReportKeuanganKonsolDetail konsolDetail : keuanganKonsolDetailList){
+                    if (konsolDetail.getSettingReportKonsolId().equalsIgnoreCase(konsol.getSettingReportKonsolId())){
+                        if ("T".equalsIgnoreCase(konsolDetail.getOperator())){
+                            totalUnit1 = totalUnit1.add(konsolDetail.getSaldoUnit1());
+                        }else if ("K".equalsIgnoreCase(konsolDetail.getOperator())){
+                            totalUnit1 = totalUnit1.subtract(konsolDetail.getSaldoUnit1());
+                        }
+                    }
+                }
+
+                data.setSettingReportKonsolId(konsol.getSettingReportKonsolId());
+                data.setKodeRekeningAlias(konsol.getKodeRekeningAlias());
+                data.setNamaKodeRekeningAlias(konsol.getNamaKodeRekeningAlias());
+                data.setFlagLabel(konsol.getFlagLabel());
+                data.setSaldoUnit1(totalUnit1);
+
+                result.add(data);
+            }
+        }
+        return result;
     }
     @Override
     public LaporanAkuntansi getById(String reportId){

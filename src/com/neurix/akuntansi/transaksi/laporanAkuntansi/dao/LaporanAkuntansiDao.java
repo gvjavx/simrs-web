@@ -2,6 +2,7 @@
 package com.neurix.akuntansi.transaksi.laporanAkuntansi.dao;
 
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.Aging;
+import com.neurix.akuntansi.master.settingReportKeuanganKonsol.model.AkunSettingReportKeuanganKonsolDetail;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.ItLaporanAkuntansiEntity;
 import com.neurix.common.dao.GenericDao;
 import org.hibernate.Criteria;
@@ -282,5 +283,397 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
             }
         }
         return result;
+    }
+
+    public List<AkunSettingReportKeuanganKonsolDetail> getAllDataLaporanAkuntansiKonsol(String periode, String branchId1, String branchId2, String branchId3, String branchId4, String branchIdAll){
+        List<AkunSettingReportKeuanganKonsolDetail> listOfResult = new ArrayList<>();
+        List<Object[]> results = new ArrayList<Object[]>();
+        String query = "SELECT \n" +
+                "  a.namarekening, \n" +
+                "  a.koderekening, \n" +
+                "  a.konsolid, \n" +
+                "  a.operator, \n" +
+                "  a.jumlahdebitunit1 - a.jumlahkreditunit1 as saldounit1, \n" +
+                "  a.jumlahdebitunit2 - a.jumlahkreditunit2 as saldounit2, \n" +
+                "  a.jumlahdebitunit3 - a.jumlahkreditunit3 as saldounit3, \n" +
+                "  a.jumlahdebitunit4 - a.jumlahkreditunit4 as saldounit4, \n" +
+                "  a.jumlahdebitunitall - a.jumlahkreditunitall as saldounitall \n" +
+                "FROM \n" +
+                "  (\n" +
+                "    SELECT \n" +
+                "      distinct a.konsolid, \n" +
+                "      a.operator, \n" +
+                "      a.nama_kode_rekening as namaRekening, \n" +
+                "      a.kode_rekening as koderekening, \n" +
+                "      junit1.jumlah_debit as jumlahdebitunit1, \n" +
+                "      junit1.jumlah_kredit as jumlahkreditunit1, \n" +
+                "      junit2.jumlah_debit as jumlahdebitunit2, \n" +
+                "      junit2.jumlah_kredit as jumlahkreditunit2, \n" +
+                "      junit3.jumlah_debit as jumlahdebitunit3, \n" +
+                "      junit3.jumlah_kredit as jumlahkreditunit3, \n" +
+                "      junit4.jumlah_debit as jumlahdebitunit4, \n" +
+                "      junit4.jumlah_kredit as jumlahkreditunit4, \n" +
+                "      junitall.jumlah_debit as jumlahdebitunitall, \n" +
+                "      junitall.jumlah_kredit as jumlahkreditunitall \n" +
+                "    FROM \n" +
+                "      (\n" +
+                "        select \n" +
+                "          setting_report_konsol_id AS konsolid, \n" +
+                "          operator AS operator, \n" +
+                "          kode.kode_rekening, \n" +
+                "          kode.rekening_id, \n" +
+                "          kode.nama_kode_rekening \n" +
+                "        from \n" +
+                "          im_akun_kode_rekening kode \n" +
+                "          INNER JOIN im_akun_setting_report_keuangan_konsol_detail rd ON rd.rekening_id = kode.rekening_id \n" +
+                "        where \n" +
+                "          rd.flag = 'Y' \n" +
+                "        group by \n" +
+                "          setting_report_konsol_id, \n" +
+                "          operator, \n" +
+                "          kode_rekening, \n" +
+                "          kode.nama_kode_rekening, \n" +
+                "          kode.rekening_id \n" +
+                "        order by \n" +
+                "          kode_rekening\n" +
+                "      ) a \n" +
+                "      LEFT OUTER JOIN (\n" +
+                "        select \n" +
+                "          jurnal.*, \n" +
+                "          kr.rekening_id \n" +
+                "        from \n" +
+                "          (\n" +
+                "            select \n" +
+                "              concat(\n" +
+                "                split_part(kr.kode_rekening, '.', 1), \n" +
+                "                '.', \n" +
+                "                split_part(kr.kode_rekening, '.', 2), \n" +
+                "                '.', \n" +
+                "                split_part(kr.kode_rekening, '.', 3), \n" +
+                "                '.', \n" +
+                "                split_part(kr.kode_rekening, '.', 4)\n" +
+                "              ) AS kode_rekening, \n" +
+                "              sum(y.jumlah_debit * x.kurs) as jumlah_debit, \n" +
+                "              sum(y.jumlah_kredit * x.kurs) as jumlah_kredit \n" +
+                "            from \n" +
+                "              it_akun_jurnal x \n" +
+                "              inner join it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal \n" +
+                "              INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = y.rekening_id \n" +
+                "            where \n" +
+                "              to_char(x.created_date, 'MM-yyyy') = '"+periode+"' \n" +
+                "              and x.branch_id = '"+branchId1+"' \n" +
+                "            group by \n" +
+                "              concat(\n" +
+                "                split_part(kr.kode_rekening, '.', 1), \n" +
+                "                '.', \n" +
+                "                split_part(kr.kode_rekening, '.', 2), \n" +
+                "                '.', \n" +
+                "                split_part(kr.kode_rekening, '.', 3), \n" +
+                "                '.', \n" +
+                "                split_part(kr.kode_rekening, '.', 4)\n" +
+                "              )\n" +
+                "          ) jurnal \n" +
+                "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
+                "      ) junit1 ON junit1.rekening_id = a.rekening_id -- UNIT 2\n" +
+                "      LEFT OUTER JOIN (\n" +
+                "        select \n" +
+                "          jurnal.*, \n" +
+                "          kr.rekening_id \n" +
+                "        from \n" +
+                "          (\n" +
+                "            select \n" +
+                "              concat(\n" +
+                "                split_part(kr.kode_rekening, '.', 1), \n" +
+                "                '.', \n" +
+                "                split_part(kr.kode_rekening, '.', 2), \n" +
+                "                '.', \n" +
+                "                split_part(kr.kode_rekening, '.', 3), \n" +
+                "                '.', \n" +
+                "                split_part(kr.kode_rekening, '.', 4)\n" +
+                "              ) AS kode_rekening, \n" +
+                "              sum(y.jumlah_debit * x.kurs) as jumlah_debit, \n" +
+                "              sum(y.jumlah_kredit * x.kurs) as jumlah_kredit \n" +
+                "            from \n" +
+                "              it_akun_jurnal x \n" +
+                "              inner join it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal \n" +
+                "              INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = y.rekening_id \n" +
+                "            where \n" +
+                "              to_char(x.created_date, 'MM-yyyy') = '"+periode+"' \n" +
+                "              and x.branch_id = '"+branchId2+"' \n" +
+                "            group by \n" +
+                "              concat(\n" +
+                "                split_part(kr.kode_rekening, '.', 1), \n" +
+                "                '.', \n" +
+                "                split_part(kr.kode_rekening, '.', 2), \n" +
+                "                '.', \n" +
+                "                split_part(kr.kode_rekening, '.', 3), \n" +
+                "                '.', \n" +
+                "                split_part(kr.kode_rekening, '.', 4)\n" +
+                "              )\n" +
+                "          ) jurnal \n" +
+                "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
+                "      ) junit2 ON junit2.rekening_id = a.rekening_id -- UNIT 3\n" +
+                "      LEFT OUTER JOIN (\n" +
+                "        select \n" +
+                "          jurnal.*, \n" +
+                "          kr.rekening_id \n" +
+                "        from \n" +
+                "          (\n" +
+                "            select \n" +
+                "              concat(\n" +
+                "                split_part(kr.kode_rekening, '.', 1), \n" +
+                "                '.', \n" +
+                "                split_part(kr.kode_rekening, '.', 2), \n" +
+                "                '.', \n" +
+                "                split_part(kr.kode_rekening, '.', 3), \n" +
+                "                '.', \n" +
+                "                split_part(kr.kode_rekening, '.', 4)\n" +
+                "              ) AS kode_rekening, \n" +
+                "              sum(y.jumlah_debit * x.kurs) as jumlah_debit, \n" +
+                "              sum(y.jumlah_kredit * x.kurs) as jumlah_kredit \n" +
+                "            from \n" +
+                "              it_akun_jurnal x \n" +
+                "              inner join it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal \n" +
+                "              INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = y.rekening_id \n" +
+                "            where \n" +
+                "              to_char(x.created_date, 'MM-yyyy') = '"+periode+"' \n" +
+                "              and x.branch_id = '"+branchId3+"' \n" +
+                "            group by \n" +
+                "              concat(\n" +
+                "                split_part(kr.kode_rekening, '.', 1), \n" +
+                "                '.', \n" +
+                "                split_part(kr.kode_rekening, '.', 2), \n" +
+                "                '.', \n" +
+                "                split_part(kr.kode_rekening, '.', 3), \n" +
+                "                '.', \n" +
+                "                split_part(kr.kode_rekening, '.', 4)\n" +
+                "              )\n" +
+                "          ) jurnal \n" +
+                "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
+                "      ) junit3 ON junit3.rekening_id = a.rekening_id -- UNIT 4\n" +
+                "      LEFT OUTER JOIN (\n" +
+                "        select \n" +
+                "          jurnal.*, \n" +
+                "          kr.rekening_id \n" +
+                "        from \n" +
+                "          (\n" +
+                "            select \n" +
+                "              concat(\n" +
+                "                split_part(kr.kode_rekening, '.', 1), \n" +
+                "                '.', \n" +
+                "                split_part(kr.kode_rekening, '.', 2), \n" +
+                "                '.', \n" +
+                "                split_part(kr.kode_rekening, '.', 3), \n" +
+                "                '.', \n" +
+                "                split_part(kr.kode_rekening, '.', 4)\n" +
+                "              ) AS kode_rekening, \n" +
+                "              sum(y.jumlah_debit * x.kurs) as jumlah_debit, \n" +
+                "              sum(y.jumlah_kredit * x.kurs) as jumlah_kredit \n" +
+                "            from \n" +
+                "              it_akun_jurnal x \n" +
+                "              inner join it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal \n" +
+                "              INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = y.rekening_id \n" +
+                "            where \n" +
+                "              to_char(x.created_date, 'MM-yyyy') = '"+periode+"' \n" +
+                "              and x.branch_id = '"+branchId4+"' \n" +
+                "            group by \n" +
+                "              concat(\n" +
+                "                split_part(kr.kode_rekening, '.', 1), \n" +
+                "                '.', \n" +
+                "                split_part(kr.kode_rekening, '.', 2), \n" +
+                "                '.', \n" +
+                "                split_part(kr.kode_rekening, '.', 3), \n" +
+                "                '.', \n" +
+                "                split_part(kr.kode_rekening, '.', 4)\n" +
+                "              )\n" +
+                "          ) jurnal \n" +
+                "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
+                "      ) junit4 ON junit4.rekening_id = a.rekening_id -- Total\n" +
+                "      LEFT OUTER JOIN (\n" +
+                "        select \n" +
+                "          jurnal.*, \n" +
+                "          kr.rekening_id \n" +
+                "        from \n" +
+                "          (\n" +
+                "            select \n" +
+                "              concat(\n" +
+                "                split_part(kr.kode_rekening, '.', 1), \n" +
+                "                '.', \n" +
+                "                split_part(kr.kode_rekening, '.', 2), \n" +
+                "                '.', \n" +
+                "                split_part(kr.kode_rekening, '.', 3), \n" +
+                "                '.', \n" +
+                "                split_part(kr.kode_rekening, '.', 4)\n" +
+                "              ) AS kode_rekening, \n" +
+                "              sum(y.jumlah_debit * x.kurs) as jumlah_debit, \n" +
+                "              sum(y.jumlah_kredit * x.kurs) as jumlah_kredit \n" +
+                "            from \n" +
+                "              it_akun_jurnal x \n" +
+                "              inner join it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal \n" +
+                "              INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = y.rekening_id \n" +
+                "            where \n" +
+                "              to_char(x.created_date, 'MM-yyyy') = '"+periode+"' \n" +
+                "              and x.branch_id IN (\n" +
+                "                "+branchIdAll+"\n" +
+                "              ) \n" +
+                "            group by \n" +
+                "              concat(\n" +
+                "                split_part(kr.kode_rekening, '.', 1), \n" +
+                "                '.', \n" +
+                "                split_part(kr.kode_rekening, '.', 2), \n" +
+                "                '.', \n" +
+                "                split_part(kr.kode_rekening, '.', 3), \n" +
+                "                '.', \n" +
+                "                split_part(kr.kode_rekening, '.', 4)\n" +
+                "              )\n" +
+                "          ) jurnal \n" +
+                "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
+                "      ) junitall ON junitall.rekening_id = a.rekening_id \n" +
+                "    order by \n" +
+                "      a.kode_rekening\n" +
+                "  ) a \n" +
+                "ORDER BY \n" +
+                "  a.koderekening\n";
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        for (Object[] row : results) {
+            AkunSettingReportKeuanganKonsolDetail data= new AkunSettingReportKeuanganKonsolDetail();
+            data.setNamaRekening((String) row[0]);
+            data.setKodeRekening((String) row[1]);
+            data.setSettingReportKonsolId((String) row[2]);
+            data.setOperator((String) row[3]);
+            if (row[4]==null){
+                data.setSaldoUnit1(BigDecimal.ZERO);
+            }else{
+                data.setSaldoUnit1(BigDecimal.valueOf(Double.parseDouble(row[4].toString())));
+            }
+            if (row[5]==null){
+                data.setSaldoUnit2(BigDecimal.ZERO);
+            }else{
+                data.setSaldoUnit2(BigDecimal.valueOf(Double.parseDouble(row[5].toString())));
+            }
+            if (row[6]==null){
+                data.setSaldoUnit3(BigDecimal.ZERO);
+            }else{
+                data.setSaldoUnit3(BigDecimal.valueOf(Double.parseDouble(row[6].toString())));
+            }
+            if (row[7]==null){
+                data.setSaldoUnit4(BigDecimal.ZERO);
+            }else{
+                data.setSaldoUnit4(BigDecimal.valueOf(Double.parseDouble(row[7].toString())));
+            }
+            if (row[8]==null){
+                data.setSaldoUnitAll(BigDecimal.ZERO);
+            }else{
+                data.setSaldoUnitAll(BigDecimal.valueOf(Double.parseDouble(row[8].toString())));
+            }
+            listOfResult.add(data);
+        }
+        return listOfResult;
+    }
+
+    public List<AkunSettingReportKeuanganKonsolDetail> getDataLaporanAkuntansiKonsolUnit(String periode, String branchId1){
+        List<AkunSettingReportKeuanganKonsolDetail> listOfResult = new ArrayList<>();
+        List<Object[]> results = new ArrayList<Object[]>();
+        String query = "SELECT \n" +
+                "  a.namarekening, \n" +
+                "  a.koderekening, \n" +
+                "  a.konsolid, \n" +
+                "  a.operator, \n" +
+                "  a.jumlahdebitunit1 - a.jumlahkreditunit1 as saldounit1\n" +
+                "FROM \n" +
+                "  (\n" +
+                "    SELECT \n" +
+                "      distinct a.konsolid, \n" +
+                "      a.operator, \n" +
+                "      a.nama_kode_rekening as namaRekening, \n" +
+                "      a.kode_rekening as koderekening, \n" +
+                "      junit1.jumlah_debit as jumlahdebitunit1, \n" +
+                "      junit1.jumlah_kredit as jumlahkreditunit1\n" +
+                "    FROM \n" +
+                "      (\n" +
+                "        select \n" +
+                "          setting_report_konsol_id AS konsolid, \n" +
+                "          operator AS operator, \n" +
+                "          kode.kode_rekening, \n" +
+                "          kode.rekening_id, \n" +
+                "          kode.nama_kode_rekening \n" +
+                "        from \n" +
+                "          im_akun_kode_rekening kode \n" +
+                "          INNER JOIN im_akun_setting_report_keuangan_konsol_detail rd ON rd.rekening_id = kode.rekening_id \n" +
+                "        where \n" +
+                "          rd.flag = 'Y' \n" +
+                "        group by \n" +
+                "          setting_report_konsol_id, \n" +
+                "          operator, \n" +
+                "          kode_rekening, \n" +
+                "          kode.nama_kode_rekening, \n" +
+                "          kode.rekening_id \n" +
+                "        order by \n" +
+                "          kode_rekening\n" +
+                "      ) a \n" +
+                "      LEFT OUTER JOIN (\n" +
+                "        select \n" +
+                "          jurnal.*, \n" +
+                "          kr.rekening_id \n" +
+                "        from \n" +
+                "          (\n" +
+                "            select \n" +
+                "              concat(\n" +
+                "                    split_part(kr.kode_rekening, '.', 1),\n" +
+                "                    '.',\n" +
+                "                    split_part(kr.kode_rekening, '.', 2),\n" +
+                "                    '.',\n" +
+                "                    split_part(kr.kode_rekening, '.', 3),\n" +
+                "                    '.',\n" +
+                "                    split_part(kr.kode_rekening, '.', 4)\n" +
+                "                  ) AS kode_rekening,\n" +
+                "              sum(y.jumlah_debit * x.kurs) as jumlah_debit, \n" +
+                "              sum(y.jumlah_kredit * x.kurs) as jumlah_kredit \n" +
+                "            from \n" +
+                "              it_akun_jurnal x \n" +
+                "              inner join it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal \n" +
+                "              INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = y.rekening_id \n" +
+                "            where \n" +
+                "              to_char(x.created_date, 'MM-yyyy') = '"+periode+"' \n" +
+                "              and x.branch_id = '"+branchId1+"' \n" +
+                "            group by \n" +
+                "              concat(\n" +
+                "                    split_part(kr.kode_rekening, '.', 1),\n" +
+                "                    '.',\n" +
+                "                    split_part(kr.kode_rekening, '.', 2),\n" +
+                "                    '.',\n" +
+                "                    split_part(kr.kode_rekening, '.', 3),\n" +
+                "                    '.',\n" +
+                "                    split_part(kr.kode_rekening, '.', 4)\n" +
+                "                  )\n" +
+                "          ) jurnal \n" +
+                "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
+                "      ) junit1 ON junit1.rekening_id = a.rekening_id \n" +
+                "    order by \n" +
+                "      a.kode_rekening\n" +
+                "  ) a \n" +
+                "ORDER BY \n" +
+                "  a.koderekening";
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        for (Object[] row : results) {
+            AkunSettingReportKeuanganKonsolDetail data= new AkunSettingReportKeuanganKonsolDetail();
+            data.setNamaRekening((String) row[0]);
+            data.setKodeRekening((String) row[1]);
+            data.setSettingReportKonsolId((String) row[2]);
+            data.setOperator((String) row[3]);
+            if (row[4]==null){
+                data.setSaldoUnit1(BigDecimal.ZERO);
+            }else{
+                data.setSaldoUnit1(BigDecimal.valueOf(Double.parseDouble(row[4].toString())));
+            }
+            listOfResult.add(data);
+        }
+        return listOfResult;
     }
 }
