@@ -30,10 +30,10 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
 
         // Get Collection and sorting
         if (mapCriteria != null) {
-            if (mapCriteria.get("id_seq_obat") != null){
+            if (mapCriteria.get("id_seq_obat") != null) {
                 criteria.add(Restrictions.eq("idSeqObat", (String) mapCriteria.get("id_seq_obat")));
             }
-            if (mapCriteria.get("id_barang") != null){
+            if (mapCriteria.get("id_barang") != null) {
                 criteria.add(Restrictions.eq("idBarang", mapCriteria.get("id_barang")));
             }
             if (mapCriteria.get("id_obat") != null) {
@@ -52,31 +52,30 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                 criteria.add(Restrictions.eq("idPabrik", (String) mapCriteria.get("id_pabrik")));
             }
 
-            if (mapCriteria.get("lembar_per_box") != null){
+            if (mapCriteria.get("lembar_per_box") != null) {
                 criteria.add(Restrictions.eq("lembarPerBox", (BigInteger) mapCriteria.get("lembar_per_box")));
             }
 
-            if (mapCriteria.get("biji_per_lembar") != null){
+            if (mapCriteria.get("biji_per_lembar") != null) {
                 criteria.add(Restrictions.eq("bijiPerLembar", (BigInteger) mapCriteria.get("biji_per_lembar")));
             }
-            if (mapCriteria.get("exp_date") != null){
+            if (mapCriteria.get("exp_date") != null) {
                 criteria.add(Restrictions.eq("expiredDate", (Date) mapCriteria.get("exp_date")));
             }
-            if (mapCriteria.get("flag") != null){
+            if (mapCriteria.get("flag") != null) {
                 criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
             }
 
-            if (mapCriteria.get("asc") != null){
+            if (mapCriteria.get("asc") != null) {
                 criteria.addOrder(Order.asc("createdDate"));
-            } else if (mapCriteria.get("desc") != null){
+            } else if (mapCriteria.get("desc") != null) {
                 criteria.addOrder(Order.desc("createdDate"));
-            } else if(mapCriteria.get("exp") != null){
+            } else if (mapCriteria.get("exp") != null) {
                 criteria.addOrder(Order.asc("expiredDate"));
-            } else{
+            } else {
                 criteria.addOrder(Order.asc("idObat"));
             }
         }
-
 
 
         List<ImSimrsObatEntity> results = criteria.list();
@@ -332,7 +331,7 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
         return listOfResults;
     }
 
-    public Obat getSumStockObatGudangById(String id){
+    public Obat getSumStockObatGudangById(String id) {
 
         String SQL = "SELECT \n" +
                 "id_obat, \n" +
@@ -349,8 +348,8 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                 .list();
 
         Obat obat = new Obat();
-        if (results.size() > 0){
-            for (Object[] obj : results){
+        if (results.size() > 0) {
+            for (Object[] obj : results) {
                 obat.setIdObat(obj[0].toString());
                 obat.setQtyBox(new BigInteger(String.valueOf(obj[1])));
                 obat.setQtyLembar(new BigInteger(String.valueOf(obj[2])));
@@ -361,7 +360,7 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
         return obat;
     }
 
-    public Obat getLastIdSeqObat( String idObat ){
+    public Obat getLastIdSeqObat(String idObat) {
 
         String SQL = "SELECT id_seq_obat, created_date\n" +
                 "FROM im_simrs_obat\n" +
@@ -375,8 +374,8 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                 .list();
 
         Obat obat = new Obat();
-        if (results.size() > 0){
-            for (Object[] obj : results){
+        if (results.size() > 0) {
+            for (Object[] obj : results) {
                 obat.setIdSeqObat((String) obj[0]);
                 obat.setCreatedDate((Timestamp) obj[1]);
             }
@@ -385,7 +384,7 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
         return obat;
     }
 
-    public List<String> getListIdObatGroupByBranchId(String branchId){
+    public List<String> getListIdObatGroupByBranchId(String branchId) {
 
         String SQL = "SELECT id_obat, id_pabrik\n" +
                 "FROM im_simrs_obat \n" +
@@ -398,8 +397,8 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                 .list();
 
         List<String> list = new ArrayList<>();
-        if (resuts.size() > 0){
-            for (Object[] obj : resuts){
+        if (resuts.size() > 0) {
+            for (Object[] obj : resuts) {
                 list.add(obj[0].toString());
             }
         }
@@ -407,7 +406,7 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
         return list;
     }
 
-    public List<Obat> getListObatGroup(Obat bean){
+    public List<Obat> getListObatGroup(Obat bean) {
 
         List<Obat> list = new ArrayList<>();
         String idPabrik = "%";
@@ -416,21 +415,21 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
         String branchId = "%";
         String flag = "%";
 
-        if(bean != null){
+        if (bean != null) {
 
-            if(bean.getIdPabrik() != null && !"".equalsIgnoreCase(bean.getIdPabrik())){
+            if (bean.getIdPabrik() != null && !"".equalsIgnoreCase(bean.getIdPabrik())) {
                 idPabrik = bean.getIdPabrik();
             }
-            if(bean.getIdJenisObat() != null && !"".equalsIgnoreCase(bean.getIdJenisObat())){
+            if (bean.getIdJenisObat() != null && !"".equalsIgnoreCase(bean.getIdJenisObat())) {
                 idJenis = bean.getIdJenisObat();
             }
-            if(bean.getIdObat() != null && !"".equalsIgnoreCase(bean.getIdObat())){
+            if (bean.getIdObat() != null && !"".equalsIgnoreCase(bean.getIdObat())) {
                 idObat = bean.getIdObat();
             }
-            if(bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())){
+            if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
                 flag = bean.getFlag();
             }
-            if(bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
+            if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())) {
                 branchId = bean.getBranchId();
             }
 
@@ -443,7 +442,7 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                     "SUM(a.qty_box) as box,\n" +
                     "SUM(a.qty_lembar) as lembar, \n" +
                     "SUM(a.qty_biji) as biji, \n" +
-                    "a.merk, \n"+
+                    "a.merk, \n" +
                     "a.flag, \n" +
                     "a.min_stok \n" +
                     "FROM im_simrs_obat a\n" +
@@ -457,8 +456,8 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                     "a.id_obat,\n" +
                     "a.nama_obat,\n" +
                     "a.lembar_per_box,\n" +
-                    "a.biji_per_lembar,"+
-                    "a.merk,\n"+
+                    "a.biji_per_lembar," +
+                    "a.merk,\n" +
                     "a.flag, a.min_stok\n";
 
             List<Object[]> resuts = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -469,8 +468,8 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                     .setParameter("idJenis", idJenis)
                     .list();
 
-            if (resuts.size() > 0){
-                for (Object[] obj : resuts){
+            if (resuts.size() > 0) {
+                for (Object[] obj : resuts) {
                     Obat obat = new Obat();
                     obat.setIdPabrik(obj[0] == null ? "" : obj[0].toString());
                     obat.setIdObat(obj[1] == null ? "" : obj[1].toString());
@@ -485,10 +484,10 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                     obat.setMinStok(obj[10] == null ? new BigInteger(String.valueOf("0")) : new BigInteger(String.valueOf(obj[10].toString())));
                     obat.setJenisObat(getObatGejalaByIdObat(obj[1].toString()));
 
-                    if(obat.getQtyBox() != null && obat.getMinStok() != null){
-                        if(obat.getQtyBox().intValue() >= obat.getMinStok().intValue()){
+                    if (obat.getQtyBox() != null && obat.getMinStok() != null) {
+                        if (obat.getQtyBox().intValue() >= obat.getMinStok().intValue()) {
                             obat.setIsMinStok("N");
-                        }else{
+                        } else {
                             obat.setIsMinStok("Y");
                         }
                     }
@@ -501,11 +500,11 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
         return list;
     }
 
-    private String getObatGejalaByIdObat(String idObat){
+    private String getObatGejalaByIdObat(String idObat) {
 
         String jenisObat = "";
 
-        if(idObat != null && !"".equalsIgnoreCase(idObat)){
+        if (idObat != null && !"".equalsIgnoreCase(idObat)) {
             String SQL = "SELECT \n" +
                     "a.id_obat_gejala, \n" +
                     "a.id_obat, \n" +
@@ -518,10 +517,10 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                     .setParameter("id", idObat)
                     .list();
 
-            if (resuts.size() > 0){
-                for (Object[] obj : resuts){
+            if (resuts.size() > 0) {
+                for (Object[] obj : resuts) {
                     StringBuilder addedScript = new StringBuilder();
-                    if(obj[2] != null){
+                    if (obj[2] != null) {
                         jenisObat = jenisObat + addedScript.append("<label class=\"label label-primary\">" + obj[2].toString() + "</label>");
                     }
                 }
@@ -530,22 +529,22 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
         return jenisObat;
     }
 
-    public List<Obat> getListObatDetail(Obat bean){
+    public List<Obat> getListObatDetail(Obat bean) {
 
         List<Obat> list = new ArrayList<>();
         String idBarang = "%";
         String idObat = "%";
         String branchId = "%";
 
-        if(bean != null){
+        if (bean != null) {
 
-            if(bean.getIdBarang() != null && !"".equalsIgnoreCase(bean.getIdBarang())){
+            if (bean.getIdBarang() != null && !"".equalsIgnoreCase(bean.getIdBarang())) {
                 idBarang = bean.getIdBarang();
             }
-            if(bean.getIdObat() != null && !"".equalsIgnoreCase(bean.getIdObat())){
+            if (bean.getIdObat() != null && !"".equalsIgnoreCase(bean.getIdObat())) {
                 idObat = bean.getIdObat();
             }
-            if(bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
+            if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())) {
                 branchId = bean.getBranchId();
             }
 
@@ -567,11 +566,11 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                     .setParameter("idObat", idObat)
                     .list();
 
-            if (resuts.size() > 0){
-                for (Object[] obj : resuts){
+            if (resuts.size() > 0) {
+                for (Object[] obj : resuts) {
                     Obat obat = new Obat();
                     obat.setIdBarang(obj[0] == null ? "" : obj[0].toString());
-                    if(obj[1] != null){
+                    if (obj[1] != null) {
                         obat.setExpiredDate(Date.valueOf(obj[1].toString()));
                     }
                     obat.setIdObat(obj[2] == null ? "" : obj[2].toString());
@@ -588,10 +587,10 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
         return list;
     }
 
-    public List<Obat> getSearchObat(String query, String branch){
+    public List<Obat> getSearchObat(String query, String branch) {
         List<Obat> obatList = new ArrayList<>();
-        if(query != null && branch != null){
-            String param = "%"+query+"%";
+        if (query != null && branch != null) {
+            String param = "%" + query + "%";
             String SQL = "SELECT id_obat, nama_obat, id_pabrik\n" +
                     "FROM im_simrs_obat\n" +
                     "WHERE nama_obat ILIKE :id AND branch_id = :branchId\n" +
@@ -607,8 +606,8 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                     .setParameter("branchId", branch)
                     .list();
 
-            if (results.size() > 0){
-                for (Object[] obj : results){
+            if (results.size() > 0) {
+                for (Object[] obj : results) {
                     Obat obat = new Obat();
                     obat.setIdObat(obj[0] == null ? "" : obj[0].toString());
                     obat.setNamaObat(obj[1] == null ? "" : obj[1].toString());
@@ -619,5 +618,49 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
         }
 
         return obatList;
+    }
+
+    public Obat getObatByIdBarang(String idBarang, String branchId) {
+        Obat obat = new Obat();
+        if (idBarang != null && branchId != null) {
+
+            String SQL = "SELECT \n" +
+                    "a.id_obat, \n" +
+                    "a.id_barang,\n" +
+                    "a.lembar_per_box,\n" +
+                    "a.biji_per_lembar,\n" +
+                    "b.diskon,\n" +
+                    "b.bruto,\n" +
+                    "b.netto,\n" +
+                    "c.average_harga_box,\n" +
+                    "a.flag_bpjs,\n" +
+                    "a.harga_terakhir\n" +
+                    "FROM im_simrs_obat a\n" +
+                    "INNER JOIN mt_simrs_transaksi_obat_detail_batch b ON a.id_barang = b.id_barang\n" +
+                    "INNER JOIN mt_simrs_transaksi_obat_detail c ON b.id_transaksi_obat_detail = c.id_transaksi_obat_detail\n" +
+                    "WHERE a.id_barang = :id AND a.branch_id = :branch";
+
+            List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("id", idBarang)
+                    .setParameter("branch", branchId)
+                    .list();
+
+            if (results.size() > 0) {
+                Object[] obj = results.get(0);
+                if (obj != null) {
+                    obat.setIdObat(obj[0] == null ? "" : obj[0].toString());
+                    obat.setIdBarang(obj[1] == null ? "" : obj[1].toString());
+                    obat.setLembarPerBox(obj[2] == null ? new BigInteger(String.valueOf("0")) : new BigInteger(obj[2].toString()));
+                    obat.setBijiPerLembar(obj[3] == null ? new BigInteger(String.valueOf("0")) : new BigInteger(obj[3].toString()));
+                    obat.setDiskon(obj[4] == null ? new BigDecimal(String.valueOf("0")) : new BigDecimal(obj[4].toString()));
+                    obat.setBruto(obj[5] == null ? new BigDecimal(String.valueOf("0")) : new BigDecimal(obj[5].toString()));
+                    obat.setNetto(obj[6] == null ? new BigDecimal(String.valueOf("0")) : new BigDecimal(obj[6].toString()));
+                    obat.setAverageHargaBox(obj[7] == null ? new BigDecimal(String.valueOf("0")) : new BigDecimal(obj[7].toString()));
+                    obat.setFlagBpjs(obj[8] == null ? "" : obj[8].toString());
+                    obat.setHargaTerakhir(obj[9] == null ? new BigDecimal(String.valueOf("0")) : new BigDecimal(obj[9].toString()));
+                }
+            }
+        }
+        return obat;
     }
 }

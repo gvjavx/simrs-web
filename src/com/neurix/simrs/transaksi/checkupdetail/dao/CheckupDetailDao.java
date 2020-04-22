@@ -509,8 +509,6 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
             String dateFrom = "";
             String dateTo = "";
 
-            String jenisPasien = "%";
-
             if (bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())) {
                 idPasien = bean.getIdPasien();
             }
@@ -539,10 +537,6 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 branchId = bean.getBranchId();
             }
 
-            if (bean.getIdJenisPeriksaPasien() != null && !"".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
-                jenisPasien = bean.getIdJenisPeriksaPasien();
-            }
-
             String SQL = "\n" +
                     "SELECT \n" +
                     "dt.id_detail_checkup,\n" +
@@ -567,7 +561,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "AND hd.nama LIKE :nama \n" +
                     "AND dt.id_pelayanan LIKE :idPelayanan \n" +
                     "AND dt.is_kronis IS NULL \n" +
-                    "AND dt.id_jenis_periksa_pasien LIKE :jenisPasien \n" +
+                    "AND dt.id_jenis_periksa_pasien IN ('bpjs', 'ptpn') \n" +
                     "AND dt.status_periksa LIKE :status";
 
             List<Object[]> results = new ArrayList<>();
@@ -583,7 +577,6 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                         .setParameter("status", statusPeriksa)
                         .setParameter("dateFrom", dateFrom)
                         .setParameter("dateTo", dateTo)
-                        .setParameter("jenisPasien", jenisPasien)
                         .setParameter("branchId", branchId)
                         .list();
 
@@ -596,7 +589,6 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                         .setParameter("nama", nama)
                         .setParameter("idPelayanan", idPelayanan)
                         .setParameter("status", statusPeriksa)
-                        .setParameter("jenisPasien", jenisPasien)
                         .setParameter("branchId", branchId)
                         .list();
             }
@@ -990,7 +982,45 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
         return detailCheckups;
     }
 
-    public BigDecimal getSumAllTarifTindakan(String idDetail, String ket) {
+    public BigDecimal getSumAllTarifTindakan(String idDetail, String jenis, String ket) {
+
+        String keterangan = "%";
+        if (!"".equalsIgnoreCase(ket)) {
+            keterangan = ket;
+        }
+
+        String jenisPasien = "%";
+        if (!"".equalsIgnoreCase(jenis)){
+            jenisPasien = jenis;
+        }
+
+        String SQL = "SELECT \n" +
+                "id_detail_checkup,\n" +
+                "SUM(total_tarif) as total_tarif\n" +
+                "FROM\n" +
+                "it_simrs_riwayat_tindakan\n" +
+                "WHERE \n" +
+                "id_detail_checkup = :idDetail\n" +
+                "AND keterangan LIKE :ket\n" +
+                "AND jenis_pasien LIKE :jenis\n" +
+                "GROUP BY id_detail_checkup";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("idDetail", idDetail)
+                .setParameter("ket", keterangan)
+                .setParameter("jenis", jenisPasien)
+                .list();
+
+        BigDecimal jumlah = new BigDecimal(0);
+        if (results.size() > 0) {
+            for (Object[] obj : results) {
+                jumlah = (BigDecimal) obj[1];
+            }
+        }
+        return jumlah;
+    }
+
+    public BigDecimal getSumAllTarifTransitoris(String idDetail, String ket) {
 
         String keterangan = "%";
         if (!"".equalsIgnoreCase(ket)) {
@@ -1000,7 +1030,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 "id_detail_checkup,\n" +
                 "SUM(total_tarif) as total_tarif\n" +
                 "FROM\n" +
-                "it_simrs_riwayat_tindakan\n" +
+                "it_simrs_tindakan_transitoris\n" +
                 "WHERE \n" +
                 "id_detail_checkup = :idDetail\n" +
                 "AND keterangan LIKE :ket\n" +
@@ -1019,6 +1049,39 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
         }
         return jumlah;
     }
+
+    public BigDecimal getSumAllTarifTransitorisByJenis(String idDetail, String jenis, String ket) {
+
+        String keterangan = "%";
+        if (!"".equalsIgnoreCase(ket)) {
+            keterangan = ket;
+        }
+        String SQL = "SELECT \n" +
+                "id_detail_checkup,\n" +
+                "SUM(total_tarif) as total_tarif\n" +
+                "FROM\n" +
+                "it_simrs_tindakan_transitoris\n" +
+                "WHERE \n" +
+                "id_detail_checkup = :idDetail \n" +
+                "AND keterangan LIKE :ket \n" +
+                "AND jenis_pasien LIKE :jenis \n" +
+                "GROUP BY id_detail_checkup";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("idDetail", idDetail)
+                .setParameter("ket", keterangan)
+                .setParameter("jenis", jenis)
+                .list();
+
+        BigDecimal jumlah = new BigDecimal(0);
+        if (results.size() > 0) {
+            for (Object[] obj : results) {
+                jumlah = (BigDecimal) obj[1];
+            }
+        }
+        return jumlah;
+    }
+
 
     public String getFindResepInRiwayatTrans(String idDetail) {
 
@@ -1059,6 +1122,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.id_detail_checkup = b.id_detail_checkup\n" +
                     "INNER JOIN it_simrs_header_checkup c ON b.no_checkup = c.no_checkup\n" +
                     "WHERE a.id_detail_checkup = :idDetail\n" +
+                    "AND a.jenis_pasien = 'bpjs'\n" +
                     "GROUP BY \n" +
                     "a.id_detail_checkup, \n" +
                     "b.tarif_bpjs, \n" +
@@ -1744,15 +1808,19 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "\tINNER JOIN im_simrs_lab_detail c ON b.id_lab_detail = c.id_lab_detail\n" +
                     "\tGROUP BY a.id_detail_checkup\n" +
                     "\t) d ON a.id_detail_checkup = d.id_detail_checkup \n" +
-                    "LEFT JOIN (\n" +
-                    "\tSELECT a.id_detail_checkup, (c.qty * d.harga_jual) as total_resep FROM mt_simrs_permintaan_resep a\n" +
-                    "\tINNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat\n" +
-                    "\tINNER JOIN (SELECT id_transaksi_obat_detail, SUM(qty_approve) as qty FROM mt_simrs_transaksi_obat_detail_batch \n" +
-                    "\tWHERE approve_flag = 'Y'\n" +
-                    "\tAND a.jenis_resep != 'umum'\n" +
-                    "\tGROUP BY id_transaksi_obat_detail) c ON b.id_transaksi_obat_detail = c.id_transaksi_obat_detail\n" +
-                    "\tINNER JOIN mt_simrs_harga_obat d ON b.id_obat = d.id_obat\n" +
-                    "\t) e ON a.id_detail_checkup = e.id_detail_checkup \n" +
+                    "LEFT JOIN ( \n" +
+                    "\tSELECT \n" +
+                    "\ta.id_detail_checkup, (c.qty * d.harga_jual) as total_resep FROM mt_simrs_permintaan_resep a \n" +
+                    "\tINNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat \n" +
+                    "\tINNER JOIN (\n" +
+                    "\t\tSELECT id_transaksi_obat_detail, SUM(qty_approve) as qty \n" +
+                    "\t\tFROM mt_simrs_transaksi_obat_detail_batch  \n" +
+                    "\t\tWHERE approve_flag = 'Y' \n" +
+                    "\t\tGROUP BY id_transaksi_obat_detail\n" +
+                    "\t) c ON b.id_transaksi_obat_detail = c.id_transaksi_obat_detail \n" +
+                    "\tINNER JOIN mt_simrs_harga_obat d ON b.id_obat = d.id_obat \n" +
+                    "\tWHERE a.jenis_resep != 'umum'\n" +
+                    ") e ON a.id_detail_checkup = e.id_detail_checkup  \n" +
                     "WHERE a.id_detail_checkup = :id";
 
             List<Object[]> result = new ArrayList<>();
@@ -1894,7 +1962,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 "INNER JOIN im_simrs_pelayanan b ON b.id_pelayanan = a.id_pelayanan\n" +
                 "WHERE b.tipe_pelayanan = 'rawat_inap'\n" +
                 "AND a.status_periksa = '1'\n" +
-                "AND a.id_jenis_periksa_pasien = 'bpjs' \n" +
+//                "AND a.id_jenis_periksa_pasien = 'bpjs' \n" +
                 "AND a.branch_id = :branchId ";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)

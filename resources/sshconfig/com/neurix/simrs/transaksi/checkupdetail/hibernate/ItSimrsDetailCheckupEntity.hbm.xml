@@ -154,6 +154,9 @@
         <property name="transPeriode">
             <column name="trans_periode" sql-type="varchar" length="10"/>
         </property>
+        <property name="invoiceTrans">
+            <column name="invoice_trans" sql-type="varchar" length="100"/>
+        </property>
 
     </class>
 </hibernate-mapping>

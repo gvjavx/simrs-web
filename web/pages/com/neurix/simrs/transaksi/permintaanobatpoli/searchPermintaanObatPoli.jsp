@@ -1036,7 +1036,7 @@
                 $('#msg_reture_detail').text('Qty tidak boleh melebihi qty stok dan approve...!');
             }
         } else {
-            $('#warning_reture_detail').show().fadeOut(5000);
+            $('#warning_returRequest Obat Polie_detail').show().fadeOut(5000);
             $('#msg_reture_detail').text('Qty reture tidak boleh kosong...!');
         }
     }

@@ -112,6 +112,57 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
         return obatPoliList;
     }
 
+    public List<PermintaanObatPoli> cekIdObatInTransaksiRequestGudang(PermintaanObatPoli bean){
+
+        String idObat      = "%";
+        String idPelayanan = "%";
+        String branchId    = "%";
+
+        if (bean.getIdObat() != null && !"".equalsIgnoreCase(bean.getIdObat())){
+            idObat = bean.getIdObat();
+        }
+
+        if (bean.getIdPelayanan() != null && !"".equalsIgnoreCase(bean.getIdPelayanan())){
+            idPelayanan = bean.getIdPelayanan();
+        }
+
+        if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
+            branchId = bean.getBranchId();
+        }
+
+        String SQL = "SELECT b.id_obat, a.id_pelayanan, a.branch_id \n" +
+                "FROM mt_simrs_approval_transaksi_obat a\n" +
+                "INNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat\n" +
+                "INNER JOIN mt_simrs_permintaan_obat_poli pol ON pol.id_approval_obat = a.id_approval_obat\n" +
+                "WHERE a.id_pelayanan LIKE :idPelayanan " +
+                "AND a.branch_id LIKE :branchId " +
+                "AND b.id_obat LIKE :idObat " +
+                "AND a.flag = 'Y' AND b.flag = 'Y'";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("idPelayanan", idPelayanan)
+                .setParameter("branchId", branchId)
+                .setParameter("idObat", idObat)
+                .list();
+
+        List<PermintaanObatPoli> obatPoliList = new ArrayList<>();
+
+        if (results.size() > 0)
+        {
+            PermintaanObatPoli permintaanObatPoli;
+            for (Object[] obj : results)
+            {
+                permintaanObatPoli = new PermintaanObatPoli();
+                permintaanObatPoli.setIdObat(obj[0].toString());
+                permintaanObatPoli.setIdPelayanan(obj[1].toString());
+                permintaanObatPoli.setBranchId(obj[2].toString());
+                obatPoliList.add(permintaanObatPoli);
+            }
+        }
+
+        return obatPoliList;
+    }
+
     public List<ObatPoli> getTujuanPelyanan(ObatPoli bean){
 
         String idPelayanan = "%";

@@ -3,6 +3,8 @@ package com.neurix.simrs.transaksi.checkup.dao;
 import com.neurix.akuntansi.master.masterVendor.model.MasterVendor;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.dao.GenericDao;
+import com.neurix.simrs.master.jenisperiksapasien.dao.AsuransiDao;
+import com.neurix.simrs.master.jenisperiksapasien.model.ImSimrsAsuransiEntity;
 import com.neurix.simrs.transaksi.checkup.model.AlertPasien;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
@@ -12,6 +14,7 @@ import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -26,6 +29,10 @@ import java.util.Map;
  * Created by Toshiba on 08/11/2019.
  */
 public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, String> {
+
+    @Autowired
+    AsuransiDao asuransiDao;
+
     @Override
     protected Class<ItSimrsHeaderChekupEntity> getEntityClass() {
         return ItSimrsHeaderChekupEntity.class;
@@ -778,6 +785,20 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         }
 
         return checkup;
+    }
+
+    public String getAsuransiName(String id){
+
+        String nama = "";
+
+        List<Object> objs = this.sessionFactory.getCurrentSession().createSQLQuery("SELECT nama_asuransi FROM im_simrs_asuransi WHERE id_asuransi = :id")
+                .setParameter("id", id)
+                .list();
+        if (objs.size() > 0){
+            nama = objs.get(0) == null ? "" : objs.get(0).toString();
+        }
+
+        return nama;
     }
 
     public List<TransaksiObatDetail> getListObatkronis(String idDetailCheckup, String idApproval) {

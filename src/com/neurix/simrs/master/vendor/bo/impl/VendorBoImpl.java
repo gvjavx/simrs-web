@@ -228,6 +228,11 @@ public class VendorBoImpl implements VendorBo {
         return response;
     }
 
+    @Override
+    public ImSimrsVendorEntity getEntityVendorById(String idVendor) throws GeneralBOException {
+        return vendorDao.getById("idVendor", idVendor);
+    }
+
     private String getNextIdVendor() {
         String id = "";
         try {

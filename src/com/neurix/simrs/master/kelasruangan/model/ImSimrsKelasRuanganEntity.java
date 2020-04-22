@@ -14,6 +14,15 @@ public class ImSimrsKelasRuanganEntity implements Serializable {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String kodering;
+    private String divisiId;
+
+    public String getDivisiId() {
+        return divisiId;
+    }
+
+    public void setDivisiId(String divisiId) {
+        this.divisiId = divisiId;
+    }
 
     public String getKodering() {
         return kodering;

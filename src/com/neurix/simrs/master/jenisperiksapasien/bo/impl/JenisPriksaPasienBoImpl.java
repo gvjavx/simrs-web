@@ -1,5 +1,6 @@
 package com.neurix.simrs.master.jenisperiksapasien.bo.impl;
 
+import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
 import com.neurix.simrs.master.jenisperiksapasien.dao.JenisPeriksaPasienDao;
 import com.neurix.simrs.master.jenisperiksapasien.model.ImJenisPeriksaPasienEntity;
@@ -15,8 +16,8 @@ import java.util.Map;
 /**
  * Created by Toshiba on 12/11/2019.
  */
-public class JenisPriksaPasienImpl implements JenisPriksaPasienBo {
-    protected static transient Logger logger = Logger.getLogger(JenisPriksaPasienImpl.class);
+public class JenisPriksaPasienBoImpl implements JenisPriksaPasienBo {
+    protected static transient Logger logger = Logger.getLogger(JenisPriksaPasienBoImpl.class);
 
     private JenisPeriksaPasienDao jenisPeriksaPasienDao;
 
@@ -89,5 +90,10 @@ public class JenisPriksaPasienImpl implements JenisPriksaPasienBo {
         logger.info("[jenisPriksaPasienImpl.getListJenisPeriksaNotBpjs] End <<<<<<");
 
         return result;
+    }
+
+    @Override
+    public ImJenisPeriksaPasienEntity getJenisPerikasEntityById(String id) throws GeneralBOException {
+        return jenisPeriksaPasienDao.getById("idJenisPeriksaPasien", id);
     }
 }

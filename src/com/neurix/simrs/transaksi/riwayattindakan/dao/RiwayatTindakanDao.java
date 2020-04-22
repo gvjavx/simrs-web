@@ -46,8 +46,14 @@ public class RiwayatTindakanDao extends GenericDao<ItSimrsRiwayatTindakanEntity,
             if (mapCriteria.get("approve_bpjs_flag") != null) {
                 criteria.add(Restrictions.eq("idRiwayatTindakan", (String) mapCriteria.get("approve_bpjs_flag")));
             }
+            if (mapCriteria.get("jenis_pasien") != null) {
+                criteria.add(Restrictions.eq("jenisPasien", (String) mapCriteria.get("jenis_pasien")));
+            }
             if (mapCriteria.get("flag") != null) {
                 criteria.add(Restrictions.eq("flag", (String) mapCriteria.get("flag")));
+            }
+            if (mapCriteria.get("not_resep") != null) {
+                criteria.add(Restrictions.ne("keterangan", "resep"));
             }
         }
 
@@ -201,7 +207,24 @@ public class RiwayatTindakanDao extends GenericDao<ItSimrsRiwayatTindakanEntity,
             }
         }
         return riwayatTindakanList;
+    }
 
+    public Boolean checkIsTransitoris(String id){
+        Boolean found = false;
+
+        String SQL = "SELECT id_riwayat_tindakan, id_detail_checkup, id_tindakan \n" +
+                "FROM it_simrs_tindakan_transitoris \n" +
+                "WHERE id_detail_checkup = :id \n" +
+                "LIMIT 1";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", id)
+                .list();
+
+        if (results.size() > 0){
+            found = true;
+        }
+        return found;
     }
 
     public String getNextSeq() {

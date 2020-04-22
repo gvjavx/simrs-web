@@ -808,6 +808,7 @@
                                             <option value='pindah'>Pindah Poli Lain</option>
                                             <%--<option value='rujuk'>Rujuk Rawat Inap</option>--%>
                                             <option value='lanjut_biaya'>Lanjut Biaya</option>
+                                            <option value='rujuk_rs_lain'>Rujuk RS Lain</option>
                                         </select>
                                     </div>
                                 </div>
@@ -2084,7 +2085,7 @@
         strSelect = "";
         var arBodyJenisResep = [];
         if(jenisPeriksaPasien == "ptpn"){
-            arBodyJenisResep.push({"nilai":"ptptn", "label":"PTPN"},{"nilai": "umum", "label":"UMUM"});
+            arBodyJenisResep.push({"nilai":"bpjs", "label":"BPJS"},{"nilai": "ptpn", "label":"PTPN"});
         } else if (jenisPeriksaPasien == "asuransi"){
             arBodyJenisResep.push({"nilai":"asuransi", "label":"ASURANSI"},{"nilai": "umum", "label":"UMUM"});
         } else if (jenisPeriksaPasien == "bpjs") {
@@ -2144,8 +2145,10 @@
 
     function hitungCoverBiaya() {
         var jenis = $('#jenis_pasien').val();
+        console.log("hitungCoverBiaya.jenis -> "+jenis);
         if("asuransi" == jenis){
             CheckupDetailAction.getBiayaAsuransi(idDetailCheckup, function (response) {
+                console.log("hitungCoverBiaya.response -> "+response);
                 console.log(response);
                 if (response.coverBiaya != null && response.coverBiaya != '') {
                     $('#status_asuransi').show();
@@ -2357,7 +2360,7 @@
                 $("#form-selesai").show();
                 $("#form-cekup").hide();
             }
-            if (idKtg == "lanjut_biaya") {
+            if (idKtg == "lanjut_biaya" || idKtg == "rujuk_rs_lain") {
                 $('#pembayaran').hide();
                 $("#kamar").attr('style', 'display:none');
                 $("#form-poli").attr('style', 'display:none');
@@ -2493,7 +2496,7 @@
                     $('#war_kolom-2').show();
                 }
             }
-            if(idKtg == "lanjut_biaya"){
+            if(idKtg == "lanjut_biaya" || idKtg == "rujuk_rs_lain"){
 
                     if(namaAsuransi == "Jasa Raharja"){
                         if(noRujukan != '' && tglRujukan != '' && suratRujukan != ''){
@@ -2634,7 +2637,7 @@
                 }
             });
         }
-        if(idKtg == "selesai" || idKtg == "lanjut_biaya"){
+        if(idKtg == "selesai" || idKtg == "lanjut_biaya" || idKtg == "rujuk_rs_lain"){
             $('#save_ket').hide();
             $('#load_ket').show();
             $('#waiting_dialog').dialog('open');

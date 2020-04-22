@@ -151,6 +151,7 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                             jurnalDetail.setTahun(bean.getTahun());
                             jurnalDetail.setUnit(bean.getUnit());
                             jurnalDetail.setRekeningId(kodeRekeningEntity.getRekeningId());
+                            jurnalDetail.setParentId(kodeRekeningEntity.getParentId());
 
                             List<TutupPeriod> jurnalDatas = tutupPeriodDao.getListDetailJurnalByCriteria(jurnalDetail);
                             if (jurnalDatas.size() > 0){

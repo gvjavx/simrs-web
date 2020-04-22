@@ -258,6 +258,10 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             detailCheckup.setIdKelas(entity.getKelasPasien());
             detailCheckup.setIdPelayananBpjs(entity.getIdPelayananBpjs());
             detailCheckup.setIdJenisPeriksaPasien(entity.getIdJenisPeriksaPasien());
+            detailCheckup.setNoKartuAsuransi(entity.getNoKartuAsuransi());
+            detailCheckup.setIdAsuransi(entity.getIdAsuransi());
+            detailCheckup.setCoverBiaya(entity.getCoverBiaya());
+            detailCheckup.setMetodePembayaran(entity.getMetodePembayaran());
 
             if (detailCheckup.getStatusPeriksa() != null && !"".equalsIgnoreCase(detailCheckup.getStatusPeriksa())) {
                 StatusPasien statusPasien = new StatusPasien();
@@ -338,7 +342,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             }
 
             // update tgl kluar if selesai
-            if ("selesai".equalsIgnoreCase(bean.getStatus())) {
+            if ("selesai".equalsIgnoreCase(bean.getStatus()) || "rujuk_rs_lain".equalsIgnoreCase(bean.getStatus())) {
                 HeaderCheckup headerCheckup = new HeaderCheckup();
                 headerCheckup.setNoCheckup(entity.getNoCheckup());
                 List<ItSimrsHeaderChekupEntity> headerChekupEntities = getListEntityCheckup(headerCheckup);
@@ -471,6 +475,9 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         detailCheckupEntity.setKodeCbg(bean.getKodeCbg());
         detailCheckupEntity.setBranchId(bean.getBranchId());
         detailCheckupEntity.setIdJenisPeriksaPasien(bean.getIdJenisPeriksaPasien());
+        detailCheckupEntity.setIdAsuransi(bean.getIdAsuransi());
+        detailCheckupEntity.setCoverBiaya(bean.getCoverBiaya());
+        detailCheckupEntity.setNoKartuAsuransi(bean.getNoKartuAsuransi());
 
         try {
             checkupDetailDao.addAndSave(detailCheckupEntity);
@@ -1263,6 +1270,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                         detailCheckupEntity.setNoJurnalTrans(bean.getNoJurnalTrans());
                         detailCheckupEntity.setTransPeriode(bean.getTransPeriode());
                         detailCheckupEntity.setTransDate(bean.getTransDate());
+                        detailCheckupEntity.setInvoiceTrans(bean.getInvoice());
                     } else {
                         detailCheckupEntity.setNoJurnal(bean.getNoJurnal());
                     }
@@ -1280,9 +1288,28 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
 
     @Override
     public BigDecimal getSumJumlahTindakan(String idDetailCheckup, String ket) {
-        return checkupDetailDao.getSumAllTarifTindakan(idDetailCheckup, ket);
+        return checkupDetailDao.getSumAllTarifTindakan(idDetailCheckup, "bpjs", ket);
    }
 
+    @Override
+    public BigDecimal getSumJumlahTindakanNonBpjs(String idDetailCheckup, String ket) {
+        return checkupDetailDao.getSumAllTarifTindakan(idDetailCheckup, "", ket);
+    }
+
+    @Override
+    public BigDecimal getSumJumlahTindakanTransitoris(String idDetailCheckup, String ket) {
+        return checkupDetailDao.getSumAllTarifTransitoris(idDetailCheckup, ket);
+    }
+
+    @Override
+    public BigDecimal getSumJumlahTindakanByJenis(String idDetailCheckup, String jenis, String ket) {
+        return checkupDetailDao.getSumAllTarifTindakan(idDetailCheckup, jenis, ket);
+    }
+
+    @Override
+    public BigDecimal getSumJumlajTindakanTransitorisByJenis(String idDetailCheckup, String jenis, String ket) {
+        return checkupDetailDao.getSumAllTarifTransitorisByJenis(idDetailCheckup, jenis, ket);
+    }
 
     @Override
     public String findResep(String idDetailCheckup) {
@@ -1316,6 +1343,11 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             }
         }
         return dokterList;
+    }
+
+    @Override
+    public Boolean checkAdaTransitoris(String idDetailCheckup) throws GeneralBOException {
+        return riwayatTindakanDao.checkIsTransitoris(idDetailCheckup);
     }
 
     @Override

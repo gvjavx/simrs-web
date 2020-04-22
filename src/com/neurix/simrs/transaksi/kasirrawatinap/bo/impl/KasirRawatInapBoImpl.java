@@ -52,7 +52,7 @@ public class KasirRawatInapBoImpl implements KasirRawatInapBo {
         List<RawatInap> result = new ArrayList<>();
         if(bean != null){
             try {
-                result = rawatInapDao.getSearchVerifikasiRawatInap(bean);
+                result = rawatInapDao.getSearchVerifikasiRawatInap(bean, bean.getIdJenisPeriksa());
             }catch (HibernateException e){
                 logger.error("[KasirRawatJalanBoImpl.getListRawatInap] Error when save update data flag approve tindakan rawat ", e);
             }
