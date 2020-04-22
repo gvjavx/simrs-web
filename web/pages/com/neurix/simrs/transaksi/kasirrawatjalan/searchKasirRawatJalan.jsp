@@ -605,10 +605,12 @@
                         if (item.totalTarif != null && item.totalTarif != '') {
                             tarif = item.totalTarif;
                             total = (parseInt(total) + parseInt(tarif));
-                            if (item.jenisPasien == "asuransi"){
-                                tindakanAsuransi = parseInt(tindakanAsuransi) + parseInt(tarif);
-                            } else {
-                                tindakanUmum = parseInt(tindakanUmum) + parseInt(tarif);
+                            if (item.keterangan != "resep"){
+                                if (item.jenisPasien == "asuransi"){
+                                    tindakanAsuransi = parseInt(tindakanAsuransi) + parseInt(tarif);
+                                } else {
+                                    tindakanUmum = parseInt(tindakanUmum) + parseInt(tarif);
+                                }
                             }
                         }
 
@@ -705,7 +707,7 @@
                             mapBiaya.push({"type": "kas", "nilai": tindakanUmum + totalObatUmum + ppnObat + ppnObatAsuransi });
                             mapBiaya.push({"type": "piutang_pasien_asuransi", "nilai": tindakanAsuransi + totalObat });
                             mapBiaya.push({"type": "pendapatan_rawat_jalan_asuransi", "nilai": tindakanAsuransi});
-                            mapBiaya.push({"type": "pendapaatan_rawat_jalan_umum", "nilai": tindakanUmum });
+                            mapBiaya.push({"type": "pendapatan_rawat_jalan_umum", "nilai": tindakanUmum });
                             mapBiaya.push({"type": "pendapatan_obat_asuransi", "nilai": totalObat});
                             mapBiaya.push({"type": "pendapatan_obat_umum", "nilai": totalObatUmum});
                             mapBiaya.push({"type": "ppn_keluaran", "nilai": ppnObat + ppnObatAsuransi });

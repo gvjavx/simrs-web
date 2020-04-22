@@ -924,13 +924,13 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         if (detailCheckupEntity.getNoJurnalTrans() != null && !"".equalsIgnoreCase(detailCheckupEntity.getNoJurnalTrans())){
 
             // for bpjs;
-            allTindakanTransUmum = checkupDetailBo.getSumJumlahTindakanByJenis(idDetailCheckup, "umum","");
-            resepTransUmum = checkupDetailBo.getSumJumlahTindakanByJenis(idDetailCheckup, "umum","resep");
+            allTindakanTransUmum = checkupDetailBo.getSumJumlajTindakanTransitorisByJenis(idDetailCheckup, "umum","");
+            resepTransUmum = checkupDetailBo.getSumJumlajTindakanTransitorisByJenis(idDetailCheckup, "umum","resep");
             tindakanTransUmum = allTindakanTransUmum.subtract(resepTransUmum);
 
             // for ptpn;
-            allTindakanTransAsuransi = checkupDetailBo.getSumJumlahTindakanByJenis(idDetailCheckup, "asuransi", "");
-            resepTransAsuransi = checkupDetailBo.getSumJumlahTindakanByJenis(idDetailCheckup, "asuransi", "resep");
+            allTindakanTransAsuransi = checkupDetailBo.getSumJumlajTindakanTransitorisByJenis(idDetailCheckup, "asuransi", "");
+            resepTransAsuransi = checkupDetailBo.getSumJumlajTindakanTransitorisByJenis(idDetailCheckup, "asuransi", "resep");
             tindakanTransAsuransi = allTindakanTransAsuransi.subtract(resepTransAsuransi);
 
             Map mapTransitoris = new HashMap();
@@ -1130,11 +1130,11 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                     Map mapResepUmum = new HashMap();
                     mapResepUmum.put("master_id", masterUmum);
                     mapResepUmum.put("divisi_id", divisiId);
-                    mapResepUmum.put("nilai", pendapatanResep);
+                    mapResepUmum.put("nilai", pendapatanResepUmum);
                     mapResepUmum.put("activity", listActivityResepUmum);
 
                     mapJurnal.put("pendapatan_rawat_inap_asuransi", mapPendapatanAsuransi);
-                    mapJurnal.put("pendapaatan_rawat_jalan_umum", mapPendapatanUmum);
+                    mapJurnal.put("pendapaatan_rawat_inap_umum", mapPendapatanUmum);
                     mapJurnal.put("pendapatan_obat_asuransi", mapResepAsuransi);
                     mapJurnal.put("pendapaatan_obat_umum", mapResepUmum);
 
@@ -1163,7 +1163,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                         mapJurnal.put("pendapatan_obat_umum", mapResepUmum);
                         mapJurnal.put("pendapatan_obat_asuransi", mapResepAsuransi);
                         mapJurnal.put("pendapatan_rawat_jalan_asuransi", mapPendapatanAsuransi);
-                        mapJurnal.put("pendapatan_rawat_jalan_umum", mapPendapatanUmum);
+                        mapJurnal.put("pendapaatan_rawat_jalan_umum", mapPendapatanUmum);
 
                         transId = "19";
                         ketTerangan = "Closing pasien rawat jalan Asuransi piutang dan Tunai dengan obat";
