@@ -225,7 +225,7 @@
             </result>
             <result name="print_report_kompilasi" type="jasper">
                 <param name="location">/pages/report/com/neurix/akuntansi/LaporanKompilasiUnit.jasper</param>
-                <param name="connection">connection</param>
+                <param name="dataSource">listKonsol</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>
             </result>

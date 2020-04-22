@@ -1733,18 +1733,20 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
                 i++;
             }
             branchId.add(unit);
+            listKonsol = laporanAkuntansiBo.getLaporanAkuntansiKonsol(periode,branchId.get(0),branchId.get(1),branchId.get(2),branchId.get(3),branchId.get(4));
         }else{
             titleReport="LAPORAN POSISI KEUANGAN";
             result="print_report_kompilasi";
+            listKonsol = laporanAkuntansiBo.getLaporanAkuntansiKonsolUnit(periode,data.getUnit());
         }
 
-        listKonsol = laporanAkuntansiBo.getLaporanAkuntansiKonsol(periode,branchId.get(0),branchId.get(1),branchId.get(2),branchId.get(3),branchId.get(4));
         Branch branch = branchBo.getBranchById(data.getUnit(),"Y");
         Date now = new Date();
         reportParams.put("reportTitle", titleReport);
         reportParams.put("reportId", reportId);
         reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
         reportParams.put("branchId", data.getUnit());
+        reportParams.put("branchName", branch.getBranchName());
         reportParams.put("periodeTitle",periodeTitle);
         reportParams.put("tanggal", CommonUtil.convertDateToString(now));
         reportParams.put("periode", periode);

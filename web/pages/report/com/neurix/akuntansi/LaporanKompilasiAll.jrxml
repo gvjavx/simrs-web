@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="IkhtisarPendapatan" pageWidth="595" pageHeight="842" columnWidth="567" leftMargin="14" rightMargin="14" topMargin="28" bottomMargin="28" isFloatColumnFooter="true" uuid="1ad74e3d-21c5-43ac-b65a-1f771461ad66">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.3310000000000044"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.zoom" value="1.9487171000000099"/>
+	<property name="ireport.x" value="234"/>
+	<property name="ireport.y" value="124"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -195,6 +195,12 @@
 					</textElement>
 					<textFieldExpression><![CDATA[$V{SUM_level_1_unit_1}]]></textFieldExpression>
 				</textField>
+				<line>
+					<reportElement key="line-2" x="176" y="19" width="390" height="1" uuid="54fbadea-9590-4c52-aff4-0ad9f5f1475c"/>
+					<graphicElement>
+						<pen lineWidth="1.0" lineStyle="Double"/>
+					</graphicElement>
+				</line>
 			</band>
 		</groupFooter>
 	</group>
@@ -297,6 +303,18 @@
 					</textElement>
 					<textFieldExpression><![CDATA[$V{SUM_level_2_unit_1}]]></textFieldExpression>
 				</textField>
+				<line>
+					<reportElement key="line-2" x="176" y="1" width="390" height="1" uuid="8048887b-89d9-4600-8d6a-a30958bf6360"/>
+					<graphicElement>
+						<pen lineWidth="1.0" lineStyle="Dashed"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement key="line-2" x="176" y="19" width="390" height="1" uuid="4d5fb409-b17d-4335-87f1-2bb3461a8294"/>
+					<graphicElement>
+						<pen lineWidth="1.0" lineStyle="Solid"/>
+					</graphicElement>
+				</line>
 			</band>
 		</groupFooter>
 	</group>
@@ -461,7 +479,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="23" splitType="Stretch">
+		<band height="43" splitType="Stretch">
 			<line>
 				<reportElement key="line-2" x="0" y="1" width="567" height="1" uuid="35bca783-b93c-4008-ba30-2e956ada8da3"/>
 				<graphicElement>
@@ -469,89 +487,150 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement key="line-3" x="0" y="22" width="567" height="1" uuid="50849c6a-caa6-4669-9735-1feaf363a243"/>
+				<reportElement key="line-3" x="0" y="42" width="567" height="1" uuid="50849c6a-caa6-4669-9735-1feaf363a243"/>
 				<graphicElement>
 					<pen lineWidth="1.0" lineStyle="Dashed"/>
 				</graphicElement>
 			</line>
 			<staticText>
-				<reportElement key="staticText-26" mode="Transparent" x="2" y="2" width="200" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="c7a7c493-7a48-48ac-9caa-47a3b4eea4ee"/>
+				<reportElement key="staticText-26" mode="Transparent" x="2" y="2" width="174" height="40" forecolor="#000000" backcolor="#FFFFFF" uuid="c7a7c493-7a48-48ac-9caa-47a3b4eea4ee"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
-				<text><![CDATA[Nama Rekening]]></text>
+				<text><![CDATA[Uraian]]></text>
 			</staticText>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-22" x="176" y="2" width="72" height="20" uuid="208baaaf-da38-4e59-84fb-ab72bbf01d67"/>
+				<reportElement key="textField-22" x="176" y="2" width="72" height="40" uuid="208baaaf-da38-4e59-84fb-ab72bbf01d67"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA["TOTAL"]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-22" x="248" y="2" width="81" height="20" uuid="3435f27f-40a0-487b-bef2-817308d04c90"/>
+				<reportElement key="textField-22" x="248" y="23" width="81" height="20" uuid="3435f27f-40a0-487b-bef2-817308d04c90"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{branch_name_1}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-22" x="406" y="2" width="76" height="20" uuid="258337cb-8d0b-4b7c-a60d-ba72ef1adc55"/>
+				<reportElement key="textField-22" x="406" y="23" width="76" height="20" uuid="258337cb-8d0b-4b7c-a60d-ba72ef1adc55"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{branch_name_3}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-22" x="329" y="2" width="76" height="20" uuid="858e4b77-4495-432a-8738-f92f8f214434"/>
+				<reportElement key="textField-22" x="329" y="23" width="76" height="20" uuid="858e4b77-4495-432a-8738-f92f8f214434"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{branch_name_2}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-22" x="484" y="2" width="81" height="20" uuid="725fe5e2-b2f2-4386-bbb7-650f7458640a"/>
+				<reportElement key="textField-22" x="484" y="23" width="81" height="20" uuid="725fe5e2-b2f2-4386-bbb7-650f7458640a"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{branch_name_4}]]></textFieldExpression>
 			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField-22" x="249" y="3" width="316" height="20" uuid="14a114a9-40ba-4121-baf0-32dedc5f00e1"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Laporan Keuangan Per Unit periode : "+$P{periodeTitle}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line-2" x="565" y="3" width="1" height="39" uuid="3ff0237f-cbe8-4583-a74c-08d02e1cc81b"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-2" x="176" y="4" width="1" height="39" uuid="0b4e6e00-490c-4500-b75e-ff8e65ee64e8"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-2" x="249" y="4" width="1" height="39" uuid="5bb39306-a8c2-40c2-b100-341694a991fc"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-2" x="0" y="3" width="1" height="39" uuid="cc6280b8-3895-48bb-97d1-835455f8528d"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-2" x="250" y="22" width="314" height="1" uuid="9098bd66-68e5-412b-85b8-0bbe75ff51e6"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-2" x="328" y="23" width="1" height="19" uuid="a48f7f10-3ae0-4e6c-b422-ac594981b931"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-2" x="405" y="24" width="1" height="19" uuid="db3adcd9-3e40-487d-afdf-4420d586ecc3"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-2" x="482" y="24" width="1" height="19" uuid="213266e6-dd86-4a96-b287-8a41de5773e4"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
 		</band>
 	</columnHeader>
 	<detail>

@@ -342,11 +342,19 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
                 BigDecimal totalUnitAll= BigDecimal.ZERO;
                 for (AkunSettingReportKeuanganKonsolDetail konsolDetail : keuanganKonsolDetailList){
                     if (konsolDetail.getSettingReportKonsolId().equalsIgnoreCase(konsol.getSettingReportKonsolId())){
-                        totalUnit1 = totalUnit1.add(konsolDetail.getSaldoUnit1());
-                        totalUnit2 = totalUnit2.add(konsolDetail.getSaldoUnit2());
-                        totalUnit3 = totalUnit3.add(konsolDetail.getSaldoUnit3());
-                        totalUnit4 = totalUnit4.add(konsolDetail.getSaldoUnit4());
-                        totalUnitAll = totalUnitAll.add(konsolDetail.getSaldoUnitAll());
+                        if ("T".equalsIgnoreCase(konsolDetail.getOperator())){
+                            totalUnit1 = totalUnit1.add(konsolDetail.getSaldoUnit1());
+                            totalUnit2 = totalUnit2.add(konsolDetail.getSaldoUnit2());
+                            totalUnit3 = totalUnit3.add(konsolDetail.getSaldoUnit3());
+                            totalUnit4 = totalUnit4.add(konsolDetail.getSaldoUnit4());
+                            totalUnitAll = totalUnitAll.add(konsolDetail.getSaldoUnitAll());
+                        }else if ("K".equalsIgnoreCase(konsolDetail.getOperator())){
+                            totalUnit1 = totalUnit1.subtract(konsolDetail.getSaldoUnit1());
+                            totalUnit2 = totalUnit2.subtract(konsolDetail.getSaldoUnit2());
+                            totalUnit3 = totalUnit3.subtract(konsolDetail.getSaldoUnit3());
+                            totalUnit4 = totalUnit4.subtract(konsolDetail.getSaldoUnit4());
+                            totalUnitAll = totalUnitAll.subtract(konsolDetail.getSaldoUnitAll());
+                        }
                     }
                 }
 
@@ -366,7 +374,50 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
 
         return result;
     }
+    @Override
+    public List<AkunSettingReportKeuanganKonsol> getLaporanAkuntansiKonsolUnit(String periode, String branchId1){
+        List<AkunSettingReportKeuanganKonsol> result = new ArrayList<>();
+        List<ImAkunSettingReportKeuanganKonsol> konsolList = new ArrayList<>();
+        List<AkunSettingReportKeuanganKonsolDetail> keuanganKonsolDetailList = new ArrayList<>();
 
+        try {
+            konsolList = settingReportKeuanganKonsolDao.listReportKeuanganKonsol();
+            keuanganKonsolDetailList = laporanAkuntansiDao.getDataLaporanAkuntansiKonsolUnit(periode,branchId1);
+        } catch (HibernateException e) {
+            logger.error("[LaporanAkuntansiBoImpl.getLaporanAkuntansiKonsol] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem , please info to your admin..." + e.getMessage());
+        }
+
+        for (ImAkunSettingReportKeuanganKonsol konsol : konsolList){
+            String[] coaSplit = konsol.getKodeRekeningAlias().split("\\.");
+            if (coaSplit.length==3){
+                AkunSettingReportKeuanganKonsol data = new AkunSettingReportKeuanganKonsol();
+
+                data.setLevel1(settingReportKeuanganKonsolDao.getCoaAliasNameByCoaAlias(coaSplit[0]));
+                data.setLevel2(settingReportKeuanganKonsolDao.getCoaAliasNameByCoaAlias(coaSplit[0]+"."+coaSplit[1]));
+
+                BigDecimal totalUnit1= BigDecimal.ZERO;
+                for (AkunSettingReportKeuanganKonsolDetail konsolDetail : keuanganKonsolDetailList){
+                    if (konsolDetail.getSettingReportKonsolId().equalsIgnoreCase(konsol.getSettingReportKonsolId())){
+                        if ("T".equalsIgnoreCase(konsolDetail.getOperator())){
+                            totalUnit1 = totalUnit1.add(konsolDetail.getSaldoUnit1());
+                        }else if ("K".equalsIgnoreCase(konsolDetail.getOperator())){
+                            totalUnit1 = totalUnit1.subtract(konsolDetail.getSaldoUnit1());
+                        }
+                    }
+                }
+
+                data.setSettingReportKonsolId(konsol.getSettingReportKonsolId());
+                data.setKodeRekeningAlias(konsol.getKodeRekeningAlias());
+                data.setNamaKodeRekeningAlias(konsol.getNamaKodeRekeningAlias());
+                data.setFlagLabel(konsol.getFlagLabel());
+                data.setSaldoUnit1(totalUnit1);
+
+                result.add(data);
+            }
+        }
+        return result;
+    }
     @Override
     public LaporanAkuntansi getById(String reportId){
         LaporanAkuntansi result;

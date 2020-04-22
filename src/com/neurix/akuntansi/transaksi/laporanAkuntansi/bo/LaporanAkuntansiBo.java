@@ -16,6 +16,8 @@ public interface LaporanAkuntansiBo extends BaseMasterBo<LaporanAkuntansi>{
 
     List<AkunSettingReportKeuanganKonsol> getLaporanAkuntansiKonsol(String periode, String branchId1, String branchId2, String branchId3, String branchId4, String branchIdAll);
 
+    List<AkunSettingReportKeuanganKonsol> getLaporanAkuntansiKonsolUnit(String periode, String branchId1);
+
     LaporanAkuntansi getById(String reportId);
 
     String levelKodeRekening(String reportId) throws GeneralBOException;
