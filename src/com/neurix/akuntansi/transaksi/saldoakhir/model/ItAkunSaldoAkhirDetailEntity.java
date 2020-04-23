@@ -7,8 +7,9 @@ import java.sql.Timestamp;
 /**
  * Created by reza on 20/03/20.
  */
-public class SaldoAkhir {
+public class ItAkunSaldoAkhirDetailEntity implements Serializable {
 
+    private String id;
     private String saldoAkhirId;
     private String rekeningId;
     private String periode;
@@ -27,12 +28,12 @@ public class SaldoAkhir {
     private String pasienId;
     private String divisiId;
 
-    public String getDivisiId() {
-        return divisiId;
+    public String getId() {
+        return id;
     }
 
-    public void setDivisiId(String divisiId) {
-        this.divisiId = divisiId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getSaldoAkhirId() {
@@ -161,5 +162,13 @@ public class SaldoAkhir {
 
     public void setPasienId(String pasienId) {
         this.pasienId = pasienId;
+    }
+
+    public String getDivisiId() {
+        return divisiId;
+    }
+
+    public void setDivisiId(String divisiId) {
+        this.divisiId = divisiId;
     }
 }

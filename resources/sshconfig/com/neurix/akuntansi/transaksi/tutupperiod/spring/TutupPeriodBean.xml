@@ -22,6 +22,7 @@
           p:tutupPeriodDao-ref="tutupPeriodDao"
           p:kodeRekeningDao-ref="kodeRekeningDao"
           p:checkupDetailDao-ref="checkupDetailDao"
+          p:saldoAkhirDetailDao-ref="saldoAkhirDetailDao"
     />
 
     <bean id="tutupPeriodBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -50,6 +51,8 @@
     <bean id="tutupPeriodDao" class="com.neurix.akuntansi.transaksi.tutupperiod.dao.TutupPeriodDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="saldoAkhirDao" class="com.neurix.akuntansi.transaksi.saldoakhir.dao.SaldoAkhirDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="saldoAkhirDetailDao" class="com.neurix.akuntansi.transaksi.saldoakhir.dao.SaldoAkhirDetailDao"
           p:sessionFactory-ref="sessionFactory" />
 
 </beans>

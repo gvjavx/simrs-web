@@ -6,6 +6,8 @@ import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDao;
 import com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDetailDao;
 import com.neurix.akuntansi.transaksi.saldoakhir.dao.SaldoAkhirDao;
+import com.neurix.akuntansi.transaksi.saldoakhir.dao.SaldoAkhirDetailDao;
+import com.neurix.akuntansi.transaksi.saldoakhir.model.ItAkunSaldoAkhirDetailEntity;
 import com.neurix.akuntansi.transaksi.saldoakhir.model.ItAkunSaldoAkhirEntity;
 import com.neurix.akuntansi.transaksi.saldoakhir.model.SaldoAkhir;
 import com.neurix.akuntansi.transaksi.tutupperiod.bo.TutupPeriodBo;
@@ -47,6 +49,7 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
     private KodeRekeningDao kodeRekeningDao;
     private TutupPeriodDao tutupPeriodDao;
     private CheckupDetailDao checkupDetailDao;
+    private SaldoAkhirDetailDao saldoAkhirDetailDao;
 
     @Override
     public void saveSettingPeriod(List<ItSimrsBatasTutupPeriodEntity> batasList) throws GeneralBOException {
@@ -222,6 +225,22 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
 
                             try {
                                 saldoAkhirDao.addAndSave(saldoAkhirEntity);
+
+                                TutupPeriod saldoDetail = new TutupPeriod();
+                                saldoDetail.setUnit(saldoAkhirEntity.getBranchId());
+                                saldoDetail.setSaldoAkhirId(saldoAkhirEntity.getSaldoAkhirId());
+                                saldoDetail.setPeriode(saldoAkhirEntity.getPeriode());
+                                saldoDetail.setRekeningId(saldoAkhirEntity.getRekeningId());
+                                saldoDetail.setBulan(bean.getBulan());
+                                saldoDetail.setTahun(bean.getTahun());
+                                saldoDetail.setCreatedDate(bean.getCreatedDate());
+                                saldoDetail.setCreatedWho(bean.getCreatedWho());
+                                saldoDetail.setLastUpdate(bean.getLastUpdate());
+                                saldoDetail.setLastUpdateWho(bean.getLastUpdateWho());
+
+                                // SAVE TO DETAIL
+                                saveSaldoAkhirDetail(saldoDetail, saldoAkhirEntity);
+
                             } catch (HibernateException e){
                                 logger.error("[TutupPeriodBoImpl.saveUpdateTutupPeriod] ERROR. ",e);
                                 throw new GeneralBOException("[TutupPeriodBoImpl.saveUpdateTutupPeriod] ERROR. ",e);
@@ -252,6 +271,91 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                 } else {
                     logger.error("[TutupPeriodBoImpl.saveSettingPeriod] ERROR. gagal menyimpan tutup period");
                     throw new GeneralBOException("[TutupPeriodBoImpl.saveSettingPeriod] ERROR. gagal menyimpan tutup period");
+                }
+            }
+        }
+    }
+
+    public void saveSaldoAkhirDetail(TutupPeriod bean, ItAkunSaldoAkhirEntity saldoAkhirEntity){
+
+        List<TutupPeriod> nilaiJurnalPerDivisi = tutupPeriodDao.getListDetailJurnalByCriteriaPerDivisi(bean);
+        if (nilaiJurnalPerDivisi.size() > 0){
+            for (TutupPeriod jurnal : nilaiJurnalPerDivisi){
+
+                SaldoAkhir saldoAkhir = new SaldoAkhir();
+                saldoAkhir.setPeriode(getPeriodeSebelum(bean.getBulan(), bean.getTahun()));
+                saldoAkhir.setBranchId(bean.getUnit());
+                saldoAkhir.setRekeningId(bean.getRekeningId());
+
+                if (jurnal.getMasterId() != null && !"".equalsIgnoreCase(jurnal.getMasterId())){
+                    saldoAkhir.setMasterId(jurnal.getMasterId());
+                }
+
+                if (jurnal.getDivisiId() != null && !"".equalsIgnoreCase(jurnal.getDivisiId())){
+                    saldoAkhir.setDivisiId(jurnal.getDivisiId());
+                }
+
+                if (jurnal.getPasienId() != null && !"".equalsIgnoreCase(jurnal.getPasienId())){
+                    saldoAkhir.setPasienId(jurnal.getPasienId());
+                }
+
+                // MENDAPATKAN SALDO AKHIR DETAIL PERIODE LALU
+                ItAkunSaldoAkhirDetailEntity saldoAkhirDetaillalu = new ItAkunSaldoAkhirDetailEntity();
+                List<ItAkunSaldoAkhirDetailEntity> saldoAkhirDetailEntities = getListEntitySaldoAkhirDetail(saldoAkhir);
+                if (saldoAkhirDetailEntities.size() > 0){
+                    for (ItAkunSaldoAkhirDetailEntity saldoAkhirDetailEntity : saldoAkhirDetailEntities){
+                        saldoAkhirDetaillalu = saldoAkhirDetailEntity;
+                    }
+                }
+
+
+                ItAkunSaldoAkhirDetailEntity detailEntity = new ItAkunSaldoAkhirDetailEntity();
+                detailEntity.setId(saldoAkhirEntity.getPeriode()+"-"+getNextSaldoAkhirDetailId());
+                detailEntity.setSaldoAkhirId(saldoAkhirEntity.getSaldoAkhirId());
+                detailEntity.setBranchId(saldoAkhirEntity.getBranchId());
+                detailEntity.setPeriode(saldoAkhirEntity.getPeriode());
+                detailEntity.setRekeningId(saldoAkhirEntity.getRekeningId());
+                detailEntity.setJumlahDebit(jurnal.getJumlahDebit());
+                detailEntity.setJumlahKredit(jurnal.getJumlahKredit());
+                detailEntity.setFlag("Y");
+                detailEntity.setAction("C");
+                detailEntity.setCreatedDate(bean.getCreatedDate());
+                detailEntity.setCreatedWho(bean.getCreatedWho());
+                detailEntity.setLastUpdate(bean.getLastUpdate());
+                detailEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                detailEntity.setMasterId(jurnal.getMasterId());
+                detailEntity.setDivisiId(jurnal.getDivisiId());
+                detailEntity.setPasienId(jurnal.getPasienId());
+
+                // DITAMBAH DENGAN SALDO BULAN LALU
+                if (saldoAkhirDetaillalu != null && saldoAkhirDetaillalu.getSaldo() != null){
+                    if ("D".equalsIgnoreCase(saldoAkhirDetaillalu.getPosisi())){
+                        detailEntity.setJumlahDebit(detailEntity.getJumlahDebit().add(saldoAkhirDetaillalu.getSaldo()));
+                    } else {
+                        detailEntity.setJumlahKredit(detailEntity.getJumlahKredit().add(saldoAkhirDetaillalu.getSaldo()));
+                    }
+                }
+
+                // JIKA DEBIT LEBIH BESAR DARI KREDIT
+                BigDecimal saldo = new BigDecimal(0);
+                String posisi = "";
+                if (detailEntity.getJumlahDebit().compareTo(detailEntity.getJumlahKredit()) == 1){
+                    saldo = detailEntity.getJumlahDebit().subtract(detailEntity.getJumlahKredit());
+                    posisi = "D";
+                }
+                if (detailEntity.getJumlahKredit().compareTo(detailEntity.getJumlahDebit()) == 1){
+                    saldo = detailEntity.getJumlahKredit().subtract(detailEntity.getJumlahDebit());
+                    posisi = "K";
+                }
+
+                detailEntity.setSaldo(saldo);
+                detailEntity.setPosisi(posisi);
+
+                try {
+                    saldoAkhirDetailDao.addAndSave(detailEntity);
+                } catch (HibernateException e){
+                    logger.error("[TutupPeriodBoImpl.saveSaldoAkhirDetail] ERROR. ",e);
+                    throw new GeneralBOException("[TutupPeriodBoImpl.saveSaldoAkhirDetail] ERROR. ",e);
                 }
             }
         }
@@ -432,39 +536,6 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
         return intBulan+"-"+intTahun;
     }
 
-    private void createTransitoris(TutupPeriod bean) throws GeneralBOException{
-        logger.info("[TutupPeriodBoImpl.createTransitoris] START >>>");
-
-        if (bean != null){
-
-            Map hsCriteria = new HashMap();
-            hsCriteria.put("branch_id", bean.getUnit());
-            hsCriteria.put("status_periksa", "1");
-
-            List<ItSimrsHeaderDetailCheckupEntity> detailCheckupEntities = new ArrayList<>();
-            try {
-                detailCheckupEntities = checkupDetailDao.getByCriteria(hsCriteria);
-            } catch (HibernateException e){
-                logger.error("[TutupPeriodBoImpl.createTransitoris] Data Is Null. ",e);
-                throw new GeneralBOException("[TutupPeriodBoImpl.createTransitoris] Data Is Null. "+e);
-            }
-
-            if (detailCheckupEntities.size() > 0){
-                for (ItSimrsHeaderDetailCheckupEntity detailCheckupEntity : detailCheckupEntities){
-
-                    Map mapTransitoris = new HashMap();
-
-                }
-            }
-
-        } else {
-            logger.error("[TutupPeriodBoImpl.createTransitoris] Data Is Null.");
-            throw new GeneralBOException("[TutupPeriodBoImpl.createTransitoris] Data Is Null.");
-        }
-
-        logger.info("[TutupPeriodBoImpl.createTransitoris] END <<<");
-    }
-
     @Override
     public void saveUpdateLockPeriod(TutupPeriod bean) throws GeneralBOException {
 
@@ -573,6 +644,51 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
         return saldoAkhirEntities;
     }
 
+    private List<ItAkunSaldoAkhirDetailEntity> getListEntitySaldoAkhirDetail(SaldoAkhir bean) throws GeneralBOException{
+
+        List<ItAkunSaldoAkhirDetailEntity> saldoAkhirEntities = new ArrayList<>();
+
+        if (bean != null){
+
+            Map hsCriteria = new HashMap();
+            if (bean.getRekeningId() != null){
+                hsCriteria.put("rekening_id", bean.getRekeningId());
+            }
+            if (bean.getRekeningId() != null){
+                hsCriteria.put("periode", bean.getPeriode());
+            }
+            if (bean.getBranchId() != null){
+                hsCriteria.put("branch_id", bean.getBranchId());
+            }
+
+            if (bean.getMasterId() != null){
+                hsCriteria.put("master_id", bean.getMasterId());
+            } else {
+                hsCriteria.put("master_id", "null");
+            }
+
+            if (bean.getDivisiId() != null){
+                hsCriteria.put("divisi_id", bean.getMasterId());
+            } else {
+                hsCriteria.put("divisi_id", "null");
+            }
+
+            if (bean.getPasienId() != null){
+                hsCriteria.put("pasien_id", bean.getMasterId());
+            } else {
+                hsCriteria.put("pasien_id", "null");
+            }
+
+            try {
+                saldoAkhirEntities = saldoAkhirDetailDao.getByCriteria(hsCriteria);
+            } catch (HibernateException e){
+                logger.error("[TutupPeriodBoImpl.getListEntitySaldoAkhir] ERROR. ",e);
+                throw new GeneralBOException("[TutupPeriodBoImpl.getListEntitySaldoAkhir] ERROR. ",e);
+            }
+        }
+        return saldoAkhirEntities;
+    }
+
     private List<ItAkunTutupPeriodEntity> getListTutupAkunTutupPeriod(TutupPeriod bean) throws GeneralBOException{
 
         List<ItAkunTutupPeriodEntity> akunTutupPeriodEntities = new ArrayList<>();
@@ -635,6 +751,17 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
         return id;
     }
 
+    private String getNextSaldoAkhirDetailId(){
+        String id = "";
+        try {
+            id = saldoAkhirDetailDao.getNextSeq();
+        } catch (HibernateException e){
+            logger.error("[TutupPeriodBoImpl.getNextSaldoAkhirDetailId] ERROR. ", e);
+        }
+
+        return id;
+    }
+
     private String getNextTutupPeriodId(){
         String id = "";
         try {
@@ -676,5 +803,9 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
 
     public void setCheckupDetailDao(CheckupDetailDao checkupDetailDao) {
         this.checkupDetailDao = checkupDetailDao;
+    }
+
+    public void setSaldoAkhirDetailDao(SaldoAkhirDetailDao saldoAkhirDetailDao) {
+        this.saldoAkhirDetailDao = saldoAkhirDetailDao;
     }
 }
