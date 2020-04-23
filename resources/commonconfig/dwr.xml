@@ -556,6 +556,13 @@
       </create>
 
       <convert converter="bean" match="com.neurix.simrs.transaksi.permintaanvendor.model.BatchPermintaanObat"/>
+
+      <!--reza-->
+      <create creator="new">
+          <param name="class" value="com.neurix.hris.transaksi.pendapatanDokter.action.PendapatanDokterAction"/>
+      </create>
+
+      <convert converter="bean" match="com.neurix.hris.transaksi.pendapatanDokter.model.PendapatanDokter"/>
   </allow>
 
 </dwr>

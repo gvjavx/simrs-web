@@ -5,6 +5,7 @@ import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.hris.master.biodata.model.Biodata;
 import com.neurix.hris.master.study.bo.StudyBo;
 import com.neurix.hris.master.study.model.Study;
 import org.apache.commons.io.FileUtils;
@@ -31,6 +32,7 @@ public class StudyAction extends BaseMasterAction{
     protected static transient Logger logger = Logger.getLogger(StudyAction.class);
     private StudyBo studyBoProxy;
     private Study study;
+    private Biodata biodata;
 
     private File fileUpload;
     private String fileUploadContentType;
@@ -103,6 +105,14 @@ public class StudyAction extends BaseMasterAction{
 
     public void setFileUploadFileName(String fileUploadFileName) {
         this.fileUploadFileName = fileUploadFileName;
+    }
+
+    public Biodata getBiodata() {
+        return biodata;
+    }
+
+    public void setBiodata(Biodata biodata) {
+        this.biodata = biodata;
     }
 
     public Study init(String kode, String flag){
@@ -288,6 +298,181 @@ public class StudyAction extends BaseMasterAction{
         return "success_save_edit";
     }
 
+    public String editStudy(){
+        String path = null;
+
+        if (isAddOrEdit()){
+            if (!isAdd()){
+                try{
+                    Study study = getStudy();
+                    String userLogin = CommonUtil.userLogin();
+                    Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+                    if (this.fileUpload != null){
+                        String idIjazah = studyBoProxy.getNextStudyId();
+                        String fileName = idIjazah+"_"+this.fileUploadFileName;
+                        String fileContentType = this.fileUploadContentType;
+                        String filePath = CommonConstant.RESOURCE_PATH_USER_UPLOAD_IJAZAH;
+                        File fileToCreate = new File(filePath, fileName);
+                        path = filePath+fileName;
+
+                        byte[] contentFile = null;
+                        try{
+                            FileUtils.copyFile(this.fileUpload, fileToCreate);
+                            contentFile = FileUtils.readFileToByteArray(this.fileUpload);
+                        } catch (IOException e) {
+                            Long logId = null;
+                            try{
+                                logId = studyBoProxy.saveErrorMessage(e.getMessage(), "Study.save");
+                            }catch (GeneralBOException e1){
+                                logger.error("[Study.addStudy] Error when saving error, ", e1);
+                            }
+                            logger.error("[Study.addStudy] Error when uploading and saving Study," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+                            addActionError("Error, " + "[code=" + logId + "] Found problem when uploading and saving user, please inform to your admin. Cause : " + e.getMessage());
+                            return ERROR;
+                        }
+
+                        if (contentFile != null){
+                            study.setUploadFile(fileName);
+                            if ("image/jpeg".equalsIgnoreCase(fileContentType)) {
+                                study.setFileType("IMG");
+                            }else if ("application/pdf".equalsIgnoreCase(fileContentType)){
+                                study.setFileType("PDF");
+                            }
+                        }
+                        study.setFilePath(path);
+                    }else {
+                        study.setUploadFile(study.getUploadFile());
+                    }
+
+                    study.setTypeStudy(study.getTypeStudy());
+                    study.setStudyName(study.getStudyName());
+                    study.setTahunAwal(study.getTahunAwal());
+                    study.setTahunAkhir(study.getTahunAkhir());
+                    study.setStudyFakultas(study.getStudyFakultas());
+                    study.setProgramStudy(study.getProgramStudy());
+
+                    study.setCreatedWho(userLogin);
+                    study.setLastUpdate(updateTime);
+                    study.setCreatedDate(updateTime);
+                    study.setLastUpdateWho(userLogin);
+                    study.setAction("U");
+                    study.setFlag("Y");
+
+                    ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+                    StudyBo studyBo = (StudyBo) ctx.getBean("studyBoProxy");
+                    studyBo.saveEdit(study);
+                }catch (GeneralBOException e){
+                    Long logId = null;
+                    try {
+                        logId = studyBoProxy.saveErrorMessage(e.getMessage(), "liburBO.saveAdd");
+                    } catch (GeneralBOException e1) {
+                        logger.error("[liburAction.saveAdd] Error when saving error,", e1);
+                        return ERROR;
+                    }
+                    logger.error("[liburAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+                    addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+                    return ERROR;
+                }
+
+                return null;
+            }else {
+                try{
+                    Study study = getStudy();
+                    String idIjazah = studyBoProxy.getNextStudyId();
+                    String userLogin = CommonUtil.userLogin();
+                    Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+                    if (this.fileUpload != null){
+                        String fileName = idIjazah+"_"+this.fileUploadFileName;
+                        String fileContentType = this.fileUploadContentType;
+                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY + ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_USER_UPLOAD_IJAZAH;
+                        File fileToCreate = new File(filePath, fileName);
+                        path = filePath+fileName;
+
+                        byte[] contentFile = null;
+                        try{
+                            FileUtils.copyFile(this.fileUpload, fileToCreate);
+                            contentFile = FileUtils.readFileToByteArray(this.fileUpload);
+                        } catch (IOException e) {
+                            Long logId = null;
+                            try{
+                                logId = studyBoProxy.saveErrorMessage(e.getMessage(), "Study.save");
+                            }catch (GeneralBOException e1){
+                                logger.error("[Study.addStudy] Error when saving error, ", e1);
+                            }
+                            logger.error("[Study.addStudy] Error when uploading and saving Study," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+                            addActionError("Error, " + "[code=" + logId + "] Found problem when uploading and saving user, please inform to your admin. Cause : " + e.getMessage());
+                            return ERROR;
+                        }
+
+                        if (contentFile != null){
+                            study.setUploadFile(fileName);
+                            if ("image/jpeg".equalsIgnoreCase(fileContentType)) {
+                                study.setFileType("IMG");
+                            }else if ("application/pdf".equalsIgnoreCase(fileContentType)){
+                                study.setFileType("PDF");
+                            }
+                        }
+                        study.setFilePath(path);
+                    }else {
+                        study.setUploadFile(study.getUploadFile());
+                    }
+
+                    study.setTypeStudy(study.getTypeStudy());
+                    study.setStudyName(study.getStudyName());
+                    study.setTahunAwal(study.getTahunAwal());
+                    study.setTahunAkhir(study.getTahunAkhir());
+                    study.setStudyFakultas(study.getStudyFakultas());
+                    study.setProgramStudy(study.getProgramStudy());
+
+                    study.setCreatedWho(userLogin);
+                    study.setLastUpdate(updateTime);
+                    study.setCreatedDate(updateTime);
+                    study.setLastUpdateWho(userLogin);
+                    study.setAction("C");
+                    study.setFlag("Y");
+
+                    String id = study.getStudyId();
+                    HttpSession session = ServletActionContext.getRequest().getSession();
+                    List<Study> listStudy = new ArrayList<>();
+                    List<Study> listOfResult = (List<Study>) session.getAttribute("listStudy");
+
+                    if (id != null && !"".equalsIgnoreCase(id)) {
+                        if (listOfResult != null) {
+                            for (Study study1 : listOfResult) {
+                                if (id.equalsIgnoreCase(study1.getStudyId())) {
+                                    listStudy.add(study);
+                                } else {
+                                    listStudy.add(study);
+                                }
+                            }
+                        }
+                        logger.info("[StudyAction.init] end process >>>");
+                    }
+
+                    session.removeAttribute("listStudy");
+                    session.setAttribute("listStudy", listStudy);
+                }catch (GeneralBOException e){
+                    Long logId = null;
+                    try {
+                        logId = studyBoProxy.saveErrorMessage(e.getMessage(), "liburBO.saveAdd");
+                    } catch (GeneralBOException e1) {
+                        logger.error("[liburAction.saveAdd] Error when saving error,", e1);
+                        return ERROR;
+                    }
+                    logger.error("[liburAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+                    addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+                    return ERROR;
+                }
+                return null;
+            }
+        }else {
+            return null;
+        }
+
+    }
+
     public String initEdit(String id, String typeStudy, String studyName, String tahunAwal, String tahunAkhir){
         logger.info("[StudyAction.saveEdit] start process >>>");
         Study editStudy = new Study();
@@ -466,88 +651,166 @@ public class StudyAction extends BaseMasterAction{
 
     public String addStudy(){
         String path = null;
-        try{
-            Study study = getStudy();
-            String idIjazah = studyBoProxy.getNextStudyId();
-            String userLogin = CommonUtil.userLogin();
-            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
-            if (this.fileUpload != null){
-                String fileName = idIjazah+"_"+this.fileUploadFileName;
-                String fileContentType = this.fileUploadContentType;
-                String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY + ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_USER_UPLOAD_IJAZAH;
-                File fileToCreate = new File(filePath, fileName);
-                path = filePath+fileName;
+        if (isAddOrEdit()) {
+            if (!isAdd()) {
 
-                byte[] contentFile = null;
-                try{
-                    FileUtils.copyFile(this.fileUpload, fileToCreate);
-                    contentFile = FileUtils.readFileToByteArray(this.fileUpload);
-                } catch (IOException e) {
-                    Long logId = null;
-                    try{
-                        logId = studyBoProxy.saveErrorMessage(e.getMessage(), "Study.save");
-                    }catch (GeneralBOException e1){
-                        logger.error("[Study.addStudy] Error when saving error, ", e1);
+                try {
+                    Study study = getStudy();
+                    String idIjazah = studyBoProxy.getNextStudyId();
+                    String userLogin = CommonUtil.userLogin();
+                    Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+                    String nip = getBiodata().getNip();
+
+                    if (this.fileUpload != null){
+                        String fileName = idIjazah+"_"+this.fileUploadFileName;
+                        String fileContentType = this.fileUploadContentType;
+                        String filePath = CommonConstant.RESOURCE_PATH_USER_UPLOAD_IJAZAH;
+                        File fileToCreate = new File(filePath, fileName);
+                        path = filePath+fileName;
+
+                        byte[] contentFile = null;
+                        try{
+                            FileUtils.copyFile(this.fileUpload, fileToCreate);
+                            contentFile = FileUtils.readFileToByteArray(this.fileUpload);
+                        } catch (IOException e) {
+                            Long logId = null;
+                            try{
+                                logId = studyBoProxy.saveErrorMessage(e.getMessage(), "Study.save");
+                            }catch (GeneralBOException e1){
+                                logger.error("[Study.addStudy] Error when saving error, ", e1);
+                            }
+                            logger.error("[Study.addStudy] Error when uploading and saving Study," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+                            addActionError("Error, " + "[code=" + logId + "] Found problem when uploading and saving user, please inform to your admin. Cause : " + e.getMessage());
+                            return ERROR;
+                        }
+
+                        if (contentFile != null){
+                            study.setUploadFile(fileName);
+                            if ("image/jpeg".equalsIgnoreCase(fileContentType)) {
+                                study.setFileType("IMG");
+                            }else if ("application/pdf".equalsIgnoreCase(fileContentType)){
+                                study.setFileType("PDF");
+                            }
+                        }
                     }
-                    logger.error("[Study.addStudy] Error when uploading and saving Study," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
-                    addActionError("Error, " + "[code=" + logId + "] Found problem when uploading and saving user, please inform to your admin. Cause : " + e.getMessage());
+                    study.setNip(nip);
+                    study.setTypeStudy(study.getTypeStudy());
+                    study.setStudyName(study.getStudyName());
+                    study.setTahunAwal(study.getTahunAwal());
+                    study.setTahunAkhir(study.getTahunAkhir());
+                    study.setStudyFakultas(study.getStudyFakultas());
+                    study.setProgramStudy(study.getProgramStudy());
+                    study.setFilePath(path);
+
+                    study.setCreatedWho(userLogin);
+                    study.setLastUpdate(updateTime);
+                    study.setCreatedDate(updateTime);
+                    study.setLastUpdateWho(userLogin);
+                    study.setAction("C");
+                    study.setFlag("Y");
+
+                    ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+                    StudyBo studyBo = (StudyBo) ctx.getBean("studyBoProxy");
+                    studyBo.saveAdd(study);
+                }catch (GeneralBOException e) {
+                    Long logId = null;
+                    try {
+                        logId = studyBoProxy.saveErrorMessage(e.getMessage(), "liburBO.saveAdd");
+                    } catch (GeneralBOException e1) {
+                        logger.error("[liburAction.saveAdd] Error when saving error,", e1);
+                        return ERROR;
+                    }
+                    logger.error("[liburAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+                    addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
                     return ERROR;
                 }
 
-                if (contentFile != null){
-                    study.setUploadFile(fileName);
-                    if ("image/jpeg".equalsIgnoreCase(fileContentType)) {
-                        study.setFileType("IMG");
-                    }else if ("application/pdf".equalsIgnoreCase(fileContentType)){
-                        study.setFileType("PDF");
+            }else {
+                try{
+                    Study study = getStudy();
+                    String idIjazah = studyBoProxy.getNextStudyId();
+                    String userLogin = CommonUtil.userLogin();
+                    Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+                    if (this.fileUpload != null){
+                        String fileName = idIjazah+"_"+this.fileUploadFileName;
+                        String fileContentType = this.fileUploadContentType;
+                        String filePath = CommonConstant.RESOURCE_PATH_USER_UPLOAD_IJAZAH;
+                        File fileToCreate = new File(filePath, fileName);
+                        path = filePath+fileName;
+
+                        byte[] contentFile = null;
+                        try{
+                            FileUtils.copyFile(this.fileUpload, fileToCreate);
+                            contentFile = FileUtils.readFileToByteArray(this.fileUpload);
+                        } catch (IOException e) {
+                            Long logId = null;
+                            try{
+                                logId = studyBoProxy.saveErrorMessage(e.getMessage(), "Study.save");
+                            }catch (GeneralBOException e1){
+                                logger.error("[Study.addStudy] Error when saving error, ", e1);
+                            }
+                            logger.error("[Study.addStudy] Error when uploading and saving Study," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+                            addActionError("Error, " + "[code=" + logId + "] Found problem when uploading and saving user, please inform to your admin. Cause : " + e.getMessage());
+                            return ERROR;
+                        }
+
+                        if (contentFile != null){
+                            study.setUploadFile(fileName);
+                            if ("image/jpeg".equalsIgnoreCase(fileContentType)) {
+                                study.setFileType("IMG");
+                            }else if ("application/pdf".equalsIgnoreCase(fileContentType)){
+                                study.setFileType("PDF");
+                            }
+                        }
                     }
+
+                    study.setTypeStudy(study.getTypeStudy());
+                    study.setStudyName(study.getStudyName());
+                    study.setTahunAwal(study.getTahunAwal());
+                    study.setTahunAkhir(study.getTahunAkhir());
+                    study.setStudyFakultas(study.getStudyFakultas());
+                    study.setProgramStudy(study.getProgramStudy());
+                    study.setFilePath(path);
+
+                    study.setCreatedWho(userLogin);
+                    study.setLastUpdate(updateTime);
+                    study.setCreatedDate(updateTime);
+                    study.setLastUpdateWho(userLogin);
+                    study.setAction("C");
+                    study.setFlag("Y");
+
+                    int id = 0;
+                    HttpSession session = ServletActionContext.getRequest().getSession();
+                    List<Study> listOfResult = (List<Study>) session.getAttribute("listStudy");
+                    if(listOfResult != null){
+                        for(Study study1: listOfResult){
+                            id = Integer.parseInt(study1.getStudyId());
+                        }
+                        id++;
+                        study.setStudyId(id + "");
+                        listOfResult.add(study);
+                    }else{
+                        listOfResult = new ArrayList<>();
+                        study.setStudyId(id + "");
+                        listOfResult.add(study);
+                    }
+                    session.removeAttribute("listStudy");
+                    session.setAttribute("listStudy", listOfResult);
+                }catch (GeneralBOException e){
+                    Long logId = null;
+                    try {
+                        logId = studyBoProxy.saveErrorMessage(e.getMessage(), "liburBO.saveAdd");
+                    } catch (GeneralBOException e1) {
+                        logger.error("[liburAction.saveAdd] Error when saving error,", e1);
+                        return ERROR;
+                    }
+                    logger.error("[liburAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+                    addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+                    return ERROR;
                 }
             }
-
-            study.setTypeStudy(study.getTypeStudy());
-            study.setStudyName(study.getStudyName());
-            study.setTahunAwal(study.getTahunAwal());
-            study.setTahunAkhir(study.getTahunAkhir());
-            study.setStudyFakultas(study.getStudyFakultas());
-            study.setProgramStudy(study.getProgramStudy());
-            study.setFilePath(path);
-
-            study.setCreatedWho(userLogin);
-            study.setLastUpdate(updateTime);
-            study.setCreatedDate(updateTime);
-            study.setLastUpdateWho(userLogin);
-            study.setAction("C");
-            study.setFlag("Y");
-
-            int id = 0;
-            HttpSession session = ServletActionContext.getRequest().getSession();
-            List<Study> listOfResult = (List<Study>) session.getAttribute("listStudy");
-            if(listOfResult != null){
-                for(Study study1: listOfResult){
-                    id = Integer.parseInt(study1.getStudyId());
-                }
-                id++;
-                study.setStudyId(id + "");
-                listOfResult.add(study);
-            }else{
-                listOfResult = new ArrayList<>();
-                study.setStudyId(id + "");
-                listOfResult.add(study);
-            }
-            session.removeAttribute("listStudy");
-            session.setAttribute("listStudy", listOfResult);
-        }catch (GeneralBOException e){
-            Long logId = null;
-            try {
-                logId = studyBoProxy.saveErrorMessage(e.getMessage(), "liburBO.saveAdd");
-            } catch (GeneralBOException e1) {
-                logger.error("[liburAction.saveAdd] Error when saving error,", e1);
-                return ERROR;
-            }
-            logger.error("[liburAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
         }
 
         return null;

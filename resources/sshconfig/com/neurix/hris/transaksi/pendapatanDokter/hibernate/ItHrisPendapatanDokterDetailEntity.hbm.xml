@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.neurix.hris.transaksi.pendapatanDokter.model.ItHrisPendapatanDokterDetailEntity" dynamic-update="true"
+           table="it_hris_pendapatan_dokter_detail" select-before-update="true" schema="public">
+
+        <id name="pendapatanDokterDetailId">
+            <column name="pendapatan_dokter_detail_id" sql-type="varchar" length="20" not-null="true" />
+        </id>
+        <property name="pendapatanDokterId">
+            <column name="pendapatan_dokter_id" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="activityId">
+            <column name="activity_id" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="activityName">
+            <column name="activity_name" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="poliId">
+            <column name="poli_id" sql-type="varchar" length="15" not-null="false"/>
+        </property>
+        <property name="poliName">
+            <column name="poli_name" sql-type="varchar" length="100" not-null="false"/>
+        </property>
+        <property name="biaya">
+            <column name="biaya" sql-type="numeric" length="20" precision="2" not-null="false"/>
+        </property>
+        <property name="noTrans">
+            <column name="no_trans" sql-type="varchar" length="30" not-null="false"/>
+        </property>
+
+        <property name="jenisRawat">
+            <column name="jenis_rawat" sql-type="varchar" length="30" not-null="false"/>
+        </property>
+        <property name="kdjnspas">
+            <column name="kdjnspas" sql-type="varchar" length="20" not-null="false"/>
+        </property>
+        <property name="namaPasien">
+            <column name="nama_pasien" sql-type="varchar" length="100" not-null="false"/>
+        </property>
+        <property name="tanggal">
+            <column name="tanggal" sql-type="date" not-null="false" />
+        </property>
+        <property name="keterangan">
+            <column name="keterangan" sql-type="varchar" length="30" not-null="false"/>
+        </property>
+        <property name="tarifInacbg">
+            <column name="tarif_inacbg" sql-type="numeric" length="20" precision="2" not-null="false"/>
+        </property>
+        <property name="bruto">
+            <column name="bruto" sql-type="numeric" length="15" precision="2" not-null="false"/>
+        </property>
+        <property name="pendapatanRs">
+            <column name="pendapatan_rs" sql-type="numeric" length="15" precision="2" not-null="false"/>
+        </property>
+        <property name="hrBruto">
+            <column name="hr_bruto" sql-type="numeric" length="15" precision="2" not-null="false"/>
+        </property>
+        <property name="dppPph21">
+            <column name="dpp_pph_21" sql-type="numeric" length="15" precision="2" not-null="false"/>
+        </property>
+        <property name="dppPph21Komulatif">
+            <column name="dpp_pph_21_komulatif" sql-type="numeric" length="15" precision="2" not-null="false"/>
+        </property>
+        <property name="pajak">
+            <column name="pajak" sql-type="numeric" length="15" precision="2" not-null="false"/>
+        </property>
+        <property name="potonganPajak">
+            <column name="potongan_pajak" sql-type="numeric" length="15" precision="2" not-null="false"/>
+        </property>
+        <property name="hrAktifitasNetto">
+            <column name="hr_aktifitas_netto" sql-type="numeric" length="15" precision="2" not-null="false"/>
+        </property>
+        <property name="potonganKs">
+            <column name="potongan_ks" sql-type="numeric" length="15" precision="2" not-null="false"/>
+        </property>
+        <property name="hrNetto">
+            <column name="hr_netto" sql-type="numeric" length="15" precision="2" not-null="false"/>
+        </property>
+
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="false"/>
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false"/>
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="date" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="date" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
+        </property>
+
+    </class>
+</hibernate-mapping>

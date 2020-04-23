@@ -40,6 +40,7 @@ public class CommonConstant {
     public final static String RESOURCE_PATH_TTD_APOTEKER = "/upload/ttd_apoteker/";
 
     public final static String RESOURCE_PATH_USER_UPLOAD = "/pages/upload/image/profile/";
+    public final static String RESOURCE_PATH_USER_UPLOAD_IJAZAH = CommonUtil.getPropertyParams("resource.dir")+"mnt/ijazah/";
 
     //sodiq, 18 Nov 2019, Upload KTP pasien
     public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = CommonUtil.getPropertyParams("upload.external.dir");

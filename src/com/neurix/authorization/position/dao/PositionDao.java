@@ -93,6 +93,17 @@ public class PositionDao extends GenericDao<ImPosition,String> {
         return results;
     }
 
+    public List<ImPosition> getListPositionKodering(String term) throws HibernateException {
+
+        List<ImPosition> results = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class)
+                .add(Restrictions.ilike("kodering",term))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("positionId"))
+                .list();
+
+        return results;
+    }
+
     public List<ImPosition> getListPositionByCriteria(String postionName, String department, String bagian, String kelompok){
         List<ImPosition> results = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class)
                 .add(Restrictions.eq("positionName",postionName))

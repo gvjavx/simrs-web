@@ -534,33 +534,57 @@
                                             mapped = {};
 
                                             var data = [];
-                                            dwr.engine.setAsync(false);
-                                            MedicalRecordAction.initComboPersonil(query,'', function (listdata) {
-                                                data = listdata;
-                                            });
-                                            $.each(data, function (i, item) {
-                                                var labelItem =item.nip+ " || "+ item.namaPegawai;
-                                                var labelNip = item.nip;
-                                                mapped[labelItem] = {pegawai:item.namaPegawai, id: item.nip, label: labelItem,
-                                                    branchId : item.branch, divisiId: item.divisi, positionId : item.positionId,
-                                                    golonganId : item.golonganId, point : item.point, tipePegawaiId : item.tipePegawai,
-                                                    statusPegawaiId: item.statusPegawai};
-                                                functions.push(labelItem);
-                                            });
+                                            var unit1 = $('#branchId').val();
 
+                                            if (unit1==""){
+//                                                dwr.engine.setAsync(false);
+//                                                MedicalRecordAction.initComboPersonil(query,'', function (listdata) {
+//                                                    data = listdata;
+//                                                });
+//                                                $.each(data, function (i, item) {
+//                                                    var labelItem =item.nip+ " || "+ item.namaPegawai;
+//                                                    var labelNip = item.nip;
+//                                                    mapped[labelItem] = {pegawai:item.namaPegawai, id: item.nip, label: labelItem,
+//                                                        branchId : item.branch, divisiId: item.divisi, positionId : item.positionId,
+//                                                        golonganId : item.golonganId, point : item.point, tipePegawaiId : item.tipePegawai,
+//                                                        statusPegawaiId: item.statusPegawai};
+//                                                    functions.push(labelItem);
+//                                                });
+//                                                process(functions);
+                                                alert("unit is empty");
+                                                $('#biodataName').val("");
+                                                $('#biodataId').val("");
+                                            }else {
+                                                dwr.engine.setAsync(false);
+                                                console.log(unit1);
+                                                CutiPegawaiAction.initComboAllPersonil(query, unit1, function (listdata) {
+                                                    data = listdata;
+                                                });
 
-                                            process(functions);
+                                                $.each(data, function (i, item) {
+                                                    var labelItem = item.nip+" "+item.namaPegawai;
+                                                    mapped[labelItem] = {id: item.nip, label: labelItem,nama:item.namaPegawai};
+                                                    functions.push(labelItem);
+                                                });
+
+                                                process(functions);
+                                            }
+
                                         },
 
                                         updater: function (item) {
-                                            var selectedObj = mapped[item];
-                                            var namaAlat = selectedObj.id;
-                                            document.getElementById("biodataName").value = selectedObj.pegawai;
-                                            $('#branchId').val(selectedObj.branchId).change();
-                                            $('#departmentId').val(selectedObj.divisiId).change();
-                                            $('#tipePegawaiId').val(selectedObj.tipePegawai).change();
+//                                            var selectedObj = mapped[item];
+//                                            var namaAlat = selectedObj.id;
+//                                            document.getElementById("biodataName").value = selectedObj.pegawai;
+//                                            $('#branchId').val(selectedObj.branchId).change();
+//                                            $('#departmentId').val(selectedObj.divisiId).change();
+//                                            $('#tipePegawaiId').val(selectedObj.tipePegawai).change();
+//                                            return namaAlat;
 
-                                            return namaAlat;
+                                            var selectedObj = mapped[item];
+                                            var namaMember = selectedObj.label;
+                                            document.getElementById("biodataName").value = selectedObj.nama;
+                                            return selectedObj.id;
                                         }
                                     });
                                 </script>
@@ -584,9 +608,18 @@
                                 </td>
                                 <td>
                                     <table>
-                                        <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                                        <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="biodata.branch"
-                                                  listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                        <s:if test='biodata.branch == "KP"'>
+                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                            <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="biodata.branch"
+                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                        </s:if>
+                                        <s:else>
+                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                            <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="biodata.branch" disabled="true"
+                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                            <s:hidden id="branchId" name="biodata.branch"/>
+                                        </s:else>
+
                                     </table>
                                 </td>
                             </tr>

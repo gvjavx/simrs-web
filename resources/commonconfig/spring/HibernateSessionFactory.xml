@@ -38,15 +38,15 @@
                 <!--<prop key="hibernate.connection.username">root</prop>-->
                 <!--<prop key="hibernate.connection.password">123456</prop>-->
 
-                <prop key="hibernate.connection.url">jdbc:postgresql://db.simrs.local:5432/gomedsys_nmu</prop>
-                <prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>
-                <prop key="hibernate.connection.username">postgres</prop>
-                <prop key="hibernate.connection.password">123456</prop>
-
-                <!--<prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs-sementara</prop>-->
+                <!--<prop key="hibernate.connection.url">jdbc:postgresql://db.simrs.local:5432/gomedsys_nmu</prop>-->
                 <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
                 <!--<prop key="hibernate.connection.username">postgres</prop>-->
                 <!--<prop key="hibernate.connection.password">123456</prop>-->
+
+                <prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs_09042020</prop>
+                <prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>
+                <prop key="hibernate.connection.username">postgres</prop>
+                <prop key="hibernate.connection.password">123456</prop>
 
                 <!--<prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs-20032020</prop>-->
                 <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
@@ -420,6 +420,9 @@
                 <value>sshconfig/com/neurix/simrs/master/obat/hibernate/ItSimrsReturObatEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/obat/hibernate/ItSimrsReturObatDetailEntity.hbm.xml</value>
 
+                <value>sshconfig/com/neurix/hris/transaksi/pendapatanDokter/hibernate/ItHrisPendapatanDokterEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/transaksi/pendapatanDokter/hibernate/ItHrisPendapatanDokterDetailEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/DokterKso/hibernate/ImSimrsDokterKso.hbm.xml</value>
             </list>
         </property>
     </bean>

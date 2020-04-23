@@ -340,6 +340,13 @@ public class CommonUtil {
         return df.format(number);
     }
 
+    public static BigDecimal dobelToBigDecimal(Double number){
+        Double data = new Double(number);
+        BigDecimal hasil = BigDecimal.valueOf(data);
+
+        return hasil;
+    }
+
     public static String longDateFormat(Timestamp timestamp) {
         if (timestamp!=null) {
             FastDateFormat dateFormat = FastDateFormat.getInstance("dd/MM/yyyy HH:mm:ss");
@@ -1037,4 +1044,5 @@ public class CommonUtil {
                     return "";
         }
     }
+
 }

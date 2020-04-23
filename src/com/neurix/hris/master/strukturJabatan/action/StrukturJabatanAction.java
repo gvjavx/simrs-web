@@ -380,6 +380,16 @@ public class StrukturJabatanAction extends BaseMasterAction{
         logger.info("[StrukturJabatanAction.initForm] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
 
+        String branchId = CommonUtil.userBranchLogin();
+        StrukturJabatan data = new StrukturJabatan();
+        if (branchId != null){
+            data.setBranchId(branchId);
+        }else {
+            data.setBranchId("");
+        }
+
+        strukturJabatan = data;
+
         session.removeAttribute("listOfResult");
         logger.info("[StrukturJabatanAction.initForm] end process >>>");
         return INPUT;

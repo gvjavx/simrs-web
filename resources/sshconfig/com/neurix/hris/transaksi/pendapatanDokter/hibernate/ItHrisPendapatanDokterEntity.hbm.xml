@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.neurix.hris.transaksi.pendapatanDokter.model.ItHrisPendapatanDokterEntity" dynamic-update="true"
+           table="it_hris_pendapatan_dokter" select-before-update="true" schema="public">
+
+        <id name="pendapatanDokterId">
+            <column name="pendapatan_dokter_id" sql-type="varchar" length="20" not-null="true" />
+        </id>
+        <property name="dokterId">
+            <column name="dokter_id" sql-type="varchar" length="15" not-null="false" />
+        </property>
+        <property name="dokterName">
+            <column name="dokter_name" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="branchId">
+            <column name="branch_id" sql-type="varchar" length="5" not-null="false" />
+        </property>
+        <property name="bulan">
+            <column name="bulan" sql-type="varchar" length="2" not-null="false"/>
+        </property>
+        <property name="tahun">
+            <column name="tahun" sql-type="varchar" length="4" not-null="false"/>
+        </property>
+        <property name="bruto">
+            <column name="bruto" sql-type="numeric" length="20" precision="2" not-null="false"/>
+        </property>
+        <property name="dppPph50">
+            <column name="dpp_pph_50" sql-type="numeric" length="20" precision="2" not-null="false"/>
+        </property>
+        <property name="dppPph21Komulatif">
+            <column name="dpp_pph_21_komulatif" sql-type="numeric" length="20" precision="2" not-null="false"/>
+        </property>
+        <property name="dppPph21">
+            <column name="dpp_pph_21" sql-type="numeric" length="20" precision="2" not-null="false"/>
+        </property>
+        <property name="tarif">
+            <column name="tarif" sql-type="numeric" length="3" precision="0" not-null="false"/>
+        </property>
+        <property name="pphDipungut">
+            <column name="pph_dipungut" sql-type="numeric" length="20" precision="2" not-null="false"/>
+        </property>
+        <property name="gajiBersih">
+            <column name="gaji_bersih" sql-type="numeric" length="20" precision="2" not-null="false"/>
+        </property>
+        <property name="approvalFlag">
+            <column name="approval_flag" sql-type="varchar" length="1" not-null="false"/>
+        </property>
+        <property name="approvalWho">
+            <column name="approval_who" sql-type="varchar" length="100" not-null="false"/>
+        </property>
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="date" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="date" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
+        </property>
+
+        <property name="approvalDate">
+            <column name="approval_date" sql-type="date" not-null="false"/>
+        </property>
+        <property name="flagDiterima">
+            <column name="flag_diterima" sql-type="varchar" length="1" not-null="false"/>
+        </property>
+        <property name="dateDiterima">
+            <column name="date_diterima" sql-type="date" not-null="false"/>
+        </property>
+        <property name="pemberiWho">
+            <column name="pemberi_who" sql-type="varchar" length="100" not-null="false"/>
+        </property>
+
+        <property name="pendapatanRs">
+            <column name="pendapatan_rs" sql-type="numeric" length="20" precision="2" not-null="false"/>
+        </property>
+        <property name="hrBruto">
+            <column name="hr_bruto" sql-type="numeric" length="20" precision="2" not-null="false"/>
+        </property>
+        <property name="hrAktifitasNetto">
+            <column name="hr_aktifitas_netto" sql-type="numeric" length="20" precision="2" not-null="false"/>
+        </property>
+        <property name="potKs">
+            <column name="pot_ks" sql-type="numeric" length="20" precision="2" not-null="false"/>
+        </property>
+
+    </class>
+</hibernate-mapping>
