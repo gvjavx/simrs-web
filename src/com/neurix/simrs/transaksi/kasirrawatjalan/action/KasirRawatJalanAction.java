@@ -1051,7 +1051,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
             Map mapPendapatanUmum = new HashMap();
             mapPendapatanUmum.put("master_id", masterId);
-            mapPendapatanUmum.put("pasien_id", idPasien);
+//            mapPendapatanUmum.put("pasien_id", idPasien);
             mapPendapatanUmum.put("divisi_id", divisiId);
             mapPendapatanUmum.put("nilai", pendapatanRawatUmum.subtract(tindakanTransUmum));
             mapPendapatanUmum.put("activity", listActivityTindakanUmum);
@@ -1067,7 +1067,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
                 Map mapResepUmum = new HashMap();
                 mapResepUmum.put("master_id", masterId);
-                mapResepUmum.put("pasien_id", idPasien);
+//                mapResepUmum.put("pasien_id", idPasien);
                 mapResepUmum.put("divisi_id", divisiResep);
                 mapResepUmum.put("nilai", pendapatanResepUmum);
                 mapResepUmum.put("activity", listActivityResepUmum);
@@ -1087,7 +1087,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
                 Map mapResepUmum = new HashMap();
                 mapResepUmum.put("master_id", masterId);
-                mapResepUmum.put("pasien_id", idPasien);
+//                mapResepUmum.put("pasien_id", idPasien);
                 mapResepUmum.put("divisi_id", divisiResep);
                 mapResepUmum.put("nilai", pendapatanResepUmum.subtract(resepTransUmum));
                 mapResepUmum.put("activity", listActivityResepUmum);
@@ -1133,7 +1133,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 mapPiutang.put("bukti", invNumber);
                 mapPiutang.put("nilai", uangPiutang);
                 mapPiutang.put("master_id", masterId);
-                mapPiutang.put("pasien_id", idPasien);
+//                mapPiutang.put("pasien_id", idPasien);
 
                 transId = "10";
                 ketTerangan = "Pembayaran Piutang Pasien BPJS";
@@ -1159,14 +1159,14 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
                 Map mapPendapatanAsuransi = new HashMap();
                 mapPendapatanAsuransi.put("master_id", masterId);
-                mapPendapatanAsuransi.put("pasien_id", idPasien);
+//                mapPendapatanAsuransi.put("pasien_id", idPasien);
                 mapPendapatanAsuransi.put("divisi_id", divisiId);
                 mapPendapatanAsuransi.put("nilai", pendapatanRawat);
                 mapPendapatanAsuransi.put("activity", listActivityTindakan);
 
                 Map mapPendapatanUmum = new HashMap();
                 mapPendapatanUmum.put("master_id", masterUmum);
-                mapPendapatanUmum.put("pasien_id", idPasien);
+//                mapPendapatanUmum.put("pasien_id", idPasien);
                 mapPendapatanUmum.put("divisi_id", divisiId);
                 mapPendapatanUmum.put("nilai", pendapatanRawatUmum);
                 mapPendapatanUmum.put("activity", listActivityTindakanUmum);
@@ -1174,7 +1174,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 mapPiutang.put("bukti", billingSystemBo.createInvoiceNumber(type, branchId));
                 mapPiutang.put("nilai", uangPiutang);
                 mapPiutang.put("master_id", masterId);
-                mapPiutang.put("pasien_id", idPasien);
+//                mapPiutang.put("pasien_id", idPasien);
 
                 mapJurnal.put("piutang_pasien_asuransi", mapPiutang);
 
@@ -1182,14 +1182,14 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
                     Map mapResepAsuransi = new HashMap();
                     mapResepAsuransi.put("master_id", masterId);
-                    mapResepAsuransi.put("pasien_id", idPasien);
+//                    mapResepAsuransi.put("pasien_id", idPasien);
                     mapResepAsuransi.put("divisi_id", divisiId);
                     mapResepAsuransi.put("nilai", pendapatanResep);
                     mapResepAsuransi.put("activity", listActivityResep);
 
                     Map mapResepUmum = new HashMap();
                     mapResepUmum.put("master_id", masterUmum);
-                    mapResepUmum.put("pasien_id", idPasien);
+//                    mapResepUmum.put("pasien_id", idPasien);
                     mapResepUmum.put("divisi_id", divisiId);
                     mapResepUmum.put("nilai", pendapatanResepUmum);
                     mapResepUmum.put("activity", listActivityResepUmum);
@@ -1207,14 +1207,14 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
                         Map mapResepAsuransi = new HashMap();
                         mapResepAsuransi.put("master_id", masterId);
-                        mapResepAsuransi.put("pasien_id", idPasien);
+//                        mapResepAsuransi.put("pasien_id", idPasien);
                         mapResepAsuransi.put("divisi_id", divisiId);
                         mapResepAsuransi.put("nilai", pendapatanResep);
                         mapResepAsuransi.put("activity", listActivityResep);
 
                         Map mapResepUmum = new HashMap();
                         mapResepUmum.put("master_id", masterUmum);
-                        mapResepUmum.put("pasien_id", idPasien);
+//                        mapResepUmum.put("pasien_id", idPasien);
                         mapResepUmum.put("divisi_id", divisiId);
                         mapResepUmum.put("nilai", pendapatanResepUmum);
                         mapResepUmum.put("activity", listActivityResepUmum);
@@ -1245,7 +1245,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 mapPiutang.put("bukti", invNumber);
                 mapPiutang.put("nilai", uangPiutang);
                 mapPiutang.put("master_id", masterId);
-                mapPiutang.put("pasien_id", idPasien);
+//                mapPiutang.put("pasien_id", idPasien);
 
                 //** UMUM **//
                 transId = "02";
@@ -1259,7 +1259,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             Map mapUangMuka = new HashMap();
             mapUangMuka.put("bukti", noNota);
             mapUangMuka.put("nilai", uangMuka);
-            mapUangMuka.put("master_id", masterId);
+//            mapUangMuka.put("master_id", masterId);
             mapUangMuka.put("pasien_id", idPasien);
 
             mapJurnal.put("uang_muka", mapUangMuka);
