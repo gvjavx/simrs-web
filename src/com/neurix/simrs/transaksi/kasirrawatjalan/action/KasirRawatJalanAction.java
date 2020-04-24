@@ -714,7 +714,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
         Map mapUangMuka = new HashMap();
         mapUangMuka.put("bukti", id);
-        mapUangMuka.put("master_id", masterId);
+//        mapUangMuka.put("master_id", masterId);
         mapUangMuka.put("pasien_id", idPasien);
         mapUangMuka.put("nilai", new BigDecimal(jumlahDibayar));
 
@@ -1684,7 +1684,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         Map mapUangMuka = new HashMap();
         mapUangMuka.put("bukti", noNota);
         mapUangMuka.put("nilai", uangMuka);
-        mapUangMuka.put("master_id", masterId);
+//        mapUangMuka.put("master_id", masterId);
         mapUangMuka.put("pasien_id", noPasien);
 
         Map mapKas = new HashMap();

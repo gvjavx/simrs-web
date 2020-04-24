@@ -1081,7 +1081,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                     mapUangMuka.put("bukti", idUm);
                     mapUangMuka.put("nilai", jumlahUm);
                     mapUangMuka.put("master_id", masterId);
-                    mapUangMuka.put("pasien_id", idPasien);
+//                    mapUangMuka.put("pasien_id", idPasien);
 
                     Map mapPajakObat = new HashMap();
                     mapPajakObat.put("bukti", invoice);
@@ -1133,7 +1133,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                         Map mapTindakan = new HashMap();
                         mapTindakan.put("master_id", masterId);
-                        mapTindakan.put("pasien_id", idPasien);
+//                        mapTindakan.put("pasien_id", idPasien);
                         mapTindakan.put("divisi_id", divisiId);
                         mapTindakan.put("nilai", jumlahTindakan);
 
@@ -1162,7 +1162,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                                 // map resep
                                 Map mapResep = new HashMap();
                                 mapResep.put("master_id", masterId);
-                                mapResep.put("pasien_id", idPasien);
+//                                mapResep.put("pasien_id", idPasien);
                                 mapResep.put("divisi_id", divisiResep);
                                 mapResep.put("nilai", jumlahResep);
                                 mapResep.put("activity", getAcitivityList(idDetailCheckup, "asuransi", "resep", kode));
@@ -1180,7 +1180,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                                 mapPiutang.put("bukti", invoice);
                                 mapPiutang.put("nilai", jumlah.subtract(jumlahUm));
                                 mapPiutang.put("master_id", masterId);
-                                mapPiutang.put("pasien_id", idPasien);
+//                                mapPiutang.put("pasien_id", idPasien);
 
                                 // debit piutang pasien asuransi
                                 hsCriteria.put("piutang_pasien_asuransi", mapPiutang);
@@ -1194,7 +1194,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                                 mapPiutang.put("bukti", invoice);
                                 mapPiutang.put("nilai", jumlah.subtract(jumlahUm));
                                 mapPiutang.put("master_id", masterId);
-                                mapPiutang.put("pasien_id", idPasien);
+//                                mapPiutang.put("pasien_id", idPasien);
 
                                 // debit piutang pasien asuransi
                                 hsCriteria.put("piutang_pasien_asuransi", mapPiutang);
@@ -1222,7 +1222,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                                 Map mapResep = new HashMap();
                                 mapResep.put("master_id", masterId);
-                                mapResep.put("pasien_id", idPasien);
+//                                mapResep.put("pasien_id", idPasien);
                                 mapResep.put("divisi_id", divisiResep);
                                 mapResep.put("nilai", jumlahResep);
 
@@ -1238,7 +1238,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                                 Map mapPiutang = new HashMap();
                                 mapPiutang.put("bukti", invoice);
                                 mapPiutang.put("nilai", jumlah.subtract(jumlahUm));
-                                mapPiutang.put("master_id", masterId);
+//                                mapPiutang.put("master_id", masterId);
                                 mapPiutang.put("pasien_id", idPasien);
 
                                 // debit piutang pasien
@@ -1251,7 +1251,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                                 Map mapPiutang = new HashMap();
                                 mapPiutang.put("bukti", invoice);
                                 mapPiutang.put("nilai", jumlah.subtract(jumlahUm));
-                                mapPiutang.put("master_id", masterId);
+//                                mapPiutang.put("master_id", masterId);
                                 mapPiutang.put("pasien_id", idPasien);
 
 
@@ -1278,7 +1278,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                         Map mapTindakan = new HashMap();
                         mapTindakan.put("master_id", masterId);
-                        mapTindakan.put("pasien_id", idPasien);
+//                        mapTindakan.put("pasien_id", idPasien);
                         mapTindakan.put("divisi_id", divisiId);
                         mapTindakan.put("nilai", jumlahTindakan);
 
@@ -1297,7 +1297,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                             Map mapResep = new HashMap();
                             mapResep.put("master_id", masterId);
-                            mapResep.put("pasien_id", idPasien);
+//                            mapResep.put("pasien_id", idPasien);
                             mapResep.put("divisi_id", divisiResep);
                             mapResep.put("nilai", jumlahResep);
                             mapResep.put("activity", getAcitivityList(idDetailCheckup, "asuransi", "resep", kode));
@@ -1313,7 +1313,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                             mapPiutang.put("bukti", invoice);
                             mapPiutang.put("nilai", jumlah.subtract(jumlahUm));
                             mapPiutang.put("master_id", masterId);
-                            mapPiutang.put("pasien_id", idPasien);
+//                            mapPiutang.put("pasien_id", idPasien);
 
                             // debit piutang pasien asuransi
                             hsCriteria.put("piutang_pasien_asuransi", mapPiutang);
@@ -1332,7 +1332,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                             Map mapResep = new HashMap();
                             mapResep.put("master_id", masterId);
-                            mapResep.put("pasien_id", idPasien);
+//                            mapResep.put("pasien_id", idPasien);
                             mapResep.put("divisi_id", divisiResep);
                             mapResep.put("nilai", jumlahResep);
                             mapResep.put("activity", getAcitivityList(idDetailCheckup, "umum", "resep", kode));
@@ -1341,7 +1341,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                             Map mapPiutang = new HashMap();
                             mapPiutang.put("bukti", invoice);
                             mapPiutang.put("nilai", jumlah.subtract(jumlahUm));
-                            mapPiutang.put("master_id", masterId);
+//                            mapPiutang.put("master_id", masterId);
                             mapPiutang.put("pasien_id", idPasien);
 
                             // debit piutang pasien

@@ -297,15 +297,11 @@ public class TutuPeriodAction extends BaseTransactionAction {
         JurnalResponse response = new JurnalResponse();
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-        TutupPeriodBo tutupPeriodBo = (TutupPeriodBo) ctx.getBean("tutupPeriodBoProxy");
         CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
         CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
         BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
         MasterBo masterBo = (MasterBo) ctx.getBean("masterBoProxy");
         AsuransiBo asuransiBo = (AsuransiBo) ctx.getBean("asuransiBoProxy");
-        RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
-        RuanganBo ruanganBo = (RuanganBo) ctx.getBean("ruanganBoProxy");
-        KelasRuanganBo kelasRuanganBo = (KelasRuanganBo) ctx.getBean("kelasRuanganBoProxy");
         JenisPriksaPasienBo jenisPriksaPasienBo = (JenisPriksaPasienBo) ctx.getBean("jenisPriksaPasienBoProxy");
 
         String masterId = "";
@@ -320,6 +316,8 @@ public class TutuPeriodAction extends BaseTransactionAction {
         Map mapJurnal = new HashMap();
         ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailBo.getEntityDetailCheckupByIdDetail(bean.getIdDetailCheckup());
         if (detailCheckupEntity != null){
+
+            idPasien = checkupBo.getEntityCheckupById(detailCheckupEntity.getNoCheckup()).getIdPasien();
 
             // MENDAPATKAN SEMUA NILAI TINDAKAN DAN RESEP;
             BigDecimal jumlahResep = checkupDetailBo.getSumJumlahTindakanNonBpjs(bean.getIdDetailCheckup(), "resep");
@@ -362,14 +360,9 @@ public class TutuPeriodAction extends BaseTransactionAction {
                     return response;
                 }
                 jenisPasien = "No. RM "+headerChekupEntity.getIdPasien();
-                if ("non_tunai".equalsIgnoreCase(detailCheckupEntity.getMetodePembayaran())){
-                        masterId = headerChekupEntity.getIdPasien();
-                } else {
-
-                    ImJenisPeriksaPasienEntity jenisPeriksaPasienEntity = jenisPriksaPasienBo.getJenisPerikasEntityById(detailCheckupEntity.getIdJenisPeriksaPasien());
-                    if (jenisPeriksaPasienEntity != null){
-                        masterId = jenisPeriksaPasienEntity.getMasterId();
-                    }
+                ImJenisPeriksaPasienEntity jenisPeriksaPasienEntity = jenisPriksaPasienBo.getJenisPerikasEntityById(detailCheckupEntity.getIdJenisPeriksaPasien());
+                if (jenisPeriksaPasienEntity != null){
+                    masterId = jenisPeriksaPasienEntity.getMasterId();
                 }
             }
 
@@ -380,7 +373,11 @@ public class TutuPeriodAction extends BaseTransactionAction {
             Map mapPiutang = new HashMap();
             mapPiutang.put("bukti", bukti);
             mapPiutang.put("nilai", jumlahAllTindakan);
-            mapPiutang.put("master_id", masterId);
+            if ("umum".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien()) && "non_tunai".equalsIgnoreCase(detailCheckupEntity.getMetodePembayaran())){
+                mapPiutang.put("id_pasien", idPasien);
+            } else {
+                mapPiutang.put("master_id", masterId);
+            }
 
             Map mapPendapatan = new HashMap();
             mapPendapatan.put("master_id", masterId);
