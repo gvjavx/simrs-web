@@ -240,10 +240,21 @@
                                         <div class="col-sm-3">
                                             <s:action id="comboRole" namespace="/admin/user" name="initComboRole_user"/>
                                             <s:select list="#comboRole.listOfComboRoles" id="roleid" name="users.roleId"
+                                                      onchange="showPelayanan(this.value)"
                                                       listKey="stRoleId" listValue="roleName" headerKey="" headerValue="[Select one]"
                                                       cssClass="form-control"/>
                                         </div>
                                     </div>
+
+                                    <div class="form-group" style="display: none" id="form-pelayanan">
+                                        <label class="control-label col-sm-5" for="users.roleId">Pelayanan :</label>
+                                        <div class="col-sm-3">
+                                            <select class="form-control select2" name="users.idPelayanan" id="pelayananId">
+                                                <option value="">[Select One]</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
                                     <div class="form-group">
                                         <label class="control-label col-sm-5" for="users.email">Email :</label>
                                         <div class="col-sm-3">
@@ -367,6 +378,8 @@
 </div>
 <!-- /.content-wrapper -->
 
+<script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
+
 <script>
     window.listPosisi = function(branch, divisi){
         var branch = document.getElementById("branchid").value;
@@ -381,6 +394,70 @@
             });
         });
     }
+
+    function showPelayanan(role){
+        var branch = $('#branchid').val();
+        if(role != '' && branch != ''){
+            if('34' == role){
+                $('#form-pelayanan').show();
+                listPelayanan(branch);
+            }else if('35' == role){
+                $('#form-pelayanan').show();
+                listPelayananIgd(branch);
+            }else if ('36' == role){
+                $('#form-pelayanan').show();
+                listApotek(branch);
+            }else{
+                $('#form-pelayanan').hide();
+            }
+        }
+    }
+
+    function listApotek(branch){
+        var option = "";
+        CheckupAction.getListComboApotek(branch, function (response) {
+            option = "<option value=''>[Select One]</option>";
+            if (response.length > 0) {
+                $.each(response, function (i, item) {
+                    option += "<option value='" + item.idPelayanan + "'>" + item.namaPelayanan + "</option>";
+                });
+            } else {
+                option = option;
+            }
+            $('#pelayananId').html(option);
+        });
+    }
+
+    function listPelayanan(branch){
+        var option = "";
+        CheckupAction.getListComboPoli(branch, function (response) {
+            option = "<option value=''>[Select One]</option>";
+            if (response.length > 0) {
+                $.each(response, function (i, item) {
+                    option += "<option value='" + item.idPelayanan + "'>" + item.namaPelayanan + "</option>";
+                });
+            } else {
+                option = option;
+            }
+            $('#pelayananId').html(option);
+        });
+    }
+
+    function listPelayananIgd(branch){
+        var option = "";
+        CheckupAction.getListComboPelayananIgd(branch, function (response) {
+            option = "<option value=''>[Select One]</option>";
+            if (response.length > 0) {
+                $.each(response, function (i, item) {
+                    option += "<option value='" + item.idPelayanan + "'>" + item.namaPelayanan + "</option>";
+                });
+            } else {
+                option = option;
+            }
+            $('#pelayananId').html(option);
+        });
+    }
+
 </script>
 <%@ include file="/pages/common/footer.jsp" %>
 

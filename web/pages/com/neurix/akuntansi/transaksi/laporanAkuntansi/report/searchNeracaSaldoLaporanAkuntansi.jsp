@@ -82,7 +82,6 @@
     <section class="content-header">
         <h1>
             Laporan Neraca Saldo
-            <small>e-HEALTH</small>
         </h1>
     </section>
     <!-- Main content -->
@@ -113,7 +112,7 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:if test='#laporanAkuntansi.unit == "KP"'>
+                                                        <s:if test='laporanAkuntansi.unit == "KP"'>
                                                             <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                                                             <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="laporanAkuntansi.unit"
                                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>

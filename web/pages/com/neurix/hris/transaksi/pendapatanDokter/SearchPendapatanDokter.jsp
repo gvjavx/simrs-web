@@ -8,6 +8,7 @@
 <html>
 <head>
     <%@ include file="/pages/common/header.jsp" %>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/PendapatanDokterAction.js"/>'></script>
     <script type='text/javascript'>
 
         function callSearch2() {
@@ -243,20 +244,25 @@
                                                         <display:table name="listOfPendapatanDokter" class="table table-condensed table-striped table-hover"
                                                                        requestURI="paging_displaytag_pendapatan.action" export="true" id="row" pagesize="30" style="font-size:10">
                                                             <display:column media="html" title="View" style="text-align:center;font-size:9">
-                                                                <s:url var="urlView" namespace="/pendapatanDokter" action="view_pendapatanDokter" escapeAmp="false">
-                                                                    <s:param name="id"><s:property value="#attr.row.absensiPegawaiId" /></s:param>
-                                                                    <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
-                                                                </s:url>
-                                                                <sj:a onClickTopics="showDialogMenuView" href="%{urlView}">
-                                                                    <img border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_trash">
-                                                                </sj:a>
+                                                                <%--<s:url var="urlView" namespace="/pendapatanDokter" action="view_pendapatanDokter" escapeAmp="false">--%>
+                                                                    <%--<s:param name="id"><s:property value="#attr.row.absensiPegawaiId" /></s:param>--%>
+                                                                    <%--<s:param name="flag"><s:property value="#attr.row.flag" /></s:param>--%>
+                                                                <%--</s:url>--%>
+                                                                <%--<sj:a onClickTopics="showDialogMenuView" href="%{urlView}">--%>
+                                                                    <%--<img border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_trash">--%>
+                                                                <%--</sj:a>--%>
+                                                                <img onclick="detailPendapatan('<s:property value="#attr.row.pendapatanDokterId"/>','<s:property value="#attr.row.dokterName"/>','<s:property value="#attr.row.branchName"/>','<s:property value="#attr.row.bruto"/>','<s:property value="#attr.row.pendapatanRs"/>','<s:property value="#attr.row.hrBruto"/>','<s:property value="#attr.row.dppPph50"/>','<s:property value="#attr.row.dppPph21Komulatif"/>','<s:property value="#attr.row.StTarif"/>','<s:property value="#attr.row.pphDipungut"/>','<s:property value="#attr.row.hrAktifitasNetto"/>','<s:property value="#attr.row.potKs"/>','<s:property value="#attr.row.gajiBersih"/>')" border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_trash" style="cursor: pointer;">
                                                             </display:column>
-                                                            <display:column property="branchName" sortable="true" title="Unit"  />
+                                                            <display:column property="branchName" sortable="true" title="Unit" />
                                                             <display:column property="dokterId" sortable="true" title="Id Dokter"  />
                                                             <display:column property="dokterName" sortable="true" title="Nama Dokter" />
                                                             <display:column property="bulan" sortable="true" title="Bulan" />
                                                             <display:column property="tahun" sortable="true" title="Tahun" />
-                                                            <display:column property="bruto" sortable="true" title="Total Pendapatan" />
+                                                            <display:column property="bruto" sortable="true" title="Bruto" />
+                                                            <display:column property="hrBruto" sortable="true" title="Hr. Bruto" />
+                                                            <display:column property="pphDipungut" sortable="true" title="Pot. Pajak" />
+                                                            <display:column property="potKs" sortable="true" title="Pot.Ks" />
+                                                            <display:column property="gajiBersih" sortable="true" title="Total Pendapatan" />
                                                         </display:table>
                                                     </td>
                                                 </tr>
@@ -305,3 +311,225 @@
 <%@ include file="/pages/common/lastScript.jsp" %>
 </body>
 </html>
+<div class="modal fade" id="modal-detail-pendapatan">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Detail Pendapatan</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-striped">
+                            <tr>
+                                <td><b>Nama</b></td>
+                                <td><span id="nama_dokter"></span></td>
+                            </tr>
+                            <tr>
+                                <td><b>Unit</b></td>
+                                <td><span id="nama_unit"></span></td>
+                            </tr>
+                            <tr>
+                                <td><b>Bruto</b></td>
+                                <td><span id="bruto"></span></td>
+                            </tr>
+                            <tr>
+                                <td><b>Pendapatan Rs</b></td>
+                                <td><span id="pendapatan_rs"></span></td>
+                            </tr>
+                            <tr>
+                                <td><b>Hr Bruto</b></td>
+                                <td><span id="hr_bruto"></span></td>
+                            </tr>
+                            <tr>
+                                <td><b>Dpp Pph 21</b></td>
+                                <td><span id="dpp_pph_21"></span></td>
+                            </tr>
+                            <tr>
+                                <td><b>Dpp Pph Komulatif</b></td>
+                                <td><span id="dpp_pph_komulatif"></span></td>
+                            </tr>
+                            <tr>
+                                <td><b>Pajak</b></td>
+                                <td><span id="pajak"></span></td>
+                            </tr>
+                            <tr>
+                                <td><b>Pot. Pajak</b></td>
+                                <td><span id="pot_pajak"></span></td>
+                            </tr>
+                            <tr>
+                                <td><b>Hr Aktifitas Netto</b></td>
+                                <td><span id="hr_aktifitas_netto"></span></td>
+                            </tr>
+                            <tr>
+                                <td><b>Pot. Ks</b></td>
+                                <td><span id="pot_ks"></span></td>
+                            </tr>
+                            <tr>
+                                <td><b>Hr Netto</b></td>
+                                <td><span id="hr_netto"></span></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <table class="table table-bordered">
+                    <thead>
+                    <td>Nama Pasien</td>
+                    <td>Tanggal</td>
+                    <td>Master Id</td>
+                    <td>Nama Poli</td>
+                    <td>Nama Activity Id</td>
+                    <td>Biaya</td>
+                    </thead>
+                    <tbody id="body_detail">
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function formaterDate(dateTime) {
+
+        var today = "";
+        if (dateTime != '' && dateTime != null) {
+
+            today = new Date(dateTime);
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+            var hh = today.getHours();
+            var min = today.getMinutes();
+            var sec = today.getSeconds();
+            today = dd + '-' + mm + '-' + yyyy + ' '+ hh +':'+ min;
+        }
+        return today;
+    }
+
+    function detailPendapatan(pendapatanDokterId,namaDokter,branchName,bruto, pendapatanRs,hrBruto,dppPph21,dppPphKomulatif,pajak,potPajak,hrAktifitas,potKs,gajiBersih){
+        console.log(namaDokter);
+        $('#nama_dokter').text(namaDokter);
+        $('#nama_unit').text(branchName);
+        $('#bruto').text(bruto);
+        $('#pendapatan_rs').text(pendapatanRs);
+        $('#hr_bruto').text(hrBruto);
+        $('#dpp_pph_21').text(dppPph21);
+        $('#dpp_pph_komulatif').text(dppPphKomulatif);
+        $('#pajak').text(pajak);
+        $('#pot_pajak').text(potPajak);
+        $('#hr_aktifitas_netto').text(hrAktifitas);
+        $('#pot_ks').text(potKs);
+        $('#hr_netto').text(gajiBersih);
+        $('#body_detail').html('');
+
+        var table = "";
+        PendapatanDokterAction.getDetailPendapatan(pendapatanDokterId, function (response) {
+            if(response.length > 0){
+                $.each(response, function (i, item) {
+                    table += '<tr>' +
+                            '<td>'+item.namaPasien+'</td>'+
+                            '<td>'+formaterDate(item.tanggal)+'</td>'+
+                            '<td>'+item.masterId+'</td>'+
+                            '<td>'+item.poliName+'</td>'+
+                            '<td>'+item.activityName+'</td>'+
+                            '<td align="right">'+item.bruto+'</td>'+
+                            '</tr>'
+                });
+
+                $('#body_detail').html(table);
+            }else{
+
+            }
+        });
+
+        $('#modal-detail-pendapatan').modal({show:true, backdrop:'static'});
+    }
+
+    window.cekKoneksi = function(){
+        dwr.engine.setAsync(false);
+        AbsensiAction.cekKoneksi(function(listdata) {
+        })
+    };
+    window.saveTmp = function(){
+        var values = new Array();
+        var status ;
+        $.each($("input[name='checkApprove[]']:checked"), function() {
+            values.push($(this).val());
+        });
+        if(values.length > 0){
+            dwr.engine.setAsync(false);
+            $.each($("input[name='checkApprove[]']:checked"), function() {
+                AbsensiAction.saveTmp($(this).val(),function(listdata) {
+                    if (listdata == '00'){
+                        status ="sukses";
+                    }else{
+                        status ="failed";
+                        return false;
+                    }
+                });
+            });
+            if(status=="sukses"){
+                $('#saveAdd').show();
+                $('#cancel').show();
+                alert("Proses Sukses");
+                loadFinal();
+                $('#save').hide();
+            }else{
+                $('#error_dialog').dialog('open');
+                $('#saveAdd').hide();
+                $('#cancel').hide();
+            }
+        }else{
+            alert('Silahkan Centang Salah Satu Absensi !');
+        }
+    };
+
+//    $('.row').on('click', '.item-view-pendapatan', function () {
+////        var branchId = $(this).attr('data');
+////        var bulan = $(this).attr('bulan');
+////        var tahun = $(this).attr('tahun');
+//        var dokterId = $(this).attr('dokter');
+//        $('#nama_dokter').text($(this).attr('nama'));
+//        $('#nama_unit').text($(this).attr('unit'));
+//        $('#bruto').text($(this).attr('bruto'));
+//        $('#pendapatan_rs').text($(this).attr('pdptnRs'));
+//        $('#hr_bruto').text($(this).attr('hrbruto'));
+//        $('#dpp_pph_21').text($(this).attr('pph21'));
+//        $('#dpp_pph_komulatif').text($(this).attr('komulatif'));
+//        $('#pajak').text($(this).attr('pajak'));
+//        $('#pot_pajak').text($(this).attr('potPjk'));
+//        $('#hr_aktifitas_netto').text($(this).attr('hrAktifitas'));
+//        $('#pot_ks').text($(this).attr('potKs'));
+//        $('#hr_netto').text($(this).attr('gajiBersih'));
+//        $('#body_detail').html('');
+//
+////        dwr.engine.setAsync(false);
+//        var tmp_table = "";
+//        PendapatanDokterAction.searchDetailPendapatan(dokterId, function(response) {
+//            if(response.length > 0){
+//                $.each(response, function (i, item) {
+//                    tmp_table += '<tr>' +
+//                            '<td>'+item.namaPasien+'</td>'+
+//                            '<td>'+formaterDate(item.tanggal)+'</td>'+
+//                            '<td>'+item.masterId+'</td>'+
+//                            '<td>'+item.poliName+'</td>'+
+//                            '<td>'+item.activityName+'</td>'+
+//                            '<td align="right">'+item.bruto+'</td>'+
+//                            '</tr>'
+//                });
+//
+//                $('#body_detail').html(tmp_table);
+//            }else{
+//
+//            }
+//        });
+//        $('#modal-detail-pendapatan').find('.modal-title').text('View Detail Pendapatan');
+//        $('#modal-detail-pendapatan').modal('show');
+//    });
+</script>

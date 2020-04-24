@@ -81,6 +81,24 @@ public class TransaksiObatDetail extends BaseModel {
     private BigDecimal netto;
 
     private String namaObatBaru;
+    private String rekanan;
+    private String jenisResep;
+
+    public String getJenisResep() {
+        return jenisResep;
+    }
+
+    public void setJenisResep(String jenisResep) {
+        this.jenisResep = jenisResep;
+    }
+
+    public String getRekanan() {
+        return rekanan;
+    }
+
+    public void setRekanan(String rekanan) {
+        this.rekanan = rekanan;
+    }
 
     public String getNamaObatBaru() {
         return namaObatBaru;

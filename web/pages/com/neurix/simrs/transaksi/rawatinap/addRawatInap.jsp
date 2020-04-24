@@ -52,6 +52,18 @@
             $.publish('showErrorDialog');
         });
 
+        function convertSentenceCase(myString){
+            if(myString != null && myString != ''){
+                var rg = /(^\w{1}|\ \s*\w{1})/gi;
+                myString = myString.replace(rg, function(toReplace) {
+                    return toReplace.toUpperCase();
+                });
+                return myString;
+            }else{
+                return "";
+            }
+        }
+
 
     </script>
     <style>
@@ -207,12 +219,21 @@
                                             <table><s:label name="rawatInap.tempatTglLahir"></s:label></table>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td><b>Metode Pembayaran</b></td>
-                                        <td>
-                                            <table><s:label name="rawatInap.metodePembayaran"></s:label></table>
-                                        </td>
-                                    </tr>
+                                    <s:if test='rawatInap.metodePembayaran != null && rawatInap.metodePembayaran != ""'>
+                                        <tr>
+                                            <td><b>Metode Pembayaran</b></td>
+                                            <td>
+                                                <table>
+                                                    <script>
+                                                        var metode = '<s:property value="rawatInap.metodePembayaran"/>';
+                                                        var met = metode.replace("_", " ");
+                                                        var meto = convertSentenceCase(met);
+                                                        document.write(meto);
+                                                    </script>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </s:if>
                                 </table>
                             </div>
                             <!-- /.col -->
@@ -389,7 +410,7 @@
                         <h3 class="box-title"><i class="fa fa-laptop"></i> Monitoring</h3>
                     </div>
                     <div class="box-body">
-                        <button class="btn btn-danger" onclick="showModalPlan('<s:property value="rawatInap.idDetailCheckup"/>')">
+                        <button class="btn btn-danger" onclick="showModalPlan('<s:property value="rawatInap.idDetailCheckup"/>','','suster')">
                             <i class="fa fa-edit"></i> Schedule Rawat
                         </button>
                         <br>
@@ -882,16 +903,21 @@
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Kategori Tindakan</label>
                         <div class="col-md-7">
-                            <s:action id="initComboKategoriTindakan" namespace="/checkupdetail"
-                                      name="getListComboKategoriTindakan_checkupdetail"/>
-                            <s:select cssStyle="margin-top: 7px; width: 100%"
-                                      onchange="listSelectTindakan(this); var warn =$('#war_kategori').is(':visible'); if (warn){$('#cor_kategori').show().fadeOut(3000);$('#war_kategori').hide()}"
-                                      list="#initComboKategoriTindakan.listOfKategoriTindakan"
-                                      id="tin_id_ketgori_tindakan"
-                                      listKey="idKategoriTindakan"
-                                      listValue="kategoriTindakan"
-                                      headerKey="" headerValue="[Select one]"
-                                      cssClass="form-control select2"/>
+                            <%--<s:action id="initComboKategoriTindakan" namespace="/checkupdetail"--%>
+                                      <%--name="getListComboKategoriTindakan_checkupdetail"/>--%>
+                            <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
+                                      <%--onchange="listSelectTindakan(this); var warn =$('#war_kategori').is(':visible'); if (warn){$('#cor_kategori').show().fadeOut(3000);$('#war_kategori').hide()}"--%>
+                                      <%--list="#initComboKategoriTindakan.listOfKategoriTindakan"--%>
+                                      <%--id="tin_id_ketgori_tindakan"--%>
+                                      <%--listKey="idKategoriTindakan"--%>
+                                      <%--listValue="kategoriTindakan"--%>
+                                      <%--headerKey="" headerValue="[Select one]"--%>
+                                      <%--cssClass="form-control select2"/>--%>
+                                <select class="form-control select2" style="margin-top: 7px; width: 100%"
+                                        id="tin_id_ketgori_tindakan"
+                                        onchange="listSelectTindakan(this.value); var warn =$('#war_kategori').is(':visible'); if (warn){$('#cor_kategori').show().fadeOut(3000);$('#war_kategori').hide()}">
+                                    <option value=''>[Select One]</option>
+                                </select>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
@@ -2864,6 +2890,9 @@
                 <br>
                 <div id="body-list-plan-malam"></div>
             </div>
+            <input type="hidden" id="id-detail">
+            <input type="hidden" id="tgl-plan">
+            <input type="hidden" id="jenis-plan">
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
@@ -3231,6 +3260,7 @@
 <div class="mask"></div>
 
 <script type='text/javascript' src='<s:url value="/pages/dist/js/rekammedic.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/planrawat.js"/>'></script>
 <script type='text/javascript'>
 
     var idDetailCheckup = $('#no_detail_checkup').val();
@@ -3275,7 +3305,7 @@
         listDiet();
         listRuanganInap();
         listResepPasien();
-
+        listSelectTindakanKategori();
         hitungStatusBiaya();
 
         $('#img_ktp').on('click', function(e){
@@ -3503,13 +3533,14 @@
         });
     }
 
-    function listSelectTindakan(idKategori) {
-        var idx = idKategori.selectedIndex;
-        var idKtg = idKategori.options[idx].value;
+    function listSelectTindakan(idKtg) {
+        console.log(idKtg)
+        // var idx = idKategori.selectedIndex;
+        // var idKtg = idKategori.options[idx].value;
         var option = "<option value=''>[Select One]</option>";
         if (idKtg != '') {
             CheckupDetailAction.getListComboTindakan(idKtg, function (response) {
-                if (response != null) {
+                if (response.length > 0) {
                     $.each(response, function (i, item) {
                         option += "<option value='" + item.idTindakan + "'>" + item.tindakan + "</option>";
                     });
@@ -3521,6 +3552,20 @@
         } else {
             $('#tin_id_tindakan').html(option);
         }
+    }
+
+    function listSelectTindakanKategori() {
+        var option = "<option value=''>[Select One]</option>";
+        CheckupDetailAction.getListComboTindakanKategori(idPoli, function (response) {
+            if (response != null) {
+                $.each(response, function (i, item) {
+                    option += "<option value='" + item.idKategoriTindakan + "'>" + item.kategoriTindakan + "</option>";
+                });
+                $('#tin_id_ketgori_tindakan').html(option);
+            } else {
+                $('#tin_id_ketgori_tindakan').html('');
+            }
+        });
     }
 
     function toContent() {
@@ -6195,7 +6240,6 @@
             $('#war_keterangan_cancel').show();
         }
     }
-
 </script>
 
 <%@ include file="/pages/common/footer.jsp" %>

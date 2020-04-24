@@ -10,4 +10,5 @@ public interface PendapatanDokterBo extends BaseMasterBo<PendapatanDokter> {
     List<PendapatanDokter> getByCriteriaForPendapatanDokter(PendapatanDokter bean);
 
     List<PendapatanDokter> getDataPendapatanDokter(PendapatanDokter bean);
+    List<PendapatanDokter> getDetailPendapatan(PendapatanDokter bean);
 }

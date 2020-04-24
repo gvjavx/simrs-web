@@ -184,6 +184,10 @@ public class KelasRuanganBoImpl implements KelasRuanganBo {
         logger.info("[KelasRuanganBoImpl.saveEdit] End <<<<<<<");
     }
 
+    @Override
+    public ImSimrsKelasRuanganEntity getKelasRuanganById(String id) throws GeneralBOException {
+        return kelasRuanganDao.getById("idKelasRuangan", id);
+    }
 
     @Override
     public Long saveErrorMessage(String message, String moduleMethod) throws GeneralBOException {

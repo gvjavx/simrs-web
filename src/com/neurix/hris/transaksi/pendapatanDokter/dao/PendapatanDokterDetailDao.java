@@ -2,8 +2,11 @@ package com.neurix.hris.transaksi.pendapatanDokter.dao;
 
 import com.neurix.common.dao.GenericDao;
 import com.neurix.hris.transaksi.pendapatanDokter.model.ItHrisPendapatanDokterDetailEntity;
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
 import java.util.Iterator;
@@ -18,8 +21,22 @@ public class PendapatanDokterDetailDao extends GenericDao<ItHrisPendapatanDokter
 
     @Override
     public List<ItHrisPendapatanDokterDetailEntity> getByCriteria(Map mapCriteria) {
-
         return null;
+    }
+
+    public List<ItHrisPendapatanDokterDetailEntity> getByPendapatanId(Map mapCriteria){
+        Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ItHrisPendapatanDokterDetailEntity.class);
+
+        if (mapCriteria != null){
+            if (mapCriteria.get("pendapatan_dokter_id") != null){
+                criteria.add(Restrictions.eq("pendapatanDokterId", (String) mapCriteria.get("pendapatan_dokter_id")));
+            }
+        }
+
+        criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
+//        criteria.add(Restrictions.eq("flag", "Y"));
+        List<ItHrisPendapatanDokterDetailEntity> results = criteria.list();
+        return results;
     }
 
     public String getNextIdDetailPendapatanDokter() throws HibernateException {

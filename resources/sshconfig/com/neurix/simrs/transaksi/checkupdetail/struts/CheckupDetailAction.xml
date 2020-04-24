@@ -76,6 +76,7 @@
             <result name="search">/pages/com/neurix/simrs/transaksi/checkupdetail/searchRawatJalan.jsp</result>
             <result name="init_add">/pages/com/neurix/simrs/transaksi/checkupdetail/addRawatJalan.jsp</result>
             <result name="init_daftar">/pages/com/neurix/simrs/transaksi/checkupdetail/pendaftaranRawatPasien.jsp</result>
+            <result name="init_rekam_medik">/pages/com/neurix/simrs/transaksi/rekammedik/rekamMedik.jsp</result>
 
             <result name="print_resep" type="jasper">
                 <param name="location">/pages/report/com/neurix/simrs/printResepPasien.jasper</param>

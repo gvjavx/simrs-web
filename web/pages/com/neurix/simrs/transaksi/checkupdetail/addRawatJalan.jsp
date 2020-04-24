@@ -150,7 +150,6 @@
     <section class="content-header">
         <h1>
             Rawat Jalan Pasien
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -391,6 +390,7 @@
                             </div>
                             <!-- /.col -->
                         </div>
+                        <a href="/simrs/rekammedik/initRekamMedik_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>&tipe=RJ" class="btn btn-primary"><i class="fa fa-user"></i> E-Rekam Medik</a>
                     </div>
                     <div class="box-header with-border" id="pos_alergi">
                     </div>
@@ -1662,6 +1662,14 @@
                                id="cor_rep_racik"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
+                    <div class="form-group" id="form-jenis-resep">
+                        <label class="col-md-3" style="margin-top: 7px">Jenis Resep</label>
+                        <div class="col-md-7">
+                            <select class="form-control" style="margin-top: 7px;width: 40%" id="select-jenis-resep">
+
+                            </select>
+                        </div>
+                    </div>
                     <%--<div class="form-group">--%>
                     <%--<label class="col-md-3" style="margin-top: 7px">Keterangan</label>--%>
                     <%--<div class="col-md-7">--%>
@@ -1945,7 +1953,7 @@
         hitungStatusBiaya();
         hitungBmi();
         listSelectTindakanKategori();
-        hitungCoverBiaya()
+        hitungCoverBiaya();
 
         $('#img_ktp').on('click', function (e) {
             e.preventDefault();
@@ -2069,9 +2077,28 @@
             }
 
         });
-
-
     });
+
+    function getJenisResep(){
+
+        strSelect = "";
+        var arBodyJenisResep = [];
+        if(jenisPeriksaPasien == "ptpn"){
+            arBodyJenisResep.push({"nilai":"ptptn", "label":"PTPN"},{"nilai": "umum", "label":"UMUM"});
+        } else if (jenisPeriksaPasien == "asuransi"){
+            arBodyJenisResep.push({"nilai":"asuransi", "label":"ASURANSI"},{"nilai": "umum", "label":"UMUM"});
+        } else if (jenisPeriksaPasien == "bpjs") {
+            arBodyJenisResep.push({"nilai": "bpjs", "label": "BPJS"});
+        } else {
+            arBodyJenisResep.push({"nilai": "umum", "label": "UMUM"});
+        }
+
+        var strSelect = "";
+        $.each(arBodyJenisResep, function (i, item) {
+            strSelect += "<option value='" + item.nilai + "'>" + item.label + "</option>";
+        });
+        $("#select-jenis-resep").html(strSelect);
+    }
 
     function hitungBmi(){
 
@@ -2750,6 +2777,7 @@
             $('#resep_nama_obat').attr("onchange", "var warn =$('#war_rep_obat').is(':visible'); if (warn){$('#cor_rep_obat').show().fadeOut(3000);$('#war_rep_obat').hide()}; setStokObatApotek(this)");
             $('#body_detail').html('');
             $('#modal-resep-head').modal('show');
+            getJenisResep();
         } else if (select == 8) {
             $('#alergi').val('');
             $('#load_alergi').hide();
@@ -3763,6 +3791,7 @@
     function saveResepObat() {
         $('#modal-ttd').modal('hide');
         var idDokter = $('#tin_id_dokter').val();
+        var jenisResep = $('#select-jenis-resep').val();
         var data = $('#tabel_rese_detail').tableToJSON();
         var stringData = JSON.stringify(data);
         var idPelayanan = $('#resep_apotek').val();
@@ -3777,7 +3806,7 @@
             $('#save_resep_head').hide();
             $('#load_resep_head').show();
             dwr.engine.setAsync(true);
-            PermintaanResepAction.saveResepPasien(idDetailCheckup, idPoli, idDokter, idPasien, stringData, idPelayanan, dataURL, {
+            PermintaanResepAction.saveResepPasien(idDetailCheckup, idPoli, idDokter, idPasien, stringData, idPelayanan, dataURL, jenisResep, {
                 callback: function (response) {
                     if (response == "success") {
                         dwr.engine.setAsync(false);

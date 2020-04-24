@@ -63,7 +63,7 @@ public class PermintaanResepAction extends BaseMasterAction{
         this.permintaanResepBoProxy = permintaanResepBoProxy;
     }
 
-    public String saveResepPasien(String idDetailCheckup, String idPelayanan, String idDokter, String idPasien, String resep, String tujuanApotek, String ttdDokter) throws IOException {
+    public String saveResepPasien(String idDetailCheckup, String idPelayanan, String idDokter, String idPasien, String resep, String tujuanApotek, String ttdDokter, String jenisResep) throws IOException {
         logger.info("[PermintaanResepAction.saveResepPasien] start process >>>");
         try {
             String userLogin = CommonUtil.userLogin();
@@ -83,6 +83,7 @@ public class PermintaanResepAction extends BaseMasterAction{
             permintaanResep.setFlag("Y");
             permintaanResep.setBranchId(userArea);
             permintaanResep.setTujuanPelayanan(tujuanApotek);
+            permintaanResep.setJenisResep(jenisResep);
 
             if(ttdDokter != null && !"".equalsIgnoreCase(ttdDokter)){
                 BASE64Decoder decoder = new BASE64Decoder();

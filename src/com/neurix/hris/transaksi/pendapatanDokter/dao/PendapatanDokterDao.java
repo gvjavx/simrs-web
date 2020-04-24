@@ -74,7 +74,8 @@ public class PendapatanDokterDao extends GenericDao<ItHrisPendapatanDokterEntity
                 "\tkso.persen_kso,\n" +
                 "\tkso.persen_ks,\n" +
                 "\tksoTindakan.persen_kso AS persen_kso_tindakan,\n" +
-                "\tdokter.nama_dokter\n" +
+                "\tdokter.nama_dokter,\n" +
+                "\tkso.kodering AS kode_jabatan\n" +
                 "\tFROM\n" +
                 "\t\t(SELECT * FROM it_akun_jurnal) jurnal LEFT JOIN\n" +
                 "\t\t(SELECT * FROM it_akun_jurnal_detail) jurnalDetail ON jurnalDetail.no_jurnal = jurnal.no_jurnal LEFT JOIN \n" +
@@ -123,7 +124,7 @@ public class PendapatanDokterDao extends GenericDao<ItHrisPendapatanDokterEntity
         return pphKomulatif;
     }
 
-    public List<Object[]> getPendapatanDokter(String unit, String bulan, String tahun) throws HibernateException {
+    public List<Object[]> getPendapatanDokter(String unit, String bulan, String tahun, String dokterId) throws HibernateException {
         List<ItHrisPendapatanDokterEntity> listOfResults = new ArrayList<ItHrisPendapatanDokterEntity>();
         List<Object[]> results = new ArrayList<Object[]>();
         int month = Integer.parseInt(bulan);
@@ -150,7 +151,7 @@ public class PendapatanDokterDao extends GenericDao<ItHrisPendapatanDokterEntity
 //                "\tjurnal.tanggal_jurnal < '"+paramTglEnd+"' AND\n" +
 //                "\tdetailActivity.person_id IS NOT NULL";
 
-        String sqlQuery = "SELECT DISTINCT\n" +
+        String sqlQuery = "SELECT\n" +
                 " \n" +
                 "                jurnal.tanggal_jurnal, \n" +
                 "                jurnalDetail.jurnal_detail_id, \n" +
@@ -174,7 +175,8 @@ public class PendapatanDokterDao extends GenericDao<ItHrisPendapatanDokterEntity
                 "                kso.persen_ks,\n" +
                 "                pelayanan.id_pelayanan AS id_poli,\n" +
                 "                pelayanan.nama_pelayanan AS nama_poli,\n" +
-                "                tindakan.nama_tindakan AS activity_name\n" +
+                "                tindakan.nama_tindakan AS activity_name,\n" +
+                "                kso.kodering AS kode_jabatan\n" +
                 "                FROM \n" +
                 "                (SELECT * FROM it_akun_jurnal) jurnal LEFT JOIN  \n" +
                 "                (SELECT * FROM it_akun_jurnal_detail) jurnalDetail ON jurnalDetail.no_jurnal = jurnal.no_jurnal LEFT JOIN  \n" +
@@ -190,7 +192,7 @@ public class PendapatanDokterDao extends GenericDao<ItHrisPendapatanDokterEntity
                 "                jurnal.branch_id = '"+unit+"' AND \n" +
                 "                jurnal.tanggal_jurnal >= '"+paramTglStart+"' AND  \n" +
                 "                jurnal.tanggal_jurnal < '"+paramTglEnd+"' AND  \n" +
-                "                detailActivity.person_id IS NOT NULL";
+                "                detailActivity.person_id = '"+dokterId+"'";
 
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(sqlQuery)

@@ -126,6 +126,16 @@ public class PendapatanDokterAction extends BaseMasterAction {
             addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
         }
 
+        String branchId = CommonUtil.userBranchLogin();
+        PendapatanDokter data = new PendapatanDokter();
+        if (branchId != null){
+            data.setBranchId(branchId);
+        }else {
+            data.setBranchId("");
+        }
+
+        pendapatanDokter = data;
+
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResultPendapatanDokter");
         session.setAttribute("listOfResultPendapatanDokter", listOfSearchPendapatanDokter);
@@ -196,6 +206,57 @@ public class PendapatanDokterAction extends BaseMasterAction {
 //        session.setAttribute("listOfResultDetailPendapatanDokter", pendapatanDokterEntityList);
 //        return pendapatanDokterEntityList;
 //    }
+
+    public List<PendapatanDokter> getDetailPendapatan(String pendapatanDokterId){
+        logger.info("[PendapatanDokterAction.getDetailPendapatan] start process >>>");
+
+        PendapatanDokter searchPendapatanDokter = new PendapatanDokter();
+        searchPendapatanDokter.setPendapatanDokterId(pendapatanDokterId);
+        List<PendapatanDokter> listOfSearchPendapatanDetail = new ArrayList<>();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PendapatanDokterBo pendapatanDokterBo = (PendapatanDokterBo) ctx.getBean("pendapatanDokterBoProxy");
+        try{
+            listOfSearchPendapatanDetail = pendapatanDokterBo.getDetailPendapatan(searchPendapatanDokter);
+        }catch (GeneralBOException e){
+            Long logId = null;
+            try {
+                logId = pendapatanDokterBo.saveErrorMessage(e.getMessage(), "pendapatanDokterBO.getByCriteria");
+            } catch (GeneralBOException e1) {
+                logger.error("[PendapatanDokterAction.search] Error when saving error,", e1);;
+            }
+            logger.error("[PendapatanDokterAction.search] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+        }
+
+//        for (PendapatanDokter pendapatanDokter : listOfSearchPendapatanDetail){
+//            PendapatanDokter dokter = new PendapatanDokter();
+//            dokter.setNoReg(pendapatanDokter.getNoReg());
+//            dokter.setJenisRawat(pendapatanDokter.getJenisRawat());
+//            dokter.setKdjnspas(pendapatanDokter.getKdjnspas());
+//            dokter.setNamaPasien(pendapatanDokter.getNamaPasien());
+//            dokter.setTanggal(pendapatanDokter.getTanggal());
+//            dokter.setKeterangan(pendapatanDokter.getKeterangan());
+//            dokter.setTarifInacbg(pendapatanDokter.getTarifInacbg());
+//            dokter.setBruto(pendapatanDokter.getBruto());
+//            dokter.setPendapatanRs(pendapatanDokter.getPendapatanRs());
+//            dokter.setHrBruto(pendapatanDokter.getHrBruto());
+//            dokter.setDppPph21(pendapatanDokter.getDppPph21());
+//            dokter.setDppPph21Komulatif(pendapatanDokter.getDppPph21Komulatif());
+//            dokter.setTarif(pendapatanDokter.getTarif());
+//            dokter.setPphDipungut(pendapatanDokter.getPphDipungut());
+//            dokter.setHrAktifitasNetto(pendapatanDokter.getHrAktifitasNetto());
+//            dokter.setPotKs(pendapatanDokter.getPotKs());
+//            dokter.setGajiBersih(pendapatanDokter.getGajiBersih());
+//            dokter.setMasterId(pendapatanDokter.getMasterId());
+//            dokter.setPoliName(pendapatanDokter.getPoliName());
+//            dokter.setActivityName(pendapatanDokter.getActivityName());
+//            detailPendapatanList.add(dokter);
+//        }
+
+        return listOfSearchPendapatanDetail;
+    }
+
     public List<PendapatanDokter> searchDetailPendapatan(String dokterId){
         logger.info("[PendapatanDokterAction.pendapatan] start process >>>");
 
@@ -223,12 +284,17 @@ public class PendapatanDokterAction extends BaseMasterAction {
                 dokter.setHrAktifitasNetto(pendapatanDokter.getHrAktifitasNetto());
                 dokter.setPotKs(pendapatanDokter.getPotKs());
                 dokter.setGajiBersih(pendapatanDokter.getGajiBersih());
+                dokter.setMasterId(pendapatanDokter.getMasterId());
+                dokter.setPoliName(pendapatanDokter.getPoliName());
+                dokter.setActivityName(pendapatanDokter.getActivityName());
                 detailPendapatanList.add(dokter);
             }
         }
 
         return detailPendapatanList;
     }
+
+
 
     public void pendapatan() throws Exception{
         logger.info("[PendapatanDokterAction.pendapatan] start process >>>");
@@ -239,7 +305,7 @@ public class PendapatanDokterAction extends BaseMasterAction {
 
         try{
             pendapatanDokterEntityList = pendapatanDokterBoProxy.getDataPendapatanDokter(pendapatanDokter);
-//            pendapatanDokterDetailEntityList = pendapatanDokterBoProxy.getByCriteriaForPendapatanDokter(pendapatanDokter);
+            pendapatanDokterDetailEntityList = pendapatanDokterBoProxy.getByCriteriaForPendapatanDokter(pendapatanDokter);
         }catch (GeneralBOException e){
             Long logId = null;
             try {
@@ -254,8 +320,8 @@ public class PendapatanDokterAction extends BaseMasterAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResultPendapatanDokter");
         session.setAttribute("listOfResultPendapatanDokter", pendapatanDokterEntityList);
-//        session.removeAttribute("listOfResultDetailPendapatanDokter");
-//        session.setAttribute("listOfResultDetailPendapatanDokter", pendapatanDokterDetailEntityList);
+        session.removeAttribute("listOfResultDetailPendapatanDokter");
+        session.setAttribute("listOfResultDetailPendapatanDokter", pendapatanDokterDetailEntityList);
     }
 
     public String goToResult(){

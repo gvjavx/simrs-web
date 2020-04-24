@@ -1182,4 +1182,9 @@ public class ObatBoImpl implements ObatBo {
         }
         return response;
     }
+
+    @Override
+    public ImSimrsObatEntity getObatEntityByKodeBarang(String id) throws GeneralBOException {
+        return obatDao.getById("idBarang", id);
+    }
 }

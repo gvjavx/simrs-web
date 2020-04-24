@@ -21,6 +21,7 @@ public class ItHrisPendapatanDokterDetailEntity implements Serializable {
     String createdWho;
     String lastUpdateWho;
 
+    String masterId;
     String jenisRawat;
     String kdjnspas;
     String namaPasien;
@@ -277,5 +278,13 @@ public class ItHrisPendapatanDokterDetailEntity implements Serializable {
 
     public void setTarifInacbg(BigDecimal tarifInacbg) {
         this.tarifInacbg = tarifInacbg;
+    }
+
+    public String getMasterId() {
+        return masterId;
+    }
+
+    public void setMasterId(String masterId) {
+        this.masterId = masterId;
     }
 }

@@ -40,10 +40,10 @@
 
                 <!--<prop key="hibernate.connection.url">jdbc:postgresql://db.simrs.local:5432/gomedsys_nmu</prop>-->
                 <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
-                <!--<prop key="hibernate.connection.username">postgres</prop>-->
+                <!--<prop key="hibernate.connection.username">root</prop>-->
                 <!--<prop key="hibernate.connection.password">123456</prop>-->
 
-                <prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs_09042020</prop>
+                <prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs_reza</prop>
                 <prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>
                 <prop key="hibernate.connection.username">postgres</prop>
                 <prop key="hibernate.connection.password">123456</prop>
@@ -403,6 +403,7 @@
                 <value>sshconfig/com/neurix/akuntansi/transaksi/tutupperiod/hibernate/ItSImrsBatasTutupPeriodEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/tutupperiod/hibernate/ItAkunTutupPeriodEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/saldoakhir/hibernate/ItAkunSaldoAkhirEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/master/reportKeuanganKonsol/hibernate/ImReportKeuanganKonsolEntity.hbm.xml</value>
 
                 <!--Hibernate Config For PAKET SIMRS-->
                 <value>sshconfig/com/neurix/simrs/transaksi/paketperiksa/hiberanate/ImSimrsKelasPaketEntity.hbm.xml</value>
@@ -423,6 +424,7 @@
                 <value>sshconfig/com/neurix/hris/transaksi/pendapatanDokter/hibernate/ItHrisPendapatanDokterEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/transaksi/pendapatanDokter/hibernate/ItHrisPendapatanDokterDetailEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/DokterKso/hibernate/ImSimrsDokterKso.hbm.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/master/pembayaran/hibernate/ImAkunPembayaranEntity.hbm.xml</value>
             </list>
         </property>
     </bean>

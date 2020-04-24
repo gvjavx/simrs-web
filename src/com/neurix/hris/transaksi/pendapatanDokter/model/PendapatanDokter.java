@@ -57,6 +57,7 @@ public class PendapatanDokter extends BaseModel {
     String activityName;
     String poliId;
     String poliName;
+    String kodeJabatan;
 
     String branchUser;
     BigDecimal totalBruto;
@@ -79,6 +80,7 @@ public class PendapatanDokter extends BaseModel {
     String stTotalPotKs;
     BigDecimal totalGajiBersih;
     String stTotalGajiBersih;
+    String masterId;
 
 
     public Timestamp getApprovalDate() {
@@ -631,5 +633,21 @@ public class PendapatanDokter extends BaseModel {
 
     public void setBgPphDipungut(BigDecimal bgPphDipungut) {
         this.bgPphDipungut = bgPphDipungut;
+    }
+
+    public String getMasterId() {
+        return masterId;
+    }
+
+    public void setMasterId(String masterId) {
+        this.masterId = masterId;
+    }
+
+    public String getKodeJabatan() {
+        return kodeJabatan;
+    }
+
+    public void setKodeJabatan(String kodeJabatan) {
+        this.kodeJabatan = kodeJabatan;
     }
 }

@@ -228,8 +228,9 @@
                                             <td>
                                                 <table>
                                                     <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                                                    <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="pendapatanDokter.branchId"
+                                                    <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="pendapatanDokter.branchId" disabled="true"
                                                               listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                    <s:hidden id="branchId" name="pendapatanDokter.branchId" />
                                                     <%--<s:if test='pendapatanDokter.branchId == "KP"'>--%>
                                                         <%--<s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>--%>
                                                         <%--<s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="pendapatanDokter.branchId"--%>
@@ -253,8 +254,9 @@
                                                 <table>
                                                     <s:select list="#{'01':'Januari', '02' : 'Februari', '03':'Maret', '04':'April', '05':'Mei', '06':'Juni', '07':'Juli',
                                                         '08': 'Agustus', '09' : 'September', '10' : 'Oktober', '11' : 'November', '12' : 'Desember'}"
-                                                              id="periodeBulan" name="pendapatanDokter.bulan"
+                                                              id="periodeBulan" name="pendapatanDokter.bulan" disabled="true"
                                                               headerKey="" headerValue="[Select One]" cssClass="form-control" />
+                                                    <s:hidden id="periodeBulan" name="pendapatanDokter.bulan" />
                                                 </table>
                                             </td>
                                         </tr>
@@ -266,9 +268,10 @@
                                             <td>
                                                 <table>
                                                     <s:action id="comboPeriode" namespace="/rekruitmen" name="initComboPeriodeTahunSekarang10_rekruitmen"/>
-                                                    <s:select cssClass="form-control" list="#comboPeriode.listOfComboPeriode" id="periodeTahun"
+                                                    <s:select cssClass="form-control" list="#comboPeriode.listOfComboPeriode" id="periodeTahun" disabled="true"
                                                               name="pendapatanDokter.tahun" required="true" headerKey=""
                                                               headerValue="[Select one]"/>
+                                                    <s:hidden id="periodeTahun" name="pendapatanDokter.tahun" />
                                                 </table>
                                             </td>
                                             <script>
@@ -283,15 +286,16 @@
                                                 <div class="form-group">
                                                     <br>
                                                     <div class="form-actions">
-                                                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary"
-                                                                   formIds="inquiryPendapatanDokter" id="inquiry" name="inquiry"
-                                                                   onBeforeTopics="beforeProcessInquiryPendapatan"
-                                                                   onCompleteTopics="closeDialogInquiry,successDialogInquiry"
-                                                                   onSuccessTopics="successDialogInquiry"
-                                                                   onErrorTopics="errorDialog">
-                                                            <i class="fa fa-refresh"></i>
-                                                            Search
-                                                        </sj:submit>
+                                                        <%--<sj:submit targets="crud" type="button" cssClass="btn btn-primary"--%>
+                                                                   <%--formIds="inquiryPendapatanDokter" id="inquiry" name="inquiry"--%>
+                                                                   <%--onBeforeTopics="beforeProcessInquiryPendapatan"--%>
+                                                                   <%--onCompleteTopics="closeDialogInquiry,successDialogInquiry"--%>
+                                                                   <%--onSuccessTopics="successDialogInquiry"--%>
+                                                                   <%--onErrorTopics="errorDialog">--%>
+                                                            <%--<i class="fa fa-refresh"></i>--%>
+                                                            <%--Search--%>
+                                                        <%--</sj:submit>--%>
+                                                        <a href="add_pendapatanDokter.action" class="btn btn-danger"><i class="fa fa-arrow-left"></i> Back</a>
                                                         <button id="btnProses" type="button" class="btn btn-success">
                                                             <i class="fa fa-check"></i> Save
                                                         </button>
@@ -488,6 +492,102 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modal-detail-pendapatan">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Detail Pendapatan</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-striped">
+                            <tr>
+                                <td><b>Nama</b></td>
+                                <td><span id="nama_dokter"></span></td>
+                            </tr>
+                            <tr>
+                                <td><b>Unit</b></td>
+                                <td><span id="nama_unit"></span></td>
+                            </tr>
+                            <tr>
+                                <td><b>Kode Jabatan</b></td>
+                                <td><span id="kode_jabatan"></span></td>
+                            </tr>
+                            <tr>
+                                <td><b>Bulan</b></td>
+                                <td><span id="bulan"></span></td>
+                            </tr>
+                            <tr>
+                                <td><b>Tahun</b></td>
+                                <td><span id="tahun"></span></td>
+                            </tr>
+                            <tr>
+                                <td><b>Bruto</b></td>
+                                <td><span id="bruto"></span></td>
+                            </tr>
+                            <tr>
+                                <td><b>Pendapatan Rs</b></td>
+                                <td><span id="pendapatan_rs"></span></td>
+                            </tr>
+                            <tr>
+                                <td><b>Hr Bruto</b></td>
+                                <td><span id="hr_bruto"></span></td>
+                            </tr>
+                            <tr>
+                                <td><b>Dpp Pph 21</b></td>
+                                <td><span id="dpp_pph_21"></span></td>
+                            </tr>
+                            <tr>
+                                <td><b>Dpp Pph Komulatif</b></td>
+                                <td><span id="dpp_pph_komulatif"></span></td>
+                            </tr>
+                            <tr>
+                                <td><b>Pajak</b></td>
+                                <td><span id="pajak"></span></td>
+                            </tr>
+                            <tr>
+                                <td><b>Pot. Pajak</b></td>
+                                <td><span id="pot_pajak"></span></td>
+                            </tr>
+                            <tr>
+                                <td><b>Hr Aktifitas Netto</b></td>
+                                <td><span id="hr_aktifitas_netto"></span></td>
+                            </tr>
+                            <tr>
+                                <td><b>Pot. Ks</b></td>
+                                <td><span id="pot_ks"></span></td>
+                            </tr>
+                            <tr>
+                                <td><b>Hr Netto</b></td>
+                                <td><span id="hr_netto"></span></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <table class="table table-bordered">
+                    <thead>
+                    <td>Nama Pasien</td>
+                    <td>Tanggal</td>
+                    <td>Master Id</td>
+                    <td>Nama Poli</td>
+                    <td>Nama Activity Id</td>
+                    <td>Biaya</td>
+                    </thead>
+                    <tbody id="body_detail">
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     window.cekKoneksi = function(){
         dwr.engine.setAsync(false);
@@ -541,6 +641,7 @@
                         "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Unit</th>"+
                         "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Id Dokter</th>"+
                         "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Nama Dokter</th>"+
+                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Kode Jabatan</th>"+
                         "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Bulan</th>"+
                         "<th style='text-align: center; color: #fff; background-color:  #3c8dbc''>Tahun</th>"+
                         "<th style='text-align: center; color: #fff; background-color:  #3c8dbc''>Bruto</th>"+
@@ -552,19 +653,24 @@
                 $.each(listdata, function (i, item) {
                     tmp_table += '<tr style="font-size: 11px;" ">' +
                             '<td align="center">' +
-                            "<a href='javascript:;' class ='item-view-pendapatan' data ='"+item.branchId+"' bulan ='"+item.bulan+"' tahun ='"+item.tahun+"' dokter ='"+item.dokterId+"' >" +
+                            "<a href='javascript:;' class ='item-view-pendapatan' unit ='"+item.branchName+"' nama = '"+item.dokterName+"' kodeJabatan = '"+item.kodeJabatan+"' bulan ='"+item.bulan+"' " +
+                            "tahun ='"+item.tahun+"' dokter ='"+item.dokterId+"' bruto = '"+item.stTotalBruto+"' pdptnRs = '"+item.stTotalPendapatanRs+"' " +
+                            "hrBruto = '"+item.stTotalHrBruto+"' pph21 = '"+item.stTotalDppPph50+"' komulatif = '"+item.stTotalDppPph21Komulatif+"' " +
+                            "komulatif = '"+item.stTotalDppPph21Komulatif+"' pajak = '"+item.stTarif+"' potPjk = '"+item.stTotalPphDipungut+"'" +
+                            "hrAktifitas = '"+item.stTotalHrAktifitasNetto+"' potKs = '"+item.stTotalPotKs+"' gajiBersih = '"+item.stTotalGajiBersih+"'>" +
                             "<img border='0' src='<s:url value='/pages/images/view.png'/>' name='icon_view'>"+
                             '</a>' +
                             '</td>' +
                             '<td style="text-align: center">' + item.branchName + '</td>' +
                             '<td style="text-align: center">' + item.dokterId + '</td>' +
                             '<td style="text-align: center">' + item.dokterName + '</td>' +
+                            '<td style="text-align: center">' + item.kodeJabatan + '</td>' +
                             '<td style="text-align: center">' + item.bulan + '</td>' +
                             '<td align="center" class="ceknull">' + item.tahun + '</td>' +
-                            '<td align="center" class="ceknull">' + item.stTotalBruto + '</td>' +
-                            '<td align="center" class="ceknull">' + item.stTotalPphDipungut + '</td>' +
-                            '<td align="center" class="ceknull">' + item.stTotalPotKs + '</td>' +
-                            '<td align="center" class="ceknull">' + item.stTotalGajiBersih + '</td>' +
+                            '<td align="right" class="ceknull">' + item.stTotalBruto + '</td>' +
+                            '<td align="right" class="ceknull">' + item.stTotalPphDipungut + '</td>' +
+                            '<td align="right" class="ceknull">' + item.stTotalPotKs + '</td>' +
+                            '<td align="right" class="ceknull">' + item.stTotalGajiBersih + '</td>' +
                             "</tr>";
 
 //                    var myDate = new Date(item.tanggalLahir);
@@ -605,65 +711,103 @@
 //            });
 //        });
     });
+
     $('.pendapatanTable').on('click', '.item-view-pendapatan', function () {
-        var branchId = $(this).attr('data');
-        var bulan = $(this).attr('bulan');
-        var tahun = $(this).attr('tahun');
-        var dokterId = $(this).attr('dokter')
+//        var branchId = $(this).attr('data');
+//        var bulan = $(this).attr('bulan');
+//        var tahun = $(this).attr('tahun');
+        var dokterId = $(this).attr('dokter');
+        $('#bulan').text($(this).attr('bulan'));
+        $('#tahun').text($(this).attr('tahun'));
+        $('#nama_dokter').text($(this).attr('nama'));
+        $('#kode_jabatan').text($(this).attr('kodeJabatan'));
+        $('#nama_unit').text($(this).attr('unit'));
+        $('#bruto').text($(this).attr('bruto'));
+        $('#pendapatan_rs').text($(this).attr('pdptnRs'));
+        $('#hr_bruto').text($(this).attr('hrbruto'));
+        $('#dpp_pph_21').text($(this).attr('pph21'));
+        $('#dpp_pph_komulatif').text($(this).attr('komulatif'));
+        $('#pajak').text($(this).attr('pajak'));
+        $('#pot_pajak').text($(this).attr('potPjk'));
+        $('#hr_aktifitas_netto').text($(this).attr('hrAktifitas'));
+        $('#pot_ks').text($(this).attr('potKs'));
+        $('#hr_netto').text($(this).attr('gajiBersih'));
+        $('#body_detail').html('');
 
-        $('.listPendapatanTable').find('tbody').remove();
-        $('.listPendapatanTable').find('thead').remove();
-        dwr.engine.setAsync(false);
+//        $('.listPendapatanTable').find('tbody').remove();
+//        $('.listPendapatanTable').find('thead').remove();
+//        dwr.engine.setAsync(false);
         var tmp_table = "";
-        PendapatanDokterAction.searchDetailPendapatan(dokterId, function(listdata) {
-            tmp_table = "<thead style='font-size: 12px' ><tr class='active'>"+
-//                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>No</th>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>No Reg</th>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Jenis Rawat</th>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>KDJNSPAS</th>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Nama Pasien</th>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Tanggal</th>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Keterangan</th>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Tar.INACBG</th>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Tarif</th>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Pend. RS</th>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>HR. Bruto</th>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Dpp PPh 21</th>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Komulatif</th>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Pajak</th>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Pot.Pajak</th>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Hr.Netto</th>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Pot.Ks</th>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Hr.Netto</th>"+
-                    "</tr></thead>";
-            var i = i;
-            $.each(listdata, function (i, item) {
-                tmp_table += '<tr style="font-size: 10px;" ">' +
-//                        '<td align="center">' + (i + 1) + '</td>' +
-                        '<td align="center">' + item.noReg + '</td>' +
-                        '<td align="center">' + item.jenisRawat + '</td>' +
-                        '<td align="center">' + item.kdjnspas + '</td>' +
-                        '<td>' + item.namaPasien + '</td>' +
-                        '<td>' + formaterDate(item.tanggal) + '</td>' +
-                        '<td>' + item.keterangan + '</td>' +
-                        '<td align="right">' + item.tarifInacbg + '</td>' +
-                        '<td align="right">' + item.bruto + '</td>' +
-                        '<td align="right">' + item.pendapatanRs + '</td>' +
-                        '<td align="right">' + item.hrBruto + '</td>' +
-                        '<td align="right">' + item.dppPph21 + '</td>' +
-                        '<td align="right">' + item.dppPph21Komulatif + '</td>' +
-                        '<td align="right">' + item.tarif + '</td>' +
-                        '<td align="right">' + item.pphDipungut + '</td>' +
-                        '<td align="right">' + item.hrAktifitasNetto + '</td>' +
-                        '<td align="right">' + item.potKs + '</td>' +
-                        '<td align="right">' + item.gajiBersih + '</td>' +
-                        "</tr>";
-            });
-            $('.listPendapatanTable').append(tmp_table);
-            $("#listPendapatanTable td:contains('null')").html("-");
-        });
+        PendapatanDokterAction.searchDetailPendapatan(dokterId, function(response) {
+            if(response.length > 0){
+                $.each(response, function (i, item) {
+                    tmp_table += '<tr>' +
+                            '<td>'+item.namaPasien+'</td>'+
+                            '<td>'+formaterDate(item.tanggal)+'</td>'+
+                            '<td>'+item.masterId+'</td>'+
+                            '<td>'+item.poliName+'</td>'+
+                            '<td>'+item.activityName+'</td>'+
+                            '<td align="right">'+item.bruto+'</td>'+
+                            '</tr>'
+                });
 
-        $('#modal-list').find('.modal-title').text('View Detail Pendapatan');
-        $('#modal-list').modal('show');
+                $('#body_detail').html(tmp_table);
+            }else{
+
+            }
+//            tmp_table = "<thead style='font-size: 12px' ><tr class='active'>"+
+//                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>No</th>"+
+//                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>No Reg</th>"+
+//                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Jenis Rawat</th>"+
+//                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>KDJNSPAS</th>"+
+//                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Nama Pasien</th>"+
+//                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Tanggal</th>"+
+//                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Keterangan</th>"+
+//                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Tar.INACBG</th>"+
+//                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Tarif</th>"+
+//                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Pend. RS</th>"+
+//                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>HR. Bruto</th>"+
+//                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Dpp PPh 21</th>"+
+//                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Komulatif</th>"+
+//                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Pajak</th>"+
+//                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Pot.Pajak</th>"+
+//                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Hr.Netto</th>"+
+//                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Pot.Ks</th>"+
+//                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Hr.Netto</th>"+
+//                    "</tr></thead>";
+//            var i = i;
+//            $.each(listdata, function (i, item) {
+//                tmp_table += '<tr style="font-size: 10px;" ">' +
+//                        '<td align="center">' + (i + 1) + '</td>' +
+//                        '<td align="center">' + item.noReg + '</td>' +
+//                        '<td align="center">' + item.jenisRawat + '</td>' +
+//                        '<td align="center">' + item.kdjnspas + '</td>' +
+//                        '<td>' + item.namaPasien + '</td>' +
+//                        '<td>' + formaterDate(item.tanggal) + '</td>' +
+//                        '<td>' + item.keterangan + '</td>' +
+//                        '<td align="right">' + item.tarifInacbg + '</td>' +
+//                        '<td align="right">' + item.bruto + '</td>' +
+//                        '<td align="right">' + item.pendapatanRs + '</td>' +
+//                        '<td align="right">' + item.hrBruto + '</td>' +
+//                        '<td align="right">' + item.dppPph21 + '</td>' +
+//                        '<td align="right">' + item.dppPph21Komulatif + '</td>' +
+//                        '<td align="right">' + item.tarif + '</td>' +
+//                        '<td align="right">' + item.pphDipungut + '</td>' +
+//                        '<td align="right">' + item.hrAktifitasNetto + '</td>' +
+//                        '<td align="right">' + item.potKs + '</td>' +
+//                        '<td align="right">' + item.gajiBersih + '</td>' +
+//                        '<td align="center">' + item.namaPasien + '</td>' +
+//                        '<td align="center">' + formaterDate(item.tanggal) + '</td>' +
+//                        '<td align="center">' + item.keterangan + '</td>' +
+//                        '<td align="center">' + item.bruto + '</td>' +
+//                        "</tr>";
+//            });
+//            $('.listPendapatanTable').append(tmp_table);
+//            $("#listPendapatanTable td:contains('null')").html("-");
+        });
+        $('#modal-detail-pendapatan').find('.modal-title').text('View Detail Pendapatan');
+        $('#modal-detail-pendapatan').modal('show');
+//        $('#modal-list').find('.modal-title').text('View Detail Pendapatan');
+//        $('#modal-list').modal('show');
     });
 </script>

@@ -319,4 +319,27 @@ public class TipeJurnalBoImpl implements TipeJurnalBo {
         }
         return tipeJurnal;
     }
+
+    @Override
+    public TipeJurnal getTipeJurnalById ( String tipeJurnalId){
+        logger.info("[TipeJurnalBoImpl.getTipeJurnalById] start process >>>");
+        TipeJurnal tipeJurnal=new TipeJurnal();
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("flag","Y");
+        hsCriteria.put("tipe_jurnal_id",tipeJurnalId);
+        List<ImTipeJurnalEntity> tipeJurnalEntityList ;
+        try {
+            // Get data from database by ID
+            tipeJurnalEntityList = tipeJurnalDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e) {
+            logger.error("[TipeJurnalBoImpl.getTipeJurnalById] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data TipeJurnal by Kode TipeJurnal, please inform to your admin...," + e.getMessage());
+        }
+        for (ImTipeJurnalEntity tipeJurnalEntity: tipeJurnalEntityList){
+            tipeJurnal.setTipeJurnalId(tipeJurnalEntity.getTipeJurnalId());
+            tipeJurnal.setTipeJurnalName(tipeJurnalEntity.getTipeJurnalName());
+        }
+        return tipeJurnal;
+    }
+
 }
