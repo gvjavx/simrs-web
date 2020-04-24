@@ -864,6 +864,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         TipeJurnal tipeJurnal= tipeJurnalBo.getTipeJurnalById(data.getTipeJurnalId());
         String titleReport="";
         String unit = "";
+        String result ="";
         if (("KP").equalsIgnoreCase(data.getUnit())){
             List<Branch> branchList = new ArrayList<>();
             branchList = branchBo.getAll();
@@ -879,7 +880,17 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         }else{
             unit="'"+data.getUnit()+"'";
         }
-        titleReport="MUTASI "+tipeJurnal.getTipeJurnalName().toUpperCase();
+
+        if (("M").equalsIgnoreCase(data.getTipeLaporan())){
+            result = "print_report_mutasi_jurnal";
+            titleReport="MUTASI "+tipeJurnal.getTipeJurnalName().toUpperCase();
+        }else if (("da").equalsIgnoreCase(data.getTipeLaporan())){
+            titleReport="MUTASI DETAIL "+tipeJurnal.getTipeJurnalName().toUpperCase();
+            result = "print_report_mutasi_jurnal_activity";
+        }else if (("ms").equalsIgnoreCase(data.getTipeLaporan())){
+            titleReport="MUTASI ACTIVITY DOKTER "+tipeJurnal.getTipeJurnalName().toUpperCase();
+            result = "print_report_mutasi_jurnal_activity_dokter";
+        }
 
         reportParams.put("reportTitle", titleReport);
         reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
@@ -910,7 +921,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
             addActionError("Error, " + "[code=" + logId + "] Found problem when downloading data, please inform to your admin.");
         }
         logger.info("[LaporanAkuntansiAction.printReportMutasiJurnal] end process <<<");
-        return "print_report_mutasi_jurnal";
+        return result;
     }
 
     public String printReportClosingKasir(){
@@ -1242,7 +1253,8 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
                 break;
         }
 
-        List<Aging> agingList = laporanAkuntansiBo.getAging(unit,periode,dataLaporan.getMasterId(),tipeAging,reportId,dataLaporan.getTipeLaporan());
+        String periodeAging = dataLaporan.getTahun()+"-"+dataLaporan.getBulan();
+        List<Aging> agingList = laporanAkuntansiBo.getAging(unit,periodeAging,dataLaporan.getMasterId(),tipeAging,reportId,dataLaporan.getTipeLaporan());
         List<Aging> listOfAgingTemp = new ArrayList<>();
         if (agingList.size()==0){
             return "print_report_akuntansi_aging";

@@ -146,12 +146,6 @@
                 <param name="dataSource">myList</param>
                 <param name="reportParameters">reportParams</param>
             </result>
-            <result name="print_report_mutasi_jurnal" type="jasper">
-                <param name="location">/pages/report/com/neurix/akuntansi/MutasiJurnal.jasper</param>
-                <param name="connection">connection</param>
-                <param name="format">PDF</param>
-                <param name="reportParameters">reportParams</param>
-            </result>
             <result name="print_report_closing_kasir" type="jasper">
                 <param name="location">/pages/report/com/neurix/akuntansi/ClosingKasir.jasper</param>
                 <param name="connection">connection</param>
@@ -257,6 +251,22 @@
                 <param name="reportParameters">reportParams</param>
             </result>
             <!-- END OF KOMPILASI -->
+
+            <!-- Mutasi -->
+            <result name="print_report_mutasi_jurnal" type="jasper">
+                <param name="location">/pages/report/com/neurix/akuntansi/MutasiJurnal.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+            <result name="print_report_mutasi_jurnal_activity" type="jasper">
+                <param name="location">/pages/report/com/neurix/akuntansi/MutasiJurnalDetail.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+            <!-- END OF Mutasi -->
+
         </action>
 
         <action name="paging_displaytag_laporanAkuntansi"

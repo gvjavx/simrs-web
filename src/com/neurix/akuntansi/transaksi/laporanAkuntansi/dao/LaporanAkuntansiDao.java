@@ -110,9 +110,9 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "where\n" +
                 "  to_date(\n" +
                 "    cast(tgljurnal as TEXT), \n" +
-                "    'MM-yyyy'\n" +
+                "    'yyyy-MM'\n" +
                 "  ) < (\n" +
-                "    to_date('"+periode+"', 'MM-yyyy')+ Interval '1 month') " +
+                "    to_date('"+periode+"', 'yyyy-MM')+ Interval '1 month') " +
                 "and rekening_id IN (\n" +
                 "                select\n" +
                 "                    rekening_id\n" +
