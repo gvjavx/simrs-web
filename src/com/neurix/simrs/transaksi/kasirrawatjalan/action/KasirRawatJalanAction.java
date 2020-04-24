@@ -14,6 +14,7 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.jenisperiksapasien.bo.AsuransiBo;
 import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
+import com.neurix.simrs.master.jenisperiksapasien.dao.JenisPeriksaPasienDao;
 import com.neurix.simrs.master.jenisperiksapasien.model.Asuransi;
 import com.neurix.simrs.master.jenisperiksapasien.model.ImJenisPeriksaPasienEntity;
 import com.neurix.simrs.master.jenisperiksapasien.model.ImSimrsAsuransiEntity;
@@ -683,6 +684,13 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
         KasirRawatJalanBo kasirRawatJalanBo = (KasirRawatJalanBo) ctx.getBean("kasirRawatJalanBoProxy");
+        JenisPriksaPasienBo jenisPriksaPasienBo = (JenisPriksaPasienBo) ctx.getBean("jenisPriksaPasienBoProxy");
+
+        String masterId = "";
+        ImJenisPeriksaPasienEntity jenisPeriksaPasienEntity = jenisPriksaPasienBo.getJenisPerikasEntityById("umum");
+        if (jenisPeriksaPasienEntity != null){
+            masterId = jenisPeriksaPasienEntity.getMasterId();
+        }
 
         String transId = "04";
         String noNota = "";
@@ -706,7 +714,8 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
         Map mapUangMuka = new HashMap();
         mapUangMuka.put("bukti", id);
-        mapUangMuka.put("master_id", idPasien);
+        mapUangMuka.put("master_id", masterId);
+        mapUangMuka.put("pasien_id", idPasien);
         mapUangMuka.put("nilai", new BigDecimal(jumlahDibayar));
 
         Map mapKas = new HashMap();
@@ -829,17 +838,12 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
         CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
-        PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
-        KelasRuanganBo kelasRuanganBo = (KelasRuanganBo) ctx.getBean("kelasRuanganBoProxy");
-        RuanganBo ruanganBo = (RuanganBo) ctx.getBean("ruanganBoProxy");
-        RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
         AsuransiBo asuransiBo = (AsuransiBo) ctx.getBean("asuransiBoProxy");
         TeamDokterBo teamDokterBo = (TeamDokterBo) ctx.getBean("teamDokterBoProxy");
         RiwayatTindakanBo riwayatTindakanBo = (RiwayatTindakanBo) ctx.getBean("riwayatTindakanBoProxy");
-        PositionBo positionBo = (PositionBo) ctx.getBean("positionBoProxy");
         JenisPriksaPasienBo jenisPriksaPasienBo = (JenisPriksaPasienBo) ctx.getBean("jenisPriksaPasienBoProxy");
-        PermintaanResepBo permintaanResepBo = (PermintaanResepBo) ctx.getBean("permintaanResepBoProxy");
 
+        String noKartu = "";
         ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailBo.getDetailCheckupById(idDetailCheckup);
 
         //** INISIALISASI MAP UNTUK CREATE JURNAL **//
@@ -932,6 +936,8 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             }
         } else if ("asuransi".equalsIgnoreCase(jenis)){
 
+            noKartu = " No. Kartu Asuransi "+ detailCheckupEntity.getNoKartuAsuransi();
+
             // jika asuransi
             ImSimrsAsuransiEntity asuransiEntity = asuransiBo.getEntityAsuransiById(detailCheckupEntity.getIdAsuransi());
             if (asuransiEntity != null){
@@ -946,7 +952,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             masterId =  detailCheckupEntity.getIdAsuransi();
         } else {
             jenis = "umum";
-            ImJenisPeriksaPasienEntity jenisPeriksaPasienEntity = jenisPriksaPasienBo.getJenisPerikasEntityById("umum");
+            ImJenisPeriksaPasienEntity jenisPeriksaPasienEntity = jenisPriksaPasienBo.getJenisPerikasEntityById(jenis);
             if (jenisPeriksaPasienEntity != null){
                 masterId = jenisPeriksaPasienEntity.getMasterId();
             }
@@ -1045,6 +1051,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
             Map mapPendapatanUmum = new HashMap();
             mapPendapatanUmum.put("master_id", masterId);
+            mapPendapatanUmum.put("pasien_id", idPasien);
             mapPendapatanUmum.put("divisi_id", divisiId);
             mapPendapatanUmum.put("nilai", pendapatanRawatUmum.subtract(tindakanTransUmum));
             mapPendapatanUmum.put("activity", listActivityTindakanUmum);
@@ -1060,6 +1067,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
                 Map mapResepUmum = new HashMap();
                 mapResepUmum.put("master_id", masterId);
+                mapResepUmum.put("pasien_id", idPasien);
                 mapResepUmum.put("divisi_id", divisiResep);
                 mapResepUmum.put("nilai", pendapatanResepUmum);
                 mapResepUmum.put("activity", listActivityResepUmum);
@@ -1079,6 +1087,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
                 Map mapResepUmum = new HashMap();
                 mapResepUmum.put("master_id", masterId);
+                mapResepUmum.put("pasien_id", idPasien);
                 mapResepUmum.put("divisi_id", divisiResep);
                 mapResepUmum.put("nilai", pendapatanResepUmum.subtract(resepTransUmum));
                 mapResepUmum.put("activity", listActivityResepUmum);
@@ -1124,6 +1133,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 mapPiutang.put("bukti", invNumber);
                 mapPiutang.put("nilai", uangPiutang);
                 mapPiutang.put("master_id", masterId);
+                mapPiutang.put("pasien_id", idPasien);
 
                 transId = "10";
                 ketTerangan = "Pembayaran Piutang Pasien BPJS";
@@ -1149,12 +1159,14 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
                 Map mapPendapatanAsuransi = new HashMap();
                 mapPendapatanAsuransi.put("master_id", masterId);
+                mapPendapatanAsuransi.put("pasien_id", idPasien);
                 mapPendapatanAsuransi.put("divisi_id", divisiId);
                 mapPendapatanAsuransi.put("nilai", pendapatanRawat);
                 mapPendapatanAsuransi.put("activity", listActivityTindakan);
 
                 Map mapPendapatanUmum = new HashMap();
                 mapPendapatanUmum.put("master_id", masterUmum);
+                mapPendapatanUmum.put("pasien_id", idPasien);
                 mapPendapatanUmum.put("divisi_id", divisiId);
                 mapPendapatanUmum.put("nilai", pendapatanRawatUmum);
                 mapPendapatanUmum.put("activity", listActivityTindakanUmum);
@@ -1162,6 +1174,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 mapPiutang.put("bukti", billingSystemBo.createInvoiceNumber(type, branchId));
                 mapPiutang.put("nilai", uangPiutang);
                 mapPiutang.put("master_id", masterId);
+                mapPiutang.put("pasien_id", idPasien);
 
                 mapJurnal.put("piutang_pasien_asuransi", mapPiutang);
 
@@ -1169,12 +1182,14 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
                     Map mapResepAsuransi = new HashMap();
                     mapResepAsuransi.put("master_id", masterId);
+                    mapResepAsuransi.put("pasien_id", idPasien);
                     mapResepAsuransi.put("divisi_id", divisiId);
                     mapResepAsuransi.put("nilai", pendapatanResep);
                     mapResepAsuransi.put("activity", listActivityResep);
 
                     Map mapResepUmum = new HashMap();
                     mapResepUmum.put("master_id", masterUmum);
+                    mapResepUmum.put("pasien_id", idPasien);
                     mapResepUmum.put("divisi_id", divisiId);
                     mapResepUmum.put("nilai", pendapatanResepUmum);
                     mapResepUmum.put("activity", listActivityResepUmum);
@@ -1192,12 +1207,14 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
                         Map mapResepAsuransi = new HashMap();
                         mapResepAsuransi.put("master_id", masterId);
+                        mapResepAsuransi.put("pasien_id", idPasien);
                         mapResepAsuransi.put("divisi_id", divisiId);
                         mapResepAsuransi.put("nilai", pendapatanResep);
                         mapResepAsuransi.put("activity", listActivityResep);
 
                         Map mapResepUmum = new HashMap();
                         mapResepUmum.put("master_id", masterUmum);
+                        mapResepUmum.put("pasien_id", idPasien);
                         mapResepUmum.put("divisi_id", divisiId);
                         mapResepUmum.put("nilai", pendapatanResepUmum);
                         mapResepUmum.put("activity", listActivityResepUmum);
@@ -1228,6 +1245,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 mapPiutang.put("bukti", invNumber);
                 mapPiutang.put("nilai", uangPiutang);
                 mapPiutang.put("master_id", masterId);
+                mapPiutang.put("pasien_id", idPasien);
 
                 //** UMUM **//
                 transId = "02";
@@ -1242,6 +1260,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             mapUangMuka.put("bukti", noNota);
             mapUangMuka.put("nilai", uangMuka);
             mapUangMuka.put("master_id", masterId);
+            mapUangMuka.put("pasien_id", idPasien);
 
             mapJurnal.put("uang_muka", mapUangMuka);
         }
@@ -1253,9 +1272,9 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                     text = " pada Bank " + getNamaBank(kodeBank);
                 }
 
-                String catatan = ketTerangan + " untuk No Pasien " + idPasien + " menggunakan metode " + metodeBayar + text;
+                String catatan = ketTerangan + " untuk No Pasien " + idPasien + " menggunakan metode " + metodeBayar + text + noKartu;
                 if (!"".equalsIgnoreCase(noRekening)) {
-                    catatan = catatan + " No. Rekening " + noRekening;
+                    catatan = catatan + " No. Kartu Pembayaran " + noRekening;
                 }
 
                 //** creat Jurnal **//
@@ -1632,9 +1651,11 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
         CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
         BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
+        JenisPriksaPasienBo jenisPriksaPasienBo = (JenisPriksaPasienBo) ctx.getBean("jenisPriksaPasienBoProxy");
 
         String noNota = "";
         String noPasien = "";
+        String masterId = "";
         BigDecimal uangMuka = new BigDecimal(0);
         ItSimrsUangMukaPendaftaranEntity uangMukaPendaftaranEntity = kasirRawatJalanBo.getEnityUangMukaById(id);
         if (uangMukaPendaftaranEntity != null){
@@ -1649,6 +1670,9 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 if (headerChekupEntity != null){
                     noPasien = headerChekupEntity.getIdPasien();
                 }
+
+                // MENDAPATKAN DATA MASTER ID;
+                masterId = jenisPriksaPasienBo.getJenisPerikasEntityById(detailCheckupEntity.getIdJenisPeriksaPasien()).getMasterId();
             }
 
         } else {
@@ -1660,7 +1684,8 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         Map mapUangMuka = new HashMap();
         mapUangMuka.put("bukti", noNota);
         mapUangMuka.put("nilai", uangMuka);
-        mapUangMuka.put("master_id", noPasien);
+        mapUangMuka.put("master_id", masterId);
+        mapUangMuka.put("pasien_id", noPasien);
 
         Map mapKas = new HashMap();
         mapKas.put("nilai", uangMuka);

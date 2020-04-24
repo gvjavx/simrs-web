@@ -1000,12 +1000,9 @@ public class CheckupDetailAction extends BaseMasterAction {
         CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
         PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
         BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
-        KelasRuanganBo kelasRuanganBo = (KelasRuanganBo) ctx.getBean("kelasRuanganBoProxy");
-        RuanganBo ruanganBo = (RuanganBo) ctx.getBean("ruanganBoProxy");
-        RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
         AsuransiBo asuransiBo = (AsuransiBo) ctx.getBean("asuransiBoProxy");
         CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
-        PositionBo positionBo = (PositionBo) ctx.getBean("positionBoProxy");
+        JenisPriksaPasienBo jenisPriksaPasienBo = (JenisPriksaPasienBo) ctx.getBean("jenisPriksaPasienBoProxy");
 
         String kode = "";
         String transId = "";
@@ -1013,8 +1010,9 @@ public class CheckupDetailAction extends BaseMasterAction {
         String ketResep = "";
         String divisiId = "";
         String masterId = "";
-        String jenisPasien = "Umum";
+        String jenisPasien = "Umum ";
         String divisiResep = "";
+        String noKartu = "";
         BigDecimal biayaCover = new BigDecimal(0);
         ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailBo.getEntityDetailCheckupByIdDetail(idDetailCheckup);
         ItSimrsHeaderChekupEntity checkupEntity = checkupBo.getEntityCheckupById(detailCheckupEntity.getNoCheckup());
@@ -1031,7 +1029,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                     ImSimrsAsuransiEntity asuransiEntity = asuransiBo.getEntityAsuransiById(detailCheckupEntity.getIdAsuransi());
                     if (asuransiEntity != null){
                         masterId = asuransiEntity.getNoMaster();
-                        jenisPasien = " Asuransi "+ asuransiEntity.getNamaAsuransi() + " ";
+                        jenisPasien = "Asuransi "+ asuransiEntity.getNamaAsuransi() + " ";
                     } else {
                         logger.error("[CheckupDetailAction.closingJurnalNonTunai] Error Asuransi tidak ditemukan");
                         response.setStatus("error");
@@ -1039,8 +1037,10 @@ public class CheckupDetailAction extends BaseMasterAction {
                         return response;
                     }
 
+                    noKartu = " No. Kartu Asuransi " + detailCheckupEntity.getNoKartuAsuransi();
+
                 } else {
-                    masterId = idPasien;
+                    masterId = jenisPriksaPasienBo.getJenisPerikasEntityById(detailCheckupEntity.getIdJenisPeriksaPasien()).getMasterId();
                 }
 
                 ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(detailCheckupEntity.getIdPelayanan());
@@ -1081,6 +1081,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                     mapUangMuka.put("bukti", idUm);
                     mapUangMuka.put("nilai", jumlahUm);
                     mapUangMuka.put("master_id", masterId);
+                    mapUangMuka.put("pasien_id", idPasien);
 
                     Map mapPajakObat = new HashMap();
                     mapPajakObat.put("bukti", invoice);
@@ -1121,9 +1122,9 @@ public class CheckupDetailAction extends BaseMasterAction {
                     //jumlah = jumlah.add(jumlahTindakan);
 
                     if ("Y".equalsIgnoreCase(isResep)){
-                        ketResep = "Dengan Obat";
+                        ketResep = "Dengan Obat ";
                     } else {
-                        ketResep = "Tanpa Obat";
+                        ketResep = "Tanpa Obat ";
                     }
 
                     // create invoice nummber
@@ -1132,6 +1133,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                         Map mapTindakan = new HashMap();
                         mapTindakan.put("master_id", masterId);
+                        mapTindakan.put("pasien_id", idPasien);
                         mapTindakan.put("divisi_id", divisiId);
                         mapTindakan.put("nilai", jumlahTindakan);
 
@@ -1160,6 +1162,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                                 // map resep
                                 Map mapResep = new HashMap();
                                 mapResep.put("master_id", masterId);
+                                mapResep.put("pasien_id", idPasien);
                                 mapResep.put("divisi_id", divisiResep);
                                 mapResep.put("nilai", jumlahResep);
                                 mapResep.put("activity", getAcitivityList(idDetailCheckup, "asuransi", "resep", kode));
@@ -1177,6 +1180,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                                 mapPiutang.put("bukti", invoice);
                                 mapPiutang.put("nilai", jumlah.subtract(jumlahUm));
                                 mapPiutang.put("master_id", masterId);
+                                mapPiutang.put("pasien_id", idPasien);
 
                                 // debit piutang pasien asuransi
                                 hsCriteria.put("piutang_pasien_asuransi", mapPiutang);
@@ -1190,6 +1194,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                                 mapPiutang.put("bukti", invoice);
                                 mapPiutang.put("nilai", jumlah.subtract(jumlahUm));
                                 mapPiutang.put("master_id", masterId);
+                                mapPiutang.put("pasien_id", idPasien);
 
                                 // debit piutang pasien asuransi
                                 hsCriteria.put("piutang_pasien_asuransi", mapPiutang);
@@ -1217,6 +1222,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                                 Map mapResep = new HashMap();
                                 mapResep.put("master_id", masterId);
+                                mapResep.put("pasien_id", idPasien);
                                 mapResep.put("divisi_id", divisiResep);
                                 mapResep.put("nilai", jumlahResep);
 
@@ -1233,6 +1239,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                                 mapPiutang.put("bukti", invoice);
                                 mapPiutang.put("nilai", jumlah.subtract(jumlahUm));
                                 mapPiutang.put("master_id", masterId);
+                                mapPiutang.put("pasien_id", idPasien);
 
                                 // debit piutang pasien
                                 hsCriteria.put("piutang_pasien_umum", mapPiutang);
@@ -1245,6 +1252,8 @@ public class CheckupDetailAction extends BaseMasterAction {
                                 mapPiutang.put("bukti", invoice);
                                 mapPiutang.put("nilai", jumlah.subtract(jumlahUm));
                                 mapPiutang.put("master_id", masterId);
+                                mapPiutang.put("pasien_id", idPasien);
+
 
                                 // debit piutang pasien
                                 hsCriteria.put("piutang_pasien_umum", mapPiutang);
@@ -1269,6 +1278,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                         Map mapTindakan = new HashMap();
                         mapTindakan.put("master_id", masterId);
+                        mapTindakan.put("pasien_id", idPasien);
                         mapTindakan.put("divisi_id", divisiId);
                         mapTindakan.put("nilai", jumlahTindakan);
 
@@ -1287,6 +1297,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                             Map mapResep = new HashMap();
                             mapResep.put("master_id", masterId);
+                            mapResep.put("pasien_id", idPasien);
                             mapResep.put("divisi_id", divisiResep);
                             mapResep.put("nilai", jumlahResep);
                             mapResep.put("activity", getAcitivityList(idDetailCheckup, "asuransi", "resep", kode));
@@ -1302,6 +1313,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                             mapPiutang.put("bukti", invoice);
                             mapPiutang.put("nilai", jumlah.subtract(jumlahUm));
                             mapPiutang.put("master_id", masterId);
+                            mapPiutang.put("pasien_id", idPasien);
 
                             // debit piutang pasien asuransi
                             hsCriteria.put("piutang_pasien_asuransi", mapPiutang);
@@ -1320,6 +1332,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                             Map mapResep = new HashMap();
                             mapResep.put("master_id", masterId);
+                            mapResep.put("pasien_id", idPasien);
                             mapResep.put("divisi_id", divisiResep);
                             mapResep.put("nilai", jumlahResep);
                             mapResep.put("activity", getAcitivityList(idDetailCheckup, "umum", "resep", kode));
@@ -1329,6 +1342,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                             mapPiutang.put("bukti", invoice);
                             mapPiutang.put("nilai", jumlah.subtract(jumlahUm));
                             mapPiutang.put("master_id", masterId);
+                            mapPiutang.put("pasien_id", idPasien);
 
                             // debit piutang pasien
                             hsCriteria.put("piutang_pasien_umum", mapPiutang);
@@ -1347,7 +1361,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                         }
                     }
 
-                    String catatan = "Closing Pasien " + ketPoli + jenisPasien + ketResep + " Piutang No Pasien " + idPasien;
+                    String catatan = "Closing Pasien " + ketPoli + jenisPasien + ketResep + "Piutang No Pasien " + " "+idPasien + noKartu;
 
 
                     try {

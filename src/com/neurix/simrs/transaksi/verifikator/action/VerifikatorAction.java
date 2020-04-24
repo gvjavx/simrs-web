@@ -856,6 +856,7 @@ public class VerifikatorAction extends BaseMasterAction {
 
         String masterId = "";
         String idPasien = headerChekupEntity.getIdPasien();
+        String noKartu = headerDetailCheckupEntity.getNoKartuAsuransi();
 
         // MENDAPATKAN DIVISI UNTUK TINDAKAN / PENDAPATAN RAWAT
         String divisiId = getDivisiId(idDetailCheckup, "", "");
@@ -927,6 +928,7 @@ public class VerifikatorAction extends BaseMasterAction {
 
                 Map mapObat = new HashMap();
                 mapObat.put("master_id", masterId);
+                mapObat.put("pasien_id", idPasien);
                 mapObat.put("divisi_id", divisiResep);
                 mapObat.put("nilai", jmlResep);
                 mapObat.put("activity", getAcitivityList(idDetailCheckup, "bpjs", "resep", kode));
@@ -963,6 +965,7 @@ public class VerifikatorAction extends BaseMasterAction {
 
             Map mapTindakan = new HashMap();
             mapTindakan.put("master_id", masterId);
+            mapTindakan.put("pasien_id", idPasien);
             mapTindakan.put("divisi_id", divisiId);
             mapTindakan.put("nilai", jmlOnlyTindakan);
             mapTindakan.put("activity", getAcitivityList(idDetailCheckup, "bpjs", "", kode));
@@ -971,6 +974,7 @@ public class VerifikatorAction extends BaseMasterAction {
             mapPiutang.put("bukti", headerDetailCheckupEntity.getNoSep());
             mapPiutang.put("nilai", jumlah );
             mapPiutang.put("master_id", masterId);
+            mapPiutang.put("pasien_id", idPasien);
 
             // JIKA RAWAT JALAN
             if ("JRJ".equalsIgnoreCase(kode)){
@@ -1105,10 +1109,6 @@ public class VerifikatorAction extends BaseMasterAction {
         BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
         PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
         MasterBo masterBo = (MasterBo) ctx.getBean("masterBoProxy");
-        RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
-        RuanganBo ruanganBo = (RuanganBo) ctx.getBean("ruanganBoProxy");
-        KelasRuanganBo kelasRuanganBo = (KelasRuanganBo) ctx.getBean("kelasRuanganBoProxy");
-        PositionBo positionBo = (PositionBo) ctx.getBean("positionBoProxy");
         JenisPriksaPasienBo jenisPriksaPasienBo = (JenisPriksaPasienBo) ctx.getBean("jenisPriksaPasienBoProxy");
 
         JurnalResponse response = new JurnalResponse();
@@ -1124,12 +1124,17 @@ public class VerifikatorAction extends BaseMasterAction {
         String invoice = "";
         String company = "";
         String divisiResep = "";
+        String idPasien = "";
+        String noKartu = "";
 
         // PENGAMBILAN DETAIL CHECKUP SEBAGAI DATA UTAMA;
         // PENGAMBILAN COVER BIAYA;
         ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailBo.getEntityDetailCheckupByIdDetail(idDetailCheckup);
         ItSimrsHeaderChekupEntity headerChekupEntity = checkupBo.getEntityCheckupById(detailCheckupEntity.getNoCheckup());
         BigDecimal biayaCover = detailCheckupEntity.getTarifBpjs();
+        idPasien = headerChekupEntity.getIdPasien();
+        noKartu = " No. Kartu PTPN " + detailCheckupEntity.getNoKartuAsuransi();
+
         ImMasterEntity masterEntity = masterBo.getEntityMasterById(detailCheckupEntity.getIdAsuransi());
         if (masterEntity != null) {
             company = " "+ masterEntity.getNama()+ " ";
@@ -1222,6 +1227,7 @@ public class VerifikatorAction extends BaseMasterAction {
 
             Map mapTindakan = new HashMap();
             mapTindakan.put("master_id", masterId);
+            mapTindakan.put("pasien_id", idPasien);
             mapTindakan.put("divisi_id", divisiId);
             mapTindakan.put("nilai", jumlahTindakan);
             mapTindakan.put("activity", getAcitivityList(idDetailCheckup, "bpjs", "", kode));
@@ -1238,6 +1244,7 @@ public class VerifikatorAction extends BaseMasterAction {
 
                     Map mapObat = new HashMap();
                     mapObat.put("master_id", masterId);
+                    mapObat.put("pasien_id", idPasien);
                     mapObat.put("divisi_id", divisiResep);
                     mapObat.put("nilai", jumlahResep);
                     mapObat.put("activity", getAcitivityList(idDetailCheckup, "bpjs", "resep", kode));
@@ -1262,6 +1269,7 @@ public class VerifikatorAction extends BaseMasterAction {
                     mapPiutang.put("bukti", detailCheckupEntity.getNoSep());
                     mapPiutang.put("nilai", jumlahAllTindakan);
                     mapPiutang.put("master_id", masterId);
+                    mapPiutang.put("pasien_id", idPasien);
 
                     // debit piutang pasien PTPN
                     hsCriteria.put("piutang_pasien_bpjs", mapPiutang);
@@ -1280,6 +1288,7 @@ public class VerifikatorAction extends BaseMasterAction {
 
                 Map mapObat = new HashMap();
                 mapObat.put("master_id", masterId);
+                mapObat.put("pasien_id", idPasien);
                 mapObat.put("divisi_id", divisiResep);
                 mapObat.put("nilai",jumlahResep);
                 mapObat.put("activity", getAcitivityList(idDetailCheckup, "bpjs", "resep", kode));
@@ -1350,12 +1359,14 @@ public class VerifikatorAction extends BaseMasterAction {
 
             Map mapTindakanBpjs = new HashMap();
             mapTindakanBpjs.put("master_id", masterId);
+            mapTindakanBpjs.put("pasien_id", idPasien);
             mapTindakanBpjs.put("divisi_id", divisiId);
             mapTindakanBpjs.put("nilai", jumlahTindakan);
             mapTindakanBpjs.put("activity", getAcitivityList(idDetailCheckup, "bpjs", "", kode));
 
             Map mapTindakanPtpn = new HashMap();
             mapTindakanPtpn.put("master_id", ptpnMasterId);
+            mapTindakanPtpn.put("pasien_id", idPasien);
             mapTindakanPtpn.put("divisi_id", divisiId);
             mapTindakanPtpn.put("nilai", jumlaTindakanPtpn);
             mapTindakanPtpn.put("activity", getAcitivityList(idDetailCheckup, "ptpn", "", kode));
@@ -1365,11 +1376,13 @@ public class VerifikatorAction extends BaseMasterAction {
                 Map mapPiutangBpjs = new HashMap();
                 mapPiutangBpjs.put("bukti", detailCheckupEntity.getNoSep());
                 mapPiutangBpjs.put("master_id", masterId);
+                mapPiutangBpjs.put("pasien_id", idPasien);
                 mapPiutangBpjs.put("nilai", jumlahAllTindakan.add(ppnObat));
 
                 Map mapPiutangPtpn = new HashMap();
                 mapPiutangPtpn.put("bukti", billingSystemBo.createInvoiceNumber(kode, branchId));
                 mapPiutangPtpn.put("master_id", ptpnMasterId);
+                mapPiutangPtpn.put("pasien_id", idPasien);
                 mapPiutangPtpn.put("nilai", jumlahAllTindakanPtpn.add(ppnObtPtpn));
 
                 if ("Y".equalsIgnoreCase(isResep) || "Y".equalsIgnoreCase(isResepPtpn)){
@@ -1379,12 +1392,14 @@ public class VerifikatorAction extends BaseMasterAction {
 
                     Map mapResepBpjs = new HashMap();
                     mapResepBpjs.put("master_id", masterId);
+                    mapResepBpjs.put("pasien_id", idPasien);
                     mapResepBpjs.put("divisi_id", divisiResep);
                     mapResepBpjs.put("nilai", jumlahResep);
                     mapResepBpjs.put("activity", getAcitivityList(idDetailCheckup, "bpjs", "resep", kode));
 
                     Map mapResepPtpn = new HashMap();
                     mapResepPtpn.put("master_id", ptpnMasterId);
+                    mapResepPtpn.put("pasien_id", idPasien);
                     mapResepPtpn.put("divisi_id", divisiResep);
                     mapResepPtpn.put("nilai", jumlahResepPtpn);
                     mapResepPtpn.put("activity", getAcitivityList(idDetailCheckup, "ptpn", "resep", kode));
@@ -1414,12 +1429,14 @@ public class VerifikatorAction extends BaseMasterAction {
 
                 Map mapResepBpjs = new HashMap();
                 mapResepBpjs.put("master_id", masterId);
+                mapResepBpjs.put("pasien_id", idPasien);
                 mapResepBpjs.put("divisi_id", divisiResep);
                 mapResepBpjs.put("nilai", jumlahResep);
                 mapResepBpjs.put("activity", getAcitivityList(idDetailCheckup, "bpjs", "resep", kode));
 
                 Map mapResepPtpn = new HashMap();
                 mapResepPtpn.put("master_id", ptpnMasterId);
+                mapResepPtpn.put("pasien_id", idPasien);
                 mapResepPtpn.put("divisi_id", divisiResep);
                 mapResepPtpn.put("nilai", jumlahResepPtpn);
                 mapResepPtpn.put("activity", getAcitivityList(idDetailCheckup, "ptpn", "resep", kode));
@@ -1427,11 +1444,13 @@ public class VerifikatorAction extends BaseMasterAction {
                 Map mapPiutangBpjs = new HashMap();
                 mapPiutangBpjs.put("bukti", detailCheckupEntity.getNoSep());
                 mapPiutangBpjs.put("master_id", masterId);
+                mapPiutangBpjs.put("pasien_id", idPasien);
                 mapPiutangBpjs.put("nilai", jumlahAllTindakan);
 
                 Map mapPiutangPtpn = new HashMap();
                 mapPiutangPtpn.put("bukti", billingSystemBo.createInvoiceNumber(kode, branchId));
                 mapPiutangPtpn.put("master_id", ptpnMasterId);
+                mapPiutangPtpn.put("pasien_id", idPasien);
                 mapPiutangPtpn.put("nilai", jumlahAllTindakanPtpn);
 
                 hsCriteria.put("piutang_pasien_bpjs", mapPiutangBpjs);
@@ -1450,7 +1469,7 @@ public class VerifikatorAction extends BaseMasterAction {
             }
         }
 
-        String catatan = "Closing" + ketPoli + company + jenisPasien + "No. RM "+ headerChekupEntity.getIdPasien();
+        String catatan = "Closing" + ketPoli + company + jenisPasien + "No. RM "+ headerChekupEntity.getIdPasien() + noKartu ;
         String noJurnal = "";
         try {
             noJurnal = billingSystemBo.createJurnal(transId, hsCriteria, branchId, catatan, "Y");
