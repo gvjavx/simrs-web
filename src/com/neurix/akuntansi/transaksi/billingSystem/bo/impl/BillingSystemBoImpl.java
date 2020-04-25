@@ -225,7 +225,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                     ItJurnalPendingEntity pending = new ItJurnalPendingEntity();
                     pending.setNoJurnal(noJurnal);
                     pending.setTipeJurnalId(tipeJurnalId);
-                    pending.setTanggalJurnal(new java.sql.Date(bulanBerikutnya.getMillis()));
+                    pending.setTanggalJurnal(new java.sql.Date(tanggalSekarang.getTime()));
                     pending.setMataUangId("032");
                     pending.setKurs(BigDecimal.valueOf(1));
                     pending.setKeterangan(catatanPembuatanJurnal);

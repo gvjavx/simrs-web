@@ -1092,11 +1092,11 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                     if ("rawat_jalan".equalsIgnoreCase(pelayananEntity.getTipePelayanan()) || "igd".equalsIgnoreCase(pelayananEntity.getTipePelayanan())) {
                         kode = "JRJ";
-                        ketPoli = "Rawat Jalan";
+                        ketPoli = "Rawat Jalan ";
                     }
                     if ("rawat_inap".equalsIgnoreCase(pelayananEntity.getTipePelayanan())) {
                         kode = "JRI";
-                        ketPoli = "Rawat Inap";
+                        ketPoli = "Rawat Inap ";
                     }
 
                     // untuk transitoris

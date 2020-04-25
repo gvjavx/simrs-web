@@ -295,6 +295,10 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
         return tutupPeriodDao.getListNoJurnalPending(bulan, tahun, unit);
     }
 
+    private String flagPendingTransitoris(String noJurnal){
+        return tutupPeriodDao.checkIsPendingTransitorisByNoJurnal(noJurnal);
+    }
+
     private void movePendingToJurnalDetail(List<String> noJurnals, TutupPeriod bean){
 
         for (String noJurnal : noJurnals){
@@ -309,7 +313,14 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                 ItJurnalEntity jurnalEntity = new ItJurnalEntity();
                 jurnalEntity.setNoJurnal(jurnalPendingEntity.getNoJurnal());
                 jurnalEntity.setTipeJurnalId(jurnalPendingEntity.getTipeJurnalId());
-                jurnalEntity.setTanggalJurnal(new java.sql.Date(bulanBerikutnya.getMillis()));
+
+                // jika transitoris masuk pending
+                if ("Y".equalsIgnoreCase(flagPendingTransitoris(jurnalPendingEntity.getNoJurnal()))){
+                    jurnalEntity.setTanggalJurnal(jurnalPendingEntity.getTanggalJurnal());
+                } else {
+                    jurnalEntity.setTanggalJurnal(new java.sql.Date(bulanBerikutnya.getMillis()));
+                }
+
                 jurnalEntity.setMataUangId(jurnalPendingEntity.getMataUangId());
                 jurnalEntity.setKurs(jurnalPendingEntity.getKurs());
                 jurnalEntity.setKeterangan(jurnalPendingEntity.getKeterangan());

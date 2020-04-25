@@ -190,26 +190,51 @@ public class TutupPeriodDao extends GenericDao<ItAkunTutupPeriodEntity, String> 
 
     public List<String> getListNoJurnalPending(String bulan, String tahun, String unit){
 
-        String SQL = "SELECT jn.no_jurnal FROM it_akun_jurnal_detail_pending jp\n" +
-                "INNER JOIN it_akun_jurnal_pending jn ON jn.no_jurnal = jp.no_jurnal\n" +
+        BigDecimal dcBulan = new BigDecimal(bulan);
+        BigDecimal dcTahun = new BigDecimal(tahun);
+
+        String SQL = "SELECT \n" +
+                "jn.no_jurnal, \n" +
+                "jn.branch_id \n" +
+                "FROM it_akun_jurnal_pending jn\n" +
                 "WHERE jn.registered_flag = 'Y'\n" +
                 "AND EXTRACT(MONTH FROM jn.tanggal_jurnal) = :bulan\n" +
                 "AND EXTRACT(YEAR FROM jn.tanggal_jurnal) = :tahun\n" +
                 "AND jn.branch_id = :unit\n" +
-                "GROUP BY jn.no_jurnal";
+                "GROUP BY jn.no_jurnal, jn.branch_id";
 
-        List<Object> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
-                .setParameter("bulan", bulan)
-                .setParameter("tahun", tahun)
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("bulan", dcBulan)
+                .setParameter("tahun", dcTahun)
                 .setParameter("unit",unit)
                 .list();
 
         List<String> noJurnals = new ArrayList<>();
         if (results.size() > 0){
-            for (Object obj : results){
-                noJurnals.add(obj.toString());
+            for (Object[] obj : results){
+                noJurnals.add(obj[0].toString());
             }
         }
         return noJurnals;
+    }
+
+    public String checkIsPendingTransitorisByNoJurnal(String noJurnal){
+        String SQL = "SELECT no_jurnal, jumlah_debit\n" +
+                "FROM it_akun_jurnal_detail_pending jp \n" +
+                "WHERE jumlah_debit > '0'\n" +
+                "AND rekening_id = '00046'\n" +
+                "AND no_jurnal = :noJurnal\n" +
+                "GROUP BY no_jurnal, jumlah_debit";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("noJurnal", noJurnal)
+                .list();
+
+        String result = "N";
+        if (results.size() > 0){
+            result = "Y";
+        }
+
+        return result;
     }
 }
