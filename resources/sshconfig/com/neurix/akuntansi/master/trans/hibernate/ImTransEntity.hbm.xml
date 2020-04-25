@@ -37,6 +37,8 @@
         <property name="lastUpdate">
             <column name="last_update" sql-type="date" not-null="false" />
         </property>
-
+        <property name="master">
+            <column name="master" sql-type="varchar" length="20" not-null="false" />
+        </property>
     </class>
 </hibernate-mapping>

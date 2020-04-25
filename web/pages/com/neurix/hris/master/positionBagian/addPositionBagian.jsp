@@ -17,10 +17,10 @@
 
         $.subscribe('beforeProcessSave', function (event, data) {
             var bagianName = document.getElementById("bagianName1").value;
+            var kodering = document.getElementById("kodering1").value;
 
 
-
-            if (bagianName != '' ) {
+            if (bagianName != '' && kodering != '') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -39,6 +39,9 @@
 
                 if (bagianName == '') {
                     msg += 'Field <strong>Bagian Name</strong> is required.' + '<br/>';
+                }
+                if (kodering == '') {
+                    msg += 'Field <strong>Kodering</strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
@@ -118,6 +121,16 @@
                         </td>
                     </tr>
 
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Kodering :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield id="kodering1" name="positionBagian.kodering" required="true" disabled="false" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
                 </table>
 
 

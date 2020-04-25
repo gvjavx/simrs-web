@@ -212,6 +212,8 @@
     <include file="sshconfig/com/neurix/simrs/transaksi/plankegiatanrawat/struts/PlanKegiatanRawatAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/checkupdetail/struts/RekamMedikAction.xml"/>
 
+    <include file="sshconfig/com/neurix/hris/transaksi/pendapatanDokter/struts/PendapatanDokterAction.xml"/>
+
     <!--AKUNTANSI-->
     <!--MASTER -->
     <include file="sshconfig/com/neurix/akuntansi/master/kodeRekening/struts/KodeRekeningAction.xml"/>

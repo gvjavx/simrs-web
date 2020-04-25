@@ -122,8 +122,9 @@
                                             <div class="col-md-8">
                                                 <s:action id="comboTrans" namespace="/trans" name="initComboTransPembayaran_trans"/>
                                                 <s:select list="#comboTrans.listOfComboTrans" id="tipe_transaksi" name="pembayaranUtangPiutang.tipeTransaksi"
-                                                          cssStyle="margin-top: 7px" onchange="isiKeteterangan()"
+                                                          cssStyle="margin-top: 7px" onchange="isiKeteterangan(),getTipeMaster()"
                                                           listKey="transId" listValue="transName" headerKey="" headerValue="" cssClass="form-control" />
+                                                <s:hidden id="tipeMaster" />
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -232,19 +233,25 @@
                                                                 functions = [];
                                                                 mapped = {};
                                                                 var data = [];
-                                                                dwr.engine.setAsync(false);
-                                                                MasterAction.initTypeaheadMaster(query,function (listdata) {
-                                                                    data = listdata;
-                                                                });
-                                                                $.each(data, function (i, item) {
-                                                                    var labelItem = item.nomorVendor + " | " + item.nama;
-                                                                    mapped[labelItem] = {
-                                                                        id: item.nomorVendor,
-                                                                        nama: item.nama
-                                                                    };
-                                                                    functions.push(labelItem);
-                                                                });
-                                                                process(functions);
+                                                                var master = $('#tipeMaster').val();
+                                                                if (master!=""){
+                                                                    dwr.engine.setAsync(false);
+                                                                    MasterAction.initTypeaheadMasterPembayaran(query,master,function (listdata) {
+                                                                        data = listdata;
+                                                                    });
+                                                                    $.each(data, function (i, item) {
+                                                                        var labelItem = item.nomorVendor + " | " + item.nama;
+                                                                        mapped[labelItem] = {
+                                                                            id: item.nomorVendor,
+                                                                            nama: item.nama
+                                                                        };
+                                                                        functions.push(labelItem);
+                                                                    });
+                                                                    process(functions);
+                                                                } else{
+                                                                    alert("belum memilih tipe pembayaran");
+                                                                }
+
                                                             },
                                                             updater: function (item) {
                                                                 var selectedObj = mapped[item];
@@ -682,6 +689,14 @@
 
         $('#keterangan').val(keterangan);
     }
+
+    function getTipeMaster() {
+        var tipeTransaksi = $('#tipe_transaksi option:selected').val();
+        PembayaranUtangPiutangAction.getTipeMaster(tipeTransaksi,function (response) {
+            $('#tipeMaster').val(response);
+        })
+    }
+
     function formatRupiahAngka(angka) {
         var number_string = angka.replace(/[^,\d]/g, '').toString(),
             split = number_string.split(','),

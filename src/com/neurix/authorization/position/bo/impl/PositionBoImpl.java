@@ -148,6 +148,8 @@ public class PositionBoImpl implements PositionBo {
                     resultPosition.setPositionId(imPosition.getPositionId());
                     resultPosition.setStPositionId(imPosition.getPositionId().toString());
                     resultPosition.setPositionName(imPosition.getPositionName());
+                    resultPosition.setKodering(imPosition.getKodering());
+
                     resultPosition.setDepartmentId(imPosition.getDepartmentId());
                     if(imPosition.getImDepartmentEntity() != null){
                         resultPosition.setDepartmentName(imPosition.getImDepartmentEntity().getDepartmentName());
@@ -192,7 +194,7 @@ public class PositionBoImpl implements PositionBo {
         logger.info("[PositionBoImpl.saveAdd] start process >>>");
 
         if (position != null) {
-            String status = cekStatus(position.getPositionName());
+            String status = cekStatus(position.getPositionName(), position.getKodering());
             if (!status.equalsIgnoreCase("Exist")){
                 ImPosition imPosition = new ImPosition();
 
@@ -202,6 +204,7 @@ public class PositionBoImpl implements PositionBo {
                 imPosition.setDepartmentId(position.getDepartmentId());
                 imPosition.setKelompokId(position.getKelompokId());
                 imPosition.setBagianId(position.getBagianId());
+                imPosition.setKodering(position.getKodering());
 
                 imPosition.setCreatedDate(position.getCreatedDate());
                 imPosition.setLastUpdate(position.getLastUpdate());
@@ -215,7 +218,7 @@ public class PositionBoImpl implements PositionBo {
                     throw new GeneralBOException("Found problem when saving new data position, please info to your admin..." + e.getMessage());
                 }
             }else{
-                throw new GeneralBOException("Maaf Posisi Tersebut Sudah Ada");
+                throw new GeneralBOException("Maaf Posisi atau Kodering Tersebut Sudah Ada");
             }
         }
 
@@ -250,6 +253,7 @@ public class PositionBoImpl implements PositionBo {
                 if (imPosition != null){
                     imPosition.setPositionId(bean.getPositionId());
                     imPosition.setPositionName(bean.getPositionName());
+                    imPosition.setKodering(bean.getKodering());
                     imPosition.setDepartmentId(bean.getDepartmentId());
                     imPosition.setKelompokId(bean.getKelompokId());
                     imPosition.setBagianId(bean.getBagianId());
@@ -438,6 +442,7 @@ public class PositionBoImpl implements PositionBo {
             resultPosition.setPositionId(imPosition.getPositionId());
             resultPosition.setStPositionId(imPosition.getPositionId());
             resultPosition.setPositionName(imPosition.getPositionName());
+            resultPosition.setKodering(imPosition.getKodering());
             resultPosition.setBagianId(imPosition.getBagianId());
             resultPosition.setBagianName(imPosition.getImPositionBagianEntity().getBagianName());
             resultPosition.setKelompokId(imPosition.getKelompokId());
@@ -593,11 +598,13 @@ public class PositionBoImpl implements PositionBo {
         }
         return positions;
     }
-    public String cekStatus(String positionName)throws GeneralBOException{
+    public String cekStatus(String positionName, String kodering)throws GeneralBOException{
         String status ="";
         List<ImPosition> imPositions = new ArrayList<>();
+        List<ImPosition> positionList = new ArrayList<>();
         try {
             imPositions = positionDao.getListPosition(positionName);
+            positionList = positionDao.getListPositionKodering(kodering);
         } catch (HibernateException e) {
             logger.error("[PositionBoImpl.cekStatus] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
@@ -605,7 +612,10 @@ public class PositionBoImpl implements PositionBo {
         if (imPositions.size()>0){
             status = "exist";
         }else{
-            status="notExits";
+            if (positionList.size()>0)
+                status = "exist";
+            else
+                status="notExits";
         }
         return status;
     }

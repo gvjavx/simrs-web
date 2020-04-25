@@ -244,6 +244,26 @@ public class MasterAction extends BaseMasterAction {
         return masterList;
     }
 
+    public List<Master> initTypeaheadMasterPembayaran(String key,String tipeMaster) {
+        logger.info("[MasterAction.initTypeaheadMasterPembayaran] start process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        MasterBo masterBo = (MasterBo) ctx.getBean("masterBoProxy");
+        List<Master> masterList = new ArrayList();
+        try {
+            masterList = masterBo.typeaheadMasterPembayaran(key,tipeMaster);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = masterBo.saveErrorMessage(e.getMessage(), "StrukturJabatanBO.getByCriteria");
+            } catch (GeneralBOException e1) {
+                logger.error("[MasterAction.initTypeaheadMasterPembayaran] Error when saving error,", e1);
+            }
+            logger.error("[MasterAction.initTypeaheadMasterPembayaran] Error when searching data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+        }
+        return masterList;
+    }
+
     public List<Master> initMasterSearch(String rekeningId, String namaRekening, String coa) {
         logger.info("[MasterAction.initMasterSearch] start process >>>");
 

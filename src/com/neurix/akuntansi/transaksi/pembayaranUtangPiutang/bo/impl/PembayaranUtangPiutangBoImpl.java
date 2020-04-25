@@ -595,6 +595,21 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
         logger.info("[PembayaranUtangPiutangBoImpl.postingJurnal] end process <<<");
         return rekeningKas;
     }
+
+    @Override
+    public ImTransEntity getTipeMaster(String transId) throws GeneralBOException {
+        logger.info("[PembayaranUtangPiutangBoImpl.getTipeMaster] start process >>>");
+        ImTransEntity transEntity= new ImTransEntity();
+        try {
+            transEntity= transDao.getById("transId",transId);
+        } catch (HibernateException e) {
+            logger.error("[PembayaranUtangPiutangBoImpl.getTipeMaster] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when saving update data PembayaranUtangPiutang, please info to your admin..." + e.getMessage());
+        }
+        logger.info("[PembayaranUtangPiutangBoImpl.getTipeMaster] end process <<<");
+        return transEntity;
+    }
+
     @Override
     public String getNamaRekeningKasJurnal(String noJurnal) throws GeneralBOException {
         logger.info("[PembayaranUtangPiutangBoImpl.postingJurnal] start process >>>");

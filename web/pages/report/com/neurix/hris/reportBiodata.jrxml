@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="7" uuid="439178ee-4584-4e86-b765-559a2351e7e6">
 	<property name="ireport.zoom" value="1.4641000000000133"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="680"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -123,6 +123,8 @@
 	<parameter name="reportParams.urlFoto" class="java.lang.String"/>
 	<parameter name="reportParams.itemRiwayatPekerjaan" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
 	<parameter name="reportParams.itemPendidikan" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<parameter name="reportParams.kota" class="java.lang.String"/>
+	<parameter name="reportParams.areaId" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select
 	pegawai.*,
@@ -247,7 +249,7 @@ limit 1]]>
 				<textFieldExpression><![CDATA[$P{reportParams.titleReport}]]></textFieldExpression>
 			</textField>
 			<image>
-				<reportElement x="3" y="6" width="95" height="50" uuid="cf8f70f1-b6d7-4748-9c1d-abb8c6f5229c"/>
+				<reportElement x="3" y="-6" width="95" height="50" uuid="cf8f70f1-b6d7-4748-9c1d-abb8c6f5229c"/>
 				<imageExpression><![CDATA[$P{reportParams.urlLogo}]]></imageExpression>
 			</image>
 			<image>
@@ -266,6 +268,26 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-13" x="4" y="51" width="208" height="18" uuid="4ebaf58d-f347-47f0-89fa-52bc3f719654"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="9" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.kota}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="4" y="37" width="208" height="15" uuid="191025c6-8512-4584-99a8-6042903baaeb"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.areaId}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>

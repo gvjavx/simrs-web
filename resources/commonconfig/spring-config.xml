@@ -220,4 +220,5 @@
     <import resource="sshconfig/com/neurix/simrs/transaksi/asesmenugd/spring/AsesmenUgdBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/asesmenoperasi/spring/AsesmenOperasiBean.xml"/>
 
+    <import resource="sshconfig/com/neurix/hris/transaksi/pendapatanDokter/spring/PendapatanDokterBean.xml"/>
 </beans>

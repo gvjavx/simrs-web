@@ -17,6 +17,8 @@ public class ImTransEntity implements Serializable {
     private String tipePembayaran;
     private String flagSumberBaru;
 
+    private String master;
+
     private String flag;
     private String action;
     private Timestamp createdDate;
@@ -24,6 +26,13 @@ public class ImTransEntity implements Serializable {
     private String createdWho;
     private String lastUpdateWho;
 
+    public String getMaster() {
+        return master;
+    }
+
+    public void setMaster(String master) {
+        this.master = master;
+    }
 
     public String getFlagSumberBaru() {
         return flagSumberBaru;

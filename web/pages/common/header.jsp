@@ -1,6 +1,7 @@
 <%@ taglib prefix="sj" uri="/struts-jquery-tags" %>
 <%@ taglib prefix="sb" uri="/struts-bootstrap-tags" %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
+<s:url value="/" var="appname" />
 
 
 <TITLE>GO-MEDSYS NMU</TITLE>

@@ -161,7 +161,7 @@ public class AbsensiOnlineController implements ModelDriven<Object> {
             bean.setTanggalDari(CommonUtil.convertToDate(tanggal));
 
             try {
-                result = mesinAbsensiDetailBoProxy.getByCriteria(bean);
+                result = mesinAbsensiDetailBoProxy.getByCriteriaMobile(bean);
             } catch (GeneralBOException e) {
                 logger.error("AbsensiOnlineController.getAbensi] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when get data AbsensiOnlineController, please info to your admin..." + e.getMessage());

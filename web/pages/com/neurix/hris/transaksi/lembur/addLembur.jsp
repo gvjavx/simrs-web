@@ -205,7 +205,7 @@
                                     $('#statusGiling1').val(selectedObj.statusGiling).change();
                                     return selectedObj.id;
                                 } else {
-                                    alert("Karyawan Struktural tidak bisa mengambil Lembur");
+                                    alert("Pimpinan tidak bisa mengambil Lembur");
                                     $('#nipId').val("");
                                 }
                             }

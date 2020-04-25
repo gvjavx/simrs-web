@@ -80,6 +80,17 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
 
         return results;
     }
+
+    public List<ImPositionBagianEntity> getListPositionBagianKodering(String term) throws HibernateException {
+
+        List<ImPositionBagianEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImPositionBagianEntity.class)
+                .add(Restrictions.ilike("kodering",term))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+
+        return results;
+    }
+
     public List<ImPositionBagianEntity> getPositionBagianName(String term) throws HibernateException {
 
         List<ImPositionBagianEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImPositionBagianEntity.class)

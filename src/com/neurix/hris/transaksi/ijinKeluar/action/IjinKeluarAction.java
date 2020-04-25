@@ -1062,6 +1062,7 @@ public class IjinKeluarAction extends BaseMasterAction {
     public String paging_anggota(){
         return SUCCESS;
     }
+
     public String cetakSurat(){
         logger.info("[IjinKeluarAction.cetakSurat] end process >>>");
 
@@ -1259,17 +1260,10 @@ public class IjinKeluarAction extends BaseMasterAction {
                     branch = branchBo.getBranchById(ijinKeluar1.getUnitId(),"Y");
                 }catch( HibernateException e){
                 }
-                if (ijinKeluar1.getUnitId().equalsIgnoreCase("RS01")){
-                    reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS01);
-                }else if (ijinKeluar1.getUnitId().equalsIgnoreCase("RS02")){
-                    reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS02);
-                }else if (ijinKeluar1.getUnitId().equalsIgnoreCase("RS03")){
-                    reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS03);
-                }else{
-                    reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU);
-                }
+
                 String stTanggal = CommonUtil.convertDateToString( new java.util.Date());
                 reportParams.put("alamatUni", branch.getAlamatSurat()+","+stTanggal);
+                reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
                 reportParams.put("ijinTidakMasukId", id);
                 reportParams.put("nama",ijinKeluar1.getNamaPegawai());
                 reportParams.put("nip",ijinKeluar1.getNip());

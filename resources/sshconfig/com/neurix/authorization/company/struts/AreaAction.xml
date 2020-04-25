@@ -95,7 +95,7 @@
         <action name="paging_displaytag"
                 class="com.neurix.authorization.company.action.AreaAction" method="paging">
             <interceptor-ref name="defaultStack"/>
-            <result name="success">/pages/com/neurix/authorization/company/area.jsp</result>
+            <result name="success">/pages/com/neurix/authorization/company/area/area.jsp</result>
         </action>
 
     </package>

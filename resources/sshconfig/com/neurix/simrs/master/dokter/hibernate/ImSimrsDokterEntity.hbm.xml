@@ -41,7 +41,9 @@
         <property name="lon">
             <column name="lon" sql-type="varchar" length="200" not-null="false" />
         </property>
-
+        <property name="kodering">
+            <column name="kodering" sql-type="varchar" length="20" not-null="false" />
+        </property>
         <property name="kodeDpjp">
             <column name="kode_dpjp" sql-type="varchar" length="100" not-null="false" />
         </property>

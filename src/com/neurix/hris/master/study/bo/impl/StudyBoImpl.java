@@ -1,6 +1,7 @@
 package com.neurix.hris.master.study.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.hris.master.biodata.model.Biodata;
 import com.neurix.hris.master.study.bo.StudyBo;
 import com.neurix.hris.master.study.dao.StudyDao;
 import com.neurix.hris.master.study.model.Study;
@@ -114,7 +115,9 @@ public class StudyBoImpl implements StudyBo {
                 imStudyEntity.setTahunAwal(bean.getTahunAwal());
                 imStudyEntity.setTahunAkhir(bean.getTahunAkhir());
                 imStudyEntity.setProgramStudy(bean.getProgramStudy());
-                imStudyEntity.setStudyJurusanId(bean.getFakultasId());
+                imStudyEntity.setStudyJurusanId(bean.getStudyFakultas());
+                imStudyEntity.setIjazahUpload(bean.getUploadFile());
+
                 imStudyEntity.setFlag(bean.getFlag());
                 imStudyEntity.setAction(bean.getAction());
                 imStudyEntity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -163,7 +166,8 @@ public class StudyBoImpl implements StudyBo {
             imStudyEntity.setTahunAwal(bean.getTahunAwal());
             imStudyEntity.setTahunAkhir(bean.getTahunAkhir());
             imStudyEntity.setProgramStudy(bean.getProgramStudy());
-            imStudyEntity.setStudyJurusanId(bean.getFakultasId());
+            imStudyEntity.setStudyJurusanId(bean.getStudyFakultas());
+            imStudyEntity.setIjazahUpload(bean.getUploadFile());
 
             imStudyEntity.setFlag(bean.getFlag());
             imStudyEntity.setAction(bean.getAction());
@@ -267,9 +271,12 @@ public class StudyBoImpl implements StudyBo {
                             returnStudy.setFakultasId("");
                         }
 
+                        returnStudy.setUploadFile(studyEntity.getIjazahUpload());
+
                         returnStudy.setCreatedWho(studyEntity.getCreatedWho());
                         returnStudy.setCreatedDate(studyEntity.getCreatedDate());
                         returnStudy.setLastUpdate(studyEntity.getLastUpdate());
+                        returnStudy.setLastUpdateWho(studyEntity.getLastUpdateWho());
 
                         returnStudy.setAction(studyEntity.getAction());
                         returnStudy.setFlag(studyEntity.getFlag());
@@ -317,5 +324,17 @@ public class StudyBoImpl implements StudyBo {
         }
         logger.info("[UserBoImpl.getComboUserWithCriteria] end process <<<");
         return listComboStudy;
+    }
+
+    @Override
+    public String getNextStudyId() throws GeneralBOException {
+        String studyId;
+        try{
+            studyId = studyDao.getNextStudyId();
+        }catch (HibernateException e){
+            logger.error("[StudyBoImpl.saveAdd] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when getting sequence studyId, please info to your admin..." + e.getMessage());
+        }
+        return studyId;
     }
 }

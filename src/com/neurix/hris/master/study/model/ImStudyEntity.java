@@ -24,6 +24,7 @@ public class ImStudyEntity implements Serializable {
     private String studyJurusanId;
     private String fakultasId;
     private String fakultasName;
+    private String ijazahUpload;
 
     private String flag;
     private String action;
@@ -168,5 +169,13 @@ public class ImStudyEntity implements Serializable {
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    public String getIjazahUpload() {
+        return ijazahUpload;
+    }
+
+    public void setIjazahUpload(String ijazahUpload) {
+        this.ijazahUpload = ijazahUpload;
     }
 }

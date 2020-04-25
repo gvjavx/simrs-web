@@ -17,5 +17,8 @@ import java.util.List;
 public interface MasterBo extends BaseMasterBo<Master> {
 
     List<Master> typeaheadMaster(String coa) throws GeneralBOException;
+
+    List<Master> typeaheadMasterPembayaran(String key, String tipeMaster) throws GeneralBOException;
+
     public ImMasterEntity getEntityMasterById(String id) throws GeneralBOException;
 }

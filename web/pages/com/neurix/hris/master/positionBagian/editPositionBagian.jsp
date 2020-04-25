@@ -132,6 +132,17 @@
                         </td>
                     </tr>
 
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Kodering :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield id="kodering1" name="positionBagian.kodering" required="true" readonly="true" disabled="false" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+
                 </table>
 
 
