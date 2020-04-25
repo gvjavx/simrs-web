@@ -951,8 +951,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         } else if ("ptpn".equalsIgnoreCase(jenis)){
             masterId =  detailCheckupEntity.getIdAsuransi();
         } else {
-            jenis = "umum";
-            ImJenisPeriksaPasienEntity jenisPeriksaPasienEntity = jenisPriksaPasienBo.getJenisPerikasEntityById(jenis);
+            ImJenisPeriksaPasienEntity jenisPeriksaPasienEntity = jenisPriksaPasienBo.getJenisPerikasEntityById("umum");
             if (jenisPeriksaPasienEntity != null){
                 masterId = jenisPeriksaPasienEntity.getMasterId();
             }

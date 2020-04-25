@@ -49,11 +49,6 @@ public class TutupPeriodDao extends GenericDao<ItAkunTutupPeriodEntity, String> 
 
     public List<TutupPeriod> getListDetailJurnalByCriteria(TutupPeriod bean){
 
-//        String rekening = "%";
-//        if (bean.getRekeningId() != null && !"".equalsIgnoreCase(bean.getRekeningId())){
-//            rekening = bean.getRekeningId();
-//        }
-
         BigDecimal dcBulan = new BigDecimal(bean.getBulan());
         BigDecimal dcTahun = new BigDecimal(bean.getTahun());
         String rekenigId = "%";
@@ -191,5 +186,30 @@ public class TutupPeriodDao extends GenericDao<ItAkunTutupPeriodEntity, String> 
         }
 
         return result;
+    }
+
+    public List<String> getListNoJurnalPending(String bulan, String tahun, String unit){
+
+        String SQL = "SELECT jn.no_jurnal FROM it_akun_jurnal_detail_pending jp\n" +
+                "INNER JOIN it_akun_jurnal_pending jn ON jn.no_jurnal = jp.no_jurnal\n" +
+                "WHERE jn.registered_flag = 'Y'\n" +
+                "AND EXTRACT(MONTH FROM jn.tanggal_jurnal) = :bulan\n" +
+                "AND EXTRACT(YEAR FROM jn.tanggal_jurnal) = :tahun\n" +
+                "AND jn.branch_id = :unit\n" +
+                "GROUP BY jn.no_jurnal";
+
+        List<Object> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("bulan", bulan)
+                .setParameter("tahun", tahun)
+                .setParameter("unit",unit)
+                .list();
+
+        List<String> noJurnals = new ArrayList<>();
+        if (results.size() > 0){
+            for (Object obj : results){
+                noJurnals.add(obj.toString());
+            }
+        }
+        return noJurnals;
     }
 }

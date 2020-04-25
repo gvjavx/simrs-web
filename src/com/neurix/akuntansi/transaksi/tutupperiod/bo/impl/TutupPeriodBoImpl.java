@@ -4,7 +4,12 @@ import com.neurix.akuntansi.master.kodeRekening.dao.KodeRekeningDao;
 import com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity;
 import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDao;
+import com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDetailActivityDao;
 import com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDetailDao;
+import com.neurix.akuntansi.transaksi.jurnal.dao.pending.JurnalDetailActivityPendingDao;
+import com.neurix.akuntansi.transaksi.jurnal.dao.pending.JurnalDetailPendingDao;
+import com.neurix.akuntansi.transaksi.jurnal.dao.pending.JurnalPendingDao;
+import com.neurix.akuntansi.transaksi.jurnal.model.*;
 import com.neurix.akuntansi.transaksi.saldoakhir.dao.SaldoAkhirDao;
 import com.neurix.akuntansi.transaksi.saldoakhir.dao.SaldoAkhirDetailDao;
 import com.neurix.akuntansi.transaksi.saldoakhir.model.ItAkunSaldoAkhirDetailEntity;
@@ -25,14 +30,13 @@ import com.neurix.simrs.transaksi.riwayattindakan.dao.RiwayatTindakanDao;
 import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsRiwayatTindakanEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
+import org.joda.time.DateTime;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.*;
+import java.util.*;
+import java.util.Date;
 import java.util.stream.Collectors;
 
 /**
@@ -50,6 +54,11 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
     private TutupPeriodDao tutupPeriodDao;
     private CheckupDetailDao checkupDetailDao;
     private SaldoAkhirDetailDao saldoAkhirDetailDao;
+
+    private JurnalDetailActivityDao jurnalDetailActivityDao;
+    private JurnalPendingDao jurnalPendingDao;
+    private JurnalDetailPendingDao jurnalDetailPendingDao;
+    private JurnalDetailActivityPendingDao jurnalDetailActivityPendingDao;
 
     @Override
     public void saveSettingPeriod(List<ItSimrsBatasTutupPeriodEntity> batasList) throws GeneralBOException {
@@ -264,6 +273,12 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                 if (isClear){
                     try {
                         batasTutupPeriodDao.updateAndSave(batasTutupPeriodEntity);
+
+                        // mencari list pending lalu pindah ke jurnal detail
+                        List<String> listJurnalPending = getListNoJurnalPending(bean.getTahun(), bean.getBulan(), bean.getUnit());
+                        if (listJurnalPending.size() > 0){
+                            movePendingToJurnalDetail(listJurnalPending, bean);
+                        }
                     } catch (HibernateException e){
                         logger.error("[TutupPeriodBoImpl.saveSettingPeriod] ERROR. ",e);
                         throw new GeneralBOException("[TutupPeriodBoImpl.saveSettingPeriod] ERROR. ",e);
@@ -271,6 +286,121 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                 } else {
                     logger.error("[TutupPeriodBoImpl.saveSettingPeriod] ERROR. gagal menyimpan tutup period");
                     throw new GeneralBOException("[TutupPeriodBoImpl.saveSettingPeriod] ERROR. gagal menyimpan tutup period");
+                }
+            }
+        }
+    }
+
+    private List<String> getListNoJurnalPending(String tahun, String bulan, String unit){
+        return tutupPeriodDao.getListNoJurnalPending(bulan, tahun, unit);
+    }
+
+    private void movePendingToJurnalDetail(List<String> noJurnals, TutupPeriod bean){
+
+        for (String noJurnal : noJurnals){
+
+            ItJurnalPendingEntity jurnalPendingEntity = jurnalPendingDao.getById("noJurnal", noJurnal);
+
+            if (jurnalPendingEntity != null) {
+
+                DateTime tglSekarang = new DateTime(System.currentTimeMillis());
+                DateTime bulanBerikutnya = tglSekarang.plusMonths(1).withDayOfMonth(1);
+
+                ItJurnalEntity jurnalEntity = new ItJurnalEntity();
+                jurnalEntity.setNoJurnal(jurnalPendingEntity.getNoJurnal());
+                jurnalEntity.setTipeJurnalId(jurnalPendingEntity.getTipeJurnalId());
+                jurnalEntity.setTanggalJurnal(new java.sql.Date(bulanBerikutnya.getMillis()));
+                jurnalEntity.setMataUangId(jurnalPendingEntity.getMataUangId());
+                jurnalEntity.setKurs(jurnalPendingEntity.getKurs());
+                jurnalEntity.setKeterangan(jurnalPendingEntity.getKeterangan());
+                jurnalEntity.setSumber(jurnalPendingEntity.getSumber());
+                jurnalEntity.setPrintRegisterCount(jurnalPendingEntity.getPrintRegisterCount());
+                jurnalEntity.setPrintCount(jurnalPendingEntity.getPrintCount());
+                jurnalEntity.setRegisteredFlag(jurnalPendingEntity.getRegisteredFlag());
+                jurnalEntity.setRegisteredUser(jurnalPendingEntity.getRegisteredUser());
+                jurnalEntity.setRegisteredDate(jurnalPendingEntity.getRegisteredDate());
+                jurnalEntity.setBranchId(jurnalPendingEntity.getBranchId());
+                jurnalEntity.setFlag(jurnalPendingEntity.getFlag());
+                jurnalEntity.setCreatedWho(bean.getCreatedWho());
+                jurnalEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                jurnalEntity.setCreatedDate(bean.getCreatedDate());
+                jurnalEntity.setLastUpdate(bean.getLastUpdate());
+
+                try {
+                    jurnalDao.addAndSave(jurnalEntity);
+                } catch (HibernateException e){
+                    logger.error("[TutupPeriodBoImpl.movePendingToJurnalDetail] ERROR. ",e);
+                    throw new GeneralBOException("[TutupPeriodBoImpl.movePendingToJurnalDetail] ERROR. ",e);
+                }
+
+                Map hsCriteria = new HashMap();
+                hsCriteria.put("no_jurnal", jurnalPendingEntity.getNoJurnal());
+                hsCriteria.put("flag", jurnalPendingEntity.getFlag());
+
+                List<ItJurnalDetailPendingEntity> detailPendingEntities = jurnalDetailPendingDao.getByCriteria(hsCriteria);
+                if (detailPendingEntities.size() > 0){
+                    for (ItJurnalDetailPendingEntity detailPending : detailPendingEntities){
+
+                        ItJurnalDetailEntity jurnalDetailEntity = new ItJurnalDetailEntity();
+                        jurnalDetailEntity.setJurnalDetailId(detailPending.getJurnalDetailId());
+                        jurnalDetailEntity.setNoJurnal(detailPending.getNoJurnal());
+                        jurnalDetailEntity.setRekeningId(detailPending.getRekeningId());
+                        jurnalDetailEntity.setMasterId(detailPending.getMasterId());
+                        jurnalDetailEntity.setNoNota(detailPending.getNoNota());
+                        jurnalDetailEntity.setJumlahDebit(detailPending.getJumlahDebit());
+                        jurnalDetailEntity.setJumlahKredit(detailPending.getJumlahKredit());
+                        jurnalDetailEntity.setBiaya(detailPending.getBiaya());
+                        jurnalDetailEntity.setFlag(detailPending.getFlag());
+                        jurnalDetailEntity.setAction(detailPending.getAction());
+                        jurnalDetailEntity.setCreatedDate(detailPending.getCreatedDate());
+                        jurnalDetailEntity.setLastUpdate(detailPending.getLastUpdate());
+                        jurnalDetailEntity.setCreatedWho(detailPending.getCreatedWho());
+                        jurnalDetailEntity.setLastUpdateWho(detailPending.getLastUpdateWho());
+                        jurnalDetailEntity.setKdBarang(detailPending.getKdBarang());
+                        jurnalDetailEntity.setPasienId(detailPending.getPasienId());
+                        jurnalDetailEntity.setNomorRekening(detailPending.getNomorRekening());
+                        jurnalDetailEntity.setDivisiId(detailPending.getDivisiId());
+
+                        try {
+                            jurnalDetailDao.addAndSave(jurnalDetailEntity);
+                        } catch (HibernateException e){
+                            logger.error("[TutupPeriodBoImpl.movePendingToJurnalDetail] ERROR. ",e);
+                            throw new GeneralBOException("[TutupPeriodBoImpl.movePendingToJurnalDetail] ERROR. ",e);
+                        }
+
+                        hsCriteria = new HashMap();
+                        hsCriteria.put("jurnal_detail_id", detailPending.getJurnalDetailId());
+                        hsCriteria.put("flag", detailPending.getFlag());
+
+                        List<ItJurnalDetailActivityPendingEntity> activityPendingEntities = jurnalDetailActivityPendingDao.getByCriteria(hsCriteria);
+                        if (activityPendingEntities.size() > 0){
+
+                            for (ItJurnalDetailActivityPendingEntity pendingEntity : activityPendingEntities){
+
+                                ItJurnalDetailActivityEntity activityEntity = new ItJurnalDetailActivityEntity();
+                                activityEntity.setJurnalDetailActivityId(pendingEntity.getJurnalDetailActivityId());
+                                activityEntity.setJurnalDetailId(pendingEntity.getJurnalDetailId());
+                                activityEntity.setActivityId(pendingEntity.getActivityId());
+                                activityEntity.setJumlah(pendingEntity.getJumlah());
+                                activityEntity.setPersonId(pendingEntity.getPersonId());
+                                activityEntity.setFlag(pendingEntity.getFlag());
+                                activityEntity.setTipe(pendingEntity.getTipe());
+                                activityEntity.setNoTrans(pendingEntity.getNoTrans());
+                                activityEntity.setAction(pendingEntity.getAction());
+                                activityEntity.setCreatedDate(pendingEntity.getCreatedDate());
+                                activityEntity.setLastUpdate(pendingEntity.getLastUpdate());
+                                activityEntity.setCreatedWho(pendingEntity.getCreatedWho());
+                                activityEntity.setLastUpdateWho(pendingEntity.getLastUpdateWho());
+
+                                try {
+                                    jurnalDetailActivityDao.addAndSave(activityEntity);
+                                } catch (HibernateException e){
+                                    logger.error("[TutupPeriodBoImpl.movePendingToJurnalDetail] ERROR. ",e);
+                                    throw new GeneralBOException("[TutupPeriodBoImpl.movePendingToJurnalDetail] ERROR. ",e);
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -807,5 +937,21 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
 
     public void setSaldoAkhirDetailDao(SaldoAkhirDetailDao saldoAkhirDetailDao) {
         this.saldoAkhirDetailDao = saldoAkhirDetailDao;
+    }
+
+    public void setJurnalDetailActivityDao(JurnalDetailActivityDao jurnalDetailActivityDao) {
+        this.jurnalDetailActivityDao = jurnalDetailActivityDao;
+    }
+
+    public void setJurnalPendingDao(JurnalPendingDao jurnalPendingDao) {
+        this.jurnalPendingDao = jurnalPendingDao;
+    }
+
+    public void setJurnalDetailPendingDao(JurnalDetailPendingDao jurnalDetailPendingDao) {
+        this.jurnalDetailPendingDao = jurnalDetailPendingDao;
+    }
+
+    public void setJurnalDetailActivityPendingDao(JurnalDetailActivityPendingDao jurnalDetailActivityPendingDao) {
+        this.jurnalDetailActivityPendingDao = jurnalDetailActivityPendingDao;
     }
 }
