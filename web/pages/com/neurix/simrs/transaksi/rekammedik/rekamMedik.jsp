@@ -580,21 +580,19 @@
                             </div>
                             <div class="box-header with-border"></div>
                             <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-stethoscope"></i> Appendecitomy </h3>
+                                <h3 class="box-title"><i class="fa fa-heart-o"></i> Appendecitomy </h3>
                             </div>
                             <div class="box-body">
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Action
                                     </button>
-                                    <button type="button" class="btn btn-primary dropdown-toggle"
+                                    <button onclick="loadModalRM('appendecitomy')" type="button" class="btn btn-primary dropdown-toggle"
                                             data-toggle="dropdown" style="height: 34px">
                                         <span class="caret"></span>
                                         <span class="sr-only">Toggle Dropdown</span>
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a target="_blank"
-                                               href="printGeneralConcent_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
-                                            <i class="fa fa-edit"></i>Informed Consent Appendecitomy</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalAppendecitomy('appendecitomy')"><i class="fa fa-circle-o"></i>Informed Consent Appendecitomy</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -615,40 +613,18 @@
                                     <ul class="dropdown-menu" role="menu">
                                         <li><a target="_blank"
                                                href="printSuratPernyataan_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>&tipe=RI01">
-                                            <i class="fa fa-print"></i>Surat Permintaan Rawat Inap</a></li>
-                                        <li><a target="_blank"
-                                               href="printPelepasanInformasi_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
-                                            <i class="fa fa-print"></i>Pengkajian Ulang Keperawatan dan Tindakan</a></li>
-                                        <li><a target="_blank"
-                                               href="printPelepasanInformasi_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
-                                            <i class="fa fa-print"></i>Asesmen Awal Medis Rawat Inap</a></li>
-                                        <li><a target="_blank"
-                                               href="printPelepasanInformasi_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
-                                            <i class="fa fa-print"></i>Rencana Asuhan Keperawatan</a></li>
-                                        <li><a target="_blank"
-                                               href="printPelepasanInformasi_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
-                                            <i class="fa fa-print"></i>Discharge Planing</a></li>
-                                        <li><a target="_blank"
-                                               href="printPelepasanInformasi_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
-                                            <i class="fa fa-print"></i>Catatan Perkembangan Pasien Terintegrasi</a></li>
-                                        <li><a target="_blank"
-                                               href="printPelepasanInformasi_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
-                                            <i class="fa fa-print"></i>Transfer Pasien Antar Ruangan</a></li>
-                                        <li><a target="_blank"
-                                               href="printPelepasanInformasi_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
-                                            <i class="fa fa-print"></i>Privasi Pasien</a></li>
-                                        <li><a target="_blank"
-                                               href="printPelepasanInformasi_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
-                                            <i class="fa fa-print"></i>Lembar Observasi Pediatric Early Warning Score</a></li>
-                                        <li><a target="_blank"
-                                               href="printPelepasanInformasi_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
-                                            <i class="fa fa-print"></i>Catatan Pemberian Obat</a></li>
-                                        <li><a target="_blank"
-                                               href="printPelepasanInformasi_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
-                                            <i class="fa fa-print"></i>Injeksi CPO / Jadwal Pemberian Terapi</a></li>
-                                        <li><a target="_blank"
-                                               href="printPelepasanInformasi_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
-                                            <i class="fa fa-print"></i>Rekonsiliasi Obat</a></li>
+                                            <i class="fa fa-circle-o"></i>Surat Permintaan Rawat Inap</a></li>
+                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('pengkajian_keperawatan')" onclick="showModalPengkajianKep('pengkajian')"><i class="fa fa-circle-o"></i>Pengkajian Ulang Keperawatan dan Tindakan</a></li>
+                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('asesmen_rawat_inap')" onclick="showModalAsesmenRawatInap('asesmen')"><i class="fa fa-circle-o"></i>Asesmen Awal Medis Rawat Inap</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalAsesmenRawatInap('asuhan')"><i class="fa fa-circle-o"></i>Rencana Asuhan Keperawatan</a></li>
+                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('discharge_planing')" onclick="showModalAsesmenRawatInap('discharge_planing')"><i class="fa fa-circle-o"></i>Discharge Planing</a></li>
+                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('catatan_integrasi')" onclick="showModalAsesmenRawatInap('catatan_integrasi')"><i class="fa fa-circle-o"></i>Catatan Perkembangan Pasien Terintegrasi</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalAsesmenRawatInap('transfer')"><i class="fa fa-circle-o"></i>Transfer Pasien Antar Ruangan</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalAsesmenRawatInap('privasi')"><i class="fa fa-circle-o"></i>Privasi Pasien</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalAsesmenRawatInap('observasi')"><i class="fa fa-circle-o"></i>Lembar Observasi Pediatric Early Warning Score</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalAsesmenRawatInap('pemberian_obat')"><i class="fa fa-circle-o"></i>Catatan Pemberian Obat</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalAsesmenRawatInap('injeksi')"><i class="fa fa-circle-o"></i>Injeksi CPO / Jadwal Pemberian Terapi</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalAsesmenRawatInap('rekonsilasi')"><i class="fa fa-circle-o"></i>Rekonsiliasi Obat</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -746,7 +722,7 @@
     <!-- /.content -->
 </div>
 
-<div id="conten-modal"></div>
+<div id="modal-temp"></div>
 
 <script type='text/javascript' src='<s:url value="/dwr/interface/FisioterapiAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenUgdAction.js"/>'></script>
@@ -754,6 +730,10 @@
 <script type='text/javascript' src='<s:url value="/dwr/interface/MppAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/HemodialisaAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/MonitoringTransfusiDarahAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/AppendecitomyAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenRawatInapAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/PengkajianUlangKeperawatanAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/CatatanTerintegrasiAction.js"/>'></script>
 
 <script type='text/javascript' src='<s:url value="/pages/dist/js/paintTtd.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/operasi.js"/>'></script>
@@ -761,9 +741,13 @@
 <script type='text/javascript' src='<s:url value="/pages/dist/js/asesmenUgd.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/mpp.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/hd.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/appendecitomy.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/asesmenrawatinap.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/pengkajiankeperawatan.js"/>'></script>
 
 <script type='text/javascript'>
 
+    var isReadRM = false;
     var idDetailCheckup = $('#id_detail_checkup').val();
     var contextPath = '<%= request.getContextPath() %>';
 
@@ -784,7 +768,23 @@
         if(jenis == "hd"){
             context = contextPath+'/pages/modal/modalHD.jsp';
         }
-        $('#conten-modal').load(context, function (res) {
+        if(jenis == "appendecitomy"){
+            context = contextPath+'/pages/modal/modalAppendecitomy.jsp';
+        }
+        if(jenis == "asesmen_rawat_inap"){
+            context = contextPath+'/pages/modal/modalAsesmenRawatInap.jsp';
+        }
+        if(jenis == "pengkajian_keperawatan"){
+            context = contextPath+'/pages/modal/modalPengkajianKeperawatan.jsp';
+        }
+        if(jenis == "discharge_planing"){
+            context = contextPath+'/pages/modal/modalPemulanganPasien.jsp';
+        }
+        if(jenis == "catatan_integrasi"){
+            context = contextPath+'/pages/modal/modalCatatanTerintegrasi.jsp';
+        }
+        $('#modal-temp').load(context, function (res) {
+
         });
     }
 
@@ -800,6 +800,7 @@
         if ("IGD" == tipe) {
             $('#igd').addClass('active');
         }
+
     });
 
 </script>

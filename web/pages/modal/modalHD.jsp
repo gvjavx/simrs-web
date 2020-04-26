@@ -8,7 +8,7 @@
                 </h4>
             </div>
             <div class="modal-body">
-                <div class="box-body">
+                <div class="box-body btn-hide">
                     <div class="alert alert-success alert-dismissible" style="display: none"
                          id="warning_hd_monitoring_hd">
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
@@ -1119,7 +1119,7 @@
                 </h4>
             </div>
             <div class="modal-body">
-                <div class="box-body">
+                <div class="box-body btn-hide">
                     <div class="alert alert-success alert-dismissible" style="display: none"
                          id="warning_hd_asesmen_hd">
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
@@ -1323,7 +1323,7 @@
                 </h4>
             </div>
             <div class="modal-body">
-                <div class="box-body">
+                <div class="box-body btn-hide">
                     <div class="alert alert-success alert-dismissible" style="display: none"
                          id="warning_hd_tranfusi_hd">
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
@@ -1771,7 +1771,7 @@
                 </h4>
             </div>
             <div class="modal-body">
-                <div class="box-body">
+                <div class="box-body btn-hide">
                     <div class="alert alert-success alert-dismissible" style="display: none"
                          id="warning_hd_persetujuan_hd">
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
@@ -2210,7 +2210,7 @@
                 </h4>
             </div>
             <div class="modal-body">
-                <div class="box-body">
+                <div class="box-body btn-hide">
                     <div class="alert alert-success alert-dismissible" style="display: none"
                          id="warning_hd_catatan_tranfusi_darah">
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
@@ -2268,6 +2268,7 @@
                                 <li>DM = Demam > 38 C</li>
                                 <li>ME = Menggigil</li>
                                 <li>GE = Gelisah</li>
+                                <li><i class="fa fa-check" style="color: #449d44"></i> = Ya</li>
                             </ul>
                         </div>
                         <div class="col-md-6">
@@ -2277,6 +2278,7 @@
                                 <li>UR = Urin yang berwarna hitam/gelap</li>
                                 <li>PH = Pendarahan yang tidak jelas penyebabnya</li>
                                 <li>GK = Gangguan kesadaran</li>
+                                <li><i class="fa fa-times" style="color: #dd4b39"></i> = Tidak</li>
                             </ul>
                         </div>
                     </div>
@@ -2613,6 +2615,203 @@
                     Save
                 </button>
                 <button id="load_hd_catatan_tranfusi" style="display: none; cursor: no-drop" type="button"
+                        class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-hd-travelling">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-md"></i> Travelling Dialysis
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body btn-hide">
+                    <div class="alert alert-success alert-dismissible" style="display: none"
+                         id="warning_hd_travelling">
+                        <h4><i class="icon fa fa-info"></i> Info!</h4>
+                        <p id="msg_hd_travelling"></p>
+                    </div>
+                    <button class="btn btn-success" onclick="showModalHD('travelling_dialysis')"><i class="fa fa-plus"></i> Travelling Dialysis</button>
+                </div>
+                <div class="box-body">
+                    <table class="table" id="tabel_hd_travelling">
+                        <tbody>
+                        <tr id="row_hd_travelling_dialysis">
+                            <td>Travelling Dialysis</td>
+                            <td width="20%" align="center">
+                                <img id="btn_hd_travelling_dialysis" class="hvr-grow" onclick="detailMonHD('travelling_dialysis')"
+                                     src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-hd-travelling_dialysis">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Travelling Dialysis
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none"
+                     id="warning_hd_travelling_dialysis">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_hd_travelling_dialysis"></p>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4">Nama Pasien</label>
+                            <div class="col-md-6">
+                                <input class="form-control" id="td1">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Alamat</label>
+                            <div class="col-md-6">
+                                <textarea class="form-control" id="td2" style="margin-top: 7px"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Diagnosa</label>
+                            <div class="col-md-6">
+                                <input class="form-control" id="td3" style="margin-top: 7px">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Mulai Hemodialisa</label>
+                            <div class="col-md-6">
+                                <input class="form-control" id="td4" style="margin-top: 7px">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Terapi</label>
+                            <div class="col-md-6">
+                                <textarea class="form-control" id="td5" style="margin-top: 7px"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Tekanan Darah</label>
+                            <div class="col-md-6">
+                                <input class="form-control" id="td6" style="margin-top: 7px">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Komposisi Dialisat</label>
+                            <div class="col-md-6">
+                                <input class="form-control" id="td7" style="margin-top: 7px">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Tipe Dializer</label>
+                            <div class="col-md-6">
+                                <input class="form-control" id="td8" style="margin-top: 7px">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Komplikasi Saat HD</label>
+                            <div class="col-md-6">
+                                <input class="form-control" id="td9" style="margin-top: 7px">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Pungsi</label>
+                            <div class="col-md-6">
+                                <input class="form-control" id="td10" style="margin-top: 7px">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Dosis Heparin</label>
+                            <div class="col-md-6">
+                                <input class="form-control" id="td11" style="margin-top: 7px">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Interval Hemodialisa</label>
+                            <div class="col-md-6">
+                                <input class="form-control" id="td12" style="margin-top: 7px">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">TMP</label>
+                            <div class="col-md-6">
+                                <input class="form-control" id="td13" style="margin-top: 7px">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">HbsAg</label>
+                            <div class="col-md-6">
+                                <input class="form-control" id="td14" style="margin-top: 7px">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Riwayat Transfusi</label>
+                            <div class="col-md-6">
+                                <input class="form-control" id="td15" style="margin-top: 7px">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Diet</label>
+                            <div class="col-md-6">
+                                <input class="form-control" id="td16" style="margin-top: 7px">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Allergi</label>
+                            <div class="col-md-6">
+                                <input class="form-control" id="td17" style="margin-top: 7px">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Berat Badan Kering</label>
+                            <div class="col-md-6">
+                                <input class="form-control" id="td18" style="margin-top: 7px">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Golongan Darah</label>
+                            <div class="col-md-6">
+                                <input class="form-control" id="td19" style="margin-top: 7px">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Tanda Tangan</label>
+                            <div class="col-md-6">
+                                <canvas style="margin-left: -1px;" onmouseover="paintTtd('hd_ttd_dokter')" class="paint-canvas-ttd" id="hd_ttd_dokter"></canvas>
+                                <button style="margin-top: -5px; margin-left: -1px" type="button" class="btn btn-danger" onclick="clearConvas('hd_ttd_dokter')"><i class="fa fa-trash"></i> Clear
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button id="save_hd_travelling_dialysis" class="btn btn-success pull-right" onclick="saveMonHD('travelling_dialysis','travelling')"><i class="fa fa-check"></i>
+                    Save
+                </button>
+                <button id="load_hd_travelling_dialysis" style="display: none; cursor: no-drop" type="button"
                         class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>

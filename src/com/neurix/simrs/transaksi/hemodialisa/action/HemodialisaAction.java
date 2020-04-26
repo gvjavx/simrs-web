@@ -43,7 +43,7 @@ public class HemodialisaAction {
             hemodialisa.setIdDetailCheckup(obj.getString("id_detail_checkup"));
             hemodialisa.setKeterangan(obj.getString("keterangan"));
 
-            if("tranfusi_penyataan".equalsIgnoreCase(obj.getString("jenis")) || "persetujuan_hd_penyataan".equalsIgnoreCase(obj.getString("jenis"))){
+            if("tranfusi_penyataan".equalsIgnoreCase(obj.getString("keterangan")) || "persetujuan_hd_penyataan".equalsIgnoreCase(obj.getString("keterangan")) || "hd_ttd_dokter".equalsIgnoreCase(obj.getString("jenis")) ){
                 BASE64Decoder decoder = new BASE64Decoder();
                 byte[] decodedBytes = decoder.decodeBuffer(obj.getString("jawaban1"));
                 logger.info("Decoded upload data : " + decodedBytes.length);

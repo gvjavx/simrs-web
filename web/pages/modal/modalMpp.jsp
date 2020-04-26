@@ -8,7 +8,7 @@
                 </h4>
             </div>
             <div class="modal-body">
-                <div class="box-body">
+                <div class="box-body btn-hide">
                     <div class="alert alert-success alert-dismissible" style="display: none" id="warning_mpp_evaluasi_awal">
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_mpp_evaluasi_awal"></p>
@@ -762,7 +762,7 @@
                 </h4>
             </div>
             <div class="modal-body">
-                <div class="box-body">
+                <div class="box-body btn-hide">
                     <div class="alert alert-success alert-dismissible" style="display: none" id="warning_mpp_impementasi_mpp">
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_mpp_impementasi_mpp"></p>

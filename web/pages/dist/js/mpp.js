@@ -1,4 +1,9 @@
 function showModalMpp(jenis) {
+    if(isReadRM){
+        $('.btn-hide').hide();
+    }else{
+        $('.btn-hide').show();
+    }
     if ("identifikasi" == jenis) {
         $('#idn0').val(formaterDate(new Date)).datepicker({
             dateFormat:'dd-mm-yy'
@@ -578,7 +583,7 @@ function detailFormMpp(jenis) {
 
             var newRow = $('<tr id="del_mpp_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
             newRow.insertAfter($('table').find('#row_mpp_' + jenis));
-            var url = contextPath+'/pages/images/cancel-flat-new.png';
+            var url = contextPath+'/pages/images/minus-allnew.png';
             $('#btn_mpp_' + jenis).attr('src', url);
             $('#btn_mpp_' + jenis).attr('onclick', 'delRowMpp(\'' + jenis + '\')');
         });

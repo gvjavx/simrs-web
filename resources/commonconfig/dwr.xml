@@ -585,10 +585,31 @@
           <param name="class" value="com.neurix.simrs.transaksi.hemodialisa.action.HemodialisaAction"/>
       </create>
       <convert converter="bean" match="com.neurix.simrs.transaksi.hemodialisa.model.Hemodialisa"/>
+
       <create creator="new">
           <param name="class" value="com.neurix.simrs.transaksi.hemodialisa.action.MonitoringTransfusiDarahAction"/>
       </create>
       <convert converter="bean" match="com.neurix.simrs.transaksi.hemodialisa.model.MonitoringTransfusiDarah"/>
+
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.appendecitomy.action.AppendecitomyAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.appendecitomy.model.Appendecitomy"/>
+
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.asesmenrawatinap.action.AsesmenRawatInapAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.asesmenrawatinap.model.AsesmenRawatInap"/>
+
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.pengkajiankeperawatan.action.PengkajianUlangKeperawatanAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.pengkajiankeperawatan.model.PengkajianUlangKeperawatan"/>
+
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.catatanterintegrasi.action.CatatanTerintegrasiAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.catatanterintegrasi.model.CatatanTerintegrasi"/>
 
   </allow>
 

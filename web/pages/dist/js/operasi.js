@@ -8,6 +8,11 @@ $('[name=cek_list14]').click(function () {
 });
 
 function showModalOperasi(jenis) {
+    if(isReadRM){
+        $('.btn-hide').hide();
+    }else{
+        $('.btn-hide').show();
+    }
     $('#modal-op-' + jenis).modal({show: true, backdrop: 'static'});
 }
 
@@ -1414,7 +1419,7 @@ function detailOperasi(jenis) {
 
             var newRow = $('<tr id="del_op_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
             newRow.insertAfter($('table').find('#row_op_' + jenis));
-            var url = contextPath+'/pages/images/cancel-flat-new.png';
+            var url = contextPath+'/pages/images/minus-allnew.png';
             $('#btn_op_' + jenis).attr('src', url);
             $('#btn_op_' + jenis).attr('onclick', 'delRowOperasi(\'' + jenis + '\')');
         });
@@ -1530,7 +1535,7 @@ function formaterDateTime(dateTime) {
         var hh = today.getHours();
         var min = today.getMinutes();
         var sec = today.getSeconds();
-        today = dd + '-' + mm + '-' + yyyy + ' ' + hh + ':' + min + ':' + sec;
+        today = dd + '-' + mm + '-' + yyyy + ' ' + hh + ':' + min;
     }
     return today;
 }

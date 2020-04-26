@@ -1,6 +1,7 @@
 package com.neurix.common.constant;
 
 import com.neurix.common.util.CommonUtil;
+import org.apache.struts2.ServletActionContext;
 
 /**
  * Created by IntelliJ IDEA.
@@ -92,7 +93,8 @@ public class CommonConstant {
     public final static String ROLE_ADMIN_APOTEK = "ADMIN APOTEK";
 
     //BPJS
-    public final static String APP_NAME = "simrs";
+    public final static String APP_NAME = ServletActionContext.getRequest().getContextPath();
+//    public final static String APP_NAME = "simrs";
 
     //for prod
     public final static String BPJS_BASE_URL = "https://new-api.bpjs-kesehatan.go.id:8080";

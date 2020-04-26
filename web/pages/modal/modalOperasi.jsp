@@ -8,7 +8,7 @@
                 </h4>
             </div>
             <div class="modal-body">
-                <div class="box-body">
+                <div class="box-body btn-hide">
                     <div class="alert alert-success alert-dismissible" style="display: none" id="warning_op_ceklist_operasi">
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_op_ceklist_operasi"></p>
@@ -690,7 +690,7 @@
                 </h4>
             </div>
             <div class="modal-body">
-                <div class="box-body">
+                <div class="box-body btn-hide">
                     <div class="alert alert-success alert-dismissible" style="display: none" id="warning_op_pra_anestesi">
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_op_pra_anestesi"></p>
@@ -1356,7 +1356,7 @@
                 </h4>
             </div>
             <div class="modal-body">
-                <div class="box-body">
+                <div class="box-body btn-hide">
                     <div class="alert alert-success alert-dismissible" style="display: none" id="warning_op_general_anestesi">
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_op_general_anestesi"></p>
@@ -1745,7 +1745,7 @@
                 </h4>
             </div>
             <div class="modal-body">
-                <div class="box-body">
+                <div class="box-body btn-hide">
                     <div class="alert alert-success alert-dismissible" style="display: none" id="warning_op_regional_anestesi">
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_op_regional_anestesi"></p>
@@ -2134,7 +2134,7 @@
                 </h4>
             </div>
             <div class="modal-body">
-                <div class="box-body">
+                <div class="box-body btn-hide">
                     <div class="alert alert-success alert-dismissible" style="display: none" id="warning_op_pindah_rr">
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_op_pindah_rr"></p>

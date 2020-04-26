@@ -25,7 +25,7 @@ public class MonitoringTransfusiDarahBoImpl implements MonitoringTransfusiDarahB
         if(bean != null){
             Map hsCriteria = new HashMap();
             if(bean.getIdMonitoringTransfusiDarah() != null && !"".equalsIgnoreCase(bean.getIdMonitoringTransfusiDarah())){
-                hsCriteria.put("id_hemodialisa", bean.getIdMonitoringTransfusiDarah());
+                hsCriteria.put("id_monitoring_transfusi_darah", bean.getIdMonitoringTransfusiDarah());
             }
             if(bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())){
                 hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
@@ -47,7 +47,7 @@ public class MonitoringTransfusiDarahBoImpl implements MonitoringTransfusiDarahB
                     MonitoringTransfusiDarah transfusiDarah = new MonitoringTransfusiDarah();
                     transfusiDarah.setIdMonitoringTransfusiDarah(entity.getIdMonitoringTransfusiDarah());
                     transfusiDarah.setIdDetailCheckup(entity.getIdDetailCheckup());
-                    transfusiDarah.setWaktu(bean.getWaktu());
+                    transfusiDarah.setWaktu(entity.getWaktu());
                     transfusiDarah.setTekananDarah(entity.getTekananDarah());
                     transfusiDarah.setNadi(entity.getNadi());
                     transfusiDarah.setSuhu(entity.getSuhu());
@@ -87,7 +87,6 @@ public class MonitoringTransfusiDarahBoImpl implements MonitoringTransfusiDarahB
     public CrudResponse saveAdd(MonitoringTransfusiDarah bean) throws GeneralBOException {
         CrudResponse response = new CrudResponse();
         if(bean != null){
-
             ItSimrsMonitoringTransfusiDarahEntity transfusiDarah = new ItSimrsMonitoringTransfusiDarahEntity();
             transfusiDarah.setIdMonitoringTransfusiDarah("MTD"+monitoringTransfusiDarahDao.getNextSeq());
             transfusiDarah.setIdDetailCheckup(bean.getIdDetailCheckup());

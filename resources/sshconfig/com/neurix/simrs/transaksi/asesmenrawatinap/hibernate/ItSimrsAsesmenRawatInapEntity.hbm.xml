@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.neurix.simrs.transaksi.asesmenrawatinap.model.ItSimrsAsesmenRawatInapEntity" dynamic-update="true"
+           table="it_simrs_asesmen_keperawatan_rawat_inap" select-before-update="true" schema="public">
+
+        <id name="idAsesmenKeperawatanRawatInap">
+            <column name="id_asesmen_keperawatan_rawat_inap" sql-type="varchar" length="30" not-null="true" />
+        </id>
+
+        <property name="idDetailCheckup">
+            <column name="id_detail_checkup" sql-type="varchar" length="30" not-null="false"/>
+        </property>
+        <property name="parameter">
+            <column name="parameter" sql-type="text" not-null="false"/>
+        </property>
+        <property name="jawaban">
+            <column name="jawaban" sql-type="text" not-null="false"/>
+        </property>
+        <property name="keterangan">
+            <column name="keterangan" sql-type="varchar" length="1000" not-null="false"/>
+        </property>
+        <property name="jenis">
+            <column name="jenis" sql-type="varchar" length="1000" not-null="false"/>
+        </property>
+        <property name="skor">
+            <column name="skor" sql-type="int" not-null="false"/>
+        </property>
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="timestamp" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="timestamp" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
+        </property>
+
+    </class>
+</hibernate-mapping>

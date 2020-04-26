@@ -8,7 +8,7 @@
                 </h4>
             </div>
             <div class="modal-body">
-                <div class="box-body">
+                <div class="box-body btn-hide">
                     <div class="alert alert-success alert-dismissible" style="display: none" id="warning_asesmen_ugd-dewasa">
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_asesmen_ugd-dewasa"></p>

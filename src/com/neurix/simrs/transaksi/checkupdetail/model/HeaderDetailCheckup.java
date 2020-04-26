@@ -138,6 +138,25 @@ public class HeaderDetailCheckup extends BaseModel{
     private String transPeriode;
     private String invoiceTrans;
 
+    private String stTanggalKeluar;
+    private String stTanggalMasuk;
+
+    public String getStTanggalKeluar() {
+        return stTanggalKeluar;
+    }
+
+    public void setStTanggalKeluar(String stTanggalKeluar) {
+        this.stTanggalKeluar = stTanggalKeluar;
+    }
+
+    public String getStTanggalMasuk() {
+        return stTanggalMasuk;
+    }
+
+    public void setStTanggalMasuk(String stTanggalMasuk) {
+        this.stTanggalMasuk = stTanggalMasuk;
+    }
+
     public String getInvoiceTrans() {
         return invoiceTrans;
     }

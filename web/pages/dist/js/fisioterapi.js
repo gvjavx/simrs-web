@@ -1,4 +1,9 @@
 function pengkajianFisioterapi(idDetailCheckup) {
+    if(isReadRM){
+        $('.btn-hide').hide();
+    }else{
+        $('.btn-hide').show();
+    }
     $('#modal-pengkajian-fisioterapi').modal({show: true, backdrop: 'static'});
 }
 
@@ -189,7 +194,7 @@ function detailFisio(jenis) {
 
             var newRow = $('<tr id="del_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
             newRow.insertAfter($('table').find('#row_' + jenis));
-            var url = contextPath+'/pages/images/cancel-flat-new.png';
+            var url = contextPath+'/pages/images/minus-allnew.png';
             $('#btn_' + jenis).attr('src', url);
             $('#btn_' + jenis).attr('onclick', 'delRow(\'' + jenis + '\')');
         });
@@ -205,6 +210,11 @@ function delRow(id) {
 
 function addMonitoringFisioterapi(){
     listMonitoringFisioterapi();
+    if(isReadRM){
+        $('.btn-hide').hide();
+    }else{
+        $('.btn-hide').show();
+    }
     $('#modal-monitoring-kunjungan').modal({show: true, backdrop: 'static'});
 }
 
