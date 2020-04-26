@@ -65,16 +65,16 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
 
     protected static transient Logger logger = Logger.getLogger(BillingSystemBoImpl.class);
 
-    private JurnalDao jurnalDao;
-    private JurnalDetailDao jurnalDetailDao;
-    private JurnalDetailActivityDao jurnalDetailActivityDao;
+//    private JurnalDao jurnalDao;
+//    private JurnalDetailDao jurnalDetailDao;
+//    private JurnalDetailActivityDao jurnalDetailActivityDao;
     private MappingJurnalDao mappingJurnalDao;
-    private KodeRekeningDao kodeRekeningDao;
+//    private KodeRekeningDao kodeRekeningDao;
     private String userLogin;
     private Timestamp updateTime;
     private TipeJurnalDao tipeJurnalDao;
     private TransDao transDao;
-    private BatasTutupPeriodDao batasTutupPeriodDao;
+//    private BatasTutupPeriodDao batasTutupPeriodDao;
 
 
     private CheckupDetailDao checkupDetailDao;
@@ -90,6 +90,8 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
     private PositionDao positionDao;
     private MasterDao masterDao;
     private AsuransiDao asuransiDao;
+
+
 
     public void setAsuransiDao(AsuransiDao asuransiDao) {
         this.asuransiDao = asuransiDao;
@@ -144,40 +146,20 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
         this.checkupDetailDao = checkupDetailDao;
     }
 
-    public BatasTutupPeriodDao getBatasTutupPeriodDao() {
-        return batasTutupPeriodDao;
-    }
-
     public void setBatasTutupPeriodDao(BatasTutupPeriodDao batasTutupPeriodDao) {
         this.batasTutupPeriodDao = batasTutupPeriodDao;
-    }
-
-    public JurnalDetailActivityDao getJurnalDetailActivityDao() {
-        return jurnalDetailActivityDao;
     }
 
     public void setJurnalDetailActivityDao(JurnalDetailActivityDao jurnalDetailActivityDao) {
         this.jurnalDetailActivityDao = jurnalDetailActivityDao;
     }
 
-    public TransDao getTransDao() {
-        return transDao;
-    }
-
     public void setTransDao(TransDao transDao) {
         this.transDao = transDao;
     }
 
-    public TipeJurnalDao getTipeJurnalDao() {
-        return tipeJurnalDao;
-    }
-
     public void setTipeJurnalDao(TipeJurnalDao tipeJurnalDao) {
         this.tipeJurnalDao = tipeJurnalDao;
-    }
-
-    public KodeRekeningDao getKodeRekeningDao() {
-        return kodeRekeningDao;
     }
 
     public void setKodeRekeningDao(KodeRekeningDao kodeRekeningDao) {
@@ -192,16 +174,8 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
         this.mappingJurnalDao = mappingJurnalDao;
     }
 
-    public JurnalDao getJurnalDao() {
-        return jurnalDao;
-    }
-
     public void setJurnalDao(JurnalDao jurnalDao) {
         this.jurnalDao = jurnalDao;
-    }
-
-    public JurnalDetailDao getJurnalDetailDao() {
-        return jurnalDetailDao;
     }
 
     public void setJurnalDetailDao(JurnalDetailDao jurnalDetailDao) {

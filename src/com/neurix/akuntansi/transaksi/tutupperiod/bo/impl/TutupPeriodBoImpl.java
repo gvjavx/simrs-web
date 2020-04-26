@@ -47,18 +47,18 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
 
     protected RiwayatTindakanDao riwayatTindakanDao;
     protected BatasTutupPeriodDao batasTutupPeriodDao;
+    protected KodeRekeningDao kodeRekeningDao;
     protected JurnalDao jurnalDao;
     protected JurnalDetailDao jurnalDetailDao;
-    protected SaldoAkhirDao saldoAkhirDao;
-    protected KodeRekeningDao kodeRekeningDao;
-    protected TutupPeriodDao tutupPeriodDao;
-    protected CheckupDetailDao checkupDetailDao;
-    protected SaldoAkhirDetailDao saldoAkhirDetailDao;
-
     protected JurnalDetailActivityDao jurnalDetailActivityDao;
-    protected JurnalPendingDao jurnalPendingDao;
-    protected JurnalDetailPendingDao jurnalDetailPendingDao;
-    protected JurnalDetailActivityPendingDao jurnalDetailActivityPendingDao;
+    private SaldoAkhirDao saldoAkhirDao;
+    private TutupPeriodDao tutupPeriodDao;
+    private CheckupDetailDao checkupDetailDao;
+    private SaldoAkhirDetailDao saldoAkhirDetailDao;
+
+    private JurnalPendingDao jurnalPendingDao;
+    private JurnalDetailPendingDao jurnalDetailPendingDao;
+    private JurnalDetailActivityPendingDao jurnalDetailActivityPendingDao;
 
     @Override
     public void saveSettingPeriod(List<ItSimrsBatasTutupPeriodEntity> batasList) throws GeneralBOException {
