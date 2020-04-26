@@ -1,6 +1,7 @@
 package com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.bo;
 
 import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
+import com.neurix.akuntansi.master.trans.model.ImTransEntity;
 import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.PembayaranUtangPiutang;
 import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.PembayaranUtangPiutangDetail;
 import com.neurix.common.bo.BaseMasterBo;
@@ -29,6 +30,8 @@ public interface PembayaranUtangPiutangBo extends BaseMasterBo<PembayaranUtangPi
     List<PembayaranUtangPiutangDetail> getDetailPembayaran(String pembayaranId) throws GeneralBOException;
 
     String getKodeRekeningKasJurnal(String noJurnal) throws GeneralBOException;
+
+    ImTransEntity getTipeMaster(String transId) throws GeneralBOException;
 
     String getNamaRekeningKasJurnal(String noJurnal) throws GeneralBOException;
 }

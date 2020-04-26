@@ -57,9 +57,8 @@ from
     left outer join im_akun_kode_rekening rek on y.rekening_id = rek.rekening_id
     left outer join im_akun_mata_uang mu ON (x.mata_uang_id = mu.mata_uang_id)
 where
-    x.created_date between $P{reportParams.tanggalAwal} and $P{reportParams.tanggalAkhir}
+    x.tanggal_jurnal between $P{reportParams.tanggalAwal} and $P{reportParams.tanggalAkhir}
     and y.rekening_id = $P{rekening_id}
-    and y.master_id = $P{nomor_master}
     and lower(mu.kode_mata_uang) = 'rph'
     and x.registered_flag = 'Y'
     and x.branch_id IN ($P!{reportParams.branchId})]]>

@@ -64,7 +64,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
             tipeWhere = "and masterId like '"+masterId+"'";
         }
         List<Object[]> results = new ArrayList<Object[]>();
-        String query = "select \n" +
+        String query = "select distinct\n" +
                 "  * \n" +
                 "from \n" +
                 "  (\n" +
@@ -93,7 +93,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "      ) a \n" +
                 "      inner join it_akun_jurnal_detail b on b.no_jurnal = a.no_jurnal \n" +
                 "      inner join im_akun_mata_uang c on a.mata_uang_id = c.mata_uang_id \n" +
-                "      inner join im_akun_master d on b.master_id = d.nomor_master \n" +
+                "      left join im_akun_master d on b.master_id = d.nomor_master \n" +
                 "\t  INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = b.rekening_id\n" +
                 "      INNER JOIN (\n" +
                 "        select \n" +
@@ -110,9 +110,9 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "where\n" +
                 "  to_date(\n" +
                 "    cast(tgljurnal as TEXT), \n" +
-                "    'MM-yyyy'\n" +
+                "    'yyyy-MM'\n" +
                 "  ) < (\n" +
-                "    to_date('"+periode+"', 'MM-yyyy')+ Interval '1 month') " +
+                "    to_date('"+periode+"', 'yyyy-MM')+ Interval '1 month') " +
                 "and rekening_id IN (\n" +
                 "                select\n" +
                 "                    rekening_id\n" +
@@ -142,7 +142,11 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
             data.setMataUang((String) row[4]);
             data.setTotal(BigDecimal.valueOf(Double.parseDouble(row[5].toString())));
             data.setMasterId((String) row[6]);
-            data.setNamaMaster((String) row[7]);
+            if ((String) row[7]!=null){
+                data.setNamaMaster((String) row[7]);
+            }else{
+                data.setNamaMaster("");
+            }
 //            data.setMasterGrp(row[8].toString());
             data.setKurs(BigDecimal.valueOf(Double.parseDouble(row[8].toString())));
             listOfResult.add(data);

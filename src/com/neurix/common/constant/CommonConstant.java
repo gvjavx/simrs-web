@@ -38,6 +38,8 @@ public class CommonConstant {
     public final static String RESOURCE_PATH_DOC_FPK = "/upload/fpk/";
     public final static String RESOURCE_PATH_TTD_DOKTER = "/upload/ttd_dokter/";
     public final static String RESOURCE_PATH_TTD_APOTEKER = "/upload/ttd_apoteker/";
+    public final static String RESOURCE_PATH_AREA_OPERASI = "/upload/penanda_area_operasi/";
+
 
     public final static String RESOURCE_PATH_USER_UPLOAD = "/pages/upload/image/profile/";
     public final static String RESOURCE_PATH_USER_UPLOAD_IJAZAH = CommonUtil.getPropertyParams("resource.dir")+"mnt/ijazah/";

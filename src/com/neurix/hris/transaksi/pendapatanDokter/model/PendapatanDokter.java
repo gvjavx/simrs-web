@@ -5,6 +5,7 @@ import com.neurix.common.model.BaseModel;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.Map;
 
 public class PendapatanDokter extends BaseModel {
 
@@ -104,6 +105,26 @@ public class PendapatanDokter extends BaseModel {
     BigDecimal totalPphFinal;
     String stTotalPphFinal;
 
+    //billing pendapatan dokter
+
+    Map dataBilling;
+    String keteranganBilling;
+
+    public String getKeteranganBilling() {
+        return keteranganBilling;
+    }
+
+    public void setKeteranganBilling(String keteranganBilling) {
+        this.keteranganBilling = keteranganBilling;
+    }
+
+    public Map getDataBilling() {
+        return dataBilling;
+    }
+
+    public void setDataBilling(Map dataBilling) {
+        this.dataBilling = dataBilling;
+    }
 
     public Timestamp getApprovalDate() {
         return approvalDate;

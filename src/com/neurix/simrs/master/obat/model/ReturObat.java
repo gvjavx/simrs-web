@@ -21,6 +21,15 @@ public class ReturObat extends BaseModel {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String branchId;
+    private String idApprovalObat;
+
+    public String getIdApprovalObat() {
+        return idApprovalObat;
+    }
+
+    public void setIdApprovalObat(String idApprovalObat) {
+        this.idApprovalObat = idApprovalObat;
+    }
 
     public String getIdReturObat() {
         return idReturObat;

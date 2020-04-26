@@ -43,7 +43,7 @@
                 <!--<prop key="hibernate.connection.username">root</prop>-->
                 <!--<prop key="hibernate.connection.password">123456</prop>-->
 
-                <prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs_reza</prop>
+                <prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs25042020</prop>
                 <prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>
                 <prop key="hibernate.connection.username">postgres</prop>
                 <prop key="hibernate.connection.password">123456</prop>
@@ -380,7 +380,7 @@
                 <value>sshconfig/com/neurix/simrs/transaksi/checkup/hibernate/ItSimrsFpkEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/checkup/hibernate/ItSimrsAsesmen.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/plankegiatanrawat/hibernate/ItSImrsPlanKegiatanRawatEntity.hbm.xml</value>
-
+                <value>sshconfig/com/neurix/simrs/transaksi/riwayattindakan/hibernate/ItSimrsTindakanTransitorisEntity.hbm.xml</value>
 
                 <!--Hibernate Config For Acountant Feature SIMRS is HERE-->
                 <value>sshconfig/com/neurix/akuntansi/master/kodeRekening/hibernate/ImKodeRekeningEntity.hbm.xml</value>
@@ -426,6 +426,12 @@
                 <value>sshconfig/com/neurix/hris/master/DokterKso/hibernate/ImSimrsDokterKso.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/master/pembayaran/hibernate/ImAkunPembayaranEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/transaksi/pendapatanDokter/hibernate/ItHrisPendapatanDokterPphLebihEntity.hbm.xml</value>
+
+                <value>sshconfig/com/neurix/simrs/transaksi/fisioterapi/hibernate/ItSimrsFisioterapiEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/fisioterapi/hibernate/ItSimrsMonitoringFisioterapiEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/asesmenugd/hibernate/ItSimrsAsesmenUgdEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/asesmenoperasi/hibernate/ItSimrsAsesmenOperasiEntity.hbm.xml</value>
+
             </list>
         </property>
     </bean>

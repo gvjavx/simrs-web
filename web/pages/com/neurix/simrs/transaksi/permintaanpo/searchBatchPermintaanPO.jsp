@@ -41,9 +41,8 @@
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-        <h1>
+        <h1 id="label-head">
             Batch Purchase Order (PO)
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -58,6 +57,14 @@
                     </div>
                     <div class="box-body">
                         <table class="table table-striped">
+                            <tr>
+                                <td width="17%"><b>No. PO</b></td>
+                                <td>
+                                    <table>
+                                        <label id="no_po"></label>
+                                    </table>
+                                </td>
+                            </tr>
                             <tr>
                                 <td width="17%"><b>ID Vendor</b></td>
                                 <td>
@@ -159,7 +166,12 @@
                                         </div>
                                         <div class="col-md-6">
                                             <a class="btn btn-success pull-right" onclick="addBatch()"><i class="fa fa-plus"></i> Tambah Batch</a>
-                                            <a href="initForm_permintaanpo.action" class="btn btn-warning pull-right" style="margin-right: 5px"><i class="fa fa-arrow-left"></i> Back</a>
+                                            <s:if test='tipe == "reture"'>
+                                                <a href="/simrs/returobat/initForm_returobat.action" class="btn btn-warning pull-right" style="margin-right: 5px"><i class="fa fa-arrow-left"></i> Back</a>
+                                            </s:if>
+                                            <s:else>
+                                                <a href="initForm_permintaanpo.action" class="btn btn-warning pull-right" style="margin-right: 5px"><i class="fa fa-arrow-left"></i> Back</a>
+                                            </s:else>
                                         </div>
                                     </div>
                                 </div>
@@ -456,9 +468,27 @@
 
     var idApprovalObat = $('#id_approval').val();
     var idpermintaanPo = $('#id_permintaan_vendor').val();
+    var noPo = '<s:property value="id" />';
+    var jenis = '<s:property value="tipe" />';
+
 
     $(document).ready(function () {
-        $('#permintaan_po').addClass('active');
+
+        if (jenis == "reture"){
+            $("#label-head").text("List Batch Pengganti Barang Reture");
+        } else {
+            jenis = "req";
+        }
+
+        $("#no_po").text(noPo);
+
+        var tipe = '<s:property value="tipe"/>';
+        if(tipe == "reture"){
+            $('#retur_obat').addClass('active');
+        }else{
+            $('#permintaan_po').addClass('active');
+        }
+
         listDocument();
 
         var canvas = document.getElementById('img_canvas');
@@ -505,11 +535,21 @@
     }
 
     function addBatch(){
-        window.location.href = 'edit_permintaanpo.action?id='+idpermintaanPo+'&isBatch=Y&newBatch=Y';
+        var tipe = '<s:property value="tipe"/>';
+        if(tipe == "reture"){
+            window.location.href = 'edit_permintaanpo.action?id='+idpermintaanPo+'&isBatch=Y&newBatch=Y&tipe=reture';
+        }else{
+            window.location.href = 'edit_permintaanpo.action?id='+idpermintaanPo+'&isBatch=Y&newBatch=Y';
+        }
     }
 
     function updateBatch(noBatch){
-        window.location.href = 'edit_permintaanpo.action?id='+idpermintaanPo+'&isBatch=Y&newBatch=N&noBatch='+noBatch;
+        var tipe = '<s:property value="tipe"/>';
+        if(tipe == "reture"){
+            window.location.href = 'edit_permintaanpo.action?id='+idpermintaanPo+'&isBatch=Y&newBatch=N&noBatch='+noBatch+'&tipe=reture';
+        }else{
+            window.location.href = 'edit_permintaanpo.action?id='+idpermintaanPo+'&isBatch=Y&newBatch=N&noBatch='+noBatch;
+        }
     }
 
     function listDocument() {
@@ -615,7 +655,7 @@
         $('#load_approve').show();
 
         dwr.engine.setAsync(true);
-        PermintaanVendorAction.saveApproveBatch(idpermintaanPo, data, {
+        PermintaanVendorAction.saveApproveBatch(idpermintaanPo, data, jenis, {
             callback: function (response) {
                 if(response.status = "success"){
                     $('#info_dialog').dialog('open');

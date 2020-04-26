@@ -95,7 +95,6 @@
         <property name="potKs">
             <column name="pot_ks" sql-type="numeric" length="20" precision="2" not-null="false"/>
         </property>
-
         <property name="level">
             <column name="level" sql-type="varchar" length="2" not-null="false" />
         </property>
@@ -111,6 +110,5 @@
         <property name="kodeJabatan">
             <column name="kode_jabatan" sql-type="varchar" length="15" not-null="false" />
         </property>
-
     </class>
 </hibernate-mapping>

@@ -146,7 +146,6 @@ public class KasirRawatInapAction extends BaseMasterAction {
 
         RawatInap rawatInap = getRawatInap();
         rawatInap.setBranchId(CommonUtil.userBranchLogin());
-        rawatInap.setNotLike("bpjs");
         List<RawatInap> listOfRawatInap = new ArrayList();
 
         try {

@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.3310000000000015"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="17"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -169,32 +169,32 @@ where
 		<variableExpression><![CDATA[$F{saldosekarang}]]></variableExpression>
 	</variable>
 	<variable name="saldoDisplay" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$F{saldo}.abs()]]></variableExpression>
+		<variableExpression><![CDATA[$F{saldo}]]></variableExpression>
 	</variable>
 	<variable name="sumSaldo1Display" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$V{SUM_saldo_1}.abs()]]></variableExpression>
+		<variableExpression><![CDATA[$V{SUM_saldo_1}]]></variableExpression>
 	</variable>
 	<variable name="sumSaldo2Display" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$V{SUM_saldo_2}.abs()]]></variableExpression>
+		<variableExpression><![CDATA[$V{SUM_saldo_2}]]></variableExpression>
 	</variable>
 	<variable name="saldoSekarangDisplay" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$F{saldosekarang}==null?($F{koderekening}.length()>3?BigDecimal.ZERO:null):$F{saldosekarang}.abs()]]></variableExpression>
+		<variableExpression><![CDATA[$F{saldosekarang}==null?($F{koderekening}.length()>3?BigDecimal.ZERO:null):$F{saldosekarang}]]></variableExpression>
 		<initialValueExpression><![CDATA[BigDecimal.ZERO]]></initialValueExpression>
 	</variable>
 	<variable name="sumSaldoSekarang1Display" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$V{SUM_saldoSekarang_1}==null?BigDecimal.ZERO:$V{SUM_saldoSekarang_1}.abs()]]></variableExpression>
+		<variableExpression><![CDATA[$V{SUM_saldoSekarang_1}==null?BigDecimal.ZERO:$V{SUM_saldoSekarang_1}]]></variableExpression>
 	</variable>
 	<variable name="sumSaldoSekarang2Display" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$V{SUM_saldoSekarang_2}==null?BigDecimal.ZERO:$V{SUM_saldoSekarang_2}.abs()]]></variableExpression>
+		<variableExpression><![CDATA[$V{SUM_saldoSekarang_2}==null?BigDecimal.ZERO:$V{SUM_saldoSekarang_2}]]></variableExpression>
 	</variable>
 	<variable name="lastSaldoDisplay" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$F{lastsaldo}.abs()]]></variableExpression>
+		<variableExpression><![CDATA[$F{lastsaldo}]]></variableExpression>
 	</variable>
 	<variable name="sumLastSaldo1Display" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$V{SUM_lastSaldo_2}.abs()]]></variableExpression>
+		<variableExpression><![CDATA[$V{SUM_lastSaldo_1}]]></variableExpression>
 	</variable>
 	<variable name="sumLastSaldo2Display" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$V{SUM_lastSaldo_2}.abs()]]></variableExpression>
+		<variableExpression><![CDATA[$V{SUM_lastSaldo_2}]]></variableExpression>
 	</variable>
 	<variable name="SUM_lastSaldo_1" class="java.math.BigDecimal" resetType="Group" resetGroup="rekening" calculation="Sum">
 		<variableExpression><![CDATA[$F{lastsaldo}]]></variableExpression>
@@ -659,14 +659,6 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{namarekening}]]></textFieldExpression>
 			</textField>
-			<line>
-				<reportElement key="line-1" isPrintRepeatedValues="false" x="0" y="15" width="235" height="1" isPrintInFirstWholeBand="true" printWhenGroupChanges="rekening" uuid="03ed574d-83d4-41e2-b914-c46f3797bd6e">
-					<printWhenExpression><![CDATA[new Boolean($F{koderekening}.length() == 3)]]></printWhenExpression>
-				</reportElement>
-				<graphicElement>
-					<pen lineWidth="1.0" lineStyle="Dashed"/>
-				</graphicElement>
-			</line>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-16" x="349" y="1" width="116" height="14" uuid="4bedb26c-495e-44ab-8c56-f96318f343f7"/>
 				<box>

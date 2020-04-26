@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printSuratPengantarIjasah" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
-	<property name="ireport.zoom" value="0.931381984588738"/>
+	<property name="ireport.zoom" value="1.3636363636363718"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="160"/>
+	<property name="ireport.y" value="384"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -32,8 +32,12 @@
 	<parameter name="reportParams.jenisKelamin" class="java.lang.String"/>
 	<parameter name="reportParams.unit" class="java.lang.String"/>
 	<parameter name="reportParams.area" class="java.lang.String"/>
-	<parameter name="reportParams.data1" class="java.lang.String"/>
-	<parameter name="reportParams.data2" class="java.lang.String"/>
+	<parameter name="reportParams.unitKota" class="java.lang.String"/>
+	<parameter name="reportParams.profesi" class="java.lang.String"/>
+	<parameter name="reportParams.desa" class="java.lang.String"/>
+	<parameter name="reportParams.kecamatan" class="java.lang.String"/>
+	<parameter name="reportParams.provinsi" class="java.lang.String"/>
+	<parameter name="reportParams.kabupaten" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT * FROM im_simrs_pasien LIMIT 1]]>
 	</queryString>
@@ -178,7 +182,7 @@
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.nama} == null ? "" : $P{reportParams.nama}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{reportParams.profesi} == null ? "" : $P{reportParams.profesi}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="2" y="185" width="111" height="20" uuid="884dccf6-431c-44ec-9229-cc73e8298da4"/>
@@ -244,20 +248,13 @@
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="118" y="205" width="437" height="20" uuid="ef3e804e-49a1-4a2f-a326-3a039b69208a"/>
+				<reportElement x="118" y="165" width="437" height="20" uuid="ef3e804e-49a1-4a2f-a326-3a039b69208a"/>
 				<box leftPadding="1"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.tglLahir} == null ? "" : $P{reportParams.tglLahir} + " / " + $P{reportParams.jenisKelamin}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="118" y="165" width="437" height="20" uuid="e755eceb-d0f3-4c82-9b52-834da4fc5766"/>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[Diri Sendiri/Suami/Istri/Anak/Ayah/Ibu/...........................]]></text>
-			</staticText>
 			<staticText>
 				<reportElement x="2" y="245" width="111" height="20" uuid="cf9928d8-5289-4ab2-95b8-64d6a9c3d443"/>
 				<textElement verticalAlignment="Middle">
@@ -322,6 +319,23 @@
 				</textElement>
 				<textFieldExpression><![CDATA["Yang bertanda tangan di bawah ini kami, Kepala Rumah Sakit "+$P{reportParams.unit}+" menugaskan kepada :"]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement x="118" y="145" width="437" height="20" uuid="e5b0ab02-8004-4241-95cd-585f3cf1bf69"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.nama} == null ? "" : $P{reportParams.nama}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="118" y="205" width="437" height="20" uuid="5ff1f219-81f4-4335-8dd8-e32e20aae533"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Desa "+$P{reportParams.desa}
++", Kec. "+$P{reportParams.kecamatan} + ", "+$P{reportParams.kabupaten}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<lastPageFooter>
@@ -345,12 +359,12 @@
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.nama} == null ? "" : $P{reportParams.nama}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{reportParams.unitKota} == null ? "" : $P{reportParams.unitKota}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="375" y="20" width="180" height="20" uuid="4f47136c-9235-4bac-9e22-33205cd33a6a"/>
 				<box leftPadding="1"/>
-				<textElement verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.unit} == null ? "" : $P{reportParams.unit}]]></textFieldExpression>

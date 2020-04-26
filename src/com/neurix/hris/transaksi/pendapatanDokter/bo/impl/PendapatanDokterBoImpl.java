@@ -1,8 +1,10 @@
 package com.neurix.hris.transaksi.pendapatanDokter.bo.impl;
 
+import com.neurix.akuntansi.master.mappingJurnal.dao.MappingJurnalDao;
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.dao.BranchDao;
 import com.neurix.authorization.company.model.Branch;
+import com.neurix.authorization.company.model.ImBranches;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.dokterKso.dao.DokterKsoDao;
@@ -12,6 +14,15 @@ import com.neurix.hris.transaksi.pendapatanDokter.dao.PendapatanDokterDao;
 import com.neurix.hris.transaksi.pendapatanDokter.dao.PendapatanDokterDetailDao;
 import com.neurix.hris.transaksi.pendapatanDokter.dao.PendapatanDokterPphLebihDao;
 import com.neurix.hris.transaksi.pendapatanDokter.model.*;
+import com.neurix.hris.transaksi.pendapatanDokter.model.BillingPendapatanDokter;
+import com.neurix.hris.transaksi.pendapatanDokter.model.ItHrisPendapatanDokterDetailEntity;
+import com.neurix.hris.transaksi.pendapatanDokter.model.ItHrisPendapatanDokterEntity;
+import com.neurix.hris.transaksi.pendapatanDokter.model.PendapatanDokter;
+import com.neurix.simrs.master.dokter.dao.DokterDao;
+import com.neurix.simrs.master.dokter.model.Dokter;
+import com.neurix.simrs.master.dokter.model.ImSimrsDokterEntity;
+import com.neurix.simrs.master.pelayanan.dao.PelayananDao;
+import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
@@ -33,6 +44,33 @@ public class PendapatanDokterBoImpl implements PendapatanDokterBo {
     private DokterKsoDao dokterKsoDao;
     private BranchDao branchDao;
     private PendapatanDokterPphLebihDao pendapatanDokterPphLebihDao;
+    private MappingJurnalDao mappingJurnalDao;
+    private PelayananDao pelayananDao;
+    private DokterDao dokterDao;
+
+    public DokterDao getDokterDao() {
+        return dokterDao;
+    }
+
+    public void setDokterDao(DokterDao dokterDao) {
+        this.dokterDao = dokterDao;
+    }
+
+    public PelayananDao getPelayananDao() {
+        return pelayananDao;
+    }
+
+    public void setPelayananDao(PelayananDao pelayananDao) {
+        this.pelayananDao = pelayananDao;
+    }
+
+    public MappingJurnalDao getMappingJurnalDao() {
+        return mappingJurnalDao;
+    }
+
+    public void setMappingJurnalDao(MappingJurnalDao mappingJurnalDao) {
+        this.mappingJurnalDao = mappingJurnalDao;
+    }
 
     public DokterKsoDao getDokterKsoDao() {
         return dokterKsoDao;
@@ -1769,7 +1807,13 @@ public class PendapatanDokterBoImpl implements PendapatanDokterBo {
 
     @Override
     public PendapatanDokter saveAdd(PendapatanDokter bean) throws GeneralBOException {
-        logger.info("[PendapatanBoImpl.saveAdd] start process >>>");
+        return null;
+    }
+
+    @Override
+    public List<PendapatanDokter> saveAddPendapatanDokter(PendapatanDokter bean) throws GeneralBOException{
+        logger.info("[PendapatanBoImpl.saveAddPendapatanDokter] start process >>>");
+        List<PendapatanDokter> resultList = new ArrayList<>();
 
         if (bean != null){
             String idPendapatan, idDetailPendapatan, idPendapatanDokterPphLebih;
@@ -1778,7 +1822,11 @@ public class PendapatanDokterBoImpl implements PendapatanDokterBo {
             List<PendapatanDokter> listDetailPendapatan = (List<PendapatanDokter>) session.getAttribute("listOfResultDetailPendapatanDokter");
 
             if (listPendaptanDokter != null){
+
                 for (PendapatanDokter pendapatanDokter : listPendaptanDokter){
+                    String noNota = mappingJurnalDao.getNextInvoiceId("JKR",pendapatanDokter.getBranchId());
+                    List<BillingPendapatanDokter> billingDokter = new ArrayList<>();
+
                     ItHrisPendapatanDokterEntity entity = new ItHrisPendapatanDokterEntity();
                     idPendapatan = pendapatanDokterDao.getNextIdPendapatanDokter();
 
@@ -1816,11 +1864,12 @@ public class PendapatanDokterBoImpl implements PendapatanDokterBo {
                     if (pendapatanDokter.getTotalPphFinal() != null){
                         entity.setPphFinal(pendapatanDokter.getTotalPphFinal());
                     }
+                    entity.setNoNota(noNota);
 
                     try{
                         pendapatanDokterDao.addAndSave(entity);
                     }catch (HibernateException e){
-                        logger.error("[PendapatanDokterBoImpl.saveAdd] Error, " + e.getMessage());
+                        logger.error("[PendapatanDokterBoImpl.saveAddPendapatanDokter] Error, " + e.getMessage());
                         throw new GeneralBOException("Found problem when saving new data Pendapatan, please info to your admin..." + e.getMessage());
                     }
 
@@ -1889,16 +1938,128 @@ public class PendapatanDokterBoImpl implements PendapatanDokterBo {
                             try{
                                 pendapatanDokterDetailDao.addAndSave(detailEntity);
                             }catch (HibernateException e){
-                                logger.error("[PendapatanDokterBoImpl.saveAdd] Error, " + e.getMessage());
+                                logger.error("[PendapatanDokterBoImpl.saveAddPendapatanDokter] Error, " + e.getMessage());
                                 throw new GeneralBOException("Found problem when saving new data Pendapatan, please info to your admin..." + e.getMessage());
+                            }
+
+
+                            //memetakan biaya berdasarkan billing
+                            ImSimrsPelayananEntity pelayananEntity = pelayananDao.getById("idPelayanan",detailEntity.getPoliId());
+                            String masterId= "";
+
+                            switch (detailEntity.getMasterId()){
+                                case "umum":
+                                    masterId="01.000";
+                                    break;
+                                case "bpjs":
+                                    masterId="02.000";
+                                    break;
+                            }
+
+                            boolean ada = false;
+                            for (BillingPendapatanDokter billingPendapatanDokter : billingDokter){
+                                if (pelayananEntity.getKodering().equalsIgnoreCase(billingPendapatanDokter.getDivisiId())&&masterId.equalsIgnoreCase(billingPendapatanDokter.getMasterId())){
+                                    billingPendapatanDokter.setNilai(billingPendapatanDokter.getNilai().add(pendapatanDokterdetail.getBgHrBruto()));
+                                    ada=true;
+                                    break;
+                                }
+                            }
+                            if (!ada){
+                                BillingPendapatanDokter billingPendapatanDokter1 = new BillingPendapatanDokter();
+                                billingPendapatanDokter1.setDivisiId(pelayananEntity.getKodering());
+                                billingPendapatanDokter1.setMasterId(masterId);
+                                billingPendapatanDokter1.setNilai(pendapatanDokterdetail.getBgHrBruto());
+                                billingPendapatanDokter1.setJenisRawat(pendapatanDokterdetail.getJenisRawat());
+                                billingDokter.add(billingPendapatanDokter1);
                             }
                         }
                     }
+
+                    //untuk billing
+                    PendapatanDokter result = new PendapatanDokter();
+                    result.setDokterName(pendapatanDokter.getDokterName());
+                    result.setBulan(pendapatanDokter.getBulan());
+                    result.setTahun(pendapatanDokter.getTahun());
+                    result.setBranchId(pendapatanDokter.getBranchId());
+                    result.setDokterId(pendapatanDokter.getDokterId());
+
+                    String namaUnit = "";
+                    List<ImBranches> branches = branchDao.getListBranchById(result.getBranchId());
+                    for (ImBranches unit : branches){
+                        namaUnit=unit.getBranchName();
+                    }
+
+                    String koderingDokter = dokterDao.getById("idDokter",pendapatanDokter.getDokterId()).getKodering();
+
+                    //membuat map ke billing
+                    Map billing =  new HashMap();
+
+                    List<Map> reduksiPendapatanRjList = new ArrayList<>();
+                    List<Map> reduksiPendapatanRiList = new ArrayList<>();
+
+                    for (BillingPendapatanDokter billingPendapatanDokter : billingDokter) {
+                        if ("rawat_jalan".equalsIgnoreCase(billingPendapatanDokter.getJenisRawat())){
+                            Map reduksiPendapatanRj = new HashMap();
+
+                            reduksiPendapatanRj.put("nilai",billingPendapatanDokter.getNilai());
+                            reduksiPendapatanRj.put("divisi_id",billingPendapatanDokter.getDivisiId());
+                            reduksiPendapatanRj.put("master_id",billingPendapatanDokter.getMasterId());
+                            reduksiPendapatanRjList.add(reduksiPendapatanRj);
+                        }else{
+                            Map reduksiPendapatanRi = new HashMap();
+
+                            reduksiPendapatanRi.put("nilai",billingPendapatanDokter.getNilai());
+                            reduksiPendapatanRi.put("divisi_id",billingPendapatanDokter.getDivisiId());
+                            reduksiPendapatanRi.put("master_id",billingPendapatanDokter.getMasterId());
+                            reduksiPendapatanRiList.add(reduksiPendapatanRi);
+                        }
+                    }
+
+                    if (reduksiPendapatanRiList.size()==0){
+                        Map reduksiPendapatanRi = new HashMap();
+
+                        reduksiPendapatanRi.put("nilai",BigDecimal.ZERO);
+                        reduksiPendapatanRi.put("divisi_id","");
+                        reduksiPendapatanRi.put("master_id","");
+                        reduksiPendapatanRiList.add(reduksiPendapatanRi);
+                    }
+                    if (reduksiPendapatanRjList.size()==0){
+                        Map reduksiPendapatanRj = new HashMap();
+
+                        reduksiPendapatanRj.put("nilai",BigDecimal.ZERO);
+                        reduksiPendapatanRj.put("divisi_id","");
+                        reduksiPendapatanRj.put("master_id","");
+                        reduksiPendapatanRjList.add(reduksiPendapatanRj);
+                    }
+
+                    Map hutangDokter = new HashMap();
+                    hutangDokter.put("nilai",pendapatanDokter.getTotalGajiBersih());
+                    hutangDokter.put("bukti",noNota);
+                    hutangDokter.put("master_id",koderingDokter);
+
+                    Map pphDokter = new HashMap();
+                    pphDokter.put("nilai",pendapatanDokter.getTotalPphDipungut());
+                    pphDokter.put("master_id",koderingDokter);
+
+                    Map potKs = new HashMap();
+                    potKs.put("nilai",pendapatanDokter.getTotalPotKs());
+                    potKs.put("master_id",koderingDokter);
+
+                    billing.put("hutang_dokter",hutangDokter);
+                    billing.put("pot_ks",potKs);
+                    billing.put("pph_dokter",pphDokter);
+                    billing.put("reduksi_pendapatan_rawat_jalan",reduksiPendapatanRjList);
+                    billing.put("reduksi_pendapatan_rawat_inap",reduksiPendapatanRiList);
+
+                    result.setDataBilling(billing);
+                    result.setKeteranganBilling("Pendapatan dokter an. "+result.getDokterName()+", bulan "+CommonUtil.convertNumberToStringBulan(result.getBulan())+" tahun "+result.getTahun()+" unit "+namaUnit);
+                    resultList.add(result);
                 }
+
             }
         }
-        logger.info("[PendapatanDokterBoImpl.saveAdd] end process <<<");
-        return null;
+        logger.info("[PendapatanDokterBoImpl.saveAddPendapatanDokter] end process <<<");
+        return resultList;
     }
 
     @Override

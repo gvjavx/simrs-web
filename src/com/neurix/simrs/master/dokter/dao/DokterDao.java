@@ -4,6 +4,7 @@ import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.master.dokter.model.ImSimrsDokterEntity;
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.util.ArrayList;
@@ -62,5 +63,21 @@ public class DokterDao extends GenericDao<ImSimrsDokterEntity, String> {
             }
         }
         return list;
+    }
+
+    //for typeahead
+    public List<ImSimrsDokterEntity> getDokterListByLike(String name) {
+        Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ImSimrsDokterEntity.class);
+        criteria.add(
+                Restrictions.or(
+                        Restrictions.ilike("kodering", name + "%"),
+                        Restrictions.ilike("namaDokter", "%"+name+"%")
+                )
+        );
+        criteria.add(Restrictions.eq("flag", "Y"));
+        criteria.addOrder(Order.asc("idDokter"));
+
+        List<ImSimrsDokterEntity> results = criteria.list();
+        return results;
     }
 }

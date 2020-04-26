@@ -52,7 +52,7 @@ from
     left outer join im_akun_kode_rekening rek on y.rekening_id = rek.rekening_id
     left outer join im_akun_mata_uang mu ON (x.mata_uang_id = mu.mata_uang_id)
 where
-    to_char(x.created_date, 'MM-yyyy') = $P{periode}
+    to_char(x.tanggal_jurnal, 'MM-yyyy') = $P{periode}
     and y.rekening_id = $P{rekening_id}
     and y.master_id = $P{nomor_master}
     and lower(mu.kode_mata_uang) = 'rph'
@@ -71,7 +71,8 @@ where
 	<field name="jumlahdebit" class="java.math.BigDecimal"/>
 	<field name="jumlahkredit" class="java.math.BigDecimal"/>
 	<field name="periode" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+		<fieldDescription><![CDATA[
+]]></fieldDescription>
 	</field>
 	<variable name="SUM_jumlahDebit_1" class="java.math.BigDecimal" resetType="Group" resetGroup="rekening" calculation="Sum">
 		<variableExpression><![CDATA[$F{jumlahdebit}]]></variableExpression>

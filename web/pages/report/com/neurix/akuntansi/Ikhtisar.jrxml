@@ -152,7 +152,7 @@ FROM
       inner join it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal
       inner join im_akun_master z on y.master_id = z.nomor_master
     where
-      to_char(x.created_date, 'MM-yyyy') =  $P{reportParams.periode}
+      to_char(x.tanggal_jurnal, 'MM-yyyy') =  $P{reportParams.periode}
       and x.branch_id IN  ($P!{reportParams.branchId})
     group by
       y.rekening_id,

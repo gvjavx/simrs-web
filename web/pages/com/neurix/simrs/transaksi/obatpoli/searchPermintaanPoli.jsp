@@ -35,7 +35,6 @@
     <section class="content-header">
         <h1>
             Permintaan Obat Poli
-            <small>e-HEALTH</small>
         </h1>
     </section>
 

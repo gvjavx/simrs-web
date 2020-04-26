@@ -1,5 +1,6 @@
 package com.neurix.hris.transaksi.pendapatanDokter.action;
 
+import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
@@ -10,6 +11,7 @@ import org.apache.batik.css.parser.Scanner;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.context.ApplicationContext;
+import org.springframework.security.access.method.P;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
@@ -22,6 +24,23 @@ public class PendapatanDokterAction extends BaseMasterAction {
     protected static transient Logger logger = Logger.getLogger(PendapatanDokterAction.class);
     PendapatanDokter pendapatanDokter;
     PendapatanDokterBo pendapatanDokterBoProxy;
+    BillingSystemBo billingSystemBoProxy;
+
+    public static Logger getLogger() {
+        return logger;
+    }
+
+    public static void setLogger(Logger logger) {
+        PendapatanDokterAction.logger = logger;
+    }
+
+    public BillingSystemBo getBillingSystemBoProxy() {
+        return billingSystemBoProxy;
+    }
+
+    public void setBillingSystemBoProxy(BillingSystemBo billingSystemBoProxy) {
+        this.billingSystemBoProxy = billingSystemBoProxy;
+    }
 
     public PendapatanDokter getPendapatanDokter() {
         return pendapatanDokter;
@@ -91,8 +110,15 @@ public class PendapatanDokterAction extends BaseMasterAction {
         pendapatanDokter.setAction("C");
         pendapatanDokter.setFlag("Y");
 
+        List<PendapatanDokter> savePendapatan ;
         try{
-            pendapatanDokterBoProxy.saveAdd(pendapatanDokter);
+            savePendapatan = pendapatanDokterBoProxy.saveAddPendapatanDokter(pendapatanDokter);
+
+            //menyimpan ke billing
+            for (PendapatanDokter billing :savePendapatan){
+                billingSystemBoProxy.createJurnal("44",billing.getDataBilling(),billing.getBranchId(),billing.getKeteranganBilling(),"Y");
+            }
+
         }catch (GeneralBOException e){
             Long logId = null;
             try {
@@ -101,7 +127,7 @@ public class PendapatanDokterAction extends BaseMasterAction {
                 logger.error("[PendapatanDokterAction.save] Error when saving error,", e1);;
             }
             logger.error("[PendapatanDokterAction.save] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            throw new GeneralBOException(e.getMessage());
         }
 
         return null;

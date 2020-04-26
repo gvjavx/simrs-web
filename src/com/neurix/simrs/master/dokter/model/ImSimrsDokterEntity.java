@@ -19,6 +19,15 @@ public class ImSimrsDokterEntity implements Serializable {
     private String lat;
     private String lon;
     private String kodeDpjp;
+    private String kodering;
+
+    public String getKodering() {
+        return kodering;
+    }
+
+    public void setKodering(String kodering) {
+        this.kodering = kodering;
+    }
 
     public String getLat() {
         return lat;

@@ -6,7 +6,9 @@
 	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
     <bean id="pendapatanDokterAction" class="com.neurix.hris.transaksi.pendapatanDokter.action.PendapatanDokterAction"
-          p:pendapatanDokterBoProxy-ref="pendapatanDokterBoProxy" />
+          p:pendapatanDokterBoProxy-ref="pendapatanDokterBoProxy"
+          p:billingSystemBoProxy-ref="billingSystemBoProxy"
+    />
 
     <bean id="pendapatanDokterBo" class="com.neurix.hris.transaksi.pendapatanDokter.bo.impl.PendapatanDokterBoImpl"
           p:pendapatanDokterDao-ref="pendapatanDokterDao"
@@ -14,6 +16,9 @@
           p:branchDao-ref="branchDao"
           p:dokterKsoDao-ref="dokterKsoDao"
           p:pendapatanDokterPphLebihDao-ref="pendapatanDokterPphLebihDao"
+          p:mappingJurnalDao-ref="mappingJurnalDao"
+          p:pelayananDao-ref="pelayananDao"
+          p:dokterDao-ref="dokterDao"
     />
 
     <bean id="pendapatanDokterBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

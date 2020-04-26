@@ -559,6 +559,21 @@
 
       <convert converter="bean" match="com.neurix.simrs.transaksi.permintaanvendor.model.BatchPermintaanObat"/>
 
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.fisioterapi.action.FisioterapiAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.fisioterapi.model.Fisioterapi"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.fisioterapi.model.MonitoringFisioterapi"/>
+
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.asesmenugd.action.AsesmenUgdAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.asesmenugd.model.AsesmenUgd"/>
+
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.asesmenoperasi.action.AsesmenOperasiAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.asesmenoperasi.model.AsesmenOperasi"/>
       <!--reza-->
       <create creator="new">
           <param name="class" value="com.neurix.hris.transaksi.pendapatanDokter.action.PendapatanDokterAction"/>

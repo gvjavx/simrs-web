@@ -249,7 +249,7 @@
                                     <div class="form-group" style="display: none" id="form-pelayanan">
                                         <label class="control-label col-sm-5" for="users.roleId">Pelayanan :</label>
                                         <div class="col-sm-3">
-                                            <select class="form-control select2" name="users.idPelayanan" id="pelayananId">
+                                            <select style="width: 100%" class="form-control select2" name="users.idPelayanan" id="pelayananId">
                                                 <option value="">[Select One]</option>
                                             </select>
                                         </div>
@@ -407,6 +407,9 @@
             }else if ('36' == role){
                 $('#form-pelayanan').show();
                 listApotek(branch);
+            }else if ('37' == role){
+                $('#form-pelayanan').show();
+                listGudangObat(branch);
             }else{
                 $('#form-pelayanan').hide();
             }
@@ -446,7 +449,20 @@
     function listPelayananIgd(branch){
         var option = "";
         CheckupAction.getListComboPelayananIgd(branch, function (response) {
-            option = "<option value=''>[Select One]</option>";
+            if (response.length > 0) {
+                $.each(response, function (i, item) {
+                    option += "<option value='" + item.idPelayanan + "'>" + item.namaPelayanan + "</option>";
+                });
+            } else {
+                option = option;
+            }
+            $('#pelayananId').html(option);
+        });
+    }
+
+    function listGudangObat(branch){
+        var option = "";
+        CheckupAction.getListComboGudangByBranch(branch, function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {
                     option += "<option value='" + item.idPelayanan + "'>" + item.namaPelayanan + "</option>";

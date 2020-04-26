@@ -61,9 +61,18 @@ public class ItSimrsHeaderDetailCheckupEntity implements Serializable{
     private String noPpkRujukan;
     private Date tglRujukan;
 
+    private String invoiceTrans;
     private String noJurnalTrans;
     private Timestamp transDate;
     private String transPeriode;
+
+    public String getInvoiceTrans() {
+        return invoiceTrans;
+    }
+
+    public void setInvoiceTrans(String invoiceTrans) {
+        this.invoiceTrans = invoiceTrans;
+    }
 
     public String getTransPeriode() {
         return transPeriode;

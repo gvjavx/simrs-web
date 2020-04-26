@@ -4,6 +4,7 @@ package com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.action;
 import com.neurix.akuntansi.master.kodeRekening.bo.KodeRekeningBo;
 import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.master.tipeJurnal.bo.TipeJurnalBo;
+import com.neurix.akuntansi.master.trans.model.ImTransEntity;
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.bo.LaporanAkuntansiBo;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.LaporanAkuntansi;
@@ -489,6 +490,29 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
                 noJurnal= billingSystemBoProxy.createJurnal(pembayaranUtangPiutang.getTipeTransaksi(),data,pembayaranUtangPiutang.getBranchId(),pembayaranUtangPiutang.getKeterangan(),"N");
                 pembayaranUtangPiutang.setNoJurnal(noJurnal);
                 pembayaranUtangPiutangBoProxy.saveAddPembayaran(pembayaranUtangPiutang,pembayaranUtangPiutangDetailList);
+            }else if(("45").equalsIgnoreCase(pembayaranUtangPiutang.getTipeTransaksi())){
+                //pembayaran hutang dokter
+                List<Map> dataMap = new ArrayList<>();
+                for (PembayaranUtangPiutangDetail pembayaranUtangPiutangDetail : pembayaranUtangPiutangDetailList){
+                    BigDecimal jumlahPembayaran = new BigDecimal(pembayaranUtangPiutangDetail.getStJumlahPembayaran().replace(".",""));
+
+                    Map hs = new HashMap();
+                    hs.put("bukti",pembayaranUtangPiutangDetail.getNoNota());
+                    hs.put("nilai",jumlahPembayaran);
+                    hs.put("master_id", pembayaranUtangPiutangDetail.getMasterId());
+                    dataMap.add(hs);
+                }
+                Map kas = new HashMap();
+                kas.put("metode_bayar",pembayaranUtangPiutang.getMetodePembayaran());
+                kas.put("bank",pembayaranUtangPiutang.getBank());
+                kas.put("nilai",bayar);
+
+                Map data = new HashMap();
+                data.put("hutang_dokter",dataMap);
+                data.put("kas",kas);
+                noJurnal= billingSystemBoProxy.createJurnal(pembayaranUtangPiutang.getTipeTransaksi(),data,pembayaranUtangPiutang.getBranchId(),pembayaranUtangPiutang.getKeterangan(),"N");
+                pembayaranUtangPiutang.setNoJurnal(noJurnal);
+                pembayaranUtangPiutangBoProxy.saveAddPembayaran(pembayaranUtangPiutang,pembayaranUtangPiutangDetailList);
             }else{
                 String status ="ERROR : belum bisa membuat jurnal pada tipe transaksi yang dipilih";
                 logger.error("[PembayaranUtangPiutangAction.saveAdd] "+status);
@@ -711,6 +735,20 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         return result;
     }
 
+
+    public String getTipeMaster(String transaksiId) {
+        logger.info("[PembayaranUtangPiutangAction.getTipeMaster] start process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PembayaranUtangPiutangBo pembayaranUtangPiutangBo = (PembayaranUtangPiutangBo) ctx.getBean("pembayaranUtangPiutangBoProxy");
+
+        String masterId="";
+        ImTransEntity transEntity = pembayaranUtangPiutangBo.getTipeMaster(transaksiId);
+        masterId=transEntity.getMaster();
+
+        logger.info("[PembayaranUtangPiutangAction.getTipeMaster] end process >>>");
+        return masterId;
+    }
+
     public String postingJurnal(String pembayaranId){
         logger.info("[PembayaranUtangPiutangAction.postingJurnal] start process >>>");
         try {
@@ -780,6 +818,9 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
                 break;
             case ("21"):
                 reportName="BUKTI KAS MASUK";
+                break;
+            case ("45"):
+                reportName="BUKTI KAS KELUAR";
                 break;
             case("01"):
                 reportName="BUKTI KAS MASUK";

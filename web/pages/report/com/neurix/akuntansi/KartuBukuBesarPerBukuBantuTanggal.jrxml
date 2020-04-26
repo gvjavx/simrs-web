@@ -3,8 +3,8 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.5937424601000023"/>
-	<property name="ireport.x" value="606"/>
-	<property name="ireport.y" value="222"/>
+	<property name="ireport.x" value="351"/>
+	<property name="ireport.y" value="42"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -57,7 +57,7 @@ from
     left outer join im_akun_kode_rekening rek on y.rekening_id = rek.rekening_id
     left outer join im_akun_mata_uang mu ON (x.mata_uang_id = mu.mata_uang_id)
 where
-    x.created_date between $P{reportParams.tanggalAwal} and $P{reportParams.tanggalAkhir}
+    x.tanggal_jurnal between $P{reportParams.tanggalAwal} and $P{reportParams.tanggalAkhir}
     and y.rekening_id = $P{rekening_id}
     and y.master_id = $P{nomor_master}
     and lower(mu.kode_mata_uang) = 'rph'

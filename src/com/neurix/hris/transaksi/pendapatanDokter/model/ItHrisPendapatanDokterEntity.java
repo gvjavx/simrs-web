@@ -47,12 +47,22 @@ public class ItHrisPendapatanDokterEntity implements Serializable {
     String level;
     BigDecimal pphLebih;
     BigDecimal pphFinal;
-    BigDecimal noNota;
+//    BigDecimal noNota;
 
     BigDecimal pendapatanRs;
     BigDecimal hrBruto;
     BigDecimal hrAktifitasNetto;
     BigDecimal potKs;
+
+    private String noNota;
+
+    public String getNoNota() {
+        return noNota;
+    }
+
+    public void setNoNota(String noNota) {
+        this.noNota = noNota;
+    }
 
     public Timestamp getApprovalDate() {
         return approvalDate;
@@ -350,13 +360,13 @@ public class ItHrisPendapatanDokterEntity implements Serializable {
         this.level = level;
     }
 
-    public BigDecimal getNoNota() {
-        return noNota;
-    }
-
-    public void setNoNota(BigDecimal noNota) {
-        this.noNota = noNota;
-    }
+//    public BigDecimal getNoNota() {
+//        return noNota;
+//    }
+//
+//    public void setNoNota(BigDecimal noNota) {
+//        this.noNota = noNota;
+//    }
 
     public BigDecimal getPphFinal() {
         return pphFinal;

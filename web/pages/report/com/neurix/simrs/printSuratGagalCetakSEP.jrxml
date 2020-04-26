@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printSuratGagalCetakSEP" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
 	<property name="ireport.zoom" value="1.239669421487608"/>
 	<property name="ireport.x" value="4"/>
-	<property name="ireport.y" value="96"/>
+	<property name="ireport.y" value="192"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -32,8 +32,13 @@
 	<parameter name="reportParams.petugas" class="java.lang.String"/>
 	<parameter name="reportParams.unit" class="java.lang.String"/>
 	<parameter name="reportParams.area" class="java.lang.String"/>
-	<parameter name="reportParams.data1" class="java.lang.String"/>
+	<parameter name="reportParams.jenisKelamin" class="java.lang.String"/>
 	<parameter name="reportParams.data2" class="java.lang.String"/>
+	<parameter name="reportParams.desa" class="java.lang.String"/>
+	<parameter name="reportParams.kecamatan" class="java.lang.String"/>
+	<parameter name="reportParams.provinsi" class="java.lang.String"/>
+	<parameter name="reportParams.kabupaten" class="java.lang.String"/>
+	<parameter name="reportParams.unitKota" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT * FROM im_simrs_pasien LIMIT 1]]>
 	</queryString>
@@ -185,7 +190,7 @@
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.tglLahir} == null ? "" : $P{reportParams.tglLahir}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{reportParams.tglLahir} == null ? "" : $P{reportParams.tglLahir} +" / "+$P{reportParams.jenisKelamin}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="98" y="165" width="457" height="20" uuid="0e0443d1-a668-41e9-a60b-0ddc525954fa"/>
@@ -292,7 +297,7 @@
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.nama} == null ? "" : $P{reportParams.nama}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{reportParams.unitKota} == null ? "" : $P{reportParams.unitKota}]]></textFieldExpression>
 			</textField>
 		</band>
 	</lastPageFooter>

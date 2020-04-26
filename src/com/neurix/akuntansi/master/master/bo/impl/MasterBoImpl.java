@@ -5,6 +5,9 @@ import com.neurix.akuntansi.master.master.dao.MasterDao;
 import com.neurix.akuntansi.master.master.model.ImMasterEntity;
 import com.neurix.akuntansi.master.master.model.Master;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.master.dokter.dao.DokterDao;
+import com.neurix.simrs.master.dokter.model.Dokter;
+import com.neurix.simrs.master.dokter.model.ImSimrsDokterEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -24,6 +27,16 @@ public class MasterBoImpl implements MasterBo {
 
     protected static transient Logger logger = Logger.getLogger(MasterBoImpl.class);
     private MasterDao masterDao;
+    private DokterDao dokterDao;
+
+
+    public DokterDao getDokterDao() {
+        return dokterDao;
+    }
+
+    public void setDokterDao(DokterDao dokterDao) {
+        this.dokterDao = dokterDao;
+    }
 
     @Override
     public void saveDelete(Master bean) throws GeneralBOException {
@@ -181,6 +194,56 @@ public class MasterBoImpl implements MasterBo {
         }
         logger.info("[MasterBoImpl.typeaheadMaster] end process <<<");
 
+        return listOfResult;
+    }
+
+    @Override
+    public List<Master> typeaheadMasterPembayaran(String key, String tipeMaster) throws GeneralBOException {
+        logger.info("[MasterBoImpl.typeaheadMasterPembayaran] start process >>>");
+
+        // Mapping with collection and put
+        List<Master> listOfResult = new ArrayList();
+        List<ImMasterEntity> imMasterEntityList = null;
+        List<ImSimrsDokterEntity> imSimrsDokterEntityList= null;
+
+        if ("dokter".equalsIgnoreCase(tipeMaster)){
+            try {
+                imSimrsDokterEntityList = dokterDao.getDokterListByLike(key);
+            } catch (HibernateException e) {
+                logger.error("[MasterBoImpl.typeaheadMasterPembayaran] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+            }
+
+            if(imSimrsDokterEntityList != null){
+                Master returnMaster;
+                // Looping from dao to object and save in collection
+                for(ImSimrsDokterEntity dokterEntity : imSimrsDokterEntityList){
+                    returnMaster = new Master();
+                    returnMaster.setNomorVendor(dokterEntity.getKodering());
+                    returnMaster.setNama(dokterEntity.getNamaDokter());
+                    listOfResult.add(returnMaster);
+                }
+            }
+        }else {
+            try {
+                imMasterEntityList = masterDao.getMasterListByLike(key);
+            } catch (HibernateException e) {
+                logger.error("[MasterBoImpl.typeaheadMasterPembayaran] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+            }
+
+            if(imMasterEntityList != null){
+                Master returnMaster;
+                // Looping from dao to object and save in collection
+                for(ImMasterEntity masterEntity : imMasterEntityList){
+                    returnMaster = new Master();
+                    returnMaster.setNomorVendor(masterEntity.getPrimaryKey().getNomorMaster());
+                    returnMaster.setNama(masterEntity.getNama());
+                    listOfResult.add(returnMaster);
+                }
+            }
+        }
+        logger.info("[MasterBoImpl.typeaheadMasterPembayaran] end process <<<");
         return listOfResult;
     }
 
