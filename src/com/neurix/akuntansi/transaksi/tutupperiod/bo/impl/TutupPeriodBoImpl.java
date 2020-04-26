@@ -45,20 +45,20 @@ import java.util.stream.Collectors;
 public class TutupPeriodBoImpl implements TutupPeriodBo {
     private static transient Logger logger = Logger.getLogger(TutupPeriodBoImpl.class);
 
-    private RiwayatTindakanDao riwayatTindakanDao;
-    private BatasTutupPeriodDao batasTutupPeriodDao;
-    private JurnalDao jurnalDao;
-    private JurnalDetailDao jurnalDetailDao;
-    private SaldoAkhirDao saldoAkhirDao;
-    private KodeRekeningDao kodeRekeningDao;
-    private TutupPeriodDao tutupPeriodDao;
-    private CheckupDetailDao checkupDetailDao;
-    private SaldoAkhirDetailDao saldoAkhirDetailDao;
+    protected RiwayatTindakanDao riwayatTindakanDao;
+    protected BatasTutupPeriodDao batasTutupPeriodDao;
+    protected JurnalDao jurnalDao;
+    protected JurnalDetailDao jurnalDetailDao;
+    protected SaldoAkhirDao saldoAkhirDao;
+    protected KodeRekeningDao kodeRekeningDao;
+    protected TutupPeriodDao tutupPeriodDao;
+    protected CheckupDetailDao checkupDetailDao;
+    protected SaldoAkhirDetailDao saldoAkhirDetailDao;
 
-    private JurnalDetailActivityDao jurnalDetailActivityDao;
-    private JurnalPendingDao jurnalPendingDao;
-    private JurnalDetailPendingDao jurnalDetailPendingDao;
-    private JurnalDetailActivityPendingDao jurnalDetailActivityPendingDao;
+    protected JurnalDetailActivityDao jurnalDetailActivityDao;
+    protected JurnalPendingDao jurnalPendingDao;
+    protected JurnalDetailPendingDao jurnalDetailPendingDao;
+    protected JurnalDetailActivityPendingDao jurnalDetailActivityPendingDao;
 
     @Override
     public void saveSettingPeriod(List<ItSimrsBatasTutupPeriodEntity> batasList) throws GeneralBOException {

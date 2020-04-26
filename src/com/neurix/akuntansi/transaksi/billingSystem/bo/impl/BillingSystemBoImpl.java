@@ -3,6 +3,9 @@ package com.neurix.akuntansi.transaksi.billingSystem.bo.impl;
 import com.neurix.akuntansi.master.kodeRekening.dao.KodeRekeningDao;
 import com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity;
 import com.neurix.akuntansi.master.mappingJurnal.dao.MappingJurnalDao;
+import com.neurix.akuntansi.master.master.dao.MasterDao;
+import com.neurix.akuntansi.master.master.model.ImMasterEntity;
+import com.neurix.akuntansi.master.master.model.Master;
 import com.neurix.akuntansi.master.tipeJurnal.dao.TipeJurnalDao;
 import com.neurix.akuntansi.master.mappingJurnal.model.ImMappingJurnalEntity;
 import com.neurix.akuntansi.master.tipeJurnal.model.ImTipeJurnalEntity;
@@ -13,20 +16,52 @@ import com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDao;
 import com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDetailActivityDao;
 import com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDetailDao;
 import com.neurix.akuntansi.transaksi.jurnal.model.*;
+import com.neurix.akuntansi.transaksi.tutupperiod.bo.impl.TutupPeriodBoImpl;
 import com.neurix.akuntansi.transaksi.tutupperiod.dao.BatasTutupPeriodDao;
 import com.neurix.akuntansi.transaksi.tutupperiod.model.ItSimrsBatasTutupPeriodEntity;
+import com.neurix.akuntansi.transaksi.tutupperiod.model.TutupPeriod;
+import com.neurix.authorization.position.dao.PositionDao;
+import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.jenisperiksapasien.dao.AsuransiDao;
+import com.neurix.simrs.master.jenisperiksapasien.dao.JenisPeriksaPasienDao;
+import com.neurix.simrs.master.jenisperiksapasien.model.ImJenisPeriksaPasienEntity;
+import com.neurix.simrs.master.jenisperiksapasien.model.ImSimrsAsuransiEntity;
+import com.neurix.simrs.master.kelasruangan.dao.KelasRuanganDao;
+import com.neurix.simrs.master.kelasruangan.model.ImSimrsKelasRuanganEntity;
+import com.neurix.simrs.master.pelayanan.dao.PelayananDao;
+import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
+import com.neurix.simrs.master.ruangan.dao.RuanganDao;
+import com.neurix.simrs.master.ruangan.model.MtSimrsRuanganEntity;
+import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao;
+import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
+import com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao;
+import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
+import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
+import com.neurix.simrs.transaksi.permintaanresep.dao.PermintaanResepDao;
+import com.neurix.simrs.transaksi.permintaanresep.model.ImSimrsPermintaanResepEntity;
+import com.neurix.simrs.transaksi.rawatinap.dao.RawatInapDao;
+import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
+import com.neurix.simrs.transaksi.riwayattindakan.dao.TindakanTransitorisDao;
+import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsRiwayatTindakanEntity;
+import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsTindakanTransitorisEntity;
+import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
+import com.neurix.simrs.transaksi.teamdokter.dao.DokterTeamDao;
+import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
+import com.neurix.simrs.transaksi.teamdokter.model.ItSimrsDokterTeamEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.joda.time.DateTime;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.ContextLoader;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.*;
 
 
-public class BillingSystemBoImpl implements BillingSystemBo {
+public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSystemBo  {
 
     protected static transient Logger logger = Logger.getLogger(BillingSystemBoImpl.class);
 
@@ -40,6 +75,74 @@ public class BillingSystemBoImpl implements BillingSystemBo {
     private TipeJurnalDao tipeJurnalDao;
     private TransDao transDao;
     private BatasTutupPeriodDao batasTutupPeriodDao;
+
+
+    private CheckupDetailDao checkupDetailDao;
+    private HeaderCheckupDao headerCheckupDao;
+    private JenisPeriksaPasienDao jenisPeriksaPasienDao;
+    private TindakanTransitorisDao tindakanTransitorisDao;
+    private PermintaanResepDao permintaanResepDao;
+    private RawatInapDao rawatInapDao;
+    private KelasRuanganDao kelasRuanganDao;
+    private RuanganDao ruanganDao;
+    private PelayananDao pelayananDao;
+    private DokterTeamDao dokterTeamDao;
+    private PositionDao positionDao;
+    private MasterDao masterDao;
+    private AsuransiDao asuransiDao;
+
+    public void setAsuransiDao(AsuransiDao asuransiDao) {
+        this.asuransiDao = asuransiDao;
+    }
+
+    public void setMasterDao(MasterDao masterDao) {
+        this.masterDao = masterDao;
+    }
+
+    public void setPositionDao(PositionDao positionDao) {
+        this.positionDao = positionDao;
+    }
+
+    public void setPelayananDao(PelayananDao pelayananDao) {
+        this.pelayananDao = pelayananDao;
+    }
+
+    public void setDokterTeamDao(DokterTeamDao dokterTeamDao) {
+        this.dokterTeamDao = dokterTeamDao;
+    }
+
+    public void setTindakanTransitorisDao(TindakanTransitorisDao tindakanTransitorisDao) {
+        this.tindakanTransitorisDao = tindakanTransitorisDao;
+    }
+
+    public void setPermintaanResepDao(PermintaanResepDao permintaanResepDao) {
+        this.permintaanResepDao = permintaanResepDao;
+    }
+
+    public void setRawatInapDao(RawatInapDao rawatInapDao) {
+        this.rawatInapDao = rawatInapDao;
+    }
+
+    public void setKelasRuanganDao(KelasRuanganDao kelasRuanganDao) {
+        this.kelasRuanganDao = kelasRuanganDao;
+    }
+
+    public void setRuanganDao(RuanganDao ruanganDao) {
+        this.ruanganDao = ruanganDao;
+    }
+
+    public void setJenisPeriksaPasienDao(JenisPeriksaPasienDao jenisPeriksaPasienDao) {
+        this.jenisPeriksaPasienDao = jenisPeriksaPasienDao;
+    }
+
+    public void setHeaderCheckupDao(HeaderCheckupDao headerCheckupDao) {
+        this.headerCheckupDao = headerCheckupDao;
+    }
+
+    @Override
+    public void setCheckupDetailDao(CheckupDetailDao checkupDetailDao) {
+        this.checkupDetailDao = checkupDetailDao;
+    }
 
     public BatasTutupPeriodDao getBatasTutupPeriodDao() {
         return batasTutupPeriodDao;
@@ -923,5 +1026,546 @@ public class BillingSystemBoImpl implements BillingSystemBo {
         }
 
         return rekeningId;
+    }
+
+
+    private ItSimrsHeaderDetailCheckupEntity getEntityDetailCheckupByIdDetail(String idDetailCheckup) throws GeneralBOException {
+        if (!"".equalsIgnoreCase(idDetailCheckup)){
+            Map hsCriteria = new HashMap();
+            hsCriteria.put("id_detail_checkup", idDetailCheckup);
+
+            List<ItSimrsHeaderDetailCheckupEntity> detailCheckupEntities = new ArrayList<>();
+            try {
+                detailCheckupEntities = checkupDetailDao.getByCriteria(hsCriteria);
+            } catch (HibernateException e){
+                logger.error("[PermintaanResepBoImpl.getEntityDetailCheckupByIdDetail] ERROR. ", e);
+                throw new GeneralBOException("[PermintaanResepBoImpl.getEntityDetailCheckupByIdDetail] ERROR. ", e);
+            }
+
+            if (detailCheckupEntities.size() > 0){
+                return detailCheckupEntities.get(0);
+            }
+        }
+        return new ItSimrsHeaderDetailCheckupEntity();
+    }
+
+    private ItSimrsHeaderChekupEntity getEntityCheckupById(String id) throws GeneralBOException {
+        logger.info("[CheckupBoImpl.getEntityCheckupById] START >>>");
+        logger.info("[CheckupBoImpl.getEntityCheckupById] END <<<");
+        return headerCheckupDao.getById("noCheckup", id);
+    }
+
+    private BigDecimal getSumJumlahTindakanNonBpjs(String idDetailCheckup, String ket) throws GeneralBOException {
+        return checkupDetailDao.getSumAllTarifTindakan(idDetailCheckup, "", ket);
+    }
+
+    private ImJenisPeriksaPasienEntity getJenisPerikasEntityById(String id) throws GeneralBOException {
+        return jenisPeriksaPasienDao.getById("idJenisPeriksaPasien", id);
+    }
+
+    private List<ItSimrsDokterTeamEntity> getListEntityTeamDokter(DokterTeam bean) throws GeneralBOException{
+        logger.info("[TeamDokterBoImpl.getListEntityTeamDokter] Start >>>>>>>>");
+        List<ItSimrsDokterTeamEntity> entities = new ArrayList<>();
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+        try {
+            entities = dokterTeamDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[TeamDokterBoImpl.getListEntityTeamDokter] Error when get data", e);
+            throw new GeneralBOException("[TeamDokterBoImpl.getListEntityTeamDokter] Error when get data"+e);
+        }
+
+        logger.info("[TeamDokterBoImpl.getListEntityTeamDokter] End <<<<<<<<");
+        return entities;
+    }
+
+    private List<ItSimrsRiwayatTindakanEntity> getListEntityRiwayatTindakan(RiwayatTindakan bean) throws GeneralBOException{
+        logger.info("[RiwayatTindakanBoImpl.getListEntityRiwayatTindakan] Start >>>>>>>>");
+        List<ItSimrsRiwayatTindakanEntity> entities = new ArrayList<>();
+        Map hsCriteria = new HashMap();
+
+        if (bean != null) {
+            if (bean.getIdRiwayatTindakan() != null) {
+                hsCriteria.put("id_riwayat_tindakan", bean.getIdRiwayatTindakan());
+            }
+            if (bean.getIdTindakan() != null) {
+                hsCriteria.put("id_tindakan", bean.getIdTindakan());
+            }
+            if (bean.getIdDetailCheckup() != null) {
+                hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+            }
+            if (bean.getApproveBpjsFlag() != null) {
+                hsCriteria.put("approve_bpjs_flag", bean.getApproveBpjsFlag());
+            }
+            if (bean.getKeterangan() != null) {
+                hsCriteria.put("keterangan", bean.getKeterangan());
+            }
+            if (bean.getJenisPasien() != null) {
+                hsCriteria.put("jenis_pasien", bean.getJenisPasien());
+            }
+            if (bean.getNotResep() != null) {
+                hsCriteria.put("not_resep", bean.getNotResep());
+            }
+
+            hsCriteria.put("flag", "Y");
+
+            try {
+                entities = riwayatTindakanDao.getByCriteria(hsCriteria);
+            } catch (HibernateException e) {
+                logger.error("[RiwayatTindakanBoImpl.getListEntityRiwayatTindakan] Error when get data riwayat tindakan. ", e);
+                throw new GeneralBOException("[RiwayatTindakanBoImpl.getListEntityRiwayatTindakan] Error when get data riwayat tindakan. "+e);
+            }
+        }
+
+        logger.info("[RiwayatTindakanBoImpl.getListEntityRiwayatTindakan] End <<<<<<<<");
+        return entities;
+    }
+
+    public ItSimrsTindakanTransitorisEntity getTindakanTransitorisById(String id) throws GeneralBOException {
+        return tindakanTransitorisDao.getById("idRiwayatTindakan", id);
+    }
+
+    private ItSimrsRiwayatTindakanEntity getRiwayatTindakanResep(String idDetail, String jenisPasien) throws GeneralBOException {
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_detail_checkup", idDetail);
+
+        if (jenisPasien != null && !"".equalsIgnoreCase(jenisPasien)){
+            hsCriteria.put("jenis_pasien", jenisPasien);
+        }
+
+        hsCriteria.put("keterangan", "resep");
+
+        List<ItSimrsRiwayatTindakanEntity> riwayatTindakanEntities = new ArrayList<>();
+
+        try {
+            riwayatTindakanEntities = riwayatTindakanDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[RiwayatTindakanBoImpl.getRiwayatTindakanResep] ERROR. ", e);
+            throw new GeneralBOException("[RiwayatTindakanBoImpl.getRiwayatTindakanResep] ERROR. ", e);
+        }
+
+        if (riwayatTindakanEntities.size() > 0){
+            return riwayatTindakanEntities.get(0);
+        }
+
+        return new ItSimrsRiwayatTindakanEntity();
+    }
+
+    private ImSimrsPermintaanResepEntity getEntityPermintaanResepById(String id) throws GeneralBOException {
+        return permintaanResepDao.getById("idPermintaanResep", id);
+    }
+
+    public ImSimrsPelayananEntity getPelayananById(String id) throws GeneralBOException {
+        logger.info("[PelayananBoImpl.getByCriteria] Start >>>>>>");
+        logger.info("[PelayananBoImpl.getByCriteria] End <<<<<<");
+        return pelayananDao.getById("idPelayanan", id);
+    }
+
+    private ImPosition getPositionEntityById(String id) throws GeneralBOException {
+        return positionDao.getById("positionId", id);
+    }
+
+    private ItSimrsHeaderDetailCheckupEntity getDetailCheckupById(String id) throws GeneralBOException {
+        logger.info("[CheckupDetailBoImpl.getDetailCheckupById] START >>>>");
+        logger.info("[CheckupDetailBoImpl.getDetailCheckupById] END <<<");
+        return checkupDetailDao.getById("idDetailCheckup", id);
+    }
+
+    private RawatInap getLastUsedRoom(String id) throws GeneralBOException {
+        return rawatInapDao.getLastRuanganById(id);
+    }
+
+    private MtSimrsRuanganEntity getEntityRuanganById(String id) throws GeneralBOException {
+        return ruanganDao.getById("idRuangan", id);
+    }
+
+    private ImSimrsKelasRuanganEntity getKelasRuanganById(String id) throws GeneralBOException {
+        return kelasRuanganDao.getById("idKelasRuangan", id);
+    }
+
+    private ImSimrsAsuransiEntity getEntityAsuransiById(String idAsuransi) throws GeneralBOException {
+        return asuransiDao.getById("idAsuransi", idAsuransi);
+    }
+
+    public ImMasterEntity getEntityMasterById(String id) throws GeneralBOException {
+        return masterDao.getById("primaryKey.nomorMaster", id);
+    }
+
+    public String getDivisiId(String idDetailCheckup, String jenisPasien, String keterangan) throws GeneralBOException{
+
+        String divisiId = "";
+
+        if ("resep".equalsIgnoreCase(keterangan)){
+            ItSimrsRiwayatTindakanEntity riwayatTindakanEntity = getRiwayatTindakanResep(idDetailCheckup, jenisPasien);
+            if (riwayatTindakanEntity != null){
+                ImSimrsPermintaanResepEntity permintaanResepEntity = getEntityPermintaanResepById(riwayatTindakanEntity.getIdTindakan());
+                if (permintaanResepEntity != null){
+                    ImSimrsPelayananEntity pelayananEntity = getPelayananById(permintaanResepEntity.getTujuanPelayanan());
+                    if (pelayananEntity != null){
+                        ImPosition position = getPositionEntityById(pelayananEntity.getDivisiId());
+                        if (position != null){
+                            divisiId = position.getKodering();
+                        }
+                    }
+                }
+            }
+        } else {
+
+            ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = getDetailCheckupById(idDetailCheckup);
+            if (detailCheckupEntity != null && detailCheckupEntity.getIdPelayanan() != null){
+                try {
+                    ImSimrsPelayananEntity pelayananEntity = getPelayananById(detailCheckupEntity.getIdPelayanan());
+
+                    // jika poli selain rawat inap maka mengambil kodering dari pelayanan
+                    // jika poli rawat rawat inap maka mengambil kodering dari kelas ruangan , Sigit
+                    if (pelayananEntity != null && !"rawat_inap".equalsIgnoreCase(pelayananEntity.getTipePelayanan())){
+
+                        ImPosition position = getPositionEntityById(pelayananEntity.getDivisiId());
+                        if (position != null){
+                            divisiId = position.getKodering();
+                        }
+
+                    } else {
+
+                        RawatInap lastRuangan = getLastUsedRoom(idDetailCheckup);
+                        if (lastRuangan != null){
+                            MtSimrsRuanganEntity ruanganEntity = getEntityRuanganById(lastRuangan.getIdRuang());
+                            if (ruanganEntity != null){
+                                ImSimrsKelasRuanganEntity kelasRuanganEntity = getKelasRuanganById(ruanganEntity.getIdKelasRuangan());
+                                if (kelasRuanganEntity != null){
+                                    ImPosition position = getPositionEntityById(kelasRuanganEntity.getDivisiId());
+                                    if (position != null){
+                                        divisiId = position.getKodering();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } catch (GeneralBOException e){
+                    throw new GeneralBOException("[getDivisiId] ERROR " + e);
+                }
+            } else {
+                throw new GeneralBOException("[getDivisiId] ERROR gagal mendapakatkan divisi_id atau data detail checkup");
+            }
+        }
+        return divisiId;
+    };
+
+    private List<Map> getAcitivityList(String idDetailCheckup, String jenisPasien, String ket, String type){
+        logger.info("[CheckupDetailAction.getAcitivityList] START >>>>");
+
+        //** mencari tindakan dan dimasukan ke jurnal detail activity. START **//
+        // dokter team
+
+        List<Map> activityList = new ArrayList<>();
+
+        String idDokter = "";
+        DokterTeam dokterTeam = new DokterTeam();
+        dokterTeam.setIdDetailCheckup(idDetailCheckup);
+        List<ItSimrsDokterTeamEntity> dokterTeamEntities = getListEntityTeamDokter(dokterTeam);
+        if (dokterTeamEntities.size() > 0){
+            ItSimrsDokterTeamEntity dokterTeamEntity = dokterTeamEntities.get(0);
+            idDokter = dokterTeamEntity.getIdDokter();
+        }
+
+        // riwayat tindakan list
+        RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
+        riwayatTindakan.setIdDetailCheckup(idDetailCheckup);
+
+        if (!"".equalsIgnoreCase(jenisPasien)){
+            riwayatTindakan.setJenisPasien(jenisPasien);
+        }
+
+        if ("".equalsIgnoreCase(ket)){
+            riwayatTindakan.setNotResep("Y");
+        } else {
+            riwayatTindakan.setKeterangan(ket);
+        }
+
+        List<ItSimrsRiwayatTindakanEntity> riwayatTindakanEntities = getListEntityRiwayatTindakan(riwayatTindakan);
+        if (riwayatTindakanEntities.size() > 0){
+            for (ItSimrsRiwayatTindakanEntity riwayatTindakanEntity : riwayatTindakanEntities){
+
+                // jika selain JRJ
+                // maka obat dikenakan PPN
+                BigDecimal ppn = new BigDecimal(0);
+
+                // mencari apakah tindakan transitoris
+                boolean nonTransitoris = true;
+                if ("JRI".equalsIgnoreCase(type)){
+                    ItSimrsTindakanTransitorisEntity transitorisEntity = getTindakanTransitorisById(riwayatTindakanEntity.getIdRiwayatTindakan());
+                    if (transitorisEntity != null){
+                        nonTransitoris = false;
+                    }
+                }
+
+                // jika bukan Transitoris
+                // maka ditambahkan activity
+                if (nonTransitoris){
+                    Map activityMap = new HashMap();
+                    activityMap.put("activity_id", riwayatTindakanEntity.getIdTindakan());
+                    activityMap.put("person_id", idDokter);
+                    activityMap.put("nilai", riwayatTindakanEntity.getTotalTarif().add(ppn));
+                    activityMap.put("no_trans", riwayatTindakanEntity.getIdDetailCheckup());
+                    activityMap.put("tipe", riwayatTindakanEntity.getJenisPasien());
+                    activityList.add(activityMap);
+                }
+            }
+        }
+        //** mencari tindakan dan dimasukan ke jurnal detail activity. END **//
+        logger.info("[CheckupDetailAction.getAcitivityList] END <<<");
+        return activityList;
+    }
+
+    // create transitoris
+    private void createJurnalTransitoris(TutupPeriod bean) throws GeneralBOException{
+        logger.info("[TutuPeriodAction.createJurnalTransitoris] START >>>");
+
+        String masterId = "";
+        String divisiId = "";
+        String jenisPasien = "";
+        String bukti = "";
+        String transId = "";
+        String idPasien = "";
+        String divisiResep = "";
+        String invoiceNumber = createInvoiceNumber("JRI", bean.getUnit());
+
+        Map mapJurnal = new HashMap();
+        ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = getEntityDetailCheckupByIdDetail(bean.getIdDetailCheckup());
+        if (detailCheckupEntity != null){
+
+            idPasien = getEntityCheckupById(detailCheckupEntity.getNoCheckup()).getIdPasien();
+
+            // MENDAPATKAN SEMUA NILAI TINDAKAN DAN RESEP;
+            BigDecimal jumlahResep = getSumJumlahTindakanNonBpjs(bean.getIdDetailCheckup(), "resep");
+            BigDecimal jumlahAllTindakan = getSumJumlahTindakanNonBpjs(bean.getIdDetailCheckup(), "");
+            BigDecimal jumlahTindakan = jumlahAllTindakan.subtract(jumlahResep);
+
+            // MENDAPATKAN DIVISI ID TINDAKAN / PENDAPATAN RAWAT
+            divisiId = getDivisiId(bean.getIdDetailCheckup(), "", "");
+
+            // MENDAPATKAN DIVISI ID TINDAKAN / PENDAPATAN RAWAT
+            divisiResep = getDivisiId(bean.getIdDetailCheckup(), "", "resep");
+
+            bukti = invoiceNumber;
+            if ("bpjs".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())){
+
+                bukti = detailCheckupEntity.getNoSep();
+                jenisPasien = "No. SEP : "+detailCheckupEntity.getNoSep();
+
+                ImJenisPeriksaPasienEntity jenisPeriksaPasienEntity = getJenisPerikasEntityById(detailCheckupEntity.getIdJenisPeriksaPasien());
+                if (jenisPeriksaPasienEntity != null){
+                    masterId = jenisPeriksaPasienEntity.getMasterId();
+                }
+
+            } else if ("asuransi".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())){
+
+                ImSimrsAsuransiEntity asuransiEntity = getEntityAsuransiById(detailCheckupEntity.getIdAsuransi());
+                jenisPasien = "Asuransi "+asuransiEntity.getNamaAsuransi();
+                masterId = asuransiEntity.getNoMaster();
+            } else if ("ptpn".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())){
+
+                ImMasterEntity masterEntity = getEntityMasterById(detailCheckupEntity.getIdAsuransi());
+                jenisPasien = masterEntity.getNama();
+                masterId = detailCheckupEntity.getIdAsuransi();
+            } else {
+                ItSimrsHeaderChekupEntity headerChekupEntity = getEntityCheckupById(detailCheckupEntity.getNoCheckup());
+                if (headerChekupEntity == null){
+                    logger.error("[TutupPeriodAction.createJurnalTransitoris] ERROR. data header is null");
+                    throw new GeneralBOException("[TutupPeriodAction.createJurnalTransitoris] ERROR. data header is null");
+                }
+                jenisPasien = "No. RM "+headerChekupEntity.getIdPasien();
+                ImJenisPeriksaPasienEntity jenisPeriksaPasienEntity = getJenisPerikasEntityById(detailCheckupEntity.getIdJenisPeriksaPasien());
+                if (jenisPeriksaPasienEntity != null){
+                    masterId = jenisPeriksaPasienEntity.getMasterId();
+                }
+            }
+
+
+            jenisPasien = jenisPasien + " No. Detail Checkup "+detailCheckupEntity.getIdDetailCheckup();
+            transId = "32";
+
+            Map mapPiutang = new HashMap();
+            mapPiutang.put("bukti", bukti);
+            mapPiutang.put("nilai", jumlahAllTindakan);
+            if ("umum".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien()) && "non_tunai".equalsIgnoreCase(detailCheckupEntity.getMetodePembayaran())){
+                mapPiutang.put("id_pasien", idPasien);
+            } else {
+                mapPiutang.put("master_id", masterId);
+            }
+
+            Map mapPendapatan = new HashMap();
+            mapPendapatan.put("master_id", masterId);
+            mapPendapatan.put("divisi_id", divisiId);
+            mapPendapatan.put("nilai", jumlahTindakan);
+            mapPendapatan.put("activity", getAcitivityList(detailCheckupEntity.getIdDetailCheckup(), "", "", "JRI"));
+
+            Map mapResep = new HashMap();
+            mapResep.put("master_id", masterId);
+            mapResep.put("divisi_id", divisiResep);
+            mapResep.put("nilai", jumlahResep);
+            mapResep.put("activity", getAcitivityList(detailCheckupEntity.getIdDetailCheckup(), "", "resep", "JRI"));
+
+            mapJurnal.put("piutang_transistoris_pasien_rawat_inap", mapPiutang);
+            mapJurnal.put("pendapatan_rawat_inap", mapPendapatan);
+            mapJurnal.put("pendapatan_obat", mapResep);
+
+        }
+        String catatan = "Transitoris Rawat Inap saat tutup periode "+jenisPasien;
+
+        try {
+
+            String noJurnal = createJurnal(transId, mapJurnal, bean.getUnit(), catatan, "Y");
+
+            HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+            detailCheckup.setIdDetailCheckup(bean.getIdDetailCheckup());
+            detailCheckup.setTransPeriode(bean.getBulan()+"-"+bean.getTahun());
+            detailCheckup.setTransDate(bean.getCreatedDate());
+            detailCheckup.setNoJurnalTrans(noJurnal);
+            detailCheckup.setInvoice(invoiceNumber);
+            detailCheckup.setAction("U");
+            detailCheckup.setLastUpdate(bean.getCreatedDate());
+            detailCheckup.setLastUpdateWho(bean.getCreatedWho());
+
+            // update invoice transitoris & no jurnal to detail ceckup
+            saveUpdateNoJuran(detailCheckup);
+
+        } catch (GeneralBOException e){
+            logger.error("[TutupPeriodAction.createJurnalTransitoris] ERROR. ", e);
+            throw new GeneralBOException("[TutupPeriodAction.createJurnalTransitoris] ERROR. ", e);
+        }
+
+        logger.info("[TutuPeriodAction.createJurnalTransitoris] END <<<");
+    }
+
+    public void saveUpdateNoJuran(HeaderDetailCheckup bean) throws GeneralBOException {
+        if (bean != null){
+
+            HeaderDetailCheckup detail = new HeaderDetailCheckup();
+            detail.setIdDetailCheckup(bean.getIdDetailCheckup());
+
+            List<ItSimrsHeaderDetailCheckupEntity> details = getListEntityByCriteria(detail);
+            if (details.size() > 0){
+                for (ItSimrsHeaderDetailCheckupEntity detailCheckupEntity : details){
+                    detailCheckupEntity.setAction(bean.getAction());
+                    detailCheckupEntity.setLastUpdate(bean.getLastUpdate());
+                    detailCheckupEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                    // for transitoris or jurnal rawat
+                    if (bean.getNoJurnalTrans() != null && !"".equalsIgnoreCase(bean.getNoJurnalTrans())){
+                        detailCheckupEntity.setNoJurnalTrans(bean.getNoJurnalTrans());
+                        detailCheckupEntity.setTransPeriode(bean.getTransPeriode());
+                        detailCheckupEntity.setTransDate(bean.getTransDate());
+                        detailCheckupEntity.setInvoiceTrans(bean.getInvoice());
+                    } else {
+                        detailCheckupEntity.setNoJurnal(bean.getNoJurnal());
+                    }
+
+                    try {
+                        checkupDetailDao.updateAndSave(detailCheckupEntity);
+                    } catch (HibernateException e){
+                        logger.error("[PermintaanResepBoImpl.saveUpdateNoJuran] ERROR. ", e);
+                        throw new GeneralBOException("[PermintaanResepBoImpl.saveUpdateNoJuran] ERROR. ", e);
+                    }
+                }
+            }
+        }
+    }
+
+    private List<ItSimrsHeaderDetailCheckupEntity> getListEntityByCriteria(HeaderDetailCheckup bean) throws GeneralBOException {
+        logger.info("[CheckupDetailBoImpl.getListEntityByCriteria] Start >>>>>>>");
+        List<ItSimrsHeaderDetailCheckupEntity> entityList = new ArrayList<>();
+
+        Map hsCriteria = new HashMap();
+        if (bean.getNoCheckup() != null && !"".equalsIgnoreCase(bean.getNoCheckup())) {
+            hsCriteria.put("no_checkup", bean.getNoCheckup());
+        }
+        if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())) {
+            hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+        }
+
+        try {
+            entityList = checkupDetailDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e) {
+            logger.error("[CheckupDetailBoImpl.getListEntityByCriteria] Error when get data detail checkup entity ", e);
+            throw new GeneralBOException("Error when get data detail checkup entity " + e.getMessage());
+        }
+
+        logger.info("[CheckupDetailBoImpl.getListEntityByCriteria] End <<<<<<<<");
+        return entityList;
+    }
+
+    private void saveTindakanTransitoris(String idDetailCheckup, Timestamp time, String user) throws GeneralBOException {
+
+        RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
+        riwayatTindakan.setIdDetailCheckup(idDetailCheckup);
+
+        List<ItSimrsRiwayatTindakanEntity> tindakanEntities = getListEntityRiwayatTindakan(riwayatTindakan);
+        if (tindakanEntities.size() > 0){
+            for (ItSimrsRiwayatTindakanEntity tindakanEntity : tindakanEntities){
+
+                ItSimrsTindakanTransitorisEntity transitorisEntity = new ItSimrsTindakanTransitorisEntity();
+                transitorisEntity.setIdRiwayatTindakan(tindakanEntity.getIdRiwayatTindakan());
+                transitorisEntity.setIdTindakan(tindakanEntity.getIdTindakan());
+                transitorisEntity.setNamaTindakan(tindakanEntity.getNamaTindakan());
+                transitorisEntity.setKeterangan(tindakanEntity.getKeterangan());
+                transitorisEntity.setJenisPasien(tindakanEntity.getJenisPasien());
+                transitorisEntity.setTotalTarif(tindakanEntity.getTotalTarif());
+                transitorisEntity.setKategoriTindakanBpjs(tindakanEntity.getKategoriTindakanBpjs());
+                transitorisEntity.setApproveBpjsFlag(tindakanEntity.getApproveBpjsFlag());
+                transitorisEntity.setAction(tindakanEntity.getAction());
+                transitorisEntity.setFlag(tindakanEntity.getFlag());
+                transitorisEntity.setTanggalTindakan(tindakanEntity.getTanggalTindakan());
+                transitorisEntity.setIdDetailCheckup(idDetailCheckup);
+
+                transitorisEntity.setCreatedDate(time);
+                transitorisEntity.setCreatedWho(user);
+                transitorisEntity.setLastUpdate(time);
+                transitorisEntity.setLastUpdateWho(user);
+
+                try {
+                    tindakanTransitorisDao.addAndSave(transitorisEntity);
+                } catch (HibernateException e){
+                    logger.error("[RiwayatTindakanBoImpl.saveTindakanTransitoris] ERROR. ", e);
+                    throw new GeneralBOException("[RiwayatTindakanBoImpl.saveTindakanTransitoris] ERROR. ", e);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void saveTutupPeriod(List<TutupPeriod> listTransitoris, TutupPeriod tutupPeriod) throws GeneralBOException{
+
+        logger.info("[BillingSystemBoImpl.saveTutupPeriod] START >>>");
+
+        for (TutupPeriod transJurnal : listTransitoris){
+
+            try {
+                // create jurnal transitoris, Sigit
+                createJurnalTransitoris(transJurnal);
+            } catch (GeneralBOException e){
+                logger.error("[BillingSystemBoImpl.saveTutupPeriod] ERROR when create jurnal transitoris. ",e);
+                throw new GeneralBOException("[BillingSystemBoImpl.saveTutupPeriod] ERROR when create jurnal transitoris. ",e);
+            }
+
+            try {
+                // jika dibuatkan jurnal save tindakan - tindakan ke table tindakan transitoris, Sigit
+                saveTindakanTransitoris(transJurnal.getIdDetailCheckup(), transJurnal.getCreatedDate(), transJurnal.getCreatedWho());
+            } catch (GeneralBOException e){
+                logger.error("[BillingSystemBoImpl.saveTutupPeriod] ERROR when insert tindakan to tindankan transitoris. ",e);
+                throw new GeneralBOException("[BillingSystemBoImpl.saveTutupPeriod] ERROR when insert tindakan to tindankan transitoris. ",e);
+            }
+        }
+
+        // tutup period, sigit
+        try {
+            saveUpdateTutupPeriod(tutupPeriod);
+        } catch (GeneralBOException e){
+            logger.error("[TutupPeriodAction.saveTutupPeriod] ERROR when create tutup periode. ", e);
+            throw new GeneralBOException("[BillingSystemBoImpl.saveTutupPeriod] ERROR when create tutup periode. ",e);
+        }
+
+        logger.info("[BillingSystemBoImpl.saveTutupPeriod] END <<<");
     }
 }
