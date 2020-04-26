@@ -425,6 +425,7 @@
                 <value>sshconfig/com/neurix/hris/transaksi/pendapatanDokter/hibernate/ItHrisPendapatanDokterDetailEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/DokterKso/hibernate/ImSimrsDokterKso.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/master/pembayaran/hibernate/ImAkunPembayaranEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/transaksi/pendapatanDokter/hibernate/ItHrisPendapatanDokterPphLebihEntity.hbm.xml</value>
             </list>
         </property>
     </bean>

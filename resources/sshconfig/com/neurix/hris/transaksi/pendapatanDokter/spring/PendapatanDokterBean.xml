@@ -13,6 +13,7 @@
           p:pendapatanDokterDetailDao-ref="pendapatanDokterDetailDao"
           p:branchDao-ref="branchDao"
           p:dokterKsoDao-ref="dokterKsoDao"
+          p:pendapatanDokterPphLebihDao-ref="pendapatanDokterPphLebihDao"
     />
 
     <bean id="pendapatanDokterBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -41,5 +42,7 @@
     <bean id="pendapatanDokterDetailDao" class="com.neurix.hris.transaksi.pendapatanDokter.dao.PendapatanDokterDetailDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="dokterKsoDao" class="com.neurix.hris.master.dokterKso.dao.DokterKsoDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="pendapatanDokterPphLebihDao" class="com.neurix.hris.transaksi.pendapatanDokter.dao.PendapatanDokterPphLebihDao"
           p:sessionFactory-ref="sessionFactory" />
 </beans>

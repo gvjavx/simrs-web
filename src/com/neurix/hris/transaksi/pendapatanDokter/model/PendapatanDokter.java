@@ -59,7 +59,6 @@ public class PendapatanDokter extends BaseModel {
     String poliName;
     String kodeJabatan;
 
-    String branchUser;
     BigDecimal totalBruto;
     String stTotalBruto;
     BigDecimal totalPendapatanRs;
@@ -81,6 +80,29 @@ public class PendapatanDokter extends BaseModel {
     BigDecimal totalGajiBersih;
     String stTotalGajiBersih;
     String masterId;
+    String level;
+    String branchUser;
+
+    BigDecimal tarifLebih;
+    String stTarifLebih;
+    BigDecimal totalDpp50Lebih;
+    String stTotalDpp50Lebih;
+    BigDecimal totalDppPph21KomulatifLebih;
+    String stTotalDppPph21KomulatifLebih;
+    BigDecimal totalDppPph21Lebih;
+    String stTotalDppPph21Lebih;
+    BigDecimal totalPphDipungutLebih;
+    String stTotalPphDipungutLebih;
+
+    BigDecimal totalPphLebihAwal;
+    String stTotalPphLebihAwal;
+    BigDecimal totalPphFinalAwal;
+    String stTotalPphFinalAwal;
+
+    BigDecimal totalPphLebih;
+    String stTotalPphLebih;
+    BigDecimal totalPphFinal;
+    String stTotalPphFinal;
 
 
     public Timestamp getApprovalDate() {
@@ -650,4 +672,158 @@ public class PendapatanDokter extends BaseModel {
     public void setKodeJabatan(String kodeJabatan) {
         this.kodeJabatan = kodeJabatan;
     }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
+    public String getStTotalDpp50Lebih() {
+        return stTotalDpp50Lebih;
+    }
+
+    public void setStTotalDpp50Lebih(String stTotalDpp50Lebih) {
+        this.stTotalDpp50Lebih = stTotalDpp50Lebih;
+    }
+
+    public String getStTotalDppPph21KomulatifLebih() {
+        return stTotalDppPph21KomulatifLebih;
+    }
+
+    public void setStTotalDppPph21KomulatifLebih(String stTotalDppPph21KomulatifLebih) {
+        this.stTotalDppPph21KomulatifLebih = stTotalDppPph21KomulatifLebih;
+    }
+
+    public String getStTotalDppPph21Lebih() {
+        return stTotalDppPph21Lebih;
+    }
+
+    public void setStTotalDppPph21Lebih(String stTotalDppPph21Lebih) {
+        this.stTotalDppPph21Lebih = stTotalDppPph21Lebih;
+    }
+
+    public String getStTotalPphDipungutLebih() {
+        return stTotalPphDipungutLebih;
+    }
+
+    public void setStTotalPphDipungutLebih(String stTotalPphDipungutLebih) {
+        this.stTotalPphDipungutLebih = stTotalPphDipungutLebih;
+    }
+
+    public String getStTotalPphFinal() {
+        return stTotalPphFinal;
+    }
+
+    public void setStTotalPphFinal(String stTotalPphFinal) {
+        this.stTotalPphFinal = stTotalPphFinal;
+    }
+
+    public String getStTotalPphLebih() {
+        return stTotalPphLebih;
+    }
+
+    public void setStTotalPphLebih(String stTotalPphLebih) {
+        this.stTotalPphLebih = stTotalPphLebih;
+    }
+
+    public BigDecimal getTotalDpp50Lebih() {
+        return totalDpp50Lebih;
+    }
+
+    public void setTotalDpp50Lebih(BigDecimal totalDpp50Lebih) {
+        this.totalDpp50Lebih = totalDpp50Lebih;
+    }
+
+    public BigDecimal getTotalDppPph21KomulatifLebih() {
+        return totalDppPph21KomulatifLebih;
+    }
+
+    public void setTotalDppPph21KomulatifLebih(BigDecimal totalDppPph21KomulatifLebih) {
+        this.totalDppPph21KomulatifLebih = totalDppPph21KomulatifLebih;
+    }
+
+    public BigDecimal getTotalDppPph21Lebih() {
+        return totalDppPph21Lebih;
+    }
+
+    public void setTotalDppPph21Lebih(BigDecimal totalDppPph21Lebih) {
+        this.totalDppPph21Lebih = totalDppPph21Lebih;
+    }
+
+    public BigDecimal getTotalPphDipungutLebih() {
+        return totalPphDipungutLebih;
+    }
+
+    public void setTotalPphDipungutLebih(BigDecimal totalPphDipungutLebih) {
+        this.totalPphDipungutLebih = totalPphDipungutLebih;
+    }
+
+    public BigDecimal getTotalPphFinal() {
+        return totalPphFinal;
+    }
+
+    public void setTotalPphFinal(BigDecimal totalPphFinal) {
+        this.totalPphFinal = totalPphFinal;
+    }
+
+    public BigDecimal getTotalPphLebih() {
+        return totalPphLebih;
+    }
+
+    public void setTotalPphLebih(BigDecimal totalPphLebih) {
+        this.totalPphLebih = totalPphLebih;
+    }
+
+    public String getStTarifLebih() {
+        return stTarifLebih;
+    }
+
+    public void setStTarifLebih(String stTarifLebih) {
+        this.stTarifLebih = stTarifLebih;
+    }
+
+    public BigDecimal getTarifLebih() {
+        return tarifLebih;
+    }
+
+    public void setTarifLebih(BigDecimal tarifLebih) {
+        this.tarifLebih = tarifLebih;
+    }
+
+    public String getStTotalPphFinalAwal() {
+        return stTotalPphFinalAwal;
+    }
+
+    public void setStTotalPphFinalAwal(String stTotalPphFinalAwal) {
+        this.stTotalPphFinalAwal = stTotalPphFinalAwal;
+    }
+
+    public String getStTotalPphLebihAwal() {
+        return stTotalPphLebihAwal;
+    }
+
+    public void setStTotalPphLebihAwal(String stTotalPphLebihAwal) {
+        this.stTotalPphLebihAwal = stTotalPphLebihAwal;
+    }
+
+    public BigDecimal getTotalPphFinalAwal() {
+        return totalPphFinalAwal;
+    }
+
+    public void setTotalPphFinalAwal(BigDecimal totalPphFinalAwal) {
+        this.totalPphFinalAwal = totalPphFinalAwal;
+    }
+
+    public BigDecimal getTotalPphLebihAwal() {
+        return totalPphLebihAwal;
+    }
+
+    public void setTotalPphLebihAwal(BigDecimal totalPphLebihAwal) {
+        this.totalPphLebihAwal = totalPphLebihAwal;
+    }
+
+
 }

@@ -129,9 +129,9 @@ public class PendapatanDokterAction extends BaseMasterAction {
         String branchId = CommonUtil.userBranchLogin();
         PendapatanDokter data = new PendapatanDokter();
         if (branchId != null){
-            data.setBranchId(branchId);
+            data.setBranchUser(branchId);
         }else {
-            data.setBranchId("");
+            data.setBranchUser("");
         }
 
         pendapatanDokter = data;
@@ -152,9 +152,10 @@ public class PendapatanDokterAction extends BaseMasterAction {
         String branchId = CommonUtil.userBranchLogin();
         PendapatanDokter data = new PendapatanDokter();
         if (branchId != null){
+            data.setBranchUser(branchId);
             data.setBranchId(branchId);
         }else {
-            data.setBranchId("");
+            data.setBranchUser("");
         }
 
         pendapatanDokter = data;
@@ -334,6 +335,38 @@ public class PendapatanDokterAction extends BaseMasterAction {
         pendapatanDokters = (List<PendapatanDokter>) session.getAttribute("listOfResultPendapatanDokter");
 
         return pendapatanDokters;
+    }
+
+    public List<PendapatanDokter> loadResultsPphLebih(String nip){
+        List<PendapatanDokter> pphLebihDokters = new ArrayList<>();
+        List<PendapatanDokter> pphLebih = new ArrayList<>();
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        pphLebihDokters = (List<PendapatanDokter>) session.getAttribute("listOfResultPendapatanDokter");
+
+        for (PendapatanDokter dokter: pphLebihDokters){
+            if (dokter.getDokterId() != null){
+                if (dokter.getDokterId().equalsIgnoreCase(nip)){
+                    PendapatanDokter pendapatanDokter = new PendapatanDokter();
+                    pendapatanDokter.setTotalDppPph21KomulatifLebih(dokter.getTotalDppPph21KomulatifLebih());
+                    pendapatanDokter.setTotalDppPph21Lebih(dokter.getTotalDppPph21Lebih());
+                    pendapatanDokter.setTarifLebih(dokter.getTarifLebih());
+                    pendapatanDokter.setTotalPphDipungutLebih(dokter.getTotalPphDipungutLebih());
+                    pendapatanDokter.setTotalPphLebih(dokter.getTotalPphLebih());
+                    pendapatanDokter.setTotalPphFinal(dokter.getTotalPphFinal());
+
+                    pendapatanDokter.setStTotalDppPph21KomulatifLebih(CommonUtil.numbericFormat(dokter.getTotalDppPph21KomulatifLebih(), "###,###"));
+                    pendapatanDokter.setStTotalDppPph21Lebih(CommonUtil.numbericFormat(dokter.getTotalDppPph21Lebih(), "###,###"));
+                    pendapatanDokter.setStTarifLebih(dokter.getStTarifLebih());
+                    pendapatanDokter.setStTotalPphDipungutLebih(CommonUtil.numbericFormat(dokter.getTotalPphDipungutLebih(), "###,###"));
+                    pendapatanDokter.setStTotalPphLebih(CommonUtil.numbericFormat(dokter.getTotalPphLebih(), "###,###"));
+                    pendapatanDokter.setStTotalPphFinal(CommonUtil.numbericFormat(dokter.getTotalPphFinal(), "###,###"));
+
+                    pphLebih.add(pendapatanDokter);
+                }
+            }
+        }
+
+        return pphLebih;
     }
 
 }

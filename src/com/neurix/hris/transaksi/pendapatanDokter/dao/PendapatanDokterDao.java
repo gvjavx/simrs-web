@@ -94,6 +94,36 @@ public class PendapatanDokterDao extends GenericDao<ItHrisPendapatanDokterEntity
         return results;
     }
 
+    public String getLevel(String dokterId, String bulan, String tahun){
+        List<Object[]> pendapatanDokterEntityList = new ArrayList<>();
+        String level = "";
+        int month = Integer.parseInt(bulan) - 1;
+        if (month < 10)
+            bulan = "0"+month;
+
+        String query = "select  \n" +
+                "\t\tbranch_id,\n" +
+                "\t\tlevel\n" +
+                "                from  \n" +
+                "                it_hris_pendapatan_dokter \n" +
+                "                where \n" +
+                "                bulan='"+bulan+"' and  \n" +
+                "                tahun='"+tahun+"' and  \n" +
+                "                dokter_id='"+dokterId+"'";
+        pendapatanDokterEntityList = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+        if (pendapatanDokterEntityList != null){
+            for (Object[] entity : pendapatanDokterEntityList){
+                if (entity != null){
+                    level = String.valueOf(entity[1]);
+                }
+            }
+        }
+
+        return level;
+    }
+
     public Double getPphKomulatif(String dokterId, String bulan, String tahun){
         List<Object[]> pendapatanDokterEntityList = new ArrayList<>();
         Double pphKomulatif = 0.0;
@@ -101,23 +131,29 @@ public class PendapatanDokterDao extends GenericDao<ItHrisPendapatanDokterEntity
         if (month < 10)
             bulan = "0"+month;
 
-        String query = "select \n" +
-                "\tsum(dpp_pph_21_komulatif) AS pendapatan_dokter \n" +
-                "\tfrom \n" +
-                "\t\tit_hris_pendapatan_dokter\n" +
-                "\twhere\n" +
-                "\t\tbulan='"+bulan+"' and \n" +
-                "\t\ttahun='"+tahun+"' and \n" +
-                "\t\tdokter_id='"+dokterId+"' ";
+        String query = "select  \n" +
+                "                sum(dpp_pph_21_komulatif) AS pph_komulatif_last,\n" +
+                "                branch_id  \n" +
+                "                from  \n" +
+                "                it_hris_pendapatan_dokter \n" +
+                "                where \n" +
+                "                bulan='"+bulan+"' and  \n" +
+                "                tahun='"+tahun+"' and  \n" +
+                "                dokter_id='"+dokterId+"'\n" +
+                "                group by branch_id";
+
         pendapatanDokterEntityList = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
                 .list();
         if (pendapatanDokterEntityList != null){
             for (Object[] entity : pendapatanDokterEntityList){
-                if (entity != null)
-                    pphKomulatif = (Double) entity[0];
-                else
+                if (entity != null){
+                    BigDecimal komulatif = (BigDecimal) entity[0];
+                    pphKomulatif = komulatif.doubleValue();
+                }
+                else {
                     pphKomulatif = 0.0;
+                }
 
             }
         }

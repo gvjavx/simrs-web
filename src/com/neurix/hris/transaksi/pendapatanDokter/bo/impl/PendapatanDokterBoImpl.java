@@ -5,17 +5,13 @@ import com.neurix.authorization.company.dao.BranchDao;
 import com.neurix.authorization.company.model.Branch;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
-import com.neurix.hris.master.biodata.model.PengalamanKerja;
 import com.neurix.hris.master.dokterKso.dao.DokterKsoDao;
-import com.neurix.hris.master.dokterKso.model.DokterKso;
 import com.neurix.hris.master.dokterKso.model.ImSimrsDokterKso;
 import com.neurix.hris.transaksi.pendapatanDokter.bo.PendapatanDokterBo;
 import com.neurix.hris.transaksi.pendapatanDokter.dao.PendapatanDokterDao;
 import com.neurix.hris.transaksi.pendapatanDokter.dao.PendapatanDokterDetailDao;
-import com.neurix.hris.transaksi.pendapatanDokter.model.ItHrisPendapatanDokterDetailEntity;
-import com.neurix.hris.transaksi.pendapatanDokter.model.ItHrisPendapatanDokterEntity;
-import com.neurix.hris.transaksi.pendapatanDokter.model.PendapatanDokter;
-import com.neurix.simrs.master.dokter.model.Dokter;
+import com.neurix.hris.transaksi.pendapatanDokter.dao.PendapatanDokterPphLebihDao;
+import com.neurix.hris.transaksi.pendapatanDokter.model.*;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
@@ -24,7 +20,6 @@ import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -37,6 +32,7 @@ public class PendapatanDokterBoImpl implements PendapatanDokterBo {
     private PendapatanDokterDetailDao pendapatanDokterDetailDao;
     private DokterKsoDao dokterKsoDao;
     private BranchDao branchDao;
+    private PendapatanDokterPphLebihDao pendapatanDokterPphLebihDao;
 
     public DokterKsoDao getDokterKsoDao() {
         return dokterKsoDao;
@@ -68,6 +64,14 @@ public class PendapatanDokterBoImpl implements PendapatanDokterBo {
 
     public void setBranchDao(BranchDao branchDao) {
         this.branchDao = branchDao;
+    }
+
+    public PendapatanDokterPphLebihDao getPendapatanDokterPphLebihDao() {
+        return pendapatanDokterPphLebihDao;
+    }
+
+    public void setPendapatanDokterPphLebihDao(PendapatanDokterPphLebihDao pendapatanDokterPphLebihDao) {
+        this.pendapatanDokterPphLebihDao = pendapatanDokterPphLebihDao;
     }
 
     @Override
@@ -582,12 +586,14 @@ public class PendapatanDokterBoImpl implements PendapatanDokterBo {
                     Double hrBruto, pndptnRs, dppPph50,dppPphKomulatif = 0.0, dppPph21, tarif, pphDipungut, hrAktifitas, potKs, gajiBersih;
                     Double totHrBruto = 0.0, totpndptnRs = 0.0, totBruto = 0.0, totDppPph50 = 0.0, totDppPphKomulatif = 0.0, totDppPph21 = 0.0,
                             totPphDipungut = 0.0, totHrAktifitas = 0.0, totPotKs = 0.0, totGajiBersih = 0.0, komulatifLastMonth = 0.0;
-                    BigDecimal tarifInajbg, bruto, ksoPersen, tarifPajak, bgPersenKs;
-                    String stTarif, dokterId = null;
+                    BigDecimal tarifInajbg, bruto, ksoPersen, tarifPajak, bgPersenKs, tarifPajakLebih;
+                    String stTarif, dokterId = null, level = "", stTarifLebih;
+                    Double pph50Lebih = 0.0, komulatifLebih=0.0, pph21Lebih = 0.0, tarifLebih = 0.0, pphDipungutLebih = 0.0, pphLebihAwal = 0.0, pphLebih = 0.0, pphFinalAwal = 0.0, pphFinal=0.0;
 
                     dokterId = simrsDokterKso.getNip();
                     results = pendapatanDokterDao.getDataPendapatan(bean.getBranchId(), bean.getBulan(), bean.getTahun(), dokterId);
                     komulatifLastMonth = pendapatanDokterDao.getPphKomulatif(dokterId, bean.getBulan(), bean.getTahun()).doubleValue();
+                    level = pendapatanDokterDao.getLevel(dokterId, bean.getBulan(), bean.getTahun());
                     int id = 0;
                     PendapatanDokter pendapatanDokter;
                     if (results != null){
@@ -613,7 +619,7 @@ public class PendapatanDokterBoImpl implements PendapatanDokterBo {
 //                            dppPph50 = bruto.doubleValue() * 0.5;
                             dppPph50 = hrBruto * 0.5;
                             if (komulatifLastMonth != 0.0)
-                                dppPphKomulatif = dppPph50 + dppPphKomulatif;
+                                dppPphKomulatif = dppPph50 + komulatifLastMonth;
                             else
                                 dppPphKomulatif = dppPph50;
                             dppPph21 = dppPph50;
@@ -667,69 +673,694 @@ public class PendapatanDokterBoImpl implements PendapatanDokterBo {
                                 String branchName = branches.get(0).getBranchName();
                                 pendapatanDokter.setBranchName(branchName);
 
-                                pendapatanDokter.setDokterId(dokterId);
-                                pendapatanDokter.setDokterName(String.valueOf(obj[6]));
-                                pendapatanDokter.setBranchId(bean.getBranchId());
-                                pendapatanDokter.setBulan(bean.getBulan());
-                                pendapatanDokter.setTahun(bean.getTahun());
-                                pendapatanDokter.setKodeJabatan(String.valueOf(obj[7]));
 
-                                BigDecimal bgTotBruto = CommonUtil.dobelToBigDecimal(totBruto);
-                                pendapatanDokter.setTotalBruto(bgTotBruto);
-                                pendapatanDokter.setStTotalBruto(CommonUtil.numbericFormat(bgTotBruto, "###,###"));
+                                if (!"".equalsIgnoreCase(level)){
+                                    if ("1".equalsIgnoreCase(level) && totDppPphKomulatif > 50000000){
+                                        totDppPph50 = 50000000 - komulatifLastMonth;
+                                        totDppPphKomulatif = komulatifLastMonth + totDppPph50;
+                                        totDppPph21 = totDppPph50;
 
-                                BigDecimal bgTotDppPph50 = CommonUtil.dobelToBigDecimal(totDppPph50);
-                                pendapatanDokter.setTotalDppPph50(bgTotDppPph50);
-                                pendapatanDokter.setStTotalDppPph50(CommonUtil.numbericFormat(bgTotDppPph50, "###,###"));
+                                        if (totDppPphKomulatif <= 50000000) {
+                                            tarif = 0.05;
+                                            tarifPajak = BigDecimal.valueOf(5);
+                                            stTarif = "5%";
+                                        }
+                                        else if (totDppPphKomulatif > 50000000 && totDppPphKomulatif <= 250000000) {
+                                            tarif = 0.15;
+                                            tarifPajak = BigDecimal.valueOf(15);
+                                            stTarif = "15%";
+                                        }
+                                        else if (totDppPphKomulatif > 250000000 && totDppPphKomulatif <= 500000000){
+                                            tarif = 0.25;
+                                            tarifPajak = BigDecimal.valueOf(25);
+                                            stTarif = "25%";
+                                        }
+                                        else {
+                                            tarif = 0.30;
+                                            tarifPajak = BigDecimal.valueOf(30);
+                                            stTarif = "30%";
+                                        }
 
-                                BigDecimal bgTotDppPphKomulatif = CommonUtil.dobelToBigDecimal(totDppPphKomulatif);
-                                pendapatanDokter.setTotalDppPph21Komulatif(bgTotDppPphKomulatif);
-                                pendapatanDokter.setStTotalDppPph21Komulatif(CommonUtil.numbericFormat(bgTotDppPphKomulatif, "###,###"));
+                                        totPphDipungut = totDppPph21 * tarif;
+//                                        totGajiBersih = totHrBruto - totPphDipungut - totPotKs;
 
-                                BigDecimal bgTotDppPph21 = CommonUtil.dobelToBigDecimal(totDppPph21);
-                                pendapatanDokter.setTotalDppPph21(bgTotDppPph21);
-                                pendapatanDokter.setStTotalDppPph21(CommonUtil.numbericFormat(bgTotDppPph21, "###,###"));
+                                        pph50Lebih = (totHrBruto*0.5)+komulatifLastMonth-totDppPphKomulatif;
+                                        komulatifLebih = pph50Lebih + totDppPphKomulatif;
+                                        pph21Lebih = pph50Lebih;
+                                        if (komulatifLebih <= 50000000) {
+                                            tarifLebih = 0.05;
+                                            tarifPajakLebih = BigDecimal.valueOf(5);
+                                            stTarifLebih = "5%";
+                                        }
+                                        else if (komulatifLebih > 50000000 && komulatifLebih <= 250000000) {
+                                            tarifLebih = 0.15;
+                                            tarifPajakLebih = BigDecimal.valueOf(15);
+                                            stTarifLebih = "15%";
+                                        }
+                                        else if (komulatifLebih > 250000000 && komulatifLebih <= 500000000){
+                                            tarifLebih = 0.25;
+                                            tarifPajakLebih = BigDecimal.valueOf(25);
+                                            stTarifLebih = "25%";
+                                        }
+                                        else {
+                                            tarifLebih = 0.30;
+                                            tarifPajakLebih = BigDecimal.valueOf(30);
+                                            stTarifLebih = "30%";
+                                        }
 
-                                pendapatanDokter.setTarif(tarifPajak);
-                                pendapatanDokter.setStTarif(stTarif);
+                                        pphDipungutLebih = pph21Lebih * tarifLebih;
+                                        pphLebih = pphDipungutLebih;
+                                        pphFinal = totPphDipungut + pphLebih;
 
-                                BigDecimal bgTotPphDipungut = CommonUtil.dobelToBigDecimal(totPphDipungut);
-                                pendapatanDokter.setTotalPphDipungut(bgTotPphDipungut);
-                                pendapatanDokter.setStTotalPphDipungut(CommonUtil.numbericFormat(bgTotPphDipungut, "###,###"));
+                                        totHrAktifitas = totHrBruto - pphFinal;
+                                        bgPersenKs = (BigDecimal) obj[4];
+                                        totPotKs = totHrAktifitas * (bgPersenKs.doubleValue() / 100);
 
-                                BigDecimal bgTotGajiBersih = CommonUtil.dobelToBigDecimal(totGajiBersih);
-                                pendapatanDokter.setTotalGajiBersih(bgTotGajiBersih);
-                                pendapatanDokter.setStTotalGajiBersih(CommonUtil.numbericFormat(bgTotGajiBersih, "###,###"));
+                                        totGajiBersih = totHrBruto - pphFinal;
+                                        int uL = Integer.parseInt(level);
+                                        uL++;
+                                        level = String.valueOf(uL);
 
-                                String userLogin = CommonUtil.userLogin();
-                                Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-                                pendapatanDokter.setApprovalFlag("Y");
-                                pendapatanDokter.setApprovalWho(userLogin);
-                                pendapatanDokter.setApprovalDate(updateTime);
-                                pendapatanDokter.setFlag("Y");
-                                pendapatanDokter.setAction("C");
-                                pendapatanDokter.setCreatedDate(updateTime);
-                                pendapatanDokter.setLastUpdate(updateTime);
-                                pendapatanDokter.setCreatedWho(userLogin);
-                                pendapatanDokter.setLastUpdateWho(userLogin);
+                                        pendapatanDokter.setDokterId(dokterId);
+                                        pendapatanDokter.setDokterName(String.valueOf(obj[6]));
+                                        pendapatanDokter.setBranchId(bean.getBranchId());
+                                        pendapatanDokter.setBulan(bean.getBulan());
+                                        pendapatanDokter.setTahun(bean.getTahun());
+                                        pendapatanDokter.setKodeJabatan(String.valueOf(obj[7]));
 
-                                BigDecimal bgTotpndptnRs = CommonUtil.dobelToBigDecimal(totpndptnRs);
-                                pendapatanDokter.setTotalPendapatanRs(bgTotpndptnRs);
-                                pendapatanDokter.setStTotalPendapatanRs(CommonUtil.numbericFormat(bgTotpndptnRs, "###,###"));
+                                        BigDecimal bgTotBruto = CommonUtil.dobelToBigDecimal(totBruto);
+                                        pendapatanDokter.setTotalBruto(bgTotBruto);
+                                        pendapatanDokter.setStTotalBruto(CommonUtil.numbericFormat(bgTotBruto, "###,###"));
 
-                                BigDecimal bgTotHrBruto = CommonUtil.dobelToBigDecimal(totHrBruto);
-                                pendapatanDokter.setTotalHrBruto(bgTotHrBruto);
-                                pendapatanDokter.setStTotalHrBruto(CommonUtil.numbericFormat(bgTotHrBruto, "###,###"));
+                                        BigDecimal bgTotDppPph50 = CommonUtil.dobelToBigDecimal(totDppPph50);
+                                        pendapatanDokter.setTotalDppPph50(bgTotDppPph50);
+                                        pendapatanDokter.setStTotalDppPph50(CommonUtil.numbericFormat(bgTotDppPph50, "###,###"));
 
-                                BigDecimal bgTotHrAktifitas = CommonUtil.dobelToBigDecimal(totHrAktifitas);
-                                pendapatanDokter.setTotalHrAktifitasNetto(bgTotHrAktifitas);
-                                pendapatanDokter.setStTotalHrAktifitasNetto(CommonUtil.numbericFormat(bgTotHrAktifitas, "###,###"));
+                                        BigDecimal bgTotDppPphKomulatif = CommonUtil.dobelToBigDecimal(totDppPphKomulatif);
+                                        pendapatanDokter.setTotalDppPph21Komulatif(bgTotDppPphKomulatif);
+                                        pendapatanDokter.setStTotalDppPph21Komulatif(CommonUtil.numbericFormat(bgTotDppPphKomulatif, "###,###"));
 
-                                BigDecimal bgTotPotKs = CommonUtil.dobelToBigDecimal(totPotKs);
-                                pendapatanDokter.setTotalPotKs(bgTotPotKs);
-                                pendapatanDokter.setStTotalPotKs(CommonUtil.numbericFormat(bgTotPotKs, "###,###"));
+                                        BigDecimal bgTotDppPph21 = CommonUtil.dobelToBigDecimal(totDppPph21);
+                                        pendapatanDokter.setTotalDppPph21(bgTotDppPph21);
+                                        pendapatanDokter.setStTotalDppPph21(CommonUtil.numbericFormat(bgTotDppPph21, "###,###"));
 
-                                listPendapatan.add(pendapatanDokter);
+                                        pendapatanDokter.setTarif(tarifPajak);
+                                        pendapatanDokter.setStTarif(stTarif);
+
+                                        BigDecimal bgTotPphDipungut = CommonUtil.dobelToBigDecimal(totPphDipungut);
+                                        pendapatanDokter.setTotalPphDipungut(bgTotPphDipungut);
+                                        pendapatanDokter.setStTotalPphDipungut(CommonUtil.numbericFormat(bgTotPphDipungut, "###,###"));
+
+//                                        BigDecimal bgPphLebihAwal = CommonUtil.dobelToBigDecimal(0.0);
+//                                        pendapatanDokter.setTotalPphLebihAwal(bgPphLebihAwal);
+//                                        pendapatanDokter.setStTotalPphDipungut(CommonUtil.numbericFormat(bgPphLebihAwal, "###,###"));
+
+                                        BigDecimal bgTotDpp50Lebih = CommonUtil.dobelToBigDecimal(pph50Lebih);
+                                        pendapatanDokter.setTotalDpp50Lebih(bgTotDpp50Lebih);
+                                        pendapatanDokter.setStTotalDpp50Lebih(CommonUtil.numbericFormat(bgTotDpp50Lebih, "###,###"));
+
+                                        BigDecimal bgTotDppKomulatifLebih = CommonUtil.dobelToBigDecimal(komulatifLebih);
+                                        pendapatanDokter.setTotalDppPph21KomulatifLebih(bgTotDppKomulatifLebih);
+                                        pendapatanDokter.setStTotalDppPph21KomulatifLebih(CommonUtil.numbericFormat(bgTotDppKomulatifLebih, "###,###"));
+
+                                        BigDecimal bgTotDppPph21Lebih = CommonUtil.dobelToBigDecimal(pph21Lebih);
+                                        pendapatanDokter.setTotalDppPph21Lebih(bgTotDppPph21Lebih);
+                                        pendapatanDokter.setStTotalDppPph21Lebih(CommonUtil.numbericFormat(bgTotDppPph21Lebih, "###,###"));
+
+                                        pendapatanDokter.setTarifLebih(tarifPajakLebih);
+                                        pendapatanDokter.setStTarifLebih(stTarifLebih);
+
+                                        BigDecimal bgTotPphDipungutLebih = CommonUtil.dobelToBigDecimal(pphDipungutLebih);
+                                        pendapatanDokter.setTotalPphDipungutLebih(bgTotPphDipungutLebih);
+                                        pendapatanDokter.setStTotalPphDipungutLebih(CommonUtil.numbericFormat(bgTotPphDipungutLebih, "###,###"));
+
+                                        BigDecimal bgTotPphLebih = CommonUtil.dobelToBigDecimal(pphLebih);
+                                        pendapatanDokter.setTotalPphLebih(bgTotPphLebih);
+                                        pendapatanDokter.setStTotalPphLebih(CommonUtil.numbericFormat(bgTotPphLebih, "###,###"));
+
+                                        BigDecimal bgTotPphFinal = CommonUtil.dobelToBigDecimal(pphFinal);
+                                        pendapatanDokter.setTotalPphFinal(bgTotPphFinal);
+                                        pendapatanDokter.setStTotalPphFinal(CommonUtil.numbericFormat(bgTotPphFinal, "###,###"));
+
+                                        BigDecimal bgTotGajiBersih = CommonUtil.dobelToBigDecimal(totGajiBersih);
+                                        pendapatanDokter.setTotalGajiBersih(bgTotGajiBersih);
+                                        pendapatanDokter.setStTotalGajiBersih(CommonUtil.numbericFormat(bgTotGajiBersih, "###,###"));
+
+                                        String userLogin = CommonUtil.userLogin();
+                                        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+                                        pendapatanDokter.setApprovalFlag("Y");
+                                        pendapatanDokter.setApprovalWho(userLogin);
+                                        pendapatanDokter.setApprovalDate(updateTime);
+                                        pendapatanDokter.setFlag("Y");
+                                        pendapatanDokter.setAction("C");
+                                        pendapatanDokter.setCreatedDate(updateTime);
+                                        pendapatanDokter.setLastUpdate(updateTime);
+                                        pendapatanDokter.setCreatedWho(userLogin);
+                                        pendapatanDokter.setLastUpdateWho(userLogin);
+                                        pendapatanDokter.setLevel(level);
+
+                                        BigDecimal bgTotpndptnRs = CommonUtil.dobelToBigDecimal(totpndptnRs);
+                                        pendapatanDokter.setTotalPendapatanRs(bgTotpndptnRs);
+                                        pendapatanDokter.setStTotalPendapatanRs(CommonUtil.numbericFormat(bgTotpndptnRs, "###,###"));
+
+                                        BigDecimal bgTotHrBruto = CommonUtil.dobelToBigDecimal(totHrBruto);
+                                        pendapatanDokter.setTotalHrBruto(bgTotHrBruto);
+                                        pendapatanDokter.setStTotalHrBruto(CommonUtil.numbericFormat(bgTotHrBruto, "###,###"));
+
+                                        BigDecimal bgTotHrAktifitas = CommonUtil.dobelToBigDecimal(totHrAktifitas);
+                                        pendapatanDokter.setTotalHrAktifitasNetto(bgTotHrAktifitas);
+                                        pendapatanDokter.setStTotalHrAktifitasNetto(CommonUtil.numbericFormat(bgTotHrAktifitas, "###,###"));
+
+                                        BigDecimal bgTotPotKs = CommonUtil.dobelToBigDecimal(totPotKs);
+                                        pendapatanDokter.setTotalPotKs(bgTotPotKs);
+                                        pendapatanDokter.setStTotalPotKs(CommonUtil.numbericFormat(bgTotPotKs, "###,###"));
+
+                                        listPendapatan.add(pendapatanDokter);
+                                    }
+                                    else if ("2".equalsIgnoreCase(level) && totDppPphKomulatif > 250000000){
+                                        totDppPph50 = 250000000 - komulatifLastMonth;
+                                        totDppPphKomulatif = komulatifLastMonth + totDppPph50;
+                                        totDppPph21 = totDppPph50;
+
+                                        if (totDppPphKomulatif <= 50000000) {
+                                            tarif = 0.05;
+                                            tarifPajak = BigDecimal.valueOf(5);
+                                            stTarif = "5%";
+                                        }
+                                        else if (totDppPphKomulatif > 50000000 && totDppPphKomulatif <= 250000000) {
+                                            tarif = 0.15;
+                                            tarifPajak = BigDecimal.valueOf(15);
+                                            stTarif = "15%";
+                                        }
+                                        else if (totDppPphKomulatif > 250000000 && totDppPphKomulatif <= 500000000){
+                                            tarif = 0.25;
+                                            tarifPajak = BigDecimal.valueOf(25);
+                                            stTarif = "25%";
+                                        }
+                                        else {
+                                            tarif = 0.30;
+                                            tarifPajak = BigDecimal.valueOf(30);
+                                            stTarif = "30%";
+                                        }
+
+                                        totPphDipungut = totDppPph21 * tarif;
+//                                        totGajiBersih = totHrBruto - totPphDipungut - totPotKs;
+
+                                        pph50Lebih = (totHrBruto*0.5)+komulatifLastMonth-totDppPphKomulatif;
+                                        komulatifLebih = pph50Lebih + totDppPphKomulatif;
+                                        pph21Lebih = pph50Lebih;
+                                        if (komulatifLebih <= 50000000) {
+                                            tarifLebih = 0.05;
+                                            tarifPajakLebih = BigDecimal.valueOf(5);
+                                            stTarifLebih = "5%";
+                                        }
+                                        else if (komulatifLebih > 50000000 && komulatifLebih <= 250000000) {
+                                            tarifLebih = 0.15;
+                                            tarifPajakLebih = BigDecimal.valueOf(15);
+                                            stTarifLebih = "15%";
+                                        }
+                                        else if (komulatifLebih > 250000000 && komulatifLebih <= 500000000){
+                                            tarifLebih = 0.25;
+                                            tarifPajakLebih = BigDecimal.valueOf(25);
+                                            stTarifLebih = "25%";
+                                        }
+                                        else {
+                                            tarifLebih = 0.30;
+                                            tarifPajakLebih = BigDecimal.valueOf(30);
+                                            stTarifLebih = "30%";
+                                        }
+
+                                        pphDipungutLebih = pph21Lebih * tarifLebih;
+                                        pphLebih = pphDipungutLebih;
+                                        pphFinal = totPphDipungut + pphLebih;
+
+                                        totHrAktifitas = totHrBruto - pphFinal;
+                                        bgPersenKs = (BigDecimal) obj[4];
+                                        totPotKs = totHrAktifitas * (bgPersenKs.doubleValue() / 100);
+
+                                        totGajiBersih = totHrBruto - pphFinal;
+                                        int uL = Integer.parseInt(level);
+                                        uL++;
+                                        level = String.valueOf(uL);
+
+                                        pendapatanDokter.setDokterId(dokterId);
+                                        pendapatanDokter.setDokterName(String.valueOf(obj[6]));
+                                        pendapatanDokter.setBranchId(bean.getBranchId());
+                                        pendapatanDokter.setBulan(bean.getBulan());
+                                        pendapatanDokter.setTahun(bean.getTahun());
+                                        pendapatanDokter.setKodeJabatan(String.valueOf(obj[7]));
+
+                                        BigDecimal bgTotBruto = CommonUtil.dobelToBigDecimal(totBruto);
+                                        pendapatanDokter.setTotalBruto(bgTotBruto);
+                                        pendapatanDokter.setStTotalBruto(CommonUtil.numbericFormat(bgTotBruto, "###,###"));
+
+                                        BigDecimal bgTotDppPph50 = CommonUtil.dobelToBigDecimal(totDppPph50);
+                                        pendapatanDokter.setTotalDppPph50(bgTotDppPph50);
+                                        pendapatanDokter.setStTotalDppPph50(CommonUtil.numbericFormat(bgTotDppPph50, "###,###"));
+
+                                        BigDecimal bgTotDppPphKomulatif = CommonUtil.dobelToBigDecimal(totDppPphKomulatif);
+                                        pendapatanDokter.setTotalDppPph21Komulatif(bgTotDppPphKomulatif);
+                                        pendapatanDokter.setStTotalDppPph21Komulatif(CommonUtil.numbericFormat(bgTotDppPphKomulatif, "###,###"));
+
+                                        BigDecimal bgTotDppPph21 = CommonUtil.dobelToBigDecimal(totDppPph21);
+                                        pendapatanDokter.setTotalDppPph21(bgTotDppPph21);
+                                        pendapatanDokter.setStTotalDppPph21(CommonUtil.numbericFormat(bgTotDppPph21, "###,###"));
+
+                                        pendapatanDokter.setTarif(tarifPajak);
+                                        pendapatanDokter.setStTarif(stTarif);
+
+                                        BigDecimal bgTotPphDipungut = CommonUtil.dobelToBigDecimal(totPphDipungut);
+                                        pendapatanDokter.setTotalPphDipungut(bgTotPphDipungut);
+                                        pendapatanDokter.setStTotalPphDipungut(CommonUtil.numbericFormat(bgTotPphDipungut, "###,###"));
+
+//                                        BigDecimal bgPphLebihAwal = CommonUtil.dobelToBigDecimal(0.0);
+//                                        pendapatanDokter.setTotalPphLebihAwal(bgPphLebihAwal);
+//                                        pendapatanDokter.setStTotalPphDipungut(CommonUtil.numbericFormat(bgPphLebihAwal, "###,###"));
+
+                                        BigDecimal bgTotDpp50Lebih = CommonUtil.dobelToBigDecimal(pph50Lebih);
+                                        pendapatanDokter.setTotalDpp50Lebih(bgTotDpp50Lebih);
+                                        pendapatanDokter.setStTotalDpp50Lebih(CommonUtil.numbericFormat(bgTotDpp50Lebih, "###,###"));
+
+                                        BigDecimal bgTotDppKomulatifLebih = CommonUtil.dobelToBigDecimal(komulatifLebih);
+                                        pendapatanDokter.setTotalDppPph21KomulatifLebih(bgTotDppKomulatifLebih);
+                                        pendapatanDokter.setStTotalDppPph21KomulatifLebih(CommonUtil.numbericFormat(bgTotDppKomulatifLebih, "###,###"));
+
+                                        BigDecimal bgTotDppPph21Lebih = CommonUtil.dobelToBigDecimal(pph21Lebih);
+                                        pendapatanDokter.setTotalDppPph21Lebih(bgTotDppPph21Lebih);
+                                        pendapatanDokter.setStTotalDppPph21Lebih(CommonUtil.numbericFormat(bgTotDppPph21Lebih, "###,###"));
+
+                                        pendapatanDokter.setTarifLebih(tarifPajakLebih);
+                                        pendapatanDokter.setStTarifLebih(stTarifLebih);
+
+                                        BigDecimal bgTotPphDipungutLebih = CommonUtil.dobelToBigDecimal(pphDipungutLebih);
+                                        pendapatanDokter.setTotalPphDipungutLebih(bgTotPphDipungutLebih);
+                                        pendapatanDokter.setStTotalPphDipungutLebih(CommonUtil.numbericFormat(bgTotPphDipungutLebih, "###,###"));
+
+                                        BigDecimal bgTotPphLebih = CommonUtil.dobelToBigDecimal(pphLebih);
+                                        pendapatanDokter.setTotalPphLebih(bgTotPphLebih);
+                                        pendapatanDokter.setStTotalPphLebih(CommonUtil.numbericFormat(bgTotPphLebih, "###,###"));
+
+                                        BigDecimal bgTotPphFinal = CommonUtil.dobelToBigDecimal(pphFinal);
+                                        pendapatanDokter.setTotalPphFinal(bgTotPphFinal);
+                                        pendapatanDokter.setStTotalPphFinal(CommonUtil.numbericFormat(bgTotPphFinal, "###,###"));
+
+                                        BigDecimal bgTotGajiBersih = CommonUtil.dobelToBigDecimal(totGajiBersih);
+                                        pendapatanDokter.setTotalGajiBersih(bgTotGajiBersih);
+                                        pendapatanDokter.setStTotalGajiBersih(CommonUtil.numbericFormat(bgTotGajiBersih, "###,###"));
+
+                                        String userLogin = CommonUtil.userLogin();
+                                        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+                                        pendapatanDokter.setApprovalFlag("Y");
+                                        pendapatanDokter.setApprovalWho(userLogin);
+                                        pendapatanDokter.setApprovalDate(updateTime);
+                                        pendapatanDokter.setFlag("Y");
+                                        pendapatanDokter.setAction("C");
+                                        pendapatanDokter.setCreatedDate(updateTime);
+                                        pendapatanDokter.setLastUpdate(updateTime);
+                                        pendapatanDokter.setCreatedWho(userLogin);
+                                        pendapatanDokter.setLastUpdateWho(userLogin);
+                                        pendapatanDokter.setLevel(level);
+
+                                        BigDecimal bgTotpndptnRs = CommonUtil.dobelToBigDecimal(totpndptnRs);
+                                        pendapatanDokter.setTotalPendapatanRs(bgTotpndptnRs);
+                                        pendapatanDokter.setStTotalPendapatanRs(CommonUtil.numbericFormat(bgTotpndptnRs, "###,###"));
+
+                                        BigDecimal bgTotHrBruto = CommonUtil.dobelToBigDecimal(totHrBruto);
+                                        pendapatanDokter.setTotalHrBruto(bgTotHrBruto);
+                                        pendapatanDokter.setStTotalHrBruto(CommonUtil.numbericFormat(bgTotHrBruto, "###,###"));
+
+                                        BigDecimal bgTotHrAktifitas = CommonUtil.dobelToBigDecimal(totHrAktifitas);
+                                        pendapatanDokter.setTotalHrAktifitasNetto(bgTotHrAktifitas);
+                                        pendapatanDokter.setStTotalHrAktifitasNetto(CommonUtil.numbericFormat(bgTotHrAktifitas, "###,###"));
+
+                                        BigDecimal bgTotPotKs = CommonUtil.dobelToBigDecimal(totPotKs);
+                                        pendapatanDokter.setTotalPotKs(bgTotPotKs);
+                                        pendapatanDokter.setStTotalPotKs(CommonUtil.numbericFormat(bgTotPotKs, "###,###"));
+
+                                        listPendapatan.add(pendapatanDokter);
+
+                                    }
+                                    else if ("3".equalsIgnoreCase(level) && totDppPphKomulatif > 500000000){
+                                        totDppPph50 = 500000000 - komulatifLastMonth;
+                                        totDppPphKomulatif = komulatifLastMonth + totDppPph50;
+                                        totDppPph21 = totDppPph50;
+
+                                        if (totDppPphKomulatif <= 50000000) {
+                                            tarif = 0.05;
+                                            tarifPajak = BigDecimal.valueOf(5);
+                                            stTarif = "5%";
+                                        }
+                                        else if (totDppPphKomulatif > 50000000 && totDppPphKomulatif <= 250000000) {
+                                            tarif = 0.15;
+                                            tarifPajak = BigDecimal.valueOf(15);
+                                            stTarif = "15%";
+                                        }
+                                        else if (totDppPphKomulatif > 250000000 && totDppPphKomulatif <= 500000000){
+                                            tarif = 0.25;
+                                            tarifPajak = BigDecimal.valueOf(25);
+                                            stTarif = "25%";
+                                        }
+                                        else {
+                                            tarif = 0.30;
+                                            tarifPajak = BigDecimal.valueOf(30);
+                                            stTarif = "30%";
+                                        }
+
+                                        totPphDipungut = totDppPph21 * tarif;
+//                                        totGajiBersih = totHrBruto - totPphDipungut - totPotKs;
+
+                                        pph50Lebih = (totHrBruto*0.5)+komulatifLastMonth-totDppPphKomulatif;
+                                        komulatifLebih = pph50Lebih + totDppPphKomulatif;
+                                        pph21Lebih = pph50Lebih;
+                                        if (komulatifLebih <= 50000000) {
+                                            tarifLebih = 0.05;
+                                            tarifPajakLebih = BigDecimal.valueOf(5);
+                                            stTarifLebih = "5%";
+                                        }
+                                        else if (komulatifLebih > 50000000 && komulatifLebih <= 250000000) {
+                                            tarifLebih = 0.15;
+                                            tarifPajakLebih = BigDecimal.valueOf(15);
+                                            stTarifLebih = "15%";
+                                        }
+                                        else if (komulatifLebih > 250000000 && komulatifLebih <= 500000000){
+                                            tarifLebih = 0.25;
+                                            tarifPajakLebih = BigDecimal.valueOf(25);
+                                            stTarifLebih = "25%";
+                                        }
+                                        else {
+                                            tarifLebih = 0.30;
+                                            tarifPajakLebih = BigDecimal.valueOf(30);
+                                            stTarifLebih = "30%";
+                                        }
+
+                                        pphDipungutLebih = pph21Lebih * tarifLebih;
+                                        pphLebih = pphDipungutLebih;
+                                        pphFinal = totPphDipungut + pphLebih;
+
+                                        totHrAktifitas = totHrBruto - pphFinal;
+                                        bgPersenKs = (BigDecimal) obj[4];
+                                        totPotKs = totHrAktifitas * (bgPersenKs.doubleValue() / 100);
+
+                                        totGajiBersih = totHrBruto - pphFinal;
+                                        int uL = Integer.parseInt(level);
+                                        uL++;
+                                        level = String.valueOf(uL);
+
+                                        pendapatanDokter.setDokterId(dokterId);
+                                        pendapatanDokter.setDokterName(String.valueOf(obj[6]));
+                                        pendapatanDokter.setBranchId(bean.getBranchId());
+                                        pendapatanDokter.setBulan(bean.getBulan());
+                                        pendapatanDokter.setTahun(bean.getTahun());
+                                        pendapatanDokter.setKodeJabatan(String.valueOf(obj[7]));
+
+                                        BigDecimal bgTotBruto = CommonUtil.dobelToBigDecimal(totBruto);
+                                        pendapatanDokter.setTotalBruto(bgTotBruto);
+                                        pendapatanDokter.setStTotalBruto(CommonUtil.numbericFormat(bgTotBruto, "###,###"));
+
+                                        BigDecimal bgTotDppPph50 = CommonUtil.dobelToBigDecimal(totDppPph50);
+                                        pendapatanDokter.setTotalDppPph50(bgTotDppPph50);
+                                        pendapatanDokter.setStTotalDppPph50(CommonUtil.numbericFormat(bgTotDppPph50, "###,###"));
+
+                                        BigDecimal bgTotDppPphKomulatif = CommonUtil.dobelToBigDecimal(totDppPphKomulatif);
+                                        pendapatanDokter.setTotalDppPph21Komulatif(bgTotDppPphKomulatif);
+                                        pendapatanDokter.setStTotalDppPph21Komulatif(CommonUtil.numbericFormat(bgTotDppPphKomulatif, "###,###"));
+
+                                        BigDecimal bgTotDppPph21 = CommonUtil.dobelToBigDecimal(totDppPph21);
+                                        pendapatanDokter.setTotalDppPph21(bgTotDppPph21);
+                                        pendapatanDokter.setStTotalDppPph21(CommonUtil.numbericFormat(bgTotDppPph21, "###,###"));
+
+                                        pendapatanDokter.setTarif(tarifPajak);
+                                        pendapatanDokter.setStTarif(stTarif);
+
+                                        BigDecimal bgTotPphDipungut = CommonUtil.dobelToBigDecimal(totPphDipungut);
+                                        pendapatanDokter.setTotalPphDipungut(bgTotPphDipungut);
+                                        pendapatanDokter.setStTotalPphDipungut(CommonUtil.numbericFormat(bgTotPphDipungut, "###,###"));
+
+//                                        BigDecimal bgPphLebihAwal = CommonUtil.dobelToBigDecimal(0.0);
+//                                        pendapatanDokter.setTotalPphLebihAwal(bgPphLebihAwal);
+//                                        pendapatanDokter.setStTotalPphDipungut(CommonUtil.numbericFormat(bgPphLebihAwal, "###,###"));
+
+                                        BigDecimal bgTotDpp50Lebih = CommonUtil.dobelToBigDecimal(pph50Lebih);
+                                        pendapatanDokter.setTotalDpp50Lebih(bgTotDpp50Lebih);
+                                        pendapatanDokter.setStTotalDpp50Lebih(CommonUtil.numbericFormat(bgTotDpp50Lebih, "###,###"));
+
+                                        BigDecimal bgTotDppKomulatifLebih = CommonUtil.dobelToBigDecimal(komulatifLebih);
+                                        pendapatanDokter.setTotalDppPph21KomulatifLebih(bgTotDppKomulatifLebih);
+                                        pendapatanDokter.setStTotalDppPph21KomulatifLebih(CommonUtil.numbericFormat(bgTotDppKomulatifLebih, "###,###"));
+
+                                        BigDecimal bgTotDppPph21Lebih = CommonUtil.dobelToBigDecimal(pph21Lebih);
+                                        pendapatanDokter.setTotalDppPph21Lebih(bgTotDppPph21Lebih);
+                                        pendapatanDokter.setStTotalDppPph21Lebih(CommonUtil.numbericFormat(bgTotDppPph21Lebih, "###,###"));
+
+                                        pendapatanDokter.setTarifLebih(tarifPajakLebih);
+                                        pendapatanDokter.setStTarifLebih(stTarifLebih);
+
+                                        BigDecimal bgTotPphDipungutLebih = CommonUtil.dobelToBigDecimal(pphDipungutLebih);
+                                        pendapatanDokter.setTotalPphDipungutLebih(bgTotPphDipungutLebih);
+                                        pendapatanDokter.setStTotalPphDipungutLebih(CommonUtil.numbericFormat(bgTotPphDipungutLebih, "###,###"));
+
+                                        BigDecimal bgTotPphLebih = CommonUtil.dobelToBigDecimal(pphLebih);
+                                        pendapatanDokter.setTotalPphLebih(bgTotPphLebih);
+                                        pendapatanDokter.setStTotalPphLebih(CommonUtil.numbericFormat(bgTotPphLebih, "###,###"));
+
+                                        BigDecimal bgTotPphFinal = CommonUtil.dobelToBigDecimal(pphFinal);
+                                        pendapatanDokter.setTotalPphFinal(bgTotPphFinal);
+                                        pendapatanDokter.setStTotalPphFinal(CommonUtil.numbericFormat(bgTotPphFinal, "###,###"));
+
+                                        BigDecimal bgTotGajiBersih = CommonUtil.dobelToBigDecimal(totGajiBersih);
+                                        pendapatanDokter.setTotalGajiBersih(bgTotGajiBersih);
+                                        pendapatanDokter.setStTotalGajiBersih(CommonUtil.numbericFormat(bgTotGajiBersih, "###,###"));
+
+                                        String userLogin = CommonUtil.userLogin();
+                                        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+                                        pendapatanDokter.setApprovalFlag("Y");
+                                        pendapatanDokter.setApprovalWho(userLogin);
+                                        pendapatanDokter.setApprovalDate(updateTime);
+                                        pendapatanDokter.setFlag("Y");
+                                        pendapatanDokter.setAction("C");
+                                        pendapatanDokter.setCreatedDate(updateTime);
+                                        pendapatanDokter.setLastUpdate(updateTime);
+                                        pendapatanDokter.setCreatedWho(userLogin);
+                                        pendapatanDokter.setLastUpdateWho(userLogin);
+                                        pendapatanDokter.setLevel(level);
+
+                                        BigDecimal bgTotpndptnRs = CommonUtil.dobelToBigDecimal(totpndptnRs);
+                                        pendapatanDokter.setTotalPendapatanRs(bgTotpndptnRs);
+                                        pendapatanDokter.setStTotalPendapatanRs(CommonUtil.numbericFormat(bgTotpndptnRs, "###,###"));
+
+                                        BigDecimal bgTotHrBruto = CommonUtil.dobelToBigDecimal(totHrBruto);
+                                        pendapatanDokter.setTotalHrBruto(bgTotHrBruto);
+                                        pendapatanDokter.setStTotalHrBruto(CommonUtil.numbericFormat(bgTotHrBruto, "###,###"));
+
+                                        BigDecimal bgTotHrAktifitas = CommonUtil.dobelToBigDecimal(totHrAktifitas);
+                                        pendapatanDokter.setTotalHrAktifitasNetto(bgTotHrAktifitas);
+                                        pendapatanDokter.setStTotalHrAktifitasNetto(CommonUtil.numbericFormat(bgTotHrAktifitas, "###,###"));
+
+                                        BigDecimal bgTotPotKs = CommonUtil.dobelToBigDecimal(totPotKs);
+                                        pendapatanDokter.setTotalPotKs(bgTotPotKs);
+                                        pendapatanDokter.setStTotalPotKs(CommonUtil.numbericFormat(bgTotPotKs, "###,###"));
+
+                                        listPendapatan.add(pendapatanDokter);
+                                    }else {
+                                        pendapatanDokter.setDokterId(dokterId);
+                                        pendapatanDokter.setDokterName(String.valueOf(obj[6]));
+                                        pendapatanDokter.setBranchId(bean.getBranchId());
+                                        pendapatanDokter.setBulan(bean.getBulan());
+                                        pendapatanDokter.setTahun(bean.getTahun());
+                                        pendapatanDokter.setKodeJabatan(String.valueOf(obj[7]));
+
+                                        BigDecimal bgTotBruto = CommonUtil.dobelToBigDecimal(totBruto);
+                                        pendapatanDokter.setTotalBruto(bgTotBruto);
+                                        pendapatanDokter.setStTotalBruto(CommonUtil.numbericFormat(bgTotBruto, "###,###"));
+
+                                        BigDecimal bgTotDppPph50 = CommonUtil.dobelToBigDecimal(totDppPph50);
+                                        pendapatanDokter.setTotalDppPph50(bgTotDppPph50);
+                                        pendapatanDokter.setStTotalDppPph50(CommonUtil.numbericFormat(bgTotDppPph50, "###,###"));
+
+                                        BigDecimal bgTotDppPphKomulatif = CommonUtil.dobelToBigDecimal(totDppPphKomulatif);
+                                        pendapatanDokter.setTotalDppPph21Komulatif(bgTotDppPphKomulatif);
+                                        pendapatanDokter.setStTotalDppPph21Komulatif(CommonUtil.numbericFormat(bgTotDppPphKomulatif, "###,###"));
+
+                                        BigDecimal bgTotDppPph21 = CommonUtil.dobelToBigDecimal(totDppPph21);
+                                        pendapatanDokter.setTotalDppPph21(bgTotDppPph21);
+                                        pendapatanDokter.setStTotalDppPph21(CommonUtil.numbericFormat(bgTotDppPph21, "###,###"));
+
+                                        pendapatanDokter.setTarif(tarifPajak);
+                                        pendapatanDokter.setStTarif(stTarif);
+
+                                        BigDecimal bgTotPphDipungut = CommonUtil.dobelToBigDecimal(totPphDipungut);
+                                        pendapatanDokter.setTotalPphDipungut(bgTotPphDipungut);
+                                        pendapatanDokter.setStTotalPphDipungut(CommonUtil.numbericFormat(bgTotPphDipungut, "###,###"));
+
+                                        BigDecimal bgTotGajiBersih = CommonUtil.dobelToBigDecimal(totGajiBersih);
+                                        pendapatanDokter.setTotalGajiBersih(bgTotGajiBersih);
+                                        pendapatanDokter.setStTotalGajiBersih(CommonUtil.numbericFormat(bgTotGajiBersih, "###,###"));
+
+                                        String userLogin = CommonUtil.userLogin();
+                                        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+                                        pendapatanDokter.setApprovalFlag("Y");
+                                        pendapatanDokter.setApprovalWho(userLogin);
+                                        pendapatanDokter.setApprovalDate(updateTime);
+                                        pendapatanDokter.setFlag("Y");
+                                        pendapatanDokter.setAction("C");
+                                        pendapatanDokter.setCreatedDate(updateTime);
+                                        pendapatanDokter.setLastUpdate(updateTime);
+                                        pendapatanDokter.setCreatedWho(userLogin);
+                                        pendapatanDokter.setLastUpdateWho(userLogin);
+                                        pendapatanDokter.setLevel("1");
+
+                                        BigDecimal bgTotpndptnRs = CommonUtil.dobelToBigDecimal(totpndptnRs);
+                                        pendapatanDokter.setTotalPendapatanRs(bgTotpndptnRs);
+                                        pendapatanDokter.setStTotalPendapatanRs(CommonUtil.numbericFormat(bgTotpndptnRs, "###,###"));
+
+                                        BigDecimal bgTotHrBruto = CommonUtil.dobelToBigDecimal(totHrBruto);
+                                        pendapatanDokter.setTotalHrBruto(bgTotHrBruto);
+                                        pendapatanDokter.setStTotalHrBruto(CommonUtil.numbericFormat(bgTotHrBruto, "###,###"));
+
+                                        BigDecimal bgTotHrAktifitas = CommonUtil.dobelToBigDecimal(totHrAktifitas);
+                                        pendapatanDokter.setTotalHrAktifitasNetto(bgTotHrAktifitas);
+                                        pendapatanDokter.setStTotalHrAktifitasNetto(CommonUtil.numbericFormat(bgTotHrAktifitas, "###,###"));
+
+                                        BigDecimal bgTotPotKs = CommonUtil.dobelToBigDecimal(totPotKs);
+                                        pendapatanDokter.setTotalPotKs(bgTotPotKs);
+                                        pendapatanDokter.setStTotalPotKs(CommonUtil.numbericFormat(bgTotPotKs, "###,###"));
+
+                                        listPendapatan.add(pendapatanDokter);
+                                    }
+                                }else {
+                                    pendapatanDokter.setDokterId(dokterId);
+                                    pendapatanDokter.setDokterName(String.valueOf(obj[6]));
+                                    pendapatanDokter.setBranchId(bean.getBranchId());
+                                    pendapatanDokter.setBulan(bean.getBulan());
+                                    pendapatanDokter.setTahun(bean.getTahun());
+                                    pendapatanDokter.setKodeJabatan(String.valueOf(obj[7]));
+
+                                    BigDecimal bgTotBruto = CommonUtil.dobelToBigDecimal(totBruto);
+                                    pendapatanDokter.setTotalBruto(bgTotBruto);
+                                    pendapatanDokter.setStTotalBruto(CommonUtil.numbericFormat(bgTotBruto, "###,###"));
+
+                                    BigDecimal bgTotDppPph50 = CommonUtil.dobelToBigDecimal(totDppPph50);
+                                    pendapatanDokter.setTotalDppPph50(bgTotDppPph50);
+                                    pendapatanDokter.setStTotalDppPph50(CommonUtil.numbericFormat(bgTotDppPph50, "###,###"));
+
+                                    BigDecimal bgTotDppPphKomulatif = CommonUtil.dobelToBigDecimal(totDppPphKomulatif);
+                                    pendapatanDokter.setTotalDppPph21Komulatif(bgTotDppPphKomulatif);
+                                    pendapatanDokter.setStTotalDppPph21Komulatif(CommonUtil.numbericFormat(bgTotDppPphKomulatif, "###,###"));
+
+                                    BigDecimal bgTotDppPph21 = CommonUtil.dobelToBigDecimal(totDppPph21);
+                                    pendapatanDokter.setTotalDppPph21(bgTotDppPph21);
+                                    pendapatanDokter.setStTotalDppPph21(CommonUtil.numbericFormat(bgTotDppPph21, "###,###"));
+
+                                    pendapatanDokter.setTarif(tarifPajak);
+                                    pendapatanDokter.setStTarif(stTarif);
+
+                                    BigDecimal bgTotPphDipungut = CommonUtil.dobelToBigDecimal(totPphDipungut);
+                                    pendapatanDokter.setTotalPphDipungut(bgTotPphDipungut);
+                                    pendapatanDokter.setStTotalPphDipungut(CommonUtil.numbericFormat(bgTotPphDipungut, "###,###"));
+
+                                    BigDecimal bgTotGajiBersih = CommonUtil.dobelToBigDecimal(totGajiBersih);
+                                    pendapatanDokter.setTotalGajiBersih(bgTotGajiBersih);
+                                    pendapatanDokter.setStTotalGajiBersih(CommonUtil.numbericFormat(bgTotGajiBersih, "###,###"));
+
+                                    String userLogin = CommonUtil.userLogin();
+                                    Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+                                    pendapatanDokter.setApprovalFlag("Y");
+                                    pendapatanDokter.setApprovalWho(userLogin);
+                                    pendapatanDokter.setApprovalDate(updateTime);
+                                    pendapatanDokter.setFlag("Y");
+                                    pendapatanDokter.setAction("C");
+                                    pendapatanDokter.setCreatedDate(updateTime);
+                                    pendapatanDokter.setLastUpdate(updateTime);
+                                    pendapatanDokter.setCreatedWho(userLogin);
+                                    pendapatanDokter.setLastUpdateWho(userLogin);
+                                    pendapatanDokter.setLevel("1");
+
+                                    BigDecimal bgTotpndptnRs = CommonUtil.dobelToBigDecimal(totpndptnRs);
+                                    pendapatanDokter.setTotalPendapatanRs(bgTotpndptnRs);
+                                    pendapatanDokter.setStTotalPendapatanRs(CommonUtil.numbericFormat(bgTotpndptnRs, "###,###"));
+
+                                    BigDecimal bgTotHrBruto = CommonUtil.dobelToBigDecimal(totHrBruto);
+                                    pendapatanDokter.setTotalHrBruto(bgTotHrBruto);
+                                    pendapatanDokter.setStTotalHrBruto(CommonUtil.numbericFormat(bgTotHrBruto, "###,###"));
+
+                                    BigDecimal bgTotHrAktifitas = CommonUtil.dobelToBigDecimal(totHrAktifitas);
+                                    pendapatanDokter.setTotalHrAktifitasNetto(bgTotHrAktifitas);
+                                    pendapatanDokter.setStTotalHrAktifitasNetto(CommonUtil.numbericFormat(bgTotHrAktifitas, "###,###"));
+
+                                    BigDecimal bgTotPotKs = CommonUtil.dobelToBigDecimal(totPotKs);
+                                    pendapatanDokter.setTotalPotKs(bgTotPotKs);
+                                    pendapatanDokter.setStTotalPotKs(CommonUtil.numbericFormat(bgTotPotKs, "###,###"));
+
+                                    listPendapatan.add(pendapatanDokter);
+                                }
+
+
+
+
+//                                pendapatanDokter.setDokterId(dokterId);
+//                                pendapatanDokter.setDokterName(String.valueOf(obj[6]));
+//                                pendapatanDokter.setBranchId(bean.getBranchId());
+//                                pendapatanDokter.setBulan(bean.getBulan());
+//                                pendapatanDokter.setTahun(bean.getTahun());
+//                                pendapatanDokter.setKodeJabatan(String.valueOf(obj[7]));
+//
+//                                BigDecimal bgTotBruto = CommonUtil.dobelToBigDecimal(totBruto);
+//                                pendapatanDokter.setTotalBruto(bgTotBruto);
+//                                pendapatanDokter.setStTotalBruto(CommonUtil.numbericFormat(bgTotBruto, "###,###"));
+//
+//                                BigDecimal bgTotDppPph50 = CommonUtil.dobelToBigDecimal(totDppPph50);
+//                                pendapatanDokter.setTotalDppPph50(bgTotDppPph50);
+//                                pendapatanDokter.setStTotalDppPph50(CommonUtil.numbericFormat(bgTotDppPph50, "###,###"));
+//
+//                                BigDecimal bgTotDppPphKomulatif = CommonUtil.dobelToBigDecimal(totDppPphKomulatif);
+//                                pendapatanDokter.setTotalDppPph21Komulatif(bgTotDppPphKomulatif);
+//                                pendapatanDokter.setStTotalDppPph21Komulatif(CommonUtil.numbericFormat(bgTotDppPphKomulatif, "###,###"));
+//
+//                                BigDecimal bgTotDppPph21 = CommonUtil.dobelToBigDecimal(totDppPph21);
+//                                pendapatanDokter.setTotalDppPph21(bgTotDppPph21);
+//                                pendapatanDokter.setStTotalDppPph21(CommonUtil.numbericFormat(bgTotDppPph21, "###,###"));
+//
+//                                pendapatanDokter.setTarif(tarifPajak);
+//                                pendapatanDokter.setStTarif(stTarif);
+//
+//                                BigDecimal bgTotPphDipungut = CommonUtil.dobelToBigDecimal(totPphDipungut);
+//                                pendapatanDokter.setTotalPphDipungut(bgTotPphDipungut);
+//                                pendapatanDokter.setStTotalPphDipungut(CommonUtil.numbericFormat(bgTotPphDipungut, "###,###"));
+//
+//                                BigDecimal bgTotGajiBersih = CommonUtil.dobelToBigDecimal(totGajiBersih);
+//                                pendapatanDokter.setTotalGajiBersih(bgTotGajiBersih);
+//                                pendapatanDokter.setStTotalGajiBersih(CommonUtil.numbericFormat(bgTotGajiBersih, "###,###"));
+//
+//                                String userLogin = CommonUtil.userLogin();
+//                                Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+//                                pendapatanDokter.setApprovalFlag("Y");
+//                                pendapatanDokter.setApprovalWho(userLogin);
+//                                pendapatanDokter.setApprovalDate(updateTime);
+//                                pendapatanDokter.setFlag("Y");
+//                                pendapatanDokter.setAction("C");
+//                                pendapatanDokter.setCreatedDate(updateTime);
+//                                pendapatanDokter.setLastUpdate(updateTime);
+//                                pendapatanDokter.setCreatedWho(userLogin);
+//                                pendapatanDokter.setLastUpdateWho(userLogin);
+//                                pendapatanDokter.setLevel("1");
+//
+//                                BigDecimal bgTotpndptnRs = CommonUtil.dobelToBigDecimal(totpndptnRs);
+//                                pendapatanDokter.setTotalPendapatanRs(bgTotpndptnRs);
+//                                pendapatanDokter.setStTotalPendapatanRs(CommonUtil.numbericFormat(bgTotpndptnRs, "###,###"));
+//
+//                                BigDecimal bgTotHrBruto = CommonUtil.dobelToBigDecimal(totHrBruto);
+//                                pendapatanDokter.setTotalHrBruto(bgTotHrBruto);
+//                                pendapatanDokter.setStTotalHrBruto(CommonUtil.numbericFormat(bgTotHrBruto, "###,###"));
+//
+//                                BigDecimal bgTotHrAktifitas = CommonUtil.dobelToBigDecimal(totHrAktifitas);
+//                                pendapatanDokter.setTotalHrAktifitasNetto(bgTotHrAktifitas);
+//                                pendapatanDokter.setStTotalHrAktifitasNetto(CommonUtil.numbericFormat(bgTotHrAktifitas, "###,###"));
+//
+//                                BigDecimal bgTotPotKs = CommonUtil.dobelToBigDecimal(totPotKs);
+//                                pendapatanDokter.setTotalPotKs(bgTotPotKs);
+//                                pendapatanDokter.setStTotalPotKs(CommonUtil.numbericFormat(bgTotPotKs, "###,###"));
+//
+//                                listPendapatan.add(pendapatanDokter);
                             }
                         }
                     }
@@ -1091,7 +1722,10 @@ public class PendapatanDokterBoImpl implements PendapatanDokterBo {
                     pendapatanDokter.setNamaPasien(entity.getNamaPasien());
                     pendapatanDokter.setTanggal(entity.getTanggal());
                     pendapatanDokter.setKeterangan(entity.getKeterangan());
-                    pendapatanDokter.setTarifInacbg(CommonUtil.numbericFormat(entity.getTarifInacbg(), "###,###"));
+                    if (entity.getTarifInacbg() != null)
+                        pendapatanDokter.setTarifInacbg(CommonUtil.numbericFormat(entity.getTarifInacbg(), "###,###"));
+                    else
+                        pendapatanDokter.setTarifInacbg("-");
 
                     pendapatanDokter.setBruto(CommonUtil.numbericFormat(entity.getBruto(), "###,###"));
                     pendapatanDokter.setPendapatanRs(CommonUtil.numbericFormat(entity.getPendapatanRs(), "###,###"));
@@ -1138,7 +1772,7 @@ public class PendapatanDokterBoImpl implements PendapatanDokterBo {
         logger.info("[PendapatanBoImpl.saveAdd] start process >>>");
 
         if (bean != null){
-            String idPendapatan, idDetailPendapatan;
+            String idPendapatan, idDetailPendapatan, idPendapatanDokterPphLebih;
             HttpSession session = ServletActionContext.getRequest().getSession();
             List<PendapatanDokter> listPendaptanDokter = (List<PendapatanDokter>) session.getAttribute("listOfResultPendapatanDokter");
             List<PendapatanDokter> listDetailPendapatan = (List<PendapatanDokter>) session.getAttribute("listOfResultDetailPendapatanDokter");
@@ -1147,6 +1781,7 @@ public class PendapatanDokterBoImpl implements PendapatanDokterBo {
                 for (PendapatanDokter pendapatanDokter : listPendaptanDokter){
                     ItHrisPendapatanDokterEntity entity = new ItHrisPendapatanDokterEntity();
                     idPendapatan = pendapatanDokterDao.getNextIdPendapatanDokter();
+
                     entity.setPendapatanDokterId(idPendapatan);
                     entity.setDokterId(pendapatanDokter.getDokterId());
                     entity.setDokterName(pendapatanDokter.getDokterName());
@@ -1173,12 +1808,45 @@ public class PendapatanDokterBoImpl implements PendapatanDokterBo {
                     entity.setHrBruto(pendapatanDokter.getTotalHrBruto());
                     entity.setHrAktifitasNetto(pendapatanDokter.getTotalHrAktifitasNetto());
                     entity.setPotKs(pendapatanDokter.getTotalPotKs());
+                    entity.setLevel(pendapatanDokter.getLevel());
+                    entity.setKodeJabatan(pendapatanDokter.getKodeJabatan());
+                    if (pendapatanDokter.getTotalPphLebih() != null){
+                        entity.setPphLebih(pendapatanDokter.getTotalPphLebih());
+                    }
+                    if (pendapatanDokter.getTotalPphFinal() != null){
+                        entity.setPphFinal(pendapatanDokter.getTotalPphFinal());
+                    }
 
                     try{
                         pendapatanDokterDao.addAndSave(entity);
                     }catch (HibernateException e){
                         logger.error("[PendapatanDokterBoImpl.saveAdd] Error, " + e.getMessage());
                         throw new GeneralBOException("Found problem when saving new data Pendapatan, please info to your admin..." + e.getMessage());
+                    }
+
+                    if (pendapatanDokter.getTotalDpp50Lebih() != null){
+                        ItHrisPendapatanDokterPphLebihEntity pphLebih = new ItHrisPendapatanDokterPphLebihEntity();
+                        idPendapatanDokterPphLebih = pendapatanDokterPphLebihDao.getNextIdPendapatanDokterPphLebih();
+                        pphLebih.setPendapatanDokterPphLebihId(idPendapatanDokterPphLebih);
+                        pphLebih.setPendapatanDokterId(idPendapatan);
+                        pphLebih.setDppPph50(pendapatanDokter.getTotalDpp50Lebih());
+                        pphLebih.setDppPph21Komulatif(pendapatanDokter.getTotalDppPph21KomulatifLebih());
+                        pphLebih.setDppPph21(pendapatanDokter.getTotalDppPph21Lebih());
+                        pphLebih.setTarif(pendapatanDokter.getTarifLebih());
+                        pphLebih.setPphDipungut(pendapatanDokter.getTotalPphDipungutLebih());
+                        pphLebih.setFlag(bean.getFlag());
+                        pphLebih.setAction(bean.getAction());
+                        pphLebih.setCreatedDate(bean.getCreatedDate());
+                        pphLebih.setLastUpdate(bean.getLastUpdate());
+                        pphLebih.setCreatedWho(bean.getCreatedWho());
+                        pphLebih.setLastUpdateWho(bean.getLastUpdateWho());
+
+                        try{
+                            pendapatanDokterPphLebihDao.addAndSave(pphLebih);
+                        }catch (HibernateException e){
+                            logger.error("[PendapatanDokterBoImpl.saveAdd] Error, " + e.getMessage());
+                            throw new GeneralBOException("Found problem when saving new data Pendapatan, please info to your admin..." + e.getMessage());
+                        }
                     }
 
                     for (PendapatanDokter pendapatanDokterdetail : listDetailPendapatan){
@@ -1276,7 +1944,7 @@ public class PendapatanDokterBoImpl implements PendapatanDokterBo {
                     pendapatanDokter.setPendapatanDokterId(entity.getPendapatanDokterId());
                     pendapatanDokter.setDokterId(entity.getDokterId());
                     pendapatanDokter.setDokterName(entity.getDokterName());
-                    pendapatanDokter.setBranchId(entity.getBranchId());
+//                    pendapatanDokter.setBranchId(entity.getBranchId());
                     pendapatanDokter.setBulan(entity.getBulan());
                     pendapatanDokter.setTahun(entity.getTahun());
                     pendapatanDokter.setBruto(CommonUtil.numbericFormat(entity.getBruto(), "###,###"));
@@ -1288,6 +1956,12 @@ public class PendapatanDokterBoImpl implements PendapatanDokterBo {
                     pendapatanDokter.setHrAktifitasNetto(CommonUtil.numbericFormat(entity.getHrAktifitasNetto(), "###,###"));
 
                     pendapatanDokter.setPotKs(CommonUtil.numbericFormat(entity.getPotKs(), "###,###"));
+                    pendapatanDokter.setKodeJabatan(entity.getKodeJabatan());
+
+                    if (entity.getFlagDiterima() != null)
+                        pendapatanDokter.setFlagDiterima(entity.getFlagDiterima());
+                    else
+                        pendapatanDokter.setFlagDiterima("N");
 
                     pendapatanDokter.setApprovalFlag(entity.getApprovalFlag());
                     pendapatanDokter.setApprovalWho(entity.getApprovalWho());

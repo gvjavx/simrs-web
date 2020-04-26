@@ -75,7 +75,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Pendapatan Dokter
+            Pendapatan Dokter KSO
         </h1>
     </section>
     <!-- Main content -->
@@ -171,7 +171,10 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:if test='pendapatanDokter.branchId == "KP"'>
+                                                        <%--<s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>--%>
+                                                        <%--<s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="pendapatanDokter.branchId"--%>
+                                                                  <%--listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
+                                                        <s:if test='pendapatanDokter.branchUser == "KP"'>
                                                             <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                                                             <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="pendapatanDokter.branchId"
                                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
@@ -251,18 +254,20 @@
                                                                 <%--<sj:a onClickTopics="showDialogMenuView" href="%{urlView}">--%>
                                                                     <%--<img border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_trash">--%>
                                                                 <%--</sj:a>--%>
-                                                                <img onclick="detailPendapatan('<s:property value="#attr.row.pendapatanDokterId"/>','<s:property value="#attr.row.dokterName"/>','<s:property value="#attr.row.branchName"/>','<s:property value="#attr.row.bruto"/>','<s:property value="#attr.row.pendapatanRs"/>','<s:property value="#attr.row.hrBruto"/>','<s:property value="#attr.row.dppPph50"/>','<s:property value="#attr.row.dppPph21Komulatif"/>','<s:property value="#attr.row.StTarif"/>','<s:property value="#attr.row.pphDipungut"/>','<s:property value="#attr.row.hrAktifitasNetto"/>','<s:property value="#attr.row.potKs"/>','<s:property value="#attr.row.gajiBersih"/>')" border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_trash" style="cursor: pointer;">
+                                                                <img onclick="detailPendapatan('<s:property value="#attr.row.kodeJabatan"/>','<s:property value="#attr.row.bulan"/>','<s:property value="#attr.row.tahun"/>','<s:property value="#attr.row.pendapatanDokterId"/>','<s:property value="#attr.row.dokterName"/>','<s:property value="#attr.row.branchName"/>','<s:property value="#attr.row.bruto"/>','<s:property value="#attr.row.pendapatanRs"/>','<s:property value="#attr.row.hrBruto"/>','<s:property value="#attr.row.dppPph50"/>','<s:property value="#attr.row.dppPph21Komulatif"/>','<s:property value="#attr.row.StTarif"/>','<s:property value="#attr.row.pphDipungut"/>','<s:property value="#attr.row.hrAktifitasNetto"/>','<s:property value="#attr.row.potKs"/>','<s:property value="#attr.row.gajiBersih"/>')" border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_trash" style="cursor: pointer;">
                                                             </display:column>
-                                                            <display:column property="branchName" sortable="true" title="Unit" />
-                                                            <display:column property="dokterId" sortable="true" title="Id Dokter"  />
-                                                            <display:column property="dokterName" sortable="true" title="Nama Dokter" />
-                                                            <display:column property="bulan" sortable="true" title="Bulan" />
-                                                            <display:column property="tahun" sortable="true" title="Tahun" />
-                                                            <display:column property="bruto" sortable="true" title="Bruto" />
-                                                            <display:column property="hrBruto" sortable="true" title="Hr. Bruto" />
-                                                            <display:column property="pphDipungut" sortable="true" title="Pot. Pajak" />
-                                                            <display:column property="potKs" sortable="true" title="Pot.Ks" />
-                                                            <display:column property="gajiBersih" sortable="true" title="Total Pendapatan" />
+                                                            <display:column style="text-align:center" property="branchName" sortable="true" title="Unit" />
+                                                            <display:column style="text-align:center" property="dokterId" sortable="true" title="Id Dokter"  />
+                                                            <display:column style="text-align:center" property="dokterName" sortable="true" title="Nama Dokter" />
+                                                            <display:column style="text-align:center" property="kodeJabatan" sortable="true" title="Kode Dokter" />
+                                                            <display:column style="text-align:center" property="bulan" sortable="true" title="Bulan" />
+                                                            <display:column style="text-align:center" property="tahun" sortable="true" title="Tahun" />
+                                                            <display:column style="text-align:right" property="bruto" sortable="true" title="Bruto" />
+                                                            <display:column style="text-align:right" property="hrBruto" sortable="true" title="Hr. Bruto" />
+                                                            <display:column style="text-align:right" property="pphDipungut" sortable="true" title="Pot. Pajak" />
+                                                            <display:column style="text-align:right" property="potKs" sortable="true" title="Pot.Ks" />
+                                                            <display:column style="text-align:right" property="gajiBersih" sortable="true" title="Total Pendapatan" />
+                                                            <display:column style="text-align:center" property="flagDiterima" sortable="true" title="Diterima" />
                                                         </display:table>
                                                     </td>
                                                 </tr>
@@ -324,12 +329,24 @@
                     <div class="col-md-12">
                         <table class="table table-striped">
                             <tr>
+                                <td><b>Kode Dokter</b></td>
+                                <td><span id="kode_dokter"></span></td>
+                            </tr>
+                            <tr>
                                 <td><b>Nama</b></td>
                                 <td><span id="nama_dokter"></span></td>
                             </tr>
                             <tr>
                                 <td><b>Unit</b></td>
                                 <td><span id="nama_unit"></span></td>
+                            </tr>
+                            <tr>
+                                <td><b>Bulan</b></td>
+                                <td><span id="bulan"></span></td>
+                            </tr>
+                            <tr>
+                                <td><b>Tahun</b></td>
+                                <td><span id="tahun"></span></td>
                             </tr>
                             <tr>
                                 <td><b>Bruto</b></td>
@@ -346,6 +363,11 @@
                             <tr>
                                 <td><b>Dpp Pph 21</b></td>
                                 <td><span id="dpp_pph_21"></span></td>
+                                <td>
+                                    <a href="javascript:void(0)">
+                                        <img sizes="30" id="btnViewPphLebih" border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_trash">
+                                    </a>
+                                </td>
                             </tr>
                             <tr>
                                 <td><b>Dpp Pph Komulatif</b></td>
@@ -394,6 +416,27 @@
         </div>
     </div>
 </div>
+
+<div id="modal-pph" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Detail PPH Lebih</h4>
+            </div>
+            <div class="modal-body">
+                <table style="width: 100%;" class="detailPphLebihTable table table-bordered">
+
+                </table>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn btn-default" data-dismiss="modal">Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     function formaterDate(dateTime) {
 
@@ -412,7 +455,7 @@
         return today;
     }
 
-    function detailPendapatan(pendapatanDokterId,namaDokter,branchName,bruto, pendapatanRs,hrBruto,dppPph21,dppPphKomulatif,pajak,potPajak,hrAktifitas,potKs,gajiBersih){
+    function detailPendapatan(kodeJabatan, bulan, tahun, pendapatanDokterId,namaDokter,branchName,bruto, pendapatanRs,hrBruto,dppPph21,dppPphKomulatif,pajak,potPajak,hrAktifitas,potKs,gajiBersih){
         console.log(namaDokter);
         $('#nama_dokter').text(namaDokter);
         $('#nama_unit').text(branchName);
@@ -426,6 +469,9 @@
         $('#hr_aktifitas_netto').text(hrAktifitas);
         $('#pot_ks').text(potKs);
         $('#hr_netto').text(gajiBersih);
+        $('#kode_dokter').text(kodeJabatan);
+        $('#bulan').text(bulan);
+        $('#tahun').text(tahun);
         $('#body_detail').html('');
 
         var table = "";
