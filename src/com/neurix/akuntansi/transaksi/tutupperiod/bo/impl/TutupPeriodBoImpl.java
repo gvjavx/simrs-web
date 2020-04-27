@@ -607,32 +607,35 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                             TutupPeriod parent = parents.get(0);
                             saldoAkhirEntity.setJumlahDebit(parent.getJumlahDebit());
                             saldoAkhirEntity.setJumlahKredit(parent.getJumlahKredit());
+                            parentPeriod.setJumlahDebit(parent.getJumlahDebit());
+                            parentPeriod.setJumlahKredit(parent.getJumlahKredit());
                         }
                     }
 
                     // mendapatkan data saldo akhir periode sebelumnya dengan rekening_id dan unit
-                    SaldoAkhir saldoAkhir = new SaldoAkhir();
-                    saldoAkhir.setPeriode(getPeriodeSebelum(bean.getBulan(), bean.getTahun()));
-                    saldoAkhir.setBranchId(bean.getUnit());
-                    saldoAkhir.setRekeningId(saldoAkhirEntity.getRekeningId());
-
-                    ItAkunSaldoAkhirEntity saldoAkhirLalu = new ItAkunSaldoAkhirEntity();
-                    List<ItAkunSaldoAkhirEntity> saldoAkhirEntities = getListEntitySaldoAkhir(saldoAkhir);
-                    if (saldoAkhirEntities.size() > 0){
-                        saldoAkhirLalu = saldoAkhirEntities.get(0);
-
-                        // jika posisi saldo akhir yang lalu dengan rekening_id yang dicari adalah debit maka akan menambah jumlah debit
-                        if ("D".equalsIgnoreCase(saldoAkhirLalu.getPosisi())){
-                            saldoAkhirEntity.setJumlahDebit(saldoAkhirEntity.getJumlahDebit().add(saldoAkhirLalu.getSaldo()));
-                            parentPeriod.setJumlahDebit(saldoAkhirEntity.getJumlahDebit().add(saldoAkhirLalu.getSaldo()));
-                        } else {
-                            // jika saldo akhir lalu adalah kredit maka akan menambah jumlah kredit
-                            saldoAkhirEntity.setJumlahKredit(saldoAkhirEntity.getJumlahKredit().add(saldoAkhirLalu.getSaldo()));
-                            parentPeriod.setJumlahKredit(saldoAkhirEntity.getJumlahKredit().add(saldoAkhirLalu.getSaldo()));
-                        }
-                    }
+//                    SaldoAkhir saldoAkhir = new SaldoAkhir();
+//                    saldoAkhir.setPeriode(getPeriodeSebelum(bean.getBulan(), bean.getTahun()));
+//                    saldoAkhir.setBranchId(bean.getUnit());
+//                    saldoAkhir.setRekeningId(saldoAkhirEntity.getRekeningId());
+//
+//                    ItAkunSaldoAkhirEntity saldoAkhirLalu = new ItAkunSaldoAkhirEntity();
+//                    List<ItAkunSaldoAkhirEntity> saldoAkhirEntities = getListEntitySaldoAkhir(saldoAkhir);
+//                    if (saldoAkhirEntities.size() > 0){
+//                        saldoAkhirLalu = saldoAkhirEntities.get(0);
+//
+//                        // jika posisi saldo akhir yang lalu dengan rekening_id yang dicari adalah debit maka akan menambah jumlah debit
+//                        if ("D".equalsIgnoreCase(saldoAkhirLalu.getPosisi())){
+//                            saldoAkhirEntity.setJumlahDebit(saldoAkhirEntity.getJumlahDebit().add(saldoAkhirLalu.getSaldo()));
+//                            parentPeriod.setJumlahDebit(saldoAkhirEntity.getJumlahDebit().add(saldoAkhirLalu.getSaldo()));
+//                        } else {
+//                            // jika saldo akhir lalu adalah kredit maka akan menambah jumlah kredit
+//                            saldoAkhirEntity.setJumlahKredit(saldoAkhirEntity.getJumlahKredit().add(saldoAkhirLalu.getSaldo()));
+//                            parentPeriod.setJumlahKredit(saldoAkhirEntity.getJumlahKredit().add(saldoAkhirLalu.getSaldo()));
+//                        }
+//                    }
                     // end
 
+                    // SET SALDO
                     if (saldoAkhirEntity.getJumlahDebit().compareTo(saldoAkhirEntity.getJumlahKredit()) == 1){
 
                         // jika debit lebih besar maka debit - kredit = saldo, posisi = debit
@@ -658,7 +661,7 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                 // prosess kembali dengan parameter parrent yang sudah di collect dan di insert;
                 // parameter parent diprosess kembali sebagai child;
                 level--;
-                prosesTutupPeriod(parentPeriods, bean, level);
+                prosesTutupPeriod(listOfMapingParents, bean, level);
             }
         }
 
