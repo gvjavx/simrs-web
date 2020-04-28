@@ -237,4 +237,24 @@ public class TutupPeriodDao extends GenericDao<ItAkunTutupPeriodEntity, String> 
 
         return result;
     }
+
+    public String checkIfJurnalTransitoris(String transId){
+
+        String SQL = "SELECT posisi, keterangan FROM im_akun_mapping_jurnal\n" +
+                "WHERE keterangan = 'piutang_transistoris_pasien_rawat_inap'\n" +
+                "AND posisi = 'D'\n" +
+                "AND trans_id = :transId";
+
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("transId", transId)
+                .list();
+
+        String found = "N";
+        if (results.size() > 0){
+            found = "Y";
+        }
+
+        return found;
+    }
 }

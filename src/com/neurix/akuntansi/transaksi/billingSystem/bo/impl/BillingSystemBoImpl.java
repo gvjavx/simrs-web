@@ -246,6 +246,12 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
             periodSudahTutup=simrsBatasTutupPeriodEntity.getFlagTutup();
         }
 
+        // perbaikan periode
+        String isTransitoris = checkIsJurnalTransitoris(transId);
+        if ("Y".equalsIgnoreCase(isTransitoris)){
+            periodSudahTutup=null;
+        }
+
         if (tipeJurnalId!=null){
             try {
                 // Generating ID, get from postgre sequence

@@ -868,6 +868,10 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
         return kodeRekeningEntity;
     }
 
+    protected String checkIsJurnalTransitoris(String transId){
+        return tutupPeriodDao.checkIfJurnalTransitoris(transId);
+    }
+
     private String getNextIdBatasPeriod(){
         String id = "";
 
