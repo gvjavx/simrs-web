@@ -3,8 +3,8 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.5937424601000023"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="78"/>
+	<property name="ireport.x" value="364"/>
+	<property name="ireport.y" value="222"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -18,7 +18,7 @@
 		<defaultValueExpression><![CDATA["40023"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String">
-		<defaultValueExpression><![CDATA["C:\\tomcat\\webapps\\simrs\\pages\\report\\com\\neurix\\akuntansi\\"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["C:\\tomcat\\webapps\\go-medsys\\pages\\report\\com\\neurix\\akuntansi\\"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="kota" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="periodeTitle" class="java.lang.String" isForPrompting="false"/>
@@ -37,6 +37,8 @@
 	<parameter name="reportParams.tanggalAkhir" class="java.sql.Date">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="reportParams.periode" class="java.lang.String"/>
+	<parameter name="reportParams.tanggalAwalBulan" class="java.sql.Date"/>
 	<queryString>
 		<![CDATA[select
     x.tanggal_jurnal,
@@ -90,6 +92,9 @@ where
 	</variable>
 	<variable name="saldo" class="java.math.BigDecimal">
 		<variableExpression><![CDATA[$V{debit_akhir}.subtract( $V{kredit_akhir} )]]></variableExpression>
+	</variable>
+	<variable name="posisiSaldo" class="java.lang.String">
+		<variableExpression><![CDATA[$V{saldo}.compareTo(new BigDecimal(0))<0 ? "K" : "D"]]></variableExpression>
 	</variable>
 	<group name="rekening" isReprintHeaderOnEachPage="true">
 		<groupExpression><![CDATA[]]></groupExpression>
@@ -182,7 +187,7 @@ where
 					<text><![CDATA[Saldo Akhir : ]]></text>
 				</staticText>
 				<textField pattern="#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField-9" x="383" y="21" width="184" height="18" uuid="c956feb6-ad3c-40fe-b374-e3ca98ed2410"/>
+					<reportElement key="textField-9" x="383" y="21" width="173" height="18" uuid="c956feb6-ad3c-40fe-b374-e3ca98ed2410"/>
 					<box rightPadding="2">
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -192,7 +197,20 @@ where
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{saldo}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{saldo}.abs()]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField-9" x="556" y="21" width="11" height="18" uuid="d42ef91a-f2d6-4810-8a37-d4e4d01fc622"/>
+					<box rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{posisiSaldo}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
@@ -506,19 +524,28 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<subreportParameter name="nomor_master">
 					<subreportParameterExpression><![CDATA[$P{nomor_master}]]></subreportParameterExpression>
 				</subreportParameter>
+				<subreportParameter name="periode">
+					<subreportParameterExpression><![CDATA[$P{reportParams.periode}]]></subreportParameterExpression>
+				</subreportParameter>
 				<subreportParameter name="tanggal_awal">
 					<subreportParameterExpression><![CDATA[$P{reportParams.tanggalAwal}]]></subreportParameterExpression>
 				</subreportParameter>
-				<subreportParameter name="rekening_id">
-					<subreportParameterExpression><![CDATA[$P{rekening_id}]]></subreportParameterExpression>
+				<subreportParameter name="tanggal_awal_bulan">
+					<subreportParameterExpression><![CDATA[$P{reportParams.tanggalAwalBulan}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="tanggal_akhir">
+					<subreportParameterExpression><![CDATA[$P{reportParams.tanggalAkhir}]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportParameter name="branch_id">
 					<subreportParameterExpression><![CDATA[$P{reportParams.branchId}]]></subreportParameterExpression>
 				</subreportParameter>
+				<subreportParameter name="rekening_id">
+					<subreportParameterExpression><![CDATA[$P{rekening_id}]]></subreportParameterExpression>
+				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<returnValue subreportVariable="debit_awal" toVariable="debit_awal"/>
 				<returnValue subreportVariable="kredit_awal" toVariable="kredit_awal"/>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "KartuBukuBesarPerBukuBantuTanggal_subReport.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "KartuBukuBesarPerBukuBantuTanggalTanpaMaster_subReport.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</columnHeader>

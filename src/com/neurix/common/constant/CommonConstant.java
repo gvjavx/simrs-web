@@ -74,6 +74,7 @@ public class CommonConstant {
 
     public final static String URL_IMAGE_LOGO_REPORT = CommonUtil.getPropertyParams("base.dir")+"pages/images/logo-nmu.png";
     public final static String URL_LOGO_REPORT = CommonUtil.getPropertyParams("base.dir")+"pages/images/";
+    public final static String IMAGE_LOGO_KP = "KP.png";
     public final static String RESOURCE_DOCUMENT_PAYROLL = CommonUtil.getPropertyParams("resource.dir")+"mnt/documents/";
 
     public final static String REPORT_PAYROLL = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayroll3.jrxml";

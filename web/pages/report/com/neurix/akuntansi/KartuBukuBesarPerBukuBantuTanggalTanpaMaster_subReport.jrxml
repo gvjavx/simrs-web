@@ -32,12 +32,11 @@ it_akun_jurnal_detail a
 LEFT JOIN it_akun_saldo_akhir sa ON a.rekening_id = sa.rekening_id
 LEFT JOIN it_akun_jurnal b on a.no_jurnal = b.no_jurnal
 where
-    b.tanggal_jurnal <= $P{tanggal_akhir}
+    b.tanggal_jurnal <= $P{tanggal_awal}
 	AND b.tanggal_jurnal >= $P{tanggal_awal_bulan}
 	AND to_date(sa.periode, 'MM-yyyy') = to_date($P{periode}, 'MM-yyyy') - Interval '1 month'
     and sa.rekening_id = $P{rekening_id}
     and b.registered_flag = 'Y'
-    and a.master_id=$P{nomor_master}
     and b.branch_id IN ($P!{branch_id})
 ) a]]>
 	</queryString>
@@ -62,7 +61,7 @@ where
 		<band splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="19" splitType="Stretch">
+		<band height="18" splitType="Stretch">
 			<textField pattern="#,##0.00" isBlankWhenNull="false">
 				<reportElement key="textField-1" mode="Transparent" x="0" y="0" width="92" height="18" uuid="92555ed2-b091-4889-884a-5721db6c52a9"/>
 				<box leftPadding="2" rightPadding="2">

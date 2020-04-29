@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.9487171000000019"/>
-	<property name="ireport.x" value="122"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -24,107 +24,20 @@
 	<parameter name="areaId" class="java.lang.String"/>
 	<parameter name="parameter2" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[SELECT
-  a.*,
-  a.lastsaldo + a.penerimaan - a.pengeluaran as saldosekarang
-FROM
-  (
-    SELECT
-      distinct a.kode_rekening as kodeRekening,
-      a.grup as grup,
-      $P{periode} as periode,
-      a.nama_kode_rekening as namaRekening,
-      c.jumlah_debit as penerimaan,
-      c.jumlah_kredit as pengeluaran,
-      (
-        CASE WHEN length(a.kode_rekening) = 12 THEN (
-          CASE WHEN d.jumlah_debit IS NULL
-          OR d.jumlah_kredit IS NULL THEN 0 ELSE (d.jumlah_debit - d.jumlah_kredit) END
-        ) ELSE NULL END
-      ) as lastSaldo
-    FROM
-      (
-        SELECT
-          x.*,
-          y.nama_kode_rekening as grup
-        FROM
-          (
-            select
-              kode_rekening,
-              nama_kode_rekening,
-              rekening_id,
-              left(kode_rekening, 9) as grup_id
-            from
-              im_akun_kode_rekening
-            where
-              rekening_id IN (
-                select
-                  rekening_id
-                from
-                  im_akun_report_detail
-                where
-                  report_id = $P{reportId}
-                  and flag = 'Y'
-              )
-            group by
-              kode_rekening,
-              nama_kode_rekening,
-              rekening_id
-            order by
-              kode_rekening
-          ) x
-          INNER JOIN im_akun_kode_rekening y ON x.grup_id = y.kode_rekening
-      ) a
-      left outer JOIN (
-        select
-          y.rekening_id as rekening_id,
-          sum(y.jumlah_debit * x.kurs) as jumlah_debit,
-          sum(y.jumlah_kredit * x.kurs) as jumlah_kredit
-        from
-          it_akun_jurnal x
-          inner join it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal
-          left outer join im_akun_mata_uang mu ON (x.mata_uang_id = mu.mata_uang_id)
-        where
-          to_char(x.tanggal_jurnal, 'dd-MM-yyyy') = $P{periode}
-          and x.registered_flag = 'Y'
-          and x.branch_id IN ($P!{branchId})
-        group by
-          y.rekening_id
-      ) c ON c.rekening_id = a.rekening_id
-      left outer JOIN (
-        select
-          y.rekening_id as rekening_id,
-          sum(y.jumlah_debit * x.kurs) as jumlah_debit,
-          sum(y.jumlah_kredit * x.kurs) as jumlah_kredit
-        from
-          it_akun_jurnal x
-          inner join it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal
-        where
-          x.tanggal_jurnal < (
-            select
-              to_date($P{periode}, 'dd-MM-yyyy')
-          )
-          and x.branch_id IN ($P!{branchId})
-        group by
-          y.rekening_id
-      ) d ON d.rekening_id = a.rekening_id
-    WHERE
-      c.jumlah_debit IS NOT NULL
-  ) a]]>
+		<![CDATA[]]>
 	</queryString>
-	<field name="koderekening" class="java.lang.String"/>
+	<field name="kodeRekening" class="java.lang.String"/>
 	<field name="grup" class="java.lang.String"/>
 	<field name="periode" class="java.lang.String">
-		<fieldDescription><![CDATA[
-]]></fieldDescription>
+		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="namarekening" class="java.lang.String"/>
+	<field name="namaRekening" class="java.lang.String"/>
 	<field name="penerimaan" class="java.math.BigDecimal"/>
 	<field name="pengeluaran" class="java.math.BigDecimal"/>
-	<field name="lastsaldo" class="java.math.BigDecimal"/>
-	<field name="saldosekarang" class="java.math.BigDecimal"/>
+	<field name="lastSaldo" class="java.math.BigDecimal"/>
+	<field name="saldoSekarang" class="java.math.BigDecimal"/>
 	<variable name="SUM_saldo_lalu" class="java.math.BigDecimal" resetType="Group" resetGroup="reks" calculation="Sum">
-		<variableExpression><![CDATA[$F{lastsaldo}]]></variableExpression>
+		<variableExpression><![CDATA[$F{lastSaldo}]]></variableExpression>
 	</variable>
 	<variable name="SUM_penerimaan" class="java.math.BigDecimal" resetType="Group" resetGroup="reks" calculation="Sum">
 		<variableExpression><![CDATA[$F{penerimaan}]]></variableExpression>
@@ -133,10 +46,10 @@ FROM
 		<variableExpression><![CDATA[$F{pengeluaran}]]></variableExpression>
 	</variable>
 	<variable name="SUM_saldo_sekarang" class="java.math.BigDecimal" resetType="Group" resetGroup="reks" calculation="Sum">
-		<variableExpression><![CDATA[$F{saldosekarang}]]></variableExpression>
+		<variableExpression><![CDATA[$F{saldoSekarang}]]></variableExpression>
 	</variable>
 	<variable name="DISPLAY_saldo_lalu" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$F{lastsaldo}.abs()]]></variableExpression>
+		<variableExpression><![CDATA[$F{lastSaldo}.abs()]]></variableExpression>
 	</variable>
 	<variable name="DISPLAY_penerimaan" class="java.math.BigDecimal">
 		<variableExpression><![CDATA[$F{penerimaan}.abs()]]></variableExpression>
@@ -145,7 +58,7 @@ FROM
 		<variableExpression><![CDATA[$F{pengeluaran}.abs()]]></variableExpression>
 	</variable>
 	<variable name="DISPLAY_saldo_sekarang" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$F{saldosekarang}]]></variableExpression>
+		<variableExpression><![CDATA[$F{saldoSekarang}]]></variableExpression>
 	</variable>
 	<variable name="DISPLAY_SUM_saldo_lalu" class="java.math.BigDecimal">
 		<variableExpression><![CDATA[$V{SUM_saldo_lalu}.abs()]]></variableExpression>
@@ -548,7 +461,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{koderekening}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{kodeRekening}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement key="textField" mode="Transparent" x="68" y="1" width="133" height="15" uuid="79fd5edc-7d17-4151-b4ed-103ab95422eb"/>
@@ -561,16 +474,8 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{namarekening}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{namaRekening}]]></textFieldExpression>
 			</textField>
-			<line>
-				<reportElement key="line-1" isPrintRepeatedValues="false" x="0" y="15" width="201" height="1" isPrintInFirstWholeBand="true" printWhenGroupChanges="rekening" uuid="03ed574d-83d4-41e2-b914-c46f3797bd6e">
-					<printWhenExpression><![CDATA[new Boolean($F{koderekening}.length() == 3)]]></printWhenExpression>
-				</reportElement>
-				<graphicElement>
-					<pen lineWidth="1.0" lineStyle="Dashed"/>
-				</graphicElement>
-			</line>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-16" x="385" y="1" width="82" height="14" uuid="4bedb26c-495e-44ab-8c56-f96318f343f7"/>
 				<box>

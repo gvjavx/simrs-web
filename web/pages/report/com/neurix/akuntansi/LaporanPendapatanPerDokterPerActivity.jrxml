@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="MutasiJurnal" pageWidth="595" pageHeight="842" columnWidth="567" leftMargin="14" rightMargin="14" topMargin="28" bottomMargin="28" isFloatColumnFooter="true" uuid="772f1804-f1af-4e5f-8cf2-ffcc355aa079">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.948717100000004"/>
-	<property name="ireport.x" value="188"/>
-	<property name="ireport.y" value="162"/>
+	<property name="ireport.zoom" value="1.9487171000000045"/>
+	<property name="ireport.x" value="234"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -20,64 +20,29 @@
 	<parameter name="reportParams.kota" class="java.lang.String"/>
 	<parameter name="reportParams.branchId" class="java.lang.String"/>
 	<parameter name="reportParams.areaId" class="java.lang.String"/>
+	<parameter name="reportParams.reportId" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[SELECT
-  a.no_jurnal,
-  c.kode_rekening,
-  c.nama_kode_rekening,
-  b.master_id,
-  m.nama,
-  b.divisi_id,
-  dv.position_name,
-  a.keterangan,
-  i.activity_id,
-  t.nama_tindakan,
-  i.person_id,
-  dok.kodering,
-  dok.nama_dokter,
-  i.jumlah
-FROM
-  it_akun_jurnal a
-  INNER JOIN it_akun_jurnal_detail b ON (a.no_jurnal = b.no_jurnal)
-  LEFT JOIN it_akun_jurnal_detail_activity i ON (b.jurnal_detail_id = i.jurnal_detail_id)
-  INNER JOIN im_akun_tipe_jurnal h ON (a.tipe_jurnal_id = h.tipe_jurnal_id)
-  LEFT OUTER JOIN im_akun_kode_rekening c ON (b.rekening_id = c.rekening_id)
-  LEFT JOIN im_simrs_dokter dok ON i.person_id = dok.id_dokter
-  LEFT JOIN it_simrs_riwayat_tindakan t ON t.id_tindakan = i.activity_id
-  LEFT JOIN	im_akun_master m ON m.nomor_master = b.master_id
-  LEFT JOIN im_position dv ON dv.kodering=b.divisi_id
-WHERE
-  h.tipe_jurnal_id = $P{jurnalType}
-  AND to_char(a.tanggal_jurnal, 'MM-yyyy') = $P{periode}
-  and a.registered_flag = 'Y' and a.flag='Y'
-  and a.branch_id IN ($P!{reportParams.branchId})
-  and i.activity_id is not null
-order by
-	i.activity_id,c.kode_rekening]]>
+		<![CDATA[]]>
 	</queryString>
-	<field name="no_jurnal" class="java.lang.String"/>
-	<field name="kode_rekening" class="java.lang.String"/>
-	<field name="nama_kode_rekening" class="java.lang.String"/>
-	<field name="master_id" class="java.lang.String"/>
-	<field name="nama" class="java.lang.String">
-		<fieldDescription><![CDATA[Nama Master]]></fieldDescription>
-	</field>
-	<field name="divisi_id" class="java.lang.String"/>
-	<field name="position_name" class="java.lang.String"/>
+	<field name="biaya" class="java.math.BigDecimal"/>
+	<field name="dokterId" class="java.lang.String"/>
+	<field name="dokterName" class="java.lang.String"/>
 	<field name="keterangan" class="java.lang.String"/>
-	<field name="activity_id" class="java.lang.String"/>
-	<field name="nama_tindakan" class="java.lang.String"/>
-	<field name="person_id" class="java.lang.String"/>
-	<field name="kodering" class="java.lang.String"/>
-	<field name="nama_dokter" class="java.lang.String"/>
-	<field name="jumlah" class="java.math.BigDecimal"/>
+	<field name="activityId" class="java.lang.String"/>
+	<field name="activityName" class="java.lang.String"/>
+	<field name="noTrans" class="java.lang.String"/>
+	<field name="koderingDokter" class="java.lang.String"/>
+	<field name="idTindakan" class="java.lang.String"/>
 	<variable name="SUM_jumlah" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{jumlah}]]></variableExpression>
+		<variableExpression><![CDATA[$F{biaya}]]></variableExpression>
+	</variable>
+	<variable name="SUM_jumlah_per_dokter" class="java.math.BigDecimal" resetType="Group" resetGroup="jurnal" calculation="Sum">
+		<variableExpression><![CDATA[$F{biaya}]]></variableExpression>
 	</variable>
 	<group name="jurnal" isReprintHeaderOnEachPage="true">
-		<groupExpression><![CDATA[$F{no_jurnal}]]></groupExpression>
+		<groupExpression><![CDATA[$F{dokterId}]]></groupExpression>
 		<groupHeader>
-			<band height="23" splitType="Stretch">
+			<band height="18" splitType="Stretch">
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 					<reportElement key="textField" stretchType="RelativeToTallestObject" x="2" y="0" width="74" height="15" printWhenGroupChanges="jurnal" uuid="9b106f9d-d053-44ae-a112-88997b47dea9"/>
 					<box leftPadding="2" rightPadding="2">
@@ -87,12 +52,12 @@ order by
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement verticalAlignment="Middle">
-						<font fontName="Arial" size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{kode_rekening}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{koderingDokter}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement key="textField" stretchType="RelativeToTallestObject" x="76" y="0" width="134" height="15" printWhenGroupChanges="jurnal" uuid="3e00da47-9e40-4443-a174-0f9ebacf03dd"/>
+					<reportElement key="textField" stretchType="RelativeToTallestObject" x="76" y="0" width="491" height="15" printWhenGroupChanges="jurnal" uuid="3e00da47-9e40-4443-a174-0f9ebacf03dd"/>
 					<box leftPadding="2" rightPadding="2">
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -100,53 +65,47 @@ order by
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement verticalAlignment="Middle">
-						<font fontName="Arial" size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{nama_kode_rekening}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement key="textField" stretchType="RelativeToTallestObject" x="210" y="0" width="90" height="15" printWhenGroupChanges="jurnal" uuid="cdd15a6d-3af2-481c-9177-b2b70d8df8e6"/>
-					<box leftPadding="2" rightPadding="2">
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement verticalAlignment="Middle">
-						<font fontName="Arial" size="8"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{master_id}+"-"+$F{nama}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement key="textField" stretchType="RelativeToTallestObject" x="300" y="0" width="90" height="15" printWhenGroupChanges="jurnal" uuid="92e185bc-bc24-49ec-b14d-8d2684cf0028"/>
-					<box leftPadding="2" rightPadding="2">
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement verticalAlignment="Middle">
-						<font fontName="Arial" size="8"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{divisi_id}+"-"+$F{position_name}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement key="textField" stretchType="RelativeToTallestObject" x="390" y="0" width="177" height="15" printWhenGroupChanges="jurnal" uuid="5db11acc-4432-4fa9-ad07-6b43c5d7658f"/>
-					<box leftPadding="2" rightPadding="2">
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement verticalAlignment="Middle">
-						<font fontName="Arial" size="8"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{keterangan}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{dokterName}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band splitType="Stretch"/>
+			<band height="19" splitType="Stretch">
+				<line>
+					<reportElement key="line-5" x="434" y="0" width="135" height="1" uuid="29f55730-c9b9-45fe-9f1d-5c345ba8b0d6"/>
+					<graphicElement>
+						<pen lineWidth="1.0" lineStyle="Dashed"/>
+					</graphicElement>
+				</line>
+				<staticText>
+					<reportElement key="staticText-41" x="398" y="0" width="77" height="17" uuid="217ea415-7fc4-4009-9cd1-cc54c68900a3"/>
+					<box rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[JUMLAH]]></text>
+				</staticText>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField-24" x="476" y="0" width="91" height="17" uuid="443d19bb-325f-4189-9990-7184b8fb39ed"/>
+					<box leftPadding="2" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{SUM_jumlah_per_dokter}]]></textFieldExpression>
+				</textField>
+			</band>
 		</groupFooter>
 	</group>
 	<background>
@@ -270,7 +229,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font size="8" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.kota}]]></textFieldExpression>
 			</textField>
@@ -332,9 +291,9 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Top">
-					<font fontName="Arial" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
-				<text><![CDATA[Nama Rekening]]></text>
+				<text><![CDATA[Nama Dokter]]></text>
 			</staticText>
 			<staticText>
 				<reportElement key="staticText-39" x="2" y="2" width="74" height="18" uuid="30bfa65b-4285-447e-8e19-fcf7b51053b1"/>
@@ -345,9 +304,9 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Top">
-					<font fontName="Arial" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
-				<text><![CDATA[Kode Rekening]]></text>
+				<text><![CDATA[ID Dokter]]></text>
 			</staticText>
 			<staticText>
 				<reportElement key="staticText-36" x="35" y="20" width="60" height="16" uuid="6dd548be-ab93-4de1-bcff-518e82c77a4e"/>
@@ -358,9 +317,9 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Top">
-					<font fontName="Arial" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
-				<text><![CDATA[ID Activity]]></text>
+				<text><![CDATA[ID Tindakan]]></text>
 			</staticText>
 			<staticText>
 				<reportElement key="staticText-36" x="476" y="20" width="91" height="16" uuid="1969d31f-2f09-431a-97a4-6126b3e9a582"/>
@@ -371,12 +330,12 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Top">
-					<font fontName="Arial" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[Jumlah]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-36" x="290" y="20" width="57" height="16" uuid="e51f76b5-ac04-46f9-ae04-ae64b46b54a7"/>
+				<reportElement key="staticText-36" x="314" y="20" width="162" height="16" uuid="04270697-555d-4fe5-a0c6-fb54faddc359"/>
 				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -384,51 +343,12 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Top">
-					<font fontName="Arial" size="8"/>
-				</textElement>
-				<text><![CDATA[ID Dokter]]></text>
-			</staticText>
-			<staticText>
-				<reportElement key="staticText-36" x="210" y="2" width="90" height="18" uuid="b404fa00-20fa-47ea-a4d1-7ac489f0a5ea"/>
-				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement verticalAlignment="Top">
-					<font fontName="Arial" size="8"/>
-				</textElement>
-				<text><![CDATA[Master]]></text>
-			</staticText>
-			<staticText>
-				<reportElement key="staticText-36" x="300" y="2" width="90" height="18" uuid="9aa571bc-1462-432a-b289-43bc130abeba"/>
-				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement verticalAlignment="Top">
-					<font fontName="Arial" size="8"/>
-				</textElement>
-				<text><![CDATA[Divisi]]></text>
-			</staticText>
-			<staticText>
-				<reportElement key="staticText-36" x="390" y="2" width="177" height="18" uuid="04270697-555d-4fe5-a0c6-fb54faddc359"/>
-				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement verticalAlignment="Top">
-					<font fontName="Arial" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[Keterangan]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-36" x="95" y="20" width="195" height="16" uuid="3fb852a9-5b8a-488b-84e1-a1ede147667c"/>
+				<reportElement key="staticText-36" x="95" y="20" width="157" height="16" uuid="3fb852a9-5b8a-488b-84e1-a1ede147667c"/>
 				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -436,12 +356,12 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Top">
-					<font fontName="Arial" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
-				<text><![CDATA[Nama Activity]]></text>
+				<text><![CDATA[Nama Tindakan]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-36" x="347" y="20" width="148" height="16" uuid="23170034-edce-4f50-b86e-39fef4927685"/>
+				<reportElement key="staticText-36" x="251" y="20" width="63" height="16" uuid="23170034-edce-4f50-b86e-39fef4927685"/>
 				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -449,9 +369,9 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Top">
-					<font fontName="Arial" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
-				<text><![CDATA[Nama Dokter]]></text>
+				<text><![CDATA[No. Trans]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
@@ -466,12 +386,12 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{activity_id}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{activityId}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField" stretchType="RelativeToTallestObject" x="290" y="0" width="57" height="15" uuid="6f0d2eea-6a06-4534-b91a-c9e1d773c5c3"/>
+				<reportElement key="textField" stretchType="RelativeToTallestObject" x="252" y="0" width="62" height="15" uuid="6f0d2eea-6a06-4534-b91a-c9e1d773c5c3"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -479,12 +399,12 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{kodering}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{noTrans}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField" stretchType="RelativeToTallestObject" x="95" y="0" width="195" height="15" uuid="23cda4f5-dbc0-4b71-8150-84cdcc799354"/>
+				<reportElement key="textField" stretchType="RelativeToTallestObject" x="95" y="0" width="157" height="15" uuid="23cda4f5-dbc0-4b71-8150-84cdcc799354"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -492,9 +412,9 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{nama_tindakan}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{activityName}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField" stretchType="RelativeToTallestObject" x="476" y="0" width="91" height="15" uuid="93608b2d-8b3a-44ce-8f1c-6ed4483fea81"/>
@@ -505,12 +425,12 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Arial" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{jumlah}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{biaya}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField" stretchType="RelativeToTallestObject" x="347" y="0" width="148" height="15" uuid="ff1c1d0c-a693-45c5-8710-308321daaaf7"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField" stretchType="RelativeToTallestObject" x="314" y="0" width="161" height="15" printWhenGroupChanges="jurnal" uuid="5db11acc-4432-4fa9-ad07-6b43c5d7658f"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -518,9 +438,9 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{nama_dokter}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{keterangan}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -531,7 +451,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 		<band splitType="Stretch"/>
 	</pageFooter>
 	<summary>
-		<band height="59" splitType="Stretch">
+		<band height="43" splitType="Stretch">
 			<line>
 				<reportElement key="line-4" x="0" y="21" width="567" height="1" uuid="b19fb1af-c82d-4362-a986-1b8a4c8f4471"/>
 				<graphicElement>
@@ -545,7 +465,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</graphicElement>
 			</line>
 			<staticText>
-				<reportElement key="staticText-41" x="382" y="3" width="82" height="17" uuid="90261ee5-f910-4cbd-86fd-5e8e4a11799a"/>
+				<reportElement key="staticText-41" x="329" y="3" width="146" height="17" uuid="90261ee5-f910-4cbd-86fd-5e8e4a11799a"/>
 				<box rightPadding="2">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -553,12 +473,12 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Arial" size="8"/>
+					<font fontName="SansSerif" size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[TOTAL]]></text>
+				<text><![CDATA[TOTAL SELURUHNYA]]></text>
 			</staticText>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-24" x="464" y="3" width="103" height="17" uuid="8b1e5172-735f-4f4a-8dea-54da9c81d8d2"/>
+				<reportElement key="textField-24" x="476" y="3" width="91" height="17" uuid="8b1e5172-735f-4f4a-8dea-54da9c81d8d2"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -566,7 +486,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Arial" size="8"/>
+					<font fontName="SansSerif" size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_jumlah}]]></textFieldExpression>
 			</textField>
@@ -579,7 +499,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Arial" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[** Selesai **]]></text>
 			</staticText>

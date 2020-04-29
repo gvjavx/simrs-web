@@ -314,6 +314,38 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
     }
 
     @Override
+    public List<PendapatanDTO> getPendapatan(String reportId, String unit, String periode, String tipeLaporan) throws GeneralBOException {
+        List<PendapatanDTO> pendapatanDTOList= new ArrayList<>();
+        try {
+            if (("PDA").equalsIgnoreCase(tipeLaporan)){
+                pendapatanDTOList = laporanAkuntansiDao.getPendapatanPerActivityPerDokter(reportId,unit,periode);
+            }else if (("PDDOK").equalsIgnoreCase(tipeLaporan)){
+                pendapatanDTOList = laporanAkuntansiDao.getPendapatanPerDokterPerActivity(reportId,unit,periode);
+            }
+        } catch (HibernateException e) {
+            logger.error("[LaporanAkuntansiBoImpl.getSearchLaporanAkuntansiByCriteria] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        return pendapatanDTOList;
+    }
+
+    @Override
+    public List<ArusKasDTO> getArusKas(String reportId, String unit, String periode, String tipeLaporan) throws GeneralBOException {
+        List<ArusKasDTO> arusKasDTOList= new ArrayList<>();
+        try {
+            if (("AK").equalsIgnoreCase(tipeLaporan)){
+                arusKasDTOList = laporanAkuntansiDao.getArusKas(reportId,unit,periode);
+            }else if (("ARD").equalsIgnoreCase(tipeLaporan)){
+                arusKasDTOList = laporanAkuntansiDao.getArusKasDetail(reportId,unit,periode);
+            }
+        } catch (HibernateException e) {
+            logger.error("[LaporanAkuntansiBoImpl.getArusKas] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem , please info to your admin..." + e.getMessage());
+        }
+        return arusKasDTOList;
+    }
+
+    @Override
     public List<AkunSettingReportKeuanganKonsol> getLaporanAkuntansiKonsol(String periode, String branchId1, String branchId2, String branchId3, String branchId4, String branchIdAll){
         List<AkunSettingReportKeuanganKonsol> result = new ArrayList<>();
         List<ImAkunSettingReportKeuanganKonsol> konsolList = new ArrayList<>();
@@ -340,6 +372,19 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
                 BigDecimal totalUnit3= BigDecimal.ZERO;
                 BigDecimal totalUnit4= BigDecimal.ZERO;
                 BigDecimal totalUnitAll= BigDecimal.ZERO;
+
+                BigDecimal totalLastSaldoUnit1= BigDecimal.ZERO;
+                BigDecimal totalLastSaldoUnit2= BigDecimal.ZERO;
+                BigDecimal totalLastSaldoUnit3= BigDecimal.ZERO;
+                BigDecimal totalLastSaldoUnit4= BigDecimal.ZERO;
+                BigDecimal totalLastSaldoUnitAll= BigDecimal.ZERO;
+
+                BigDecimal totalCurSaldoUnit1= BigDecimal.ZERO;
+                BigDecimal totalCurSaldoUnit2= BigDecimal.ZERO;
+                BigDecimal totalCurSaldoUnit3= BigDecimal.ZERO;
+                BigDecimal totalCurSaldoUnit4= BigDecimal.ZERO;
+                BigDecimal totalCurSaldoUnitAll= BigDecimal.ZERO;
+
                 for (AkunSettingReportKeuanganKonsolDetail konsolDetail : keuanganKonsolDetailList){
                     if (konsolDetail.getSettingReportKonsolId().equalsIgnoreCase(konsol.getSettingReportKonsolId())){
                         if ("T".equalsIgnoreCase(konsolDetail.getOperator())){
@@ -348,12 +393,37 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
                             totalUnit3 = totalUnit3.add(konsolDetail.getSaldoUnit3());
                             totalUnit4 = totalUnit4.add(konsolDetail.getSaldoUnit4());
                             totalUnitAll = totalUnitAll.add(konsolDetail.getSaldoUnitAll());
+
+                            totalLastSaldoUnit1 = totalLastSaldoUnit1.add(konsolDetail.getLastSaldoUnit1());
+                            totalLastSaldoUnit2 = totalLastSaldoUnit2.add(konsolDetail.getLastSaldoUnit2());
+                            totalLastSaldoUnit3 = totalLastSaldoUnit3.add(konsolDetail.getLastSaldoUnit3());
+                            totalLastSaldoUnit4 = totalLastSaldoUnit4.add(konsolDetail.getLastSaldoUnit4());
+                            totalLastSaldoUnitAll = totalLastSaldoUnitAll.add(konsolDetail.getLastSaldoUnitAll());
+
+                            totalCurSaldoUnit1 = totalCurSaldoUnit1.add(konsolDetail.getCurSaldoUnit1());
+                            totalCurSaldoUnit2 = totalCurSaldoUnit2.add(konsolDetail.getCurSaldoUnit2());
+                            totalCurSaldoUnit3 = totalCurSaldoUnit3.add(konsolDetail.getCurSaldoUnit3());
+                            totalCurSaldoUnit4 = totalCurSaldoUnit4.add(konsolDetail.getCurSaldoUnit4());
+                            totalCurSaldoUnitAll = totalCurSaldoUnitAll.add(konsolDetail.getCurSaldoUnitAll());
+
                         }else if ("K".equalsIgnoreCase(konsolDetail.getOperator())){
                             totalUnit1 = totalUnit1.subtract(konsolDetail.getSaldoUnit1());
                             totalUnit2 = totalUnit2.subtract(konsolDetail.getSaldoUnit2());
                             totalUnit3 = totalUnit3.subtract(konsolDetail.getSaldoUnit3());
                             totalUnit4 = totalUnit4.subtract(konsolDetail.getSaldoUnit4());
                             totalUnitAll = totalUnitAll.subtract(konsolDetail.getSaldoUnitAll());
+
+                            totalLastSaldoUnit1 = totalLastSaldoUnit1.subtract(konsolDetail.getLastSaldoUnit1());
+                            totalLastSaldoUnit2 = totalLastSaldoUnit2.subtract(konsolDetail.getLastSaldoUnit2());
+                            totalLastSaldoUnit3 = totalLastSaldoUnit3.subtract(konsolDetail.getLastSaldoUnit3());
+                            totalLastSaldoUnit4 = totalLastSaldoUnit4.subtract(konsolDetail.getLastSaldoUnit4());
+                            totalLastSaldoUnitAll = totalLastSaldoUnitAll.subtract(konsolDetail.getLastSaldoUnitAll());
+
+                            totalCurSaldoUnit1 = totalCurSaldoUnit1.subtract(konsolDetail.getCurSaldoUnit1());
+                            totalCurSaldoUnit2 = totalCurSaldoUnit2.subtract(konsolDetail.getCurSaldoUnit2());
+                            totalCurSaldoUnit3 = totalCurSaldoUnit3.subtract(konsolDetail.getCurSaldoUnit3());
+                            totalCurSaldoUnit4 = totalCurSaldoUnit4.subtract(konsolDetail.getCurSaldoUnit4());
+                            totalCurSaldoUnitAll = totalCurSaldoUnitAll.subtract(konsolDetail.getCurSaldoUnitAll());
                         }
                     }
                 }
@@ -367,6 +437,18 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
                 data.setSaldoUnit3(totalUnit3);
                 data.setSaldoUnit4(totalUnit4);
                 data.setSaldoUnitAll(totalUnitAll);
+
+                data.setLastSaldoUnit1(totalLastSaldoUnit1);
+                data.setLastSaldoUnit2(totalLastSaldoUnit2);
+                data.setLastSaldoUnit3(totalLastSaldoUnit3);
+                data.setLastSaldoUnit4(totalLastSaldoUnit4);
+                data.setLastSaldoUnitAll(totalLastSaldoUnitAll);
+
+                data.setCurSaldoUnit1(totalCurSaldoUnit1);
+                data.setCurSaldoUnit2(totalCurSaldoUnit2);
+                data.setCurSaldoUnit3(totalCurSaldoUnit3);
+                data.setCurSaldoUnit4(totalCurSaldoUnit4);
+                data.setCurSaldoUnitAll(totalCurSaldoUnitAll);
 
                 result.add(data);
             }
@@ -397,12 +479,18 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
                 data.setLevel2(settingReportKeuanganKonsolDao.getCoaAliasNameByCoaAlias(coaSplit[0]+"."+coaSplit[1]));
 
                 BigDecimal totalUnit1= BigDecimal.ZERO;
+                BigDecimal totalLastSaldoUnit1= BigDecimal.ZERO;
+                BigDecimal totalCurSaldoUnit1= BigDecimal.ZERO;
                 for (AkunSettingReportKeuanganKonsolDetail konsolDetail : keuanganKonsolDetailList){
                     if (konsolDetail.getSettingReportKonsolId().equalsIgnoreCase(konsol.getSettingReportKonsolId())){
                         if ("T".equalsIgnoreCase(konsolDetail.getOperator())){
                             totalUnit1 = totalUnit1.add(konsolDetail.getSaldoUnit1());
+                            totalLastSaldoUnit1 = totalLastSaldoUnit1.add(konsolDetail.getLastSaldoUnit1());
+                            totalCurSaldoUnit1 = totalCurSaldoUnit1.add(konsolDetail.getCurSaldoUnit1());
                         }else if ("K".equalsIgnoreCase(konsolDetail.getOperator())){
                             totalUnit1 = totalUnit1.subtract(konsolDetail.getSaldoUnit1());
+                            totalLastSaldoUnit1 = totalLastSaldoUnit1.subtract(konsolDetail.getLastSaldoUnit1());
+                            totalCurSaldoUnit1 = totalCurSaldoUnit1.subtract(konsolDetail.getCurSaldoUnit1());
                         }
                     }
                 }
@@ -412,6 +500,8 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
                 data.setNamaKodeRekeningAlias(konsol.getNamaKodeRekeningAlias());
                 data.setFlagLabel(konsol.getFlagLabel());
                 data.setSaldoUnit1(totalUnit1);
+                data.setLastSaldoUnit1(totalLastSaldoUnit1);
+                data.setCurSaldoUnit1(totalCurSaldoUnit1);
 
                 result.add(data);
             }

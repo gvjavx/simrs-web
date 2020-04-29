@@ -152,12 +152,6 @@
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>
             </result>
-            <result name="print_arus_kas" type="jasper">
-                <param name="location">/pages/report/com/neurix/akuntansi/arusKas.jasper</param>
-                <param name="connection">connection</param>
-                <param name="format">PDF</param>
-                <param name="reportParameters">reportParams</param>
-            </result>
 
             <!-- PENDAPATAN -->
             <result name="print_report_akuntansi_ikhitisar_pendapatan" type="jasper">
@@ -169,6 +163,18 @@
             <result name="print_report_akuntansi_ikhitisar_pendapatan_master" type="jasper">
                 <param name="location">/pages/report/com/neurix/akuntansi/LaporanPendapatanPerMaster.jasper</param>
                 <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+            <result name="print_report_akuntansi_ikhitisar_pendapatan_dokter" type="jasper">
+                <param name="location">/pages/report/com/neurix/akuntansi/LaporanPendapatanPerDokterPerActivity.jasper</param>
+                <param name="dataSource">listPendapatanDokter</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+            <result name="print_report_akuntansi_ikhitisar_pendapatan_activity" type="jasper">
+                <param name="location">/pages/report/com/neurix/akuntansi/LaporanPendapatanPerActivityPerDokter.jasper</param>
+                <param name="dataSource">listPendapatanDokter</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>
             </result>
@@ -195,20 +201,20 @@
             </result>
             <!-- END OF BIAYA -->
 
-            <!-- BIAYA -->
+            <!-- ARUS KAS -->
             <result name="print_report_arus_kas" type="jasper">
                 <param name="location">/pages/report/com/neurix/akuntansi/LaporanArusKas.jasper</param>
-                <param name="connection">connection</param>
+                <param name="dataSource">arusKasDTOList</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>
             </result>
             <result name="print_report_arus_kas_detail" type="jasper">
                 <param name="location">/pages/report/com/neurix/akuntansi/LaporanArusKasDetail.jasper</param>
-                <param name="connection">connection</param>
+                <param name="dataSource">arusKasDTOList</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>
             </result>
-            <!-- END OF BIAYA -->
+            <!-- END OF ARUS KAS -->
 
             <!-- KOMPILASI -->
             <result name="print_report_kompilasi_all" type="jasper">
