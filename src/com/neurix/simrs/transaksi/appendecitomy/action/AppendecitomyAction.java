@@ -37,6 +37,7 @@ public class AppendecitomyAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         AppendecitomyBo appendecitomyBo = (AppendecitomyBo) ctx.getBean("appendecitomyBoProxy");
         JSONArray json = new JSONArray(data);
+        List<Appendecitomy> appendecitomyList = new ArrayList<>();
 
         for (int i = 0; i < json.length(); i++) {
 
@@ -85,15 +86,18 @@ public class AppendecitomyAction {
             appendecitomy.setCreatedDate(time);
             appendecitomy.setLastUpdateWho(userLogin);
             appendecitomy.setLastUpdate(time);
+            appendecitomyList.add(appendecitomy);
 
-            try {
-                response = appendecitomyBo.saveAdd(appendecitomy);
-            } catch (GeneralBOException e) {
-                response.setStatus("Error");
-                response.setMsg("Found Error " + e.getMessage());
-                return response;
-            }
         }
+
+        try {
+            response = appendecitomyBo.saveAdd(appendecitomyList);
+        } catch (GeneralBOException e) {
+            response.setStatus("Error");
+            response.setMsg("Found Error " + e.getMessage());
+            return response;
+        }
+
         return response;
     }
 

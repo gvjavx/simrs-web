@@ -1,11 +1,19 @@
-function paintTtd(id){
-    console.log(id);
+function paintTtd(id, change){
     const paintCanvas = document.querySelector("#"+id);
     const context = paintCanvas.getContext("2d");
 
     context.lineCap = "round";
+    var colorPicker = "";
+    if(change){
+        colorPicker = document.querySelector(".js-color-picker-op");
+    }else{
+        colorPicker = document.querySelector(".js-color-picker");
+    }
 
-    const colorPicker = document.querySelector(".js-color-picker");
+    console.log(colorPicker);
+    console.log(change);
+    // var clr = $('.js-color-picker').val();
+    // context.strokeStyle = clr;
 
     colorPicker.addEventListener("change", function (evt) {
         context.strokeStyle = evt.target.value;

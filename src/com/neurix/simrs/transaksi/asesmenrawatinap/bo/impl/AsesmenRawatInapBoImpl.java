@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.asesmenrawatinap.bo.impl;
 
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.asesmenrawatinap.bo.AsesmenRawatInapBo;
@@ -22,18 +23,18 @@ public class AsesmenRawatInapBoImpl implements AsesmenRawatInapBo {
     public List<AsesmenRawatInap> getByCriteria(AsesmenRawatInap bean) throws GeneralBOException {
         List<AsesmenRawatInap> list = new ArrayList<>();
 
-        if(bean != null){
+        if (bean != null) {
             Map hsCriteria = new HashMap();
-            if(bean.getIdAsesmenKeperawatanRawatInap() != null && !"".equalsIgnoreCase(bean.getIdAsesmenKeperawatanRawatInap())){
+            if (bean.getIdAsesmenKeperawatanRawatInap() != null && !"".equalsIgnoreCase(bean.getIdAsesmenKeperawatanRawatInap())) {
                 hsCriteria.put("id_asesmen_keperawatan_rawat_inap", bean.getIdAsesmenKeperawatanRawatInap());
             }
-            if(bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())){
+            if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())) {
                 hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
             }
-            if(bean.getKeterangan() != null && !"".equalsIgnoreCase(bean.getKeterangan())){
+            if (bean.getKeterangan() != null && !"".equalsIgnoreCase(bean.getKeterangan())) {
                 hsCriteria.put("keterangan", bean.getKeterangan());
             }
-            if(bean.getJenis() != null && !"".equalsIgnoreCase(bean.getJenis())){
+            if (bean.getJenis() != null && !"".equalsIgnoreCase(bean.getJenis())) {
                 hsCriteria.put("jenis", bean.getJenis());
             }
 
@@ -41,17 +42,21 @@ public class AsesmenRawatInapBoImpl implements AsesmenRawatInapBo {
 
             try {
                 entityList = asesmenRawatInapDao.getByCriteria(hsCriteria);
-            }catch (HibernateException e){
+            } catch (HibernateException e) {
                 logger.error(e.getMessage());
             }
 
-            if(entityList.size() > 0){
-                for (ItSimrsAsesmenRawatInapEntity entity: entityList){
+            if (entityList.size() > 0) {
+                for (ItSimrsAsesmenRawatInapEntity entity : entityList) {
                     AsesmenRawatInap asesmenRawatInap = new AsesmenRawatInap();
                     asesmenRawatInap.setIdAsesmenKeperawatanRawatInap(entity.getIdAsesmenKeperawatanRawatInap());
                     asesmenRawatInap.setIdDetailCheckup(entity.getIdDetailCheckup());
                     asesmenRawatInap.setParameter(entity.getParameter());
-                    asesmenRawatInap.setJawaban(entity.getJawaban());
+                    if ("ttd_early_warning_score".equalsIgnoreCase(entity.getJenis()) || "ttd_privasi".equalsIgnoreCase(entity.getJenis()) || "ttd_rencana_gigi".equalsIgnoreCase(entity.getJenis())) {
+                        asesmenRawatInap.setJawaban(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_TTD_RM + entity.getJawaban());
+                    } else {
+                        asesmenRawatInap.setJawaban(entity.getJawaban());
+                    }
                     asesmenRawatInap.setKeterangan(entity.getKeterangan());
                     asesmenRawatInap.setJenis(entity.getJenis());
                     asesmenRawatInap.setSkor(entity.getSkor());
@@ -70,33 +75,34 @@ public class AsesmenRawatInapBoImpl implements AsesmenRawatInapBo {
     }
 
     @Override
-    public CrudResponse saveAdd(AsesmenRawatInap bean) throws GeneralBOException {
+    public CrudResponse saveAdd(List<AsesmenRawatInap> list) throws GeneralBOException {
         CrudResponse response = new CrudResponse();
-        if(bean != null){
+        if (list.size() > 0) {
+            for (AsesmenRawatInap bean : list) {
+                ItSimrsAsesmenRawatInapEntity asesmenRawatInapEntity = new ItSimrsAsesmenRawatInapEntity();
+                asesmenRawatInapEntity.setIdAsesmenKeperawatanRawatInap("ARI" + asesmenRawatInapDao.getNextSeq());
+                asesmenRawatInapEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
+                asesmenRawatInapEntity.setParameter(bean.getParameter());
+                asesmenRawatInapEntity.setJawaban(bean.getJawaban());
+                asesmenRawatInapEntity.setKeterangan(bean.getKeterangan());
+                asesmenRawatInapEntity.setJenis(bean.getJenis());
+                asesmenRawatInapEntity.setSkor(bean.getSkor());
+                asesmenRawatInapEntity.setAction(bean.getAction());
+                asesmenRawatInapEntity.setFlag(bean.getFlag());
+                asesmenRawatInapEntity.setCreatedDate(bean.getCreatedDate());
+                asesmenRawatInapEntity.setCreatedWho(bean.getCreatedWho());
+                asesmenRawatInapEntity.setLastUpdate(bean.getLastUpdate());
+                asesmenRawatInapEntity.setLastUpdateWho(bean.getLastUpdateWho());
 
-            ItSimrsAsesmenRawatInapEntity asesmenRawatInapEntity = new ItSimrsAsesmenRawatInapEntity();
-            asesmenRawatInapEntity.setIdAsesmenKeperawatanRawatInap("ARI"+asesmenRawatInapDao.getNextSeq());
-            asesmenRawatInapEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
-            asesmenRawatInapEntity.setParameter(bean.getParameter());
-            asesmenRawatInapEntity.setJawaban(bean.getJawaban());
-            asesmenRawatInapEntity.setKeterangan(bean.getKeterangan());
-            asesmenRawatInapEntity.setJenis(bean.getJenis());
-            asesmenRawatInapEntity.setSkor(bean.getSkor());
-            asesmenRawatInapEntity.setAction(bean.getAction());
-            asesmenRawatInapEntity.setFlag(bean.getFlag());
-            asesmenRawatInapEntity.setCreatedDate(bean.getCreatedDate());
-            asesmenRawatInapEntity.setCreatedWho(bean.getCreatedWho());
-            asesmenRawatInapEntity.setLastUpdate(bean.getLastUpdate());
-            asesmenRawatInapEntity.setLastUpdateWho(bean.getLastUpdateWho());
-
-            try {
-                asesmenRawatInapDao.addAndSave(asesmenRawatInapEntity);
-                response.setStatus("success");
-                response.setMsg("Berhasil");
-            }catch (HibernateException e){
-                response.setStatus("error");
-                response.setMsg("Found Error "+e.getMessage());
-                logger.error(e.getMessage());
+                try {
+                    asesmenRawatInapDao.addAndSave(asesmenRawatInapEntity);
+                    response.setStatus("success");
+                    response.setMsg("Berhasil");
+                } catch (HibernateException e) {
+                    response.setStatus("error");
+                    response.setMsg("Found Error " + e.getMessage());
+                    logger.error(e.getMessage());
+                }
             }
         }
         return response;

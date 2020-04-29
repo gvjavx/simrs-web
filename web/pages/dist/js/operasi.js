@@ -1532,8 +1532,8 @@ function formaterDateTime(dateTime) {
         var dd = String(today.getDate()).padStart(2, '0');
         var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
         var yyyy = today.getFullYear();
-        var hh = today.getHours();
-        var min = today.getMinutes();
+        var hh = ((today.getHours() < 10 ? '0' : '') + today.getHours());
+        var min = ((today.getMinutes() < 10 ? '0' : '') + today.getMinutes());
         var sec = today.getSeconds();
         today = dd + '-' + mm + '-' + yyyy + ' ' + hh + ':' + min;
     }
@@ -1549,8 +1549,8 @@ function formaterDate(dateTime) {
         var dd = String(today.getDate()).padStart(2, '0');
         var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
         var yyyy = today.getFullYear();
-        var hh = today.getHours();
-        var min = today.getMinutes();
+        var hh = ((today.getHours() < 10 ? '0' : '') + today.getHours());
+        var min = ((today.getMinutes() < 10 ? '0' : '') + today.getMinutes());
         var sec = today.getSeconds();
         today = dd + '-' + mm + '-' + yyyy;
     }
@@ -1566,8 +1566,8 @@ function formaterTime(dateTime) {
         var dd = String(today.getDate()).padStart(2, '0');
         var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
         var yyyy = today.getFullYear();
-        var hh = today.getHours();
-        var min = today.getMinutes();
+        var hh = ((today.getHours() < 10 ? '0' : '') + today.getHours());
+        var min = ((today.getMinutes() < 10 ? '0' : '') + today.getMinutes());
         var sec = today.getSeconds();
         today = hh + ':' + min;
     }

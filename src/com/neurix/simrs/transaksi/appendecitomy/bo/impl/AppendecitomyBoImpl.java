@@ -75,33 +75,34 @@ public class AppendecitomyBoImpl implements AppendecitomyBo {
     }
 
     @Override
-    public CrudResponse saveAdd(Appendecitomy bean) throws GeneralBOException {
+    public CrudResponse saveAdd(List<Appendecitomy> list) throws GeneralBOException {
         CrudResponse response = new CrudResponse();
-        if(bean != null){
+        if(list.size()> 0){
+            for (Appendecitomy bean: list){
+                ItSimrsAppendecitomyEntity appendecitomyEntity = new ItSimrsAppendecitomyEntity();
+                appendecitomyEntity.setIdAppendecitomy("HDL"+appendecitomyDao.getNextSeq());
+                appendecitomyEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
+                appendecitomyEntity.setParameter(bean.getParameter());
+                appendecitomyEntity.setJawaban1(bean.getJawaban1());
+                appendecitomyEntity.setJawaban2(bean.getJawaban2());
+                appendecitomyEntity.setKeterangan(bean.getKeterangan());
+                appendecitomyEntity.setJenis(bean.getJenis());
+                appendecitomyEntity.setAction(bean.getAction());
+                appendecitomyEntity.setFlag(bean.getFlag());
+                appendecitomyEntity.setCreatedDate(bean.getCreatedDate());
+                appendecitomyEntity.setCreatedWho(bean.getCreatedWho());
+                appendecitomyEntity.setLastUpdate(bean.getLastUpdate());
+                appendecitomyEntity.setLastUpdateWho(bean.getLastUpdateWho());
 
-            ItSimrsAppendecitomyEntity appendecitomyEntity = new ItSimrsAppendecitomyEntity();
-            appendecitomyEntity.setIdAppendecitomy("HDL"+appendecitomyDao.getNextSeq());
-            appendecitomyEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
-            appendecitomyEntity.setParameter(bean.getParameter());
-            appendecitomyEntity.setJawaban1(bean.getJawaban1());
-            appendecitomyEntity.setJawaban2(bean.getJawaban2());
-            appendecitomyEntity.setKeterangan(bean.getKeterangan());
-            appendecitomyEntity.setJenis(bean.getJenis());
-            appendecitomyEntity.setAction(bean.getAction());
-            appendecitomyEntity.setFlag(bean.getFlag());
-            appendecitomyEntity.setCreatedDate(bean.getCreatedDate());
-            appendecitomyEntity.setCreatedWho(bean.getCreatedWho());
-            appendecitomyEntity.setLastUpdate(bean.getLastUpdate());
-            appendecitomyEntity.setLastUpdateWho(bean.getLastUpdateWho());
-
-            try {
-                appendecitomyDao.addAndSave(appendecitomyEntity);
-                response.setStatus("success");
-                response.setMsg("Berhasil");
-            }catch (HibernateException e){
-                response.setStatus("error");
-                response.setMsg("Found Error "+e.getMessage());
-                logger.error(e.getMessage());
+                try {
+                    appendecitomyDao.addAndSave(appendecitomyEntity);
+                    response.setStatus("success");
+                    response.setMsg("Berhasil");
+                }catch (HibernateException e){
+                    response.setStatus("error");
+                    response.setMsg("Found Error "+e.getMessage());
+                    logger.error(e.getMessage());
+                }
             }
         }
         return response;

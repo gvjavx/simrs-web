@@ -611,6 +611,26 @@
       </create>
       <convert converter="bean" match="com.neurix.simrs.transaksi.catatanterintegrasi.model.CatatanTerintegrasi"/>
 
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.pemberianobat.action.CatatanPemberianObatAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.pemberianobat.model.CatatanPemberianObat"/>
+
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.rencanaasuhankeperawatan.action.RencanaAsuhanKeperawatanAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.rencanaasuhankeperawatan.model.RencanaAsuhanKeperawatan"/>
+
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.rekonsiliasiobat.action.RekonsiliasiObatAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.rekonsiliasiobat.model.RekonsiliasiObat"/>
+
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.profilrekammedisrj.action.RekamMedisRawatJalanAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.profilrekammedisrj.model.RekamMedisRawatJalan"/>
+
   </allow>
 
 </dwr>

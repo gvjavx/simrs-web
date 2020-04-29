@@ -226,5 +226,10 @@
     <import resource="sshconfig/com/neurix/simrs/transaksi/pengkajiankeperawatan/spring/PengkajianUlangKeperawatanBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/catatanteritegrasi/spring/CatatanTeritegrasiBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/rekakmedik/spring/RekamMedikBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/pemberianobat/spring/CatatanPemberianObatBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/rencanaasuhankeperawatan/spring/RencanaAsuhanKeperawatanBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/rekonsiliasiobat/spring/RekonsiliasiObatBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/profilrekammedisrj/spring/RekamMedisRawatJalanBean.xml"/>
+
 
 </beans>

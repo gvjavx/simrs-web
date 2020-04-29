@@ -99,7 +99,7 @@
                             <div class="form-group">
                                 <label>Tekanan Darah</label>
                                 <div class="input-group">
-                                    <input class="form-control" id="f_darah">
+                                    <input class="form-control" type="number" id="f_darah">
                                     <div class="input-group-addon" style="width: 30%">
                                         mmHg
                                     </div>
@@ -108,7 +108,7 @@
                             <div class="form-group">
                                 <label>Frekuensi Nadi</label>
                                 <div class="input-group">
-                                    <input class="form-control" id="f_nadi">
+                                    <input class="form-control" type="number" id="f_nadi">
                                     <div class="input-group-addon" style="width: 30%">
                                         X/menit
                                     </div>
@@ -117,7 +117,7 @@
                             <div class="form-group">
                                 <label>Frekuensi Nafas</label>
                                 <div class="input-group">
-                                    <input class="form-control" id="f_nafas">
+                                    <input class="form-control" type="number" id="f_nafas">
                                     <div class="input-group-addon" style="width: 30%">
                                         X/menit
                                     </div>
@@ -126,7 +126,7 @@
                             <div class="form-group">
                                 <label>Suhu</label>
                                 <div class="input-group">
-                                    <input class="form-control" id="f_suhu">
+                                    <input class="form-control" type="number" id="f_suhu">
                                     <div class="input-group-addon" style="width: 30%">
                                         C
                                     </div>
@@ -137,7 +137,7 @@
                             <div class="form-group">
                                 <label>Berat Badan</label>
                                 <div class="input-group">
-                                    <input class="form-control" id="f_berat">
+                                    <input class="form-control" type="number" id="f_berat">
                                     <div class="input-group-addon" style="width: 30%">
                                         g/kg
                                     </div>
@@ -146,7 +146,7 @@
                             <div class="form-group">
                                 <label>Tinggi Badan</label>
                                 <div class="input-group">
-                                    <input class="form-control" id="f_tinggi">
+                                    <input class="form-control" type="number" id="f_tinggi">
                                     <div class="input-group-addon" style="width: 30%">
                                         cm
                                     </div>
@@ -492,7 +492,7 @@
                     </button>
                 </div>
                 <div class="box-body">
-                    <table class="table table-bordered table-striped">
+                    <table class="table table-bordered table-striped" style="font-size: 12px">
                         <thead>
                         <td>Tanggal</td>
                         <td>Tindakan</td>

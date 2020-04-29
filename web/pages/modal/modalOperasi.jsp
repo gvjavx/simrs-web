@@ -551,7 +551,7 @@
                 </h4>
             </div>
             <div class="modal-body">
-                <div class="box-body">
+                <div class="box-body btn-hide">
                     <div class="alert alert-success alert-dismissible" style="display: none" id="warning_op_penandaan_area">
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_op_penandaan_area"></p>
@@ -595,7 +595,7 @@
                 </div>
                 <div class="form-group" style="padding-top: 10px; padding-bottom: 10px">
                     <div class="col-md-1">
-                        <input type="color" style="margin-left: -6px; margin-top: -8px" class="js-color-picker  color-picker pull-left">
+                        <input type="color" style="margin-left: -6px; margin-top: -8px" class="js-color-picker-op  color-picker pull-left">
                     </div>
                     <div class="col-md-9">
                         <input type="range" style="margin-top: -8px" class="js-line-range" min="1" max="72" value="1">
@@ -605,7 +605,7 @@
                     </div>
                 </div>
                 <div class="text-center">
-                    <canvas class="paint-canvas" id="area_canvas" onmouseover="paintTtd('area_canvas')"></canvas>
+                    <canvas class="paint-canvas" id="area_canvas" onmouseover="paintTtd('area_canvas', true)"></canvas>
                 </div>
                 <canvas style="display: none" id="area_cek"></canvas>
             </div>

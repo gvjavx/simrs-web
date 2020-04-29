@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.asesmenrawatinap.action;
 
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.CrudResponse;
@@ -11,7 +12,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
+import sun.misc.BASE64Decoder;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,13 +27,15 @@ public class AsesmenRawatInapAction {
 
     public static transient Logger logger = Logger.getLogger(AsesmenRawatInapAction.class);
 
-    public CrudResponse saveAsesmenRawat(String data) throws JSONException {
+    public CrudResponse saveAsesmenRawat(String data) throws JSONException, IOException {
         CrudResponse response = new CrudResponse();
         String userLogin = CommonUtil.userLogin();
         Timestamp time = new Timestamp(System.currentTimeMillis());
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         AsesmenRawatInapBo asesmenRawatInapBo = (AsesmenRawatInapBo) ctx.getBean("asesmenRawatInapBoProxy");
         JSONArray json = new JSONArray(data);
+
+        List<AsesmenRawatInap> rawatInapList = new ArrayList<>();
 
         for (int i = 0; i < json.length(); i++) {
 
@@ -37,7 +46,27 @@ public class AsesmenRawatInapAction {
             asesmenRawatInap.setKeterangan(obj.getString("keterangan"));
 
             if(obj.has("jawaban")){
-                asesmenRawatInap.setJawaban(obj.getString("jawaban"));
+                if("ttd_early_warning_score".equalsIgnoreCase(obj.getString("jenis")) || "ttd_privasi".equalsIgnoreCase(obj.getString("jenis")) || "ttd_rencana_gigi".equalsIgnoreCase(obj.getString("jenis"))){
+                    BASE64Decoder decoder = new BASE64Decoder();
+                    byte[] decodedBytes = decoder.decodeBuffer(obj.getString("jawaban"));
+                    String wkt = time.toString();
+                    String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
+                    String fileName = obj.getString("id_detail_checkup") + "-" + obj.getString("jenis")+i+ "-" + patten + ".png";
+                    String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName;
+                    BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+
+                    if (image == null) {
+                        response.setStatus("error");
+                        response.setMsg("Buffered Image is null");
+                    } else {
+                        File f = new File(uploadFile);
+                        // write the image
+                        ImageIO.write(image, "png", f);
+                        asesmenRawatInap.setJawaban(fileName);
+                    }
+                }else{
+                    asesmenRawatInap.setJawaban(obj.getString("jawaban"));
+                }
             }
             if(obj.has("jenis")){
                 asesmenRawatInap.setJenis(obj.getString("jenis"));
@@ -52,15 +81,17 @@ public class AsesmenRawatInapAction {
             asesmenRawatInap.setCreatedDate(time);
             asesmenRawatInap.setLastUpdateWho(userLogin);
             asesmenRawatInap.setLastUpdate(time);
-
-            try {
-                response = asesmenRawatInapBo.saveAdd(asesmenRawatInap);
-            } catch (GeneralBOException e) {
-                response.setStatus("Error");
-                response.setMsg("Found Error " + e.getMessage());
-                return response;
-            }
+            rawatInapList.add(asesmenRawatInap);
         }
+
+        try {
+            response = asesmenRawatInapBo.saveAdd(rawatInapList);
+        } catch (GeneralBOException e) {
+            response.setStatus("Error");
+            response.setMsg("Found Error " + e.getMessage());
+            return response;
+        }
+
         return response;
     }
 
@@ -80,6 +111,7 @@ public class AsesmenRawatInapAction {
         }
         return list;
     }
+
     public static Logger getLogger() {
         return logger;
     }

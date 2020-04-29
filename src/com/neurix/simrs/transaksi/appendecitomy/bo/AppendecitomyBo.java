@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface AppendecitomyBo {
     public List<Appendecitomy> getByCriteria(Appendecitomy bean) throws GeneralBOException;
-    public CrudResponse saveAdd(Appendecitomy bean) throws GeneralBOException;
+    public CrudResponse saveAdd(List<Appendecitomy> list) throws GeneralBOException;
 }

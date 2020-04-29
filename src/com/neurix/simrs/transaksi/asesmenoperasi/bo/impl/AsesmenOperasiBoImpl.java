@@ -83,32 +83,34 @@ public class AsesmenOperasiBoImpl implements AsesmenOperasiBo {
     }
 
     @Override
-    public CrudResponse saveAdd(AsesmenOperasi bean) throws GeneralBOException {
+    public CrudResponse saveAdd(List<AsesmenOperasi> list) throws GeneralBOException {
         CrudResponse response = new CrudResponse();
-        if (bean != null) {
-            ItSimrsAsesmenOperasiEntity operasi = new ItSimrsAsesmenOperasiEntity();
-            operasi.setIdAsesmenOperasi("ASO" + asesmenOperasiDao.getNextSeq());
-            operasi.setIdDetailCheckup(bean.getIdDetailCheckup());
-            operasi.setParameter(bean.getParameter());
-            operasi.setJawaban1(bean.getJawaban1());
-            operasi.setJawaban2(bean.getJawaban2());
-            operasi.setKeterangan(bean.getKeterangan());
-            operasi.setJenis(bean.getJenis());
-            operasi.setSkor(bean.getSkor());
-            operasi.setAction(bean.getAction());
-            operasi.setFlag(bean.getFlag());
-            operasi.setCreatedDate(bean.getCreatedDate());
-            operasi.setCreatedWho(bean.getCreatedWho());
-            operasi.setLastUpdate(bean.getLastUpdate());
-            operasi.setLastUpdateWho(bean.getLastUpdateWho());
-            try {
-                asesmenOperasiDao.addAndSave(operasi);
-                response.setStatus("success");
-                response.setMsg("Berhasil");
-            } catch (HibernateException e) {
-                response.setStatus("error");
-                response.setMsg("Found Error " + e.getMessage());
-                logger.error(e.getMessage());
+        if (list.size() >0) {
+            for (AsesmenOperasi bean: list){
+                ItSimrsAsesmenOperasiEntity operasi = new ItSimrsAsesmenOperasiEntity();
+                operasi.setIdAsesmenOperasi("ASO" + asesmenOperasiDao.getNextSeq());
+                operasi.setIdDetailCheckup(bean.getIdDetailCheckup());
+                operasi.setParameter(bean.getParameter());
+                operasi.setJawaban1(bean.getJawaban1());
+                operasi.setJawaban2(bean.getJawaban2());
+                operasi.setKeterangan(bean.getKeterangan());
+                operasi.setJenis(bean.getJenis());
+                operasi.setSkor(bean.getSkor());
+                operasi.setAction(bean.getAction());
+                operasi.setFlag(bean.getFlag());
+                operasi.setCreatedDate(bean.getCreatedDate());
+                operasi.setCreatedWho(bean.getCreatedWho());
+                operasi.setLastUpdate(bean.getLastUpdate());
+                operasi.setLastUpdateWho(bean.getLastUpdateWho());
+                try {
+                    asesmenOperasiDao.addAndSave(operasi);
+                    response.setStatus("success");
+                    response.setMsg("Berhasil");
+                } catch (HibernateException e) {
+                    response.setStatus("error");
+                    response.setMsg("Found Error " + e.getMessage());
+                    logger.error(e.getMessage());
+                }
             }
         }
         return response;

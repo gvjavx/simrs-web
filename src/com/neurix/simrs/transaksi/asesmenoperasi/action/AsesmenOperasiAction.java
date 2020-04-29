@@ -36,6 +36,7 @@ public class AsesmenOperasiAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         AsesmenOperasiBo asesmenOperasiBo = (AsesmenOperasiBo) ctx.getBean("asesmenOperasiBoProxy");
         JSONArray json = new JSONArray(data);
+        List<AsesmenOperasi> operasiList = new ArrayList<>();
 
         for (int i = 0; i < json.length(); i++) {
 
@@ -120,14 +121,15 @@ public class AsesmenOperasiAction {
             asesmenOperasi.setCreatedDate(time);
             asesmenOperasi.setLastUpdateWho(userLogin);
             asesmenOperasi.setLastUpdate(time);
+            operasiList.add(asesmenOperasi);
+        }
 
-            try {
-                response = asesmenOperasiBo.saveAdd(asesmenOperasi);
-            } catch (GeneralBOException e) {
-                response.setStatus("Error");
-                response.setMsg("Found Error " + e.getMessage());
-                return response;
-            }
+        try {
+            response = asesmenOperasiBo.saveAdd(operasiList);
+        } catch (GeneralBOException e) {
+            response.setStatus("Error");
+            response.setMsg("Found Error " + e.getMessage());
+            return response;
         }
         return response;
     }
