@@ -214,6 +214,7 @@
     <import resource="sshconfig/com/neurix/akuntansi/transaksi/tutupperiod/spring/TutupPeriodBean.xml"/>
     <import resource="sshconfig/com/neurix/akuntansi/master/pembayaran/spring/PembayaranBean.xml"/>
     <import resource="sshconfig/com/neurix/akuntansi/master/reportKeuanganKonsol/spring/ReportKeuanganKonsolBean.xml"/>
+    <import resource="sshconfig/com/neurix/akuntansi/transaksi/budgeting/spring/BudgetingBean.xml"/>
 
     <import resource="sshconfig/com/neurix/simrs/transaksi/fisioterapi/spring/FisioterapiBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/fisioterapi/spring/MonitoringFisioterapiBean.xml"/>
