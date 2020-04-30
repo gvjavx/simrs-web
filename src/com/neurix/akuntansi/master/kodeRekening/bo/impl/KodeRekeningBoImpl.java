@@ -314,6 +314,7 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
                 returnKodeRekening.setNamaKodeRekening(kodeRekeningEntity.getNamaKodeRekening());
                 returnKodeRekening.setParentId(kodeRekeningEntity.getParentId());
                 returnKodeRekening.setTipeRekeningId(kodeRekeningEntity.getTipeRekeningId());
+                returnKodeRekening.setLevel(kodeRekeningEntity.getLevel());
 
                 returnKodeRekening.setCreatedWho(kodeRekeningEntity.getCreatedWho());
                 returnKodeRekening.setCreatedDate(kodeRekeningEntity.getCreatedDate());

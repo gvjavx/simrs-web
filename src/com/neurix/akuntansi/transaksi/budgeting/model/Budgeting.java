@@ -39,7 +39,25 @@ public class Budgeting {
     private BigDecimal nilaiDraf;
     private BigDecimal nilaiFinal;
     private BigDecimal nilaiRevisi;
+    private String stLevel;
+    private String kodeParent;
+    private String namaParent;
 
+    public String getKodeParent() {
+        return kodeParent;
+    }
+
+    public void setKodeParent(String kodeParent) {
+        this.kodeParent = kodeParent;
+    }
+
+    public String getNamaParent() {
+        return namaParent;
+    }
+
+    public void setNamaParent(String namaParent) {
+        this.namaParent = namaParent;
+    }
 
     public static Comparator<Budgeting> kodeRekeningSorting = new Comparator<Budgeting>() {
 
@@ -300,5 +318,13 @@ public class Budgeting {
 
     public void setNilaiRevisi(BigDecimal nilaiRevisi) {
         this.nilaiRevisi = nilaiRevisi;
+    }
+
+    public String getStLevel() {
+        return stLevel;
+    }
+
+    public void setStLevel(String stLevel) {
+        this.stLevel = stLevel;
     }
 }

@@ -44,9 +44,13 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Budgeting </h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i>Edit Budgeting Detail</h3>
                     </div>
                     <div class="box-body">
+                        <table style="font-size: 15px;">
+                            <tr><td>Parent Coa </td>:<td></td><td> <s:label value="budgeting.kodeParent"></s:label> - <s:label value="budgeting.namaRekening"></s:label></td></tr>
+                            <tr><td>Child Coa </td>:<td></td><td> <s:label value="budgeting.kodeRekening"></s:label> - <s:label value="budgeting.namaKodeRekening"></s:label></td></tr>
+                        </table>
                         <%--<s:form id="kasirjalanForm" method="post" namespace="/kasirjalan" action="search_kasirjalan.action" theme="simple" cssClass="form-horizontal">--%>
                         <div class="form-group form-horizontal">
                             <div class="row">
@@ -54,7 +58,7 @@
                                     <div class="row">
                                         <label class="control-label col-sm-2">Tahun</label>
                                         <div class="col-sm-2">
-                                            <select class="form-control" id="sel-tahun">
+                                            <select class="form-control" id="sel-tahun" name="budgeting.tahun" disabled="true">
                                                 <option value="2020">2020</option>
                                                 <option value="2021">2021</option>
                                                 <option value="2022">2022</option>
@@ -68,7 +72,7 @@
 
                                             <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                                             <s:select list="#initComboBranch.listOfComboBranch" id="sel-unit" name="budgeting.branchId"
-                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control" disabled="true"/>
                                             <%--<select class="form-control" id="sel-unit">--%>
                                             <%--</select>--%>
                                         </div>
@@ -77,7 +81,7 @@
                                     <div class="row">
                                         <label class="control-label col-sm-2">Tipe Budgeting</label>
                                         <div class="col-sm-2">
-                                            <select class="form-control" id="sel-tipe">
+                                            <select class="form-control" id="sel-tipe" name="budgeting.tipe" disabled="true">
                                                 <option value="tahun">Tahunan</option>
                                                 <option value="semester">Semester</option>
                                                 <option value="quartal">Quartal</option>
@@ -90,7 +94,7 @@
 
                             <div class="row">
                                 <div class="col-md-6 col-md-offset-5" style="margin-top: 10px">
-                                    <button class="btn btn-success" onclick="add()"><i class="fa fa-plus"></i> Add</button>
+                                    <%--<button class="btn btn-success" onclick="add()"><i class="fa fa-plus"></i> Add</button>--%>
                                     <button class="btn btn-success" onclick="initForm()"><i class="fa fa-back"></i> Back</button>
                                 </div>
                             </div>
@@ -123,13 +127,29 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-md-8 col-md-offset-2">
-                                <table id="sortTable" class="table table-bordered table-striped">
+                            <div class="col-md-10 col-md-offset-1">
+                                <table id="sortTable" class="table table-bordered table-striped" style="font-size: 15px;">
                                     <thead id="head-budgeting">
                                     <tr bgcolor="#90ee90">
                                         <td style="width: 20%">COA</td>
                                         <td align="center">Keterangan</td>
-                                        <%--<td align="center">Action</td>--%>
+                                        <s:if test='budgeting.tipe == "quartal"'>
+                                            <td align="center">Total</td>
+                                            <td align="center">Kuartal 1</td>
+                                            <td align="center">Kuartal 2</td>
+                                            <td align="center">Kuartal 3</td>
+                                            <td align="center">Kuartal 4</td>
+                                        </s:if>
+                                        <s:if test='budgeting.tipe == "semester"'>
+                                            <td align="center">Total</td>
+                                            <td align="center">Semester 1</td>
+                                            <td align="center">Semester 2</td>
+                                        </s:if>
+                                        <s:if test='budgeting.tipe == "tahunan"'>
+                                            <td align="center">Total</td>
+                                        </s:if>
+                                        <td align="center">Action</td>
+                                    <%--<td align="center">Action</td>--%>
                                     </tr>
                                     </thead>
                                     <tbody id="body-budgeting">
@@ -137,6 +157,26 @@
                                         <tr>
                                             <td><s:property value="kodeRekening"/></td>
                                             <td><s:property value="namaKodeRekening"/></td>
+                                            <s:if test='budgeting.tipe == "quartal"'>
+                                                <td align="center"><s:property value="nilaiTotal"/></td>
+                                                <td align="center"><s:property value="quartal1"/></td>
+                                                <td align="center"><s:property value="quartal2"/></td>
+                                                <td align="center"><s:property value="quartal3"/></td>
+                                                <td align="center"><s:property value="quartal4"/></td>
+                                            </s:if>
+                                            <s:if test='budgeting.tipe == "semester"'>
+                                                <td align="center"><s:property value="nilaiTotal"/></td>
+                                                <td align="center"><s:property value="semester1"/></td>
+                                                <td align="center"><s:property value="semester2"/></td>
+                                            </s:if>
+                                            <s:if test='budgeting.tipe == "tahunan"'>
+                                                <td align="center"><s:property value="nilaiTotal"/>l</td>
+                                            </s:if>
+                                            <td align="center">
+                                                <s:if test='#row.stLevel == "5"'>
+                                                    <button class="btn btn-sm btn-success"><i class="fa fa-edit"></i></button>
+                                                </s:if>
+                                            </td>
                                         </tr>
                                     </s:iterator>
                                     </tbody>
@@ -145,7 +185,7 @@
                         </div>
                         <div class="form-group" style="margin-top: 10px">
                             <div class="col-md-4 col-md-offset-6">
-                            <button class="btn btn-success" id="btn-save" onclick="saveAdd()"><i class="fa fa-arrow-right"></i> Next </button>
+                                <button class="btn btn-success" id="btn-save" onclick="saveAdd()"><i class="fa fa-arrow-right"></i> Save </button>
                             </div>
                         </div>
                     </div>
@@ -161,57 +201,57 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span></button>
+                    <span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title"><i class="fa fa-plus"></i> Add COA
                 </h4>
             </div>
             <div class="modal-body">
                 <div class="form-group">
                     <div class="row">
-                    <label class="col-md-2 col-md-offset-1">COA</label>
-                    <div class="col-md-6">
-                    <input type="text" class="form-control" id="coa">
+                        <label class="col-md-2 col-md-offset-1">COA</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" id="coa">
 
-                        <script>
-                            $(document).ready(function() {
-                                var functions, mapped;
-                                $('#coa').typeahead({
-                                    minLength: 1,
-                                    source: function (query, process) {
-                                        functions = [];
-                                        mapped = {};
-                                        var data = [];
-                                        dwr.engine.setAsync(false);
-                                        KodeRekeningAction.initTypeaheadKodeRekening(query,function (listdata) {
-                                            data = listdata;
-                                        });
-                                        $.each(data, function (i, item) {
-                                            var labelItem = item.kodeRekening + " | " + item.namaKodeRekening;
-                                            mapped[labelItem] = {
-                                                id: item.rekeningId,
-                                                nama: item.namaKodeRekening,
-                                                kode : item.kodeRekening,
-                                                parent :item.parentId
-                                            };
-                                            functions.push(labelItem);
-                                        });
-                                        process(functions);
-                                    },
-                                    updater: function (item) {
-                                        var selectedObj = mapped[item];
-                                        $('#rekeningid').val(selectedObj.id);
-                                        $('#namacoa').val(selectedObj.nama);
-                                        $('#parentid').val(selectedObj.parent);
-                                        return selectedObj.kode;
-                                    }
+                            <script>
+                                $(document).ready(function() {
+                                    var functions, mapped;
+                                    $('#coa').typeahead({
+                                        minLength: 1,
+                                        source: function (query, process) {
+                                            functions = [];
+                                            mapped = {};
+                                            var data = [];
+                                            dwr.engine.setAsync(false);
+                                            KodeRekeningAction.initTypeaheadKodeRekening(query,function (listdata) {
+                                                data = listdata;
+                                            });
+                                            $.each(data, function (i, item) {
+                                                var labelItem = item.kodeRekening + " | " + item.namaKodeRekening;
+                                                mapped[labelItem] = {
+                                                    id: item.rekeningId,
+                                                    nama: item.namaKodeRekening,
+                                                    kode : item.kodeRekening,
+                                                    parent :item.parentId
+                                                };
+                                                functions.push(labelItem);
+                                            });
+                                            process(functions);
+                                        },
+                                        updater: function (item) {
+                                            var selectedObj = mapped[item];
+                                            $('#rekeningid').val(selectedObj.id);
+                                            $('#namacoa').val(selectedObj.nama);
+                                            $('#parentid').val(selectedObj.parent);
+                                            return selectedObj.kode;
+                                        }
+                                    });
                                 });
-                            });
-                        </script>
+                            </script>
 
-                    <input type="hidden" id="rekeningid">
-                    <input type="hidden" id="namacoa">
-                    <input type="hidden" id="parentid">
-                    </div>
+                            <input type="hidden" id="rekeningid">
+                            <input type="hidden" id="namacoa">
+                            <input type="hidden" id="parentid">
+                        </div>
                     </div>
 
                     <div class="alert alert-warning alert-dismissable" id="alert-error-modal" style="display: none">
@@ -229,9 +269,18 @@
 
 <script type='text/javascript'>
 
+    var unit = '<s:property value="budgeting.branchId" />';
+    var tahun = '<s:property value="budgeting.tahun" />';
+    var tipe = '<s:property value="budgeting.tipe" />';
+
     var listOfCoa = [];
     $( document ).ready(function() {
 
+        console.log("hasil >>> "+unit+tahun+tipe);
+
+        $("#sel-tipe").val(tipe);
+        $("#sel-tahun").val(tahun);
+        $("#sel-unit").val(unit);
     });
 
 
@@ -309,8 +358,8 @@
 
             BudgetingAction.setToSessionCoa(jsonString, function (response) {
                 if(response == "01"){
-                    refreshAdd();
                     $("#btn-save").show();
+                    refreshAdd();
                 } else {
                     $("#alert-error-modal").show().fadeOut(5000);
                 }
@@ -342,13 +391,14 @@
 
     function saveAdd() {
         var tahun = $("#sel-tahun").val();
-        var unit = $("#sel-unit").val();
-        var tipe = $("#sel-tipe").val();
+        var unit = $("#initComboBranch").val();
+        var status = $("#sel-tipe").val();
 
-        var form = { "budgeting.tahun":tahun, "budgeting.branchId":unit, "budgeting.tipe":tipe };
+        var arrForm = [];
+        arrForm.push({ "budgeting.tahun":tahun, "budgeting.branchId":unit, "budgeting.status":status });
 
         var host = firstpath()+"/budgeting/add_budgeting.action?status=add&tipe=detail";
-        post(host, form);
+        post(host, arrForm);
     }
 
     function search() {
@@ -377,11 +427,11 @@
                 $.each(response.list, function (i, item) {
                     strList += "<tr>" +
                         "<td>"+setIconByAction(item.status)+"</td>"+
-                    "<td>"+item.kodeRekening+"</td>"+
-                    "<td>"+item.nilaiDraf+"</td>"+
-                    "<td>"+item.nilaiFinal+"</td>"+
-                    "<td>"+item.nilaiRevisi+"</td>"+
-                    "</tr>";
+                        "<td>"+item.kodeRekening+"</td>"+
+                        "<td>"+item.nilaiDraf+"</td>"+
+                        "<td>"+item.nilaiFinal+"</td>"+
+                        "<td>"+item.nilaiRevisi+"</td>"+
+                        "</tr>";
                 });
             }
 
