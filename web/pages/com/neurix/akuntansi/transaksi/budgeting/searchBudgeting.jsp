@@ -15,6 +15,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/BranchAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/SettingTutupPeriodAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/TutuPeriodAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/BudgetingAction.js"/>'></script>
     <script type='text/javascript'>
 
         $( document ).ready(function() {
@@ -60,8 +61,6 @@
                                             <label class="control-label col-sm-2">Tahun</label>
                                             <div class="col-sm-2">
                                                 <select class="form-control" id="sel-tahun">
-                                                    <option value="2020">2020</option>
-                                                    <option value="2021">2021</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -69,6 +68,7 @@
                                             <label class="control-label col-sm-2">Coa</label>
                                             <div class="col-sm-2">
                                                 <input type="text" class="form-control" id="coa">
+                                                <input type="hidden" id="rekeningid">
                                             </div>
                                         </div>
                                         <div class="row">
@@ -91,7 +91,7 @@
                                 <div class="row">
                                     <div class="col-md-6 col-md-offset-4" style="margin-top: 10px">
                                         <button class="btn btn-success" onclick="seach()"><i class="fa fa-search"></i> Search</button>
-                                        <button class="btn btn-success" onclick=""><i class="fa fa-plus"></i> Add</button>
+                                        <button class="btn btn-success" onclick="add()"><i class="fa fa-plus"></i> Add</button>
                                         <button class="btn btn-success" onclick=""><i class="fa fa-edit"></i> Action</button>
                                         <button class="btn btn-success" onclick=""><i class="fa fa-refresh"></i> Reset</button>
                                     </div>
@@ -127,15 +127,17 @@
                         <div class="row">
                             <div class="col-md-8 col-md-offset-2">
                                 <table id="sortTable" class="table table-bordered table-striped">
-                                    <thead id="head-period">
-                                    <tr bgcolor="#90ee90">
-                                        <td>Unit</td>
-                                        <td style="width: 20%">Tgl Tutup Period</td>
-                                        <td align="center">Action</td>
-                                        <td align="center">Status</td>
-                                    </tr>
+                                    <thead id="head-budgeting">
+                                        <tr bgcolor="#90ee90">
+                                            <td>Action</td>
+                                            <td style="width: 20%">COA</td>
+                                            <td align="center">Keterangan</td>
+                                            <td align="center">Nilai Draf</td>
+                                            <td align="center">Nilai Final</td>
+                                            <td align="center">Nilai Revisi</td>
+                                        </tr>
                                     </thead>
-                                    <tbody id="body-period">
+                                    <tbody id="body-budgeting">
                                     </tbody>
                                     <input type="hidden" id="index-period"/>
                                     <input type="hidden" id="index-branch"/>
@@ -181,6 +183,35 @@
 
 <script type='text/javascript'>
 
+
+    function post(path, params) {
+
+        var method='post';
+        // The rest of this code assumes you are not using a library.
+        // It can be made less wordy if you use one.
+        const form = document.createElement('form');
+        form.method = method;
+        form.action = path;
+
+        for (const key in params) {
+            if (params.hasOwnProperty(key)) {
+                const hiddenField = document.createElement('input');
+                hiddenField.type = 'hidden';
+                hiddenField.name = key;
+                hiddenField.value = params[key];
+
+                form.appendChild(hiddenField);
+            }
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+    $( document ).ready(function() {
+
+    });
+
     function formatDate(date) {
         var d = new Date(date),
             month = '' + (d.getMonth() + 1),
@@ -195,80 +226,59 @@
         return [year, month, day].join('-');
     }
 
-    function searchPeriod(){
-
-        var tahun = $("#sel-tahun").val();
-        var bulan = $("#sel-bulan").val();
-        var labebulan = $("#sel-bulan option:selected").text();
-
-        $("#label-bulan").text(labebulan);
-        $("#label-tahun").text(tahun);
-        $("#bulan").val(bulan);
-        $("#tahun").val(tahun);
-
-        BranchAction.getListBranchByArea( function (response) {
-            var strBody = "";
-            var indexperiod = 0;
-            var indexbranch = "";
-            if(response.length > 0){
-                $.each(response, function (i, item) {
-
-                    TutuPeriodAction.getDataBatasTutupPeriod(item.branchId, tahun, bulan, function (batas) {
-
-                        strBody += "<tr>" +
-                            "<td>"+item.branchName+"</td>" +
-                            "<td align='center'>"+setNullToString(batas.stTglBatas)+"</td>" +
-                            "<td align='center'>";
-
-                        if (batas.flagTutup == "Y"){
-                            strBody += "<button class='btn btn-primary' id='btn-tutup-"+item.branchId+"' onclick=\"saveTutup('"+item.branchId+"','"+tahun+"','"+bulan+"')\" disabled>Tutup</button>" +
-                                " <button class='btn btn-info' id='btn-lock-"+item.branchId+"' onclick=\"saveLock('"+item.branchId+"','"+tahun+"','"+bulan+"')\" disabled>Lock</button>" +
-                                "<span id='load-save-"+item.branchId+"'></span>" +
-                                "</td>" +
-                                "<td align='center'><span class='label label-danger'>Sudah Ditutup</span></td>" +
-                                "</tr>";
-                        } else if (batas.flagTutup == "P"){
-                            strBody +=  "<button class='btn btn-primary' id='btn-tutup-"+item.branchId+"' onclick=\"saveTutup('"+item.branchId+"','"+tahun+"','"+bulan+"')\">Tutup</button>" +
-                                " <button class='btn btn-info' id='btn-lock-"+item.branchId+"' onclick=\"saveLock('"+item.branchId+"','"+tahun+"','"+bulan+"')\" disabled>Lock</button>" +
-                                "<span id='load-save-"+item.branchId+"'></span>" +
-                                "</td>" +
-                                "<td align='center'><span class='label label-warning'>Lock Process</span></td>" +
-                                "</tr>";
-                        } else {
-                            if (batas.statusTanggal == "kurang"){
-                                strBody += "<button class='btn btn-primary' id='btn-tutup-"+item.branchId+"' onclick=\"saveTutup('"+item.branchId+"','"+tahun+"','"+bulan+"')\" disabled>Tutup</button>" +
-                                    " <button class='btn btn-info' id='btn-lock-"+item.branchId+"' onclick=\"saveLock('"+item.branchId+"','"+tahun+"','"+bulan+"')\" disabled>Lock</button>" +
-                                    "<span id='load-save-"+item.branchId+"'></span>" +
-                                    "</td>" +
-                                    "<td align='center'><span class='label label-default'>Belum Waktu Tutup</span></td>" +
-                                    "</tr>";
-                            } else if (batas.stTglBatas == "" || batas.stTglBatas == null) {
-                                strBody += "<button class='btn btn-primary' id='btn-tutup-"+item.branchId+"' onclick=\"saveTutup('"+item.branchId+"','"+tahun+"','"+bulan+"')\" disabled>Tutup</button>" +
-                                    " <button class='btn btn-info' id='btn-lock-"+item.branchId+"' onclick=\"saveLock('"+item.branchId+"','"+tahun+"','"+bulan+"')\" disabled>Lock</button>" +
-                                    "<span id='load-save-"+item.branchId+"'></span>" +
-                                    "</td>" +
-                                    "<td align='center'><span class='label label-default'>Belum Set Waktu Tutup</span></td>" +
-                                    "</tr>";
-                            } else {
-                                strBody += "<button class='btn btn-primary' id='btn-tutup-"+item.branchId+"' onclick=\"saveTutup('" + item.branchId + "','" + tahun + "','" + bulan + "')\" disabled>Tutup</button>" +
-                                " <button class='btn btn-info' id='btn-lock-"+item.branchId+"' onclick=\"saveLock('" + item.branchId + "','" + tahun + "','" + bulan + "')\">Lock</button>" +
-                                "<span id='load-save-"+item.branchId+"'></span>" +
-                                "</td>" +
-                                "<td align='center'><span class='label label-success'>Siap Ditutup</span></td>" +
-                                "</tr>";
-                            }
-                        }
-                    });
-
-                    indexbranch += "_"+item.branchId;
-                });
-
-            }
-            $("#body-period").html(strBody);
-            $("#index-period").val(indexperiod);
-            $("#index-branch").val(indexbranch);
-        });
+    function firstpath() {
+        var pathArray = window.location.pathname.split('/');
+        var first = pathArray[1];
+        return "/" + first;
     }
+
+    function add() {
+        var host = firstpath()+"/budgeting/add_budgeting.action";
+        post(host);
+    }
+
+    function search() {
+        var tahun = $("#sel-tahun").val();
+        var unit = $("#sel-unit").val();
+        var status = $("#sel-status").val();
+        var rekeningid = $("#rekeningid").val();
+
+        var arr = [];
+        arr.push({
+            "tahun":tahun,
+            "unit":unit,
+            "status":status,
+            "coa":rekeningid
+        });
+
+        var strJson = JSON.stringify(arr);
+        BudgetingAction.getSearchListBudgeting(strJson, function (response) {
+            if (response.status == "error"){
+                $("#alert-error").show().fadeOut(5000);
+                $("#error-msg").text(response.msg);
+            } else {
+
+                var tipe = "";
+                var strList = "";
+                $.each(response.list, function (i, item) {
+                    strList += "<tr>" +
+                            "<td>"+setIconByAction(item.status)+"</td>"+
+                            "<td>"+item.kodeRekening+"</td>"+
+                            "<td>"+item.nilaiDraf+"</td>"+
+                            "<td>"+item.nilaiFinal+"</td>"+
+                            "<td>"+item.nilaiRevisi+"</td>"+
+                            "</tr>";
+                });
+            }
+
+            $("#body-budgeting").html(strList);
+        })
+    }
+
+    function setIconByAction() {
+
+    }
+
 
     function saveTutup(unit, tahun, bulan) {
 

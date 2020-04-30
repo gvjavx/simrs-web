@@ -13,14 +13,9 @@
     </style>
 
     <script type='text/javascript' src='<s:url value="/dwr/interface/BranchAction.js"/>'></script>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/SettingTutupPeriodAction.js"/>'></script>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/TutuPeriodAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/BudgetingAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/KodeRekeningAction.js"/>'></script>
     <script type='text/javascript'>
-
-        $( document ).ready(function() {
-            $('#bayar_rawat_jalan, #pembayaran_active').addClass('active');
-            $('#pembayaran_open').addClass('menu-open');
-        });
 
 
     </script>
@@ -49,45 +44,62 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Tutup Period</h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Budgeting </h3>
                     </div>
                     <div class="box-body">
                         <%--<s:form id="kasirjalanForm" method="post" namespace="/kasirjalan" action="search_kasirjalan.action" theme="simple" cssClass="form-horizontal">--%>
-                            <div class="form-group form-horizontal">
-                                <label class="control-label col-sm-2 col-sm-offset-1">Periode</label>
-                                <div class="col-sm-3">
-                                    <select class="form form-control" id="sel-bulan">
-                                        <option value="1">Januari</option>
-                                        <option value="2">Februari</option>
-                                        <option value="3">Maret</option>
-                                        <option value="4">April</option>
-                                        <option value="5">Mei</option>
-                                        <option value="6">Juni</option>
-                                        <option value="7">Juli</option>
-                                        <option value="8">Agustus</option>
-                                        <option value="9">September</option>
-                                        <option value="10">Oktober</option>
-                                        <option value="11">November</option>
-                                        <option value="12">Desember</option>
-                                    </select>
-                                </div>
-                                <div class="col-sm-2">
-                                    <select class="form form-control" id="sel-tahun">
-                                        <option value="2020">2020</option>
-                                        <option value="2021">2021</option>
-                                    </select>
-                                </div>
-                                <div class="col-sm-2">
-                                    <button class="btn btn-success" onclick="searchPeriod()"><i class="fa fa-check"></i> Choose</button>
+                        <div class="form-group form-horizontal">
+                            <div class="row">
+                                <div class="col-md-12 col-md-offset-3">
+                                    <div class="row">
+                                        <label class="control-label col-sm-2">Tahun</label>
+                                        <div class="col-sm-2">
+                                            <select class="form-control" id="sel-tahun">
+                                                <option value="2020">2020</option>
+                                                <option value="2021">2021</option>
+                                                <option value="2022">2022</option>
+                                                <option value="2023">2023</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label class="control-label col-sm-2">Unit</label>
+                                        <div class="col-sm-2">
+                                            <select class="form-control" id="sel-unit">
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <label class="control-label col-sm-2">Tipe Budgeting</label>
+                                        <div class="col-sm-2">
+                                            <select class="form-control" id="sel-tipe">
+                                                <option value="tahun">Tahunan</option>
+                                                <option value="semester">Semester</option>
+                                                <option value="quartal">Quartal</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
+
+                            <div class="row">
+                                <div class="col-md-6 col-md-offset-5" style="margin-top: 10px">
+                                    <button class="btn btn-success" onclick="add()"><i class="fa fa-plus"></i> Add</button>
+                                    <button class="btn btn-success" onclick="initForm()"><i class="fa fa-back"></i> Back</button>
+                                </div>
+                            </div>
+                        </div>
 
                         <%--</s:form>--%>
                     </div>
 
                     <div class="box-header with-border"></div>
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-th-list"></i> List Tutup Period <strong><span id="label-tahun"></span> - <span id="label-bulan"></span></strong> </h3>
+                        <h3 class="box-title"><i class="fa fa-th-list"></i>
+                            <%--List Tutup Period <strong><span id="label-tahun"></span> - <span id="label-bulan"></span></strong> --%>
+                        </h3>
                     </div>
                     <div class="box-body">
 
@@ -109,29 +121,29 @@
                         <div class="row">
                             <div class="col-md-8 col-md-offset-2">
                                 <table id="sortTable" class="table table-bordered table-striped">
-                                    <thead id="head-period">
+                                    <thead id="head-budgeting">
                                     <tr bgcolor="#90ee90">
-                                        <td>Unit</td>
-                                        <td style="width: 20%">Tgl Tutup Period</td>
-                                        <td align="center">Action</td>
-                                        <td align="center">Status</td>
+                                        <td style="width: 20%">COA</td>
+                                        <td align="center">Keterangan</td>
+                                        <%--<td align="center">Action</td>--%>
                                     </tr>
                                     </thead>
-                                    <tbody id="body-period">
+                                    <tbody id="body-budgeting">
+                                    <s:iterator value="#session.listOfCoa" status="listOfCoa" var="row">
+                                        <tr>
+                                            <td><s:property value="kodeRekening"/></td>
+                                            <td><s:property value="namaKodeRekening"/></td>
+                                        </tr>
+                                    </s:iterator>
                                     </tbody>
-                                    <input type="hidden" id="index-period"/>
-                                    <input type="hidden" id="index-branch"/>
-                                    <input type="hidden" id="bulan"/>
-                                    <input type="hidden" id="tahun"/>
                                 </table>
                             </div>
                         </div>
-
-                        <%--<div class="form-group">--%>
-                            <%--<div class="col-md-4 col-md-offset-5">--%>
-                                <%--<button class="btn btn-success" style="display: none" id="btn-save" onclick="saveBatasPeriod()"><i class="fa fa-check"></i> Save </button>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
+                        <div class="form-group">
+                            <div class="col-md-4 col-md-offset-6">
+                            <button class="btn btn-success" style="display: none" id="btn-save" onclick="saveAdd()"><i class="fa fa-arrow-right"></i> Next </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -140,28 +152,106 @@
     <!-- /.content -->
 </div>
 
-<%--<div class="modal fade" id="modal-confirm-dialog">--%>
-    <%--<div class="modal-dialog modal-sm">--%>
-        <%--<div class="modal-content">--%>
-            <%--<div class="modal-header">--%>
-                <%--<button type="button" class="close" data-dismiss="modal" aria-label="Close">--%>
-                    <%--<span aria-hidden="true">&times;</span></button>--%>
-                <%--<h4 class="modal-title"><i class="fa fa-info"></i> Confirmation--%>
-                <%--</h4>--%>
-            <%--</div>--%>
-            <%--<div class="modal-body">--%>
-                <%--<h4 class="text-center">Do you want save this record?</h4>--%>
-            <%--</div>--%>
-            <%--<div class="modal-footer">--%>
-                <%--<button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No--%>
-                <%--</button>--%>
-                <%--<button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes</button>--%>
-            <%--</div>--%>
-        <%--</div>--%>
-    <%--</div>--%>
-<%--</div>--%>
+<div class="modal fade" id="modal-add-coa">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-plus"></i> Add COA
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="row">
+                    <label class="col-md-2 col-md-offset-1">COA</label>
+                    <div class="col-md-6">
+                    <input type="text" class="form-control" id="coa">
+
+                        <script>
+                            $(document).ready(function() {
+                                var functions, mapped;
+                                $('#coa').typeahead({
+                                    minLength: 1,
+                                    source: function (query, process) {
+                                        functions = [];
+                                        mapped = {};
+                                        var data = [];
+                                        dwr.engine.setAsync(false);
+                                        KodeRekeningAction.initTypeaheadKodeRekening(query,function (listdata) {
+                                            data = listdata;
+                                        });
+                                        $.each(data, function (i, item) {
+                                            var labelItem = item.kodeRekening + " | " + item.namaKodeRekening;
+                                            mapped[labelItem] = {
+                                                id: item.rekeningId,
+                                                nama: item.namaKodeRekening,
+                                                kode : item.kodeRekening,
+                                                parent :item.parentId
+                                            };
+                                            functions.push(labelItem);
+                                        });
+                                        process(functions);
+                                    },
+                                    updater: function (item) {
+                                        var selectedObj = mapped[item];
+                                        $('#rekeningid').val(selectedObj.id);
+                                        $('#namacoa').val(selectedObj.nama);
+                                        $('#parentid').val(selectedObj.parent);
+                                        return selectedObj.kode;
+                                    }
+                                });
+                            });
+                        </script>
+
+                    <input type="hidden" id="rekeningid">
+                    <input type="hidden" id="namacoa">
+                    <input type="hidden" id="parentid">
+                    </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="save_con" onclick="addCoa()"><i class="fa fa-check"></i> Save</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script type='text/javascript'>
+
+    var listOfCoa = [];
+    $( document ).ready(function() {
+
+    });
+
+
+    // exemple : post('/contact/', {name: 'Johnny Bravo'});
+    function post(path, params) {
+
+        var method='post';
+        // The rest of this code assumes you are not using a library.
+        // It can be made less wordy if you use one.
+        const form = document.createElement('form');
+        form.method = method;
+        form.action = path;
+
+        for (const key in params) {
+            if (params.hasOwnProperty(key)) {
+                const hiddenField = document.createElement('input');
+                hiddenField.type = 'hidden';
+                hiddenField.name = key;
+                hiddenField.value = params[key];
+
+                form.appendChild(hiddenField);
+            }
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+
 
     function formatDate(date) {
         var d = new Date(date),
@@ -177,80 +267,120 @@
         return [year, month, day].join('-');
     }
 
-    function searchPeriod(){
-
-        var tahun = $("#sel-tahun").val();
-        var bulan = $("#sel-bulan").val();
-        var labebulan = $("#sel-bulan option:selected").text();
-
-        $("#label-bulan").text(labebulan);
-        $("#label-tahun").text(tahun);
-        $("#bulan").val(bulan);
-        $("#tahun").val(tahun);
-
-        BranchAction.getListBranchByArea( function (response) {
-            var strBody = "";
-            var indexperiod = 0;
-            var indexbranch = "";
-            if(response.length > 0){
-                $.each(response, function (i, item) {
-
-                    TutuPeriodAction.getDataBatasTutupPeriod(item.branchId, tahun, bulan, function (batas) {
-
-                        strBody += "<tr>" +
-                            "<td>"+item.branchName+"</td>" +
-                            "<td align='center'>"+setNullToString(batas.stTglBatas)+"</td>" +
-                            "<td align='center'>";
-
-                        if (batas.flagTutup == "Y"){
-                            strBody += "<button class='btn btn-primary' id='btn-tutup-"+item.branchId+"' onclick=\"saveTutup('"+item.branchId+"','"+tahun+"','"+bulan+"')\" disabled>Tutup</button>" +
-                                " <button class='btn btn-info' id='btn-lock-"+item.branchId+"' onclick=\"saveLock('"+item.branchId+"','"+tahun+"','"+bulan+"')\" disabled>Lock</button>" +
-                                "<span id='load-save-"+item.branchId+"'></span>" +
-                                "</td>" +
-                                "<td align='center'><span class='label label-danger'>Sudah Ditutup</span></td>" +
-                                "</tr>";
-                        } else if (batas.flagTutup == "P"){
-                            strBody +=  "<button class='btn btn-primary' id='btn-tutup-"+item.branchId+"' onclick=\"saveTutup('"+item.branchId+"','"+tahun+"','"+bulan+"')\">Tutup</button>" +
-                                " <button class='btn btn-info' id='btn-lock-"+item.branchId+"' onclick=\"saveLock('"+item.branchId+"','"+tahun+"','"+bulan+"')\" disabled>Lock</button>" +
-                                "<span id='load-save-"+item.branchId+"'></span>" +
-                                "</td>" +
-                                "<td align='center'><span class='label label-warning'>Lock Process</span></td>" +
-                                "</tr>";
-                        } else {
-                            if (batas.statusTanggal == "kurang"){
-                                strBody += "<button class='btn btn-primary' id='btn-tutup-"+item.branchId+"' onclick=\"saveTutup('"+item.branchId+"','"+tahun+"','"+bulan+"')\" disabled>Tutup</button>" +
-                                    " <button class='btn btn-info' id='btn-lock-"+item.branchId+"' onclick=\"saveLock('"+item.branchId+"','"+tahun+"','"+bulan+"')\" disabled>Lock</button>" +
-                                    "<span id='load-save-"+item.branchId+"'></span>" +
-                                    "</td>" +
-                                    "<td align='center'><span class='label label-default'>Belum Waktu Tutup</span></td>" +
-                                    "</tr>";
-                            } else if (batas.stTglBatas == "" || batas.stTglBatas == null) {
-                                strBody += "<button class='btn btn-primary' id='btn-tutup-"+item.branchId+"' onclick=\"saveTutup('"+item.branchId+"','"+tahun+"','"+bulan+"')\" disabled>Tutup</button>" +
-                                    " <button class='btn btn-info' id='btn-lock-"+item.branchId+"' onclick=\"saveLock('"+item.branchId+"','"+tahun+"','"+bulan+"')\" disabled>Lock</button>" +
-                                    "<span id='load-save-"+item.branchId+"'></span>" +
-                                    "</td>" +
-                                    "<td align='center'><span class='label label-default'>Belum Set Waktu Tutup</span></td>" +
-                                    "</tr>";
-                            } else {
-                                strBody += "<button class='btn btn-primary' id='btn-tutup-"+item.branchId+"' onclick=\"saveTutup('" + item.branchId + "','" + tahun + "','" + bulan + "')\" disabled>Tutup</button>" +
-                                " <button class='btn btn-info' id='btn-lock-"+item.branchId+"' onclick=\"saveLock('" + item.branchId + "','" + tahun + "','" + bulan + "')\">Lock</button>" +
-                                "<span id='load-save-"+item.branchId+"'></span>" +
-                                "</td>" +
-                                "<td align='center'><span class='label label-success'>Siap Ditutup</span></td>" +
-                                "</tr>";
-                            }
-                        }
-                    });
-
-                    indexbranch += "_"+item.branchId;
-                });
-
-            }
-            $("#body-period").html(strBody);
-            $("#index-period").val(indexperiod);
-            $("#index-branch").val(indexbranch);
-        });
+    function firstpath() {
+        var pathArray = window.location.pathname.split('/');
+        var first = pathArray[1];
+        return "/" + first;
     }
+
+    function initForm() {
+        var host = firstpath()+"/budgeting/initForm_budgeting.action";
+        post(host);
+    }
+
+    function add() {
+        $("#modal-add-coa").modal('show');
+        $("#rekeningid").val("");
+        $("#coa").val("");
+        $("#namacoa").val("");
+    }
+
+    function addCoa() {
+        var rekeningId = $("#rekeningid").val();
+        var coa = $("#coa").val();
+        var namacoa = $("#namacoa").val();
+        var parent = $("#parentid").val();
+
+
+        if (rekeningId != ""){
+
+            var arrCoa = [];
+            arrCoa.push({kode:coa, nama:namacoa, id:rekeningId, parent:parent});
+            var jsonString = JSON.stringify(arrCoa);
+
+            BudgetingAction.setToSessionCoa(jsonString, function (response) {
+                if(response == "01"){
+                    refreshAdd();
+                } else {
+                    $("#alert-error").show().fadeOut(5000);
+                    $("#error-msg").text("Gagal Menambahkan ke list");
+                }
+            });
+
+//            listOfCoa.push({kode:coa, nama:namacoa, id:rekeningId, parent:parent});
+//
+//
+//            var strBody = "";
+//            $.each(listOfCoa, function (i, item) {
+//                strBody += "<tr>" +
+//                        "<td>"+item.kode+"</td>"+
+//                        "<td>"+item.nama+"</td>"+
+//                        "</tr>";
+//            });
+//            console.log(listOfCoa);
+//            $("#body-budgeting").html(strBody);
+//            $("#modal-add-coa").modal('hide');
+//            $("#btn-save").show();
+        } else {
+            alert("COA Harus Diisi !");
+        }
+    }
+
+    function refreshAdd() {
+        var host = firstpath()+"/budgeting/add_budgeting.action";
+        post(host);
+    }
+
+    function saveAdd() {
+        var tahun = $("#sel-tahun").val();
+        var unit = $("#sel-unit").val();
+        var status = $("#sel-tipe").val();
+        var host = firstpath()+"/budgeting/add_budgeting.action?";
+        post(host);
+    }
+
+    function search() {
+        var tahun = $("#sel-tahun").val();
+        var unit = $("#sel-unit").val();
+        var status = $("#sel-status").val();
+        var rekeningid = $("#rekeningid").val();
+
+        var arr = [];
+        arr.push({
+            "tahun":tahun,
+            "unit":unit,
+            "status":status,
+            "coa":rekeningid
+        });
+
+        var strJson = JSON.stringify(arr);
+        BudgetingAction.getSearchListBudgeting(strJson, function (response) {
+            if (response.status == "error"){
+                $("#alert-error").show().fadeOut(5000);
+                $("#error-msg").text(response.msg);
+            } else {
+
+                var tipe = "";
+                var strList = "";
+                $.each(response.list, function (i, item) {
+                    strList += "<tr>" +
+                        "<td>"+setIconByAction(item.status)+"</td>"+
+                    "<td>"+item.kodeRekening+"</td>"+
+                    "<td>"+item.nilaiDraf+"</td>"+
+                    "<td>"+item.nilaiFinal+"</td>"+
+                    "<td>"+item.nilaiRevisi+"</td>"+
+                    "</tr>";
+                });
+            }
+
+            $("#body-budgeting").html(strList);
+        })
+    }
+
+    function setIconByAction() {
+
+    }
+
 
     function saveTutup(unit, tahun, bulan) {
 
@@ -263,18 +393,18 @@
         TutuPeriodAction.saveTutupPeriod(unit, tahun, bulan, function(response){
             dwr.engine.setAsync(false);
             if (response.status == "error"){
-               searchPeriod();
-               $("#alert-error").show().fadeOut(5000);
-               $("#error-msg").text(response.msg);
-           } else {
-               searchPeriod();
-               $("#btn-tutup-"+unit).show();
-               $("#btn-lock-"+unit).show();
-               $("#alert-error").hide();
-               $("#alert-success").show().fadeOut(5000);
+                searchPeriod();
+                $("#alert-error").show().fadeOut(5000);
+                $("#error-msg").text(response.msg);
+            } else {
+                searchPeriod();
+                $("#btn-tutup-"+unit).show();
+                $("#btn-lock-"+unit).show();
+                $("#alert-error").hide();
+                $("#alert-success").show().fadeOut(5000);
 
-           }
-       });
+            }
+        });
     }
 
     function saveLock(unit, tahun, bulan){

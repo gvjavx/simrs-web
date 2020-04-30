@@ -12,7 +12,7 @@ public interface BudgetingBo {
 
     public List<Budgeting> getSearchByCriteria(Budgeting bean) throws GeneralBOException;
     public void saveAddCoaBudgeting(List<Budgeting> budgetingList) throws GeneralBOException;
-    public void saveBudgetingDetail(List<Budgeting> budgetingList) throws GeneralBOException;
+    public void saveBudgetingDetail(List<Budgeting> budgetingList, String type) throws GeneralBOException;
     public void saveAllBudgeting(List<Budgeting> budgetingList, String type) throws GeneralBOException;
 
 }

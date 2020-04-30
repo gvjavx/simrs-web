@@ -22,6 +22,9 @@
         <property name="status">
             <column name="status" sql-type="varchar" length="10" not-null="false"/>
         </property>
+        <property name="tipe">
+            <column name="tipe" sql-type="varchar" length="30" not-null="false"/>
+        </property>
         <property name="nilaiTotal">
             <column name="nilai_total" sql-type="numeric" not-null="false" />
         </property>

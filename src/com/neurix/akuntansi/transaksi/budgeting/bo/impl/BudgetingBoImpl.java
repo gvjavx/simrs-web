@@ -53,6 +53,7 @@ public class BudgetingBoImpl implements BudgetingBo {
                 budgeting.setRekeningId(budgetingEntity.getRekeningId());
                 budgeting.setStatus(budgetingEntity.getStatus());
                 budgeting.setNilaiTotal(budgetingEntity.getNilaiTotal());
+                budgeting.setTipe(budgetingEntity.getTipe());
                 budgeting.setSemester1(budgetingEntity.getSemester1());
                 budgeting.setSemester2(budgetingEntity.getSemester2());
                 budgeting.setQuartal1(budgetingEntity.getQuartal1());
@@ -104,9 +105,13 @@ public class BudgetingBoImpl implements BudgetingBo {
         if (bean.getStatus() != null){
             hsCriteria.put("status", bean.getStatus());
         }
-        if (bean.getApproveFlag() != null){
-            hsCriteria.put("approve", bean.getApproveFlag());
+        if (bean.getTipe() != null){
+            hsCriteria.put("tipe", bean.getTipe());
         }
+        if (bean.getApproveFlag() != null){
+            hsCriteria.put("approve_flag", bean.getApproveFlag());
+        }
+
         if (bean.getBranchId() != null){
             hsCriteria.put("branch_id", bean.getBranchId());
         }
@@ -133,7 +138,7 @@ public class BudgetingBoImpl implements BudgetingBo {
     }
 
     @Override
-    public void saveBudgetingDetail(List<Budgeting> budgetingList) throws GeneralBOException {
+    public void saveBudgetingDetail(List<Budgeting> budgetingList, String type) throws GeneralBOException {
 
     }
 

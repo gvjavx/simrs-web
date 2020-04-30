@@ -35,6 +35,10 @@ public class Budgeting {
     private String namaKodeRekening;
     private Long level;
     private String parentId;
+    private String tipe;
+    private BigDecimal nilaiDraf;
+    private BigDecimal nilaiFinal;
+    private BigDecimal nilaiRevisi;
 
 
     public static Comparator<Budgeting> kodeRekeningSorting = new Comparator<Budgeting>() {
@@ -43,11 +47,11 @@ public class Budgeting {
             String kdRekening1 = s1.getKodeRekening();
             String kdRekening2 = s2.getKodeRekening();
 
-            //ascending order
-            return kdRekening1.compareTo(kdRekening2);
+//            //ascending order
+//            return kdRekening1.compareTo(kdRekening2);
 
             //descending order
-            //return kdRekening2.compareTo(kdRekening1);
+            return kdRekening2.compareTo(kdRekening1);
         }};
 
     public static Comparator<Budgeting> getKodeRekeningSorting() {
@@ -266,4 +270,35 @@ public class Budgeting {
         this.selisih = selisih;
     }
 
+    public String getTipe() {
+        return tipe;
+    }
+
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
+    }
+
+    public BigDecimal getNilaiDraf() {
+        return nilaiDraf;
+    }
+
+    public void setNilaiDraf(BigDecimal nilaiDraf) {
+        this.nilaiDraf = nilaiDraf;
+    }
+
+    public BigDecimal getNilaiFinal() {
+        return nilaiFinal;
+    }
+
+    public void setNilaiFinal(BigDecimal nilaiFinal) {
+        this.nilaiFinal = nilaiFinal;
+    }
+
+    public BigDecimal getNilaiRevisi() {
+        return nilaiRevisi;
+    }
+
+    public void setNilaiRevisi(BigDecimal nilaiRevisi) {
+        this.nilaiRevisi = nilaiRevisi;
+    }
 }

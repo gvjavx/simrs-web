@@ -575,6 +575,12 @@
           <param name="class" value="com.neurix.simrs.transaksi.asesmenoperasi.action.AsesmenOperasiAction"/>
       </create>
       <convert converter="bean" match="com.neurix.simrs.transaksi.asesmenoperasi.model.AsesmenOperasi"/>
+
+      <!--budgeting-->
+      <create creator="new">
+          <param name="class" value="com.neurix.akuntansi.transaksi.budgeting.action.BudgetingAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.akuntansi.transaksi.budgeting.model.Budgeting"/>
   </allow>
 
 </dwr>

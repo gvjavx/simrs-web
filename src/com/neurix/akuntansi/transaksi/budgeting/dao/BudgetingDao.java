@@ -1,5 +1,7 @@
 package com.neurix.akuntansi.transaksi.budgeting.dao;
 
+import com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity;
+import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.transaksi.budgeting.model.ItAkunBudgetingEntity;
 import com.neurix.common.dao.GenericDao;
 import org.hibernate.Criteria;
@@ -31,8 +33,21 @@ public class BudgetingDao extends GenericDao<ItAkunBudgetingEntity, String> {
         if (mapCriteria.get("branch_id") != null){
             criteria.add(Restrictions.eq("branchId", mapCriteria.get("branch_id").toString()));
         }
+        if (mapCriteria.get("approve_flag") != null){
+            criteria.add(Restrictions.eq("approveFlag", mapCriteria.get("approve_flag").toString()));
+        }
+        if (mapCriteria.get("tipe") != null){
+            criteria.add(Restrictions.eq("tipe", mapCriteria.get("tipe").toString()));
+        }
 
         List<ItAkunBudgetingEntity> akunBudgetingEntities = criteria.list();
         return akunBudgetingEntities;
+    }
+
+    public List<ImKodeRekeningEntity> getCoaLastLevel(String id){
+        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImKodeRekeningEntity.class);
+        criteria.add(Restrictions.eq("level", new Long(5)));
+        criteria.add(Restrictions.ilike("kodeRekening", id));
+        return criteria.list();
     }
 }

@@ -14,6 +14,7 @@ public class ItAkunBudgetingEntity implements Serializable {
     private String tahun;
     private String rekeningId;
     private String status;
+    private String tipe;
     private BigDecimal nilaiTotal;
     private BigDecimal semester1;
     private BigDecimal semester2;
@@ -206,5 +207,13 @@ public class ItAkunBudgetingEntity implements Serializable {
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    public String getTipe() {
+        return tipe;
+    }
+
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
     }
 }
