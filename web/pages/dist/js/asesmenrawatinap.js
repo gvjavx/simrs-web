@@ -1206,7 +1206,11 @@ function saveAsesmenRawatInap(jenis, ket) {
             var tr = "";
             $.each(namaTcm, function (i, item) {
                 if (item.value != '') {
-                    tr += '<tr><td>' + item.value + '</td><td>' + alamatTcm[i].value + '</td></tr>';
+                    if(tr != ''){
+                        tr = tr +'='+item.value+'|'+alamatTcm[i].value;
+                    }else{
+                        tr = item.value+'|'+alamatTcm[i].value;
+                    }
                 }
             });
 
@@ -1654,17 +1658,35 @@ function detailAsesmenRawatInap(jenis) {
                                 '<td>' + '<img style="height: 50px" src="' + jwb + '">' + '</td>' +
                                 '</tr>';
                         } else if ("nama_tercantum" == item.jenis) {
-                            var isi = "";
-                            if (cekJenis != item.createdDate) {
-                                cekJenis = item.jenis;
-                                var tabeleTcm = '<label>Yang tidak dibolehkan adalah</label>' +
-                                    '<table class="table table-bordered" style="font-size: 12px">' +
+
+                            if(jwb != ''){
+                                var temp1 = "";
+                                var tr = jwb.split("=");
+                                $.each(tr, function (i, item) {
+                                    var td = item.split("|");
+                                    var temp2 = "";
+                                    $.each(td, function (i, item) {
+                                        if (temp2 != '') {
+                                            temp2 = temp2 + '<td>' + item + '</td>';
+                                        } else {
+                                            temp2 = '<td>' + item + '</td>';
+                                        }
+                                    });
+                                    if (temp1 != '') {
+                                        temp1 = temp1 + '<tr>' + temp2 + '</tr>';
+                                    } else {
+                                        temp1 = '<tr>' + temp2 + '</tr>';
+                                    }
+                                });
+                                var tabeleTcm = '<label>Dengan ini menyatakan untuk tidak memperbolehkan nama yang tercantum dibawah ini mempunyai akan terhadap pasien tersebut dengan cara apapun.</label>' +
+                                    '<table class="table table-bordered table-striped" style="font-size: 12px">' +
                                     '<thead>' +
                                     '<td>Nama</td>' +
                                     '<td>Alamat</td>' +
                                     '</thead>' +
-                                    '<tbody>' + jwb + '</tbody>' +
+                                    '<tbody>' + temp1 + '</tbody>' +
                                     '</table>';
+
                                 body += '<tr>' +
                                     '<td colspan="2">' + tabeleTcm + '</td>' +
                                     '</tr>';
@@ -1730,10 +1752,6 @@ function detailAsesmenRawatInap(jenis) {
                         last = '<tr style="font-weight: bold"><td colspan="2">Total</td><td align="center">' + totalSkor + '</td></tr>';
                     }
                 }
-            }
-
-            if ("privasi_pasien" == jenis) {
-
             }
 
             var table = '<table style="font-size: 12px" class="table table-bordered">' +
