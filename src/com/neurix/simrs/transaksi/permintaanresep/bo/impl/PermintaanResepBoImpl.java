@@ -249,6 +249,11 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
         logger.info("[PermintaanResepBoImpl.saveObatResep] END <<<<<<<");
     }
 
+    @Override
+    public ImSimrsPermintaanResepEntity getEntityPermintaanResepById(String id) throws GeneralBOException {
+        return permintaanResepDao.getById("idPermintaanResep", id);
+    }
+
     private String getNextPermintaanResepId() throws GeneralBOException {
         String id = "";
         try {

@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.neurix.akuntansi.transaksi.budgeting.model.ItAkunBudgetingEntity" dynamic-update="true"
+           table="it_akun_budgeting" select-before-update="true" schema="public">
+
+        <id name="noBudgeting">
+            <column name="no_budgeting" sql-type="varchar" length="30" not-null="true" />
+        </id>
+
+        <property name="branchId">
+            <column name="branch_id" sql-type="varchar" length="5" not-null="true" />
+        </property>
+        <property name="tahun">
+            <column name="tahun" sql-type="varchar" length="5" not-null="true" />
+        </property>
+        <property name="rekeningId">
+            <column name="rekening_id" sql-type="varchar" length="30" not-null="false" />
+        </property>
+        <property name="status">
+            <column name="status" sql-type="varchar" length="10" not-null="false"/>
+        </property>
+        <property name="tipe">
+            <column name="tipe" sql-type="varchar" length="30" not-null="false"/>
+        </property>
+        <property name="nilaiTotal">
+            <column name="nilai_total" sql-type="numeric" not-null="false" />
+        </property>
+        <property name="semester1">
+            <column name="semester_1" sql-type="numeric" not-null="false" />
+        </property>
+        <property name="semester2">
+            <column name="semester_2" sql-type="numeric" not-null="false" />
+        </property>
+        <property name="quartal1">
+            <column name="quartal_1" sql-type="numeric" not-null="false" />
+        </property>
+        <property name="quartal2">
+            <column name="quartal_2" sql-type="numeric" not-null="false" />
+        </property>
+        <property name="quartal3">
+            <column name="quartal_3" sql-type="numeric" not-null="false" />
+        </property>
+        <property name="quartal4">
+            <column name="quartal_4" sql-type="numeric" not-null="false" />
+        </property>
+        <property name="selisih">
+            <column name="selisih" sql-type="numeric" not-null="false" />
+        </property>
+        <property name="approveFlag">
+            <column name="approve_flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="approveWho">
+            <column name="approve_who" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="approveTime">
+            <column name="approve_time" sql-type="timestamp" not-null="false" />
+        </property>
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="timestamp" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="timestamp" not-null="false" />
+        </property>
+
+    </class>
+</hibernate-mapping>
