@@ -43,6 +43,7 @@
             <filter-chain pattern="/dashboard.action" filters="none" />
             <filter-chain pattern="/dwr/**" filters="none" />
             <filter-chain pattern="/pages/antrian/**" filters="none" />
+            <filter-chain pattern="/pages/modal/**" filters="none" />
 
             <filter-chain pattern="/mobileapi/cronproccess" filters="none" />
             <filter-chain pattern="/mobileapi/loginmobile" filters="none" />

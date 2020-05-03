@@ -18,6 +18,8 @@ public class ItJurnalDetailActivityEntity implements Serializable {
     private String activityId;
     private BigDecimal jumlah;
     private  String personId;
+    private String tipe;
+    private String noTrans;
 
     private String flag;
     private String action;
@@ -25,6 +27,22 @@ public class ItJurnalDetailActivityEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+    public String getTipe() {
+        return tipe;
+    }
+
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
+    }
+
+    public String getNoTrans() {
+        return noTrans;
+    }
+
+    public void setNoTrans(String noTrans) {
+        this.noTrans = noTrans;
+    }
 
     public String getJurnalDetailActivityId() {
         return jurnalDetailActivityId;

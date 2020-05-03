@@ -1,8 +1,11 @@
 package com.neurix.simrs.transaksi.checkupdetail.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
+import com.neurix.simrs.transaksi.checkupdetail.model.KlaimFpkDTO;
+import com.neurix.simrs.transaksi.checkupdetail.model.RiwayatTindakanDTO;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
 import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
@@ -15,6 +18,7 @@ import org.hibernate.criterion.Restrictions;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -51,12 +55,97 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
         return result;
     }
 
-    public List<ItSimrsHeaderDetailCheckupEntity> getSearchCheckupBySep (String noSep){
-        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ItSimrsHeaderDetailCheckupEntity.class);
-        criteria.add(Restrictions.eq("noSep", noSep));
-        criteria.add(Restrictions.eq("flag", "Y"));
+    public List<KlaimFpkDTO> getSearchCheckupBySep(String noSep) {
+        List<KlaimFpkDTO> listOfResult = new ArrayList<KlaimFpkDTO>();
+        List<Object[]> result = new ArrayList<Object[]>();
 
-        return (List<ItSimrsHeaderDetailCheckupEntity>) criteria.list();
+        String query1 = "SELECT\n" +
+                "\tdc.id_detail_checkup AS id,\n" +
+                "\tdc.no_sep AS sep,\n" +
+                "\tc.id_pasien AS idpasien,\n" +
+                "\tc.nama AS nama,\n" +
+                "\tSUM(rt.total_tarif) AS total,\n" +
+                "\tf.status_bayar AS status\n" +
+                "FROM \n" +
+                "\tit_simrs_header_detail_checkup dc \n" +
+                "\tLEFT JOIN it_simrs_header_checkup c ON dc.no_checkup=c.no_checkup\n" +
+                "\tLEFT JOIN it_simrs_riwayat_tindakan rt ON dc.id_detail_checkup=rt.id_detail_checkup\n" +
+                "\tLEFT JOIN it_simrs_fpk f ON f.no_sep=dc.no_sep\n" +
+                "WHERE\n" +
+                "\tdc.no_sep='" + noSep + "'\n" +
+                "\tAND dc.flag='Y'\n" +
+                "GROUP BY\n" +
+                "\tdc.id_detail_checkup,\n" +
+                "\tdc.no_sep,\n" +
+                "\tc.id_pasien,\n" +
+                "\tc.nama,\n" +
+                "\tf.status_bayar";
+        result = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query1)
+                .list();
+
+        for (Object[] row : result) {
+            KlaimFpkDTO klaimFpkDTO = new KlaimFpkDTO();
+            klaimFpkDTO.setIdDetailCheckup((String) row[0]);
+            klaimFpkDTO.setNoSep((String) row[1]);
+            klaimFpkDTO.setIdPasien((String) row[2]);
+            klaimFpkDTO.setNamaPasien((String) row[3]);
+            if (row[4] != null) {
+                klaimFpkDTO.setTotalBiaya(BigInteger.valueOf(Long.parseLong((row[4].toString()))));
+            }
+            if (row[5] != null) {
+                klaimFpkDTO.setStatusBayar((String) row[5]);
+            }
+
+            listOfResult.add(klaimFpkDTO);
+        }
+        return listOfResult;
+    }
+
+    public List<RiwayatTindakanDTO> getRiwayatTindakanDanDokter(String id) {
+        List<RiwayatTindakanDTO> listOfResult = new ArrayList<>();
+
+        String query1 = "select \n" +
+                "\tdt.id_dokter as iddokter,\n" +
+                "\td.nama_dokter as namadokter,\n" +
+                "\trt.id_tindakan as idtindakan,\n" +
+                "\trt.nama_tindakan as namatindakan,\n" +
+                "\trt.keterangan as kettindakan,\n" +
+                "\trt.total_tarif as total,\n" +
+                "\tdc.id_pelayanan as idpoli,\n" +
+                "\tp.nama_pelayanan as namapelayanan,\n" +
+                "\tp.kodering\n" +
+                "from \n" +
+                "\tit_simrs_riwayat_tindakan rt\n" +
+                "\tLEFT JOIN it_simrs_dokter_team dt ON rt.id_detail_checkup = dt.id_detail_checkup\n" +
+                "\tLEFT JOIN im_simrs_dokter d ON d.id_dokter = dt.id_dokter\n" +
+                "\tLEFT JOIN it_simrs_header_detail_checkup dc ON dc.id_detail_checkup=rt.id_detail_checkup\n" +
+                "\tLEFT JOIN im_simrs_pelayanan p ON p.id_pelayanan = dc.id_pelayanan\n" +
+                "WHERE\n" +
+                "\trt.id_detail_checkup='" + id + "'\n" +
+                "\tAND rt.flag='Y'\n" +
+                "\tAND dt.flag='Y'";
+        List<Object[]> result = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query1)
+                .list();
+
+        for (Object[] row : result) {
+            RiwayatTindakanDTO riwayatTindakanDTO = new RiwayatTindakanDTO();
+            riwayatTindakanDTO.setIdDokter((String) row[0]);
+            riwayatTindakanDTO.setNamaDokter((String) row[1]);
+            riwayatTindakanDTO.setIdTindakan((String) row[2]);
+            riwayatTindakanDTO.setNamaTindakan((String) row[3]);
+            riwayatTindakanDTO.setKetTindakan((String) row[4]);
+            riwayatTindakanDTO.setTotalTarif(BigInteger.valueOf(Long.parseLong((row[5].toString()))));
+            riwayatTindakanDTO.setStTotalTarif(CommonUtil.numbericFormat(new BigDecimal(riwayatTindakanDTO.getTotalTarif()), "###,###"));
+            riwayatTindakanDTO.setIdPoli((String) row[6]);
+            riwayatTindakanDTO.setNamaPoli((String) row[7]);
+            riwayatTindakanDTO.setKoderingPoli((String) row[8]);
+
+
+            listOfResult.add(riwayatTindakanDTO);
+        }
+        return listOfResult;
     }
 
     public List<HeaderDetailCheckup> getSearchRawatJalan(HeaderDetailCheckup bean) {
@@ -115,6 +204,11 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 statusBayar = "\n AND dt.status_bayar is null \n";
             }
 
+            String forRekanan = "";
+            if ("asuransi".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "ptpn".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
+                forRekanan = "\n AND dt.invoice is null OR dt.invoice = '' \n";
+            }
+
 //            if(bean.getNotLike() != null && !"".equalsIgnoreCase(bean.getNotLike())){
 //                notLike = "\n AND hd.id_jenis_periksa_pasien NOT LIKE '"+bean.getNotLike()+"' \n";
 //            }
@@ -156,7 +250,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "AND dt.id_pelayanan LIKE :idPelayanan \n" +
                     "AND dt.id_jenis_periksa_pasien LIKE :jenisPasien \n" +
                     "AND dt.is_kronis IS NULL \n" +
-                    "AND dt.status_periksa LIKE :status " + statusBayar;
+                    "AND dt.status_periksa LIKE :status " + statusBayar + forRekanan;
 
 
             String order = "\n ORDER BY dt.tgl_antrian ASC";
@@ -416,8 +510,6 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
             String dateFrom = "";
             String dateTo = "";
 
-            String jenisPasien = "%";
-
             if (bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())) {
                 idPasien = bean.getIdPasien();
             }
@@ -446,10 +538,6 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 branchId = bean.getBranchId();
             }
 
-            if (bean.getIdJenisPeriksaPasien() != null && !"".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
-                jenisPasien = bean.getIdJenisPeriksaPasien();
-            }
-
             String SQL = "\n" +
                     "SELECT \n" +
                     "dt.id_detail_checkup,\n" +
@@ -474,7 +562,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "AND hd.nama LIKE :nama \n" +
                     "AND dt.id_pelayanan LIKE :idPelayanan \n" +
                     "AND dt.is_kronis IS NULL \n" +
-                    "AND dt.id_jenis_periksa_pasien LIKE :jenisPasien \n" +
+                    "AND dt.id_jenis_periksa_pasien IN ('bpjs', 'ptpn') \n" +
                     "AND dt.status_periksa LIKE :status";
 
             List<Object[]> results = new ArrayList<>();
@@ -490,7 +578,6 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                         .setParameter("status", statusPeriksa)
                         .setParameter("dateFrom", dateFrom)
                         .setParameter("dateTo", dateTo)
-                        .setParameter("jenisPasien", jenisPasien)
                         .setParameter("branchId", branchId)
                         .list();
 
@@ -503,7 +590,6 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                         .setParameter("nama", nama)
                         .setParameter("idPelayanan", idPelayanan)
                         .setParameter("status", statusPeriksa)
-                        .setParameter("jenisPasien", jenisPasien)
                         .setParameter("branchId", branchId)
                         .list();
             }
@@ -897,7 +983,45 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
         return detailCheckups;
     }
 
-    public BigDecimal getSumAllTarifTindakan(String idDetail, String ket) {
+    public BigDecimal getSumAllTarifTindakan(String idDetail, String jenis, String ket) {
+
+        String keterangan = "%";
+        if (!"".equalsIgnoreCase(ket)) {
+            keterangan = ket;
+        }
+
+        String jenisPasien = "%";
+        if (!"".equalsIgnoreCase(jenis)) {
+            jenisPasien = jenis;
+        }
+
+        String SQL = "SELECT \n" +
+                "id_detail_checkup,\n" +
+                "SUM(total_tarif) as total_tarif\n" +
+                "FROM\n" +
+                "it_simrs_riwayat_tindakan\n" +
+                "WHERE \n" +
+                "id_detail_checkup = :idDetail\n" +
+                "AND keterangan LIKE :ket\n" +
+                "AND jenis_pasien LIKE :jenis\n" +
+                "GROUP BY id_detail_checkup";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("idDetail", idDetail)
+                .setParameter("ket", keterangan)
+                .setParameter("jenis", jenisPasien)
+                .list();
+
+        BigDecimal jumlah = new BigDecimal(0);
+        if (results.size() > 0) {
+            for (Object[] obj : results) {
+                jumlah = (BigDecimal) obj[1];
+            }
+        }
+        return jumlah;
+    }
+
+    public BigDecimal getSumAllTarifTransitoris(String idDetail, String ket) {
 
         String keterangan = "%";
         if (!"".equalsIgnoreCase(ket)) {
@@ -907,7 +1031,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 "id_detail_checkup,\n" +
                 "SUM(total_tarif) as total_tarif\n" +
                 "FROM\n" +
-                "it_simrs_riwayat_tindakan\n" +
+                "it_simrs_tindakan_transitoris\n" +
                 "WHERE \n" +
                 "id_detail_checkup = :idDetail\n" +
                 "AND keterangan LIKE :ket\n" +
@@ -926,6 +1050,39 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
         }
         return jumlah;
     }
+
+    public BigDecimal getSumAllTarifTransitorisByJenis(String idDetail, String jenis, String ket) {
+
+        String keterangan = "%";
+        if (!"".equalsIgnoreCase(ket)) {
+            keterangan = ket;
+        }
+        String SQL = "SELECT \n" +
+                "id_detail_checkup,\n" +
+                "SUM(total_tarif) as total_tarif\n" +
+                "FROM\n" +
+                "it_simrs_tindakan_transitoris\n" +
+                "WHERE \n" +
+                "id_detail_checkup = :idDetail \n" +
+                "AND keterangan LIKE :ket \n" +
+                "AND jenis_pasien LIKE :jenis \n" +
+                "GROUP BY id_detail_checkup";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("idDetail", idDetail)
+                .setParameter("ket", keterangan)
+                .setParameter("jenis", jenis)
+                .list();
+
+        BigDecimal jumlah = new BigDecimal(0);
+        if (results.size() > 0) {
+            for (Object[] obj : results) {
+                jumlah = (BigDecimal) obj[1];
+            }
+        }
+        return jumlah;
+    }
+
 
     public String getFindResepInRiwayatTrans(String idDetail) {
 
@@ -966,6 +1123,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.id_detail_checkup = b.id_detail_checkup\n" +
                     "INNER JOIN it_simrs_header_checkup c ON b.no_checkup = c.no_checkup\n" +
                     "WHERE a.id_detail_checkup = :idDetail\n" +
+                    "AND a.jenis_pasien = 'bpjs'\n" +
                     "GROUP BY \n" +
                     "a.id_detail_checkup, \n" +
                     "b.tarif_bpjs, \n" +
@@ -1079,7 +1237,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                         "AND hd.nama LIKE :nama \n" +
                         "AND dt.id_pelayanan LIKE :idPelayanan \n" +
                         "AND dt.id_jenis_periksa_pasien LIKE :jenisPasien \n" +
-                        "AND dt.id_jenis_periksa_pasien NOT IN ('paket_perusahaan', 'paket_individu') \n"+
+                        "AND dt.id_jenis_periksa_pasien NOT IN ('paket_perusahaan', 'paket_individu') \n" +
                         "AND dt.is_kronis IS NULL \n" +
                         "AND dt.status_periksa LIKE :status ";
 
@@ -1289,9 +1447,9 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
         return checkupList;
     }
 
-    public PermintaanResep getDataDokterWithResep(String id){
+    public PermintaanResep getDataDokterWithResep(String id) {
         PermintaanResep resep = new PermintaanResep();
-        if(id != null && !"".equalsIgnoreCase(id)){
+        if (id != null && !"".equalsIgnoreCase(id)) {
             String SQL = "SELECT \n" +
                     "a.id_permintaan_resep,\n" +
                     "a.id_approval_obat,\n" +
@@ -1307,11 +1465,11 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "WHERE a.id_permintaan_resep = :id";
             List<Object[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
-                    .setParameter("id",id)
+                    .setParameter("id", id)
                     .list();
-            if(result.size() > 0){
+            if (result.size() > 0) {
                 Object[] obj = result.get(0);
-                if(obj != null){
+                if (obj != null) {
                     resep.setIdPermintaanResep(obj[0] == null ? "" : obj[0].toString());
                     resep.setIdApprovalObat(obj[1] == null ? "" : obj[1].toString());
                     resep.setNamaDokter(obj[2] == null ? "" : obj[2].toString());
@@ -1518,7 +1676,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                         "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                         "INNER JOIN im_simrs_status_pasien c ON b.status_periksa = c.id_status_pasien\n" +
                         "INNER JOIN im_simrs_jenis_periksa_pasien jp ON jp.id_jenis_periksa_pasien = b.id_jenis_periksa_pasien\n" +
-                        "INNER JOIN (SELECT * FROM it_simrs_rawat_inap WHERE flag = 'Y') d ON b.id_detail_checkup = d.id_detail_checkup\n" +
+                        "INNER JOIN it_simrs_rawat_inap d ON b.id_detail_checkup = d.id_detail_checkup\n" +
                         "INNER JOIN mt_simrs_ruangan e ON d.id_ruangan = e.id_ruangan\n" +
                         "INNER JOIN im_simrs_kelas_ruangan f ON e.id_kelas_ruangan = f.id_kelas_ruangan\n" +
                         "WHERE a.id_pasien LIKE :idPasien\n" +
@@ -1620,11 +1778,11 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
         return checkupList;
     }
 
-    public HeaderDetailCheckup getCoverBiayaAsuransi(String idDetailCheckup){
+    public HeaderDetailCheckup getCoverBiayaAsuransi(String idDetailCheckup) {
 
         HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
 
-        if(idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)){
+        if (idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)) {
             String SQL = "SELECT \n" +
                     "a.id_detail_checkup, \n" +
                     "a.id_asuransi, \n" +
@@ -1651,23 +1809,28 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "\tINNER JOIN im_simrs_lab_detail c ON b.id_lab_detail = c.id_lab_detail\n" +
                     "\tGROUP BY a.id_detail_checkup\n" +
                     "\t) d ON a.id_detail_checkup = d.id_detail_checkup \n" +
-                    "LEFT JOIN (\n" +
-                    "\tSELECT a.id_detail_checkup, (c.qty * d.harga_jual) as total_resep FROM mt_simrs_permintaan_resep a\n" +
-                    "\tINNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat\n" +
-                    "\tINNER JOIN (SELECT id_transaksi_obat_detail, SUM(qty_approve) as qty FROM mt_simrs_transaksi_obat_detail_batch \n" +
-                    "\tWHERE approve_flag = 'Y'\n" +
-                    "\tGROUP BY id_transaksi_obat_detail) c ON b.id_transaksi_obat_detail = c.id_transaksi_obat_detail\n" +
-                    "\tINNER JOIN mt_simrs_harga_obat d ON b.id_obat = d.id_obat\n" +
-                    "\t) e ON a.id_detail_checkup = e.id_detail_checkup \n" +
+                    "LEFT JOIN ( \n" +
+                    "\tSELECT \n" +
+                    "\ta.id_detail_checkup, (c.qty * d.harga_jual) as total_resep FROM mt_simrs_permintaan_resep a \n" +
+                    "\tINNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat \n" +
+                    "\tINNER JOIN (\n" +
+                    "\t\tSELECT id_transaksi_obat_detail, SUM(qty_approve) as qty \n" +
+                    "\t\tFROM mt_simrs_transaksi_obat_detail_batch  \n" +
+                    "\t\tWHERE approve_flag = 'Y' \n" +
+                    "\t\tGROUP BY id_transaksi_obat_detail\n" +
+                    "\t) c ON b.id_transaksi_obat_detail = c.id_transaksi_obat_detail \n" +
+                    "\tINNER JOIN mt_simrs_harga_obat d ON b.id_obat = d.id_obat \n" +
+                    "\tWHERE a.jenis_resep != 'umum'\n" +
+                    ") e ON a.id_detail_checkup = e.id_detail_checkup  \n" +
                     "WHERE a.id_detail_checkup = :id";
 
             List<Object[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("id", idDetailCheckup)
                     .list();
-            if(result.size() > 0){
+            if (result.size() > 0) {
                 Object[] objects = result.get(0);
-                if(objects != null){
+                if (objects != null) {
                     BigDecimal coverBiaya = new BigDecimal(String.valueOf("0"));
                     BigDecimal tindakan = new BigDecimal(String.valueOf("0"));
                     BigDecimal lab = new BigDecimal(String.valueOf("0"));
@@ -1675,19 +1838,19 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     BigDecimal resep = new BigDecimal(String.valueOf("0"));
                     BigDecimal totalTindakan = new BigDecimal(String.valueOf("0"));
 
-                    if(objects[3] != null && !"".equalsIgnoreCase(objects[3].toString())){
+                    if (objects[3] != null && !"".equalsIgnoreCase(objects[3].toString())) {
                         coverBiaya = new BigDecimal(objects[3].toString());
 
-                        if(objects[4] != null && !"".equalsIgnoreCase(objects[4].toString())){
+                        if (objects[4] != null && !"".equalsIgnoreCase(objects[4].toString())) {
                             tindakan = new BigDecimal(objects[4].toString());
                         }
-                        if(objects[5] != null && !"".equalsIgnoreCase(objects[5].toString())){
+                        if (objects[5] != null && !"".equalsIgnoreCase(objects[5].toString())) {
                             lab = new BigDecimal(objects[5].toString());
                         }
-                        if(objects[6] != null && !"".equalsIgnoreCase(objects[6].toString())){
+                        if (objects[6] != null && !"".equalsIgnoreCase(objects[6].toString())) {
                             radiologi = new BigDecimal(objects[6].toString());
                         }
-                        if(objects[7] != null && !"".equalsIgnoreCase(objects[7].toString())){
+                        if (objects[7] != null && !"".equalsIgnoreCase(objects[7].toString())) {
                             resep = new BigDecimal(objects[7].toString());
                         }
 
@@ -1704,11 +1867,11 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
         return detailCheckup;
     }
 
-    public HeaderDetailCheckup getTotalBiayaTindakanBpjs(String idDetailCheckup){
+    public HeaderDetailCheckup getTotalBiayaTindakanBpjs(String idDetailCheckup) {
 
         HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
 
-        if(idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)){
+        if (idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)) {
             String SQL = "SELECT\n" +
                     "a.id_detail_checkup,\n" +
                     "a.no_sep,\n" +
@@ -1749,9 +1912,9 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("id", idDetailCheckup)
                     .list();
-            if(result.size() > 0){
+            if (result.size() > 0) {
                 Object[] objects = result.get(0);
-                if(objects != null){
+                if (objects != null) {
                     BigDecimal tarifBpjs = new BigDecimal(String.valueOf("0"));
                     BigDecimal tindakan = new BigDecimal(String.valueOf("0"));
                     BigDecimal lab = new BigDecimal(String.valueOf("0"));
@@ -1759,19 +1922,19 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     BigDecimal resep = new BigDecimal(String.valueOf("0"));
                     BigDecimal totalTindakan = new BigDecimal(String.valueOf("0"));
 
-                    if(objects[2] != null && !"".equalsIgnoreCase(objects[2].toString())){
+                    if (objects[2] != null && !"".equalsIgnoreCase(objects[2].toString())) {
                         tarifBpjs = new BigDecimal(objects[2].toString());
 
-                        if(objects[3] != null && !"".equalsIgnoreCase(objects[3].toString())){
+                        if (objects[3] != null && !"".equalsIgnoreCase(objects[3].toString())) {
                             tindakan = new BigDecimal(objects[3].toString());
                         }
-                        if(objects[4] != null && !"".equalsIgnoreCase(objects[4].toString())){
+                        if (objects[4] != null && !"".equalsIgnoreCase(objects[4].toString())) {
                             lab = new BigDecimal(objects[4].toString());
                         }
-                        if(objects[5] != null && !"".equalsIgnoreCase(objects[5].toString())){
+                        if (objects[5] != null && !"".equalsIgnoreCase(objects[5].toString())) {
                             radiologi = new BigDecimal(objects[5].toString());
                         }
-                        if(objects[6] != null && !"".equalsIgnoreCase(objects[6].toString())){
+                        if (objects[6] != null && !"".equalsIgnoreCase(objects[6].toString())) {
                             resep = new BigDecimal(objects[6].toString());
                         }
 
@@ -1787,6 +1950,166 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
             }
         }
         return detailCheckup;
+    }
+
+    public List<HeaderDetailCheckup> getListRawatInapExisting(String branchId) {
+
+        String SQL = "SELECT \n" +
+                "a.id_detail_checkup,\n" +
+                "a.id_jenis_periksa_pasien,\n" +
+                "a.id_pelayanan,\n" +
+                "b.tipe_pelayanan\n" +
+                "FROM it_simrs_header_detail_checkup a\n" +
+                "INNER JOIN im_simrs_pelayanan b ON b.id_pelayanan = a.id_pelayanan\n" +
+                "WHERE b.tipe_pelayanan = 'rawat_inap'\n" +
+                "AND a.status_periksa = '1'\n" +
+//                "AND a.id_jenis_periksa_pasien = 'bpjs' \n" +
+                "AND a.branch_id = :branchId ";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("branchId", branchId)
+                .list();
+
+        List<HeaderDetailCheckup> headerDetailCheckups = new ArrayList<>();
+        if (results.size() > 0) {
+            HeaderDetailCheckup detailCheckup;
+            for (Object[] obj : results) {
+                detailCheckup = new HeaderDetailCheckup();
+                detailCheckup.setIdDetailCheckup(obj[0].toString());
+                detailCheckup.setIdJenisPeriksaPasien(obj[1].toString());
+                detailCheckup.setIdPelayanan(obj[2].toString());
+                detailCheckup.setTipePelayanan(obj[3].toString());
+                headerDetailCheckups.add(detailCheckup);
+            }
+        }
+
+        return headerDetailCheckups;
+    }
+
+    public List<HeaderDetailCheckup> getListPasienRekamMedik(HeaderDetailCheckup bean) {
+
+        List<HeaderDetailCheckup> headerDetailCheckups = new ArrayList<>();
+        String idPasien = "%";
+        String nama = "%";
+        String jenisKelamin = "%";
+        String branchId = "%";
+
+        if (bean != null) {
+            if (bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())) {
+                idPasien = bean.getIdPasien();
+            }
+            if (bean.getNamaPasien() != null && !"".equalsIgnoreCase(bean.getNamaPasien())) {
+                nama = "%"+bean.getNamaPasien()+"%";
+            }
+            if (bean.getJenisKelamin() != null && !"".equalsIgnoreCase(bean.getJenisKelamin())) {
+                jenisKelamin = bean.getJenisKelamin();
+            }
+            if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())) {
+                branchId = bean.getBranchId();
+            }
+
+            String SQL = "SELECT \n" +
+                    "b.id_pasien,\n" +
+                    "b.nama,\n" +
+                    "b.jenis_kelamin,\n" +
+                    "b.tempat_lahir,\n" +
+                    "b.tgl_lahir,\n" +
+                    "c.desa_name\n" +
+                    "FROM \n" +
+                    "(\n" +
+                    "SELECT a.id_pasien FROM it_simrs_header_checkup a\n" +
+                    "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
+                    "WHERE b.status_periksa = '3' \n" +
+                    "AND a.branch_id LIKE :branchId\n" +
+                    "GROUP BY a.id_pasien\n" +
+                    ") a \n" +
+                    "INNER JOIN im_simrs_pasien b ON a.id_pasien = b.id_pasien\n" +
+                    "INNER JOIN im_hris_desa c ON CAST(b.desa_id AS VARCHAR) = c.desa_id\n" +
+                    "WHERE b.id_pasien LIKE :idPasien\n" +
+                    "AND b.nama LIKE :nama\n" +
+                    "AND b.jenis_kelamin LIKE :jenisKelamin\n";
+
+            List<Object[]> results = new ArrayList<>();
+            results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("branchId", branchId)
+                    .setParameter("idPasien", idPasien)
+                    .setParameter("nama", nama)
+                    .setParameter("jenisKelamin", jenisKelamin)
+                    .list();
+
+            if (results.size() > 0) {
+                for (Object[] obj : results) {
+                    HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+                    String jk = "";
+                    detailCheckup.setIdPasien(obj[0] != null ? obj[0].toString() : "");
+                    detailCheckup.setNamaPasien(obj[1] != null ? obj[1].toString() : "");
+                    if(obj[2] != null){
+                        if("L".equalsIgnoreCase(obj[2].toString())){
+                            jk = "Laki-Laki";
+                        }
+                        if("P".equalsIgnoreCase(obj[2].toString())){
+                            jk = "Perempuan";
+                        }
+
+                        detailCheckup.setJenisKelamin(jk);
+                    }
+                    detailCheckup.setTempatLahir(obj[3] != null ? obj[3].toString() : "");
+                    detailCheckup.setTglLahir(obj[4] != null ? obj[4].toString() : "");
+                    detailCheckup.setDesa(obj[5] != null ? obj[5].toString() : "");
+                    if(!"".equalsIgnoreCase(detailCheckup.getTempatLahir()) && !"".equalsIgnoreCase(detailCheckup.getTglLahir())){
+                        String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(java.sql.Date.valueOf(detailCheckup.getTglLahir()));
+                        detailCheckup.setTempatTglLahir(detailCheckup.getTempatLahir()+", "+formatDate);
+                    }
+                    headerDetailCheckups.add(detailCheckup);
+                }
+            }
+        }
+
+        return headerDetailCheckups;
+    }
+
+    public List<HeaderDetailCheckup> getDetailListRekamMedis(String idPasien) {
+
+        List<HeaderDetailCheckup> headerDetailCheckups = new ArrayList<>();
+        if (idPasien != null && !"".equalsIgnoreCase(idPasien)) {
+
+            String SQL = "SELECT \n" +
+                    "a.no_checkup,\n" +
+                    "a.created_date,\n" +
+                    "a.tgl_keluar,\n" +
+                    "b.id_detail_checkup,\n" +
+                    "b.keterangan_selesai,\n" +
+                    "c.nama_pelayanan\n" +
+                    "FROM it_simrs_header_checkup a\n" +
+                    "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
+                    "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
+                    "WHERE a.id_pasien = :idPasien AND b.status_periksa = '3'";
+
+            List<Object[]> results = new ArrayList<>();
+            results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("idPasien", idPasien)
+                    .list();
+
+            if (results.size() > 0) {
+                for (Object[] obj : results) {
+                    HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+                    detailCheckup.setNoCheckup(obj[0] != null ? obj[0].toString() : "");
+                    if(obj[1] != null){
+                        String tglMasuk = new SimpleDateFormat("dd-MM-yyyy HH:mm").format(Timestamp.valueOf(obj[1].toString()));
+                        detailCheckup.setStTanggalMasuk(tglMasuk);
+                    }
+                    if(obj[2] != null){
+                        String tglKeluar = new SimpleDateFormat("dd-MM-yyyy HH:mm").format(Timestamp.valueOf(obj[2].toString()));
+                        detailCheckup.setStTanggalKeluar(tglKeluar);
+                    }
+                    detailCheckup.setIdDetailCheckup(obj[3] != null ? obj[3].toString() : "");
+                    detailCheckup.setKeteranganSelesai(obj[4] != null ? obj[4].toString() : "");
+                    detailCheckup.setNamaPelayanan(obj[5] != null ? obj[5].toString() : "");
+                    headerDetailCheckups.add(detailCheckup);
+                }
+            }
+        }
+        return headerDetailCheckups;
     }
 
     public String getNextId() {

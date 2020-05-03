@@ -259,7 +259,8 @@
 
                         if(statusBpjs != '' && statusRujukan != ''){
 
-                            if(statusBpjs == "aktif" && statusRujukan == "aktif"){
+                            if(statusBpjs == "aktif"){
+                                // if(statusBpjs == "aktif" && statusRujukan == "aktif"){
                                 $('#confirm_dialog').dialog('open');
                             }else{
                                 var msg1 = "";
@@ -346,8 +347,8 @@
                             && noRujukan != '' && ppkRujukan != '' && tglRujukan != '' && fotoRujukan != '' ) {
 
                             if(statusBpjs != '' && statusRujukan != ''){
-
-                                if(statusBpjs == "aktif" && statusRujukan == "aktif"){
+                                //&& statusRujukan == "aktif"
+                                if(statusBpjs == "aktif" ){
                                     $('#confirm_dialog').dialog('open');
                                 }else{
                                     var msg1 = "";
@@ -972,7 +973,7 @@
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Diagnosa Awal</label>
                                             <div class="col-md-8">
-                                                    <s:if test='tipe == "bpjs"'>
+                                                <s:if test='tipe == "bpjs" || tipe == "ptpn"'>
                                                         <s:textfield id="diagnosa_awal" style="margin-top: 7px"
                                                                      name="headerCheckup.diagnosa"
                                                                      onkeypress="$(this).css('border','')"

@@ -183,6 +183,12 @@ public class MasterBoImpl implements MasterBo {
 
         return listOfResult;
     }
+
+    @Override
+    public ImMasterEntity getEntityMasterById(String id) throws GeneralBOException {
+        return masterDao.getById("primaryKey.nomorMaster", id);
+    }
+
     @Override
     public List<Master> getAll() throws GeneralBOException {
         return null;

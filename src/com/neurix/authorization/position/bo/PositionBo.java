@@ -1,5 +1,6 @@
 package com.neurix.authorization.position.bo;
 
+import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.authorization.position.model.Position;
 import com.neurix.common.bo.BaseMasterBo;
 import com.neurix.common.exception.GeneralBOException;
@@ -24,5 +25,6 @@ public interface PositionBo extends BaseMasterBo<Position> {
     public List<Position> searchPositionBiodataSys(String divisiId) throws GeneralBOException;
     public List<Position> searchPositionBiodataSysHistory(String divisiId) throws GeneralBOException;
 
+    public ImPosition getPositionEntityById(String id) throws GeneralBOException;
 
 }

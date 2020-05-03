@@ -1,6 +1,7 @@
 package com.neurix.common.constant;
 
 import com.neurix.common.util.CommonUtil;
+import org.apache.struts2.ServletActionContext;
 
 /**
  * Created by IntelliJ IDEA.
@@ -39,14 +40,26 @@ public class CommonConstant {
     public final static String RESOURCE_PATH_DOC_FPK = "/upload/fpk/";
     public final static String RESOURCE_PATH_TTD_DOKTER = "/upload/ttd_dokter/";
     public final static String RESOURCE_PATH_TTD_APOTEKER = "/upload/ttd_apoteker/";
+    public final static String RESOURCE_PATH_AREA_OPERASI = "/upload/penanda_area_operasi/";
+    public final static String RESOURCE_PATH_TTD_RM = "/upload/ttd_rm/";
+
 
     public final static String RESOURCE_PATH_USER_UPLOAD = "/pages/upload/image/profile/";
 
     //sodiq, 18 Nov 2019, Upload KTP pasien
     public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = CommonUtil.getPropertyParams("upload.external.dir");
-    public final static String RESOURCE_PATH_IMG_ASSET = CommonUtil.getPropertyParams("resource.dir");
 
-    public final static String EXTERNAL_IMG_URI = "/simrs/images";
+    public final static String RESOURCE_PATH_IMG_ASSET = CommonUtil.getPropertyParams("resource.dir");
+//    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = CommonUtil.getPropertyParams("upload.folder");
+
+//    public final static String RESOURCE_PATH_IMG_ASSET = "C:\\apache-tomcat-8.5.40\\webapps";
+//    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = "C:\\Users\\pc001\\Pictures";
+//    public final static String RESOURCE_PATH_IMG_ASSET = "C:\\tomcat\\webapps";
+//    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY="C:\\Users\\Toshiba\\Pictures";
+//    public final static String RESOURCE_PATH_IMG_ASSET = CommonUtil.getPropertyParams("resource.dir");
+//    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = "C:\\Users\\user\\Pictures";
+
+    public final static String EXTERNAL_IMG_URI = ServletActionContext.getRequest().getContextPath()+"/images";
     public final static String RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY = CommonUtil.getUploadFolderValue();
 
     public final static String LOGOUT_URL = "/j_spring_security_logout";
@@ -56,6 +69,11 @@ public class CommonConstant {
     public final static String EXCEL = "xls";
 
     public final static String RESOURCE_PATH_USER_UPLOAD_DOC = "/pages/upload/doc/";
+
+//    public final static String URL_IMAGE_LOGO_REPORT = "/opt/tomcat/webapps/simrs/pages/images/LOGO-RW.png";
+//    public final static String URL_LOGO_REPORT = "/opt/tomcat/webapps/simrs/pages/images/";
+//    public final static String RESOURCE_DOCUMENT_PAYROLL = "/opt/tomcat/webapps/mnt/documents/";
+
 
     public final static String URL_IMAGE_LOGO_REPORT = CommonUtil.getPropertyParams("base.dir")+"pages/images/logo-nmu.png";
     public final static String URL_LOGO_REPORT = CommonUtil.getPropertyParams("base.dir")+"pages/images/";
@@ -77,7 +95,8 @@ public class CommonConstant {
     public final static String ROLE_ADMIN_APOTEK = "ADMIN APOTEK";
 
     //BPJS
-    public final static String APP_NAME = "simrs";
+    public final static String APP_NAME = ServletActionContext.getRequest().getContextPath();
+//    public final static String APP_NAME = "simrs";
 
     //for prod
     public final static String BPJS_BASE_URL = "https://new-api.bpjs-kesehatan.go.id:8080";
@@ -112,7 +131,9 @@ public class CommonConstant {
     public final static String BRANCH_RS02 = "RS02";
     public final static String BRANCH_RS03 = "RS03";
 
-    public static final String RESOURCE_IMAGE_TTD = CommonUtil.getPropertyParams("resource.dir")+"mnt/images/";
+    public static final String RESOURCE_IMAGE_TTD = CommonUtil.getPropertyParams("upload.folder");
+//    public static final String RESOURCE_IMAGE_TTD = "C:/Users/pc001/Pictures/";
+//    public static final String RESOURCE_IMAGE_TTD = CommonUtil.getPropertyParams("resource.dir")+"mnt/images/";
     public final static String IMAGE_TYPE = ".png";
 
     public final static String URL_IMG = "/images/";

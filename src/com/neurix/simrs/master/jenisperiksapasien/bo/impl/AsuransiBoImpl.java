@@ -57,6 +57,12 @@ public class AsuransiBoImpl implements AsuransiBo  {
         return asuransiList;
     }
 
+
+    @Override
+    public ImSimrsAsuransiEntity getEntityAsuransiById(String idAsuransi) throws GeneralBOException {
+        return asuransiDao.getById("idAsuransi", idAsuransi);
+    }
+
     public static Logger getLogger() {
         return logger;
     }

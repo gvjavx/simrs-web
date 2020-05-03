@@ -55,7 +55,7 @@ public class RawatInapBoImpl implements RawatInapBo {
     private MonVitalSignDao monVitalSignDao;
     private PlanKegiatanRawatDao planKegiatanRawatDao;
 
-    protected List<ItSimrsRawatInapEntity> getListEntityByCriteria(RawatInap bean) throws GeneralBOException{
+    public List<ItSimrsRawatInapEntity> getListEntityByCriteria(RawatInap bean) throws GeneralBOException{
         logger.info("[RawatInapBoImpl.getListEntityByCriteria] Start >>>>>>>");
         List<ItSimrsRawatInapEntity> entityList = new ArrayList<>();
 
@@ -877,6 +877,11 @@ public class RawatInapBoImpl implements RawatInapBo {
         }
 
         return skorRanaps;
+    }
+
+    @Override
+    public RawatInap getLastUsedRoom(String id) throws GeneralBOException {
+        return rawatInapDao.getLastRuanganById(id);
     }
 
     private String getNextSkorRanap(){

@@ -50,35 +50,41 @@ public class ObatPoliBoImpl implements ObatPoliBo {
         if (bean != null) {
             List<MtSimrsObatPoliEntity> obatPoliEntities = getListEntityObatPoli(bean);
             if (!obatPoliEntities.isEmpty() && obatPoliEntities.size() > 0) {
-                ObatPoli obatPoli;
                 for (MtSimrsObatPoliEntity obatPoliEntity : obatPoliEntities) {
-                    obatPoli = new ObatPoli();
-                    obatPoli.setIdObat(obatPoliEntity.getIdObat());
-                    obatPoli.setIdPelayanan(obatPoliEntity.getPrimaryKey().getIdPelayanan());
-                    obatPoli.setFlag(obatPoliEntity.getFlag());
-                    obatPoli.setQtyBox(obatPoliEntity.getQtyBox());
-                    obatPoli.setQtyLembar(obatPoliEntity.getQtyLembar());
-                    obatPoli.setQtyBiji(obatPoliEntity.getQtyBiji());
-                    obatPoli.setQty(obatPoliEntity.getQty());
-                    obatPoli.setAction(obatPoliEntity.getAction());
-                    obatPoli.setCreatedDate(obatPoliEntity.getCreatedDate());
-                    obatPoli.setCreatedWho(obatPoliEntity.getCreatedWho());
-                    obatPoli.setLastUpdate(obatPoliEntity.getLastUpdate());
-                    obatPoli.setLastUpdateWho(obatPoliEntity.getLastUpdateWho());
-                    obatPoli.setBranchId(obatPoliEntity.getBranchId());
-                    obatPoli.setIdPabrik(obatPoliEntity.getIdPabrik());
-                    obatPoli.setExpiredDate(obatPoliEntity.getExpiredDate());
-                    obatPoli.setIdBarang(obatPoliEntity.getPrimaryKey().getIdBarang());
 
-                    ImSimrsObatEntity obatEntity = getObatById(obatPoliEntity.getIdObat(), obatPoliEntity.getBranchId());
+                    if(obatPoliEntity.getPrimaryKey().getIdBarang() != null && !"".equalsIgnoreCase(obatPoliEntity.getPrimaryKey().getIdBarang())){
+                        Integer box = Integer.valueOf(obatPoliEntity.getQtyBox().toString());
+                        Integer lembar = Integer.valueOf(obatPoliEntity.getQtyLembar().toString());
+                        Integer biji = Integer.valueOf(obatPoliEntity.getQtyBiji().toString());
 
-                    if (obatEntity != null) {
-                        obatPoli.setNamaObat(obatEntity.getNamaObat());
-                        obatPoli.setLembarPerBox(obatEntity.getLembarPerBox());
-                        obatPoli.setBijiPerLembar(obatEntity.getBijiPerLembar());
+                        if(box > 0 || lembar > 0 || biji > 0){
+                            ObatPoli obatPoli = new ObatPoli();
+                            obatPoli.setIdObat(obatPoliEntity.getIdObat());
+                            obatPoli.setIdPelayanan(obatPoliEntity.getPrimaryKey().getIdPelayanan());
+                            obatPoli.setFlag(obatPoliEntity.getFlag());
+                            obatPoli.setQtyBox(obatPoliEntity.getQtyBox());
+                            obatPoli.setQtyLembar(obatPoliEntity.getQtyLembar());
+                            obatPoli.setQtyBiji(obatPoliEntity.getQtyBiji());
+                            obatPoli.setQty(obatPoliEntity.getQty());
+                            obatPoli.setAction(obatPoliEntity.getAction());
+                            obatPoli.setCreatedDate(obatPoliEntity.getCreatedDate());
+                            obatPoli.setCreatedWho(obatPoliEntity.getCreatedWho());
+                            obatPoli.setLastUpdate(obatPoliEntity.getLastUpdate());
+                            obatPoli.setLastUpdateWho(obatPoliEntity.getLastUpdateWho());
+                            obatPoli.setBranchId(obatPoliEntity.getBranchId());
+                            obatPoli.setIdPabrik(obatPoliEntity.getIdPabrik());
+                            obatPoli.setExpiredDate(obatPoliEntity.getExpiredDate());
+                            obatPoli.setIdBarang(obatPoliEntity.getPrimaryKey().getIdBarang());
+
+                            ImSimrsObatEntity obatEntity = getObatById(obatPoliEntity.getIdObat(), obatPoliEntity.getBranchId());
+                            if (obatEntity != null) {
+                                obatPoli.setNamaObat(obatEntity.getNamaObat());
+                                obatPoli.setLembarPerBox(obatEntity.getLembarPerBox());
+                                obatPoli.setBijiPerLembar(obatEntity.getBijiPerLembar());
+                            }
+                            obatPoliList.add(obatPoli);
+                        }
                     }
-
-                    obatPoliList.add(obatPoli);
                 }
             }
         }
@@ -220,7 +226,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
             permintaanObatPoli.setIdObat(obatDetail.getIdObat());
             permintaanObatPoli.setIdPelayanan(bean.getIdPelayanan());
             permintaanObatPoli.setBranchId(bean.getBranchId());
-            obatPoliEntity = getCekListEntityObatPoli(permintaanObatPoli);
+            obatPoliEntity = getCekRequestExist(permintaanObatPoli);
 
             PermintaanObatPoli permintaanEntity = new PermintaanObatPoli();
             if (!obatPoliEntity.isEmpty()) {
@@ -370,7 +376,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                 permintaanObatPoli.setIdPelayanan(obatDetail.getIdPelayanan());
                 permintaanObatPoli.setBranchId(obatDetail.getBranchId());
 
-                permintaanEntityList = getCekListEntityObatPoli(permintaanObatPoli);
+                permintaanEntityList = getCekRequestExist(permintaanObatPoli);
 
                 PermintaanObatPoli permintaanEntity = new PermintaanObatPoli();
                 if (!permintaanEntityList.isEmpty()) {
@@ -1591,6 +1597,22 @@ public class ObatPoliBoImpl implements ObatPoliBo {
         return results;
     }
 
+    @Override
+    public List<PermintaanObatPoli> getCekRequestExist(PermintaanObatPoli bean) throws GeneralBOException {
+        logger.info("[ObatPoliBoImpl.PermintaanObatPoli] START >>>>>>>>>>");
+        List<PermintaanObatPoli> results = new ArrayList<>();
+
+        try {
+            results = obatPoliDao.cekIdObatInTransaksiRequestGudang(bean);
+        } catch (HibernateException e) {
+            logger.error("[PermintaanResepBoImpl.PermintaanObatPoli] ERROR when get data obat poli entity by criteria. ", e);
+            throw new GeneralBOException("[PermintaanResepBoImpl.PermintaanObatPoli] ERROR when get data obat poli entity by criteria. ", e);
+        }
+
+        logger.info("[ObatPoliBoImpl.getListEntityObatPoli] END <<<<<<<<<<");
+        return results;
+    }
+
     private List<MtSimrsPermintaanObatPoliEntity> getListEntityPermintaanObat(PermintaanObatPoli bean) throws GeneralBOException {
         logger.info("[ObatPoliBoImpl.getListEntityPermintaanObat] START >>>>>>>>>>");
         List<MtSimrsPermintaanObatPoliEntity> obatPoliEntities = new ArrayList<>();
@@ -2063,6 +2085,11 @@ public class ObatPoliBoImpl implements ObatPoliBo {
 
         return obatPoliList;
 
+    }
+
+    @Override
+    public MtSimrsPermintaanObatPoliEntity getEntityPermintaanObatPoliById(String id) throws GeneralBOException {
+        return permintaanObatPoliDao.getById("idPermintaanObatPoli", id);
     }
 
     // list method seq

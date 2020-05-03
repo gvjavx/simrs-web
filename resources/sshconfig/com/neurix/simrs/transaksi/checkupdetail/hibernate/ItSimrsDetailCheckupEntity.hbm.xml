@@ -145,6 +145,18 @@
         <property name="idPelayananBpjs">
             <column name="id_pelayanan_bpjs" sql-type="varchar" length="30"/>
         </property>
+        <property name="noJurnalTrans">
+            <column name="no_jurnal_trans" sql-type="varchar" length="100"/>
+        </property>
+        <property name="transDate">
+            <column name="trans_date" sql-type="timestamp"/>
+        </property>
+        <property name="transPeriode">
+            <column name="trans_periode" sql-type="varchar" length="10"/>
+        </property>
+        <property name="invoiceTrans">
+            <column name="invoice_trans" sql-type="varchar" length="100"/>
+        </property>
 
     </class>
 </hibernate-mapping>

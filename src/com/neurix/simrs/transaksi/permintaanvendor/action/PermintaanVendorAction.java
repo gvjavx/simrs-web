@@ -3,6 +3,8 @@ package com.neurix.simrs.transaksi.permintaanvendor.action;
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Branch;
+import com.neurix.authorization.position.bo.PositionBo;
+import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
@@ -10,6 +12,8 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.obat.bo.ObatBo;
 import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
 import com.neurix.simrs.master.obat.model.Obat;
+import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
+import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.vendor.bo.VendorBo;
 import com.neurix.simrs.master.vendor.model.ImSimrsVendorEntity;
 import com.neurix.simrs.master.vendor.model.Vendor;
@@ -72,18 +76,18 @@ public class PermintaanVendorAction extends BaseMasterAction {
     private String isBatch;
     private Integer noBatch;
     private String newBatch;
-    private String isVerif;
+    private String tipe;
 
     public void setBranchBoProxy(BranchBo branchBoProxy) {
         this.branchBoProxy = branchBoProxy;
     }
 
-    public String getIsVerif() {
-        return isVerif;
+    public String getTipe() {
+        return tipe;
     }
 
-    public void setIsVerif(String isVerif) {
-        this.isVerif = isVerif;
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
     }
 
     public String getNewBatch() {
@@ -203,7 +207,8 @@ public class PermintaanVendorAction extends BaseMasterAction {
         String id = getId();
         String isBatch = getIsBatch();
         String newBatch = getNewBatch();
-        String isVerif = getIsVerif();
+        String tipe = getTipe();
+        setTipe(tipe);
 
         PermintaanVendor permintaanVendor = new PermintaanVendor();
         permintaanVendor.setIdPermintaanVendor(id);
@@ -387,6 +392,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
         PermintaanVendor permintaanVendor = getPermintaanVendor();
         List<PermintaanVendor> listOfPemintaanVendor = new ArrayList();
         permintaanVendor.setBranchId(CommonUtil.userBranchLogin());
+        permintaanVendor.setTipeTransaksi("request");
 
         try {
             listOfPemintaanVendor = permintaanVendorBoProxy.getByCriteria(permintaanVendor);
@@ -648,10 +654,11 @@ public class PermintaanVendorAction extends BaseMasterAction {
         return "init_approve";
     }
 
-    public CheckObatResponse saveApproveBatch(String idPermintaanVendor, String data) throws JSONException, IOException {
+    public CheckObatResponse saveApproveBatch(String idPermintaanVendor, String data, String jenis) throws JSONException, IOException {
         logger.info("[PermintaanVendorAction.saveApproveBatch] START >>>>>>>");
 
         CheckObatResponse checkObatResponse = new CheckObatResponse();
+        String pelayananId = CommonUtil.userPelayananIdLogin();
 
         PermintaanVendor permintaanVendor = new PermintaanVendor();
         permintaanVendor.setIdPermintaanVendor(idPermintaanVendor);
@@ -659,6 +666,12 @@ public class PermintaanVendorAction extends BaseMasterAction {
         permintaanVendor.setLastUpdateWho(CommonUtil.userLogin());
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PermintaanVendorBo permintaanVendorBo = (PermintaanVendorBo) ctx.getBean("permintaanVendorBoProxy");
+        TransaksiObatBo transaksiObatBo = (TransaksiObatBo) ctx.getBean("transaksiObatBoProxy");
+        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+        BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
+        PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
+        VendorBo vendorBo  = (VendorBo) ctx.getBean("vendorBoProxy");
+        PositionBo positionBo  = (PositionBo) ctx.getBean("positionBoProxy");
 
         Integer noBatch = null;
         String noFaktur = "";
@@ -714,7 +727,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
             List<TransaksiObatDetail> transaksiObatDetails = new ArrayList<>();
             try {
-                transaksiObatDetails = permintaanVendorBo.getListTransByBatchSorted(requestVendor.getListOfTransaksiObatDetail(), noBatch, "N");
+                transaksiObatDetails = permintaanVendorBo.getListTransByBatchSorted(requestVendor.getListOfTransaksiObatDetail(), noBatch, "Y");
             } catch (GeneralBOException e) {
                 logger.error("[PermintaanVendorAction.saveApproveBatch] ERROR. ", e);
                 addActionError("[PermintaanVendorAction.saveApproveBatch] ERROR. " + e.getMessage());
@@ -729,6 +742,119 @@ public class PermintaanVendorAction extends BaseMasterAction {
                 addActionError(" Error when save data approve PO" + e.getMessage());
             }
 
+
+
+            List<Map> listMapPersediaan = new ArrayList<>();
+            BigDecimal hutangUsaha = new BigDecimal(0);
+            BigDecimal ppn = new BigDecimal(0);
+            if (transaksiObatDetails.size() > 0) {
+                for (TransaksiObatDetail trans : transaksiObatDetails) {
+
+                    ImSimrsObatEntity obatEntity = obatBo.getObatByIdBarang(trans.getIdBarang());
+                    if (obatEntity == null){
+                        logger.error("Found Error when search master obat is null");
+                        checkObatResponse.setMessage("Found Error when search master obat is null");
+                        checkObatResponse.setStatus("error");
+                    }
+
+                    // jika harga bukan pengembalian reture pakai harga terakhir;
+                    BigDecimal hargaRata = new BigDecimal(0);
+                    if (!"reture".equalsIgnoreCase(jenis)){
+                        hargaRata = obatEntity.getHargaTerakhir();
+                    } else {
+                        if ("box".equalsIgnoreCase(trans.getJenisSatuan())){
+                            hargaRata = hargaRata.add(obatEntity.getAverageHargaBox());
+                        } if ("lembar".equalsIgnoreCase(trans.getJenisSatuan())){
+                            hargaRata = hargaRata.add(obatEntity.getAverageHargaLembar());
+                        } if ("biji".equalsIgnoreCase(trans.getJenisSatuan())){
+                            hargaRata = hargaRata.add(obatEntity.getAverageHargaBiji());
+                        }
+                    }
+
+                    BigDecimal hargaTotal = hargaRata.multiply(new BigDecimal(trans.getQtyApprove()));
+                    BigDecimal hargaPpn = new BigDecimal( 0);
+
+                    // hutang usaha
+                    hutangUsaha = hutangUsaha.add(hargaTotal);
+
+                    //ppn
+                    // jika bukan pengembalian reture maka pakai ppn
+                    if (!"reture".equalsIgnoreCase(jenis)){
+                        hargaPpn = hargaTotal.multiply(new BigDecimal(0.1)).setScale(2, BigDecimal.ROUND_HALF_UP);
+                        ppn = ppn.add(hargaPpn);
+                    }
+
+                    Map mapHutangUsaha = new HashMap();
+                    mapHutangUsaha.put("kd_barang", trans.getIdBarang());
+                    mapHutangUsaha.put("nilai", hargaTotal.subtract(hargaPpn));
+                    listMapPersediaan.add(mapHutangUsaha);
+                }
+            }
+
+            String divisiId = "";
+            String transId = "";
+            String catatan = "";
+            String namaVendor = "";
+
+            namaVendor = "";
+            ImSimrsVendorEntity vendorEntity = vendorBo.getEntityVendorById(requestVendor.getIdVendor());
+            if (vendorEntity != null){
+                namaVendor = vendorEntity.getNamaVendor();
+            }
+
+            Map jurnalMap = new HashMap();
+            if ("reture".equalsIgnoreCase(jenis)){
+
+                ImSimrsPelayananEntity pelayananEntity = pelayananEntity = pelayananBo.getPelayananById(pelayananId);
+                if (pelayananEntity != null){
+
+                    ImPosition position = positionBo.getPositionEntityById(pelayananEntity.getDivisiId());
+                    if (position != null){
+                        divisiId = position.getKodering();
+                    }
+                }
+
+                Map mapBiaya = new HashMap();
+                mapBiaya.put("divisi_id", divisiId);
+                mapBiaya.put("nilai", hutangUsaha);
+
+                jurnalMap.put("divisi_id", divisiId);
+                jurnalMap.put("persediaan_gudang", listMapPersediaan);
+                jurnalMap.put("biaya_persediaan_obat", mapBiaya);
+
+                catatan = "Pengganti Barang Retur Vendor ke Gudang dari Vendor " + requestVendor.getIdVendor() + " - " + namaVendor;
+                transId = "36";
+            } else {
+
+                Map mapPajakObat = new HashMap();
+                mapPajakObat.put("bukti", noDo);
+                mapPajakObat.put("nilai", ppn);
+                mapPajakObat.put("master_id", requestVendor.getIdVendor());
+
+                Map mapHutangVendor = new HashMap();
+                mapHutangVendor.put("bukti", noDo);
+                mapHutangVendor.put("nilai", hutangUsaha);
+                mapHutangVendor.put("master_id", requestVendor.getIdVendor());
+                mapHutangVendor.put("nidivisi_id", divisiId);
+
+                jurnalMap.put("persediaan_gudang", listMapPersediaan);
+                jurnalMap.put("hutang_farmasi_vendor", mapHutangVendor);
+                jurnalMap.put("ppn_masukan", mapPajakObat);
+
+                catatan = "Penerimaan Barang Gudang dari Vendor " + requestVendor.getIdVendor() + " - " + namaVendor;
+                transId = "27";
+            }
+
+            String noJurnal = "";
+            try {
+                noJurnal = billingSystemBo.createJurnal(transId, jurnalMap, CommonUtil.userBranchLogin(), catatan, "Y");
+            } catch (GeneralBOException e) {
+                logger.error("Found Error when search permintaan vendor " + e.getMessage());
+                checkObatResponse.setMessage("Found Error when search permintaan vendor " + e.getMessage());
+                checkObatResponse.setStatus("error");
+                addActionError(" Error when save data approve PO" + e.getMessage());
+                return checkObatResponse;
+            }
         }
 
         logger.info("[PermintaanVendorAction.saveApproveBatch] START >>>>>>>");

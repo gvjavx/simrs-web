@@ -55,63 +55,72 @@
     <section class="content-header">
         <h1>
             Laporan Akuntansi
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
 
     <!-- Main content -->
     <section class="content">
-
-        <table width="100%" align="center">
-            <tr>
-                <td align="center">
-                    <s:form id="reportForm" method="post"  theme="simple" namespace="/report" action="search_report.action" cssClass="well form-horizontal">
-
-                        <s:hidden name="addOrEdit"/>
-                        <s:hidden name="delete"/>
-
-                        <table>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Pilih Laporan</h3>
+                    </div>
+                    <div class="box-body">
+                        <table width="100%" align="center">
                             <tr>
-                                <td width="10%" align="center">
-                                    <%@ include file="/pages/common/message.jsp" %>
-                                </td>
-                            </tr>
-                        </table>
+                                <td align="center">
+                                    <s:form id="reportForm" method="post"  theme="simple" namespace="/report" action="search_report.action" cssClass="form-horizontal">
 
-                        <table >
+                                        <s:hidden name="addOrEdit"/>
+                                        <s:hidden name="delete"/>
 
-                            <tr>
-                                <td>
-                                    <label class="control-label"><small>Nama Laporan :</small></label>
-                                </td>
-                                <td>
-                                    <table>
-                                        <s:action id="comboLaporan" namespace="/laporanAkuntansi" name="searchLaporanAkuntansi_laporanAkuntansi"/>
-                                        <s:select list="#comboLaporan.listComboLaporanAkuntansi" id="positionId" onchange="getReportURL(this);"
-                                                  listKey="url" listValue="laporanAkuntansiName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                                    </table>
+                                        <table>
+                                            <tr>
+                                                <td width="10%" align="center">
+                                                    <%@ include file="/pages/common/message.jsp" %>
+                                                </td>
+                                            </tr>
+                                        </table>
 
-                                </td>
-                            </tr>
+                                        <table >
+
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label"><small>Nama Laporan :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:action id="comboLaporan" namespace="/laporanAkuntansi" name="searchLaporanAkuntansi_laporanAkuntansi"/>
+                                                        <s:select list="#comboLaporan.listComboLaporanAkuntansi" id="positionId" onchange="getReportURL(this);"
+                                                                  listKey="url" listValue="laporanAkuntansiName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                    </table>
+
+                                                </td>
+                                            </tr>
 
 
-                        </table>
+                                        </table>
 
-                        <sj:dialog id="info_dialog_error" openTopics="showInfoDialogUpdateSession" modal="true" resizable="false"
-                                   position="center" height="200" width="400" autoOpen="false" title="Infomation Dialog"
-                                   buttons="{
+                                        <sj:dialog id="info_dialog_error" openTopics="showInfoDialogUpdateSession" modal="true" resizable="false"
+                                                   position="center" height="200" width="400" autoOpen="false" title="Infomation Dialog"
+                                                   buttons="{
                                                           'OK':function() { $('#info_dialog_error').dialog('close'); }
                                                         }"
-                        >
-                            <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error">
-                            Found failure when open report, please try again or call your admin.
-                        </sj:dialog>
+                                        >
+                                            <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error">
+                                            Found failure when open report, please try again or call your admin.
+                                        </sj:dialog>
 
-                    </s:form>
-                </td>
-            </tr>
-        </table>
+                                    </s:form>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
     <!-- /.content -->
 </div>

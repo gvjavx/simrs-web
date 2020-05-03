@@ -87,9 +87,10 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                     permintaanVendor.setCreatedWho(permintaanVendorEntity.getCreatedWho());
                     permintaanVendor.setLastUpdate(permintaanVendorEntity.getLastUpdate());
                     permintaanVendor.setLastUpdateWho(permintaanVendorEntity.getLastUpdateWho());
-                    String tglCair = new SimpleDateFormat("dd-MM-yyyy").format(permintaanVendorEntity.getTglCair());
-                    permintaanVendor.setTglCair(tglCair);
-
+                    if(permintaanVendorEntity.getTglCair() != null && !"".equalsIgnoreCase(permintaanVendorEntity.getTglCair().toString())){
+                        String tglCair = new SimpleDateFormat("dd-MM-yyyy").format(permintaanVendorEntity.getTglCair());
+                        permintaanVendor.setTglCair(tglCair);
+                    }
 
                     if (!"".equalsIgnoreCase(permintaanVendor.getIdApprovalObat())) {
 
@@ -201,6 +202,9 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
             }
             if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
                 hsCriteria.put("flag", bean.getFlag());
+            }
+            if (bean.getTipeTransaksi() != null && !"".equalsIgnoreCase(bean.getTipeTransaksi())) {
+                hsCriteria.put("tipe_transaksi", bean.getTipeTransaksi());
             }
 
             try {
@@ -350,6 +354,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
             permintaanVendorEntity.setLastUpdateWho(bean.getLastUpdateWho());
             permintaanVendorEntity.setUrlDocPo(bean.getUrlDocPo());
             permintaanVendorEntity.setTglCair(Date.valueOf(bean.getTglCair()));
+            permintaanVendorEntity.setTipeTransaksi("request");
 
             try {
                 permintaanVendorDao.addAndSave(permintaanVendorEntity);

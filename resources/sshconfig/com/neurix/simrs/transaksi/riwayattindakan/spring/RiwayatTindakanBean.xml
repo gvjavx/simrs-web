@@ -8,6 +8,7 @@
 
     <bean id="riwayatTindakanBo" class="com.neurix.simrs.transaksi.riwayattindakan.bo.impl.RiwayatTindakanBoImpl"
           p:riwayatTindakanDao-ref="riwayatTindakanDao"
+          p:tindakanTransitorisDao-ref="tindakanTransitorisDao"
     />
 
     <bean id="riwayatTindakanBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -32,6 +33,8 @@
     </bean>
 
     <bean id="riwayatTindakanDao" class="com.neurix.simrs.transaksi.riwayattindakan.dao.RiwayatTindakanDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="tindakanTransitorisDao" class="com.neurix.simrs.transaksi.riwayattindakan.dao.TindakanTransitorisDao"
           p:sessionFactory-ref="sessionFactory" />
 
 </beans>

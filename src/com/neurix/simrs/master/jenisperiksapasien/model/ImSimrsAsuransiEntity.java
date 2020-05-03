@@ -13,6 +13,15 @@ public class ImSimrsAsuransiEntity implements Serializable{
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String noMaster;
+
+    public String getNoMaster() {
+        return noMaster;
+    }
+
+    public void setNoMaster(String noMaster) {
+        this.noMaster = noMaster;
+    }
 
     public String getIdAsuransi() {
         return idAsuransi;

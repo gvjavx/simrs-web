@@ -3,6 +3,8 @@ package com.neurix.simrs.transaksi.checkup.dao;
 import com.neurix.akuntansi.master.masterVendor.model.MasterVendor;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.dao.GenericDao;
+import com.neurix.simrs.master.jenisperiksapasien.dao.AsuransiDao;
+import com.neurix.simrs.master.jenisperiksapasien.model.ImSimrsAsuransiEntity;
 import com.neurix.simrs.transaksi.checkup.model.AlertPasien;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
@@ -12,6 +14,7 @@ import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -26,6 +29,10 @@ import java.util.Map;
  * Created by Toshiba on 08/11/2019.
  */
 public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, String> {
+
+    @Autowired
+    AsuransiDao asuransiDao;
+
     @Override
     protected Class<ItSimrsHeaderChekupEntity> getEntityClass() {
         return ItSimrsHeaderChekupEntity.class;
@@ -34,30 +41,31 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
     @Override
     public List<ItSimrsHeaderChekupEntity> getByCriteria(Map mapCriteria) {
         Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ItSimrsHeaderChekupEntity.class);
-        if (mapCriteria != null)
+        if (mapCriteria != null) {
             if (mapCriteria.get("no_checkup") != null) {
                 criteria.add(Restrictions.eq("noCheckup", mapCriteria.get("no_checkup").toString()));
             }
-        if (mapCriteria.get("id_pasien") != null) {
-            criteria.add(Restrictions.eq("idPasien", mapCriteria.get("id_pasien").toString()));
-        }
-        if (mapCriteria.get("branch_id") != null) {
-            criteria.add(Restrictions.eq("branchId", mapCriteria.get("id_branch").toString()));
-        }
-        if (mapCriteria.get("desa_id") != null) {
-            criteria.add(Restrictions.eq("desaId", mapCriteria.get("desa_id").toString()));
-        }
-        if (mapCriteria.get("no_ktp") != null) {
-            criteria.add(Restrictions.eq("noKtp", mapCriteria.get("no_ktp").toString()));
-        }
-        if (mapCriteria.get("list_no_checkup") != null) {
-            criteria.add(Restrictions.in("noCheckup", (List<String>) mapCriteria.get("list_no_checkup")));
-        }
-        if (mapCriteria.get("flag") != null) {
-            criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
-        }
-        if (mapCriteria.get("tgl_keluar_not_null") != null) {
-            criteria.add(Restrictions.isNotNull("tglKeluar"));
+            if (mapCriteria.get("id_pasien") != null) {
+                criteria.add(Restrictions.eq("idPasien", mapCriteria.get("id_pasien").toString()));
+            }
+            if (mapCriteria.get("branch_id") != null) {
+                criteria.add(Restrictions.eq("branchId", mapCriteria.get("id_branch").toString()));
+            }
+            if (mapCriteria.get("desa_id") != null) {
+                criteria.add(Restrictions.eq("desaId", mapCriteria.get("desa_id").toString()));
+            }
+            if (mapCriteria.get("no_ktp") != null) {
+                criteria.add(Restrictions.eq("noKtp", mapCriteria.get("no_ktp").toString()));
+            }
+            if (mapCriteria.get("list_no_checkup") != null) {
+                criteria.add(Restrictions.in("noCheckup", (List<String>) mapCriteria.get("list_no_checkup")));
+            }
+            if (mapCriteria.get("flag") != null) {
+                criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
+            }
+            if (mapCriteria.get("tgl_keluar_not_null") != null) {
+                criteria.add(Restrictions.isNotNull("tglKeluar"));
+            }
         }
 
         List<ItSimrsHeaderChekupEntity> result = criteria.list();
@@ -779,6 +787,20 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         return checkup;
     }
 
+    public String getAsuransiName(String id){
+
+        String nama = "";
+
+        List<Object> objs = this.sessionFactory.getCurrentSession().createSQLQuery("SELECT nama_asuransi FROM im_simrs_asuransi WHERE id_asuransi = :id")
+                .setParameter("id", id)
+                .list();
+        if (objs.size() > 0){
+            nama = objs.get(0) == null ? "" : objs.get(0).toString();
+        }
+
+        return nama;
+    }
+
     public List<TransaksiObatDetail> getListObatkronis(String idDetailCheckup, String idApproval) {
 
         List<TransaksiObatDetail> transaksiObatDetailList = new ArrayList<>();
@@ -840,7 +862,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         List<MasterVendor> vendorList = new ArrayList<>();
         String SQL = "SELECT nomor_master, nama \n" +
                 "FROM im_akun_master\n" +
-                "WHERE is_ptpn = 'Y'";
+                "WHERE nama ilike 'PTP%'";
 
         List<Object[]> result = new ArrayList<>();
         result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
