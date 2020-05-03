@@ -626,4 +626,9 @@ public class PositionBoImpl implements PositionBo {
         }
         return status;
     }
+
+    @Override
+    public ImPosition getPositionEntityById(String id) throws GeneralBOException {
+        return positionDao.getById("positionId", id);
+    }
 }

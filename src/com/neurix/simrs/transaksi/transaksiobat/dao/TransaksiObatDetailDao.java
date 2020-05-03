@@ -396,7 +396,8 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                     "a.id_pelayanan, \n" +
                     "a.id_pasien, \n" +
                     "a.id_jenis_periksa_pasien,\n" +
-                    "a.no_checkup\n" +
+                    "a.no_checkup, \n" +
+                    "a.jenis_resep \n" +
                     "FROM(\n" +
                     "\tSELECT \n" +
                     "\ta.id_permintaan_resep, \n" +
@@ -424,7 +425,8 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                     "a.id_pelayanan, \n" +
                     "a.id_pasien, \n" +
                     "a.id_jenis_periksa_pasien,\n" +
-                    "a.no_checkup";
+                    "a.no_checkup, \n" +
+                    "a.jenis_resep";
 
             List<Object[]> results = new ArrayList<>();
             results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -441,7 +443,7 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                 transaksiObatDetail.setIdPasien(objects[4] == null ? "" : objects[4].toString());
                 transaksiObatDetail.setJenisPeriksaPasien(objects[5] == null ? "" : objects[5].toString());
                 transaksiObatDetail.setNoCheckup(objects[6] == null ? "" : objects[6].toString());
-
+                transaksiObatDetail.setJenisResep(objects[7] == null ? "" :objects[7].toString());
             }
         }
 
@@ -461,7 +463,8 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                     "a.id_pelayanan, \n" +
                     "a.id_pasien, \n" +
                     "a.id_jenis_periksa_pasien,\n" +
-                    "a.no_checkup\n" +
+                    "a.no_checkup,\n" +
+                    "a.jenis_resep\n" +
                     "FROM(\n" +
                     "\tSELECT \n" +
                     "\ta.id_permintaan_resep, \n" +
@@ -475,7 +478,8 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                     "\te.id_pelayanan,\n" +
                     "\tf.no_checkup,\n" +
                     "\tf.id_pasien,\n" +
-                    "\te.id_jenis_periksa_pasien\n" +
+                    "\te.id_jenis_periksa_pasien,\n" +
+                    "\ta.jenis_resep\n" +
                     "\tFROM mt_simrs_permintaan_resep a\n" +
                     "\tINNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat\n" +
                     "\tINNER JOIN (SELECT id_transaksi_obat_detail, SUM(qty_approve) as qty FROM mt_simrs_transaksi_obat_detail_batch WHERE approve_flag = 'Y'  GROUP BY id_transaksi_obat_detail)c ON b.id_transaksi_obat_detail = c.id_transaksi_obat_detail\n" +
@@ -489,7 +493,8 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                     "a.id_pelayanan, \n" +
                     "a.id_pasien, \n" +
                     "a.id_jenis_periksa_pasien,\n" +
-                    "a.no_checkup";
+                    "a.no_checkup,\n" +
+                    "a.jenis_resep";
 
             List<Object[]> results = new ArrayList<>();
             results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -506,6 +511,7 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                 transaksiObatDetail.setIdPasien(objects[4] == null ? "" : objects[4].toString());
                 transaksiObatDetail.setJenisPeriksaPasien(objects[5] == null ? "" : objects[5].toString());
                 transaksiObatDetail.setNoCheckup(objects[6] == null ? "" : objects[6].toString());
+                transaksiObatDetail.setJenisResep(objects[7] == null ? "" : objects[7].toString());
 
             }
         }

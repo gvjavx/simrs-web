@@ -1536,7 +1536,6 @@
                             <input type="text" class="form-control" id="studyTahunAkhir" name="txtStdudyName">
                         </div>
                     </div>
-
                     <%--<div class="form-group">--%>
                         <%--<label class="control-label col-sm-4" >Ijazah (Jpg): </label>--%>
                         <%--<div class="col-sm-8">--%>

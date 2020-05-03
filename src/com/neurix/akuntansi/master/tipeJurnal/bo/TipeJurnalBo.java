@@ -20,4 +20,6 @@ public interface TipeJurnalBo extends BaseMasterBo<TipeJurnal> {
     List<KodeRekening> getMappingJurnalInKodeRekening(String id) throws GeneralBOException;
 
     String getTipeJurnalByTransId(String transId);
+
+    TipeJurnal getTipeJurnalById(String tipeJurnalId);
 }

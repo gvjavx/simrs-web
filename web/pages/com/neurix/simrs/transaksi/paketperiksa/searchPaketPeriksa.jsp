@@ -311,7 +311,8 @@
         var cancel = '<s:url value="/pages/images/icons8-cancel-25.png"/>';
         $('#btn'+idLab).attr('src',cancel);
         $('#btn'+idLab).attr('onclick', 'deleteRow(\''+idLab+'\',\''+idPaket+'\')');
-        newRow.insertAfter($('#tabel_medis tr:nth('+rowIndex+')'));
+        // newRow.insertAfter($('#tabel_medis tr:nth('+rowIndex+')'));
+        newRow.insertAfter($('table').find('#row' + idLab));
     }
 
     function deleteRow(idLab, idPaket){

@@ -59,6 +59,16 @@ public class PermintaanVendor{
     private String noInvoice;
     private String noDo;
 
+    private String tipeTransaksi;
+
+    public String getTipeTransaksi() {
+        return tipeTransaksi;
+    }
+
+    public void setTipeTransaksi(String tipeTransaksi) {
+        this.tipeTransaksi = tipeTransaksi;
+    }
+
     public String getNoFaktur() {
         return noFaktur;
     }

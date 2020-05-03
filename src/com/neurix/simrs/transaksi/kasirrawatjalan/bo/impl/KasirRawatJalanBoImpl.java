@@ -1,5 +1,8 @@
 package com.neurix.simrs.transaksi.kasirrawatjalan.bo.impl;
 
+import com.neurix.akuntansi.master.pembayaran.dao.PembayaranDao;
+import com.neurix.akuntansi.master.pembayaran.model.ImAkunPembayaranEntity;
+import com.neurix.akuntansi.master.pembayaran.model.Pembayaran;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.CrudResponse;
@@ -9,10 +12,7 @@ import com.neurix.simrs.transaksi.checkup.model.Fpk;
 import com.neurix.simrs.transaksi.checkup.model.ItSImrsFpkEntity;
 import com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao;
 import com.neurix.simrs.transaksi.checkupdetail.dao.UangMukaDao;
-import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
-import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
-import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsUangMukaPendaftaranEntity;
-import com.neurix.simrs.transaksi.checkupdetail.model.UangMuka;
+import com.neurix.simrs.transaksi.checkupdetail.model.*;
 import com.neurix.simrs.transaksi.kasirrawatjalan.bo.KasirRawatJalanBo;
 import com.neurix.simrs.transaksi.rawatinap.dao.RawatInapDao;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
@@ -22,6 +22,8 @@ import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,6 +38,11 @@ public class KasirRawatJalanBoImpl implements KasirRawatJalanBo {
     private UangMukaDao uangMukaDao;
     private CheckupDetailDao checkupDetailDao;
     private FpkDao fpkDao;
+    private PembayaranDao pembayaranDao;
+
+    public void setPembayaranDao(PembayaranDao pembayaranDao) {
+        this.pembayaranDao = pembayaranDao;
+    }
 
     public void setFpkDao(FpkDao fpkDao) {
         this.fpkDao = fpkDao;
@@ -243,7 +250,7 @@ public class KasirRawatJalanBoImpl implements KasirRawatJalanBo {
     }
 
     @Override
-    public CheckResponse saveRefund(String id) throws GeneralBOException {
+    public CheckResponse saveRefund(String id, String noJurnal) throws GeneralBOException {
         CheckResponse response = new CheckResponse();
 
         ItSimrsUangMukaPendaftaranEntity entity = new ItSimrsUangMukaPendaftaranEntity();
@@ -257,6 +264,7 @@ public class KasirRawatJalanBoImpl implements KasirRawatJalanBo {
                 entity.setFlagRefund("Y");
                 entity.setLastUpdateWho(CommonUtil.userLogin());
                 entity.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+                entity.setNoJurnalRefund(noJurnal);
 
                 try {
                     uangMukaDao.updateAndSave(entity);
@@ -277,6 +285,19 @@ public class KasirRawatJalanBoImpl implements KasirRawatJalanBo {
         return response;
     }
 
+    @Override
+    public List<ImAkunPembayaranEntity> getListPembayaran() throws GeneralBOException {
+        List<ImAkunPembayaranEntity> list = new ArrayList<>();
+        Map hscriteria = new HashMap();
+        hscriteria.put("flag", "Y");
+        try {
+            list = pembayaranDao.getByCriteria(hscriteria);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return list;
+    }
+
     private String getNextIdFpk() {
         String id = "";
         try {
@@ -288,29 +309,172 @@ public class KasirRawatJalanBoImpl implements KasirRawatJalanBo {
     }
 
     @Override
-    public List<ItSimrsHeaderDetailCheckupEntity> getSearchCheckupBySep(String noSep) throws GeneralBOException {
-        List<ItSimrsHeaderDetailCheckupEntity> list = new ArrayList<>();
-        List<ItSimrsHeaderDetailCheckupEntity> listOfResult = new ArrayList<>();
+    public List<KlaimFpkDTO> getSearchCheckupBySep(String noSep) throws GeneralBOException {
+        List<KlaimFpkDTO> list = new ArrayList<>();
+        List<KlaimFpkDTO> listOfResult = new ArrayList<>();
         try {
             list = checkupDetailDao.getSearchCheckupBySep(noSep);
         }catch (HibernateException e){
             logger.error("Found Error "+e.getMessage());
         }
 
-        for (ItSimrsHeaderDetailCheckupEntity headerDetailCheckupEntity : list){
-            Map hscriteria = new HashMap();
-            hscriteria.put("no_sep",noSep);
-            hscriteria.put("flag","Y");
-            List<ItSImrsFpkEntity> fpkEntityList = fpkDao.getByCriteria(hscriteria);
-
-            headerDetailCheckupEntity.setStatusBayar(null);
-            for (ItSImrsFpkEntity fpkEntity : fpkEntityList){
-                if (("Y").equalsIgnoreCase(fpkEntity.getStatusBayar())){
-                    headerDetailCheckupEntity.setStatusBayar("Y");
-                }
+        for (KlaimFpkDTO data : list){
+            if (("Y").equalsIgnoreCase(data.getStatusBayar())){
+                data.setStatus("Y");
             }
-            listOfResult.add(headerDetailCheckupEntity);
+            listOfResult.add(data);
         }
         return listOfResult;
+    }
+
+    @Override
+    public Map setMappingJurnalFpk(KlaimFpkDTO data,List<KlaimFpkDTO> listOfKlaim){
+        Map dataMap = new HashMap();
+        List<Map> piutangeksesbpjslist = new ArrayList<>();
+        List<Map> piutangpasienbpjslist = new ArrayList<>();
+        List<Map> pendapatanselisihbpjslist = new ArrayList<>();
+        List<Map> activityList = new ArrayList<>();
+        BigInteger jumlahPiutangTerverif = BigInteger.ZERO;
+        for (KlaimFpkDTO dataKlaim : listOfKlaim){
+            //mendapat id poli terlebih dahulu
+            String divisiId ="";
+            List<RiwayatTindakanDTO> riwayatTindakanDTO = checkupDetailDao.getRiwayatTindakanDanDokter(dataKlaim.getIdDetailCheckup());
+            for (RiwayatTindakanDTO riwayattindakan : riwayatTindakanDTO){
+                Map activity = new HashMap();
+                activity.put("activity_id",riwayattindakan.getIdTindakan());
+                activity.put("person_id",riwayattindakan.getIdDokter());
+                activity.put("nilai",new BigDecimal(riwayattindakan.getTotalTarif()));
+                activity.put("no_trans",dataKlaim.getIdDetailCheckup());
+                activity.put("tipe","bpjs");
+                activityList.add(activity);
+
+                divisiId=riwayattindakan.getKoderingPoli();
+            }
+
+            if (("P").equalsIgnoreCase(dataKlaim.getStatusBayar())){
+                Map piutangPasien = new HashMap();
+                piutangPasien.put("nilai",new BigDecimal(dataKlaim.getTotalBiayaBpjs()));
+                piutangPasien.put("bukti",dataKlaim.getNoSep());
+                piutangPasien.put("master_id","02.000");
+                piutangPasien.put("activity",activityList);
+                piutangpasienbpjslist.add(piutangPasien);
+
+                jumlahPiutangTerverif=jumlahPiutangTerverif.add(dataKlaim.getTotalBiayaBpjs());
+            }else if (("LB").equalsIgnoreCase(dataKlaim.getStatusBayar())){
+                Map piutangPasien = new HashMap();
+                piutangPasien.put("nilai",new BigDecimal(dataKlaim.getTotalBiaya()));
+                piutangPasien.put("bukti",dataKlaim.getNoSep());
+                piutangPasien.put("master_id","02.000");
+                piutangPasien.put("activity",activityList);
+                piutangpasienbpjslist.add(piutangPasien);
+
+                Map pendapatanselisihbpjs = new HashMap();
+                pendapatanselisihbpjs.put("nilai",new BigDecimal(dataKlaim.getTotalBiayaBpjs().subtract(dataKlaim.getTotalBiaya())));
+                pendapatanselisihbpjs.put("bukti",dataKlaim.getNoSep());
+                pendapatanselisihbpjs.put("divisi_id",divisiId);
+                pendapatanselisihbpjs.put("master_id","02.000");
+                pendapatanselisihbpjslist.add(pendapatanselisihbpjs);
+
+                jumlahPiutangTerverif=jumlahPiutangTerverif.add(dataKlaim.getTotalBiayaBpjs());
+            }else if (("KB").equalsIgnoreCase(dataKlaim.getStatusBayar())){
+                Map piutangeksesbpjs = new HashMap();
+                piutangeksesbpjs.put("nilai",new BigDecimal(dataKlaim.getTotalBiaya().subtract(dataKlaim.getTotalBiayaBpjs())));
+                piutangeksesbpjs.put("bukti",data.getNoSep());
+                piutangeksesbpjs.put("master_id","02.000");
+                piutangeksesbpjslist.add(piutangeksesbpjs);
+
+                Map piutangPasien = new HashMap();
+                piutangPasien.put("nilai",new BigDecimal(dataKlaim.getTotalBiaya()));
+                piutangPasien.put("bukti",dataKlaim.getNoSep());
+                piutangPasien.put("master_id","02.000");
+                piutangPasien.put("activity",activityList);
+                piutangpasienbpjslist.add(piutangPasien);
+
+                jumlahPiutangTerverif=jumlahPiutangTerverif.add(dataKlaim.getTotalBiayaBpjs());
+            }
+        }
+
+        Map piutangTerverif = new HashMap();
+        piutangTerverif.put("nilai",new BigDecimal(jumlahPiutangTerverif));
+        piutangTerverif.put("bukti",data.getNoFpk());
+        piutangTerverif.put("master_id","02.000");
+
+        //create zero value
+        Map piutangPasien = new HashMap();
+        piutangPasien.put("nilai",BigDecimal.ZERO);
+        piutangPasien.put("bukti","");
+        piutangPasien.put("master_id","02.000");
+        piutangpasienbpjslist.add(piutangPasien);
+
+        Map piutangeksesbpjs = new HashMap();
+        piutangeksesbpjs.put("nilai",BigDecimal.ZERO);
+        piutangeksesbpjs.put("bukti","");
+        piutangeksesbpjs.put("master_id","02.000");
+        piutangeksesbpjslist.add(piutangeksesbpjs);
+
+        Map pendapatanselisihbpjs = new HashMap();
+        pendapatanselisihbpjs.put("nilai",BigDecimal.ZERO);
+        pendapatanselisihbpjs.put("bukti","");
+        pendapatanselisihbpjs.put("divisi_id","");
+        pendapatanselisihbpjs.put("master_id","02.000");
+        pendapatanselisihbpjslist.add(pendapatanselisihbpjs);
+
+        dataMap.put("piutang_terverif",piutangTerverif);
+        dataMap.put("piutang_ekses_bpjs",piutangeksesbpjslist);
+        dataMap.put("piutang_pasien_bpjs",piutangpasienbpjslist);
+        dataMap.put("pendapatan_selisih_bpjs",pendapatanselisihbpjslist);
+        return dataMap;
+    }
+
+    @Override
+    public void saveFpk(KlaimFpkDTO klaimFpkDTO, List<KlaimFpkDTO> listData) throws GeneralBOException {
+        if(listData != null){
+
+            for (KlaimFpkDTO list: listData){
+                if (("P").equalsIgnoreCase(list.getStatusBayar())||("LB").equalsIgnoreCase(list.getStatusBayar())||("KB").equalsIgnoreCase(list.getStatusBayar())){
+                    //save FPK
+                    ItSImrsFpkEntity entity = new ItSImrsFpkEntity();
+                    entity.setIdFpk("FPK"+getNextIdFpk());
+                    entity.setNoSep(list.getNoSep());
+                    entity.setNoFpk(klaimFpkDTO.getNoFpk());
+                    entity.setIdDetailCheckup(list.getIdDetailCheckup());
+                    entity.setTanggalFpk(CommonUtil.convertStringToDate(klaimFpkDTO.getStTanggalFpk()));
+                    entity.setStatusBayar("Y");
+                    entity.setFlag("Y");
+                    entity.setAction("C");
+                    entity.setCreatedWho(CommonUtil.userLogin());
+                    entity.setLastUpdateWho(CommonUtil.userLogin());
+                    entity.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+                    entity.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+                    try {
+                        fpkDao.addAndSave(entity);
+                    }catch (HibernateException e){
+                        logger.error("Found Error");
+                    }
+
+                    //Update detail checkup bayar to Y
+                    ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailDao.getById("idDetailCheckup",list.getIdDetailCheckup());
+                    detailCheckupEntity.setStatusBayar("Y");
+                    detailCheckupEntity.setLastUpdateWho(CommonUtil.userLogin());
+                    detailCheckupEntity.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+                    try {
+                        checkupDetailDao.updateAndSave(detailCheckupEntity);
+                    }catch (HibernateException e){
+                        logger.error("Found Error");
+                    }
+
+                }
+            }
+        }
+    }
+
+    @Override
+    public ItSimrsUangMukaPendaftaranEntity getEnityUangMukaById(String id) throws GeneralBOException {
+        return uangMukaDao.getById("id", id);
+    }
+
+    @Override
+    public ImAkunPembayaranEntity getPembayaranEntityByCoa(String coa) throws GeneralBOException {
+        return pembayaranDao.getById("coa", coa);
     }
 }

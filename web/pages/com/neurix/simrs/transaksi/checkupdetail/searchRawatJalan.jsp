@@ -217,6 +217,11 @@
                                                 <img src="<s:url value="/pages/images/icons8-print-25.png"/>">
                                             </a>
                                         </s:else>
+                                        <s:if test='#row.keteranganSelesai == "Rujuk Rumah Sakit Lain"'>
+                                            <a target="_blank" href="printFormulirPindahRS_checkupdetail.action?id=<s:property value="idDetailCheckup"/>">
+                                                <img src="<s:url value="/pages/images/icons8-print-25.png"/>">
+                                            </a>
+                                        </s:if>
                                     </td>
                                 </tr>
                             </s:iterator>

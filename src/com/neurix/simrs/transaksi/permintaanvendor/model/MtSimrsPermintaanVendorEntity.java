@@ -21,6 +21,15 @@ public class MtSimrsPermintaanVendorEntity implements Serializable {
     private String branchId;
     private String notaVendor;
     private Date tglCair;
+    private String tipeTransaksi;
+
+    public String getTipeTransaksi() {
+        return tipeTransaksi;
+    }
+
+    public void setTipeTransaksi(String tipeTransaksi) {
+        this.tipeTransaksi = tipeTransaksi;
+    }
 
     public Date getTglCair() {
         return tglCair;

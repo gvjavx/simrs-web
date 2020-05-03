@@ -25,12 +25,21 @@ public class ImSimrsPermintaanResepEntity implements Serializable {
     private String status;
     private Timestamp tglAntrian;
     private String tujuanPelayanan;
+    private String jenisResep;
 
     private String ttdPasien;
     private String ttdDokter;
 
     private String ttdApoteker;
     private String idApoteker;
+
+    public String getJenisResep() {
+        return jenisResep;
+    }
+
+    public void setJenisResep(String jenisResep) {
+        this.jenisResep = jenisResep;
+    }
 
     public String getTtdApoteker() {
         return ttdApoteker;

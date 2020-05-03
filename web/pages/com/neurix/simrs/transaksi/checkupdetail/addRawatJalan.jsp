@@ -150,7 +150,6 @@
     <section class="content-header">
         <h1>
             Rawat Jalan Pasien
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -390,6 +389,13 @@
                                 </sj:dialog>
                             </div>
                             <!-- /.col -->
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <a href="<%= request.getContextPath() %>/rekammedik/initRekamMedik_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>&tipe=RJ" class="btn btn-primary pull-right"><i class="fa fa-user-plus"></i> E-Rekam Medik</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="box-header with-border" id="pos_alergi">
@@ -808,6 +814,7 @@
                                             <option value='pindah'>Pindah Poli Lain</option>
                                             <%--<option value='rujuk'>Rujuk Rawat Inap</option>--%>
                                             <option value='lanjut_biaya'>Lanjut Biaya</option>
+                                            <option value='rujuk_rs_lain'>Rujuk RS Lain</option>
                                         </select>
                                     </div>
                                 </div>
@@ -1662,6 +1669,14 @@
                                id="cor_rep_racik"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
+                    <div class="form-group" id="form-jenis-resep">
+                        <label class="col-md-3" style="margin-top: 7px">Jenis Resep</label>
+                        <div class="col-md-7">
+                            <select class="form-control" style="margin-top: 7px;width: 40%" id="select-jenis-resep">
+
+                            </select>
+                        </div>
+                    </div>
                     <%--<div class="form-group">--%>
                     <%--<label class="col-md-3" style="margin-top: 7px">Keterangan</label>--%>
                     <%--<div class="col-md-7">--%>
@@ -1945,7 +1960,7 @@
         hitungStatusBiaya();
         hitungBmi();
         listSelectTindakanKategori();
-        hitungCoverBiaya()
+        hitungCoverBiaya();
 
         $('#img_ktp').on('click', function (e) {
             e.preventDefault();
@@ -2069,9 +2084,28 @@
             }
 
         });
-
-
     });
+
+    function getJenisResep(){
+
+        strSelect = "";
+        var arBodyJenisResep = [];
+        if(jenisPeriksaPasien == "ptpn"){
+            arBodyJenisResep.push({"nilai":"bpjs", "label":"BPJS"},{"nilai": "ptpn", "label":"PTPN"});
+        } else if (jenisPeriksaPasien == "asuransi"){
+            arBodyJenisResep.push({"nilai":"asuransi", "label":"ASURANSI"},{"nilai": "umum", "label":"UMUM"});
+        } else if (jenisPeriksaPasien == "bpjs") {
+            arBodyJenisResep.push({"nilai": "bpjs", "label": "BPJS"});
+        } else {
+            arBodyJenisResep.push({"nilai": "umum", "label": "UMUM"});
+        }
+
+        var strSelect = "";
+        $.each(arBodyJenisResep, function (i, item) {
+            strSelect += "<option value='" + item.nilai + "'>" + item.label + "</option>";
+        });
+        $("#select-jenis-resep").html(strSelect);
+    }
 
     function hitungBmi(){
 
@@ -2117,8 +2151,10 @@
 
     function hitungCoverBiaya() {
         var jenis = $('#jenis_pasien').val();
+        console.log("hitungCoverBiaya.jenis -> "+jenis);
         if("asuransi" == jenis){
             CheckupDetailAction.getBiayaAsuransi(idDetailCheckup, function (response) {
+                console.log("hitungCoverBiaya.response -> "+response);
                 console.log(response);
                 if (response.coverBiaya != null && response.coverBiaya != '') {
                     $('#status_asuransi').show();
@@ -2168,7 +2204,7 @@
 
     function hitungStatusBiaya() {
         var jenis = $('#jenis_pasien').val();
-        if("bpjs" == jenis){
+        if("bpjs" == jenis || "ptpn" == jenis){
             CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, "RWJ", function (response) {
                     $('#status_bpjs').show();
                     if (response.tarifBpjs != null && response.tarifTindakan != null) {
@@ -2330,7 +2366,7 @@
                 $("#form-selesai").show();
                 $("#form-cekup").hide();
             }
-            if (idKtg == "lanjut_biaya") {
+            if (idKtg == "lanjut_biaya" || idKtg == "rujuk_rs_lain") {
                 $('#pembayaran').hide();
                 $("#kamar").attr('style', 'display:none');
                 $("#form-poli").attr('style', 'display:none');
@@ -2466,7 +2502,7 @@
                     $('#war_kolom-2').show();
                 }
             }
-            if(idKtg == "lanjut_biaya"){
+            if(idKtg == "lanjut_biaya" || idKtg == "rujuk_rs_lain"){
 
                     if(namaAsuransi == "Jasa Raharja"){
                         if(noRujukan != '' && tglRujukan != '' && suratRujukan != ''){
@@ -2607,7 +2643,7 @@
                 }
             });
         }
-        if(idKtg == "selesai" || idKtg == "lanjut_biaya"){
+        if(idKtg == "selesai" || idKtg == "lanjut_biaya" || idKtg == "rujuk_rs_lain"){
             $('#save_ket').hide();
             $('#load_ket').show();
             $('#waiting_dialog').dialog('open');
@@ -2750,6 +2786,7 @@
             $('#resep_nama_obat').attr("onchange", "var warn =$('#war_rep_obat').is(':visible'); if (warn){$('#cor_rep_obat').show().fadeOut(3000);$('#war_rep_obat').hide()}; setStokObatApotek(this)");
             $('#body_detail').html('');
             $('#modal-resep-head').modal('show');
+            getJenisResep();
         } else if (select == 8) {
             $('#alergi').val('');
             $('#load_alergi').hide();
@@ -3763,6 +3800,7 @@
     function saveResepObat() {
         $('#modal-ttd').modal('hide');
         var idDokter = $('#tin_id_dokter').val();
+        var jenisResep = $('#select-jenis-resep').val();
         var data = $('#tabel_rese_detail').tableToJSON();
         var stringData = JSON.stringify(data);
         var idPelayanan = $('#resep_apotek').val();
@@ -3777,7 +3815,7 @@
             $('#save_resep_head').hide();
             $('#load_resep_head').show();
             dwr.engine.setAsync(true);
-            PermintaanResepAction.saveResepPasien(idDetailCheckup, idPoli, idDokter, idPasien, stringData, idPelayanan, dataURL, {
+            PermintaanResepAction.saveResepPasien(idDetailCheckup, idPoli, idDokter, idPasien, stringData, idPelayanan, dataURL, jenisResep, {
                 callback: function (response) {
                     if (response == "success") {
                         dwr.engine.setAsync(false);

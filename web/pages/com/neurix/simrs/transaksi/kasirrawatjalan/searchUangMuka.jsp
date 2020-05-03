@@ -444,13 +444,9 @@
                             <div class="form-group">
                                 <label class="col-md-4" style="margin-top: 7px">Bank</label>
                                 <div class="col-md-8">
-                                        <select style="margin-top: 7px" class="form-control" id="bank">
-                                            <option value="" >[Select One]</option>
-                                            <option value="bri">BRI</option>
-                                            <option value="bni">BNI</option>
-                                            <option value="bca">BCA</option>
-                                            <option value="mandiri">Mandiri</option>
-                                        </select>
+                                    <select class="form-control select2" id="bank" style="width: 100%">
+                                        <option value="">[Select One]</option>
+                                    </select>
                                 </div>
                             </div>
 
@@ -638,6 +634,7 @@
     }
 
     function showInvoice(idCheckup, idDetailCheckup, pasiendId) {
+        selectPembayaran();
         var table = "";
         var dataTindakan = [];
         var dataPasien = [];
@@ -767,9 +764,23 @@
     }
 
     function confirmSaveUangMuka(id, idPasien, uangmuka){
-        if(id != '' && idPasien != '' && uangmuka > 0){
-            $('#modal-confirm-dialog').modal('show');
-            $('#save_con').attr('onclick','saveUangMuka(\''+id+'\',\''+idPasien+'\',\''+uangmuka+'\')');
+        var jumlah = $('#val_uang_muka').val();
+        var metodeBayar = $('#metode_bayar').val();
+        var kodeBank = $('#bank').val();
+        var noRekening = $('#no_rekening').val();
+        if(id != '' && idPasien != '' && uangmuka > 0 && parseInt(jumlah) >= parseInt(uangmuka) && metodeBayar != ''){
+            if("transfer" == metodeBayar){
+                if(kodeBank != '' && noRekening != ''){
+                    $('#modal-confirm-dialog').modal('show');
+                    $('#save_con').attr('onclick','saveUangMuka(\''+id+'\',\''+idPasien+'\',\''+uangmuka+'\')');
+                }else{
+                    $('#warning_fin').show().fadeOut(5000);
+                    $('#msg_fin').text("Silahkan cek data yang diinput");
+                }
+            }else {
+                $('#modal-confirm-dialog').modal('show');
+                $('#save_con').attr('onclick','saveUangMuka(\''+id+'\',\''+idPasien+'\',\''+uangmuka+'\')');
+            }
         }else{
             $('#warning_fin').show().fadeOut(5000);
             $('#msg_fin').text("Silahkan cek data yang diinput");
@@ -916,6 +927,20 @@
         var um = $("#jumlah_um").val();
         var total = jumlah - um;
         $("#kembalian").val(total);
+    }
+
+    function selectPembayaran(){
+        var option = '<option value="">[Select One]</option>';
+        KasirRawatJalanAction.getListPembayaran(function (res) {
+            if(res.length > 0){
+                $.each(res, function (i, item) {
+                    option += '<option value="'+item.coa+'">'+item.pembayaranName+'</option>';
+                });
+                $('#bank').html(option);
+            }else{
+                $('#bank').html(option);
+            }
+        });
     }
 
 </script>

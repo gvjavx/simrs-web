@@ -20,6 +20,7 @@
           p:uangMukaDao-ref="uangMukaDao"
           p:checkupDetailDao-ref="checkupDetailDao"
           p:fpkDao-ref="fpkDao"
+          p:pembayaranDao-ref="pembayaranDao"
     />
 
     <bean id="kasirRawatJalanBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

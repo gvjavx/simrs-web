@@ -22,6 +22,9 @@
           p:hargaObatDao-ref="hargaObatDao"
           p:returObatDao-ref="returObatDao"
           p:returObatDetailDao-ref="returObatDetailDao"
+          p:approvalTransaksiObatDao-ref="approvalTransaksiObatDao"
+          p:permintaanVendorDao-ref="permintaanVendorDao"
+          p:transaksiObatDetailDao-ref="transaksiObatDetailDao"
     />
 
     <bean id="obatBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

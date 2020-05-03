@@ -3,12 +3,16 @@ package com.neurix.simrs.transaksi.riwayattindakan.bo.impl;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.transaksi.riwayattindakan.bo.RiwayatTindakanBo;
 import com.neurix.simrs.transaksi.riwayattindakan.dao.RiwayatTindakanDao;
+import com.neurix.simrs.transaksi.riwayattindakan.dao.TindakanTransitorisDao;
 import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsRiwayatTindakanEntity;
+import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsTindakanTransitorisEntity;
 import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
 import com.neurix.simrs.transaksi.teamdokter.bo.impl.TeamDokterBoImpl;
+import com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,10 +21,15 @@ import java.util.Map;
 public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
 
     private RiwayatTindakanDao riwayatTindakanDao;
+    private TindakanTransitorisDao tindakanTransitorisDao;
     private static transient Logger logger = Logger.getLogger(RiwayatTindakanBoImpl.class);
 
     public void setRiwayatTindakanDao(RiwayatTindakanDao riwayatTindakanDao) {
         this.riwayatTindakanDao = riwayatTindakanDao;
+    }
+
+    public void setTindakanTransitorisDao(TindakanTransitorisDao tindakanTransitorisDao) {
+        this.tindakanTransitorisDao = tindakanTransitorisDao;
     }
 
     @Override
@@ -40,6 +49,7 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
                     riwayatTindakan.setNamaTindakan(entity.getNamaTindakan());
                     riwayatTindakan.setKeterangan(entity.getKeterangan());
                     riwayatTindakan.setTotalTarif(entity.getTotalTarif());
+                    riwayatTindakan.setJenisPasien(entity.getJenisPasien());
                     riwayatTindakan.setKategoriTindakanBpjs(entity.getKategoriTindakanBpjs());
                     riwayatTindakan.setApproveBpjsFlag(entity.getApproveBpjsFlag());
                     riwayatTindakan.setAction(entity.getAction());
@@ -130,7 +140,8 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
         return riwayatTindakanList;
     }
 
-    private List<ItSimrsRiwayatTindakanEntity> getListEntityRiwayatTindakan(RiwayatTindakan bean) {
+    @Override
+    public List<ItSimrsRiwayatTindakanEntity> getListEntityRiwayatTindakan(RiwayatTindakan bean) {
         logger.info("[RiwayatTindakanBoImpl.getListEntityRiwayatTindakan] Start >>>>>>>>");
         List<ItSimrsRiwayatTindakanEntity> entities = new ArrayList<>();
         Map hsCriteria = new HashMap();
@@ -148,6 +159,15 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
             if (bean.getApproveBpjsFlag() != null) {
                 hsCriteria.put("approve_bpjs_flag", bean.getApproveBpjsFlag());
             }
+            if (bean.getKeterangan() != null) {
+                hsCriteria.put("keterangan", bean.getKeterangan());
+            }
+            if (bean.getJenisPasien() != null) {
+                hsCriteria.put("jenis_pasien", bean.getJenisPasien());
+            }
+            if (bean.getNotResep() != null) {
+                hsCriteria.put("not_resep", bean.getNotResep());
+            }
 
             hsCriteria.put("flag", "Y");
 
@@ -160,6 +180,60 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
 
         logger.info("[RiwayatTindakanBoImpl.getListEntityRiwayatTindakan] End <<<<<<<<");
         return entities;
+    }
+
+    @Override
+    public void saveTindakanTransitoris(String idDetailCheckup, Timestamp time, String user) throws GeneralBOException {
+
+        RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
+        riwayatTindakan.setIdDetailCheckup(idDetailCheckup);
+
+        List<ItSimrsRiwayatTindakanEntity> tindakanEntities = getListEntityRiwayatTindakan(riwayatTindakan);
+        if (tindakanEntities.size() > 0){
+            for (ItSimrsRiwayatTindakanEntity tindakanEntity : tindakanEntities){
+
+                ItSimrsTindakanTransitorisEntity transitorisEntity = new ItSimrsTindakanTransitorisEntity();
+                transitorisEntity.setIdRiwayatTindakan(tindakanEntity.getIdRiwayatTindakan());
+                transitorisEntity.setIdTindakan(tindakanEntity.getIdTindakan());
+                transitorisEntity.setNamaTindakan(tindakanEntity.getNamaTindakan());
+                transitorisEntity.setKeterangan(tindakanEntity.getKeterangan());
+                transitorisEntity.setJenisPasien(tindakanEntity.getJenisPasien());
+                transitorisEntity.setTotalTarif(tindakanEntity.getTotalTarif());
+                transitorisEntity.setKategoriTindakanBpjs(tindakanEntity.getKategoriTindakanBpjs());
+                transitorisEntity.setApproveBpjsFlag(tindakanEntity.getApproveBpjsFlag());
+                transitorisEntity.setAction(tindakanEntity.getAction());
+                transitorisEntity.setFlag(tindakanEntity.getFlag());
+                transitorisEntity.setTanggalTindakan(tindakanEntity.getTanggalTindakan());
+                transitorisEntity.setIdDetailCheckup(idDetailCheckup);
+
+                transitorisEntity.setCreatedDate(time);
+                transitorisEntity.setCreatedWho(user);
+                transitorisEntity.setLastUpdate(time);
+                transitorisEntity.setLastUpdateWho(user);
+
+                try {
+                    tindakanTransitorisDao.addAndSave(transitorisEntity);
+                } catch (HibernateException e){
+                    logger.error("[RiwayatTindakanBoImpl.saveTindakanTransitoris] ERROR. ", e);
+                    throw new GeneralBOException("[RiwayatTindakanBoImpl.saveTindakanTransitoris] ERROR. ", e);
+                }
+            }
+        }
+    }
+
+    @Override
+    public ItSimrsTindakanTransitorisEntity getTindakanTransitorisById(String id) throws GeneralBOException {
+        return tindakanTransitorisDao.getById("idRiwayatTindakan", id);
+    }
+
+    @Override
+    public void updateByEntity(ItSimrsRiwayatTindakanEntity entity) throws GeneralBOException {
+        try {
+            riwayatTindakanDao.updateAndSave(entity);
+        } catch (HibernateException e){
+            logger.error("[RiwayatTindakanBoImpl.updateByEntity] ERROR When update tindakan", e);
+            throw new GeneralBOException("[RiwayatTindakanBoImpl.updateByEntity] ERROR When update tindakan", e);
+        }
     }
 
     private String getNextIdRiwayatTindakan(){

@@ -1,11 +1,18 @@
 package com.neurix.simrs.master.obat.action;
 
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
+import com.neurix.authorization.position.bo.PositionBo;
+import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.obat.bo.ObatBo;
+import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
 import com.neurix.simrs.master.obat.model.Obat;
+import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
+import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
+import com.neurix.simrs.master.vendor.bo.VendorBo;
+import com.neurix.simrs.master.vendor.model.ImSimrsVendorEntity;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.hargaobat.model.HargaObat;
@@ -26,9 +33,7 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
 public class ObatAction extends BaseMasterAction {
 
@@ -532,6 +537,11 @@ public class ObatAction extends BaseMasterAction {
         Timestamp time = new Timestamp(System.currentTimeMillis());
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+        BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
+        PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
+        VendorBo vendorBo = (VendorBo) ctx.getBean("vendorBoProxy");
+        PositionBo positionBo = (PositionBo) ctx.getBean("positionBoProxy");
+
 
         if (jsonString != null && !"".equalsIgnoreCase(jsonString)) {
 
@@ -551,6 +561,12 @@ public class ObatAction extends BaseMasterAction {
             if (data != null) {
                 bean.setQty(new BigInteger(object.getString("qty_total")));
                 bean.setIdVendor(object.getString("id_vendor"));
+
+                ImSimrsVendorEntity vendorEntity = vendorBo.getEntityVendorById(bean.getIdVendor());
+                if (vendorEntity != null){
+                    bean.setNamaVendor(vendorEntity.getNamaVendor());
+                }
+
                 bean.setBranchId(CommonUtil.userBranchLogin());
                 bean.setTglRetur(Timestamp.valueOf(object.getString("tgl_retur")));
                 bean.setCreatedDate(time);
@@ -559,10 +575,71 @@ public class ObatAction extends BaseMasterAction {
                 bean.setLastUpdate(time);
             }
 
+            List<Map> listMapObat = new ArrayList<>();
+            BigDecimal totalHarga = new BigDecimal(0);
+            for (Obat obat : obatList){
+
+
+                ImSimrsObatEntity obatEntity = obatBo.getObatByIdBarang(obat.getIdBarang());
+                BigDecimal harga = new BigDecimal(0);
+                if (obatEntity != null){
+                    harga = obatEntity.getAverageHargaBox().multiply( new BigDecimal(obat.getQty()));
+                } else {
+                    logger.error("[ObatAction.saveReturObat] Tidak ditemukan data Obat.");
+                    response.setStatus("error");
+                    response.setMessage("[ObatAction.saveReturObat] Tidak ditemukan data Obat.");
+                    return response;
+                }
+                totalHarga = totalHarga.add(harga);
+
+                Map mapObat = new HashMap();
+                mapObat.put("kd_barang", obat.getIdBarang());
+                mapObat.put("nilai", harga);
+                listMapObat.add(mapObat);
+            }
+
+            String divisiId = "";
+            ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(CommonUtil.userPelayananIdLogin());
+            if (pelayananEntity != null){
+
+                ImPosition position = positionBo.getPositionEntityById(pelayananEntity.getDivisiId());
+                if (position != null){
+                    divisiId = position.getKodering();
+                }
+
+            } else {
+                logger.error("[ObatAction.saveReturObat] Tidak ditemukan divisi_id.");
+                response.setStatus("error");
+                response.setMessage("[ObatAction.saveReturObat] Tidak ditemukan divisi_id.");
+                return response;
+            }
+
+            Map mapBiaya = new HashMap();
+            mapBiaya.put("divisi_id", divisiId);
+            mapBiaya.put("nilai", totalHarga);
+
+            Map mapJurnal = new HashMap();
+            mapJurnal.put("biaya_persediaan_obat", mapBiaya);
+            mapJurnal.put("persediaan_gudang", listMapObat);
+
+            String catatan = "Retur Barang Gudang ke Vendor. "+bean.getIdVendor()+" - "+ bean.getNamaVendor();
+            String branchId = CommonUtil.userBranchLogin();
+
+            try {
+                String noJurnal = billingSystemBo.createJurnal("35", mapJurnal, branchId, catatan, "Y");
+                bean.setNoJurnal(noJurnal);
+            } catch (GeneralBOException e) {
+                response.setStatus("error");
+                logger.error("[ObatAction.saveReturObat] ERROR. ", e);
+                response.setStatus("error");
+                response.setMessage("[ObatAction.saveReturObat] ERROR. " + e);
+                return response;
+            }
+
             try {
                 response = obatBo.saveReturObat(bean, obatList);
             } catch (GeneralBOException e) {
-                logger.error("Found Error");
+                logger.error("Found Error", e);
                 response.setStatus("error");
                 response.setMessage("Found error " + e);
             }

@@ -254,12 +254,13 @@
                 }
 
                 if (tipe == "bpjs") {
-                    if (diagnosaBpjs != '' && perujuk != '' && ketPerujuk != ''
-                        && noRujukan != '' && ppkRujukan != '' && tglRujukan != '' && fotoRujukan != '' ) {
+                    if (diagnosaBpjs != '') {
+                        // if (diagnosaBpjs != '' && perujuk != '' && ketPerujuk != ''
+                        //     && noRujukan != '' && ppkRujukan != '' && tglRujukan != '' && fotoRujukan != '' ) {
 
-                        if(statusBpjs != '' && statusRujukan != ''){
+                        if(statusBpjs != ''){
 
-                            if(statusBpjs == "aktif" && statusRujukan == "aktif"){
+                            if(statusBpjs == "aktif"){
                                 $('#confirm_dialog').dialog('open');
                             }else{
                                 var msg1 = "";
@@ -269,41 +270,38 @@
                                 if(statusBpjs != "aktif"){
                                     msg1 = "No BPJS Tidak Aktif";
                                 }
-                                if(statusRujukan != "aktif"){
-                                    msg2 = "No Rujukan Tidak Aktif";
-                                }
-                                $('#msg_pasien').text("Mohon maaf transaksi gagal, dikarenakan "+msg1+". "+msg2+"...!");
+                                $('#msg_pasien').text("Mohon maaf transaksi gagal, dikarenakan "+msg1+"...!");
                             }
                         }else{
                             $("html, body").animate({scrollTop: 0}, 600);
                             $('#warning_pasien').show().fadeOut(10000);
-                            $('#msg_pasien').text("Silahkan klik tombol check untuk melakukan validasi No BPJS dan No Rujukan...!");
+                            $('#msg_pasien').text("Silahkan klik tombol check untuk melakukan validasi No BPJS...!");
                         }
                     } else {
                         $("html, body").animate({scrollTop: 0}, 600);
                         $('#warning_pasien').show().fadeOut(10000);
-                        $('#msg_pasien').text("Silahkan cek kembali data diagnosa awal dan data rujukan...!");
+                        $('#msg_pasien').text("Silahkan cek kembali data diagnosa awal...!");
                         if(diagnosaBpjs == ''){
                             $('#diagnosa_awal').css('border','solid 1px red');
                         }
-                        if(perujuk == ''){
-                            $('#war_perujuk').show();
-                        }
-                        if(ketPerujuk == ''){
-                            $('#war_ket_perujuk').show();
-                        }
-                        if(noRujukan == ''){
-                            $('#war_no_rujukan').show();
-                        }
-                        if(ppkRujukan == ''){
-                            $('#war_ppk_rujukan').show();
-                        }
-                        if(tglRujukan == ''){
-                            $('#war_tgl_rujukan').show();
-                        }
-                        if(fotoRujukan == ''){
-                            $('#war_foto_rujukan').show();
-                        }
+                        // if(perujuk == ''){
+                        //     $('#war_perujuk').show();
+                        // }
+                        // if(ketPerujuk == ''){
+                        //     $('#war_ket_perujuk').show();
+                        // }
+                        // if(noRujukan == ''){
+                        //     $('#war_no_rujukan').show();
+                        // }
+                        // if(ppkRujukan == ''){
+                        //     $('#war_ppk_rujukan').show();
+                        // }
+                        // if(tglRujukan == ''){
+                        //     $('#war_tgl_rujukan').show();
+                        // }
+                        // if(fotoRujukan == ''){
+                        //     $('#war_foto_rujukan').show();
+                        // }
                     }
                 }
 
@@ -342,12 +340,13 @@
 
                 if (tipe == "ptpn") {
                     if(noKartuPtpn != '' && unitPtpn != ''){
-                        if (diagnosaBpjs != '' && perujuk != '' && ketPerujuk != ''
-                            && noRujukan != '' && ppkRujukan != '' && tglRujukan != '' && fotoRujukan != '' ) {
+                        if(diagnosaBpjs != ''){
+                        // if (diagnosaBpjs != '' && perujuk != '' && ketPerujuk != ''
+                        //     && noRujukan != '' && ppkRujukan != '' && tglRujukan != '' && fotoRujukan != '' ) {
 
-                            if(statusBpjs != '' && statusRujukan != ''){
+                            if(statusBpjs != ''){
 
-                                if(statusBpjs == "aktif" && statusRujukan == "aktif"){
+                                if(statusBpjs == "aktif"){
                                     $('#confirm_dialog').dialog('open');
                                 }else{
                                     var msg1 = "";
@@ -357,41 +356,38 @@
                                     if(statusBpjs != "aktif"){
                                         msg1 = "No BPJS Tidak Aktif";
                                     }
-                                    if(statusRujukan != "aktif"){
-                                        msg2 = "No Rujukan Tidak Aktif";
-                                    }
-                                    $('#msg_pasien').text("Mohon maaf transaksi gagal, dikarenakan "+msg1+". "+msg2+"...!");
+                                    $('#msg_pasien').text("Mohon maaf transaksi gagal, dikarenakan "+msg1+"...!");
                                 }
                             }else{
                                 $("html, body").animate({scrollTop: 0}, 600);
                                 $('#warning_pasien').show().fadeOut(10000);
-                                $('#msg_pasien').text("Silahkan klik tombol check untuk melakukan validasi No BPJS dan No Rujukan...!");
+                                $('#msg_pasien').text("Silahkan klik tombol check untuk melakukan validasi No BPJS...!");
                             }
                         } else {
                             $("html, body").animate({scrollTop: 0}, 600);
                             $('#warning_pasien').show().fadeOut(10000);
-                            $('#msg_pasien').text("Silahkan cek kembali data diagnosa awal dan data rujukan...!");
+                            $('#msg_pasien').text("Silahkan cek kembali data diagnosa awal...!");
                             if(diagnosaBpjs == ''){
                                 $('#diagnosa_awal').css('border','solid 1px red');
                             }
-                            if(perujuk == ''){
-                                $('#war_perujuk').show();
-                            }
-                            if(ketPerujuk == ''){
-                                $('#war_ket_perujuk').show();
-                            }
-                            if(noRujukan == ''){
-                                $('#war_no_rujukan').show();
-                            }
-                            if(ppkRujukan == ''){
-                                $('#war_ppk_rujukan').show();
-                            }
-                            if(tglRujukan == ''){
-                                $('#war_tgl_rujukan').show();
-                            }
-                            if(fotoRujukan == ''){
-                                $('#war_foto_rujukan').show();
-                            }
+                            // if(perujuk == ''){
+                            //     $('#war_perujuk').show();
+                            // }
+                            // if(ketPerujuk == ''){
+                            //     $('#war_ket_perujuk').show();
+                            // }
+                            // if(noRujukan == ''){
+                            //     $('#war_no_rujukan').show();
+                            // }
+                            // if(ppkRujukan == ''){
+                            //     $('#war_ppk_rujukan').show();
+                            // }
+                            // if(tglRujukan == ''){
+                            //     $('#war_tgl_rujukan').show();
+                            // }
+                            // if(fotoRujukan == ''){
+                            //     $('#war_foto_rujukan').show();
+                            // }
                         }
                     }else{
                         $("html, body").animate({scrollTop: 0}, 600);
@@ -537,7 +533,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Tambah Rawat Pasien
+            Tambah Rawat Pasien IGD
         </h1>
     </section>
 
@@ -972,7 +968,7 @@
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Diagnosa Awal</label>
                                             <div class="col-md-8">
-                                                <s:if test='tipe == "bpjs"'>
+                                                <s:if test='tipe == "bpjs" || tipe == "ptpn"'>
                                                     <s:textfield id="diagnosa_awal" style="margin-top: 7px"
                                                                  name="headerCheckup.diagnosa"
                                                                  onkeypress="$(this).css('border','')"
@@ -2202,6 +2198,7 @@
     function listSelectAsuransi() {
         var option = "<option value=''>[Select One]</option>";
         CheckupAction.getComboAsuransi(function (response) {
+            console.log(response);
             if (response.length > 0) {
                 $.each(response, function (i, item) {
                     option += '<option value="' + item.idAsuransi + '">' + item.namaAsuransi + '</option>';

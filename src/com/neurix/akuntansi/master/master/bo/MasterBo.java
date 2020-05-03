@@ -1,5 +1,6 @@
 package com.neurix.akuntansi.master.master.bo;
 
+import com.neurix.akuntansi.master.master.model.ImMasterEntity;
 import com.neurix.akuntansi.master.master.model.Master;
 import com.neurix.common.bo.BaseMasterBo;
 import com.neurix.common.exception.GeneralBOException;
@@ -16,4 +17,5 @@ import java.util.List;
 public interface MasterBo extends BaseMasterBo<Master> {
 
     List<Master> typeaheadMaster(String coa) throws GeneralBOException;
+    public ImMasterEntity getEntityMasterById(String id) throws GeneralBOException;
 }
