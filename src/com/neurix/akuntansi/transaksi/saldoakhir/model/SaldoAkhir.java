@@ -25,6 +25,15 @@ public class SaldoAkhir {
     private String lastUpdateWho;
     private String masterId;
     private String pasienId;
+    private String divisiId;
+
+    public String getDivisiId() {
+        return divisiId;
+    }
+
+    public void setDivisiId(String divisiId) {
+        this.divisiId = divisiId;
+    }
 
     public String getSaldoAkhirId() {
         return saldoAkhirId;

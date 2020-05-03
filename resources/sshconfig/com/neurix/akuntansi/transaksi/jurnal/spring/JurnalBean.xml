@@ -41,4 +41,11 @@
     <bean id="jurnalDetailActivityDao" class="com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDetailActivityDao"
           p:sessionFactory-ref="sessionFactory" />
 
+    <bean id="jurnalPendingDao" class="com.neurix.akuntansi.transaksi.jurnal.dao.pending.JurnalPendingDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="jurnalDetailPendingDao" class="com.neurix.akuntansi.transaksi.jurnal.dao.pending.JurnalDetailPendingDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="jurnalDetailActivityPendingDao" class="com.neurix.akuntansi.transaksi.jurnal.dao.pending.JurnalDetailActivityPendingDao"
+          p:sessionFactory-ref="sessionFactory" />
+
 </beans>

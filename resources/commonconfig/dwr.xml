@@ -631,6 +631,11 @@
       </create>
       <convert converter="bean" match="com.neurix.simrs.transaksi.profilrekammedisrj.model.RekamMedisRawatJalan"/>
 
+      <!--budgeting-->
+      <create creator="new">
+          <param name="class" value="com.neurix.akuntansi.transaksi.budgeting.action.BudgetingAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.akuntansi.transaksi.budgeting.model.Budgeting"/>
   </allow>
 
 </dwr>

@@ -17,4 +17,5 @@ import java.util.List;
 public interface KodeRekeningBo extends BaseMasterBo<KodeRekening> {
 
     List<KodeRekening> typeaheadKodeRekening(String coa) throws GeneralBOException;
+    List<KodeRekening> getPostByKodeRekening(String coa) throws GeneralBOException;
 }

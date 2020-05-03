@@ -585,13 +585,15 @@
                             kategori = item.kategoriTindakanBpjs;
                         }
 
-                        if(item.totalTarif != null && item.totalTarif != ''){
+                        if (item.totalTarif != null && item.totalTarif != '') {
                             tarif = item.totalTarif;
                             total = (parseInt(total) + parseInt(tarif));
-                            if (item.jenisPasien == "asuransi"){
-                                tindakanAsuransi = parseInt(tindakanAsuransi) + parseInt(tarif);
-                            } else {
-                                tindakanUmum = parseInt(tindakanUmum) + parseInt(tarif);
+                            if (item.keterangan != "resep"){
+                                if (item.jenisPasien == "asuransi"){
+                                    tindakanAsuransi = parseInt(tindakanAsuransi) + parseInt(tarif);
+                                } else {
+                                    tindakanUmum = parseInt(tindakanUmum) + parseInt(tarif);
+                                }
                             }
                         }
 
