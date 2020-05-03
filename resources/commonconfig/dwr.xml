@@ -581,6 +581,9 @@
           <param name="class" value="com.neurix.akuntansi.transaksi.budgeting.action.BudgetingAction"/>
       </create>
       <convert converter="bean" match="com.neurix.akuntansi.transaksi.budgeting.model.Budgeting"/>
+      <convert converter="bean" match="com.neurix.akuntansi.transaksi.budgeting.model.BudgetingDetail"/>
+      <convert converter="bean" match="com.neurix.akuntansi.transaksi.budgeting.model.BudgetingPengadaan"/>
+      <convert converter="bean" match="com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity"/>
   </allow>
 
 </dwr>

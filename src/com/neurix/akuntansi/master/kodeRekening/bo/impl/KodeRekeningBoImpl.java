@@ -328,6 +328,17 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
 
         return listOfResult;
     }
+
+    @Override
+    public ImKodeRekeningEntity getKodeRekeningById(String id) throws GeneralBOException {
+        return kodeRekeningDao.getById("rekeningId", id);
+    }
+
+    @Override
+    public List<ImKodeRekeningEntity> getListKodeRekeningByLevel(String coa, Long level) throws GeneralBOException {
+        return kodeRekeningDao.getKodeRekeningListByLevel(coa, level);
+    }
+
     @Override
     public List<KodeRekening> getAll() throws GeneralBOException {
         return null;

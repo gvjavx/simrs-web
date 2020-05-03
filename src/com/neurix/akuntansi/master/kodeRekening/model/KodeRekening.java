@@ -18,6 +18,7 @@ public class KodeRekening extends BaseModel {
     private String parentId;
     private String tipeRekeningId;
     private Long level;
+    private String postCoa;
 
     private String posisi;
     private String posisiName;
@@ -26,6 +27,14 @@ public class KodeRekening extends BaseModel {
     private String tipeRekeningName;
     private boolean adaRekeningReport=false;
     private boolean bisaCek=false;
+
+    public String getPostCoa() {
+        return postCoa;
+    }
+
+    public void setPostCoa(String postCoa) {
+        this.postCoa = postCoa;
+    }
 
     public boolean isBisaCek() {
         return bisaCek;

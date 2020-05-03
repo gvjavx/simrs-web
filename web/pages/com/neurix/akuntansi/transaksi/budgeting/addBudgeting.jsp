@@ -68,7 +68,7 @@
 
                                             <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                                             <s:select list="#initComboBranch.listOfComboBranch" id="sel-unit" name="budgeting.branchId"
-                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                      listKey="branchId" listValue="branchName" cssClass="form-control"/>
                                             <%--<select class="form-control" id="sel-unit">--%>
                                             <%--</select>--%>
                                         </div>
@@ -78,7 +78,7 @@
                                         <label class="control-label col-sm-2">Tipe Budgeting</label>
                                         <div class="col-sm-2">
                                             <select class="form-control" id="sel-tipe">
-                                                <option value="tahun">Tahunan</option>
+                                                <option value="tahunan">Tahunan</option>
                                                 <option value="semester">Semester</option>
                                                 <option value="quartal">Quartal</option>
                                             </select>
@@ -89,9 +89,8 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-md-6 col-md-offset-5" style="margin-top: 10px">
+                                <div class="col-md-6 col-md-offset-6" style="margin-top: 10px">
                                     <button class="btn btn-success" onclick="add()"><i class="fa fa-plus"></i> Add</button>
-                                    <button class="btn btn-success" onclick="initForm()"><i class="fa fa-back"></i> Back</button>
                                 </div>
                             </div>
                         </div>
@@ -144,8 +143,9 @@
                             </div>
                         </div>
                         <div class="form-group" style="margin-top: 10px">
-                            <div class="col-md-4 col-md-offset-6">
-                            <button class="btn btn-success" id="btn-save" onclick="saveAdd()"><i class="fa fa-arrow-right"></i> Next </button>
+                            <div class="col-md-4 col-md-offset-5">
+                                <button class="btn btn-success" onclick="initForm()"><i class="fa fa-arrow-left"></i> Back</button>
+                                <button class="btn btn-success" id="btn-save" onclick="saveAdd()"><i class="fa fa-arrow-right"></i> Next </button>
                             </div>
                         </div>
                     </div>
@@ -182,7 +182,7 @@
                                         mapped = {};
                                         var data = [];
                                         dwr.engine.setAsync(false);
-                                        KodeRekeningAction.initTypeaheadKodeRekening(query,function (listdata) {
+                                        BudgetingAction.getListKodeRekeningByLevel(query,function (listdata) {
                                             data = listdata;
                                         });
                                         $.each(data, function (i, item) {
@@ -308,11 +308,12 @@
             var jsonString = JSON.stringify(arrCoa);
 
             BudgetingAction.setToSessionCoa(jsonString, function (response) {
-                if(response == "01"){
+                if(response.status == "success"){
                     refreshAdd();
                     $("#btn-save").show();
                 } else {
                     $("#alert-error-modal").show().fadeOut(5000);
+                    $("#error-msg-modal").text(response.msg);
                 }
             });
 
@@ -347,98 +348,8 @@
 
         var form = { "budgeting.tahun":tahun, "budgeting.branchId":unit, "budgeting.tipe":tipe };
 
-        var host = firstpath()+"/budgeting/add_budgeting.action?status=add&tipe=detail";
+        var host = firstpath()+"/budgeting/add_budgeting.action?status=add&tipe=detail&trans=ADD_DRAFT";
         post(host, form);
-    }
-
-    function search() {
-        var tahun = $("#sel-tahun").val();
-        var unit = $("#initComboBranch").val();
-        var status = $("#sel-status").val();
-        var rekeningid = $("#rekeningid").val();
-
-        var arr = [];
-        arr.push({
-            "tahun":tahun,
-            "unit":unit,
-            "status":status,
-            "coa":rekeningid
-        });
-
-        var strJson = JSON.stringify(arr);
-        BudgetingAction.getSearchListBudgeting(strJson, function (response) {
-            if (response.status == "error"){
-                $("#alert-error").show().fadeOut(5000);
-                $("#error-msg").text(response.msg);
-            } else {
-
-                var tipe = "";
-                var strList = "";
-                $.each(response.list, function (i, item) {
-                    strList += "<tr>" +
-                        "<td>"+setIconByAction(item.status)+"</td>"+
-                    "<td>"+item.kodeRekening+"</td>"+
-                    "<td>"+item.nilaiDraf+"</td>"+
-                    "<td>"+item.nilaiFinal+"</td>"+
-                    "<td>"+item.nilaiRevisi+"</td>"+
-                    "</tr>";
-                });
-            }
-
-            $("#body-budgeting").html(strList);
-        })
-    }
-
-    function setIconByAction() {
-
-    }
-
-
-    function saveTutup(unit, tahun, bulan) {
-
-        dwr.engine.setAsync(true);
-
-        $("#btn-tutup-"+unit).hide();
-        $("#btn-lock-"+unit).hide();
-        $("#load-save-"+unit).text("Processing Tutup Period ... ");
-
-        TutuPeriodAction.saveTutupPeriod(unit, tahun, bulan, function(response){
-            dwr.engine.setAsync(false);
-            if (response.status == "error"){
-                searchPeriod();
-                $("#alert-error").show().fadeOut(5000);
-                $("#error-msg").text(response.msg);
-            } else {
-                searchPeriod();
-                $("#btn-tutup-"+unit).show();
-                $("#btn-lock-"+unit).show();
-                $("#alert-error").hide();
-                $("#alert-success").show().fadeOut(5000);
-
-            }
-        });
-    }
-
-    function saveLock(unit, tahun, bulan){
-        TutuPeriodAction.saveLockPeriod(unit, tahun, bulan, function(response){
-            if (response.status == "error"){
-                $("#alert-error").show().fadeOut(5000);
-                $("#error-msg").text(response.msg);
-            } else {
-                $("#alert-error").hide();
-                $("#alert-success").show().fadeOut(5000);
-
-                searchPeriod();
-            }
-        });
-    }
-
-    function setNullToString(params){
-        if (params == null){
-            return " - ";
-        } else {
-            return params;
-        }
     }
 
 </script>

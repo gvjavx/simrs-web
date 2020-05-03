@@ -1,5 +1,6 @@
 package com.neurix.akuntansi.master.kodeRekening.action;
 import com.neurix.akuntansi.master.kodeRekening.bo.KodeRekeningBo;
+import com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity;
 import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
@@ -73,6 +74,8 @@ public class KodeRekeningAction extends BaseMasterAction {
         logger.info("[KodeRekeningAction.saveAdd] end process >>>");
         return "success_save_add";
     }
+
+
 
     @Override
     public String edit() {

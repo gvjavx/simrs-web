@@ -631,4 +631,10 @@ public class PositionBoImpl implements PositionBo {
     public ImPosition getPositionEntityById(String id) throws GeneralBOException {
         return positionDao.getById("positionId", id);
     }
+
+    @Override
+    public List<ImPosition> getPositionByString(String query) throws GeneralBOException {
+        String term = "%"+query+"%";
+        return positionDao.getListPosition(term);
+    }
 }

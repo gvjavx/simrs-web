@@ -34,6 +34,8 @@
         <property name="transactionAttributes">
             <props>
                 <prop key="getByCriteria">readOnly</prop>
+                <prop key="saveAddBudgeting">PROPAGATION_REQUIRED</prop>
+                <prop key="saveEditBudgeting">PROPAGATION_REQUIRED</prop>
             </props>
         </property>
     </bean>

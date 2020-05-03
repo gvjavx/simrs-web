@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 public class ItAkunBudgetingPengadaanEntity implements Serializable {
 
     private String idPengadaan;
-    private String noBudgeting;
+    private String noBudgetingDetail;
     private String namPengadaan;
     private BigDecimal nilai;
     private BigInteger qty;
@@ -23,6 +23,15 @@ public class ItAkunBudgetingPengadaanEntity implements Serializable {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String idBudgetingDetail;
+
+    public String getIdBudgetingDetail() {
+        return idBudgetingDetail;
+    }
+
+    public void setIdBudgetingDetail(String idBudgetingDetail) {
+        this.idBudgetingDetail = idBudgetingDetail;
+    }
 
     public String getIdPengadaan() {
         return idPengadaan;
@@ -40,12 +49,12 @@ public class ItAkunBudgetingPengadaanEntity implements Serializable {
         this.namPengadaan = namPengadaan;
     }
 
-    public String getNoBudgeting() {
-        return noBudgeting;
+    public String getNoBudgetingDetail() {
+        return noBudgetingDetail;
     }
 
-    public void setNoBudgeting(String noBudgeting) {
-        this.noBudgeting = noBudgeting;
+    public void setNoBudgetingDetail(String noBudgetingDetail) {
+        this.noBudgetingDetail = noBudgetingDetail;
     }
 
     public BigDecimal getNilai() {
