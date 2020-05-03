@@ -7,6 +7,8 @@ import com.neurix.akuntansi.transaksi.tutupperiod.bo.TutupPeriodBo;
 import com.neurix.akuntansi.transaksi.tutupperiod.model.BatasTutupPeriod;
 import com.neurix.akuntansi.transaksi.tutupperiod.model.ItSimrsBatasTutupPeriodEntity;
 import com.neurix.akuntansi.transaksi.tutupperiod.model.TutupPeriod;
+import com.neurix.authorization.position.bo.PositionBo;
+import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.common.action.BaseTransactionAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
@@ -34,6 +36,7 @@ import com.neurix.simrs.transaksi.ordergizi.model.OrderGizi;
 import com.neurix.simrs.transaksi.periksalab.bo.PeriksaLabBo;
 import com.neurix.simrs.transaksi.periksalab.model.PeriksaLab;
 import com.neurix.simrs.transaksi.permintaanresep.bo.PermintaanResepBo;
+import com.neurix.simrs.transaksi.permintaanresep.model.ImSimrsPermintaanResepEntity;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
 import com.neurix.simrs.transaksi.rawatinap.model.ItSimrsRawatInapEntity;
@@ -152,7 +155,8 @@ public class TutuPeriodAction extends BaseTransactionAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         TutupPeriodBo tutupPeriodBo = (TutupPeriodBo) ctx.getBean("tutupPeriodBoProxy");
         CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
-        RiwayatTindakanBo riwayatTindakanBo = (RiwayatTindakanBo) ctx.getBean("riwayatTindakanBoProxy");
+//        RiwayatTindakanBo riwayatTindakanBo = (RiwayatTindakanBo) ctx.getBean("riwayatTindakanBoProxy");
+        BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
 
         // set object tutup period, Sigit
         TutupPeriod tutupPeriod = new TutupPeriod();
@@ -165,6 +169,8 @@ public class TutuPeriodAction extends BaseTransactionAction {
         tutupPeriod.setCreatedWho(userLogin);
         tutupPeriod.setLastUpdate(time);
         tutupPeriod.setLastUpdateWho(userLogin);
+
+        List<TutupPeriod> listJurnalTransData = new ArrayList<>();
 
         try {
             List<HeaderDetailCheckup> detailCheckups = checkupDetailBo.getListRawatInapExisiting(unit);
@@ -179,24 +185,28 @@ public class TutuPeriodAction extends BaseTransactionAction {
                         return response;
                     }
 
-                    // create jurnal transitoris, Sigit
+
+                    // mendapatkan list daftar yg akan dibuatkan jurnal transitoris, Sigit
                     tutupPeriod.setIdDetailCheckup(detailCheckup.getIdDetailCheckup());
                     tutupPeriod.setIdJenisPeriksaPasien(detailCheckup.getIdJenisPeriksaPasien());
-                    JurnalResponse jurnalResponse = createJurnalTransitoris(tutupPeriod);
-                    if ("error".equalsIgnoreCase(jurnalResponse.getStatus())){
-                        response.setStatus("error");
-                        response.setMsg(jurnalResponse.getMsg());
-                        return response;
-                    }
+                    listJurnalTransData.add(tutupPeriod);
+
+
+//                    JurnalResponse jurnalResponse = createJurnalTransitoris(tutupPeriod);
+//                    if ("error".equalsIgnoreCase(jurnalResponse.getStatus())){
+//                        response.setStatus("error");
+//                        response.setMsg(jurnalResponse.getMsg());
+//                        return response;
+//                    }
 
                     // insert into table tindakan transitoris, Sigit
-                    try {
-                        riwayatTindakanBo.saveTindakanTransitoris(detailCheckup.getIdDetailCheckup(), time, userLogin);
-                    } catch (GeneralBOException e){
-                        response.setStatus("error");
-                        response.setMsg("[TutuPeriodAction.saveTutupPeriod] ERROR. " + e);
-                        return response;
-                    }
+//                    try {
+//                        riwayatTindakanBo.saveTindakanTransitoris(detailCheckup.getIdDetailCheckup(), time, userLogin);
+//                    } catch (GeneralBOException e){
+//                        response.setStatus("error");
+//                        response.setMsg("[TutuPeriodAction.saveTutupPeriod] ERROR. " + e);
+//                        return response;
+//                    }
                 }
             }
         } catch (GeneralBOException e){
@@ -209,7 +219,7 @@ public class TutuPeriodAction extends BaseTransactionAction {
 
         // tutup period, sigit
         try {
-            tutupPeriodBo.saveUpdateTutupPeriod(tutupPeriod);
+            billingSystemBo.saveTutupPeriod(listJurnalTransData, tutupPeriod);
             response.setStatus("success");
         } catch (GeneralBOException e){
             logger.error("[TutupPeriodAction.saveTutupPeriod] ERROR. ", e);
@@ -220,20 +230,85 @@ public class TutuPeriodAction extends BaseTransactionAction {
         return response;
     }
 
+    public String getDivisiId(String idDetailCheckup, String jenisPasien, String keterangan){
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RiwayatTindakanBo riwayatTindakanBo = (RiwayatTindakanBo) ctx.getBean("riwayatTindakanBoProxy");
+        PositionBo positionBo = (PositionBo) ctx.getBean("positionBoProxy");
+        PermintaanResepBo permintaanResepBo = (PermintaanResepBo) ctx.getBean("permintaanResepBoProxy");
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+        PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
+        KelasRuanganBo kelasRuanganBo = (KelasRuanganBo) ctx.getBean("kelasRuanganBoProxy");
+        RuanganBo ruanganBo = (RuanganBo) ctx.getBean("ruanganBoProxy");
+        RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
+        String divisiId = "";
+
+        if ("resep".equalsIgnoreCase(keterangan)){
+            ItSimrsRiwayatTindakanEntity riwayatTindakanEntity = riwayatTindakanBo.getRiwayatTindakanResep(idDetailCheckup, jenisPasien);
+            if (riwayatTindakanEntity != null){
+                ImSimrsPermintaanResepEntity permintaanResepEntity = permintaanResepBo.getEntityPermintaanResepById(riwayatTindakanEntity.getIdTindakan());
+                if (permintaanResepEntity != null){
+                    ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(permintaanResepEntity.getTujuanPelayanan());
+                    if (pelayananEntity != null){
+                        ImPosition position = positionBo.getPositionEntityById(pelayananEntity.getDivisiId());
+                        if (position != null){
+                            divisiId = position.getKodering();
+                        }
+                    }
+                }
+            }
+        } else {
+
+            ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailBo.getDetailCheckupById(idDetailCheckup);
+            if (detailCheckupEntity != null && detailCheckupEntity.getIdPelayanan() != null){
+                try {
+                    ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(detailCheckupEntity.getIdPelayanan());
+
+                    // jika poli selain rawat inap maka mengambil kodering dari pelayanan
+                    // jika poli rawat rawat inap maka mengambil kodering dari kelas ruangan , Sigit
+                    if (pelayananEntity != null && !"rawat_inap".equalsIgnoreCase(pelayananEntity.getTipePelayanan())){
+
+                        ImPosition position = positionBo.getPositionEntityById(pelayananEntity.getDivisiId());
+                        if (position != null){
+                            divisiId = position.getKodering();
+                        }
+
+                    } else {
+
+                        RawatInap lastRuangan = rawatInapBo.getLastUsedRoom(idDetailCheckup);
+                        if (lastRuangan != null){
+                            MtSimrsRuanganEntity ruanganEntity = ruanganBo.getEntityRuanganById(lastRuangan.getIdRuang());
+                            if (ruanganEntity != null){
+                                ImSimrsKelasRuanganEntity kelasRuanganEntity = kelasRuanganBo.getKelasRuanganById(ruanganEntity.getIdKelasRuangan());
+                                if (kelasRuanganEntity != null){
+                                    ImPosition position = positionBo.getPositionEntityById(kelasRuanganEntity.getDivisiId());
+                                    if (position != null){
+                                        divisiId = position.getKodering();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } catch (GeneralBOException e){
+                    throw new GeneralBOException("[getDivisiId] ERROR " + e);
+                }
+            } else {
+                throw new GeneralBOException("[getDivisiId] ERROR gagal mendapakatkan divisi_id atau data detail checkup");
+            }
+        }
+        return divisiId;
+    };
+
     private JurnalResponse createJurnalTransitoris(TutupPeriod bean){
         logger.info("[TutuPeriodAction.createJurnalTransitoris] START >>>");
         JurnalResponse response = new JurnalResponse();
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-        TutupPeriodBo tutupPeriodBo = (TutupPeriodBo) ctx.getBean("tutupPeriodBoProxy");
         CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
         CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
         BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
         MasterBo masterBo = (MasterBo) ctx.getBean("masterBoProxy");
         AsuransiBo asuransiBo = (AsuransiBo) ctx.getBean("asuransiBoProxy");
-        RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
-        RuanganBo ruanganBo = (RuanganBo) ctx.getBean("ruanganBoProxy");
-        KelasRuanganBo kelasRuanganBo = (KelasRuanganBo) ctx.getBean("kelasRuanganBoProxy");
         JenisPriksaPasienBo jenisPriksaPasienBo = (JenisPriksaPasienBo) ctx.getBean("jenisPriksaPasienBoProxy");
 
         String masterId = "";
@@ -242,32 +317,25 @@ public class TutuPeriodAction extends BaseTransactionAction {
         String bukti = "";
         String transId = "";
         String idPasien = "";
+        String divisiResep = "";
         String invoiceNumber = billingSystemBo.createInvoiceNumber("JRI", bean.getUnit());
 
         Map mapJurnal = new HashMap();
         ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailBo.getEntityDetailCheckupByIdDetail(bean.getIdDetailCheckup());
         if (detailCheckupEntity != null){
 
+            idPasien = checkupBo.getEntityCheckupById(detailCheckupEntity.getNoCheckup()).getIdPasien();
+
+            // MENDAPATKAN SEMUA NILAI TINDAKAN DAN RESEP;
             BigDecimal jumlahResep = checkupDetailBo.getSumJumlahTindakanNonBpjs(bean.getIdDetailCheckup(), "resep");
             BigDecimal jumlahAllTindakan = checkupDetailBo.getSumJumlahTindakanNonBpjs(bean.getIdDetailCheckup(), "");
             BigDecimal jumlahTindakan = jumlahAllTindakan.subtract(jumlahResep);
 
-            RawatInap rawatInap = new RawatInap();
-            rawatInap.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
-            rawatInap.setFlag("Y");
+            // MENDAPATKAN DIVISI ID TINDAKAN / PENDAPATAN RAWAT
+            divisiId = getDivisiId(bean.getIdDetailCheckup(), "", "");
 
-            List<ItSimrsRawatInapEntity> rawatInapEntities = rawatInapBo.getListEntityByCriteria(rawatInap);
-            if (rawatInapEntities.size() > 0){
-                for (ItSimrsRawatInapEntity rawatInapEntity : rawatInapEntities){
-                    MtSimrsRuanganEntity ruanganEntity = ruanganBo.getEntityRuanganById(rawatInapEntity.getIdRuangan());
-                    if (ruanganEntity != null){
-                        ImSimrsKelasRuanganEntity kelasRuanganEntity = kelasRuanganBo.getKelasRuanganById(ruanganEntity.getIdKelasRuangan());
-                        if (kelasRuanganEntity != null){
-                            divisiId = kelasRuanganEntity.getKodering();
-                        }
-                    }
-                }
-            }
+            // MENDAPATKAN DIVISI ID TINDAKAN / PENDAPATAN RAWAT
+            divisiResep = getDivisiId(bean.getIdDetailCheckup(), "", "resep");
 
             bukti = invoiceNumber;
             if ("bpjs".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())){
@@ -299,27 +367,24 @@ public class TutuPeriodAction extends BaseTransactionAction {
                     return response;
                 }
                 jenisPasien = "No. RM "+headerChekupEntity.getIdPasien();
-                if ("non_tunai".equalsIgnoreCase(detailCheckupEntity.getMetodePembayaran())){
-                        masterId = headerChekupEntity.getIdPasien();
-                } else {
-
-                    ImJenisPeriksaPasienEntity jenisPeriksaPasienEntity = jenisPriksaPasienBo.getJenisPerikasEntityById(detailCheckupEntity.getIdJenisPeriksaPasien());
-                    if (jenisPeriksaPasienEntity != null){
-                        masterId = jenisPeriksaPasienEntity.getMasterId();
-                    }
+                ImJenisPeriksaPasienEntity jenisPeriksaPasienEntity = jenisPriksaPasienBo.getJenisPerikasEntityById(detailCheckupEntity.getIdJenisPeriksaPasien());
+                if (jenisPeriksaPasienEntity != null){
+                    masterId = jenisPeriksaPasienEntity.getMasterId();
                 }
             }
 
 
             jenisPasien = jenisPasien + " No. Detail Checkup "+detailCheckupEntity.getIdDetailCheckup();
-
             transId = "32";
-            String jenis = detailCheckupEntity.getIdJenisPeriksaPasien();
 
             Map mapPiutang = new HashMap();
             mapPiutang.put("bukti", bukti);
             mapPiutang.put("nilai", jumlahAllTindakan);
-            mapPiutang.put("master_id", masterId);
+            if ("umum".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien()) && "non_tunai".equalsIgnoreCase(detailCheckupEntity.getMetodePembayaran())){
+                mapPiutang.put("id_pasien", idPasien);
+            } else {
+                mapPiutang.put("master_id", masterId);
+            }
 
             Map mapPendapatan = new HashMap();
             mapPendapatan.put("master_id", masterId);
@@ -329,7 +394,7 @@ public class TutuPeriodAction extends BaseTransactionAction {
 
             Map mapResep = new HashMap();
             mapResep.put("master_id", masterId);
-            mapResep.put("divisi_id", divisiId);
+            mapResep.put("divisi_id", divisiResep);
             mapResep.put("nilai", jumlahResep);
             mapResep.put("activity", getAcitivityList(detailCheckupEntity.getIdDetailCheckup(), "", "resep", "JRI"));
 

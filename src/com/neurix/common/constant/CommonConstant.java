@@ -46,12 +46,10 @@ public class CommonConstant {
     public final static String RESOURCE_PATH_USER_UPLOAD = "/pages/upload/image/profile/";
 
     //sodiq, 18 Nov 2019, Upload KTP pasien
-<<<<<<< HEAD
     public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = CommonUtil.getPropertyParams("upload.external.dir");
-=======
->>>>>>> sodiq/editor
+
     public final static String RESOURCE_PATH_IMG_ASSET = CommonUtil.getPropertyParams("resource.dir");
-    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = CommonUtil.getPropertyParams("upload.folder");
+//    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = CommonUtil.getPropertyParams("upload.folder");
 
 //    public final static String RESOURCE_PATH_IMG_ASSET = "C:\\apache-tomcat-8.5.40\\webapps";
 //    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = "C:\\Users\\pc001\\Pictures";

@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.riwayattindakan.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.transaksi.permintaanresep.model.ImSimrsPermintaanResepEntity;
 import com.neurix.simrs.transaksi.riwayattindakan.bo.RiwayatTindakanBo;
 import com.neurix.simrs.transaksi.riwayattindakan.dao.RiwayatTindakanDao;
 import com.neurix.simrs.transaksi.riwayattindakan.dao.TindakanTransitorisDao;
@@ -9,6 +10,7 @@ import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsTindakanTransitor
 import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
 import com.neurix.simrs.transaksi.teamdokter.bo.impl.TeamDokterBoImpl;
 import com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity;
+import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -244,5 +246,33 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
             logger.error("[RiwayatTindakanBoImpl.getNextIdRiwayatTindakan] ERROR When create sequences", e);
         }
         return id;
+    }
+
+    @Override
+    public ItSimrsRiwayatTindakanEntity getRiwayatTindakanResep(String idDetail, String jenisPasien) throws GeneralBOException {
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_detail_checkup", idDetail);
+
+        if (jenisPasien != null && !"".equalsIgnoreCase(jenisPasien)){
+            hsCriteria.put("jenis_pasien", jenisPasien);
+        }
+
+        hsCriteria.put("keterangan", "resep");
+
+        List<ItSimrsRiwayatTindakanEntity> riwayatTindakanEntities = new ArrayList<>();
+
+        try {
+            riwayatTindakanEntities = riwayatTindakanDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[RiwayatTindakanBoImpl.getRiwayatTindakanResep] ERROR. ", e);
+            throw new GeneralBOException("[RiwayatTindakanBoImpl.getRiwayatTindakanResep] ERROR. ", e);
+        }
+
+        if (riwayatTindakanEntities.size() > 0){
+            return riwayatTindakanEntities.get(0);
+        }
+
+        return new ItSimrsRiwayatTindakanEntity();
     }
 }

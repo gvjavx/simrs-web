@@ -30,6 +30,51 @@ public class TutupPeriod {
     private String flagTutup;
     private String idDetailCheckup;
     private String idJenisPeriksaPasien;
+    private String masterId;
+    private String divisiId;
+    private String saldoAkhirId;
+    private String periode;
+    private String pasienId;
+
+    public String getPasienId() {
+        return pasienId;
+    }
+
+    public void setPasienId(String pasienId) {
+        this.pasienId = pasienId;
+    }
+
+    public String getPeriode() {
+        return periode;
+    }
+
+    public void setPeriode(String periode) {
+        this.periode = periode;
+    }
+
+    public String getSaldoAkhirId() {
+        return saldoAkhirId;
+    }
+
+    public void setSaldoAkhirId(String saldoAkhirId) {
+        this.saldoAkhirId = saldoAkhirId;
+    }
+
+    public String getMasterId() {
+        return masterId;
+    }
+
+    public void setMasterId(String masterId) {
+        this.masterId = masterId;
+    }
+
+    public String getDivisiId() {
+        return divisiId;
+    }
+
+    public void setDivisiId(String divisiId) {
+        this.divisiId = divisiId;
+    }
 
     public String getIdJenisPeriksaPasien() {
         return idJenisPeriksaPasien;
