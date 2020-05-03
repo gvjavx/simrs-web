@@ -411,7 +411,7 @@
                 <value>sshconfig/com/neurix/simrs/master/tindakan/hibernate/ImSimrsKategoriTindakanPelayananEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/dokter/hibernate/ImSimrsDokterPelayananEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/jenisperiksapasien/hibernate/ImSimrsAsuransiEntity.hbm.xml</value>
-                <value>sshconfig/com/neurix/simrs/transaksi/checkup/hibernate/ItSimrsHeaderCheckupEntityLog.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/checkup/hibernate/ItSimrsHeaderDetailCheckupLogEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/obat/hibernate/ItSimrsReturObatEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/obat/hibernate/ItSimrsReturObatDetailEntity.hbm.xml</value>
 

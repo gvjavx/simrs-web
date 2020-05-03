@@ -12,6 +12,15 @@ public class Asuransi {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String isLaka;
+
+    public String getIsLaka() {
+        return isLaka;
+    }
+
+    public void setIsLaka(String isLaka) {
+        this.isLaka = isLaka;
+    }
 
     public String getIdAsuransi() {
         return idAsuransi;

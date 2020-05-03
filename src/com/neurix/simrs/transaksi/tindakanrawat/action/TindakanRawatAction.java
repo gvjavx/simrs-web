@@ -165,7 +165,7 @@ public class TindakanRawatAction extends BaseMasterAction {
 
             tindakanRawat.setNamaTindakan(tindakanResult.getTindakan());
             tindakanRawat.setIdDokter(idDokter);
-            tindakanRawat.setIdPerawat(idPerawat);
+            tindakanRawat.setIdPerawat(userLogin);
             tindakanRawat.setQty(qty);
 
             if ("bpjs".equalsIgnoreCase(jenisTransaksi)){
@@ -383,7 +383,7 @@ public class TindakanRawatAction extends BaseMasterAction {
 
             tindakanRawat.setNamaTindakan(tindakanResult.getTindakan());
             tindakanRawat.setIdDokter(idDokter);
-            tindakanRawat.setIdPerawat(idPerawat);
+            tindakanRawat.setIdPerawat(userLogin);
             tindakanRawat.setQty(qty);
             tindakanRawat.setTarif(tindakanResult.getTarif());
             tindakanRawat.setLastUpdate(updateTime);

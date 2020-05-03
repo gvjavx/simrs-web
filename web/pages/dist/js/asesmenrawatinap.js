@@ -1,4 +1,5 @@
 function showModalAsesmenRawatInap(jenis) {
+    console.log()
     if (isReadRM) {
         $('.btn-hide').hide();
     } else {
@@ -43,7 +44,7 @@ function showModalAsesmenRawatInap(jenis) {
         listRekonsiliasiObat();
     }
 
-    if("ringkasan_rj" == jenis){
+    if ("ringkasan_rj" == jenis) {
         listRekamMedisRJ();
     }
 
@@ -1206,10 +1207,10 @@ function saveAsesmenRawatInap(jenis, ket) {
             var tr = "";
             $.each(namaTcm, function (i, item) {
                 if (item.value != '') {
-                    if(tr != ''){
-                        tr = tr +'='+item.value+'|'+alamatTcm[i].value;
-                    }else{
-                        tr = item.value+'|'+alamatTcm[i].value;
+                    if (tr != '') {
+                        tr = tr + '=' + item.value + '|' + alamatTcm[i].value;
+                    } else {
+                        tr = item.value + '|' + alamatTcm[i].value;
                     }
                 }
             });
@@ -1551,6 +1552,329 @@ function saveAsesmenRawatInap(jenis, ket) {
         }
     }
 
+    if ("data_ruangan" == jenis) {
+        var va1 = $('#dr1').val();
+        var va2 = $('#dr2').val();
+        var va3 = $('#dr3').val();
+        var va4 = $('#dr4').val();
+        var va5 = $('#dr5').val();
+        var va6 = $('#dr6').val();
+        var va7 = $('[name=dr7]');
+        var temp7 = "";
+        $.each(va7, function (i, item) {
+            if (item.checked) {
+                if (temp7 != '') {
+                    temp7 = temp7 + '|' + item.value;
+                } else {
+                    temp7 = item.value;
+                }
+            }
+        });
+        var va8 = $('[name=dr8]');
+        var temp8 = "";
+        $.each(va8, function (i, item) {
+            if (item.checked) {
+                if (temp8 != '') {
+                    temp8 = temp8 + '|' + item.value;
+                } else {
+                    temp8 = item.value;
+                }
+            }
+        });
+        var va9 = $('#dr9').val();
+        var va10 = $('#dr10').val();
+
+        if (va1 && va2 && va3 && va4 && va5 && va6 && temp7 && temp8 && va9 && va10 != '') {
+            data.push({
+                'parameter': 'Ruang Asal',
+                'jawaban': va1,
+                'keterangan': jenis,
+                'jenis': 'transfer_pasien',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Ruang Tujuan',
+                'jawaban': va2,
+                'keterangan': jenis,
+                'jenis': 'transfer_pasien',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Petugas yang menghubungi',
+                'jawaban': va3,
+                'keterangan': jenis,
+                'jenis': 'transfer_pasien',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Petugas penerima telp',
+                'jawaban': va4,
+                'keterangan': jenis,
+                'jenis': 'transfer_pasien',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Berangkat Tanggal dan Jam',
+                'jawaban': va5 + ' ' + va6,
+                'keterangan': jenis,
+                'jenis': 'transfer_pasien',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Alasan Mentransfer',
+                'jawaban': temp7,
+                'keterangan': jenis,
+                'jenis': 'transfer_pasien',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Derajat Transfer',
+                'jawaban': temp8,
+                'keterangan': jenis,
+                'jenis': 'transfer_pasien',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Diagnosa Medis',
+                'jawaban': va9,
+                'keterangan': jenis,
+                'jenis': 'transfer_pasien',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Dokter /petugas yang menunjuk',
+                'jawaban': va10,
+                'keterangan': jenis,
+                'jenis': 'transfer_pasien',
+                'id_detail_checkup': idDetailCheckup
+            });
+            cek = true;
+        }
+    }
+
+    if ("catatan_klinis" == jenis) {
+        var va1 = $('#ck1').val();
+        var va2 = $('[name=ck2]:checked').val();
+        var va3 = "";
+        var v3 = $('[name=ck3]:checked').val();
+        if (v3 != undefined) {
+            var a = $('[name=ket_ck3]');
+            if (v3 == "Ada") {
+                $.each(a, function (i, item) {
+                    if (item.checked) {
+                        if (va3 != '') {
+                            va3 = va3 + '|' + item.value;
+                        } else {
+                            va3 = item.value;
+                        }
+                    }
+                });
+            } else {
+                va3 = v3;
+            }
+        }
+        var va4 = $('#ck4').val();
+        var va5 = $('#ck5').val();
+        var va6 = $('#ck6').val();
+        var va7 = $('[name=ck7]');
+        var temp7 = "";
+        $.each(va7, function (i, item) {
+            if (item.checked) {
+                if (temp7 != '') {
+                    temp7 = temp7 + '|' + item.value;
+                } else {
+                    temp7 = item.value;
+                }
+            }
+        });
+        var va8 = $('#ck8').val();
+
+        if (va2 != undefined && va1 && va3 && va4 && va5 && va6 && temp7 && va8 != '') {
+            data.push({
+                'parameter': 'Anamnesis',
+                'jawaban': va1,
+                'keterangan': jenis,
+                'jenis': 'transfer_pasien',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Alergi',
+                'jawaban': va2,
+                'keterangan': jenis,
+                'jenis': 'transfer_pasien',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Riwayat Penyakit',
+                'jawaban': va3,
+                'keterangan': jenis,
+                'jenis': 'transfer_pasien',
+                'id_detail_checkup': idDetailCheckup
+            });
+
+            var tindakan = "";
+            var tin = $('.tin-tindakan');
+            $.each(tin, function (i, item) {
+                if (item.value != '') {
+                    if (tindakan != '') {
+                        tindakan = tindakan + '|' + item.value;
+                    } else {
+                        tindakan = item.value;
+                    }
+                }
+            });
+
+            if (tindakan != '') {
+                data.push({
+                    'parameter': 'Pengobatan yang sudah diberikan/ tindakan yang sudah dilakukan',
+                    'jawaban': tindakan,
+                    'keterangan': jenis,
+                    'jenis': 'transfer_pasien',
+                    'id_detail_checkup': idDetailCheckup
+                });
+            }
+
+            data.push({
+                'parameter': 'Luka',
+                'jawaban': va4,
+                'keterangan': jenis,
+                'jenis': 'transfer_pasien',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Makan / Minum terakhir jam',
+                'jawaban': va5,
+                'keterangan': jenis,
+                'jenis': 'transfer_pasien',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Dokumen yang disertakan',
+                'jawaban': va6,
+                'keterangan': jenis,
+                'jenis': 'transfer_pasien',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Peralatan medis yang digunakan',
+                'jawaban': temp7,
+                'keterangan': jenis,
+                'jenis': 'transfer_pasien',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Catatan Hal penting',
+                'jawaban': va8,
+                'keterangan': jenis,
+                'jenis': 'transfer_pasien',
+                'id_detail_checkup': idDetailCheckup
+            });
+            cek = true;
+        }
+    }
+
+    if ("kondisi_serah_terima" == jenis) {
+        var va1 = $('#kps1').val();
+        var va2 = $('#kps2').val();
+        var va3 = $('#kps3').val();
+        var va4 = $('#kps4').val();
+        var va5 = $('#kps5').val();
+        var va6 = $('#kps6').val();
+        var va7 = $('#kps7').val();
+        var va8 = $('#kps8').val();
+        var va9 = $('#kps9').val();
+        var va10 = $('#kps10').val();
+        var va11 = $('#kps11').val();
+        var va12 = $('#kps12').val();
+        var va13 = $('#kps13').val();
+        var va14 = $('#kps14').val();
+        var va15 = $('#kps15').val();
+        var va16 = $('#kps16').val();
+        var va17 = $('#kps17').val();
+        var va18 = $('#kps18').val();
+        var va19 = $('#kps19').val();
+        var va20 = $('#kps20').val();
+
+        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va10 && va11 && va12 &&
+            va13 && va14 && va15 && va16 && va17 && va18 != '') {
+            data.push({
+                'parameter': 'Kesadaran Umum',
+                'jawaban': va1 + '|' + va2,
+                'keterangan': jenis,
+                'jenis': 'transfer_pasien',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Kesadaran / GCS',
+                'jawaban': va3 + '|' + va4,
+                'keterangan': jenis,
+                'jenis': 'transfer_pasien',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Tekanan Darah',
+                'jawaban': va5 + ' mmHg|' + va6+' mmHg',
+                'keterangan': jenis,
+                'jenis': 'transfer_pasien',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Suhu',
+                'jawaban': va7 + ' C|' + va8+' C',
+                'keterangan': jenis,
+                'jenis': 'transfer_pasien',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Nadi',
+                'jawaban': va9 + ' x/mnt|' + va10+' x/mnt',
+                'keterangan': jenis,
+                'jenis': 'transfer_pasien',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'RR',
+                'jawaban': va11 + ' x/mnt|' + va12+' x/mnt',
+                'keterangan': jenis,
+                'jenis': 'transfer_pasien',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Saturasi',
+                'jawaban': va13 + ' %|' + va14+' %',
+                'keterangan': jenis,
+                'jenis': 'transfer_pasien',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Skala Nyeri',
+                'jawaban': va15 + '|' + va16,
+                'keterangan': jenis,
+                'jenis': 'transfer_pasien',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Resiko Jatuh',
+                'jawaban': va17 + '|' + va18,
+                'keterangan': jenis,
+                'jenis': 'transfer_pasien',
+                'id_detail_checkup': idDetailCheckup
+            });
+
+            if (va19 && va20 != '') {
+                data.push({
+                    'parameter': 'Lain-Lain',
+                    'jawaban': va19 + '|' + va20,
+                    'keterangan': jenis,
+                    'jenis': 'transfer_pasien',
+                    'id_detail_checkup': idDetailCheckup
+                });
+            }
+
+            cek = true;
+        }
+    }
+
     if (cek) {
         var result = JSON.stringify(data);
         $('#save_ina_' + jenis).hide();
@@ -1659,7 +1983,7 @@ function detailAsesmenRawatInap(jenis) {
                                 '</tr>';
                         } else if ("nama_tercantum" == item.jenis) {
 
-                            if(jwb != ''){
+                            if (jwb != '') {
                                 var temp1 = "";
                                 var tr = jwb.split("=");
                                 $.each(tr, function (i, item) {
@@ -1719,6 +2043,67 @@ function detailAsesmenRawatInap(jenis) {
                                 '<td>' + jwb + '</td>' +
                                 '</tr>';
                         }
+                    } else if ("data_ruangan" == item.keterangan) {
+                        if ("Alasan Mentransfer" == item.parameter || "Derajat Transfer" == item.parameter) {
+                            var isi = jwb.split("|");
+                            var li = "";
+                            $.each(isi, function (i, item) {
+                                li += '<li>' + item + '</li>';
+                            });
+                            if (li != '') {
+                                body += '<tr>' +
+                                    '<td>' + item.parameter + '</td>' +
+                                    '<td>' + '<ul style="margin-left: 15px">' + li + '</ul>' + '</td>' +
+                                    '</tr>';
+                            }
+                        } else {
+                            body += '<tr>' +
+                                '<td>' + item.parameter + '</td>' +
+                                '<td>' + jwb + '</td>' +
+                                '</tr>';
+                        }
+
+                    } else if ("catatan_klinis" == item.keterangan) {
+                        if ("Riwayat Penyakit" == item.parameter || "Peralatan medis yang digunakan" == item.parameter) {
+                            var isi = jwb.split("|");
+                            var li = "";
+                            $.each(isi, function (i, item) {
+                                li += '<li>' + item + '</li>';
+                            });
+                            if (li != '') {
+                                body += '<tr>' +
+                                    '<td>' + item.parameter + '</td>' +
+                                    '<td>' + '<ul style="margin-left: 15px">' + li + '</ul>' + '</td>' +
+                                    '</tr>';
+                            }
+                        } else if ("Pengobatan yang sudah diberikan/ tindakan yang sudah dilakukan" == item.parameter) {
+                            var isi = jwb.split("|");
+                            var li = "";
+                            $.each(isi, function (i, item) {
+                                li += '<li>' + item + '</li>';
+                            });
+                            if (li != '') {
+                                body += '<tr>' +
+                                    '<td colspan="2">' + '<label>'+item.parameter+'</label><ul style="margin-left: 15px">' + li + '</ul>' + '</td>' +
+                                    '</tr>';
+                            }
+                        } else {
+                            body += '<tr>' +
+                                '<td width="40%">' + item.parameter + '</td>' +
+                                '<td>' + jwb + '</td>' +
+                                '</tr>';
+                        }
+                    } else if ("kondisi_serah_terima" == item.keterangan) {
+                        var isi = jwb.split("|");
+                        var sebelum = isi[0];
+                        var sesudah = isi[1];
+                        if (li != '') {
+                            body += '<tr>' +
+                                '<td>' +item.parameter + '</td>' +
+                                '<td>' + sebelum + '</td>' +
+                                '<td>' + sesudah + '</td>' +
+                                '</tr>';
+                        }
                     } else {
                         body += '<tr>' +
                             '<td>' + item.parameter + '</td>' +
@@ -1751,6 +2136,16 @@ function detailAsesmenRawatInap(jenis) {
                     if ("funsional" == jenis) {
                         last = '<tr style="font-weight: bold"><td colspan="2">Total</td><td align="center">' + totalSkor + '</td></tr>';
                     }
+                }
+            }
+
+            if("kondisi_serah_terima" == jenis){
+                if(cekData){
+                    head = '<tr>' +
+                        '<td><b>Pemeriksaan</b></td>' +
+                        '<td><b>Sebelum ditransfer</b></td>' +
+                        '<td><b>Saat diterima</b></td>' +
+                        '</tr>';
                 }
             }
 
@@ -2323,10 +2718,10 @@ function saveRekamMedisRJ(jenis, ket) {
     var va5 = $('#rj5').val();
     var va6 = $('#rj6').val();
 
-    if(va1 && va2 && va3 && va4 && va5 && va6 != ''){
+    if (va1 && va2 && va3 && va4 && va5 && va6 != '') {
         data = {
             'id_detail_checkup': idDetailCheckup,
-            'waktu': va1.split("-").reverse().join("-")+ ' ' + va2+':00',
+            'waktu': va1.split("-").reverse().join("-") + ' ' + va2 + ':00',
             'anamnese': va3,
             'pemeriksaan_fisik': va4,
             'diagnosa': va5,
@@ -2430,4 +2825,19 @@ function tambahNama() {
 
 function removeTambahNama(id) {
     $('#' + id).remove();
+}
+
+function tambahTindakan() {
+    var cek = $('.form-tindakan').length;
+    var index = parseInt(cek) + 1;
+    var id = 'tindakan-' + index;
+    var kolom = '<div class="form-group form-tindakan" id="' + id + '">' +
+        '<div class="col-md-11">' +
+        '<input placeholder="Keterangan Tindakan" class="form-control tin-tindakan" style="margin-top: 7px">' +
+        '</div>' +
+        '<div class="col-md-1">' +
+        '<button onclick="removeTambahNama(\'' + id + '\')" style="margin-top: 9px; margin-left: -20px" class="btn btn-danger"><i class="fa fa-trash"></i></button>' +
+        '</div>' +
+        '</div>';
+    $('#temp_tindakan').append(kolom);
 }

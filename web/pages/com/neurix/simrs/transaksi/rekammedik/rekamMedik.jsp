@@ -609,7 +609,7 @@
                                         <li><a style="cursor: pointer" onmouseover="loadModalRM('asuhan')" onclick="showModalAsesmenRawatInap('asuhan')"><i class="fa fa-circle-o"></i>Rencana Asuhan Keperawatan</a></li>
                                         <li><a style="cursor: pointer" onmouseover="loadModalRM('discharge_planing')" onclick="showModalAsesmenRawatInap('discharge_planing')"><i class="fa fa-circle-o"></i>Discharge Planing</a></li>
                                         <li><a style="cursor: pointer" onmouseover="loadModalRM('catatan_integrasi')" onclick="showModalAsesmenRawatInap('catatan_integrasi')"><i class="fa fa-circle-o"></i>Catatan Perkembangan Pasien Terintegrasi</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalAsesmenRawatInap('transfer')"><i class="fa fa-circle-o"></i>Transfer Pasien Antar Ruangan</a></li>
+                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('transfer_pasien')" onclick="showModalAsesmenRawatInap('transfer_pasien')"><i class="fa fa-circle-o"></i>Transfer Pasien Antar Ruangan</a></li>
                                         <li><a style="cursor: pointer" onmouseover="loadModalRM('privasi')" onclick="showModalAsesmenRawatInap('privasi')"><i class="fa fa-circle-o"></i>Privasi Pasien</a></li>
                                         <li><a style="cursor: pointer" onmouseover="loadModalRM('early_warning')" onclick="showModalAsesmenRawatInap('early_warning')"><i class="fa fa-circle-o"></i>Lembar Observasi Pediatric Early Warning Score</a></li>
                                         <li><a style="cursor: pointer" onmouseover="loadModalRM('pemberian_obat')" onclick="showModalAsesmenRawatInap('catatan_pemberian')"><i class="fa fa-circle-o"></i>Catatan Pemberian Obat</a></li>
@@ -820,6 +820,9 @@
         }
         if(jenis == "ringkasan"){
             context = contextPath+'/pages/modal/modalRingkasan.jsp';
+        }
+        if(jenis == "transfer_pasien"){
+            context = contextPath+'/pages/modal/modalTransferPasien.jsp';
         }
         $('#modal-temp').load(context, function (res) {
 

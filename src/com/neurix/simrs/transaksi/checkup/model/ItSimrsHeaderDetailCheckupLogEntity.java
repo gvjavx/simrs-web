@@ -6,24 +6,51 @@ import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
 
-public class ItSimrsHeaderChekupLogEntity implements Serializable {
+public class ItSimrsHeaderDetailCheckupLogEntity implements Serializable {
 
     private String idHeaderCheckupLog;
     private String noCheckup;
-    private String idJenisPeriksaPasien;
+    private String idDetailCheckup;
+    private String idJenisPeriksaPasienSebelumnya;
+    private String idJenisPeriksaPasienSetelahnya;
     private String flag;
     private String action;
     private Timestamp createdDate;
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String keterangan;
 
-    public String getIdJenisPeriksaPasien() {
-        return idJenisPeriksaPasien;
+    public String getKeterangan() {
+        return keterangan;
     }
 
-    public void setIdJenisPeriksaPasien(String idJenisPeriksaPasien) {
-        this.idJenisPeriksaPasien = idJenisPeriksaPasien;
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
+    public String getIdDetailCheckup() {
+        return idDetailCheckup;
+    }
+
+    public void setIdDetailCheckup(String idDetailCheckup) {
+        this.idDetailCheckup = idDetailCheckup;
+    }
+
+    public String getIdJenisPeriksaPasienSebelumnya() {
+        return idJenisPeriksaPasienSebelumnya;
+    }
+
+    public void setIdJenisPeriksaPasienSebelumnya(String idJenisPeriksaPasienSebelumnya) {
+        this.idJenisPeriksaPasienSebelumnya = idJenisPeriksaPasienSebelumnya;
+    }
+
+    public String getIdJenisPeriksaPasienSetelahnya() {
+        return idJenisPeriksaPasienSetelahnya;
+    }
+
+    public void setIdJenisPeriksaPasienSetelahnya(String idJenisPeriksaPasienSetelahnya) {
+        this.idJenisPeriksaPasienSetelahnya = idJenisPeriksaPasienSetelahnya;
     }
 
     public String getIdHeaderCheckupLog() {

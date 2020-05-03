@@ -127,27 +127,7 @@
                                                   cssClass="form-control select2"/>
                                     </div>
                                 </div>
-                                <%--<div class="form-group">--%>
-                                    <%--<label class="control-label col-sm-4">Flag</label>--%>
-                                    <%--<div class="col-sm-4">--%>
-                                        <%--<s:select list="#{'N':'Non Active'}" cssStyle="margin-top: 7px"--%>
-                                                  <%--id="flag" name="permintaanResep.status"--%>
-                                                  <%--headerKey="Y" headerValue="Active"--%>
-                                                  <%--cssClass="form-control select2"/>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-                                <%--<div class="form-group">--%>
-                                    <%--<label>&nbsp;</label>--%>
-                                    <%--<div class="col-sm-4">--%>
-                                        <%--<div class="input-group">--%>
-                                        <%--<input class="form-control" id="namaOrang">--%>
-                                        <%--<div class="input-group-addon" onclick="tesSuara()">--%>
-                                            <%--<i class="fa fa-search"> TEST</i>--%>
-                                        <%--</div>--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-                                <%--<s:hidden name="permintaanResep.status" value="3"></s:hidden>--%>
+
                                 <s:hidden name="permintaanResep.isUmum" value="N"></s:hidden>
                                 <br>
                                 <div class="form-group">
@@ -163,9 +143,6 @@
                                         <a type="button" class="btn btn-danger" href="initForm_reseppoli.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
-                                        <%--<a type="button" class="btn btn-info" href="initForm_transaksi.action">--%>
-                                            <%--<i class="fa fa-history"></i> Riwayat Transaksi--%>
-                                        <%--</a>--%>
                                     </div>
                                 </div>
                                 <div class="form-group">

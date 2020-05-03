@@ -3,15 +3,22 @@ function showModalPengkajianKep(jenis) {
         $('.btn-hide').hide();
     }else{
         $('.btn-hide').show();
+        var jam = $('.jam').length;
+        var tgl = $('.tgl').length;
+        if(tgl > 0){
+            $('.tgl').datepicker({
+                dateFormat: 'dd-mm-yy'
+            });
+            $('.tgl').val(formaterDate(new Date()));
+            $('.tgl').inputmask('dd-mm-yyyy', {'placeholder': 'dd-mm-yyyy'});
+        }
+        if(jam > 0){
+            $('.jam').timepicker();
+            $('.jam').val(formaterTime(new Date()));
+        }
     }
+
     $('#modal-puk-' + jenis).modal({show: true, backdrop: 'static'});
-    $('.tgl').datepicker({
-        dateFormat: 'dd-mm-yy'
-    });
-    $('.tgl').val(formaterDate(new Date()));
-    $('.tgl').inputmask('dd-mm-yyyy', {'placeholder': 'dd-mm-yyyy'});
-    $('.jam').timepicker();
-    $('.jam').val(formaterTime(new Date()));
 }
 
 function savePengkajianKep(jenis, ket) {
