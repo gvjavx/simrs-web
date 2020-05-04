@@ -110,6 +110,17 @@ public class BudgetingDao extends GenericDao<ItAkunBudgetingEntity, String> {
         return false;
     }
 
+    public String checkLastTipeOfBudgeting(){
+        String SQL = "SELECT no_budgeting, tipe FROM it_akun_budgeting LIMIT 1";
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                return obj[1].toString();
+            }
+        }
+        return "";
+    }
+
     public String getNextId() {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_budgeting')");
         Iterator<BigInteger> iter = query.list().iterator();

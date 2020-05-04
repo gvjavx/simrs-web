@@ -25,4 +25,7 @@ public interface BudgetingBo {
     public void saveEditBudgeting(List<Budgeting> budgetingList, List<BudgetingDetail> budgetingDetails, List<BudgetingPengadaan> budgetingPengadaans, String statusTrans, String typeTrans, Budgeting bean) throws GeneralBOException;
     public Long getlastLevelKodeRekening();
     public Boolean foundWithSameStatus(String tahun, String branchId, String status);
+    public String generateBudgetingDetailId();
+    public String generateBudgetingPengadaan();
+    public String checkLastTipeBudgeting();
 }
