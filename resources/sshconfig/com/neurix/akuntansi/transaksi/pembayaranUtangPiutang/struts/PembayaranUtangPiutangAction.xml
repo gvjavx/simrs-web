@@ -75,12 +75,15 @@
             <result name="init_add">/pages/com/neurix/akuntansi/transaksi/pembayaranUtangPiutang/addPembayaranUtangPiutang.jsp</result>
             <result name="success_save_add">/pages/com/neurix/akuntansi/transaksi/pembayaranUtangPiutang/addPembayaranUtangPiutang.jsp</result>
 
-            <result name="success_save_delete">/pages/com/neurix/akuntansi/master/pembayaranUtangPiutang/deletePembayaranUtangPiutang.jsp</result>
-            <result name="init_delete">/pages/com/neurix/akuntansi/master/pembayaranUtangPiutang/deletePembayaranUtangPiutang.jsp</result>
-            <result name="init_view">/pages/com/neurix/akuntansi/master/pembayaranUtangPiutang/viewPembayaranUtangPiutang.jsp</result>
-            <result name="init_edit">/pages/com/neurix/akuntansi/master/pembayaranUtangPiutang/editPembayaranUtangPiutang.jsp</result>
-            <result name="success_save_edit">/pages/com/neurix/akuntansi/master/pembayaranUtangPiutang/editPembayaranUtangPiutang.jsp</result>
-            <result name="failure">/pages/com/neurix/akuntansi/master/pembayaranUtangPiutang/editPembayaranUtangPiutang.jsp</result>
+            <result name="input_pemasukan">/pages/com/neurix/akuntansi/transaksi/pembayaranUtangPiutang/SearchPemasukan.jsp</result>
+            <result name="success_pemasukan">/pages/com/neurix/akuntansi/transaksi/pembayaranUtangPiutang/SearchPemasukan.jsp</result>
+            <result name="init_add_pemasukan">/pages/com/neurix/akuntansi/transaksi/pembayaranUtangPiutang/addPemasukan.jsp</result>
+            <result name="success_save_add_pemasukan">/pages/com/neurix/akuntansi/transaksi/pembayaranUtangPiutang/addPemasukan.jsp</result>
+
+            <result name="input_koreksi">/pages/com/neurix/akuntansi/transaksi/pembayaranUtangPiutang/SearchKoreksi.jsp</result>
+            <result name="success_koreksi">/pages/com/neurix/akuntansi/transaksi/pembayaranUtangPiutang/SearchKoreksi.jsp</result>
+            <result name="init_add_koreksi">/pages/com/neurix/akuntansi/transaksi/pembayaranUtangPiutang/addKoreksi.jsp</result>
+            <result name="success_save_add_koreksi">/pages/com/neurix/akuntansi/transaksi/pembayaranUtangPiutang/addKoreksi.jsp</result>
 
             <result name="print_report_bukti_posting" type="jasper">
                 <param name="location">/pages/report/com/neurix/akuntansi/bukti.jasper</param>
@@ -95,6 +98,15 @@
             <interceptor-ref name="defaultStack"/>
             <result name="success">/pages/com/neurix/akuntansi/transaksi/pembayaranUtangPiutang/SearchPembayaranUtangPiutang.jsp</result>
         </action>
-
+        <action name="paging_displaytag_pemasukan_pembayaranUtangPiutang"
+                class="com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.action.PembayaranUtangPiutangAction" method="paging">
+            <interceptor-ref name="defaultStack"/>
+            <result name="success">/pages/com/neurix/akuntansi/transaksi/pembayaranUtangPiutang/SearchPemasukan.jsp</result>
+        </action>
+        <action name="paging_displaytag_koreksi_pembayaranUtangPiutang"
+                class="com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.action.PembayaranUtangPiutangAction" method="paging">
+            <interceptor-ref name="defaultStack"/>
+            <result name="success">/pages/com/neurix/akuntansi/transaksi/pembayaranUtangPiutang/SearchKoreksi.jsp</result>
+        </action>
     </package>
 </struts>

@@ -23,6 +23,15 @@ public class PembayaranUtangPiutangDetail extends BaseModel {
     private String masterName;
     private String rekeningId;
     private String kodeRekening;
+    private String posisiCoa;
+
+    public String getPosisiCoa() {
+        return posisiCoa;
+    }
+
+    public void setPosisiCoa(String posisiCoa) {
+        this.posisiCoa = posisiCoa;
+    }
 
     public String getDivisiName() {
         return divisiName;

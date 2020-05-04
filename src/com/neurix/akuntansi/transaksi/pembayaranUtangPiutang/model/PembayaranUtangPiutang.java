@@ -24,6 +24,7 @@ public class PembayaranUtangPiutang extends BaseModel {
     private String registeredFlag;
     private Date registeredDate;
     private String registeredWho;
+    private String tipePembayaran;
 
     private String stBayar;
     private String stTanggal;
@@ -34,6 +35,14 @@ public class PembayaranUtangPiutang extends BaseModel {
     private String stTanggalSelesai;
     private String metodePembayaran;
     private String bank;
+
+    public String getTipePembayaran() {
+        return tipePembayaran;
+    }
+
+    public void setTipePembayaran(String tipePembayaran) {
+        this.tipePembayaran = tipePembayaran;
+    }
 
     public String getMetodePembayaran() {
         return metodePembayaran;

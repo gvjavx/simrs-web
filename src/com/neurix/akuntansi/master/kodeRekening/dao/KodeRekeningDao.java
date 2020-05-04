@@ -243,21 +243,25 @@ public class KodeRekeningDao extends GenericDao<ImKodeRekeningEntity, String> {
         return result;
     }
 
-    public List<KodeRekening> getKodeRekeningLawanByTransId(String transId){
-
+    public List<KodeRekening> getKodeRekeningLawanByTransId(String transId,String posisiLawan){
         List<KodeRekening> listOfResult = new ArrayList<>();
-
+        String where = "";
+        if (!"".equalsIgnoreCase(posisiLawan)){
+            where=" and posisi='"+posisiLawan+"' ";
+        }
         List<Object[]> results = new ArrayList<Object[]>();
-        String query = "select\n" +
-                "\tkr.*\n" +
-                "from\n" +
-                "\tim_akun_mapping_jurnal j\n" +
-                "\tleft join im_akun_kode_rekening kr ON kr.kode_rekening ILIKE '%' || j.kode_rekening || '%'\n" +
-                "where\n" +
-                "\ttrans_id='"+transId+"'\n" +
-                "\tand kr.kode_rekening not ilike '1%'\n" +
-                "\tand kr.level=5";
-        results = this.sessionFactory.getCurrentSession()
+        String query = "select \n" +
+                "\t kr.*, " +
+                " j.* \n" +
+                " from \n" +
+                "\t im_akun_mapping_jurnal j \n" +
+                "\t left join im_akun_kode_rekening kr ON kr.kode_rekening ILIKE '%' || j.kode_rekening || '%' \n" +
+                " where \n" +
+                "\t kr.level=5 \n"+
+                "\t and trans_id='"+transId+"' "+
+                where;
+
+                results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
                 .list();
 
@@ -266,7 +270,11 @@ public class KodeRekeningDao extends GenericDao<ImKodeRekeningEntity, String> {
             data.setRekeningId((String) row[0]);
             data.setKodeRekening((String) row[1]);
             data.setNamaKodeRekening((String) row[2]);
-
+            if (!"".equalsIgnoreCase(posisiLawan)){
+                data.setTampilanCoa(data.getKodeRekening()+" | "+data.getNamaKodeRekening());
+            }else{
+                data.setTampilanCoa((String) row[14]+" | "+data.getKodeRekening()+" | "+data.getNamaKodeRekening());
+            }
             listOfResult.add(data);
         }
         return listOfResult;
@@ -281,6 +289,25 @@ public class KodeRekeningDao extends GenericDao<ImKodeRekeningEntity, String> {
                 "  im_akun_kode_rekening \n" +
                 "where \n" +
                 "  kode_rekening = '" + coa + "'\n";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results != null) {
+            result = results.toString();
+        } else {
+            result = null;
+        }
+        return result;
+    }
+
+    //untuk mendapat coa dari rekeningId
+    public String getCoaByRekeningId(String rekeningId) {
+        String result = "";
+        String query = "select \n" +
+                "  kode_rekening\n" +
+                "from \n" +
+                "  im_akun_kode_rekening \n" +
+                "where \n" +
+                "  rekening_id = '"+rekeningId+"'\n";
         Object results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query).uniqueResult();
         if (results != null) {
@@ -322,5 +349,40 @@ public class KodeRekeningDao extends GenericDao<ImKodeRekeningEntity, String> {
 
         List<ImKodeRekeningEntity> results = criteria.list();
         return results;
+    }
+
+    public Integer getLevelKodeRekening(String coa) {
+        Integer result ;
+        String query = "select \n" +
+                "  level\n" +
+                "from \n" +
+                "  im_akun_kode_rekening \n" +
+                "where \n" +
+                "  kode_rekening = '" + coa + "'\n";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results != null) {
+            result = Integer.parseInt(results.toString());
+        } else {
+            result = null;
+        }
+        return result;
+    }
+    public String getKodeRekeningParent(String kodeRekening) {
+        String result = "";
+        String query = "select \n" +
+                "  parent_id \n" +
+                "from \n" +
+                "  im_akun_kode_rekening \n" +
+                "where \n" +
+                "  kode_rekening = '"+kodeRekening+"'\n";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results != null) {
+            result = results.toString();
+        } else {
+            result = null;
+        }
+        return result;
     }
 }

@@ -67,7 +67,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Pengeluaran Kas/Bank
+            Pemasukan Kas/Bank
         </h1>
     </section>
     <!-- Main content -->
@@ -76,14 +76,14 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Pengeluaran Kas/Bank </h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Pemasukan Kas/Bank </h3>
                     </div>
                     <div class="box-body">
                         <table width="100%" align="center">
                             <tr>
                                 <td align="center">
-                                    <s:form id="pembayaranUtangPiutangForm" method="post"  theme="simple" namespace="/pembayaranUtangPiutang" action="search_pembayaranUtangPiutang.action" cssClass="form-horizontal">
-                                        <s:hidden name="pembayaranUtangPiutang.tipePembayaran" value="KK" />
+                                    <s:form id="pembayaranUtangPiutangForm" method="post"  theme="simple" namespace="/pembayaranUtangPiutang" action="searchPemasukan_pembayaranUtangPiutang.action" cssClass="form-horizontal">
+                                        <s:hidden name="pembayaranUtangPiutang.tipePembayaran" value="KM" />
                                         <table>
                                             <tr>
                                                 <td width="10%" align="center">
@@ -189,10 +189,10 @@
                                                         </sj:submit>
                                                     </td>
                                                     <td>
-                                                        <a href="add_pembayaranUtangPiutang.action" class="btn btn-success" ><i class="fa fa-plus"></i> Add Pengeluaran Kas/Bank</a>
+                                                        <a href="addPemasukan_pembayaranUtangPiutang.action" class="btn btn-success" ><i class="fa fa-plus"></i> Add Pemasukan Kas/Bank</a>
                                                     </td>
                                                     <td>
-                                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_pembayaranUtangPiutang"/>'">
+                                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initFormPemasukan_pembayaranUtangPiutang"/>'">
                                                             <i class="fa fa-refresh"></i> Reset
                                                         </button>
                                                     </td>
@@ -280,7 +280,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="col-md-4" style="margin-top: 7px">Pengeluaran Kas/Bank Id</label>
+                                <label class="col-md-4" style="margin-top: 7px">Pemasukan Kas/Bank Id</label>
                                 <div class="col-md-6">
                                     <s:textfield id="mod_pembayaran_id" onkeypress="$(this).css('border','')" readonly="true" cssStyle="margin-top: 7px"
                                                  cssClass="form-control" />

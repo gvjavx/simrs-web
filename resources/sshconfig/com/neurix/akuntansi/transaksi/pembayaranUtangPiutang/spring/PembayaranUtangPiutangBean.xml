@@ -19,6 +19,7 @@
           p:jurnalDetailDao-ref="jurnalDetailDao"
           p:transDao-ref="transDao"
           p:branchDao-ref="branchDao"
+          p:mappingJurnalDao-ref="mappingJurnalDao"
     />
 
     <bean id="pembayaranUtangPiutangBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

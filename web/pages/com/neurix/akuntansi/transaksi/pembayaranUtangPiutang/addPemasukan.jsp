@@ -75,7 +75,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Pengeluaran Kas/Bank
+            Pemasukan Kas/Bank
         </h1>
     </section>
 
@@ -86,11 +86,11 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-user-plus"></i> Input Pengeluaran Kas/Bank</h3>
+                        <h3 class="box-title"><i class="fa fa-user-plus"></i> Input Pemasukan Kas/Bank</h3>
                     </div>
                     <s:form id="addPembayaranUtangPiutangForm" enctype="multipart/form-data" method="post" namespace="/pembayaranUtangPiutang"
                             action="saveAdd_pembayaranUtangPiutang.action" theme="simple">
-                        <s:hidden name="pembayaranUtangPiutang.tipePembayaran" value="KK" />
+                        <s:hidden name="pembayaranUtangPiutang.tipePembayaran" value="KM" />
                         <div class="box-body">
                             <div class="alert alert-danger alert-dismissible" id="warning_pembayaran" style="display: none">
                                 <h4><i class="icon fa fa-ban"></i> Warning!</h4>
@@ -123,7 +123,7 @@
                                             <label class="col-md-4" style="margin-top: 7px">Tipe Transaksi</label>
                                             <div class="col-md-8">
                                                 <s:action id="comboTrans" namespace="/trans" name="initComboTransPembayaran_trans">
-                                                    <s:param name="tipe">KK</s:param>
+                                                    <s:param name="tipe">KM</s:param>
                                                 </s:action>
                                                 <s:select list="#comboTrans.listOfComboTrans" id="tipe_transaksi" name="pembayaranUtangPiutang.tipeTransaksi"
                                                           cssStyle="margin-top: 7px" onchange="isiKeteterangan(),getTipeMaster(),getCoaLawan(),getDisableTrans()"
@@ -375,7 +375,7 @@
                                     <button type="button" class="btn btn-danger" onclick="resetField()">
                                         <i class="fa fa-refresh"></i> Reset
                                     </button>
-                                    <a type="button" class="btn btn-warning" href="initForm_pembayaranUtangPiutang.action">
+                                    <a type="button" class="btn btn-warning" href="initFormPemasukan_pembayaranUtangPiutang.action">
                                         <i class="fa fa-arrow-left"></i> Back
                                     </a>
                                 </div>
@@ -425,7 +425,7 @@
                                                buttons="{
                                                                                 'OK':function() {
                                                                                          $('#info_dialog').dialog('close');
-                                                                                         window.location.href = 'initForm_pembayaranUtangPiutang.action';
+                                                                                         window.location.href = 'initFormPemasukan_pembayaranUtangPiutang.action';
                                                                                      }
                                                                             }"
                                     >
@@ -527,6 +527,7 @@
                             "<th style='text-align: center; color: #fff; background-color:  #30d196 '>No</th>" +
                             "<th style='text-align: center; color: #fff; background-color:  #30d196'><input type='checkbox' id='checkAll'></th>"+
                             "<th style='text-align: center; color: #fff; background-color:  #30d196 '>Kode Vendor</th>" +
+                            "<th style='text-align: center; color: #fff; background-color:  #30d196 '>Divisi ID</th>" +
                             "<th style='text-align: center; color: #fff; background-color:  #30d196 ''>Rekening ID</th>" +
                             "<th style='text-align: center; color: #fff; background-color:  #30d196 ''>No. Nota</th>" +
                             "<th style='text-align: center; color: #fff; background-color:  #30d196 ''>Debit</th>" +
@@ -539,6 +540,7 @@
                                 '<td align="center">' + (i + 1) + '</td>' +
                                 '<td align="center">' + combo + '</td>' +
                                 '<td align="center">' + item.masterId + '</td>' +
+                                '<td align="center">' + item.divisiId + '</td>' +
                                 '<td align="center">' + item.rekeningId + '</td>' +
                                 '<td align="center">' + item.noNota + '</td>' +
                                 '<td align="center">' + item.stJumlahPembayaran + '</td>' +
@@ -775,7 +777,7 @@
     function getCoaLawan() {
         var option = '<option value=""></option>';
         var tipeTransaksi = $('#tipe_transaksi option:selected').val();
-        KodeRekeningAction.getKodeRekeningLawanByTransId(tipeTransaksi,"KK",function (res) {
+        KodeRekeningAction.getKodeRekeningLawanByTransId(tipeTransaksi,"KM",function (res) {
             if(res.length > 0){
                 $.each(res, function (i, item) {
                     option += '<option value="'+item.kodeRekening+'">'+item.tampilanCoa+'</option>';

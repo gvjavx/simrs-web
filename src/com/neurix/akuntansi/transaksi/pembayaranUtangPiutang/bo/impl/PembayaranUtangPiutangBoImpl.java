@@ -3,6 +3,8 @@ package com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.bo.impl;
 import com.neurix.akuntansi.master.kodeRekening.dao.KodeRekeningDao;
 import com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity;
 import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
+import com.neurix.akuntansi.master.mappingJurnal.dao.MappingJurnalDao;
+import com.neurix.akuntansi.master.mappingJurnal.model.ImMappingJurnalEntity;
 import com.neurix.akuntansi.master.trans.dao.TransDao;
 import com.neurix.akuntansi.master.trans.model.ImTransEntity;
 import com.neurix.akuntansi.master.trans.model.Trans;
@@ -52,6 +54,15 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
     private JurnalDetailDao jurnalDetailDao;
     private TransDao transDao;
     private BranchDao branchDao;
+    private MappingJurnalDao mappingJurnalDao;
+
+    public MappingJurnalDao getMappingJurnalDao() {
+        return mappingJurnalDao;
+    }
+
+    public void setMappingJurnalDao(MappingJurnalDao mappingJurnalDao) {
+        this.mappingJurnalDao = mappingJurnalDao;
+    }
 
     public BranchDao getBranchDao() {
         return branchDao;
@@ -260,6 +271,9 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
             if (searchBean.getTipeTransaksi() != null && !"".equalsIgnoreCase(searchBean.getTipeTransaksi())) {
                 hsCriteria.put("tipe_transaksi", searchBean.getTipeTransaksi());
             }
+            if (searchBean.getTipePembayaran() != null && !"".equalsIgnoreCase(searchBean.getTipePembayaran())) {
+                hsCriteria.put("tipe_pembayaran", searchBean.getTipePembayaran());
+            }
             if (searchBean.getStTanggalDari() != null && !"".equalsIgnoreCase(String.valueOf(searchBean.getStTanggalDari()))) {
                 Timestamp tanggalDari = CommonUtil.convertToTimestamp(searchBean.getStTanggalDari());
                 hsCriteria.put("tanggal_dari", tanggalDari);
@@ -303,6 +317,7 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
                     returnPembayaranUtangPiutang.setNoSlipBank(pembayaranUtangPiutangEntity.getNoSlipBank());
                     returnPembayaranUtangPiutang.setBranchId(pembayaranUtangPiutangEntity.getBranchId());
                     returnPembayaranUtangPiutang.setNoJurnal(pembayaranUtangPiutangEntity.getNoJurnal());
+                    returnPembayaranUtangPiutang.setTipePembayaran(pembayaranUtangPiutangEntity.getTipePembayaran());
 
                     if (pembayaranUtangPiutangEntity.getRegisteredFlag()!=null){
                         if (("Y").equalsIgnoreCase(pembayaranUtangPiutangEntity.getRegisteredFlag())){
@@ -371,12 +386,26 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
             // Looping from dao to object and save in collection
             for(PembayaranUtangPiutangDetail pembayaranUtangPiutangDetail : pembayaranUtangPiutangDetailList){
                 returnPembayaranUtangPiutangDetail = new PembayaranUtangPiutangDetail();
-                returnPembayaranUtangPiutangDetail.setMasterId(pembayaranUtangPiutangDetail.getMasterId());
                 returnPembayaranUtangPiutangDetail.setRekeningId(pembayaranUtangPiutangDetail.getRekeningId());
-                returnPembayaranUtangPiutangDetail.setNoNota(pembayaranUtangPiutangDetail.getNoNota());
                 returnPembayaranUtangPiutangDetail.setStJumlahPembayaran(pembayaranUtangPiutangDetail.getStJumlahPembayaran().replace(",","."));
                 returnPembayaranUtangPiutangDetail.setStJumlahPembayaran(returnPembayaranUtangPiutangDetail.getStJumlahPembayaran().replace(" ",""));
                 returnPembayaranUtangPiutangDetail.setStJumlahPembayaran(returnPembayaranUtangPiutangDetail.getStJumlahPembayaran().replace("-",""));
+
+                if (pembayaranUtangPiutangDetail.getDivisiId()==null){
+                    returnPembayaranUtangPiutangDetail.setDivisiId("");
+                }else{
+                    returnPembayaranUtangPiutangDetail.setDivisiId(pembayaranUtangPiutangDetail.getDivisiId());
+                }
+                if (pembayaranUtangPiutangDetail.getNoNota()==null){
+                    returnPembayaranUtangPiutangDetail.setNoNota("");
+                }else{
+                    returnPembayaranUtangPiutangDetail.setNoNota(pembayaranUtangPiutangDetail.getNoNota());
+                }
+                if (pembayaranUtangPiutangDetail.getMasterId()==null){
+                    returnPembayaranUtangPiutangDetail.setMasterId("");
+                }else{
+                    returnPembayaranUtangPiutangDetail.setMasterId(pembayaranUtangPiutangDetail.getMasterId());
+                }
                 listOfResult.add(returnPembayaranUtangPiutangDetail);
             }
         }
@@ -503,6 +532,7 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
             imPembayaranUtangPiutangEntity.setNoSlipBank(bean.getNoSlipBank());
             imPembayaranUtangPiutangEntity.setBranchId(bean.getBranchId());
             imPembayaranUtangPiutangEntity.setNoJurnal(bean.getNoJurnal());
+            imPembayaranUtangPiutangEntity.setTipePembayaran(bean.getTipePembayaran());
 
             imPembayaranUtangPiutangEntity.setFlag(bean.getFlag());
             imPembayaranUtangPiutangEntity.setAction(bean.getAction());
@@ -573,6 +603,7 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
                 returnPembayaranUtangPiutangDetail = new PembayaranUtangPiutangDetail();
                 returnPembayaranUtangPiutangDetail.setPembayaranUtangPiutangDetailId(pembayaranUtangPiutangDetail.getPembayaranUtangPiutangDetailId());
                 returnPembayaranUtangPiutangDetail.setMasterId(pembayaranUtangPiutangDetail.getMasterId());
+                returnPembayaranUtangPiutangDetail.setDivisiId(pembayaranUtangPiutangDetail.getDivisiId());
                 returnPembayaranUtangPiutangDetail.setRekeningId(pembayaranUtangPiutangDetail.getRekeningId());
                 returnPembayaranUtangPiutangDetail.setNoNota(pembayaranUtangPiutangDetail.getNoNota());
                 returnPembayaranUtangPiutangDetail.setStJumlahPembayaran(CommonUtil.numbericFormat(pembayaranUtangPiutangDetail.getJumlahPembayaran(),"###,###"));
@@ -646,5 +677,32 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
 
         logger.info("[PembayaranUtangPiutangBoImpl.getDisableTrans] end process <<<");
         return data;
+    }
+
+    @Override
+    public String getPosisiCoaDiMappingJurnal(String transId, String kodeRekening) throws GeneralBOException {
+        logger.info("[PembayaranUtangPiutangBoImpl.getPosisiCoaDiMappingJurnal] start process >>>");
+        String posisiCoa = "";
+        boolean belumketemu=true;
+        List<ImMappingJurnalEntity> mappingJurnalEntityList = new ArrayList<>();
+        try {
+            do {
+                mappingJurnalEntityList = mappingJurnalDao.getListMappingJurnalByTransIdAndKodeRekening(transId,kodeRekening);
+
+                if (mappingJurnalEntityList.size()>0){
+                    belumketemu=false;
+                }
+                String rekeningIdParent = kodeRekeningDao.getKodeRekeningParent(kodeRekening);
+                kodeRekening = kodeRekeningDao.getCoaByRekeningId(rekeningIdParent);
+            }while (belumketemu);
+        } catch (HibernateException e) {
+            logger.error("[PembayaranUtangPiutangBoImpl.getDisableTrans] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when saving update data PembayaranUtangPiutang, please info to your admin..." + e.getMessage());
+        }
+        for (ImMappingJurnalEntity mappingJurnalEntity : mappingJurnalEntityList ){
+            posisiCoa = mappingJurnalEntity.getPosisi();
+        }
+        logger.info("[PembayaranUtangPiutangBoImpl.getPosisiCoaDiMappingJurnal] end process <<<");
+        return posisiCoa;
     }
 }

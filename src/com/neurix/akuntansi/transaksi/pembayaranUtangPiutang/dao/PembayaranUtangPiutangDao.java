@@ -47,6 +47,9 @@ public class PembayaranUtangPiutangDao extends GenericDao<ImPembayaranUtangPiuta
             if (mapCriteria.get("tipe_transaksi")!=null) {
                 criteria.add(Restrictions.eq("tipeTransaksi", (String) mapCriteria.get("tipe_transaksi")));
             }
+            if (mapCriteria.get("tipe_pembayaran")!=null) {
+                criteria.add(Restrictions.eq("tipePembayaran", (String) mapCriteria.get("tipe_pembayaran")));
+            }
             if (mapCriteria.get("tanggal")!=null) {
                 criteria.add(Restrictions.eq("tanggal", (String) mapCriteria.get("tanggal")));
             }
@@ -98,10 +101,10 @@ public class PembayaranUtangPiutangDao extends GenericDao<ImPembayaranUtangPiuta
         }
         switch (tipeBayar){
             case "KK":
-                wherePosisi="foo.debit > 0 \n";
+                wherePosisi="foo.debit < 0 \n";
                 break;
             case "KM":
-                wherePosisi="foo.debit < 0 \n";
+                wherePosisi="foo.debit > 0 \n";
                 break;
             case "KR":
                 wherePosisi="foo.debit < 0 \n";

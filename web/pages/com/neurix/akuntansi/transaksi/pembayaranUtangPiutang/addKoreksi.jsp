@@ -17,15 +17,12 @@
     <script type='text/javascript'>
         function confirm() {
 
-            var tipeTransaksi          = $('#tipe_transaksi').val();
-            var tanggal        = $('#tanggal').val();
-            var metodeBayar           = $('#metode_bayar').val();
-            var bayar      = $('#bayar').val();
-            var keterangan    = $('#keterangan').val();
-            var noslipBank     = $('#no_slip_bank').val();
-            var branchId     = $('#branch_id').val();
+            var tipeTransaksi = $('#tipe_transaksi').val();
+            var tanggal  = $('#tanggal').val();
+            var keterangan  = $('#keterangan').val();
+            var branchId = $('#branch_id').val();
             var status ="";
-            PembayaranUtangPiutangAction.cekBeforeSave(tipeTransaksi,tanggal,metodeBayar,bayar,keterangan,noslipBank,branchId,function (result) {
+            PembayaranUtangPiutangAction.cekBeforeSaveKoreksi(tipeTransaksi,tanggal,keterangan,branchId,function (result) {
                 status=result;
             })
 
@@ -75,10 +72,9 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Pengeluaran Kas/Bank
+            Koreksi / Penyesuaian
         </h1>
     </section>
-
     <!-- Main content -->
     <section class="content">
         <!-- Your Page Content Here -->
@@ -86,11 +82,11 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-user-plus"></i> Input Pengeluaran Kas/Bank</h3>
+                        <h3 class="box-title"><i class="fa fa-user-plus"></i> Input Koreksi / Penyesuaian</h3>
                     </div>
                     <s:form id="addPembayaranUtangPiutangForm" enctype="multipart/form-data" method="post" namespace="/pembayaranUtangPiutang"
-                            action="saveAdd_pembayaranUtangPiutang.action" theme="simple">
-                        <s:hidden name="pembayaranUtangPiutang.tipePembayaran" value="KK" />
+                            action="saveAddKoreksi_pembayaranUtangPiutang.action" theme="simple">
+                        <s:hidden name="pembayaranUtangPiutang.tipePembayaran" value="KR" />
                         <div class="box-body">
                             <div class="alert alert-danger alert-dismissible" id="warning_pembayaran" style="display: none">
                                 <h4><i class="icon fa fa-ban"></i> Warning!</h4>
@@ -123,7 +119,7 @@
                                             <label class="col-md-4" style="margin-top: 7px">Tipe Transaksi</label>
                                             <div class="col-md-8">
                                                 <s:action id="comboTrans" namespace="/trans" name="initComboTransPembayaran_trans">
-                                                    <s:param name="tipe">KK</s:param>
+                                                    <s:param name="tipe">KR</s:param>
                                                 </s:action>
                                                 <s:select list="#comboTrans.listOfComboTrans" id="tipe_transaksi" name="pembayaranUtangPiutang.tipeTransaksi"
                                                           cssStyle="margin-top: 7px" onchange="isiKeteterangan(),getTipeMaster(),getCoaLawan(),getDisableTrans()"
@@ -154,59 +150,10 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Metode Bayar</label>
-                                            <div class="col-md-8" style="margin-top: 7px" >
-                                                <div class="col-md-4">
-                                                    <select id="metode_bayar" class="form-control" onchange="pilihMetode(this.value),isiKeteterangan()"  name="pembayaranUtangPiutang.metodePembayaran">
-                                                        <option value="" ></option>
-                                                        <option value="tunai">Tunai</option>
-                                                        <option value="transfer">Transfer</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-md-8">
-                                                    <div style="display: none" id="pilih_bank">
-                                                        <div class="form-group">
-                                                            <label class="col-md-2" style="margin-top: 7px">Bank</label>
-                                                            <div class="col-md-10">
-                                                                <select class="form-control" id="bank"  name="pembayaranUtangPiutang.bank" onchange="isiKeteterangan()">
-                                                                    <option value="" ></option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                            <script>
-                                                function pilihMetode(val){
-                                                    if(val != ''){
-                                                        if(val == 'transfer'){
-                                                            $('#pilih_bank').show();
-                                                        }else{
-                                                            $('#pilih_bank').hide();
-                                                        }
-                                                    }
-                                                }
-                                            </script>
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Bayar</label>
-                                            <div class="col-md-8">
-                                                <s:textfield id="bayar" name="pembayaranUtangPiutang.stBayar"
-                                                             cssClass="form-control" cssStyle="margin-top: 7px" readonly="true" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Keterangan</label>
                                             <div class="col-md-8">
                                                 <s:textarea id="keterangan" rows="3" cssStyle="margin-top: 7px" onkeypress="$(this).css('border','')"
                                                             name="pembayaranUtangPiutang.keterangan" cssClass="form-control"/>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">No. Referensi</label>
-                                            <div class="col-md-8">
-                                                <s:textfield id="no_slip_bank" name="pembayaranUtangPiutang.noSlipBank" onkeypress="$(this).css('border','')" onchange="isiKeteterangan()"
-                                                             cssClass="form-control" cssStyle="margin-top: 7px" />
                                             </div>
                                         </div>
                                     </div>
@@ -220,7 +167,7 @@
                                 <div class="row">
                                     <div class="col-md-8">
                                         <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">COA Lawan</label>
+                                            <label class="col-md-4" style="margin-top: 7px">COA</label>
                                             <div class="col-md-8">
                                                 <select class="form-control" id="coa_lawan">
                                                     <option value="" ></option>
@@ -375,7 +322,7 @@
                                     <button type="button" class="btn btn-danger" onclick="resetField()">
                                         <i class="fa fa-refresh"></i> Reset
                                     </button>
-                                    <a type="button" class="btn btn-warning" href="initForm_pembayaranUtangPiutang.action">
+                                    <a type="button" class="btn btn-warning" href="initFormKoreksi_pembayaranUtangPiutang.action">
                                         <i class="fa fa-arrow-left"></i> Back
                                     </a>
                                 </div>
@@ -425,7 +372,7 @@
                                                buttons="{
                                                                                 'OK':function() {
                                                                                          $('#info_dialog').dialog('close');
-                                                                                         window.location.href = 'initForm_pembayaranUtangPiutang.action';
+                                                                                         window.location.href = 'initFormKoreksi_pembayaranUtangPiutang.action';
                                                                                      }
                                                                             }"
                                     >
@@ -481,22 +428,7 @@
 </div>
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
-    function selectPembayaran(){
-        var option = '<option value=""></option>';
-        KasirRawatJalanAction.getListPembayaran(function (res) {
-            if(res.length > 0){
-                $.each(res, function (i, item) {
-                    option += '<option value="'+item.coa+'">'+item.pembayaranName+'</option>';
-                });
-                $('#bank').html(option);
-            }else{
-                $('#bank').html(option);
-            }
-        });
-    }
-
     $(document).ready(function () {
-        selectPembayaran();
         $('#btnSearchNota').click(function () {
             var masterId = $('#kode_vendor').val();
             var transaksiId = $('#tipe_transaksi').val();
@@ -527,6 +459,7 @@
                             "<th style='text-align: center; color: #fff; background-color:  #30d196 '>No</th>" +
                             "<th style='text-align: center; color: #fff; background-color:  #30d196'><input type='checkbox' id='checkAll'></th>"+
                             "<th style='text-align: center; color: #fff; background-color:  #30d196 '>Kode Vendor</th>" +
+                            "<th style='text-align: center; color: #fff; background-color:  #30d196 '>Divisi ID</th>" +
                             "<th style='text-align: center; color: #fff; background-color:  #30d196 ''>Rekening ID</th>" +
                             "<th style='text-align: center; color: #fff; background-color:  #30d196 ''>No. Nota</th>" +
                             "<th style='text-align: center; color: #fff; background-color:  #30d196 ''>Debit</th>" +
@@ -539,6 +472,7 @@
                                 '<td align="center">' + (i + 1) + '</td>' +
                                 '<td align="center">' + combo + '</td>' +
                                 '<td align="center">' + item.masterId + '</td>' +
+                                '<td align="center">' + item.divisiId + '</td>' +
                                 '<td align="center">' + item.rekeningId + '</td>' +
                                 '<td align="center">' + item.noNota + '</td>' +
                                 '<td align="center">' + item.stJumlahPembayaran + '</td>' +
@@ -638,43 +572,34 @@
             var kodeVendor=$('#kode_vendor').val();
             var namaVendor=$('#nama_vendor').val();
             var noNota=$('#no_nota').val();
-            var rekeningId=$('#rekening_id').val();
+            var rekeningId=$('#coa_lawan').val();
             var jumlahPembayaran=$('#jumlah_pembayaran').val();
             var divisiId=$('#divisi_id').val();
             var divisiName=$('#nama_divisi').val();
+            var tipeTransaksi = $('#tipe_transaksi option:selected').val();
 
             var statusDivisi=$('#divisi_id').attr('wajib');
             var statusVendor=$('#kode_vendor').attr('wajib');
-            var statusNota=$('#no_nota').attr('wajib');
 
             if (statusDivisi=='Y'&& divisiId==""){
                 alert("belum memilih Divisi");
             } else if (statusVendor=='Y'&& kodeVendor==""){
                 alert("belum memilih Vendor");
-            }else if (statusNota=='Y'&& noNota==""){
-                alert("belum memilih No. Nota");
             }else{
-                PembayaranUtangPiutangAction.saveDetailPembayaran(kodeVendor,namaVendor,noNota,jumlahPembayaran,rekeningId,divisiId,divisiName,function (result) {
-                    if (result==""){
-                        loadDetailPembayaran();
-                        //dihitung totalbayarnya
-                        var totalBayar = $('#bayar').val();
-                        totalBayar=totalBayar.replace(/[.]/g,"");
-                        var strBayar=jumlahPembayaran.replace(/[.]/g,"");
-                        var intTotalBayar=0;
-                        if (totalBayar!=''){
-                            intTotalBayar = parseInt(totalBayar);
+                if (jumlahPembayaran!=""){
+                    PembayaranUtangPiutangAction.saveDetailKoreksi(kodeVendor,namaVendor,noNota,jumlahPembayaran,rekeningId,divisiId,divisiName,tipeTransaksi,function (result) {
+                        if (result==""){
+                            loadDetailPembayaran();
+                        } else{
+                            alert(result);
                         }
-                        var intBayar = parseInt(strBayar);
-                        totalBayar = intTotalBayar+intBayar;
-                        var strTotalBayar = String(totalBayar);
-                        $('#bayar').val(formatRupiahAngka(strTotalBayar));
-                    } else{
-                        alert(result);
+                    });
+                }else {
+                    if (jumlahPembayaran==""){
+                        alert("Jumlah Pembayaran belum di masukkan")
                     }
-                });
+                }
             }
-
         });
         $('.detailPembayaranTable').on('click', '.item-delete-data', function () {
             var id = $(this).attr('data');
@@ -718,6 +643,7 @@
                     "<th style='text-align: center; color: #fff; background-color:  #30d196 '>Rekening ID</th>" +
                     "<th style='text-align: center; color: #fff; background-color:  #30d196 ''>No. Nota</th>" +
                     "<th style='text-align: center; color: #fff; background-color:  #30d196 ''>Jumlah Pembayaran</th>" +
+                    "<th style='text-align: center; color: #fff; background-color:  #30d196 ''>Posisi</th>" +
                     "<th style='text-align: center; color: #fff; background-color:  #30d196 '>Delete</th>" +
                     "</tr></thead>";
                 var i = i;
@@ -731,6 +657,7 @@
                         '<td align="center">' + item.rekeningId + '</td>' +
                         '<td align="center">' + item.noNota + '</td>' +
                         '<td align="center">' + item.stJumlahPembayaran+ '</td>' +
+                        '<td align="center">' + item.posisiCoa+ '</td>' +
                         '<td align="center">' +
                         "<a href='javascript:;' class ='item-delete-data' data ='" + item.noNota + "' biaya ='" + item.stJumlahPembayaran + "'>" +
                         "<img border='0' src='<s:url value='/pages/images/delete_task.png'/>' name='icon_delete'>" +
@@ -747,20 +674,9 @@
         var tipeTransaksi = $('#tipe_transaksi option:selected').text();
         var metodeBayar = $('#metode_bayar option:selected').text();
         var branchName = $('#branch_id option:selected').text();
-        var bank = $('#bank option:selected').text();
-        var noSlipBank = $('#no_slip_bank').val();
         var keterangan ="";
-        if (metodeBayar!=""){
-            metodeBayar = "dengan metode bayar "+metodeBayar;
-            if (bank!=""){
-                bank="pada "+bank;
-            }
-        }
-        if (noSlipBank!=""){
-            noSlipBank="dengan no referensi bank "+noSlipBank;
-        }
 
-        keterangan= tipeTransaksi +" "+branchName+" "+metodeBayar+" "+bank+" "+noSlipBank;
+        keterangan= tipeTransaksi +" "+branchName;
 
         $('#keterangan').val(keterangan);
     }
@@ -775,7 +691,7 @@
     function getCoaLawan() {
         var option = '<option value=""></option>';
         var tipeTransaksi = $('#tipe_transaksi option:selected').val();
-        KodeRekeningAction.getKodeRekeningLawanByTransId(tipeTransaksi,"KK",function (res) {
+        KodeRekeningAction.getKodeRekeningLawanByTransId(tipeTransaksi,"KR",function (res) {
             if(res.length > 0){
                 $.each(res, function (i, item) {
                     option += '<option value="'+item.kodeRekening+'">'+item.tampilanCoa+'</option>';
@@ -808,13 +724,15 @@
                 $('#kode_vendor').attr('readonly', false);
                 $('#kode_vendor').attr('wajib', "Y");
             }
-            if (res.noNota=="Y"){
+
+            if (res.noNota=="A"){
                 $('#btnSearchNota').show();
                 $('#no_nota').attr('wajib', "Y");
-            }else{
+            }else if (res.noNota=="Y"){
                 $('#no_nota').attr('wajib', "Y");
                 $('#no_nota').attr('readonly', false);
             }
+
             if (res.biaya=="Y"){
                 $('#jumlah_pembayaran').attr('readonly', false);
             }

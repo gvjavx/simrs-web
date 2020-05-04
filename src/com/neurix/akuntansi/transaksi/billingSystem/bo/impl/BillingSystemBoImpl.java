@@ -441,7 +441,18 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                                     throw new GeneralBOException("Found problem "+status+", please info to your admin...");
                                 }
                             }else{
-                                rekeningId=getRekeningForMappingOtomatis(mapping.getKodeRekening());
+                                Integer level = kodeRekeningDao.getLevelKodeRekening(mapping.getKodeRekening());
+                                if (level==5){
+                                    rekeningId=getRekeningForMappingOtomatis(mapping.getKodeRekening());
+                                }else{
+                                    if (listOfMap.get("rekening_id")!=null){
+                                        rekeningId= String.valueOf(listOfMap.get("rekening_id"));
+                                    }else{
+                                        status="ERROR : Rekening ID tidak ditemukan pada trans ID"+mapping.getTransId();
+                                        logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
+                                        throw new GeneralBOException("Found problem "+status+", please info to your admin...");
+                                    }
+                                }
                             }
 
                             if (("Y").equalsIgnoreCase(mapping.getBukti())){
@@ -584,7 +595,7 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                         ///////// JIKA JURNAL DETAIL LIST ( jurnal detail dengan data yang dikirim berupa list )
                         if (("Y").equalsIgnoreCase(mapping.getKirimList())){
                             if (data.get(mapping.getKeterangan())!=null){
-                                rekeningId=getRekeningForMappingOtomatis(mapping.getKodeRekening());
+
                                 List<Map> mapList = (List<Map>) data.get(mapping.getKeterangan());
                                 for (int i=0;i<mapList.size();i++){
                                     String buktiLoop = null;
@@ -629,6 +640,20 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                                         status="ERROR : ada nilai yang masih kosong";
                                         logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
                                         throw new GeneralBOException("Found problem "+status+", please info to your admin...");
+                                    }
+
+                                    //mencari rekening Id
+                                    Integer level = kodeRekeningDao.getLevelKodeRekening(mapping.getKodeRekening());
+                                    if (level==5){
+                                        rekeningId=getRekeningForMappingOtomatis(mapping.getKodeRekening());
+                                    }else{
+                                        if (mapList.get(i).get("rekening_id")!=null){
+                                            rekeningId= String.valueOf(mapList.get(i).get("rekening_id"));
+                                        }else{
+                                            status="ERROR : Rekening ID tidak ditemukan pada trans ID"+mapping.getTransId();
+                                            logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
+                                            throw new GeneralBOException("Found problem "+status+", please info to your admin...");
+                                        }
                                     }
 
                                     ///////////////////////MEMASUKKAN KE ENTITY  //////////////////////////////
@@ -743,9 +768,8 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                         }else if (("Y").equalsIgnoreCase(mapping.getKodeBarang())){
                             ///////// JIKA JURNAL BARANG ( jurnal detail yang di looping )
                             if (data.get(mapping.getKeterangan())!=null){
-                                rekeningId=getRekeningForMappingOtomatis(mapping.getKodeRekening());
-                                List<Map> mapList = (List<Map>) data.get(mapping.getKeterangan());
 
+                                List<Map> mapList = (List<Map>) data.get(mapping.getKeterangan());
                                 for (int i=0;i<mapList.size();i++){
                                     String noKdBarang = null;
                                     BigDecimal biayaPembayaranBarang=null;
@@ -777,6 +801,20 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                                             divisiId=(String)mapList.get(i).get("divisi_id");
                                         }else{
                                             status="ERROR : ada divisi belum di kirim";
+                                            logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
+                                            throw new GeneralBOException("Found problem "+status+", please info to your admin...");
+                                        }
+                                    }
+
+                                    //mencari rekening ID
+                                    Integer level = kodeRekeningDao.getLevelKodeRekening(mapping.getKodeRekening());
+                                    if (level==5){
+                                        rekeningId=getRekeningForMappingOtomatis(mapping.getKodeRekening());
+                                    }else{
+                                        if (mapList.get(i).get("rekening_id")!=null){
+                                            rekeningId= String.valueOf(mapList.get(i).get("rekening_id"));
+                                        }else{
+                                            status="ERROR : Rekening ID tidak ditemukan pada trans ID"+mapping.getTransId();
                                             logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
                                             throw new GeneralBOException("Found problem "+status+", please info to your admin...");
                                         }
