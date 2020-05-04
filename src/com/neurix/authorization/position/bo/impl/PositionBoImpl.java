@@ -653,8 +653,8 @@ public class PositionBoImpl implements PositionBo {
             logger.error("[PositionBoImpl.getPositionById] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when retrieving position based on id and flag, please info to your admin..." + e.getMessage());
         }
-        if(imPositionList != null){
-            for (ImPosition imPosition : imPositionList){
+        if (imPositionList != null) {
+            for (ImPosition imPosition : imPositionList) {
                 Position resultPosition = new Position();
                 resultPosition.setPositionId(imPosition.getPositionId());
                 resultPosition.setStPositionId(imPosition.getPositionId());
@@ -674,5 +674,10 @@ public class PositionBoImpl implements PositionBo {
         logger.info("[PositionBoImpl.getPositionById] end process <<<");
 
         return positionList;
+    }
+
+    public List<ImPosition> getPositionByString(String query) throws GeneralBOException {
+        String term = "%"+query+"%";
+        return positionDao.getListPosition(term);
     }
 }

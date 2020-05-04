@@ -230,5 +230,6 @@
     <include file="sshconfig/com/neurix/akuntansi/master/settingReportUser/struts/SettingReportUserAction.xml"/>
     <include file="sshconfig/com/neurix/akuntansi/transaksi/tutupperiod/struts/SettingTutupPeriodAction.xml"/>
     <include file="sshconfig/com/neurix/akuntansi/transaksi/tutupperiod/struts/TutupPeriodAction.xml"/>
+    <include file="sshconfig/com/neurix/akuntansi/transaksi/budgeting/struts/BudgetingAction.xml"/>
 
 </struts>

@@ -1,6 +1,7 @@
 package com.neurix.authorization.position.action;
 
 import com.neurix.authorization.position.bo.PositionBo;
+import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.authorization.position.model.Position;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
@@ -745,5 +746,11 @@ public class PositionAction extends BaseMasterAction {
         }
 
         return listOfSearchPosition;
+    }
+    public List<ImPosition> typeHeadPosition(String query) {
+        logger.info("[PositionAction.typeHeadPosition] start process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PositionBo positionBo = (PositionBo) ctx.getBean("positionBoProxy");
+        return positionBo.getPositionByString(query);
     }
 }
