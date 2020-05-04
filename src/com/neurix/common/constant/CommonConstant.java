@@ -1,6 +1,7 @@
 package com.neurix.common.constant;
 
 import com.neurix.common.util.CommonUtil;
+import org.apache.struts2.ServletActionContext;
 
 /**
  * Created by IntelliJ IDEA.
@@ -39,6 +40,7 @@ public class CommonConstant {
     public final static String RESOURCE_PATH_TTD_DOKTER = "/upload/ttd_dokter/";
     public final static String RESOURCE_PATH_TTD_APOTEKER = "/upload/ttd_apoteker/";
     public final static String RESOURCE_PATH_AREA_OPERASI = "/upload/penanda_area_operasi/";
+    public final static String RESOURCE_PATH_TTD_RM = "/upload/ttd_rm/";
 
 
     public final static String RESOURCE_PATH_USER_UPLOAD = "/pages/upload/image/profile/";
@@ -56,7 +58,7 @@ public class CommonConstant {
 //    public final static String RESOURCE_PATH_IMG_ASSET = CommonUtil.getPropertyParams("resource.dir");
 //    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = "C:\\Users\\user\\Pictures";
 
-    public final static String EXTERNAL_IMG_URI = "/simrs/images";
+    public final static String EXTERNAL_IMG_URI = ServletActionContext.getRequest().getContextPath()+"/images";
     public final static String RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY = CommonUtil.getUploadFolderValue();
 
     public final static String LOGOUT_URL = "/j_spring_security_logout";
@@ -93,7 +95,8 @@ public class CommonConstant {
     public final static String ROLE_ADMIN_APOTEK = "ADMIN APOTEK";
 
     //BPJS
-    public final static String APP_NAME = "simrs";
+    public final static String APP_NAME = ServletActionContext.getRequest().getContextPath();
+//    public final static String APP_NAME = "simrs";
 
     //for prod
     public final static String BPJS_BASE_URL = "https://new-api.bpjs-kesehatan.go.id:8080";

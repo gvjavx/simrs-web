@@ -138,6 +138,45 @@ public class HeaderDetailCheckup extends BaseModel{
     private String transPeriode;
     private String invoiceTrans;
 
+    private String stTanggalKeluar;
+    private String stTanggalMasuk;
+
+    private String isLaka;
+
+    public String getIsLaka() {
+        return isLaka;
+    }
+
+    public void setIsLaka(String isLaka) {
+        this.isLaka = isLaka;
+    }
+
+    private String idJenisPeriksaSebelumnya;
+
+    public String getIdJenisPeriksaSebelumnya() {
+        return idJenisPeriksaSebelumnya;
+    }
+
+    public void setIdJenisPeriksaSebelumnya(String idJenisPeriksaSebelumnya) {
+        this.idJenisPeriksaSebelumnya = idJenisPeriksaSebelumnya;
+    }
+
+    public String getStTanggalKeluar() {
+        return stTanggalKeluar;
+    }
+
+    public void setStTanggalKeluar(String stTanggalKeluar) {
+        this.stTanggalKeluar = stTanggalKeluar;
+    }
+
+    public String getStTanggalMasuk() {
+        return stTanggalMasuk;
+    }
+
+    public void setStTanggalMasuk(String stTanggalMasuk) {
+        this.stTanggalMasuk = stTanggalMasuk;
+    }
+
     public String getInvoiceTrans() {
         return invoiceTrans;
     }

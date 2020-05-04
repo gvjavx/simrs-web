@@ -481,7 +481,6 @@
         var option = "<option value=''>[Select One]</option>";
         PaketPeriksaAction.getListPaketPeriksa(function (response) {
             if (response.length > 0) {
-                console.log(response);
                 $.each(response, function (i, item) {
                     option += "<option value='" + item.idPaket + "'>" + item.namaPaket + "</option>";
                 });

@@ -49,6 +49,7 @@ public class AsuransiBoImpl implements AsuransiBo  {
                     asuransi.setCreatedDate(entity.getCreatedDate());
                     asuransi.setLastUpdate(entity.getLastUpdate());
                     asuransi.setLastUpdateWho(entity.getLastUpdateWho());
+                    asuransi.setIsLaka(entity.getIsLaka());
                     asuransiList.add(asuransi);
                 }
             }

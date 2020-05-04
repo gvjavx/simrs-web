@@ -69,33 +69,34 @@ public class AsesmenUgdBoImpl implements AsesmenUgdBo {
     }
 
     @Override
-    public CrudResponse saveAdd(AsesmenUgd bean) throws GeneralBOException {
+    public CrudResponse saveAdd(List<AsesmenUgd> list) throws GeneralBOException {
         CrudResponse response = new CrudResponse();
-        if(bean != null){
+        if(list.size() > 0){
+            for (AsesmenUgd bean: list){
+                ItSimrsAsesmenUgdEntity asesmenUgdEntity = new ItSimrsAsesmenUgdEntity();
+                asesmenUgdEntity.setIdAsesmenUgd("AGD"+asesmenUgdDao.getNextSeq());
+                asesmenUgdEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
+                asesmenUgdEntity.setParameter(bean.getParameter());
+                asesmenUgdEntity.setJawaban(bean.getJawaban());
+                asesmenUgdEntity.setKeterangan(bean.getKeterangan());
+                asesmenUgdEntity.setJenis(bean.getJenis());
+                asesmenUgdEntity.setSkor(bean.getSkor());
+                asesmenUgdEntity.setAction(bean.getAction());
+                asesmenUgdEntity.setFlag(bean.getFlag());
+                asesmenUgdEntity.setCreatedDate(bean.getCreatedDate());
+                asesmenUgdEntity.setCreatedWho(bean.getCreatedWho());
+                asesmenUgdEntity.setLastUpdate(bean.getLastUpdate());
+                asesmenUgdEntity.setLastUpdateWho(bean.getLastUpdateWho());
 
-            ItSimrsAsesmenUgdEntity asesmenUgdEntity = new ItSimrsAsesmenUgdEntity();
-            asesmenUgdEntity.setIdAsesmenUgd("AGD"+asesmenUgdDao.getNextSeq());
-            asesmenUgdEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
-            asesmenUgdEntity.setParameter(bean.getParameter());
-            asesmenUgdEntity.setJawaban(bean.getJawaban());
-            asesmenUgdEntity.setKeterangan(bean.getKeterangan());
-            asesmenUgdEntity.setJenis(bean.getJenis());
-            asesmenUgdEntity.setSkor(bean.getSkor());
-            asesmenUgdEntity.setAction(bean.getAction());
-            asesmenUgdEntity.setFlag(bean.getFlag());
-            asesmenUgdEntity.setCreatedDate(bean.getCreatedDate());
-            asesmenUgdEntity.setCreatedWho(bean.getCreatedWho());
-            asesmenUgdEntity.setLastUpdate(bean.getLastUpdate());
-            asesmenUgdEntity.setLastUpdateWho(bean.getLastUpdateWho());
-
-            try {
-                asesmenUgdDao.addAndSave(asesmenUgdEntity);
-                response.setStatus("success");
-                response.setMsg("Berhasil");
-            }catch (HibernateException e){
-                response.setStatus("error");
-                response.setMsg("Found Error "+e.getMessage());
-                logger.error(e.getMessage());
+                try {
+                    asesmenUgdDao.addAndSave(asesmenUgdEntity);
+                    response.setStatus("success");
+                    response.setMsg("Berhasil");
+                }catch (HibernateException e){
+                    response.setStatus("error");
+                    response.setMsg("Found Error "+e.getMessage());
+                    logger.error(e.getMessage());
+                }
             }
         }
         return response;

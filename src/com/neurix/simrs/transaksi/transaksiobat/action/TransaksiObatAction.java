@@ -597,6 +597,7 @@ public class TransaksiObatAction extends BaseMasterAction {
 
         session.removeAttribute("listOfResult");
         session.setAttribute("listOfResult", listResep);
+        setPermintaanResep(permintaanResep);
 
         logger.info("[CheckupAction.search] end process <<<");
         return "search";

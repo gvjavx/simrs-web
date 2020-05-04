@@ -62,6 +62,12 @@ public class TindakanBoImpl implements TindakanBo {
         if (bean.getIdKategoriTindakan() != null && !"".equalsIgnoreCase(bean.getIdKategoriTindakan())){
             hsCiteria.put("id_kategori_tindakan", bean.getIdKategoriTindakan());
         }
+        if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
+            hsCiteria.put("branch_id", bean.getBranchId());
+        }
+        if (bean.getIsIna() != null && !"".equalsIgnoreCase(bean.getIsIna())){
+            hsCiteria.put("is_ina", bean.getIsIna());
+        }
         hsCiteria.put("flag", "Y");
 
         try {

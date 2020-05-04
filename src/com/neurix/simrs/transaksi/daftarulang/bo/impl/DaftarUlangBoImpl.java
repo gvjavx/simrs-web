@@ -81,26 +81,8 @@ public class DaftarUlangBoImpl implements DaftarUlangBo {
         ItSimrsHeaderChekupEntity chekupEntity = new ItSimrsHeaderChekupEntity();
 
         try {
+
             chekupEntity = headerCheckupDao.getById("noCheckup", bean.getNoCheckup());
-            if(chekupEntity != null){
-                try {
-
-                    chekupEntity.setLastUpdate(bean.getLastUpdate());
-                    chekupEntity.setLastUpdateWho(bean.getLastUpdateWho());
-
-                    try {
-                        headerCheckupDao.updateAndSave(chekupEntity);
-                    }catch (HibernateException e){
-                        response.setStatus("error");
-                        response.setMessage("Error When Saving data checkup " + e.getMessage());
-                    }
-
-                }catch (HibernateException e){
-                    logger.error("Found Error "+e.getMessage());
-                    response.setStatus("error");
-                    response.setMessage("Error When Saving data checkup " + e.getMessage());
-                }
-            }
 
         }catch (HibernateException e){
             logger.error("Found Error "+e.getMessage());
@@ -251,87 +233,98 @@ public class DaftarUlangBoImpl implements DaftarUlangBo {
                 response = saveTeamDokter(dokterTeam);
             }
 
-            // save to table rawat inap
-            RawatInap rawatInap = new RawatInap();
-            rawatInap.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
-            rawatInap.setIdRuangan(bean.getIdRuangan());
-            rawatInap.setNoCheckup(bean.getNoCheckup());
-            rawatInap.setCreatedDate(bean.getCreatedDate());
-            rawatInap.setCreatedWho(bean.getCreatedWho());
-            response = saveRawatInap(rawatInap);
+            if(bean.getIdRawatInap() != null && !"".equalsIgnoreCase(bean.getIdRawatInap())){
+                ItSimrsRawatInapEntity rawatInapEntity = new ItSimrsRawatInapEntity();
+                try {
+                    rawatInapEntity = rawatInapDao.getById("idRawatInap", bean.getIdRawatInap());
+                }catch (HibernateException e){
 
-            if (bean.getTindakanList() != null && bean.getTindakanList().size() > 0) {
-                for (Tindakan tindakan : bean.getTindakanList()) {
-                    List<ImSimrsTindakanEntity> tindakanEntities = getListEntityTindakan(tindakan);
-                    if (tindakanEntities.size() > 0) {
+                }
+                if(rawatInapEntity.getIdRawatInap() != null){
 
-                        ImSimrsTindakanEntity tindakanEntity = tindakanEntities.get(0);
-                        ItSimrsTindakanRawatEntity tindakanRawatEntity = new ItSimrsTindakanRawatEntity();
-                        tindakanRawatEntity.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
-                        tindakanRawatEntity.setIdTindakanRawat("TDR" + getNextTindakanRawatId());
-                        tindakanRawatEntity.setIdTindakan(tindakanEntity.getIdTindakan());
-                        tindakanRawatEntity.setNamaTindakan(tindakanEntity.getTindakan());
-                        tindakanRawatEntity.setIdDokter(dokTeam.getIdDokter());
-                        tindakanRawatEntity.setCreatedDate(bean.getCreatedDate());
-                        tindakanRawatEntity.setCreatedWho(bean.getCreatedWho());
-                        tindakanRawatEntity.setLastUpdate(bean.getCreatedDate());
-                        tindakanRawatEntity.setLastUpdateWho(bean.getCreatedWho());
-                        tindakanRawatEntity.setFlag("Y");
-                        tindakanRawatEntity.setAction("U");
+                    // save to table rawat inap
+                    RawatInap rawatInap = new RawatInap();
+                    rawatInap.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
+                    rawatInap.setIdRuangan(rawatInapEntity.getIdRuangan());
+                    rawatInap.setNoCheckup(bean.getNoCheckup());
+                    rawatInap.setCreatedDate(bean.getCreatedDate());
+                    rawatInap.setCreatedWho(bean.getCreatedWho());
+                    response = saveRawatInap(rawatInap);
 
-                        if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
-                            tindakanRawatEntity.setTarif(tindakanEntity.getTarifBpjs());
-                        } else {
-                            tindakanRawatEntity.setTarif(tindakanEntity.getTarif());
-                        }
+                    if (bean.getTindakanList() != null && bean.getTindakanList().size() > 0) {
+                        for (Tindakan tindakan : bean.getTindakanList()) {
+                            List<ImSimrsTindakanEntity> tindakanEntities = getListEntityTindakan(tindakan);
+                            if (tindakanEntities.size() > 0) {
 
-                        tindakanRawatEntity.setQty(new BigInteger(String.valueOf(1)));
-                        tindakanRawatEntity.setTarifTotal(tindakanRawatEntity.getTarif().multiply(tindakanRawatEntity.getQty()));
+                                ImSimrsTindakanEntity tindakanEntity = tindakanEntities.get(0);
+                                ItSimrsTindakanRawatEntity tindakanRawatEntity = new ItSimrsTindakanRawatEntity();
+                                tindakanRawatEntity.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
+                                tindakanRawatEntity.setIdTindakanRawat("TDR" + getNextTindakanRawatId());
+                                tindakanRawatEntity.setIdTindakan(tindakanEntity.getIdTindakan());
+                                tindakanRawatEntity.setNamaTindakan(tindakanEntity.getTindakan());
+                                tindakanRawatEntity.setIdDokter(dokTeam.getIdDokter());
+                                tindakanRawatEntity.setCreatedDate(bean.getCreatedDate());
+                                tindakanRawatEntity.setCreatedWho(bean.getCreatedWho());
+                                tindakanRawatEntity.setLastUpdate(bean.getCreatedDate());
+                                tindakanRawatEntity.setLastUpdateWho(bean.getCreatedWho());
+                                tindakanRawatEntity.setFlag("Y");
+                                tindakanRawatEntity.setAction("U");
 
-                        try {
+                                if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
+                                    tindakanRawatEntity.setTarif(tindakanEntity.getTarifBpjs());
+                                } else {
+                                    tindakanRawatEntity.setTarif(tindakanEntity.getTarif());
+                                }
 
-                            tindakanRawatDao.addAndSave(tindakanRawatEntity);
-
-                            if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
-
-                                ItSimrsRiwayatTindakanEntity riwayatTindakan = new ItSimrsRiwayatTindakanEntity();
-                                riwayatTindakan.setIdRiwayatTindakan("RWT" + getNextIdRiwayatTindakan());
-                                riwayatTindakan.setIdTindakan(tindakanRawatEntity.getIdTindakanRawat());
-                                riwayatTindakan.setNamaTindakan(tindakanRawatEntity.getNamaTindakan());
-                                riwayatTindakan.setTotalTarif(new BigDecimal(String.valueOf(tindakanRawatEntity.getTarifTotal())));
-                                riwayatTindakan.setApproveBpjsFlag("Y");
-                                riwayatTindakan.setKategoriTindakanBpjs("konsultasi");
-                                riwayatTindakan.setKeterangan("tindakan");
-                                riwayatTindakan.setJenisPasien(bean.getIdJenisPeriksaPasien());
-                                riwayatTindakan.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
-                                riwayatTindakan.setFlagUpdateKlaim("Y");
-                                riwayatTindakan.setCreatedWho(bean.getCreatedWho());
-                                riwayatTindakan.setCreatedDate(bean.getCreatedDate());
-                                riwayatTindakan.setLastUpdate(bean.getLastUpdate());
-                                riwayatTindakan.setLastUpdateWho(bean.getLastUpdateWho());
-                                riwayatTindakan.setFlag("Y");
-                                riwayatTindakan.setAction("C");
-                                riwayatTindakan.setTanggalTindakan(bean.getCreatedDate());
+                                tindakanRawatEntity.setQty(new BigInteger(String.valueOf(1)));
+                                tindakanRawatEntity.setTarifTotal(tindakanRawatEntity.getTarif().multiply(tindakanRawatEntity.getQty()));
 
                                 try {
-                                    riwayatTindakanDao.addAndSave(riwayatTindakan);
-                                    response.setStatus("success");
-                                    response.setMessage("Berhasil");
+
+                                    tindakanRawatDao.addAndSave(tindakanRawatEntity);
+
+                                    if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
+
+                                        ItSimrsRiwayatTindakanEntity riwayatTindakan = new ItSimrsRiwayatTindakanEntity();
+                                        riwayatTindakan.setIdRiwayatTindakan("RWT" + getNextIdRiwayatTindakan());
+                                        riwayatTindakan.setIdTindakan(tindakanRawatEntity.getIdTindakanRawat());
+                                        riwayatTindakan.setNamaTindakan(tindakanRawatEntity.getNamaTindakan());
+                                        riwayatTindakan.setTotalTarif(new BigDecimal(String.valueOf(tindakanRawatEntity.getTarifTotal())));
+                                        riwayatTindakan.setApproveBpjsFlag("Y");
+                                        riwayatTindakan.setKategoriTindakanBpjs(tindakan.getKategoriInaBpjs());
+                                        riwayatTindakan.setKeterangan("tindakan");
+                                        riwayatTindakan.setJenisPasien(bean.getIdJenisPeriksaPasien());
+                                        riwayatTindakan.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
+                                        riwayatTindakan.setFlagUpdateKlaim("Y");
+                                        riwayatTindakan.setCreatedWho(bean.getCreatedWho());
+                                        riwayatTindakan.setCreatedDate(bean.getCreatedDate());
+                                        riwayatTindakan.setLastUpdate(bean.getLastUpdate());
+                                        riwayatTindakan.setLastUpdateWho(bean.getLastUpdateWho());
+                                        riwayatTindakan.setFlag("Y");
+                                        riwayatTindakan.setAction("C");
+                                        riwayatTindakan.setTanggalTindakan(bean.getCreatedDate());
+
+                                        try {
+                                            riwayatTindakanDao.addAndSave(riwayatTindakan);
+                                            response.setStatus("success");
+                                            response.setMessage("Berhasil");
+                                        } catch (HibernateException e) {
+                                            response.setStatus("error");
+                                            response.setMessage("Error when saving tindakan rawat " + e.getMessage());
+                                            logger.error("[CheckupBoImpl FOunf error]" + e.getMessage());
+                                        }
+
+                                    }
+
                                 } catch (HibernateException e) {
                                     response.setStatus("error");
                                     response.setMessage("Error when saving tindakan rawat " + e.getMessage());
-                                    logger.error("[CheckupBoImpl FOunf error]" + e.getMessage());
+                                    logger.error("[CheckupBoImpl.saveAdd] Error When Saving tindakan rawat" + e.getMessage());
+                                    throw new GeneralBOException("[CheckupBoImpl.saveAdd] Error When Saving tindakan rawat" + e.getMessage());
                                 }
 
                             }
-
-                        } catch (HibernateException e) {
-                            response.setStatus("error");
-                            response.setMessage("Error when saving tindakan rawat " + e.getMessage());
-                            logger.error("[CheckupBoImpl.saveAdd] Error When Saving tindakan rawat" + e.getMessage());
-                            throw new GeneralBOException("[CheckupBoImpl.saveAdd] Error When Saving tindakan rawat" + e.getMessage());
                         }
-
                     }
                 }
             }
@@ -417,7 +410,7 @@ public class DaftarUlangBoImpl implements DaftarUlangBo {
                                 riwayatTindakan.setNamaTindakan(tindakanRawatEntity.getNamaTindakan());
                                 riwayatTindakan.setTotalTarif(new BigDecimal(String.valueOf(tindakanRawatEntity.getTarifTotal())));
                                 riwayatTindakan.setApproveBpjsFlag("Y");
-                                riwayatTindakan.setKategoriTindakanBpjs("konsultasi");
+                                riwayatTindakan.setKategoriTindakanBpjs(tindakan.getKategoriInaBpjs());
                                 riwayatTindakan.setKeterangan("tindakan");
                                 riwayatTindakan.setJenisPasien(bean.getIdJenisPeriksaPasien());
                                 riwayatTindakan.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());

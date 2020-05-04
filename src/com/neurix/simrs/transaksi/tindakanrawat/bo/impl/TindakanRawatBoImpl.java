@@ -284,6 +284,9 @@ public class TindakanRawatBoImpl implements TindakanRawatBo {
             }
             if(tindakanEntity != null){
                 tindakanRawat.setIdKategoriTindakan(tindakanEntity.getIdKategoriTindakan());
+                tindakanRawat.setKategoriInaBpjs(tindakanEntity.getKategoriInaBpjs());
+                tindakanRawat.setTarifBpjs(tindakanEntity.getTarifBpjs());
+                tindakanRawat.setTarif(tindakanEntity.getTarif());
             }
 
             results.add(tindakanRawat);

@@ -96,4 +96,15 @@ public class JenisPriksaPasienBoImpl implements JenisPriksaPasienBo {
     public ImJenisPeriksaPasienEntity getJenisPerikasEntityById(String id) throws GeneralBOException {
         return jenisPeriksaPasienDao.getById("idJenisPeriksaPasien", id);
     }
+
+    @Override
+    public List<JenisPriksaPasien> getListJenisPeriksaByIdDetailCheckup(String jenis, String idDetail) {
+        List<JenisPriksaPasien> list = new ArrayList<>();
+        try {
+            list = jenisPeriksaPasienDao.getListJenisPeriksaByidDetaiCheckup(jenis, idDetail);
+        }catch (HibernateException e){
+            logger.error("Found Error"+e.getMessage());
+        }
+        return list;
+    }
 }

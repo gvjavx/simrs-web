@@ -116,6 +116,10 @@
             border: 1px black solid;
             margin: 1rem;
         }
+
+        .garis{
+            border: solid 0.5px #ddd;
+        }
     </style>
 </head>
 <body class="hold-transition skin-blue fixed sidebar-mini">
@@ -387,24 +391,20 @@
                             </div>
                             <div class="box-header with-border"></div>
                             <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-print"></i> MPP </h3><small> (Manajemen Pelayanan Pasien)</small>
+                                <h3 class="box-title"><i class="fa fa-file-o"></i> MPP </h3><small> (Manajemen Pelayanan Pasien)</small>
                             </div>
                             <div class="box-body">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-success"><i class="fa fa-print"></i> Action
+                                    <button type="button" class="btn btn-success"><i class="fa fa-edit"></i> Action
                                     </button>
-                                    <button type="button" class="btn btn-success dropdown-toggle"
+                                    <button onclick="loadModalRM('mpp')" type="button" class="btn btn-success dropdown-toggle"
                                             data-toggle="dropdown" style="height: 34px">
                                         <span class="caret"></span>
                                         <span class="sr-only">Toggle Dropdown</span>
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a target="_blank"
-                                               href="printGeneralConcent_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
-                                            <i class="fa fa-print"></i>Form-A Evaluasi Awal</a></li>
-                                        <li><a target="_blank"
-                                               href="printPelepasanInformasi_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
-                                            <i class="fa fa-print"></i>Form-B Catatan Implementasi</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalMpp('evaluasi_awal')"><i class="fa fa-circle-o"></i>Form-A Evaluasi Awal</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalMpp('impementasi_mpp')"><i class="fa fa-circle-o"></i>Form-B Catatan Implementasi</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -474,27 +474,21 @@
                             </div>
                             <div class="box-header with-border"></div>
                             <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-stethoscope"></i> Ringkasan  </h3>
+                                <h3 class="box-title"><i class="fa fa-heartbeat"></i> Ringkasan  </h3>
                             </div>
                             <div class="box-body">
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Action
                                     </button>
-                                    <button type="button" class="btn btn-primary dropdown-toggle"
+                                    <button onclick="loadModalRM('ringkasan')" type="button" class="btn btn-primary dropdown-toggle"
                                             data-toggle="dropdown" style="height: 34px">
                                         <span class="caret"></span>
                                         <span class="sr-only">Toggle Dropdown</span>
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a target="_blank"
-                                               href="printGeneralConcent_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
-                                            <i class="fa fa-edit"></i>Ringkasan Pulang</a></li>
-                                        <li><a target="_blank"
-                                               href="printPelepasanInformasi_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
-                                            <i class="fa fa-edit"></i>Ringkasan Masuk Keluar</a></li>
-                                        <li><a target="_blank"
-                                               href="printPelepasanInformasi_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
-                                            <i class="fa fa-edit"></i>Resume Medis</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalRingkasanPasien('ringkasan_pulang')"><i class="fa fa-circle-o"></i>Ringkasan Pulang</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalRingkasanPasien('ringkasan_keluar')"><i class="fa fa-circle-o"></i>Ringkasan Masuk Keluar</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalRingkasanPasien('resume_medis')"><i class="fa fa-circle-o"></i>Resume Medis</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -507,20 +501,20 @@
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Action
                                     </button>
-                                    <button type="button" class="btn btn-primary dropdown-toggle"
+                                    <button onclick="loadModalRM('fisioterapi')" type="button" class="btn btn-primary dropdown-toggle"
                                             data-toggle="dropdown" style="height: 34px">
                                         <span class="caret"></span>
                                         <span class="sr-only">Toggle Dropdown</span>
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a href="#" onclick="pengkajianFisioterapi('<s:property value="headerDetailCheckup.idDetailCheckup"/>')"><i class="fa fa-edit"></i>Pengkajian Pasien Fisioterapi</a></li>
-                                        <li><a href="#" onclick="addMonitoringFisioterapi('<s:property value="headerDetailCheckup.idDetailCheckup"/>')"><i class="fa fa-television"></i>Kunjungan Fisioterapi</a></li>
+                                        <li><a style="cursor: pointer" onclick="pengkajianFisioterapi('<s:property value="headerDetailCheckup.idDetailCheckup"/>')"><i class="fa fa-circle-o"></i>Pengkajian Pasien Fisioterapi</a></li>
+                                        <li><a style="cursor: pointer" onclick="addMonitoringFisioterapi('<s:property value="headerDetailCheckup.idDetailCheckup"/>')"><i class="fa fa-circle-o"></i>Kunjungan Fisioterapi</a></li>
                                     </ul>
                                 </div>
                             </div>
                             <div class="box-header with-border"></div>
                             <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-stethoscope"></i> HIV </h3><small> (Human Immunodeficiency Virus)</small>
+                                <h3 class="box-title"><i class="fa fa-certificate"></i> HIV </h3><small> (Human Immunodeficiency Virus)</small>
                             </div>
                             <div class="box-body">
                                 <div class="btn-group">
@@ -540,72 +534,66 @@
                             </div>
                             <div class="box-header with-border"></div>
                             <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-stethoscope"></i> Edukasi Pasien </h3>
+                                <h3 class="box-title"><i class="fa fa-hospital-o"></i> Edukasi Pasien </h3>
                             </div>
                             <div class="box-body">
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Action
                                     </button>
-                                    <button type="button" class="btn btn-primary dropdown-toggle"
+                                    <button onclick="loadModalRM('edukasi_pasien')" type="button" class="btn btn-primary dropdown-toggle"
                                             data-toggle="dropdown" style="height: 34px">
                                         <span class="caret"></span>
                                         <span class="sr-only">Toggle Dropdown</span>
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a target="_blank"
-                                               href="printGeneralConcent_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
-                                            <i class="fa fa-edit"></i>Edukasi Pasien dan Keluarga</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalAsesmenRawatInap('edukasi_pasien')"><i class="fa fa-circle-o"></i>Edukasi Pasien dan Keluarga</a></li>
                                     </ul>
                                 </div>
                             </div>
                             <div class="box-header with-border"></div>
                             <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-stethoscope"></i> Gigi </h3>
+                                <h3 class="box-title"><i class="fa fa-user-md"></i> Gigi </h3>
                             </div>
                             <div class="box-body">
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-success"><i class="fa fa-edit"></i> Action
                                     </button>
-                                    <button type="button" class="btn btn-success dropdown-toggle"
+                                    <button onclick="loadModalRM('rencana_gigi')" type="button" class="btn btn-success dropdown-toggle"
                                             data-toggle="dropdown" style="height: 34px">
                                         <span class="caret"></span>
                                         <span class="sr-only">Toggle Dropdown</span>
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a target="_blank"
-                                               href="printGeneralConcent_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
-                                            <i class="fa fa-edit"></i>Resume Gigi</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalAsesmenRawatInap('rencana_gigi')"><i class="fa fa-circle-o"></i>Rencana Perawatan Gigi</a></li>
                                     </ul>
                                 </div>
                             </div>
                             <div class="box-header with-border"></div>
                             <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-stethoscope"></i> Appendecitomy </h3>
+                                <h3 class="box-title"><i class="fa fa-heart-o"></i> Appendecitomy </h3>
                             </div>
                             <div class="box-body">
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Action
                                     </button>
-                                    <button type="button" class="btn btn-primary dropdown-toggle"
+                                    <button onclick="loadModalRM('appendecitomy')" type="button" class="btn btn-primary dropdown-toggle"
                                             data-toggle="dropdown" style="height: 34px">
                                         <span class="caret"></span>
                                         <span class="sr-only">Toggle Dropdown</span>
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a target="_blank"
-                                               href="printGeneralConcent_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
-                                            <i class="fa fa-edit"></i>Informed Consent Appendecitomy</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalAppendecitomy('appendecitomy')"><i class="fa fa-circle-o"></i>Informed Consent Appendecitomy</a></li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-print"></i> Rawat Inap </h3>
+                                <h3 class="box-title"><i class="fa fa-hotel"></i> Rawat Inap </h3>
                             </div>
                             <div class="box-body">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-primary"><i class="fa fa-print"></i> Action
+                                    <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Action
                                     </button>
                                     <button type="button" class="btn btn-primary dropdown-toggle"
                                             data-toggle="dropdown" style="height: 34px">
@@ -615,63 +603,42 @@
                                     <ul class="dropdown-menu" role="menu">
                                         <li><a target="_blank"
                                                href="printSuratPernyataan_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>&tipe=RI01">
-                                            <i class="fa fa-print"></i>Surat Permintaan Rawat Inap</a></li>
-                                        <li><a target="_blank"
-                                               href="printPelepasanInformasi_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
-                                            <i class="fa fa-print"></i>Pengkajian Ulang Keperawatan dan Tindakan</a></li>
-                                        <li><a target="_blank"
-                                               href="printPelepasanInformasi_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
-                                            <i class="fa fa-print"></i>Asesmen Awal Medis Rawat Inap</a></li>
-                                        <li><a target="_blank"
-                                               href="printPelepasanInformasi_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
-                                            <i class="fa fa-print"></i>Rencana Asuhan Keperawatan</a></li>
-                                        <li><a target="_blank"
-                                               href="printPelepasanInformasi_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
-                                            <i class="fa fa-print"></i>Discharge Planing</a></li>
-                                        <li><a target="_blank"
-                                               href="printPelepasanInformasi_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
-                                            <i class="fa fa-print"></i>Catatan Perkembangan Pasien Terintegrasi</a></li>
-                                        <li><a target="_blank"
-                                               href="printPelepasanInformasi_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
-                                            <i class="fa fa-print"></i>Transfer Pasien Antar Ruangan</a></li>
-                                        <li><a target="_blank"
-                                               href="printPelepasanInformasi_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
-                                            <i class="fa fa-print"></i>Privasi Pasien</a></li>
-                                        <li><a target="_blank"
-                                               href="printPelepasanInformasi_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
-                                            <i class="fa fa-print"></i>Lembar Observasi Pediatric Early Warning Score</a></li>
-                                        <li><a target="_blank"
-                                               href="printPelepasanInformasi_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
-                                            <i class="fa fa-print"></i>Catatan Pemberian Obat</a></li>
-                                        <li><a target="_blank"
-                                               href="printPelepasanInformasi_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
-                                            <i class="fa fa-print"></i>Injeksi CPO / Jadwal Pemberian Terapi</a></li>
-                                        <li><a target="_blank"
-                                               href="printPelepasanInformasi_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
-                                            <i class="fa fa-print"></i>Rekonsiliasi Obat</a></li>
+                                            <i class="fa fa-circle-o"></i>Surat Permintaan Rawat Inap</a></li>
+                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('pengkajian_keperawatan')" onclick="showModalPengkajianKep('pengkajian')"><i class="fa fa-circle-o"></i>Pengkajian Ulang Keperawatan dan Tindakan</a></li>
+                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('asesmen_rawat_inap')" onclick="showModalAsesmenRawatInap('asesmen')"><i class="fa fa-circle-o"></i>Asesmen Awal Medis Rawat Inap</a></li>
+                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('asuhan')" onclick="showModalAsesmenRawatInap('asuhan')"><i class="fa fa-circle-o"></i>Rencana Asuhan Keperawatan</a></li>
+                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('discharge_planing')" onclick="showModalAsesmenRawatInap('discharge_planing')"><i class="fa fa-circle-o"></i>Discharge Planing</a></li>
+                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('catatan_integrasi')" onclick="showModalAsesmenRawatInap('catatan_integrasi')"><i class="fa fa-circle-o"></i>Catatan Perkembangan Pasien Terintegrasi</a></li>
+                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('transfer_pasien')" onclick="showModalAsesmenRawatInap('transfer_pasien')"><i class="fa fa-circle-o"></i>Transfer Pasien Antar Ruangan</a></li>
+                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('privasi')" onclick="showModalAsesmenRawatInap('privasi')"><i class="fa fa-circle-o"></i>Privasi Pasien</a></li>
+                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('early_warning')" onclick="showModalAsesmenRawatInap('early_warning')"><i class="fa fa-circle-o"></i>Lembar Observasi Pediatric Early Warning Score</a></li>
+                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('pemberian_obat')" onclick="showModalAsesmenRawatInap('catatan_pemberian')"><i class="fa fa-circle-o"></i>Catatan Pemberian Obat</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalAsesmenRawatInap('injeksi')"><i class="fa fa-circle-o"></i>Injeksi CPO / Jadwal Pemberian Terapi</a></li>
+                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('rekonsiliasi')" onclick="showModalAsesmenRawatInap('rekonsiliasi')"><i class="fa fa-circle-o"></i>Rekonsiliasi Obat</a></li>
                                     </ul>
                                 </div>
                             </div>
                             <div class="box-header with-border"></div>
                             <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-print"></i> HD </h3><small> (Hemodialisa)</small>
+                                <h3 class="box-title"><i class="fa fa-heartbeat"></i> HD </h3><small> (Hemodialisa)</small>
                             </div>
                             <div class="box-body">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-success"><i class="fa fa-print"></i> Action
+                                    <button type="button" class="btn btn-success"><i class="fa fa-edit"></i> Action
                                     </button>
-                                    <button type="button" class="btn btn-success dropdown-toggle"
+                                    <button onclick="loadModalRM('hd')" type="button" class="btn btn-success dropdown-toggle"
                                             data-toggle="dropdown" style="height: 34px">
                                         <span class="caret"></span>
                                         <span class="sr-only">Toggle Dropdown</span>
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a target="_blank"
-                                               href="printGeneralConcent_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
-                                            <i class="fa fa-print"></i>Form-A Evaluasi Awal</a></li>
-                                        <li><a target="_blank"
-                                               href="printPelepasanInformasi_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
-                                            <i class="fa fa-print"></i>Form-B Catatan Implementasi</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalHD('monitoring_hd')"><i class="fa fa-circle-o"></i>Monitoring HD</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalHD('perencanaan_hemodialisa')"><i class="fa fa-circle-o"></i>Perencanaan HD</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalHD('asesmen_hd')"><i class="fa fa-circle-o"></i>Asesmen Awal HD</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalHD('tranfusi_hd')"><i class="fa fa-circle-o"></i>Tindakan Medis Transfusi Darah</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalHD('catatan_tranfusi_darah')"><i class="fa fa-circle-o"></i>Catatan Pemantauan Tranfusi Darah</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalHD('persetujuan_hd')"><i class="fa fa-circle-o"></i>Persetujuan HD</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalHD('travelling')"><i class="fa fa-circle-o"></i>Travelling Dialysis</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -683,7 +650,7 @@
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Action
                                     </button>
-                                    <button type="button" class="btn btn-primary dropdown-toggle"
+                                    <button onclick="loadModalRM('operasi')" type="button" class="btn btn-primary dropdown-toggle"
                                             data-toggle="dropdown" style="height: 34px">
                                         <span class="caret"></span>
                                         <span class="sr-only">Toggle Dropdown</span>
@@ -700,21 +667,19 @@
                             </div>
                             <div class="box-header with-border"></div>
                             <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-print"></i> Rawat Jalan </h3>
+                                <h3 class="box-title"><i class="fa fa-medkit"></i> Rawat Jalan </h3>
                             </div>
                             <div class="box-body">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-success"><i class="fa fa-print"></i> Action
+                                    <button type="button" class="btn btn-success"><i class="fa fa-edit"></i> Action
                                     </button>
-                                    <button type="button" class="btn btn-success dropdown-toggle"
+                                    <button onclick="loadModalRM('ringkasan_rj')" type="button" class="btn btn-success dropdown-toggle"
                                             data-toggle="dropdown" style="height: 34px">
                                         <span class="caret"></span>
                                         <span class="sr-only">Toggle Dropdown</span>
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a target="_blank"
-                                               href="printGeneralConcent_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
-                                            <i class="fa fa-print"></i>Profil Rekam Medis Rawat Jalan</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalAsesmenRawatInap('ringkasan_rj')"><i class="fa fa-circle-o"></i>Profil Rekam Medis Rawat Jalan</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -723,16 +688,29 @@
                                 <h3 class="box-title"><i class="fa fa-plus-square"></i> UGD </h3>
                             </div>
                             <div class="box-body">
+                                <div class="form-group" style="display: none">
+                                    <div class="col-md-1">
+                                        <input type="color" style="margin-left: -6px; margin-top: -8px"
+                                               class="js-color-picker  color-picker pull-left">
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input type="range" style="margin-top: -8px" class="js-line-range" min="1" max="72"
+                                               value="1">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div style="margin-top: -8px;" class="js-range-value">1 px</div>
+                                    </div>
+                                </div>
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Action
                                     </button>
-                                    <button type="button" class="btn btn-primary dropdown-toggle"
+                                    <button onclick="loadModalRM('ugd')" type="button" class="btn btn-primary dropdown-toggle"
                                             data-toggle="dropdown" style="height: 34px">
                                         <span class="caret"></span>
                                         <span class="sr-only">Toggle Dropdown</span>
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a href="#" onclick="showAsesmenUgd()"><i class="fa fa-user-plus"></i>Asesmen Awal Gawat Darurat</a></li>
+                                        <li><a style="cursor: pointer" onclick="showAsesmenUgd()"><i class="fa fa-user-plus"></i>Asesmen Awal Gawat Darurat</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -745,19 +723,111 @@
     <!-- /.content -->
 </div>
 
-<%@ include file="/pages/com/neurix/simrs/transaksi/rekammedik/modalOperasi.jsp" %>
-<%@ include file="/pages/com/neurix/simrs/transaksi/rekammedik/modalFisioterapi.jsp" %>
-<%@ include file="/pages/com/neurix/simrs/transaksi/rekammedik/modalAsesmenUGD.jsp" %>
+<div id="modal-temp"></div>
 
 <script type='text/javascript' src='<s:url value="/dwr/interface/FisioterapiAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenUgdAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenOperasiAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/MppAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/HemodialisaAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/MonitoringTransfusiDarahAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/AppendecitomyAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenRawatInapAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/PengkajianUlangKeperawatanAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/CatatanTerintegrasiAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/CatatanPemberianObatAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/RencanaAsuhanKeperawatanAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/RekonsiliasiObatAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/RekamMedisRawatJalanAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/RingkasanPasienAction.js"/>'></script>
 
+<script type='text/javascript' src='<s:url value="/pages/dist/js/paintTtd.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/operasi.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/fisioterapi.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/asesmenUgd.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/mpp.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/hd.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/appendecitomy.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/asesmenrawatinap.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/pengkajiankeperawatan.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/ringkasanpasien.js"/>'></script>
 
 <script type='text/javascript'>
+
+    var isReadRM = false;
+    var idDetailCheckup = $('#id_detail_checkup').val();
+    var contextPath = '<%= request.getContextPath() %>';
+    var idPasien = '<s:property value="headerDetailCheckup.idPasien"/>';
+    var tglLhr = '<s:property value="headerDetailCheckup.tglLahir"/>';
+    var tglLahir = tglLhr.split("-").reverse().join("-");
+    var namaPasien = '<s:property value="headerDetailCheckup.namaPasien"/>';
+
+    function loadModalRM(jenis){
+        var context = "";
+        if(jenis == "fisioterapi"){
+            context = contextPath+'/pages/modal/modalFisioterapi.jsp';
+        }
+        if(jenis == "operasi"){
+            context = contextPath+'/pages/modal/modalOperasi.jsp';
+        }
+        if(jenis == "ugd"){
+            context = contextPath+'/pages/modal/modalAsesmenUGD.jsp';
+        }
+        if(jenis == "mpp"){
+            context = contextPath+'/pages/modal/modalMpp.jsp';
+        }
+        if(jenis == "hd"){
+            context = contextPath+'/pages/modal/modalHD.jsp';
+        }
+        if(jenis == "appendecitomy"){
+            context = contextPath+'/pages/modal/modalAppendecitomy.jsp';
+        }
+        if(jenis == "asesmen_rawat_inap"){
+            context = contextPath+'/pages/modal/modalAsesmenRawatInap.jsp';
+        }
+        if(jenis == "pengkajian_keperawatan"){
+            context = contextPath+'/pages/modal/modalPengkajianKeperawatan.jsp';
+        }
+        if(jenis == "discharge_planing"){
+            context = contextPath+'/pages/modal/modalPemulanganPasien.jsp';
+        }
+        if(jenis == "catatan_integrasi"){
+            context = contextPath+'/pages/modal/modalCatatanTerintegrasi.jsp';
+        }
+        if(jenis == "early_warning"){
+            context = contextPath+'/pages/modal/modalEWS.jsp';
+        }
+        if(jenis == "privasi"){
+            context = contextPath+'/pages/modal/modalPrivasiPasien.jsp';
+        }
+        if(jenis == "pemberian_obat"){
+            context = contextPath+'/pages/modal/modalPemberianObat.jsp';
+        }
+        if(jenis == "asuhan"){
+            context = contextPath+'/pages/modal/modalAsuhanKeperawatan.jsp';
+        }
+        if(jenis == "rekonsiliasi"){
+            context = contextPath+'/pages/modal/modalRekonsiliasiObat.jsp';
+        }
+        if(jenis == "edukasi_pasien"){
+            context = contextPath+'/pages/modal/modalEdukasiPasien.jsp';
+        }
+        if(jenis == "ringkasan_rj"){
+            context = contextPath+'/pages/modal/modalRingkasanRawatJalan.jsp';
+        }
+        if(jenis == "rencana_gigi"){
+            context = contextPath+'/pages/modal/modalRencanaPerawatanGigi.jsp';
+        }
+        if(jenis == "ringkasan"){
+            context = contextPath+'/pages/modal/modalRingkasan.jsp';
+        }
+        if(jenis == "transfer_pasien"){
+            context = contextPath+'/pages/modal/modalTransferPasien.jsp';
+        }
+        $('#modal-temp').load(context, function (res) {
+
+        });
+    }
 
     $(document).ready(function () {
 
@@ -772,101 +842,6 @@
             $('#igd').addClass('active');
         }
 
-        const paintCanvas = document.querySelector(".js-paint");
-        const paintCanvas1 = document.querySelector(".js-paint-1");
-        const paintCanvas2 = document.querySelector(".js-paint-2");
-
-        const context = paintCanvas.getContext("2d");
-        const context1 = paintCanvas1.getContext("2d");
-        const context2 = paintCanvas2.getContext("2d");
-
-        context.lineCap = "round";
-        context1.lineCap = "round";
-        context2.lineCap = "round";
-
-        const colorPicker = document.querySelector(".js-color-picker");
-
-        colorPicker.addEventListener("change", function (evt) {
-            context.strokeStyle = evt.target.value;
-        });
-
-        const lineWidthRange = document.querySelector(".js-line-range");
-        const lineWidthLabel = document.querySelector(".js-range-value");
-
-        lineWidthRange.addEventListener("input", function (evt) {
-            const width = evt.target.value;
-            lineWidthLabel.innerHTML = width+" px";
-            context.lineWidth = width;
-            context1.lineWidth = width;
-            context2.lineWidth = width;
-        });
-
-        let x = 0,
-            y = 0;
-        let isMouseDown = false;
-
-        const stopDrawing = function () {
-            isMouseDown = false;
-        };
-
-        const startDrawing = function (evt) {
-            isMouseDown = true;
-            [x, y] = [evt.offsetX, evt.offsetY];
-        };
-
-        const drawLine = function (evt) {
-            if (isMouseDown) {
-                const newX = evt.offsetX;
-                const newY = evt.offsetY;
-                context.beginPath();
-                context.moveTo(x, y);
-                context.lineTo(newX, newY);
-                context.stroke();
-                x = newX;
-                y = newY;
-            }
-        };
-
-        const drawLine1 = function (evt) {
-            if (isMouseDown) {
-                const newX = evt.offsetX;
-                const newY = evt.offsetY;
-                context1.beginPath();
-                context1.moveTo(x, y);
-                context1.lineTo(newX, newY);
-                context1.stroke();
-                x = newX;
-                y = newY;
-            }
-        };
-
-        const drawLine2 = function (evt) {
-            if (isMouseDown) {
-                const newX = evt.offsetX;
-                const newY = evt.offsetY;
-                context2.beginPath();
-                context2.moveTo(x, y);
-                context2.lineTo(newX, newY);
-                context2.stroke();
-                x = newX;
-                y = newY;
-            }
-        };
-
-        paintCanvas.addEventListener("mousedown", startDrawing);
-        paintCanvas.addEventListener("mousemove", drawLine);
-        paintCanvas.addEventListener("mouseup", stopDrawing);
-        paintCanvas.addEventListener("mouseout", stopDrawing);
-
-        paintCanvas1.addEventListener("mousedown", startDrawing);
-        paintCanvas1.addEventListener("mousemove", drawLine1);
-        paintCanvas1.addEventListener("mouseup", stopDrawing);
-        paintCanvas1.addEventListener("mouseout", stopDrawing);
-
-        paintCanvas2.addEventListener("mousedown", startDrawing);
-        paintCanvas2.addEventListener("mousemove", drawLine2);
-        paintCanvas2.addEventListener("mouseup", stopDrawing);
-        paintCanvas2.addEventListener("mouseout", stopDrawing);
     });
 
 </script>

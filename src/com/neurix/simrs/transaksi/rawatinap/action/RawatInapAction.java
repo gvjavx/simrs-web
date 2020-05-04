@@ -264,8 +264,15 @@ public class RawatInapAction extends BaseMasterAction {
                 rawatInap.setNoSep(checkup.getNoSep());
                 rawatInap.setJenisPeriksaPasien(checkup.getStatusPeriksaName());
                 rawatInap.setMetodePembayaran(checkup.getMetodePembayaran());
-
+                rawatInap.setNoRujukan(checkup.getNoRujukan());
+                rawatInap.setTglRujukan(checkup.getTglRujukan());
+                rawatInap.setSuratRujukan(checkup.getUrlDocRujuk());
+                rawatInap.setIdAsuransi(checkup.getIdAsuransi());
+                rawatInap.setNamaAsuransi(checkup.getNamaAsuransi());
+                rawatInap.setCoverBiaya(checkup.getCoverBiaya());
+                rawatInap.setIsLaka(checkup.getIsLaka());
                 setRawatInap(rawatInap);
+
             }else{
                 setRawatInap(new RawatInap());
             }
