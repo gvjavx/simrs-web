@@ -121,4 +121,16 @@ public class MappingJurnalDao extends GenericDao<ImMappingJurnalEntity, String> 
 
         return jurnalId+branchId+bulan+tahun+sId;
     }
+    public String getParameterByTransId(String transId){
+        String result="";
+        String query = "select keterangan from im_akun_mapping_jurnal where trans_id='"+transId+"' and flag='Y' limit 1";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            result = results.toString();
+        }else {
+            result=null;
+        }
+        return result;
+    }
 }

@@ -19,12 +19,49 @@ public class ImTransEntity implements Serializable {
 
     private String master;
 
+    private String divisiId;
+    private String noNota;
+    private String masterId;
+    private String biaya;
+
     private String flag;
     private String action;
     private Timestamp createdDate;
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+    public String getDivisiId() {
+        return divisiId;
+    }
+
+    public void setDivisiId(String divisiId) {
+        this.divisiId = divisiId;
+    }
+
+    public String getNoNota() {
+        return noNota;
+    }
+
+    public void setNoNota(String noNota) {
+        this.noNota = noNota;
+    }
+
+    public String getMasterId() {
+        return masterId;
+    }
+
+    public void setMasterId(String masterId) {
+        this.masterId = masterId;
+    }
+
+    public String getBiaya() {
+        return biaya;
+    }
+
+    public void setBiaya(String biaya) {
+        this.biaya = biaya;
+    }
 
     public String getMaster() {
         return master;

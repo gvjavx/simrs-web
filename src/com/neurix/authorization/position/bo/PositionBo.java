@@ -27,4 +27,5 @@ public interface PositionBo extends BaseMasterBo<Position> {
 
     public ImPosition getPositionEntityById(String id) throws GeneralBOException;
 
+    List<Position> typeAheadPosition(String key) throws GeneralBOException;
 }

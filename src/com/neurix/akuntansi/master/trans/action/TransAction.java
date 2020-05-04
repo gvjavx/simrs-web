@@ -24,6 +24,15 @@ public class TransAction extends BaseMasterAction {
     private TransBo transBoProxy;
     private Trans trans;
     private List<Trans> listOfComboTrans = new ArrayList<Trans>();
+    private String tipe;
+
+    public String getTipe() {
+        return tipe;
+    }
+
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
+    }
 
     public List<Trans> getListOfComboTrans() {
         return listOfComboTrans;
@@ -410,11 +419,11 @@ public class TransAction extends BaseMasterAction {
     }
     public String initComboTransPembayaran() {
         logger.info("[TransAction.initComboTransPembayaran] start process >>>");
-
+        String tipe = getTipe();
         Trans search = new Trans();
         List<Trans> listOfSearchTrans = new ArrayList();
         search.setFlag("Y");
-        search.setTipePembayaran("Y");
+        search.setTipePembayaran(tipe);
         try {
             listOfSearchTrans = transBoProxy.getByCriteria(search);
         } catch (GeneralBOException e) {

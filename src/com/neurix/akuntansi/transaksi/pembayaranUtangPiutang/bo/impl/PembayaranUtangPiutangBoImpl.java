@@ -5,6 +5,7 @@ import com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity;
 import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.master.trans.dao.TransDao;
 import com.neurix.akuntansi.master.trans.model.ImTransEntity;
+import com.neurix.akuntansi.master.trans.model.Trans;
 import com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDao;
 import com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDetailDao;
 import com.neurix.akuntansi.transaksi.jurnal.model.ItJurnalDetailEntity;
@@ -335,7 +336,7 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
     }
 
     @Override
-    public List<PembayaranUtangPiutangDetail> getSearchNotaPembayaran(String masterId,String transaksiId,String branchId) throws GeneralBOException {
+    public List<PembayaranUtangPiutangDetail> getSearchNotaPembayaran(String masterId,String transaksiId,String branchId,String divisiId,String coa) throws GeneralBOException {
         logger.info("[PembayaranUtangPiutangBoImpl.getSearchNotaPembayaran] start process >>>");
         List<PembayaranUtangPiutangDetail> listOfResult = new ArrayList<>();
         String unit="";
@@ -358,7 +359,8 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
 
         try {
             String tipeBayar = transDao.getTipeBayarByTransId(transaksiId);
-            pembayaranUtangPiutangDetailList = pembayaranUtangPiutangDao.getSearchNotaPembayaran(masterId,transaksiId,unit,tipeBayar);
+            String rekeningId = kodeRekeningDao.getRekeningIdByCoa(coa);
+            pembayaranUtangPiutangDetailList = pembayaranUtangPiutangDao.getSearchNotaPembayaran(masterId,unit,tipeBayar,divisiId,rekeningId);
         } catch (HibernateException e) {
             logger.error("[PembayaranUtangPiutangBoImpl.getSearchPembayaranUtangPiutangByCriteria] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
@@ -528,6 +530,7 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
                 pembayaranUtangPiutangDetailEntity.setNoNota(data.getNoNota());
                 pembayaranUtangPiutangDetailEntity.setRekeningId(data.getRekeningId());
                 pembayaranUtangPiutangDetailEntity.setJumlahPembayaran(jumlahPembayaran);
+                pembayaranUtangPiutangDetailEntity.setDivisiId(data.getDivisiId());
 
                 pembayaranUtangPiutangDetailEntity.setFlag(bean.getFlag());
                 pembayaranUtangPiutangDetailEntity.setAction(bean.getAction());
@@ -623,5 +626,25 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
         }
         logger.info("[PembayaranUtangPiutangBoImpl.postingJurnal] end process <<<");
         return rekeningKas;
+    }
+
+    @Override
+    public Trans getDisableTrans(String transId) throws GeneralBOException {
+        logger.info("[PembayaranUtangPiutangBoImpl.getDisableTrans] start process >>>");
+        ImTransEntity transEntity= new ImTransEntity();
+        try {
+            transEntity= transDao.getById("transId",transId);
+        } catch (HibernateException e) {
+            logger.error("[PembayaranUtangPiutangBoImpl.getDisableTrans] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when saving update data PembayaranUtangPiutang, please info to your admin..." + e.getMessage());
+        }
+        Trans data = new Trans();
+        data.setDivisiId(transEntity.getDivisiId());
+        data.setMasterId(transEntity.getMasterId());
+        data.setNoNota(transEntity.getNoNota());
+        data.setBiaya(transEntity.getBiaya());
+
+        logger.info("[PembayaranUtangPiutangBoImpl.getDisableTrans] end process <<<");
+        return data;
     }
 }

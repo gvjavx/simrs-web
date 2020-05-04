@@ -19,26 +19,56 @@
 	<parameter name="tanggal_awal_bulan" class="java.sql.Date"/>
 	<queryString>
 		<![CDATA[SELECT
-	debitBulanLalu+debitTangalSekarang as debit,
-	kreditBulanLalu+kreditTangalSekarang as kredit
-FROM (
-	select
-	(CASE WHEN sum(sa.jumlah_debit) IS NULL THEN 0.0 ELSE sum(sa.jumlah_debit) END) as debitBulanLalu,
-    (CASE WHEN sum(sa.jumlah_kredit) IS NULL THEN 0.0 ELSE sum(sa.jumlah_kredit) END) as kreditBulanLalu,
-    (CASE WHEN sum(a.jumlah_debit) IS NULL THEN 0.0 ELSE sum(a.jumlah_debit) END) as debitTangalSekarang,
-    (CASE WHEN sum(a.jumlah_kredit) IS NULL THEN 0.0 ELSE sum(a.jumlah_kredit) END) as kreditTangalSekarang
+  debitBulanLalu + debitTangalSekarang as debit,
+  kreditBulanLalu + kreditTangalSekarang as kredit
 FROM
-it_akun_jurnal_detail a
-LEFT JOIN it_akun_saldo_akhir sa ON a.rekening_id = sa.rekening_id
-LEFT JOIN it_akun_jurnal b on a.no_jurnal = b.no_jurnal
-where
-    b.tanggal_jurnal <= $P{tanggal_awal}
-	AND b.tanggal_jurnal >= $P{tanggal_awal_bulan}
-	AND to_date(sa.periode, 'MM-yyyy') = to_date($P{periode}, 'MM-yyyy') - Interval '1 month'
-    and sa.rekening_id = $P{rekening_id}
-    and b.registered_flag = 'Y'
-    and b.branch_id IN ($P!{branch_id})
-) a]]>
+  (
+    select
+      (
+        CASE WHEN sum(sa.jumlah_debit) IS NULL THEN 0.0 ELSE sum(sa.jumlah_debit) END
+      ) as debitBulanLalu,
+      (
+        CASE WHEN sum(sa.jumlah_kredit) IS NULL THEN 0.0 ELSE sum(sa.jumlah_kredit) END
+      ) as kreditBulanLalu,
+      (
+        CASE WHEN sum(a.jumlah_debit) IS NULL THEN 0.0 ELSE sum(a.jumlah_debit) END
+      ) as debitTangalSekarang,
+      (
+        CASE WHEN sum(a.jumlah_kredit) IS NULL THEN 0.0 ELSE sum(a.jumlah_kredit) END
+      ) as kreditTangalSekarang
+    FROM
+      (
+        select
+          *
+        from
+          im_akun_kode_rekening
+        where
+          rekening_id = $P{rekening_id}
+      ) rk
+      LEFT JOIN (
+        select
+          *
+        from
+          it_akun_saldo_akhir
+        where
+          to_date(periode, 'MM-yyyy') = to_date($P{periode}, 'MM-yyyy') - Interval '1 month'
+      ) sa ON rk.rekening_id = sa.rekening_id
+      LEFT JOIN (
+        select
+          rekening_id,
+          jumlah_debit,
+          jumlah_kredit
+        from
+          it_akun_jurnal_detail x
+          LEFT JOIN it_akun_jurnal y ON y.no_jurnal = x.no_jurnal
+        WHERE
+          y.tanggal_jurnal < $P{tanggal_awal}
+          AND y.tanggal_jurnal >= $P{tanggal_awal_bulan}
+          and y.registered_flag = 'Y'
+          and y.branch_id IN ($P!{branch_id})
+      ) a ON a.rekening_id = rk.rekening_id
+  ) a
+]]>
 	</queryString>
 	<field name="debit" class="java.math.BigDecimal"/>
 	<field name="kredit" class="java.math.BigDecimal"/>

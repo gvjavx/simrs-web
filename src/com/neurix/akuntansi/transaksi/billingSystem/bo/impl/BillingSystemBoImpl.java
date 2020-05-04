@@ -924,4 +924,22 @@ public class BillingSystemBoImpl implements BillingSystemBo {
 
         return rekeningId;
     }
+
+    @Override
+    public String getParameterPembayaran(String transaksiId) {
+        String parameter ;
+        try {
+            parameter = mappingJurnalDao.getParameterByTransId(transaksiId);
+        } catch (HibernateException e) {
+            logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+
+        if (parameter == null){
+            String status = "ERROR : tidak ditemukan parameter";
+            logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail] Error, " + status);
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + status);
+        }
+        return parameter;
+    }
 }

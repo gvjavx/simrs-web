@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="IkhtisarPendapatan" pageWidth="595" pageHeight="842" columnWidth="567" leftMargin="14" rightMargin="14" topMargin="28" bottomMargin="28" isFloatColumnFooter="true" uuid="1ad74e3d-21c5-43ac-b65a-1f771461ad66">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.9487171000000019"/>
+	<property name="ireport.zoom" value="1.6105100000000026"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="56"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -72,6 +72,18 @@
 	<variable name="DISPLAY_SUM_saldo_sekarang" class="java.math.BigDecimal">
 		<variableExpression><![CDATA[$V{SUM_saldo_sekarang}]]></variableExpression>
 	</variable>
+	<variable name="SUM_saldo_lalu_grup" class="java.math.BigDecimal" resetType="Group" resetGroup="rekening" calculation="Sum">
+		<variableExpression><![CDATA[$F{lastSaldo}]]></variableExpression>
+	</variable>
+	<variable name="SUM_penerimaan_grup" class="java.math.BigDecimal" resetType="Group" resetGroup="rekening" calculation="Sum">
+		<variableExpression><![CDATA[$F{penerimaan}]]></variableExpression>
+	</variable>
+	<variable name="SUM_pengeluaran_grup" class="java.math.BigDecimal" resetType="Group" resetGroup="rekening" calculation="Sum">
+		<variableExpression><![CDATA[$F{pengeluaran}]]></variableExpression>
+	</variable>
+	<variable name="SUM_saldo_sekarang_grup" class="java.math.BigDecimal" resetType="Group" resetGroup="rekening" calculation="Sum">
+		<variableExpression><![CDATA[$F{saldoSekarang}]]></variableExpression>
+	</variable>
 	<group name="reks">
 		<groupExpression><![CDATA[]]></groupExpression>
 		<groupHeader>
@@ -80,7 +92,7 @@
 		<groupFooter>
 			<band height="40" splitType="Stretch">
 				<staticText>
-					<reportElement key="staticText-17" positionType="Float" mode="Transparent" x="53" y="2" width="117" height="20" isPrintInFirstWholeBand="true" uuid="3791f9f8-7336-47a2-a278-0286869a1270"/>
+					<reportElement key="staticText-17" positionType="Float" mode="Transparent" x="0" y="2" width="170" height="20" isPrintInFirstWholeBand="true" uuid="3791f9f8-7336-47a2-a278-0286869a1270"/>
 					<box leftPadding="2" rightPadding="4">
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -88,9 +100,9 @@
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
+						<font size="8" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Total : ]]></text>
+					<text><![CDATA[Total Seluruhnya : ]]></text>
 				</staticText>
 				<staticText>
 					<reportElement key="staticText-24" positionType="Float" x="475" y="22" width="92" height="17" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="4d260316-528b-4988-83e4-bfab1fafe2a2"/>
@@ -126,7 +138,7 @@
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
+						<font size="8" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{DISPLAY_SUM_pengeluaran}]]></textFieldExpression>
 				</textField>
@@ -139,7 +151,7 @@
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
+						<font size="8" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{DISPLAY_SUM_saldo_sekarang}]]></textFieldExpression>
 				</textField>
@@ -152,7 +164,7 @@
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
+						<font size="8" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{DISPLAY_SUM_penerimaan}]]></textFieldExpression>
 				</textField>
@@ -165,7 +177,7 @@
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
+						<font size="8" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{DISPLAY_SUM_saldo_lalu}]]></textFieldExpression>
 				</textField>
@@ -175,10 +187,90 @@
 	<group name="rekening" isReprintHeaderOnEachPage="true">
 		<groupExpression><![CDATA[$F{grup}]]></groupExpression>
 		<groupHeader>
-			<band height="2" splitType="Stretch"/>
+			<band height="17" splitType="Stretch">
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField" mode="Transparent" x="2" y="1" width="564" height="15" uuid="1a8afb59-6260-4124-a931-88e2cf2cc27b"/>
+					<box leftPadding="2" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{grup}]]></textFieldExpression>
+				</textField>
+			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="1" splitType="Stretch"/>
+			<band height="23" splitType="Stretch">
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField" mode="Transparent" x="2" y="0" width="168" height="20" uuid="b616d727-a7da-4c2d-b3c7-6a3983e8bc64"/>
+					<box leftPadding="2" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Jumlah "+$F{grup}+" :"]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField-16" x="385" y="1" width="82" height="14" uuid="91bbbc4f-a9b2-41c8-8dd2-e9247f973bda"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{SUM_pengeluaran_grup}.abs()]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField-22" x="202" y="1" width="102" height="14" uuid="215fc24a-c689-4ef2-b5b0-e2669280ad43"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{SUM_saldo_lalu_grup}.abs()]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField-18" x="467" y="1" width="99" height="14" uuid="43b08e7f-03ab-4b52-8678-6b8b147f4345"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{SUM_saldo_sekarang_grup}.abs()]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField-22" x="304" y="1" width="81" height="14" uuid="01dc6f46-ab0f-429b-aa43-5796ecb5adf6"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{SUM_penerimaan_grup}.abs()]]></textFieldExpression>
+				</textField>
+			</band>
 		</groupFooter>
 	</group>
 	<background>
@@ -436,7 +528,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="17" splitType="Stretch">
+		<band height="21" splitType="Stretch">
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-22" x="304" y="0" width="81" height="15" uuid="1ddbcd29-e5d0-4a5a-b697-14fc33fed678"/>
 				<box>

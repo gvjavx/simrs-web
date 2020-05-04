@@ -425,6 +425,25 @@ public class KodeRekeningAction extends BaseMasterAction {
         logger.info("[KodeRekeningAction.saveDeleteAnggota] end process >>>");
     }
 
+    public List<KodeRekening> getKodeRekeningLawanByTransId(String transId) {
+        logger.info("[KodeRekeningAction.getKodeRekeningLawanByTransId] start process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        KodeRekeningBo kodeRekeningBo = (KodeRekeningBo) ctx.getBean("kodeRekeningBoProxy");
+        List<KodeRekening> kodeRekeningList = new ArrayList();
+        try {
+            kodeRekeningList = kodeRekeningBo.getKodeRekeningLawanByTransId(transId);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = kodeRekeningBo.saveErrorMessage(e.getMessage(), "KodeRekeningAction.getKodeRekeningLawanByTransId");
+            } catch (GeneralBOException e1) {
+                logger.error("[KodeRekeningAction.getKodeRekeningLawanByTransId] Error when saving error,", e1);
+            }
+            logger.error("[KodeRekeningAction.getKodeRekeningLawanByTransId] Error when searching data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+        }
+        return kodeRekeningList;
+    }
     @Override
     public String downloadPdf() {
         return SUCCESS;

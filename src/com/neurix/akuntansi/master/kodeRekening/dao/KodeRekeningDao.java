@@ -1,6 +1,7 @@
 package com.neurix.akuntansi.master.kodeRekening.dao;
 
 import com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity;
+import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.common.dao.GenericDao;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -9,6 +10,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -224,6 +226,54 @@ public class KodeRekeningDao extends GenericDao<ImKodeRekeningEntity, String> {
             if (results!=null){
                 result = result+Integer.parseInt(results.toString());
             }
+        }
+        return result;
+    }
+
+    public List<KodeRekening> getKodeRekeningLawanByTransId(String transId){
+
+        List<KodeRekening> listOfResult = new ArrayList<>();
+
+        List<Object[]> results = new ArrayList<Object[]>();
+        String query = "select\n" +
+                "\tkr.*\n" +
+                "from\n" +
+                "\tim_akun_mapping_jurnal j\n" +
+                "\tleft join im_akun_kode_rekening kr ON kr.kode_rekening ILIKE '%' || j.kode_rekening || '%'\n" +
+                "where\n" +
+                "\ttrans_id='"+transId+"'\n" +
+                "\tand kr.kode_rekening not ilike '1%'\n" +
+                "\tand kr.level=5";
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        for (Object[] row : results) {
+            KodeRekening data= new KodeRekening();
+            data.setRekeningId((String) row[0]);
+            data.setKodeRekening((String) row[1]);
+            data.setNamaKodeRekening((String) row[2]);
+
+            listOfResult.add(data);
+        }
+        return listOfResult;
+    }
+
+    //untuk mendapat rekening id dari coa
+    public String getRekeningIdByCoa(String coa){
+        String result="";
+        String query = "select \n" +
+                "  rekening_id\n" +
+                "from \n" +
+                "  im_akun_kode_rekening \n" +
+                "where \n" +
+                "  kode_rekening = '"+coa+"'\n";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            result = results.toString();
+        }else {
+            result=null;
         }
         return result;
     }

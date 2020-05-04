@@ -335,8 +335,40 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
         try {
             if (("AK").equalsIgnoreCase(tipeLaporan)){
                 arusKasDTOList = laporanAkuntansiDao.getArusKas(reportId,unit,periode);
+
+                if (arusKasDTOList.size()!=0){
+                    List<ArusKasDTO> arusKasDTOListPending= laporanAkuntansiDao.getArusKasBiayaPendingTanggalItu(reportId,unit,periode);
+                    List<ArusKasDTO> arusKasDTOListPendingDibayar= laporanAkuntansiDao.getArusKasBiayaPendingDibayarTanggalItu(reportId,unit,periode);
+
+                    if (arusKasDTOListPending.size()!=0){
+                        //Menambahkan 1 baris baru yang kosong
+
+                        arusKasDTOList.addAll(arusKasDTOListPending);
+                    }
+
+                    if (arusKasDTOListPendingDibayar.size()!=0){
+                        //Menambahkan 1 baris baru yang kosong
+                        arusKasDTOList.addAll(arusKasDTOListPendingDibayar);
+                    }
+                }
             }else if (("ARD").equalsIgnoreCase(tipeLaporan)){
                 arusKasDTOList = laporanAkuntansiDao.getArusKasDetail(reportId,unit,periode);
+
+                if (arusKasDTOList.size()!=0){
+                    List<ArusKasDTO> arusKasDTOListPending= laporanAkuntansiDao.getArusKasDetailBiayaPendingTanggalItu(reportId,unit,periode);
+                    List<ArusKasDTO> arusKasDTOListPendingDibayar= laporanAkuntansiDao.getArusKasDetailBiayaPendingDibayarTanggalItu(reportId,unit,periode);
+
+                    if (arusKasDTOListPending.size()!=0){
+                        //Menambahkan 1 baris baru yang kosong
+
+                        arusKasDTOList.addAll(arusKasDTOListPending);
+                    }
+
+                    if (arusKasDTOListPendingDibayar.size()!=0){
+                        //Menambahkan 1 baris baru yang kosong
+                        arusKasDTOList.addAll(arusKasDTOListPendingDibayar);
+                    }
+                }
             }
         } catch (HibernateException e) {
             logger.error("[LaporanAkuntansiBoImpl.getArusKas] Error, " + e.getMessage());

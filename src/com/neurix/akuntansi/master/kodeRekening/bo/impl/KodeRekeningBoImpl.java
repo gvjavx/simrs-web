@@ -300,6 +300,24 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
     }
 
 
+    @Override
+    public List<KodeRekening> getKodeRekeningLawanByTransId(String transId) throws GeneralBOException {
+        logger.info("[KodeRekeningBoImpl.getKodeRekeningLawanByTransId] start process >>>");
+
+        // Mapping with collection and put
+        List<KodeRekening> listOfResult = new ArrayList();
+        try {
+            listOfResult = kodeRekeningDao.getKodeRekeningLawanByTransId(transId);
+        } catch (HibernateException e) {
+            logger.error("[KodeRekeningBoImpl.getKodeRekeningLawanByTransId] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+
+        logger.info("[KodeRekeningBoImpl.getKodeRekeningLawanByTransId] end process <<<");
+
+        return listOfResult;
+    }
+
     public static Logger getLogger() {
         return logger;
     }
