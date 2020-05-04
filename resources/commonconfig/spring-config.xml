@@ -233,6 +233,7 @@
     <import resource="sshconfig/com/neurix/simrs/transaksi/rekonsiliasiobat/spring/RekonsiliasiObatBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/profilrekammedisrj/spring/RekamMedisRawatJalanBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/ringkasanpasien/spring/RingkasanPasienBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/cetakanrm/spring/CetakanRmBean.xml"/>
 
     <import resource="sshconfig/com/neurix/hris/transaksi/pendapatanDokter/spring/PendapatanDokterBean.xml"/>
 </beans>

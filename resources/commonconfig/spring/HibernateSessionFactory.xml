@@ -435,6 +435,7 @@
                 <value>sshconfig/com/neurix/simrs/transaksi/rencanaasuhankeperawatan/hibernate/ItSimrsRencanaAsuhanKeperawatanEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/profilrekammedisrj/hibernate/ItSimrsRekamMedisRawatJalanEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/ringkasanpasien/hibernate/ItSimrsRingkasanPasienEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/cetakanrm/hibernate/ItSimrsCetakanRmEntity.hbm.xml</value>
 
             </list>
         </property>

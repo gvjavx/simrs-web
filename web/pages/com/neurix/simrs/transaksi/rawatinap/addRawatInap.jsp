@@ -274,7 +274,7 @@
                                             </td>
                                         </tr>
                                     </s:if>
-                                    <s:if test='rawatInap.idJenisPeriksaPasien == "asuransi"'>
+                                    <s:if test='rawatInap.idJenisPeriksa == "asuransi"'>
                                         <tr>
                                             <td><b>Nama Asuransi</b></td>
                                             <td>
@@ -5511,6 +5511,10 @@
             $('#msg_cancel').text('Silahkan cek kembali data inputan...!');
             $('#war_keterangan_cancel').show();
         }
+    }
+
+    function printResep(id) {
+        window.open('printResepPasien_rawatinap.action?id=' + idDetailCheckup + '&idResep=' + id, '_blank');
     }
 </script>
 

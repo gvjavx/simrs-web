@@ -401,35 +401,35 @@
                     <div class="box-header with-border" id="pos_alergi">
                     </div>
 
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-hospital-o"></i> Asesmen</h3>
-                    </div>
+                    <%--<div class="box-header with-border">--%>
+                        <%--<h3 class="box-title"><i class="fa fa-hospital-o"></i> Asesmen</h3>--%>
+                    <%--</div>--%>
 
-                    <div class="box-body">
+                    <%--<div class="box-body">--%>
 
-                        <button class="btn btn-primary" onclick="showModalCheckFisik('<s:property value="headerDetailCheckup.noCheckup"/>')">
-                            <i class="fa fa-edit"></i> Form Pemeriksaan Fisik
-                        </button>
-                        <button class="btn btn-primary" onclick="showModalPsikosial('<s:property value="headerDetailCheckup.noCheckup"/>')">
-                            <i class="fa fa-edit"></i> Form Psikosial
-                        </button>
-                        <button class="btn btn-primary" onclick="showModalRencanaRawat('<s:property value="headerDetailCheckup.noCheckup"/>','<s:property value="headerDetailCheckup.idDetailCheckup"/>','rigd')">
-                            <i class="fa fa-edit"></i> Form Rencana Keperawatan
-                        </button>
-                        <button class="btn btn-primary" onclick="showModalResikoJatuh('<s:property value="headerDetailCheckup.noCheckup"/>', '<s:property value="headerDetailCheckup.tglLahir"/>')">
-                            <i class="fa fa-edit"></i> Form Resiko Jatuh
-                        </button>
-                        <button class="btn btn-primary" onclick="showModalRekonObat('<s:property value="headerDetailCheckup.noCheckup"/>', '<s:property value="headerDetailCheckup.tglLahir"/>')">
-                            <i class="fa fa-edit"></i> Form Rekonsiliasi Obat
-                        </button>
-                        <button class="btn btn-primary" onclick="showModalTranfusi('<s:property value="headerDetailCheckup.noCheckup"/>')">
-                            <i class="fa fa-edit"></i> Form Tranfusi
-                        </button>
-                        <button class="btn btn-primary" onclick="showModalPatrus('<s:property value="headerDetailCheckup.noCheckup"/>')">
-                            <i class="fa fa-edit"></i> Form Patrus
-                        </button>
+                        <%--<button class="btn btn-primary" onclick="showModalCheckFisik('<s:property value="headerDetailCheckup.noCheckup"/>')">--%>
+                            <%--<i class="fa fa-edit"></i> Form Pemeriksaan Fisik--%>
+                        <%--</button>--%>
+                        <%--<button class="btn btn-primary" onclick="showModalPsikosial('<s:property value="headerDetailCheckup.noCheckup"/>')">--%>
+                            <%--<i class="fa fa-edit"></i> Form Psikosial--%>
+                        <%--</button>--%>
+                        <%--<button class="btn btn-primary" onclick="showModalRencanaRawat('<s:property value="headerDetailCheckup.noCheckup"/>','<s:property value="headerDetailCheckup.idDetailCheckup"/>','rigd')">--%>
+                            <%--<i class="fa fa-edit"></i> Form Rencana Keperawatan--%>
+                        <%--</button>--%>
+                        <%--<button class="btn btn-primary" onclick="showModalResikoJatuh('<s:property value="headerDetailCheckup.noCheckup"/>', '<s:property value="headerDetailCheckup.tglLahir"/>')">--%>
+                            <%--<i class="fa fa-edit"></i> Form Resiko Jatuh--%>
+                        <%--</button>--%>
+                        <%--<button class="btn btn-primary" onclick="showModalRekonObat('<s:property value="headerDetailCheckup.noCheckup"/>', '<s:property value="headerDetailCheckup.tglLahir"/>')">--%>
+                            <%--<i class="fa fa-edit"></i> Form Rekonsiliasi Obat--%>
+                        <%--</button>--%>
+                        <%--<button class="btn btn-primary" onclick="showModalTranfusi('<s:property value="headerDetailCheckup.noCheckup"/>')">--%>
+                            <%--<i class="fa fa-edit"></i> Form Tranfusi--%>
+                        <%--</button>--%>
+                        <%--<button class="btn btn-primary" onclick="showModalPatrus('<s:property value="headerDetailCheckup.noCheckup"/>')">--%>
+                            <%--<i class="fa fa-edit"></i> Form Patrus--%>
+                        <%--</button>--%>
 
-                        <div class="box-header with-border"></div>
+                        <%--<div class="box-header with-border"></div>--%>
                         <div class="box-header with-border">
                             <div class="row">
                                 <div class="col-md-6">
@@ -2355,7 +2355,7 @@
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Foto Surat Polisi</label>
                         <div class="col-md-7">
-                            <div class="input-group" style="margin-top: 7px" id="img_url">
+                            <div class="input-group" id="img_url">
                                   <span class="input-group-btn">
                                   <span class="btn btn-default btn-file">
                                   Browse… <s:file id="url_do" accept=".jpg"
@@ -4248,6 +4248,7 @@
                         $('#save_resep_head').show();
                         $('#load_resep_head').hide();
                         $('#modal-resep-head').modal('hide');
+                        $('#modal-ttd').modal('hide');
                         listResepPasien();
                     } else {
                         $('#warning_resep_head').show().fadeOut(5000);

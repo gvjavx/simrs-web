@@ -75,21 +75,22 @@
                                 <div class="col-md-4">
                                     <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Resep Poli</h3>
                                 </div>
-                                <div class="col-md-3 pull-right">
-                                    <div class="input-group date">
-                                        <input class="form-control" id="add_resep" placeholder="Antrian" onchange="saveAntrian()">
-                                        <div class="input-group-addon btn btn-success" onclick="saveAntrian()" id="save_resep">
-                                            <i class="fa fa-arrow-right" style="cursor: pointer"></i> Save
-                                        </div>
-                                        <div class="input-group-addon btn btn-success" id="load_resep" style="display: none">
-                                            <i class="fa fa-spinner fa-spin" style="cursor: no-drop"></i> Sedang menyimpan...
-                                        </div>
-                                    </div>
-                                </div>
+                                <%--<div class="col-md-3 pull-right">--%>
+                                    <%--<div class="input-group date">--%>
+                                        <%--<input class="form-control" id="add_resep" placeholder="Antrian" onchange="saveAntrian()">--%>
+                                        <%--<div class="input-group-addon btn btn-success" onclick="saveAntrian()" id="save_resep">--%>
+                                            <%--<i class="fa fa-arrow-right" style="cursor: pointer"></i> Save--%>
+                                        <%--</div>--%>
+                                        <%--<div class="input-group-addon btn btn-success" id="load_resep" style="display: none">--%>
+                                            <%--<i class="fa fa-spinner fa-spin" style="cursor: no-drop"></i> Sedang menyimpan...--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
                             </div>
                     </div>
                     <div class="box-body">
                         <div class="form-group">
+
                             <s:form id="resepPoliForm" method="post" namespace="/reseppoli"
                                     action="searchResepPasien_reseppoli.action"
                                     theme="simple" cssClass="form-horizontal">
