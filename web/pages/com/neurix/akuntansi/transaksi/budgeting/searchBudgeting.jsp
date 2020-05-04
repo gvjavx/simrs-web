@@ -138,8 +138,8 @@
                                         <button class="btn btn-success" onclick="search()"><i class="fa fa-search"></i> Search</button>
                                         <button class="btn btn-success" onclick="add()" id="btn-add" style="display: inline-block;"><i class="fa fa-plus"></i> Add</button>
                                         <div class="btn-group">
-                                            <button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Action</button>
-                                            <button type="button" class="btn btn-primary dropdown-toggle"
+                                            <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Action</button>
+                                            <button type="button" class="btn btn-success dropdown-toggle"
                                                     data-toggle="dropdown" style="height: 34px">
                                                 <span class="caret"></span>
                                                 <span class="sr-only">Toggle Dropdown</span>
@@ -157,7 +157,7 @@
 
                     <div class="box-header with-border"></div>
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-th-list"></i>
+                        <h3 class="box-title"><i class="fa fa-th-list"></i> List Data
                             <%--List Tutup Period <strong><span id="label-tahun"></span> - <span id="label-bulan"></span></strong> --%>
                         </h3>
                     </div>
@@ -610,7 +610,7 @@
                     var strList = "";
                     $.each(response.list, function (i, item) {
                         strList += "<tr>" +
-                            "<td align='center'>"+setIconByAction(item.status, item.level)+"</td>"+
+                            "<td align='center'>"+actionView(item.idBudgeting, item.level)+"</td>"+
                             "<td>"+item.kodeRekening+"</td>"+
                             "<td>"+item.namaKodeRekening+"</td>"+
                             "<td>"+item.nilaiDraf+"</td>"+
@@ -628,16 +628,16 @@
 
     }
 
-    function setIconByAction( var1 , var2, var3) {
-
+    function actionView(var1, var2) {
         var str = "";
-        if ( ("ADD_DRAFT" || "EDIT_DRAF") == var1){
-            if ("5" == var2){
-                str = "<button class='btn btn-sm btn-success' onclick=\"editdraft(\'"+var3+"\')\"><i class='fa fa-edit'></i></button>";
-            }
+        if (var2 == "5"){
+        str = "<button class='btn btn-sm btn-success' onclick='"+view(var1)+"'><i class='fa fa-search'></i></button>";
         }
-
         return str;
+    }
+
+    function view(var1) {
+
     }
 
     function saveTutup(unit, tahun, bulan) {

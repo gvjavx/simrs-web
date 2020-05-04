@@ -19,6 +19,7 @@ import org.hibernate.HibernateException;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -176,6 +177,31 @@ public class BudgetingBoImpl implements BudgetingBo {
     }
 
     @Override
+    public String generateBudgetingDetailId() {
+        java.util.Date now = new java.util.Date();
+        SimpleDateFormat f = new SimpleDateFormat("yyyyMMdd");
+        return "DT" +  f.format(now) + budgetingPengadaanDao.getNextId();
+    }
+
+    @Override
+    public String generateBudgetingPengadaan() {
+        java.util.Date now = new java.util.Date();
+        SimpleDateFormat f = new SimpleDateFormat("yyyyMMdd");
+        return "PN" + f.format(now) + budgetingPengadaanDao.getNextId();
+    }
+
+    public String generateBudgetingId() {
+        java.util.Date now = new java.util.Date();
+        SimpleDateFormat f = new SimpleDateFormat("yyyyMMdd");
+        return "BT" + f.format(now) + budgetingPengadaanDao.getNextId();
+    }
+
+    @Override
+    public String checkLastTipeBudgeting() {
+        return budgetingDao.checkLastTipeOfBudgeting();
+    }
+
+    @Override
     public void saveAddBudgeting(List<Budgeting> budgetingList, List<BudgetingDetail> budgetingDetails, List<BudgetingPengadaan> budgetingPengadaans, String type, Budgeting bean) throws GeneralBOException {
         logger.info("[BudgetingBoImpl.saveAddBudgeting] START >>>");
 
@@ -227,7 +253,7 @@ public class BudgetingBoImpl implements BudgetingBo {
                     for (ImKodeRekeningEntity kodeRekeningEntity : kodeRekeningEntities){
 
                         ItAkunBudgetingEntity budgetingEntity = new ItAkunBudgetingEntity();
-                        budgetingEntity.setIdBudgeting(nextBudgetingId());
+                        budgetingEntity.setIdBudgeting(generateBudgetingId());
                         budgetingEntity.setNoBudgeting(name+"-"+bean.getBranchId()+"-"+bean.getTahun()+"-"+kodeRekeningEntity.getKodeRekening());
                         budgetingEntity.setRekeningId(kodeRekeningEntity.getRekeningId());
                         budgetingEntity.setTahun(bean.getTahun());
@@ -309,7 +335,7 @@ public class BudgetingBoImpl implements BudgetingBo {
                             for (BudgetingDetail budgetingDetail : details){
 
                                 ItAkunBudgetingDetailEntity budgetingDetailEntity = new ItAkunBudgetingDetailEntity();
-                                budgetingDetailEntity.setIdBudgetingDetail(nextBudgetingDetailId());
+                                budgetingDetailEntity.setIdBudgetingDetail(budgetingDetail.getIdBudgetingDetail());
                                 budgetingDetailEntity.setIdBudgeting(budgetingEntity.getIdBudgeting());
                                 budgetingDetailEntity.setNoBudgetingDetail(budgetingEntity.getNoBudgeting()+"-"+budgetingDetail.getTipe()+"-"+budgetingDetail.getDivisiId());
                                 budgetingDetailEntity.setNoBudgeting(budgetingEntity.getNoBudgeting());
@@ -338,7 +364,7 @@ public class BudgetingBoImpl implements BudgetingBo {
                                     for (BudgetingPengadaan budgetingPengadaan : pengadaans){
 
                                         ItAkunBudgetingPengadaanEntity pengadaanEntity = new ItAkunBudgetingPengadaanEntity();
-                                        pengadaanEntity.setIdPengadaan(nextBudgetingPengadaanId());
+                                        pengadaanEntity.setIdPengadaan(generateBudgetingPengadaan());
                                         pengadaanEntity.setNoBudgetingDetail(budgetingDetailEntity.getNoBudgetingDetail());
                                         pengadaanEntity.setIdBudgetingDetail(budgetingDetailEntity.getIdBudgetingDetail());
                                         pengadaanEntity.setNamPengadaan(budgetingPengadaan.getNamPengadaan());
@@ -435,7 +461,7 @@ public class BudgetingBoImpl implements BudgetingBo {
                             }
                         } else {
                             budgetingDetailEntity = new ItAkunBudgetingDetailEntity();
-                            budgetingDetailEntity.setIdBudgetingDetail(nextBudgetingDetailId());
+                            budgetingDetailEntity.setIdBudgetingDetail(budgetingDetail.getIdBudgetingDetail());
                             budgetingDetailEntity.setIdBudgeting(budgetingEntity.getIdBudgeting());
                             budgetingDetailEntity.setNoBudgeting(budgetingEntity.getNoBudgeting());
                             budgetingDetailEntity.setNoBudgetingDetail(budgetingEntity.getNoBudgeting()+"-"+budgetingDetail.getTipe()+"-"+budgetingDetail.getDivisiId());
@@ -483,7 +509,7 @@ public class BudgetingBoImpl implements BudgetingBo {
                                     }
                                 } else {
                                     pengadaanEntity = new ItAkunBudgetingPengadaanEntity();
-                                    pengadaanEntity.setIdPengadaan(nextBudgetingPengadaanId());
+                                    pengadaanEntity.setIdPengadaan(generateBudgetingPengadaan());
                                     pengadaanEntity.setIdBudgetingDetail(budgetingDetail.getIdBudgetingDetail());
                                     pengadaanEntity.setNamPengadaan(budgetingPengadaan.getNamPengadaan());
                                     pengadaanEntity.setNilai(budgetingPengadaan.getNilai());
@@ -600,7 +626,7 @@ public class BudgetingBoImpl implements BudgetingBo {
                     // insert table
                     ItAkunBudgetingEntity budgetingEntity = new ItAkunBudgetingEntity();
                     budgetingEntity.setRekeningId(kodeRekeningEntity.getRekeningId());
-                    budgetingEntity.setIdBudgeting(nextBudgetingId());
+                    budgetingEntity.setIdBudgeting(generateBudgetingId());
                     budgetingEntity.setNoBudgeting(name+"-"+bean.getBranchId()+"-"+bean.getTahun()+"-"+kodeRekeningEntity.getKodeRekening());
                     budgetingEntity.setBranchId(bean.getBranchId());
                     budgetingEntity.setTahun(bean.getTahun());
@@ -773,17 +799,6 @@ public class BudgetingBoImpl implements BudgetingBo {
         hsCriteria.put("id_budgeting_detail", id);
         return budgetingPengadaanDao.getByCriteria(hsCriteria);
     }
-
-    private String nextBudgetingId(){
-        return budgetingDao.getNextId();
-    }
-    private String nextBudgetingDetailId(){
-        return budgetingDetailDao.getNextId();
-    }
-    private String nextBudgetingPengadaanId(){
-        return budgetingPengadaanDao.getNextId();
-    }
-
 
     public void setBudgetingDao(BudgetingDao budgetingDao) {
         this.budgetingDao = budgetingDao;

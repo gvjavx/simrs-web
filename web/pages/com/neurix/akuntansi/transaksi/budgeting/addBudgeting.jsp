@@ -232,8 +232,18 @@
     var listOfCoa = [];
     $( document ).ready(function() {
 
+        chekTipe();
     });
 
+    var tipe = '<s:property value="budgeting.tipe"/>';
+    var flagDisable = '<s:property value="budgeting.flagDisable"/>';
+
+    function chekTipe() {
+        if ("Y" == flagDisable){
+            $("#sel-tipe").attr('readonly',true);
+            $("#sel-tipe").val(tipe);
+        }
+    }
 
     // exemple : post('/contact/', {name: 'Johnny Bravo'});
     function post(path, params) {
