@@ -20,10 +20,10 @@
         $.subscribe('beforeProcessSave', function (event, data) {
             var idDepartment = document.getElementById("departmentId").value;
             var nameDepartment    = document.getElementById("departmentName1").value;
+            var kodering          = document.getElementById("kodering1").value;
 
 
-
-            if (nameDepartment != '' ) {
+            if (nameDepartment != '' && kodering) {
                 if (confirm('Do you want to Delete this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -128,6 +128,17 @@
                         <td>
                             <table>
                                 <s:textfield id="departmentName1" name="department.departmentName" readonly="true" required="true" disabled="false" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Kodering :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield id="kodering1" name="department.kodering" readonly="true" required="true" disabled="false" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>

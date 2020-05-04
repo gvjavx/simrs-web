@@ -96,7 +96,7 @@
 
 
 
-                <legend align="left">Add Tunjangan Strategis</legend>
+                <legend align="left">Add Tunjangan Fungsional</legend>
 
 
                 <table>

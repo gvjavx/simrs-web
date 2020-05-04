@@ -26,5 +26,7 @@ public interface PositionBo extends BaseMasterBo<Position> {
     public List<Position> searchPositionBiodataSysHistory(String divisiId) throws GeneralBOException;
 
     public ImPosition getPositionEntityById(String id) throws GeneralBOException;
+    public List<ImPosition> getPositionByString(String query) throws GeneralBOException;
 
+    List<Position> typeAheadPosition(String key) throws GeneralBOException;
 }

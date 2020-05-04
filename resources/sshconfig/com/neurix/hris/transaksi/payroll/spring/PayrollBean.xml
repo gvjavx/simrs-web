@@ -9,6 +9,10 @@
           p:dataSource-ref="dataSource"
     />
 
+    <bean id="viewPayrolController" class="com.neurix.hris.mobileapi.ViewPayrollController"
+          p:payrollBoProxy-ref="payrollBoProxy"
+    />
+
     <bean id="payrollAction" class="com.neurix.hris.transaksi.payroll.action.PayrollAction"
           p:payrollBoProxy-ref="payrollBoProxy"
     />

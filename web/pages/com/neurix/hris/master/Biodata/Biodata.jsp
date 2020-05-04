@@ -127,6 +127,82 @@
             }
         });
 
+        $.subscribe('beforeProcessSaveStudy2', function (event, data){
+            if (confirm('Do you want to save this record?')){
+                event.originalEvent.options.submit = true;
+                $('#modal-edit').modal('hide');
+                $('#myFormDocument')[0].reset();
+                alert('Record has been Saved successfully.');
+                var nip = document.getElementById("nip1").value;
+                loadStudy(nip);
+            } else{
+                event.originalEvent.options.submit = false;
+            }
+        });
+
+        $.subscribe('successDialogDocument2', function(event, data){
+            var nip = document.getElementById("nip1").value;
+            loadStudy(nip);
+        });
+
+        $.subscribe('beforeProcessSaveStudy1', function (event, data){
+            if (confirm('Do you want to save this record?')){
+                event.originalEvent.options.submit = true;
+                $('#modal-edit-study').modal('hide');
+                $('#myFormDocument1')[0].reset();
+                alert('Record has been Saved successfully.');
+//                var nip = document.getElementById("nip1").value;
+//                loadSessionStudy();
+//                loadStudy(nip);
+            } else{
+                event.originalEvent.options.submit = false;
+            }
+        });
+
+        $.subscribe('successDialogDocument1', function(event, data){
+//            var nip = document.getElementById("nip1").value;
+//                loadSessionStudy();
+//            loadStudy(nip);
+            <s:if test="isAdd()">
+                loadSessionStudy();
+            </s:if>
+            <s:else>
+                var nip = document.getElementById("nip1").value;
+                loadStudy(nip);
+            </s:else>
+        });
+
+        $.subscribe('beforeProcessSaveStudy', function (event, data){
+            if (confirm('Do you want to save this record?')){
+                event.originalEvent.options.submit = true;
+                $('#modal-edit').modal('hide');
+                $('#myFormDocument')[0].reset();
+                alert('Record has been Saved successfully.');
+//                loadSessionStudy();
+
+                <s:if test="isAdd()">
+                    loadSessionStudy();
+                </s:if>
+                <s:else>
+                    var nip = document.getElementById("nip1").value;
+                    loadStudy(nip);
+                </s:else>
+            } else{
+                event.originalEvent.options.submit = false;
+            }
+        });
+
+        $.subscribe('successDialogDocument', function(event, data){
+//            loadSessionStudy();
+            <s:if test="isAdd()">
+                loadSessionStudy();
+            </s:if>
+            <s:else>
+                var nip = document.getElementById("nip1").value;
+                loadStudy(nip);
+            </s:else>
+        });
+
         $.subscribe('beforeProcessDelete', function (event, data) {
             if (confirm('Do you want to delete this record ?')) {
                 event.originalEvent.options.submit = true;
@@ -308,22 +384,35 @@
                                     </td>
                                 </tr>
 
-                                <tr>
-                                    <td>
-                                        <label class="control-label"><small>Jumlah Anak * :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:if test="isDelete()">
+                                <s:if test="isDelete()">
+                                    <tr>
+                                        <td>
+                                            <label class="control-label"><small>Jumlah Anak :</small></label>
+                                        </td>
+                                        <td>
+                                            <table>
                                                 <s:textfield type="number" id="jumlahAnak" name="biodata.jumlahAnak" readonly="true" required="true" disabled="false" cssClass="form-control"/>
-                                            </s:if>
-                                            <s:else>
-                                                <s:textfield type="number" id="jumlahAnak" name="biodata.jumlahAnak" readonly="false" required="true" disabled="false" cssClass="form-control"/>
-                                            </s:else>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </s:if>
 
-                                        </table>
-                                    </td>
-                                </tr>
+                                <%--<tr>--%>
+                                    <%--<td>--%>
+                                        <%--<label class="control-label"><small>Jumlah Anak * :</small></label>--%>
+                                    <%--</td>--%>
+                                    <%--<td>--%>
+                                        <%--<table>--%>
+                                            <%--<s:if test="isDelete()">--%>
+                                                <%--<s:textfield type="number" id="jumlahAnak" name="biodata.jumlahAnak" readonly="true" required="true" disabled="false" cssClass="form-control"/>--%>
+                                            <%--</s:if>--%>
+                                            <%--<s:else>--%>
+                                                <%--<s:textfield type="number" id="jumlahAnak" name="biodata.jumlahAnak" readonly="false" required="true" disabled="false" cssClass="form-control"/>--%>
+                                            <%--</s:else>--%>
+
+                                        <%--</table>--%>
+                                    <%--</td>--%>
+                                <%--</tr>--%>
 
                                 <tr>
                                     <td>
@@ -397,109 +486,207 @@
                                                 <s:textfield cssStyle="text-align: left;"
                                                              cssClass="form-control" id="tanggalPensiun" name="biodata.stTanggalPensiun" />
                                             </s:else>
-
                                         </table>
-
                                     </td>
-
                                 </tr>
 
-                                <tr>
-                                    <td>
-                                        <label class="control-label"><small>Unit * :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
+                                <s:if test="isDelete()">
+                                    <tr>
+                                        <td>
+                                            <label class="control-label"><small>Unit * :</small></label>
+                                        </td>
+                                        <td>
+                                            <table>
+                                                <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                                <s:if test="isDelete()">
+                                                    <s:select list="#initComboBranch.listOfComboBranch" id="branch1" name="biodata.branch" disabled="true"
+                                                              listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                </s:if>
+                                                <s:else>
+                                                    <%--<s:select list="#initComboBranch.listOfComboBranch" id="branch1" name="biodata.branch" onchange="listPosisi()"--%>
+                                                    <%--listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
+
+                                                    <s:if test='biodata.branch == "KP"'>
+                                                        <s:select list="#initComboBranch.listOfComboBranch" id="branch1" name="biodata.branch" onchange="listPosisi()"
+                                                                  listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                    </s:if>
+                                                    <s:else>
+                                                        <s:select list="#initComboBranch.listOfComboBranch" id="branch1" name="biodata.branch" disabled="true"
+                                                                  listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                        <s:hidden id="branchId" name="biodata.branch"/>
+                                                    </s:else>
+
+                                                </s:else>
+                                                <s:textfield type="text" cssStyle="display: none" id="posisi2" name="biodata.positionId2"/>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </s:if>
+                                <s:else>
+                                    <div style="display: none" class="form-group">
+                                        <label class="control-label col-sm-3" >Unit : </label>
+                                        <div class="col-sm-8">
                                             <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                                            <s:if test="isDelete()">
-                                                <s:select list="#initComboBranch.listOfComboBranch" id="branch1" name="biodata.branch" disabled="true"
-                                                          listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                                            </s:if>
-                                            <s:else>
+                                            <s:if test='biodata.branch == "KP"'>
                                                 <s:select list="#initComboBranch.listOfComboBranch" id="branch1" name="biodata.branch" onchange="listPosisi()"
                                                           listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                            </s:if>
+                                            <s:else>
+                                                <s:select list="#initComboBranch.listOfComboBranch" id="branch1" name="biodata.branch" disabled="true"
+                                                          listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                <s:hidden id="branchId" name="biodata.branch"/>
                                             </s:else>
                                             <s:textfield type="text" cssStyle="display: none" id="posisi2" name="biodata.positionId2"/>
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
+                                        </div>
+                                    </div>
+                                </s:else>
+
+                                <s:if test="isDelete()">
+                                    <tr>
+                                        <td>
+                                            <label class="control-label"><small>Bidang :</small></label>
+                                        </td>
+                                        <td>
+                                            <table>
+                                                <s:action id="comboDivisi" namespace="/department" name="searchDepartment_department"/>
+                                                <s:if test="isDelete()">
+                                                    <s:select list="#comboDivisi.listComboDepartment" id="divisi1" name="biodata.divisi" disabled="true" readonly="true"
+                                                              listKey="departmentId" listValue="departmentName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
+                                                </s:if>
+                                                <s:else>
+                                                    <s:select list="#comboDivisi.listComboDepartment" id="divisi1" name="biodata.divisi" onchange="listPosisi()"
+                                                              listKey="departmentId" listValue="departmentName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
+                                                </s:else>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </s:if>
+                                <s:else>
+                                    <div style="display: none" class="form-group">
                                         <label class="control-label"><small>Bidang :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
+                                        <div class="col-sm-8">
                                             <s:action id="comboDivisi" namespace="/department" name="searchDepartment_department"/>
-                                            <s:if test="isDelete()">
-                                                <s:select list="#comboDivisi.listComboDepartment" id="divisi1" name="biodata.divisi" disabled="true" readonly="true"
-                                                          listKey="departmentId" listValue="departmentName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
-                                            </s:if>
-                                            <s:else>
-                                                <s:select list="#comboDivisi.listComboDepartment" id="divisi1" name="biodata.divisi" onchange="listPosisi()"
-                                                          listKey="departmentId" listValue="departmentName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
-                                            </s:else>
-                                        </table>
-                                    </td>
-                                </tr>
+                                            <s:select list="#comboDivisi.listComboDepartment" id="divisi1" name="biodata.divisi" onchange="listPosisi()"
+                                                      listKey="departmentId" listValue="departmentName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
+                                        </div>
+                                    </div>
+                                </s:else>
 
-                                <tr>
-                                    <td>
+                                <s:if test="isDelete()">
+                                    <tr>
+                                        <td>
+                                            <label class="control-label"><small>Jabatan :</small></label>
+                                        </td>
+                                        <td>
+                                            <table>
+                                                <s:action id="comboPosition" namespace="/admin/position" name="searchPosition_position"/>
+                                                <s:if test="isDelete()">
+                                                    <s:select list="#comboPosition.listOfComboPosition" id="positionId1" name="biodata.positionId" disabled="true"
+                                                              listKey="positionId" listValue="positionName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                </s:if>
+                                                <s:else>
+                                                    <select id="positionId1" name="biodata.positionId" class="form-control"></select>
+                                                </s:else>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </s:if>
+                                <s:else>
+                                    <div style="display: none" class="form-group">
                                         <label class="control-label"><small>Jabatan :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
+                                        <div class="col-sm-8">
                                             <s:action id="comboPosition" namespace="/admin/position" name="searchPosition_position"/>
-                                            <s:if test="isDelete()">
-                                                <s:select list="#comboPosition.listOfComboPosition" id="positionId1" name="biodata.positionId" disabled="true"
-                                                          listKey="positionId" listValue="positionName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                                            </s:if>
-                                            <s:else>
-                                                <select id="positionId1" name="biodata.positionId" class="form-control"></select>
-                                            </s:else>
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label class="control-label"><small>Profesi :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:action id="comboProfesi" namespace="/profesi" name="searchProfesi_profesi"/>
-                                            <s:if test="isDelete()">
-                                                <s:select list="#comboProfesi.listComboProfesi" id="profesi1" name="biodata.profesiId" disabled="true" readonly="true"
-                                                          listKey="profesiId" listValue="profesiName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
-                                            </s:if>
-                                            <s:else>
-                                                <s:select list="#comboProfesi.listComboProfesi" id="profesi1" name="biodata.profesiId"
-                                                          listKey="profesiId" listValue="profesiName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
-                                            </s:else>
-                                        </table>
-                                    </td>
-                                </tr>
+                                            <select id="positionId1" name="biodata.positionId" class="form-control"></select>
+                                        </div>
+                                    </div>
+                                </s:else>
 
-                                <tr>
-                                    <td>
+                                <s:if test="isDelete()">
+                                    <tr>
+                                        <td>
+                                            <label class="control-label"><small>Profesi :</small></label>
+                                        </td>
+                                        <td>
+                                            <table>
+                                                <s:action id="comboProfesi" namespace="/profesi" name="searchProfesi_profesi"/>
+                                                <s:if test="isDelete()">
+                                                    <s:select list="#comboProfesi.listComboProfesi" id="profesi1" name="biodata.profesiId" disabled="true" readonly="true"
+                                                              listKey="profesiId" listValue="profesiName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
+                                                </s:if>
+                                                <s:else>
+                                                    <s:select list="#comboProfesi.listComboProfesi" id="profesi1" name="biodata.profesiId"
+                                                              listKey="profesiId" listValue="profesiName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
+                                                </s:else>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </s:if>
+                                <s:else>
+                                    <div style="display: none" class="form-group">
+                                        <label class="control-label"><small>Profesi :</small></label>
+                                        <div class="col-sm-8">
+                                            <s:action id="comboProfesi" namespace="/profesi" name="searchProfesi_profesi"/>
+                                            <s:select list="#comboProfesi.listComboProfesi" id="profesi1" name="biodata.profesiId"
+                                                      listKey="profesiId" listValue="profesiName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
+                                        </div>
+                                    </div>
+                                </s:else>
+
+                                <s:if test="isDelete()">
+                                    <tr>
+                                        <td>
+                                            <label class="control-label"><small>PJS :</small></label>
+                                        </td>
+                                        <td>
+                                            <table>
+                                                <input type="checkbox" id="pjs" class="checkZakat" disabled onchange="cekPjs()" />
+                                                <s:textfield cssStyle="display: none" id="flagPjs" name="biodata.pjs"  />
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </s:if>
+                                <s:elseif test="isAdd()">
+                                    <div style="display: none" class="form-group">
                                         <label class="control-label"><small>PJS :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:if test="isDelete()">
-                                                <input type="checkbox" id="pjs" class="checkZakat" disabled onchange="cekPjs()" />
-                                                <s:textfield cssStyle="display: none" id="flagPjs" name="biodata.pjs"  />
-                                            </s:if>
-                                            <s:elseif test="isAdd()">
-                                                <input type="checkbox" id="pjs" class="checkZakat" onchange="cekPjs()" />
-                                                <s:textfield cssStyle="display: none" id="flagPjs" name="biodata.pjs"  />
-                                            </s:elseif>
-                                            <s:else>
-                                                <input type="checkbox" id="pjs" class="checkZakat" disabled onchange="cekPjs()" />
-                                                <s:textfield cssStyle="display: none" id="flagPjs" name="biodata.pjs"  />
+                                        <div class="col-sm-8">
+                                            <input type="checkbox" id="pjs" class="checkZakat" onchange="cekPjs()" />
+                                            <s:textfield cssStyle="display: none" id="flagPjs" name="biodata.pjs"  />
+                                        </div>
+                                    </div>
+                                </s:elseif>
+                                <s:else>
+                                    <div style="display: none" class="form-group">
+                                        <label class="control-label"><small>PJS :</small></label>
+                                        <div class="col-sm-8">
+                                            <input type="checkbox" id="pjs" class="checkZakat" disabled onchange="cekPjs()" />
+                                            <s:textfield cssStyle="display: none" id="flagPjs" name="biodata.pjs"  />
                                                 <%--<s:hidden name="biodata.pjs"/>--%>
-                                            </s:else>
-                                        </table>
-                                    </td>
-                                </tr>
+                                        </div>
+                                    </div>
+                                </s:else>
+
+                                <%--<tr>--%>
+                                    <%--<td>--%>
+                                        <%--<label class="control-label"><small>PJS :</small></label>--%>
+                                    <%--</td>--%>
+                                    <%--<td>--%>
+                                        <%--<table>--%>
+                                            <%--<s:if test="isDelete()">--%>
+                                                <%--<input type="checkbox" id="pjs" class="checkZakat" disabled onchange="cekPjs()" />--%>
+                                                <%--<s:textfield cssStyle="display: none" id="flagPjs" name="biodata.pjs"  />--%>
+                                            <%--</s:if>--%>
+                                            <%--<s:elseif test="isAdd()">--%>
+                                                <%--<input type="checkbox" id="pjs" class="checkZakat" onchange="cekPjs()" />--%>
+                                                <%--<s:textfield cssStyle="display: none" id="flagPjs" name="biodata.pjs"  />--%>
+                                            <%--</s:elseif>--%>
+                                            <%--<s:else>--%>
+                                                <%--<input type="checkbox" id="pjs" class="checkZakat" disabled onchange="cekPjs()" />--%>
+                                                <%--<s:textfield cssStyle="display: none" id="flagPjs" name="biodata.pjs"  />--%>
+                                                <%--&lt;%&ndash;<s:hidden name="biodata.pjs"/>&ndash;%&gt;--%>
+                                            <%--</s:else>--%>
+                                        <%--</table>--%>
+                                    <%--</td>--%>
+                                <%--</tr>--%>
 
                                 <tr>
                                     <td>
@@ -920,8 +1107,8 @@
                                             <s:if test="isDelete()">
                                                 <s:select list="#initComboTipe.listComboGolonganDapen" id="golongan2" name="biodata.golonganDapenId"
                                                           listKey="golonganDapenId" listValue="golonganDapenName" headerKey="" headerValue="[Select one]" cssClass="form-control" disabled="true" readonly="true"/>
-                                                <s:textfield id="golongan2" name="biodata.golonganDapenId" required="true" disabled="true" cssClass="form-control" readonly="true"/>
-
+                                                <%--<s:textfield id="golongan2" name="biodata.golonganDapenId" required="true" disabled="true" cssClass="form-control" readonly="true"/>--%>
+                                                <s:hidden name="biodata.golonganDapenId"/>
                                             </s:if>
                                             <s:else>
                                                 <s:select list="#initComboTipe.listComboGolonganDapen" id="golongan2" name="biodata.golonganDapenId"
@@ -1451,8 +1638,8 @@
 
 </body>
 
-<!-- Modal Edit-->
-<div id="modal-edit" class="modal fade" role="dialog">
+
+<div id="modal-edit-study" class="modal fade" role="dialog">
     <div class="modal-dialog" style="width: 450px">
 
         <!-- Modal content-->
@@ -1462,19 +1649,26 @@
                 <h4 class="modal-title">Edit Study</h4>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" id="myForm">
+                <s:url id="urlProcess" namespace="/study" action="editStudy_study"
+                       includeContext="false"/>
+                <s:form id="myFormDocument1" enctype="multipart/form-data" method="post" action="%{urlProcess}"
+                        theme="simple" cssClass="form-horizontal">
+                    <s:hidden name="addOrEdit"/>
+                    <s:hidden id="add" name="add"/>
+                    <s:hidden name="delete"/>
 
+                    <s:if test="isAddOrEdit()">
                     <div style="display: none" class="form-group">
                         <label class="control-label col-sm-3" >Id : </label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="studyId" name="txtStdudyName">
+                            <input type="text" class="form-control" id="studyId" name="study.studyId">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="control-label col-sm-4" for="gender">Type Study :</label>
                         <div class="col-sm-8">
-                            <select class="form-control" id="studyTypeStudy" name="txtGender">
+                            <select class="form-control" id="studyTypeStudy" name="study.typeStudy">
                                 <option value="SD">SD</option>
                                 <option value="SMP">SMP</option>
                                 <option value="SMA">SMA</option>
@@ -1491,14 +1685,14 @@
                     <div class="form-group">
                         <label class="control-label col-sm-4" >Study Name : </label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="studyName" name="txtStdudyName">
+                            <input type="text" class="form-control" id="studyName" name="study.studyName">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="control-label col-sm-4" for="gender">Fakultas :</label>
                         <div class="col-sm-8">
-                            <select class="form-control" id="studyFakultas" >
+                            <select class="form-control" id="studyFakultas1" name="study.studyFakultas" >
                             </select>
                         </div>
                     </div>
@@ -1506,47 +1700,187 @@
                     <div class="form-group">
                         <label class="control-label col-sm-4" >Program Studi : </label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="pendidikanProgramStudi" name="txtStdudyName">
+                            <input type="text" class="form-control" id="pendidikanProgramStudi" name="study.programStudy">
                         </div>
                     </div>
 
-                    <%--<div class="form-group">
+                    <div class="form-group">
                         <label class="control-label col-sm-4" >Tahun Awal : </label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="studyTahunAwal" name="txtStdudyName">
+                            <input type="text" class="form-control" id="studyTahunAwal" name="study.tahunAwal">
                         </div>
-                    </div>--%>
+                    </div>
 
                     <div class="form-group">
                         <label class="control-label col-sm-4" >Tahun Lulus : </label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="studyTahunAkhir" name="txtStdudyName">
+                            <input type="text" class="form-control" id="studyTahunAkhir" name="study.tahunAkhir">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-4">Ijazah (Jpeg) : </label>
+
+                        <div class="col-sm-8">
+                            <input type="file" id="file" class="form-control" name="fileUpload"/>
+                            <input type="text" id="cpiddoc" class="form-control" accept="application/pdf,image/jpeg"
+                                   name="study.uploadFile" readonly />
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="myFormDocument1"
+                                   id="saveDocument1" name="save" onBeforeTopics="beforeProcessSaveStudy1"
+                                   onCompleteTopics="closeDialog,successDialogDocument1"
+                                   onSuccessTopics="successDialogDocument1" onErrorTopics="errorDialog">
+                            <i class="fa fa-check"></i>
+                            Save
+                        </sj:submit>
+                        <a type="button" class="btn btn-default" data-dismiss="modal">Close</a>
+                    </div>
+                    </s:if>
+                </s:form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal Edit-->
+<div id="modal-edit" class="modal fade" role="dialog">
+    <div class="modal-dialog" style="width: 450px">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Edit Study</h4>
+            </div>
+            <div class="modal-body">
+                <s:url id="urlProcess" namespace="/study" action="addStudy_study"
+                       includeContext="false"/>
+                <s:form id="myFormDocument" enctype="multipart/form-data" method="post" action="%{urlProcess}" proses="addStudy"
+                        theme="simple" cssClass="form-horizontal">
+                    <s:hidden name="addOrEdit"/>
+                    <s:hidden id="add" name="add"/>
+                    <s:hidden name="delete"/>
+                    <s:hidden name="biodata.nip"/>
+
+                    <s:if test="isAddOrEdit()">
+                    <div style="display: none" class="form-group">
+                        <label class="control-label col-sm-3" >Id : </label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="studyId" name="txtStdudyName">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" for="gender">Type Study :</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" id="studyTypeStudy" name="study.typeStudy">
+                                <option value="SD">SD</option>
+                                <option value="SMP">SMP</option>
+                                <option value="SMA">SMA</option>
+                                <option value="D1">Diploma D1</option>
+                                <option value="D2">Diploma D2</option>
+                                <option value="D3">Diploma D3</option>
+                                <option value="S1">Sarjana (S1)</option>
+                                <option value="S2">Sarjana (S2)</option>
+                                <option value="S3">Sarjana (S3)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Study Name : </label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="studyName" name="study.studyName">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" for="gender">Fakultas :</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" id="studyFakultas" name="study.studyFakultas" >
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Program Studi : </label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="pendidikanProgramStudi" name="study.programStudy">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Tahun Awal : </label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="studyTahunAwal" name="study.tahunAwal">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Tahun Lulus : </label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="studyTahunAkhir" name="study.tahunAkhir">
                         </div>
                     </div>
                     <%--<div class="form-group">--%>
-                        <%--<label class="control-label col-sm-4" >Ijazah (Jpg): </label>--%>
-                        <%--<div class="col-sm-8">--%>
-                            <%--<s:file id="fileUploadIjazah" name="fileUploadIjazah" cssClass="form-control" />--%>
-                        <%--</div>--%>
+                    <%--<label class="control-label col-sm-4" >Ijazah (Jpg): </label>--%>
+                    <%--<div class="col-sm-8">--%>
+                    <%--<s:file id="fileUploadIjazah" name="fileUploadIjazah" cssClass="form-control" />--%>
                     <%--</div>--%>
+                    <%--</div>--%>
+
                     <div class="form-group">
-                        <label style="margin-top: 7px">Ijazah (Jpg): </label>
-                        <div class="input-group" id="img_file">
-                              <span class="input-group-btn">
-                              <span class="btn btn-default btn-file">
-                               Browse… <s:file id="imgInp" accept=".jpg" name="fileUploadIjazah"
-                                               onchange="$('#img_file').css('border','')"></s:file>
-                                                    </span>
-                                                    </span>
-                            <input type="text" class="form-control" readonly>
+                        <label class="control-label col-sm-4">Ijazah (Jpeg) : </label>
+
+                        <div class="col-sm-8">
+                            <input type="file" id="file" class="form-control" name="fileUpload"/>
+                            <input type="text" id="cpiddoc" class="form-control" accept="application/pdf,image/jpeg"
+                                   name="study.uploadFile" readonly style="display: none;"/>
                         </div>
-                        <canvas id="img_ijazah_canvas" style="border: solid 1px #ccc"></canvas>
                     </div>
 
-                </form>
+                        <div class="modal-footer">
+                            <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="myFormDocument"
+                                       id="saveDocument" name="save" onBeforeTopics="beforeProcessSaveStudy"
+                                       onCompleteTopics="closeDialog,successDialogDocument"
+                                       onSuccessTopics="successDialogDocument" onErrorTopics="errorDialog">
+                                <i class="fa fa-check"></i>
+                                Save
+                            </sj:submit>
+                            <a type="button" class="btn btn-default" data-dismiss="modal">Close</a>
+                        </div>
+                    </s:if>
+                </s:form>
+
+                <%--<form class="form-horizontal" id="myForm">--%>
+
+                <%--</form>--%>
+            </div>
+            <%--<div class="modal-footer">--%>
+                <%--<button id="btnSave" type="button" class="btn btn-default btn-success">Simpan</button>--%>
+                <%--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>--%>
+            <%--</div>--%>
+        </div>
+    </div>
+</div>
+
+<div id="modal-view-document" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">View Document</h4>
+            </div>
+            <div class="modal-body">
+                <img src="" class="img-responsive" id="my-image">
             </div>
             <div class="modal-footer">
-                <button id="btnSave" type="button" class="btn btn-default btn-success">Simpan</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -2375,12 +2709,12 @@
                         </div>
                     </div>
 
-                    <%--<div class="form-group">
+                    <div class="form-group">
                         <label class="control-label col-sm-4" >Tahun Awal : </label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control" id="studyTahunAwalDelete" readonly name="txtStdudyName">
                         </div>
-                    </div>--%>
+                    </div>
 
                     <div class="form-group">
                         <label class="control-label col-sm-4" >Tahun Lulus : </label>
@@ -2620,14 +2954,14 @@
         console.log(jenis);
         if (pathFoto != '') {
             if (pathFoto == 'null') {
-                $('#detailImg').attr('src', '/simrs/pages/upload/image/profile/man_employee.png');
+                $('#detailImg').attr('src', '/go-medsys/pages/upload/image/profile/man_employee.png');
                 $('#detailImg').attr('alt', nama);
             } else {
                 $('#detailImg').attr('src', pathFoto);
                 $('#detailImg').attr('alt', nama);
             }
         } else {
-            $('#detailImg').attr('src', '/simrs/pages/upload/image/profile/man_employee.png');
+            $('#detailImg').attr('src', '/go-medsys/pages/upload/image/profile/man_employee.png');
             $('#detailImg').attr('alt', nama);
         }
         var zakat = document.getElementById("flagZakat").value;
@@ -2681,7 +3015,7 @@
             document.getElementById("profesional").checked = false;
         }
 
-        function loadStudy(nip) {
+        window.loadStudy= function(nip){
             $('.studyTable').find('tbody').remove();
             $('.studyTable').find('thead').remove();
             dwr.engine.setAsync(false);
@@ -2693,10 +3027,11 @@
                         "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc'>Type Study</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc''>Study Name</th>" +
-                        /*"<th style='text-align: center; background-color:  #3c8dbc''>Tahun Awal</th>" +*/
                         "<th style='text-align: center; background-color:  #3c8dbc''>Fakultas</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc''>Program Studi</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc''>Tahun Awal</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc''>Tahun Lulus</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc''>Ijazah</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
                         "</tr></thead>";
@@ -2708,8 +3043,9 @@
                         "<th style='text-align: center; background-color:  #3c8dbc''>Study Name</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc''>Fakultas</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc''>Program Studi</th>" +
-                        /*"<th style='text-align: center; background-color:  #3c8dbc''>Tahun Awal</th>" +*/
+                        "<th style='text-align: center; background-color:  #3c8dbc''>Tahun Awal</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc''>Tahun Lulus</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc''>Ijazah</th>" +
                         "</tr></thead>";
                 </s:else>
 
@@ -2717,14 +3053,22 @@
                 var i = i;
                 $.each(listdata, function (i, item) {
                     <s:if test="isAddOrEdit()">
+                    console.log("Tes 2 "+item.studyName);
                     tmp_table += '<tr style="font-size: 12px;" ">' +
                             '<td >' + (i + 1) + '</td>' +
                             '<td >' + item.typeStudy + '</td>' +
                             '<td align="center">' + item.studyName + '</td>' +
                             '<td align="center">' + item.fakultasName + '</td>' +
                             '<td align="center">' + item.programStudy + '</td>' +
-                            /*'<td align="center">' + item.tahunAwal + '</td>' +*/
+                            '<td align="center">' + item.tahunAwal + '</td>' +
                             '<td align="center">' + item.tahunAkhir + '</td>' +
+
+                            '<td align="center">' +
+                            "<a href='javascript:;' class ='item-view-document' data ='" + item.uploadFile + "' judul ='" + item.studyName + "' >" +
+                            "<img border='0' src='<s:url value='/pages/images/view.png'/>' name='icon_view'>" +
+                            '</a>' +
+                            '</td>' +
+
                             '<td align="center">' +
                             "<a href='javascript:;' class ='item-edit' data ='" + item.studyId + "' >" +
                             "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
@@ -2742,9 +3086,96 @@
                             '<td >' + (i + 1) + '</td>' +
                             '<td >' + item.typeStudy + '</td>' +
                             '<td align="center">' + item.studyName + '</td>' +
+                            '<td align="center">' + item.fakultasName + '</td>' +
+                            '<td align="center">' + item.programStudy + '</td>' +
+                            '<td align="center">' + item.tahunAwal + '</td>' +
+                            '<td align="center">' + item.tahunAkhir + '</td>' +
+                            "</tr>";
+                    </s:else>
+                });
+                $('.studyTable').append(tmp_table);
+            });
+        };
+
+        function loadStudy(nip) {
+            $('.studyTable').find('tbody').remove();
+            $('.studyTable').find('thead').remove();
+            dwr.engine.setAsync(false);
+            var tmp_table = "";
+            StudyAction.searchData(nip, function (listdata) {
+
+                <s:if test="isAddOrEdit()">
+                tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc'>Type Study</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc'>Study Name</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc'>Fakultas</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc'>Program Studi</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc'>Tahun Awal</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc'>Tahun Lulus</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc'>Ijazah</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
+                        "</tr></thead>";
+                </s:if>
+                <s:else>
+                tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc'>Type Study</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc''>Study Name</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc''>Fakultas</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc''>Program Studi</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc''>Tahun Awal</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc''>Tahun Lulus</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc''>Ijazah</th>" +
+                        "</tr></thead>";
+                </s:else>
+
+
+                var i = i;
+                $.each(listdata, function (i, item) {
+                    <s:if test="isAddOrEdit()">
+                    tmp_table += '<tr style="font-size: 12px;" ">' +
+                            '<td >' + (i + 1) + '</td>' +
+                            '<td >' + item.typeStudy + '</td>' +
+                            '<td align="center">' + item.studyName + '</td>' +
+                            '<td align="center">' + item.fakultasName + '</td>' +
+                            '<td align="center">' + item.programStudy + '</td>' +
                             '<td align="center">' + item.tahunAwal + '</td>' +
                             '<td align="center">' + item.tahunAkhir + '</td>' +
 
+                            '<td align="center">' +
+                            "<a href='javascript:;' class ='item-view-document' data ='" + item.uploadFile + "' judul ='" + item.studyName + "' >" +
+                            "<img border='0' src='<s:url value='/pages/images/view.png'/>' name='icon_view'>" +
+                            '</a>' +
+                            '</td>' +
+
+                            '<td align="center">' +
+                            "<a href='javascript:;' class ='item-edit' data ='" + item.studyId + "' >" +
+                            "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
+                            '</a>' +
+                            '</td>' +
+                            '<td align="center">' +
+                            "<a href='javascript:;' class ='item-delete' data ='" + item.studyId + "' >" +
+                            "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>" +
+                            '</a>' +
+                            '</td>' +
+                            "</tr>";
+                    </s:if>
+                    <s:else>
+                    tmp_table += '<tr style="font-size: 12px;" ">' +
+                            '<td >' + (i + 1) + '</td>' +
+                            '<td >' + item.typeStudy + '</td>' +
+                            '<td align="center">' + item.studyName + '</td>' +
+                            '<td align="center">' + item.fakultasName + '</td>' +
+                            '<td align="center">' + item.programStudy + '</td>' +
+                            '<td align="center">' + item.tahunAwal + '</td>' +
+                            '<td align="center">' + item.tahunAkhir + '</td>' +
+                            '<td align="center">' +
+                            "<a href='javascript:;' class ='item-view-document' data ='" + item.uploadFile + "' judul ='" + item.studyName + "' >" +
+                            "<img border='0' src='<s:url value='/pages/images/view.png'/>' name='icon_view'>" +
+                            '</a>' +
+                            '</td>' +
                             "</tr>";
                     </s:else>
                 });
@@ -3128,6 +3559,53 @@
             });
 
         }
+        window.loadSessionStudy= function(){
+            $('.studyTable').find('tbody').remove();
+            $('.studyTable').find('thead').remove();
+            dwr.engine.setAsync(false);
+            var tmp_table = "";
+            StudyAction.searchDataSession(function (listdata) {
+
+                tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc'>Type Study</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc''>Study Name</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc''>Tahun Awal</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc''>Tahun Lulus</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc''>Ijazah</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
+                        "</tr></thead>";
+                var i = i;
+                $.each(listdata, function (i, item) {
+                    tmp_table += '<tr style="font-size: 12px;" ">' +
+                            '<td >' + (i + 1) + '</td>' +
+                            '<td >' + item.typeStudy + '</td>' +
+                            '<td align="center">' + item.studyName + '</td>' +
+                            '<td align="center">' + item.tahunAwal + '</td>' +
+                            '<td align="center">' + item.tahunAkhir + '</td>' +
+
+                            '<td align="center">' +
+                            "<a href='javascript:;' class ='item-view-document' data ='" + item.uploadFile + "' judul ='" + item.studyName + "' >" +
+                            "<img border='0' src='<s:url value='/pages/images/view.png'/>' name='icon_view'>" +
+                            '</a>' +
+                            '</td>' +
+
+                            '<td align="center">' +
+                            "<a href='javascript:;' class ='item-edit' data ='" + item.studyId + "' >" +
+                            "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
+                            '</a>' +
+                            '</td>' +
+                            '<td align="center">' +
+                            "<a href='javascript:;' class ='item-delete' data ='" + item.studyId + "' >" +
+                            "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>" +
+                            '</a>' +
+                            '</td>' +
+                            "</tr>";
+                });
+                $('.studyTable').append(tmp_table);
+            });
+        };
 
         function loadSessionStudy() {
             $('.studyTable').find('tbody').remove();
@@ -3140,8 +3618,9 @@
                         "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc'>Type Study</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc''>Study Name</th>" +
-                        /*"<th style='text-align: center; background-color:  #3c8dbc''>Tahun Awal</th>" +*/
+                        "<th style='text-align: center; background-color:  #3c8dbc''>Tahun Awal</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc''>Tahun Lulus</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc''>Ijazah</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
                         "</tr></thead>";
@@ -3151,8 +3630,14 @@
                             '<td >' + (i + 1) + '</td>' +
                             '<td >' + item.typeStudy + '</td>' +
                             '<td align="center">' + item.studyName + '</td>' +
-                            /*'<td align="center">' + item.tahunAwal + '</td>' +*/
+                            '<td align="center">' + item.tahunAwal + '</td>' +
                             '<td align="center">' + item.tahunAkhir + '</td>' +
+                            '<td align="center">' +
+                            "<a href='javascript:;' class ='item-view-document' data ='" + item.uploadFile + "' judul ='" + item.studyName + "' >" +
+                            "<img border='0' src='<s:url value='/pages/images/view.png'/>' name='icon_view'>" +
+                            '</a>' +
+                            '</td>' +
+
                             '<td align="center">' +
                             "<a href='javascript:;' class ='item-edit' data ='" + item.studyId + "' >" +
                             "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
@@ -3391,7 +3876,7 @@
                     tmp_table += '<tr style="font-size: 12px;" ">' +
                             '<td >' + (i + 1 ) + '</td>' +
                             '<td >' + item.name + '</td>' +
-                            '<td align="center">' + item.statusKeluarga + '</td>' +
+                            '<td align="center">' + item.statusKeluargaName + '</td>' +
                             '<td align="center">' + item.gender + '</td>' +
                             '<td align="center">' + (myDate.getDate()) + ' - ' + ("0" + (myDate.getMonth() + 1)).slice(-2) + ' - ' + myDate.getFullYear() + '</td>' +
                                 /*'<td align="center">' + myDate.toTimeString("dd-mm-yy") + '</td>' +*/
@@ -3482,7 +3967,7 @@
                 } else {
                     if (confirm('Are you sure you want to save this Record?')) {
                         dwr.engine.setAsync(false);
-                        StudyAction.saveAdd(typeStudy, studyName, tahunAwal, tahunAkhir, function (listdata) {
+                        StudyAction.saveAdd(typeStudy, studyName, tahunAwal, tahunAkhir, programStudy, function (listdata) {
                             alert('Data Successfully Added');
                             $('#modal-edit').modal('hide');
                             $('#myForm')[0].reset();
@@ -3675,21 +4160,27 @@
                         }
 
                     }else {
-                        if (confirm('Apakah anda yakin ingin menyimpan data?')) {
-                            dwr.engine.setAsync(false);
-                            dwr.engine.beginBatch();
-                            BiodataAction.saveAddPengalaman(nip, branchId, posisiId, divisiId, profesiId, tanggal, tanggalKeluar, tipePegawaiId, golonganId, pjsFlag, aktifFlag,function (listdata) {
-                                alert('Data Berhasil Disimpan');
-                                $('#modal-pengalamanKerja').modal('hide');
-                                $('#myFormPengalaman')[0].reset();
-                                loadSessionPengalamanKerja();
-                            });
+                        if (aktifFlag == 'Y'){
+                            msg+="- Tanggal Selesai harus kosong apabila jabatan masih aktif\n";
+                            alert(msg);
+                            $('#pengalamanTanggalKeluar').val("");
+                        }else {
+                            if (confirm('Apakah anda yakin ingin menyimpan data?')) {
+                                dwr.engine.setAsync(false);
+                                dwr.engine.beginBatch();
+                                BiodataAction.saveAddPengalaman(nip, branchId, posisiId, divisiId, profesiId, tanggal, tanggalKeluar, tipePegawaiId, golonganId, pjsFlag, aktifFlag,function (listdata) {
+                                    alert('Data Berhasil Disimpan');
+                                    $('#modal-pengalamanKerja').modal('hide');
+                                    $('#myFormPengalaman')[0].reset();
+                                    loadSessionPengalamanKerja();
+                                });
 
-                            dwr.engine.endBatch({
-                                errorHandler:function(errorString, exception){
-                                    alert(exception+' Jabatan aktif sudah ada');
-                                }
-                            });
+                                dwr.engine.endBatch({
+                                    errorHandler:function(errorString, exception){
+                                        alert(exception+' Jabatan aktif sudah ada');
+                                    }
+                                });
+                            }
                         }
                     }
                 }
@@ -3734,22 +4225,50 @@
                             msg+="- Tipe Pegawai\n";
                         }
                         alert(msg+"Harus Diisi\n"+msg2);
-                    }else{
-                        console.log('yayaya');
-                        if (confirm('Are you sure you want to save this Record?')) {
-                            dwr.engine.setAsync(false);
+                    }else if(tanggalKeluar == ''){
+                        if (tanggalKeluar == ''){
+                            if(aktifFlag == 'N'){
+                                msg+="- Jabatan aktif harus 'YA' apabila Tanggal Selesai kosong\n";
+                                alert(msg);
+                            }else{
+                                if (confirm('Are you sure you want to save this Record?')) {
+                                    dwr.engine.setAsync(false);
 //                            BiodataAction.initEditPengalaman(id, nip, namaPerusahaan, posisiId, tanggalMasuk, tanggalKeluar, function (listdata) {
 //                                alert('Data Successfully Updated');
 //                                $('#modal-pengalamanKerja').modal('hide');
 //                                $('#myFormPengalaman')[0].reset();
 //                                loadSessionPengalamanKerja();
 //                            });
-                            BiodataAction.initEditPengalaman(id, nip, branchId, posisiId, divisiId, profesiId, tanggal, tanggalKeluar, tipePegawaiId, golonganId, pjsFlag, aktifFlag, function (listdata) {
-                                alert('Data Successfully Updated');
-                                $('#modal-pengalamanKerja').modal('hide');
-                                $('#myFormPengalaman')[0].reset();
-                                loadSessionPengalamanKerja();
-                            });
+                                    BiodataAction.initEditPengalaman(id, nip, branchId, posisiId, divisiId, profesiId, tanggal, tanggalKeluar, tipePegawaiId, golonganId, pjsFlag, aktifFlag, function (listdata) {
+                                        alert('Data Successfully Updated');
+                                        $('#modal-pengalamanKerja').modal('hide');
+                                        $('#myFormPengalaman')[0].reset();
+                                        loadSessionPengalamanKerja();
+                                    });
+                                }
+                            }
+                        }
+                    }else{
+                        if (aktifFlag == 'Y'){
+                            msg+="- Tanggal Selesai harus kosong apabila jabatan masih aktif\n";
+                            alert(msg);
+                            $('#pengalamanTanggalKeluar').val("");
+                        }else{
+                            if (confirm('Are you sure you want to save this Record?')) {
+                                dwr.engine.setAsync(false);
+//                            BiodataAction.initEditPengalaman(id, nip, namaPerusahaan, posisiId, tanggalMasuk, tanggalKeluar, function (listdata) {
+//                                alert('Data Successfully Updated');
+//                                $('#modal-pengalamanKerja').modal('hide');
+//                                $('#myFormPengalaman')[0].reset();
+//                                loadSessionPengalamanKerja();
+//                            });
+                                BiodataAction.initEditPengalaman(id, nip, branchId, posisiId, divisiId, profesiId, tanggal, tanggalKeluar, tipePegawaiId, golonganId, pjsFlag, aktifFlag, function (listdata) {
+                                    alert('Data Successfully Updated');
+                                    $('#modal-pengalamanKerja').modal('hide');
+                                    $('#myFormPengalaman')[0].reset();
+                                    loadSessionPengalamanKerja();
+                                });
+                            }
                         }
                     }
                 }
@@ -3821,16 +4340,23 @@
                         }
                     }
                     else{
-                        if (confirm('Are you sure you want to save this Record?')) {
-                            dwr.engine.setAsync(false);
-                            BiodataAction.saveAddDataPengalamaKerja(nip, branchId, divisiId, posisiId, tanggal,tanggalKeluar, tipePegawaiId,
-                                    golonganId, pjsFlag, perusahaanLain, bidangLain, jabatanLain, aktifFlag,profesiId,  function (listdata) {
-                                        alert('Data Successfully Added');
-                                        $('#modal-pengalamanKerja').modal('hide');
-                                        $('#myFormPengalaman')[0].reset();
-                                        loadPengalamanKerja(nip);
-                                    });
+                        if (aktifFlag == 'Y'){
+                            msg+="- Tanggal Selesai harus kosong apabila jabatan masih aktif\n";
+                            alert(msg);
+                            $('#pengalamanTanggalKeluar').val("");
+                        }else{
+                            if (confirm('Are you sure you want to save this Record?')) {
+                                dwr.engine.setAsync(false);
+                                BiodataAction.saveAddDataPengalamaKerja(nip, branchId, divisiId, posisiId, tanggal,tanggalKeluar, tipePegawaiId,
+                                        golonganId, pjsFlag, perusahaanLain, bidangLain, jabatanLain, aktifFlag,profesiId,  function (listdata) {
+                                            alert('Data Successfully Added');
+                                            $('#modal-pengalamanKerja').modal('hide');
+                                            $('#myFormPengalaman')[0].reset();
+                                            loadPengalamanKerja(nip);
+                                        });
+                            }
                         }
+
                     }
 
                 }
@@ -3876,15 +4402,28 @@
                         alert(msg+"Harus Diisi\n"+msg2);
                     }
                     else{
-                        if (confirm('Are you sure you want to save this Record?')) {
-                            dwr.engine.setAsync(false);
-                            BiodataAction.saveEditPengalamanKerja(id, nip, branchId, divisiId, posisiId, tanggal,tanggalKeluar, tipePegawaiId,
-                                    golonganId, perusahaanLain, bidangLain, jabatanLain, aktifFlag, function (listdata) {
-                                        alert('Data Successfully Updated');
-                                        $('#modal-pengalamanKerja').modal('hide');
-                                        $('#myFormPengalaman')[0].reset();
-                                        loadPengalamanKerja(nip);
-                                    });
+                        if (aktifFlag == 'Y'){
+                            msg+="- Tanggal Selesai harus kosong apabila jabatan masih aktif\n";
+                            alert(msg);
+                            $('#pengalamanTanggalKeluar').val("");
+                        }
+                        else{
+                            if (confirm('Are you sure you want to save this Record?')) {
+                                dwr.engine.setAsync(false);
+                                dwr.engine.beginBatch();
+                                BiodataAction.saveEditPengalamanKerja(id, nip, branchId, divisiId, posisiId, tanggal,tanggalKeluar, tipePegawaiId,
+                                        golonganId, perusahaanLain, bidangLain, jabatanLain, aktifFlag, function (listdata) {
+                                            alert('Data Successfully Updated');
+                                            $('#modal-pengalamanKerja').modal('hide');
+                                            $('#myFormPengalaman')[0].reset();
+                                            loadPengalamanKerja(nip);
+                                        });
+                                dwr.engine.endBatch({
+                                    errorHandler:function(errorString, exception){
+                                        alert('Jabatan aktif sudah ada');
+                                    }
+                                });
+                            }
                         }
                     }
                 }
@@ -4236,9 +4775,9 @@
         $('#btnAdd').click(function () {
             listPendidikanFakultas();
 
-            $('#myForm')[0].reset();
+//            $('#myForm')[0].reset();
             $('#modal-edit').modal('show');
-            $('#myForm').attr('action', 'addStudy');
+            $('#myFormDocument').attr('proses', 'addStudy');
             $('#modal-edit').find('.modal-title').text('Add Pendidikan');
         });
 
@@ -4281,17 +4820,43 @@
             $('#modal-editKeluarga').find('.modal-title').text('Add Keluarga');
         });
 
+        $('.studyTable').on('click', '.item-view-document', function(){
+            var id = $(this).attr('data');
+            var judul = $(this).attr('judul');
+            console.log(id);
+            dwr.engine.setAsync(false);
+            $("#my-image").attr("src","/mnt/ijazah/" + id);
+            $('#modal-view-document').find('.modal-title').text(judul);
+            $('#modal-view-document').modal('show');
+            $('#ViewDocument').attr('action', 'editPerson');
+        })
+
         $('.studyTable').on('click', '.item-edit', function () {
             var id = $(this).attr('data');
-            listPendidikanFakultas();
+            listPendidikanFakultas1();
 
             <s:if test="isAdd()">
+//            StudyAction.initSearch(id, function (listdata) {
+//                $('#studyName').val(listdata.studyName);
+//                $('#studyTahunAwal').val(listdata.tahunAwal);
+//                $('#studyTahunAkhir').val(listdata.tahunAkhir);
+//                $('#pendidikanProgramStudi').val(item.programStudy);
+//                $('#studyFakultas').val(item.fakultasId).change();
+//                $('#studyTypeStudy').val(listdata.typeStudy).change();
+//                $('#studyId').val(listdata.studyId);
+//                $('#fileUpload').val(listdata.uploadFile);
+//            });
             StudyAction.initSearch(id, function (listdata) {
-                $('#studyName').val(listdata.studyName);
-                $('#studyTahunAwal').val(listdata.tahunAwal);
-                $('#studyTahunAkhir').val(listdata.tahunAkhir);
-                $('#studyTypeStudy').val(listdata.typeStudy).change();
-                $('#studyId').val(listdata.studyId);
+                $.each(listdata, function(i, item){
+                    $('#studyName').val(listdata.studyName);
+                    $('#studyTahunAwal').val(listdata.tahunAwal);
+                    $('#studyTahunAkhir').val(listdata.tahunAkhir);
+                    $('#pendidikanProgramStudi').val(listdata.programStudy);
+                    $('#studyFakultas1').val(listdata.studyFakultas).change();
+                    $('#studyTypeStudy').val(listdata.typeStudy).change();
+                    $('#studyId').val(listdata.studyId);
+                    $('#cpiddoc').val(listdata.uploadFile);
+                });
             });
             </s:if>
             <s:else>
@@ -4301,15 +4866,16 @@
                     $('#studyTahunAwal').val(item.tahunAwal);
                     $('#studyTahunAkhir').val(item.tahunAkhir);
                     $('#pendidikanProgramStudi').val(item.programStudy);
-                    $('#studyFakultas').val(item.fakultasId).change();
+                    $('#studyFakultas1').val(item.fakultasId).change();
                     $('#studyTypeStudy').val(item.typeStudy).change();
                     $('#studyId').val(item.studyId);
+                    $('#cpiddoc').val(item.uploadFile);
                 });
             });
             </s:else>
 
-            $('#modal-edit').find('.modal-title').text('Edit Data');
-            $('#modal-edit').modal('show');
+            $('#modal-edit-study').find('.modal-title').text('Edit Data');
+            $('#modal-edit-study').modal('show');
             $('#myForm').attr('action', 'editStudy');
         });
 
@@ -4330,7 +4896,7 @@
                 $('#pengalamanTanggalMasuk').val(listdata.stTtahunMasuk);
                 $('#pengalamanTanggalKeluar').val(listdata.stTahunKeluar);
                 $('#pengalamanId').val(listdata.pengalamanId);
-                $('#golonganHistory3').val(listdata.golonganId);
+                $('#pengalamanGolonganId1').val(listdata.golonganId);
 
                 $('#pengalamanTipePegawaiId').val(listdata.tipePegawaiId);
                 $('#pjsFlag1').val(listdata.pjsFlag);
@@ -4358,15 +4924,16 @@
                     $('#golonganHistory1Group').hide();
                     $('#golonganHistory2Group').show();
                 }
-                if(listdata.tanggalKeluar!=null){
-                    if(listdata.tanggalKeluar!=''){
-                        $('#flagAktif1').val("N").change();
-                    }else{
-                        $('#flagAktif1').val("Y").change();
-                    }
-                }else{
-                    $('#flagAktif1').val("Y").change();
-                }
+//                if(listdata.tanggalKeluar!=null){
+//                    if(listdata.tanggalKeluar!='-'){
+//                        $('#flagAktif1').val("N").change();
+//                    }else{
+//                        $('#flagAktif1').val("Y").change();
+//                    }
+//                }else{
+//                    $('#flagAktif1').val("Y").change();
+//                }
+                $('#flagAktif1').val(listdata.flagJabatanAktif);
                 $('#pengalamanId').val(listdata.pengalamanId);
                 $('#pengalamanGolonganName').val(listdata.golonganName);
             });
@@ -4428,7 +4995,7 @@
                 if (confirm('Are you sure you want to Delete this Record?')) {
                     StudyAction.initDelete(id, function (listdata) {
                         $('#deleteModal').modal('hide');
-                        $('#myForm')[0].reset();
+                        $('#myFormDelete')[0].reset();
                         alert('Record has been Deleted successfully.');
                         loadSessionStudy();
                     });
@@ -4452,7 +5019,7 @@
                 if (confirm('Are you sure you want to Delete this Record?')) {
                     StudyAction.saveDelete(id, function (listdata) {
                         $('#deleteModal').modal('hide');
-                        $('#myForm')[0].reset();
+                        $('#myFormDelete')[0].reset();
                         alert('Record has been Deleted successfully.');
                         loadStudy(nip);
                     });
@@ -4480,7 +5047,7 @@
                 if (confirm('Are you sure you want to Delete this Record?')) {
                     BiodataAction.initDeletePengalamanKerja(id, function (listdata) {
                         $('#deleteModalPengalamanKerja').modal('hide');
-                        $('#myForm')[0].reset();
+                        $('#myFormDeletePengalaman')[0].reset();
                         alert('Record has been Deleted successfully.');
                         loadSessionPengalamanKerja();
                     });
@@ -4503,7 +5070,7 @@
                     dwr.engine.beginBatch();
                     BiodataAction.saveDeletePengalamanKerja(id, function (listdata) {
                         $('#deleteModalPengalamanKerja').modal('hide');
-                        $('#myForm')[0].reset();
+                        $('#myFormDeletePengalaman')[0].reset();
                         alert('Record has been Deleted successfully.');
                         loadPengalamanKerja(nip);
                     });
@@ -5054,6 +5621,21 @@
             //         .text(""));
             $.each(listdata, function (i, item) {
                 $('#studyFakultas').append($("<option></option>")
+                        .attr("value", item.jurusanId)
+                        .text(item.jurusanName));
+            });
+        });
+    }
+
+    window.listPendidikanFakultas1 = function () {
+        $('#studyFakultas1').empty();
+
+        StudyJurusanAction.getAllData( function (listdata) {
+            // $('#studyFakultas').append($("<option></option>")
+            //         .attr("value", "")
+            //         .text(""));
+            $.each(listdata, function (i, item) {
+                $('#studyFakultas1').append($("<option></option>")
                         .attr("value", item.jurusanId)
                         .text(item.jurusanName));
             });

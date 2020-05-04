@@ -96,7 +96,7 @@ public class DepartmentBoImpl implements DepartmentBo {
 //        String condition = null;
 
         if (bean!=null) {
-            String status = cekStatus(bean.getDepartmentName());
+            String status = cekStatus1(bean.getDepartmentName());
             if (!status.equalsIgnoreCase("Exist")){
 
                 String historyId = "";
@@ -159,7 +159,7 @@ public class DepartmentBoImpl implements DepartmentBo {
         logger.info("[DepartmentBoImpl.saveAdd] start process >>>");
 
         if (bean!=null) {
-            String status = cekStatus(bean.getDepartmentName());
+            String status = cekStatus(bean.getDepartmentName(), bean.getKodering());
             if (!status.equalsIgnoreCase("Exist")){
                 String departmentId;
                 try {
@@ -175,6 +175,7 @@ public class DepartmentBoImpl implements DepartmentBo {
 
                 imDepartmentEntity.setDepartmentId(departmentId);
                 imDepartmentEntity.setDepartmentName(bean.getDepartmentName());
+                imDepartmentEntity.setKodering(bean.getKodering());
                 imDepartmentEntity.setFlag(bean.getFlag());
                 imDepartmentEntity.setAction(bean.getAction());
                 imDepartmentEntity.setCreatedWho(bean.getCreatedWho());
@@ -242,7 +243,7 @@ public class DepartmentBoImpl implements DepartmentBo {
                     returnDepartment = new Department();
                     returnDepartment.setDepartmentId(departmentEntity.getDepartmentId());
                     returnDepartment.setDepartmentName(departmentEntity.getDepartmentName());
-
+                    returnDepartment.setKodering(departmentEntity.getKodering());
                     returnDepartment.setCreatedWho(departmentEntity.getCreatedWho());
                     returnDepartment.setCreatedDate(departmentEntity.getCreatedDate());
                     returnDepartment.setLastUpdate(departmentEntity.getLastUpdate());
@@ -294,11 +295,33 @@ public class DepartmentBoImpl implements DepartmentBo {
         logger.info("[UserBoImpl.getComboUserWithCriteria] end process <<<");
         return listComboDepartment;
     }
-    public String cekStatus(String golonganId)throws GeneralBOException{
+    public String cekStatus(String golonganName, String kodering)throws GeneralBOException{
+        String status ="";
+        List<ImDepartmentEntity> skalaGajiEntity = new ArrayList<>();
+        List<ImDepartmentEntity> departmentEntities = new ArrayList<>();
+        try {
+            skalaGajiEntity = departmentDao.getListDepartment(golonganName);
+            departmentEntities = departmentDao.getListKodering(kodering);
+        } catch (HibernateException e) {
+            logger.error("[PayrollSkalaGajiBoImpl.getSearchPayrollSkalaGajiByCriteria] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        if (skalaGajiEntity.size()>0){
+            status = "exist";
+        }else{
+            if (departmentEntities.size() > 0)
+                status = "exist";
+            else
+                status="notExits";
+        }
+        return status;
+    }
+
+    public String cekStatus1(String golonganName)throws GeneralBOException{
         String status ="";
         List<ImDepartmentEntity> skalaGajiEntity = new ArrayList<>();
         try {
-            skalaGajiEntity = departmentDao.getListDepartment(golonganId);
+            skalaGajiEntity = departmentDao.getListDepartment(golonganName);
         } catch (HibernateException e) {
             logger.error("[PayrollSkalaGajiBoImpl.getSearchPayrollSkalaGajiByCriteria] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());

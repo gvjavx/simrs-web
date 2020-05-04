@@ -1,6 +1,7 @@
 package com.neurix.akuntansi.master.kodeRekening.dao;
 
 import com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity;
+import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.common.dao.GenericDao;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -9,6 +10,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -49,6 +51,9 @@ public class KodeRekeningDao extends GenericDao<ImKodeRekeningEntity, String> {
             }
             if (mapCriteria.get("level")!=null) {
                 criteria.add(Restrictions.eq("level", (Long) mapCriteria.get("level")));
+            }
+            if (mapCriteria.get("post_coa")!=null) {
+                criteria.add(Restrictions.ilike("kodeRekening", mapCriteria.get("post_coa").toString() + "%"));
             }
         }
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
@@ -236,5 +241,86 @@ public class KodeRekeningDao extends GenericDao<ImKodeRekeningEntity, String> {
             }
         }
         return result;
+    }
+
+    public List<KodeRekening> getKodeRekeningLawanByTransId(String transId){
+
+        List<KodeRekening> listOfResult = new ArrayList<>();
+
+        List<Object[]> results = new ArrayList<Object[]>();
+        String query = "select\n" +
+                "\tkr.*\n" +
+                "from\n" +
+                "\tim_akun_mapping_jurnal j\n" +
+                "\tleft join im_akun_kode_rekening kr ON kr.kode_rekening ILIKE '%' || j.kode_rekening || '%'\n" +
+                "where\n" +
+                "\ttrans_id='"+transId+"'\n" +
+                "\tand kr.kode_rekening not ilike '1%'\n" +
+                "\tand kr.level=5";
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        for (Object[] row : results) {
+            KodeRekening data= new KodeRekening();
+            data.setRekeningId((String) row[0]);
+            data.setKodeRekening((String) row[1]);
+            data.setNamaKodeRekening((String) row[2]);
+
+            listOfResult.add(data);
+        }
+        return listOfResult;
+    }
+
+    //untuk mendapat rekening id dari coa
+    public String getRekeningIdByCoa(String coa) {
+        String result = "";
+        String query = "select \n" +
+                "  rekening_id\n" +
+                "from \n" +
+                "  im_akun_kode_rekening \n" +
+                "where \n" +
+                "  kode_rekening = '" + coa + "'\n";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results != null) {
+            result = results.toString();
+        } else {
+            result = null;
+        }
+        return result;
+    }
+
+    public Long getLowestLevelKodeRekening(){
+
+        String SQL = "SELECT rekening_id, MAX(level) FROM im_akun_kode_rekening \n" +
+                "GROUP BY rekening_id ORDER BY level DESC LIMIT 1";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        Long result = Long.valueOf(0);
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                BigInteger bigresult = obj[1] == null ? new BigInteger(String.valueOf(0)) : (BigInteger) obj[1];
+                result = Long.valueOf(bigresult.toString());
+            }
+        }
+        return result;
+    }
+
+    public List<ImKodeRekeningEntity> getKodeRekeningListByLevel(String coa, Long level) {
+        Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ImKodeRekeningEntity.class);
+        criteria.add(
+                Restrictions.or(
+                        Restrictions.ilike("kodeRekening", coa + "%"),
+                        Restrictions.ilike("namaKodeRekening", "%"+coa+"%")
+                )
+        );
+        criteria.add(Restrictions.eq("flag", "Y"));
+        criteria.add(Restrictions.eq("level", level));
+        criteria.addOrder(Order.desc("kodeRekening"));
+
+        List<ImKodeRekeningEntity> results = criteria.list();
+        return results;
     }
 }

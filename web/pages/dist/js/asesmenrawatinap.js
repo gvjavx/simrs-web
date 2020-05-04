@@ -1939,7 +1939,7 @@ function detailAsesmenRawatInap(jenis) {
                             totalSkor = parseInt(totalSkor) + parseInt(item.skor);
                         }
                         body += '<tr>' +
-                            '<td>' + item.parameter + '</td>' +
+                            '<td width="40%">' + item.parameter + '</td>' +
                             '<td>' + jwb + '</td>' +
                             '<td align="center" width="10%">' + skor + '</td>' +
                             '</tr>';
@@ -2106,7 +2106,7 @@ function detailAsesmenRawatInap(jenis) {
                         }
                     } else {
                         body += '<tr>' +
-                            '<td>' + item.parameter + '</td>' +
+                            '<td width="40%">' + item.parameter + '</td>' +
                             '<td>' + jwb + '</td>' +
                             '</tr>';
                     }

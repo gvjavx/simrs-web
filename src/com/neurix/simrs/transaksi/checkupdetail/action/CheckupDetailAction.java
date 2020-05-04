@@ -3759,22 +3759,9 @@ public class CheckupDetailAction extends BaseMasterAction {
         }
 
         if (checkup != null) {
-
             HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
             detailCheckup.setNoCheckup(checkup.getNoCheckup());
             detailCheckup.setIdDetailCheckup(checkup.getIdDetailCheckup());
-            detailCheckup.setStatusPeriksa("1");
-            detailCheckup.setFlag("Y");
-            detailCheckup.setAction("U");
-            detailCheckup.setLastUpdate(new Timestamp(System.currentTimeMillis()));
-            detailCheckup.setLastUpdateWho(CommonUtil.userLogin());
-
-            try {
-                checkupDetailBoProxy.saveEdit(detailCheckup);
-            } catch (GeneralBOException e) {
-                logger.error("[CheckupDetailAction.add] Error when update checkup detail");
-            }
-
             detailCheckup.setIdPasien(checkup.getIdPasien());
             detailCheckup.setNamaPasien(checkup.getNama());
             detailCheckup.setAlamat(checkup.getJalan());

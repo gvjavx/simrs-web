@@ -50,7 +50,6 @@
     <section class="content-header">
         <h1>
             Payroll Skala Gaji
-            <small>GO-MEDSYS</small>
         </h1>
     </section>
 

@@ -9,6 +9,7 @@ import java.sql.Timestamp;
  */
 public class ItAkunBudgetingEntity implements Serializable {
 
+    private String idBudgeting;
     private String noBudgeting;
     private String branchId;
     private String tahun;
@@ -32,6 +33,14 @@ public class ItAkunBudgetingEntity implements Serializable {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+
+    public String getIdBudgeting() {
+        return idBudgeting;
+    }
+
+    public void setIdBudgeting(String idBudgeting) {
+        this.idBudgeting = idBudgeting;
+    }
 
     public BigDecimal getSelisih() {
         return selisih;

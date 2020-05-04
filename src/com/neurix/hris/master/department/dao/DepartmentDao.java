@@ -81,6 +81,17 @@ public class DepartmentDao extends GenericDao<ImDepartmentEntity, String> {
         return results;
     }
 
+    public List<ImDepartmentEntity> getListKodering(String term) throws HibernateException {
+
+        List<ImDepartmentEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImDepartmentEntity.class)
+                .add(Restrictions.ilike("kodering",term))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("departmentId"))
+                .list();
+
+        return results;
+    }
+
     public void addAndSaveHistory(ImDepartmentHistoryEntity entity) throws HibernateException {
         this.sessionFactory.getCurrentSession().save(entity);
     }

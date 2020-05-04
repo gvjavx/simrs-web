@@ -44,8 +44,10 @@ public class CommonConstant {
 
 
     public final static String RESOURCE_PATH_USER_UPLOAD = "/pages/upload/image/profile/";
+    public final static String RESOURCE_PATH_USER_UPLOAD_IJAZAH = CommonUtil.getPropertyParams("resource.dir")+"mnt/ijazah/";
 
     //sodiq, 18 Nov 2019, Upload KTP pasien
+//    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = CommonUtil.getPropertyParams("upload.external.dir");
     public final static String RESOURCE_PATH_IMG_ASSET = CommonUtil.getPropertyParams("resource.dir");
     public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = CommonUtil.getPropertyParams("upload.folder");
 
@@ -74,6 +76,7 @@ public class CommonConstant {
 
     public final static String URL_IMAGE_LOGO_REPORT = CommonUtil.getPropertyParams("base.dir")+"pages/images/logo-nmu.png";
     public final static String URL_LOGO_REPORT = CommonUtil.getPropertyParams("base.dir")+"pages/images/";
+    public final static String IMAGE_LOGO_KP = "KP.png";
     public final static String RESOURCE_DOCUMENT_PAYROLL = CommonUtil.getPropertyParams("resource.dir")+"mnt/documents/";
 
     public final static String REPORT_PAYROLL = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayroll3.jrxml";
@@ -84,7 +87,6 @@ public class CommonConstant {
     public final static String REPORT_PAYROLL_INSENTIF = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayrollInsentifBranch3.jrxml";
     public final static String REPORT_PAYROLL_CUTI_PANJANG = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayrollCutiPanjangBranch3.jrxml";
     public final static String REPORT_PAYROLL_CUTI_TAHUNAN = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayrollCutiTahunanBranch3.jrxml";
-
 
     //ptpnx e-farming
     public final static String ROLE_ADMIN_POLI = "ADMIN POLI";

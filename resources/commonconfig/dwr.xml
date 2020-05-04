@@ -499,6 +499,7 @@
       </create>
       <convert converter="bean" match="com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.PembayaranUtangPiutangDetail"/>
       <convert converter="bean" match="com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.PembayaranUtangPiutang"/>
+      <convert converter="bean" match="com.neurix.akuntansi.master.trans.model.Trans"/>
 
       <create creator="new">
           <param name="class" value="com.neurix.akuntansi.master.reportDetail.action.ReportDetailAction"/>
@@ -559,7 +560,6 @@
       </create>
 
       <convert converter="bean" match="com.neurix.simrs.transaksi.permintaanvendor.model.BatchPermintaanObat"/>
-      <convert converter="bean" match="com.neurix.akuntansi.master.pembayaran.model.ImAkunPembayaranEntity"/>
 
       <create creator="new">
           <param name="class" value="com.neurix.simrs.transaksi.fisioterapi.action.FisioterapiAction"/>
@@ -576,6 +576,13 @@
           <param name="class" value="com.neurix.simrs.transaksi.asesmenoperasi.action.AsesmenOperasiAction"/>
       </create>
       <convert converter="bean" match="com.neurix.simrs.transaksi.asesmenoperasi.model.AsesmenOperasi"/>
+      <!--reza-->
+      <create creator="new">
+          <param name="class" value="com.neurix.hris.transaksi.pendapatanDokter.action.PendapatanDokterAction"/>
+      </create>
+
+      <convert converter="bean" match="com.neurix.hris.transaksi.pendapatanDokter.model.PendapatanDokter"/>
+      <convert converter="bean" match="com.neurix.akuntansi.master.pembayaran.model.ImAkunPembayaranEntity"/>
 
       <create creator="new">
           <param name="class" value="com.neurix.simrs.transaksi.mpp.action.MppAction"/>
@@ -642,6 +649,9 @@
           <param name="class" value="com.neurix.akuntansi.transaksi.budgeting.action.BudgetingAction"/>
       </create>
       <convert converter="bean" match="com.neurix.akuntansi.transaksi.budgeting.model.Budgeting"/>
+      <convert converter="bean" match="com.neurix.akuntansi.transaksi.budgeting.model.BudgetingDetail"/>
+      <convert converter="bean" match="com.neurix.akuntansi.transaksi.budgeting.model.BudgetingPengadaan"/>
+      <convert converter="bean" match="com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity"/>
   </allow>
 
 </dwr>

@@ -1,6 +1,8 @@
 package com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.bo;
 
 import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
+import com.neurix.akuntansi.master.trans.model.ImTransEntity;
+import com.neurix.akuntansi.master.trans.model.Trans;
 import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.PembayaranUtangPiutang;
 import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.PembayaranUtangPiutangDetail;
 import com.neurix.common.bo.BaseMasterBo;
@@ -18,7 +20,7 @@ import java.util.List;
 public interface PembayaranUtangPiutangBo extends BaseMasterBo<PembayaranUtangPiutang> {
     public void saveDelete(PembayaranUtangPiutang bean) throws GeneralBOException;
 
-    List<PembayaranUtangPiutangDetail> getSearchNotaPembayaran(String masterId,String transaksiId,String branchId) throws GeneralBOException;
+    List<PembayaranUtangPiutangDetail> getSearchNotaPembayaran(String masterId,String transaksiId,String branchId,String divisiId,String coa) throws GeneralBOException;
 
     void postingJurnal(PembayaranUtangPiutang bean) throws GeneralBOException;
 
@@ -30,5 +32,9 @@ public interface PembayaranUtangPiutangBo extends BaseMasterBo<PembayaranUtangPi
 
     String getKodeRekeningKasJurnal(String noJurnal) throws GeneralBOException;
 
+    ImTransEntity getTipeMaster(String transId) throws GeneralBOException;
+
     String getNamaRekeningKasJurnal(String noJurnal) throws GeneralBOException;
+
+    Trans getDisableTrans(String transId) throws GeneralBOException;
 }

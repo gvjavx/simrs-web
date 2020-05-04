@@ -20,8 +20,12 @@ public class Study extends BaseModel {
     private String fakultasId;
     private String fakultasName;
 
+    private String studyFakultas;
     private byte[] contentFile;
     private String fotoUpload;
+    private String uploadFile;
+    private String filePath;
+    private String fileType;
 
     public String getProgramStudy() {
         return programStudy;
@@ -109,5 +113,37 @@ public class Study extends BaseModel {
 
     public void setFotoUpload(String fotoUpload) {
         this.fotoUpload = fotoUpload;
+    }
+
+    public String getUploadFile() {
+        return uploadFile;
+    }
+
+    public void setUploadFile(String uploadFile) {
+        this.uploadFile = uploadFile;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public String getFileType() {
+        return fileType;
+    }
+
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
+    }
+
+    public String getStudyFakultas() {
+        return studyFakultas;
+    }
+
+    public void setStudyFakultas(String studyFakultas) {
+        this.studyFakultas = studyFakultas;
     }
 }

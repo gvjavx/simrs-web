@@ -90,6 +90,7 @@ public class TindakanBoImpl implements TindakanBo {
             tindakan.setIdTindakan(entity.getIdTindakan());
             tindakan.setTindakan(entity.getTindakan());
             tindakan.setIdKategoriTindakan(entity.getIdKategoriTindakan());
+            tindakan.setKategoriInaBpjs(entity.getKategoriInaBpjs());
             tindakan.setTarif(entity.getTarif());
             tindakan.setTarifBpjs(entity.getTarifBpjs());
             tindakan.setFlag(entity.getFlag());

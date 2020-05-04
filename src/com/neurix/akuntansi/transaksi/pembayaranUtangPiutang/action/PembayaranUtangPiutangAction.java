@@ -4,6 +4,8 @@ package com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.action;
 import com.neurix.akuntansi.master.kodeRekening.bo.KodeRekeningBo;
 import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.master.tipeJurnal.bo.TipeJurnalBo;
+import com.neurix.akuntansi.master.trans.model.ImTransEntity;
+import com.neurix.akuntansi.master.trans.model.Trans;
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.bo.LaporanAkuntansiBo;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.LaporanAkuntansi;
@@ -389,111 +391,33 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         pembayaranUtangPiutang.setFlag("Y");
 
         try {
+            //get parameter pembayaran
+            String parameter = billingSystemBoProxy.getParameterPembayaran(pembayaranUtangPiutang.getTipeTransaksi());
+
             //Jika pembayaran berhasil
-            //MEMBUAT BILLING
-            if (("01").equalsIgnoreCase(pembayaranUtangPiutang.getTipeTransaksi())){
-                //pembayaran piutang pasien bpjs atas NO FPK
-                List<Map> dataMap = new ArrayList<>();
-                for (PembayaranUtangPiutangDetail pembayaranUtangPiutangDetail : pembayaranUtangPiutangDetailList){
-                    BigDecimal jumlahPembayaran = new BigDecimal(pembayaranUtangPiutangDetail.getStJumlahPembayaran().replace(".",""));
-
-                    Map hs = new HashMap();
-                    hs.put("bukti",pembayaranUtangPiutangDetail.getNoNota());
-                    hs.put("nilai",jumlahPembayaran);
-                    hs.put("master_id", pembayaranUtangPiutangDetail.getMasterId());
-                    dataMap.add(hs);
-                }
-
-                Map kas = new HashMap();
-                kas.put("metode_bayar",pembayaranUtangPiutang.getMetodePembayaran());
-                kas.put("bank",pembayaranUtangPiutang.getBank());
-                kas.put("nilai",bayar);
-
-                Map data = new HashMap();
-                data.put("piutang_terverif",dataMap);
-                data.put("kas",kas);
-
-                noJurnal= billingSystemBoProxy.createJurnal(pembayaranUtangPiutang.getTipeTransaksi(),data,pembayaranUtangPiutang.getBranchId(),pembayaranUtangPiutang.getKeterangan(),"N");
-                pembayaranUtangPiutang.setNoJurnal(noJurnal);
-                pembayaranUtangPiutangBoProxy.saveAddPembayaran(pembayaranUtangPiutang,pembayaranUtangPiutangDetailList);
-            }else if(("02").equalsIgnoreCase(pembayaranUtangPiutang.getTipeTransaksi())){
-                //pembayaran piutang pasien non bpjs
-                List<Map> dataMap = new ArrayList<>();
-                for (PembayaranUtangPiutangDetail pembayaranUtangPiutangDetail : pembayaranUtangPiutangDetailList){
-                    BigDecimal jumlahPembayaran = new BigDecimal(pembayaranUtangPiutangDetail.getStJumlahPembayaran().replace(".",""));
-
-                    Map hs = new HashMap();
-                    hs.put("bukti",pembayaranUtangPiutangDetail.getNoNota());
-                    hs.put("nilai",jumlahPembayaran);
-                    hs.put("master_id", pembayaranUtangPiutangDetail.getMasterId());
-                    dataMap.add(hs);
-                }
-
-                Map kas = new HashMap();
-                kas.put("metode_bayar",pembayaranUtangPiutang.getMetodePembayaran());
-                kas.put("bank",pembayaranUtangPiutang.getBank());
-                kas.put("nilai",bayar);
-
-                Map data = new HashMap();
-                data.put("piutang_pasien_non_bpjs",dataMap);
-                data.put("kas",kas);
-
-                noJurnal= billingSystemBoProxy.createJurnal(pembayaranUtangPiutang.getTipeTransaksi(),data,pembayaranUtangPiutang.getBranchId(),pembayaranUtangPiutang.getKeterangan(),"N");
-                pembayaranUtangPiutang.setNoJurnal(noJurnal);
-                pembayaranUtangPiutangBoProxy.saveAddPembayaran(pembayaranUtangPiutang,pembayaranUtangPiutangDetailList);
-            }else if(("03").equalsIgnoreCase(pembayaranUtangPiutang.getTipeTransaksi())){
-                //pembayaran piutang pasien non bpjs
-                List<Map> dataMap = new ArrayList<>();
-                for (PembayaranUtangPiutangDetail pembayaranUtangPiutangDetail : pembayaranUtangPiutangDetailList){
-                    BigDecimal jumlahPembayaran = new BigDecimal(pembayaranUtangPiutangDetail.getStJumlahPembayaran().replace(".",""));
-
-                    Map hs = new HashMap();
-                    hs.put("bukti",pembayaranUtangPiutangDetail.getNoNota());
-                    hs.put("nilai",jumlahPembayaran);
-                    hs.put("master_id", pembayaranUtangPiutangDetail.getMasterId());
-                    dataMap.add(hs);
-                }
-
-                Map kas = new HashMap();
-                kas.put("metode_bayar",pembayaranUtangPiutang.getMetodePembayaran());
-                kas.put("bank",pembayaranUtangPiutang.getBank());
-                kas.put("nilai",bayar);
-
-                Map data = new HashMap();
-                data.put("piutang_rekanan",dataMap);
-                data.put("kas",kas);
-
-                noJurnal= billingSystemBoProxy.createJurnal(pembayaranUtangPiutang.getTipeTransaksi(),data,pembayaranUtangPiutang.getBranchId(),pembayaranUtangPiutang.getKeterangan(),"N");
-                pembayaranUtangPiutang.setNoJurnal(noJurnal);
-                pembayaranUtangPiutangBoProxy.saveAddPembayaran(pembayaranUtangPiutang,pembayaranUtangPiutangDetailList);
-            }else if(("05").equalsIgnoreCase(pembayaranUtangPiutang.getTipeTransaksi())){
-                //pembayaran piutang pasien non bpjs
-                List<Map> dataMap = new ArrayList<>();
-                for (PembayaranUtangPiutangDetail pembayaranUtangPiutangDetail : pembayaranUtangPiutangDetailList){
-                    BigDecimal jumlahPembayaran = new BigDecimal(pembayaranUtangPiutangDetail.getStJumlahPembayaran().replace(".",""));
-
-                    Map hs = new HashMap();
-                    hs.put("bukti",pembayaranUtangPiutangDetail.getNoNota());
-                    hs.put("nilai",jumlahPembayaran);
-                    hs.put("master_id", pembayaranUtangPiutangDetail.getMasterId());
-                    dataMap.add(hs);
-                }
-                Map kas = new HashMap();
-                kas.put("metode_bayar",pembayaranUtangPiutang.getMetodePembayaran());
-                kas.put("bank",pembayaranUtangPiutang.getBank());
-                kas.put("nilai",bayar);
-
-                Map data = new HashMap();
-                data.put("hutang_usaha",dataMap);
-                data.put("kas",kas);
-                noJurnal= billingSystemBoProxy.createJurnal(pembayaranUtangPiutang.getTipeTransaksi(),data,pembayaranUtangPiutang.getBranchId(),pembayaranUtangPiutang.getKeterangan(),"N");
-                pembayaranUtangPiutang.setNoJurnal(noJurnal);
-                pembayaranUtangPiutangBoProxy.saveAddPembayaran(pembayaranUtangPiutang,pembayaranUtangPiutangDetailList);
-            }else{
-                String status ="ERROR : belum bisa membuat jurnal pada tipe transaksi yang dipilih";
-                logger.error("[PembayaranUtangPiutangAction.saveAdd] "+status);
-                throw new GeneralBOException(status);
+            //Membuat Billing
+            List<Map> dataMap = new ArrayList<>();
+            for (PembayaranUtangPiutangDetail pembayaranUtangPiutangDetail : pembayaranUtangPiutangDetailList){
+                BigDecimal jumlahPembayaran = new BigDecimal(pembayaranUtangPiutangDetail.getStJumlahPembayaran().replace(".",""));
+                Map hs = new HashMap();
+                hs.put("bukti",pembayaranUtangPiutangDetail.getNoNota());
+                hs.put("nilai",jumlahPembayaran);
+                hs.put("master_id", pembayaranUtangPiutangDetail.getMasterId());
+                hs.put("divisi_id", pembayaranUtangPiutangDetail.getDivisiId());
+                dataMap.add(hs);
             }
+
+            Map kas = new HashMap();
+            kas.put("metode_bayar",pembayaranUtangPiutang.getMetodePembayaran());
+            kas.put("bank",pembayaranUtangPiutang.getBank());
+            kas.put("nilai",bayar);
+
+            Map data = new HashMap();
+            data.put(parameter,dataMap);
+            data.put("kas",kas);
+            noJurnal= billingSystemBoProxy.createJurnal(pembayaranUtangPiutang.getTipeTransaksi(),data,pembayaranUtangPiutang.getBranchId(),pembayaranUtangPiutang.getKeterangan(),"N");
+            pembayaranUtangPiutang.setNoJurnal(noJurnal);
+            pembayaranUtangPiutangBoProxy.saveAddPembayaran(pembayaranUtangPiutang,pembayaranUtangPiutangDetailList);
         }catch (GeneralBOException e) {
             Long logId = null;
             try {
@@ -571,7 +495,7 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         return INPUT;
     }
 
-    public String saveDetailPembayaran(String kodeVendor,String namaVendor,String noNota,String jumlahPembayaran,String rekeningId) {
+    public String saveDetailPembayaran(String kodeVendor,String namaVendor,String noNota,String jumlahPembayaran,String rekeningId,String divisiId,String divisiName) {
         logger.info("[PembayaranUtangPiutangAction.saveDetailPembayaran] start process >>>");
         String status="";
         HttpSession session = ServletActionContext.getRequest().getSession();
@@ -585,6 +509,8 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
             newData.setNoNota(noNota);
             newData.setMasterName(namaVendor);
             newData.setRekeningId(rekeningId);
+            newData.setDivisiId(divisiId);
+            newData.setDivisiName(divisiName);
 
             piutangDetailArrayList.add(newData);
             session.setAttribute("listOfResultPembayaranDetail",piutangDetailArrayList);
@@ -604,6 +530,8 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
                 newData.setNoNota(noNota);
                 newData.setMasterName(namaVendor);
                 newData.setRekeningId(rekeningId);
+                newData.setDivisiId(divisiId);
+                newData.setDivisiName(divisiName);
                 piutangDetailArrayList.add(newData);
                 session.setAttribute("listOfResultPembayaranDetail",piutangDetailArrayList);
             }
@@ -681,13 +609,13 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         return status;
     }
 
-    public List<PembayaranUtangPiutangDetail> searchNotaPembayaran(String masterId,String transaksiId,String branchId) {
+    public List<PembayaranUtangPiutangDetail> searchNotaPembayaran(String masterId,String transaksiId,String branchId,String divisiId,String coa) {
         logger.info("[PembayaranUtangPiutangAction.searchNotaPembayaran] start process >>>");
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PembayaranUtangPiutangBo pembayaranUtangPiutangBo = (PembayaranUtangPiutangBo) ctx.getBean("pembayaranUtangPiutangBoProxy");
         HttpSession session = ServletActionContext.getRequest().getSession();
 
-        List<PembayaranUtangPiutangDetail> listDataDb = pembayaranUtangPiutangBo.getSearchNotaPembayaran(masterId,transaksiId,branchId);
+        List<PembayaranUtangPiutangDetail> listDataDb = pembayaranUtangPiutangBo.getSearchNotaPembayaran(masterId,transaksiId,branchId,divisiId,coa);
         List<PembayaranUtangPiutangDetail> listDataSession = (List<PembayaranUtangPiutangDetail>) session.getAttribute("listOfResultPembayaranDetail");
         List<PembayaranUtangPiutangDetail> result= new ArrayList<>();
         if (listDataSession==null){
@@ -709,6 +637,20 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         }
         logger.info("[PembayaranUtangPiutangAction.searchNotaPembayaran] end process >>>");
         return result;
+    }
+
+
+    public String getTipeMaster(String transaksiId) {
+        logger.info("[PembayaranUtangPiutangAction.getTipeMaster] start process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PembayaranUtangPiutangBo pembayaranUtangPiutangBo = (PembayaranUtangPiutangBo) ctx.getBean("pembayaranUtangPiutangBoProxy");
+
+        String masterId="";
+        ImTransEntity transEntity = pembayaranUtangPiutangBo.getTipeMaster(transaksiId);
+        masterId=transEntity.getMaster();
+
+        logger.info("[PembayaranUtangPiutangAction.getTipeMaster] end process >>>");
+        return masterId;
     }
 
     public String postingJurnal(String pembayaranId){
@@ -781,6 +723,9 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
             case ("21"):
                 reportName="BUKTI KAS MASUK";
                 break;
+            case ("45"):
+                reportName="BUKTI KAS KELUAR";
+                break;
             case("01"):
                 reportName="BUKTI KAS MASUK";
                 break;
@@ -850,6 +795,16 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
 
         return (List<PembayaranUtangPiutangDetail>) session.getAttribute("listPembayaranDetailModal");
     }
+
+    public Trans getDisableTrans(String transaksiId) {
+        logger.info("[PembayaranUtangPiutangAction.getDisableTrans] start process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PembayaranUtangPiutangBo pembayaranUtangPiutangBo = (PembayaranUtangPiutangBo) ctx.getBean("pembayaranUtangPiutangBoProxy");
+        logger.info("[PembayaranUtangPiutangAction.getDisableTrans] end process >>>");
+        Trans data = pembayaranUtangPiutangBo.getDisableTrans(transaksiId);
+        return data;
+    }
+
     public String paging(){
         return SUCCESS;
     }

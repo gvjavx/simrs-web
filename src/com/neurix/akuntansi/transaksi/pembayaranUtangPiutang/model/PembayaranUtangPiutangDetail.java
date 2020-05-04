@@ -16,11 +16,29 @@ public class PembayaranUtangPiutangDetail extends BaseModel {
     private String pembayaranUtangPiutangId;
     private String masterId;
     private String noNota;
+    private String divisiId;
+    private String divisiName;
 
     private String stJumlahPembayaran;
     private String masterName;
     private String rekeningId;
     private String kodeRekening;
+
+    public String getDivisiName() {
+        return divisiName;
+    }
+
+    public void setDivisiName(String divisiName) {
+        this.divisiName = divisiName;
+    }
+
+    public String getDivisiId() {
+        return divisiId;
+    }
+
+    public void setDivisiId(String divisiId) {
+        this.divisiId = divisiId;
+    }
 
     public String getRekeningId() {
         return rekeningId;

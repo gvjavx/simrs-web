@@ -710,7 +710,7 @@
                                         <span class="sr-only">Toggle Dropdown</span>
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a style="cursor: pointer" onclick="showAsesmenUgd()"><i class="fa fa-user-plus"></i>Asesmen Awal Gawat Darurat</a></li>
+                                        <li><a style="cursor: pointer" onclick="showAsesmenUgd()"><i class="fa fa-circle-o"></i>Asesmen Awal Gawat Darurat</a></li>
                                     </ul>
                                 </div>
                             </div>

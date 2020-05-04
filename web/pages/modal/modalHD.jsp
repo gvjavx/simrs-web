@@ -169,7 +169,7 @@
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">Durasi</label>
                             <div class="col-md-3">
-                                <input class="form-control" style="margin-top: 7px" id="pkj5">
+                                <input type="number" class="form-control" style="margin-top: 7px" id="pkj5">
                             </div>
                             <label class="col-md-1" style="margin-top: 7px">Jenis</label>
                             <div class="col-md-1">
@@ -223,7 +223,7 @@
                             <label class="col-md-3" style="margin-top: 7px">Tekanan Darah</label>
                             <div class="col-md-3">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input class="form-control" id="pkj8">
+                                    <input type="number" class="form-control" id="pkj8">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         mmHg
                                     </div>
@@ -231,14 +231,14 @@
                             </div>
                             <label class="col-md-1" style="margin-top: 7px">MAP</label>
                             <div class="col-md-3">
-                                <input class="form-control" id="pkj9" style="margin-top: 7px">
+                                <input type="number" class="form-control" id="pkj9" style="margin-top: 7px">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">Suhu</label>
                             <div class="col-md-3">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input class="form-control" id="pkj10">
+                                    <input type="number" class="form-control" id="pkj10">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         C
                                     </div>
@@ -266,7 +266,7 @@
                             <label class="col-md-3" style="margin-top: 7px">Freq Nadi</label>
                             <div class="col-md-3">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input class="form-control" id="pkj012">
+                                    <input type="number" class="form-control" id="pkj012">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         x/menit
                                     </div>
@@ -308,7 +308,7 @@
                             <label class="col-md-3" style="margin-top: 7px">Freq Respirasi</label>
                             <div class="col-md-3">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input class="form-control" id="pkj014">
+                                    <input type="number" class="form-control" id="pkj014">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         x/menit
                                     </div>
@@ -382,7 +382,7 @@
                             <label class="col-md-3" style="margin-top: 7px">BB Kering</label>
                             <div class="col-md-7">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input class="form-control" id="pkj17">
+                                    <input type="number" class="form-control" id="pkj17">
                                     <div class="input-group-addon">
                                         Kg
                                     </div>
@@ -393,7 +393,7 @@
                             <label class="col-md-3" style="margin-top: 7px">BB Post HD</label>
                             <div class="col-md-7">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input class="form-control" id="pkj18">
+                                    <input type="number" class="form-control" id="pkj18">
                                     <div class="input-group-addon">
                                         Kg
                                     </div>
@@ -404,7 +404,7 @@
                             <label class="col-md-3" style="margin-top: 7px">BB Pre HD</label>
                             <div class="col-md-7">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input class="form-control" id="pkj19">
+                                    <input type="number" class="form-control" id="pkj19">
                                     <div class="input-group-addon">
                                         Kg
                                     </div>

@@ -93,6 +93,17 @@ public class PositionDao extends GenericDao<ImPosition,String> {
         return results;
     }
 
+    public List<ImPosition> getListPositionKodering(String term) throws HibernateException {
+
+        List<ImPosition> results = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class)
+                .add(Restrictions.ilike("kodering",term))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("positionId"))
+                .list();
+
+        return results;
+    }
+
     public List<ImPosition> getListPositionByCriteria(String postionName, String department, String bagian, String kelompok){
         List<ImPosition> results = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class)
                 .add(Restrictions.eq("positionName",postionName))
@@ -367,6 +378,19 @@ public class PositionDao extends GenericDao<ImPosition,String> {
                         Restrictions.or(
                                 Restrictions.eq("bagianId", "PB01"),
                                 Restrictions.eq("bagianId", "PB03")
+                        )
+                )
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("positionId"))
+                .list();
+        return results;
+    }
+    public List<ImPosition> getTypeAheadPosition (String key) throws HibernateException {
+        List<ImPosition> results = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class)
+                .add(
+                        Restrictions.or(
+                                Restrictions.ilike("kodering", key+"%"),
+                                Restrictions.ilike("positionName", "%"+key+"%")
                         )
                 )
                 .add(Restrictions.eq("flag", "Y"))

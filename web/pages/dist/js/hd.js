@@ -612,8 +612,8 @@ function saveMonHD(jenis, ket) {
         var va13 = $('#ti13').val();
         var va14 = $('[name=ti14]:checked').val();
 
-        if (va1 && va10 && va13 != '' && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 &&
-            va11 && va12 && va14 != undefined) {
+        // if (va1 && va10 && va13 != '' && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 &&
+        //     va11 && va12 && va14 != undefined) {
             data.push({
                 'parameter': 'Diagnosis (WD dan DD)',
                 'jawaban1': va1,
@@ -703,7 +703,7 @@ function saveMonHD(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
-        }
+        // }
     }
 
     if ("tranfusi_penyataan" == jenis) {
@@ -840,8 +840,8 @@ function saveMonHD(jenis, ket) {
         var va10 = $('#tti10').val();
         var va11 = $('[name=tti11]:checked').val();
 
-        if (va10 != '' && va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 &&
-            va11 != undefined) {
+        // if (va10 != '' && va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 &&
+        //     va11 != undefined) {
             data.push({
                 'parameter': 'Diagnosis (WD dan DD)',
                 'jawaban1': 'CKD V on HD',
@@ -924,7 +924,7 @@ function saveMonHD(jenis, ket) {
             });
 
             cek = true;
-        }
+        // }
     }
 
     if ("persetujuan_hd_penyataan" == jenis) {
@@ -1339,7 +1339,7 @@ function detailMonHD(jenis) {
                             li += '<li>' + item + '</li>';
                         });
                         body += '<tr>' +
-                            '<td>' + item.parameter + '</td>' +
+                            '<td width="40%">' + item.parameter + '</td>' +
                             '<td>' + '<ul style="margin-left: 10px">' + li + '</ul>' + '</td>' +
                             '</tr>';
                     } else if ("resiko_jatuh" == item.keterangan) {
@@ -1377,7 +1377,7 @@ function detailMonHD(jenis) {
                             if(li != ''){
                                 body += '<tr>' +
                                     '<td>' + item.parameter + '</td>' +
-                                    '<td>' + '<ul style="margin-left: 15px">'+li+'</ul>' + '</td>' +
+                                    '<td>' + '<ul style="margin-left: 1px">'+li+'</ul>' + '</td>' +
                                     '</tr>';
                             }
                         } else {
@@ -1388,7 +1388,7 @@ function detailMonHD(jenis) {
                         }
                     } else {
                         body += '<tr>' +
-                            '<td>' + item.parameter + '</td>' +
+                            '<td width="40%">' + item.parameter + '</td>' +
                             '<td>' + jwb + '</td>' +
                             '</tr>';
                     }

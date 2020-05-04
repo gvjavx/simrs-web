@@ -24,16 +24,12 @@
     (CASE WHEN sum(a.jumlah_debit) IS NULL THEN 0.0 ELSE sum(a.jumlah_debit) END) as debit,
     (CASE WHEN sum(a.jumlah_kredit) IS NULL THEN 0.0 ELSE sum(a.jumlah_kredit) END) as kredit
 from
-	it_akun_jurnal_detail a
-    inner join it_akun_jurnal b on a.no_jurnal = b.no_jurnal
-	left outer join im_akun_mata_uang mu ON (b.mata_uang_id = mu.mata_uang_id)
+	it_akun_saldo_akhir a
 where
-	b.created_date < to_date($P{periode}, 'MM-yyyy')
+          to_date(a.periode, 'MM-yyyy') = to_date($P{periode}, 'MM-yyyy') - Interval '1 month'
     and a.rekening_id = $P{rekening_id}
     and a.master_id = $P{nomor_master}
-    and lower(mu.kode_mata_uang) = 'rph'
-    and b.registered_flag = 'Y'
-    and b.branch_id IN ( $P!{branch_id} )]]>
+    and a.branch_id IN ( $P!{branch_id} )]]>
 	</queryString>
 	<field name="debit" class="java.math.BigDecimal"/>
 	<field name="kredit" class="java.math.BigDecimal"/>

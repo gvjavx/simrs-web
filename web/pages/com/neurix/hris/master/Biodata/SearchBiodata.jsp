@@ -490,7 +490,6 @@
     <section class="content-header">
         <h1>
             Biodata
-            <small>GO-MEDSYS</small>
         </h1>
     </section>
 
@@ -535,33 +534,57 @@
                                             mapped = {};
 
                                             var data = [];
-                                            dwr.engine.setAsync(false);
-                                            MedicalRecordAction.initComboPersonil(query,'', function (listdata) {
-                                                data = listdata;
-                                            });
-                                            $.each(data, function (i, item) {
-                                                var labelItem =item.nip+ " || "+ item.namaPegawai;
-                                                var labelNip = item.nip;
-                                                mapped[labelItem] = {pegawai:item.namaPegawai, id: item.nip, label: labelItem,
-                                                    branchId : item.branch, divisiId: item.divisi, positionId : item.positionId,
-                                                    golonganId : item.golonganId, point : item.point, tipePegawaiId : item.tipePegawai,
-                                                    statusPegawaiId: item.statusPegawai};
-                                                functions.push(labelItem);
-                                            });
+                                            var unit1 = $('#branchId').val();
 
+                                            if (unit1==""){
+//                                                dwr.engine.setAsync(false);
+//                                                MedicalRecordAction.initComboPersonil(query,'', function (listdata) {
+//                                                    data = listdata;
+//                                                });
+//                                                $.each(data, function (i, item) {
+//                                                    var labelItem =item.nip+ " || "+ item.namaPegawai;
+//                                                    var labelNip = item.nip;
+//                                                    mapped[labelItem] = {pegawai:item.namaPegawai, id: item.nip, label: labelItem,
+//                                                        branchId : item.branch, divisiId: item.divisi, positionId : item.positionId,
+//                                                        golonganId : item.golonganId, point : item.point, tipePegawaiId : item.tipePegawai,
+//                                                        statusPegawaiId: item.statusPegawai};
+//                                                    functions.push(labelItem);
+//                                                });
+//                                                process(functions);
+                                                alert("unit is empty");
+                                                $('#biodataName').val("");
+                                                $('#biodataId').val("");
+                                            }else {
+                                                dwr.engine.setAsync(false);
+                                                console.log(unit1);
+                                                CutiPegawaiAction.initComboAllPersonil(query, unit1, function (listdata) {
+                                                    data = listdata;
+                                                });
 
-                                            process(functions);
+                                                $.each(data, function (i, item) {
+                                                    var labelItem = item.nip+" "+item.namaPegawai;
+                                                    mapped[labelItem] = {id: item.nip, label: labelItem,nama:item.namaPegawai};
+                                                    functions.push(labelItem);
+                                                });
+
+                                                process(functions);
+                                            }
+
                                         },
 
                                         updater: function (item) {
-                                            var selectedObj = mapped[item];
-                                            var namaAlat = selectedObj.id;
-                                            document.getElementById("biodataName").value = selectedObj.pegawai;
-                                            $('#branchId').val(selectedObj.branchId).change();
-                                            $('#departmentId').val(selectedObj.divisiId).change();
-                                            $('#tipePegawaiId').val(selectedObj.tipePegawai).change();
+//                                            var selectedObj = mapped[item];
+//                                            var namaAlat = selectedObj.id;
+//                                            document.getElementById("biodataName").value = selectedObj.pegawai;
+//                                            $('#branchId').val(selectedObj.branchId).change();
+//                                            $('#departmentId').val(selectedObj.divisiId).change();
+//                                            $('#tipePegawaiId').val(selectedObj.tipePegawai).change();
+//                                            return namaAlat;
 
-                                            return namaAlat;
+                                            var selectedObj = mapped[item];
+                                            var namaMember = selectedObj.label;
+                                            document.getElementById("biodataName").value = selectedObj.nama;
+                                            return selectedObj.id;
                                         }
                                     });
                                 </script>
@@ -585,9 +608,18 @@
                                 </td>
                                 <td>
                                     <table>
-                                        <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                                        <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="biodata.branch"
-                                                  listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                        <s:if test='biodata.branch == "KP"'>
+                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                            <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="biodata.branch"
+                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                        </s:if>
+                                        <s:else>
+                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                            <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="biodata.branch" disabled="true"
+                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                            <s:hidden id="branchId" name="biodata.branch"/>
+                                        </s:else>
+
                                     </table>
                                 </td>
                             </tr>
@@ -939,9 +971,9 @@
     $('.listOfbiodata').on('click', '.item-payroll', function(){
         var nip = $(this).attr('data');
 
-        $('.tablePayroll').find('tbody').remove();
-        $('.tablePayroll').find('thead').remove();
-        $('.tablePayroll').find('tfoot').remove();
+        $('.tabelPayroll').find('tbody').remove();
+        $('.tabelPayroll').find('thead').remove();
+        $('.tabelPayroll').find('tfoot').remove();
         dwr.engine.setAsync(false);
         var tmp_table = "";
         BiodataAction.searchPayroll(nip, function(listdata) {
@@ -952,15 +984,10 @@
                     "<th style='text-align: center; background-color:  #3c8dbc''>Gaji Kotor</th>"+
                     "<th style='text-align: center; background-color:  #3c8dbc''>Potongan</th>"+
                     "<th style='text-align: center; background-color:  #3c8dbc''>Pph</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Gaji Bersih</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Thr</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Jasopr</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>SHT</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>PMP</th>"+
                     "</tr></thead>";
             var i = i ;
             $.each(listdata, function (i, item) {
-                var link = "/hris/payroll/printReportPayroll_payroll.action?id=" + item.payrollId + "&flag=Y";
+                var link = "<s:property value="appname" />payroll/printReportPayroll_payroll.action?id=" + item.payrollId + "&tipe=PR";
                 tmp_table += '<tr  style="font-size: 12px">' +
                         '<td ><a href="'+link+'" >Download</a></td>' +
                         '<td >' + item.bulan+ '</td>' +
@@ -968,11 +995,6 @@
                         '<td >' + item.totalA+ '</td>' +
                         '<td >' + item.totalB+ '</td>' +
                         '<td >' + item.pphGaji+ '</td>' +
-                        '<td >' + item.totalGajiBersih+ '</td>' +
-                        '<td >' + item.totalThr+ '</td>' +
-                        '<td >' + item.totalJasProd+ '</td>' +
-                        '<td >' + item.totalPensiun+ '</td>' +
-                        '<td >' + item.totalJubileum+ '</td>' +
                         "</tr>";
             });
             $('.tabelPayroll').append(tmp_table);
