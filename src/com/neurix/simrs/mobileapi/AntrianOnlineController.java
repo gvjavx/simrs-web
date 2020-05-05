@@ -591,7 +591,8 @@ public class AntrianOnlineController implements ModelDriven<Object> {
             try {
                 antrianOnlineBoProxy.saveAdd(antianOnline);
             } catch (GeneralBOException e) {
-
+                logger.error("[AntrianOnlineController.tambah] Error save add antrian online " + e.getMessage());
+                throw new GeneralBOException("[AntrianOnlineController.tambah] Error save add antrian online");
             }
         }
 

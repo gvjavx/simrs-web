@@ -106,6 +106,7 @@ public class CheckupController implements ModelDriven<Object> {
 
     private File fileUploadTtd;
     private String fileNameTtd;
+    private String base64Ttd;
 
     private String idPelayanan;
     private String idObat;
@@ -684,23 +685,24 @@ public class CheckupController implements ModelDriven<Object> {
             bean.setCreatedWho(username);
             bean.setLastUpdateWho(username);
             bean.setLastUpdate(now);
+            bean.setTtdDokter(base64Ttd);
 
             List<TransaksiObatDetail> list = new ArrayList<>();
             JSONArray jsonArray;
 
-            if (fileUploadTtd != null) {
-                if(fileUploadTtd.length() > 0 && fileUploadTtd.length() <= 15728640) {
-                    Random random = new Random( System.currentTimeMillis() );
-                    String fileNamePhoto = "TTD_DOKTER_" + random.nextInt(1000000) + "_" + CommonConstant.IMAGE_TYPE;
-                    bean.setTtdDokter(fileNamePhoto);
-                    File fileCreate = new File(CommonConstant.RESOURCE_IMAGE_TTD, fileNamePhoto);
-                    try {
-                        FileUtils.copyFile(fileUploadTtd, fileCreate);
-                    }catch (IOException e){
-                        e.printStackTrace();
-                    }
-                }
-            }
+//            if (fileUploadTtd != null) {
+//                if(fileUploadTtd.length() > 0 && fileUploadTtd.length() <= 15728640) {
+//                    Random random = new Random( System.currentTimeMillis() );
+//                    String fileNamePhoto = "TTD_DOKTER_" + random.nextInt(1000000) + "_" + CommonConstant.IMAGE_TYPE;
+//                    bean.setTtdDokter(fileNamePhoto);
+//                    File fileCreate = new File(CommonConstant.RESOURCE_IMAGE_TTD, fileNamePhoto);
+//                    try {
+//                        FileUtils.copyFile(fileUploadTtd, fileCreate);
+//                    }catch (IOException e){
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
 
             if (jsonResep != null && !jsonResep.equalsIgnoreCase("")){
                 try{
