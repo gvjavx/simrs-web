@@ -24,7 +24,6 @@
             $('#pembayaran_open').addClass('menu-open');
         });
 
-
     </script>
 </head>
 
@@ -564,6 +563,17 @@
         form.submit();
     }
 
+    function formatRupiah(angka) {
+        if(angka != null && angka != '' && angka > 0){
+            var reverse = angka.toString().split('').reverse().join(''),
+                ribuan = reverse.match(/\d{1,3}/g);
+            ribuan = ribuan.join('.').split('').reverse().join('');
+            return ribuan;
+        }else{
+            return 0;
+        }
+    }
+
     function formatDate(date) {
         var d = new Date(date),
             month = '' + (d.getMonth() + 1),
@@ -613,9 +623,9 @@
                             "<td align='center'>"+actionView(item.idBudgeting, item.level)+"</td>"+
                             "<td>"+item.kodeRekening+"</td>"+
                             "<td>"+item.namaKodeRekening+"</td>"+
-                            "<td>"+item.nilaiDraf+"</td>"+
-                            "<td>"+item.nilaiFinal+"</td>"+
-                            "<td>"+item.nilaiRevisi+"</td>"+
+                            "<td>"+formatRupiah(item.nilaiDraf)+"</td>"+
+                            "<td>"+formatRupiah(item.nilaiFinal)+"</td>"+
+                            "<td>"+formatRupiah(item.nilaiRevisi)+"</td>"+
                             "</tr>";
                     });
                 }

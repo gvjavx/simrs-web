@@ -1543,7 +1543,7 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                 createJurnalTransitoris(transJurnal);
             } catch (GeneralBOException e){
                 logger.error("[BillingSystemBoImpl.saveTutupPeriod] ERROR when create jurnal transitoris. ",e);
-                throw new GeneralBOException("[BillingSystemBoImpl.saveTutupPeriod] ERROR when create jurnal transitoris. ",e);
+                throw new GeneralBOException("[BillingSystemBoImpl.saveTutupPeriod] ERROR when create jurnal transitoris. "+e);
             }
 
             try {
@@ -1551,7 +1551,7 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                 saveTindakanTransitoris(transJurnal.getIdDetailCheckup(), transJurnal.getCreatedDate(), transJurnal.getCreatedWho());
             } catch (GeneralBOException e){
                 logger.error("[BillingSystemBoImpl.saveTutupPeriod] ERROR when insert tindakan to tindankan transitoris. ",e);
-                throw new GeneralBOException("[BillingSystemBoImpl.saveTutupPeriod] ERROR when insert tindakan to tindankan transitoris. ",e);
+                throw new GeneralBOException("[BillingSystemBoImpl.saveTutupPeriod] ERROR when insert tindakan to tindankan transitoris. "+e);
             }
         }
 
@@ -1560,7 +1560,7 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
             saveUpdateTutupPeriod(tutupPeriod);
         } catch (GeneralBOException e){
             logger.error("[TutupPeriodAction.saveTutupPeriod] ERROR when create tutup periode. ", e);
-            throw new GeneralBOException("[BillingSystemBoImpl.saveTutupPeriod] ERROR when create tutup periode. ",e);
+            throw new GeneralBOException("[BillingSystemBoImpl.saveTutupPeriod] ERROR when create tutup periode. "+e);
         }
 
         logger.info("[BillingSystemBoImpl.saveTutupPeriod] END <<<");
