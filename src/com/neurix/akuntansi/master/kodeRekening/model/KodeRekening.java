@@ -20,6 +20,7 @@ public class KodeRekening extends BaseModel {
     private Long level;
     private String postCoa;
 
+    private String tampilanCoa;
     private String posisi;
     private String posisiName;
 
@@ -27,6 +28,14 @@ public class KodeRekening extends BaseModel {
     private String tipeRekeningName;
     private boolean adaRekeningReport=false;
     private boolean bisaCek=false;
+
+    public String getTampilanCoa() {
+        return tampilanCoa;
+    }
+
+    public void setTampilanCoa(String tampilanCoa) {
+        this.tampilanCoa = tampilanCoa;
+    }
 
     public String getPostCoa() {
         return postCoa;

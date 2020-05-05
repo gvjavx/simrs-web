@@ -75,7 +75,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Pengeluaran Kas/Bank
+            Pemasukan Kas/Bank
         </h1>
     </section>
 
@@ -86,7 +86,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-user-plus"></i> Input Pengeluaran Kas/Bank</h3>
+                        <h3 class="box-title"><i class="fa fa-user-plus"></i> Input Pemasukan Kas/Bank</h3>
                     </div>
                     <s:form id="addPembayaranUtangPiutangForm" enctype="multipart/form-data" method="post" namespace="/pembayaranUtangPiutang"
                             action="saveAdd_pembayaranUtangPiutang.action" theme="simple">
@@ -123,7 +123,7 @@
                                             <label class="col-md-4" style="margin-top: 7px">Tipe Transaksi</label>
                                             <div class="col-md-8">
                                                 <s:action id="comboTrans" namespace="/trans" name="initComboTransPembayaran_trans">
-                                                    <s:param name="tipe">KK</s:param>
+                                                    <s:param name="tipe">KM</s:param>
                                                 </s:action>
                                                 <s:select list="#comboTrans.listOfComboTrans" id="tipe_transaksi" name="pembayaranUtangPiutang.tipeTransaksi"
                                                           cssStyle="margin-top: 7px" onchange="isiKeteterangan(),getTipeMaster(),getCoaLawan(),getCoaAsal()"
@@ -398,7 +398,7 @@
                                                buttons="{
                                                                                 'OK':function() {
                                                                                          $('#info_dialog').dialog('close');
-                                                                                         window.location.href = 'initForm_pembayaranUtangPiutang.action';
+                                                                                         window.location.href = 'initFormPemasukan_pembayaranUtangPiutang.action';
                                                                                      }
                                                                             }"
                                     >
@@ -546,7 +546,7 @@
                         msg+="Unit belum dipilih \n";
                     }
                     if (coaLawan==""){
-                        msg+="Coa lawan belum dipilih \n";
+                        msg+="COA lawan belum dipilih \n";
                     }
                     alert(msg);
                 }
@@ -753,7 +753,7 @@
     function getCoaAsal() {
         var option = '<option value=""></option>';
         var tipeTransaksi = $('#tipe_transaksi option:selected').val();
-        KodeRekeningAction.getKodeRekeningLawanByTransId(tipeTransaksi,"K",function (res) {
+        KodeRekeningAction.getKodeRekeningLawanByTransId(tipeTransaksi,"D",function (res) {
             if(res.length > 0){
                 $.each(res, function (i, item) {
                     option += '<option value="'+item.kodeRekening+'">'+item.namaKodeRekening+'</option>';
@@ -768,7 +768,7 @@
     function getCoaLawan() {
         var option = '<option value=""></option>';
         var tipeTransaksi = $('#tipe_transaksi option:selected').val();
-        KodeRekeningAction.getKodeRekeningLawanByTransId(tipeTransaksi,"D",function (res) {
+        KodeRekeningAction.getKodeRekeningLawanByTransId(tipeTransaksi,"K",function (res) {
             if(res.length > 0){
                 $.each(res, function (i, item) {
                     option += '<option value="'+item.kodeRekening+'">'+item.tampilanCoa+'</option>';
@@ -848,4 +848,3 @@
 
 </body>
 </html>
-

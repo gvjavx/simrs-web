@@ -123,7 +123,7 @@ public class MappingJurnalDao extends GenericDao<ImMappingJurnalEntity, String> 
     }
     public String getParameterByTransId(String transId){
         String result="";
-        String query = "select keterangan from im_akun_mapping_jurnal where trans_id='"+transId+"' and flag='Y' limit 1";
+        String query = "select keterangan from im_akun_mapping_jurnal where trans_id='"+transId+"' and flag='Y' and keterangan<>'metode_bayar' limit 1";
         Object results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query).uniqueResult();
         if (results!=null){
@@ -132,5 +132,14 @@ public class MappingJurnalDao extends GenericDao<ImMappingJurnalEntity, String> 
             result=null;
         }
         return result;
+    }
+    public List<ImMappingJurnalEntity> getListMappingJurnalByTransIdAndKodeRekening(String id,String kodeRekening) throws HibernateException {
+        List<ImMappingJurnalEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImMappingJurnalEntity.class)
+                .add(Restrictions.eq("transId", id))
+                .add(Restrictions.eq("kodeRekening", kodeRekening))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("mappingJurnalId"))
+                .list();
+        return results;
     }
 }

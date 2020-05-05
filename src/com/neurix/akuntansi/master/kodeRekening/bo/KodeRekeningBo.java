@@ -17,7 +17,10 @@ import java.util.List;
 public interface KodeRekeningBo extends BaseMasterBo<KodeRekening> {
 
     List<KodeRekening> typeaheadKodeRekening(String coa) throws GeneralBOException;
-    List<KodeRekening> getKodeRekeningLawanByTransId(String transId) throws GeneralBOException;
+
+    String getRekeningIdByKodeRekening(String kodeRekening);
+
+    List<KodeRekening> getKodeRekeningLawanByTransId(String transId, String tipeBayar) throws GeneralBOException;
     List<KodeRekening> getPostByKodeRekening(String coa) throws GeneralBOException;
     public ImKodeRekeningEntity getKodeRekeningById(String id) throws GeneralBOException;
     List<ImKodeRekeningEntity> getListKodeRekeningByLevel(String coa, Long level) throws GeneralBOException;

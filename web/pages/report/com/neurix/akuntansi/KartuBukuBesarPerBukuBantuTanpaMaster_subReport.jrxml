@@ -25,9 +25,10 @@
     (CASE WHEN sum(a.jumlah_kredit) IS NULL THEN 0.0 ELSE sum(a.jumlah_kredit) END) as kredit
 from
 	it_akun_saldo_akhir a
+	LEFT JOIN im_akun_kode_rekening kr ON a.rekening_id = kr.rekening_id
 where
     to_date(a.periode, 'MM-yyyy') = to_date($P{periode}, 'MM-yyyy') - Interval '1 month'
-    and a.rekening_id = $P{rekening_id}
+    and kr.kode_rekening = $P{kode_rekening}
     and a.branch_id IN ( $P!{branch_id} )]]>
 	</queryString>
 	<field name="debit" class="java.math.BigDecimal"/>

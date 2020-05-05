@@ -67,7 +67,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Pengeluaran Kas/Bank
+            Koreksi / Penyesuaian
         </h1>
     </section>
     <!-- Main content -->
@@ -76,14 +76,14 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Pengeluaran Kas/Bank </h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Koreksi / Penyesuaian </h3>
                     </div>
                     <div class="box-body">
                         <table width="100%" align="center">
                             <tr>
                                 <td align="center">
-                                    <s:form id="pembayaranUtangPiutangForm" method="post"  theme="simple" namespace="/pembayaranUtangPiutang" action="search_pembayaranUtangPiutang.action" cssClass="form-horizontal">
-                                        <s:hidden name="pembayaranUtangPiutang.tipePembayaran" value="KK" />
+                                    <s:form id="pembayaranUtangPiutangForm" method="post"  theme="simple" namespace="/pembayaranUtangPiutang" action="searchKoreksi_pembayaranUtangPiutang.action" cssClass="form-horizontal">
+                                        <s:hidden name="pembayaranUtangPiutang.tipePembayaran" value="KR" />
                                         <table>
                                             <tr>
                                                 <td width="10%" align="center">
@@ -115,7 +115,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Pengeluaran Kas/Bank ID :</small></label>
+                                                    <label class="control-label"><small>Koreksi dan Penyesuaian ID :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -189,10 +189,10 @@
                                                         </sj:submit>
                                                     </td>
                                                     <td>
-                                                        <a href="add_pembayaranUtangPiutang.action" class="btn btn-success" ><i class="fa fa-plus"></i> Add Pengeluaran Kas/Bank</a>
+                                                        <a href="addKoreksi_pembayaranUtangPiutang.action" class="btn btn-success" ><i class="fa fa-plus"></i> Add Koreksi / Penyesuaian</a>
                                                     </td>
                                                     <td>
-                                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_pembayaranUtangPiutang"/>'">
+                                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initFormKoreksi_pembayaranUtangPiutang"/>'">
                                                             <i class="fa fa-refresh"></i> Reset
                                                         </button>
                                                     </td>
@@ -220,15 +220,11 @@
                                                                     <img border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_view">
                                                                 </a>
                                                             </display:column>
-                                                            <display:column property="pembayaranUtangPiutangId" sortable="true" title="Pengeluaran Kas/Bank ID" />
+                                                            <display:column property="pembayaranUtangPiutangId" sortable="true" title="Koreksi / Penyesuaian ID" />
                                                             <display:column property="noJurnal" sortable="true" title="No. Jurnal" />
                                                             <display:column property="stTipeTransaksi" sortable="true" title="Tipe Transaksi"  />
                                                             <display:column property="stTanggal" sortable="true" title="Tanggal"  />
-                                                            <display:column property="metodePembayaran" sortable="true" title="COA Kas"  />
-                                                            <display:column property="metodePembayaranName" sortable="true" title="Kas"  />
-                                                            <display:column property="bayar" sortable="true" title="Total Bayar"  />
                                                             <display:column property="keterangan" sortable="true" title="Keterangan"  />
-                                                            <display:column property="noSlipBank" sortable="true" title="No. Referensi"  />
                                                             <display:column media="html" title="Posting"  style="text-align:center">
                                                                 <s:if test="#attr.row.flagPosting">
                                                                     <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_edit">
@@ -281,7 +277,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="col-md-4" style="margin-top: 7px">Pengeluaran Kas/Bank Id</label>
+                                <label class="col-md-4" style="margin-top: 7px">Koreksi / Penyesuaian ID</label>
                                 <div class="col-md-6">
                                     <s:textfield id="mod_pembayaran_id" onkeypress="$(this).css('border','')" readonly="true" cssStyle="margin-top: 7px"
                                                  cssClass="form-control" />
@@ -373,7 +369,7 @@
                 $('#mod_no_jurnal').val(data.noJurnal);
                 $('#mod_tipe_transaksi').val(data.stTipeTransaksi);
                 $('#mod_tanggal').val(data.stTanggal);
-                $('#mod_metode_bayar').val(data.metodePembayaranName);
+                $('#mod_metode_bayar').val(data.metodePembayaran);
                 $('#mod_no_slip_bank').val(data.noSlipBank);
                 $('#mod_keterangan').val(data.keterangan);
                 $('#mod_total_bayar').val(data.stBayar);
