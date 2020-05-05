@@ -180,7 +180,7 @@ public class BudgetingBoImpl implements BudgetingBo {
     public String generateBudgetingDetailId() {
         java.util.Date now = new java.util.Date();
         SimpleDateFormat f = new SimpleDateFormat("yyyyMMdd");
-        return "DT" +  f.format(now) + budgetingPengadaanDao.getNextId();
+        return "DT" +  f.format(now) + budgetingDetailDao.getNextId();
     }
 
     @Override
@@ -193,7 +193,7 @@ public class BudgetingBoImpl implements BudgetingBo {
     public String generateBudgetingId() {
         java.util.Date now = new java.util.Date();
         SimpleDateFormat f = new SimpleDateFormat("yyyyMMdd");
-        return "BT" + f.format(now) + budgetingPengadaanDao.getNextId();
+        return "BT" + f.format(now) + budgetingDao.getNextId();
     }
 
     @Override
@@ -335,7 +335,7 @@ public class BudgetingBoImpl implements BudgetingBo {
                             for (BudgetingDetail budgetingDetail : details){
 
                                 ItAkunBudgetingDetailEntity budgetingDetailEntity = new ItAkunBudgetingDetailEntity();
-                                budgetingDetailEntity.setIdBudgetingDetail(budgetingDetail.getIdBudgetingDetail());
+                                budgetingDetailEntity.setIdBudgetingDetail(generateBudgetingDetailId());
                                 budgetingDetailEntity.setIdBudgeting(budgetingEntity.getIdBudgeting());
                                 budgetingDetailEntity.setNoBudgetingDetail(budgetingEntity.getNoBudgeting()+"-"+budgetingDetail.getTipe()+"-"+budgetingDetail.getDivisiId());
                                 budgetingDetailEntity.setNoBudgeting(budgetingEntity.getNoBudgeting());

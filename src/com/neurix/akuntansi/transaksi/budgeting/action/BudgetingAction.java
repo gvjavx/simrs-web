@@ -6,6 +6,7 @@ import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.transaksi.budgeting.bo.BudgetingBo;
 import com.neurix.akuntansi.transaksi.budgeting.model.Budgeting;
 import com.neurix.akuntansi.transaksi.budgeting.model.BudgetingDetail;
+import com.neurix.akuntansi.transaksi.budgeting.model.BudgetingPengadaan;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.CrudResponse;
@@ -457,6 +458,7 @@ public class BudgetingAction {
             setBudgeting(budgetingNew);
             return "edit";
         } else if ("add".equalsIgnoreCase(this.status)){
+            setBudgeting(budgetingNew);
             return "add";
         } else {
             setBudgeting(budgetingNew);
@@ -1051,6 +1053,50 @@ public class BudgetingAction {
 
         Long level = budgetingBo.getlastLevelKodeRekening();
         return kodeRekeningBo.getListKodeRekeningByLevel(coa, level);
+    }
+
+    public CrudResponse saveAddPengadaan(String strJson, String namaPengadaan, String rekeningId, String tipe) throws JSONException{
+        CrudResponse response = new CrudResponse();
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<Budgeting> budgetingSessionList = (List<Budgeting>) session.getAttribute("listOfCoa");
+        List<BudgetingDetail> sessionDetail = (List<BudgetingDetail>) session.getAttribute("listOfDetail");
+        List<BudgetingDetail> sessionDetailEdit = (List<BudgetingDetail>) session.getAttribute("listOfDetailEdit");
+        List<BudgetingPengadaan> sessionPengadaan = (List<BudgetingPengadaan>) session.getAttribute("listOfPengadaan");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
+
+        List<BudgetingPengadaan> pengadaans = new ArrayList<>();
+        JSONArray json = new JSONArray(strJson);
+        for (int i = 0; i < json.length(); i++) {
+            JSONObject obj = json.getJSONObject(i);
+            BudgetingPengadaan pengadaan = new BudgetingPengadaan();
+            pengadaan.setNamPengadaan(obj.getString("name").toString());
+            pengadaan.setQty(new BigInteger(obj.getString("qty").toString()));
+            pengadaan.setNilai(new BigDecimal(obj.getString("nilai").toString()));
+            pengadaan.setSubTotal(new BigDecimal(pengadaan.getQty()).multiply(pengadaan.getNilai()));
+            pengadaans.add(pengadaan);
+        }
+
+        BudgetingDetail budgetingDetail = new BudgetingDetail();
+        budgetingDetail.setIdBudgetingDetail(budgetingBo.generateBudgetingDetailId());
+        budgetingDetail.setRekeningId(rekeningId);
+        budgetingDetail.setTipe(tipe);
+        budgetingDetail.setQty(new BigInteger(String.valueOf(0)));
+        budgetingDetail.setNilai(new BigDecimal(0));
+        budgetingDetail.setSubTotal(new BigDecimal(0));
+        for (BudgetingPengadaan pengadaan : pengadaans){
+            // set to pengadaan;
+            pengadaan.setIdBudgetingDetail(budgetingDetail.getIdBudgetingDetail());
+
+            // set nilai pengadaan;
+            budgetingDetail.setQty(budgetingDetail.getQty().add(pengadaan.getQty()));
+            budgetingDetail.setNilai(budgetingDetail.getNilai().add(pengadaan.getNilai()));
+            budgetingDetail.setSubTotal(budgetingDetail.getSubTotal().add(pengadaan.getSubTotal()));
+        }
+
+        return response;
     }
 
     // untuk mengosongkan nilai budgeting, digunakan untuk parent

@@ -108,7 +108,7 @@
 
                         <div class="row">
                             <div class="col-md-8 col-md-offset-2">
-                                <table id="sortTable" class="table table-bordered table-striped">
+                                <table class="table table-bordered table-striped">
                                     <thead id="head-period">
                                     <tr bgcolor="#90ee90">
                                         <td>Unit</td>

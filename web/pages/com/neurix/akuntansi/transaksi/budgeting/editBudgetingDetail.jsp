@@ -18,7 +18,16 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/PositionAction.js"/>'></script>
     <script type='text/javascript'>
 
-
+        function formatRupiah(angka) {
+            if(angka != null && angka != '' && angka > 0){
+                var reverse = angka.toString().split('').reverse().join(''),
+                    ribuan = reverse.match(/\d{1,3}/g);
+                ribuan = ribuan.join('.').split('').reverse().join('');
+                return ribuan;
+            }else{
+                return 0;
+            }
+        }
     </script>
 </head>
 
@@ -81,7 +90,7 @@
                                         <tr>
                                             <td><s:property value="kodeRekening"/></td>
                                             <td><s:property value="namaKodeRekening"/></td>
-                                            <td align="center"><s:property value="nilaiTotal"/></td>
+                                            <td align="center"><script>document.write(formatRupiah('<s:property value="nilaiTotal"/>'))</script></td>
                                             <td align="center"><s:property value="selisih"/></td>
                                         </tr>
                                     </s:iterator>
@@ -230,8 +239,8 @@
                                                     <td><s:property value="divisiId"/></td>
                                                     <td><s:property value="divisiName"/></td>
                                                     <td align="center"><s:property value="qty"/></td>
-                                                    <td align="center"><s:property value="nilai"/></td>
-                                                    <td align="center"><s:property value="subTotal"/></td>
+                                                    <td align="center"><script>document.write(formatRupiah('<s:property value="nilai"/>'))</script></td>
+                                                    <td align="center"><script>document.write(formatRupiah('<s:property value="subTotal"/>'))</script></td>
                                                     <td align="center"><button class="btn btn-sm btn-success" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button></td>
                                                 </tr>
                                             </s:if>
@@ -505,25 +514,71 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-pengadaan">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-plus"></i> Tambah Pengadaan
+                </h4>
+            </div>
+            <div class="modal-body">
+                <button class="btn btn-sm btn-success" onclick="addInputUpload()"><i class="fa fa-plus"></i> Tambah</button>
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <td>Nama</td>
+                        <td>Qty</td>
+                        <td>Nilai</td>
+                    </tr>
+                    </thead>
+                    <tbody id="body-add-pengadaan">
+
+                    </tbody>
+                </table>
+                <div class="row">
+                    <label class="control-label col-sm-2">Nama </label>
+                    <div class="col-sm-4">
+                       <input type="text" class="form form-control" id="nama-head-pengadaan"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="control-label col-sm-2" id="label-tipe-pengadaan"></label>
+                    <div class="col-sm-4">
+                        <select class="form-control" id="sel-tipe-pengadaan">
+
+                        </select>
+                    </div>
+                </div>
+
+                <div class="alert alert-warning alert-dismissable" id="alert-error-add-pengadaan" style="display: none">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <strong>Error!</strong><span id="error-msg-add-pengadaan">Gagal Menambahkan Ke List</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="saveAddPengadaan()"><i class="fa fa-check"></i> Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type='text/javascript'>
 
-    var unit = '<s:property value="budgeting.branchId" />';
-    var tahun = '<s:property value="budgeting.tahun" />';
-    var tipe = '<s:property value="budgeting.tipe" />';
-    var status = '<s:property value="status" />';
-    var rekeningid = '<s:property value="id" />';
-    var trans = '<s:property value="trans" />';
+    var unit        = '<s:property value="budgeting.branchId" />';
+    var tahun       = '<s:property value="budgeting.tahun" />';
+    var tipe        = '<s:property value="budgeting.tipe" />';
+    var status      = '<s:property value="status" />';
+    var rekeningid  = '<s:property value="id" />';
+    var trans       = '<s:property value="trans" />';
 
     var form = { "budgeting.tahun":tahun, "budgeting.branchId":unit, "budgeting.tipe":tipe };
 
-    var listOfCoa = [];
+//    var listOfCoa = [];
     $( document ).ready(function() {
-
         console.log("hasil >>> "+unit+tahun+tipe);
         comboTipe();
-//        $("#sel-tipe").val(tipe);
-//        $("#sel-tahun").val(tahun);
-//        $("#sel-unit").val(unit);
     });
 
     function comboTipe() {
@@ -552,7 +607,9 @@
         }
 
         $("#label-tipe").text(label);
+        $("#label-tipe-pengadaan").text(label);
         $("#sel-tipe").html(opt);
+        $("#sel-tipe-pengadaan").html(opt);
     }
 
 
@@ -580,8 +637,6 @@
         document.body.appendChild(form);
         form.submit();
     }
-
-
 
     function formatDate(date) {
         var d = new Date(date),
@@ -619,8 +674,6 @@
         $("#rekeningid").val("");
         $("#coa").val("");
         $("#namacoa").val("");
-
-
     }
 
     function saveAdd() {
@@ -632,20 +685,29 @@
         var nilai       = $("#nilai").val();
         var tipe        = $("#sel-tipe").val();
 
-        if (rekeningid != ""){
-            var arrCoa = [];
-            arrCoa.push({ "divisi":divisi, "divisiname":namadivisi, "qty":qty, "nilai":nilai, "tipe":tipe, "rekeningid":rekeningid, "positionid":positionid});
-            var jsonString = JSON.stringify(arrCoa);
-
-            BudgetingAction.setToSessionCoaDetail(jsonString, function (response) {
-                if(response == "01"){
-                    refresh();
-                } else {
-                    $("#alert-error-modal").show().fadeOut(5000);
-                }
-            });
+        if (divisi == ""){
+            // jika inputan divisi kosong makan muncul modal input pengadaan
+            n = 0;
+            strPengadaan = "";
+            $("#body-add-pengadaan").html("");
+            $("#modal-pengadaan").modal('show');
         } else {
-            alert("Kode Rekening tidak ditemukan !");
+            // jika ada inputan divisi maka save to session detail
+            if (rekeningid != ""){
+                var arrCoa = [];
+                arrCoa.push({ "divisi":divisi, "divisiname":namadivisi, "qty":qty, "nilai":nilai, "tipe":tipe, "rekeningid":rekeningid, "positionid":positionid});
+                var jsonString = JSON.stringify(arrCoa);
+
+                BudgetingAction.setToSessionCoaDetail(jsonString, function (response) {
+                    if(response == "01"){
+                        refresh();
+                    } else {
+                        $("#alert-error-modal").show().fadeOut(5000);
+                    }
+                });
+            } else {
+                alert("Kode Rekening tidak ditemukan !");
+            }
         }
     }
 
@@ -683,6 +745,40 @@
             } else {
                 $("#alert-error-modal").show().fadeOut(5000);
                 $("#error-msg-modal").text(response.msg);
+            }
+        });
+    }
+
+    var n = 0;
+    var strPengadaan = "";
+    function addInputUpload() {
+        strPengadaan += '<tr>' +
+            '<td><input type="text" class="form form-control" id="nama-add-'+n+'"/></td>' +
+            '<td><input type="number" class="form form-control" id="qty-add-'+n+'"/></td>' +
+            '<td><input type="number" class="form form-control" id="nilai-add-'+n+'"/></td>' +
+            '</tr>';
+        $("#body-add-pengadaan").html(strPengadaan);
+        n++;
+    }
+    
+    function saveAddPengadaan() {
+
+        var tipe = $("#sel-tipe-pengadaan").val();
+        var namapengadaan = $("#nama-head-pengadaan").val();
+        var arrData = [];
+        for (var i = 0 ; i <= n; i++){
+            var nama = $("#ama-add-"+i+"").val();
+            var qty = $("#ama-add-"+i+"").val();
+            var nilai = $("#ama-add-"+i+"").val();
+            arrData.push({"name":nama, "qty":qty, "nilai":nilai});
+        }
+
+        var strJson = JSON.stringify(arrData);
+        BudgetingAction.saveAddPengadaan(strJson, namapengadaan, rekeningid, tipe, function (response) {
+            if (response.status == "success"){
+                refresh();
+            } else {
+                $("#alert-error-add-pengadaan").show().fadeOut(5000);
             }
         });
     }
