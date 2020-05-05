@@ -59,6 +59,7 @@ public class PendapatanDokter extends BaseModel {
     String poliId;
     String poliName;
     String kodeJabatan;
+    String noNota;
 
     BigDecimal totalBruto;
     String stTotalBruto;
@@ -109,6 +110,7 @@ public class PendapatanDokter extends BaseModel {
 
     Map dataBilling;
     String keteranganBilling;
+    Boolean approvalDibayar;
 
     public String getKeteranganBilling() {
         return keteranganBilling;
@@ -846,5 +848,19 @@ public class PendapatanDokter extends BaseModel {
         this.totalPphLebihAwal = totalPphLebihAwal;
     }
 
+    public Boolean getApprovalDibayar() {
+        return approvalDibayar;
+    }
 
+    public void setApprovalDibayar(Boolean approvalDibayar) {
+        this.approvalDibayar = approvalDibayar;
+    }
+
+    public String getNoNota() {
+        return noNota;
+    }
+
+    public void setNoNota(String noNota) {
+        this.noNota = noNota;
+    }
 }

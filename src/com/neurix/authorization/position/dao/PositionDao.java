@@ -40,23 +40,24 @@ public class PositionDao extends GenericDao<ImPosition,String> {
             if (mapCriteria.get("position_id")!=null) {
                 criteria.add(Restrictions.eq("positionId", (String) mapCriteria.get("position_id")));
             }
-
             if (mapCriteria.get("kelompok_id")!=null) {
                 criteria.add(Restrictions.eq("kelompokId", (String) mapCriteria.get("kelompok_id")));
             }
-
             if (mapCriteria.get("bagian_id")!=null) {
                 criteria.add(Restrictions.eq("bagianId", (String) mapCriteria.get("bagian_id")));
             }
-
             if (mapCriteria.get("department_id")!=null) {
                 criteria.add(Restrictions.eq("departmentId", (String) mapCriteria.get("department_id")));
             }
-
             if (mapCriteria.get("position_name")!=null) {
                 criteria.add(Restrictions.ilike("positionName", "%" + (String)mapCriteria.get("position_name") + "%" ));
             }
-
+            if (mapCriteria.get("kodering")!=null) {
+                criteria.add(Restrictions.eq("kodering", (String) mapCriteria.get("kodering")));
+            }
+            if (mapCriteria.get("kategori")!=null) {
+                criteria.add(Restrictions.eq("kategori", (String) mapCriteria.get("kategori")));
+            }
         }
 
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
@@ -384,5 +385,26 @@ public class PositionDao extends GenericDao<ImPosition,String> {
                 .addOrder(Order.asc("positionId"))
                 .list();
         return results;
+    }
+
+    public String getKodringPosition(Map mapCriteria){
+        String kode = null;
+        Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class);
+
+        if (mapCriteria != null){
+            if (mapCriteria.get("position_id")!=null) {
+                criteria.add(Restrictions.eq("positionId", (String) mapCriteria.get("position_id")));
+            }
+        }
+        criteria.add(Restrictions.eq("flag", "Y"));
+        List<ImPosition> results = criteria.list();
+
+        if (results != null){
+            for (ImPosition position : results){
+                kode = position.getKodering();
+            }
+        }
+
+        return kode;
     }
 }

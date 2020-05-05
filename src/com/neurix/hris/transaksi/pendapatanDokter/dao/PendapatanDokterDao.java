@@ -59,6 +59,32 @@ public class PendapatanDokterDao extends GenericDao<ItHrisPendapatanDokterEntity
         return "PDR"+sId;
     }
 
+    public List<Object[]> getDataPendapatanPphLebih(String pendapatanId){
+        List<Object[]> result = new ArrayList<Object[]>();
+
+        String query = "SELECT\n" +
+                "\ta.dpp_pph_21_komulatif,\n" +
+                "\ta.dpp_pph_21,\n" +
+                "\ta.tarif,\n" +
+                "\ta.pph_dipungut,\n" +
+                "\ta.pph_lebih,\n" +
+                "\ta.pph_final,\n" +
+                "\tb.dpp_pph_50 AS pph21Lebih,\n" +
+                "\tb.dpp_pph_21_komulatif AS komulatifLebih,\n" +
+                "\tb.tarif AS tarifLebih,\n" +
+                "\tb.pph_dipungut AS pphDipungutLebih\n" +
+                "\tFROM\n" +
+                "\t(SELECT * FROM it_hris_pendapatan_dokter) a LEFT JOIN\n" +
+                "\t(SELECT * FROM it_hris_pendapatan_dokter_pph_lebih) b ON b.pendapatan_dokter_id = a.pendapatan_dokter_id\n" +
+                "\tWHERE\n" +
+                "\ta.pendapatan_dokter_id = '"+pendapatanId+"'";
+
+        result = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+        return result;
+    }
+
     public List<Object[]> getDataPendapatan(String unit, String bulan, String tahun, String dokterId){
         List<Object[]> results = new ArrayList<Object[]>();
 

@@ -1,5 +1,7 @@
 package com.neurix.simrs.master.kelasruangan.action;
 
+import com.neurix.authorization.position.bo.PositionBo;
+import com.neurix.authorization.position.model.Position;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
@@ -20,7 +22,26 @@ public class KelasRuanganAction extends BaseMasterAction {
     private static transient Logger logger = Logger.getLogger(PasienAction.class);
     private KelasRuangan kelasRuangan;
     private KelasRuanganBo kelasRuanganBoProxy;
+    private PositionBo positionBoProxy;
+
+    private List<Position> listOfComboPositions = new ArrayList<Position>();
     private List<KelasRuangan> listOfKelasRuangan = new ArrayList<>();
+
+    public List<Position> getListOfComboPositions() {
+        return listOfComboPositions;
+    }
+
+    public void setListOfComboPositions(List<Position> listOfComboPositions) {
+        this.listOfComboPositions = listOfComboPositions;
+    }
+
+    public PositionBo getPositionBoProxy() {
+        return positionBoProxy;
+    }
+
+    public void setPositionBoProxy(PositionBo positionBoProxy) {
+        this.positionBoProxy = positionBoProxy;
+    }
 
     public static Logger getLogger() {
         return logger;
@@ -57,7 +78,7 @@ public class KelasRuanganAction extends BaseMasterAction {
     public KelasRuangan init(String kode, String flag){
         logger.info("[KelasRuanganAction.init] start process >>>>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
-        List<KelasRuangan> listOfResult = (List<KelasRuangan>) session.getAttribute("listOfResult");
+        List<KelasRuangan> listOfResult = (List<KelasRuangan>) session.getAttribute("listOfResultRuanganKelas");
 //        List<Ruangan> listPasien = new ArrayList<>();
 
         if (kode != null && !"".equalsIgnoreCase(kode)){
@@ -79,13 +100,12 @@ public class KelasRuanganAction extends BaseMasterAction {
     @Override
     public String add() {
         logger.info("[KelasRuanganAction.add] start process");
-
         KelasRuangan addKelasRuangan = new KelasRuangan();
         setKelasRuangan(addKelasRuangan);
         setAdd(true);
         setAddOrEdit(true);
 
-        HttpSession session = ServletActionContext.getRequest().getSession();
+//        HttpSession session = ServletActionContext.getRequest().getSession();
 //        session.removeAttribute("listOfResult");
 
         logger.info("[Ruangan.add] stop process");
@@ -207,8 +227,8 @@ public class KelasRuanganAction extends BaseMasterAction {
         }
         HttpSession session = ServletActionContext.getRequest().getSession();
 
-        session.removeAttribute("listOfResult");
-        session.setAttribute("listOfResult", listOfKelas);
+        session.removeAttribute("listOfResultRuanganKelas");
+        session.setAttribute("listOfResultRuanganKelas", listOfKelas);
 
         logger.info("[KelasRuanganAction.search] end process <<<");
 
@@ -246,8 +266,8 @@ public class KelasRuanganAction extends BaseMasterAction {
         }
 
         HttpSession session = ServletActionContext.getRequest().getSession();
-        session.removeAttribute("listOfResult");
-        logger.info("[pasienAction.saveAdd] end process >>>>");
+        session.removeAttribute("listOfResultRuanganKelas");
+        logger.info("[kelasRuanganAction.saveAdd] end process >>>>");
         return "add";
     }
 
@@ -316,7 +336,38 @@ public class KelasRuanganAction extends BaseMasterAction {
 
     @Override
     public String initForm() {
+        logger.info("[KelasRuanganAction.initForm] start process >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+
+        session.removeAttribute("listOfResultRuanganKelas");
+        logger.info("[KelasRuanganAction.initForm] end process >>>");
         return "search";
+    }
+
+    public String initComboPosition() {
+
+        Position position = new Position();
+        position.setFlag("Y");
+        position.setKategori("kelas_ruangan");
+
+        List<Position> listOfPosition = new ArrayList<Position>();
+        try {
+            listOfPosition = positionBoProxy.getByCriteria(position);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = positionBoProxy.saveErrorMessage(e.getMessage(), "PositionBO.getByCriteria");
+            } catch (GeneralBOException e1) {
+                logger.error("[UserAction.initComboPosition] Error when saving error,", e1);
+            }
+            logger.error("[UserAction.initComboPosition] Error when searching data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
+            return "failure";
+        }
+
+        listOfComboPositions.addAll(listOfPosition);
+
+        return "init_combo_position";
     }
 
     @Override

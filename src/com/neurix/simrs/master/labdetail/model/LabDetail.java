@@ -1,21 +1,28 @@
 package com.neurix.simrs.master.labdetail.model;
 
 import com.neurix.common.model.BaseModel;
+
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 public class LabDetail extends BaseModel {
 
     private String idLabDetail;
     private String idLab;
+    private String namaLab;
     private String namaDetailPeriksa;
     private String satuan;
     private String ketentuanAcuan;
     private String flag;
     private String action;
+    private String stCreatedDate;
     private Timestamp createdDate;
     private String createdWho;
+    private String stLastUpdate;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private BigDecimal tarif;
+    private String stTarif;
 
     public String getIdLabDetail() {
         return idLabDetail;
@@ -103,5 +110,47 @@ public class LabDetail extends BaseModel {
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    @Override
+    public String getStCreatedDate() {
+        return stCreatedDate;
+    }
+
+    public void setStCreatedDate(String stCreatedDate) {
+        this.stCreatedDate = stCreatedDate;
+    }
+
+    @Override
+    public String getStLastUpdate() {
+        return stLastUpdate;
+    }
+
+    public void setStLastUpdate(String stLastUpdate) {
+        this.stLastUpdate = stLastUpdate;
+    }
+
+    public String getNamaLab() {
+        return namaLab;
+    }
+
+    public void setNamaLab(String namaLab) {
+        this.namaLab = namaLab;
+    }
+
+    public String getStTarif() {
+        return stTarif;
+    }
+
+    public void setStTarif(String stTarif) {
+        this.stTarif = stTarif;
+    }
+
+    public BigDecimal getTarif() {
+        return tarif;
+    }
+
+    public void setTarif(BigDecimal tarif) {
+        this.tarif = tarif;
     }
 }

@@ -3,9 +3,13 @@ package com.neurix.simrs.master.labdetail.dao;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.master.labdetail.model.ImSimrsLabDetailEntity;
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import java.math.BigInteger;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -32,22 +36,35 @@ public class LabDetailDao extends GenericDao<ImSimrsLabDetailEntity, String> {
             if (mapCriteria.get("nama_detail_periksa")!=null) {
                 criteria.add(Restrictions.ilike("namaDetailPeriksa", "%" + (String)mapCriteria.get("nama_detail_periksa") + "%"));
             }
-            if (mapCriteria.get("satuan")!=null) {
-                criteria.add(Restrictions.eq("satuan", (String) mapCriteria.get("satuan")));
-            }
-            if (mapCriteria.get("keterangan_acuan")!=null) {
-                criteria.add(Restrictions.eq("ketentuanAcuan", (String) mapCriteria.get("keterangan_acuan")));
-            }
-
+//            if (mapCriteria.get("satuan")!=null) {
+//                criteria.add(Restrictions.eq("satuan", (String) mapCriteria.get("satuan")));
+//            }
+//            if (mapCriteria.get("keterangan_acuan")!=null) {
+//                criteria.add(Restrictions.eq("ketentuanAcuan", (String) mapCriteria.get("keterangan_acuan")));
+//            }
         }
-
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
 
         // Order by
         criteria.addOrder(Order.asc("idLabDetail"));
-
         List<ImSimrsLabDetailEntity> results = criteria.list();
+        return results;
+    }
+
+    public List<ImSimrsLabDetailEntity> getDataLabDetail(String namaDetailPeriksa) throws HibernateException {
+        List<ImSimrsLabDetailEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsLabDetailEntity.class)
+                .add(Restrictions.eq("namaDetailPeriksa", namaDetailPeriksa))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
 
         return results;
+    }
+
+    public String getNextLabDetailId() throws HibernateException {
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_lab_detail')");
+        Iterator<BigInteger> iter=query.list().iterator();
+        String sId = String.format("%08d", iter.next());
+
+        return "LDB" + sId;
     }
 }

@@ -11,18 +11,26 @@ public class Tindakan {
     private String idTindakan;
     private String tindakan;
     private String idKategoriTindakan;
+    private String namaKategoriTindakan;
+    private String idKategoriTindakanIna;
+    private String namaKategoriTindakanIna;
     private BigInteger tarif;
     private BigInteger tarifBpjs;
     private String flag;
     private String action;
     private Timestamp createdDate;
+    private String stCreatedDate;
     private String createdWho;
     private Timestamp lastUpdate;
+    private String stLastUpdate;
     private String lastUpdateWho;
+    private String branchUser;
 
     private String idPelayanan;
     private String branchId;
+    private String branchName;
     private BigDecimal diskon;
+    private String stDiskon;
 
     public String getBranchId() {
         return branchId;
@@ -136,4 +144,67 @@ public class Tindakan {
         this.lastUpdateWho = lastUpdateWho;
     }
 
+    public String getBranchUser() {
+        return branchUser;
+    }
+
+    public void setBranchUser(String branchUser) {
+        this.branchUser = branchUser;
+    }
+
+    public String getIdKategoriTindakanIna() {
+        return idKategoriTindakanIna;
+    }
+
+    public void setIdKategoriTindakanIna(String idKategoriTindakanIna) {
+        this.idKategoriTindakanIna = idKategoriTindakanIna;
+    }
+
+    public String getNamaKategoriTindakan() {
+        return namaKategoriTindakan;
+    }
+
+    public void setNamaKategoriTindakan(String namaKategoriTindakan) {
+        this.namaKategoriTindakan = namaKategoriTindakan;
+    }
+
+    public String getNamaKategoriTindakanIna() {
+        return namaKategoriTindakanIna;
+    }
+
+    public void setNamaKategoriTindakanIna(String namaKategoriTindakanIna) {
+        this.namaKategoriTindakanIna = namaKategoriTindakanIna;
+    }
+
+    public String getBranchName() {
+        return branchName;
+    }
+
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
+    }
+
+    public String getStCreatedDate() {
+        return stCreatedDate;
+    }
+
+    public void setStCreatedDate(String stCreatedDate) {
+        this.stCreatedDate = stCreatedDate;
+    }
+
+    public String getStLastUpdate() {
+        return stLastUpdate;
+    }
+
+    public void setStLastUpdate(String stLastUpdate) {
+        this.stLastUpdate = stLastUpdate;
+    }
+
+    public String getStDiskon() {
+        return stDiskon;
+    }
+
+    public void setStDiskon(String stDiskon) {
+        this.stDiskon = stDiskon;
+    }
 }

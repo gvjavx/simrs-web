@@ -19,6 +19,8 @@
           p:mappingJurnalDao-ref="mappingJurnalDao"
           p:pelayananDao-ref="pelayananDao"
           p:dokterDao-ref="dokterDao"
+          p:pajakPendapatanDokterDao-ref="pajakPendapatanDokterDao"
+          p:jurnalDetailDao-ref="jurnalDetailDao"
     />
 
     <bean id="pendapatanDokterBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -49,5 +51,9 @@
     <bean id="dokterKsoDao" class="com.neurix.hris.master.dokterKso.dao.DokterKsoDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="pendapatanDokterPphLebihDao" class="com.neurix.hris.transaksi.pendapatanDokter.dao.PendapatanDokterPphLebihDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="pajakPendapatanDokterDao" class="com.neurix.hris.transaksi.pendapatanDokter.dao.PajakPendapatanDokterDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="jurnalDetailDao" class="com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDetailDao"
           p:sessionFactory-ref="sessionFactory" />
 </beans>

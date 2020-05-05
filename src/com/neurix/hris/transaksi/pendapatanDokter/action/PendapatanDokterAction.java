@@ -149,7 +149,7 @@ public class PendapatanDokterAction extends BaseMasterAction {
                 logger.error("[PendapatanDokterAction.search] Error when saving error,", e1);;
             }
             logger.error("[PendapatanDokterAction.search] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by    criteria, please inform to your admin" );
         }
 
         String branchId = CommonUtil.userBranchLogin();
@@ -363,6 +363,28 @@ public class PendapatanDokterAction extends BaseMasterAction {
         return pendapatanDokters;
     }
 
+    public List<PendapatanDokter> loadPendapatanPphLebih(String pendapatanId){
+        List<PendapatanDokter> listData = new ArrayList<>();
+        List<PendapatanDokter> listDataPendapatan = new ArrayList<>();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PendapatanDokterBo pendapatanDokterBo = (PendapatanDokterBo) ctx.getBean("pendapatanDokterBoProxy");
+        try{
+            listData = pendapatanDokterBo.getDetailPendapatanPph(pendapatanId);
+        }catch (GeneralBOException e){
+            Long logId = null;
+            try {
+                logId = pendapatanDokterBo.saveErrorMessage(e.getMessage(), "pendapatanDokterBO.getByCriteria");
+            } catch (GeneralBOException e1) {
+                logger.error("[PendapatanDokterAction.search] Error when saving error,", e1);;
+            }
+            logger.error("[PendapatanDokterAction.search] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+        }
+
+        return listData;
+    }
+
     public List<PendapatanDokter> loadResultsPphLebih(String nip){
         List<PendapatanDokter> pphLebihDokters = new ArrayList<>();
         List<PendapatanDokter> pphLebih = new ArrayList<>();
@@ -380,9 +402,14 @@ public class PendapatanDokterAction extends BaseMasterAction {
                     pendapatanDokter.setTotalPphLebih(dokter.getTotalPphLebih());
                     pendapatanDokter.setTotalPphFinal(dokter.getTotalPphFinal());
 
+                    pendapatanDokter.setStTotalDppPph50(CommonUtil.numbericFormat(dokter.getTotalDppPph50(), "###,###"));
+                    pendapatanDokter.setStTotalDppPph21Komulatif(CommonUtil.numbericFormat(dokter.getTotalDppPph21Komulatif(), "###,###"));
+                    pendapatanDokter.setStTarif(CommonUtil.numbericFormat(dokter.getTarif(), "###,###")+"%");
+                    pendapatanDokter.setStTotalPphDipungut(CommonUtil.numbericFormat(dokter.getTotalPphDipungut(), "###,###"));
+
                     pendapatanDokter.setStTotalDppPph21KomulatifLebih(CommonUtil.numbericFormat(dokter.getTotalDppPph21KomulatifLebih(), "###,###"));
                     pendapatanDokter.setStTotalDppPph21Lebih(CommonUtil.numbericFormat(dokter.getTotalDppPph21Lebih(), "###,###"));
-                    pendapatanDokter.setStTarifLebih(dokter.getStTarifLebih());
+                    pendapatanDokter.setStTarifLebih(dokter.getStTarifLebih()+"%");
                     pendapatanDokter.setStTotalPphDipungutLebih(CommonUtil.numbericFormat(dokter.getTotalPphDipungutLebih(), "###,###"));
                     pendapatanDokter.setStTotalPphLebih(CommonUtil.numbericFormat(dokter.getTotalPphLebih(), "###,###"));
                     pendapatanDokter.setStTotalPphFinal(CommonUtil.numbericFormat(dokter.getTotalPphFinal(), "###,###"));
