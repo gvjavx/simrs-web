@@ -692,6 +692,9 @@ public class TutuPeriodAction extends BaseTransactionAction {
                         riwayatTindakan.setNamaTindakan("Periksa Lab " + entity.getLabName());
                         riwayatTindakan.setTotalTarif(lab.getTarif());
                         riwayatTindakan.setKeterangan(lab.getKategoriLabName());
+                        if ("ptpn".equalsIgnoreCase(jenisPasien)){
+                            jenisPasien = "bpjs";
+                        }
                         riwayatTindakan.setJenisPasien(jenisPasien);
                         riwayatTindakan.setAction("C");
                         riwayatTindakan.setFlag("Y");
@@ -767,6 +770,9 @@ public class TutuPeriodAction extends BaseTransactionAction {
                             riwayatTindakan.setNamaTindakan("Tarif Resep dengan No. Resep " + entity.getIdPermintaanResep());
                             riwayatTindakan.setTotalTarif(new BigDecimal(obatDetailList.getTotalHarga()));
                             riwayatTindakan.setKeterangan("resep");
+                            if ("ptpn".equalsIgnoreCase(jenisPasien)){
+                                jenisPasien = "bpjs";
+                            }
                             riwayatTindakan.setJenisPasien(jenisPasien);
                             riwayatTindakan.setAction("C");
                             riwayatTindakan.setFlag("Y");
@@ -847,6 +853,9 @@ public class TutuPeriodAction extends BaseTransactionAction {
                                 riwayatTindakan.setNamaTindakan("Tarif Gizi dengan No. Gizi " + gizi.getIdOrderGizi());
                                 riwayatTindakan.setTotalTarif(gizi.getTarifTotal());
                                 riwayatTindakan.setKeterangan("gizi");
+                                if ("ptpn".equalsIgnoreCase(jenisPasien)){
+                                    jenisPasien = "bpjs";
+                                }
                                 riwayatTindakan.setJenisPasien(jenisPasien);
                                 riwayatTindakan.setAction("C");
                                 riwayatTindakan.setFlag("Y");
