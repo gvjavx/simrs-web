@@ -55,6 +55,30 @@ public class MasterDao extends GenericDao<ImMasterEntity, String> {
         return results;
     }
 
+    public List<ImMasterEntity> getByInput(Map mapCriteria) {
+        Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ImMasterEntity.class);
+        // Get Collection and sorting
+        if (mapCriteria!=null) {
+            if (mapCriteria.get("nomor_master")!=null) {
+                criteria.add(Restrictions.eq("primaryKey", (String) mapCriteria.get("nomor_master")));
+            }
+            if (mapCriteria.get("nama")!=null) {
+                criteria.add(Restrictions.ilike("nama", "%" + (String)mapCriteria.get("nama") + "%"));
+            }
+            if (mapCriteria.get("alamat")!=null) {
+                criteria.add(Restrictions.eq("master", (String) mapCriteria.get("alamat")));
+            }
+        }
+        criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
+
+        // Order by
+        criteria.addOrder(Order.asc("nama"));
+
+        List<ImMasterEntity> results = criteria.list();
+
+        return results;
+    }
+
     // Generate surrogate id from postgre
     public String getNextMasterId() throws HibernateException {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_kode_rekening')");

@@ -30,19 +30,154 @@ public class KategoriLabBoImpl implements KategoriLabBo {
 
 
     @Override
+    public void saveDelete(KategoriLab bean) throws GeneralBOException {
+        logger.info("[saveDelete.KategoriLabBoImpl] start process >>>");
+
+        if (bean!=null) {
+
+            String idKategoriLab = bean.getIdKategoriLab();
+
+            ImSimrsKategoriLabEntity entity = null;
+
+            try {
+                // Get data from database by ID
+                entity = kategoriLabDao.getById("idKategoriLab", idKategoriLab);
+            } catch (HibernateException e) {
+                logger.error("[KategoriLabBoImpl.saveDelete] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data Lab by IdLab, please inform to your admin...," + e.getMessage());
+            }
+
+            if (entity != null) {
+
+                // Modify from bean to entity serializable
+                entity.setIdKategoriLab(bean.getIdKategoriLab());
+                entity.setFlag(bean.getFlag());
+                entity.setAction(bean.getAction());
+                entity.setLastUpdateWho(bean.getLastUpdateWho());
+                entity.setLastUpdate(bean.getLastUpdate());
+
+                try {
+                    // Delete (Edit) into database
+                    kategoriLabDao.updateAndSave(entity);
+                } catch (HibernateException e) {
+                    logger.error("[KategoriLabBoImpl.saveDelete] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving update data Lab, please info to your admin..." + e.getMessage());
+                }
+
+            } else {
+                logger.error("[KategoriLabBoImpl.saveDelete] Error, not found data Lab with request id, please check again your data ...");
+                throw new GeneralBOException("Error, not found data Lab with request id, please check again your data ...");
+            }
+        }
+        logger.info("[KategoriLabBoImpl.saveDelete] end process <<<");
+    }
+
+    @Override
+    public void saveEdit(KategoriLab bean) throws GeneralBOException {
+        logger.info("[PayrollSkalaGajiBoImpl.saveEdit] start process >>>");
+        if (bean!=null) {
+            String kategoriLabId = bean.getIdKategoriLab();
+
+            ImSimrsKategoriLabEntity entity = null;
+            try {
+                // Get data from database by ID
+                entity = kategoriLabDao.getById("idKategoriLab", kategoriLabId);
+                //historyId = payrollSkalaGajiDao.getNextSkalaGaji();
+            } catch (HibernateException e) {
+                logger.error("[KategoriLabBoImpl.saveEdit] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data KategoriLab by IdKategoriLab, please inform to your admin...," + e.getMessage());
+            }
+
+            if (entity != null) {
+                entity.setIdKategoriLab(bean.getIdKategoriLab());
+                entity.setNamaKategori(bean.getNamaKategori());
+                entity.setFlag(bean.getFlag());
+                entity.setAction(bean.getAction());
+                entity.setLastUpdateWho(bean.getLastUpdateWho());
+                entity.setLastUpdate(bean.getLastUpdate());
+
+                String flag;
+                try {
+                    // Update into database
+                    kategoriLabDao.updateAndSave(entity);
+                    //payrollSkalaGajiDao.addAndSaveHistory(imPayrollSkalaGajiHistoryEntity);
+                } catch (HibernateException e) {
+                    logger.error("[KategoriLabBoImpl.saveEdit] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving update data KategoriLab, please info to your admin..." + e.getMessage());
+                }
+            } else {
+                logger.error("[KategoriLabBoImpl.saveEdit] Error, not found data Lab with request id, please check again your data ...");
+                throw new GeneralBOException("Error, not found data KategoriLab with request id, please check again your data ...");
+            }
+        }
+        logger.info("[KategoriLabBoImpl.saveEdit] end process <<<");
+    }
+
+    @Override
+    public KategoriLab saveAdd(KategoriLab bean) throws GeneralBOException {
+        logger.info("[PayrollSkalaGajiBoImpl.saveAdd] start process >>>");
+        if (bean!=null) {
+            String status = cekStatus(bean.getNamaKategori());
+            String kategoriLabId;
+            if (!status.equalsIgnoreCase("exist")){
+                try {
+                    // Generating ID, get from postgre sequence
+                    kategoriLabId = kategoriLabDao.getNextLabKategoriId();
+                } catch (HibernateException e) {
+                    logger.error("[KategoriLabBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when getting sequence KategoriId id, please info to your admin..." + e.getMessage());
+                }
+                // creating object entity serializable
+                ImSimrsKategoriLabEntity entity = new ImSimrsKategoriLabEntity();
+                entity.setIdKategoriLab(kategoriLabId);
+                entity.setNamaKategori(bean.getNamaKategori());
+                entity.setFlag(bean.getFlag());
+                entity.setAction(bean.getAction());
+                entity.setCreatedWho(bean.getCreatedWho());
+                entity.setLastUpdateWho(bean.getLastUpdateWho());
+                entity.setCreatedDate(bean.getCreatedDate());
+                entity.setLastUpdate(bean.getLastUpdate());
+
+                try {
+                    // insert into database
+                    kategoriLabDao.addAndSave(entity);
+                } catch (HibernateException e) {
+                    logger.error("[KategoriLabBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data KategoriLab, please info to your admin..." + e.getMessage());
+                }
+            }else{
+                throw new GeneralBOException("Maaf Data dengan Nama Kategori Lab Tersebut Sudah Ada");
+            }
+        }
+
+        logger.info("[LabBoImpl.saveAdd] end process <<<");
+        return null;
+    }
+
+    @Override
     public List<KategoriLab> getByCriteria(KategoriLab bean) throws GeneralBOException {
         logger.info("[KategoriLabBoImpl.getByCriteria] Start >>>>>>>");
+        List<KategoriLab> result = new ArrayList<>();
         if (bean != null) {
             Map hsCriteria = new HashMap();
 
             if (bean.getIdKategoriLab() != null && !"".equalsIgnoreCase(bean.getIdKategoriLab())) {
                 hsCriteria.put("id_kategori_lab", bean.getIdKategoriLab());
             }
-
-            hsCriteria.put("flag", "Y");
+            if (bean.getNamaKategori() != null && !"".equalsIgnoreCase(bean.getNamaKategori())) {
+                hsCriteria.put("nama_kategori", bean.getNamaKategori());
+            }
+            if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
+                if ("N".equalsIgnoreCase(bean.getFlag())) {
+                    hsCriteria.put("flag", "N");
+                } else {
+                    hsCriteria.put("flag", bean.getFlag());
+                }
+            } else {
+                hsCriteria.put("flag", "Y");
+            }
 
             List<ImSimrsKategoriLabEntity> kategoriLabEntityList = new ArrayList<>();
-            List<KategoriLab> result = new ArrayList<>();
 
             try {
                 kategoriLabEntityList = kategoriLabDao.getByCriteria(hsCriteria);
@@ -58,18 +193,44 @@ public class KategoriLabBoImpl implements KategoriLabBo {
                     kategoriLab.setNamaKategori(kategoriLabEntity.getNamaKategori());
                     kategoriLab.setFlag(kategoriLabEntity.getFlag());
                     kategoriLab.setAction(kategoriLabEntity.getAction());
+                    kategoriLab.setStCreatedDate(kategoriLabEntity.getCreatedDate().toString());
                     kategoriLab.setCreatedDate(kategoriLabEntity.getCreatedDate());
                     kategoriLab.setCreatedWho(kategoriLabEntity.getCreatedWho());
+                    kategoriLab.setStLastUpdate(kategoriLabEntity.getLastUpdate().toString());
                     kategoriLab.setLastUpdate(kategoriLabEntity.getLastUpdate());
                     kategoriLab.setLastUpdateWho(kategoriLabEntity.getLastUpdateWho());
                     result.add(kategoriLab);
                 }
             }
-
-            logger.info("[KategoriLabBoImpl.getByCriteria] End <<<<<<<");
-            return result;
         }
         logger.info("[KategoriLabBoImpl.getByCriteria] End <<<<<<<");
+        return result;
+    }
+
+    @Override
+    public List<KategoriLab> getAll() throws GeneralBOException {
         return null;
+    }
+
+    @Override
+    public Long saveErrorMessage(String message, String moduleMethod) throws GeneralBOException {
+        return null;
+    }
+
+    public String cekStatus(String namaPelayanan)throws GeneralBOException{
+        String status ="";
+        List<ImSimrsKategoriLabEntity> entities = new ArrayList<>();
+        try {
+            entities = kategoriLabDao.getDataKategoriLab(namaPelayanan);
+        } catch (HibernateException e) {
+            logger.error("[KategoriLabBoImpl.cekStatus] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        if (entities.size()>0){
+            status = "exist";
+        }else{
+            status="notExits";
+        }
+        return status;
     }
 }

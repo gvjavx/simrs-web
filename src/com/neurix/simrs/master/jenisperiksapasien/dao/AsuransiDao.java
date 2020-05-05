@@ -3,7 +3,12 @@ package com.neurix.simrs.master.jenisperiksapasien.dao;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.master.jenisperiksapasien.model.ImSimrsAsuransiEntity;
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
+
+import java.math.BigInteger;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +27,10 @@ public class AsuransiDao extends GenericDao<ImSimrsAsuransiEntity, String> {
                 criteria.add(Restrictions.eq("idAsuransi", mapCriteria.get("id_asuransi").toString()));
             }
             if (mapCriteria.get("nama_asuransi") != null) {
-                criteria.add(Restrictions.eq("namaAsuransi", mapCriteria.get("nama_asuransi").toString()));
+                criteria.add(Restrictions.ilike("namaAsuransi", "%" + (String)mapCriteria.get("nama_asuransi") + "%"));
+            }
+            if (mapCriteria.get("no_master") != null) {
+                criteria.add(Restrictions.eq("noMaster", mapCriteria.get("no_master").toString()));
             }
             if(mapCriteria.get("flag") != null){
                 criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
@@ -30,5 +38,22 @@ public class AsuransiDao extends GenericDao<ImSimrsAsuransiEntity, String> {
         }
         List<ImSimrsAsuransiEntity> result = criteria.list();
         return result;
+    }
+
+    public List<ImSimrsAsuransiEntity> getDataAsuransi(String namaAsurnasi) throws HibernateException {
+        List<ImSimrsAsuransiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsAsuransiEntity.class)
+                .add(Restrictions.eq("namaAsuransi", namaAsurnasi))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+
+        return results;
+    }
+
+    public String getNextAsuransuId() throws HibernateException {
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_asuransi')");
+        Iterator<BigInteger> iter=query.list().iterator();
+        String sId = String.format("%08d", iter.next());
+
+        return "ASN" + sId;
     }
 }

@@ -6,6 +6,6 @@ import com.neurix.simrs.master.labdetail.model.LabDetail;
 
 import java.util.List;
 
-public interface LabDetailBo{
+public interface LabDetailBo extends BaseMasterBo<LabDetail>{
     public List<LabDetail> getByCriteria(LabDetail bean) throws GeneralBOException;
 }

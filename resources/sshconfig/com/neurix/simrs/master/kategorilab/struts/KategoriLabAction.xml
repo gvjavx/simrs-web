@@ -73,23 +73,30 @@
                 class="com.neurix.simrs.master.kategorilab.action.KategoriLabAction" method="{1}">
             <interceptor-ref name="ivelinStack" />
 
-            <!--<result name="search">/pages/com/neurix/simrs/master/pasien/searchRawatPasien.jsp</result>-->
-            <!--<result name="add">/pages/com/neurix/simrs/master/pasien/addRawatPasien.jsp</result>-->
-            <!--<result name="edit">/pages/com/neurix/simrs/master/pasien/editRawatPasien.jsp</result>-->
-            <!--<result name="delete">/pages/com/neurix/simrs/master/pasien/deletePasien.jsp</result>-->
+            <result name="search">/pages/com/neurix/simrs/master/kategoriLab/searchKategoriLab.jsp</result>
+            <result name="success">/pages/com/neurix/simrs/master/kategoriLab/searchKategoriLab.jsp</result>
+            <result name="input">/pages/com/neurix/simrs/master/kategoriLab/searchKategoriLab.jsp</result>
+            <result name="init_add">/pages/com/neurix/simrs/master/kategoriLab/addKategoriLab.jsp</result>
+            <result name="success_save_add">/pages/com/neurix/simrs/master/kategoriLab/addKategoriLab.jsp</result>
+            <result name="error">/pages/com/neurix/simrs/master/kategoriLab/addKategoriLab.jsp</result>
 
-            <!--<result name="save_add">/pages/com/neurix/hris/master/keluarga/addKeluarga.jsp</result>-->
-            <!--<result name="save_edit">/pages/com/neurix/hris/master/keluarga/addKeluarga.jsp</result>-->
-            <!--<result name="failure">/pages/com/neurix/hris/master/keluarga/editKeluarga.jsp</result>-->
+            <result name="init_edit">/pages/com/neurix/simrs/master/kategoriLab/editKategoriLab.jsp</result>
+            <result name="failure">/pages/com/neurix/simrs/master/kategoriLab/editKategoriLab.jsp</result>
+            <result name="success_save_edit">/pages/com/neurix/simrs/master/kategoriLab/editKategoriLab.jsp</result>
 
-
-
-
+            <result name="success_save_delete">/pages/com/neurix/simrs/master/kategoriLab/deleteKategoriLab.jsp</result>
+            <result name="init_delete">/pages/com/neurix/simrs/master/kategoriLab/deleteKategoriLab.jsp</result>
 
             <!--<result name="error" type="httpheader">-->
             <!--<param name="status">504</param>-->
             <!--<param name="headers.message">${actionErrors}</param>-->
             <!--</result>-->
+        </action>
+
+        <action name="paging_displaytag_kategorilab"
+                class="com.neurix.simrs.master.kategorilab.action.KategoriLabAction" method="paging">
+            <interceptor-ref name="defaultStack"/>
+            <result name="success">/pages/com/neurix/simrs/master/kategoriLab/searchKategoriLab.jsp</result>
         </action>
 
     </package>

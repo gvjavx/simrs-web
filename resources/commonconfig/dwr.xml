@@ -580,7 +580,6 @@
       <create creator="new">
           <param name="class" value="com.neurix.hris.transaksi.pendapatanDokter.action.PendapatanDokterAction"/>
       </create>
-
       <convert converter="bean" match="com.neurix.hris.transaksi.pendapatanDokter.model.PendapatanDokter"/>
       <convert converter="bean" match="com.neurix.akuntansi.master.pembayaran.model.ImAkunPembayaranEntity"/>
 
@@ -652,6 +651,11 @@
       <convert converter="bean" match="com.neurix.akuntansi.transaksi.budgeting.model.BudgetingDetail"/>
       <convert converter="bean" match="com.neurix.akuntansi.transaksi.budgeting.model.BudgetingPengadaan"/>
       <convert converter="bean" match="com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity"/>
+
+      <create creator="new">
+          <param name="class" value="com.neurix.akuntansi.master.pembayaran.action.PembayaranAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.akuntansi.master.pembayaran.model.Pembayaran"/>
   </allow>
 
 </dwr>

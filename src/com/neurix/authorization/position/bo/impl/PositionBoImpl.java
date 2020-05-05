@@ -117,9 +117,14 @@ public class PositionBoImpl implements PositionBo {
             if (searchPosition.getBagianId() != null && !"".equalsIgnoreCase(searchPosition.getBagianId())) {
                 hsCriteria.put("bagian_id", searchPosition.getBagianId());
             }
-
             if (searchPosition.getKelompokId() != null && !"".equalsIgnoreCase(searchPosition.getKelompokId())) {
                 hsCriteria.put("kelompok_id", searchPosition.getKelompokId());
+            }
+            if (searchPosition.getKodering() != null && !"".equalsIgnoreCase(searchPosition.getKodering())) {
+                hsCriteria.put("kodering", searchPosition.getKodering());
+            }
+            if (searchPosition.getKategori() != null && !"".equalsIgnoreCase(searchPosition.getKategori())) {
+                hsCriteria.put("kategori", searchPosition.getKategori());
             }
 
             if (searchPosition.getFlag() != null && !"".equalsIgnoreCase(searchPosition.getFlag())) {
@@ -177,6 +182,7 @@ public class PositionBoImpl implements PositionBo {
                     resultPosition.setLastUpdate(imPosition.getLastUpdate());
                     resultPosition.setLastUpdateWho(imPosition.getLastUpdateWho());
                     resultPosition.setFlag(imPosition.getFlag());
+                    resultPosition.setKategori(imPosition.getKategori());
 
                     listOfResultPosition.add(resultPosition);
                 }

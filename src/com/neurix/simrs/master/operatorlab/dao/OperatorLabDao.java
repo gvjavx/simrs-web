@@ -28,7 +28,6 @@ public class OperatorLabDao extends GenericDao<ImSimrsOperatorLabEntity, String>
             if (mapCriteria.get("nama_operator")!=null) {
                 criteria.add(Restrictions.ilike("namaOperator", "%" + (String)mapCriteria.get("nama_operator") + "%"));
             }
-
         }
 
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));

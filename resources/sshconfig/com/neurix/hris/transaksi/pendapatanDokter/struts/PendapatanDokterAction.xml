@@ -97,10 +97,10 @@
 
         </action>
 
-        <action name="paging_displaytag_absensi"
-                class="com.neurix.hris.transaksi.absensi.action.AbsensiAction" method="paging">
+        <action name="paging_displaytag_pendapatanDokter"
+                class="com.neurix.hris.transaksi.pendapatanDokter.action.PendapatanDokterAction" method="paging">
             <interceptor-ref name="defaultStack"/>
-            <result name="success">/pages/com/neurix/hris/transaksi/absensi/SearchAbsensi.jsp</result>
+            <result name="success">/pages/com/neurix/hris/transaksi/pendapatanDokter/SearchPendapatanDokter.jsp</result>
         </action>
 
     </package>

@@ -1,6 +1,7 @@
 package com.neurix.simrs.master.labdetail.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 public class ImSimrsLabDetailEntity implements Serializable{
@@ -16,6 +17,7 @@ public class ImSimrsLabDetailEntity implements Serializable{
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private BigDecimal tarif;
 
     public String getIdLabDetail() {
         return idLabDetail;
@@ -103,5 +105,13 @@ public class ImSimrsLabDetailEntity implements Serializable{
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    public BigDecimal getTarif() {
+        return tarif;
+    }
+
+    public void setTarif(BigDecimal tarif) {
+        this.tarif = tarif;
     }
 }

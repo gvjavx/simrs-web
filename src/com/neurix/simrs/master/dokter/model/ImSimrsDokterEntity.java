@@ -9,6 +9,7 @@ import java.sql.Timestamp;
 public class ImSimrsDokterEntity implements Serializable {
     private String idDokter;
     private String namaDokter;
+    private String idPelayanan;
     private String flag;
     private String action;
     private Timestamp createdDate;
@@ -124,6 +125,14 @@ public class ImSimrsDokterEntity implements Serializable {
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    public String getIdPelayanan() {
+        return idPelayanan;
+    }
+
+    public void setIdPelayanan(String idPelayanan) {
+        this.idPelayanan = idPelayanan;
     }
 
     @Override

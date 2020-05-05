@@ -12,15 +12,23 @@ public class Dokter {
     private String flag;
     private String action;
     private Timestamp createdDate;
+    private String stCreatedDate;
     private String createdWho;
     private Timestamp lastUpdate;
+    private String stLastUpdate;
     private String lastUpdateWho;
+    private String idPelayanan;
 
     private String idSpesialis;
     private String namaSpesialis;
+    private String namaPelayanan;
 
     private String kuota;
     private String kodeDpjp;
+    private String kodering;
+    private String positionId;
+
+    private String kode;
 
     public String getKodeDpjp() {
         return kodeDpjp;
@@ -135,5 +143,53 @@ public class Dokter {
 
     public void setNamaSpesialis(String namaSpesialis) {
         this.namaSpesialis = namaSpesialis;
+    }
+
+    public String getIdPelayanan() {
+        return idPelayanan;
+    }
+
+    public void setIdPelayanan(String idPelayanan) {
+        this.idPelayanan = idPelayanan;
+    }
+
+    public String getStCreatedDate() {
+        return stCreatedDate;
+    }
+
+    public void setStCreatedDate(String stCreatedDate) {
+        this.stCreatedDate = stCreatedDate;
+    }
+
+    public String getStLastUpdate() {
+        return stLastUpdate;
+    }
+
+    public void setStLastUpdate(String stLastUpdate) {
+        this.stLastUpdate = stLastUpdate;
+    }
+
+    public String getKodering() {
+        return kodering;
+    }
+
+    public void setKodering(String kodering) {
+        this.kodering = kodering;
+    }
+
+    public String getNamaPelayanan() {
+        return namaPelayanan;
+    }
+
+    public void setNamaPelayanan(String namaPelayanan) {
+        this.namaPelayanan = namaPelayanan;
+    }
+
+    public String getPositionId() {
+        return positionId;
+    }
+
+    public void setPositionId(String positionId) {
+        this.positionId = positionId;
     }
 }
