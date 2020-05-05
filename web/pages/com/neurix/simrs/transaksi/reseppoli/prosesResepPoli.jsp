@@ -713,6 +713,40 @@
         }
     }
 
+    function formaterDateDD(dateTime) {
+
+        var today = "";
+        if (dateTime != '' && dateTime != null) {
+
+            today = new Date(dateTime);
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+            var hh = ((today.getHours() < 10 ? '0' : '') + today.getHours());
+            var min = ((today.getMinutes() < 10 ? '0' : '') + today.getMinutes());
+            var sec = today.getSeconds();
+            today = dd + '-' + mm + '-' + yyyy;
+        }
+        return today;
+    }
+
+    function formaterDateMM(dateTime) {
+
+        var today = "";
+        if (dateTime != '' && dateTime != null) {
+
+            today = new Date(dateTime);
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+            var hh = ((today.getHours() < 10 ? '0' : '') + today.getHours());
+            var min = ((today.getMinutes() < 10 ? '0' : '') + today.getMinutes());
+            var sec = today.getSeconds();
+            today = mm + '-' + dd + '-' + yyyy;
+        }
+        return today;
+    }
+
     function confirmObat(idObatVal, idObat, namaObat, qtyReq, jenisSatuan, idTransaksi) {
 
         $('#load_app').hide();
@@ -726,13 +760,13 @@
         var dd = String(today.getDate()).padStart(2, '0');
         var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
         var yyyy = today.getFullYear();
-        today = mm + '/' + dd + '/' + yyyy;
+        today = mm + '-' + dd + '-' + yyyy;
         var lembarPerBox = "";
         var bijiPerLembar = "";
         if (idObatVal != "") {
             TransaksiObatAction.listObatPoliEntity(idObatVal, {
                 callback: function (response) {
-                    if (response.length > 0) {
+                    if (response.length > 0 && idObat == idObatVal) {
 
                         $('#loading_data').show();
                         $('#modal-approve').modal({show: true, backdrop: 'static'});
@@ -742,9 +776,9 @@
                             var qtyLembar = "";
                             var qtyBiji = "";
 
-                            var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(item.expiredDate));
+                            var dateFormat = formaterDateDD(new Date(item.expiredDate));
 
-                            var dateExpired = $.datepicker.formatDate('mm-dd-yy', new Date(item.expiredDate));
+                            var dateExpired = formaterDateMM(new Date(item.expiredDate));
 
                             const date1 = new Date(today);
                             const date2 = new Date(dateExpired);
