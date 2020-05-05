@@ -3528,6 +3528,8 @@
         CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, "RI", function (response) {
             if (jenis == "bpjs" || jenis == "ptpn") {
                 $('#status_bpjs').show();
+                console.log('tes');
+                console.log(response);
                 if (response.tarifBpjs != null && response.tarifTindakan != null) {
 
                     var coverBiaya = response.tarifBpjs;
