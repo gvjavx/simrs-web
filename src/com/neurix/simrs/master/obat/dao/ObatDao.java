@@ -333,47 +333,51 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
         return listOfResults;
     }
 
-    public Obat getSumStockObatGudangById(String id) {
+    public Obat getSumStockObatGudangById(String id, String ket) {
 
-//        String SQL = "SELECT \n" +
-//                "id_obat, \n" +
-//                "SUM(qty_box) as qty_box, \n" +
-//                "SUM(qty_lembar) as qty_lembar,\n" +
-//                "SUM(qty_biji) as qty_biji\n" +
-//                "FROM im_simrs_obat \n" +
-//                "WHERE (qty_box, qty_lembar, qty_biji) != ('0','0','0')\n" +
-//                "AND id_obat = :id\n" +
-//                "GROUP BY id_obat";
-
-        //stok obat digudang ditambah dengan stok di apotek
-        String SQL = "SELECT\n" +
-                "a.id_obat,\n" +
-                "(a.qty_box + b.jml_box) as qty_box,\n" +
-                "(a.qty_lembar + b.jml_lembar) as qty_lembar,\n" +
-                "(a.qty_biji + b.jml_biji) as qty_biji\n" +
-                "FROM\n" +
-                "\t(SELECT  \n" +
-                "\tid_obat,  \n" +
-                "\tSUM(qty_box) as qty_box,  \n" +
-                "\tSUM(qty_lembar) as qty_lembar, \n" +
-                "\tSUM(qty_biji) as qty_biji \n" +
-                "\tFROM im_simrs_obat\n" +
-                "\tWHERE (qty_box, qty_lembar, qty_biji) != (0,0,0) \n" +
-                "\tAND id_obat = :id\n" +
-                "\tAND branch_id = :branchId\n" +
-                "\tGROUP BY id_obat) a\n" +
-                "INNER JOIN\n" +
-                "\t(SELECT \n" +
-                "\tid_obat, \n" +
-                "\tSUM(qty_box) as jml_box, \n" +
-                "\tSUM(qty_lembar) as jml_lembar, \n" +
-                "\tSUM(qty_biji) as jml_biji\n" +
-                "\tFROM mt_simrs_obat_poli\n" +
-                "\tWHERE (qty_box, qty_lembar, qty_biji) != (0,0,0) \n" +
-                "\tAND id_obat = :id\n" +
-                "\tAND branch_id = :branchId\n" +
-                "\tGROUP BY id_obat) b\n" +
-                "ON a.id_obat = b.id_obat\n";
+        String SQL = "";
+        if ("stok".equalsIgnoreCase(ket)) {
+            SQL = "SELECT \n" +
+                    "id_obat, \n" +
+                    "SUM(qty_box) as qty_box, \n" +
+                    "SUM(qty_lembar) as qty_lembar,\n" +
+                    "SUM(qty_biji) as qty_biji\n" +
+                    "FROM im_simrs_obat \n" +
+                    "WHERE (qty_box, qty_lembar, qty_biji) != ('0','0','0')\n" +
+                    "AND id_obat = :id\n" +
+                    "AND branch_id = :branchId\n" +
+                    "GROUP BY id_obat";
+        } else {
+            //stok obat digudang ditambah dengan stok di apotek
+            SQL = "SELECT\n" +
+                    "a.id_obat,\n" +
+                    "(a.qty_box + b.jml_box) as qty_box,\n" +
+                    "(a.qty_lembar + b.jml_lembar) as qty_lembar,\n" +
+                    "(a.qty_biji + b.jml_biji) as qty_biji\n" +
+                    "FROM\n" +
+                    "\t(SELECT  \n" +
+                    "\tid_obat,  \n" +
+                    "\tSUM(qty_box) as qty_box,  \n" +
+                    "\tSUM(qty_lembar) as qty_lembar, \n" +
+                    "\tSUM(qty_biji) as qty_biji \n" +
+                    "\tFROM im_simrs_obat\n" +
+                    "\tWHERE (qty_box, qty_lembar, qty_biji) != (0,0,0) \n" +
+                    "\tAND id_obat = :id\n" +
+                    "\tAND branch_id = :branchId\n" +
+                    "\tGROUP BY id_obat) a\n" +
+                    "LEFT JOIN\n" +
+                    "\t(SELECT \n" +
+                    "\tid_obat, \n" +
+                    "\tSUM(qty_box) as jml_box, \n" +
+                    "\tSUM(qty_lembar) as jml_lembar, \n" +
+                    "\tSUM(qty_biji) as jml_biji\n" +
+                    "\tFROM mt_simrs_obat_poli\n" +
+                    "\tWHERE (qty_box, qty_lembar, qty_biji) != (0,0,0) \n" +
+                    "\tAND id_obat = :id\n" +
+                    "\tAND branch_id = :branchId\n" +
+                    "\tGROUP BY id_obat) b\n" +
+                    "ON a.id_obat = b.id_obat\n";
+        }
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("id", id)

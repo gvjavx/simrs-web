@@ -839,7 +839,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 
         Obat sumObat = new Obat();
         try {
-            sumObat = obatDao.getSumStockObatGudangById(bean.getIdObat());
+            sumObat = obatDao.getSumStockObatGudangById(bean.getIdObat(), "");
         } catch (HibernateException e) {
             logger.error("[PermintaanVendorBoImpl.updateAddStockGudang] ERROR.", e);
             throw new GeneralBOException("[PermintaanVendorBoImpl.updateAddStockGudang] ERROR." + e.getMessage());

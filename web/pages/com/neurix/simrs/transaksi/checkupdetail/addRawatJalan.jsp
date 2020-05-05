@@ -3636,10 +3636,13 @@
         var option = "<option value=''>[Select One]</option>";
         if (idJenis != '') {
             ObatAction.listObat(idJenis, function (response) {
+                console.log(response);
                 if (response != null) {
                     $.each(response, function (i, item) {
                         option += "<option value='" + item.idObat + "'>" + item.namaObat + "</option>";
                     });
+                    $('#ob_id_obat').html(option);
+                    $('#resep_nama_obat').html(option);
                 } else {
                     option = option;
                 }
@@ -3647,9 +3650,6 @@
         } else {
             option = option;
         }
-
-        $('#ob_id_obat').html(option);
-        $('#resep_nama_obat').html(option);
     }
 
     function showFormCekup(select) {

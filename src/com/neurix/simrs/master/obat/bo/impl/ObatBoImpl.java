@@ -814,7 +814,7 @@ public class ObatBoImpl implements ObatBo {
 
                     Obat sumObat = new Obat();
                     try {
-                        sumObat = obatDao.getSumStockObatGudangById(idObat);
+                        sumObat = obatDao.getSumStockObatGudangById(idObat, "stok");
                     } catch (HibernateException e) {
                         logger.error("[ObatBoImpl.getListObatGroup] ERROR, " + e.getMessage());
                         throw new GeneralBOException("[ObatBoImpl.getListObatGroup] ERROR, " + e.getMessage());
