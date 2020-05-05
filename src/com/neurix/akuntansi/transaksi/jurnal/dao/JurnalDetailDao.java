@@ -55,7 +55,7 @@ public class JurnalDetailDao extends GenericDao<ItJurnalDetailEntity, String> {
             }
         }
 
-        criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
+        criteria.add(Restrictions.eq("flag", "Y"));
 
         // Order by
         criteria.addOrder(Order.asc("jurnalDetailId"));

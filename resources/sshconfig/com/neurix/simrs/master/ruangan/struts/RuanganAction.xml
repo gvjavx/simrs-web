@@ -79,6 +79,8 @@
             <result name="delete">//pages/com/neurix/simrs/master/ruangan/deleteRuangan.jsp</result>
             <result name="failure">/pages/com/neurix/simrs/master/ruangan/editRuangan.jsp</result>
 
+            <result name="init_combo_kelasruangan">/pages/com/neurix/simrs/master/ruangan/searchRuangan.jsp</result>
+
             <!--<result name="save_add">/pages/com/neurix/hris/master/keluarga/addKeluarga.jsp</result>-->
             <!--<result name="save_edit">/pages/com/neurix/hris/master/keluarga/addKeluarga.jsp</result>-->
             <!--<result name="failure">/pages/com/neurix/hris/master/keluarga/editKeluarga.jsp</result>-->

@@ -75,7 +75,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Pendapatan Dokter
+            Pendapatan Dokter KSO
         </h1>
     </section>
     <!-- Main content -->
@@ -171,7 +171,10 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:if test='pendapatanDokter.branchId == "KP"'>
+                                                        <%--<s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>--%>
+                                                        <%--<s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="pendapatanDokter.branchId"--%>
+                                                                  <%--listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
+                                                        <s:if test='pendapatanDokter.branchUser == "KP"'>
                                                             <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                                                             <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="pendapatanDokter.branchId"
                                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
@@ -215,20 +218,26 @@
                                             <table id="showdata" width="80%">
                                                 <tr>
                                                     <td align="center">
-                                                        <sj:dialog id="waiting_dialog_loading" openTopics="showDialog" closeTopics="closeDialog" modal="true"
+                                                        <sj:dialog id="waiting_dialog_loading" openTopics="showDialog"
+                                                                   closeTopics="closeDialog" modal="true"
                                                                    resizable="false"
-                                                                   height="350" width="600" autoOpen="false" title="Loading ...">
+                                                                   height="250" width="600" autoOpen="false"
+                                                                   title="Search Data ...">
                                                             Please don't close this window, server is processing your request ...
-                                                            </br>
-                                                            </br>
-                                                            </br>
+                                                            <br>
                                                             <center>
-                                                                <img border="0" src="<s:url value="/pages/images/indicator-read.gif"/>" name="image_indicator_read">
+                                                                <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                                     src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                                     name="image_indicator_write">
+                                                                <br>
+                                                                <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                                     src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                                     name="image_indicator_write">
                                                             </center>
                                                         </sj:dialog>
                                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
-                                                                   height="620" width="900" autoOpen="false"
-                                                                   title="Pendapatan Dokter">
+                                                                   height="700" width="900" autoOpen="false"
+                                                                   title="Cuti Pegawai ">
                                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                                         </sj:dialog>
 
@@ -242,7 +251,7 @@
                                                         </sj:dialog>
                                                         <s:set name="listOfPendapatanDokter" value="#session.listOfResultPendapatanDokter" scope="request" />
                                                         <display:table name="listOfPendapatanDokter" class="table table-condensed table-striped table-hover"
-                                                                       requestURI="paging_displaytag_pendapatan.action" export="true" id="row" pagesize="30" style="font-size:10">
+                                                                       requestURI="paging_displaytag_pendapatanDokter.action" export="true" id="row" pagesize="30" style="font-size:10">
                                                             <display:column media="html" title="View" style="text-align:center;font-size:9">
                                                                 <%--<s:url var="urlView" namespace="/pendapatanDokter" action="view_pendapatanDokter" escapeAmp="false">--%>
                                                                     <%--<s:param name="id"><s:property value="#attr.row.absensiPegawaiId" /></s:param>--%>
@@ -251,18 +260,31 @@
                                                                 <%--<sj:a onClickTopics="showDialogMenuView" href="%{urlView}">--%>
                                                                     <%--<img border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_trash">--%>
                                                                 <%--</sj:a>--%>
-                                                                <img onclick="detailPendapatan('<s:property value="#attr.row.pendapatanDokterId"/>','<s:property value="#attr.row.dokterName"/>','<s:property value="#attr.row.branchName"/>','<s:property value="#attr.row.bruto"/>','<s:property value="#attr.row.pendapatanRs"/>','<s:property value="#attr.row.hrBruto"/>','<s:property value="#attr.row.dppPph50"/>','<s:property value="#attr.row.dppPph21Komulatif"/>','<s:property value="#attr.row.StTarif"/>','<s:property value="#attr.row.pphDipungut"/>','<s:property value="#attr.row.hrAktifitasNetto"/>','<s:property value="#attr.row.potKs"/>','<s:property value="#attr.row.gajiBersih"/>')" border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_trash" style="cursor: pointer;">
+                                                                <img onclick="detailPendapatan('<s:property value="#attr.row.totalPphLebih"/>','<s:property value="#attr.row.kodeJabatan"/>','<s:property value="#attr.row.bulan"/>','<s:property value="#attr.row.tahun"/>','<s:property value="#attr.row.pendapatanDokterId"/>','<s:property value="#attr.row.dokterName"/>','<s:property value="#attr.row.branchName"/>','<s:property value="#attr.row.bruto"/>','<s:property value="#attr.row.pendapatanRs"/>','<s:property value="#attr.row.hrBruto"/>','<s:property value="#attr.row.dppPph50"/>','<s:property value="#attr.row.dppPph21Komulatif"/>','<s:property value="#attr.row.StTarif"/>','<s:property value="#attr.row.pphDipungut"/>','<s:property value="#attr.row.hrAktifitasNetto"/>','<s:property value="#attr.row.potKs"/>','<s:property value="#attr.row.gajiBersih"/>')" border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_trash" style="cursor: pointer;">
                                                             </display:column>
-                                                            <display:column property="branchName" sortable="true" title="Unit" />
-                                                            <display:column property="dokterId" sortable="true" title="Id Dokter"  />
-                                                            <display:column property="dokterName" sortable="true" title="Nama Dokter" />
-                                                            <display:column property="bulan" sortable="true" title="Bulan" />
-                                                            <display:column property="tahun" sortable="true" title="Tahun" />
-                                                            <display:column property="bruto" sortable="true" title="Bruto" />
-                                                            <display:column property="hrBruto" sortable="true" title="Hr. Bruto" />
-                                                            <display:column property="pphDipungut" sortable="true" title="Pot. Pajak" />
-                                                            <display:column property="potKs" sortable="true" title="Pot.Ks" />
-                                                            <display:column property="gajiBersih" sortable="true" title="Total Pendapatan" />
+                                                            <display:column style="text-align:center" property="branchName" sortable="true" title="Unit" />
+                                                            <display:column style="text-align:center" property="dokterId" sortable="true" title="Id Dokter"  />
+                                                            <display:column style="text-align:center" property="dokterName" sortable="true" title="Nama Dokter" />
+                                                            <display:column style="text-align:center" property="kodeJabatan" sortable="true" title="Kode Dokter" />
+                                                            <display:column style="text-align:center" property="bulan" sortable="true" title="Bulan" />
+                                                            <display:column style="text-align:center" property="tahun" sortable="true" title="Tahun" />
+                                                            <display:column style="text-align:center" property="noNota" sortable="true" title="No. Nota" />
+                                                            <display:column style="text-align:right" property="bruto" sortable="true" title="Bruto" />
+                                                            <display:column style="text-align:right" property="hrBruto" sortable="true" title="Hr. Bruto" />
+                                                            <display:column style="text-align:right" property="pphDipungut" sortable="true" title="Pot. Pajak" />
+                                                            <display:column style="text-align:right" property="potKs" sortable="true" title="Pot.Ks" />
+                                                            <display:column style="text-align:right" property="gajiBersih" sortable="true" title="Total Pendapatan" />
+                                                            <%--<display:column style="text-align:center" property="flagDiterima" sortable="true" title="Diterima" />--%>
+                                                            <s:if test="#attr.row.approvalDibayar">
+                                                                <display:column media="html" title="Dibayar"  style="text-align:center">
+                                                                    <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_edit">
+                                                                </display:column>
+                                                            </s:if>
+                                                            <s:else>
+                                                                <display:column media="html" title="Dibayar"  style="text-align:center">
+                                                                    <img border="0" src="<s:url value="/pages/images/icon_failure.ico"/>" name="icon_edit">
+                                                                </display:column>
+                                                            </s:else>
                                                         </display:table>
                                                     </td>
                                                 </tr>
@@ -324,6 +346,14 @@
                     <div class="col-md-12">
                         <table class="table table-striped">
                             <tr>
+                                <td><b>Pendapatan Dokter Id</b></td>
+                                <td><span id="pendapatan_id"></span></td>
+                            </tr>
+                            <tr>
+                                <td><b>Kode Dokter</b></td>
+                                <td><span id="kode_dokter"></span></td>
+                            </tr>
+                            <tr>
                                 <td><b>Nama</b></td>
                                 <td><span id="nama_dokter"></span></td>
                             </tr>
@@ -332,44 +362,57 @@
                                 <td><span id="nama_unit"></span></td>
                             </tr>
                             <tr>
+                                <td><b>Bulan</b></td>
+                                <td><span id="bulan"></span></td>
+                            </tr>
+                            <tr>
+                                <td><b>Tahun</b></td>
+                                <td><span id="tahun"></span></td>
+                            </tr>
+                            <tr>
                                 <td><b>Bruto</b></td>
-                                <td><span id="bruto"></span></td>
+                                <td align="right"><span id="bruto"></span></td>
                             </tr>
                             <tr>
                                 <td><b>Pendapatan Rs</b></td>
-                                <td><span id="pendapatan_rs"></span></td>
+                                <td align="right"><span id="pendapatan_rs"></span></td>
                             </tr>
                             <tr>
                                 <td><b>Hr Bruto</b></td>
-                                <td><span id="hr_bruto"></span></td>
+                                <td align="right"><span id="hr_bruto"></span></td>
                             </tr>
                             <tr>
                                 <td><b>Dpp Pph 21</b></td>
-                                <td><span id="dpp_pph_21"></span></td>
+                                <td align="right"><span id="dpp_pph_21"></span></td>
+                                <td>
+                                    <a id="btn" href="javascript:void(0)">
+                                        <img sizes="30" id="btnViewPphLebih" border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_trash">
+                                    </a>
+                                </td>
                             </tr>
                             <tr>
                                 <td><b>Dpp Pph Komulatif</b></td>
-                                <td><span id="dpp_pph_komulatif"></span></td>
+                                <td align="right"><span id="dpp_pph_komulatif"></span></td>
                             </tr>
                             <tr>
                                 <td><b>Pajak</b></td>
-                                <td><span id="pajak"></span></td>
+                                <td align="right"><span id="pajak"></span></td>
                             </tr>
                             <tr>
                                 <td><b>Pot. Pajak</b></td>
-                                <td><span id="pot_pajak"></span></td>
+                                <td align="right"><span id="pot_pajak"></span></td>
                             </tr>
                             <tr>
                                 <td><b>Hr Aktifitas Netto</b></td>
-                                <td><span id="hr_aktifitas_netto"></span></td>
+                                <td align="right"><span id="hr_aktifitas_netto"></span></td>
                             </tr>
                             <tr>
                                 <td><b>Pot. Ks</b></td>
-                                <td><span id="pot_ks"></span></td>
+                                <td align="right"><span id="pot_ks"></span></td>
                             </tr>
                             <tr>
                                 <td><b>Hr Netto</b></td>
-                                <td><span id="hr_netto"></span></td>
+                                <td align="right"><span id="hr_netto"></span></td>
                             </tr>
                         </table>
                     </div>
@@ -394,6 +437,50 @@
         </div>
     </div>
 </div>
+
+<%--<div id="modal-pph" class="modal fade" role="dialog">--%>
+    <%--<div class="modal-dialog">--%>
+        <%--<!-- Modal content-->--%>
+        <%--<div class="modal-content">--%>
+            <%--<div class="modal-header">--%>
+                <%--<button type="button" class="close" data-dismiss="modal">&times;</button>--%>
+                <%--<h4 class="modal-title">Detail PPH Lebih</h4>--%>
+            <%--</div>--%>
+            <%--<div class="modal-body">--%>
+                <%--<table style="width: 100%;" class="detailPphLebihTable table table-bordered">--%>
+
+                <%--</table>--%>
+            <%--</div>--%>
+            <%--<div class="modal-footer">--%>
+                <%--<a type="button" class="btn btn-default" data-dismiss="modal">Close</a>--%>
+            <%--</div>--%>
+        <%--</div>--%>
+    <%--</div>--%>
+<%--</div>--%>
+
+<div id="modal-pph" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Detail PPH Lebih</h4>
+            </div>
+            <div class="modal-body">
+                <table style="width: 100%;" class="detailPphTable table table-bordered">
+                </table>
+            </div>
+            <div class="modal-body">
+                <table style="width: 100%;" class="detailPphLebihTable table table-bordered">
+                </table>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn btn-default" data-dismiss="modal">Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     function formaterDate(dateTime) {
 
@@ -412,21 +499,50 @@
         return today;
     }
 
-    function detailPendapatan(pendapatanDokterId,namaDokter,branchName,bruto, pendapatanRs,hrBruto,dppPph21,dppPphKomulatif,pajak,potPajak,hrAktifitas,potKs,gajiBersih){
+    function detailPendapatan(pphLebih, kodeJabatan, bulan, tahun, pendapatanDokterId,namaDokter,branchName,bruto, pendapatanRs,hrBruto,dppPph21,dppPphKomulatif,pajak,potPajak,hrAktifitas,potKs,gajiBersih){
         console.log(namaDokter);
-        $('#nama_dokter').text(namaDokter);
-        $('#nama_unit').text(branchName);
-        $('#bruto').text(bruto);
-        $('#pendapatan_rs').text(pendapatanRs);
-        $('#hr_bruto').text(hrBruto);
-        $('#dpp_pph_21').text(dppPph21);
-        $('#dpp_pph_komulatif').text(dppPphKomulatif);
-        $('#pajak').text(pajak);
-        $('#pot_pajak').text(potPajak);
-        $('#hr_aktifitas_netto').text(hrAktifitas);
-        $('#pot_ks').text(potKs);
-        $('#hr_netto').text(gajiBersih);
-        $('#body_detail').html('');
+        console.log("tes "+pphLebih);
+        if (pphLebih == '0.00' || pphLebih == ''){
+            $('#btn').hide();
+
+            $('#pendapatan_id').text(pendapatanDokterId);
+            $('#nama_dokter').text(namaDokter);
+            $('#nama_unit').text(branchName);
+            $('#bruto').text(bruto);
+            $('#pendapatan_rs').text(pendapatanRs);
+            $('#hr_bruto').text(hrBruto);
+            $('#dpp_pph_21').text(dppPph21);
+            $('#dpp_pph_komulatif').text(dppPphKomulatif);
+            $('#pajak').text(pajak);
+            $('#pot_pajak').text(potPajak);
+            $('#hr_aktifitas_netto').text(hrAktifitas);
+            $('#pot_ks').text(potKs);
+            $('#hr_netto').text(gajiBersih);
+            $('#kode_dokter').text(kodeJabatan);
+            $('#bulan').text(bulan);
+            $('#tahun').text(tahun);
+            $('#body_detail').html('');
+        }else {
+            $('#btn').show();
+
+            $('#pendapatan_id').text(pendapatanDokterId);
+            $('#nama_dokter').text(namaDokter);
+            $('#nama_unit').text(branchName);
+            $('#bruto').text(bruto);
+            $('#pendapatan_rs').text(pendapatanRs);
+            $('#hr_bruto').text(hrBruto);
+            $('#dpp_pph_21').text("-");
+            $('#dpp_pph_komulatif').text("-");
+            $('#pajak').text("-");
+            $('#pot_pajak').text("-");
+            $('#hr_aktifitas_netto').text(hrAktifitas);
+            $('#pot_ks').text(potKs);
+            $('#hr_netto').text(gajiBersih);
+            $('#kode_dokter').text(kodeJabatan);
+            $('#bulan').text(bulan);
+            $('#tahun').text(tahun);
+            $('#body_detail').html('');
+        }
 
         var table = "";
         PendapatanDokterAction.getDetailPendapatan(pendapatanDokterId, function (response) {
@@ -489,6 +605,85 @@
             alert('Silahkan Centang Salah Satu Absensi !');
         }
     };
+
+    $('#btnViewPphLebih').click(function () {
+        var idPendapatan = document.getElementById('pendapatan_id').innerHTML;;
+
+        if (idPendapatan!=""){
+            $('.detailPphTable').find('tbody').remove();
+            $('.detailPphTable').find('thead').remove();
+            $('.detailPphLebihTable').find('tbody').remove();
+            $('.detailPphLebihTable').find('thead').remove();
+            dwr.engine.setAsync(false);
+            var table = "";
+            var tmp_table = "";
+            PendapatanDokterAction.loadPendapatanPphLebih(idPendapatan,function(listdata) {
+                if (listdata!=""){
+                    console.log("Tes");
+                    table = "<thead style='font-size: 14px' >" +
+//                            "<tr>" +
+//                            "<th colspan='6' align='center' style='outline: 0px;text-align: center'>Pendapatan Pph Lebih</th>" +
+//                            "</tr>"+
+                            "<tr class='active'>"+
+//                            "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>No</th>"+
+                            "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Pph Komulatif</th>"+
+                            "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Pph 21</th>"+
+                            "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Pajak</th>"+
+                            "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Pph Dipungut</th>"+
+                            "</tr></thead>";
+                    var i = i;
+                    $.each(listdata, function (i, item) {
+                        table += '<tr style="font-size: 12px;" ">' +
+//                                '<td align="center">' + (i + 1) + '</td>' +
+                                '<td align="right">' + item.stTotalDppPph21Komulatif + '</td>' +
+                                '<td align="right">' + item.stTotalDppPph21 + '</td>' +
+                                '<td align="right">' + item.stTarif + '</td>' +
+                                '<td align="right">' + item.stTotalPphDipungut + '</td>' +
+                                "</tr>";
+                    });
+
+                    $('.detailPphTable').append(table);
+                    $("#detailPphTable").find("td:contains('null')").html("-");
+
+                    tmp_table = "<thead style='font-size: 14px' >" +
+//                            "<tr>" +
+//                            "<th colspan='6' align='center' style='outline: 0px;text-align: center'>Pendapatan Pph Lebih</th>" +
+//                            "</tr>"+
+                            "<tr class='active'>"+
+//                            "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>No</th>"+
+                            "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Pph Komulatif Lebih</th>"+
+                            "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Pph 21 Lebih</th>"+
+                            "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Pajak</th>"+
+                            "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Pph Dipungut Lebih</th>"+
+                            "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Pph Lebih</th>"+
+                            "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Pph Final</th>"+
+                            "</tr></thead>";
+                    var i = i;
+                    $.each(listdata, function (i, item) {
+                        tmp_table += '<tr style="font-size: 12px;" ">' +
+//                                '<td align="center">' + (i + 1) + '</td>' +
+                                '<td align="right">' + item.stTotalDppPph21KomulatifLebih + '</td>' +
+                                '<td align="right">' + item.stTotalDppPph21Lebih + '</td>' +
+                                '<td align="right">' + item.stTarifLebih + '</td>' +
+                                '<td align="right">' + item.stTotalPphDipungutLebih + '</td>' +
+                                '<td align="right">' + item.stTotalPphLebih + '</td>' +
+                                '<td align="right">' + item.stTotalPphFinal + '</td>' +
+                                "</tr>";
+                    });
+                    $('.detailPphLebihTable').append(tmp_table);
+                    $("#detailPphLebihTable").find("td:contains('null')").html("-");
+
+                    $('#modal-pph').find('.modal-title').text('View Detail PPH Lebih');
+                    $('#modal-pph').modal('show');
+                }else {
+                    alert("data PPH Lebih Kosong")
+                }
+            });
+
+        }else{
+            alert("Isi NIP terlebih dahulu");
+        }
+    });
 
 //    $('.row').on('click', '.item-view-pendapatan', function () {
 ////        var branchId = $(this).attr('data');

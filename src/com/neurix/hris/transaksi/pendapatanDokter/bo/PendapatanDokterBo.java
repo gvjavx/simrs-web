@@ -14,4 +14,6 @@ public interface PendapatanDokterBo extends BaseMasterBo<PendapatanDokter> {
     List<PendapatanDokter> getDetailPendapatan(PendapatanDokter bean);
 
     List<PendapatanDokter> saveAddPendapatanDokter(PendapatanDokter bean) throws GeneralBOException;
+
+    List<PendapatanDokter> getDetailPendapatanPph(String idPendapatan);
 }

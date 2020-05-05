@@ -21,7 +21,9 @@
             //$('#waiting_dialog').dialog('close');
             $('#view_dialog_menu').dialog('close');
             $('#info_dialog').dialog('close');
-            window.location.reload(true);
+//            window.location.reload(true);
+            document.kelasruanganForm.action = "search_kelasruangan.action";
+            document.kelasruanganForm.submit();
         };
 
         $.subscribe('beforeProcessSave', function (event, data) {
@@ -114,9 +116,17 @@
                 </table>
 
                 <table >
-                    <S:hidden name="kelasRuangan.idKelasRuangan">
-
-                    </S:hidden>
+                    <tr >
+                        <td>
+                            <label class="control-label"><small>ID Kelas Ruangan</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield cssStyle="margin-top: 7px" id="id_kelasruangan" name="kelasRuangan.idKelasRuangan" required="false" disabled="true" cssClass="form-control"/>
+                                <S:hidden name="kelasRuangan.idKelasRuangan"></S:hidden>
+                            </table>
+                        </td>
+                    </tr>
 
                     <tr>
                         <td>
@@ -129,6 +139,18 @@
                                 <s:textfield id="nama_kelasruangan3" cssStyle="margin-top: 7px"
                                              name="kelasRuangan.namaKelasRuangan" required="false"
                                              readonly="true" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Divisi :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:action id="initComboPosition" namespace="/kelasruangan" name="initComboPosition_kelasruangan"/>
+                                <s:select list="#initComboPosition.listOfComboPositions" id="positionId" name="kelasRuangan.positionId" disabled="true"
+                                          listKey="positionId" listValue="positionName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -159,15 +181,21 @@
                             <div id="crud">
                                 <td>
                                     <table>
-                                        <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"
+                                        <sj:dialog id="waiting_dialog" openTopics="showDialog"
+                                                   closeTopics="closeDialog" modal="true"
                                                    resizable="false"
-                                                   height="350" width="600" autoOpen="false" title="Saving ...">
+                                                   height="250" width="600" autoOpen="false"
+                                                   title="Update Data ...">
                                             Please don't close this window, server is processing your request ...
-                                            </br>
-                                            </br>
-                                            </br>
+                                            <br>
                                             <center>
-                                                <img border="0" src="<s:url value="/pages/images/indicator-write.gif"/>" name="image_indicator_write">
+                                                <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                     src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                     name="image_indicator_write">
+                                                <br>
+                                                <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                     src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                     name="image_indicator_write">
                                             </center>
                                         </sj:dialog>
 

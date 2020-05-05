@@ -51,7 +51,6 @@ To change this template use File | Settings | File Templates.
     <section class="content-header">
         <h1>
             Kelas Ruangan
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -100,6 +99,30 @@ To change this template use File | Settings | File Templates.
                                                 </table>
                                             </td>
                                         </tr>
+                                        <tr>
+                                            <td>
+                                                <label class="control-label"><small>Divisi :</small></label>
+                                            </td>
+                                            <td>
+                                                <table>
+                                                    <s:action id="initComboPosition" namespace="/kelasruangan" name="initComboPosition_kelasruangan"/>
+                                                    <s:select list="#initComboPosition.listOfComboPositions" id="positionId" name="kelasRuangan.positionId"
+                                                              listKey="positionId" listValue="positionName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label class="control-label"><small>Flag :</small></label>
+                                            </td>
+                                            <td>
+                                                <table>
+                                                    <s:select list="#{'N':'Non-Active'}" id="flag" name="kelasRuangan.flag"
+                                                              headerKey="Y" headerValue="Active" cssClass="form-control" />
+                                                </table>
+
+                                            </td>
+                                        </tr>
                                     </table>
                                     <br>
                                     <div id="actions" class="form-actions">
@@ -136,30 +159,34 @@ To change this template use File | Settings | File Templates.
                                                 <td align="center">
                                                     <sj:dialog id="waiting_dialog_loading" openTopics="showDialogLoading" closeTopics="closeDialogLoading" modal="true"
                                                                resizable="false"
-                                                               height="50" width="600" autoOpen="false" title="Loading ...">
+                                                               height="250" width="600" autoOpen="false" title="Loading ...">
                                                         Please don't close this window, server is processing your request ...
                                                         </br>
-                                                        </br>
-                                                        </br>
                                                         <center>
-                                                            <img border="0" src="<s:url value="/pages/images/indicator-read.gif"/>" name="image_indicator_read">
+                                                            <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                                 src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                                 name="image_indicator_write">
+                                                            <br>
+                                                            <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                                 src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                                 name="image_indicator_write">
                                                         </center>
                                                     </sj:dialog>
                                                     <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
-                                                               height="300" width="1100" autoOpen="false"
+                                                               height="500" width="600" autoOpen="false"
                                                                title="Ruangan ">
                                                     </sj:dialog>
                                                     <sj:dialog id="view_dialog_menu" openTopics="showDialogMenuView" modal="true"
-                                                               height="700" width="1100" autoOpen="false"
+                                                               height="570" width="700" autoOpen="false"
                                                                title="Rekruitmen ">
                                                         <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                                     </sj:dialog>
-                                                    <s:set name="listOfRekruitmen" value="#session.listOfResult" scope="request" />
-                                                    <display:table name="listOfRekruitmen" class=" tableRekruitmen table table-condensed table-striped table-hover"
+                                                    <s:set name="listOfKelas" value="#session.listOfResultRuanganKelas" scope="request" />
+                                                    <display:table name="listOfKelas" class=" tableRekruitmen table table-condensed table-striped table-hover"
                                                                    requestURI="paging_displaytag_kelasruangan.action" export="true" id="row" pagesize="14" style="font-size:12">
                                                         <%--<display:column property="calonPegawaiId" sortable="true" title="Cal Peg ID"  />--%>
                                                         <display:column media="html" title="Edit">
-<%--                                                            <s:if test="#attr.row.flagYes">--%>
+                                                            <s:if test='#attr.row.flag == "Y"'>
                                                                 <s:url var="urlEdit" namespace="/kelasruangan" action="edit_kelasruangan" escapeAmp="false">
                                                                     <s:param name="id"><s:property value="#attr.row.idKelasRuangan"/></s:param>
                                                                     <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
@@ -167,22 +194,31 @@ To change this template use File | Settings | File Templates.
                                                                 <sj:a onClickTopics="showDialogMenu" href="%{urlEdit}">
                                                                     <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">
                                                                 </sj:a>
-<%--                                                            </s:if>--%>
+                                                            </s:if>
                                                         </display:column>
 
                                                         <display:column media="html" title="Delete" style="text-align:center;font-size:9">
-                                                            <s:url var="urlViewDelete" namespace="/kelasruangan" action="delete_kelasruangan" escapeAmp="false">
-                                                                <s:param name="id"><s:property value="#attr.row.idKelasRuangan" /></s:param>
-                                                                <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
-                                                            </s:url>
-                                                            <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
-                                                                <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
-                                                            </sj:a>
+                                                            <s:if test='#attr.row.flag == "Y"'>
+                                                                <s:url var="urlViewDelete" namespace="/kelasruangan" action="delete_kelasruangan" escapeAmp="false">
+                                                                    <s:param name="id"><s:property value="#attr.row.idKelasRuangan" /></s:param>
+                                                                    <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
+                                                                </s:url>
+                                                                <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
+                                                                    <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
+                                                                </sj:a>
+                                                            </s:if>
 
                                                         </display:column>
                                                         <display:column property="idKelasRuangan" sortable="true" title="Kelas Ruangan ID"/>
                                                         <display:column property="namaKelasRuangan" sortable="true" title="Nama Kelas"  />
-
+                                                        <display:column property="divisiName" sortable="true" title="Divisi"/>
+                                                        <display:column property="kodering" sortable="true" title="kodering"  />
+                                                        <display:column property="flag" sortable="true" title="flag"  />
+                                                        <display:column property="action" sortable="true" title="action"  />
+                                                        <display:column property="stCreatedDate" sortable="true" title="Created date"  />
+                                                        <display:column property="createdWho" sortable="true" title="Created who"  />
+                                                        <display:column property="stLastUpdate" sortable="true" title="Last update"  />
+                                                        <display:column property="lastUpdateWho" sortable="true" title="Last update who"  />
                                                     </display:table>
                                                 </td>
                                             </tr>

@@ -8,7 +8,9 @@ public class Asuransi {
     private String namaAsuransi;
     private String flag;
     private String action;
+    private String stCreatedDate;
     private Timestamp createdDate;
+    private String stLastUpdate;
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
@@ -21,6 +23,8 @@ public class Asuransi {
     public void setIsLaka(String isLaka) {
         this.isLaka = isLaka;
     }
+
+    private String noMaster;
 
     public String getIdAsuransi() {
         return idAsuransi;
@@ -84,5 +88,29 @@ public class Asuransi {
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    public String getNoMaster() {
+        return noMaster;
+    }
+
+    public void setNoMaster(String noMaster) {
+        this.noMaster = noMaster;
+    }
+
+    public String getStCreatedDate() {
+        return stCreatedDate;
+    }
+
+    public void setStCreatedDate(String stCreatedDate) {
+        this.stCreatedDate = stCreatedDate;
+    }
+
+    public String getStLastUpdate() {
+        return stLastUpdate;
+    }
+
+    public void setStLastUpdate(String stLastUpdate) {
+        this.stLastUpdate = stLastUpdate;
     }
 }

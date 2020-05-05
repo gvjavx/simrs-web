@@ -16,15 +16,18 @@ public class Ruangan extends BaseModel {
     private String idKelasRuangan;
     private String keterangan;
     private BigInteger tarif;
+    private String stTarif;
     private String branchId;
     private String flag;
     private String action;
     private Timestamp createdDate;
+    private String stCreatedDate;
     private String createdWho;
     private Timestamp lastUpdate;
+    private String stLastUpdate;
     private String lastUpdateWho;
     private String namaKelasRuangan;
-
+    private String branchName;
 
     private String idDetailCheckup;
     private String tglMasuk;
@@ -38,6 +41,7 @@ public class Ruangan extends BaseModel {
     private Integer kuota;
 
     private String namaPasien;
+    private String branchUser;
 
     public String getNamaPasien() {
         return namaPasien;
@@ -242,5 +246,47 @@ public class Ruangan extends BaseModel {
 
     public void setNamaKelasRuangan(String namaKelasRuangan) {
         this.namaKelasRuangan = namaKelasRuangan;
+    }
+
+    public String getStTarif() {
+        return stTarif;
+    }
+
+    public void setStTarif(String stTarif) {
+        this.stTarif = stTarif;
+    }
+
+    public String getBranchName() {
+        return branchName;
+    }
+
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
+    }
+
+    @Override
+    public String getStCreatedDate() {
+        return stCreatedDate;
+    }
+
+    public void setStCreatedDate(String stCreatedDate) {
+        this.stCreatedDate = stCreatedDate;
+    }
+
+    @Override
+    public String getStLastUpdate() {
+        return stLastUpdate;
+    }
+
+    public void setStLastUpdate(String stLastUpdate) {
+        this.stLastUpdate = stLastUpdate;
+    }
+
+    public String getBranchUser() {
+        return branchUser;
+    }
+
+    public void setBranchUser(String branchUser) {
+        this.branchUser = branchUser;
     }
 }

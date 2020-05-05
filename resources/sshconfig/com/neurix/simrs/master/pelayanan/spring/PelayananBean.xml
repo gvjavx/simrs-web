@@ -10,6 +10,8 @@
     <bean id="pelayananBo" class="com.neurix.simrs.master.pelayanan.bo.impl.PelayananBoImpl"
           p:pelayananDao-ref="pelayananDao"
           p:pelayananSpesialisDao-ref="pelayananSpesialisDao"
+          p:positionDao-ref="positionDao"
+          p:branchDao-ref="branchDao"
     />
 
     <bean id="pelayananController" class="com.neurix.simrs.mobileapi.PelayananController"
@@ -44,6 +46,12 @@
           p:sessionFactory-ref="sessionFactory" />
 
     <bean id="pelayananSpesialisDao" class="com.neurix.simrs.master.pelayanan.dao.PelayananSpesialisDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+    <bean id="positionDao" class="com.neurix.authorization.position.dao.PositionDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+    <bean id="branchDao" class="com.neurix.authorization.company.dao.BranchDao"
           p:sessionFactory-ref="sessionFactory" />
 
 </beans>

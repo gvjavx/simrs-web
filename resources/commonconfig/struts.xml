@@ -175,6 +175,10 @@
     <include file="sshconfig/com/neurix/simrs/master/ruangan/struts/RuanganAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/master/kelasruangan/struts/KelasRuanganAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/master/fingerPrint/struts/FingerPrintAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/master/pelayanan/struts/PelayananAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/master/jenisperiksapasien/struts/AsuransiAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/master/dokter/struts/DokterAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/master/tindakan/struts/TindakanAction.xml"/>
 
     <!--TRANSAKSI -->
     <include file="sshconfig/com/neurix/simrs/transaksi/checkup/struts/CheckupAction.xml"/>
@@ -232,5 +236,6 @@
     <include file="sshconfig/com/neurix/akuntansi/transaksi/tutupperiod/struts/SettingTutupPeriodAction.xml"/>
     <include file="sshconfig/com/neurix/akuntansi/transaksi/tutupperiod/struts/TutupPeriodAction.xml"/>
     <include file="sshconfig/com/neurix/akuntansi/transaksi/budgeting/struts/BudgetingAction.xml"/>
+    <include file="sshconfig/com/neurix/akuntansi/master/pembayaran/struts/PembayaranAction.xml"/>
 
 </struts>

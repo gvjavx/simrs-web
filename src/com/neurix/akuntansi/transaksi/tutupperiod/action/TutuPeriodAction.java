@@ -187,9 +187,21 @@ public class TutuPeriodAction extends BaseTransactionAction {
 
 
                     // mendapatkan list daftar yg akan dibuatkan jurnal transitoris, Sigit
-                    tutupPeriod.setIdDetailCheckup(detailCheckup.getIdDetailCheckup());
-                    tutupPeriod.setIdJenisPeriksaPasien(detailCheckup.getIdJenisPeriksaPasien());
-                    listJurnalTransData.add(tutupPeriod);
+
+                    TutupPeriod transPeriod = new TutupPeriod();
+                    transPeriod.setUnit(unit);
+                    transPeriod.setTahun(tahun);
+                    transPeriod.setBulan(bulan);
+                    transPeriod.setFlagTutup("Y");
+                    transPeriod.setFlag("Y");
+                    transPeriod.setCreatedDate(time);
+                    transPeriod.setCreatedWho(userLogin);
+                    transPeriod.setLastUpdate(time);
+                    transPeriod.setLastUpdateWho(userLogin);
+                    transPeriod.setIdDetailCheckup(detailCheckup.getIdDetailCheckup());
+                    transPeriod.setIdJenisPeriksaPasien(detailCheckup.getIdJenisPeriksaPasien());
+
+                    listJurnalTransData.add(transPeriod);
 
 
 //                    JurnalResponse jurnalResponse = createJurnalTransitoris(tutupPeriod);
@@ -608,6 +620,9 @@ public class TutuPeriodAction extends BaseTransactionAction {
                         riwayatTindakan.setNamaTindakan(entity.getNamaTindakan());
                         riwayatTindakan.setTotalTarif(new BigDecimal(entity.getTarifTotal()));
                         riwayatTindakan.setKeterangan("tindakan");
+                        if ("ptpn".equalsIgnoreCase(jenisPasien)){
+                            jenisPasien = "bpjs";
+                        }
                         riwayatTindakan.setJenisPasien(jenisPasien);
                         riwayatTindakan.setAction("C");
                         riwayatTindakan.setFlag("Y");

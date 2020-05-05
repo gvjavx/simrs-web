@@ -43,6 +43,12 @@ public class ItHrisPendapatanDokterEntity implements Serializable {
     private String createdWho;
     private String lastUpdateWho;
 
+    String kodeJabatan;
+    String level;
+    BigDecimal pphLebih;
+    BigDecimal pphFinal;
+//    BigDecimal noNota;
+
     BigDecimal pendapatanRs;
     BigDecimal hrBruto;
     BigDecimal hrAktifitasNetto;
@@ -344,5 +350,45 @@ public class ItHrisPendapatanDokterEntity implements Serializable {
 
     public void setPotKs(BigDecimal potKs) {
         this.potKs = potKs;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
+//    public BigDecimal getNoNota() {
+//        return noNota;
+//    }
+//
+//    public void setNoNota(BigDecimal noNota) {
+//        this.noNota = noNota;
+//    }
+
+    public BigDecimal getPphFinal() {
+        return pphFinal;
+    }
+
+    public void setPphFinal(BigDecimal pphFinal) {
+        this.pphFinal = pphFinal;
+    }
+
+    public BigDecimal getPphLebih() {
+        return pphLebih;
+    }
+
+    public void setPphLebih(BigDecimal pphLebih) {
+        this.pphLebih = pphLebih;
+    }
+
+    public String getKodeJabatan() {
+        return kodeJabatan;
+    }
+
+    public void setKodeJabatan(String kodeJabatan) {
+        this.kodeJabatan = kodeJabatan;
     }
 }

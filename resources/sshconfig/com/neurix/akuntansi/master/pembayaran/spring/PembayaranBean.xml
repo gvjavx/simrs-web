@@ -7,8 +7,11 @@
 
     <!--<bean id="vendorAction" class="com.neurix.akuntansi.master.masterVendor.action.MasterVendorAction"-->
           <!--p:masterVendorBoProxy-ref="masterVendorBoProxy" />-->
+    <bean id="pembayaranAction" class="com.neurix.akuntansi.master.pembayaran.action.PembayaranAction"
+    />
 
     <bean id="pembayaranBo" class="com.neurix.akuntansi.master.pembayaran.bo.impl.PembayaranBoImpl"
+        p:pembayaranDao-ref="pembayaranDao"
     />
 
     <bean id="pembayaranBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

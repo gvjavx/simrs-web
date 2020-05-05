@@ -19,7 +19,7 @@
 
 
         function formatRupiah(angka) {
-            if(angka != null && angka != '' && angka > 0){
+            if(angka != null && angka != ''){
                 var reverse = angka.toString().split('').reverse().join(''),
                     ribuan = reverse.match(/\d{1,3}/g);
                 ribuan = ribuan.join('.').split('').reverse().join('');
