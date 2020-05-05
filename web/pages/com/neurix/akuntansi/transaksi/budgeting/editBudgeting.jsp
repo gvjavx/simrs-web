@@ -172,17 +172,17 @@
                                                 <td align="center"><script>document.write(formatRupiah('<s:property value="quartal2"/>'))</script></td>
                                                 <td align="center"><script>document.write(formatRupiah('<s:property value="quartal3"/>'))</script></td>
                                                 <td align="center"><script>document.write(formatRupiah('<s:property value="quartal4"/>'))</script></td>
-                                                <td align="center"><script>document.write(formatRupiah('<s:property value="selisih"/>'))</script></td>
+                                                <td align="center"><s:property value="selisih"/></td>
                                             </s:if>
                                             <s:if test='budgeting.tipe == "semester"'>
                                                 <td align="center"><script>document.write(formatRupiah('<s:property value="nilaiTotal"/>'))</script></td>
                                                 <td align="center"><script>document.write(formatRupiah('<s:property value="semester1"/>'))</script></td>
                                                 <td align="center"><script>document.write(formatRupiah('<s:property value="semester2"/>'))</script></td>
-                                                <td align="center"><script>document.write(formatRupiah('<s:property value="selisih"/>'))</script></td>
+                                                <td align="center"><s:property value="selisih"/></td>
                                             </s:if>
                                             <s:if test='budgeting.tipe == "tahunan"'>
                                                 <td align="center"><script>document.write(formatRupiah('<s:property value="nilaiTotal"/>'))</script></td>
-                                                <td align="center"><script>document.write(formatRupiah('<s:property value="selisih"/>'))</script></td>
+                                                <td align="center"><s:property value="selisih"/></td>
                                             </s:if>
                                             <td align="center">
                                                 <s:if test='#row.stLevel == "5"'>

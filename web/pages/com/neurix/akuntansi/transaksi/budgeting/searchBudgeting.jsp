@@ -178,7 +178,7 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-md-8 col-md-offset-2">
+                            <div class="col-md-12">
                                 <table class="table table-bordered table-striped">
                                     <thead id="head-budgeting">
                                         <tr bgcolor="#90ee90">

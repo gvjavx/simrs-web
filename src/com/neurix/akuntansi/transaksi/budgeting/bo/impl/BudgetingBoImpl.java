@@ -335,7 +335,7 @@ public class BudgetingBoImpl implements BudgetingBo {
                             for (BudgetingDetail budgetingDetail : details){
 
                                 ItAkunBudgetingDetailEntity budgetingDetailEntity = new ItAkunBudgetingDetailEntity();
-                                budgetingDetailEntity.setIdBudgetingDetail(budgetingDetail.getIdBudgetingDetail());
+                                budgetingDetailEntity.setIdBudgetingDetail(generateBudgetingDetailId());
                                 budgetingDetailEntity.setIdBudgeting(budgetingEntity.getIdBudgeting());
                                 budgetingDetailEntity.setNoBudgetingDetail(budgetingEntity.getNoBudgeting()+"-"+budgetingDetail.getTipe()+"-"+budgetingDetail.getDivisiId());
                                 budgetingDetailEntity.setNoBudgeting(budgetingEntity.getNoBudgeting());

@@ -458,6 +458,7 @@ public class BudgetingAction {
             setBudgeting(budgetingNew);
             return "edit";
         } else if ("add".equalsIgnoreCase(this.status)){
+            setBudgeting(budgetingNew);
             return "add";
         } else {
             setBudgeting(budgetingNew);

@@ -91,7 +91,7 @@
                                             <td><s:property value="kodeRekening"/></td>
                                             <td><s:property value="namaKodeRekening"/></td>
                                             <td align="center"><script>document.write(formatRupiah('<s:property value="nilaiTotal"/>'))</script></td>
-                                            <td align="center"><script>document.write(formatRupiah('<s:property value="selisih"/>'))</script></td>
+                                            <td align="center"><s:property value="selisih"/></td>
                                         </tr>
                                     </s:iterator>
                                     </tbody>
