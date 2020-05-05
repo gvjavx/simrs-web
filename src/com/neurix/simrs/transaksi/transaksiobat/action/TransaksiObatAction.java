@@ -579,10 +579,10 @@ public class TransaksiObatAction extends BaseMasterAction {
         permintaanResep.setBranchId(CommonUtil.userBranchLogin());
         permintaanResep.setTujuanPelayanan(CommonUtil.userPelayananIdLogin());
 
-        if ("4".equalsIgnoreCase(permintaanResep.getStatus())) {
-            permintaanResep.setFlag("N");
-            permintaanResep.setStatus("");
-        }
+//        if ("4".equalsIgnoreCase(permintaanResep.getStatus())) {
+//            permintaanResep.setFlag("N");
+//            permintaanResep.setStatus("");
+//        }
 
         try {
             listResep = transaksiObatBoProxy.getListResepPasien(permintaanResep);
@@ -597,7 +597,6 @@ public class TransaksiObatAction extends BaseMasterAction {
 
         session.removeAttribute("listOfResult");
         session.setAttribute("listOfResult", listResep);
-        setPermintaanResep(permintaanResep);
 
         logger.info("[CheckupAction.search] end process <<<");
         return "search";
@@ -1696,7 +1695,7 @@ public class TransaksiObatAction extends BaseMasterAction {
         String fileName1 = "ttd_pasien-"+idResep+"-"+dateFormater("MM")+dateFormater("yy")+".png";
         String fileName2 = "ttd_apoteker-"+idResep+"-"+dateFormater("MM")+dateFormater("yy")+".png";
         String uploadFile1 = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_TTD_PASIEN+fileName1;
-        String uploadFile2 = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_TTD_PASIEN+fileName2;
+        String uploadFile2 = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_TTD_APOTEKER+fileName2;
         logger.info("File save path : " + uploadFile1);
         BufferedImage image1 = ImageIO.read(new ByteArrayInputStream(decodedBytes1));
         BufferedImage image2 = ImageIO.read(new ByteArrayInputStream(decodedBytes2));

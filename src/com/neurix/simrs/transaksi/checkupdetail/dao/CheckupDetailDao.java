@@ -993,6 +993,8 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
         String jenisPasien = "%";
         if (!"".equalsIgnoreCase(jenis)) {
             jenisPasien = jenis;
+        } else if ("ptpn".equalsIgnoreCase(jenis)){
+            jenisPasien = "bpjs";
         }
 
         String SQL = "SELECT \n" +
@@ -1984,7 +1986,8 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "c.total_lab,\n" +
                     "d.total_radiologi,\n" +
                     "e.total_resep, \n" +
-                    "a.id_jenis_periksa_pasien \n" +
+                    "a.id_jenis_periksa_pasien, \n" +
+                    "a.kode_cbg\n" +
                     "FROM it_simrs_header_detail_checkup a\n" +
                     "LEFT JOIN (\n" +
                     "SELECT id_detail_checkup, SUM(tarif_total) as total_tindakan\n" +
@@ -2050,6 +2053,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     detailCheckup.setTarifBpjs(tarifBpjs);
                     detailCheckup.setTarifTindakan(totalTindakan);
                     detailCheckup.setIdJenisPeriksaPasien(objects[7] == null ? "" : objects[7].toString());
+                    detailCheckup.setKodeCbg(objects[8] == null ? "" : objects[8].toString());
                 }
             }
         }

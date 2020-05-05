@@ -199,7 +199,6 @@ function saveDataOperasi(jenis, ket) {
     }
 
     if ("kondisi_pasien" == jenis) {
-        console.log('tes');
         var cekList171 = $('#cek_list171').val();
         var cekList172 = $('#cek_list172').val();
         var cekList181 = $('#cek_list181').val();
@@ -647,8 +646,8 @@ function saveDataOperasi(jenis, ket) {
         var pa1010 = $('#ga10').val();
         var pa122 = $('#ga122').val();
 
-        if (pa2 && pa3 && pa4 && pa5 && pa6 && pa7 && pa8 && pa9 && pa10 && pa12 && pa11 != undefined &&
-            tsPa1 != '') {
+        // if (pa2 && pa3 && pa4 && pa5 && pa6 && pa7 && pa8 && pa9 && pa10 && pa12 && pa11 != undefined &&
+        //     tsPa1 != '') {
             data.push({
                 'parameter': 'Teknik Anestesi',
                 'jawaban1': tsPa1,
@@ -730,7 +729,7 @@ function saveDataOperasi(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
-        }
+        // }
     }
 
     if ("general_penyataan" == jenis) {
@@ -865,8 +864,8 @@ function saveDataOperasi(jenis, ket) {
         var pa1010 = $('#reg10').val();
         var pa122 = $('#reg122').val();
 
-        if (pa2 && pa3 && pa4 && pa5 && pa6 && pa7 && pa8 && pa9 && pa10 && pa12 && pa11 != undefined &&
-            tsPa1 != '') {
+        // if (pa2 && pa3 && pa4 && pa5 && pa6 && pa7 && pa8 && pa9 && pa10 && pa12 && pa11 != undefined &&
+        //     tsPa1 != '') {
             data.push({
                 'parameter': 'Teknik Anestesi',
                 'jawaban1': tsPa1,
@@ -948,7 +947,7 @@ function saveDataOperasi(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
-        }
+        // }
     }
 
     if ("regional_penyataan" == jenis) {
@@ -1332,7 +1331,7 @@ function detailOperasi(jenis) {
                             jwb1 = item.jawaban1;
                         }
                         body += '<tr>' +
-                            '<td>' + item.parameter + '</td>' +
+                            '<td width="40%">' + item.parameter + '</td>' +
                             '<td>' + jwb1 + '</td>' +
                             '</tr>';
                         tgl = item.createdDate;

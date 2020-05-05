@@ -8,10 +8,13 @@
            table="it_simrs_tindakan_transitoris" select-before-update="true" schema="public">
 
 
-        <id name="idRiwayatTindakan">
-            <column name="id_riwayat_tindakan" sql-type="varchar" length="30" not-null="true" />
+        <id name="id">
+            <column name="id" sql-type="varchar" length="30" not-null="true" />
         </id>
 
+        <property name="idRiwayatTindakan">
+            <column name="id_riwayat_tindakan" sql-type="varchar" length="30" not-null="true"/>
+        </property>
         <property name="idTindakan">
             <column name="id_tindakan" sql-type="varchar" length="30" not-null="true"/>
         </property>

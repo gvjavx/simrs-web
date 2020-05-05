@@ -315,6 +315,6 @@
 
 </div>
 </div>
-<a href="/simrs/pages/antrian/choseeAntrian.jsp" style="color: blue; position: absolute; bottom: 10px ;float: right !important;padding: 10px">Antrian</a>
+<a target="_blank" href="<%= request.getContextPath() %>/pages/antrian/choseeAntrian.jsp" style="color: blue; position: absolute; bottom: 10px ;float: right !important;padding: 10px">Antrian</a>
 </body>
 </html>

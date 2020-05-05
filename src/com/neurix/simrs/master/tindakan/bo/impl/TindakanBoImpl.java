@@ -265,6 +265,7 @@ public class TindakanBoImpl implements TindakanBo {
             tindakan.setBranchId(entity.getBranchId());
             tindakan.setIdKategoriTindakan(entity.getIdKategoriTindakan());
             tindakan.setIdKategoriTindakanIna(entity.getKategoriInaBpjs());
+            tindakan.setKategoriInaBpjs(entity.getKategoriInaBpjs());
             tindakan.setTarif(entity.getTarif());
             tindakan.setTarifBpjs(entity.getTarifBpjs());
             if (entity.getDiskon() != null){

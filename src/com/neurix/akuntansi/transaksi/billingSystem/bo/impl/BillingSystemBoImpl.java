@@ -58,6 +58,7 @@ import org.springframework.web.context.ContextLoader;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -1493,6 +1494,12 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
         return entityList;
     }
 
+    public String generateTrasitorisId() {
+        java.util.Date now = new java.util.Date();
+        SimpleDateFormat f = new SimpleDateFormat("yyyyMMdd");
+        return "TR" +  f.format(now) + tindakanTransitorisDao.getNextSeq();
+    }
+
     private void saveTindakanTransitoris(String idDetailCheckup, Timestamp time, String user) throws GeneralBOException {
 
         RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
@@ -1503,6 +1510,7 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
             for (ItSimrsRiwayatTindakanEntity tindakanEntity : tindakanEntities){
 
                 ItSimrsTindakanTransitorisEntity transitorisEntity = new ItSimrsTindakanTransitorisEntity();
+                transitorisEntity.setId(generateTrasitorisId());
                 transitorisEntity.setIdRiwayatTindakan(tindakanEntity.getIdRiwayatTindakan());
                 transitorisEntity.setIdTindakan(tindakanEntity.getIdTindakan());
                 transitorisEntity.setNamaTindakan(tindakanEntity.getNamaTindakan());

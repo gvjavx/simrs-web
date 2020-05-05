@@ -149,7 +149,7 @@
                                         <s:action id="initComboKelas" namespace="/checkupdetail"
                                                   name="getListComboKelasRuangan_checkupdetail"/>
                                         <s:select cssStyle="margin-top: 7px"
-                                                  onchange="$(this).css('border',''); listSelectRuangan(this)"
+                                                  onchange="$(this).css('border',''); listSelectRuangan(this.value)"
                                                   list="#initComboKelas.listOfKelasRuangan" id="kelas_kamar"
                                                   name="ruangan.idKelasRuangan"
                                                   listKey="idKelasRuangan"
@@ -166,7 +166,7 @@
                                     <label class="control-label col-sm-4">Ruangan</label>
                                     <div class="col-sm-4">
                                         <select id="ruangan_ruang" style="margin-top: 7px" class="form-control select2"
-                                                id="nama_ruangan" name="ruangan.idRuangan">
+                                                name="ruangan.idRuangan">
                                             <option value=''>[Select One]</option>
                                         </select>
                                     </div>
@@ -361,22 +361,6 @@
                                     <td><b>Alamat</b></td>
                                     <td><span id="det_desa"></span>, <span id="det_kecamatan"></span></td>
                                 </tr>
-                                <%--<tr>--%>
-                                <%--<td><b>Provinsi</b></td>--%>
-                                <%--<td><span id="det_provinsi"></span></td>--%>
-                                <%--</tr>--%>
-                                <%--<tr>--%>
-                                <%--<td><b>Kabupaten</b></td>--%>
-                                <%--<td></span></td>--%>
-                                <%--</tr>--%>
-                                <%--<tr>--%>
-                                <%--<td><b>Kecamatan</b></td>--%>
-                                <%--<td><span id="det_kecamatan"></span></td>--%>
-                                <%--</tr>--%>
-                                <%--<tr>--%>
-                                <%--<td><b>Desa</b></td>--%>
-                                <%--<td></span></td>--%>
-                                <%--</tr>--%>
                             </table>
                         </div>
 
@@ -448,6 +432,25 @@
             return "0";
         }
 
+    }
+
+    function listSelectRuangan(id){
+        var option = "<option value=''>[Select One]</option>";
+        if(id != ''){
+            CheckupDetailAction.listRuangan(id, false, { callback: function (response) {
+                    if (response != null) {
+                        $.each(response, function (i, item) {
+                            option += "<option value='" + item.idRuangan + "'>" + item.noRuangan + "-" + item.namaRuangan + "</option>";
+                        });
+                        $('#ruangan_ruang').html(option);
+                    } else {
+                        $('#ruangan_ruang').html(option);
+                    }
+                }
+            });
+        }else{
+            $('#ruangan_ruang').html(option);
+        }
     }
 
     function hitungStatusBiaya(idDetailCheckup) {

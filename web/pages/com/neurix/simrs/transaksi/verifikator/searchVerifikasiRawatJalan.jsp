@@ -855,6 +855,7 @@
         if (cek) {
             $('#msg_tin').text("Silahkan pilih kategori tindakan BPJS terlebih kemudian klik icon di pinggir untuk konfirmasi...!");
             $('#warning_tin').show().fadeOut(5000);
+            $('#modal-detail-pasien').scrollTop(0);
         } else {
             $('#save_con').attr('onclick','saveApproveTindakan(\''+idDetailCheckup+'\')');
             $('#modal-confirm-dialog').modal('show');
@@ -879,6 +880,7 @@
                     $('#save_verif').show();
                     $('#msg_tin').text(response.message);
                     $('#warning_tin').show().fadeOut(5000);
+                    $('#modal-detail-pasien').scrollTop(0);
                 }
             }
         });

@@ -666,7 +666,7 @@ function savePengkajianKep(jenis, ket) {
                     $('#load_puk_' + jenis).hide();
                     $('#modal-puk-' + jenis).modal('hide');
                     $('#warning_puk_' + ket).show().fadeOut(5000);
-                    $('#msg_puk_' + ket).text("Berhasil menambahkan data asesmen rawat pukp...");
+                    $('#msg_puk_' + ket).text("Berhasil menambahkan data data keperawatan...");
                     $('#modal-puk-' + jenis).scrollTop(0);
                 } else {
                     $('#save_puk_' + jenis).show();

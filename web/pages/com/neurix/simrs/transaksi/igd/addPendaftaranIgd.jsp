@@ -226,6 +226,7 @@
             var statusRujukan = $('#status_rujukan').val();
 
             var asuransi = $('#asuransi').val();
+            var isLaka = $('#is_laka').val();
             var noKartu = $('#no_kartu').val();
             var coverBiaya = $('#nominal_cover_biaya').val();
 
@@ -308,7 +309,7 @@
                 if(tipe == "asuransi"){
                     if(asuransi != '' && coverBiaya != ''){
 
-                        if(asuransi == "ASN00000001"){
+                        if(isLaka == "Y"){
                             $('#confirm_dialog').dialog('open');
                         }else{
                             if(noKartu != ''){
@@ -1205,6 +1206,7 @@
                                                             class="fa fa-check"></i> correct</span>
                                                 </div>
                                                 <s:hidden name="headerCheckup.idAsuransi" id="id_asuransi"></s:hidden>
+                                                <s:hidden id="is_laka"></s:hidden>
                                             </div>
                                             <div class="form-group" id="form_no_kartu">
                                                 <label class="col-md-4" style="margin-top: 10px">No Kartu</label>
@@ -2261,6 +2263,7 @@
             var isLaka = temp[1];
             if(id != 'null'){
                 $('#id_asuransi').val(id);
+                $('#is_laka').val(isLaka);
                 if(isLaka == "Y"){
                     $('#form_jasaraharja_1, #form_jasaraharja_2').show();
                     $('#form_no_kartu').hide();

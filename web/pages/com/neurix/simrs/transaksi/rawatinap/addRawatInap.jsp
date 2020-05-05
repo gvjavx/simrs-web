@@ -274,7 +274,7 @@
                                             </td>
                                         </tr>
                                     </s:if>
-                                    <s:if test='rawatInap.idJenisPeriksaPasien == "asuransi"'>
+                                    <s:if test='rawatInap.idJenisPeriksa == "asuransi"'>
                                         <tr>
                                             <td><b>Nama Asuransi</b></td>
                                             <td>
@@ -388,56 +388,56 @@
                         <div class="row">
                             <div class="form-group">
                                 <div class="col-md-12">
-                                    <a href="<%= request.getContextPath() %>/rekammedik/initRekamMedik_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>&tipe=RI" class="btn btn-primary pull-left"><i class="fa fa-user-plus"></i> E-Rekam Medik</a>
+                                    <a href="<%= request.getContextPath() %>/rekammedik/initRekamMedik_rekammedik.action?id=<s:property value="rawatInap.idDetailCheckup"/>&tipe=RI" class="btn btn-primary pull-left"><i class="fa fa-user-plus"></i> E-Rekam Medik</a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="box-header with-border"></div>
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-hospital-o"></i> Asesmen</h3>
-                    </div>
-                    <div class="box-body">
-                        <button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap10')">
-                            <i class="fa fa-edit"></i> Form Riwayat Kesehatan
-                        </button>
-                        <button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap11')">
-                            <i class="fa fa-edit"></i> Form Keadaan Umum
-                        </button>
-                        <button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap12')">
-                            <i class="fa fa-edit"></i> Form Pemeriksaan Fisik
-                        </button>
-                        <button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap13')">
-                            <i class="fa fa-edit"></i> Form Asesmen Nyeri
-                        </button>
-                        <button class="btn btn-primary" onclick="showModalResiko('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap1')">
-                            <i class="fa fa-edit"></i> Form Resiko Dekubitus
-                        </button>
-                        <button class="btn btn-primary" onclick="showModalResiko('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap2')">
-                            <i class="fa fa-edit"></i> Form Fungsional
-                        </button>
-                        <button class="btn btn-primary" onclick="showModalResiko('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap3')">
-                            <i class="fa fa-edit"></i> Form Skrining Gizi Pasien Dewasa
-                        </button>
-                        <button class="btn btn-primary" onclick="showModalResiko('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap4')">
-                            <i class="fa fa-edit"></i> Form Skrining Gizi Pasien Anak
-                        </button>
-                        <button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap5')">
-                            <i class="fa fa-edit"></i> Form Seksual dan Reproduksi
-                        </button>
-                        <button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap9')">
-                            <i class="fa fa-edit"></i> Form Kebutuhan Komunikasi. Kognisi dan Edukasi
-                        </button>
-                        <button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap6')">
-                            <i class="fa fa-edit"></i> Form Psikososial dan Ekonomi
-                        </button>
-                        <button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap7')">
-                            <i class="fa fa-edit"></i> Form Spritual
-                        </button>
-                        <button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap8')">
-                            <i class="fa fa-edit"></i> Form Diagnose Keperawatan yang muncul
-                        </button>
-                    </div>
+                    <%--<div class="box-header with-border"></div>--%>
+                    <%--<div class="box-header with-border">--%>
+                        <%--<h3 class="box-title"><i class="fa fa-hospital-o"></i> Asesmen</h3>--%>
+                    <%--</div>--%>
+                    <%--<div class="box-body">--%>
+                        <%--<button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap10')">--%>
+                            <%--<i class="fa fa-edit"></i> Form Riwayat Kesehatan--%>
+                        <%--</button>--%>
+                        <%--<button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap11')">--%>
+                            <%--<i class="fa fa-edit"></i> Form Keadaan Umum--%>
+                        <%--</button>--%>
+                        <%--<button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap12')">--%>
+                            <%--<i class="fa fa-edit"></i> Form Pemeriksaan Fisik--%>
+                        <%--</button>--%>
+                        <%--<button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap13')">--%>
+                            <%--<i class="fa fa-edit"></i> Form Asesmen Nyeri--%>
+                        <%--</button>--%>
+                        <%--<button class="btn btn-primary" onclick="showModalResiko('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap1')">--%>
+                            <%--<i class="fa fa-edit"></i> Form Resiko Dekubitus--%>
+                        <%--</button>--%>
+                        <%--<button class="btn btn-primary" onclick="showModalResiko('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap2')">--%>
+                            <%--<i class="fa fa-edit"></i> Form Fungsional--%>
+                        <%--</button>--%>
+                        <%--<button class="btn btn-primary" onclick="showModalResiko('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap3')">--%>
+                            <%--<i class="fa fa-edit"></i> Form Skrining Gizi Pasien Dewasa--%>
+                        <%--</button>--%>
+                        <%--<button class="btn btn-primary" onclick="showModalResiko('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap4')">--%>
+                            <%--<i class="fa fa-edit"></i> Form Skrining Gizi Pasien Anak--%>
+                        <%--</button>--%>
+                        <%--<button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap5')">--%>
+                            <%--<i class="fa fa-edit"></i> Form Seksual dan Reproduksi--%>
+                        <%--</button>--%>
+                        <%--<button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap9')">--%>
+                            <%--<i class="fa fa-edit"></i> Form Kebutuhan Komunikasi. Kognisi dan Edukasi--%>
+                        <%--</button>--%>
+                        <%--<button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap6')">--%>
+                            <%--<i class="fa fa-edit"></i> Form Psikososial dan Ekonomi--%>
+                        <%--</button>--%>
+                        <%--<button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap7')">--%>
+                            <%--<i class="fa fa-edit"></i> Form Spritual--%>
+                        <%--</button>--%>
+                        <%--<button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap8')">--%>
+                            <%--<i class="fa fa-edit"></i> Form Diagnose Keperawatan yang muncul--%>
+                        <%--</button>--%>
+                    <%--</div>--%>
 
                     <div class="box-header with-border"></div>
                     <div class="box-header with-border">
@@ -3528,6 +3528,8 @@
         CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, "RI", function (response) {
             if (jenis == "bpjs" || jenis == "ptpn") {
                 $('#status_bpjs').show();
+                console.log('tes');
+                console.log(response);
                 if (response.tarifBpjs != null && response.tarifTindakan != null) {
 
                     var coverBiaya = response.tarifBpjs;
@@ -5511,6 +5513,10 @@
             $('#msg_cancel').text('Silahkan cek kembali data inputan...!');
             $('#war_keterangan_cancel').show();
         }
+    }
+
+    function printResep(id) {
+        window.open('printResepPasien_rawatinap.action?id=' + idDetailCheckup + '&idResep=' + id, '_blank');
     }
 </script>
 

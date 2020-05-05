@@ -10,9 +10,9 @@
             <div class="modal-body">
                 <div class="box-body btn-hide">
                     <div class="alert alert-success alert-dismissible" style="display: none"
-                         id="warning_puk_asesmen">
+                         id="warning_puk_pengkajian">
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
-                        <p id="msg_puk_asesmen"></p>
+                        <p id="msg_puk_pengkajian"></p>
                     </div>
                     <div class="btn-group">
                         <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Tambah

@@ -741,7 +741,7 @@
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
                                         <li><a style="cursor: pointer" onclick="showAsesmenUgd()"><i
-                                                class="fa fa-user-plus"></i>Asesmen Awal Gawat Darurat</a></li>
+                                                class="fa fa-circle-o"></i>Asesmen Awal Gawat Darurat</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -872,6 +872,7 @@
             '<option value="50">50</option>' +
             '<option value="75">75</option>' +
             '<option value="100">100</option>';
+
         $('[name=tableRM_length]').html(option);
 
         if(idDetailCheckup != null && idDetailCheckup != ''){

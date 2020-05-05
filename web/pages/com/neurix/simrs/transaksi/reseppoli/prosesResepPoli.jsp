@@ -690,7 +690,6 @@
 
         setInterval(function () {
             TransaksiObatAction.getListResepPasien(idResep, function (response) {
-                console.log(response);
                 if(response.length > 0) {
                     $.each(response, function (i, item) {
                         if(item.flagVerifikasi == "Y"){

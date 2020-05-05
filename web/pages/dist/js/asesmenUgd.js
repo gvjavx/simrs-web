@@ -945,7 +945,7 @@ function detailAud(jenis) {
                             cekSkor = true;
                         }else{
                             body += '<tr>' +
-                                '<td>' + item.parameter + '</td>' +
+                                '<td width="40%">' + item.parameter + '</td>' +
                                 '<td>' + item.jawaban + '</td>' +
                                 '</tr>';
                         }
