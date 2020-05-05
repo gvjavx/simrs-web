@@ -428,13 +428,13 @@ public class KodeRekeningAction extends BaseMasterAction {
         logger.info("[KodeRekeningAction.saveDeleteAnggota] end process >>>");
     }
 
-    public List<KodeRekening> getKodeRekeningLawanByTransId(String transId,String tipeBayar) {
+    public List<KodeRekening> getKodeRekeningLawanByTransId(String transId,String posisi) {
         logger.info("[KodeRekeningAction.getKodeRekeningLawanByTransId] start process >>>");
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         KodeRekeningBo kodeRekeningBo = (KodeRekeningBo) ctx.getBean("kodeRekeningBoProxy");
         List<KodeRekening> kodeRekeningList = new ArrayList();
         try {
-            kodeRekeningList = kodeRekeningBo.getKodeRekeningLawanByTransId(transId,tipeBayar);
+            kodeRekeningList = kodeRekeningBo.getKodeRekeningLawanByTransId(transId,posisi);
         } catch (GeneralBOException e) {
             Long logId = null;
             try {

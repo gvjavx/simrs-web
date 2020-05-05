@@ -224,10 +224,7 @@
                                                             <display:column property="noJurnal" sortable="true" title="No. Jurnal" />
                                                             <display:column property="stTipeTransaksi" sortable="true" title="Tipe Transaksi"  />
                                                             <display:column property="stTanggal" sortable="true" title="Tanggal"  />
-                                                            <display:column property="metodePembayaran" sortable="true" title="Metode Pembayaran"  />
-                                                            <display:column property="bayar" sortable="true" title="Total Bayar"  />
                                                             <display:column property="keterangan" sortable="true" title="Keterangan"  />
-                                                            <display:column property="noSlipBank" sortable="true" title="No. Referensi"  />
                                                             <display:column media="html" title="Posting"  style="text-align:center">
                                                                 <s:if test="#attr.row.flagPosting">
                                                                     <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_edit">

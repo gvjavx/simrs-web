@@ -44,8 +44,17 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
     private BillingSystemBo billingSystemBoProxy;
     private MappingJurnalBo mappingJurnalBoProxy;
     private TipeJurnalBo tipeJurnalBoProxy;
+    private KodeRekeningBo kodeRekeningBoProxy;
     private PembayaranUtangPiutang pembayaranUtangPiutang;
     private List<PembayaranUtangPiutang> listOfComboPembayaranUtangPiutang = new ArrayList<PembayaranUtangPiutang>();
+
+    public KodeRekeningBo getKodeRekeningBoProxy() {
+        return kodeRekeningBoProxy;
+    }
+
+    public void setKodeRekeningBoProxy(KodeRekeningBo kodeRekeningBoProxy) {
+        this.kodeRekeningBoProxy = kodeRekeningBoProxy;
+    }
 
     public MappingJurnalBo getMappingJurnalBoProxy() {
         return mappingJurnalBoProxy;
@@ -446,6 +455,7 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         try {
             //get parameter pembayaran
             String parameter = billingSystemBoProxy.getParameterPembayaran(pembayaranUtangPiutang.getTipeTransaksi());
+            String rekeningIdBayar = kodeRekeningBoProxy.getRekeningIdByKodeRekening(pembayaranUtangPiutang.getMetodePembayaran());
 
             //Jika pembayaran berhasil
             //Membuat Billing
@@ -462,13 +472,12 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
             }
 
             Map kas = new HashMap();
-            kas.put("metode_bayar",pembayaranUtangPiutang.getMetodePembayaran());
-            kas.put("bank",pembayaranUtangPiutang.getBank());
             kas.put("nilai",bayar);
+            kas.put("rekening_id", rekeningIdBayar);
 
             Map data = new HashMap();
             data.put(parameter,dataMap);
-            data.put("kas",kas);
+            data.put("metode_bayar",kas);
             noJurnal= billingSystemBoProxy.createJurnal(pembayaranUtangPiutang.getTipeTransaksi(),data,pembayaranUtangPiutang.getBranchId(),pembayaranUtangPiutang.getKeterangan(),"N");
             pembayaranUtangPiutang.setNoJurnal(noJurnal);
             pembayaranUtangPiutangBoProxy.saveAddPembayaran(pembayaranUtangPiutang,pembayaranUtangPiutangDetailList);
@@ -531,6 +540,7 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
             for (MappingJurnal mappingJurnal : mappingJurnalList){
                 List<Map> dataMap = new ArrayList<>();
                 for (PembayaranUtangPiutangDetail pembayaranUtangPiutangDetail : pembayaranUtangPiutangDetailList){
+                    String rekeningId = kodeRekeningBoProxy.getRekeningIdByKodeRekening(pembayaranUtangPiutangDetail.getRekeningId());
                     if (mappingJurnal.getPosisi().equalsIgnoreCase(pembayaranUtangPiutangDetail.getPosisiCoa())){
                         BigDecimal jumlahPembayaran = new BigDecimal(pembayaranUtangPiutangDetail.getStJumlahPembayaran().replace(".",""));
                         Map hs = new HashMap();
@@ -538,7 +548,7 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
                         hs.put("nilai",jumlahPembayaran);
                         hs.put("master_id", pembayaranUtangPiutangDetail.getMasterId());
                         hs.put("divisi_id", pembayaranUtangPiutangDetail.getDivisiId());
-                        hs.put("rekening_id", pembayaranUtangPiutangDetail.getRekeningId());
+                        hs.put("rekening_id", rekeningId);
                         dataMap.add(hs);
                     }
                 }
@@ -1095,7 +1105,11 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
             addActionError("Error, " + "[code=" + logId + "] Found problem when downloading data, please inform to your admin.");
         }
         logger.info("[PembayaranUtangPiutangAction.printReportBuktiPosting] end process <<<");
-        return "print_report_bukti_posting";
+        if ("KR".equalsIgnoreCase(tipeTransaksi)){
+            return "print_report_bukti_posting_koreksi";
+        }else{
+            return "print_report_bukti_posting";
+        }
     }
 
     public PembayaranUtangPiutang getForModalPopUp(String pembayaranId) {
@@ -1132,12 +1146,12 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         return (List<PembayaranUtangPiutangDetail>) session.getAttribute("listPembayaranDetailModal");
     }
 
-    public Trans getDisableTrans(String transaksiId) {
+    public Trans getDisableTrans(String transaksiId,String coaLawan) {
         logger.info("[PembayaranUtangPiutangAction.getDisableTrans] start process >>>");
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PembayaranUtangPiutangBo pembayaranUtangPiutangBo = (PembayaranUtangPiutangBo) ctx.getBean("pembayaranUtangPiutangBoProxy");
         logger.info("[PembayaranUtangPiutangAction.getDisableTrans] end process >>>");
-        Trans data = pembayaranUtangPiutangBo.getDisableTrans(transaksiId);
+        Trans data = pembayaranUtangPiutangBo.getDisableTrans(transaksiId,coaLawan);
         return data;
     }
 

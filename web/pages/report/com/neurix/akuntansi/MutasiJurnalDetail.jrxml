@@ -3,8 +3,8 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.948717100000004"/>
-	<property name="ireport.x" value="188"/>
-	<property name="ireport.y" value="162"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="13"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -21,7 +21,7 @@
 	<parameter name="reportParams.branchId" class="java.lang.String"/>
 	<parameter name="reportParams.areaId" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[SELECT
+		<![CDATA[SELECT distinct
   a.no_jurnal,
   c.kode_rekening,
   c.nama_kode_rekening,

@@ -349,21 +349,17 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
         return null;
     }
 
+    @Override
+    public String getRekeningIdByKodeRekening ( String kodeRekening ){
+        return kodeRekeningDao.getRekeningIdByCoa(kodeRekening);
+    }
 
     @Override
-    public List<KodeRekening> getKodeRekeningLawanByTransId(String transId, String tipePembayaran) throws GeneralBOException {
+    public List<KodeRekening> getKodeRekeningLawanByTransId(String transId, String posisiLawan) throws GeneralBOException {
         logger.info("[KodeRekeningBoImpl.getKodeRekeningLawanByTransId] start process >>>");
 
         // Mapping with collection and put
         List<KodeRekening> listOfResult = new ArrayList();
-        String posisiLawan = "";
-        if ("KM".equalsIgnoreCase(tipePembayaran)){
-            posisiLawan="K";
-        }else if ("KK".equalsIgnoreCase(tipePembayaran)){
-            posisiLawan="D";
-        }else{
-            posisiLawan="";
-        }
         try {
             listOfResult = kodeRekeningDao.getKodeRekeningLawanByTransId(transId,posisiLawan);
         } catch (HibernateException e) {

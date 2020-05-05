@@ -224,7 +224,8 @@
                                                             <display:column property="noJurnal" sortable="true" title="No. Jurnal" />
                                                             <display:column property="stTipeTransaksi" sortable="true" title="Tipe Transaksi"  />
                                                             <display:column property="stTanggal" sortable="true" title="Tanggal"  />
-                                                            <display:column property="metodePembayaran" sortable="true" title="Metode Pembayaran"  />
+                                                            <display:column property="metodePembayaran" sortable="true" title="COA Kas"  />
+                                                            <display:column property="metodePembayaranName" sortable="true" title="Kas"  />
                                                             <display:column property="bayar" sortable="true" title="Total Bayar"  />
                                                             <display:column property="keterangan" sortable="true" title="Keterangan"  />
                                                             <display:column property="noSlipBank" sortable="true" title="No. Referensi"  />
@@ -372,7 +373,7 @@
                 $('#mod_no_jurnal').val(data.noJurnal);
                 $('#mod_tipe_transaksi').val(data.stTipeTransaksi);
                 $('#mod_tanggal').val(data.stTanggal);
-                $('#mod_metode_bayar').val(data.metodePembayaran);
+                $('#mod_metode_bayar').val(data.metodePembayaranName);
                 $('#mod_no_slip_bank').val(data.noSlipBank);
                 $('#mod_keterangan').val(data.keterangan);
                 $('#mod_total_bayar').val(data.stBayar);

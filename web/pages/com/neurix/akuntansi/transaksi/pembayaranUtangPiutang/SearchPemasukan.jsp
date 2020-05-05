@@ -50,7 +50,7 @@
             }
         }
         function link(){
-            window.location.href="<s:url action='initForm_pembayaranUtangPiutang'/>";
+            window.location.href="<s:url action='initFormPemasukan_pembayaranUtangPiutang'/>";
         }
 
     </script>
@@ -115,7 +115,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Pengeluaran Kas/Bank ID :</small></label>
+                                                    <label class="control-label"><small>Pemasukan Kas/Bank ID :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -220,11 +220,12 @@
                                                                     <img border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_view">
                                                                 </a>
                                                             </display:column>
-                                                            <display:column property="pembayaranUtangPiutangId" sortable="true" title="Pengeluaran Kas/Bank ID" />
+                                                            <display:column property="pembayaranUtangPiutangId" sortable="true" title="Pemasukan Kas/Bank ID" />
                                                             <display:column property="noJurnal" sortable="true" title="No. Jurnal" />
                                                             <display:column property="stTipeTransaksi" sortable="true" title="Tipe Transaksi"  />
                                                             <display:column property="stTanggal" sortable="true" title="Tanggal"  />
-                                                            <display:column property="metodePembayaran" sortable="true" title="Metode Pembayaran"  />
+                                                            <display:column property="metodePembayaran" sortable="true" title="COA Kas"  />
+                                                            <display:column property="metodePembayaranName" sortable="true" title="Kas"  />
                                                             <display:column property="bayar" sortable="true" title="Total Bayar"  />
                                                             <display:column property="keterangan" sortable="true" title="Keterangan"  />
                                                             <display:column property="noSlipBank" sortable="true" title="No. Referensi"  />
@@ -339,7 +340,7 @@
                                 <label class="col-md-4">Keterangan</label>
                                 <div class="col-md-6">
                                     <s:textarea id="mod_keterangan" onkeypress="$(this).css('border','')" readonly="true"
-                                                 cssClass="form-control"/>
+                                                cssClass="form-control"/>
                                     <br>
                                 </div>
                             </div>
@@ -372,7 +373,7 @@
                 $('#mod_no_jurnal').val(data.noJurnal);
                 $('#mod_tipe_transaksi').val(data.stTipeTransaksi);
                 $('#mod_tanggal').val(data.stTanggal);
-                $('#mod_metode_bayar').val(data.metodePembayaran);
+                $('#mod_metode_bayar').val(data.metodePembayaranName);
                 $('#mod_no_slip_bank').val(data.noSlipBank);
                 $('#mod_keterangan').val(data.keterangan);
                 $('#mod_total_bayar').val(data.stBayar);
@@ -410,7 +411,7 @@
         });
         $('#btnPostingJurnal').click(function () {
             var pembayaranId =  $('#mod_pembayaran_id').val();
-            if (confirm("apakah anda ingin memposting pengeluaran dengan pembayaran id "+pembayaranId +" ?")){
+            if (confirm("apakah anda ingin memposting Pemasukan Kas Bank dengan pembayaran id "+pembayaranId +" ?")){
                 PembayaranUtangPiutangAction.postingJurnal(pembayaranId,function (listdata) {
                     alert(listdata);
                     window.location.reload();
@@ -449,4 +450,3 @@
         });
     };
 </script>
-

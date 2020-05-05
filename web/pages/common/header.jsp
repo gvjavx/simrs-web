@@ -446,6 +446,16 @@ apply the skin class to the body tag so the changes take effect.
             el.value = el.value.substring(0,el.value.length - 1);
         }
     }
+    function formatRupiahAtas(angka) {
+        if(angka != null && angka != '' && angka > 0){
+            var reverse = angka.toString().split('').reverse().join(''),
+                ribuan = reverse.match(/\d{1,3}/g);
+            ribuan = ribuan.join('.').split('').reverse().join('');
+            return ribuan;
+        }else{
+            return 0;
+        }
+    }
 </script>
 
 

@@ -163,7 +163,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
         List<PendapatanDTO> listOfResult = new ArrayList<>();
 
         List<Object[]> results = new ArrayList<Object[]>();
-        String query = "SELECT\n" +
+        String query = "SELECT DISTINCT \n" +
                 "\ta.*,\n" +
                 "\trt.nama_tindakan,\n" +
                 "\tdt.nama_dokter,\n" +
@@ -234,7 +234,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
         List<PendapatanDTO> listOfResult = new ArrayList<>();
 
         List<Object[]> results = new ArrayList<Object[]>();
-        String query = "SELECT\n" +
+        String query = "SELECT DISTINCT \n" +
                 "\ta.*,\n" +
                 "\trt.nama_tindakan,\n" +
                 "\tdt.nama_dokter,\n" +
@@ -1419,7 +1419,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
         for (Object[] row : results) {
             ArusKasDTO data= new ArusKasDTO();
             data.setKodeRekening((String) row[0]);
-            data.setGrup("KAS PENDING DIBAYAR");
+            data.setGrup("KAS/BANK PENDING DITERIMA");
             data.setNamaRekening((String) row[2]);
             data.setPenerimaan(BigDecimal.valueOf(Double.parseDouble(row[3].toString())));
             data.setPengeluaran(BigDecimal.valueOf(Double.parseDouble(row[4].toString())));

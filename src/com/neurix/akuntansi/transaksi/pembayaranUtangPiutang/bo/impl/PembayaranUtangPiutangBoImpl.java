@@ -334,6 +334,7 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
                             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
                         }
                     }
+                    returnPembayaranUtangPiutang.setMetodePembayaranName(kodeRekeningDao.getNamaRekeningByCoa(pembayaranUtangPiutangEntity.getMetodeBayar()));
 
                     returnPembayaranUtangPiutang.setRegisteredFlag(pembayaranUtangPiutangEntity.getRegisteredFlag());
                     returnPembayaranUtangPiutang.setCreatedWho(pembayaranUtangPiutangEntity.getCreatedWho());
@@ -660,20 +661,32 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
     }
 
     @Override
-    public Trans getDisableTrans(String transId) throws GeneralBOException {
+    public Trans getDisableTrans(String transId,String coaLawan) throws GeneralBOException {
         logger.info("[PembayaranUtangPiutangBoImpl.getDisableTrans] start process >>>");
-        ImTransEntity transEntity= new ImTransEntity();
+        Trans data = new Trans();
+
+        boolean belumketemu=true;
+        List<ImMappingJurnalEntity> mappingJurnalEntityList = new ArrayList<>();
         try {
-            transEntity= transDao.getById("transId",transId);
+            do {
+                mappingJurnalEntityList = mappingJurnalDao.getListMappingJurnalByTransIdAndKodeRekening(transId,coaLawan);
+
+                if (mappingJurnalEntityList.size()>0){
+                    for (ImMappingJurnalEntity mappingJurnalEntity : mappingJurnalEntityList){
+                        data.setDivisiId(mappingJurnalEntity.getDivisiId());
+                        data.setMasterId(mappingJurnalEntity.getMasterId());
+                        data.setNoNota(mappingJurnalEntity.getBukti());
+                        data.setBiaya(mappingJurnalEntity.getEditBiaya());
+                    }
+                    belumketemu=false;
+                }
+                String rekeningIdParent = kodeRekeningDao.getKodeRekeningParent(coaLawan);
+                coaLawan = kodeRekeningDao.getCoaByRekeningId(rekeningIdParent);
+            }while (belumketemu);
         } catch (HibernateException e) {
             logger.error("[PembayaranUtangPiutangBoImpl.getDisableTrans] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when saving update data PembayaranUtangPiutang, please info to your admin..." + e.getMessage());
         }
-        Trans data = new Trans();
-        data.setDivisiId(transEntity.getDivisiId());
-        data.setMasterId(transEntity.getMasterId());
-        data.setNoNota(transEntity.getNoNota());
-        data.setBiaya(transEntity.getBiaya());
 
         logger.info("[PembayaranUtangPiutangBoImpl.getDisableTrans] end process <<<");
         return data;

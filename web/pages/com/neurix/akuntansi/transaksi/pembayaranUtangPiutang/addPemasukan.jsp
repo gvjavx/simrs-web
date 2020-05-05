@@ -19,7 +19,7 @@
 
             var tipeTransaksi          = $('#tipe_transaksi').val();
             var tanggal        = $('#tanggal').val();
-            var metodeBayar           = $('#metode_bayar').val();
+            var metodeBayar           = $('#coa_asal').val();
             var bayar      = $('#bayar').val();
             var keterangan    = $('#keterangan').val();
             var noslipBank     = $('#no_slip_bank').val();
@@ -90,7 +90,7 @@
                     </div>
                     <s:form id="addPembayaranUtangPiutangForm" enctype="multipart/form-data" method="post" namespace="/pembayaranUtangPiutang"
                             action="saveAdd_pembayaranUtangPiutang.action" theme="simple">
-                        <s:hidden name="pembayaranUtangPiutang.tipePembayaran" value="KM" />
+                        <s:hidden name="pembayaranUtangPiutang.tipePembayaran" value="KK" />
                         <div class="box-body">
                             <div class="alert alert-danger alert-dismissible" id="warning_pembayaran" style="display: none">
                                 <h4><i class="icon fa fa-ban"></i> Warning!</h4>
@@ -126,7 +126,7 @@
                                                     <s:param name="tipe">KM</s:param>
                                                 </s:action>
                                                 <s:select list="#comboTrans.listOfComboTrans" id="tipe_transaksi" name="pembayaranUtangPiutang.tipeTransaksi"
-                                                          cssStyle="margin-top: 7px" onchange="isiKeteterangan(),getTipeMaster(),getCoaLawan(),getDisableTrans()"
+                                                          cssStyle="margin-top: 7px" onchange="isiKeteterangan(),getTipeMaster(),getCoaLawan(),getCoaAsal()"
                                                           listKey="transId" listValue="transName" headerKey="" headerValue="" cssClass="form-control" />
                                                 <s:hidden id="tipeMaster" />
                                             </div>
@@ -154,40 +154,13 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Metode Bayar</label>
-                                            <div class="col-md-8" style="margin-top: 7px" >
-                                                <div class="col-md-4">
-                                                    <select id="metode_bayar" class="form-control" onchange="pilihMetode(this.value),isiKeteterangan()"  name="pembayaranUtangPiutang.metodePembayaran">
-                                                        <option value="" ></option>
-                                                        <option value="tunai">Tunai</option>
-                                                        <option value="transfer">Transfer</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-md-8">
-                                                    <div style="display: none" id="pilih_bank">
-                                                        <div class="form-group">
-                                                            <label class="col-md-2" style="margin-top: 7px">Bank</label>
-                                                            <div class="col-md-10">
-                                                                <select class="form-control" id="bank"  name="pembayaranUtangPiutang.bank" onchange="isiKeteterangan()">
-                                                                    <option value="" ></option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                            <label class="col-md-4" style="margin-top: 7px">COA Kas </label>
+                                            <div class="col-md-8">
+                                                <select class="form-control" id="coa_asal" onchange="isiKeteterangan()" style="margin-top: 7px" name="pembayaranUtangPiutang.metodePembayaran">
+                                                    <option value="" ></option>
+                                                </select>
                                             </div>
                                         </div>
-                                            <script>
-                                                function pilihMetode(val){
-                                                    if(val != ''){
-                                                        if(val == 'transfer'){
-                                                            $('#pilih_bank').show();
-                                                        }else{
-                                                            $('#pilih_bank').hide();
-                                                        }
-                                                    }
-                                                }
-                                            </script>
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Bayar</label>
                                             <div class="col-md-8">
@@ -222,7 +195,7 @@
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">COA Lawan</label>
                                             <div class="col-md-8">
-                                                <select class="form-control" id="coa_lawan">
+                                                <select class="form-control" id="coa_lawan" onchange="getDisableTrans()">
                                                     <option value="" ></option>
                                                 </select>
                                             </div>
@@ -375,7 +348,7 @@
                                     <button type="button" class="btn btn-danger" onclick="resetField()">
                                         <i class="fa fa-refresh"></i> Reset
                                     </button>
-                                    <a type="button" class="btn btn-warning" href="initFormPemasukan_pembayaranUtangPiutang.action">
+                                    <a type="button" class="btn btn-warning" href="initForm_pembayaranUtangPiutang.action">
                                         <i class="fa fa-arrow-left"></i> Back
                                     </a>
                                 </div>
@@ -496,6 +469,15 @@
     }
 
     $(document).ready(function () {
+        $('#divisi_id').attr('readonly', true);
+        $('#kode_vendor').attr('readonly', true);
+        $('#no_nota').attr('readonly', true);
+        $('#jumlah_pembayaran').attr('readonly', true);
+        $('#btnSearchNota').hide();
+        $('#divisi_id').attr('wajib', "N");
+        $('#kode_vendor').attr('wajib', "N");
+        $('#no_nota').attr('wajib', "N");
+
         selectPembayaran();
         $('#btnSearchNota').click(function () {
             var masterId = $('#kode_vendor').val();
@@ -527,7 +509,6 @@
                             "<th style='text-align: center; color: #fff; background-color:  #30d196 '>No</th>" +
                             "<th style='text-align: center; color: #fff; background-color:  #30d196'><input type='checkbox' id='checkAll'></th>"+
                             "<th style='text-align: center; color: #fff; background-color:  #30d196 '>Kode Vendor</th>" +
-                            "<th style='text-align: center; color: #fff; background-color:  #30d196 '>Divisi ID</th>" +
                             "<th style='text-align: center; color: #fff; background-color:  #30d196 ''>Rekening ID</th>" +
                             "<th style='text-align: center; color: #fff; background-color:  #30d196 ''>No. Nota</th>" +
                             "<th style='text-align: center; color: #fff; background-color:  #30d196 ''>Debit</th>" +
@@ -540,7 +521,6 @@
                                 '<td align="center">' + (i + 1) + '</td>' +
                                 '<td align="center">' + combo + '</td>' +
                                 '<td align="center">' + item.masterId + '</td>' +
-                                '<td align="center">' + item.divisiId + '</td>' +
                                 '<td align="center">' + item.rekeningId + '</td>' +
                                 '<td align="center">' + item.noNota + '</td>' +
                                 '<td align="center">' + item.stJumlahPembayaran + '</td>' +
@@ -566,7 +546,7 @@
                         msg+="Unit belum dipilih \n";
                     }
                     if (coaLawan==""){
-                        msg+="Coa lawan belum dipilih \n";
+                        msg+="COA lawan belum dipilih \n";
                     }
                     alert(msg);
                 }
@@ -713,11 +693,11 @@
             PembayaranUtangPiutangAction.searchDetailPembayaran(function (listdata) {
                 tmp_table = "<thead style='font-size: 14px' ><tr class='active'>" +
                     "<th style='text-align: center; color: #fff; background-color:  #30d196 '>No</th>" +
-                    "<th style='text-align: center; color: #fff; background-color:  #30d196 '>Kode Vendor</th>" +
-                    "<th style='text-align: center; color: #fff; background-color:  #30d196 ''>Nama Vendor</th>" +
+                    "<th style='text-align: center; color: #fff; background-color:  #30d196 '>Rekening ID</th>" +
                     "<th style='text-align: center; color: #fff; background-color:  #30d196 '>Divisi ID</th>" +
                     "<th style='text-align: center; color: #fff; background-color:  #30d196 ''>Nama Divisi</th>" +
-                    "<th style='text-align: center; color: #fff; background-color:  #30d196 '>Rekening ID</th>" +
+                    "<th style='text-align: center; color: #fff; background-color:  #30d196 '>Kode Vendor</th>" +
+                    "<th style='text-align: center; color: #fff; background-color:  #30d196 ''>Nama Vendor</th>" +
                     "<th style='text-align: center; color: #fff; background-color:  #30d196 ''>No. Nota</th>" +
                     "<th style='text-align: center; color: #fff; background-color:  #30d196 ''>Jumlah Pembayaran</th>" +
                     "<th style='text-align: center; color: #fff; background-color:  #30d196 '>Delete</th>" +
@@ -726,11 +706,11 @@
                 $.each(listdata, function (i, item) {
                     tmp_table += '<tr style="font-size: 12px;" ">' +
                         '<td align="center">' + (i + 1) + '</td>' +
-                        '<td align="center">' + item.masterId + '</td>' +
-                        '<td align="center">' + item.masterName + '</td>' +
+                        '<td align="center">' + item.rekeningId + '</td>' +
                         '<td align="center">' + item.divisiId + '</td>' +
                         '<td align="center">' + item.divisiName + '</td>' +
-                        '<td align="center">' + item.rekeningId + '</td>' +
+                        '<td align="center">' + item.masterId + '</td>' +
+                        '<td align="center">' + item.masterName + '</td>' +
                         '<td align="center">' + item.noNota + '</td>' +
                         '<td align="center">' + item.stJumlahPembayaran+ '</td>' +
                         '<td align="center">' +
@@ -747,22 +727,18 @@
 
     function isiKeteterangan() {
         var tipeTransaksi = $('#tipe_transaksi option:selected').text();
-        var metodeBayar = $('#metode_bayar option:selected').text();
+        var metodeBayar = $('#coa_asal option:selected').text();
         var branchName = $('#branch_id option:selected').text();
-        var bank = $('#bank option:selected').text();
         var noSlipBank = $('#no_slip_bank').val();
         var keterangan ="";
         if (metodeBayar!=""){
             metodeBayar = "dengan metode bayar "+metodeBayar;
-            if (bank!=""){
-                bank="pada "+bank;
-            }
         }
         if (noSlipBank!=""){
             noSlipBank="dengan no referensi bank "+noSlipBank;
         }
 
-        keterangan= tipeTransaksi +" "+branchName+" "+metodeBayar+" "+bank+" "+noSlipBank;
+        keterangan= tipeTransaksi +" "+branchName+" "+metodeBayar+" "+noSlipBank;
 
         $('#keterangan').val(keterangan);
     }
@@ -774,10 +750,25 @@
         })
     }
 
+    function getCoaAsal() {
+        var option = '<option value=""></option>';
+        var tipeTransaksi = $('#tipe_transaksi option:selected').val();
+        KodeRekeningAction.getKodeRekeningLawanByTransId(tipeTransaksi,"D",function (res) {
+            if(res.length > 0){
+                $.each(res, function (i, item) {
+                    option += '<option value="'+item.kodeRekening+'">'+item.namaKodeRekening+'</option>';
+                });
+                $('#coa_asal').html(option);
+            }else{
+                $('#coa_asal').html(option);
+            }
+        });
+    }
+
     function getCoaLawan() {
         var option = '<option value=""></option>';
         var tipeTransaksi = $('#tipe_transaksi option:selected').val();
-        KodeRekeningAction.getKodeRekeningLawanByTransId(tipeTransaksi,"KM",function (res) {
+        KodeRekeningAction.getKodeRekeningLawanByTransId(tipeTransaksi,"K",function (res) {
             if(res.length > 0){
                 $.each(res, function (i, item) {
                     option += '<option value="'+item.kodeRekening+'">'+item.tampilanCoa+'</option>';
@@ -800,27 +791,38 @@
         $('#no_nota').attr('wajib', "N");
 
         var tipeTransaksi = $('#tipe_transaksi option:selected').val();
-        PembayaranUtangPiutangAction.getDisableTrans(tipeTransaksi,function (res) {
-            console.log(res);
-            if (res.divisiId=="Y"){
-                $('#divisi_id').attr('readonly', false);
-                $('#divisi_id').attr('wajib', "Y");
+        var coaLawan = $('#coa_lawan option:selected').val();
+        if (tipeTransaksi!=''&&coaLawan!=''){
+            PembayaranUtangPiutangAction.getDisableTrans(tipeTransaksi,coaLawan,function (res) {
+                if (res.divisiId=="Y"){
+                    $('#divisi_id').attr('readonly', false);
+                    $('#divisi_id').attr('wajib', "Y");
+                }
+                if (res.masterId=="Y"){
+                    $('#kode_vendor').attr('readonly', false);
+                    $('#kode_vendor').attr('wajib', "Y");
+                }
+                if (res.noNota=="Y"){
+                    $('#btnSearchNota').show();
+                    $('#no_nota').attr('wajib', "Y");
+                }else{
+                    $('#no_nota').attr('wajib', "N");
+                }
+
+                if (res.biaya=="Y"){
+                    $('#jumlah_pembayaran').attr('readonly', false);
+                }
+            });
+        }else{
+            var msg="";
+            if (tipeTransaksi==""){
+                msg+="Tipe transaksi belum dipilih \n";
             }
-            if (res.masterId=="Y"){
-                $('#kode_vendor').attr('readonly', false);
-                $('#kode_vendor').attr('wajib', "Y");
+            if (coaLawan==""){
+                msg+="COA lawan belum dipilih \n";
             }
-            if (res.noNota=="Y"){
-                $('#btnSearchNota').show();
-                $('#no_nota').attr('wajib', "Y");
-            }else{
-                $('#no_nota').attr('wajib', "Y");
-                $('#no_nota').attr('readonly', false);
-            }
-            if (res.biaya=="Y"){
-                $('#jumlah_pembayaran').attr('readonly', false);
-            }
-        });
+            alert(msg);
+        }
     }
 
     function formatRupiahAngka(angka) {
@@ -846,4 +848,3 @@
 
 </body>
 </html>
-

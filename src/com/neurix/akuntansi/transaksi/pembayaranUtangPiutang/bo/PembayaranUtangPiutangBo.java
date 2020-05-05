@@ -36,7 +36,7 @@ public interface PembayaranUtangPiutangBo extends BaseMasterBo<PembayaranUtangPi
 
     String getNamaRekeningKasJurnal(String noJurnal) throws GeneralBOException;
 
-    Trans getDisableTrans(String transId) throws GeneralBOException;
+    Trans getDisableTrans(String transId,String coaLawan) throws GeneralBOException;
 
     String getPosisiCoaDiMappingJurnal(String transId, String coa) throws GeneralBOException;
 }

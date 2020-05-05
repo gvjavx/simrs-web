@@ -123,9 +123,9 @@ public class KodeRekeningDao extends GenericDao<ImKodeRekeningEntity, String> {
                 "from \n" +
                 "  im_akun_kode_rekening \n" +
                 "where \n" +
-                "  nama_kode_rekening ilike 'kas' \n" +
+                "  nama_kode_rekening ilike 'kas%' \n" +
                 "order by \n" +
-                "  rekening_id asc \n" +
+                "  level asc \n" +
                 "limit \n" +
                 "  1\n";
         Object results = this.sessionFactory.getCurrentSession()
@@ -245,10 +245,6 @@ public class KodeRekeningDao extends GenericDao<ImKodeRekeningEntity, String> {
 
     public List<KodeRekening> getKodeRekeningLawanByTransId(String transId,String posisiLawan){
         List<KodeRekening> listOfResult = new ArrayList<>();
-        String where = "";
-        if (!"".equalsIgnoreCase(posisiLawan)){
-            where=" and posisi='"+posisiLawan+"' ";
-        }
         List<Object[]> results = new ArrayList<Object[]>();
         String query = "select \n" +
                 "\t kr.*, " +
@@ -258,8 +254,8 @@ public class KodeRekeningDao extends GenericDao<ImKodeRekeningEntity, String> {
                 "\t left join im_akun_kode_rekening kr ON kr.kode_rekening ILIKE '%' || j.kode_rekening || '%' \n" +
                 " where \n" +
                 "\t kr.level=5 \n"+
-                "\t and trans_id='"+transId+"' "+
-                where;
+                "\t and trans_id='"+transId+"' " +
+                " and posisi='"+posisiLawan+"' ";
 
                 results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
@@ -270,11 +266,8 @@ public class KodeRekeningDao extends GenericDao<ImKodeRekeningEntity, String> {
             data.setRekeningId((String) row[0]);
             data.setKodeRekening((String) row[1]);
             data.setNamaKodeRekening((String) row[2]);
-            if (!"".equalsIgnoreCase(posisiLawan)){
-                data.setTampilanCoa(data.getKodeRekening()+" | "+data.getNamaKodeRekening());
-            }else{
-                data.setTampilanCoa((String) row[14]+" | "+data.getKodeRekening()+" | "+data.getNamaKodeRekening());
-            }
+            data.setTampilanCoa(data.getKodeRekening()+" | "+data.getNamaKodeRekening());
+
             listOfResult.add(data);
         }
         return listOfResult;
@@ -285,6 +278,25 @@ public class KodeRekeningDao extends GenericDao<ImKodeRekeningEntity, String> {
         String result = "";
         String query = "select \n" +
                 "  rekening_id\n" +
+                "from \n" +
+                "  im_akun_kode_rekening \n" +
+                "where \n" +
+                "  kode_rekening = '" + coa + "'\n";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results != null) {
+            result = results.toString();
+        } else {
+            result = null;
+        }
+        return result;
+    }
+
+    //untuk mendapat rekening id dari coa
+    public String getNamaRekeningByCoa(String coa) {
+        String result = "";
+        String query = "select \n" +
+                "  nama_kode_rekening\n" +
                 "from \n" +
                 "  im_akun_kode_rekening \n" +
                 "where \n" +
