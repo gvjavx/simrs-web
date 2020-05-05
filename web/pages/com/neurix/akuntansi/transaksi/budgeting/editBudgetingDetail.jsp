@@ -520,7 +520,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-plus"></i> Tambah Pengadaan
+                <h4 class="modal-title"><i class="fa fa-plus"></i> Tambah Rincian
                 </h4>
             </div>
             <div class="modal-body">
@@ -528,7 +528,7 @@
                 <table class="table table-bordered table-striped">
                     <thead>
                     <tr>
-                        <td>Nama</td>
+                        <td>Nama Rincian</td>
                         <td>Qty</td>
                         <td>Nilai</td>
                     </tr>
@@ -763,24 +763,26 @@
     
     function saveAddPengadaan() {
 
-        var tipe = $("#sel-tipe-pengadaan").val();
-        var namapengadaan = $("#nama-head-pengadaan").val();
-        var arrData = [];
-        for (var i = 0 ; i <= n; i++){
-            var nama = $("#ama-add-"+i+"").val();
-            var qty = $("#ama-add-"+i+"").val();
-            var nilai = $("#ama-add-"+i+"").val();
-            arrData.push({"name":nama, "qty":qty, "nilai":nilai});
-        }
+        $("#modal-pengadaan").modal('hide');
 
-        var strJson = JSON.stringify(arrData);
-        BudgetingAction.saveAddPengadaan(strJson, namapengadaan, rekeningid, tipe, function (response) {
-            if (response.status == "success"){
-                refresh();
-            } else {
-                $("#alert-error-add-pengadaan").show().fadeOut(5000);
-            }
-        });
+//        var tipe = $("#sel-tipe-pengadaan").val();
+//        var namapengadaan = $("#nama-head-pengadaan").val();
+//        var arrData = [];
+//        for (var i = 0 ; i <= n; i++){
+//            var nama = $("#ama-add-"+i+"").val();
+//            var qty = $("#ama-add-"+i+"").val();
+//            var nilai = $("#ama-add-"+i+"").val();
+//            arrData.push({"name":nama, "qty":qty, "nilai":nilai});
+//        }
+//
+//        var strJson = JSON.stringify(arrData);
+//        BudgetingAction.saveAddPengadaan(strJson, namapengadaan, rekeningid, tipe, function (response) {
+//            if (response.status == "success"){
+//                refresh();
+//            } else {
+//                $("#alert-error-add-pengadaan").show().fadeOut(5000);
+//            }
+//        });
     }
 
 </script>
