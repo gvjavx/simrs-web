@@ -203,36 +203,36 @@
                             "<td align='center'>";
 
                         if (batas.flagTutup == "Y"){
-                            strBody += "<button class='btn btn-primary' id='btn-tutup-"+item.branchId+"' onclick=\"saveTutup('"+item.branchId+"','"+tahun+"','"+bulan+"')\" disabled>Tutup</button>" +
-                                " <button class='btn btn-info' id='btn-lock-"+item.branchId+"' onclick=\"saveLock('"+item.branchId+"','"+tahun+"','"+bulan+"')\" disabled>Lock</button>" +
+                            strBody += "<button class='btn btn-default' id='btn-tutup-"+item.branchId+"' onclick=\"saveTutup('"+item.branchId+"','"+tahun+"','"+bulan+"')\" disabled>Tutup</button>" +
+                                " <button class='btn btn-default' id='btn-lock-"+item.branchId+"' onclick=\"saveLock('"+item.branchId+"','"+tahun+"','"+bulan+"')\" disabled>Lock</button>" +
                                 "<span id='load-save-"+item.branchId+"'></span>" +
                                 "</td>" +
                                 "<td align='center'><span class='label label-danger'>Sudah Ditutup</span></td>" +
                                 "</tr>";
                         } else if (batas.flagTutup == "P"){
                             strBody +=  "<button class='btn btn-primary' id='btn-tutup-"+item.branchId+"' onclick=\"saveTutup('"+item.branchId+"','"+tahun+"','"+bulan+"')\">Tutup</button>" +
-                                " <button class='btn btn-info' id='btn-lock-"+item.branchId+"' onclick=\"saveLock('"+item.branchId+"','"+tahun+"','"+bulan+"')\" disabled>Lock</button>" +
+                                " <button class='btn btn-default' id='btn-lock-"+item.branchId+"' onclick=\"saveLock('"+item.branchId+"','"+tahun+"','"+bulan+"')\" disabled>Lock</button>" +
                                 "<span id='load-save-"+item.branchId+"'></span>" +
                                 "</td>" +
                                 "<td align='center'><span class='label label-warning'>Lock Process</span></td>" +
                                 "</tr>";
                         } else {
                             if (batas.statusTanggal == "kurang"){
-                                strBody += "<button class='btn btn-primary' id='btn-tutup-"+item.branchId+"' onclick=\"saveTutup('"+item.branchId+"','"+tahun+"','"+bulan+"')\" disabled>Tutup</button>" +
-                                    " <button class='btn btn-info' id='btn-lock-"+item.branchId+"' onclick=\"saveLock('"+item.branchId+"','"+tahun+"','"+bulan+"')\" disabled>Lock</button>" +
+                                strBody += "<button class='btn btn-default' id='btn-tutup-"+item.branchId+"' onclick=\"saveTutup('"+item.branchId+"','"+tahun+"','"+bulan+"')\" disabled>Tutup</button>" +
+                                    " <button class='btn btn-default' id='btn-lock-"+item.branchId+"' onclick=\"saveLock('"+item.branchId+"','"+tahun+"','"+bulan+"')\" disabled>Lock</button>" +
                                     "<span id='load-save-"+item.branchId+"'></span>" +
                                     "</td>" +
                                     "<td align='center'><span class='label label-default'>Belum Waktu Tutup</span></td>" +
                                     "</tr>";
                             } else if (batas.stTglBatas == "" || batas.stTglBatas == null) {
-                                strBody += "<button class='btn btn-primary' id='btn-tutup-"+item.branchId+"' onclick=\"saveTutup('"+item.branchId+"','"+tahun+"','"+bulan+"')\" disabled>Tutup</button>" +
-                                    " <button class='btn btn-info' id='btn-lock-"+item.branchId+"' onclick=\"saveLock('"+item.branchId+"','"+tahun+"','"+bulan+"')\" disabled>Lock</button>" +
+                                strBody += "<button class='btn btn-default' id='btn-tutup-"+item.branchId+"' onclick=\"saveTutup('"+item.branchId+"','"+tahun+"','"+bulan+"')\" disabled>Tutup</button>" +
+                                    " <button class='btn btn-default' id='btn-lock-"+item.branchId+"' onclick=\"saveLock('"+item.branchId+"','"+tahun+"','"+bulan+"')\" disabled>Lock</button>" +
                                     "<span id='load-save-"+item.branchId+"'></span>" +
                                     "</td>" +
                                     "<td align='center'><span class='label label-default'>Belum Set Waktu Tutup</span></td>" +
                                     "</tr>";
                             } else {
-                                strBody += "<button class='btn btn-primary' id='btn-tutup-"+item.branchId+"' onclick=\"saveTutup('" + item.branchId + "','" + tahun + "','" + bulan + "')\" disabled>Tutup</button>" +
+                                strBody += "<button class='btn btn-default' id='btn-tutup-"+item.branchId+"' onclick=\"saveTutup('" + item.branchId + "','" + tahun + "','" + bulan + "')\" disabled>Tutup</button>" +
                                 " <button class='btn btn-info' id='btn-lock-"+item.branchId+"' onclick=\"saveLock('" + item.branchId + "','" + tahun + "','" + bulan + "')\">Lock</button>" +
                                 "<span id='load-save-"+item.branchId+"'></span>" +
                                 "</td>" +
