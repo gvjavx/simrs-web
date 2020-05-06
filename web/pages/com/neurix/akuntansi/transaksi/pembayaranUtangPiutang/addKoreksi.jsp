@@ -122,7 +122,7 @@
                                                     <s:param name="tipe">KR</s:param>
                                                 </s:action>
                                                 <s:select list="#comboTrans.listOfComboTrans" id="tipe_transaksi" name="pembayaranUtangPiutang.tipeTransaksi"
-                                                          cssStyle="margin-top: 7px" onchange="isiKeteterangan(),getTipeMaster(),getCoaLawan(),getDisableTrans()"
+                                                          cssStyle="margin-top: 7px" onchange="isiKeteterangan(),getTipeMaster(),getCoaLawan()"
                                                           listKey="transId" listValue="transName" headerKey="" headerValue="" cssClass="form-control" />
                                                 <s:hidden id="tipeMaster" />
                                             </div>
@@ -169,7 +169,7 @@
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">COA</label>
                                             <div class="col-md-8">
-                                                <select class="form-control" id="coa_debit">
+                                                <select class="form-control" id="coa_debit" onchange="getDisableTransDebit()">
                                                     <option value="" ></option>
                                                 </select>
                                             </div>
@@ -305,7 +305,7 @@
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">COA</label>
                                             <div class="col-md-8">
-                                                <select class="form-control" id="coa_kredit">
+                                                <select class="form-control" id="coa_kredit" onchange="getDisableTransKredit()">
                                                     <option value="" ></option>
                                                 </select>
                                             </div>
@@ -1117,7 +1117,7 @@
 
         var coaLawanKredit = $('#coa_kredit option:selected').val();
         var tipeTransaksi = $('#tipe_transaksi option:selected').val();
-        PembayaranUtangPiutangAction.getDisableTrans(tipeTransaksi,function (res) {
+        PembayaranUtangPiutangAction.getDisableTrans(tipeTransaksi,coaLawanKredit,function (res) {
             if (res.divisiId=="Y"){
                 $('#divisi_id_kredit').attr('readonly', false);
                 $('#divisi_id_kredit').attr('wajib', "Y");
