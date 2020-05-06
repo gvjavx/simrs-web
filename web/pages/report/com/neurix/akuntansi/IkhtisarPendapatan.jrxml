@@ -283,7 +283,7 @@ FROM
 					</graphicElement>
 				</line>
 				<textField pattern="#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField-20" x="350" y="22" width="100" height="18" uuid="ad144f8c-68cf-4631-91b7-e137e6d40a78"/>
+					<reportElement key="textField-20" x="350" y="22" width="117" height="18" uuid="ad144f8c-68cf-4631-91b7-e137e6d40a78"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -296,7 +296,7 @@ FROM
 					<textFieldExpression><![CDATA[$V{sumSaldoSekarang2Display}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField-21" x="428" y="22" width="123" height="18" uuid="651cecb5-471b-47e3-ad4d-321d4f878285"/>
+					<reportElement key="textField-21" x="428" y="22" width="139" height="18" uuid="651cecb5-471b-47e3-ad4d-321d4f878285"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -309,7 +309,7 @@ FROM
 					<textFieldExpression><![CDATA[$V{sumSaldo2Display}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField-24" x="223" y="22" width="102" height="18" uuid="4655c2ac-948b-4bde-b5cd-b89b49df68a3"/>
+					<reportElement key="textField-24" x="223" y="22" width="117" height="18" uuid="4655c2ac-948b-4bde-b5cd-b89b49df68a3"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -320,45 +320,6 @@ FROM
 						<font size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{SUM_lastSaldo_2}.abs()]]></textFieldExpression>
-				</textField>
-				<textField pattern="#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField-22" x="325" y="21" width="14" height="19" uuid="82bb9561-9b7e-454d-83ef-5f58f6f1ce23"/>
-					<box>
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$V{posisi_last_saldo_2}]]></textFieldExpression>
-				</textField>
-				<textField pattern="#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField-22" x="551" y="22" width="14" height="18" uuid="b15226b6-ca42-4aa8-9e9e-f9788e49fbe6"/>
-					<box>
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$V{posisi_saldo_2}]]></textFieldExpression>
-				</textField>
-				<textField pattern="#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField-22" x="450" y="22" width="14" height="18" uuid="b419015b-005b-4145-849f-29e154fbdf10"/>
-					<box>
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$V{posisi_saldo_sekarang_2}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
@@ -410,7 +371,7 @@ FROM
 					<text><![CDATA[JUMLAH : ]]></text>
 				</staticText>
 				<textField pattern="#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField-17" x="350" y="1" width="100" height="19" uuid="0812a5a8-de85-4e98-979a-8dde74b6c4a3"/>
+					<reportElement key="textField-17" x="350" y="1" width="117" height="19" uuid="0812a5a8-de85-4e98-979a-8dde74b6c4a3"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -423,7 +384,7 @@ FROM
 					<textFieldExpression><![CDATA[$V{sumSaldoSekarang1Display}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField-19" x="450" y="2" width="101" height="18" uuid="66745d93-b914-4fa0-9be3-40ba35edad4c"/>
+					<reportElement key="textField-19" x="450" y="2" width="117" height="18" uuid="66745d93-b914-4fa0-9be3-40ba35edad4c"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -436,7 +397,7 @@ FROM
 					<textFieldExpression><![CDATA[$V{sumSaldo1Display}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField-23" x="223" y="2" width="102" height="18" uuid="2887f76b-7077-4cf8-82f0-83cddf92ff34"/>
+					<reportElement key="textField-23" x="223" y="2" width="117" height="18" uuid="2887f76b-7077-4cf8-82f0-83cddf92ff34"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -447,45 +408,6 @@ FROM
 						<font size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{SUM_lastSaldo_1}.abs()]]></textFieldExpression>
-				</textField>
-				<textField pattern="#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField-22" x="325" y="2" width="14" height="18" uuid="6cc775ea-1fe5-40c6-94fd-4aa197bd1180"/>
-					<box>
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$V{posisi_last_saldo_1}]]></textFieldExpression>
-				</textField>
-				<textField pattern="#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField-22" x="450" y="2" width="14" height="18" uuid="9820a368-141c-436f-a90a-a2b374063b27"/>
-					<box>
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$V{posisi_saldo_sekarang_1}]]></textFieldExpression>
-				</textField>
-				<textField pattern="#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField-22" x="551" y="2" width="14" height="18" uuid="3fd5d01e-037a-4ade-b525-e11e91767dab"/>
-					<box>
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$V{posisi_saldo_1}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
@@ -734,7 +656,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 	<detail>
 		<band height="17" splitType="Stretch">
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-22" x="158" y="0" width="167" height="15" uuid="1ddbcd29-e5d0-4a5a-b697-14fc33fed678"/>
+				<reportElement key="textField-22" x="158" y="0" width="182" height="15" uuid="1ddbcd29-e5d0-4a5a-b697-14fc33fed678"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -773,7 +695,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[$F{namarekening}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-16" x="349" y="0" width="101" height="15" uuid="4bedb26c-495e-44ab-8c56-f96318f343f7"/>
+				<reportElement key="textField-16" x="349" y="0" width="118" height="15" uuid="4bedb26c-495e-44ab-8c56-f96318f343f7"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -786,7 +708,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[$V{saldoSekarangDisplay}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-18" x="449" y="0" width="102" height="16" uuid="3f136fc4-38a2-4184-95e8-ddc326e7322d"/>
+				<reportElement key="textField-18" x="449" y="0" width="118" height="16" uuid="3f136fc4-38a2-4184-95e8-ddc326e7322d"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -797,45 +719,6 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{saldoDisplay}]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-22" x="325" y="0" width="14" height="15" uuid="d7db887c-3a7b-4ee4-a9be-5769eb415681"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{posisilastsaldo}]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-22" x="450" y="0" width="14" height="15" uuid="e7428925-822d-41f9-8fb4-0776f9a15a04"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{posisisaldosekarang}]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-22" x="551" y="0" width="14" height="15" uuid="7bc3318d-5a70-4ce1-b093-b34ffaa0e02e"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{posisisaldo}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
