@@ -1,7 +1,7 @@
 function showModalHD(jenis) {
-    if(isReadRM){
+    if (isReadRM) {
         $('.btn-hide').hide();
-    }else{
+    } else {
         $('.btn-hide').show();
     }
 
@@ -612,8 +612,8 @@ function saveMonHD(jenis, ket) {
         var va13 = $('#ti13').val();
         var va14 = $('[name=ti14]:checked').val();
 
-        if (va1 && va10 && va13 != '' && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 &&
-            va11 && va12 && va14 != undefined) {
+        // if (va1 && va10 && va13 != '' && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 &&
+        //     va11 && va12 && va14 != undefined) {
             data.push({
                 'parameter': 'Diagnosis (WD dan DD)',
                 'jawaban1': va1,
@@ -703,7 +703,7 @@ function saveMonHD(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
-        }
+        // }
     }
 
     if ("tranfusi_penyataan" == jenis) {
@@ -840,8 +840,8 @@ function saveMonHD(jenis, ket) {
         var va10 = $('#tti10').val();
         var va11 = $('[name=tti11]:checked').val();
 
-        if (va10 != '' && va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 &&
-            va11 != undefined) {
+        // if (va10 != '' && va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 &&
+        //     va11 != undefined) {
             data.push({
                 'parameter': 'Diagnosis (WD dan DD)',
                 'jawaban1': 'CKD V on HD',
@@ -924,7 +924,7 @@ function saveMonHD(jenis, ket) {
             });
 
             cek = true;
-        }
+        // }
     }
 
     if ("persetujuan_hd_penyataan" == jenis) {
@@ -1221,6 +1221,66 @@ function saveMonHD(jenis, ket) {
         }
     }
 
+    if ("perencanaan_hemodialisa_pasien") {
+        var va1 = $('#ph1').val();
+        var va2 = $('#ph2').val();
+        var va3 = $('#ph3').val();
+        var va4 = $('#ph4').val();
+        var va5 = $('#ph5').val();
+        var va6 = $('#ph6').val();
+        var va7 = $('#ph7').val();
+        var va8 = $('#ph8').val();
+        var va9 = $('#ph9').val();
+        var va10 = $('#ph10').val();
+        var va11 = $('#ph11').val();
+        var va12 = $('#ph12').val();
+        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va10 && va11 && va12 != '') {
+            data.push({
+                'parameter': 'Nama Pasien',
+                'jawaban1': va1,
+                'keterangan': jenis,
+                'jenis': 'perencanaan_hemodialisa',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Umur',
+                'jawaban1': va2,
+                'keterangan': jenis,
+                'jenis': 'perencanaan_hemodialisa',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Alamat',
+                'jawaban1': va3,
+                'keterangan': jenis,
+                'jenis': 'perencanaan_hemodialisa',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'No Asuransi/ BPJS/ Swasta',
+                'jawaban1': va4,
+                'keterangan': jenis,
+                'jenis': 'perencanaan_hemodialisa',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Perencanaan Hemodialisa',
+                'jawaban1': 'Sebanyak ' + va5 + ' kali/minggu|' + 'Lama Hemodialisa ' + va6 + ' Jam ' + va7 + ' Menit|' + 'UF ' + va8 + ' Liter, Heparin ' + va9 + '|QB ' + va10 + ', BD ' + va11,
+                'keterangan': jenis,
+                'jenis': 'perencanaan_hemodialisa',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Catatan',
+                'jawaban1': va12,
+                'keterangan': jenis,
+                'jenis': 'perencanaan_hemodialisa',
+                'id_detail_checkup': idDetailCheckup
+            });
+            cek = true;
+        }
+    }
+
     if (cek) {
         var result = JSON.stringify(data);
         $('#save_hd_' + jenis).hide();
@@ -1279,7 +1339,7 @@ function detailMonHD(jenis) {
                             li += '<li>' + item + '</li>';
                         });
                         body += '<tr>' +
-                            '<td>' + item.parameter + '</td>' +
+                            '<td width="40%">' + item.parameter + '</td>' +
                             '<td>' + '<ul style="margin-left: 10px">' + li + '</ul>' + '</td>' +
                             '</tr>';
                     } else if ("resiko_jatuh" == item.keterangan) {
@@ -1307,9 +1367,28 @@ function detailMonHD(jenis) {
                             '<td>' + item.parameter + '</td>' +
                             '<td align="left">' + '<img src="' + jwb + '" style="width: 150px">' + '</td>' +
                             '</tr>';
+                    } else if ("perencanaan_hemodialisa_pasien" == item.keterangan) {
+                        if ("Perencanaan Hemodialisa" == item.parameter) {
+                            var isi = jwb.split("|");
+                            var li = "";
+                            $.each(isi, function (i, item) {
+                               li += '<li style="list-style-type: none">'+item+'</li>';
+                            });
+                            if(li != ''){
+                                body += '<tr>' +
+                                    '<td>' + item.parameter + '</td>' +
+                                    '<td>' + '<ul style="margin-left: 1px">'+li+'</ul>' + '</td>' +
+                                    '</tr>';
+                            }
+                        } else {
+                            body += '<tr>' +
+                                '<td>' + item.parameter + '</td>' +
+                                '<td>' + jwb + '</td>' +
+                                '</tr>';
+                        }
                     } else {
                         body += '<tr>' +
-                            '<td>' + item.parameter + '</td>' +
+                            '<td width="40%">' + item.parameter + '</td>' +
                             '<td>' + jwb + '</td>' +
                             '</tr>';
                     }

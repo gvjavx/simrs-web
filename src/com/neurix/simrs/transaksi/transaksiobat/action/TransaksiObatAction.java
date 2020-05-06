@@ -579,10 +579,10 @@ public class TransaksiObatAction extends BaseMasterAction {
         permintaanResep.setBranchId(CommonUtil.userBranchLogin());
         permintaanResep.setTujuanPelayanan(CommonUtil.userPelayananIdLogin());
 
-        if ("4".equalsIgnoreCase(permintaanResep.getStatus())) {
-            permintaanResep.setFlag("N");
-            permintaanResep.setStatus("");
-        }
+//        if ("4".equalsIgnoreCase(permintaanResep.getStatus())) {
+//            permintaanResep.setFlag("N");
+//            permintaanResep.setStatus("");
+//        }
 
         try {
             listResep = transaksiObatBoProxy.getListResepPasien(permintaanResep);
@@ -935,80 +935,93 @@ public class TransaksiObatAction extends BaseMasterAction {
         if (permintaanReseps.size() > 0){
             for (PermintaanResep dataPermintaan : permintaanReseps){
 
-                if (dataPermintaan.getIdDetailCheckup() != null){
+                if (dataPermintaan.getTujuanPelayanan() != null){
 
-                    ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailBo.getDetailCheckupById(dataPermintaan.getIdDetailCheckup());
-                    if (detailCheckupEntity != null){
-
-                        idDetailCheckup = detailCheckupEntity.getIdDetailCheckup();
-                        ItSimrsHeaderChekupEntity chekupEntity = checkupBo.getEntityCheckupById(detailCheckupEntity.getNoCheckup());
-                        if (chekupEntity != null){
-                            idPasien = chekupEntity.getIdPasien();
+                    ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(dataPermintaan.getTujuanPelayanan());
+                    if (pelayananEntity != null){
+                        ImPosition position = positionBo.getPositionEntityById(pelayananEntity.getDivisiId());
+                        if (position != null){
+                            divisiId = position.getKodering();
                         }
-                        try {
-                            ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(detailCheckupEntity.getIdPelayanan());
-
-
-                            if (pelayananEntity != null && pelayananEntity.getTipePelayanan() != null){
-
-                                // jika poli selain rawat inap maka mengambil kodering dari pelayanan
-                                // jika poli rawat rawat inap maka mengambil koderBing dari kelas ruangan , Sigit
-                                if ("rawat_inap".equalsIgnoreCase(pelayananEntity.getTipePelayanan())){
-
-                                    RawatInap rawatInap = new RawatInap();
-                                    rawatInap.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
-                                    rawatInap.setFlag("Y");
-
-                                    List<ItSimrsRawatInapEntity> rawatInapEntities = rawatInapBo.getListEntityByCriteria(rawatInap);
-                                    if (rawatInapEntities.size() > 0){
-                                        for (ItSimrsRawatInapEntity rawatInapEntity : rawatInapEntities){
-                                            MtSimrsRuanganEntity ruanganEntity = ruanganBo.getEntityRuanganById(rawatInapEntity.getIdRuangan());
-                                            if (ruanganEntity != null){
-                                                ImSimrsKelasRuanganEntity kelasRuanganEntity = kelasRuanganBo.getKelasRuanganById(ruanganEntity.getIdKelasRuangan());
-                                                if (kelasRuanganEntity != null){
-
-                                                    ImPosition position = positionBo.getPositionEntityById(kelasRuanganEntity.getDivisiId());
-                                                    if (position != null){
-                                                        divisiId = position.getKodering();
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                } else {
-                                    if (pelayananEntity != null && pelayananEntity.getDivisiId() != null){
-
-                                        ImPosition position = positionBo.getPositionEntityById(pelayananEntity.getDivisiId());
-                                        if (position != null){
-                                            divisiId = position.getKodering();
-                                        }
-
-                                    } else {
-                                        response.setStatus("error");
-                                        response.setMsg("[TransaksiObatAction.createJurnalPengeluaranObatApotik] tidak ditemukan data kodering");
-                                        return response;
-                                    }
-                                }
-                            } else {
-                                response.setStatus("error");
-                                response.setMsg("[TransaksiObatAction.createJurnalPengeluaranObatApotik] tidak ditemukan data tipePelayanan");
-                                return response;
-                            }
-                        } catch (GeneralBOException e){
-                            response.setStatus("error");
-                            response.setMsg("[TransaksiObatAction.createJurnalPengeluaranObatApotik] tidak ditemukan idPelayanan");
-                            return response;
-                        }
-                    } else {
-                        response.setStatus("error");
-                        response.setMsg("[TransaksiObatAction.createJurnalPengeluaranObatApotik] tidak ditemukan idDetailCheckup");
-                        return response;
                     }
-                } else {
-                    response.setStatus("error");
-                    response.setMsg("[TransaksiObatAction.createJurnalPengeluaranObatApotik] tidak ditemukan idDetailCheckup");
-                    return response;
                 }
+
+//                if (dataPermintaan.getIdDetailCheckup() != null){
+//
+//
+//
+//                    ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailBo.getDetailCheckupById(dataPermintaan.getIdDetailCheckup());
+//                    if (detailCheckupEntity != null){
+//
+//                        idDetailCheckup = detailCheckupEntity.getIdDetailCheckup();
+//                        ItSimrsHeaderChekupEntity chekupEntity = checkupBo.getEntityCheckupById(detailCheckupEntity.getNoCheckup());
+//                        if (chekupEntity != null){
+//                            idPasien = chekupEntity.getIdPasien();
+//                        }
+//                        try {
+//                            ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(detailCheckupEntity.getIdPelayanan());
+//
+//
+//                            if (pelayananEntity != null && pelayananEntity.getTipePelayanan() != null){
+//
+//                                // jika poli selain rawat inap maka mengambil kodering dari pelayanan
+//                                // jika poli rawat rawat inap maka mengambil koderBing dari kelas ruangan , Sigit
+//                                if ("rawat_inap".equalsIgnoreCase(pelayananEntity.getTipePelayanan())){
+//
+//                                    RawatInap rawatInap = new RawatInap();
+//                                    rawatInap.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
+//                                    rawatInap.setFlag("Y");
+//
+//                                    List<ItSimrsRawatInapEntity> rawatInapEntities = rawatInapBo.getListEntityByCriteria(rawatInap);
+//                                    if (rawatInapEntities.size() > 0){
+//                                        for (ItSimrsRawatInapEntity rawatInapEntity : rawatInapEntities){
+//                                            MtSimrsRuanganEntity ruanganEntity = ruanganBo.getEntityRuanganById(rawatInapEntity.getIdRuangan());
+//                                            if (ruanganEntity != null){
+//                                                ImSimrsKelasRuanganEntity kelasRuanganEntity = kelasRuanganBo.getKelasRuanganById(ruanganEntity.getIdKelasRuangan());
+//                                                if (kelasRuanganEntity != null){
+//
+//                                                    ImPosition position = positionBo.getPositionEntityById(kelasRuanganEntity.getDivisiId());
+//                                                    if (position != null){
+//                                                        divisiId = position.getKodering();
+//                                                    }
+//                                                }
+//                                            }
+//                                        }
+//                                    }
+//                                } else {
+//                                    if (pelayananEntity != null && pelayananEntity.getDivisiId() != null){
+//
+//                                        ImPosition position = positionBo.getPositionEntityById(pelayananEntity.getDivisiId());
+//                                        if (position != null){
+//                                            divisiId = position.getKodering();
+//                                        }
+//
+//                                    } else {
+//                                        response.setStatus("error");
+//                                        response.setMsg("[TransaksiObatAction.createJurnalPengeluaranObatApotik] tidak ditemukan data kodering");
+//                                        return response;
+//                                    }
+//                                }
+//                            } else {
+//                                response.setStatus("error");
+//                                response.setMsg("[TransaksiObatAction.createJurnalPengeluaranObatApotik] tidak ditemukan data tipePelayanan");
+//                                return response;
+//                            }
+//                        } catch (GeneralBOException e){
+//                            response.setStatus("error");
+//                            response.setMsg("[TransaksiObatAction.createJurnalPengeluaranObatApotik] tidak ditemukan idPelayanan");
+//                            return response;
+//                        }
+//                    } else {
+//                        response.setStatus("error");
+//                        response.setMsg("[TransaksiObatAction.createJurnalPengeluaranObatApotik] tidak ditemukan idDetailCheckup");
+//                        return response;
+//                    }
+//                } else {
+//                    response.setStatus("error");
+//                    response.setMsg("[TransaksiObatAction.createJurnalPengeluaranObatApotik] tidak ditemukan idDetailCheckup");
+//                    return response;
+//                }
 
                 Pelayanan pelayanan = new Pelayanan();
                 pelayanan.setIdPelayanan(dataPermintaan.getTujuanPelayanan());
@@ -1695,7 +1708,7 @@ public class TransaksiObatAction extends BaseMasterAction {
         String fileName1 = "ttd_pasien-"+idResep+"-"+dateFormater("MM")+dateFormater("yy")+".png";
         String fileName2 = "ttd_apoteker-"+idResep+"-"+dateFormater("MM")+dateFormater("yy")+".png";
         String uploadFile1 = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_TTD_PASIEN+fileName1;
-        String uploadFile2 = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_TTD_PASIEN+fileName2;
+        String uploadFile2 = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_TTD_APOTEKER+fileName2;
         logger.info("File save path : " + uploadFile1);
         BufferedImage image1 = ImageIO.read(new ByteArrayInputStream(decodedBytes1));
         BufferedImage image2 = ImageIO.read(new ByteArrayInputStream(decodedBytes2));

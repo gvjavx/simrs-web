@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.357947691000003"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="6"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -164,7 +164,7 @@ FROM
           inner join it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal
           INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = y.rekening_id
         where
-          to_char(x.created_date, 'MM-yyyy') = $P{reportParams.periode}
+          to_char(tanggal_jurnal, 'MM-yyyy') = $P{reportParams.periode}
       		and x.branch_id IN ($P!{reportParams.branchId})
         group by
           concat(

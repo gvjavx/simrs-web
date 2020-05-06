@@ -58,6 +58,7 @@ import org.springframework.web.context.ContextLoader;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -441,7 +442,18 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                                     throw new GeneralBOException("Found problem "+status+", please info to your admin...");
                                 }
                             }else{
-                                rekeningId=getRekeningForMappingOtomatis(mapping.getKodeRekening());
+                                Integer level = kodeRekeningDao.getLevelKodeRekening(mapping.getKodeRekening());
+                                if (level==5){
+                                    rekeningId=getRekeningForMappingOtomatis(mapping.getKodeRekening());
+                                }else{
+                                    if (listOfMap.get("rekening_id")!=null){
+                                        rekeningId= String.valueOf(listOfMap.get("rekening_id"));
+                                    }else{
+                                        status="ERROR : Rekening ID tidak ditemukan pada trans ID"+mapping.getTransId();
+                                        logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
+                                        throw new GeneralBOException("Found problem "+status+", please info to your admin...");
+                                    }
+                                }
                             }
 
                             if (("Y").equalsIgnoreCase(mapping.getBukti())){
@@ -584,7 +596,7 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                         ///////// JIKA JURNAL DETAIL LIST ( jurnal detail dengan data yang dikirim berupa list )
                         if (("Y").equalsIgnoreCase(mapping.getKirimList())){
                             if (data.get(mapping.getKeterangan())!=null){
-                                rekeningId=getRekeningForMappingOtomatis(mapping.getKodeRekening());
+
                                 List<Map> mapList = (List<Map>) data.get(mapping.getKeterangan());
                                 for (int i=0;i<mapList.size();i++){
                                     String buktiLoop = null;
@@ -629,6 +641,20 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                                         status="ERROR : ada nilai yang masih kosong";
                                         logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
                                         throw new GeneralBOException("Found problem "+status+", please info to your admin...");
+                                    }
+
+                                    //mencari rekening Id
+                                    Integer level = kodeRekeningDao.getLevelKodeRekening(mapping.getKodeRekening());
+                                    if (level==5){
+                                        rekeningId=getRekeningForMappingOtomatis(mapping.getKodeRekening());
+                                    }else{
+                                        if (mapList.get(i).get("rekening_id")!=null){
+                                            rekeningId= String.valueOf(mapList.get(i).get("rekening_id"));
+                                        }else{
+                                            status="ERROR : Rekening ID tidak ditemukan pada trans ID"+mapping.getTransId();
+                                            logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
+                                            throw new GeneralBOException("Found problem "+status+", please info to your admin...");
+                                        }
                                     }
 
                                     ///////////////////////MEMASUKKAN KE ENTITY  //////////////////////////////
@@ -743,9 +769,8 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                         }else if (("Y").equalsIgnoreCase(mapping.getKodeBarang())){
                             ///////// JIKA JURNAL BARANG ( jurnal detail yang di looping )
                             if (data.get(mapping.getKeterangan())!=null){
-                                rekeningId=getRekeningForMappingOtomatis(mapping.getKodeRekening());
-                                List<Map> mapList = (List<Map>) data.get(mapping.getKeterangan());
 
+                                List<Map> mapList = (List<Map>) data.get(mapping.getKeterangan());
                                 for (int i=0;i<mapList.size();i++){
                                     String noKdBarang = null;
                                     BigDecimal biayaPembayaranBarang=null;
@@ -777,6 +802,20 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                                             divisiId=(String)mapList.get(i).get("divisi_id");
                                         }else{
                                             status="ERROR : ada divisi belum di kirim";
+                                            logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
+                                            throw new GeneralBOException("Found problem "+status+", please info to your admin...");
+                                        }
+                                    }
+
+                                    //mencari rekening ID
+                                    Integer level = kodeRekeningDao.getLevelKodeRekening(mapping.getKodeRekening());
+                                    if (level==5){
+                                        rekeningId=getRekeningForMappingOtomatis(mapping.getKodeRekening());
+                                    }else{
+                                        if (mapList.get(i).get("rekening_id")!=null){
+                                            rekeningId= String.valueOf(mapList.get(i).get("rekening_id"));
+                                        }else{
+                                            status="ERROR : Rekening ID tidak ditemukan pada trans ID"+mapping.getTransId();
                                             logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
                                             throw new GeneralBOException("Found problem "+status+", please info to your admin...");
                                         }
@@ -1008,6 +1047,23 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
         return rekeningId;
     }
 
+    @Override
+    public String getParameterPembayaran(String transaksiId) {
+        String parameter;
+        try {
+            parameter = mappingJurnalDao.getParameterByTransId(transaksiId);
+        } catch (HibernateException e) {
+            logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+
+        if (parameter == null) {
+            String status = "ERROR : tidak ditemukan parameter";
+            logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail] Error, " + status);
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + status);
+        }
+        return parameter;
+    }
 
     private ItSimrsHeaderDetailCheckupEntity getEntityDetailCheckupByIdDetail(String idDetailCheckup) throws GeneralBOException {
         if (!"".equalsIgnoreCase(idDetailCheckup)){
@@ -1476,6 +1532,12 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
         return entityList;
     }
 
+    public String generateTrasitorisId() {
+        java.util.Date now = new java.util.Date();
+        SimpleDateFormat f = new SimpleDateFormat("yyyyMMdd");
+        return "TR" +  f.format(now) + tindakanTransitorisDao.getNextSeq();
+    }
+
     private void saveTindakanTransitoris(String idDetailCheckup, Timestamp time, String user) throws GeneralBOException {
 
         RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
@@ -1486,6 +1548,7 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
             for (ItSimrsRiwayatTindakanEntity tindakanEntity : tindakanEntities){
 
                 ItSimrsTindakanTransitorisEntity transitorisEntity = new ItSimrsTindakanTransitorisEntity();
+                transitorisEntity.setId(generateTrasitorisId());
                 transitorisEntity.setIdRiwayatTindakan(tindakanEntity.getIdRiwayatTindakan());
                 transitorisEntity.setIdTindakan(tindakanEntity.getIdTindakan());
                 transitorisEntity.setNamaTindakan(tindakanEntity.getNamaTindakan());
@@ -1526,7 +1589,7 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                 createJurnalTransitoris(transJurnal);
             } catch (GeneralBOException e){
                 logger.error("[BillingSystemBoImpl.saveTutupPeriod] ERROR when create jurnal transitoris. ",e);
-                throw new GeneralBOException("[BillingSystemBoImpl.saveTutupPeriod] ERROR when create jurnal transitoris. ",e);
+                throw new GeneralBOException("[BillingSystemBoImpl.saveTutupPeriod] ERROR when create jurnal transitoris. "+e);
             }
 
             try {
@@ -1534,7 +1597,7 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                 saveTindakanTransitoris(transJurnal.getIdDetailCheckup(), transJurnal.getCreatedDate(), transJurnal.getCreatedWho());
             } catch (GeneralBOException e){
                 logger.error("[BillingSystemBoImpl.saveTutupPeriod] ERROR when insert tindakan to tindankan transitoris. ",e);
-                throw new GeneralBOException("[BillingSystemBoImpl.saveTutupPeriod] ERROR when insert tindakan to tindankan transitoris. ",e);
+                throw new GeneralBOException("[BillingSystemBoImpl.saveTutupPeriod] ERROR when insert tindakan to tindankan transitoris. "+e);
             }
         }
 
@@ -1543,7 +1606,7 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
             saveUpdateTutupPeriod(tutupPeriod);
         } catch (GeneralBOException e){
             logger.error("[TutupPeriodAction.saveTutupPeriod] ERROR when create tutup periode. ", e);
-            throw new GeneralBOException("[BillingSystemBoImpl.saveTutupPeriod] ERROR when create tutup periode. ",e);
+            throw new GeneralBOException("[BillingSystemBoImpl.saveTutupPeriod] ERROR when create tutup periode. "+e);
         }
 
         logger.info("[BillingSystemBoImpl.saveTutupPeriod] END <<<");

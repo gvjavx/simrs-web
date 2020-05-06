@@ -6,6 +6,6 @@ import com.neurix.simrs.master.kategorilab.model.KategoriLab;
 
 import java.util.List;
 
-public interface KategoriLabBo {
+public interface KategoriLabBo extends BaseMasterBo<KategoriLab>{
     public List<KategoriLab> getByCriteria(KategoriLab bean) throws GeneralBOException;
 }

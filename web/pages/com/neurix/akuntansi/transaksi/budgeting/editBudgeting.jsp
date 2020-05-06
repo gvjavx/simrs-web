@@ -18,6 +18,17 @@
     <script type='text/javascript'>
 
 
+        function formatRupiah(angka) {
+            if(angka != null && angka != ''){
+                var reverse = angka.toString().split('').reverse().join(''),
+                    ribuan = reverse.match(/\d{1,3}/g);
+                ribuan = ribuan.join('.').split('').reverse().join('');
+                return ribuan;
+            }else{
+                return 0;
+            }
+        }
+
     </script>
 </head>
 
@@ -78,7 +89,7 @@
                                         <label class="control-label col-sm-2">Tipe Budgeting</label>
                                         <div class="col-sm-2">
                                             <select class="form-control" id="sel-tipe" name="budgeting.tipe" disabled="true">
-                                                <option value="tahun">Tahunan</option>
+                                                <option value="tahunan">Tahunan</option>
                                                 <option value="semester">Semester</option>
                                                 <option value="quartal">Quartal</option>
                                             </select>
@@ -91,7 +102,6 @@
                             <div class="row">
                                 <div class="col-md-6 col-md-offset-5" style="margin-top: 10px">
                                     <%--<button class="btn btn-success" onclick="add()"><i class="fa fa-plus"></i> Add</button>--%>
-                                    <button class="btn btn-success" onclick="initForm()"><i class="fa fa-back"></i> Back</button>
                                 </div>
                             </div>
                         </div>
@@ -135,14 +145,17 @@
                                             <td align="center">Kuartal 2</td>
                                             <td align="center">Kuartal 3</td>
                                             <td align="center">Kuartal 4</td>
+                                            <td align="center">Selisih</td>
                                         </s:if>
                                         <s:if test='budgeting.tipe == "semester"'>
                                             <td align="center">Total</td>
                                             <td align="center">Semester 1</td>
                                             <td align="center">Semester 2</td>
+                                            <td align="center">Selisih</td>
                                         </s:if>
                                         <s:if test='budgeting.tipe == "tahunan"'>
                                             <td align="center">Total</td>
+                                            <td align="center">Selisih</td>
                                         </s:if>
                                         <td align="center">Action</td>
                                     <%--<td align="center">Action</td>--%>
@@ -154,23 +167,26 @@
                                             <td><s:property value="kodeRekening"/></td>
                                             <td><s:property value="namaKodeRekening"/></td>
                                             <s:if test='budgeting.tipe == "quartal"'>
-                                                <td align="center"><s:property value="nilaiTotal"/></td>
-                                                <td align="center"><s:property value="quartal1"/></td>
-                                                <td align="center"><s:property value="quartal2"/></td>
-                                                <td align="center"><s:property value="quartal3"/></td>
-                                                <td align="center"><s:property value="quartal4"/></td>
+                                                <td align="center"><script>document.write(formatRupiah('<s:property value="nilaiTotal"/>'))</script></td>
+                                                <td align="center"><script>document.write(formatRupiah('<s:property value="quartal1"/>'))</script></td>
+                                                <td align="center"><script>document.write(formatRupiah('<s:property value="quartal2"/>'))</script></td>
+                                                <td align="center"><script>document.write(formatRupiah('<s:property value="quartal3"/>'))</script></td>
+                                                <td align="center"><script>document.write(formatRupiah('<s:property value="quartal4"/>'))</script></td>
+                                                <td align="center"><s:property value="selisih"/></td>
                                             </s:if>
                                             <s:if test='budgeting.tipe == "semester"'>
-                                                <td align="center"><s:property value="nilaiTotal"/></td>
-                                                <td align="center"><s:property value="semester1"/></td>
-                                                <td align="center"><s:property value="semester2"/></td>
+                                                <td align="center"><script>document.write(formatRupiah('<s:property value="nilaiTotal"/>'))</script></td>
+                                                <td align="center"><script>document.write(formatRupiah('<s:property value="semester1"/>'))</script></td>
+                                                <td align="center"><script>document.write(formatRupiah('<s:property value="semester2"/>'))</script></td>
+                                                <td align="center"><s:property value="selisih"/></td>
                                             </s:if>
                                             <s:if test='budgeting.tipe == "tahunan"'>
-                                                <td align="center"><s:property value="nilaiTotal"/>l</td>
+                                                <td align="center"><script>document.write(formatRupiah('<s:property value="nilaiTotal"/>'))</script></td>
+                                                <td align="center"><s:property value="selisih"/></td>
                                             </s:if>
                                             <td align="center">
                                                 <s:if test='#row.stLevel == "5"'>
-                                                    <button class="btn btn-sm btn-success" onclick="detail('<s:property value="rekeningId"/>')"><i class="fa fa-edit"></i></button>
+                                                    <button class="btn btn-sm btn-success btn-edit" onclick="detail('<s:property value="rekeningId"/>')"><i class="fa fa-edit"></i></button>
                                                 </s:if>
                                             </td>
                                         </tr>
@@ -180,8 +196,9 @@
                             </div>
                         </div>
                         <div class="form-group" style="margin-top: 10px">
-                            <div class="col-md-4 col-md-offset-6">
-                                <button class="btn btn-success" id="btn-save" onclick="saveAdd()"><i class="fa fa-arrow-right"></i> Save </button>
+                            <div class="col-md-4 col-md-offset-5">
+                                <button class="btn btn-success" onclick="initForm()"><i class="fa fa-arrow-left"></i> Back</button>
+                                <button class="btn btn-success" id="btn-save" onclick="saveBudgeting()"><i class="fa fa-check"></i> Save </button>
                             </div>
                         </div>
                     </div>
@@ -268,6 +285,10 @@
     var unit = '<s:property value="budgeting.branchId" />';
     var tahun = '<s:property value="budgeting.tahun" />';
     var tipe = '<s:property value="budgeting.tipe" />';
+    var status = '<s:property value="status" />';
+    var trans = '<s:property value="trans" />';
+
+    var form = { "budgeting.tahun":tahun, "budgeting.branchId":unit, "budgeting.tipe":tipe };
 
     var listOfCoa = [];
     $( document ).ready(function() {
@@ -277,6 +298,11 @@
         $("#sel-tipe").val(tipe);
         $("#sel-tahun").val(tahun);
         $("#sel-unit").val(unit);
+
+        if (trans == "APPROVE_DRAFT" || trans == "APPROVE_FINAL" || trans == "APPROVE_REVISI"){
+            $(".btn-edit").hide();
+            $("#btn-save").html("<i class='fa fa-check'></i> Approve");
+        }
     });
 
 
@@ -305,8 +331,20 @@
         form.submit();
     }
 
-    function detail(id){
+    function firstpath() {
+        var pathArray = window.location.pathname.split('/');
+        var first = pathArray[1];
+        return "/" + first;
+    }
 
+    function detail(id){
+        var host = firstpath()+"/budgeting/edit_budgeting.action?status="+status+"&id="+id+"&trans="+trans;
+        post(host, form);
+    }
+
+    function refresh() {
+        var host = firstpath()+"/budgeting/add_budgeting.action?status="+status+"&tipe=detail";
+        post(host, form);
     }
 
     function setNullToString(params){
@@ -315,6 +353,23 @@
         } else {
             return params;
         }
+    }
+
+    function initForm() {
+        var host = firstpath()+"/budgeting/initForm_budgeting.action";
+        post(host);
+    }
+
+    function saveBudgeting() {
+        BudgetingAction.saveBudgeting(status, tahun, unit, tipe, trans, function (response) {
+            if (response.status == "success"){
+                initForm();
+            } else {
+                $("#alert-error").show().fadeOut(5000);
+                $("#error-msg").text(response.msg);
+            }
+        })
+
     }
 
 </script>

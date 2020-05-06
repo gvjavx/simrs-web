@@ -9,9 +9,15 @@
         <id name="idPengadaan">
             <column name="id_pengadaan" sql-type="varchar" length="30" not-null="true" />
         </id>
-        <property name="noBudgeting">
-            <column name="no_budgeting" sql-type="varchar" length="30" not-null="true" />
+
+        <property name="noBudgetingDetail">
+            <column name="no_budgeting_detail" sql-type="varchar" length="30" not-null="true" />
         </property>
+
+        <property name="idBudgetingDetail">
+            <column name="id_budgeting_detail" sql-type="varchar" length="30" not-null="true" />
+        </property>
+
         <property name="namPengadaan">
             <column name="nama_pengadaan" sql-type="varchar" length="100" not-null="true" />
         </property>

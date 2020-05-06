@@ -480,21 +480,15 @@
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Action
                                     </button>
-                                    <button type="button" class="btn btn-primary dropdown-toggle"
+                                    <button onclick="loadModalRM('ringkasan')" type="button" class="btn btn-primary dropdown-toggle"
                                             data-toggle="dropdown" style="height: 34px">
                                         <span class="caret"></span>
                                         <span class="sr-only">Toggle Dropdown</span>
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a target="_blank"
-                                               href="printGeneralConcent_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
-                                            <i class="fa fa-edit"></i>Ringkasan Pulang</a></li>
-                                        <li><a target="_blank"
-                                               href="printPelepasanInformasi_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
-                                            <i class="fa fa-edit"></i>Ringkasan Masuk Keluar</a></li>
-                                        <li><a target="_blank"
-                                               href="printPelepasanInformasi_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>">
-                                            <i class="fa fa-edit"></i>Resume Medis</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalRingkasanPasien('ringkasan_pulang')"><i class="fa fa-circle-o"></i>Ringkasan Pulang</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalRingkasanPasien('ringkasan_keluar')"><i class="fa fa-circle-o"></i>Ringkasan Masuk Keluar</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalRingkasanPasien('resume_medis')"><i class="fa fa-circle-o"></i>Resume Medis</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -513,8 +507,8 @@
                                         <span class="sr-only">Toggle Dropdown</span>
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a style="cursor: pointer" onclick="pengkajianFisioterapi('<s:property value="headerDetailCheckup.idDetailCheckup"/>')"><i class="fa fa-edit"></i>Pengkajian Pasien Fisioterapi</a></li>
-                                        <li><a style="cursor: pointer" onclick="addMonitoringFisioterapi('<s:property value="headerDetailCheckup.idDetailCheckup"/>')"><i class="fa fa-television"></i>Kunjungan Fisioterapi</a></li>
+                                        <li><a style="cursor: pointer" onclick="pengkajianFisioterapi('<s:property value="headerDetailCheckup.idDetailCheckup"/>')"><i class="fa fa-circle-o"></i>Pengkajian Pasien Fisioterapi</a></li>
+                                        <li><a style="cursor: pointer" onclick="addMonitoringFisioterapi('<s:property value="headerDetailCheckup.idDetailCheckup"/>')"><i class="fa fa-circle-o"></i>Kunjungan Fisioterapi</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -615,7 +609,7 @@
                                         <li><a style="cursor: pointer" onmouseover="loadModalRM('asuhan')" onclick="showModalAsesmenRawatInap('asuhan')"><i class="fa fa-circle-o"></i>Rencana Asuhan Keperawatan</a></li>
                                         <li><a style="cursor: pointer" onmouseover="loadModalRM('discharge_planing')" onclick="showModalAsesmenRawatInap('discharge_planing')"><i class="fa fa-circle-o"></i>Discharge Planing</a></li>
                                         <li><a style="cursor: pointer" onmouseover="loadModalRM('catatan_integrasi')" onclick="showModalAsesmenRawatInap('catatan_integrasi')"><i class="fa fa-circle-o"></i>Catatan Perkembangan Pasien Terintegrasi</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalAsesmenRawatInap('transfer')"><i class="fa fa-circle-o"></i>Transfer Pasien Antar Ruangan</a></li>
+                                        <li><a style="cursor: pointer" onmouseover="loadModalRM('transfer_pasien')" onclick="showModalAsesmenRawatInap('transfer_pasien')"><i class="fa fa-circle-o"></i>Transfer Pasien Antar Ruangan</a></li>
                                         <li><a style="cursor: pointer" onmouseover="loadModalRM('privasi')" onclick="showModalAsesmenRawatInap('privasi')"><i class="fa fa-circle-o"></i>Privasi Pasien</a></li>
                                         <li><a style="cursor: pointer" onmouseover="loadModalRM('early_warning')" onclick="showModalAsesmenRawatInap('early_warning')"><i class="fa fa-circle-o"></i>Lembar Observasi Pediatric Early Warning Score</a></li>
                                         <li><a style="cursor: pointer" onmouseover="loadModalRM('pemberian_obat')" onclick="showModalAsesmenRawatInap('catatan_pemberian')"><i class="fa fa-circle-o"></i>Catatan Pemberian Obat</a></li>
@@ -639,7 +633,7 @@
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
                                         <li><a style="cursor: pointer" onclick="showModalHD('monitoring_hd')"><i class="fa fa-circle-o"></i>Monitoring HD</a></li>
-                                        <li><a style="cursor: pointer" onclick="showModalHD('perencanaan_hd')"><i class="fa fa-circle-o"></i>Perencanaan HD</a></li>
+                                        <li><a style="cursor: pointer" onclick="showModalHD('perencanaan_hemodialisa')"><i class="fa fa-circle-o"></i>Perencanaan HD</a></li>
                                         <li><a style="cursor: pointer" onclick="showModalHD('asesmen_hd')"><i class="fa fa-circle-o"></i>Asesmen Awal HD</a></li>
                                         <li><a style="cursor: pointer" onclick="showModalHD('tranfusi_hd')"><i class="fa fa-circle-o"></i>Tindakan Medis Transfusi Darah</a></li>
                                         <li><a style="cursor: pointer" onclick="showModalHD('catatan_tranfusi_darah')"><i class="fa fa-circle-o"></i>Catatan Pemantauan Tranfusi Darah</a></li>
@@ -716,7 +710,7 @@
                                         <span class="sr-only">Toggle Dropdown</span>
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a style="cursor: pointer" onclick="showAsesmenUgd()"><i class="fa fa-user-plus"></i>Asesmen Awal Gawat Darurat</a></li>
+                                        <li><a style="cursor: pointer" onclick="showAsesmenUgd()"><i class="fa fa-circle-o"></i>Asesmen Awal Gawat Darurat</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -745,6 +739,7 @@
 <script type='text/javascript' src='<s:url value="/dwr/interface/RencanaAsuhanKeperawatanAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/RekonsiliasiObatAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/RekamMedisRawatJalanAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/RingkasanPasienAction.js"/>'></script>
 
 <script type='text/javascript' src='<s:url value="/pages/dist/js/paintTtd.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/operasi.js"/>'></script>
@@ -755,6 +750,7 @@
 <script type='text/javascript' src='<s:url value="/pages/dist/js/appendecitomy.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/asesmenrawatinap.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/pengkajiankeperawatan.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/ringkasanpasien.js"/>'></script>
 
 <script type='text/javascript'>
 
@@ -821,6 +817,12 @@
         }
         if(jenis == "rencana_gigi"){
             context = contextPath+'/pages/modal/modalRencanaPerawatanGigi.jsp';
+        }
+        if(jenis == "ringkasan"){
+            context = contextPath+'/pages/modal/modalRingkasan.jsp';
+        }
+        if(jenis == "transfer_pasien"){
+            context = contextPath+'/pages/modal/modalTransferPasien.jsp';
         }
         $('#modal-temp').load(context, function (res) {
 

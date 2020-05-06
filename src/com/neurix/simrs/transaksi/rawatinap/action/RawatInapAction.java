@@ -205,6 +205,13 @@ public class RawatInapAction extends BaseMasterAction {
 
                             String user = CommonUtil.userLogin();
                             Timestamp now = new Timestamp(System.currentTimeMillis());
+                            String jenisPasien = "";
+
+                            if("ptpn".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien())){
+                                jenisPasien = "bpjs";
+                            }else{
+                                jenisPasien = checkup.getIdJenisPeriksaPasien();
+                            }
 
                             RiwayatTindakan tindakan = new RiwayatTindakan();
                             tindakan.setIdTindakan(ruangan.getIdRuangan());
@@ -212,7 +219,7 @@ public class RawatInapAction extends BaseMasterAction {
                             tindakan.setKeterangan("kamar");
                             tindakan.setTotalTarif(new BigDecimal(ruangan.getTarif()));
                             tindakan.setIdDetailCheckup(checkup.getIdDetailCheckup());
-                            tindakan.setJenisPasien(checkup.getIdJenisPeriksaPasien());
+                            tindakan.setJenisPasien(jenisPasien);
                             tindakan.setAction("C");
                             tindakan.setFlag("Y");
                             tindakan.setCreatedDate(now);
@@ -264,8 +271,15 @@ public class RawatInapAction extends BaseMasterAction {
                 rawatInap.setNoSep(checkup.getNoSep());
                 rawatInap.setJenisPeriksaPasien(checkup.getStatusPeriksaName());
                 rawatInap.setMetodePembayaran(checkup.getMetodePembayaran());
-
+                rawatInap.setNoRujukan(checkup.getNoRujukan());
+                rawatInap.setTglRujukan(checkup.getTglRujukan());
+                rawatInap.setSuratRujukan(checkup.getUrlDocRujuk());
+                rawatInap.setIdAsuransi(checkup.getIdAsuransi());
+                rawatInap.setNamaAsuransi(checkup.getNamaAsuransi());
+                rawatInap.setCoverBiaya(checkup.getCoverBiaya());
+                rawatInap.setIsLaka(checkup.getIsLaka());
                 setRawatInap(rawatInap);
+
             }else{
                 setRawatInap(new RawatInap());
             }

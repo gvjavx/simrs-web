@@ -4,9 +4,13 @@ import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.master.lab.model.ImSimrsLabEntity;
 import com.neurix.simrs.master.lab.model.Lab;
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import java.math.BigInteger;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -49,5 +53,22 @@ public class LabDao extends GenericDao<ImSimrsLabEntity, String> {
         List<ImSimrsLabEntity> results = criteria.list();
 
         return results;
+    }
+
+    public List<ImSimrsLabEntity> getDataLab(String namaLab) throws HibernateException {
+        List<ImSimrsLabEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsLabEntity.class)
+                .add(Restrictions.eq("namaLab", namaLab))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+
+        return results;
+    }
+
+    public String getNextLabId() throws HibernateException {
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_lab')");
+        Iterator<BigInteger> iter=query.list().iterator();
+        String sId = String.format("%08d", iter.next());
+
+        return "LAB" + sId;
     }
 }

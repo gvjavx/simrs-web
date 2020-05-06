@@ -1229,16 +1229,9 @@ public class CutiPegawaiAction extends BaseMasterAction {
                     branch = branchBo.getBranchById(cutiPegawai1.getUnitId(),"Y");
                 }catch( HibernateException e){
                 }
-                if (cutiPegawai1.getUnitId().equalsIgnoreCase("RS01")){
-                    reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS01);
-                }else if (cutiPegawai1.getUnitId().equalsIgnoreCase("RS02")){
-                    reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS02);
-                }else if (cutiPegawai1.getUnitId().equalsIgnoreCase("RS03")){
-                    reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS03);
-                }else{
-                    reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU);
-                }
+
                 String stTanggal = CommonUtil.convertDateToString( new java.util.Date());
+                reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
                 reportParams.put("alamatUni", branch.getAlamatSurat()+","+stTanggal);
                 reportParams.put("cutiPegawaiId", id);
                 reportParams.put("nama",cutiPegawai1.getNamaPegawai());
@@ -1598,18 +1591,9 @@ public class CutiPegawaiAction extends BaseMasterAction {
         }catch( HibernateException e){
 
         }
-        String logo ="";
-        if (unitId.equalsIgnoreCase("RS01")){
-            logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS01;
-        }else if (unitId.equalsIgnoreCase("RS02")){
-            logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS02;
-        }else if (unitId.equalsIgnoreCase("RS03")){
-            logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS03;
-        }else{
-            logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU;
-        }
+
         String stTanggal = CommonUtil.convertDateToString( new java.util.Date());
-        reportParams.put("urlLogo", logo);
+        reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
         JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(listOfResult);
         reportParams.put("alamatSurat", branch.getAlamatSurat()+","+stTanggal);
         reportParams.put("titleReport","REPORT CUTI");

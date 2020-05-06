@@ -14,6 +14,15 @@ public class ImSimrsAsuransiEntity implements Serializable{
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String noMaster;
+    private String isLaka;
+
+    public String getIsLaka() {
+        return isLaka;
+    }
+
+    public void setIsLaka(String isLaka) {
+        this.isLaka = isLaka;
+    }
 
     public String getNoMaster() {
         return noMaster;

@@ -905,6 +905,7 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
                 .add(Restrictions.eq("nip", nip))
                 .add(Restrictions.eq("flag", "Y"))
                 .add(Restrictions.eq("approvalFlag", "Y"))
+                .add(Restrictions.eq("flagPayroll", "Y"))
                 .addOrder(Order.desc("createdDate"))
                 .list();
         return results;

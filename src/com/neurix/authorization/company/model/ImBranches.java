@@ -36,6 +36,7 @@ public class ImBranches implements Serializable {
     private String eklaimAddress; //example : "http://192.168.1.1/"
     private String keyEklaim;
     private String logoName;
+    private String kodering;
 
     public String getLogoName() {
         return logoName;
@@ -479,6 +480,14 @@ public class ImBranches implements Serializable {
 
     public void setImAreasBranchesUsers(Set<ImAreasBranchesUsers> imAreasBranchesUsers) {
         this.imAreasBranchesUsers = imAreasBranchesUsers;
+    }
+
+    public String getKodering() {
+        return kodering;
+    }
+
+    public void setKodering(String kodering) {
+        this.kodering = kodering;
     }
 
     @Override

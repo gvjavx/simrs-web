@@ -1,6 +1,7 @@
 package com.neurix.authorization.position.action;
 
 import com.neurix.authorization.position.bo.PositionBo;
+import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.authorization.position.model.Position;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
@@ -74,6 +75,32 @@ public class PositionAction extends BaseMasterAction {
         logger.info("[PositionAction.init] end process <<<");
 
         return initPosition;
+    }
+
+    private String initComboPosition(){
+        logger.info("[PositionAction.search] start process >>>");
+
+        Position searchPosition = new Position();
+        List<Position> listOfSearchPosition = new ArrayList();
+        searchPosition.setFlag("Y");
+        try {
+            listOfSearchPosition = positionBoProxy.getByCriteria(searchPosition);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = positionBoProxy.saveErrorMessage(e.getMessage(), "PositionBO.getByCriteria");
+            } catch (GeneralBOException e1) {
+                logger.error("[PositionAction.search] Error when saving error,", e1);
+            }
+            logger.error("[PositionhAction.save] Error when searching function by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            return "failure";
+        }
+
+        listOfComboPosition.addAll(listOfSearchPosition);
+        logger.info("[PositionAction.search] end process <<<");
+
+        return SUCCESS;
     }
 
     @Override
@@ -726,4 +753,30 @@ public class PositionAction extends BaseMasterAction {
         return listOfSearchPosition;
     }
 
+    public List<Position> typeAheadPosition(String key) {
+        logger.info("[PositionAction.typeAheadPosition] start process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PositionBo positionBo = (PositionBo) ctx.getBean("positionBoProxy");
+        List<Position> listOfSearchPosition = new ArrayList();
+        try {
+            listOfSearchPosition = positionBo.typeAheadPosition(key);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = positionBoProxy.saveErrorMessage(e.getMessage(), "PositionBO.typeAheadPosition");
+            } catch (GeneralBOException e1) {
+                logger.error("[PositionAction.typeAheadPosition] Error when saving error,", e1);
+            }
+            logger.error("[PositionAction.typeAheadPosition] Error when searching position by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+        }
+
+        return listOfSearchPosition;
+    }
+    public List<ImPosition> typeHeadPosition(String query) {
+        logger.info("[PositionAction.typeHeadPosition] start process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PositionBo positionBo = (PositionBo) ctx.getBean("positionBoProxy");
+        return positionBo.getPositionByString(query);
+    }
 }

@@ -428,6 +428,39 @@ public class BranchAction extends BaseMasterAction {
         return SUCCESS;
     }
 
+    public String initComboBranchAkuntansi() {
+        logger.info("[BranchAction.initComboBranchAkuntansi] start process >>>");
+
+        Branch searchBranch = new Branch();
+        List<Branch> listOfSearchBranch = new ArrayList();
+        searchBranch.setFlag("Y");
+        try {
+            listOfSearchBranch = branchBoProxy.getByCriteria(searchBranch);
+
+            Branch tambah = new Branch();
+            tambah.setBranchId("All");
+            tambah.setBranchName("All Unit");
+            tambah.setLogoName("KP.png");
+
+            listOfSearchBranch.add(tambah);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = branchBoProxy.saveErrorMessage(e.getMessage(), "BranchBO.getByCriteria");
+            } catch (GeneralBOException e1) {
+                logger.error("[BranchAction.initComboBranchAkuntansi] Error when saving error,", e1);
+            }
+            logger.error("[BranchAction.initComboBranchAkuntansi] Error when searching function by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            return "failure";
+        }
+
+        listOfComboBranch.addAll(listOfSearchBranch);
+        logger.info("[BranchAction.search] end process <<<");
+
+        return SUCCESS;
+    }
+
     public String initComboBranch2() {
         logger.info("[BranchAction.search] start process >>>");
 

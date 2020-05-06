@@ -16,7 +16,7 @@
     <script type='text/javascript'>
 
         $(document).ready(function () {
-            $('#permintaan_obat').addClass('active');
+            $('#rencana_kegiatan_rawat').addClass('active');
         });
 
     </script>

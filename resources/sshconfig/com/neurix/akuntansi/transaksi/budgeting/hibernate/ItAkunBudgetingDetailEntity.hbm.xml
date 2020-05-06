@@ -6,15 +6,26 @@
     <class name="com.neurix.akuntansi.transaksi.budgeting.model.ItAkunBudgetingDetailEntity" dynamic-update="true"
            table="it_akun_budgeting_detail" select-before-update="true" schema="public">
 
-        <id name="noBudgetingDetail">
-            <column name="no_budgeting_detail" sql-type="varchar" length="30" not-null="true" />
+        <id name="idBudgetingDetail">
+            <column name="id_budgeting_detail" sql-type="varchar" length="50" not-null="true" />
         </id>
+        <property name="noBudgetingDetail">
+            <column name="no_budgeting_detail" sql-type="varchar" length="50" not-null="true" />
+        </property>
 
         <property name="noBudgeting">
-            <column name="no_budgeting" sql-type="varchar" length="30" not-null="true" />
+            <column name="no_budgeting" sql-type="varchar" length="50" not-null="true" />
         </property>
+
+        <property name="idBudgeting">
+            <column name="id_budgeting" sql-type="varchar" length="50" not-null="true" />
+        </property>
+
         <property name="divisiId">
             <column name="divisi_id" sql-type="varchar" length="30" not-null="true" />
+        </property>
+        <property name="positionId">
+            <column name="position_id" sql-type="varchar" length="30" not-null="true" />
         </property>
         <property name="nilai">
             <column name="nilai" sql-type="numeric" not-null="false" />

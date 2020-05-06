@@ -361,8 +361,7 @@
 
         if (idObatVal != "") {
             PermintaanObatPoliAction.listObatEntity(idObatVal, function (response) {
-                console.log(response);
-                if (response.length > 0) {
+                if (response.length > 0 && idObat == idObatVal) {
                     $.each(response, function (i, item) {
                         $('#modal-approve').modal({show: true, backdrop: 'static'});
                         var dateExp = $.datepicker.formatDate('mm-dd-yy', new Date(item.expiredDate));

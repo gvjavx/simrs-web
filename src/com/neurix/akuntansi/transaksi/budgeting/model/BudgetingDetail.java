@@ -10,6 +10,7 @@ import java.sql.Timestamp;
  */
 public class BudgetingDetail{
 
+    private String idBudgetingDetail;
     private String noBudgetingDetail;
     private String noBudgeting;
     private String divisiId;
@@ -23,6 +24,50 @@ public class BudgetingDetail{
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String divisiName;
+    private String rekeningId;
+    private String idBudgeting;
+    private String positionId;
+
+    public String getPositionId() {
+        return positionId;
+    }
+
+    public void setPositionId(String positionId) {
+        this.positionId = positionId;
+    }
+
+    public String getIdBudgeting() {
+        return idBudgeting;
+    }
+
+    public void setIdBudgeting(String idBudgeting) {
+        this.idBudgeting = idBudgeting;
+    }
+
+    public String getIdBudgetingDetail() {
+        return idBudgetingDetail;
+    }
+
+    public void setIdBudgetingDetail(String idBudgetingDetail) {
+        this.idBudgetingDetail = idBudgetingDetail;
+    }
+
+    public String getRekeningId() {
+        return rekeningId;
+    }
+
+    public void setRekeningId(String rekeningId) {
+        this.rekeningId = rekeningId;
+    }
+
+    public String getDivisiName() {
+        return divisiName;
+    }
+
+    public void setDivisiName(String divisiName) {
+        this.divisiName = divisiName;
+    }
 
     public String getNoBudgetingDetail() {
         return noBudgetingDetail;

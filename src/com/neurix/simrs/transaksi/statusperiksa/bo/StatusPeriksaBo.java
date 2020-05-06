@@ -2,6 +2,7 @@ package com.neurix.simrs.transaksi.statusperiksa.bo;
 
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
+import com.neurix.simrs.transaksi.checkup.model.HeaderDetailCheckupLog;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 
 import java.util.List;

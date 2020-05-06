@@ -56,4 +56,11 @@ public class TindakanTransitorisDao extends GenericDao<ItSimrsTindakanTransitori
         List<ItSimrsTindakanTransitorisEntity> result = criteria.list();
         return result;
     }
+
+    public String getNextSeq() {
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_transitoris')");
+        Iterator<BigInteger> iter = query.list().iterator();
+        String sId = String.format("%08d", iter.next());
+        return sId;
+    }
 }

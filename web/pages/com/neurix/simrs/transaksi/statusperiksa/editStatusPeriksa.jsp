@@ -49,6 +49,7 @@
                                     <s:hidden id="id_pasien" name="headerDetailCheckup.idPasien"/>
                                     <s:hidden id="jenis_pasien" name="headerDetailCheckup.idJenisPeriksaPasien"/>
                                     <s:hidden id="jenis_bayar" name="headerDetailCheckup.metodePembayaran"/>
+                                    <s:hidden id="is_rawat_inap" name="headerDetailCheckup.rawatInap"/>
                                     <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "bpjs"'>
                                         <tr>
                                             <td width="45%"><b>No SEP</b></td>
@@ -568,17 +569,18 @@
     function initlistPenjamin() {
         var option = "";
         var jenisPasien = $('#jenis_pasien').val();
-        CheckupAction.getComboJenisPeriksaPasienWithBpjs(function (response) {
+        var idDetailCheckup = $('#no_detail_checkup').val();
+
+        CheckupAction.getComboJenisPeriksaByIdDetailCheckup(jenisPasien, idDetailCheckup, function (response) {
             if (response.length > 0) {
-                console.log(response);
                 option = "<option value=''>[Select One]</option>";
                 $.each(response, function (i, item) {
-                    if( item.idJenisPeriksaPasien != jenisPasien
-                        && item.idJenisPeriksaPasien != "paket_perusahaan"
-                        &&  item.idJenisPeriksaPasien != "paket_individu"
-                        &&  item.idJenisPeriksaPasien != "ptpn"){
+                    // if( item.idJenisPeriksaPasien != jenisPasien
+                    //     && item.idJenisPeriksaPasien != "paket_perusahaan"
+                    //     &&  item.idJenisPeriksaPasien != "paket_individu"
+                    //     &&  item.idJenisPeriksaPasien != "ptpn"){
                         option += '<option value="' + item.idJenisPeriksaPasien + '">' + item.keterangan + '</option>';
-                    }
+                    // }
                 });
                 $('#penjamin').html(option);
             }
@@ -717,6 +719,8 @@
             dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
         var statusBpjs      = $('#status_bpjs').val();
         var statusRujukan   = $('#status_rujukan').val();
+        var idJenisPeriksaSebelumya = $('#jenis_pasien').val();
+        var isRawatInap = $('#is_rawat_inap').val();
 
         if(jenisPeriksa != ''){
 
@@ -738,7 +742,9 @@
                         'id_detail_checkup':idDetail,
                         'id_kelas':idkelas,
                         'id_pelayanan':idPelayananBpjs,
-                        'foto_surat':dataURL
+                        'foto_surat':dataURL,
+                        'id_jenis_periksa_sebelumnya': idJenisPeriksaSebelumya,
+                        'is_rawat_inap':isRawatInap
                     }
 
                     if(statusBpjs != '' && statusRujukan != ''){
@@ -802,7 +808,8 @@
                         'uang_muka':uang,
                         'jenis_periksa':jenisPeriksa,
                         'id_pasien':idPasien,
-                        'id_detail_checkup':idDetail
+                        'id_detail_checkup':idDetail,
+                        'id_jenis_periksa_sebelumnya': idJenisPeriksaSebelumya
                     }
 
                     var result = JSON.stringify(data);
@@ -833,7 +840,8 @@
                         'cover_biaya':coverBiaya,
                         'jenis_periksa':jenisPeriksa,
                         'id_pasien':idPasien,
-                        'id_detail_checkup':idDetail
+                        'id_detail_checkup':idDetail,
+                        'id_jenis_periksa_sebelumnya': idJenisPeriksaSebelumya
                     }
 
                     var result = JSON.stringify(data);

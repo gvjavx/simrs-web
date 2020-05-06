@@ -16,15 +16,22 @@ public class Pelayanan extends BaseModel implements Serializable {
     private String flag;
     private String action;
     private Timestamp createdDate;
+    private String stCreatedDate;
     private String createdWho;
     private Timestamp lastUpdate;
+    private String stLastUpdate;
     private String lastUpdateWho;
     private String notPoli;
 
+    private String positionId;
     private String tipePelayanan;
     private String branchId;
-
+    private String divisiId;
+    private String divisiName;
+    private String isEksekutif;
     private String kodering;
+    private String branchName;
+    private String branchUser;
 
     public String getKodering() {
         return kodering;
@@ -130,5 +137,69 @@ public class Pelayanan extends BaseModel implements Serializable {
         this.lastUpdateWho = lastUpdateWho;
     }
 
+    public String getDivisiId() {
+        return divisiId;
+    }
 
+    public void setDivisiId(String divisiId) {
+        this.divisiId = divisiId;
+    }
+
+    public String getIsEksekutif() {
+        return isEksekutif;
+    }
+
+    public void setIsEksekutif(String isEksekutif) {
+        this.isEksekutif = isEksekutif;
+    }
+
+    public String getPositionId() {
+        return positionId;
+    }
+
+    public void setPositionId(String positionId) {
+        this.positionId = positionId;
+    }
+
+    public String getBranchName() {
+        return branchName;
+    }
+
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
+    }
+
+    public String getBranchUser() {
+        return branchUser;
+    }
+
+    public void setBranchUser(String branchUser) {
+        this.branchUser = branchUser;
+    }
+
+    public String getDivisiName() {
+        return divisiName;
+    }
+
+    public void setDivisiName(String divisiName) {
+        this.divisiName = divisiName;
+    }
+
+    @Override
+    public String getStCreatedDate() {
+        return stCreatedDate;
+    }
+
+    public void setStCreatedDate(String stCreatedDate) {
+        this.stCreatedDate = stCreatedDate;
+    }
+
+    @Override
+    public String getStLastUpdate() {
+        return stLastUpdate;
+    }
+
+    public void setStLastUpdate(String stLastUpdate) {
+        this.stLastUpdate = stLastUpdate;
+    }
 }

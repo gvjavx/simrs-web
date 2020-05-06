@@ -1,6 +1,8 @@
 
 package com.neurix.authorization.user.action;
 
+import com.neurix.akuntansi.master.master.bo.MasterBo;
+import com.neurix.akuntansi.master.master.model.Master;
 import com.neurix.authorization.company.bo.AreaBo;
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Area;
@@ -44,14 +46,20 @@ public class UserAction extends BaseMasterAction {
     private AreaBo areaBoProxy;
     private BranchBo branchBoProxy;
     private PositionBo positionBoProxy;
+    private MasterBo masterBoProxy;
 
     private User users;
     private List<Roles> listOfComboRoles = new ArrayList<Roles>();
     private List<Area> listOfComboAreas = new ArrayList<Area>();
     private List<Branch> listOfComboBranches = new ArrayList<Branch>();
     private List<Position> listOfComboPositions = new ArrayList<Position>();
+    private List<Master> listOfComboMaster = new ArrayList<Master>();
     private File fileUpload;
     private String userId;
+
+    public void setMasterBoProxy(MasterBo masterBoProxy) {
+        this.masterBoProxy = masterBoProxy;
+    }
 
     public void setAreaBoProxy(AreaBo areaBoProxy) {
         this.areaBoProxy = areaBoProxy;
@@ -129,6 +137,13 @@ public class UserAction extends BaseMasterAction {
         this.listOfComboPositions = listOfComboPositions;
     }
 
+    public List<Master> getListOfComboMaster() {
+        return listOfComboMaster;
+    }
+
+    public void setListOfComboMaster(List<Master> listOfComboMaster) {
+        this.listOfComboMaster = listOfComboMaster;
+    }
 
     public String initComboRole() {
 
@@ -153,6 +168,31 @@ public class UserAction extends BaseMasterAction {
         listOfComboRoles.addAll(listOfRoles);
 
         return "init_combo_role";
+    }
+
+    public String initComboMaster(){
+
+        Master master = new Master();
+        master.setFlag("Y");
+
+        List<Master> listOfMaster = new ArrayList<Master>();
+        try {
+            listOfMaster = masterBoProxy.getByCriteria(master);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = masterBoProxy.saveErrorMessage(e.getMessage(), "RoleBO.getByCriteria");
+            } catch (GeneralBOException e1) {
+                logger.error("[UserAction.initComboRole] Error when saving error,", e1);
+            }
+            logger.error("[UserAction.initComboRole] Error when searching data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
+            return "failure";
+        }
+
+        listOfComboMaster.addAll(listOfMaster);
+
+        return "init_combo_nomaster";
     }
 
     public String initComboArea() {

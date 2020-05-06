@@ -560,7 +560,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                         tindakanRawatEntity.setFlag("Y");
                         tindakanRawatEntity.setAction("U");
 
-                        if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
+                        if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "ptpn".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
                             tindakanRawatEntity.setTarif(tindakanEntity.getTarifBpjs());
                         } else {
                             tindakanRawatEntity.setTarif(tindakanEntity.getTarif());
@@ -573,7 +573,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
 
                             tindakanRawatDao.addAndSave(tindakanRawatEntity);
 
-                            if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
+                            if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "ptpn".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
 
                                 ItSimrsRiwayatTindakanEntity riwayatTindakan = new ItSimrsRiwayatTindakanEntity();
                                 riwayatTindakan.setIdRiwayatTindakan("RWT" + getNextIdRiwayatTindakan());
@@ -581,9 +581,9 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                                 riwayatTindakan.setNamaTindakan(tindakanRawatEntity.getNamaTindakan());
                                 riwayatTindakan.setTotalTarif(new BigDecimal(String.valueOf(tindakanRawatEntity.getTarifTotal())));
                                 riwayatTindakan.setApproveBpjsFlag("Y");
-                                riwayatTindakan.setKategoriTindakanBpjs("konsultasi");
+                                riwayatTindakan.setKategoriTindakanBpjs(tindakan.getKategoriInaBpjs());
                                 riwayatTindakan.setKeterangan("tindakan");
-                                riwayatTindakan.setJenisPasien(bean.getIdJenisPeriksaPasien());
+                                riwayatTindakan.setJenisPasien("bpjs");
                                 riwayatTindakan.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
                                 riwayatTindakan.setFlagUpdateKlaim("Y");
                                 riwayatTindakan.setCreatedWho(bean.getCreatedWho());

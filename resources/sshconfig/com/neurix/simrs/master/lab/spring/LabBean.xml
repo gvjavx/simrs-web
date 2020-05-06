@@ -6,6 +6,9 @@
 
     <bean id="labAction" class="com.neurix.simrs.master.lab.action.LabAction"
           p:labBoProxy-ref="labBoProxy"
+          p:operatorLabBoProxy-ref="operatorLabBoProxy"
+          p:dokterBoProxy-ref="dokterBoProxy"
+          p:kategoriLabBoProxy-ref="kategoriLabBoProxy"
     />
 
     <bean id="labBo" class="com.neurix.simrs.master.lab.bo.impl.LabBoImpl"
@@ -22,7 +25,7 @@
         </property>
     </bean>
 
-    <bean id="transactionPasienInterceptor"
+    <bean id="transactionLabInterceptor"
           class="org.springframework.transaction.interceptor.TransactionInterceptor"
           p:transactionManager-ref="transactionManager">
         <property name="transactionAttributes">

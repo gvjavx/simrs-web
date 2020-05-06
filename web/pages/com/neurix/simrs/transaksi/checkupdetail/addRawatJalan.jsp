@@ -179,6 +179,7 @@
                                     <s:hidden id="no_rujukan" name="headerDetailCheckup.noRujukan"/>
                                     <s:hidden id="tgl_rujukan" name="headerDetailCheckup.tglRujukan"/>
                                     <s:hidden id="surat_rujukan" name="headerDetailCheckup.suratRujukan"/>
+                                    <s:hidden id="is_laka" name="headerDetailCheckup.isLaka"/>
 
                                     <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "bpjs"'>
                                         <tr>
@@ -286,7 +287,7 @@
                                             </td>
                                         </tr>
                                     </s:if>
-                                    <s:if test='headerDetailCheckup.namaAsuransi != null && headerDetailCheckup.namaAsuransi != ""'>
+                                    <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "asuransi"'>
                                         <tr>
                                             <td><b>Nama Asuransi</b></td>
                                             <td>
@@ -393,7 +394,7 @@
                         <div class="row">
                             <div class="form-group">
                                 <div class="col-md-12">
-                                    <a href="<%= request.getContextPath() %>/rekammedik/initRekamMedik_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>&tipe=RJ" class="btn btn-primary pull-right"><i class="fa fa-user-plus"></i> E-Rekam Medik</a>
+                                    <a href="<%= request.getContextPath() %>/rekammedik/initRekamMedik_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>&tipe=RJ" class="btn btn-primary pull-left"><i class="fa fa-user-plus"></i> E-Rekam Medik</a>
                                 </div>
                             </div>
                         </div>
@@ -2405,29 +2406,56 @@
     function confirmSaveKeterangan(){
         var idKtg = $("#keterangan").val();
         var noCheckup = $("#no_checkup").val();
-        var poli = "";
-        var kelas = "";
-        var kamar = "";
-        var idDokter = "";
-        var ket_selesai = "";
-        var tgl_cekup = "";
-        var ket_cekup = "";
+        var poli = $("#poli_lain").val();
+        var kelas = $("#kelas_kamar").val();
+        var kamar = $("#kamar_detail").val();
+        var idDokter = $("#list_dokter").val();
+        var ket_selesai = $('#ket_selesai').val();
+        var tgl_cekup = $('#tgl_cekup').val();
+        var ket_cekup = $('#cekup_ket').val();
         var jenisPasien = $('#jenis_pasien').val();
-        var metodeBayar = "";
-        var uangMuka = "";
+        var metodeBayar = $("#metode_bayar").val();
+        var uangMuka = $("#uang_muka_val").val();
         var idPasien = $('#id_pasien').val();
         var namaAsuransi = $('#nama_asuransi').val();
         var noRujukan = $('#no_rujukan').val();
         var tglRujukan = $('#tgl_rujukan').val();
         var suratRujukan = $('#surat_rujukan').val();
+        var isLaka = $('#is_laka').val();
 
         if (idKtg != '') {
+
             if (idKtg == "pindah") {
-                poli = $("#poli_lain").val();
-                idDokter = $("#list_dokter").val();
                 if (poli != '' && idDokter != '') {
-                    $('#save_con').attr('onclick','saveKeterangan(\''+idKtg+'\', \''+poli+'\', \''+kelas+'\', \''+kamar+'\', \''+ket_selesai+'\', \''+tgl_cekup+'\', \''+ket_cekup+'\', \''+jenisPasien+'\',\''+idPasien+'\', \''+metodeBayar+'\', \''+uangMuka+'\')');
-                    $('#modal-confirm-dialog').modal('show');
+                    if(isLaka == "Y"){
+                        if(noRujukan != '' && tglRujukan != '' && suratRujukan != ''){
+                            $('#save_con').attr('onclick','saveKeterangan(\''+idKtg+'\', \''+poli+'\', \''+kelas+'\', \''+kamar+'\', \''+ket_selesai+'\', \''+tgl_cekup+'\', \''+ket_cekup+'\', \''+jenisPasien+'\',\''+idPasien+'\',\''+metodeBayar+'\', \''+uangMuka+'\')');
+                            $('#modal-confirm-dialog').modal('show');
+                        }else{
+                            $('#laka_no_polisi').val(noRujukan);
+                            $('#laka_tgl_kejadian').val(noRujukan);
+                            $('#laka_surat_rujukan').val(suratRujukan);
+                            $('#modal-laka').modal({show:true, backdrop:'static'});
+                            var data  = {
+                                'id_ktg':idKtg,
+                                'poli':poli,
+                                'kelas':kelas,
+                                'kamar':kamar,
+                                'ket_selesai':ket_selesai,
+                                'tgl_cekup':tgl_cekup,
+                                'ket_cekup':ket_cekup,
+                                'jenis':jenisPasien,
+                                'id_pasien':idPasien,
+                                'metode_bayar':metodeBayar,
+                                'uang_muka':uangMuka
+                            }
+                            var result = JSON.stringify(data);
+                            $('#save_laka').attr('onclick','saveDataAsuransi(\''+result+'\')');
+                        }
+                    }else{
+                        $('#save_con').attr('onclick','saveKeterangan(\''+idKtg+'\', \''+poli+'\', \''+kelas+'\', \''+kamar+'\', \''+ket_selesai+'\', \''+tgl_cekup+'\', \''+ket_cekup+'\', \''+jenisPasien+'\',\''+idPasien+'\',\''+metodeBayar+'\', \''+uangMuka+'\')');
+                        $('#modal-confirm-dialog').modal('show');
+                    }
                 } else {
                     $('#warning_ket').show().fadeOut(5000);
                     if (poli == '') {
@@ -2440,16 +2468,37 @@
             }
 
             if (idKtg == "rujuk") {
-                kelas = $("#kelas_kamar").val();
-                kamar = $("#kamar_detail").val();
-                metodeBayar = $("#metode_bayar").val();
-                uangMuka = $("#uang_muka_val").val();
-
                 if (kelas != '' && kamar != '') {
-                    $('#save_con').attr('onclick','saveKeterangan(\''+idKtg+'\', \''+poli+'\', \''+kelas+'\', \''+kamar+'\', \''+ket_selesai+'\', \''+tgl_cekup+'\', \''+ket_cekup+'\', \''+jenisPasien+'\',\''+idPasien+'\',\''+metodeBayar+'\', \''+uangMuka+'\')');
-                    $('#modal-confirm-dialog').modal('show');
-                }
-                else {
+                    if(isLaka == "Y"){
+                        if(noRujukan != '' && tglRujukan != '' && suratRujukan != ''){
+                            $('#save_con').attr('onclick','saveKeterangan(\''+idKtg+'\', \''+poli+'\', \''+kelas+'\', \''+kamar+'\', \''+ket_selesai+'\', \''+tgl_cekup+'\', \''+ket_cekup+'\', \''+jenisPasien+'\',\''+idPasien+'\',\''+metodeBayar+'\', \''+uangMuka+'\')');
+                            $('#modal-confirm-dialog').modal('show');
+                        }else{
+                            $('#laka_no_polisi').val(noRujukan);
+                            $('#laka_tgl_kejadian').val(noRujukan);
+                            $('#laka_surat_rujukan').val(suratRujukan);
+                            $('#modal-laka').modal({show:true, backdrop:'static'});
+                            var data  = {
+                                'id_ktg':idKtg,
+                                'poli':poli,
+                                'kelas':kelas,
+                                'kamar':kamar,
+                                'ket_selesai':ket_selesai,
+                                'tgl_cekup':tgl_cekup,
+                                'ket_cekup':ket_cekup,
+                                'jenis':jenisPasien,
+                                'id_pasien':idPasien,
+                                'metode_bayar':metodeBayar,
+                                'uang_muka':uangMuka
+                            }
+                            var result = JSON.stringify(data);
+                            $('#save_laka').attr('onclick','saveDataAsuransi(\''+result+'\')');
+                        }
+                    }else{
+                        $('#save_con').attr('onclick','saveKeterangan(\''+idKtg+'\', \''+poli+'\', \''+kelas+'\', \''+kamar+'\', \''+ket_selesai+'\', \''+tgl_cekup+'\', \''+ket_cekup+'\', \''+jenisPasien+'\',\''+idPasien+'\',\''+metodeBayar+'\', \''+uangMuka+'\')');
+                        $('#modal-confirm-dialog').modal('show');
+                    }
+                }else {
                     $('#warning_ket').show().fadeOut(5000);
                     if (kelas == '') {
                         $('#war_kolom-2').show();
@@ -2461,14 +2510,8 @@
             }
 
             if (idKtg == "selesai") {
-
-                ket_selesai = $('#ket_selesai').val();
-                tgl_cekup = $('#tgl_cekup').val();
-                ket_cekup = $('#cekup_ket').val();
-
                 if (ket_selesai != '') {
-
-                    if(namaAsuransi == "Jasa Raharja"){
+                    if(isLaka == "Y"){
                         if(noRujukan != '' && tglRujukan != '' && suratRujukan != ''){
                             $('#save_con').attr('onclick','saveKeterangan(\''+idKtg+'\', \''+poli+'\', \''+kelas+'\', \''+kamar+'\', \''+ket_selesai+'\', \''+tgl_cekup+'\', \''+ket_cekup+'\', \''+jenisPasien+'\',\''+idPasien+'\',\''+metodeBayar+'\', \''+uangMuka+'\')');
                             $('#modal-confirm-dialog').modal('show');
@@ -2502,9 +2545,9 @@
                     $('#war_kolom-2').show();
                 }
             }
-            if(idKtg == "lanjut_biaya" || idKtg == "rujuk_rs_lain"){
 
-                    if(namaAsuransi == "Jasa Raharja"){
+            if(idKtg == "lanjut_biaya" || idKtg == "rujuk_rs_lain"){
+                    if(isLaka == "Y"){
                         if(noRujukan != '' && tglRujukan != '' && suratRujukan != ''){
                             $('#save_con').attr('onclick','saveKeterangan(\''+idKtg+'\', \''+poli+'\', \''+kelas+'\', \''+kamar+'\', \''+ket_selesai+'\', \''+tgl_cekup+'\', \''+ket_cekup+'\', \''+jenisPasien+'\',\''+idPasien+'\',\''+metodeBayar+'\', \''+uangMuka+'\')');
                             $('#modal-confirm-dialog').modal('show');
@@ -2567,6 +2610,7 @@
             dwr.engine.setAsync(true);
             CheckupDetailAction.saveUpdateDataAsuransi(idDetailCheckup, noPolisi, tglKejadian, dataURL, function (response) {
                 if(response.status == "success"){
+                    $('#modal-laka').modal('hide');
                     $('#save_laka').show();
                     $('#load_laka').hide();
                     $('#save_con').attr('onclick','saveKeterangan(\''+idKtg+'\', \''+poli+'\', \''+kelas+'\', \''+kamar+'\', \''+ket_selesai+'\', \''+tgl_cekup+'\', \''+ket_cekup+'\', \''+jenisPasien+'\',\''+idPasien+'\',\''+metodeBayar+'\', \''+uangMuka+'\')');
@@ -3592,10 +3636,13 @@
         var option = "<option value=''>[Select One]</option>";
         if (idJenis != '') {
             ObatAction.listObat(idJenis, function (response) {
+                console.log(response);
                 if (response != null) {
                     $.each(response, function (i, item) {
                         option += "<option value='" + item.idObat + "'>" + item.namaObat + "</option>";
                     });
+                    $('#ob_id_obat').html(option);
+                    $('#resep_nama_obat').html(option);
                 } else {
                     option = option;
                 }
@@ -3603,9 +3650,6 @@
         } else {
             option = option;
         }
-
-        $('#ob_id_obat').html(option);
-        $('#resep_nama_obat').html(option);
     }
 
     function showFormCekup(select) {

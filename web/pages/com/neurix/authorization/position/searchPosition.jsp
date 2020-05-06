@@ -49,7 +49,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Posisi
+            Unit Kerja
         </h1>
         <%--<ol class="breadcrumb">--%>
         <%--<li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>--%>
@@ -226,6 +226,7 @@
                                             <display:column property="departmentName" sortable="true" title="Bidang/Divisi"/>
                                             <display:column property="bagianName" sortable="true" title="Bagian"/>
                                             <display:column property="kelompokName" sortable="true" title="Kelompok Jabatan"/>
+                                            <display:column property="kodering" sortable="true" title="Kodering"/>
                                             <display:column property="flag" sortable="true" title="flag"  />
                                             <display:column property="action" sortable="true" title="action"  />
                                             <display:column property="createdDate" sortable="true" title="Created date"  />

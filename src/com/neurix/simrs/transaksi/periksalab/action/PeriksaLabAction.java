@@ -477,6 +477,8 @@ public class PeriksaLabAction extends BaseMasterAction {
             PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
 
             periksaLabBo.saveDokterLab(periksaLab);
+            response.setStatus("success");
+            response.setMessage("Berhasil");
 
         } catch (GeneralBOException e) {
             response.setStatus("error");

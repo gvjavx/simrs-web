@@ -171,12 +171,12 @@ function detailFisio(jenis) {
                             });
                         }
                         body += '<tr>' +
-                            '<td>' + item.parameter + '</td>' +
+                            '<td width="40%">' + item.parameter + '</td>' +
                             '<td>' + '<ul style="margin-left: 10px;">'+li+'</ul>' + '</td>' +
                             '</tr>';
                     }else{
                         body += '<tr>' +
-                            '<td>' + item.parameter + '</td>' +
+                            '<td width="40%">' + item.parameter + '</td>' +
                             '<td>' + item.jawaban + '</td>' +
                             '</tr>';
                     }
@@ -214,6 +214,15 @@ function addMonitoringFisioterapi(){
         $('.btn-hide').hide();
     }else{
         $('.btn-hide').show();
+    }
+
+    var tgl = $('.tgl').length;
+    if (tgl > 0) {
+        $('.tgl').datepicker({
+            dateFormat: 'dd-mm-yy'
+        });
+        $('.tgl').val(formaterDate(new Date()));
+        $('.tgl').inputmask('dd-mm-yyyy', {'placeholder': 'dd-mm-yyyy'});
     }
     $('#modal-monitoring-kunjungan').modal({show: true, backdrop: 'static'});
 }

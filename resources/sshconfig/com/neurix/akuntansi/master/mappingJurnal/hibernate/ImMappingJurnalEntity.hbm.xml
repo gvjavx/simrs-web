@@ -40,6 +40,9 @@
         <property name="divisiId">
             <column name="divisi_id" sql-type="varchar" length="1" not-null="false" />
         </property>
+        <property name="editBiaya">
+            <column name="edit_biaya" sql-type="varchar" length="1" not-null="false" />
+        </property>
 
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />

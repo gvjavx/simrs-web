@@ -117,9 +117,14 @@ public class PositionBoImpl implements PositionBo {
             if (searchPosition.getBagianId() != null && !"".equalsIgnoreCase(searchPosition.getBagianId())) {
                 hsCriteria.put("bagian_id", searchPosition.getBagianId());
             }
-
             if (searchPosition.getKelompokId() != null && !"".equalsIgnoreCase(searchPosition.getKelompokId())) {
                 hsCriteria.put("kelompok_id", searchPosition.getKelompokId());
+            }
+            if (searchPosition.getKodering() != null && !"".equalsIgnoreCase(searchPosition.getKodering())) {
+                hsCriteria.put("kodering", searchPosition.getKodering());
+            }
+            if (searchPosition.getKategori() != null && !"".equalsIgnoreCase(searchPosition.getKategori())) {
+                hsCriteria.put("kategori", searchPosition.getKategori());
             }
 
             if (searchPosition.getFlag() != null && !"".equalsIgnoreCase(searchPosition.getFlag())) {
@@ -148,6 +153,8 @@ public class PositionBoImpl implements PositionBo {
                     resultPosition.setPositionId(imPosition.getPositionId());
                     resultPosition.setStPositionId(imPosition.getPositionId().toString());
                     resultPosition.setPositionName(imPosition.getPositionName());
+                    resultPosition.setKodering(imPosition.getKodering());
+
                     resultPosition.setDepartmentId(imPosition.getDepartmentId());
                     if(imPosition.getImDepartmentEntity() != null){
                         resultPosition.setDepartmentName(imPosition.getImDepartmentEntity().getDepartmentName());
@@ -175,6 +182,7 @@ public class PositionBoImpl implements PositionBo {
                     resultPosition.setLastUpdate(imPosition.getLastUpdate());
                     resultPosition.setLastUpdateWho(imPosition.getLastUpdateWho());
                     resultPosition.setFlag(imPosition.getFlag());
+                    resultPosition.setKategori(imPosition.getKategori());
 
                     listOfResultPosition.add(resultPosition);
                 }
@@ -192,7 +200,7 @@ public class PositionBoImpl implements PositionBo {
         logger.info("[PositionBoImpl.saveAdd] start process >>>");
 
         if (position != null) {
-            String status = cekStatus(position.getPositionName());
+            String status = cekStatus(position.getPositionName(), position.getKodering());
             if (!status.equalsIgnoreCase("Exist")){
                 ImPosition imPosition = new ImPosition();
 
@@ -202,6 +210,7 @@ public class PositionBoImpl implements PositionBo {
                 imPosition.setDepartmentId(position.getDepartmentId());
                 imPosition.setKelompokId(position.getKelompokId());
                 imPosition.setBagianId(position.getBagianId());
+                imPosition.setKodering(position.getKodering());
 
                 imPosition.setCreatedDate(position.getCreatedDate());
                 imPosition.setLastUpdate(position.getLastUpdate());
@@ -215,7 +224,7 @@ public class PositionBoImpl implements PositionBo {
                     throw new GeneralBOException("Found problem when saving new data position, please info to your admin..." + e.getMessage());
                 }
             }else{
-                throw new GeneralBOException("Maaf Posisi Tersebut Sudah Ada");
+                throw new GeneralBOException("Maaf Posisi atau Kodering Tersebut Sudah Ada");
             }
         }
 
@@ -250,6 +259,7 @@ public class PositionBoImpl implements PositionBo {
                 if (imPosition != null){
                     imPosition.setPositionId(bean.getPositionId());
                     imPosition.setPositionName(bean.getPositionName());
+                    imPosition.setKodering(bean.getKodering());
                     imPosition.setDepartmentId(bean.getDepartmentId());
                     imPosition.setKelompokId(bean.getKelompokId());
                     imPosition.setBagianId(bean.getBagianId());
@@ -438,6 +448,7 @@ public class PositionBoImpl implements PositionBo {
             resultPosition.setPositionId(imPosition.getPositionId());
             resultPosition.setStPositionId(imPosition.getPositionId());
             resultPosition.setPositionName(imPosition.getPositionName());
+            resultPosition.setKodering(imPosition.getKodering());
             resultPosition.setBagianId(imPosition.getBagianId());
             resultPosition.setBagianName(imPosition.getImPositionBagianEntity().getBagianName());
             resultPosition.setKelompokId(imPosition.getKelompokId());
@@ -593,11 +604,13 @@ public class PositionBoImpl implements PositionBo {
         }
         return positions;
     }
-    public String cekStatus(String positionName)throws GeneralBOException{
+    public String cekStatus(String positionName, String kodering)throws GeneralBOException{
         String status ="";
         List<ImPosition> imPositions = new ArrayList<>();
+        List<ImPosition> positionList = new ArrayList<>();
         try {
             imPositions = positionDao.getListPosition(positionName);
+            positionList = positionDao.getListPositionKodering(kodering);
         } catch (HibernateException e) {
             logger.error("[PositionBoImpl.cekStatus] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
@@ -605,7 +618,10 @@ public class PositionBoImpl implements PositionBo {
         if (imPositions.size()>0){
             status = "exist";
         }else{
-            status="notExits";
+            if (positionList.size()>0)
+                status = "exist";
+            else
+                status="notExits";
         }
         return status;
     }
@@ -630,5 +646,44 @@ public class PositionBoImpl implements PositionBo {
     @Override
     public ImPosition getPositionEntityById(String id) throws GeneralBOException {
         return positionDao.getById("positionId", id);
+    }
+
+    @Override
+    public List<Position> typeAheadPosition(String key) throws GeneralBOException {
+        logger.info("[PositionBoImpl.getPositionById] start process >>>");
+        List<Position> positionList = new ArrayList<>();
+        List<ImPosition> imPositionList = null;
+        try {
+            imPositionList = positionDao.getTypeAheadPosition(key);
+        } catch (HibernateException e) {
+            logger.error("[PositionBoImpl.getPositionById] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when retrieving position based on id and flag, please info to your admin..." + e.getMessage());
+        }
+        if (imPositionList != null) {
+            for (ImPosition imPosition : imPositionList) {
+                Position resultPosition = new Position();
+                resultPosition.setPositionId(imPosition.getPositionId());
+                resultPosition.setStPositionId(imPosition.getPositionId());
+                resultPosition.setPositionName(imPosition.getPositionName());
+                resultPosition.setKodering(imPosition.getKodering());
+                resultPosition.setBagianId(imPosition.getBagianId());
+                resultPosition.setBagianName(imPosition.getImPositionBagianEntity().getBagianName());
+                resultPosition.setKelompokId(imPosition.getKelompokId());
+                resultPosition.setKelompokName(imPosition.getImKelompokPositionEntity().getKelompokName());
+                resultPosition.setDepartmentId(imPosition.getDepartmentId());
+                resultPosition.setDepartmentName(imPosition.getImDepartmentEntity().getDepartmentName());
+                resultPosition.setFlag(imPosition.getFlag());
+
+                positionList.add(resultPosition);
+            }
+        }
+        logger.info("[PositionBoImpl.getPositionById] end process <<<");
+
+        return positionList;
+    }
+
+    public List<ImPosition> getPositionByString(String query) throws GeneralBOException {
+        String term = "%"+query+"%";
+        return positionDao.getListPosition(term);
     }
 }

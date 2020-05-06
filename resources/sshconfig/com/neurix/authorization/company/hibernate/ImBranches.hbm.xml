@@ -139,6 +139,10 @@
         <property name="coderNik">
             <column name="coder_nik" sql-type="varchar" length="100"/>
         </property>
+        <property name="kodering">
+            <column name="kodering" sql-type="varchar" length="100"/>
+        </property>
+
         <set name="imAreasBranchesUsers" inverse="true" lazy="true" where="flag='Y'">
             <key>
                 <column name="branch_id"/>

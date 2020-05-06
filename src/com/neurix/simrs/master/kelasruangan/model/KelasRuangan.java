@@ -8,11 +8,16 @@ public class KelasRuangan extends BaseModel {
 
     private String idKelasRuangan;
     private String namaKelasRuangan;
+    private String positionId;
+    private String divisiName;
+    private String kodering;
     private String flag;
     private String action;
     private Timestamp createdDate;
+    private String stCreatedDate;
     private String createdWho;
     private Timestamp lastUpdate;
+    private String stLastUpdate;
     private String lastUpdateWho;
 
     public String getIdKelasRuangan() {
@@ -89,5 +94,47 @@ public class KelasRuangan extends BaseModel {
     @Override
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    public String getKodering() {
+        return kodering;
+    }
+
+    public void setKodering(String kodering) {
+        this.kodering = kodering;
+    }
+
+    public String getPositionId() {
+        return positionId;
+    }
+
+    public void setPositionId(String positionId) {
+        this.positionId = positionId;
+    }
+
+    public String getDivisiName() {
+        return divisiName;
+    }
+
+    public void setDivisiName(String divisiName) {
+        this.divisiName = divisiName;
+    }
+
+    @Override
+    public String getStCreatedDate() {
+        return stCreatedDate;
+    }
+
+    public void setStCreatedDate(String stCreatedDate) {
+        this.stCreatedDate = stCreatedDate;
+    }
+
+    @Override
+    public String getStLastUpdate() {
+        return stLastUpdate;
+    }
+
+    public void setStLastUpdate(String stLastUpdate) {
+        this.stLastUpdate = stLastUpdate;
     }
 }

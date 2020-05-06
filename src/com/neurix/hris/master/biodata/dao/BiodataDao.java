@@ -647,12 +647,12 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 result.setTanggalAkhirKontrak((Date)row[71]);
             }
 
-            if (row[74] != null){
-                result.setTanggalPraPensiun((Date) row[74]);
+            if (row[78] != null){
+                result.setTanggalPraPensiun((Date) row[78]);
             }
-            result.setBagianId((String) row[75]);
-            result.setBagianName((String) row[76]);
-            result.setProfesiId((String)row[77]);
+            result.setBagianId((String) row[79]);
+            result.setBagianName((String) row[80]);
+            result.setProfesiId((String)row[81]);
 
             listOfResult.add(result);
         }
