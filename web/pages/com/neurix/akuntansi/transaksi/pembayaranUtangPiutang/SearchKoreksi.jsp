@@ -309,30 +309,6 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-4">Metode Pembayaran</label>
-                                <div class="col-md-6">
-                                    <s:textfield id="mod_metode_bayar" onkeypress="$(this).css('border','')" readonly="true"
-                                                 cssClass="form-control"/>
-                                    <br>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-4">Total Bayar</label>
-                                <div class="col-md-6">
-                                    <s:textfield id="mod_total_bayar" onkeypress="$(this).css('border','')" readonly="true"
-                                                 cssClass="form-control"/>
-                                    <br>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-4">No. Referensi</label>
-                                <div class="col-md-6">
-                                    <s:textfield id="mod_no_slip_bank" onkeypress="$(this).css('border','')" readonly="true"
-                                                 cssClass="form-control" />
-                                    <br>
-                                </div>
-                            </div>
-                            <div class="form-group">
                                 <label class="col-md-4">Keterangan</label>
                                 <div class="col-md-6">
                                     <s:textarea id="mod_keterangan" onkeypress="$(this).css('border','')" readonly="true"
