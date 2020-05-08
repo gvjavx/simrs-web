@@ -20,6 +20,7 @@ import com.neurix.akuntansi.transaksi.tutupperiod.bo.impl.TutupPeriodBoImpl;
 import com.neurix.akuntansi.transaksi.tutupperiod.dao.BatasTutupPeriodDao;
 import com.neurix.akuntansi.transaksi.tutupperiod.model.ItSimrsBatasTutupPeriodEntity;
 import com.neurix.akuntansi.transaksi.tutupperiod.model.TutupPeriod;
+import com.neurix.authorization.position.bo.PositionBo;
 import com.neurix.authorization.position.dao.PositionDao;
 import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.common.exception.GeneralBOException;
@@ -28,25 +29,35 @@ import com.neurix.simrs.master.jenisperiksapasien.dao.AsuransiDao;
 import com.neurix.simrs.master.jenisperiksapasien.dao.JenisPeriksaPasienDao;
 import com.neurix.simrs.master.jenisperiksapasien.model.ImJenisPeriksaPasienEntity;
 import com.neurix.simrs.master.jenisperiksapasien.model.ImSimrsAsuransiEntity;
+import com.neurix.simrs.master.kelasruangan.bo.KelasRuanganBo;
 import com.neurix.simrs.master.kelasruangan.dao.KelasRuanganDao;
 import com.neurix.simrs.master.kelasruangan.model.ImSimrsKelasRuanganEntity;
+import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
 import com.neurix.simrs.master.pelayanan.dao.PelayananDao;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
+import com.neurix.simrs.master.pelayanan.model.Pelayanan;
+import com.neurix.simrs.master.ruangan.bo.RuanganBo;
 import com.neurix.simrs.master.ruangan.dao.RuanganDao;
 import com.neurix.simrs.master.ruangan.model.MtSimrsRuanganEntity;
 import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao;
 import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
+import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
+import com.neurix.simrs.transaksi.periksalab.bo.PeriksaLabBo;
+import com.neurix.simrs.transaksi.permintaanresep.bo.PermintaanResepBo;
 import com.neurix.simrs.transaksi.permintaanresep.dao.PermintaanResepDao;
 import com.neurix.simrs.transaksi.permintaanresep.model.ImSimrsPermintaanResepEntity;
+import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
 import com.neurix.simrs.transaksi.rawatinap.dao.RawatInapDao;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
+import com.neurix.simrs.transaksi.riwayattindakan.bo.RiwayatTindakanBo;
 import com.neurix.simrs.transaksi.riwayattindakan.dao.TindakanTransitorisDao;
 import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsRiwayatTindakanEntity;
 import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsTindakanTransitorisEntity;
 import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
+import com.neurix.simrs.transaksi.teamdokter.bo.TeamDokterBo;
 import com.neurix.simrs.transaksi.teamdokter.dao.DokterTeamDao;
 import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
 import com.neurix.simrs.transaksi.teamdokter.model.ItSimrsDokterTeamEntity;
@@ -1232,57 +1243,99 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
         return masterDao.getById("primaryKey.nomorMaster", id);
     }
 
-    public String getDivisiId(String idDetailCheckup, String jenisPasien, String keterangan) throws GeneralBOException{
+    private BigDecimal getJumlahNilaiBiayaByKeterangan(String idDetailCheckup, String jenisPasien, String keterangan){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+
+        BigDecimal nilai = new BigDecimal(0);
+        try {
+            nilai = checkupDetailBo.getSumJumlahTindakanByJenis(idDetailCheckup, jenisPasien, keterangan);
+        } catch (GeneralBOException e){
+            logger.error("[CheckupDetailAction.getJumlahNilaiBiayaByKeterangan] ERROR ", e);
+            throw new GeneralBOException("[CheckupDetailAction.getJumlahNilaiBiayaByKeterangan] ERROR " + e);
+
+        }
+        return nilai;
+    }
+
+    public String getDivisiId(String idDetailCheckup, String jenisPasien, String keterangan) {
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PositionBo positionBo = (PositionBo) ctx.getBean("positionBoProxy");
+        PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
+        PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
 
         String divisiId = "";
 
-        if ("resep".equalsIgnoreCase(keterangan)){
+        if ("resep".equalsIgnoreCase(keterangan)) {
             ItSimrsRiwayatTindakanEntity riwayatTindakanEntity = getRiwayatTindakanResep(idDetailCheckup, jenisPasien);
-            if (riwayatTindakanEntity != null){
+            if (riwayatTindakanEntity != null) {
                 ImSimrsPermintaanResepEntity permintaanResepEntity = getEntityPermintaanResepById(riwayatTindakanEntity.getIdTindakan());
-                if (permintaanResepEntity != null){
+                if (permintaanResepEntity != null) {
                     ImSimrsPelayananEntity pelayananEntity = getPelayananById(permintaanResepEntity.getTujuanPelayanan());
-                    if (pelayananEntity != null){
+                    if (pelayananEntity != null) {
                         ImPosition position = getPositionEntityById(pelayananEntity.getDivisiId());
-                        if (position != null){
+                        if (position != null) {
                             divisiId = position.getKodering();
                         }
                     }
                 }
             }
+        } else if ("laboratorium".equalsIgnoreCase(keterangan) || "radiologi".equalsIgnoreCase(keterangan)){
+            divisiId = periksaLabBo.getDivisiIdKodering(idDetailCheckup, keterangan);
+        } else if ("gizi".equalsIgnoreCase(keterangan)){
+
+            ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = getEntityDetailCheckupByIdDetail(idDetailCheckup);
+            if (detailCheckupEntity != null){
+
+                Pelayanan pelayanan = new Pelayanan();
+                pelayanan.setBranchId(detailCheckupEntity.getBranchId());
+                pelayanan.setTipePelayanan("gizi");
+
+                List<Pelayanan> pelayananList = pelayananBo.getByCriteria(pelayanan);
+                if (pelayananList.size() > 0){
+                    Pelayanan pelayananData = pelayananList.get(0);
+
+                    ImPosition position = positionBo.getPositionEntityById(pelayananData.getDivisiId());
+                    if (position != null) {
+                        divisiId = position.getKodering();
+                    }
+                }
+            }
+
         } else {
 
             ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = getDetailCheckupById(idDetailCheckup);
-            if (detailCheckupEntity != null && detailCheckupEntity.getIdPelayanan() != null){
+            if (detailCheckupEntity != null && detailCheckupEntity.getIdPelayanan() != null) {
                 try {
                     ImSimrsPelayananEntity pelayananEntity = getPelayananById(detailCheckupEntity.getIdPelayanan());
 
                     // jika poli selain rawat inap maka mengambil kodering dari pelayanan
                     // jika poli rawat rawat inap maka mengambil kodering dari kelas ruangan , Sigit
-                    if (pelayananEntity != null && !"rawat_inap".equalsIgnoreCase(pelayananEntity.getTipePelayanan())){
+                    if (pelayananEntity != null && !"rawat_inap".equalsIgnoreCase(pelayananEntity.getTipePelayanan())) {
 
-                        ImPosition position = getPositionEntityById(pelayananEntity.getDivisiId());
-                        if (position != null){
+                        ImPosition position = positionBo.getPositionEntityById(pelayananEntity.getDivisiId());
+                        if (position != null) {
                             divisiId = position.getKodering();
                         }
 
                     } else {
 
                         RawatInap lastRuangan = getLastUsedRoom(idDetailCheckup);
-                        if (lastRuangan != null){
+                        if (lastRuangan != null) {
                             MtSimrsRuanganEntity ruanganEntity = getEntityRuanganById(lastRuangan.getIdRuang());
-                            if (ruanganEntity != null){
+                            if (ruanganEntity != null) {
                                 ImSimrsKelasRuanganEntity kelasRuanganEntity = getKelasRuanganById(ruanganEntity.getIdKelasRuangan());
-                                if (kelasRuanganEntity != null){
+                                if (kelasRuanganEntity != null) {
                                     ImPosition position = getPositionEntityById(kelasRuanganEntity.getDivisiId());
-                                    if (position != null){
+                                    if (position != null) {
                                         divisiId = position.getKodering();
                                     }
                                 }
                             }
                         }
                     }
-                } catch (GeneralBOException e){
+                } catch (GeneralBOException e) {
                     throw new GeneralBOException("[getDivisiId] ERROR " + e);
                 }
             } else {
@@ -1290,9 +1343,9 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
             }
         }
         return divisiId;
-    };
+    }
 
-    private List<Map> getAcitivityList(String idDetailCheckup, String jenisPasien, String ket, String type){
+    private List<Map> getAcitivityList(String idDetailCheckup, String jenisPasien, String ket, String type) {
         logger.info("[CheckupDetailAction.getAcitivityList] START >>>>");
 
         //** mencari tindakan dan dimasukan ke jurnal detail activity. START **//
@@ -1304,7 +1357,7 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
         DokterTeam dokterTeam = new DokterTeam();
         dokterTeam.setIdDetailCheckup(idDetailCheckup);
         List<ItSimrsDokterTeamEntity> dokterTeamEntities = getListEntityTeamDokter(dokterTeam);
-        if (dokterTeamEntities.size() > 0){
+        if (dokterTeamEntities.size() > 0) {
             ItSimrsDokterTeamEntity dokterTeamEntity = dokterTeamEntities.get(0);
             idDokter = dokterTeamEntity.getIdDokter();
         }
@@ -1312,20 +1365,17 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
         // riwayat tindakan list
         RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
         riwayatTindakan.setIdDetailCheckup(idDetailCheckup);
+        riwayatTindakan.setJenisPasien(jenisPasien);
 
-        if (!"".equalsIgnoreCase(jenisPasien)){
-            riwayatTindakan.setJenisPasien(jenisPasien);
-        }
-
-        if ("".equalsIgnoreCase(ket)){
+        if ("".equalsIgnoreCase(ket)) {
             riwayatTindakan.setNotResep("Y");
         } else {
             riwayatTindakan.setKeterangan(ket);
         }
 
         List<ItSimrsRiwayatTindakanEntity> riwayatTindakanEntities = getListEntityRiwayatTindakan(riwayatTindakan);
-        if (riwayatTindakanEntities.size() > 0){
-            for (ItSimrsRiwayatTindakanEntity riwayatTindakanEntity : riwayatTindakanEntities){
+        if (riwayatTindakanEntities.size() > 0) {
+            for (ItSimrsRiwayatTindakanEntity riwayatTindakanEntity : riwayatTindakanEntities) {
 
                 // jika selain JRJ
                 // maka obat dikenakan PPN
@@ -1333,16 +1383,18 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
 
                 // mencari apakah tindakan transitoris
                 boolean nonTransitoris = true;
-                if ("JRI".equalsIgnoreCase(type)){
+                if ("JRI".equalsIgnoreCase(type)) {
                     ItSimrsTindakanTransitorisEntity transitorisEntity = getTindakanTransitorisById(riwayatTindakanEntity.getIdRiwayatTindakan());
-                    if (transitorisEntity != null){
+                    if (transitorisEntity != null) {
+                        // jika ditemukan transitoris
+                        // maka transitoris;
                         nonTransitoris = false;
                     }
                 }
 
                 // jika bukan Transitoris
                 // maka ditambahkan activity
-                if (nonTransitoris){
+                if (nonTransitoris) {
                     Map activityMap = new HashMap();
                     activityMap.put("activity_id", riwayatTindakanEntity.getIdTindakan());
                     activityMap.put("person_id", idDokter);
@@ -1362,6 +1414,9 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
     private void createJurnalTransitoris(TutupPeriod bean) throws GeneralBOException{
         logger.info("[TutuPeriodAction.createJurnalTransitoris] START >>>");
 
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RiwayatTindakanBo riwayatTindakanBo = (RiwayatTindakanBo) ctx.getBean("riwayatTindakanBoProxy");
+
         String masterId = "";
         String divisiId = "";
         String jenisPasien = "";
@@ -1369,6 +1424,7 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
         String transId = "";
         String idPasien = "";
         String divisiResep = "";
+        String idJenisPasien = "";
         String invoiceNumber = createInvoiceNumber("JRI", bean.getUnit());
 
         Map mapJurnal = new HashMap();
@@ -1376,18 +1432,6 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
         if (detailCheckupEntity != null){
 
             idPasien = getEntityCheckupById(detailCheckupEntity.getNoCheckup()).getIdPasien();
-
-            // MENDAPATKAN SEMUA NILAI TINDAKAN DAN RESEP;
-            BigDecimal jumlahResep = getSumJumlahTindakanNonBpjs(bean.getIdDetailCheckup(), "resep");
-            BigDecimal jumlahAllTindakan = getSumJumlahTindakanNonBpjs(bean.getIdDetailCheckup(), "");
-            BigDecimal jumlahTindakan = jumlahAllTindakan.subtract(jumlahResep);
-
-            // MENDAPATKAN DIVISI ID TINDAKAN / PENDAPATAN RAWAT
-            divisiId = getDivisiId(bean.getIdDetailCheckup(), "", "");
-
-            // MENDAPATKAN DIVISI ID TINDAKAN / PENDAPATAN RAWAT
-            divisiResep = getDivisiId(bean.getIdDetailCheckup(), "", "resep");
-
             bukti = invoiceNumber;
             if ("bpjs".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())){
 
@@ -1399,16 +1443,21 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                     masterId = jenisPeriksaPasienEntity.getMasterId();
                 }
 
+                idJenisPasien = "bpjs";
+
             } else if ("asuransi".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())){
 
                 ImSimrsAsuransiEntity asuransiEntity = getEntityAsuransiById(detailCheckupEntity.getIdAsuransi());
                 jenisPasien = "Asuransi "+asuransiEntity.getNamaAsuransi();
                 masterId = asuransiEntity.getNoMaster();
+                idJenisPasien = "asuransi";
+
             } else if ("ptpn".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())){
 
                 ImMasterEntity masterEntity = getEntityMasterById(detailCheckupEntity.getIdAsuransi());
                 jenisPasien = masterEntity.getNama();
                 masterId = detailCheckupEntity.getIdAsuransi();
+                idJenisPasien = "bpjs";
             } else {
                 ItSimrsHeaderChekupEntity headerChekupEntity = getEntityCheckupById(detailCheckupEntity.getNoCheckup());
                 if (headerChekupEntity == null){
@@ -1420,7 +1469,11 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                 if (jenisPeriksaPasienEntity != null){
                     masterId = jenisPeriksaPasienEntity.getMasterId();
                 }
+
+                idJenisPasien = "umum";
             }
+
+            BigDecimal jumlahAllTindakan = getJumlahNilaiBiayaByKeterangan(bean.getIdDetailCheckup(), "", "");
 
 
             jenisPasien = jenisPasien + " No. Detail Checkup "+detailCheckupEntity.getIdDetailCheckup();
@@ -1435,22 +1488,23 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                 mapPiutang.put("master_id", masterId);
             }
 
-            Map mapPendapatan = new HashMap();
-            mapPendapatan.put("master_id", masterId);
-            mapPendapatan.put("divisi_id", divisiId);
-            mapPendapatan.put("nilai", jumlahTindakan);
-            mapPendapatan.put("activity", getAcitivityList(detailCheckupEntity.getIdDetailCheckup(), "", "", "JRI"));
+            List<Map> listOfMapTindakan = new ArrayList<>();
+            List<String> listOfKeteranganRiwayat = riwayatTindakanBo.getListKeteranganByIdDetailCheckup(bean.getIdDetailCheckup());
+            if (listOfKeteranganRiwayat.size() > 0){
 
-            Map mapResep = new HashMap();
-            mapResep.put("master_id", masterId);
-            mapResep.put("divisi_id", divisiResep);
-            mapResep.put("nilai", jumlahResep);
-            mapResep.put("activity", getAcitivityList(detailCheckupEntity.getIdDetailCheckup(), "", "resep", "JRI"));
+                for (String keterangan : listOfKeteranganRiwayat){
+                    Map mapTindakan = new HashMap();
+                    mapTindakan.put("master_id", masterId);
+                    mapTindakan.put("divisi_id", getDivisiId(bean.getIdDetailCheckup(), idJenisPasien, keterangan));
+                    mapTindakan.put("nilai", getJumlahNilaiBiayaByKeterangan(bean.getIdDetailCheckup(), idJenisPasien, keterangan));
+                    mapTindakan.put("activity", getAcitivityList(bean.getIdDetailCheckup(), idJenisPasien, keterangan, "JRI"));
+                    listOfMapTindakan.add(mapTindakan);
+                }
+            }
+
 
             mapJurnal.put("piutang_transistoris_pasien_rawat_inap", mapPiutang);
-            mapJurnal.put("pendapatan_rawat_inap", mapPendapatan);
-            mapJurnal.put("pendapatan_obat", mapResep);
-
+            mapJurnal.put("pendapatan_rawat_inap", listOfMapTindakan);
         }
         String catatan = "Transitoris Rawat Inap saat tutup periode "+jenisPasien;
 
