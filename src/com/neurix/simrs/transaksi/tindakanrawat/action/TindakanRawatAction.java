@@ -136,7 +136,7 @@ public class TindakanRawatAction extends BaseMasterAction {
         return "init_add";
     }
 
-    public String saveTindakanRawat(String idDetailCheckup, String idTindakan, String idDokter, String idPerawat, BigInteger qty, String jenisTransaksi){
+    public String saveTindakanRawat(String idDetailCheckup, String idTindakan, String idDokter, String tipeRawat, BigInteger qty, String jenisTransaksi){
         logger.info("[TindakanRawatAction.saveTindakanRawat] start process >>>");
         try {
             String userLogin = CommonUtil.userLogin();
@@ -174,7 +174,6 @@ public class TindakanRawatAction extends BaseMasterAction {
                 tindakanRawat.setTarif(tindakanResult.getTarif());
             }
 
-            tindakanRawat.setTarif(tindakanResult.getTarif());
             tindakanRawat.setTarifTotal(tindakanRawat.getQty().multiply(tindakanRawat.getTarif()));
             tindakanRawat.setCreatedWho(userLogin);
             tindakanRawat.setLastUpdate(updateTime);
@@ -352,7 +351,7 @@ public class TindakanRawatAction extends BaseMasterAction {
         }
     }
 
-    public String editTindakanRawat(String idTindakanRawat, String idDetailCheckup, String idTindakan, String idDokter, String idPerawat, BigInteger qty){
+    public String editTindakanRawat(String idTindakanRawat, String idDetailCheckup, String idTindakan, String idDokter, String idPerawat, BigInteger qty, String jenisTransaksi){
         logger.info("[TindakanRawatAction.saveTindakanRawat] start process >>>");
         try {
             String userLogin = CommonUtil.userLogin();
@@ -377,6 +376,7 @@ public class TindakanRawatAction extends BaseMasterAction {
             }catch (GeneralBOException e){
                 logger.error("[TindakanRawatAction.saveTindakanRawat] Error when search tarif dan decs tindakan by id ," + "Found problem when saving add data, please inform to your admin.", e);
             }
+
             if (!tindakanList.isEmpty()){
                 tindakanResult = tindakanList.get(0);
             }
@@ -385,7 +385,14 @@ public class TindakanRawatAction extends BaseMasterAction {
             tindakanRawat.setIdDokter(idDokter);
             tindakanRawat.setIdPerawat(userLogin);
             tindakanRawat.setQty(qty);
-            tindakanRawat.setTarif(tindakanResult.getTarif());
+
+            if ("bpjs".equalsIgnoreCase(jenisTransaksi)){
+                tindakanRawat.setTarif(tindakanResult.getTarifBpjs());
+            } else {
+                tindakanRawat.setTarif(tindakanResult.getTarif());
+            }
+
+            tindakanRawat.setTarifTotal(tindakanRawat.getQty().multiply(tindakanRawat.getTarif()));
             tindakanRawat.setLastUpdate(updateTime);
             tindakanRawat.setLastUpdateWho(userLogin);
             tindakanRawat.setAction("U");

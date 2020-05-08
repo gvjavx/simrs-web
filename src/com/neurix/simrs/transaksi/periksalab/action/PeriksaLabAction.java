@@ -303,18 +303,19 @@ public class PeriksaLabAction extends BaseMasterAction {
         return checkupDetailBo.getListDokterByDetailCheckup(idDetailCheckup);
     }
 
-    public List<PeriksaLabDetail> listParameterPemeriksaan(String idPeriksaLab) {
+    public List<PeriksaLabDetail> listParameterPemeriksaan(String idPeriksaLab, String kategoriName) {
 
         logger.info("[PeriksaLabAction.listParameterPemeriksaan] start process >>>");
         List<PeriksaLabDetail> periksaLabDetailList = new ArrayList<>();
 
         PeriksaLabDetail periksaLabDetail = new PeriksaLabDetail();
         periksaLabDetail.setIdPeriksaLab(idPeriksaLab);
+        periksaLabDetail.setKategoriName(kategoriName);
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
 
-        if (!"".equalsIgnoreCase(idPeriksaLab)) {
+        if (!"".equalsIgnoreCase(idPeriksaLab) && !"".equalsIgnoreCase(kategoriName)) {
             try {
                 periksaLabDetailList = periksaLabBo.getListParameterLab(periksaLabDetail);
             } catch (GeneralBOException e) {

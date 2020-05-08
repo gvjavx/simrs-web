@@ -2,6 +2,10 @@ package com.neurix.simrs.transaksi.diagnosarawat.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
 
+import com.neurix.simrs.transaksi.CrudResponse;
+import com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao;
+import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
+import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
 import com.neurix.simrs.transaksi.diagnosarawat.bo.DiagnosaRawatBo;
 import com.neurix.simrs.transaksi.diagnosarawat.dao.DiagnosaRawatDao;
 import com.neurix.simrs.transaksi.diagnosarawat.model.DiagnosaRawat;
@@ -20,6 +24,7 @@ import java.util.Map;
 public class DiagnosaRawatBoImpl implements DiagnosaRawatBo {
     private static transient Logger logger = Logger.getLogger(DiagnosaRawatBoImpl.class);
     private DiagnosaRawatDao diagnosaRawatDao;
+    private CheckupDetailDao checkupDetailDao;
 
     @Override
     public List<DiagnosaRawat> getByCriteria(DiagnosaRawat bean) throws GeneralBOException {
@@ -121,6 +126,35 @@ public class DiagnosaRawatBoImpl implements DiagnosaRawatBo {
     }
 
     @Override
+    public CrudResponse updateCoverBpjs(HeaderDetailCheckup bean) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
+        if(bean != null){
+            ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = new ItSimrsHeaderDetailCheckupEntity();
+            try {
+                detailCheckupEntity = checkupDetailDao.getById("idDetailCheckup", bean.getIdDetailCheckup());
+            }catch (HibernateException e){
+                response.setStatus("error");
+                response.setMsg("Found Error when "+e.getMessage());
+            }
+
+            if(detailCheckupEntity.getIdDetailCheckup() != null){
+                detailCheckupEntity.setLastUpdate(bean.getLastUpdate());
+                detailCheckupEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                detailCheckupEntity.setTarifBpjs(bean.getTarifBpjs());
+                detailCheckupEntity.setKodeCbg(bean.getKodeCbg());
+
+                try {
+                    checkupDetailDao.updateAndSave(detailCheckupEntity);
+                }catch (HibernateException e){
+                    response.setStatus("error");
+                    response.setMsg("Found Error when "+e.getMessage());
+                }
+            }
+        }
+        return response;
+    }
+
+    @Override
     public List<ItSimrsDiagnosaRawatEntity> getListEntityDiagnosaRawat(DiagnosaRawat bean) throws GeneralBOException{
         logger.info("[DiagnosaRawatBoImpl.getListEntityDiagnosaRawat] Start >>>>>>>>>");
 
@@ -159,5 +193,9 @@ public class DiagnosaRawatBoImpl implements DiagnosaRawatBo {
     public void setDiagnosaRawatDao(DiagnosaRawatDao diagnosaRawatDao) {
         this.diagnosaRawatDao = diagnosaRawatDao;
 
+    }
+
+    public void setCheckupDetailDao(CheckupDetailDao checkupDetailDao) {
+        this.checkupDetailDao = checkupDetailDao;
     }
 }
