@@ -749,4 +749,8 @@ public class PeriksaLabBoImpl implements PeriksaLabBo{
         this.periksaRadiologiDao = periksaRadiologiDao;
     }
 
+    @Override
+    public String getDivisiIdKodering(String idDetailCheckup, String tipeLab) throws GeneralBOException {
+        return periksaLabDao.getDivisiIdLabTransaction(idDetailCheckup, tipeLab);
+    }
 }

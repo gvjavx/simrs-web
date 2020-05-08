@@ -701,24 +701,25 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                                         try{
                                             List<Map> activityList = (List<Map>) mapList.get(i).get("activity");
                                             BigDecimal nilaiActivity = BigDecimal.ZERO;
+                                            // DIRUBAH SIGIT, 2020-05-08 Perubahan INDEX : sebelumnya i menjadi x; START
                                             for (int x=0;x<activityList.size();x++){
                                                 ItJurnalDetailActivityEntity saveActivity = new ItJurnalDetailActivityEntity();
-                                                if (activityList.get(i).get("activity_id")!=null){
-                                                    saveActivity.setActivityId((String)activityList.get(i).get("activity_id"));
+                                                if (activityList.get(x).get("activity_id")!=null){
+                                                    saveActivity.setActivityId((String)activityList.get(x).get("activity_id"));
                                                 }else{
                                                     status="ERROR : Activity ID tidak ditemukan";
                                                     logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
                                                     throw new GeneralBOException("Found problem "+status+", please info to your admin...");
                                                 }
-                                                if (activityList.get(i).get("person_id")!=null){
-                                                    saveActivity.setPersonId((String)activityList.get(i).get("person_id"));
+                                                if (activityList.get(x).get("person_id")!=null){
+                                                    saveActivity.setPersonId((String)activityList.get(x).get("person_id"));
                                                 }else{
                                                     status="ERROR : Person ID tidak ditemukan";
                                                     logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
                                                     throw new GeneralBOException("Found problem "+status+", please info to your admin...");
                                                 }
-                                                if (activityList.get(i).get("nilai")!=null){
-                                                    saveActivity.setJumlah((BigDecimal)activityList.get(i).get("nilai"));
+                                                if (activityList.get(x).get("nilai")!=null){
+                                                    saveActivity.setJumlah((BigDecimal)activityList.get(x).get("nilai"));
                                                 }else{
                                                     status="ERROR : nilai tidak ditemukan";
                                                     logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
@@ -738,6 +739,9 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                                                     logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
                                                     throw new GeneralBOException("Found problem "+status+", please info to your admin...");
                                                 }
+
+                                                // DIRUBAH SIGIT, 2020-05-08 Perubahan INDEX : sebelumnya i menjadi x; END
+
                                                 saveActivity.setJurnalDetailActivityId(jurnalDetailActivityDao.getNextJurnalActivityId());
                                                 saveActivity.setJurnalDetailId(jurnalDetailIdLoop);
                                                 saveActivity.setFlag("Y");
