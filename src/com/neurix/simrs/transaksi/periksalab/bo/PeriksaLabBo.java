@@ -24,4 +24,5 @@ public interface PeriksaLabBo {
     public CheckResponse updateFlagApprovePeriksaLab (PeriksaLab bean) throws GeneralBOException;
 
     public PeriksaLab getTarifTotalPemeriksaan(String idLab, String idPeriksaan) throws GeneralBOException;
+    public String getDivisiIdKodering(String idDetailCheckup, String tipeLab) throws GeneralBOException;
 }

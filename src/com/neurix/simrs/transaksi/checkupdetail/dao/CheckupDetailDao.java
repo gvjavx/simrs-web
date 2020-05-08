@@ -1006,6 +1006,11 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 "id_detail_checkup = :idDetail\n" +
                 "AND keterangan LIKE :ket\n" +
                 "AND jenis_pasien LIKE :jenis\n" +
+                "AND id_riwayat_tindakan NOT IN (\n" +
+                "\tSELECT id_riwayat_tindakan \n" +
+                "\tFROM it_simrs_tindakan_transitoris\n" +
+                "\tWHERE id_detail_checkup = :idDetail\n" +
+                ")\n" +
                 "GROUP BY id_detail_checkup";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
