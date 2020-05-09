@@ -720,8 +720,7 @@
                             onclick = "";
                         }
 
-                        if(item.kategoriTindakanBpjs == null || item.kategoriTindakanBpjs == '' &&
-                            item.flagUpdateKlaim != null && item.flagUpdateKlaim != ''){
+                        if(item.flagUpdateKlaim == '' || item.flagUpdateKlaim == null){
                             cekTindakan = true;
                         }
 

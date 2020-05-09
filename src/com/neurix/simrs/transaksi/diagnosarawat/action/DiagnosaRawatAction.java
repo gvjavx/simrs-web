@@ -138,7 +138,7 @@ public class DiagnosaRawatAction extends BaseMasterAction {
             String id = "";
             String ket = "";
 
-            if ("bpjs".equalsIgnoreCase(jenisPasien)) {
+            if ("bpjs".equalsIgnoreCase(jenisPasien) || "ptpn".equalsIgnoreCase(jenisPasien)) {
                 id = idDiagnosa;
                 ket = ketDiagnosa;
 
@@ -242,7 +242,7 @@ public class DiagnosaRawatAction extends BaseMasterAction {
             String id = "";
             String ket = "";
 
-            if ("bpjs".equalsIgnoreCase(jenisPasien)) {
+            if ("bpjs".equalsIgnoreCase(jenisPasien) || "ptpn".equalsIgnoreCase(jenisPasien)) {
 
                 id = idDiagnosa;
                 ket = ketDiagnosa;

@@ -1049,7 +1049,7 @@
                     Silahkan cek kembali data inputan!
                 </div>
                 <div class="row">
-                    <s:if test='rawatInap.idJenisPeriksa == "bpjs"'>
+                    <s:if test='rawatInap.idJenisPeriksa == "bpjs" || rawatInap.idJenisPeriksa == "ptpn"'>
                         <div class="form-group">
                             <label class="col-md-3">Diagnosa</label>
                             <div class="col-md-7">
@@ -4799,7 +4799,7 @@
     function editDiagnosa(id, idDiagnosa, jenis) {
         var jenisPasien = $('#jenis_pasien').val();
         $('#load_diagnosa, #warning_diagnosa, #war_diagnosa, #war_jenis_diagnosa').hide();
-        if(jenisPasien == "bpjs"){
+        if(jenisPasien == "bpjs" || jenisPasien == "ptpn"){
             $('#nosa_id_diagnosa_bpjs').val(idDiagnosa);
             $('#nosa_ket_diagnosa').val(ket);
         }else{
