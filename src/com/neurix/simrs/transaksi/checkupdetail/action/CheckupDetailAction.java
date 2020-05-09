@@ -904,6 +904,8 @@ public class CheckupDetailAction extends BaseMasterAction {
 
             if ("asuransi".equalsIgnoreCase(jenisPasien) || "ptpn".equalsIgnoreCase(jenisPasien)) {
                 metodeBayar = "non_tunai";
+            } else if ("umum".equalsIgnoreCase(jenisPasien)){
+                metodeBayar = jenisBayar;
             }
 
             // create jurnal if non tunai

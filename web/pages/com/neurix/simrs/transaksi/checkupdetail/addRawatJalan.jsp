@@ -2534,6 +2534,9 @@
             }
 
             if (idKtg == "selesai") {
+
+                metodeBayar = $("#jenis_bayar").val();
+
                 if (ket_selesai != '') {
                     if(isLaka == "Y"){
                         if(noRujukan != '' && tglRujukan != '' && suratRujukan != ''){
