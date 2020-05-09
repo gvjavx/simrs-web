@@ -1625,15 +1625,15 @@
                         <label class="col-md-3" style="margin-top: 7px">Waktu Minum</label>
                         <div class="col-md-7">
                             <div class="form-check" style="margin-top: 7px;">
-                                <input type="checkbox" name="cek_waktu" id="pagi" value="Pagi">
+                                <input type="checkbox" name="cek_waktu" id="pagi" value="Pagi" onclick="var warn = $('#war_rep_cek_waktu').is(':visible'); if (warn){$('#cor_rep_cek_waktu').show().fadeOut(3000);$('#war_rep_cek_waktu').hide()}">
                                 <label for="pagi"></label> Pagi
                             </div>
                             <div class="form-check" style="margin-top: 7px; margin-left: 10px">
-                                <input type="checkbox" name="cek_waktu" id="siang" value="Siang">
+                                <input type="checkbox" name="cek_waktu" id="siang" value="Siang" onclick="var warn = $('#war_rep_cek_waktu').is(':visible'); if (warn){$('#cor_rep_cek_waktu').show().fadeOut(3000);$('#war_rep_cek_waktu').hide()}">
                                 <label for="siang"></label> Siang
                             </div>
                             <div class="form-check" style="margin-top: 7px; margin-left: 10px">
-                                <input type="checkbox" name="cek_waktu" id="malam" value="Malam">
+                                <input type="checkbox" name="cek_waktu" id="malam" value="Malam" onclick="var warn = $('#war_rep_cek_waktu').is(':visible'); if (warn){$('#cor_rep_cek_waktu').show().fadeOut(3000);$('#war_rep_cek_waktu').hide()}">
                                 <label for="malam"></label> Malam
                             </div>
                         </div>
@@ -2143,12 +2143,8 @@
 
         if (berat != '' && tinggi != '') {
             var tom = (parseInt(tinggi) * 0.01);
-            console.log(tom);
             var tes = (parseFloat(tom)) *  parseFloat(tom);
-            console.log(berat);
-            console.log(tes);
             bmi = (parseInt(berat) / (tom *  tom)).toFixed(2);
-            console.log(bmi);
         }
 
         if (parseInt(bmi) < 18.5) {
@@ -2176,11 +2172,8 @@
 
     function hitungCoverBiaya() {
         var jenis = $('#jenis_pasien').val();
-        console.log("hitungCoverBiaya.jenis -> "+jenis);
         if("asuransi" == jenis){
             CheckupDetailAction.getBiayaAsuransi(idDetailCheckup, function (response) {
-                console.log("hitungCoverBiaya.response -> "+response);
-                console.log(response);
                 if (response.coverBiaya != null && response.coverBiaya != '') {
                     $('#status_asuransi').show();
                     if (response.coverBiaya != null) {
@@ -2804,26 +2797,27 @@
             $('#dok_id_dokter').val('').trigger('change');
             $('#load_dokter, #warning_dokter, #war_dok').hide();
             $('#save_dokter').attr('onclick', 'saveDokter(\'' + id + '\')').show();
-            $('#modal-dokter').modal('show');
+            $('#modal-dokter').modal({show:true, backdrop:'static'});
 
         } else if (select == 2) {
             $('#tin_id_ketgori_tindakan, #tin_id_tindakan, #tin_id_perawat').val('').trigger('change');
             $('#tin_qty').val('1');
             $('#load_tindakan, #warning_tindakan, #war_kategori, #war_tindakan, #war_perawat').hide();
             $('#save_tindakan').attr('onclick', 'saveTindakan(\'' + id + '\')').show();
-            $('#modal-tindakan').modal('show');
+            $('#modal-tindakan').modal({show:true, backdrop:'static'});
 
         } else if (select == 3) {
+            $('#nosa_id_diagnosa_bpjs, #nosa_ket_diagnosa').val('');
             $('#nosa_id_diagnosa, #nosa_jenis_diagnosa').val('').trigger('change');
             $('#load_diagnosa, #warning_diagnosa, #war_diagnosa, #war_jenis_diagnosa').hide();
             $('#save_diagnosa').attr('onclick', 'saveDiagnosa(\'' + id + '\')').show();
-            $('#modal-diagnosa').modal('show');
+            $('#modal-diagnosa').modal({show:true, backdrop:'static'});
 
         } else if (select == 4) {
             $('#lab_kategori, #lab_lab').val('').trigger('change');
             $('#load_lab, #warning_lab, #war_kategori_lab, #war_lab, #war_parameter').hide();
             $('#save_lab').attr('onclick', 'saveLab(\'' + id + '\')').show();
-            $('#modal-lab').modal('show');
+            $('#modal-lab').modal({show:true, backdrop:'static'});
         } else if (select == 5) {
             $('#ob_id_obat').val('').trigger('change');
             $('#jenis_form').show();
@@ -2837,13 +2831,13 @@
             $('#ob_qty').val('');
             $('#save_obat').attr('onclick', 'saveObat(\'' + id + '\')').show();
             $('#load_obat, #warning_obat, #war_ob_jenis_obat, #war_obat, #war_qty_obat').hide();
-            $('#modal-obat').modal('show');
+            $('#modal-obat').modal({show:true, backdrop:'static'});
         } else if (select == 7) {
             $('#resep_apotek').val('').trigger('change').attr('disabled', false);
             $('#resep_nama_obat').val('').trigger('change');
             $('#resep_keterangan').val('');
             $('#resep_qty').val('');
-            $('#resep_jenis_satuan').val('').trigger('change');
+            $('#resep_jenis_satuan').val('biji').trigger('change');
             $('#resep_stok_box, #resep_stok_lembar, #resep_stok_biji').val('');
             $('#body_detail').html('');
             $('#desti_apotek').html('');
@@ -2853,13 +2847,13 @@
             $('#resep_apotek').attr("onchange", "var warn =$('#war_rep_apotek').is(':visible'); if (warn){$('#cor_rep_apotek').show().fadeOut(3000);$('#war_rep_apotek').hide()}; setObatPoli(this)");
             $('#resep_nama_obat').attr("onchange", "var warn =$('#war_rep_obat').is(':visible'); if (warn){$('#cor_rep_obat').show().fadeOut(3000);$('#war_rep_obat').hide()}; setStokObatApotek(this)");
             $('#body_detail').html('');
-            $('#modal-resep-head').modal('show');
+            $('#modal-resep-head').modal({show:true, backdrop:'static'});
             getJenisResep();
         } else if (select == 8) {
             $('#alergi').val('');
             $('#load_alergi').hide();
             $('#save_alergi').attr('onclick', 'saveAlergi(\'' + id + '\')').show();
-            $('#modal-alergi').modal('show');
+            $('#modal-alergi').modal({show:true, backdrop:'static'});
         }
 
     }
@@ -3253,9 +3247,8 @@
         var idKategori = $('#lab_kategori').val();
         var idLab = $('#lab_lab').val();
         var idParameter = $('#lab_parameter').val();
-        var jenisLab = $('#jenis_lab').val();
 
-        if (idDetailCheckup != '' && idKategori != '' && idLab != '') {
+        if (idDetailCheckup != '' && idKategori != '' && idLab != '' && idParameter != null) {
 
             $('#save_lab').hide();
             $('#load_lab').show();
@@ -3312,7 +3305,6 @@
 
         PeriksaLabAction.listOrderLab(idDetailCheckup, function (response) {
             data = response;
-            console.log(data);
             if (data != null) {
                 $.each(data, function (i, item) {
                     var pemeriksaan = "-";
@@ -3451,8 +3443,6 @@
                     stok = parseInt(qtyBiji) + ((parseInt(lembarPerBox * parseInt(qtyBox))) * parseInt(bijiPerLembar));
                 }
 
-                console.log(obat);
-
                 if (parseInt(qty) <= parseInt(stok)) {
 
                     $('#save_obat').hide();
@@ -3574,7 +3564,7 @@
         $('#load_dokter, #war_dok').hide();
         $('#save_dokter').attr('onclick', 'saveDokter(\'' + id + '\')').show();
         $('#dok_id_dokter').val(idDokter).trigger('change');
-        $('#modal-dokter').modal('show');
+        $('#modal-dokter').modal({show:true, backdrop:'static'});
     }
 
     function editTindakan(id, idTindakan, idKategori, idPerawat, qty) {
@@ -3584,7 +3574,7 @@
         $('#tin_id_perawat').val(idPerawat).trigger('change');
         $('#tin_qty').val(qty);
         $('#save_tindakan').attr('onclick', 'saveTindakan(\'' + id + '\')').show();
-        $('#modal-tindakan').modal('show');
+        $('#modal-tindakan').modal({show:true, backdrop:'static'});
     }
 
     function editDiagnosa(id, idDiagnosa, jenis, ket) {
@@ -3615,7 +3605,7 @@
         });
         $('#lab_lab').val(idLab).trigger('change');
         $('#lab_parameter').val(idParameter).trigger('change');
-        $('#modal-lab').modal('show');
+        $('#modal-lab').modal({show:true, backdrop:'static'});
     }
 
     function editObat(id, idobat, qty, jenis, namaObat, qtyBox, qtyLembar, qtyBiji, lembarPerBox, bijiPerLembar) {
@@ -3648,7 +3638,7 @@
         $('#set_biji_perlembar').val(bijiPerLembar);
         $('#ob_jenis_satuan').val(jenis).trigger('change').attr('disabled', true);
         $('#save_obat').attr('onclick', 'saveObat(\'' + id + '\')').show();
-        $('#modal-obat').modal('show');
+        $('#modal-obat').modal({show:true, backdrop:'static'});
     }
 
     function listSelectObatEdit(select) {
@@ -3678,7 +3668,6 @@
         var option = "<option value=''>[Select One]</option>";
         if (idJenis != '') {
             ObatAction.listObat(idJenis, function (response) {
-                console.log(response);
                 if (response != null) {
                     $.each(response, function (i, item) {
                         option += "<option value='" + item.idObat + "'>" + item.namaObat + "</option>";
@@ -3708,7 +3697,6 @@
 
         var apotek = $('#resep_apotek').val();
         var obat = $('#resep_nama_obat').val();
-//        var ket = $('#resep_keterangan').val();
         var qty = $('#resep_qty').val();
         var jenisSatuan = $('#resep_jenis_satuan').val();
         var stokBox = $('#resep_stok_box').val();
@@ -3724,7 +3712,7 @@
         var lembarPerBox = 0;
         var bijiPerLembar = 0;
 
-        var listObat = $("input[name=cek_waktu]:checked");
+        var listObat = $("[name=cek_waktu]:checked");
         var pemberian = $("#resep_waktu").val();
         var jenisResep = $("#jenis_resep").val();
         var flagKronis = $("#val-kronis").val();
@@ -3737,14 +3725,16 @@
 
         var i = 0;
         var waktu = [];
-        $.each(listObat, function () {
-            waktu.push($(this).val());
-            i = i+1;
+        $.each(listObat, function (idx, item) {
+            if(item.checked){
+                waktu.push($(this).val());
+                i = i+1;
+            }
         });
 
         var ket = pemberian+" Makan. "+i+"x1. "+waktu.join(", ");
 
-        if (obat != '' && ket != '' && qty != '' && apotek != '' && jenisSatuan != '') {
+        if (obat != '' && ket != '' && qty != '' && apotek != '' && jenisSatuan != '' && waktu.length > 0) {
 
             var idPelayanan = apotek.split('|')[0];
             var namaPelayanan = apotek.split('|')[1];
@@ -3815,7 +3805,6 @@
                             '</tr>';
                     $('#body_detail').append(row);
                     var total = $('#total_harga_obat').val();
-                    console.log(total);
                     var tot = 0;
                     if(total != ""){
                         tot = total.replace(/[.]/g, '');
@@ -3826,6 +3815,7 @@
             } else {
                 $('#warning_resep_head').show().fadeOut(5000);
                 $('#msg_resep').text('Qty tidak boleh melebihi stok obat..!');
+                $('#modal-resep-head').scrollTop(0);
             }
 
         } else {
@@ -3841,11 +3831,12 @@
             if (qty == '' || qty <= 0) {
                 $('#war_rep_qty').show();
             }
-            if (ket == '') {
-                $('#war_rep_ket').show();
+            if (waktu.length == 0) {
+                $('#war_rep_cek_waktu').show();
             }
             $('#warning_resep_head').show().fadeOut(5000);
             $('#msg_resep').text('Silahkan cek kembali data inputan!');
+            $('#modal-resep-head').scrollTop(0);
         }
     }
 
@@ -3856,7 +3847,6 @@
         if(total != ""){
             tot = total.replace(/[.]/g, '');
         }
-        console.log(harga);
         var jumlah = parseInt(tot) - parseInt(harga);
         $('#total_harga_obat').val(formatRupiah(jumlah));
     }
@@ -3874,6 +3864,7 @@
         } else {
             $('#warning_resep_head').show().fadeOut(5000);
             $('#msg_resep').text("Silahkan cek kembali data inputan anda..!");
+            $('#modal-resep-head').scrollTop(0);
         }
     }
 
@@ -3922,6 +3913,7 @@
         } else {
             $('#warning_resep_head').show().fadeOut(5000);
             $('#msg_resep').text("Silahkan cek kembali data inputan anda..!");
+            $('#modal-resep-head').scrollTop(0);
         }
     }
 
@@ -3969,7 +3961,7 @@
     }
 
     function detailResep(id) {
-        $('#modal-resep-detail').modal('show');
+        $('#modal-resep-detail').modal({show:true, backdrop:'static'});
         listDetailResepPasien(id);
     }
 
@@ -3980,7 +3972,6 @@
 
         PermintaanResepAction.listDetail(idApprovalObat, function (response) {
             data = response;
-            console.log(data);
             if (data != null) {
                 $.each(data, function (i, item) {
 
@@ -4131,14 +4122,13 @@
                     labelKronis(flagKronis);
                     $("#form-hari").hide();
                 }
-                //$('#resep_stok_box').val(qtyBox);
-                //$('#resep_stok_lembar').val(qtyLembar);
+
                 $('#resep_stok_biji').val(total);
                 $("#h-qty-default").val(bijiPerLembar);
 
                 $('#resep_keterangan').val('');
-                $('#resep_qty').val('');
-                $('#resep_jenis_satuan').val('').trigger('change');
+                $('#resep_qty').val(bijiPerLembar);
+                $('#resep_jenis_satuan').val('biji').trigger('change');
             }
         }
     }
@@ -4214,7 +4204,7 @@
     }
 
     function confirmSaveAllTindakan(){
-        $('#modal-confirm-dialog').modal('show');
+        $('#modal-confirm-dialog').modal({show:true, backdrop:'static'});
         $('#save_con').attr('onclick','saveAllTindakan()');
     }
 
@@ -4226,7 +4216,6 @@
         dwr.engine.setAsync(true);
         CheckupDetailAction.saveApproveAllTindakanRawatJalan(idDetailCheckup, idJenisPeriksa, {
             callback : function (response) {
-                console.log(response);
                 if(response.status == "success"){
                     $('#success_all').show().fadeOut(5000);
                     $('#msg_all_suc').text(response.message);
@@ -4243,15 +4232,10 @@
     }
 
     function defaultValByJenisSatuan(name) {
-
         var nilai = "1";
         if (name == "biji"){
             nilai = $("#h-qty-default").val();
         }
-
-        console.log(name);
-        console.log(nilai);
-
         $("#resep_qty").val(nilai);
 
     }

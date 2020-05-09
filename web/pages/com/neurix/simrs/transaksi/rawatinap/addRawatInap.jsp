@@ -3873,6 +3873,7 @@
             $('#modal-tindakan').modal({show:true,backdrop:'static'});
 
         } else if (select == 3) {
+            $('#nosa_id_diagnosa_bpjs, #nosa_ket_diagnosa').val('');
             $('#nosa_id_diagnosa, #nosa_jenis_diagnosa').val('').trigger('change');
             $('#load_diagnosa, #warning_diagnosa, #war_diagnosa, #war_jenis_diagnosa').hide();
             $('#save_diagnosa').attr('onclick', 'saveDiagnosa(\'' + id + '\')').show();
@@ -3908,7 +3909,7 @@
             $('#resep_nama_obat').val('').trigger('change');
             $('#resep_keterangan').val('');
             $('#resep_qty').val('');
-            $('#resep_jenis_satuan').val('').trigger('change');
+            $('#resep_jenis_satuan').val('biji').trigger('change');
             $('#resep_stok_box, #resep_stok_lembar, #resep_stok_biji').val('');
             $('#body_detail').html('');
             $('#desti_apotek').html('');
@@ -4311,7 +4312,7 @@
         var idLab = $('#lab_lab').val();
         var idParameter = $('#lab_parameter').val();
 
-        if (idDetailCheckup != '' && idKategori != '' && idLab != '' && idParameter != '') {
+        if (idDetailCheckup != '' && idKategori != '' && idLab != '' && idParameter != null) {
 
             $('#save_lab').hide();
             $('#load_lab').show();
@@ -5013,14 +5014,16 @@
 
         var i = 0;
         var waktu = [];
-        $.each(listObat, function () {
-            waktu.push($(this).val());
-            i = i+1;
+        $.each(listObat, function (idx, item) {
+            if(item.checked){
+                waktu.push($(this).val());
+                i = i+1;
+            }
         });
 
         var ket = pemberian+" Makan. "+i+"x1. "+waktu.join(", ");
 
-        if (obat != '' && ket != '' && qty != '' && apotek != '' && jenisSatuan != '') {
+        if (obat != '' && ket != '' && qty != '' && apotek != '' && jenisSatuan != '' && waktu.length > 0) {
 
             var idPelayanan = apotek.split('|')[0];
             var namaPelayanan = apotek.split('|')[1];
@@ -5102,6 +5105,7 @@
             } else {
                 $('#warning_resep_head').show().fadeOut(5000);
                 $('#msg_resep').text('Qty tidak boleh melebihi stok obat..!');
+                $('#modal-resep-head').scrollTop(0);
             }
 
         } else {
@@ -5117,11 +5121,12 @@
             if (qty == '' || qty <= 0) {
                 $('#war_rep_qty').show();
             }
-            if (ket == '') {
-                $('#war_rep_ket').show();
+            if (waktu.length == 0) {
+                $('#war_rep_cek_waktu').show();
             }
             $('#warning_resep_head').show().fadeOut(5000);
             $('#msg_resep').text('Silahkan cek kembali data inputan!');
+            $('#modal-resep-head').scrollTop(0);
         }
     }
 
@@ -5150,6 +5155,7 @@
         } else {
             $('#warning_resep_head').show().fadeOut(5000);
             $('#msg_resep').text("Silahkan cek kembali data inputan anda..!");
+            $('#modal-resep-head').scrollTop(0);
         }
     }
 
@@ -5198,6 +5204,7 @@
         } else {
             $('#warning_resep_head').show().fadeOut(5000);
             $('#msg_resep').text("Silahkan cek kembali data inputan anda..!");
+            $('#modal-resep-head').scrollTop(0);
         }
     }
 
@@ -5475,8 +5482,8 @@
                 console.log(bijiPerLembar);
 
                 $('#resep_keterangan').val('');
-                // $('#resep_qty').val('');
-                $('#resep_jenis_satuan').val('').trigger('change');
+                $('#resep_qty').val(bijiPerLembar);
+                $('#resep_jenis_satuan').val('biji').trigger('change');
             }
         }
     }

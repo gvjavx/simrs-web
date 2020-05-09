@@ -783,7 +783,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
 
         Boolean cek = false;
 
-        String SQL = "SELECT id_detail_checkup, approve_bpjs_flag\n" +
+        String SQL = "SELECT id_detail_checkup, approve_bpjs_flag, flag_update_klaim\n" +
                 "FROM it_simrs_riwayat_tindakan\n" +
                 "WHERE id_detail_checkup LIKE :id ";
 
@@ -794,7 +794,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
 
         if (results != null) {
             for (Object[] obj : results) {
-                if (obj[1] == null || "".equalsIgnoreCase(obj[1].toString())) {
+                if (obj[2] == null || "".equalsIgnoreCase(obj[1].toString())) {
                     cek = true;
                 }
             }

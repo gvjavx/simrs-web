@@ -356,7 +356,7 @@
                     <h3 class="box-title"><i class="fa fa-medkit"></i> Daftar Tindakan Rawat</h3>
                 </div>
                 <div class="box-body">
-                    <table class="table table-bordered table-striped" id="tabel_tindakan_ts">
+                    <table class="table table-bordered table-striped" id="tabel_tindakan_ts" style="font-size: 12px">
                         <thead>
                         <tr bgcolor="#90ee90">
                             <td width="20%">Tanggal</td>
@@ -434,7 +434,7 @@
                         </div>
                         <!-- /.col -->
                         <div class="col-md-6">
-                            <table class="table table-striped">
+                            <table class="table table-striped" >
                                 <tr>
                                     <td><b>Jenis Kelamin</b></td>
                                     <td><span id="fin_jenis_kelamin"></span></td>
@@ -513,7 +513,7 @@
                     <h3 class="box-title"><i class="fa fa-medkit"></i> Daftar Tindakan Rawat</h3>
                 </div>
                 <div class="box-body">
-                    <table class="table table-bordered table-striped" id="tabel_tindakan_fin">
+                    <table class="table table-bordered table-striped" id="tabel_tindakan_fin" style="font-size: 12px">
                         <thead>
                         <tr bgcolor="#90ee90">
                             <td width="20%">Tanggal</td>
@@ -708,7 +708,7 @@
                         });
 
                         var kategori =
-                            '<select class="form-control" id="kategori'+i+'">' +
+                            '<select style="width: 100%;" class="form-control select-2" id="kategori'+i+'">' +
                             '<option value="">[Select One]</option>'+ tindakanina +
                             '</select>';
 
@@ -810,6 +810,11 @@
                 $('#save_verif').attr('onclick','confirmSaveApproveTindakan(\''+idDetailCheckup+'\')');
             }else{
                 $('#save_verif').hide();
+            }
+            var select2 = $('.select-2').length;
+            if(select2 > 0){
+                $('.select-2').select2({
+                });
             }
             $('#modal-detail-pasien').modal({show:true, backdrop:'static'});
         }, 100);

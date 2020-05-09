@@ -368,7 +368,7 @@
                     <h3 class="box-title"><i class="fa fa-medkit"></i> Daftar Tindakan Rawat</h3>
                 </div>
                 <div class="box-body">
-                    <table class="table table-bordered table-striped" id="tabel_tindakan_ts">
+                    <table class="table table-bordered table-striped" id="tabel_tindakan_ts" style="font-size: 12px">
                         <thead>
                         <tr bgcolor="#90ee90">
                             <td width="19%">Tanggal</td>
@@ -509,7 +509,7 @@
                     <h3 class="box-title"><i class="fa fa-medkit"></i> Daftar Tindakan Rawat</h3>
                 </div>
                 <div class="box-body">
-                    <table class="table table-bordered table-striped" id="tabel_tindakan_fin">
+                    <table class="table table-bordered table-striped" id="tabel_tindakan_fin" style="font-size: 12px">
                         <thead>
                         <tr bgcolor="#90ee90">
                             <td width="20%">Tanggal</td>
@@ -575,9 +575,7 @@
 
     function hitungStatusBiaya(idDetailCheckup) {
         CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, "RJ",  function (response) {
-            // if (response.idJenisPeriksaPasien == "bpjs") {
                 if (response.tarifBpjs != null && response.tarifTindakan != null) {
-
                     var coverBiaya = response.tarifBpjs;
                     var biayaTindakan = response.tarifTindakan;
 
@@ -677,7 +675,6 @@
                         noSep = response.noSep;
                         $('#det_no_rm').html(response.idPasien);
                         jenisPasien = response.idJenisPeriksaPasien;
-
                 }
             });
 
@@ -705,7 +702,7 @@
                         });
 
                         var kategori =
-                                '<select class="form-control" id="kategori'+i+'">' +
+                                '<select style="width: 100%;" class="form-control select-2" id="kategori'+i+'">' +
                                 '<option value="">[Select One]</option>'+
                                 tindakanina +
                                 '</select>';
@@ -723,7 +720,8 @@
                             onclick = "";
                         }
 
-                        if(item.kategoriTindakanBpjs == null || item.kategoriTindakanBpjs == ''){
+                        if(item.kategoriTindakanBpjs == null || item.kategoriTindakanBpjs == '' &&
+                            item.flagUpdateKlaim != null && item.flagUpdateKlaim != ''){
                             cekTindakan = true;
                         }
 
@@ -799,6 +797,12 @@
                 $('#save_verif').attr('onclick','confirmSaveApproveTindakan(\''+idDetailCheckup+'\')');
             }else{
                 $('#save_verif').hide();
+            }
+
+            var select2 = $('.select-2').length;
+            if(select2 > 0){
+                $('.select-2').select2({
+                });
             }
             $('#modal-detail-pasien').modal({show:true, backdrop:'static'});
         }, 100);

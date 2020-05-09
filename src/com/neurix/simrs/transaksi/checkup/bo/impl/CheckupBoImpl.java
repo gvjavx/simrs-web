@@ -518,6 +518,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                             tindakanRawatEntity.setLastUpdateWho(bean.getCreatedWho());
                             tindakanRawatEntity.setFlag("Y");
                             tindakanRawatEntity.setAction("U");
+                            tindakanRawatEntity.setApproveFlag("Y");
 
                             if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "ptpn".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
                                 tindakanRawatEntity.setTarif(tindakanEntity.getTarifBpjs());
