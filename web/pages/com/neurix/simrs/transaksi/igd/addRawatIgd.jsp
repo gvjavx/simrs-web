@@ -2923,6 +2923,8 @@
             } else {
                 option = option;
             }
+
+            console.log(response);
         });
 
         $('#kamar_detail').html(option);

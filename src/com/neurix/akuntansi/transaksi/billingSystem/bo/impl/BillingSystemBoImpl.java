@@ -1483,7 +1483,7 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
             mapPiutang.put("bukti", bukti);
             mapPiutang.put("nilai", jumlahAllTindakan);
             if ("umum".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien()) && "non_tunai".equalsIgnoreCase(detailCheckupEntity.getMetodePembayaran())){
-                mapPiutang.put("id_pasien", idPasien);
+                mapPiutang.put("pasien_id", idPasien);
             } else {
                 mapPiutang.put("master_id", masterId);
             }
