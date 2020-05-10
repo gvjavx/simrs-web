@@ -30,8 +30,118 @@ public class AkunSettingReportKeuanganKonsol extends BaseModel {
     private BigDecimal curSaldoUnit5;
     private BigDecimal curSaldoUnitAll;
 
+    private BigDecimal saldoUnit11TahunLalu;
+    private BigDecimal saldoUnit21TahunLalu;
+    private BigDecimal saldoUnit31TahunLalu;
+    private BigDecimal saldoUnit41TahunLalu;
+    private BigDecimal saldoUnit51TahunLalu;
+    private BigDecimal saldoUnitAll1TahunLalu;
+
+    private BigDecimal saldoUnit12TahunLalu;
+    private BigDecimal saldoUnit22TahunLalu;
+    private BigDecimal saldoUnit32TahunLalu;
+    private BigDecimal saldoUnit42TahunLalu;
+    private BigDecimal saldoUnit52TahunLalu;
+    private BigDecimal saldoUnitAll2TahunLalu;
+
     private String level1;
     private String level2;
+
+    public BigDecimal getSaldoUnit11TahunLalu() {
+        return saldoUnit11TahunLalu;
+    }
+
+    public void setSaldoUnit11TahunLalu(BigDecimal saldoUnit11TahunLalu) {
+        this.saldoUnit11TahunLalu = saldoUnit11TahunLalu;
+    }
+
+    public BigDecimal getSaldoUnit21TahunLalu() {
+        return saldoUnit21TahunLalu;
+    }
+
+    public void setSaldoUnit21TahunLalu(BigDecimal saldoUnit21TahunLalu) {
+        this.saldoUnit21TahunLalu = saldoUnit21TahunLalu;
+    }
+
+    public BigDecimal getSaldoUnit31TahunLalu() {
+        return saldoUnit31TahunLalu;
+    }
+
+    public void setSaldoUnit31TahunLalu(BigDecimal saldoUnit31TahunLalu) {
+        this.saldoUnit31TahunLalu = saldoUnit31TahunLalu;
+    }
+
+    public BigDecimal getSaldoUnit41TahunLalu() {
+        return saldoUnit41TahunLalu;
+    }
+
+    public void setSaldoUnit41TahunLalu(BigDecimal saldoUnit41TahunLalu) {
+        this.saldoUnit41TahunLalu = saldoUnit41TahunLalu;
+    }
+
+    public BigDecimal getSaldoUnit51TahunLalu() {
+        return saldoUnit51TahunLalu;
+    }
+
+    public void setSaldoUnit51TahunLalu(BigDecimal saldoUnit51TahunLalu) {
+        this.saldoUnit51TahunLalu = saldoUnit51TahunLalu;
+    }
+
+    public BigDecimal getSaldoUnitAll1TahunLalu() {
+        return saldoUnitAll1TahunLalu;
+    }
+
+    public void setSaldoUnitAll1TahunLalu(BigDecimal saldoUnitAll1TahunLalu) {
+        this.saldoUnitAll1TahunLalu = saldoUnitAll1TahunLalu;
+    }
+
+    public BigDecimal getSaldoUnit12TahunLalu() {
+        return saldoUnit12TahunLalu;
+    }
+
+    public void setSaldoUnit12TahunLalu(BigDecimal saldoUnit12TahunLalu) {
+        this.saldoUnit12TahunLalu = saldoUnit12TahunLalu;
+    }
+
+    public BigDecimal getSaldoUnit22TahunLalu() {
+        return saldoUnit22TahunLalu;
+    }
+
+    public void setSaldoUnit22TahunLalu(BigDecimal saldoUnit22TahunLalu) {
+        this.saldoUnit22TahunLalu = saldoUnit22TahunLalu;
+    }
+
+    public BigDecimal getSaldoUnit32TahunLalu() {
+        return saldoUnit32TahunLalu;
+    }
+
+    public void setSaldoUnit32TahunLalu(BigDecimal saldoUnit32TahunLalu) {
+        this.saldoUnit32TahunLalu = saldoUnit32TahunLalu;
+    }
+
+    public BigDecimal getSaldoUnit42TahunLalu() {
+        return saldoUnit42TahunLalu;
+    }
+
+    public void setSaldoUnit42TahunLalu(BigDecimal saldoUnit42TahunLalu) {
+        this.saldoUnit42TahunLalu = saldoUnit42TahunLalu;
+    }
+
+    public BigDecimal getSaldoUnit52TahunLalu() {
+        return saldoUnit52TahunLalu;
+    }
+
+    public void setSaldoUnit52TahunLalu(BigDecimal saldoUnit52TahunLalu) {
+        this.saldoUnit52TahunLalu = saldoUnit52TahunLalu;
+    }
+
+    public BigDecimal getSaldoUnitAll2TahunLalu() {
+        return saldoUnitAll2TahunLalu;
+    }
+
+    public void setSaldoUnitAll2TahunLalu(BigDecimal saldoUnitAll2TahunLalu) {
+        this.saldoUnitAll2TahunLalu = saldoUnitAll2TahunLalu;
+    }
 
     public BigDecimal getLastSaldoUnit1() {
         return lastSaldoUnit1;

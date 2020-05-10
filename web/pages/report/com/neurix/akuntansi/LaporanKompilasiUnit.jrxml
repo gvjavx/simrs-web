@@ -23,6 +23,8 @@
 	<parameter name="urlLogo" class="java.lang.String"/>
 	<parameter name="areaId" class="java.lang.String"/>
 	<parameter name="branchName" class="java.lang.String"/>
+	<parameter name="periodeTitleTahunLalu" class="java.lang.String"/>
+	<parameter name="periodeTitle2TahunLalu" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -30,20 +32,20 @@
 	<field name="level2" class="java.lang.String"/>
 	<field name="namaKodeRekeningAlias" class="java.lang.String"/>
 	<field name="kodeRekeningAlias" class="java.lang.String"/>
-	<field name="saldoUnit1" class="java.math.BigDecimal"/>
-	<field name="lastSaldoUnit1" class="java.math.BigDecimal"/>
+	<field name="saldoUnit12TahunLalu" class="java.math.BigDecimal"/>
+	<field name="saldoUnit11TahunLalu" class="java.math.BigDecimal"/>
 	<field name="curSaldoUnit1" class="java.math.BigDecimal"/>
 	<variable name="SUM_level_2" class="java.math.BigDecimal" resetType="Group" resetGroup="level2" calculation="Sum">
-		<variableExpression><![CDATA[$F{saldoUnit1}]]></variableExpression>
+		<variableExpression><![CDATA[$F{saldoUnit11TahunLalu}]]></variableExpression>
 	</variable>
 	<variable name="SUM_level_1" class="java.math.BigDecimal" resetType="Group" resetGroup="level1" calculation="Sum">
-		<variableExpression><![CDATA[$F{saldoUnit1}]]></variableExpression>
+		<variableExpression><![CDATA[$F{saldoUnit11TahunLalu}]]></variableExpression>
 	</variable>
 	<variable name="SUM_level_2_last_saldo" class="java.math.BigDecimal" resetType="Group" resetGroup="level2" calculation="Sum">
-		<variableExpression><![CDATA[$F{lastSaldoUnit1}]]></variableExpression>
+		<variableExpression><![CDATA[$F{saldoUnit12TahunLalu}]]></variableExpression>
 	</variable>
 	<variable name="SUM_level_1_last_saldo" class="java.math.BigDecimal" resetType="Group" resetGroup="level1" calculation="Sum">
-		<variableExpression><![CDATA[$F{lastSaldoUnit1}]]></variableExpression>
+		<variableExpression><![CDATA[$F{saldoUnit12TahunLalu}]]></variableExpression>
 	</variable>
 	<variable name="SUM_level_2_cur_saldo" class="java.math.BigDecimal" resetType="Group" resetGroup="level2" calculation="Sum">
 		<variableExpression><![CDATA[$F{curSaldoUnit1}]]></variableExpression>
@@ -442,7 +444,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Bulan Lalu"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{periodeTitle2TahunLalu}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-22" x="324" y="2" width="122" height="20" uuid="138caea6-cc49-4cd9-b3d6-89334afe0702"/>
@@ -455,7 +457,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Bulan Ini"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{periodeTitleTahunLalu}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-22" x="446" y="2" width="122" height="20" uuid="7d0a7d89-0100-46c3-ad18-4409424f2766"/>
@@ -468,7 +470,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["s/d Bulan Ini"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{periodeTitle}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
@@ -498,7 +500,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{lastSaldoUnit1}.abs()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{saldoUnit12TahunLalu}.abs()]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-22" x="324" y="2" width="122" height="15" uuid="e714db20-f5a3-44b8-b082-20098f521baf"/>
@@ -511,7 +513,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{saldoUnit1}.abs()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{saldoUnit11TahunLalu}.abs()]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-22" x="446" y="2" width="122" height="15" uuid="befc03aa-00f7-49f6-afbc-deaab2bb8e26"/>

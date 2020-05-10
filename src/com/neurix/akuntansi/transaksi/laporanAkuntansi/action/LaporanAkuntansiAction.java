@@ -1775,7 +1775,11 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         String reportId="RPT24";
         String result="";
         String periode= data.getBulan()+"-"+data.getTahun();
+        String tahunLalu = String.valueOf(Integer.parseInt(data.getTahun())-1);
+        String duaTahunLalu = String.valueOf(Integer.parseInt(data.getTahun())-2);
         String periodeTitle = CommonUtil.convertNumberToStringBulan(data.getBulan())+" "+data.getTahun();
+        String periodeTitleTahunLalu = CommonUtil.convertNumberToStringBulan(data.getBulan())+" "+tahunLalu;
+        String periodeTitle2TahunLalu = CommonUtil.convertNumberToStringBulan(data.getBulan())+" "+duaTahunLalu;
         List<String> branchId = new ArrayList<>();
 
         if (("K").equalsIgnoreCase(data.getTipeLaporan())){
@@ -1813,6 +1817,8 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         reportParams.put("branchId", data.getUnit());
         reportParams.put("branchName", branch.getBranchName());
         reportParams.put("periodeTitle",periodeTitle);
+        reportParams.put("periodeTitleTahunLalu",periodeTitleTahunLalu);
+        reportParams.put("periodeTitle2TahunLalu",periodeTitle2TahunLalu);
         reportParams.put("tanggal", CommonUtil.convertDateToString(now));
         reportParams.put("periode", periode);
         reportParams.put("kota",branch.getBranchName());

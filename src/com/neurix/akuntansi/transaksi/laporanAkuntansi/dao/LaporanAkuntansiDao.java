@@ -447,22 +447,32 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "  a.jumlahdebitunit1 - a.jumlahkreditunit1 as saldounit1 ,\n" +
                 "  a.jumlahlastdebitunit1 - a.jumlahlastkreditunit1 as lastsaldounit1,\n" +
                 "  (a.jumlahdebitunit1+a.jumlahlastdebitunit1) - (a.jumlahkreditunit1+a.jumlahlastkreditunit1) as cursaldounit1,\n" +
+                "  a.saldounit11tahunlalu,\n" +
+                "  a.saldounit12tahunlalu,\n" +
                 "  --unit 2\n" +
                 "  a.jumlahdebitunit2 - a.jumlahkreditunit2 as saldounit2 ,\n" +
                 "  a.jumlahlastdebitunit2 - a.jumlahlastkreditunit2 as lastsaldounit2,\n" +
                 "  (a.jumlahdebitunit2+a.jumlahlastdebitunit2) - (a.jumlahkreditunit2+a.jumlahlastkreditunit2) as cursaldounit2,\n" +
+                "  a.saldounit21tahunlalu,\n" +
+                "  a.saldounit22tahunlalu,\n" +
                 "  --unit 3\n" +
                 "  a.jumlahdebitunit3 - a.jumlahkreditunit3 as saldounit3 ,\n" +
                 "  a.jumlahlastdebitunit3 - a.jumlahlastkreditunit3 as lastsaldounit3,\n" +
                 "  (a.jumlahdebitunit3+a.jumlahlastdebitunit3) - (a.jumlahkreditunit3+a.jumlahlastkreditunit3) as cursaldounit3,\n" +
+                "  a.saldounit31tahunlalu,\n" +
+                "  a.saldounit32tahunlalu,\n" +
                 "  --unit 4\n" +
                 "  a.jumlahdebitunit4 - a.jumlahkreditunit4 as saldounit4 ,\n" +
                 "  a.jumlahlastdebitunit4 - a.jumlahlastkreditunit4 as lastsaldounit4,\n" +
                 "  (a.jumlahdebitunit4+a.jumlahlastdebitunit4) - (a.jumlahkreditunit4+a.jumlahlastkreditunit4) as cursaldounit4,\n" +
+                "  a.saldounit41tahunlalu,\n" +
+                "  a.saldounit42tahunlalu,\n" +
                 "  --unit all\n" +
                 "  a.jumlahdebitunitAll - a.jumlahkreditunitAll as saldounitAll ,\n" +
                 "  a.jumlahlastdebitunitAll - a.jumlahlastkreditunitAll as lastsaldounitAll,\n" +
-                "  (a.jumlahdebitunitAll+a.jumlahlastdebitunitAll) - (a.jumlahkreditunitAll+a.jumlahlastkreditunitAll) as cursaldounitAll\n" +
+                "  (a.jumlahdebitunitAll+a.jumlahlastdebitunitAll) - (a.jumlahkreditunitAll+a.jumlahlastkreditunitAll) as cursaldounitAll,\n" +
+                "  a.saldounitAll1tahunlalu,\n" +
+                "  a.saldounitAll2tahunlalu\n" +
                 "FROM \n" +
                 "  (\n" +
                 "    SELECT \n" +
@@ -475,26 +485,40 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "\t  CASE WHEN junit1.jumlah_kredit IS NULL THEN 0 ELSE junit1.jumlah_kredit END as jumlahkreditunit1,\n" +
                 "\t  CASE WHEN sa1.jumlah_debit IS NULL THEN 0 ELSE sa1.jumlah_debit END as jumlahlastdebitunit1,\n" +
                 "\t  CASE WHEN sa1.jumlah_kredit IS NULL THEN 0 ELSE sa1.jumlah_kredit END as jumlahlastkreditunit1,\n" +
+                "\t  CASE WHEN sst1.jumlah_saldo IS NULL THEN 0 ELSE sst1.jumlah_saldo END as saldounit11tahunlalu,\n" +
+                "\t  CASE WHEN sdt1.jumlah_saldo IS NULL THEN 0 ELSE sdt1.jumlah_saldo END as saldounit12tahunlalu,\n" +
+                "\n" +
                 "\t  -- unit 2\n" +
                 "\t  CASE WHEN junit2.jumlah_debit IS NULL THEN 0 ELSE junit2.jumlah_debit END as jumlahdebitunit2, \n" +
                 "\t  CASE WHEN junit2.jumlah_kredit IS NULL THEN 0 ELSE junit2.jumlah_kredit END as jumlahkreditunit2,\n" +
                 "\t  CASE WHEN sa2.jumlah_debit IS NULL THEN 0 ELSE sa2.jumlah_debit END as jumlahlastdebitunit2,\n" +
                 "\t  CASE WHEN sa2.jumlah_kredit IS NULL THEN 0 ELSE sa2.jumlah_kredit END as jumlahlastkreditunit2,\n" +
+                "\t  CASE WHEN sst2.jumlah_saldo IS NULL THEN 0 ELSE sst2.jumlah_saldo END as saldounit21tahunlalu,\n" +
+                "\t  CASE WHEN sdt2.jumlah_saldo IS NULL THEN 0 ELSE sdt2.jumlah_saldo END as saldounit22tahunlalu,\n" +
+                "\t  \n" +
                 "\t  -- unit 3\n" +
                 "\t  CASE WHEN junit3.jumlah_debit IS NULL THEN 0 ELSE junit3.jumlah_debit END as jumlahdebitunit3, \n" +
                 "\t  CASE WHEN junit3.jumlah_kredit IS NULL THEN 0 ELSE junit3.jumlah_kredit END as jumlahkreditunit3,\n" +
                 "\t  CASE WHEN sa3.jumlah_debit IS NULL THEN 0 ELSE sa3.jumlah_debit END as jumlahlastdebitunit3,\n" +
                 "\t  CASE WHEN sa3.jumlah_kredit IS NULL THEN 0 ELSE sa3.jumlah_kredit END as jumlahlastkreditunit3,\n" +
+                "\t  CASE WHEN sst3.jumlah_saldo IS NULL THEN 0 ELSE sst3.jumlah_saldo END as saldounit31tahunlalu,\n" +
+                "\t  CASE WHEN sdt3.jumlah_saldo IS NULL THEN 0 ELSE sdt3.jumlah_saldo END as saldounit32tahunlalu,\n" +
+                "\t  \n" +
                 "\t  -- unit 4\n" +
                 "\t  CASE WHEN junit4.jumlah_debit IS NULL THEN 0 ELSE junit4.jumlah_debit END as jumlahdebitunit4, \n" +
                 "\t  CASE WHEN junit4.jumlah_kredit IS NULL THEN 0 ELSE junit4.jumlah_kredit END as jumlahkreditunit4,\n" +
                 "\t  CASE WHEN sa4.jumlah_debit IS NULL THEN 0 ELSE sa4.jumlah_debit END as jumlahlastdebitunit4,\n" +
                 "\t  CASE WHEN sa4.jumlah_kredit IS NULL THEN 0 ELSE sa4.jumlah_kredit END as jumlahlastkreditunit4,\n" +
+                "\t  CASE WHEN sst4.jumlah_saldo IS NULL THEN 0 ELSE sst4.jumlah_saldo END as saldounit41tahunlalu,\n" +
+                "\t  CASE WHEN sdt4.jumlah_saldo IS NULL THEN 0 ELSE sdt4.jumlah_saldo END as saldounit42tahunlalu,\n" +
+                "\t  \n" +
                 "\t  --total\n" +
                 "\t  CASE WHEN junitAll.jumlah_debit IS NULL THEN 0 ELSE junitAll.jumlah_debit END as jumlahdebitunitAll, \n" +
                 "\t  CASE WHEN junitAll.jumlah_kredit IS NULL THEN 0 ELSE junitAll.jumlah_kredit END as jumlahkreditunitAll,\n" +
                 "\t  CASE WHEN saAll.jumlah_debit IS NULL THEN 0 ELSE saAll.jumlah_debit END as jumlahlastdebitunitAll,\n" +
-                "\t  CASE WHEN saAll.jumlah_kredit IS NULL THEN 0 ELSE saAll.jumlah_kredit END as jumlahlastkreditunitAll\n" +
+                "\t  CASE WHEN saAll.jumlah_kredit IS NULL THEN 0 ELSE saAll.jumlah_kredit END as jumlahlastkreditunitAll,\n" +
+                "\t  CASE WHEN sstAll.jumlah_saldo IS NULL THEN 0 ELSE sstAll.jumlah_saldo END as saldounitAll1tahunlalu,\n" +
+                "\t  CASE WHEN sdtAll.jumlah_saldo IS NULL THEN 0 ELSE sdtAll.jumlah_saldo END as saldounitAll2tahunlalu\n" +
                 "    FROM \n" +
                 "      (\n" +
                 "        select \n" +
@@ -561,6 +585,46 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "          ) jurnal \n" +
                 "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
                 "      ) sa1 ON sa1.rekening_id = a.rekening_id \n" +
+                "\t  LEFT OUTER JOIN (\n" +
+                "        select \n" +
+                "          jurnal.*, \n" +
+                "          kr.rekening_id \n" +
+                "        from \n" +
+                "          (\n" +
+                "            select \n" +
+                "              kr.kode_rekening AS kode_rekening, \n" +
+                "              sum(x.jumlah_debit-x.jumlah_kredit ) as jumlah_saldo\n" +
+                "            from \n" +
+                "              it_akun_saldo_akhir x\n" +
+                "              INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = x.rekening_id \n" +
+                "            where \n" +
+                "              to_date(x.periode, 'MM-yyyy') = to_date('"+periode+"', 'MM-yyyy') - Interval '1 year'\n" +
+                "              and x.branch_id = '"+branchId1+"' \n" +
+                "            group by \n" +
+                "              kr.kode_rekening\n" +
+                "          ) jurnal \n" +
+                "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
+                "      ) sst1 ON sst1.rekening_id = a.rekening_id \n" +
+                "\t  LEFT OUTER JOIN (\n" +
+                "        select \n" +
+                "          jurnal.*, \n" +
+                "          kr.rekening_id \n" +
+                "        from \n" +
+                "          (\n" +
+                "            select \n" +
+                "              kr.kode_rekening AS kode_rekening, \n" +
+                "              sum(x.jumlah_debit-x.jumlah_kredit ) as jumlah_saldo\n" +
+                "            from \n" +
+                "              it_akun_saldo_akhir x\n" +
+                "              INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = x.rekening_id \n" +
+                "            where \n" +
+                "              to_date(x.periode, 'MM-yyyy') = to_date('"+periode+"', 'MM-yyyy') - Interval '2 year'\n" +
+                "              and x.branch_id = '"+branchId1+"' \n" +
+                "            group by \n" +
+                "              kr.kode_rekening\n" +
+                "          ) jurnal \n" +
+                "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
+                "      ) sdt1 ON sdt1.rekening_id = a.rekening_id \n" +
                 "\t  -- UNIT 2\n" +
                 "      LEFT OUTER JOIN (\n" +
                 "        select \n" +
@@ -605,6 +669,46 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "          ) jurnal \n" +
                 "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
                 "      ) sa2 ON sa2.rekening_id = a.rekening_id \n" +
+                "\t  LEFT OUTER JOIN (\n" +
+                "        select \n" +
+                "          jurnal.*, \n" +
+                "          kr.rekening_id \n" +
+                "        from \n" +
+                "          (\n" +
+                "            select \n" +
+                "              kr.kode_rekening AS kode_rekening, \n" +
+                "              sum(x.jumlah_debit-x.jumlah_kredit ) as jumlah_saldo\n" +
+                "            from \n" +
+                "              it_akun_saldo_akhir x\n" +
+                "              INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = x.rekening_id \n" +
+                "            where \n" +
+                "              to_date(x.periode, 'MM-yyyy') = to_date('"+periode+"', 'MM-yyyy') - Interval '1 year'\n" +
+                "              and x.branch_id = '"+branchId2+"' \n" +
+                "            group by \n" +
+                "              kr.kode_rekening\n" +
+                "          ) jurnal \n" +
+                "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
+                "      ) sst2 ON sst2.rekening_id = a.rekening_id \n" +
+                "\t  LEFT OUTER JOIN (\n" +
+                "        select \n" +
+                "          jurnal.*, \n" +
+                "          kr.rekening_id \n" +
+                "        from \n" +
+                "          (\n" +
+                "            select \n" +
+                "              kr.kode_rekening AS kode_rekening, \n" +
+                "              sum(x.jumlah_debit-x.jumlah_kredit ) as jumlah_saldo\n" +
+                "            from \n" +
+                "              it_akun_saldo_akhir x\n" +
+                "              INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = x.rekening_id \n" +
+                "            where \n" +
+                "              to_date(x.periode, 'MM-yyyy') = to_date('"+periode+"', 'MM-yyyy') - Interval '2 year'\n" +
+                "              and x.branch_id = '"+branchId2+"' \n" +
+                "            group by \n" +
+                "              kr.kode_rekening\n" +
+                "          ) jurnal \n" +
+                "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
+                "      ) sdt2 ON sdt2.rekening_id = a.rekening_id \n" +
                 "\t  -- UNIT 3\n" +
                 "      LEFT OUTER JOIN (\n" +
                 "        select \n" +
@@ -649,6 +753,46 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "          ) jurnal \n" +
                 "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
                 "      ) sa3 ON sa3.rekening_id = a.rekening_id \n" +
+                "\t  LEFT OUTER JOIN (\n" +
+                "        select \n" +
+                "          jurnal.*, \n" +
+                "          kr.rekening_id \n" +
+                "        from \n" +
+                "          (\n" +
+                "            select \n" +
+                "              kr.kode_rekening AS kode_rekening, \n" +
+                "              sum(x.jumlah_debit-x.jumlah_kredit ) as jumlah_saldo\n" +
+                "            from \n" +
+                "              it_akun_saldo_akhir x\n" +
+                "              INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = x.rekening_id \n" +
+                "            where \n" +
+                "              to_date(x.periode, 'MM-yyyy') = to_date('"+periode+"', 'MM-yyyy') - Interval '1 year'\n" +
+                "              and x.branch_id = '"+branchId3+"' \n" +
+                "            group by \n" +
+                "              kr.kode_rekening\n" +
+                "          ) jurnal \n" +
+                "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
+                "      ) sst3 ON sst3.rekening_id = a.rekening_id \n" +
+                "\t  LEFT OUTER JOIN (\n" +
+                "        select \n" +
+                "          jurnal.*, \n" +
+                "          kr.rekening_id \n" +
+                "        from \n" +
+                "          (\n" +
+                "            select \n" +
+                "              kr.kode_rekening AS kode_rekening, \n" +
+                "              sum(x.jumlah_debit-x.jumlah_kredit ) as jumlah_saldo\n" +
+                "            from \n" +
+                "              it_akun_saldo_akhir x\n" +
+                "              INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = x.rekening_id \n" +
+                "            where \n" +
+                "              to_date(x.periode, 'MM-yyyy') = to_date('"+periode+"', 'MM-yyyy') - Interval '2 year'\n" +
+                "              and x.branch_id = '"+branchId3+"' \n" +
+                "            group by \n" +
+                "              kr.kode_rekening\n" +
+                "          ) jurnal \n" +
+                "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
+                "      ) sdt3 ON sdt3.rekening_id = a.rekening_id \n" +
                 "\t  -- UNIT 4\n" +
                 "      LEFT OUTER JOIN (\n" +
                 "        select \n" +
@@ -672,6 +816,46 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "          ) jurnal \n" +
                 "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
                 "      ) junit4 ON junit4.rekening_id = a.rekening_id \n" +
+                "\t  LEFT OUTER JOIN (\n" +
+                "        select \n" +
+                "          jurnal.*, \n" +
+                "          kr.rekening_id \n" +
+                "        from \n" +
+                "          (\n" +
+                "            select \n" +
+                "              kr.kode_rekening AS kode_rekening, \n" +
+                "              sum(x.jumlah_debit-x.jumlah_kredit ) as jumlah_saldo\n" +
+                "            from \n" +
+                "              it_akun_saldo_akhir x\n" +
+                "              INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = x.rekening_id \n" +
+                "            where \n" +
+                "              to_date(x.periode, 'MM-yyyy') = to_date('"+periode+"', 'MM-yyyy') - Interval '1 year'\n" +
+                "              and x.branch_id = '"+branchId4+"' \n" +
+                "            group by \n" +
+                "              kr.kode_rekening\n" +
+                "          ) jurnal \n" +
+                "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
+                "      ) sst4 ON sst4.rekening_id = a.rekening_id \n" +
+                "\t  LEFT OUTER JOIN (\n" +
+                "        select \n" +
+                "          jurnal.*, \n" +
+                "          kr.rekening_id \n" +
+                "        from \n" +
+                "          (\n" +
+                "            select \n" +
+                "              kr.kode_rekening AS kode_rekening, \n" +
+                "              sum(x.jumlah_debit-x.jumlah_kredit ) as jumlah_saldo\n" +
+                "            from \n" +
+                "              it_akun_saldo_akhir x\n" +
+                "              INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = x.rekening_id \n" +
+                "            where \n" +
+                "              to_date(x.periode, 'MM-yyyy') = to_date('"+periode+"', 'MM-yyyy') - Interval '2 year'\n" +
+                "              and x.branch_id = '"+branchId4+"' \n" +
+                "            group by \n" +
+                "              kr.kode_rekening\n" +
+                "          ) jurnal \n" +
+                "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
+                "      ) sdt4 ON sdt4.rekening_id = a.rekening_id \n" +
                 "\t  LEFT OUTER JOIN (\n" +
                 "        select \n" +
                 "          jurnal.*, \n" +
@@ -736,12 +920,52 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "              kr.kode_rekening\n" +
                 "          ) jurnal \n" +
                 "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
-                "      ) saall ON saall.rekening_id = a.rekening_id \n" +
+                "      ) saall ON saall.rekening_id = a.rekening_id\n" +
+                "\t  LEFT OUTER JOIN (\n" +
+                "        select \n" +
+                "          jurnal.*, \n" +
+                "          kr.rekening_id \n" +
+                "        from \n" +
+                "          (\n" +
+                "            select \n" +
+                "              kr.kode_rekening AS kode_rekening, \n" +
+                "              sum(x.jumlah_debit-x.jumlah_kredit ) as jumlah_saldo\n" +
+                "            from \n" +
+                "              it_akun_saldo_akhir x\n" +
+                "              INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = x.rekening_id \n" +
+                "            where \n" +
+                "              to_date(x.periode, 'MM-yyyy') = to_date('"+periode+"', 'MM-yyyy') - Interval '1 year'\n" +
+                "              and x.branch_id IN ("+branchIdAll+") \n" +
+                "            group by \n" +
+                "              kr.kode_rekening\n" +
+                "          ) jurnal \n" +
+                "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
+                "      ) sstall ON sstall.rekening_id = a.rekening_id \n" +
+                "\t  LEFT OUTER JOIN (\n" +
+                "        select \n" +
+                "          jurnal.*, \n" +
+                "          kr.rekening_id \n" +
+                "        from \n" +
+                "          (\n" +
+                "            select \n" +
+                "              kr.kode_rekening AS kode_rekening, \n" +
+                "              sum(x.jumlah_debit-x.jumlah_kredit ) as jumlah_saldo\n" +
+                "            from \n" +
+                "              it_akun_saldo_akhir x\n" +
+                "              INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = x.rekening_id \n" +
+                "            where \n" +
+                "              to_date(x.periode, 'MM-yyyy') = to_date('"+periode+"', 'MM-yyyy') - Interval '2 year'\n" +
+                "              and x.branch_id IN ("+branchIdAll+") \n" +
+                "            group by \n" +
+                "              kr.kode_rekening\n" +
+                "          ) jurnal \n" +
+                "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
+                "      ) sdtall ON sdtall.rekening_id = a.rekening_id \n" +
                 "    order by \n" +
                 "      a.kode_rekening\n" +
                 "  ) a \n" +
                 "ORDER BY \n" +
-                "  a.koderekening\n\n\n";
+                "  a.koderekening\n";
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
                 .list();
@@ -756,22 +980,32 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
             data.setSaldoUnit1(BigDecimal.valueOf(Double.parseDouble(row[4].toString())));
             data.setLastSaldoUnit1(BigDecimal.valueOf(Double.parseDouble(row[5].toString())));
             data.setCurSaldoUnit1(BigDecimal.valueOf(Double.parseDouble(row[6].toString())));
+            data.setSaldoUnit11TahunLalu(BigDecimal.valueOf(Double.parseDouble(row[7].toString())));
+            data.setSaldoUnit12TahunLalu(BigDecimal.valueOf(Double.parseDouble(row[8].toString())));
             //unit 2
-            data.setSaldoUnit2(BigDecimal.valueOf(Double.parseDouble(row[7].toString())));
-            data.setLastSaldoUnit2(BigDecimal.valueOf(Double.parseDouble(row[8].toString())));
-            data.setCurSaldoUnit2(BigDecimal.valueOf(Double.parseDouble(row[9].toString())));
+            data.setSaldoUnit2(BigDecimal.valueOf(Double.parseDouble(row[9].toString())));
+            data.setLastSaldoUnit2(BigDecimal.valueOf(Double.parseDouble(row[10].toString())));
+            data.setCurSaldoUnit2(BigDecimal.valueOf(Double.parseDouble(row[11].toString())));
+            data.setSaldoUnit21TahunLalu(BigDecimal.valueOf(Double.parseDouble(row[12].toString())));
+            data.setSaldoUnit22TahunLalu(BigDecimal.valueOf(Double.parseDouble(row[13].toString())));
             //unit 3
-            data.setSaldoUnit3(BigDecimal.valueOf(Double.parseDouble(row[10].toString())));
-            data.setLastSaldoUnit3(BigDecimal.valueOf(Double.parseDouble(row[11].toString())));
-            data.setCurSaldoUnit3(BigDecimal.valueOf(Double.parseDouble(row[12].toString())));
+            data.setSaldoUnit3(BigDecimal.valueOf(Double.parseDouble(row[14].toString())));
+            data.setLastSaldoUnit3(BigDecimal.valueOf(Double.parseDouble(row[15].toString())));
+            data.setCurSaldoUnit3(BigDecimal.valueOf(Double.parseDouble(row[16].toString())));
+            data.setSaldoUnit31TahunLalu(BigDecimal.valueOf(Double.parseDouble(row[17].toString())));
+            data.setSaldoUnit32TahunLalu(BigDecimal.valueOf(Double.parseDouble(row[18].toString())));
             //unit 4
-            data.setSaldoUnit4(BigDecimal.valueOf(Double.parseDouble(row[13].toString())));
-            data.setLastSaldoUnit4(BigDecimal.valueOf(Double.parseDouble(row[14].toString())));
-            data.setCurSaldoUnit4(BigDecimal.valueOf(Double.parseDouble(row[15].toString())));
+            data.setSaldoUnit4(BigDecimal.valueOf(Double.parseDouble(row[19].toString())));
+            data.setLastSaldoUnit4(BigDecimal.valueOf(Double.parseDouble(row[20].toString())));
+            data.setCurSaldoUnit4(BigDecimal.valueOf(Double.parseDouble(row[21].toString())));
+            data.setSaldoUnit41TahunLalu(BigDecimal.valueOf(Double.parseDouble(row[22].toString())));
+            data.setSaldoUnit42TahunLalu(BigDecimal.valueOf(Double.parseDouble(row[23].toString())));
             //unit All
-            data.setSaldoUnitAll(BigDecimal.valueOf(Double.parseDouble(row[16].toString())));
-            data.setLastSaldoUnitAll(BigDecimal.valueOf(Double.parseDouble(row[17].toString())));
-            data.setCurSaldoUnitAll(BigDecimal.valueOf(Double.parseDouble(row[18].toString())));
+            data.setSaldoUnitAll(BigDecimal.valueOf(Double.parseDouble(row[24].toString())));
+            data.setLastSaldoUnitAll(BigDecimal.valueOf(Double.parseDouble(row[25].toString())));
+            data.setCurSaldoUnitAll(BigDecimal.valueOf(Double.parseDouble(row[26].toString())));
+            data.setSaldoUnitAll1TahunLalu(BigDecimal.valueOf(Double.parseDouble(row[27].toString())));
+            data.setSaldoUnitAll2TahunLalu(BigDecimal.valueOf(Double.parseDouble(row[28].toString())));
             listOfResult.add(data);
         }
         return listOfResult;
@@ -787,7 +1021,9 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "  a.operator, \n" +
                 "  a.jumlahdebitunit1 - a.jumlahkreditunit1 as saldounit1 ,\n" +
                 "  a.jumlahlastdebitunit1 - a.jumlahlastkreditunit1 as lastsaldounit1,\n" +
-                "  (a.jumlahdebitunit1+a.jumlahlastdebitunit1) - (a.jumlahkreditunit1+a.jumlahlastkreditunit1) as cursaldounit1\n" +
+                "  (a.jumlahdebitunit1+a.jumlahlastdebitunit1) - (a.jumlahkreditunit1+a.jumlahlastkreditunit1) as cursaldounit1,\n" +
+                "  a.jumlahsaldo1tahunlalu,\n" +
+                "  a.jumlahsaldo2tahunlalu\n" +
                 "FROM \n" +
                 "  (\n" +
                 "    SELECT \n" +
@@ -798,7 +1034,9 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "\t  CASE WHEN junit1.jumlah_debit IS NULL THEN 0 ELSE junit1.jumlah_debit END as jumlahdebitunit1, \n" +
                 "\t  CASE WHEN junit1.jumlah_kredit IS NULL THEN 0 ELSE junit1.jumlah_kredit END as jumlahkreditunit1,\n" +
                 "\t  CASE WHEN sa1.jumlah_debit IS NULL THEN 0 ELSE sa1.jumlah_debit END as jumlahlastdebitunit1,\n" +
-                "\t  CASE WHEN sa1.jumlah_kredit IS NULL THEN 0 ELSE sa1.jumlah_kredit END as jumlahlastkreditunit1\n" +
+                "\t  CASE WHEN sa1.jumlah_kredit IS NULL THEN 0 ELSE sa1.jumlah_kredit END as jumlahlastkreditunit1,\n" +
+                "\t  CASE WHEN sst1.jumlah_saldo IS NULL THEN 0 ELSE sst1.jumlah_saldo END as jumlahsaldo1tahunlalu,\n" +
+                "\t  CASE WHEN sdt1.jumlah_saldo IS NULL THEN 0 ELSE sdt1.jumlah_saldo END as jumlahsaldo2tahunlalu\n" +
                 "    FROM \n" +
                 "      (\n" +
                 "        select \n" +
@@ -864,6 +1102,46 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "          ) jurnal \n" +
                 "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
                 "      ) sa1 ON sa1.rekening_id = a.rekening_id \n" +
+                "\t  LEFT OUTER JOIN (\n" +
+                "        select \n" +
+                "          jurnal.*, \n" +
+                "          kr.rekening_id \n" +
+                "        from \n" +
+                "          (\n" +
+                "            select \n" +
+                "              kr.kode_rekening AS kode_rekening, \n" +
+                "              sum(x.jumlah_debit-x.jumlah_kredit) as jumlah_saldo\n" +
+                "            from \n" +
+                "              it_akun_saldo_akhir x\n" +
+                "              INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = x.rekening_id \n" +
+                "            where \n" +
+                "              to_date(x.periode, 'MM-yyyy') = to_date('"+periode+"', 'MM-yyyy') - Interval '1 year'\n" +
+                "              and x.branch_id = '"+branchId1+"' \n" +
+                "            group by \n" +
+                "              kr.kode_rekening\n" +
+                "          ) jurnal \n" +
+                "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
+                "      ) sst1 ON sst1.rekening_id = a.rekening_id \n" +
+                "\t  LEFT OUTER JOIN (\n" +
+                "        select \n" +
+                "          jurnal.*, \n" +
+                "          kr.rekening_id \n" +
+                "        from \n" +
+                "          (\n" +
+                "            select \n" +
+                "              kr.kode_rekening AS kode_rekening, \n" +
+                "              sum(x.jumlah_debit-x.jumlah_kredit) as jumlah_saldo\n" +
+                "            from \n" +
+                "              it_akun_saldo_akhir x\n" +
+                "              INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = x.rekening_id \n" +
+                "            where \n" +
+                "              to_date(x.periode, 'MM-yyyy') = to_date('"+periode+"', 'MM-yyyy') - Interval '2 year'\n" +
+                "              and x.branch_id = '"+branchId1+"' \n" +
+                "            group by \n" +
+                "              kr.kode_rekening\n" +
+                "          ) jurnal \n" +
+                "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
+                "      ) sdt1 ON sdt1.rekening_id = a.rekening_id\n" +
                 "    order by \n" +
                 "      a.kode_rekening\n" +
                 "  ) a \n" +
@@ -882,6 +1160,8 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
             data.setSaldoUnit1(BigDecimal.valueOf(Double.parseDouble(row[4].toString())));
             data.setLastSaldoUnit1(BigDecimal.valueOf(Double.parseDouble(row[5].toString())));
             data.setCurSaldoUnit1(BigDecimal.valueOf(Double.parseDouble(row[6].toString())));
+            data.setSaldoUnit11TahunLalu(BigDecimal.valueOf(Double.parseDouble(row[7].toString())));
+            data.setSaldoUnit12TahunLalu(BigDecimal.valueOf(Double.parseDouble(row[8].toString())));
             listOfResult.add(data);
         }
         return listOfResult;

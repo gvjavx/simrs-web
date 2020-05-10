@@ -417,6 +417,18 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
                 BigDecimal totalCurSaldoUnit4= BigDecimal.ZERO;
                 BigDecimal totalCurSaldoUnitAll= BigDecimal.ZERO;
 
+                BigDecimal totalSaldoUnit11TahunLalu= BigDecimal.ZERO;
+                BigDecimal totalSaldoUnit21TahunLalu= BigDecimal.ZERO;
+                BigDecimal totalSaldoUnit31TahunLalu= BigDecimal.ZERO;
+                BigDecimal totalSaldoUnit41TahunLalu= BigDecimal.ZERO;
+                BigDecimal totalSaldoUnitAll1TahunLalu= BigDecimal.ZERO;
+
+                BigDecimal totalSaldoUnit12TahunLalu= BigDecimal.ZERO;
+                BigDecimal totalSaldoUnit22TahunLalu= BigDecimal.ZERO;
+                BigDecimal totalSaldoUnit32TahunLalu= BigDecimal.ZERO;
+                BigDecimal totalSaldoUnit42TahunLalu= BigDecimal.ZERO;
+                BigDecimal totalSaldoUnitAll2TahunLalu= BigDecimal.ZERO;
+
                 for (AkunSettingReportKeuanganKonsolDetail konsolDetail : keuanganKonsolDetailList){
                     if (konsolDetail.getSettingReportKonsolId().equalsIgnoreCase(konsol.getSettingReportKonsolId())){
                         if ("T".equalsIgnoreCase(konsolDetail.getOperator())){
@@ -438,6 +450,18 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
                             totalCurSaldoUnit4 = totalCurSaldoUnit4.add(konsolDetail.getCurSaldoUnit4());
                             totalCurSaldoUnitAll = totalCurSaldoUnitAll.add(konsolDetail.getCurSaldoUnitAll());
 
+                            totalSaldoUnit11TahunLalu = totalSaldoUnit11TahunLalu.add(konsolDetail.getSaldoUnit11TahunLalu());
+                            totalSaldoUnit21TahunLalu = totalSaldoUnit21TahunLalu.add(konsolDetail.getSaldoUnit21TahunLalu());
+                            totalSaldoUnit31TahunLalu = totalSaldoUnit31TahunLalu.add(konsolDetail.getSaldoUnit31TahunLalu());
+                            totalSaldoUnit41TahunLalu = totalSaldoUnit41TahunLalu.add(konsolDetail.getSaldoUnit41TahunLalu());
+                            totalSaldoUnitAll1TahunLalu = totalSaldoUnitAll1TahunLalu.add(konsolDetail.getSaldoUnitAll1TahunLalu());
+
+                            totalSaldoUnit12TahunLalu = totalSaldoUnit12TahunLalu.add(konsolDetail.getSaldoUnit12TahunLalu());
+                            totalSaldoUnit22TahunLalu = totalSaldoUnit22TahunLalu.add(konsolDetail.getSaldoUnit22TahunLalu());
+                            totalSaldoUnit32TahunLalu = totalSaldoUnit32TahunLalu.add(konsolDetail.getSaldoUnit32TahunLalu());
+                            totalSaldoUnit42TahunLalu = totalSaldoUnit42TahunLalu.add(konsolDetail.getSaldoUnit42TahunLalu());
+                            totalSaldoUnitAll2TahunLalu = totalSaldoUnitAll2TahunLalu.add(konsolDetail.getSaldoUnitAll2TahunLalu());
+
                         }else if ("K".equalsIgnoreCase(konsolDetail.getOperator())){
                             totalUnit1 = totalUnit1.subtract(konsolDetail.getSaldoUnit1());
                             totalUnit2 = totalUnit2.subtract(konsolDetail.getSaldoUnit2());
@@ -456,6 +480,18 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
                             totalCurSaldoUnit3 = totalCurSaldoUnit3.subtract(konsolDetail.getCurSaldoUnit3());
                             totalCurSaldoUnit4 = totalCurSaldoUnit4.subtract(konsolDetail.getCurSaldoUnit4());
                             totalCurSaldoUnitAll = totalCurSaldoUnitAll.subtract(konsolDetail.getCurSaldoUnitAll());
+
+                            totalSaldoUnit11TahunLalu = totalSaldoUnit11TahunLalu.subtract(konsolDetail.getSaldoUnit11TahunLalu());
+                            totalSaldoUnit21TahunLalu = totalSaldoUnit21TahunLalu.subtract(konsolDetail.getSaldoUnit21TahunLalu());
+                            totalSaldoUnit31TahunLalu = totalSaldoUnit31TahunLalu.subtract(konsolDetail.getSaldoUnit31TahunLalu());
+                            totalSaldoUnit41TahunLalu = totalSaldoUnit41TahunLalu.subtract(konsolDetail.getSaldoUnit41TahunLalu());
+                            totalSaldoUnitAll1TahunLalu = totalSaldoUnitAll1TahunLalu.subtract(konsolDetail.getSaldoUnitAll1TahunLalu());
+
+                            totalSaldoUnit12TahunLalu = totalSaldoUnit12TahunLalu.subtract(konsolDetail.getSaldoUnit12TahunLalu());
+                            totalSaldoUnit22TahunLalu = totalSaldoUnit22TahunLalu.subtract(konsolDetail.getSaldoUnit22TahunLalu());
+                            totalSaldoUnit32TahunLalu = totalSaldoUnit32TahunLalu.subtract(konsolDetail.getSaldoUnit32TahunLalu());
+                            totalSaldoUnit42TahunLalu = totalSaldoUnit42TahunLalu.subtract(konsolDetail.getSaldoUnit42TahunLalu());
+                            totalSaldoUnitAll2TahunLalu = totalSaldoUnitAll2TahunLalu.subtract(konsolDetail.getSaldoUnitAll2TahunLalu());
                         }
                     }
                 }
@@ -481,6 +517,18 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
                 data.setCurSaldoUnit3(totalCurSaldoUnit3);
                 data.setCurSaldoUnit4(totalCurSaldoUnit4);
                 data.setCurSaldoUnitAll(totalCurSaldoUnitAll);
+
+                data.setSaldoUnit11TahunLalu(totalSaldoUnit11TahunLalu);
+                data.setSaldoUnit21TahunLalu(totalSaldoUnit21TahunLalu);
+                data.setSaldoUnit31TahunLalu(totalSaldoUnit31TahunLalu);
+                data.setSaldoUnit41TahunLalu(totalSaldoUnit41TahunLalu);
+                data.setSaldoUnitAll1TahunLalu(totalSaldoUnitAll1TahunLalu);
+
+                data.setSaldoUnit12TahunLalu(totalSaldoUnit12TahunLalu);
+                data.setSaldoUnit22TahunLalu(totalSaldoUnit22TahunLalu);
+                data.setSaldoUnit32TahunLalu(totalSaldoUnit32TahunLalu);
+                data.setSaldoUnit42TahunLalu(totalSaldoUnit42TahunLalu);
+                data.setSaldoUnitAll2TahunLalu(totalSaldoUnitAll2TahunLalu);
 
                 result.add(data);
             }
@@ -513,16 +561,22 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
                 BigDecimal totalUnit1= BigDecimal.ZERO;
                 BigDecimal totalLastSaldoUnit1= BigDecimal.ZERO;
                 BigDecimal totalCurSaldoUnit1= BigDecimal.ZERO;
+                BigDecimal totalSaldoUnit11TahunLalu = BigDecimal.ZERO;
+                BigDecimal totalSaldoUnit12TahunLalu = BigDecimal.ZERO;
                 for (AkunSettingReportKeuanganKonsolDetail konsolDetail : keuanganKonsolDetailList){
                     if (konsolDetail.getSettingReportKonsolId().equalsIgnoreCase(konsol.getSettingReportKonsolId())){
                         if ("T".equalsIgnoreCase(konsolDetail.getOperator())){
                             totalUnit1 = totalUnit1.add(konsolDetail.getSaldoUnit1());
                             totalLastSaldoUnit1 = totalLastSaldoUnit1.add(konsolDetail.getLastSaldoUnit1());
                             totalCurSaldoUnit1 = totalCurSaldoUnit1.add(konsolDetail.getCurSaldoUnit1());
+                            totalSaldoUnit11TahunLalu = totalSaldoUnit11TahunLalu.add(konsolDetail.getSaldoUnit11TahunLalu());
+                            totalSaldoUnit12TahunLalu = totalSaldoUnit12TahunLalu.add(konsolDetail.getSaldoUnit12TahunLalu());
                         }else if ("K".equalsIgnoreCase(konsolDetail.getOperator())){
                             totalUnit1 = totalUnit1.subtract(konsolDetail.getSaldoUnit1());
                             totalLastSaldoUnit1 = totalLastSaldoUnit1.subtract(konsolDetail.getLastSaldoUnit1());
                             totalCurSaldoUnit1 = totalCurSaldoUnit1.subtract(konsolDetail.getCurSaldoUnit1());
+                            totalSaldoUnit11TahunLalu = totalSaldoUnit11TahunLalu.subtract(konsolDetail.getSaldoUnit11TahunLalu());
+                            totalSaldoUnit12TahunLalu = totalSaldoUnit12TahunLalu.subtract(konsolDetail.getSaldoUnit12TahunLalu());
                         }
                     }
                 }
@@ -534,7 +588,8 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
                 data.setSaldoUnit1(totalUnit1);
                 data.setLastSaldoUnit1(totalLastSaldoUnit1);
                 data.setCurSaldoUnit1(totalCurSaldoUnit1);
-
+                data.setSaldoUnit11TahunLalu(totalSaldoUnit11TahunLalu);
+                data.setSaldoUnit12TahunLalu(totalSaldoUnit12TahunLalu);
                 result.add(data);
             }
         }
