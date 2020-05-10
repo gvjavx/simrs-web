@@ -24,4 +24,5 @@ public interface RiwayatTindakanBo {
     public void updateByEntity(ItSimrsRiwayatTindakanEntity entity) throws GeneralBOException;
     public ItSimrsTindakanTransitorisEntity getTindakanTransitorisById(String id) throws GeneralBOException;
     public ItSimrsRiwayatTindakanEntity getRiwayatTindakanResep(String idDetail, String jenisPasien) throws GeneralBOException;
+    public List<String> getListKeteranganByIdDetailCheckup(String idDetailCheckup) throws GeneralBOException;
 }

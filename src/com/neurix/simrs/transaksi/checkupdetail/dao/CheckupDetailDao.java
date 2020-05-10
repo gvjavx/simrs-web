@@ -783,7 +783,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
 
         Boolean cek = false;
 
-        String SQL = "SELECT id_detail_checkup, approve_bpjs_flag\n" +
+        String SQL = "SELECT id_detail_checkup, approve_bpjs_flag, flag_update_klaim\n" +
                 "FROM it_simrs_riwayat_tindakan\n" +
                 "WHERE id_detail_checkup LIKE :id ";
 
@@ -794,7 +794,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
 
         if (results != null) {
             for (Object[] obj : results) {
-                if (obj[1] == null || "".equalsIgnoreCase(obj[1].toString())) {
+                if (obj[2] == null || "".equalsIgnoreCase(obj[1].toString())) {
                     cek = true;
                 }
             }
@@ -1006,6 +1006,11 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 "id_detail_checkup = :idDetail\n" +
                 "AND keterangan LIKE :ket\n" +
                 "AND jenis_pasien LIKE :jenis\n" +
+                "AND id_riwayat_tindakan NOT IN (\n" +
+                "\tSELECT id_riwayat_tindakan \n" +
+                "\tFROM it_simrs_tindakan_transitoris\n" +
+                "\tWHERE id_detail_checkup = :idDetail\n" +
+                ")\n" +
                 "GROUP BY id_detail_checkup";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)

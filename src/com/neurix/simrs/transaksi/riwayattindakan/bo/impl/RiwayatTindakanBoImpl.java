@@ -275,4 +275,9 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
 
         return new ItSimrsRiwayatTindakanEntity();
     }
+
+    @Override
+    public List<String> getListKeteranganByIdDetailCheckup(String idDetailCheckup) throws GeneralBOException {
+        return riwayatTindakanDao.listOfKeteranganExistByIdDetailCheckup(idDetailCheckup);
+    }
 }
