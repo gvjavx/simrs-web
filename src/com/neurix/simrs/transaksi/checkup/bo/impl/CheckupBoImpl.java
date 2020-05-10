@@ -2337,6 +2337,9 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             resepEntity.setCreatedWho(bean.getCreatedWho());
             resepEntity.setLastUpdate(bean.getLastUpdate());
             resepEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            resepEntity.setIsUmum("N");
+            resepEntity.setTglAntrian(bean.getLastUpdate());
+            resepEntity.setStatus("3");
 
             try {
                 permintaanResepDao.addAndSave(resepEntity);

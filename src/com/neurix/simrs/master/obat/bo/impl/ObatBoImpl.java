@@ -994,11 +994,11 @@ public class ObatBoImpl implements ObatBo {
 
             ImtSimrsApprovalTransaksiObatEntity approvalEntity = new ImtSimrsApprovalTransaksiObatEntity();
             approvalEntity.setIdApprovalObat("INV" + approvalTransaksiObatDao.getNextId());
-            approvalEntity.setIdPelayanan("");
+            approvalEntity.setIdPelayanan(CommonUtil.userPelayananIdLogin());
             approvalEntity.setBranchId(bean.getBranchId());
             approvalEntity.setFlag(bean.getFlag());
             approvalEntity.setAction(bean.getAction());
-            approvalEntity.setTipePermintaan("004");
+            approvalEntity.setTipePermintaan("004"); //reture obat
             approvalEntity.setLastUpdate(bean.getCreatedDate());
             approvalEntity.setLastUpdateWho(bean.getCreatedWho());
             approvalEntity.setCreatedDate(bean.getCreatedDate());

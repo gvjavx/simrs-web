@@ -3108,7 +3108,7 @@
         var jenisPasien = $('#jenis_pasien').val();
         var idDiag = "";
 
-        if(jenisPasien == "bpjs"){
+        if(jenisPasien == "bpjs" || jenisPasien == "ptpn"){
             idDiag = idDiagnosaBpjs;
         }else{
             idDiag = idDiagnosa;
@@ -3316,6 +3316,13 @@
                     var tanggal = item.createdDate;
                     var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
                     var btn = '<img border="0" class="hvr-grow" onclick="editLab(\'' + item.idPeriksaLab + '\',\'' + item.idLab + '\',\'' + item.idKategoriLab + '\',\''+item.kategoriLabName+'\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">';
+                    var tipe = "";
+
+                    if(item.kategoriLabName == "Radiologi"){
+                        tipe = "radiologi";
+                    }else{
+                        tipe = "lab";
+                    }
 
                     if (item.idLab != null) {
                         pemeriksaan = item.idLab;
@@ -3327,7 +3334,7 @@
                         lab = item.labName;
                     }
                     if(item.approveFlag == "Y"){
-                        btn = "";
+                       btn = '<a target="_blank" href="printLabRadiologi_checkupdetail.action?id='+idDetailCheckup+'&tipe='+tipe+'&lab='+item.idPeriksaLab+'"><img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;"></a>';
                     }
 
                     if("paket_perusahaan" == jenisPeriksaPasien || "paket_individu" == jenisPeriksaPasien){

@@ -207,7 +207,7 @@
                                                     </a>
                                                 </s:if>
                                                 <s:else>
-                                                    <img onclick="showDetailListObat('<s:property value="noBatch"/>','<s:property value="urlDoc"/>','<s:property value="noFaktur"/>','<s:property value="tanggalFaktur"/>','<s:property value="noInvoice"/>','<s:property value="noDo"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">
+                                                    <img onclick="showDetailListObat('<s:property value="noBatch"/>','<s:property value="urlDoc"/>','<s:property value="noFaktur"/>','<s:property value="stTanggakFaktur"/>','<s:property value="noInvoice"/>','<s:property value="noDo"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">
                                                 </s:else>
                                                 <img id='load<s:property value="noBatch"/>' src="<s:url value="/pages/images/spinner.gif"/>" style="height: 35px; width: 35px; display: none">
                                             </td>
@@ -676,9 +676,9 @@
         console.log(img);
         $('#det_img').attr('onclick','showDoc(\''+img+'\')');
         $('#det_no_faktur').text(noFaktur);
-        var tgl = $.datepicker.formatDate('dd-mm-yy', new Date(tglFaktur));
-        console.log(tgl);
-        $('#det_tlg_faktur').text(tgl);
+        // var tgl = converterDate(new Date(tglFaktur));
+        // console.log(tgl);
+        $('#det_tlg_faktur').text(tglFaktur);
         $('#det_no_invoice').text(noInvoice);
         $('#det_no_do').text(noDo);
         $('#modal-detail').modal({show:true, backdrop:'static'});

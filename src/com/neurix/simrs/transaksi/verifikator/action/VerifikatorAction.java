@@ -509,14 +509,26 @@ public class VerifikatorAction extends BaseMasterAction {
 
                                 }
 
+                                boolean isRawatInap = false;
+
+                                for (RiwayatTindakan riwayatTindakan: tindakanRawatList){
+                                    if("kamar".equalsIgnoreCase(riwayatTindakan.getKeterangan())){
+                                        isRawatInap = true;
+                                    }
+                                }
+
                                 for (RiwayatTindakan tindakan : tindakanRawatList) {
 
                                     BigDecimal ppnObat = new BigDecimal(String.valueOf(0));
                                     BigInteger tarifTotal = tindakan.getTotalTarif().toBigInteger();
 
                                     if("resep".equalsIgnoreCase(tindakan.getKeterangan())){
-                                        ppnObat = (tindakan.getTotalTarif().multiply(new BigDecimal(0.1))).setScale(2, BigDecimal.ROUND_HALF_UP);
-                                        tarifTotal = ppnObat.toBigInteger().add(tarifTotal);
+                                        if(isRawatInap){
+                                            tarifTotal = tarifTotal;
+                                        }else{
+                                            ppnObat = (tindakan.getTotalTarif().multiply(new BigDecimal(0.1))).setScale(2, BigDecimal.ROUND_HALF_UP);
+                                            tarifTotal = ppnObat.toBigInteger().add(tarifTotal);
+                                        }
                                     }
 
                                     if ("Y".equalsIgnoreCase(tindakan.getApproveBpjsFlag()) && tindakan.getTotalTarif() != null && !"Y".equalsIgnoreCase(tindakan.getFlagUpdateKlaim()) && "bpjs".equalsIgnoreCase(tindakan.getJenisPasien())) {

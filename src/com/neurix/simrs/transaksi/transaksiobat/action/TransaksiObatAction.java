@@ -1959,6 +1959,21 @@ public class TransaksiObatAction extends BaseMasterAction {
 
             }
 
+            Pelayanan pelayanan = new Pelayanan();
+            pelayanan.setIdPelayanan(checkup.getIdPelayanan());
+            List<Pelayanan> pelayananList = new ArrayList<>();
+
+            try {
+                pelayananList = pelayananBoProxy.getByCriteria(pelayanan);
+            }catch (GeneralBOException e){
+                logger.error("Found Error "+e.getMessage());
+            }
+
+            if(pelayananList.size() > 0){
+                Pelayanan plyn = pelayananList.get(0);
+                reportParams.put("tipePelayanan", plyn.getTipePelayanan());
+            }
+
             reportParams.put("dokter", permintaanResep.getNamaDokter());
             reportParams.put("ttdDokter", CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_TTD_DOKTER+permintaanResep.getTtdDokter());
             reportParams.put("resepId", idResep);

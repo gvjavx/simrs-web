@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.periksalab.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.master.kategorilab.dao.KategoriLabDao;
 import com.neurix.simrs.master.kategorilab.model.ImSimrsKategoriLabEntity;
 import com.neurix.simrs.master.lab.dao.LabDao;
@@ -855,5 +856,42 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
     @Override
     public String getDivisiIdKodering(String idDetailCheckup, String tipeLab) throws GeneralBOException {
         return periksaLabDao.getDivisiIdLabTransaction(idDetailCheckup, tipeLab);
+    }
+
+    @Override
+    public void saveEditStatusPeriksa(PeriksaLab bean) throws GeneralBOException {
+        if(bean != null){
+            ItSimrsPeriksaLabEntity periksaLabEntity = new ItSimrsPeriksaLabEntity();
+            try {
+                periksaLabEntity = periksaLabDao.getById("idPeriksaLab", bean.getIdPeriksaLab());
+                if (periksaLabEntity.getIdPeriksaLab() != null){
+                    periksaLabEntity.setStatusPeriksa("1");
+                    periksaLabEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    periksaLabEntity.setLastUpdate(bean.getLastUpdate());
+
+                    if(periksaLabEntity.getTanggalMasukLab() == null || "".equalsIgnoreCase(periksaLabEntity.getTanggalMasukLab().toString())) {
+                        periksaLabEntity.setTanggalMasukLab(bean.getTanggalMasukLab());
+                    }
+
+                    try {
+                        periksaLabDao.updateAndSave(periksaLabEntity);
+                    }catch (HibernateException e){
+                        logger.error("Found Error" +e.getMessage());
+                    }
+                }
+            }catch (HibernateException e){
+                logger.error("Found Error when "+e.getMessage());
+            }
+        }
+    }
+
+    @Override
+    public List<Dokter> getListDokterLabRadiologi(String tipe) throws GeneralBOException {
+        return periksaLabDao.getListDokterLabRadiologi(tipe);
+    }
+
+    @Override
+    public PeriksaLab getNamaLab(String idPeriksa) throws GeneralBOException {
+        return periksaLabDao.getNamaLab(idPeriksa);
     }
 }

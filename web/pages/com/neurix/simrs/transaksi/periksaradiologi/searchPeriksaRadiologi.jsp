@@ -175,20 +175,27 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <s:iterator value="#session.listOfResult" status="listOfPeriksaLab">
+                            <s:iterator value="#session.listOfResult" var="row">
                                 <tr>
                                     <td><s:property value="stCreatedDate"/></td>
                                     <td><s:property value="idDetailCheckup"/></td>
                                     <td><s:property value="namaPasien"/></td>
                                     <td><s:property value="labName"/></td>
                                     <td align="center">
-                                        <s:url var="add_periksa_radiologi" namespace="/radiologi" action="add_radiologi" escapeAmp="false">
-                                            <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
-                                            <s:param name="lab"><s:property value="idPeriksaLab"/></s:param>
-                                        </s:url>
-                                        <s:a href="%{add_periksa_radiologi}">
-                                            <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
-                                        </s:a>
+                                        <s:if test='#row.approveFlag == "Y"'>
+                                            <a target="_blank" href="printRadiologi_radiologi.action?id=<s:property value="idDetailCheckup"/>&lab=<s:property value="idPeriksaLab"/>">
+                                                <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer; ">
+                                            </a>
+                                        </s:if>
+                                        <s:else>
+                                            <s:url var="add_periksa_radiologi" namespace="/radiologi" action="add_radiologi" escapeAmp="false">
+                                                <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
+                                                <s:param name="lab"><s:property value="idPeriksaLab"/></s:param>
+                                            </s:url>
+                                            <s:a href="%{add_periksa_radiologi}">
+                                                <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
+                                            </s:a>
+                                        </s:else>
                                     </td>
                                 </tr>
                             </s:iterator>

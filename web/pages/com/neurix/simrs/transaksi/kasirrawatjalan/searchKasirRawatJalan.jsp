@@ -320,6 +320,10 @@
                                     <td><b>Jenis Pasien</b></td>
                                     <td><span id="fin_jenis_pasien"></span></td>
                                 </tr>
+                                <tr>
+                                    <td><b>Nama Poli</b></td>
+                                    <td><span id="fin_poli"></span></td>
+                                </tr>
                                 <tr style="display: none;" id="label-asuransi">
                                     <td><b>Asuransi</b></td>
                                     <td><span id="fin_asuransi"></span></td>
@@ -552,6 +556,7 @@
                         }
 
                         $('#fin_no_rm').html(response.idPasien);
+                        $('#fin_poli').html(response.namaPelayanan);
 
                     // });
 

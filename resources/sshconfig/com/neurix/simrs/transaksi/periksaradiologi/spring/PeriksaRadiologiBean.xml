@@ -10,6 +10,7 @@
           p:checkupDetailBoProxy-ref="checkupDetailBoProxy"
           p:checkupBoProxy-ref="checkupBoProxy"
           p:jenisPriksaPasienBoProxy-ref="jenisPriksaPasienBoProxy"
+          p:branchBoProxy-ref="branchBoProxy"
     />
 
     <bean id="periksaRadiologiBo" class="com.neurix.simrs.transaksi.periksaradiologi.bo.impl.PeriksaRadiologiBoImpl"

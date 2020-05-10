@@ -74,6 +74,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                     permintaanVendor.setIdVendor(permintaanVendorEntity.getIdVendor());
                     permintaanVendor.setFlag(permintaanVendorEntity.getFlag());
                     permintaanVendor.setAction(permintaanVendorEntity.getAction());
+                    permintaanVendor.setTipeTransaksi(permintaanVendorEntity.getTipeTransaksi());
 
                     Vendor vendor = new Vendor();
                     vendor.setIdVendor(permintaanVendorEntity.getIdVendor());
@@ -167,6 +168,22 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                                 if ("biji".equalsIgnoreCase(transaksiObatDetailEntity.getJenisSatuan())) {
                                     transaksiObatDetail.setHargaPo(transaksiObatDetailEntity.getAverageHargaBiji());
                                 }
+
+                                if("reture".equalsIgnoreCase(permintaanVendorEntity.getTipeTransaksi())){
+                                    TransaksiObatDetail detail = new TransaksiObatDetail();
+                                    try {
+                                        detail = permintaanVendorDao.getDiskonBrutoNetto(transaksiObatDetailEntity.getIdObat());
+                                    }catch (HibernateException e){
+                                        logger.error("Found Error when "+e.getMessage());
+                                    }
+
+                                    if(detail.getIdObat() != null){
+                                        transaksiObatDetail.setDiskon(detail.getDiskon());
+                                        transaksiObatDetail.setBruto(detail.getBruto());
+                                        transaksiObatDetail.setNetto(detail.getNetto());
+                                    }
+                                }
+
                                 transaksiObatDetails.add(transaksiObatDetail);
                             }
                             permintaanVendor.setListOfTransaksiObatDetail(transaksiObatDetails);
@@ -441,6 +458,9 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                 obatDetailBatchEntity.setLastUpdate(bean.getLastUpdate());
                 obatDetailBatchEntity.setLastUpdateWho(bean.getLastUpdateWho());
                 obatDetailBatchEntity.setFlagObatBpjs(transaksiObatDetailEntity.getFlagObatBpjs());
+                obatDetailBatchEntity.setDiskon(bean.getDiskon());
+                obatDetailBatchEntity.setBruto(bean.getBruto());
+                obatDetailBatchEntity.setNetto(bean.getNetto());
 
                 try {
                     transaksiObatDetailBatchDao.addAndSave(obatDetailBatchEntity);

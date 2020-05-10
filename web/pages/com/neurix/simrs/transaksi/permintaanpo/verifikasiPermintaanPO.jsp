@@ -200,7 +200,7 @@
                                             </s:if>
                                             <s:else>
                                             <div class="input-group">
-                                                <input oninput="cekObat(this.value, '<s:property value="idObat"/>', '<s:property value="qty"/>', '<s:property value="idTransaksiObatDetail"/>','<s:property value="namaObat"/>', '<s:property value="jenisSatuan"/>', '<s:property value="hargaPo"/>', '<s:property value="idApprovalObat"/>', '<s:property value="lembarPerBox"/>', '<s:property value="bijiPerLembar"/>', '<s:property value="noBatch"/>', '<s:property value="sumQtyApprove"/>')" class="form-control"
+                                                <input oninput="cekObat(this.value, '<s:property value="idObat"/>', '<s:property value="qty"/>', '<s:property value="idTransaksiObatDetail"/>','<s:property value="namaObat"/>', '<s:property value="jenisSatuan"/>', '<s:property value="hargaPo"/>', '<s:property value="idApprovalObat"/>', '<s:property value="lembarPerBox"/>', '<s:property value="bijiPerLembar"/>', '<s:property value="noBatch"/>', '<s:property value="sumQtyApprove"/>', '<s:property value="diskon"/>', '<s:property value="bruto"/>', '<s:property value="netto"/>')" class="form-control"
                                                        id='pabrik<s:property value="idObat"/>'>
                                                     <%--<input id="cek_obat_<s:property value="idObat"/>" class="form-control" oninput="cekObat(this.value, '<s:property value="idObat"/>')">--%>
                                                     <div class="input-group-addon">
@@ -736,6 +736,15 @@
 
                 if(valBayar1 != ''){
                     $('#val_diskon').val(valBayar1);
+                    var bruto = $('#val_bruto').val();
+                    if(bruto != '' && parseInt(bruto) > parseInt(valBayar1)){
+                        var hasil = parseInt(bruto) - parseInt(valBayar1);
+                        $('#app_netto').val(formatRupiah(hasil));
+                        $('#val_netto').val(hasil);
+                    }else{
+                        $('#app_netto').val('');
+                        $('#val_netto').val('');
+                    }
                 }else{
                     $('#val_diskon').val('');
                 }
@@ -752,7 +761,6 @@
                     var diskon = $('#val_diskon').val();
                     if(diskon != '' && parseInt(valBayar2) > parseInt(diskon)){
                         var hasil = parseInt(valBayar2) - parseInt(diskon);
-                        console.log(hasil);
                         $('#app_netto').val(formatRupiah(hasil));
                         $('#val_netto').val(hasil);
                     }else{
@@ -766,7 +774,7 @@
         }
     });
 
-    function cekObat(value, idObat, qty, idDetail, nama, jenis, harga, idApp, lembarPerBox, bijiPerlembar,noBt, sumQty){
+    function cekObat(value, idObat, qty, idDetail, nama, jenis, harga, idApp, lembarPerBox, bijiPerlembar,noBt, sumQty, diskon, bruto, netto){
         var functions, mapped;
         $('#pabrik'+idObat).typeahead({
             minLength: 3,
@@ -808,6 +816,23 @@
                     $('#app_biji_perlembar, #kon_biji').val(bijiPerlembar);
                     $('#app_qty').val(qty);
                     $('#app_qty_app').val(sumQty);
+                    if(diskon != null && diskon != ''
+                        && bruto != null && bruto != ''
+                        && netto != null && netto != ''){
+                        $('#val_diskon').val(diskon);
+                        $('#app_diskon').val(formatRupiah(diskon));
+                        $('#val_bruto').val(bruto);
+                        $('#app_bruto').val(formatRupiah(bruto));
+                        $('#val_netto').val(netto);
+                        $('#app_netto').val(formatRupiah(netto));
+                    }else{
+                        $('#val_diskon').val('');
+                        $('#app_diskon').val('');
+                        $('#val_bruto').val('');
+                        $('#app_bruto').val('');
+                        $('#val_netto').val('');
+                        $('#app_netto').val('');
+                    }
                     $('#save_approve').attr('onclick', 'confirmSaveApprove(\'' + selectedObj.id + '\', \'' + idDetail + '\', \'' + selectedObj.idPabrik + '\', \'' + noBt + '\')').show();
                     $('#save_approve').show();
                     $('#load_approve').hide();
@@ -970,6 +995,15 @@
         var diskon = $('#val_diskon').val();
         var bruto = $('#val_bruto').val();
         var netto = $('#val_netto').val();
+        if(diskon == ''){
+            diskon = 0;
+        }
+        if(bruto == ''){
+            bruto = 0;
+        }
+        if(netto == ''){
+            netto = 0;
+        }
         $('#save_approve').hide();
         $('#load_approve').show();
         dwr.engine.setAsync(true);
