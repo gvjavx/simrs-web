@@ -391,7 +391,7 @@
                 $('#mod_no_jurnal').val(data.noJurnal);
                 $('#mod_tipe_transaksi').val(data.stTipeTransaksi);
                 $('#mod_tanggal').val(data.stTanggal);
-                $('#mod_metode_bayar').val(data.metodePembayaran);
+                $('#mod_metode_bayar').val(data.metodePembayaranName);
                 $('#mod_no_slip_bank').val(data.noSlipBank);
                 $('#mod_keterangan').val(data.keterangan);
                 $('#mod_total_bayar').val(data.stBayar);

@@ -670,7 +670,7 @@
                 if (response != null) {
                     // $.each(dataPasien, function (i, item) {
                         var tanggal = response.tglLahir;
-                        var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
+                        var dateFormat = converterDate(new Date(tanggal));
                         noCheckup = response.noCheckup;
                         nik = response.noKtp;
                         namaPasien = response.nama;
@@ -758,7 +758,7 @@
 
         var tgl = "";
         if(tanggal != null && tanggal != ''){
-            tgl = $.datepicker.formatDate("dd-mm-yy", new Date(tanggal));
+            tgl = converterDate(new Date(tanggal));
         }
         return tgl;
     }
@@ -818,7 +818,7 @@
         CheckupAction.listDataPasien(idDetailCheckup, function (response) {
             if (response != null) {
                 var tanggal = response.tglLahir;
-                var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
+                var dateFormat = converterDate(new Date(tanggal));
                 var jenisKelamin = "";
 
                 if (response.jenisKelamin == "L") {

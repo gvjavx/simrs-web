@@ -26,6 +26,7 @@
   c.kode_rekening,
   c.nama_kode_rekening,
   b.master_id,
+  b.jurnal_detail_id,
   m.nama,
   b.divisi_id,
   dv.position_name,
@@ -59,6 +60,7 @@ order by
 	<field name="kode_rekening" class="java.lang.String"/>
 	<field name="nama_kode_rekening" class="java.lang.String"/>
 	<field name="master_id" class="java.lang.String"/>
+	<field name="jurnal_detail_id" class="java.lang.String"/>
 	<field name="nama" class="java.lang.String">
 		<fieldDescription><![CDATA[Nama Master]]></fieldDescription>
 	</field>
@@ -75,7 +77,7 @@ order by
 		<variableExpression><![CDATA[$F{jumlah}]]></variableExpression>
 	</variable>
 	<group name="jurnal" isReprintHeaderOnEachPage="true">
-		<groupExpression><![CDATA[$F{no_jurnal}]]></groupExpression>
+		<groupExpression><![CDATA[$F{jurnal_detail_id}]]></groupExpression>
 		<groupHeader>
 			<band height="23" splitType="Stretch">
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
