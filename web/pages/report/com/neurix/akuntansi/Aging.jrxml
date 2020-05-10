@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Aging" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="814" leftMargin="14" rightMargin="14" topMargin="28" bottomMargin="28" uuid="f9432a24-ee5d-45d2-a0d1-74b3397bc672">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.7684607682500033"/>
-	<property name="ireport.x" value="128"/>
-	<property name="ireport.y" value="79"/>
+	<property name="ireport.zoom" value="1.4615378250000033"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="62"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -48,32 +48,9 @@
 	<field name="jumlah6" class="java.math.BigDecimal"/>
 	<field name="jumlah7" class="java.math.BigDecimal"/>
 	<field name="strKurs" class="java.lang.String"/>
+	<field name="namaRekening" class="java.lang.String"/>
 	<variable name="nomor" class="java.lang.Integer" resetType="Group" resetGroup="masterGrp" calculation="Count">
 		<variableExpression><![CDATA[$F{noNota}]]></variableExpression>
-	</variable>
-	<variable name="jumlahUSD" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$F{mataUang}.equalsIgnoreCase("USD")?$F{total}.abs():new BigDecimal(0)]]></variableExpression>
-	</variable>
-	<variable name="jumlahUSD_1" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$F{mataUang}.equalsIgnoreCase("USD")?$F{jumlah1}.abs():new BigDecimal(0)]]></variableExpression>
-	</variable>
-	<variable name="jumlahUSD_2" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$F{mataUang}.equalsIgnoreCase("USD")?$F{jumlah2}.abs():new BigDecimal(0)]]></variableExpression>
-	</variable>
-	<variable name="jumlahUSD_3" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$F{mataUang}.equalsIgnoreCase("USD")?$F{jumlah3}.abs():new BigDecimal(0)]]></variableExpression>
-	</variable>
-	<variable name="jumlahUSD_4" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$F{mataUang}.equalsIgnoreCase("USD")?$F{jumlah4}.abs():new BigDecimal(0)]]></variableExpression>
-	</variable>
-	<variable name="jumlahUSD_5" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$F{mataUang}.equalsIgnoreCase("USD")?$F{jumlah5}.abs():new BigDecimal(0)]]></variableExpression>
-	</variable>
-	<variable name="jumlahUSD_6" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$F{mataUang}.equalsIgnoreCase("USD")?$F{jumlah6}.abs():new BigDecimal(0)]]></variableExpression>
-	</variable>
-	<variable name="jumlahUSD_7" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$F{mataUang}.equalsIgnoreCase("USD")?$F{jumlah7}.abs():new BigDecimal(0)]]></variableExpression>
 	</variable>
 	<variable name="jumlahRPH" class="java.math.BigDecimal">
 		<variableExpression><![CDATA[$F{mataUang}.equalsIgnoreCase("RPH")?$F{total}.abs():new BigDecimal(0)]]></variableExpression>
@@ -99,30 +76,6 @@
 	<variable name="jumlahRPH_7" class="java.math.BigDecimal">
 		<variableExpression><![CDATA[$F{mataUang}.equalsIgnoreCase("RPH")?$F{jumlah7}.abs():new BigDecimal(0)]]></variableExpression>
 	</variable>
-	<variable name="sumJumlahUSD" class="java.math.BigDecimal" resetType="Group" resetGroup="masterGrp" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlahUSD}]]></variableExpression>
-	</variable>
-	<variable name="sumJumlahUSD_1" class="java.math.BigDecimal" resetType="Group" resetGroup="masterGrp" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlahUSD_1}]]></variableExpression>
-	</variable>
-	<variable name="sumJumlahUSD_2" class="java.math.BigDecimal" resetType="Group" resetGroup="masterGrp" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlahUSD_2}]]></variableExpression>
-	</variable>
-	<variable name="sumJumlahUSD_3" class="java.math.BigDecimal" resetType="Group" resetGroup="masterGrp" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlahUSD_3}]]></variableExpression>
-	</variable>
-	<variable name="sumJumlahUSD_4" class="java.math.BigDecimal" resetType="Group" resetGroup="masterGrp" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlahUSD_4}]]></variableExpression>
-	</variable>
-	<variable name="sumJumlahUSD_5" class="java.math.BigDecimal" resetType="Group" resetGroup="masterGrp" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlahUSD_5}]]></variableExpression>
-	</variable>
-	<variable name="sumJumlahUSD_6" class="java.math.BigDecimal" resetType="Group" resetGroup="masterGrp" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlahUSD_6}]]></variableExpression>
-	</variable>
-	<variable name="sumJumlahUSD_7" class="java.math.BigDecimal" resetType="Group" resetGroup="masterGrp" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlahUSD_7}]]></variableExpression>
-	</variable>
 	<variable name="sumJumlahRPH" class="java.math.BigDecimal" resetType="Group" resetGroup="masterGrp" calculation="Sum">
 		<variableExpression><![CDATA[$V{jumlahRPH}]]></variableExpression>
 	</variable>
@@ -147,53 +100,20 @@
 	<variable name="sumJumlahRPH_7" class="java.math.BigDecimal" resetType="Group" resetGroup="masterGrp" calculation="Sum">
 		<variableExpression><![CDATA[$V{jumlahRPH_7}]]></variableExpression>
 	</variable>
-	<variable name="sumJumlahUSD_1_1" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlahUSD_1}]]></variableExpression>
-	</variable>
-	<variable name="sumJumlahUSD_2_1" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlahUSD_2}]]></variableExpression>
-	</variable>
-	<variable name="sumJumlahUSD_3_1" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlahUSD_3}]]></variableExpression>
-	</variable>
-	<variable name="sumJumlahUSD_4_1" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlahUSD_4}]]></variableExpression>
-	</variable>
-	<variable name="sumJumlahUSD_5_1" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlahUSD_5}]]></variableExpression>
-	</variable>
-	<variable name="sumJumlahUSD_6_1" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlahUSD_6}]]></variableExpression>
-	</variable>
-	<variable name="sumJumlahUSD_7_1" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlahUSD_7}]]></variableExpression>
-	</variable>
-	<variable name="sumJumlahUSD_0_1" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlahUSD}]]></variableExpression>
-	</variable>
-	<variable name="sumJumlahRPH_1_1" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlahRPH_1}]]></variableExpression>
-	</variable>
-	<variable name="sumJumlahRPH_2_1" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlahRPH_2}]]></variableExpression>
-	</variable>
-	<variable name="sumJumlahRPH_3_1" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlahRPH_3}]]></variableExpression>
-	</variable>
 	<variable name="sumJumlahRPH_4_1" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlahRPH_4}]]></variableExpression>
+		<variableExpression><![CDATA[$F{jumlah4}]]></variableExpression>
 	</variable>
 	<variable name="sumJumlahRPH_5_1" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlahRPH_5}]]></variableExpression>
+		<variableExpression><![CDATA[$F{jumlah5}]]></variableExpression>
 	</variable>
 	<variable name="sumJumlahRPH_6_1" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlahRPH_6}]]></variableExpression>
+		<variableExpression><![CDATA[$F{jumlah6}]]></variableExpression>
 	</variable>
 	<variable name="sumJumlahRPH_7_1" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlahRPH_7}]]></variableExpression>
+		<variableExpression><![CDATA[$F{jumlah7}]]></variableExpression>
 	</variable>
 	<variable name="sumJumlahRPH_0_1" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlahRPH}]]></variableExpression>
+		<variableExpression><![CDATA[$F{total}]]></variableExpression>
 	</variable>
 	<variable name="txtKurs" class="java.lang.String">
 		<variableExpression><![CDATA[$F{strKurs}]]></variableExpression>
@@ -231,123 +151,214 @@
 	<variable name="sumJumlahKonversiKurs" class="java.math.BigDecimal" resetType="Group" resetGroup="masterGrp" calculation="Sum">
 		<variableExpression><![CDATA[$V{total}==null?new BigDecimal(0):$V{total}]]></variableExpression>
 	</variable>
-	<variable name="sumJumlahRPHAll" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$V{sumJumlahRPH}.add($V{sumJumlahKonversiKurs})]]></variableExpression>
+	<variable name="sumJumlahRPHAll" class="java.math.BigDecimal" resetType="Group" resetGroup="masterGrp" calculation="Sum">
+		<variableExpression><![CDATA[$F{total}]]></variableExpression>
 	</variable>
-	<variable name="sumJumlahKonversiKurs_1" class="java.math.BigDecimal" resetType="Group" resetGroup="masterGrp" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlah1}==null?new BigDecimal(0):$V{jumlah1}]]></variableExpression>
+	<variable name="sumJumlahRPHAll_1" class="java.math.BigDecimal" resetType="Group" resetGroup="masterGrp" calculation="Sum">
+		<variableExpression><![CDATA[$F{jumlah1}]]></variableExpression>
 	</variable>
-	<variable name="sumJumlahKonversiKurs_2" class="java.math.BigDecimal" resetType="Group" resetGroup="masterGrp" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlah2}==null?new BigDecimal(0):$V{jumlah2}]]></variableExpression>
+	<variable name="sumJumlahRPHAll_2" class="java.math.BigDecimal" resetType="Group" resetGroup="masterGrp" calculation="Sum">
+		<variableExpression><![CDATA[$F{jumlah2}]]></variableExpression>
 	</variable>
-	<variable name="sumJumlahKonversiKurs_3" class="java.math.BigDecimal" resetType="Group" resetGroup="masterGrp" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlah3}==null?new BigDecimal(0):$V{jumlah3}]]></variableExpression>
+	<variable name="sumJumlahRPHAll_3" class="java.math.BigDecimal" resetType="Group" resetGroup="masterGrp" calculation="Sum">
+		<variableExpression><![CDATA[$F{jumlah3}]]></variableExpression>
 	</variable>
-	<variable name="sumJumlahKonversiKurs_4" class="java.math.BigDecimal" resetType="Group" resetGroup="masterGrp" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlah4}==null?new BigDecimal(0):$V{jumlah4}]]></variableExpression>
+	<variable name="sumJumlahRPHAll_4" class="java.math.BigDecimal" resetType="Group" resetGroup="masterGrp" calculation="Sum">
+		<variableExpression><![CDATA[$F{jumlah4}]]></variableExpression>
 	</variable>
-	<variable name="sumJumlahKonversiKurs_5" class="java.math.BigDecimal" resetType="Group" resetGroup="masterGrp" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlah5}==null?new BigDecimal(0):$V{jumlah5}]]></variableExpression>
+	<variable name="sumJumlahRPHAll_5" class="java.math.BigDecimal" resetType="Group" resetGroup="masterGrp" calculation="Sum">
+		<variableExpression><![CDATA[$F{jumlah5}]]></variableExpression>
 	</variable>
-	<variable name="sumJumlahKonversiKurs_6" class="java.math.BigDecimal" resetType="Group" resetGroup="masterGrp" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlah6}==null?new BigDecimal(0):$V{jumlah6}]]></variableExpression>
+	<variable name="sumJumlahRPHAll_6" class="java.math.BigDecimal" resetType="Group" resetGroup="masterGrp" calculation="Sum">
+		<variableExpression><![CDATA[$F{jumlah6}]]></variableExpression>
 	</variable>
-	<variable name="sumJumlahKonversiKurs_7" class="java.math.BigDecimal" resetType="Group" resetGroup="masterGrp" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlah7}==null?new BigDecimal(0):$V{jumlah7}]]></variableExpression>
+	<variable name="sumJumlahRPHAll_7" class="java.math.BigDecimal" resetType="Group" resetGroup="masterGrp" calculation="Sum">
+		<variableExpression><![CDATA[$F{jumlah7}]]></variableExpression>
 	</variable>
-	<variable name="sumJumlahRPHAll_1" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$V{sumJumlahRPH_1}.add($V{sumJumlahKonversiKurs_1})]]></variableExpression>
+	<variable name="sumJumlahRPH_0_2" class="java.math.BigDecimal" resetType="Group" resetGroup="kodeRekening" calculation="Sum">
+		<variableExpression><![CDATA[$F{total}]]></variableExpression>
 	</variable>
-	<variable name="sumJumlahRPHAll_2" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$V{sumJumlahRPH_2}.add($V{sumJumlahKonversiKurs_2})]]></variableExpression>
+	<variable name="sumJumlahRPH_1_2" class="java.math.BigDecimal" resetType="Group" resetGroup="kodeRekening" calculation="Sum">
+		<variableExpression><![CDATA[$F{jumlah1}]]></variableExpression>
 	</variable>
-	<variable name="sumJumlahRPHAll_3" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$V{sumJumlahRPH_3}.add($V{sumJumlahKonversiKurs_3})]]></variableExpression>
+	<variable name="sumJumlahRPH_2_2" class="java.math.BigDecimal" resetType="Group" resetGroup="kodeRekening" calculation="Sum">
+		<variableExpression><![CDATA[$F{jumlah2}]]></variableExpression>
 	</variable>
-	<variable name="sumJumlahRPHAll_4" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$V{sumJumlahRPH_4}.add($V{sumJumlahKonversiKurs_4})]]></variableExpression>
+	<variable name="sumJumlahRPH_3_2" class="java.math.BigDecimal" resetType="Group" resetGroup="kodeRekening" calculation="Sum">
+		<variableExpression><![CDATA[$F{jumlah3}]]></variableExpression>
 	</variable>
-	<variable name="sumJumlahRPHAll_5" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$V{sumJumlahRPH_5}.add($V{sumJumlahKonversiKurs_5})]]></variableExpression>
+	<variable name="sumJumlahRPH_4_2" class="java.math.BigDecimal" resetType="Group" resetGroup="kodeRekening" calculation="Sum">
+		<variableExpression><![CDATA[$F{jumlah4}]]></variableExpression>
 	</variable>
-	<variable name="sumJumlahRPHAll_6" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$V{sumJumlahRPH_6}.add($V{sumJumlahKonversiKurs_6})]]></variableExpression>
+	<variable name="sumJumlahRPH_5_2" class="java.math.BigDecimal" resetType="Group" resetGroup="kodeRekening" calculation="Sum">
+		<variableExpression><![CDATA[$F{jumlah5}]]></variableExpression>
 	</variable>
-	<variable name="sumJumlahRPHAll_7" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$V{sumJumlahRPH_7}.add($V{sumJumlahKonversiKurs_7})]]></variableExpression>
+	<variable name="sumJumlahRPH_6_2" class="java.math.BigDecimal" resetType="Group" resetGroup="kodeRekening" calculation="Sum">
+		<variableExpression><![CDATA[$F{jumlah6}]]></variableExpression>
 	</variable>
-	<variable name="sumJumlahKonversiKurs_0_1" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$V{total}==null?new BigDecimal(0):$V{total}]]></variableExpression>
+	<variable name="sumJumlahRPH_7_2" class="java.math.BigDecimal" resetType="Group" resetGroup="kodeRekening" calculation="Sum">
+		<variableExpression><![CDATA[$F{jumlah7}]]></variableExpression>
 	</variable>
-	<variable name="sumJumlahKonversiKurs_1_1" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlah1}==null?new BigDecimal(0):$V{jumlah1}]]></variableExpression>
+	<variable name="sumJumlahRPH_1_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{jumlah1}]]></variableExpression>
 	</variable>
-	<variable name="sumJumlahKonversiKurs_2_1" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlah2}==null?new BigDecimal(0):$V{jumlah2}]]></variableExpression>
+	<variable name="sumJumlahRPH_2_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{jumlah2}]]></variableExpression>
 	</variable>
-	<variable name="sumJumlahKonversiKurs_3_1" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlah3}==null?new BigDecimal(0):$V{jumlah3}]]></variableExpression>
+	<variable name="sumJumlahRPH_3_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{jumlah3}]]></variableExpression>
 	</variable>
-	<variable name="sumJumlahKonversiKurs_4_1" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlah4}==null?new BigDecimal(0):$V{jumlah4}]]></variableExpression>
+	<variable name="nomor_master" class="java.lang.Integer" resetType="Group" resetGroup="kodeRekening" calculation="Count">
+		<variableExpression><![CDATA[$F{masterId}]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
 	</variable>
-	<variable name="sumJumlahKonversiKurs_5_1" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlah5}==null?new BigDecimal(0):$V{jumlah5}]]></variableExpression>
-	</variable>
-	<variable name="sumJumlahKonversiKurs_6_1" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlah6}==null?new BigDecimal(0):$V{jumlah6}]]></variableExpression>
-	</variable>
-	<variable name="sumJumlahKonversiKurs_7_1" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlah7}==null?new BigDecimal(0):$V{jumlah7}]]></variableExpression>
-	</variable>
-	<variable name="sumJumlahRPH_0_2" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlahRPH}]]></variableExpression>
-	</variable>
-	<variable name="sumJumlahRPH_1_2" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlahRPH_1}]]></variableExpression>
-	</variable>
-	<variable name="sumJumlahRPH_2_2" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlahRPH_2}]]></variableExpression>
-	</variable>
-	<variable name="sumJumlahRPH_3_2" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlahRPH_3}]]></variableExpression>
-	</variable>
-	<variable name="sumJumlahRPH_4_2" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlahRPH_4}]]></variableExpression>
-	</variable>
-	<variable name="sumJumlahRPH_5_2" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlahRPH_5}]]></variableExpression>
-	</variable>
-	<variable name="sumJumlahRPH_6_2" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlahRPH_6}]]></variableExpression>
-	</variable>
-	<variable name="sumJumlahRPH_7_2" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlahRPH_7}]]></variableExpression>
-	</variable>
-	<variable name="sumJumlahKonversiKurs_0_2" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$V{total}==null?new BigDecimal(0):$V{total}]]></variableExpression>
-	</variable>
-	<variable name="sumJumlahKonversiKurs_1_2" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlah1}==null?new BigDecimal(0):$V{jumlah1}]]></variableExpression>
-	</variable>
-	<variable name="sumJumlahKonversiKurs_4_2" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlah4}==null?new BigDecimal(0):$V{jumlah4}]]></variableExpression>
-	</variable>
-	<variable name="sumJumlahKonversiKurs_6_2" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlah6}==null?new BigDecimal(0):$V{jumlah6}]]></variableExpression>
-	</variable>
-	<variable name="sumJumlahKonversiKurs_5_2" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlah5}==null?new BigDecimal(0):$V{jumlah5}]]></variableExpression>
-	</variable>
-	<variable name="sumJumlahKonversiKurs_7_2" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlah7}==null?new BigDecimal(0):$V{jumlah7}]]></variableExpression>
-	</variable>
-	<variable name="sumJumlahKonversiKurs_2_2" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlah2}==null?new BigDecimal(0):$V{jumlah2}]]></variableExpression>
-	</variable>
-	<variable name="sumJumlahKonversiKurs_3_2" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$V{jumlah3}==null?new BigDecimal(0):$V{jumlah3}]]></variableExpression>
-	</variable>
+	<group name="kodeRekening" isReprintHeaderOnEachPage="true">
+		<groupExpression><![CDATA[$F{kodeRekening}]]></groupExpression>
+		<groupHeader>
+			<band height="30" splitType="Stretch">
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-17" x="0" y="8" width="356" height="16" uuid="8a08d191-96ec-42c6-8a18-93bc199defa9"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font size="8" isBold="true" pdfFontName="Helvetica"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{kodeRekening}+" "+$F{namaRekening}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement key="line-8" x="0" y="24" width="260" height="1" uuid="77fd997f-35fc-4def-a290-5018b13f0d67"/>
+					<graphicElement>
+						<pen lineWidth="1.0" lineStyle="Double"/>
+					</graphicElement>
+				</line>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="16" splitType="Stretch">
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField-74" x="155" y="0" width="105" height="15" uuid="2fddd1bb-67e9-4a00-9bb2-2939d4b8cdd4"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumJumlahRPH_0_2}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField-85" x="494" y="0" width="80" height="16" uuid="12b71f3c-e24b-46d7-892e-a99c4a295aac"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumJumlahRPH_4_2}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField-88" x="728" y="0" width="87" height="16" uuid="d2db44e1-5930-4d8f-8b72-5ffbff4a7989"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumJumlahRPH_7_2}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField-74" x="1" y="1" width="154" height="15" uuid="b29865aa-dc29-4043-a0d6-58b8acea79ae"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Total Aging "+$F{namaRekening}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField-82" x="259" y="0" width="80" height="15" uuid="5c01436c-2083-4e55-8c2b-c7f4d0c7e7e7"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumJumlahRPH_1_2}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField-86" x="572" y="0" width="80" height="16" uuid="0f044ba1-0eaa-41b0-ad5d-9e3045bb8579"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumJumlahRPH_5_2}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField-87" x="650" y="0" width="80" height="16" uuid="b2cbf421-2b44-4002-9b13-03b566503339"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumJumlahRPH_6_2}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField-84" x="416" y="0" width="80" height="16" uuid="40a7edf5-d983-47e4-94fb-a70761d47df9"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumJumlahRPH_3_2}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField-83" x="338" y="0" width="80" height="15" uuid="910b1998-5724-410b-81e3-413faf247055"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumJumlahRPH_2_2}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
 	<group name="masterGrp" isReprintHeaderOnEachPage="true">
 		<groupExpression><![CDATA[$F{masterId}]]></groupExpression>
 		<groupHeader>
@@ -359,7 +370,7 @@
 					</graphicElement>
 				</line>
 				<textField isBlankWhenNull="false">
-					<reportElement key="textField-17" x="0" y="1" width="154" height="16" uuid="6650e331-3d43-462f-b85d-73fb8345aeb9"/>
+					<reportElement key="textField-17" x="2" y="1" width="179" height="16" uuid="6650e331-3d43-462f-b85d-73fb8345aeb9"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -374,26 +385,13 @@
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="16" splitType="Stretch">
+			<band height="23" splitType="Stretch">
 				<line>
 					<reportElement key="line-11" x="0" y="0" width="814" height="1" uuid="a072a940-c929-425c-b794-c5039a570f62"/>
 					<graphicElement>
 						<pen lineWidth="1.0" lineStyle="Dashed"/>
 					</graphicElement>
 				</line>
-				<staticText>
-					<reportElement key="staticText-44" x="34" y="0" width="87" height="15" uuid="f6bdc6c6-7b78-4e30-ad88-67e69a54aa0c"/>
-					<box>
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8" isBold="false" pdfFontName="Helvetica"/>
-					</textElement>
-					<text><![CDATA[TOTAL]]></text>
-				</staticText>
 				<textField pattern="#,##0.00" isBlankWhenNull="true">
 					<reportElement key="textField-74" x="154" y="0" width="105" height="15" uuid="09dbeac1-fad7-4381-bfd2-ceb259872594"/>
 					<box>
@@ -497,6 +495,19 @@
 						<font size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{sumJumlahRPHAll_7}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField-74" x="0" y="1" width="154" height="15" uuid="3787d5b2-c184-4a19-a986-4f3d5cb91205"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Jumlah Aging "+$F{namaMaster}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
@@ -1008,8 +1019,8 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="8" isBold="false" pdfFontName="Helvetica"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[TOTAL SELURUHNYA :]]></text>
 			</staticText>
@@ -1022,9 +1033,9 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="8" isBold="false" pdfFontName="Helvetica"/>
+					<font size="8" isBold="true" pdfFontName="Helvetica"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{sumJumlahRPH_0_1}.add($V{sumJumlahKonversiKurs_0_1})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{sumJumlahRPH_0_1}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-131" x="258" y="2" width="80" height="16" uuid="666233ae-1c7a-466f-9206-8b2917f48341"/>
@@ -1035,9 +1046,9 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="8" isBold="false" pdfFontName="Helvetica"/>
+					<font size="8" isBold="true" pdfFontName="Helvetica"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{sumJumlahRPH_1_1}.add($V{sumJumlahKonversiKurs_1_1})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{sumJumlahRPH_1_1}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-132" x="337" y="2" width="80" height="16" uuid="66f174ca-e144-4382-96f7-7fd5c639a8d2"/>
@@ -1048,9 +1059,9 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="8" isBold="false" pdfFontName="Helvetica"/>
+					<font size="8" isBold="true" pdfFontName="Helvetica"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{sumJumlahRPH_2_1}.add($V{sumJumlahKonversiKurs_2_1})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{sumJumlahRPH_2_1}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-133" x="415" y="2" width="80" height="16" uuid="9f7b8736-41e7-4c5d-979c-ce9ca90c98cf"/>
@@ -1061,9 +1072,9 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="8" isBold="false" pdfFontName="Helvetica"/>
+					<font size="8" isBold="true" pdfFontName="Helvetica"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{sumJumlahRPH_3_1}.add($V{sumJumlahKonversiKurs_3_1})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{sumJumlahRPH_3_1}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-134" x="493" y="2" width="80" height="16" uuid="20a93e1f-f779-42e7-891f-dc0e75ccc55d"/>
@@ -1074,9 +1085,9 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="8" isBold="false" pdfFontName="Helvetica"/>
+					<font size="8" isBold="true" pdfFontName="Helvetica"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{sumJumlahRPH_4_1}.add($V{sumJumlahKonversiKurs_4_1})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{sumJumlahRPH_4_1}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-135" x="571" y="2" width="80" height="16" uuid="0348c794-d781-4d0b-8553-f8b046ca1206"/>
@@ -1087,9 +1098,9 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="8" isBold="false" pdfFontName="Helvetica"/>
+					<font size="8" isBold="true" pdfFontName="Helvetica"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{sumJumlahRPH_5_1}.add($V{sumJumlahKonversiKurs_5_1})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{sumJumlahRPH_5_1}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-136" x="649" y="2" width="80" height="16" uuid="4dd94c8c-ada3-433a-a461-d10431517971"/>
@@ -1100,9 +1111,9 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="8" isBold="false" pdfFontName="Helvetica"/>
+					<font size="8" isBold="true" pdfFontName="Helvetica"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{sumJumlahRPH_6_1}.add($V{sumJumlahKonversiKurs_6_1})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{sumJumlahRPH_6_1}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-137" x="727" y="2" width="87" height="16" uuid="4d48ab78-9692-4526-a5dd-cde5baf985ee"/>
@@ -1113,9 +1124,9 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="8" isBold="false" pdfFontName="Helvetica"/>
+					<font size="8" isBold="true" pdfFontName="Helvetica"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{sumJumlahRPH_7_1}.add($V{sumJumlahKonversiKurs_7_1})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{sumJumlahRPH_7_1}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>

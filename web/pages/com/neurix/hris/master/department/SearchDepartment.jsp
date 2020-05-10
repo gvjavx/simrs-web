@@ -183,6 +183,7 @@
                                             </display:column>
                                             <display:column property="departmentId" sortable="true" title="Devisi ID" />
                                             <display:column property="departmentName" sortable="true" title="Nama Devisi"  />
+                                            <display:column property="kodering" sortable="true" title="Kodering"  />
                                             <display:column property="flag" sortable="true" title="flag"  />
                                             <display:column property="action" sortable="true" title="action"  />
                                             <display:column property="createdDate" sortable="true" title="Created date"  />

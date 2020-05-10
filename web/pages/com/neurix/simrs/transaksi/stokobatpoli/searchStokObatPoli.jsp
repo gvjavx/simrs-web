@@ -17,6 +17,23 @@
             $('#obat_poli_open').addClass('menu-open');
         });
 
+        function formaterDate(dateTime) {
+
+            var today = "";
+            if (dateTime != '' && dateTime != null) {
+
+                today = new Date(dateTime);
+                var dd = String(today.getDate()).padStart(2, '0');
+                var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                var yyyy = today.getFullYear();
+                var hh = ((today.getHours() < 10 ? '0' : '') + today.getHours());
+                var min = ((today.getMinutes() < 10 ? '0' : '') + today.getMinutes());
+                var sec = today.getSeconds();
+                today = dd + '-' + mm + '-' + yyyy;
+            }
+            return today;
+        }
+
     </script>
 
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupDetailAction.js"/>'></script>
@@ -171,7 +188,7 @@
                                 <tr>
                                     <td><s:property value="idBarang"/></td>
                                     <td><s:property value="namaObat"/></td>
-                                    <td><script>var tgl = '<s:property value="expiredDate"/>'; var format = $.datepicker.formatDate('dd-mm-yy', new Date(tgl)); document.write(format);</script></td>
+                                    <td><s:property value="expiredDate"/></td>
                                     <td align="center"><s:property value="qtyBox"/></td>
                                     <td align="center"><s:property value="qtyLembar"/></td>
                                     <td align="center"><s:property value="qtyBiji"/></td>

@@ -292,6 +292,14 @@ public class BiodataAction extends BaseMasterAction{
     public String add() {
         logger.info("[BiodataAction.add] start process >>>");
         Biodata addBiodata = new Biodata();
+
+        String branchId = CommonUtil.userBranchLogin();
+        if (branchId != null){
+            addBiodata.setBranch(branchId);
+        }else {
+            addBiodata.setBranch("");
+        }
+
         setBiodata(addBiodata);
         setAddOrEdit(true);
         setAdd(true);
@@ -988,6 +996,16 @@ public class BiodataAction extends BaseMasterAction{
             return ERROR;
         }
 
+        String branchId = CommonUtil.userBranchLogin();
+        Biodata data = new Biodata();
+        if (branchId != null){
+            data.setBranch(branchId);
+        }else {
+            data.setBranch("");
+        }
+
+        biodata = data;
+
         HttpSession session = ServletActionContext.getRequest().getSession();
 
         session.removeAttribute("listOfResult");
@@ -1012,6 +1030,16 @@ public class BiodataAction extends BaseMasterAction{
     public String initForm() {
         logger.info("[BiodataAction.initForm] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
+
+        String branchId = CommonUtil.userBranchLogin();
+        Biodata data = new Biodata();
+        if (branchId != null){
+            data.setBranch(branchId);
+        }else {
+            data.setBranch("");
+        }
+
+        biodata = data;
 
         session.removeAttribute("listOfResult");
         logger.info("[BiodataAction.initForm] end process >>>");
@@ -1913,14 +1941,14 @@ public class BiodataAction extends BaseMasterAction{
                 pengalamanKerja.setTahunMasuk(CommonUtil.convertStringToDate(tanggalMasuk));
                 pengalamanKerja.setStTtahunMasuk(tanggalMasuk);
             }else {
-                pengalamanKerja.setStTtahunMasuk("-");
+                pengalamanKerja.setStTtahunMasuk("");
             }
 
             if(tanggalKeluar != null && !"".equalsIgnoreCase(tanggalKeluar)){
                 pengalamanKerja.setTahunKeluar(CommonUtil.convertStringToDate(tanggalKeluar));
                 pengalamanKerja.setStTahunKeluar(tanggalKeluar);
             }else {
-                pengalamanKerja.setStTahunKeluar("-");
+                pengalamanKerja.setStTahunKeluar("");
             }
 
             pengalamanKerja.setTipePegawaiId(tipePegawai);
@@ -2180,6 +2208,23 @@ public class BiodataAction extends BaseMasterAction{
         logger.info("[BiodataAction.saveEdit] start process >>>");
         PengalamanKerja pengalamanKerja = new PengalamanKerja();
 
+        ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
+        Branch branch = new Branch();
+        BranchBo branchBo = (BranchBo) context.getBean("branchBoProxy");
+        branch.setBranchId(branchId);
+        branch.setFlag("Y");
+        List<Branch> branches = branchBo.getByCriteria(branch);
+        String branchName = branches.get(0).getBranchName();
+        pengalamanKerja.setBranchName(branchName);
+
+        Position position = new Position();
+        PositionBo positionBo = (PositionBo) context.getBean("positionBoProxy");
+        position.setPositionId(jabatan);
+        position.setFlag("Y");
+        List<Position> positions = positionBo.getByCriteria(position);
+        String positionName = positions.get(0).getPositionName();
+        pengalamanKerja.setJabatanName(positionName);
+
         pengalamanKerja.setPengalamanId(id);
         pengalamanKerja.setNip(nip);
         pengalamanKerja.setBranchId(branchId);
@@ -2194,11 +2239,15 @@ public class BiodataAction extends BaseMasterAction{
         if(tanggalMasuk != null && !"".equalsIgnoreCase(tanggalMasuk)){
             pengalamanKerja.setTahunMasuk(CommonUtil.convertStringToDate(tanggalMasuk));
             pengalamanKerja.setStTtahunMasuk(tanggalMasuk);
+        }else {
+            pengalamanKerja.setStTtahunMasuk("");
         }
 
         if(tanggalKeluar != null && !"".equalsIgnoreCase(tanggalKeluar)){
             pengalamanKerja.setTahunKeluar(CommonUtil.convertStringToDate(tanggalKeluar));
             pengalamanKerja.setStTahunKeluar(tanggalKeluar);
+        }else {
+            pengalamanKerja.setStTahunKeluar("");
         }
 
         pengalamanKerja.setTipePegawaiId(tipePegawai);
@@ -3018,6 +3067,33 @@ public class BiodataAction extends BaseMasterAction{
         }
 
         logger.info("[BiodataAction.initComboPersonil] end process <<<");
+
+        return listOfUser;
+    }
+
+    public List initComboAllPersonil(String query, String branchId) {
+        logger.info("[PermohonanLahanAction.initComboLokasiKebun] start process >>>");
+
+        List<Biodata> listOfUser = new ArrayList();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BiodataBo biodataBo = (BiodataBo) ctx.getBean("biodataBoProxy");
+//        HttpSession session = WebContextFactory.get().getSession();
+
+
+        try {
+            listOfUser = biodataBo.getAllListOfPersonil(query,branchId);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = biodataBo.saveErrorMessage(e.getMessage(), "DesaBo.getComboDesaWithCriteria");
+            } catch (GeneralBOException e1) {
+                logger.error("[PermohonanLahanAction.initComboLokasiKebun] Error when saving error,", e1);
+            }
+            logger.error("[PermohonanLahanAction.initComboLokasiKebun] Error when get combo lokasi kebun," + "[" + logId + "] Found problem when retrieving combo lokasi kebun data, please inform to your admin.", e);
+        }
+
+        logger.info("[PermohonanLahanAction.initComboLokasiKebun] end process <<<");
 
         return listOfUser;
     }

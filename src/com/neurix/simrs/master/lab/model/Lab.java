@@ -10,16 +10,22 @@ public class Lab extends BaseModel {
     private String idLab;
     private String namaLab;
     private String idOperatorLab;
+    private String namaOperatorLab;
     private String idDokter;
+    private String namaDokter;
     private String idKategoriLab;
+    private String namaKategoriLab;
     private String flag;
     private String action;
+    private String stCreatedDate;
     private Timestamp createdDate;
     private String createdWho;
+    private String stLastUpdate;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
 
     private BigDecimal tarif;
+    private String stTarif;
 
     public BigDecimal getTarif() {
         return tarif;
@@ -137,5 +143,55 @@ public class Lab extends BaseModel {
     @Override
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    @Override
+    public String getStCreatedDate() {
+        return stCreatedDate;
+    }
+
+    public void setStCreatedDate(String stCreatedDate) {
+        this.stCreatedDate = stCreatedDate;
+    }
+
+    @Override
+    public String getStLastUpdate() {
+        return stLastUpdate;
+    }
+
+    public void setStLastUpdate(String stLastUpdate) {
+        this.stLastUpdate = stLastUpdate;
+    }
+
+    public String getNamaDokter() {
+        return namaDokter;
+    }
+
+    public void setNamaDokter(String namaDokter) {
+        this.namaDokter = namaDokter;
+    }
+
+    public String getNamaKategoriLab() {
+        return namaKategoriLab;
+    }
+
+    public void setNamaKategoriLab(String namaKategoriLab) {
+        this.namaKategoriLab = namaKategoriLab;
+    }
+
+    public String getNamaOperatorLab() {
+        return namaOperatorLab;
+    }
+
+    public void setNamaOperatorLab(String namaOperatorLab) {
+        this.namaOperatorLab = namaOperatorLab;
+    }
+
+    public String getStTarif() {
+        return stTarif;
+    }
+
+    public void setStTarif(String stTarif) {
+        this.stTarif = stTarif;
     }
 }

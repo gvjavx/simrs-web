@@ -4,9 +4,14 @@ import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.master.dokter.model.ImSimrsDokterEntity;
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -23,10 +28,20 @@ public class DokterDao extends GenericDao<ImSimrsDokterEntity, String> {
     @Override
     public List<ImSimrsDokterEntity> getByCriteria(Map mapCriteria) {
         Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsDokterEntity.class);
-        if (mapCriteria != null)
+        if (mapCriteria != null){
             if (mapCriteria.get("id_dokter") != null){
                 criteria.add(Restrictions.eq("idDokter", mapCriteria.get("id_dokter").toString()));
             }
+            if (mapCriteria.get("nama_dokter") != null){
+                criteria.add(Restrictions.ilike("namaDokter", "%" + (String)mapCriteria.get("nama_dokter") + "%"));
+            }
+            if (mapCriteria.get("id_pelayanan") != null){
+                criteria.add(Restrictions.eq("idPelayanan", mapCriteria.get("id_pelayanan").toString()));
+            }
+            if(mapCriteria.get("flag") != null){
+                criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
+            }
+        }
 
         List<ImSimrsDokterEntity> result = criteria.list();
         return result;
@@ -62,5 +77,46 @@ public class DokterDao extends GenericDao<ImSimrsDokterEntity, String> {
             }
         }
         return list;
+    }
+
+    //for typeahead
+    public List<ImSimrsDokterEntity> getDokterListByLike(String name) {
+        Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ImSimrsDokterEntity.class);
+        criteria.add(
+                Restrictions.or(
+                        Restrictions.ilike("kodering", name + "%"),
+                        Restrictions.ilike("namaDokter", "%"+name+"%")
+                )
+        );
+        criteria.add(Restrictions.eq("flag", "Y"));
+        criteria.addOrder(Order.asc("idDokter"));
+
+        List<ImSimrsDokterEntity> results = criteria.list();
+        return results;
+    }
+
+    public List<ImSimrsDokterEntity> getDataDokter(String namaDokter) throws HibernateException {
+        List<ImSimrsDokterEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsDokterEntity.class)
+                .add(Restrictions.eq("namaDokter", namaDokter))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+
+        return results;
+    }
+
+    public String getNextDokter() throws HibernateException {
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_dokter')");
+        Iterator<BigInteger> iter=query.list().iterator();
+        String sId = String.format("%08d", iter.next());
+
+        return "DKR" + sId;
+    }
+
+    public String getNextKodering() throws HibernateException {
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_kodering')");
+        Iterator<BigInteger> iter=query.list().iterator();
+        String sId = String.format("%01d", iter.next());
+
+        return sId;
     }
 }

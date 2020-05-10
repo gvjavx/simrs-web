@@ -709,7 +709,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "b.no_kartu_asuransi, \n" +
                     "b.tgl_cekup, \n" +
                     "b.keterangan_cekup_ulang, \n" +
-                    "b.cover_biaya \n" +
+                    "b.cover_biaya, \n" +
+                    "k.is_laka \n" +
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
@@ -780,6 +781,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     checkup.setTglCheckup(obj[40] != null ? Date.valueOf(obj[40].toString()) : null);
                     checkup.setKeterangan(obj[41] == null ? "" : obj[41].toString());
                     checkup.setCoverBiaya(obj[42] == null ? new BigDecimal(String.valueOf("0")) : new BigDecimal(obj[42].toString()));
+                    checkup.setIsLaka(obj[43] == null ? "" : obj[43].toString());
                 }
             }
         }

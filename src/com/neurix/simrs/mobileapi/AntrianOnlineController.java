@@ -305,9 +305,9 @@ public class AntrianOnlineController implements ModelDriven<Object> {
         recordingConfig.idleLimitSec = 5 * 60;
         recordingConfig.isVideoOnly = false;
         recordingConfig.isAudioOnly = false;
-        recordingConfig.isMixingEnabled = false;
+        recordingConfig.isMixingEnabled = true;
         recordingConfig.mixResolution = "360,640,15,500";
-        recordingConfig.mixedVideoAudio = Common.MIXED_AV_CODEC_TYPE.values() [Common.MIXED_AV_CODEC_TYPE.MIXED_AV_DEFAULT.ordinal()];
+        recordingConfig.mixedVideoAudio = Common.MIXED_AV_CODEC_TYPE.values() [Common.MIXED_AV_CODEC_TYPE.MIXED_AV_CODEC_V1.ordinal()];
         recordingConfig.cfgFilePath = "";
         recordingConfig.secret = "";
         recordingConfig.decryptionMode = "";

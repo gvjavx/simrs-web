@@ -26,6 +26,15 @@ public class ImSimrsTindakanEntity implements Serializable{
 
     private String branchId;
     private BigDecimal diskon;
+    private String isIna;
+
+    public String getIsIna() {
+        return isIna;
+    }
+
+    public void setIsIna(String isIna) {
+        this.isIna = isIna;
+    }
 
     public String getBranchId() {
         return branchId;

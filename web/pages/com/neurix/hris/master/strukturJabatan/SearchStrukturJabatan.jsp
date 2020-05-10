@@ -375,9 +375,17 @@
                                 </td>
                                 <td>
                                     <table>
+                                        <s:if test='strukturJabatan.branchId == "KP"'>
                                             <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                                             <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="strukturJabatan.branchId"
                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                        </s:if>
+                                        <s:else>
+                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                            <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="strukturJabatan.branchId" disabled="true"
+                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                            <s:hidden id="branchId" name="strukturJabatan.branchId"/>
+                                        </s:else>
                                     </table>
                                 </td>
                             </tr>

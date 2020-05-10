@@ -114,7 +114,7 @@
         <action name="paging_displaytag_pkwt_golongan"
                 class="com.neurix.hris.master.golongan.action.GolonganAction" method="paging">
             <interceptor-ref name="defaultStack"/>
-            <result name="success">/pages/com/neurix/hris/master/golongan/SearchGolonganPkwt.jsp</result>
+            <result name="success">/pages/com/neurix/hris/master/golonganPkwt/SearchGolonganPkwt.jsp</result>
         </action>
 
     </package>

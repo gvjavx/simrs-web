@@ -6,10 +6,13 @@
     <class name="com.neurix.akuntansi.transaksi.budgeting.model.ItAkunBudgetingEntity" dynamic-update="true"
            table="it_akun_budgeting" select-before-update="true" schema="public">
 
-        <id name="noBudgeting">
-            <column name="no_budgeting" sql-type="varchar" length="30" not-null="true" />
+        <id name="idBudgeting">
+            <column name="id_budgeting" sql-type="varchar" length="50" not-null="true" />
         </id>
 
+        <property name="noBudgeting">
+            <column name="no_budgeting" sql-type="varchar" length="50" not-null="true" />
+        </property>
         <property name="branchId">
             <column name="branch_id" sql-type="varchar" length="5" not-null="true" />
         </property>

@@ -49,7 +49,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Position Bagian
+            Sub Divisi
         </h1>
         <%--<ol class="breadcrumb">--%>
         <%--<li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>--%>
@@ -189,7 +189,7 @@
                                             </display:column>
                                             <display:column property="bagianId" sortable="true" title="Bagian Id" />
                                             <display:column property="bagianName" sortable="true" title="Bagian Name"  />
-
+                                            <display:column property="kodering" sortable="true" title="Kodering"  />
                                             <display:column property="flag" sortable="true" title="flag"  />
                                             <display:column property="action" sortable="true" title="action"  />
                                             <display:column property="createdDate" sortable="true" title="Created date"  />

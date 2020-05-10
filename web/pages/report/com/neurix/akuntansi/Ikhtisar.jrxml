@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Ikhtisar" pageWidth="595" pageHeight="842" columnWidth="567" leftMargin="14" rightMargin="14" topMargin="28" bottomMargin="28" uuid="484ade16-81ff-4a97-a94d-babf2d10efc3">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="3.4522712143931047"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="161"/>
+	<property name="ireport.zoom" value="1.9487171000000019"/>
+	<property name="ireport.x" value="455"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -66,8 +66,7 @@
       ) - (
         CASE WHEN b.jumlah_debit IS NULL THEN 0 ELSE b.jumlah_debit END
       )
-    ) ELSE abs(
-      (
+    ) ELSE (
         (
           CASE WHEN c.saldo IS NULL THEN 0 ELSE c.saldo END
         ) + (
@@ -75,8 +74,7 @@
         )
       ) - (
         CASE WHEN b.jumlah_kredit IS NULL THEN 0 ELSE b.jumlah_kredit END
-      )
-    ) END
+      ) END
   ) as currsaldo,
   (
     CASE WHEN c.posisi = 'K' THEN CASE WHEN (
@@ -152,7 +150,7 @@ FROM
       inner join it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal
       inner join im_akun_master z on y.master_id = z.nomor_master
     where
-      to_char(x.created_date, 'MM-yyyy') =  $P{reportParams.periode}
+      to_char(x.tanggal_jurnal, 'MM-yyyy') =  $P{reportParams.periode}
       and x.branch_id IN  ($P!{reportParams.branchId})
     group by
       y.rekening_id,
@@ -168,7 +166,7 @@ FROM
       saldo,
       posisi
     from
-      it_akun_saldo_akhir
+      it_akun_saldo_akhir_detail
     where
       to_date(periode, 'MM-yyyy') = to_date($P{reportParams.periode}, 'MM-yyyy') - Interval '1 month'
       and branch_id IN ($P!{reportParams.branchId})
@@ -239,15 +237,20 @@ ORDER BY
 	<variable name="last_posisi_per_group" class="java.lang.String">
 		<variableExpression><![CDATA[( $V{SUM_last_saldo_2}.compareTo(BigDecimal.valueOf(0.0)) < 0 ? "K" : "D")]]></variableExpression>
 	</variable>
-	<variable name="SUM_currsaldo_1" class="java.math.BigDecimal" resetType="Group" resetGroup="rekening" calculation="Sum">
-		<variableExpression><![CDATA[( $F{currposisi}.equalsIgnoreCase("D")  ?
-		$F{currsaldo}
-		:
-		(BigDecimal.valueOf(0.0).subtract($F{currsaldo}))
-	)]]></variableExpression>
+	<variable name="SUM_currsaldo_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{currsaldo}]]></variableExpression>
 	</variable>
-	<variable name="curr_posisi_per_group" class="java.lang.String">
+	<variable name="curr_posisi_per_group" class="java.lang.String" resetType="Group" resetGroup="rekening">
 		<variableExpression><![CDATA[( $V{SUM_currsaldo_1}.compareTo(BigDecimal.valueOf(0.0)) < 0 ? "K" : "D")]]></variableExpression>
+	</variable>
+	<variable name="SUM_cur_saldo_2" class="java.math.BigDecimal" resetType="Group" resetGroup="rekening" calculation="Sum">
+		<variableExpression><![CDATA[$F{currsaldo}]]></variableExpression>
+	</variable>
+	<variable name="posisi_last_saldo_1" class="java.lang.String">
+		<variableExpression><![CDATA[( $V{SUM_last_saldo_1}.compareTo(BigDecimal.valueOf(0.0)) < 0 ? "K" : "D")]]></variableExpression>
+	</variable>
+	<variable name="posisi_cur_saldo_1" class="java.lang.String">
+		<variableExpression><![CDATA[$V{SUM_currsaldo_1}.compareTo(BigDecimal.valueOf(0)) < 0 ? "K" : "D"]]></variableExpression>
 	</variable>
 	<group name="rekening" isReprintHeaderOnEachPage="true">
 		<groupExpression><![CDATA[$F{koderekening}]]></groupExpression>
@@ -288,7 +291,7 @@ ORDER BY
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="29" splitType="Stretch">
+			<band height="25" splitType="Stretch">
 				<line>
 					<reportElement key="line-4" isPrintRepeatedValues="false" x="0" y="2" width="567" height="1" printWhenGroupChanges="rekening" uuid="e40e3727-7800-4dfa-978e-0d80abb829a1"/>
 					<graphicElement>
@@ -358,7 +361,7 @@ ORDER BY
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[( $V{SUM_currsaldo_1}==null ? BigDecimal.valueOf(0.0) : $V{SUM_currsaldo_1}.abs() )]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{SUM_cur_saldo_2}.abs()]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement key="textField" x="557" y="3" width="10" height="18" uuid="5cc347dc-6bdb-4216-aa03-87ca2c82537f"/>
@@ -695,7 +698,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{currsaldo}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{currsaldo}.abs()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement key="textField" x="557" y="0" width="10" height="15" uuid="c95ad247-ed29-4cfc-b2e2-3273ea6d611f"/>
@@ -746,45 +749,6 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 	</pageFooter>
 	<summary>
 		<band height="179" splitType="Stretch">
-			<staticText>
-				<reportElement key="staticText-17" mode="Transparent" x="0" y="6" width="167" height="30" uuid="837f7c40-2416-4905-bc4b-9feb81d32bee"/>
-				<box leftPadding="2" rightPadding="2">
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[]]></text>
-			</staticText>
-			<staticText>
-				<reportElement key="staticText-18" mode="Transparent" x="265" y="6" width="10" height="15" uuid="61266db9-75a1-4a9e-b3d1-b36e456bfd95"/>
-				<box leftPadding="2" rightPadding="2">
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[D]]></text>
-			</staticText>
-			<staticText>
-				<reportElement key="staticText-19" mode="Transparent" x="265" y="21" width="10" height="15" uuid="161d35ae-dae9-49a8-867a-99d706d21c81"/>
-				<box leftPadding="2" rightPadding="2">
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[K]]></text>
-			</staticText>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-17" mode="Transparent" x="275" y="6" width="92" height="15" uuid="36425c79-42c1-45c9-8b48-de97e06e20ff"/>
 				<box leftPadding="2" rightPadding="2">
@@ -811,58 +775,6 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</textElement>
 				<textFieldExpression><![CDATA[( $V{SUM_jml_kredit_1} == null ? BigDecimal.valueOf(0.0) : $V{SUM_jml_kredit_1} )]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement key="staticText-20" mode="Transparent" x="557" y="6" width="10" height="15" uuid="e223b2d0-3dc3-421f-91c5-56b7c2976dda"/>
-				<box leftPadding="2" rightPadding="2">
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[D]]></text>
-			</staticText>
-			<staticText>
-				<reportElement key="staticText-21" mode="Transparent" x="557" y="21" width="10" height="15" uuid="01426adc-399a-4c9a-ab8e-5c321b7f9d02"/>
-				<box leftPadding="2" rightPadding="2">
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[K]]></text>
-			</staticText>
-			<staticText>
-				<reportElement key="staticText-22" mode="Transparent" x="275" y="21" width="92" height="15" uuid="758e9c1b-9686-452a-ab53-898f4cd5dbca"/>
-				<box leftPadding="2" rightPadding="2">
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[]]></text>
-			</staticText>
-			<staticText>
-				<reportElement key="staticText-23" mode="Transparent" x="367" y="21" width="92" height="15" uuid="1466b7a8-e53f-447c-aa7a-160dc395f2d2"/>
-				<box leftPadding="2" rightPadding="2">
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[]]></text>
-			</staticText>
 			<staticText>
 				<reportElement key="staticText-24" x="475" y="41" width="92" height="17" isRemoveLineWhenBlank="true" uuid="584371ac-7bcd-483d-8392-a0f7cbe67888"/>
 				<box leftPadding="2" rightPadding="2">
@@ -965,20 +877,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[( $V{SUM_last_debit_1} == null ? BigDecimal.valueOf(0.0) : $V{SUM_last_debit_1} )]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-24" mode="Transparent" x="167" y="21" width="98" height="15" uuid="763764bd-f70c-4801-88eb-fdfaf825fdf5"/>
-				<box leftPadding="2" rightPadding="2">
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[( $V{SUM_last_kredit_1} == null ? BigDecimal.valueOf(0.0) : $V{SUM_last_kredit_1} )]]></textFieldExpression>
+				<textFieldExpression><![CDATA[( $V{SUM_last_saldo_1} == null ? BigDecimal.valueOf(0.0) : $V{SUM_last_saldo_1} )]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-25" x="459" y="6" width="98" height="15" uuid="8cd096e3-8fcf-458a-bad7-21a02f2feeeb"/>
@@ -991,20 +890,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{current_debit_value}]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-26" x="459" y="21" width="98" height="15" uuid="bc8c543a-b5ee-42b9-91ef-fb677acc7f7d"/>
-				<box rightPadding="2">
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{current_kredit_value}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{SUM_currsaldo_1}.abs()]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement key="line-6" x="0" y="40" width="567" height="1" uuid="eca28ac2-7ec6-4243-993b-e46095c4ee74"/>
@@ -1018,6 +904,32 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<pen lineWidth="1.0" lineStyle="Dashed"/>
 				</graphicElement>
 			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="265" y="6" width="10" height="15" uuid="1ae86d97-52ac-4903-92b4-47b45f3cdea4"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{posisi_last_saldo_1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="557" y="6" width="10" height="15" uuid="3ea8b3a9-7360-4890-aa62-2a3f196143db"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{posisi_cur_saldo_1}]]></textFieldExpression>
+			</textField>
 		</band>
 	</summary>
 </jasperReport>

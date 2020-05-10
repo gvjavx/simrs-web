@@ -10,6 +10,7 @@
 
     <bean id="masterBo" class="com.neurix.akuntansi.master.master.bo.impl.MasterBoImpl"
           p:masterDao-ref="masterDao"
+          p:dokterDao-ref="dokterDao"
     />
 
     <bean id="masterBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

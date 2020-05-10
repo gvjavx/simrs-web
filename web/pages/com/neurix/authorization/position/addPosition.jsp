@@ -19,13 +19,14 @@
             var department = document.getElementById("departmentId1").value;
             var bagian = document.getElementById("bagianId1").value;
             var kelompok = document.getElementById("kelompokId1").value;
+            var kodering = document.getElementById("kodering1").value;
 
             console.log(namePosition);
             console.log(department);
             console.log(bagian);
             console.log(kelompok);
 
-            if (namePosition != '' && department!='' && bagian!='' && kelompok!='') {
+            if (namePosition != '' && department!='' && bagian!='' && kelompok!='' && kodering != '') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -53,6 +54,9 @@
                 }
                 if (kelompok == '') {
                     msg += 'Field <strong>Kelompok Jabatan</strong> is required.' + '<br/>';
+                }
+                if (kodering == '') {
+                    msg += 'Field <strong>Kodering</strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
@@ -127,6 +131,16 @@
                         <td>
                             <table>
                                 <s:textfield id="positionName1" name="position.positionName" required="false" readonly="false" cssClass="form-control" />
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Kodering :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield id="kodering1" name="position.kodering" required="false" readonly="false" cssClass="form-control" />
                             </table>
                         </td>
                     </tr>

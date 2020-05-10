@@ -119,6 +119,15 @@ public class HeaderCheckup {
 
     private Date tglCheckup;
     private String keterangan;
+    private String isLaka;
+
+    public String getIsLaka() {
+        return isLaka;
+    }
+
+    public void setIsLaka(String isLaka) {
+        this.isLaka = isLaka;
+    }
 
     public Date getTglCheckup() {
         return tglCheckup;

@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.neurix.hris.transaksi.pendapatanDokter.model.ImHrisPajakEntity" dynamic-update="true"
+           table="im_hris_pajak" select-before-update="true" schema="public">
+
+        <id name="idPajak">
+            <column name="id_pajak" sql-type="varchar" length="20" not-null="true" />
+        </id>
+
+        <property name="batasBawah">
+            <column name="batas_bawah" sql-type="numeric" length="15" precision="2" not-null="false"/>
+        </property>
+        <property name="batasAtas">
+            <column name="batas_atas" sql-type="numeric" length="15" precision="2" not-null="false"/>
+        </property>
+        <property name="pajak">
+            <column name="pajak" sql-type="numeric" length="3" precision="0" not-null="false"/>
+        </property>
+
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="false"/>
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false"/>
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="timestamp" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="timestamp" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
+        </property>
+
+    </class>
+</hibernate-mapping>

@@ -169,7 +169,7 @@
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">Durasi</label>
                             <div class="col-md-3">
-                                <input class="form-control" style="margin-top: 7px" id="pkj5">
+                                <input type="number" class="form-control" style="margin-top: 7px" id="pkj5">
                             </div>
                             <label class="col-md-1" style="margin-top: 7px">Jenis</label>
                             <div class="col-md-1">
@@ -223,7 +223,7 @@
                             <label class="col-md-3" style="margin-top: 7px">Tekanan Darah</label>
                             <div class="col-md-3">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input class="form-control" id="pkj8">
+                                    <input type="number" class="form-control" id="pkj8">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         mmHg
                                     </div>
@@ -231,14 +231,14 @@
                             </div>
                             <label class="col-md-1" style="margin-top: 7px">MAP</label>
                             <div class="col-md-3">
-                                <input class="form-control" id="pkj9" style="margin-top: 7px">
+                                <input type="number" class="form-control" id="pkj9" style="margin-top: 7px">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">Suhu</label>
                             <div class="col-md-3">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input class="form-control" id="pkj10">
+                                    <input type="number" class="form-control" id="pkj10">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         C
                                     </div>
@@ -266,7 +266,7 @@
                             <label class="col-md-3" style="margin-top: 7px">Freq Nadi</label>
                             <div class="col-md-3">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input class="form-control" id="pkj012">
+                                    <input type="number" class="form-control" id="pkj012">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         x/menit
                                     </div>
@@ -308,7 +308,7 @@
                             <label class="col-md-3" style="margin-top: 7px">Freq Respirasi</label>
                             <div class="col-md-3">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input class="form-control" id="pkj014">
+                                    <input type="number" class="form-control" id="pkj014">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         x/menit
                                     </div>
@@ -382,7 +382,7 @@
                             <label class="col-md-3" style="margin-top: 7px">BB Kering</label>
                             <div class="col-md-7">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input class="form-control" id="pkj17">
+                                    <input type="number" class="form-control" id="pkj17">
                                     <div class="input-group-addon">
                                         Kg
                                     </div>
@@ -393,7 +393,7 @@
                             <label class="col-md-3" style="margin-top: 7px">BB Post HD</label>
                             <div class="col-md-7">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input class="form-control" id="pkj18">
+                                    <input type="number" class="form-control" id="pkj18">
                                     <div class="input-group-addon">
                                         Kg
                                     </div>
@@ -404,7 +404,7 @@
                             <label class="col-md-3" style="margin-top: 7px">BB Pre HD</label>
                             <div class="col-md-7">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input class="form-control" id="pkj19">
+                                    <input type="number" class="form-control" id="pkj19">
                                     <div class="input-group-addon">
                                         Kg
                                     </div>
@@ -2819,4 +2819,174 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modal-hd-perencanaan_hemodialisa">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-md"></i> Perencanaan Hemodialisa
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body btn-hide">
+                    <div class="alert alert-success alert-dismissible" style="display: none"
+                         id="warning_hd_perencanaan_hemodialisa">
+                        <h4><i class="icon fa fa-info"></i> Info!</h4>
+                        <p id="msg_hd_perencanaan_hemodialisa"></p>
+                    </div>
+                    <button class="btn btn-success" onclick="showModalHD('perencanaan_hemodialisa_pasien')"><i class="fa fa-plus"></i> Perencanaan Hemodialisa</button>
+                </div>
+                <div class="box-body">
+                    <table class="table" id="tabel_hd_perencanaan_hemodialisa">
+                        <tbody>
+                        <tr id="row_hd_perencanaan_hemodialisa_pasien">
+                            <td>Perencanaan Hemodialisa</td>
+                            <td width="20%" align="center">
+                                <img id="btn_hd_perencanaan_hemodialisa_pasien" class="hvr-grow" onclick="detailMonHD('perencanaan_hemodialisa_pasien')"
+                                     src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-hd-perencanaan_hemodialisa_pasien">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Perencanaan Hemodialisa
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none"
+                     id="warning_hd_perencanaan_hemodialisa_pasien">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_hd_perencanaan_hemodialisa_pasien"></p>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4">Nama Pasien</label>
+                            <div class="col-md-7">
+                                <input class="form-control" id="ph1">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Umur</label>
+                            <div class="col-md-7">
+                                <input class="form-control" id="ph2" style="margin-top: 7px">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Alamat</label>
+                            <div class="col-md-7">
+                                <textarea rows="3" class="form-control" id="ph3" style="margin-top: 7px"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">No Asuransi/ BPJS/ Swasta</label>
+                            <div class="col-md-7">
+                                <input class="form-control" id="ph4" style="margin-top: 7px">
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="garis">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-12" style="margin-top: 7px">Perencanaan Hemodialisa</label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Sebanyak</label>
+                            <div class="col-md-3">
+                                <input type="number" class="form-control" id="ph5" style="margin-top: 7px">
+                            </div>
+                            <label class="col-md-3" style="margin-top: 12px; margin-left: -20px">kali/minggu</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Lama Hemodialisa</label>
+                            <div class="col-md-3">
+                                <input type="number" class="form-control" id="ph6" style="margin-top: 7px">
+                            </div>
+                            <label class="col-md-1" style="margin-top: 12px; margin-left: -20px">Jam</label>
+                            <div class="col-md-3">
+                                <input type="number" class="form-control" id="ph7" style="margin-top: 7px">
+                            </div>
+                            <label class="col-md-1" style="margin-top: 12px; margin-left: -20px">Menit</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">UF</label>
+                            <div class="col-md-3">
+                                <input type="number" class="form-control" id="ph8" style="margin-top: 7px">
+                            </div>
+                            <label class="col-md-1" style="margin-top: 12px; margin-left: -20px">Liter</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Heparin</label>
+                            <div class="col-md-3">
+                                <input type="number" class="form-control" id="ph9" style="margin-top: 7px">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">QB</label>
+                            <div class="col-md-3">
+                                <input type="number" class="form-control" id="ph10" style="margin-top: 7px">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">BD</label>
+                            <div class="col-md-3">
+                                <input type="number" class="form-control" id="ph11" style="margin-top: 7px">
+                            </div>
+                            <label class="col-md-1" style="margin-top: 12px; margin-left: -20px">Unit</label>
+                        </div>
+                    </div>
+                    <hr class="garis">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Catatan</label>
+                            <div class="col-md-7">
+                                <textarea rows="3" class="form-control" id="ph12" style="margin-top: 7px"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button id="save_hd_perencanaan_hemodialisa_pasien" class="btn btn-success pull-right" onclick="saveMonHD('perencanaan_hemodialisa_pasien','perencanaan_hemodialisa')"><i class="fa fa-check"></i>
+                    Save
+                </button>
+                <button id="load_hd_perencanaan_hemodialisa_pasien" style="display: none; cursor: no-drop" type="button"
+                        class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 

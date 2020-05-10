@@ -10,6 +10,7 @@ import java.sql.Timestamp;
  */
 public class ItAkunBudgetingDetailEntity implements Serializable {
 
+    private String idBudgetingDetail;
     private String noBudgetingDetail;
     private String noBudgeting;
     private String divisiId;
@@ -23,6 +24,32 @@ public class ItAkunBudgetingDetailEntity implements Serializable {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String idBudgeting;
+    private String positionId;
+
+    public String getPositionId() {
+        return positionId;
+    }
+
+    public void setPositionId(String positionId) {
+        this.positionId = positionId;
+    }
+
+    public String getIdBudgeting() {
+        return idBudgeting;
+    }
+
+    public void setIdBudgeting(String idBudgeting) {
+        this.idBudgeting = idBudgeting;
+    }
+
+    public String getIdBudgetingDetail() {
+        return idBudgetingDetail;
+    }
+
+    public void setIdBudgetingDetail(String idBudgetingDetail) {
+        this.idBudgetingDetail = idBudgetingDetail;
+    }
 
     public String getNoBudgetingDetail() {
         return noBudgetingDetail;

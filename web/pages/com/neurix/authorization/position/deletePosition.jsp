@@ -146,6 +146,16 @@
                     </tr>
                     <tr>
                         <td>
+                            <label class="control-label"><small>Kodering :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield id="kodering3" cssClass="form-control" readonly="true" name="position.kodering"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
                             <label class="control-label"><small>Bidang/Devisi :</small></label>
                         </td>
                         <td>

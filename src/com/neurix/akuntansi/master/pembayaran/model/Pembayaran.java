@@ -11,7 +11,9 @@ public class Pembayaran extends BaseModel {
     private String coa;
     private String flag;
     private String action;
+    private String stCreatedDate;
     private Timestamp createdDate;
+    private String stLastUpdate;
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
@@ -86,5 +88,23 @@ public class Pembayaran extends BaseModel {
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    @Override
+    public String getStCreatedDate() {
+        return stCreatedDate;
+    }
+
+    public void setStCreatedDate(String stCreatedDate) {
+        this.stCreatedDate = stCreatedDate;
+    }
+
+    @Override
+    public String getStLastUpdate() {
+        return stLastUpdate;
+    }
+
+    public void setStLastUpdate(String stLastUpdate) {
+        this.stLastUpdate = stLastUpdate;
     }
 }

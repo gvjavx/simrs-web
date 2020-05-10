@@ -534,7 +534,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    <input class="form-control datepicker2 datemask2" id="mon_tanggal">
+                                    <input class="form-control tgl" id="mon_tanggal">
                                 </div>
                             </div>
                         </div>

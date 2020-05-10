@@ -75,21 +75,22 @@
                                 <div class="col-md-4">
                                     <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Resep Poli</h3>
                                 </div>
-                                <div class="col-md-3 pull-right">
-                                    <div class="input-group date">
-                                        <input class="form-control" id="add_resep" placeholder="Antrian" onchange="saveAntrian()">
-                                        <div class="input-group-addon btn btn-success" onclick="saveAntrian()" id="save_resep">
-                                            <i class="fa fa-arrow-right" style="cursor: pointer"></i> Save
-                                        </div>
-                                        <div class="input-group-addon btn btn-success" id="load_resep" style="display: none">
-                                            <i class="fa fa-spinner fa-spin" style="cursor: no-drop"></i> Sedang menyimpan...
-                                        </div>
-                                    </div>
-                                </div>
+                                <%--<div class="col-md-3 pull-right">--%>
+                                    <%--<div class="input-group date">--%>
+                                        <%--<input class="form-control" id="add_resep" placeholder="Antrian" onchange="saveAntrian()">--%>
+                                        <%--<div class="input-group-addon btn btn-success" onclick="saveAntrian()" id="save_resep">--%>
+                                            <%--<i class="fa fa-arrow-right" style="cursor: pointer"></i> Save--%>
+                                        <%--</div>--%>
+                                        <%--<div class="input-group-addon btn btn-success" id="load_resep" style="display: none">--%>
+                                            <%--<i class="fa fa-spinner fa-spin" style="cursor: no-drop"></i> Sedang menyimpan...--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
                             </div>
                     </div>
                     <div class="box-body">
                         <div class="form-group">
+
                             <s:form id="resepPoliForm" method="post" namespace="/reseppoli"
                                     action="searchResepPasien_reseppoli.action"
                                     theme="simple" cssClass="form-horizontal">
@@ -127,27 +128,7 @@
                                                   cssClass="form-control select2"/>
                                     </div>
                                 </div>
-                                <%--<div class="form-group">--%>
-                                    <%--<label class="control-label col-sm-4">Flag</label>--%>
-                                    <%--<div class="col-sm-4">--%>
-                                        <%--<s:select list="#{'N':'Non Active'}" cssStyle="margin-top: 7px"--%>
-                                                  <%--id="flag" name="permintaanResep.status"--%>
-                                                  <%--headerKey="Y" headerValue="Active"--%>
-                                                  <%--cssClass="form-control select2"/>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-                                <%--<div class="form-group">--%>
-                                    <%--<label>&nbsp;</label>--%>
-                                    <%--<div class="col-sm-4">--%>
-                                        <%--<div class="input-group">--%>
-                                        <%--<input class="form-control" id="namaOrang">--%>
-                                        <%--<div class="input-group-addon" onclick="tesSuara()">--%>
-                                            <%--<i class="fa fa-search"> TEST</i>--%>
-                                        <%--</div>--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-                                <%--<s:hidden name="permintaanResep.status" value="3"></s:hidden>--%>
+
                                 <s:hidden name="permintaanResep.isUmum" value="N"></s:hidden>
                                 <br>
                                 <div class="form-group">
@@ -163,9 +144,6 @@
                                         <a type="button" class="btn btn-danger" href="initForm_reseppoli.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
-                                        <%--<a type="button" class="btn btn-info" href="initForm_transaksi.action">--%>
-                                            <%--<i class="fa fa-history"></i> Riwayat Transaksi--%>
-                                        <%--</a>--%>
                                     </div>
                                 </div>
                                 <div class="form-group">

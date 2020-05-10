@@ -46,6 +46,5 @@
             <column name="tarif" sql-type="numeric" not-null="false" />
         </property>
 
-
     </class>
 </hibernate-mapping>

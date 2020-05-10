@@ -25,6 +25,15 @@ public class ItSimrsTindakanTransitorisEntity implements Serializable {
     private String flagUpdateKlaim;
     private Timestamp tanggalTindakan;
     private String rekanan;
+    private String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getRekanan() {
         return rekanan;

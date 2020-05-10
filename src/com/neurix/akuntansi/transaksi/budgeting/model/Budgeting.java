@@ -9,6 +9,7 @@ import java.util.Comparator;
  */
 public class Budgeting {
 
+    private String idBudgeting;
     private String noBudgeting;
     private String branchId;
     private String tahun;
@@ -42,6 +43,54 @@ public class Budgeting {
     private String stLevel;
     private String kodeParent;
     private String namaParent;
+    private BigDecimal nilaiAwal;
+    private String flagDisable;
+
+
+    public static Comparator<Budgeting> kodeRekeningSorting = new Comparator<Budgeting>() {
+
+        public int compare(Budgeting s1, Budgeting s2) {
+            String kdRekening1 = s1.getKodeRekening();
+            String kdRekening2 = s2.getKodeRekening();
+
+//            //ascending order
+            return kdRekening1.compareTo(kdRekening2);
+
+            //descending order
+//            return kdRekening2.compareTo(kdRekening1);
+        }};
+
+    public static Comparator<Budgeting> getKodeRekeningSorting() {
+        return kodeRekeningSorting;
+    }
+
+    public static void setKodeRekeningSorting(Comparator<Budgeting> kodeRekeningSorting) {
+        Budgeting.kodeRekeningSorting = kodeRekeningSorting;
+    }
+
+    public String getFlagDisable() {
+        return flagDisable;
+    }
+
+    public void setFlagDisable(String flagDisable) {
+        this.flagDisable = flagDisable;
+    }
+
+    public BigDecimal getNilaiAwal() {
+        return nilaiAwal;
+    }
+
+    public void setNilaiAwal(BigDecimal nilaiAwal) {
+        this.nilaiAwal = nilaiAwal;
+    }
+
+    public String getIdBudgeting() {
+        return idBudgeting;
+    }
+
+    public void setIdBudgeting(String idBudgeting) {
+        this.idBudgeting = idBudgeting;
+    }
 
     public String getKodeParent() {
         return kodeParent;
@@ -57,27 +106,6 @@ public class Budgeting {
 
     public void setNamaParent(String namaParent) {
         this.namaParent = namaParent;
-    }
-
-    public static Comparator<Budgeting> kodeRekeningSorting = new Comparator<Budgeting>() {
-
-        public int compare(Budgeting s1, Budgeting s2) {
-            String kdRekening1 = s1.getKodeRekening();
-            String kdRekening2 = s2.getKodeRekening();
-
-//            //ascending order
-//            return kdRekening1.compareTo(kdRekening2);
-
-            //descending order
-            return kdRekening2.compareTo(kdRekening1);
-        }};
-
-    public static Comparator<Budgeting> getKodeRekeningSorting() {
-        return kodeRekeningSorting;
-    }
-
-    public static void setKodeRekeningSorting(Comparator<Budgeting> kodeRekeningSorting) {
-        Budgeting.kodeRekeningSorting = kodeRekeningSorting;
     }
 
     public String getNoBudgeting() {

@@ -28,8 +28,26 @@ public class TindakanRawat extends BaseModel {
     private String namaPerawat;
 
     private String idKategoriTindakan;
+    private String kategoriInaBpjs;
+    private BigInteger tarifBpjs;
 
     private String approveFlag;
+
+    public String getKategoriInaBpjs() {
+        return kategoriInaBpjs;
+    }
+
+    public void setKategoriInaBpjs(String kategoriInaBpjs) {
+        this.kategoriInaBpjs = kategoriInaBpjs;
+    }
+
+    public BigInteger getTarifBpjs() {
+        return tarifBpjs;
+    }
+
+    public void setTarifBpjs(BigInteger tarifBpjs) {
+        this.tarifBpjs = tarifBpjs;
+    }
 
     public String getStDate() {
         return stDate;

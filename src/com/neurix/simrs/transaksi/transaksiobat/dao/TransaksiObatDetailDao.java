@@ -157,14 +157,14 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
 
     public List<PermintaanResep> getListResepPasien(PermintaanResep bean){
 
-        String isUmum         = "%";
-        String idTujuan       = "%";
-        String branchId       = "%";
-        String idResep        = "%";
+        String isUmum        = "%";
+        String idTujuan      = "%";
+        String branchId      = "%";
+        String idResep       = "%";
         String idDetil       = "%";
-        String nama           = "%";
-        String status         = "%";
-        String flag         = "%";
+        String nama          = "%";
+        String status        = "%";
+        String flag          = "Y";
 
         if (bean.getIsUmum() != null && !"".equalsIgnoreCase(bean.getIsUmum())){
             isUmum = bean.getIsUmum();
@@ -185,11 +185,15 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
             nama = "%"+bean.getNamaPasien()+"%";
         }
         if (bean.getStatus() != null && !"".equalsIgnoreCase(bean.getStatus())){
-            status = bean.getStatus();
+            if("4".equalsIgnoreCase(bean.getStatus())){
+                flag = "N";
+            }else{
+                status = bean.getStatus();
+            }
         }
-        if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())){
-            flag = bean.getFlag();
-        }
+//        if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())){
+//            flag = bean.getFlag();
+//        }
 
         String SQL = "SELECT a.id_permintaan_resep, a.id_detail_checkup, c.nama, d.keterangan, a.id_approval_obat, b.id_jenis_periksa_pasien FROM mt_simrs_permintaan_resep a\n" +
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.id_detail_checkup = b.id_detail_checkup\n" +

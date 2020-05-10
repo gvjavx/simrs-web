@@ -97,7 +97,7 @@ public class PositionBagianBoImpl implements PositionBagianBo {
 
         if (bean!=null) {
 
-            String status = cekStatus(bean.getBagianName());
+            String status = cekStatusEdit(bean.getBagianName());
             if (!status.equalsIgnoreCase("exist")){
                 String kelompokPositionId = bean.getBagianId();
                 String idHistory = "";
@@ -125,6 +125,7 @@ public class PositionBagianBoImpl implements PositionBagianBo {
 
                     imPositionBagianEntity.setBagianId(bean.getBagianId());
                     imPositionBagianEntity.setBagianName(bean.getBagianName());
+                    imPositionBagianEntity.setKodering(bean.getKodering());
                     imPositionBagianEntity.setFlag(bean.getFlag());
                     imPositionBagianEntity.setAction(bean.getAction());
                     imPositionBagianEntity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -155,7 +156,7 @@ public class PositionBagianBoImpl implements PositionBagianBo {
         logger.info("[PositionBagianBoImpl.saveAdd] start process >>>");
 
         if (bean!=null) {
-            String status = cekStatus(bean.getBagianName());
+            String status = cekStatus(bean.getBagianName(), bean.getKodering());
             if (!status.equalsIgnoreCase("Exist")){
                 String kelompokPositionId = "";
                 try {
@@ -171,6 +172,7 @@ public class PositionBagianBoImpl implements PositionBagianBo {
 
                 imPositionBagianEntity.setBagianId(kelompokPositionId);
                 imPositionBagianEntity.setBagianName(bean.getBagianName());
+                imPositionBagianEntity.setKodering(bean.getKodering());
                 imPositionBagianEntity.setFlag(bean.getFlag());
                 imPositionBagianEntity.setAction(bean.getAction());
                 imPositionBagianEntity.setCreatedWho(bean.getCreatedWho());
@@ -186,7 +188,7 @@ public class PositionBagianBoImpl implements PositionBagianBo {
                     throw new GeneralBOException("Found problem when saving new data PositionBagian, please info to your admin..." + e.getMessage());
                 }
             }else{
-                throw new GeneralBOException("Maaf Data Tersebut Sudah Ada");
+                throw new GeneralBOException("Maaf Nama Bagian atau Kodering Tersebut Sudah Ada");
             }
 
         }
@@ -239,7 +241,7 @@ public class PositionBagianBoImpl implements PositionBagianBo {
                     returnPositionBagian = new positionBagian();
                     returnPositionBagian.setBagianId(kelompokPositionEntity.getBagianId());
                     returnPositionBagian.setBagianName(kelompokPositionEntity.getBagianName());
-
+                    returnPositionBagian.setKodering(kelompokPositionEntity.getKodering());
                     returnPositionBagian.setCreatedWho(kelompokPositionEntity.getCreatedWho());
                     returnPositionBagian.setCreatedDate(kelompokPositionEntity.getCreatedDate());
                     returnPositionBagian.setLastUpdate(kelompokPositionEntity.getLastUpdate());
@@ -325,7 +327,29 @@ public class PositionBagianBoImpl implements PositionBagianBo {
 
         return result;
     }
-    public String cekStatus(String bagianName)throws GeneralBOException{
+    public String cekStatus(String bagianName, String kodering)throws GeneralBOException{
+        String status ="";
+        List<ImPositionBagianEntity> skalaGajiEntity = new ArrayList<>();
+        List<ImPositionBagianEntity> positionBagianEntities = new ArrayList<>();
+        try {
+            skalaGajiEntity = positionBagianDao.getListPositionBagian(bagianName);
+            positionBagianEntities = positionBagianDao.getListPositionBagianKodering(kodering);
+        } catch (HibernateException e) {
+            logger.error("[PayrollSkalaGajiBoImpl.getSearchPayrollSkalaGajiByCriteria] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        if (skalaGajiEntity.size()>0){
+            status = "exist";
+        }else{
+            if (positionBagianEntities.size()>0)
+                status = "exist";
+            else
+                status="notExits";
+        }
+        return status;
+    }
+
+    public String cekStatusEdit(String bagianName)throws GeneralBOException{
         String status ="";
         List<ImPositionBagianEntity> skalaGajiEntity = new ArrayList<>();
         try {

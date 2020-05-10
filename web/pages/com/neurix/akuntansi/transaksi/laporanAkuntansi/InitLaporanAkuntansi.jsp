@@ -36,7 +36,7 @@
 
         function getReportURL(selectReport) {
             var reportId = selectReport.value;
-            document.reportForm.action= "/simrs/laporanAkuntansi/" + reportId;
+            document.reportForm.action= "<s:property value="appname" />laporanAkuntansi/" + reportId;
             document.reportForm.submit();
         };
 

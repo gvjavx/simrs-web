@@ -602,6 +602,7 @@
 
         var idx = select.selectedIndex;
         var idObat = select.options[idx].value;
+        console.log(idObat);
         var id = "";
         var nama = "";
         var qtyBox = "";

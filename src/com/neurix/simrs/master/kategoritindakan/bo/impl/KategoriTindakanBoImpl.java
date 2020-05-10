@@ -21,6 +21,21 @@ public class KategoriTindakanBoImpl implements KategoriTindakanBo {
     private KategoriTindakanDao kategoriTindakanDao;
 
     @Override
+    public void saveDelete(KategoriTindakan bean) throws GeneralBOException {
+
+    }
+
+    @Override
+    public void saveEdit(KategoriTindakan bean) throws GeneralBOException {
+
+    }
+
+    @Override
+    public KategoriTindakan saveAdd(KategoriTindakan bean) throws GeneralBOException {
+        return null;
+    }
+
+    @Override
     public List<KategoriTindakan> getByCriteria(KategoriTindakan bean) throws GeneralBOException {
         logger.info("[KategoriTindakanBoImpl.getByCriteria] Start >>>>>>>");
         List<KategoriTindakan> results = new ArrayList<>();
@@ -36,6 +51,11 @@ public class KategoriTindakanBoImpl implements KategoriTindakanBo {
     }
 
     @Override
+    public List<KategoriTindakan> getAll() throws GeneralBOException {
+        return null;
+    }
+
+    @Override
     public List<KategoriTindakan> getListKategoriTindakan(String idPelayanan) throws GeneralBOException {
         List<KategoriTindakan> list = new ArrayList<>();
         try {
@@ -44,6 +64,57 @@ public class KategoriTindakanBoImpl implements KategoriTindakanBo {
             logger.error(e.getMessage());
         }
         return list;
+    }
+
+    @Override
+    public List<KategoriTindakan> getDataByCriteria(KategoriTindakan bean) throws GeneralBOException {
+        List<KategoriTindakan> kategoriTindakanList = new ArrayList<>();
+        if(bean != null){
+
+            Map hsCriteria = new HashMap();
+
+            if(bean.getIdKategoriTindakan() != null && !"".equalsIgnoreCase(bean.getIdKategoriTindakan())){
+                hsCriteria.put("id_kategori_tindakan", bean.getIdKategoriTindakan());
+            }
+            if(bean.getKategoriTindakan() != null && !"".equalsIgnoreCase(bean.getKategoriTindakan())){
+                hsCriteria.put("kategori_tindakan", bean.getKategoriTindakan());
+            }
+            if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
+                if ("N".equalsIgnoreCase(bean.getFlag())) {
+                    hsCriteria.put("flag", "N");
+                } else {
+                    hsCriteria.put("flag", bean.getFlag());
+                }
+            } else {
+                hsCriteria.put("flag", "Y");
+            }
+
+            List<ImSimrsKategoriTindakanEntity> kategoriTindakanEntities = new ArrayList<>();
+            try {
+                kategoriTindakanEntities = kategoriTindakanDao.getByCriteria(hsCriteria);
+            }catch (HibernateException e){
+                logger.error("Found Error when search asuransi "+e.getMessage());
+            }
+
+            if(kategoriTindakanEntities.size() > 0){
+                for (ImSimrsKategoriTindakanEntity entity: kategoriTindakanEntities){
+                    KategoriTindakan kategoriTindakan = new KategoriTindakan();
+                    kategoriTindakan.setIdKategoriTindakan(entity.getIdKategoriTindakan());
+                    kategoriTindakan.setKategoriTindakan(entity.getKategoriTindakan());
+                    kategoriTindakan.setFlag(entity.getFlag());
+                    kategoriTindakan.setAction(entity.getAction());
+                    kategoriTindakan.setCreatedWho(entity.getCreatedWho());
+                    kategoriTindakan.setStCreatedDate(entity.getCreatedDate().toString());
+                    kategoriTindakan.setCreatedDate(entity.getCreatedDate());
+                    kategoriTindakan.setStLastUpdate(entity.getLastUpdate().toString());
+                    kategoriTindakan.setLastUpdate(entity.getLastUpdate());
+                    kategoriTindakan.setLastUpdateWho(entity.getLastUpdateWho());
+                    kategoriTindakanList.add(kategoriTindakan);
+                }
+            }
+        }
+
+        return kategoriTindakanList;
     }
 
     protected List<ImSimrsKategoriTindakanEntity> getListEntityKategoriTindakan(KategoriTindakan bean) throws GeneralBOException {
@@ -92,5 +163,10 @@ public class KategoriTindakanBoImpl implements KategoriTindakanBo {
 
     public void setKategoriTindakanDao(KategoriTindakanDao kategoriTindakanDao) {
         this.kategoriTindakanDao = kategoriTindakanDao;
+    }
+
+    @Override
+    public Long saveErrorMessage(String message, String moduleMethod) throws GeneralBOException {
+        return null;
     }
 }

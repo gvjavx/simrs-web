@@ -4,6 +4,7 @@ import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.master.ruangan.model.MtSimrsRuanganEntity;
 import com.neurix.simrs.master.ruangan.model.Ruangan;
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -33,20 +34,27 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
             if (mapCriteria.get("nama_ruangan") != null) {
                 criteria.add(Restrictions.ilike("namaRuangan", "%" + (String) mapCriteria.get("nama_ruangan") + "%"));
             }
-            if (mapCriteria.get("no_ruangan") != null) {
-                criteria.add(Restrictions.eq("noRuangan", (String) mapCriteria.get("no_ruangan")));
+            if (mapCriteria.get("id_kelas_ruangan") != null) {
+                criteria.add(Restrictions.eq("idKelasRuangan", (String) mapCriteria.get("id_kelas_ruangan")));
             }
             if (mapCriteria.get("status_ruangan") != null) {
                 criteria.add(Restrictions.eq("statusRuangan", (String) mapCriteria.get("status_ruangan")));
             }
-            if (mapCriteria.get("id_kelas_ruangan") != null) {
-                criteria.add(Restrictions.eq("idKelasRuangan", (String) mapCriteria.get("id_kelas_ruangan")));
-            }
-            if (mapCriteria.get("tarif") != null) {
-                criteria.add(Restrictions.eq("tarif", (Long) mapCriteria.get("tarif")));
+            if (mapCriteria.get("no_ruangan") != null) {
+                criteria.add(Restrictions.eq("noRuangan", (String) mapCriteria.get("no_ruangan")));
             }
             if (mapCriteria.get("branch_id") != null) {
                 criteria.add(Restrictions.eq("branchId", (String) mapCriteria.get("branch_id")));
+            }
+            if (mapCriteria.get("id_kelas_ruangan") != null) {
+                criteria.add(Restrictions.eq("idKelasRuangan", (String) mapCriteria.get("id_kelas_ruangan")));
+            }
+            if (mapCriteria.get("status_ruangan") != null) {
+                criteria.add(Restrictions.eq("statusRuangan", (String) mapCriteria.get("status_ruangan")));
+            }
+
+            if (mapCriteria.get("tarif") != null) {
+                criteria.add(Restrictions.eq("tarif", (BigInteger) mapCriteria.get("tarif")));
             }
             if (mapCriteria.get("flag") != null) {
                 criteria.add(Restrictions.eq("flag", (String) mapCriteria.get("flag")));
@@ -138,5 +146,14 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
         }
 
         return ruanganList;
+    }
+
+    public List<MtSimrsRuanganEntity> getDataPelayanan(String namaRuangan) throws HibernateException {
+        List<MtSimrsRuanganEntity> results = this.sessionFactory.getCurrentSession().createCriteria(MtSimrsRuanganEntity.class)
+                .add(Restrictions.eq("namaRuangan", namaRuangan))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+
+        return results;
     }
 }
