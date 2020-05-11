@@ -709,30 +709,40 @@
         var nilai       = $("#nilai").val();
         var tipe        = $("#sel-tipe").val();
 
-        if (divisi == ""){
-            // jika inputan divisi kosong makan muncul modal input pengadaan
-            n = 0;
-            strPengadaan = "";
-            $("#body-add-pengadaan").html("");
-            $("#modal-pengadaan").modal('show');
-        } else {
-            // jika ada inputan divisi maka save to session detail
-            if (rekeningid != ""){
-                var arrCoa = [];
-                arrCoa.push({ "divisi":divisi, "divisiname":namadivisi, "qty":qty, "nilai":nilai, "tipe":tipe, "rekeningid":rekeningid, "positionid":positionid});
-                var jsonString = JSON.stringify(arrCoa);
-
-                BudgetingAction.setToSessionCoaDetail(jsonString, function (response) {
-                    if(response == "01"){
-                        refresh();
-                    } else {
-                        $("#alert-error-modal").show().fadeOut(5000);
-                    }
-                });
+        BudgetingAction.checkBudgetingDivisi(tipe, divisi, rekeningid, function (response) {
+            if (response != null){
+                $("#alert-error").show().fadeOut(5000);
+                $("#error-msg").text(" Data Sudah Ada. Divisi : "+namadivisi+" Pada : "+tipe);
             } else {
-                alert("Kode Rekening tidak ditemukan !");
+                if (divisi == ""){
+                    // jika inputan divisi kosong makan muncul modal input pengadaan
+                    n = 0;
+                    strPengadaan = "";
+                    $("#body-add-pengadaan").html("");
+                    $("#modal-pengadaan").modal('show');
+                } else if (divisi != "" && qty == "" && qty <= 0 || nilai == "" || nilai <= 0){
+                    $("#alert-error").show().fadeOut(5000);
+                    $("#error-msg").text(" Inputan Tidak Boleh Kosong / Tidak Boleh 0");
+                } else {
+                    // jika ada inputan divisi maka save to session detail
+                    if (rekeningid != ""){
+                        var arrCoa = [];
+                        arrCoa.push({ "divisi":divisi, "divisiname":namadivisi, "qty":qty, "nilai":nilai, "tipe":tipe, "rekeningid":rekeningid, "positionid":positionid});
+                        var jsonString = JSON.stringify(arrCoa);
+
+                        BudgetingAction.setToSessionCoaDetail(jsonString, function (response) {
+                            if(response == "01"){
+                                refresh();
+                            } else {
+                                $("#alert-error-modal").show().fadeOut(5000);
+                            }
+                        });
+                    } else {
+                        alert("Kode Rekening tidak ditemukan !");
+                    }
+                }
             }
-        }
+        });
     }
 
     function refresh() {
@@ -854,7 +864,6 @@
             });
         });
     }
-
 
 </script>
 

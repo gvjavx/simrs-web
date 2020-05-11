@@ -1105,6 +1105,24 @@ public class BudgetingAction {
         return new ArrayList<>();
     }
 
+    public BudgetingDetail checkBudgetingDivisi(String tipe, String divisiId, String rekeningId){
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<BudgetingDetail> sessionDetailEdit = (List<BudgetingDetail>) session.getAttribute("listOfDetailEdit");
+
+        // collect budgeting dengan parameter
+        List<BudgetingDetail> budgetingDetails = sessionDetailEdit.stream().filter(
+                p -> p.getTipe().equalsIgnoreCase(tipe)
+                && p.getDivisiId().equalsIgnoreCase(divisiId)
+                && p.getRekeningId().equalsIgnoreCase(rekeningId)
+        ).collect(Collectors.toList());
+
+        if (budgetingDetails.size() > 0){
+            return budgetingDetails.get(0);
+        }
+
+        return null;
+    }
+
     public void setBudgetingBoProxy(BudgetingBo budgetingBoProxy) {
         this.budgetingBoProxy = budgetingBoProxy;
     }
