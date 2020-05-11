@@ -25,6 +25,10 @@
         });
 
     </script>
+
+    <script src="<s:url value="/pages/plugins/tree/jquery.treegrid.bootstrap3.js"/>"></script>
+    <script src="<s:url value="/pages/plugins/tree/jquery.treegrid.js"/>"></script>
+    <script src="<s:url value="/pages/plugins/tree/lodash.js"/>"></script>
 </head>
 
 <body class="hold-transition skin-blue fixed sidebar-mini">
@@ -475,68 +479,8 @@
             }
 
             $("#action-menu").html(str);
-
-//            if ("DRAFT" == var1){
-//                str += "<li>"+
-//                    "<a href=\"#\" onclick=\"action('EDIT_DRAFT')\">"+
-//                    "<i class=\"fa fa-edit\"></i>Edit Draft</a>"+
-//                    "</li>";
-//
-//                str += "<li>"+
-//                    "<a href=\"#\" onclick=\"action('APPROVE_DRAFT')\">"+
-//                    "<i class=\"fa fa-edit\"></i>Approve Draft</a>"+
-//                    "</li>";
-//
-//                str += "<li>"+
-//                    "<a href=\"#\" onclick=\"action('ADJUST_DRAFT')\">"+
-//                    "<i class=\"fa fa-edit\"></i>Adjust Draft</a>"+
-//                    "</li><hr>";
-//            }
-//            if ("FINAL" == var1){
-//                str += "<li>"+
-//                    "<a href=\"#\" onclick=\"action('EDIT_FINAL')\">"+
-//                    "<i class=\"fa fa-edit\"></i>Edit Final</a>"+
-//                    "</li>";
-//
-//                str += "<li>"+
-//                    "<a href=\"#\" onclick=\"action('APPROVE_FINAL')\">"+
-//                    "<i class=\"fa fa-edit\"></i>Approve Final</a>"+
-//                    "</li>";
-//
-//                str += "<li>"+
-//                    "<a href=\"#\" onclick=\"action('ADJUST_FINAL')\">"+
-//                    "<i class=\"fa fa-edit\"></i>Adjust Final</a>"+
-//                    "</li><hr>";
-//            }
-//            if ("REVISI" == var1){
-//                str += "<li>"+
-//                    "<a href=\"#\" onclick=\"action('EDIT_REVISI')\">"+
-//                    "<i class=\"fa fa-edit\"></i>Edit Revisi</a>"+
-//                    "</li>";
-//
-//                str += "<li>"+
-//                    "<a href=\"#\" onclick=\"action('APPROVE_REVISI')\">"+
-//                    "<i class=\"fa fa-edit\"></i>Approve Revisi</a>"+
-//                    "</li>";
-//
-//                str += "<li>"+
-//                    "<a href=\"#\" onclick=\"action('ADJUST_REVISI')\">"+
-//                    "<i class=\"fa fa-edit\"></i>Adjust Revisi</a>"+
-//                    "</li><hr>";
-//            }
-
-
         });
     }
-
-//    function tipeAction(tipe) {
-//
-//
-//
-//    <a href="addRawatIgd_igd.action?tipe=umum">
-//            <i class="fa fa-edit"></i>edit
-//            </a>
-//    }
 
     // exemple : post('/contact/', {name: 'Johnny Bravo'});
     function post(path, params) {
@@ -590,8 +534,19 @@
 
 
     function add() {
-        var host = firstpath()+"/budgeting/add_budgeting.action";
-        post(host);
+
+        var tahun = $("#sel-tahun").val();
+        var unit = $("#sel-unit").val();
+
+        BudgetingAction.checkTransaksiBudgeting(unit, tahun, function(response){
+
+            if (response.branchId == null && response.tahun == null){
+                var host = firstpath()+"/budgeting/add_budgeting.action";
+                post(host);
+            } else {
+                alert("Data Sudah Ada. di tahun "+response.tahun);
+            }
+        });
     }
 
     function search() {

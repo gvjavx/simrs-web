@@ -794,6 +794,11 @@ public class BudgetingBoImpl implements BudgetingBo {
     }
 
     @Override
+    public Budgeting checkBudgeting(String branchId, String tahun) throws GeneralBOException {
+        return budgetingDao.getCheckTransaksi(branchId, tahun);
+    }
+
+    @Override
     public List<ItAkunBudgetingPengadaanEntity> getListBudgetingPengadaanByIdDetail(String id) throws GeneralBOException {
         Map hsCriteria = new HashMap();
         hsCriteria.put("id_budgeting_detail", id);

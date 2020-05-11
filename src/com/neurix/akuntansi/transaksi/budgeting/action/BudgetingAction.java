@@ -1112,6 +1112,14 @@ public class BudgetingAction {
         return budgeting;
     }
 
+    public Budgeting checkTransaksiBudgeting(String branch, String tahun){
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
+
+        return budgetingBo.checkBudgeting(branch, tahun);
+    }
+
     public void setBudgetingBoProxy(BudgetingBo budgetingBoProxy) {
         this.budgetingBoProxy = budgetingBoProxy;
     }
