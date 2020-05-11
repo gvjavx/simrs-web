@@ -870,6 +870,7 @@ public class RawatInapController implements ModelDriven<Object> {
             List<KategoriTindakan> result = new ArrayList<>();
 
             KategoriTindakan kategoriTindakan = new KategoriTindakan();
+            kategoriTindakan.setIdKategoriTindakan("KAT00000001");
 
             try {
                 result = kategoriTindakanBoProxy.getByCriteria(kategoriTindakan);
@@ -1042,7 +1043,7 @@ public class RawatInapController implements ModelDriven<Object> {
 
             MonVitalSign monVitalSign = new MonVitalSign();
             monVitalSign.setIdDetailCheckup(idDetailCheckup);
-//            monVitalSign.setId(idMonVitalSign);
+            monVitalSign.setId(idMonVitalSign);
             monVitalSign.setIsMobile("Y");
 
             try {
@@ -1169,7 +1170,7 @@ public class RawatInapController implements ModelDriven<Object> {
 
             MonCairan monCairan = new MonCairan();
             monCairan.setIdDetailCheckup(idDetailCheckup);
-//            monCairan.setId(idMonCairan);
+            monCairan.setId(idMonCairan);
             monCairan.setIsMobile("Y");
 
             try {
