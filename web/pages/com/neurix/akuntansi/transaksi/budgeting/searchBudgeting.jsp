@@ -535,18 +535,21 @@
 
     function add() {
 
-        var tahun = $("#sel-tahun").val();
-        var unit = $("#sel-unit").val();
+        var host = firstpath()+"/budgeting/add_budgeting.action";
+        post(host);
 
-        BudgetingAction.checkTransaksiBudgeting(unit, tahun, function(response){
-
-            if (response.branchId == null && response.tahun == null){
-                var host = firstpath()+"/budgeting/add_budgeting.action";
-                post(host);
-            } else {
-                alert("Data Sudah Ada. di tahun "+response.tahun);
-            }
-        });
+//        var tahun = $("#sel-tahun").val();
+//        var unit = $("#sel-unit").val();
+//
+//        BudgetingAction.checkTransaksiBudgeting(unit, tahun, function(response){
+//
+//            if (response.branchId == null && response.tahun == null){
+//                var host = firstpath()+"/budgeting/add_budgeting.action";
+//                post(host);
+//            } else {
+//                alert("Data Sudah Ada. di tahun "+response.tahun);
+//            }
+//        });
     }
 
     function search() {
