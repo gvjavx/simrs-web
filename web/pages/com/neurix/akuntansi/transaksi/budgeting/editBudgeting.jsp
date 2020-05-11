@@ -131,7 +131,7 @@
                     <div class="box-header with-border"></div>
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-th-list"></i>
-                            <%--List Tutup Period <strong><span id="label-tahun"></span> - <span id="label-bulan"></span></strong> --%>
+                            <strong><span id="label-trans"></span></strong>
                         </h3>
                     </div>
                     <div class="box-body">
@@ -320,9 +320,10 @@
             $("#btn-save").html("<i class='fa fa-check'></i> Approve");
         }
 
+        var met = trans.replace("_", " ");
+        $("#label-trans").text(met);
         search();
     });
-
 
     // exemple : post('/contact/', {name: 'Johnny Bravo'});
     function post(path, params) {

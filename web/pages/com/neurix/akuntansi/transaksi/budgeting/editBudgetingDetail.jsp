@@ -10,12 +10,26 @@
     <%@ include file="/pages/common/header.jsp" %>
     <style>
         .modal { overflow-y: auto}
+
+        .treegrid-collapsed {
+            background-color: #bfbfbf;
+        }
+        .treegrid-expanded {
+            background-color: #e6e6e6;
+        }
+
+        .treegrid-indent {width:16px; height: 16px; display: inline-block; position: relative;}
+
+        .treegrid-expander { width:16px; height: 16px; display: inline-block; position: relative; cursor: pointer;}
     </style>
 
     <script type='text/javascript' src='<s:url value="/dwr/interface/BranchAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/BudgetingAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/KodeRekeningAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PositionAction.js"/>'></script>
+    <script src="<s:url value="/pages/plugins/tree/jquery.treegrid.bootstrap3.js"/>"></script>
+    <script src="<s:url value="/pages/plugins/tree/jquery.treegrid.js"/>"></script>
+    <script src="<s:url value="/pages/plugins/tree/lodash.js"/>"></script>
     <script type='text/javascript'>
 
         function formatRupiah(angka) {
@@ -23,7 +37,11 @@
                 var reverse = angka.toString().split('').reverse().join(''),
                     ribuan = reverse.match(/\d{1,3}/g);
                 ribuan = ribuan.join('.').split('').reverse().join('');
-                return ribuan;
+                if (angka < 0){
+                    return "-"+ribuan;
+                } else {
+                    return ribuan;
+                }
             }else{
                 return 0;
             }
@@ -80,7 +98,7 @@
                         <%--table informasi all coa--%>
                         <div class="row">
                             <div class="col-md-10 col-md-offset-1">
-                                <table id="sortTable" class="table table-bordered table-striped" style="font-size: 15px;">
+                                <table class="table table-bordered table-striped tree" style="font-size: 15px;">
                                     <thead id="head-budgeting">
                                     <tr bgcolor="#90ee90">
                                         <td style="width: 20%">COA</td>
@@ -90,14 +108,14 @@
                                     </tr>
                                     </thead>
                                     <tbody id="body-budgeting">
-                                    <s:iterator value="#session.listOfCoa" status="listOfCoa" var="row">
-                                        <tr>
-                                            <td><s:property value="kodeRekening"/></td>
-                                            <td><s:property value="namaKodeRekening"/></td>
-                                            <td align="center"><script>document.write(formatRupiah('<s:property value="nilaiTotal"/>'))</script></td>
-                                            <td align="center"><s:property value="selisih"/></td>
-                                        </tr>
-                                    </s:iterator>
+                                    <%--<s:iterator value="#session.listOfCoa" status="listOfCoa" var="row">--%>
+                                        <%--<tr>--%>
+                                            <%--<td><s:property value="kodeRekening"/></td>--%>
+                                            <%--<td><s:property value="namaKodeRekening"/></td>--%>
+                                            <%--<td align="center"><script>document.write(formatRupiah('<s:property value="nilaiTotal"/>'))</script></td>--%>
+                                            <%--<td align="center"><s:property value="selisih"/></td>--%>
+                                        <%--</tr>--%>
+                                    <%--</s:iterator>--%>
                                     </tbody>
                                 </table>
                             </div>
@@ -189,7 +207,7 @@
 
                             <div class="row">
                                 <div class="col-md-6 col-md-offset-7" style="margin-top: 10px">
-                                    <button class="btn btn-success" onclick="saveAdd()"><i class="fa fa-plus"></i> Add</button>
+                                    <button class="btn btn-primary" onclick="saveAdd()"><i class="fa fa-plus"></i> Add</button>
                                 </div>
                             </div>
                         </div>
@@ -200,7 +218,7 @@
                     <div class="box-header with-border"></div>
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-th-list"></i>
-                            <%--List Tutup Period <strong><span id="label-tahun"></span> - <span id="label-bulan"></span></strong> --%>
+                           <strong><span id="label-tipe-list"></span></strong>
                         </h3>
                     </div>
                     <div class="box-body">
@@ -245,7 +263,7 @@
                                                     <td align="center"><s:property value="qty"/></td>
                                                     <td align="center"><script>document.write(formatRupiah('<s:property value="nilai"/>'))</script></td>
                                                     <td align="center"><script>document.write(formatRupiah('<s:property value="subTotal"/>'))</script></td>
-                                                    <td align="center"><button class="btn btn-sm btn-success" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button></td>
+                                                    <td align="center"><button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button></td>
                                                 </tr>
                                             </s:if>
                                         </s:iterator>
@@ -277,7 +295,7 @@
                                                     <td align="center"><s:property value="qty"/></td>
                                                     <td align="center"><s:property value="nilai"/></td>
                                                     <td align="center"><s:property value="subTotal"/></td>
-                                                    <td align="center"><button class="btn btn-sm btn-success" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button></td>
+                                                    <td align="center"><button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button></td>
                                                 </tr>
                                             </s:if>
                                         </s:iterator>
@@ -309,7 +327,7 @@
                                                     <td align="center"><s:property value="qty"/></td>
                                                     <td align="center"><s:property value="nilai"/></td>
                                                     <td align="center"><s:property value="subTotal"/></td>
-                                                    <td align="center"><button class="btn btn-sm btn-success" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button></td>
+                                                    <td align="center"><button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button></td>
                                                 </tr>
                                             </s:if>
                                         </s:iterator>
@@ -341,7 +359,7 @@
                                                     <td align="center"><s:property value="qty"/></td>
                                                     <td align="center"><s:property value="nilai"/></td>
                                                     <td align="center"><s:property value="subTotal"/></td>
-                                                    <td align="center"><button class="btn btn-sm btn-success" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button></td>
+                                                    <td align="center"><button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button></td>
                                                 </tr>
                                             </s:if>
                                         </s:iterator>
@@ -377,7 +395,7 @@
                                                     <td align="center"><s:property value="qty"/></td>
                                                     <td align="center"><s:property value="nilai"/></td>
                                                     <td align="center"><s:property value="subTotal"/></td>
-                                                    <td align="center"><button class="btn btn-sm btn-success" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button></td>
+                                                    <td align="center"><button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button></td>
                                                 </tr>
                                             </s:if>
                                         </s:iterator>
@@ -408,7 +426,7 @@
                                                     <td align="center"><s:property value="qty"/></td>
                                                     <td align="center"><s:property value="nilai"/></td>
                                                     <td align="center"><s:property value="subTotal"/></td>
-                                                    <td align="center"><button class="btn btn-sm btn-success" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button></td>
+                                                    <td align="center"><button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button></td>
                                                 </tr>
                                             </s:if>
                                         </s:iterator>
@@ -442,7 +460,7 @@
                                                     <td align="center"><s:property value="qty"/></td>
                                                     <td align="center"><s:property value="nilai"/></td>
                                                     <td align="center"><s:property value="subTotal"/></td>
-                                                    <td align="center"><button class="btn btn-sm btn-success" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button></td>
+                                                    <td align="center"><button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button></td>
                                                 </tr>
                                             </s:if>
                                         </s:iterator>
@@ -583,6 +601,7 @@
     $( document ).ready(function() {
         console.log("hasil >>> "+unit+tahun+tipe);
         comboTipe();
+        search();
     });
 
     function comboTipe() {
@@ -611,6 +630,7 @@
         }
 
         $("#label-tipe").text(label);
+        $("#label-tipe-list").text("List "+label);
         $("#label-tipe-pengadaan").text(label);
         $("#sel-tipe").html(opt);
         $("#sel-tipe-pengadaan").html(opt);
@@ -768,26 +788,73 @@
     function saveAddPengadaan() {
 
         $("#modal-pengadaan").modal('hide');
-
-//        var tipe = $("#sel-tipe-pengadaan").val();
-//        var namapengadaan = $("#nama-head-pengadaan").val();
-//        var arrData = [];
-//        for (var i = 0 ; i <= n; i++){
-//            var nama = $("#ama-add-"+i+"").val();
-//            var qty = $("#ama-add-"+i+"").val();
-//            var nilai = $("#ama-add-"+i+"").val();
-//            arrData.push({"name":nama, "qty":qty, "nilai":nilai});
-//        }
-//
-//        var strJson = JSON.stringify(arrData);
-//        BudgetingAction.saveAddPengadaan(strJson, namapengadaan, rekeningid, tipe, function (response) {
-//            if (response.status == "success"){
-//                refresh();
-//            } else {
-//                $("#alert-error-add-pengadaan").show().fadeOut(5000);
-//            }
-//        });
     }
+
+    function search() {
+        var data = [];
+        var data2 = [];
+        dwr.engine.setAsync(true);
+        BudgetingAction.getListOfCoaBudgetingSession(function (response) {
+
+            console.log(response);
+            data = response;
+            data2 = new Array();
+            $.each(data, function(i,item){
+                console.log(item.rekeningId);
+                data2.push({_id : item.rekeningId, level : item.level,  nama : item.namaKodeRekening, parent : item.parentId, coa : item.kodeRekening,
+                    nilaiTotal : item.nilaiTotal, quartal1 : item.quartal1, quartal2: item.quartal2, quartal3 : item.quartal3, quartal4 : item.quartal4,
+                    semester1 : item.semester1, semester2:item.semester2, stLevel: item.stLevel, selisih : item.selisih});
+
+            });
+            function hierarhySort(hashArr, key, result) {
+                if (hashArr[key] == undefined){
+                    //level--;
+                    return;
+                }else{
+                    var arr = [] ;
+                    arr  = hashArr[key];
+                }
+                for (var i=0; i<arr.length; i++) {
+                    result.push(arr[i]);
+                    hierarhySort(hashArr, arr[i]._id, result);
+                }
+                return result;
+            }
+            var hashArr = {};
+            for (var i=0; i<data2.length; i++) {
+                if (hashArr[data2[i].parent] == undefined) {
+                    hashArr[data2[i].parent] = [];
+                }
+                hashArr[data2[i].parent].push(data2[i]);
+            }
+
+            var strList = "";
+            for(i = 0 ; i < data2.length ; i++){
+                if(data2[i].parent == "-"){
+                    strList += '<tr style="font-size: 12px;" class=" treegrid-' + data2[i]._id+ '">' +
+                        '<td >' + data2[i].coa + '</td>' +
+                        '<td >' + data2[i].nama + '</td>' +
+                        "<td align='right'>"+formatRupiah(data2[i].nilaiTotal)+"</td>"+
+                        "<td align='right'>"+formatRupiah(data2[i].selisih)+"</td>"+
+                        "</tr>";
+                } else {
+                    strList += '<tr style="font-size: 12px" class=" treegrid-' + data2[i]._id + ' treegrid-parent-' + data2[i].parent + '">' +
+                        + '<td style="border: 2px solid black;">' +
+                        '<td >' + data2[i].coa + '</td>' +
+                        '<td >' + data2[i].nama + '</td>' +
+                        "<td align='right'>"+formatRupiah(data2[i].nilaiTotal)+"</td>"+
+                        "<td align='right'>"+formatRupiah(data2[i].selisih)+"</td>"+
+                        "</tr>";
+                }
+            }
+            $("#body-budgeting").html(strList);
+            $('.tree').treegrid({
+                expanderExpandedClass: 'glyphicon glyphicon-minus',
+                expanderCollapsedClass: 'glyphicon glyphicon-plus'
+            });
+        });
+    }
+
 
 </script>
 
