@@ -1065,11 +1065,17 @@ public class BudgetingAction {
             pengadaan.setIdBudgetingDetail(budgetingDetail.getIdBudgetingDetail());
 
             // set nilai pengadaan;
+            budgetingDetail.setIdBudgeting(budgetingBo.generateBudgetingDetailId());
+            budgetingDetail.setDivisiName(namaPengadaan);
+            budgetingDetail.setRekeningId(rekeningId);
+            budgetingDetail.setTipe(tipe);
             budgetingDetail.setQty(budgetingDetail.getQty().add(pengadaan.getQty()));
             budgetingDetail.setNilai(budgetingDetail.getNilai().add(pengadaan.getNilai()));
             budgetingDetail.setSubTotal(budgetingDetail.getSubTotal().add(pengadaan.getSubTotal()));
         }
 
+        sessionDetailEdit.add(budgetingDetail);
+        sessionPengadaan.addAll(pengadaans);
         return response;
     }
 
