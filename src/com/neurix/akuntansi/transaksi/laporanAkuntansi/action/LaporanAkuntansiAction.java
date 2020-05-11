@@ -1411,6 +1411,8 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
                     listAgingTempNewRecord.setMataUang(listAgingTempLast.getMataUang());
                     //
                     listAgingTempNewRecord.setTotal(objMod.getTotal().add(listAgingTempLast.getTotal()));
+                    listAgingTempNewRecord.setKodeRekening(objMod.getKodeRekening());
+                    listAgingTempNewRecord.setKodeRekening(objMod.getNamaRekening());
                     listAgingTempNewRecord.setMasterId(listAgingTempLast.getMasterId());
                     listAgingTempNewRecord.setNamaMaster(listAgingTempLast.getNamaMaster());
                     listAgingTempNewRecord.setPeriode(getPeriode());
