@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="511"/>
+	<property name="ireport.y" value="61"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -84,7 +84,7 @@
 	<title>
 		<band height="664" splitType="Stretch">
 			<subreport isUsingCache="true">
-				<reportElement key="subreport-1" positionType="Float" stretchType="RelativeToTallestObject" x="2" y="166" width="528" height="298" uuid="cc7c147c-cff4-4378-b14d-e0002f3e5dbb"/>
+				<reportElement key="subreport-1" positionType="Float" stretchType="RelativeToTallestObject" x="2" y="169" width="528" height="298" uuid="cc7c147c-cff4-4378-b14d-e0002f3e5dbb"/>
 				<subreportParameter name="noJurnal">
 					<subreportParameterExpression><![CDATA[$P{noJurnal}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -124,10 +124,10 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<reportElement key="line-1" x="-2" y="63" width="537" height="1" uuid="ceef2fc1-6745-473f-8faf-24b674c224c9"/>
 			</line>
 			<line>
-				<reportElement key="line-1" x="-1" y="472" width="537" height="1" uuid="7d5f2fb2-bfc7-46ae-a4b5-3e62037ed526"/>
+				<reportElement key="line-1" x="-1" y="475" width="537" height="1" uuid="7d5f2fb2-bfc7-46ae-a4b5-3e62037ed526"/>
 			</line>
 			<staticText>
-				<reportElement key="staticText-1" x="1" y="489" width="65" height="15" uuid="f3fd8c48-88f7-4066-8bb4-1db1426ffc21"/>
+				<reportElement key="staticText-1" x="1" y="492" width="65" height="15" uuid="f3fd8c48-88f7-4066-8bb4-1db1426ffc21"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -140,7 +140,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Pembuat]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-1" x="70" y="489" width="65" height="15" uuid="9a079c07-db72-461c-95e0-5af48cbccfbe"/>
+				<reportElement key="staticText-1" x="70" y="492" width="65" height="15" uuid="9a079c07-db72-461c-95e0-5af48cbccfbe"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -153,7 +153,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Diperiksa]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-1" x="139" y="489" width="65" height="15" uuid="76b1196a-9431-414a-a1fe-97aa5c8e3b36"/>
+				<reportElement key="staticText-1" x="139" y="492" width="65" height="15" uuid="76b1196a-9431-414a-a1fe-97aa5c8e3b36"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -166,7 +166,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Diketahui]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-1" x="209" y="489" width="65" height="15" uuid="98123fdd-a351-42b2-870f-27bf65c6a9c8"/>
+				<reportElement key="staticText-1" x="209" y="492" width="65" height="15" uuid="98123fdd-a351-42b2-870f-27bf65c6a9c8"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -179,7 +179,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Disetujui]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-1" x="279" y="489" width="65" height="15" uuid="db22dad8-d292-4477-96e6-33c65b512ff8"/>
+				<reportElement key="staticText-1" x="279" y="492" width="65" height="15" uuid="db22dad8-d292-4477-96e6-33c65b512ff8"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -192,7 +192,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Diterima]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-1" x="349" y="489" width="65" height="15" uuid="cb8b936b-5c96-478c-82d5-ba25b4a7c135"/>
+				<reportElement key="staticText-1" x="349" y="492" width="65" height="15" uuid="cb8b936b-5c96-478c-82d5-ba25b4a7c135"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -205,7 +205,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Dibukukan]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-1" x="445" y="489" width="65" height="15" uuid="b472d498-22b2-486b-aee9-bab92314a5cf"/>
+				<reportElement key="staticText-1" x="445" y="492" width="65" height="15" uuid="b472d498-22b2-486b-aee9-bab92314a5cf"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -223,28 +223,28 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[$P{reportParams.reportName}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="448" y="573" width="65" height="1" uuid="32807995-71f3-4a6b-9d43-1bb7fa81218d"/>
+				<reportElement x="448" y="576" width="65" height="1" uuid="32807995-71f3-4a6b-9d43-1bb7fa81218d"/>
 			</line>
 			<line>
-				<reportElement x="349" y="573" width="65" height="1" uuid="addc2216-dd64-4a4f-a926-12bafee9bfb7"/>
+				<reportElement x="349" y="576" width="65" height="1" uuid="addc2216-dd64-4a4f-a926-12bafee9bfb7"/>
 			</line>
 			<line>
-				<reportElement x="279" y="573" width="65" height="1" uuid="33370513-adab-4774-a006-c306ca6b3210"/>
+				<reportElement x="279" y="576" width="65" height="1" uuid="33370513-adab-4774-a006-c306ca6b3210"/>
 			</line>
 			<line>
-				<reportElement x="210" y="573" width="65" height="1" uuid="5efb8dbd-fc9f-4827-8e9e-c649f45a82f2"/>
+				<reportElement x="210" y="576" width="65" height="1" uuid="5efb8dbd-fc9f-4827-8e9e-c649f45a82f2"/>
 			</line>
 			<line>
-				<reportElement x="139" y="573" width="65" height="1" uuid="d6a56b6e-e0c5-4a3c-8c32-98b8643f306e"/>
+				<reportElement x="139" y="576" width="65" height="1" uuid="d6a56b6e-e0c5-4a3c-8c32-98b8643f306e"/>
 			</line>
 			<line>
-				<reportElement x="70" y="573" width="65" height="1" uuid="18ca2de9-9f21-4cc1-9071-416fd80e1619"/>
+				<reportElement x="70" y="576" width="65" height="1" uuid="18ca2de9-9f21-4cc1-9071-416fd80e1619"/>
 			</line>
 			<line>
-				<reportElement x="1" y="573" width="65" height="1" uuid="3123d373-acaf-45a8-b4d1-30cd4be23281"/>
+				<reportElement x="1" y="576" width="65" height="1" uuid="3123d373-acaf-45a8-b4d1-30cd4be23281"/>
 			</line>
 			<line>
-				<reportElement key="line-1" x="0" y="154" width="537" height="1" uuid="886ef042-676b-4482-b0cd-8b5e267e3ef4"/>
+				<reportElement key="line-1" x="0" y="157" width="537" height="1" uuid="886ef042-676b-4482-b0cd-8b5e267e3ef4"/>
 			</line>
 			<staticText>
 				<reportElement key="staticText-37" x="17" y="130" width="98" height="20" uuid="5c7cf297-b444-4414-bdba-7a668ac3cad8"/>

@@ -15,9 +15,6 @@
 <html>
 <head>
     <%@ include file="/pages/common/header.jsp" %>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/MasterAction.js"/>'></script>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/PasienAction.js"/>'></script>
-
     <script type='text/javascript'>
 
         function callSearch2() {
@@ -34,13 +31,12 @@
         $.subscribe('beforeProcessSave', function (event, data) {
             var unit    = document.getElementById("branchId").value;
             var periodeTahun = document.getElementById("periodeTahun").value;
-            var periodeBulan = document.getElementById("periodeBulan").value;
             var tipeLaporan = document.getElementById("tipeLaporan").value;
-            var master = document.getElementById("masterId").value;
+            // var positionId = document.getElementById("positionId").value;
 
-            if ( unit != '' && periodeTahun != ''&& periodeBulan != ''&&tipeLaporan!='') {
+            if ( unit != '' && periodeTahun != ''&&tipeLaporan!='') {
                 event.originalEvent.options.submit = false;
-                var url = "printReportAging_laporanAkuntansi.action?laporanAkuntansi.tipeLaporan="+tipeLaporan+"&laporanAkuntansi.unit="+unit+"&laporanAkuntansi.tahun="+periodeTahun+"&laporanAkuntansi.bulan="+periodeBulan+"&laporanAkuntansi.masterId="+master;
+                var url = "printReportBudgetting_laporanAkuntansi.action?laporanAkuntansi.unit="+unit+"&laporanAkuntansi.tahun="+periodeTahun+"&laporanAkuntansi.tipeLaporan="+tipeLaporan;
                 window.open(url,'_blank');
             } else {
                 event.originalEvent.options.submit = false;
@@ -51,11 +47,8 @@
                 if ( periodeTahun == '') {
                     msg += 'Field <strong>Tahun </strong> masih belum dipilih' + '<br/>';
                 }
-                if ( periodeBulan == '') {
-                    msg += 'Field <strong>Bulan </strong> masih belum dipilih' + '<br/>';
-                }
                 if ( tipeLaporan == '') {
-                    msg += 'Field <strong>Tipe Laporan </strong> masih belum dipilih' + '<br/>';
+                    msg += 'Field <strong>Tipe Laporan</strong> masih belum dipilih' + '<br/>';
                 }
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
@@ -88,7 +81,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Laporan Aging
+            Laporan Budgetting
         </h1>
     </section>
     <!-- Main content -->
@@ -97,13 +90,14 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Laporan Aging</h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Laporan Budgetting</h3>
                     </div>
                     <div class="box-body">
                         <table width="100%" align="center">
                             <tr>
                                 <td align="center">
-                                    <s:form id="laporanAkuntansiForm" method="post"  theme="simple" namespace="/laporanAkuntansi" action="printReport_laporanAkuntansi.action" cssClass="form-horizontal">
+                                    <s:form id="laporanAkuntansiForm" method="post"  theme="simple" namespace="/laporanAkuntansi" action="printReportBudgetting_laporanAkuntansi.action" cssClass="form-horizontal">
+                                        <s:hidden name="laporanAkuntansi.tipeLaporan" id="tipeLaporanId"/>
                                         <table>
                                             <tr>
                                                 <td width="10%" align="center">
@@ -119,12 +113,12 @@
                                                 <td>
                                                     <table>
                                                         <s:if test='laporanAkuntansi.unit == "KP"'>
-                                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranchAkuntansi_branch"/>
+                                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                                                             <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="laporanAkuntansi.unit"
                                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                                         </s:if>
                                                         <s:else>
-                                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranchAkuntansi_branch"/>
+                                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                                                             <s:select list="#initComboBranch.listOfComboBranch" id="branchIdView" name="laporanAkuntansi.unit" disabled="true"
                                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                                             <s:hidden id="branchId" name="laporanAkuntansi.unit" />
@@ -134,25 +128,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Tipe Laporan :</small></label>
-                                                </td>
-                                                <td>
-                                                    <s:select list="#{'hutang_usaha':'Hutang Usaha', 'piutang_usaha' : 'Piutang Usaha', 'uang_muka':'Uang Muka','piutang_pasien':'Piutang Pasien','uang_muka_p':'Uang Muka Pasien'}"
-                                                              id="tipeLaporan" name="laporanAkuntansi.tipeLaporanId"
-                                                              headerKey="" headerValue="[Select One]" cssClass="form-control" />
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <label class="control-label"><small>Periode :</small></label>
-                                                </td>
-                                                <td>
-                                                    <table>
-                                                        <s:select list="#{'01':'Januari', '02' : 'Februari', '03':'Maret', '04':'April', '05':'Mei', '06':'Juni', '07':'Juli',
-                                '08': 'Agustus', '09' : 'September', '10' : 'Oktober', '11' : 'November', '12' : 'Desember'}"
-                                                                  id="periodeBulan" name="laporanAkuntansi.bulan"
-                                                                  headerKey="" headerValue="[Select One]" cssClass="form-control" />
-                                                    </table>
+                                                    <label class="control-label"><small>Periode Tahun :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -164,89 +140,18 @@
                                                 </td>
                                                 <script>
                                                     var dt = new Date();
-                                                    $('#periodeBulan').val(("0" + (dt.getMonth() + 1)).slice(-2));
                                                     $('#periodeTahun').val(dt.getFullYear());
                                                 </script>
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Vendor :</small></label>
+                                                    <label class="control-label"><small>Tipe Laporan :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:textfield  id="masterId" name="laporanAkuntansi.masterId" required="true" cssClass="form-control"/>
-                                                    </table>
-                                                    <script>
-                                                        $(document).ready(function() {
-                                                            var tipePerson = $('#tipeLaporan').val();
-                                                            var functions, mapped;
-                                                            console.log(tipePerson);
-                                                            $('#masterId').typeahead({
-                                                                minLength: 1,
-                                                                source: function (query, process) {
-                                                                    functions = [];
-                                                                    mapped = {};
-                                                                    var data = [];
-                                                                    dwr.engine.setAsync(false);
-                                                                    MasterAction.initTypeaheadMaster(query,function (listdata) {
-                                                                        data = listdata;
-                                                                    });
-                                                                    $.each(data, function (i, item) {
-                                                                        var labelItem = item.nomorVendor + " | " + item.nama;
-                                                                        mapped[labelItem] = {
-                                                                            id: item.nomorVendor,
-                                                                            nama: item.nama
-                                                                        };
-                                                                        functions.push(labelItem);
-                                                                    });
-                                                                    process(functions);
-                                                                },
-                                                                updater: function (item) {
-                                                                    var selectedObj = mapped[item];
-                                                                    $('#masterName').val(selectedObj.nama);
-                                                                    return selectedObj.id;
-                                                                }
-                                                            });
-                                                            // if (tipePerson=='hutang_usaha'||tipePerson=='piutang_usaha'||tipePerson=='uang_muka'){
-                                                            //
-                                                            // }else if (tipePerson=='piutang_pasien'||tipePerson=='uang_muka_p') {
-                                                            //     $('#masterId').typeahead({
-                                                            //         minLength: 1,
-                                                            //         source: function (query, process) {
-                                                            //             functions = [];
-                                                            //             mapped = {};
-                                                            //
-                                                            //             var data = [];
-                                                            //             dwr.engine.setAsync(false);
-                                                            //
-                                                            //             PasienAction.getListComboPasien(query, function (listdata) {
-                                                            //                 data = listdata;
-                                                            //             });
-                                                            //
-                                                            //             $.each(data, function (i, item) {
-                                                            //                 var labelItem = item.idPasien+" | "+item.nama;
-                                                            //                 mapped[labelItem] = {
-                                                            //                     id: item.idPasien,
-                                                            //                     nama:item.nama
-                                                            //                 };
-                                                            //                 functions.push(labelItem);
-                                                            //             });
-                                                            //             process(functions);
-                                                            //
-                                                            //         },
-                                                            //         updater: function (item) {
-                                                            //             var selectedObj = mapped[item];
-                                                            //             $('#masterName').val(selectedObj.nama);
-                                                            //             return selectedObj.id;
-                                                            //         }
-                                                            //     });
-                                                            // }
-                                                        });
-                                                    </script>
-                                                </td>
-                                                <td>
-                                                    <table>
-                                                        <s:textfield  id="masterName" name="laporanAkuntansi.masterName" required="true" readonly="true" cssClass="form-control"/>
+                                                        <s:select list="#{'B':'Budgetting', 'BPS' : 'Budgetting Per Semester'}"
+                                                                  id="tipeLaporan" name="laporanAkuntansi.tipeLaporan"
+                                                                  headerKey="" headerValue="[Select One]" cssClass="form-control" />
                                                     </table>
                                                 </td>
                                             </tr>
@@ -263,7 +168,7 @@
                                                         </sj:submit>
                                                     </td>
                                                     <td>
-                                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="searchReportNeracaMutasi_laporanAkuntansi.action"/>'">
+                                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="searchReportBudgetting_laporanAkuntansi.action"/>'">
                                                             <i class="fa fa-refresh"></i> Reset
                                                         </button>
                                                     </td>

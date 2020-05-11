@@ -71,6 +71,15 @@ public class PayrollAction extends BaseMasterAction{
     private String tanggalAktif;
 
     private boolean payrollBulan12;
+    private List<Payroll> payrollList = new ArrayList<>();
+
+    public List<Payroll> getPayrollList() {
+        return payrollList;
+    }
+
+    public void setPayrollList(List<Payroll> payrollList) {
+        this.payrollList = payrollList;
+    }
 
     public boolean isPayrollBulan12() {
         return payrollBulan12;
@@ -10117,162 +10126,31 @@ public class PayrollAction extends BaseMasterAction{
 
         String hasil = "";
         Payroll searchPayroll = getPayroll();
-        List<Payroll> listData = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+        Branch branch = branchBo.getBranchById(searchPayroll.getBranchId(),"Y");
+        String unit = branch.getBranchName();
+        String titleReport="";
 
-        logger.info("[PayrollAction.searchReport] end process <<<");
-
-        String statusPegawai = "";
-        String unit = "";
-        if(searchPayroll.getStatusPegawai() != null && searchPayroll.getStatusPegawai().equalsIgnoreCase("KS")){
-            statusPegawai = "Karyawan Staf";
-        }else{
-            statusPegawai = "Karyawan Non Staf";
-        }
-
-        if(searchPayroll.getBranchId() != null && searchPayroll.getBranchId().equalsIgnoreCase("KD01")){
-            unit = "Kantor Direksi";
-        }else if(searchPayroll.getBranchId() != null && searchPayroll.getBranchId().equalsIgnoreCase("PGKB")){
-            unit = "Krebet Baru";
-        }else if(searchPayroll.getBranchId() != null && searchPayroll.getBranchId().equalsIgnoreCase("PGRA")){
-            unit = "Rejo Agung";
-        }
-
-        reportParams.put("urlLogo", CommonConstant.URL_IMAGE_LOGO_REPORT);
-        reportParams.put("statusPegawai", statusPegawai + " - " + unit);
-        reportParams.put("strBulan", "Periode : " + CommonUtil.convertNumberToStringBulan(searchPayroll.getBulan()) + "  " + searchPayroll.getTahun());
 
         PayrollBo payrollBo = (PayrollBo) ctx.getBean("payrollBoProxy");
-        if(searchPayroll.getTipe().equalsIgnoreCase("PK")){
-            listData = payrollBo.printReportPayrollBulanSys(searchPayroll.getBulan(), searchPayroll.getTahun(),
-                    searchPayroll.getBranchId(), searchPayroll.getStatusPegawai());
-            JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(listData);
-
-            reportParams.put("titleReport", "Daftar Penghasilan Kotor Karyawan");
-            reportParams.put("itemDataSource", itemData);
-
-            hasil = "success_print_report_payroll_bulan";
-        }else if(searchPayroll.getTipe().equalsIgnoreCase("PD")){
-
-            listData = payrollBo.printReportPayrollPotonganDinasSys(searchPayroll.getBulan(), searchPayroll.getTahun(), searchPayroll.getBranchId(),
-                    searchPayroll.getStatusPegawai());
-            JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(listData);
-
-            reportParams.put("titleReport", "Daftar Potongan Dinas Karyawan");
-            reportParams.put("itemDataSource", itemData);
-
-            hasil = "print_report_potongan_dinas";
-        }else if(searchPayroll.getTipe().equalsIgnoreCase("PL")){
-
-            listData = payrollBo.printReportPayrollPotonganLainLainSys(searchPayroll.getBulan(), searchPayroll.getTahun(), searchPayroll.getBranchId(),
-                    searchPayroll.getStatusPegawai());
-            JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(listData);
-
-            reportParams.put("titleReport", "Daftar Potongan Lain Lain");
-            reportParams.put("itemDataSource", itemData);
-
-            hasil = "print_report_potongan_lain";
-        }else if(searchPayroll.getTipe().equalsIgnoreCase("R")){
-            listData = payrollBo.printReportPayrollPenghasilanKaryawanSys(searchPayroll.getBulan(), searchPayroll.getTahun(), searchPayroll.getBranchId(),
-                    searchPayroll.getStatusPegawai());
-            JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(listData);
-
-            reportParams.put("titleReport", "Rekapitulasi Penghasilan Karyawan");
-            reportParams.put("itemDataSource", itemData);
-
-            hasil = "print_report_penghasilan_karyawan";
-        }else if(searchPayroll.getTipe().equalsIgnoreCase("pendidikan")){
-            listData = payrollBo.printReportPayrollPendidikanSys(searchPayroll.getBulan(), searchPayroll.getTahun(), searchPayroll.getBranchId(),
-                    searchPayroll.getStatusPegawai());
-            JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(listData);
-
-            reportParams.put("titleReport", "Rekapitulasi Tunjangan Pendidikan");
-            reportParams.put("itemDataSource", itemData);
-
-            hasil = "print_report_pendidikan";
-        }else if(searchPayroll.getTipe().equalsIgnoreCase("thr")){
-            listData = payrollBo.printReportPayrollThrSys(searchPayroll.getBulan(), searchPayroll.getTahun(), searchPayroll.getBranchId(),
-                    searchPayroll.getStatusPegawai());
-            JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(listData);
-
-            reportParams.put("titleReport", "Rekapitulasi Tunjangan THR");
-            reportParams.put("itemDataSource", itemData);
-
-            hasil = "print_report_thr";
-        }else if(searchPayroll.getTipe().equalsIgnoreCase("jasprod")){
-            listData = payrollBo.printReportPayrollJasprodSys(searchPayroll.getBulan(), searchPayroll.getTahun(), searchPayroll.getBranchId(),
-                    searchPayroll.getStatusPegawai());
-            JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(listData);
-
-            reportParams.put("titleReport", "Rekapitulasi Tunjangan Jasprod");
-            reportParams.put("itemDataSource", itemData);
-
-            hasil = "print_report_jasprod";
-        }else if(searchPayroll.getTipe().equalsIgnoreCase("insentif")){
-            listData = payrollBo.printReportPayrollInsentifSys(searchPayroll.getBulan(), searchPayroll.getTahun(), searchPayroll.getBranchId(),
-                    searchPayroll.getStatusPegawai());
-            JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(listData);
-
-            reportParams.put("titleReport", "Rekapitulasi Tunjangan Insentif");
-            reportParams.put("itemDataSource", itemData);
-
-            hasil = "print_report_insentif";
-        }else if(searchPayroll.getTipe().equalsIgnoreCase("rapelBulan")){
-            listData = payrollBo.printReportPayrollRapelSys(searchPayroll.getBulan(), searchPayroll.getTahun(), searchPayroll.getBranchId(),
-                    searchPayroll.getStatusPegawai());
-            JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(listData);
-
-            reportParams.put("titleReport", "Rapel");
-            reportParams.put("itemDataSource", itemData);
-
-            hasil = "print_report_rapel";
-        }else if(searchPayroll.getTipe().equalsIgnoreCase("rapelThr")){
-            listData = payrollBo.printReportPayrollRapelThrSys(searchPayroll.getBulan(), searchPayroll.getTahun(), searchPayroll.getBranchId(),
-                    searchPayroll.getStatusPegawai());
-            JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(listData);
-
-            reportParams.put("titleReport", "Rapel THR");
-            reportParams.put("itemDataSource", itemData);
-
-            hasil = "print_report_rapel_thr";
-        }else if(searchPayroll.getTipe().equalsIgnoreCase("rapelPendidikan")){
-            listData = payrollBo.printReportPayrollRapelPendidikanSys(searchPayroll.getBulan(), searchPayroll.getTahun(), searchPayroll.getBranchId(),
-                    searchPayroll.getStatusPegawai());
-            JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(listData);
-
-            reportParams.put("titleReport", "Rapel Pendidikan");
-            reportParams.put("itemDataSource", itemData);
-
-            hasil = "print_report_rapel_pendidikan";
-        }else if(searchPayroll.getTipe().equalsIgnoreCase("rapelLembur")){
-            listData = payrollBo.printReportPayrollRapelLemburSys(searchPayroll.getBulan(), searchPayroll.getTahun(), searchPayroll.getBranchId(),
-                    searchPayroll.getStatusPegawai());
-            JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(listData);
-
-            reportParams.put("titleReport", "Rapel Lembur");
-            reportParams.put("itemDataSource", itemData);
-
-            reportParams.put("strBulan", "Tanggal : 11-12-2018 s/d 10-07-2019" );
-            hasil = "print_report_rapel_lembur";
-        }else if(searchPayroll.getTipe().equalsIgnoreCase("rapelInsentif")){
-            listData = payrollBo.printReportPayrollRapelInsentifSys(searchPayroll.getBulan(), searchPayroll.getTahun(), searchPayroll.getBranchId(),
-                    searchPayroll.getStatusPegawai());
-            JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(listData);
-
-            reportParams.put("titleReport", "Rapel Insentif");
-            reportParams.put("itemDataSource", itemData);
-
-            hasil = "print_report_rapel_insentif";
-        }else if(searchPayroll.getTipe().equalsIgnoreCase("rapelJubileum")){
-            listData = payrollBo.printReportPayrollRapelJubileumSys(searchPayroll.getBulan(), searchPayroll.getTahun(), searchPayroll.getBranchId(),
-                    searchPayroll.getStatusPegawai());
-            JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(listData);
-
-            reportParams.put("titleReport", "Rapel Jubileum");
-            reportParams.put("itemDataSource", itemData);
-
-            hasil = "print_report_rapel_jubileum";
+        if(searchPayroll.getTipe().equalsIgnoreCase("GK")){
+            payrollList = payrollBo.getDaftarGajiKaryawan(searchPayroll.getBulan(), searchPayroll.getTahun(),
+                    searchPayroll.getBranchId());
+            titleReport = "DAFTAR GAJI KARYAWAN";
+            hasil = "success_print_daftar_gaji_kary";
         }
+
+        reportParams.put("reportTitle", titleReport);
+        reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
+        reportParams.put("branchId", unit);
+        reportParams.put("periodeTitle", CommonUtil.convertNumberToStringBulan(searchPayroll.getBulan())+" "+searchPayroll.getTahun());
+        java.util.Date now = new java.util.Date();
+        reportParams.put("tanggal", CommonUtil.convertDateToString(now));
+        reportParams.put("periode", searchPayroll.getBulan()+"-"+searchPayroll.getTahun());
+        reportParams.put("kota",branch.getBranchName());
+        reportParams.put("alamatSurat",branch.getAlamatSurat());
+        reportParams.put("areaId",CommonUtil.userAreaName());
 
         if(searchPayroll != null){
             try {

@@ -20,6 +20,7 @@ public class ImPembayaranUtangPiutangDetailEntity implements Serializable {
     private BigDecimal jumlahPembayaran;
     private String rekeningId;
     private String divisiId;
+    private String posisiCoa;
 
     private String flag;
     private String action;
@@ -27,6 +28,14 @@ public class ImPembayaranUtangPiutangDetailEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+    public String getPosisiCoa() {
+        return posisiCoa;
+    }
+
+    public void setPosisiCoa(String posisiCoa) {
+        this.posisiCoa = posisiCoa;
+    }
 
     public String getDivisiId() {
         return divisiId;

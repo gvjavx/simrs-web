@@ -101,6 +101,7 @@
             <result name="search_laporan_arus_kas">/pages/com/neurix/akuntansi/transaksi/laporanAkuntansi/report/searchArusKasLaporanAkuntansi.jsp</result>
             <result name="search_laporan_biaya">/pages/com/neurix/akuntansi/transaksi/laporanAkuntansi/report/searchBiayaLaporanAkuntansi.jsp</result>
             <result name="search_kompilasi">/pages/com/neurix/akuntansi/transaksi/laporanAkuntansi/report/searchKompilasiLaporanAkuntansi.jsp</result>
+            <result name="search_laporan_budgetting">/pages/com/neurix/akuntansi/transaksi/laporanAkuntansi/report/searchBudgettingLaporanAkuntansi.jsp</result>
 
             <!-- HASIL LAPORAN -->
             <result name="print_report_akuntansi_neraca_saldo" type="jasper">
@@ -273,6 +274,20 @@
             </result>
             <!-- END OF Mutasi -->
 
+            <!-- Budgetting -->
+            <result name="print_report_budgetting" type="jasper">
+                <param name="location">/pages/report/com/neurix/akuntansi/LaporanBudgetting.jasper</param>
+                <param name="format">PDF</param>
+                <param name="dataSource">budgettingDTOList</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+            <result name="print_report_budgetting_per_semester" type="jasper">
+                <param name="location">/pages/report/com/neurix/akuntansi/LaporanBudgettingPerSemester.jasper</param>
+                <param name="format">PDF</param>
+                <param name="dataSource">budgettingDTOList</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+            <!-- END OF KOMPILASI -->
         </action>
 
         <action name="paging_displaytag_laporanAkuntansi"
