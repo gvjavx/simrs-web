@@ -1,10 +1,16 @@
 package com.neurix.akuntansi.transaksi.laporanAkuntansi.bo.impl;
 
 import com.neurix.akuntansi.master.kodeRekening.dao.KodeRekeningDao;
+import com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity;
 import com.neurix.akuntansi.master.settingReportKeuanganKonsol.dao.SettingReportKeuanganKonsolDao;
 import com.neurix.akuntansi.master.settingReportKeuanganKonsol.model.AkunSettingReportKeuanganKonsol;
 import com.neurix.akuntansi.master.settingReportKeuanganKonsol.model.AkunSettingReportKeuanganKonsolDetail;
 import com.neurix.akuntansi.master.settingReportKeuanganKonsol.model.ImAkunSettingReportKeuanganKonsol;
+import com.neurix.akuntansi.transaksi.budgeting.action.BudgetingAction;
+import com.neurix.akuntansi.transaksi.budgeting.dao.BudgetingDao;
+import com.neurix.akuntansi.transaksi.budgeting.model.Budgeting;
+import com.neurix.akuntansi.transaksi.budgeting.model.BudgettingDTO;
+import com.neurix.akuntansi.transaksi.budgeting.model.ItAkunBudgetingEntity;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.bo.LaporanAkuntansiBo;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.dao.LaporanAkuntansiDao;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.*;
@@ -17,10 +23,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
@@ -31,6 +34,15 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
     private BiodataDao biodataDao;
     private KodeRekeningDao kodeRekeningDao;
     private SettingReportKeuanganKonsolDao settingReportKeuanganKonsolDao;
+    private BudgetingDao budgetingDao;
+
+    public BudgetingDao getBudgetingDao() {
+        return budgetingDao;
+    }
+
+    public void setBudgetingDao(BudgetingDao budgetingDao) {
+        this.budgetingDao = budgetingDao;
+    }
 
     public SettingReportKeuanganKonsolDao getSettingReportKeuanganKonsolDao() {
         return settingReportKeuanganKonsolDao;
@@ -417,6 +429,18 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
                 BigDecimal totalCurSaldoUnit4= BigDecimal.ZERO;
                 BigDecimal totalCurSaldoUnitAll= BigDecimal.ZERO;
 
+                BigDecimal totalSaldoUnit11TahunLalu= BigDecimal.ZERO;
+                BigDecimal totalSaldoUnit21TahunLalu= BigDecimal.ZERO;
+                BigDecimal totalSaldoUnit31TahunLalu= BigDecimal.ZERO;
+                BigDecimal totalSaldoUnit41TahunLalu= BigDecimal.ZERO;
+                BigDecimal totalSaldoUnitAll1TahunLalu= BigDecimal.ZERO;
+
+                BigDecimal totalSaldoUnit12TahunLalu= BigDecimal.ZERO;
+                BigDecimal totalSaldoUnit22TahunLalu= BigDecimal.ZERO;
+                BigDecimal totalSaldoUnit32TahunLalu= BigDecimal.ZERO;
+                BigDecimal totalSaldoUnit42TahunLalu= BigDecimal.ZERO;
+                BigDecimal totalSaldoUnitAll2TahunLalu= BigDecimal.ZERO;
+
                 for (AkunSettingReportKeuanganKonsolDetail konsolDetail : keuanganKonsolDetailList){
                     if (konsolDetail.getSettingReportKonsolId().equalsIgnoreCase(konsol.getSettingReportKonsolId())){
                         if ("T".equalsIgnoreCase(konsolDetail.getOperator())){
@@ -438,6 +462,18 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
                             totalCurSaldoUnit4 = totalCurSaldoUnit4.add(konsolDetail.getCurSaldoUnit4());
                             totalCurSaldoUnitAll = totalCurSaldoUnitAll.add(konsolDetail.getCurSaldoUnitAll());
 
+                            totalSaldoUnit11TahunLalu = totalSaldoUnit11TahunLalu.add(konsolDetail.getSaldoUnit11TahunLalu());
+                            totalSaldoUnit21TahunLalu = totalSaldoUnit21TahunLalu.add(konsolDetail.getSaldoUnit21TahunLalu());
+                            totalSaldoUnit31TahunLalu = totalSaldoUnit31TahunLalu.add(konsolDetail.getSaldoUnit31TahunLalu());
+                            totalSaldoUnit41TahunLalu = totalSaldoUnit41TahunLalu.add(konsolDetail.getSaldoUnit41TahunLalu());
+                            totalSaldoUnitAll1TahunLalu = totalSaldoUnitAll1TahunLalu.add(konsolDetail.getSaldoUnitAll1TahunLalu());
+
+                            totalSaldoUnit12TahunLalu = totalSaldoUnit12TahunLalu.add(konsolDetail.getSaldoUnit12TahunLalu());
+                            totalSaldoUnit22TahunLalu = totalSaldoUnit22TahunLalu.add(konsolDetail.getSaldoUnit22TahunLalu());
+                            totalSaldoUnit32TahunLalu = totalSaldoUnit32TahunLalu.add(konsolDetail.getSaldoUnit32TahunLalu());
+                            totalSaldoUnit42TahunLalu = totalSaldoUnit42TahunLalu.add(konsolDetail.getSaldoUnit42TahunLalu());
+                            totalSaldoUnitAll2TahunLalu = totalSaldoUnitAll2TahunLalu.add(konsolDetail.getSaldoUnitAll2TahunLalu());
+
                         }else if ("K".equalsIgnoreCase(konsolDetail.getOperator())){
                             totalUnit1 = totalUnit1.subtract(konsolDetail.getSaldoUnit1());
                             totalUnit2 = totalUnit2.subtract(konsolDetail.getSaldoUnit2());
@@ -456,6 +492,18 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
                             totalCurSaldoUnit3 = totalCurSaldoUnit3.subtract(konsolDetail.getCurSaldoUnit3());
                             totalCurSaldoUnit4 = totalCurSaldoUnit4.subtract(konsolDetail.getCurSaldoUnit4());
                             totalCurSaldoUnitAll = totalCurSaldoUnitAll.subtract(konsolDetail.getCurSaldoUnitAll());
+
+                            totalSaldoUnit11TahunLalu = totalSaldoUnit11TahunLalu.subtract(konsolDetail.getSaldoUnit11TahunLalu());
+                            totalSaldoUnit21TahunLalu = totalSaldoUnit21TahunLalu.subtract(konsolDetail.getSaldoUnit21TahunLalu());
+                            totalSaldoUnit31TahunLalu = totalSaldoUnit31TahunLalu.subtract(konsolDetail.getSaldoUnit31TahunLalu());
+                            totalSaldoUnit41TahunLalu = totalSaldoUnit41TahunLalu.subtract(konsolDetail.getSaldoUnit41TahunLalu());
+                            totalSaldoUnitAll1TahunLalu = totalSaldoUnitAll1TahunLalu.subtract(konsolDetail.getSaldoUnitAll1TahunLalu());
+
+                            totalSaldoUnit12TahunLalu = totalSaldoUnit12TahunLalu.subtract(konsolDetail.getSaldoUnit12TahunLalu());
+                            totalSaldoUnit22TahunLalu = totalSaldoUnit22TahunLalu.subtract(konsolDetail.getSaldoUnit22TahunLalu());
+                            totalSaldoUnit32TahunLalu = totalSaldoUnit32TahunLalu.subtract(konsolDetail.getSaldoUnit32TahunLalu());
+                            totalSaldoUnit42TahunLalu = totalSaldoUnit42TahunLalu.subtract(konsolDetail.getSaldoUnit42TahunLalu());
+                            totalSaldoUnitAll2TahunLalu = totalSaldoUnitAll2TahunLalu.subtract(konsolDetail.getSaldoUnitAll2TahunLalu());
                         }
                     }
                 }
@@ -481,6 +529,18 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
                 data.setCurSaldoUnit3(totalCurSaldoUnit3);
                 data.setCurSaldoUnit4(totalCurSaldoUnit4);
                 data.setCurSaldoUnitAll(totalCurSaldoUnitAll);
+
+                data.setSaldoUnit11TahunLalu(totalSaldoUnit11TahunLalu);
+                data.setSaldoUnit21TahunLalu(totalSaldoUnit21TahunLalu);
+                data.setSaldoUnit31TahunLalu(totalSaldoUnit31TahunLalu);
+                data.setSaldoUnit41TahunLalu(totalSaldoUnit41TahunLalu);
+                data.setSaldoUnitAll1TahunLalu(totalSaldoUnitAll1TahunLalu);
+
+                data.setSaldoUnit12TahunLalu(totalSaldoUnit12TahunLalu);
+                data.setSaldoUnit22TahunLalu(totalSaldoUnit22TahunLalu);
+                data.setSaldoUnit32TahunLalu(totalSaldoUnit32TahunLalu);
+                data.setSaldoUnit42TahunLalu(totalSaldoUnit42TahunLalu);
+                data.setSaldoUnitAll2TahunLalu(totalSaldoUnitAll2TahunLalu);
 
                 result.add(data);
             }
@@ -513,16 +573,22 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
                 BigDecimal totalUnit1= BigDecimal.ZERO;
                 BigDecimal totalLastSaldoUnit1= BigDecimal.ZERO;
                 BigDecimal totalCurSaldoUnit1= BigDecimal.ZERO;
+                BigDecimal totalSaldoUnit11TahunLalu = BigDecimal.ZERO;
+                BigDecimal totalSaldoUnit12TahunLalu = BigDecimal.ZERO;
                 for (AkunSettingReportKeuanganKonsolDetail konsolDetail : keuanganKonsolDetailList){
                     if (konsolDetail.getSettingReportKonsolId().equalsIgnoreCase(konsol.getSettingReportKonsolId())){
                         if ("T".equalsIgnoreCase(konsolDetail.getOperator())){
                             totalUnit1 = totalUnit1.add(konsolDetail.getSaldoUnit1());
                             totalLastSaldoUnit1 = totalLastSaldoUnit1.add(konsolDetail.getLastSaldoUnit1());
                             totalCurSaldoUnit1 = totalCurSaldoUnit1.add(konsolDetail.getCurSaldoUnit1());
+                            totalSaldoUnit11TahunLalu = totalSaldoUnit11TahunLalu.add(konsolDetail.getSaldoUnit11TahunLalu());
+                            totalSaldoUnit12TahunLalu = totalSaldoUnit12TahunLalu.add(konsolDetail.getSaldoUnit12TahunLalu());
                         }else if ("K".equalsIgnoreCase(konsolDetail.getOperator())){
                             totalUnit1 = totalUnit1.subtract(konsolDetail.getSaldoUnit1());
                             totalLastSaldoUnit1 = totalLastSaldoUnit1.subtract(konsolDetail.getLastSaldoUnit1());
                             totalCurSaldoUnit1 = totalCurSaldoUnit1.subtract(konsolDetail.getCurSaldoUnit1());
+                            totalSaldoUnit11TahunLalu = totalSaldoUnit11TahunLalu.subtract(konsolDetail.getSaldoUnit11TahunLalu());
+                            totalSaldoUnit12TahunLalu = totalSaldoUnit12TahunLalu.subtract(konsolDetail.getSaldoUnit12TahunLalu());
                         }
                     }
                 }
@@ -534,7 +600,8 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
                 data.setSaldoUnit1(totalUnit1);
                 data.setLastSaldoUnit1(totalLastSaldoUnit1);
                 data.setCurSaldoUnit1(totalCurSaldoUnit1);
-
+                data.setSaldoUnit11TahunLalu(totalSaldoUnit11TahunLalu);
+                data.setSaldoUnit12TahunLalu(totalSaldoUnit12TahunLalu);
                 result.add(data);
             }
         }
@@ -590,6 +657,40 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
     }
 
     @Override
+    public List<BudgettingDTO> getBudgetting(String tipeLaporan, String unit, String tahun){
+        logger.info("[LaporanAkuntansiBoImpl.getBudgetting] start process >>>");
+        List<BudgettingDTO> resultList = new ArrayList<>();
+        Budgeting budgetingStatus = findLastStatus(unit, tahun);
+
+        if ("B".equalsIgnoreCase(tipeLaporan)){
+            resultList = laporanAkuntansiDao.getBudgetting(unit,tahun,budgetingStatus.getStatus());
+        }else if ("BPS".equalsIgnoreCase(tipeLaporan)){
+            List<BudgettingDTO> resultListTmp = new ArrayList<>();
+            resultListTmp = laporanAkuntansiDao.getBudgettingPerSemester(unit,tahun,budgetingStatus.getStatus());
+            for (BudgettingDTO budgettingDTO : resultListTmp){
+                if (budgettingDTO.getTipe()==null){
+                    resultList.add(budgettingDTO);
+                }else {
+                    if ("semester1".equalsIgnoreCase(budgettingDTO.getTipe())){
+                        for (BudgettingDTO budgettingDTOSem2 : resultListTmp){
+                            if (budgettingDTO.getNoBudgetting().equalsIgnoreCase(budgettingDTOSem2.getNoBudgetting())&&"semester2".equalsIgnoreCase(budgettingDTOSem2.getTipe())){
+                                budgettingDTO.setQtySem2(budgettingDTOSem2.getQty());
+                                budgettingDTO.setNilaiSem2(budgettingDTOSem2.getNilai());
+                                budgettingDTO.setSubTotalSem2(budgettingDTOSem2.getSubTotal());
+                                break;
+                            }
+                        }
+                        resultList.add(budgettingDTO);
+                    }
+                }
+            }
+
+        }
+        logger.info("[LaporanAkuntansiBoImpl.getBudgetting] end process <<<");
+        return resultList;
+    }
+
+    @Override
     public List<LaporanAkuntansi> getAll() throws GeneralBOException {
         return null;
     }
@@ -599,5 +700,134 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
     public Long saveErrorMessage(String message, String moduleMethod) throws GeneralBOException {
         return null;
     }
-    
+
+
+    ////=== CLASS STATUS BUDGETING START ===////
+    class StatusBudgeting{
+
+        String statusDetail;
+        String status;
+        Integer idx;
+
+        public String getStatusDetail() {
+            return statusDetail;
+        }
+
+        public void setStatusDetail(String statusDetail) {
+            this.statusDetail = statusDetail;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
+        }
+
+        public Integer getIdx() {
+            return idx;
+        }
+
+        public void setIdx(Integer idx) {
+            this.idx = idx;
+        }
+    }
+    class SortByIdxDesc implements Comparator<StatusBudgeting>
+    {
+        // Used for sorting in ascending order of
+        // roll number
+        public int compare(StatusBudgeting a, StatusBudgeting b)
+        {
+            return b.getIdx() - a.getIdx();
+        }
+    }
+
+    ////=== LIST STATUS BIDGETING SORTING BY IDX START ===////
+    private List<StatusBudgeting> listOfStatusBudgeting(){
+
+        StatusBudgeting statusBudgeting;
+        List<StatusBudgeting> statusBudgetingList = new ArrayList<>();
+
+        statusBudgeting = new StatusBudgeting();
+        statusBudgeting.setStatus("DRAFT");
+        statusBudgeting.setStatusDetail("ADD_DRAFT");
+        statusBudgeting.setIdx(0);
+        statusBudgetingList.add(statusBudgeting);
+
+        statusBudgeting = new StatusBudgeting();
+        statusBudgeting.setStatus("DRAFT");
+        statusBudgeting.setStatusDetail("EDIT_DRAFT");
+        statusBudgeting.setIdx(1);
+        statusBudgetingList.add(statusBudgeting);
+
+        statusBudgeting = new StatusBudgeting();
+        statusBudgeting.setStatus("DRAFT");
+        statusBudgeting.setStatusDetail("APPROVE_DRAFT");
+        statusBudgeting.setIdx(2);
+        statusBudgetingList.add(statusBudgeting);
+
+        statusBudgeting = new StatusBudgeting();
+        statusBudgeting.setStatus("DRAFT");
+        statusBudgeting.setStatusDetail("ADJUST_DRAFT");
+        statusBudgeting.setIdx(3);
+        statusBudgetingList.add(statusBudgeting);
+
+        statusBudgeting = new StatusBudgeting();
+        statusBudgeting.setStatus("FINAL");
+        statusBudgeting.setStatusDetail("EDIT_FINAL");
+        statusBudgeting.setIdx(4);
+        statusBudgetingList.add(statusBudgeting);
+
+        statusBudgeting = new StatusBudgeting();
+        statusBudgeting.setStatus("FINAL");
+        statusBudgeting.setStatusDetail("APPROVE_FINAL");
+        statusBudgeting.setIdx(5);
+        statusBudgetingList.add(statusBudgeting);
+
+        statusBudgeting = new StatusBudgeting();
+        statusBudgeting.setStatus("FINAL");
+        statusBudgeting.setStatusDetail("ADJUST_FINAL");
+        statusBudgeting.setIdx(6);
+        statusBudgetingList.add(statusBudgeting);
+
+        statusBudgeting = new StatusBudgeting();
+        statusBudgeting.setStatus("REVISI");
+        statusBudgeting.setStatusDetail("EDIT_REVISI");
+        statusBudgeting.setIdx(7);
+        statusBudgetingList.add(statusBudgeting);
+
+        statusBudgeting = new StatusBudgeting();
+        statusBudgeting.setStatus("REVISI");
+        statusBudgeting.setStatusDetail("APPROVE_REVISI");
+        statusBudgeting.setIdx(8);
+        statusBudgetingList.add(statusBudgeting);
+
+        statusBudgeting = new StatusBudgeting();
+        statusBudgeting.setStatus("REVISI");
+        statusBudgeting.setStatusDetail("ADJUST_REVISI");
+        statusBudgeting.setIdx(9);
+        statusBudgetingList.add(statusBudgeting);
+
+        Collections.sort(statusBudgetingList, new SortByIdxDesc());
+        return statusBudgetingList;
+    }
+
+    public Budgeting findLastStatus(String branchId, String tahun){
+
+        Budgeting budgeting = new Budgeting();
+        for (StatusBudgeting statusBudgeting : listOfStatusBudgeting()){
+            Boolean foundBudgeting = budgetingDao.checkIfSameStatus(branchId, tahun, statusBudgeting.getStatusDetail());
+            if (foundBudgeting){
+                budgeting.setStatus(statusBudgeting.getStatusDetail());
+                String[] arrStatus = statusBudgeting.getStatusDetail().split("_", 2);
+                String typeTrans = arrStatus[0].toString();
+                if ("APPROVE".equalsIgnoreCase(typeTrans) || "ADJUST".equalsIgnoreCase(typeTrans)){
+                    budgeting.setApproveFlag("Y");
+                }
+                break;
+            }
+        }
+        return budgeting;
+    }
 }

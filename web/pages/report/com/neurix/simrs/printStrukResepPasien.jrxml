@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printStrukResepPasien" language="groovy" pageWidth="421" pageHeight="595" whenNoDataType="AllSectionsNoDetail" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
 	<property name="ireport.zoom" value="1.464100000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="349"/>
+	<property name="ireport.y" value="96"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -24,6 +24,7 @@
 		</box>
 	</style>
 	<subDataset name="dataSet" uuid="eed1fe6b-44ac-495b-9bef-d74ce81fa8dd">
+		<parameter name="tipePelayanan" class="java.lang.String"/>
 		<field name="idBarang" class="java.lang.String"/>
 		<field name="idObat" class="java.lang.String"/>
 		<field name="namaObat" class="java.lang.String"/>
@@ -33,7 +34,7 @@
 		<field name="jenisSatuan" class="java.lang.String"/>
 		<field name="qty" class="java.lang.String"/>
 		<variable name="totalObat" class="java.lang.Integer" calculation="Sum">
-			<variableExpression><![CDATA[$F{totalHarga} == null ? '' : $F{totalHarga}]]></variableExpression>
+			<variableExpression><![CDATA[$F{totalHarga} == null ? null : $F{totalHarga}]]></variableExpression>
 		</variable>
 		<variable name="ppnObat" class="java.lang.Integer">
 			<variableExpression><![CDATA[$V{totalObat} == null ? 0 : ($V{totalObat}*0.1)]]></variableExpression>
@@ -67,6 +68,7 @@
 	<parameter name="reportParams.dokter" class="java.lang.String"/>
 	<parameter name="reportParams.ttdDokter" class="java.lang.String"/>
 	<parameter name="reportParams.ttdApoteker" class="java.lang.String"/>
+	<parameter name="reportParams.tipePelayanan" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT ttd_pasien FROM mt_simrs_permintaan_resep WHERE id_permintaan_resep = $P{reportParams.resepId}]]>
 	</queryString>
@@ -285,7 +287,10 @@
 			<componentElement>
 				<reportElement x="0" y="0" width="381" height="92" uuid="fb1d146d-7334-465e-a56d-79bc85816191"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<datasetRun subDataset="dataSet" uuid="3824735b-2b77-498b-8f1a-43e6c12de5c1">
+					<datasetRun subDataset="dataSet" uuid="0beed443-1f67-43ac-9d14-e385be548caf">
+						<datasetParameter name="tipePelayanan">
+							<datasetParameterExpression><![CDATA[$P{reportParams.tipePelayanan}]]></datasetParameterExpression>
+						</datasetParameter>
 						<dataSourceExpression><![CDATA[$P{reportParams.itemDataSource}]]></dataSourceExpression>
 					</datasetRun>
 					<jr:column width="80" uuid="d20c28c2-e6f2-4af1-9c22-01a22b349d1b">
@@ -568,7 +573,7 @@
 								<textElement textAlignment="Right" verticalAlignment="Middle">
 									<font size="8"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$V{ppnObat}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$P{tipePelayanan} == "rawat_jalan" || $P{tipePelayanan} == "igd" ? $V{ppnObat} : "0"]]></textFieldExpression>
 							</textField>
 							<textField pattern="#,##0">
 								<reportElement x="0" y="20" width="73" height="20" uuid="0c6da306-bacb-4f54-8ad3-257010e0a02a"/>
@@ -579,7 +584,7 @@
 								<textElement textAlignment="Right" verticalAlignment="Middle">
 									<font size="8"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$V{totalbayar}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$P{tipePelayanan} == "rawat_jalan" || $P{tipePelayanan} == "igd" ? $V{totalbayar} : $V{totalObat} ]]></textFieldExpression>
 							</textField>
 						</jr:columnFooter>
 						<jr:detailCell height="20" rowSpan="1">

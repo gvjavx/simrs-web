@@ -41,7 +41,7 @@
             if ( unit != '' && periodeTahun != ''&& periodeBulan != ''&&tipeLaporan!='') {
                 event.originalEvent.options.submit = false;
                 var url = "printReportAging_laporanAkuntansi.action?laporanAkuntansi.tipeLaporan="+tipeLaporan+"&laporanAkuntansi.unit="+unit+"&laporanAkuntansi.tahun="+periodeTahun+"&laporanAkuntansi.bulan="+periodeBulan+"&laporanAkuntansi.masterId="+master;
-                window.open(url,'_self');
+                window.open(url,'_blank');
             } else {
                 event.originalEvent.options.submit = false;
                 var msg = "";

@@ -28,4 +28,5 @@ public interface BudgetingBo {
     public String generateBudgetingDetailId();
     public String generateBudgetingPengadaan();
     public String checkLastTipeBudgeting();
+    public Budgeting checkBudgeting(String branchId, String tahun) throws GeneralBOException;
 }

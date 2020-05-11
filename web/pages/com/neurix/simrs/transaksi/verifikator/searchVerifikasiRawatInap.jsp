@@ -287,6 +287,14 @@
                                     <td><b>Alamat</b></td>
                                     <td><span id="det_desa"></span>, <span id="det_kecamatan"></span></td>
                                 </tr>
+                                <tr>
+                                    <td><b>Nama Poli</b></td>
+                                    <td><span id="det_nama_poli"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Jenis Pasien</b></td>
+                                    <td><span id="det_jenis_pasien"></span></td>
+                                </tr>
                                 <%--<tr>--%>
                                 <%--<td><b>Provinsi</b></td>--%>
                                 <%--<td><span id="det_provinsi"></span></td>--%>
@@ -447,22 +455,14 @@
                                     <td><b>Alamat</b></td>
                                     <td><span id="fin_desa"></span>, <span id="fin_kecamatan"></span></td>
                                 </tr>
-                                <%--<tr>--%>
-                                <%--<td><b>Provinsi</b></td>--%>
-                                <%--<td><span id="fin_provinsi"></span></td>--%>
-                                <%--</tr>--%>
-                                <%--<tr>--%>
-                                <%--<td><b>Kabupaten</b></td>--%>
-                                <%--<td><span id="fin_kabupaten"></span></td>--%>
-                                <%--</tr>--%>
-                                <%--<tr>--%>
-                                <%--<td><b>Kecamatan</b></td>--%>
-                                <%--<td><span id="fin_kecamatan"></span></td>--%>
-                                <%--</tr>--%>
-                                <%--<tr>--%>
-                                <%--<td><b>Desa</b></td>--%>
-                                <%--<td><span id="fin_desa"></span></td>--%>
-                                <%--</tr>--%>
+                                <tr>
+                                    <td><b>Nama Poli</b></td>
+                                    <td><span id="fin_nama_poli"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Jenis Pasien</b></td>
+                                    <td><span id="fin_jenis_pasien"></span></td>
+                                </tr>
                             </table>
                         </div>
                     </div>
@@ -681,6 +681,8 @@
                         desa = response.namaDesa;
                         noSep = response.noSep;
                         $('#det_no_rm').html(response.idPasien);
+                        $('#det_nama_poli').html(response.namaPelayanan);
+                        $('#det_jenis_pasien').html(response.statusPeriksaName);
                         jenisPasien = response.idJenisPeriksaPasien;
                 }
             });
@@ -725,7 +727,7 @@
                             onclick = "";
                         }
 
-                        if(item.kategoriTindakanBpjs == null || item.kategoriTindakanBpjs == ''){
+                        if(item.flagUpdateKlaim == '' || item.flagUpdateKlaim == null){
                             cekTindakan = true;
                         }
 
@@ -961,6 +963,8 @@
                         desa = response.namaDesa;
                         noSep = response.noSep;
                         $('#fin_no_rm').html(response.idPasien);
+                        $('#fin_nama_poli').html(response.namaPelayanan);
+                        $('#fin_jenis_pasien').html(response.statusPeriksaName);
                     jenisPasien = response.idJenisPeriksaPasien;
                 }
             });
@@ -1033,13 +1037,20 @@
                     });
 
                     if(jenisPasien == "ptpn"){
-                        table = table +'<tr><td colspan="4">PPN Obat</td><td align="right">'+formatRupiah(ppnObat)+'</td></tr>'+
+                        // table = table +'<tr><td colspan="4">PPN Obat</td><td align="right">'+formatRupiah(ppnObat)+'</td></tr>'+
+                        //     '<tr><td colspan="4">Total Biaya BPJS</td><td align="right">'+formatRupiah(bpjs)+'</td></tr>'+
+                        //     '<tr><td colspan="4">Total Biaya PTPN</td><td align="right">'+formatRupiah(ptpn)+'</td></tr>'+
+                        //     '<tr><td colspan="4">Total Jasa</td><td align="right">'+formatRupiah(total + ppnObat)+'</td></tr>';
+                        table = table +
                             '<tr><td colspan="4">Total Biaya BPJS</td><td align="right">'+formatRupiah(bpjs)+'</td></tr>'+
                             '<tr><td colspan="4">Total Biaya PTPN</td><td align="right">'+formatRupiah(ptpn)+'</td></tr>'+
-                            '<tr><td colspan="4">Total Jasa</td><td align="right">'+formatRupiah(total + ppnObat)+'</td></tr>';
+                            '<tr><td colspan="4">Total Jasa</td><td align="right">'+formatRupiah(total)+'</td></tr>';
                     }else{
-                        table = table +'<tr><td colspan="3">PPN Obat</td><td align="right">'+formatRupiah(ppnObat)+'</td></tr>'+
-                            '<tr><td colspan="3">Total Jasa</td><td align="right">'+formatRupiah(total + ppnObat)+'</td></tr>';
+                        // table = table +'<tr><td colspan="3">PPN Obat</td><td align="right">'+formatRupiah(ppnObat)+'</td></tr>'+
+                        //     '<tr><td colspan="3">Total Jasa</td><td align="right">'+formatRupiah(total + ppnObat)+'</td></tr>';
+
+                        table = table +
+                            '<tr><td colspan="3">Total Jasa</td><td align="right">'+formatRupiah(total)+'</td></tr>';
                     }
 
                     $('#body_tindakan_fin').html(table);

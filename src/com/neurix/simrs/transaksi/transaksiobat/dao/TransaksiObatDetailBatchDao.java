@@ -131,6 +131,10 @@ public class TransaksiObatDetailBatchDao extends GenericDao<MtSimrsTransaksiObat
                 batchPermintaanObat.setLastUpdate((Timestamp) obj[2]);
                 batchPermintaanObat.setUrlDoc(obj[3] == null ? "" : CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_DOC_PO+obj[3].toString());
                 batchPermintaanObat.setNoFaktur(obj[4] == null ? "" : obj[4].toString());
+                if(obj[5] != null){
+                    String tglFaktur = new SimpleDateFormat("dd-MM-yyyy").format((Date) obj[5]);
+                    batchPermintaanObat.setStTanggakFaktur(tglFaktur);
+                }
                 batchPermintaanObat.setTanggalFaktur(obj[5] != null ? Date.valueOf(obj[5].toString()) : null);
                 batchPermintaanObat.setNoInvoice(obj[6] == null ? "" : obj[6].toString());
                 batchPermintaanObat.setNoDo(obj[7] == null ? "" : obj[7].toString());

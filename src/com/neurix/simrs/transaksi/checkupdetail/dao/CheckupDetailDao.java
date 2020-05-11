@@ -886,6 +886,9 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
         String dateFrom = "";
         String dateTo = "";
 
+        String idPasien = "%";
+        String namaPasien = "%";
+
         if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())) {
             idDetail = bean.getIdDetailCheckup();
         }
@@ -906,6 +909,13 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
             dateTo = bean.getStDateTo();
         }
 
+        if(bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())){
+            idPasien = bean.getIdPasien();
+        }
+
+        if(bean.getNamaPasien() != null && !"".equalsIgnoreCase(bean.getNamaPasien())){
+            namaPasien = "%"+bean.getNamaPasien() +"%";
+        }
 
         if ("Y".equalsIgnoreCase(bean.getStatusBayar())) {
             statusBayar = "\n AND um.status_bayar = '" + bean.getStatusBayar() + "'";
@@ -931,6 +941,8 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 "WHERE dt.id_detail_checkup LIKE :idDetail\n" +
                 "AND dt.id_pelayanan LIKE :idPoli\n" +
                 "AND ck.branch_id LIKE :branchId\n" +
+                "AND ck.id_pasien LIKE :idPasien\n" +
+                "AND ck.nama LIKE :nama\n" +
                 "AND um.id LIKE :idUang" + statusBayar;
 
         List<Object[]> resuts = new ArrayList<>();
@@ -949,6 +961,8 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     .setParameter("dateTo", dateTo)
                     .setParameter("dateFrom", dateFrom)
                     .setParameter("branchId", branchId)
+                    .setParameter("idPasien", idPasien)
+                    .setParameter("nama", namaPasien)
                     .list();
 
         } else {
@@ -959,6 +973,8 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     .setParameter("idPoli", idPelayanan)
                     .setParameter("idUang", idUangMuka)
                     .setParameter("branchId", branchId)
+                    .setParameter("idPasien", idPasien)
+                    .setParameter("nama", namaPasien)
                     .list();
         }
 

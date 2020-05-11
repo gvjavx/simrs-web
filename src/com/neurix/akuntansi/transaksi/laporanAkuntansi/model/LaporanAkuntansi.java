@@ -37,8 +37,16 @@ public class LaporanAkuntansi extends BaseModel {
     private String stTanggalAkhir;
     private String tipeTanggal;
     private String nip;
-
+    private String koderingDivisi;
     private String levelKodeRekening;
+
+    public String getKoderingDivisi() {
+        return koderingDivisi;
+    }
+
+    public void setKoderingDivisi(String koderingDivisi) {
+        this.koderingDivisi = koderingDivisi;
+    }
 
     public String getAdaTipeLaporan() {
         return adaTipeLaporan;
