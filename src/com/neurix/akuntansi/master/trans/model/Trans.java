@@ -13,7 +13,13 @@ public class Trans extends BaseModel {
     private String transId;
     private String transName;
     private String tipePembayaran;
+    private String tipePembayaranName;
     private String flagSumberBaru;
+    private String master;
+    private String masterName;
+
+    private String stCreatedDate;
+    private String stLastUpdate;
 
     public String getFlagSumberBaru() {
         return flagSumberBaru;
@@ -45,5 +51,47 @@ public class Trans extends BaseModel {
 
     public void setTransName(String transName) {
         this.transName = transName;
+    }
+
+    public String getMaster() {
+        return master;
+    }
+
+    public void setMaster(String master) {
+        this.master = master;
+    }
+
+    @Override
+    public String getStCreatedDate() {
+        return stCreatedDate;
+    }
+
+    public void setStCreatedDate(String stCreatedDate) {
+        this.stCreatedDate = stCreatedDate;
+    }
+
+    @Override
+    public String getStLastUpdate() {
+        return stLastUpdate;
+    }
+
+    public void setStLastUpdate(String stLastUpdate) {
+        this.stLastUpdate = stLastUpdate;
+    }
+
+    public String getMasterName() {
+        return masterName;
+    }
+
+    public void setMasterName(String masterName) {
+        this.masterName = masterName;
+    }
+
+    public String getTipePembayaranName() {
+        return tipePembayaranName;
+    }
+
+    public void setTipePembayaranName(String tipePembayaranName) {
+        this.tipePembayaranName = tipePembayaranName;
     }
 }

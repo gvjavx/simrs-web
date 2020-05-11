@@ -238,38 +238,40 @@ public class KelasRuanganBoImpl implements KelasRuanganBo {
         logger.info("[KelasRuanganBoImpl.saveDelete] start process");
 
         if (kelasRuangan!=null) {
+            String status =cekBeforeDelete(kelasRuangan.getIdKelasRuangan());
+            if (!status.equalsIgnoreCase("exist")){
+                String idKelasRuangan = kelasRuangan.getIdKelasRuangan();
 
-            String idKelasRuangan = kelasRuangan.getIdKelasRuangan();
-
-            ImSimrsKelasRuanganEntity entity = null;
-            try {
-                // Get data from database by ID
-                entity = kelasRuanganDao.getById("idKelasRuangan", idKelasRuangan);
-            } catch (HibernateException e) {
-                logger.error("[KelasRuanganBoImpl.saveDelete] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when searching data ruangan by Kelas Ruangan id, please inform to your admin...," + e.getMessage());
-            }
-
-            if (entity != null) {
-                // Modify from bean to entity serializable
-                entity.setNamaKelasRuangan(kelasRuangan.getNamaKelasRuangan());
-                entity.setFlag(kelasRuangan.getFlag());
-                entity.setAction("U");
-                entity.setLastUpdate(kelasRuangan.getLastUpdate());
-                entity.setLastUpdateWho(kelasRuangan.getLastUpdateWho());
-
+                ImSimrsKelasRuanganEntity entity = null;
                 try {
-                    // Delete (Edit) into database
-                    kelasRuanganDao.updateAndSave(entity);
+                    // Get data from database by ID
+                    entity = kelasRuanganDao.getById("idKelasRuangan", idKelasRuangan);
                 } catch (HibernateException e) {
                     logger.error("[KelasRuanganBoImpl.saveDelete] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving update data Kelas Ruangan, please info to your admin..." + e.getMessage());
+                    throw new GeneralBOException("Found problem when searching data ruangan by Kelas Ruangan id, please inform to your admin...," + e.getMessage());
                 }
 
+                if (entity != null) {
+                    // Modify from bean to entity serializable
+                    entity.setNamaKelasRuangan(kelasRuangan.getNamaKelasRuangan());
+                    entity.setFlag(kelasRuangan.getFlag());
+                    entity.setAction("U");
+                    entity.setLastUpdate(kelasRuangan.getLastUpdate());
+                    entity.setLastUpdateWho(kelasRuangan.getLastUpdateWho());
 
-            } else {
-                logger.error("[KelasRuanganBoImpl.saveDelete] Error, not found data Ruangan with request id, please check again your data ...");
-                throw new GeneralBOException("Error, not found data Kelas Ruangan with request id, please check again your data ...");
+                    try {
+                        // Delete (Edit) into database
+                        kelasRuanganDao.updateAndSave(entity);
+                    } catch (HibernateException e) {
+                        logger.error("[KelasRuanganBoImpl.saveDelete] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving update data Kelas Ruangan, please info to your admin..." + e.getMessage());
+                    }
+                } else {
+                    logger.error("[KelasRuanganBoImpl.saveDelete] Error, not found data Ruangan with request id, please check again your data ...");
+                    throw new GeneralBOException("Error, not found data Kelas Ruangan with request id, please check again your data ...");
+                }
+            }else {
+                throw new GeneralBOException("Maaf Data tidak dapat dihapus, karna masih digunakan di Master Ruangan");
             }
         }
 
@@ -335,6 +337,23 @@ public class KelasRuanganBoImpl implements KelasRuanganBo {
             entities = kelasRuanganDao.getDataKelasRuangan(namaKelasRuang);
         } catch (HibernateException e) {
             logger.error("[KelasRuanganBoImpl.cekStatus] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        if (entities.size()>0){
+            status = "exist";
+        }else{
+            status="notExits";
+        }
+        return status;
+    }
+
+    public String cekBeforeDelete(String idKelasRuangan)throws GeneralBOException{
+        String status ="";
+        List<ImSimrsKelasRuanganEntity> entities = new ArrayList<>();
+        try {
+            entities = kelasRuanganDao.cekData(idKelasRuangan);
+        } catch (HibernateException e) {
+            logger.error("[KelasRuanganBoImpl.cekBeforeDelete] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
         }
         if (entities.size()>0){

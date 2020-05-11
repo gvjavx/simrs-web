@@ -21,4 +21,5 @@ public interface RiwayatTindakanBo {
     public void updateByEntity(ItSimrsRiwayatTindakanEntity entity) throws GeneralBOException;
     public ItSimrsTindakanTransitorisEntity getTindakanTransitorisById(String id) throws GeneralBOException;
 
+    List<RiwayatTindakan> typeaheadRiwayatTindakan(String idRiwayatTindakan) throws GeneralBOException;
 }

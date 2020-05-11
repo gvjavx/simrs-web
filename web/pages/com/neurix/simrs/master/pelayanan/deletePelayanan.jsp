@@ -26,13 +26,9 @@
         };
 
         $.subscribe('beforeProcessSave', function (event, data) {
-            var namaPelayanan = document.getElementById("namaPelayanan1").value;
-            var branchId = document.getElementById("branchId1").value;
-            var positionId = document.getElementById("positionId1").value;
-            var tipePelayanan = document.getElementById("tipePelayanan1").value;
-            console.log(namaPelayanan);
+            var idPelayanan = document.getElementById("idPelayanan1").value;
 
-            if (namaPelayanan != ''&& branchId != '' && positionId != '' && tipePelayanan != '') {
+            if (idPelayanan != '') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -43,18 +39,8 @@
             } else {
                 event.originalEvent.options.submit = false;
                 var msg = "";
-                if (namaPelayanan == '') {
-                    msg += 'Field <strong>Nama Pelayanan </strong> is required.' + '<br/>';
-                }
-                if (branchId == '') {
-                    msg += 'Field <strong>Unit </strong> is required.' + '<br/>';
-                }
-                if (positionId == '') {
-                    msg += 'Field <strong>Divisi </strong> is required.' + '<br/>';
-                }
-
-                if (tipePelayanan == '') {
-                    msg += 'Field <strong>Tipe Pelayanan </strong> is required.' + '<br/>';
+                if (idPelayanan == '') {
+                    msg += 'Field <strong>Id Pelayanan </strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
@@ -244,7 +230,7 @@
                                         <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
                                                    height="250" width="600" autoOpen="false" title="Error Dialog"
                                                    buttons="{
-                                                                        'OK':function() { $('#error_dialog').dialog('close'); }
+                                                                        'OK':function() { $('#error_dialog').dialog('close'); window.location.reload(true)}
                                                                     }"
                                         >
                                             <div class="alert alert-error fade in">

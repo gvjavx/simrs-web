@@ -23,41 +23,43 @@ public class AsuransiBoImpl implements AsuransiBo  {
         logger.info("[saveDelete.PelayananBoImpl] start process >>>");
 
         if (bean!=null) {
-
-            String idAsuransi = bean.getIdAsuransi();
-
-            ImSimrsAsuransiEntity entity = null;
-
-            try {
-                // Get data from database by ID
-                entity = asuransiDao.getById("idAsuransi", idAsuransi);
-            } catch (HibernateException e) {
-                logger.error("[AsuransiBoImpl.saveDelete] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when searching data alat by Kode alat, please inform to your admin...," + e.getMessage());
-            }
-
-            if (entity != null) {
-
-                // Modify from bean to entity serializable
-                entity.setIdAsuransi(bean.getIdAsuransi());
-                entity.setFlag(bean.getFlag());
-                entity.setAction(bean.getAction());
-                entity.setLastUpdateWho(bean.getLastUpdateWho());
-                entity.setLastUpdate(bean.getLastUpdate());
+            String status = cekBeforeDelete(bean.getIdAsuransi());
+            if (!status.equalsIgnoreCase("exist")){
+                String idAsuransi = bean.getIdAsuransi();
+                ImSimrsAsuransiEntity entity = null;
 
                 try {
-                    // Delete (Edit) into database
-                    asuransiDao.updateAndSave(entity);
+                    // Get data from database by ID
+                    entity = asuransiDao.getById("idAsuransi", idAsuransi);
                 } catch (HibernateException e) {
                     logger.error("[AsuransiBoImpl.saveDelete] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving update data Asuransi, please info to your admin..." + e.getMessage());
+                    throw new GeneralBOException("Found problem when searching data alat by Kode alat, please inform to your admin...," + e.getMessage());
                 }
 
+                if (entity != null) {
 
-            } else {
-                logger.error("[AsuransiBoImpl.saveDelete] Error, not found data Asuransi with request id, please check again your data ...");
-                throw new GeneralBOException("Error, not found data Asuransi with request id, please check again your data ...");
+                    // Modify from bean to entity serializable
+                    entity.setIdAsuransi(bean.getIdAsuransi());
+                    entity.setFlag(bean.getFlag());
+                    entity.setAction(bean.getAction());
+                    entity.setLastUpdateWho(bean.getLastUpdateWho());
+                    entity.setLastUpdate(bean.getLastUpdate());
 
+                    try {
+                        // Delete (Edit) into database
+                        asuransiDao.updateAndSave(entity);
+                    } catch (HibernateException e) {
+                        logger.error("[AsuransiBoImpl.saveDelete] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving update data Asuransi, please info to your admin..." + e.getMessage());
+                    }
+
+
+                } else {
+                    logger.error("[AsuransiBoImpl.saveDelete] Error, not found data Asuransi with request id, please check again your data ...");
+                    throw new GeneralBOException("Error, not found data Asuransi with request id, please check again your data ...");
+                }
+            }else {
+                throw new GeneralBOException("Maaf Data tidak dapat dihapus, karna masih digunakan pada data Transaksi");
             }
         }
         logger.info("[AsuransiBoImpl.saveDelete] end process <<<");
@@ -234,7 +236,24 @@ public class AsuransiBoImpl implements AsuransiBo  {
         try {
             entities = asuransiDao.getDataAsuransi(namaAsuransi);
         } catch (HibernateException e) {
-            logger.error("[PayrollSkalaGajiBoImpl.getSearchPayrollSkalaGajiByCriteria] Error, " + e.getMessage());
+            logger.error("[AsuransiBoImpl.cekStatus] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        if (entities.size()>0){
+            status = "exist";
+        }else{
+            status="notExits";
+        }
+        return status;
+    }
+
+    public String cekBeforeDelete(String idAsuransi)throws GeneralBOException{
+        String status ="";
+        List<ImSimrsAsuransiEntity> entities = new ArrayList<>();
+        try {
+            entities = asuransiDao.cekData(idAsuransi);
+        } catch (HibernateException e) {
+            logger.error("[AsuransiBoImpl.cekBeforeDelete] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
         }
         if (entities.size()>0){

@@ -147,6 +147,7 @@ public class PendapatanDokterBoImpl implements PendapatanDokterBo {
             try{
                 Map hsCriteria = new HashMap<>();
                 hsCriteria.put("branch_id", bean.getBranchId());
+                hsCriteria.put("flag", "Y");
                 imSimrsDokterKsos = dokterKsoDao.getByCriteria(hsCriteria);
                 Map map = new HashMap<>();
                 map.put("flag", "Y");
@@ -653,6 +654,7 @@ public class PendapatanDokterBoImpl implements PendapatanDokterBo {
             try{
                 Map hsCriteria = new HashMap<>();
                 hsCriteria.put("branch_id", bean.getBranchId());
+                hsCriteria.put("flag", "Y");
                 imSimrsDokterKsos = dokterKsoDao.getByCriteria(hsCriteria);
                 Map map = new HashMap<>();
                 map.put("flag", "Y");

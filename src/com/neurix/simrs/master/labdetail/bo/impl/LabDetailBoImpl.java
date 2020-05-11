@@ -36,39 +36,42 @@ public class LabDetailBoImpl implements LabDetailBo {
         logger.info("[saveDelete.LabDetailBoImpl] start process >>>");
 
         if (bean!=null) {
-
             String idLabDetail = bean.getIdLabDetail();
-
-            ImSimrsLabDetailEntity entity = null;
-
-            try {
-                // Get data from database by ID
-                entity = labDetailDao.getById("idLabDetail", idLabDetail);
-            } catch (HibernateException e) {
-                logger.error("[LabDetailBoImpl.saveDelete] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when searching data Lab by IdLabDetail, please inform to your admin...," + e.getMessage());
-            }
-
-            if (entity != null) {
-                // Modify from bean to entity serializable
-                entity.setIdLabDetail(bean.getIdLabDetail());
-                entity.setFlag(bean.getFlag());
-                entity.setAction(bean.getAction());
-                entity.setLastUpdateWho(bean.getLastUpdateWho());
-                entity.setLastUpdate(bean.getLastUpdate());
+            String status = cekBeforeDelete(idLabDetail);
+            if (!status.equalsIgnoreCase("exist")){
+                ImSimrsLabDetailEntity entity = null;
 
                 try {
-                    // Delete (Edit) into database
-                    labDetailDao.updateAndSave(entity);
+                    // Get data from database by ID
+                    entity = labDetailDao.getById("idLabDetail", idLabDetail);
                 } catch (HibernateException e) {
                     logger.error("[LabDetailBoImpl.saveDelete] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving update data Lab Detail, please info to your admin..." + e.getMessage());
+                    throw new GeneralBOException("Found problem when searching data Lab by IdLabDetail, please inform to your admin...," + e.getMessage());
                 }
 
+                if (entity != null) {
+                    // Modify from bean to entity serializable
+                    entity.setIdLabDetail(bean.getIdLabDetail());
+                    entity.setFlag(bean.getFlag());
+                    entity.setAction(bean.getAction());
+                    entity.setLastUpdateWho(bean.getLastUpdateWho());
+                    entity.setLastUpdate(bean.getLastUpdate());
 
-            } else {
-                logger.error("[LabDetailBoImpl.saveDelete] Error, not found data Lab Detail with request id, please check again your data ...");
-                throw new GeneralBOException("Error, not found data Lab with request id, please check again your data ...");
+                    try {
+                        // Delete (Edit) into database
+                        labDetailDao.updateAndSave(entity);
+                    } catch (HibernateException e) {
+                        logger.error("[LabDetailBoImpl.saveDelete] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving update data Lab Detail, please info to your admin..." + e.getMessage());
+                    }
+
+
+                } else {
+                    logger.error("[LabDetailBoImpl.saveDelete] Error, not found data Lab Detail with request id, please check again your data ...");
+                    throw new GeneralBOException("Error, not found data Lab with request id, please check again your data ...");
+                }
+            }else {
+                throw new GeneralBOException("Maaf Data tidak dapat dihapus, karna masih digunakan pada data Transaksi");
             }
         }
         logger.info("[LabDetailBoImpl.saveDelete] end process <<<");
@@ -254,6 +257,23 @@ public class LabDetailBoImpl implements LabDetailBo {
             entities = labDetailDao.getDataLabDetail(namaDetailPeriksa);
         } catch (HibernateException e) {
             logger.error("[LabDetailBoImpl.cekStatus] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        if (entities.size()>0){
+            status = "exist";
+        }else{
+            status="notExits";
+        }
+        return status;
+    }
+
+    public String cekBeforeDelete(String idLabDetail)throws GeneralBOException{
+        String status ="";
+        List<ImSimrsLabDetailEntity> entities = new ArrayList<>();
+        try {
+            entities = labDetailDao.cekData(idLabDetail);
+        } catch (HibernateException e) {
+            logger.error("[LabDetailBoImpl.cekBeforeDelete] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
         }
         if (entities.size()>0){

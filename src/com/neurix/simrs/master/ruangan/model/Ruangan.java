@@ -13,6 +13,7 @@ public class Ruangan extends BaseModel {
     private String namaRuangan;
     private String noRuangan;
     private String statusRuangan;
+    private String statusRuanganName;
     private String idKelasRuangan;
     private String keterangan;
     private BigInteger tarif;
@@ -288,5 +289,13 @@ public class Ruangan extends BaseModel {
 
     public void setBranchUser(String branchUser) {
         this.branchUser = branchUser;
+    }
+
+    public String getStatusRuanganName() {
+        return statusRuanganName;
+    }
+
+    public void setStatusRuanganName(String statusRuanganName) {
+        this.statusRuanganName = statusRuanganName;
     }
 }

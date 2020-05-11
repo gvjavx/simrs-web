@@ -17,4 +17,5 @@ public interface DokterBo extends BaseMasterBo<Dokter> {
     public List<Dokter> getDokterByPelayanan(String idPelayanan) throws GeneralBOException;
 
     public List<Dokter> getSearchByCriteria(Dokter bean) throws GeneralBOException;
+    List<Dokter> typeaheadDokter(String dokterName) throws GeneralBOException;
 }

@@ -397,6 +397,15 @@
                                 <s:textfield id="modKeterangan" cssClass="form-control"/>
                             </div>
                         </div>
+                        <div class="row" style="margin-top: 7px">
+                            <div class="col-sm-offset-2 col-sm-3">
+                                <label class="control-label">Edit Biaya</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <s:select list="#{'Y':'Y'}" id="modEditBiaya"
+                                          headerKey="N" headerValue="N" cssClass="form-control" />
+                            </div>
+                        </div>
                         <br>
                     </div>
                     <br>
@@ -427,6 +436,7 @@
                     "<th style='text-align: center; background-color:  #90ee90'>Divisi ID</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>List Kirim</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Parameter</th>"+
+                    "<th style='text-align: center; background-color:  #90ee90'>Edit Biaya</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Delete</th>"+
                     "</tr></thead>";
                 var i = i;
@@ -442,6 +452,7 @@
                         '<td align="center">' + item.divisiId + '</td>' +
                         '<td align="center">' + item.kirimList + '</td>' +
                         '<td align="center">' + item.keterangan + '</td>' +
+                        '<td align="center">' + item.editBiaya + '</td>' +
                         '<td align="center">' +
                         "<a href='javascript:;' class ='item-delete-data' data ='" + item.kodeRekening + "'>" +
                         "<img border='0' src='<s:url value='/pages/images/delete_task.png'/>' name='icon_delete'>" +
@@ -473,9 +484,10 @@
             var divisiId = $('#modDivisi').val();
             var listKirim = $('#modListKirim').val();
             var keterangan = $('#modKeterangan').val();
+            var editBiaya = $('#modEditBiaya').val();
             dwr.engine.setAsync(false);
             if(kodeRekening!=''&&posisi!=''&&master!=''&&bukti!=''&&kodeBarang!=''&&listKirim!=''&&keterangan!=''&&kodeRekeningname!=''&&divisiId!=''){
-                MappingJurnalAction.saveKodeRekeningSession(kodeRekening,posisi,master,bukti,kodeBarang,listKirim,keterangan,kodeRekeningname,divisiId,function() {
+                MappingJurnalAction.saveKodeRekeningSession(kodeRekening,posisi,master,bukti,kodeBarang,listKirim,keterangan,kodeRekeningname,divisiId,editBiaya,function() {
                     listResult();
                 });
                 $('#modal-edit').modal('hide');

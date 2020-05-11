@@ -69,29 +69,32 @@
             <exception-mapping exception="java.lang.RuntimeException" result="global_error" />
         </global-exception-mappings>
 
-        <action name="*_reportDetail"
-                class="com.neurix.akuntansi.master.reportDetail.action.ReportDetailAction" method="{1}">
+        <action name="*_reportKeuanganKonsol"
+                class="com.neurix.akuntansi.master.settingReportKeuanganKonsol.action.SettingReportKeuanganKonsolAction" method="{1}">
             <interceptor-ref name="ivelinStack" />
-            <result name="input">/pages/com/neurix/akuntansi/master/reportDetail/searchReportDetail.jsp</result>
-            <result name="success">/pages/com/neurix/akuntansi/master/reportDetail/searchReportDetail.jsp</result>
+            <result name="search">/pages/com/neurix/akuntansi/master/settingReportKeuanganKonsol/searchReportKeuanganKonsol.jsp</result>
+            <result name="success">/pages/com/neurix/akuntansi/master/settingReportKeuanganKonsol/searchReportKeuanganKonsol.jsp</result>
+            <result name="input">/pages/com/neurix/akuntansi/master/settingReportKeuanganKonsol/searchReportKeuanganKonsol.jsp</result>
+            <result name="init_add">/pages/com/neurix/akuntansi/master/settingReportKeuanganKonsol/addReportKeuanganKonsol.jsp</result>
+            <result name="success_save_add">/pages/com/neurix/akuntansi/master/settingReportKeuanganKonsol/addReportKeuanganKonsol.jsp</result>
+            <result name="error">/pages/com/neurix/akuntansi/master/settingReportKeuanganKonsol/addReportKeuanganKonsol.jsp</result>
 
-            <result name="error">/pages/com/neurix/akuntansi/master/reportDetail/addReportDetail.jsp</result>
-            <result name="init_add">/pages/com/neurix/akuntansi/master/reportDetail/addReportDetail.jsp</result>
-            <result name="success_save_add">/pages/com/neurix/akuntansi/master/reportDetail/addReportDetail.jsp</result>
+            <result name="init_edit">/pages/com/neurix/akuntansi/master/settingReportKeuanganKonsol/editReportKeuanganKonsol.jsp</result>
+            <result name="failure">/pages/com/neurix/akuntansi/master/settingReportKeuanganKonsol/editReportKeuanganKonsol.jsp</result>
+            <result name="success_save_edit">/pages/com/neurix/akuntansi/master/settingReportKeuanganKonsol/editReportKeuanganKonsol.jsp</result>
 
-            <result name="success_save_delete">/pages/com/neurix/akuntansi/master/reportDetail/deleteReportDetail.jsp</result>
-            <result name="init_delete">/pages/com/neurix/akuntansi/master/reportDetail/deleteReportDetail.jsp</result>
-            <result name="init_edit">/pages/com/neurix/akuntansi/master/reportDetail/editReportDetail.jsp</result>
-            <result name="success_save_edit">/pages/com/neurix/akuntansi/master/reportDetail/editReportDetail.jsp</result>
-            <result name="failure">/pages/com/neurix/akuntansi/master/reportDetail/editReportDetail.jsp</result>
+            <result name="success_save_delete">/pages/com/neurix/akuntansi/master/settingReportKeuanganKonsol/deleteReportKeuanganKonsol.jsp</result>
+            <result name="init_delete">/pages/com/neurix/akuntansi/master/settingReportKeuanganKonsol/deleteReportKeuanganKonsol.jsp</result>
+
+            <result name="init_view">/pages/com/neurix/akuntansi/master/settingReportKeuanganKonsol/viewReportKeuanganKonsol.jsp</result>
 
         </action>
 
 
-        <action name="paging_displaytag_reportDetail"
-                class="com.neurix.akuntansi.master.reportDetail.action.ReportDetailAction" method="paging">
+        <action name="paging_displaytag_reportKeuanganKonsol"
+                class="com.neurix.akuntansi.master.settingReportKeuanganKonsol.action.SettingReportKeuanganKonsolAction" method="paging">
             <interceptor-ref name="defaultStack"/>
-            <result name="success">/pages/com/neurix/akuntansi/master/reportDetail/searchReportDetail.jsp</result>
+            <result name="success">/pages/com/neurix/akuntansi/master/settingReportKeuanganKonsol/searchReportKeuanganKonsol.jsp</result>
         </action>
 
     </package>

@@ -258,11 +258,11 @@ public class KelasRuanganAction extends BaseMasterAction {
                 logId = kelasRuanganBoProxy.saveErrorMessage(e.getMessage(), "kelasRuanganBO.saveAdd");
             } catch (GeneralBOException e1) {
                 logger.error("[kelasRuanganAction.saveAdd] Error when saving error,", e1);
-                return ERROR;
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[KelasAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            throw new GeneralBOException(e.getMessage());
         }
 
         HttpSession session = ServletActionContext.getRequest().getSession();
@@ -324,11 +324,11 @@ public class KelasRuanganAction extends BaseMasterAction {
                 logId = kelasRuanganBoProxy.saveErrorMessage(e.getMessage(), "KelasRuanganBO.saveDelete");
             } catch (GeneralBOException e1) {
                 logger.error("[KelasRuanganAction.saveDelete] Error when saving error,", e1);
-                return ERROR;
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[KelasRuanganAction.saveDelete] Error when editing item pasien," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            throw new GeneralBOException(e.getMessage());
         }
         logger.info("[KelasRuanganAction.saveDelete] end process <<<");
         return "delete";

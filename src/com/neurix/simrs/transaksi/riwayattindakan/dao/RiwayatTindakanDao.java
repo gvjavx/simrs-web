@@ -233,4 +233,20 @@ public class RiwayatTindakanDao extends GenericDao<ItSimrsRiwayatTindakanEntity,
         String sId = String.format("%08d", iter.next());
         return sId;
     }
+
+    //for typeahead
+    public List<ItSimrsRiwayatTindakanEntity> getRiwayatTindakanListByLike(String riwayatTindakanName) {
+        Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ItSimrsRiwayatTindakanEntity.class);
+        criteria.add(
+                Restrictions.or(
+                        Restrictions.ilike("idTindakan", riwayatTindakanName + "%"),
+                        Restrictions.ilike("namaTindakan", "%"+riwayatTindakanName+"%")
+                )
+        );
+        criteria.add(Restrictions.eq("flag", "Y"));
+        criteria.addOrder(Order.asc("idTindakan"));
+
+        List<ItSimrsRiwayatTindakanEntity> results = criteria.list();
+        return results;
+    }
 }

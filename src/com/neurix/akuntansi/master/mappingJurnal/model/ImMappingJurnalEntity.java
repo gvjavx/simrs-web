@@ -23,6 +23,7 @@ public class ImMappingJurnalEntity implements Serializable {
     private String keterangan;
     private String kirimList;
     private String divisiId;
+    private String editBiaya;
 
     private String flag;
     private String action;
@@ -165,5 +166,13 @@ public class ImMappingJurnalEntity implements Serializable {
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    public String getEditBiaya() {
+        return editBiaya;
+    }
+
+    public void setEditBiaya(String editBiaya) {
+        this.editBiaya = editBiaya;
     }
 }

@@ -266,11 +266,11 @@ public class AsuransiAction extends BaseMasterAction {
                 logId = asuransiBoProxy.saveErrorMessage(e.getMessage(), "AsuransiBO.saveDelete");
             } catch (GeneralBOException e1) {
                 logger.error("[AsuransiAction.saveDelete] Error when saving error,", e1);
-                return ERROR;
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[AsuransiAction.saveDelete] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            throw new GeneralBOException(e.getMessage());
         }
 
         logger.info("[AsuransiAction.saveDelete] end process <<<");

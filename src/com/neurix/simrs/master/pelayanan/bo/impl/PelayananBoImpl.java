@@ -118,41 +118,45 @@ public class PelayananBoImpl implements PelayananBo{
         logger.info("[saveDelete.PelayananBoImpl] start process >>>");
 
         if (bean!=null) {
+            String status = cekBeforeDelete(bean.getIdPelayanan());
+            if (!status.equalsIgnoreCase("exist")){
+                String idPelayanan = bean.getIdPelayanan();
 
-            String idPelayanan = bean.getIdPelayanan();
-
-            ImSimrsPelayananEntity entity = null;
-
-            try {
-                // Get data from database by ID
-                entity = pelayananDao.getById("idPelayanan", idPelayanan);
-            } catch (HibernateException e) {
-                logger.error("[PayrollSkalaGajiBoImpl.saveDelete] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when searching data alat by Kode alat, please inform to your admin...," + e.getMessage());
-            }
-
-            if (entity != null) {
-
-                // Modify from bean to entity serializable
-                entity.setIdPelayanan(bean.getIdPelayanan());
-                entity.setFlag(bean.getFlag());
-                entity.setAction(bean.getAction());
-                entity.setLastUpdateWho(bean.getLastUpdateWho());
-                entity.setLastUpdate(bean.getLastUpdate());
+                ImSimrsPelayananEntity entity = null;
 
                 try {
-                    // Delete (Edit) into database
-                    pelayananDao.updateAndSave(entity);
+                    // Get data from database by ID
+                    entity = pelayananDao.getById("idPelayanan", idPelayanan);
                 } catch (HibernateException e) {
                     logger.error("[PayrollSkalaGajiBoImpl.saveDelete] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving update data PayrollSkalaGaji, please info to your admin..." + e.getMessage());
+                    throw new GeneralBOException("Found problem when searching data alat by Kode alat, please inform to your admin...," + e.getMessage());
                 }
 
+                if (entity != null) {
 
-            } else {
-                logger.error("[PayrollSkalaGajiBoImpl.saveDelete] Error, not found data PayrollSkalaGaji with request id, please check again your data ...");
-                throw new GeneralBOException("Error, not found data PayrollSkalaGaji with request id, please check again your data ...");
+                    // Modify from bean to entity serializable
+                    entity.setIdPelayanan(bean.getIdPelayanan());
+                    entity.setFlag(bean.getFlag());
+                    entity.setAction(bean.getAction());
+                    entity.setLastUpdateWho(bean.getLastUpdateWho());
+                    entity.setLastUpdate(bean.getLastUpdate());
 
+                    try {
+                        // Delete (Edit) into database
+                        pelayananDao.updateAndSave(entity);
+                    } catch (HibernateException e) {
+                        logger.error("[PayrollSkalaGajiBoImpl.saveDelete] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving update data PayrollSkalaGaji, please info to your admin..." + e.getMessage());
+                    }
+
+
+                } else {
+                    logger.error("[PayrollSkalaGajiBoImpl.saveDelete] Error, not found data PayrollSkalaGaji with request id, please check again your data ...");
+                    throw new GeneralBOException("Error, not found data PayrollSkalaGaji with request id, please check again your data ...");
+
+                }
+            }else {
+                throw new GeneralBOException("Maaf Data tidak dapat dihapus, karna masih digunakan pada data Transaksi");
             }
         }
         logger.info("[PayrollSkalaGajiBoImpl.saveDelete] end process <<<");
@@ -409,7 +413,24 @@ public class PelayananBoImpl implements PelayananBo{
         try {
             entities = pelayananDao.getDataPelayanan(namaPelayanan);
         } catch (HibernateException e) {
-            logger.error("[PayrollSkalaGajiBoImpl.getSearchPayrollSkalaGajiByCriteria] Error, " + e.getMessage());
+            logger.error("[PelayananBoImpl.cekStatus] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        if (entities.size()>0){
+            status = "exist";
+        }else{
+            status="notExits";
+        }
+        return status;
+    }
+
+    public String cekBeforeDelete(String idPelayanan)throws GeneralBOException{
+        String status ="";
+        List<ImSimrsPelayananEntity> entities = new ArrayList<>();
+        try {
+            entities = pelayananDao.cekData(idPelayanan);
+        } catch (HibernateException e) {
+            logger.error("[PelayananBoImpl.cekBeforeDelete] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
         }
         if (entities.size()>0){

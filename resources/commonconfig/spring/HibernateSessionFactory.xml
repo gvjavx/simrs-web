@@ -43,15 +43,15 @@
                 <!--<prop key="hibernate.connection.username">root</prop>-->
                 <!--<prop key="hibernate.connection.password">123456</prop>-->
 
-                <!--<prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs_04052020</prop>-->
-                <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
-                <!--<prop key="hibernate.connection.username">postgres</prop>-->
-                <!--<prop key="hibernate.connection.password">123456</prop>-->
-
-                    <prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs_28042020</prop>
+                <prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs_04052020</prop>
                 <prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>
                 <prop key="hibernate.connection.username">postgres</prop>
                 <prop key="hibernate.connection.password">123456</prop>
+
+                <!--<prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs_28042020</prop>-->
+                <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
+                <!--<prop key="hibernate.connection.username">postgres</prop>-->
+                <!--<prop key="hibernate.connection.password">123456</prop>-->
 
                 <!--<prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs-20032020</prop>-->
                 <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
@@ -409,6 +409,7 @@
                 <value>sshconfig/com/neurix/akuntansi/transaksi/tutupperiod/hibernate/ItAkunTutupPeriodEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/saldoakhir/hibernate/ItAkunSaldoAkhirEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/master/reportKeuanganKonsol/hibernate/ImReportKeuanganKonsolEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/master/reportKeuanganKonsol/hibernate/ImAkunSettingReportKeuanganKonsolDetail.hbm.xml</value>
 
                 <!--Hibernate Config For PAKET SIMRS-->
                 <value>sshconfig/com/neurix/simrs/transaksi/paketperiksa/hiberanate/ImSimrsKelasPaketEntity.hbm.xml</value>
@@ -440,6 +441,7 @@
                 <value>sshconfig/com/neurix/simrs/transaksi/asesmenugd/hibernate/ItSimrsAsesmenUgdEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/asesmenoperasi/hibernate/ItSimrsAsesmenOperasiEntity.hbm.xml</value>
 
+                <value>sshconfig/com/neurix/hris/master/DokterKso/hibernate/ImSimrsDokterKsoTindakan.hbm.xml</value>
             </list>
         </property>
     </bean>

@@ -10,6 +10,7 @@ public class AkunSettingReportKeuanganKonsolDetail extends BaseModel {
     private String settingReportKonsolId;
     private String rekeningId;
     private String operator;
+    private String sbOperator;
 
     private String kodeRekening;
     private String namaRekening;
@@ -105,5 +106,13 @@ public class AkunSettingReportKeuanganKonsolDetail extends BaseModel {
 
     public void setOperator(String operator) {
         this.operator = operator;
+    }
+
+    public String getSbOperator() {
+        return sbOperator;
+    }
+
+    public void setSbOperator(String sbOperator) {
+        this.sbOperator = sbOperator;
     }
 }

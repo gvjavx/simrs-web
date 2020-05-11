@@ -8,11 +8,13 @@ import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.master.kategorilab.bo.KategoriLabBo;
 import com.neurix.simrs.master.kategorilab.model.KategoriLab;
 import com.neurix.simrs.master.lab.bo.LabBo;
+import com.neurix.simrs.master.lab.model.ImSimrsLabEntity;
 import com.neurix.simrs.master.lab.model.Lab;
 import com.neurix.simrs.master.operatorlab.bo.OperatorLabBo;
 import com.neurix.simrs.master.operatorlab.model.OperatorLab;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.hibernate.HibernateException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
@@ -395,11 +397,11 @@ public class LabAction extends BaseMasterAction {
                 logId = labBoProxy.saveErrorMessage(e.getMessage(), "LabBO.saveDelete");
             } catch (GeneralBOException e1) {
                 logger.error("[LabAction.saveDelete] Error when saving error,", e1);
-                return ERROR;
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[LabAction.saveDelete] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            throw new GeneralBOException(e.getMessage());
         }
 
         logger.info("[LabAction.saveDelete] end process <<<");
@@ -552,5 +554,4 @@ public class LabAction extends BaseMasterAction {
 
         return "init_combo";
     }
-
 }

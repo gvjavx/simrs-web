@@ -120,6 +120,8 @@ public class TransBoImpl implements TransBo {
             }
             if (imTransEntity != null) {
                 imTransEntity.setTransName(bean.getTransName());
+                imTransEntity.setMaster(bean.getMaster());
+                imTransEntity.setTipePembayaran(bean.getTipePembayaran());
                 imTransEntity.setFlagSumberBaru(bean.getFlagSumberBaru());
                 imTransEntity.setFlag(bean.getFlag());
                 imTransEntity.setAction(bean.getAction());
@@ -158,6 +160,8 @@ public class TransBoImpl implements TransBo {
 
             imTransEntity.setTransId(transId);
             imTransEntity.setTransName(bean.getTransName());
+            imTransEntity.setMaster(bean.getMaster());
+            imTransEntity.setTipePembayaran(bean.getTipePembayaran());
             imTransEntity.setFlagSumberBaru(bean.getFlagSumberBaru());
             imTransEntity.setFlag(bean.getFlag());
             imTransEntity.setAction(bean.getAction());
@@ -224,11 +228,30 @@ public class TransBoImpl implements TransBo {
                     returnTrans = new Trans();
                     returnTrans.setTransId(transEntity.getTransId());
                     returnTrans.setTransName(transEntity.getTransName());
+                    returnTrans.setMaster(transEntity.getMaster());
+                    if (transEntity.getMaster() != null){
+                        if ("vendor".equalsIgnoreCase(transEntity.getMaster()))
+                            returnTrans.setMasterName("Vendor");
+                        if ("dokter".equalsIgnoreCase(transEntity.getMaster()))
+                            returnTrans.setMasterName("Dokter");
+                    }
+
+                    returnTrans.setTipePembayaran(transEntity.getTipePembayaran());
                     returnTrans.setFlagSumberBaru(transEntity.getFlagSumberBaru());
                     returnTrans.setTipePembayaran(transEntity.getTipePembayaran());
+                    if (transEntity.getTipePembayaran() != null){
+                        if ("KM".equalsIgnoreCase(transEntity.getTipePembayaran()))
+                            returnTrans.setTipePembayaranName("Kas Masuk");
+                        if ("KK".equalsIgnoreCase(transEntity.getTipePembayaran()))
+                            returnTrans.setTipePembayaranName("Kas Keluar");
+                        if ("KR".equalsIgnoreCase(transEntity.getTipePembayaran()))
+                            returnTrans.setTipePembayaranName("Koreksi");
+                    }
 
                     returnTrans.setCreatedWho(transEntity.getCreatedWho());
                     returnTrans.setCreatedDate(transEntity.getCreatedDate());
+                    returnTrans.setStCreatedDate(transEntity.getCreatedDate().toString());
+                    returnTrans.setStLastUpdate(transEntity.getLastUpdate().toString());
                     returnTrans.setLastUpdate(transEntity.getLastUpdate());
                     returnTrans.setAction(transEntity.getAction());
                     returnTrans.setFlag(transEntity.getFlag());

@@ -1,5 +1,7 @@
 package com.neurix.simrs.master.kategorilab.action;
 
+import com.neurix.authorization.position.bo.PositionBo;
+import com.neurix.authorization.position.model.Position;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
@@ -18,9 +20,31 @@ public class KategoriLabAction extends BaseMasterAction {
 
     protected static transient Logger logger = Logger.getLogger(KategoriLabAction.class);
     private KategoriLabBo kategoriLabBoProxy;
+    private PositionBo positionBoProxy;
     private KategoriLab kategoriLab;
 
+    private List<Position> listOfComboPositions = new ArrayList<Position>();
     private List<KategoriLab> listOfKategoriLab = new ArrayList<>();
+
+    public KategoriLabBo getKategoriLabBoProxy() {
+        return kategoriLabBoProxy;
+    }
+
+    public List<Position> getListOfComboPositions() {
+        return listOfComboPositions;
+    }
+
+    public void setListOfComboPositions(List<Position> listOfComboPositions) {
+        this.listOfComboPositions = listOfComboPositions;
+    }
+
+    public PositionBo getPositionBoProxy() {
+        return positionBoProxy;
+    }
+
+    public void setPositionBoProxy(PositionBo positionBoProxy) {
+        this.positionBoProxy = positionBoProxy;
+    }
 
     public List<KategoriLab> getListOfKategoriLab() {
         return listOfKategoriLab;
@@ -275,11 +299,11 @@ public class KategoriLabAction extends BaseMasterAction {
                 logId = kategoriLabBoProxy.saveErrorMessage(e.getMessage(), "KategoriLabBO.saveDelete");
             } catch (GeneralBOException e1) {
                 logger.error("[KategoriLabAction.saveDelete] Error when saving error,", e1);
-                return ERROR;
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[KategoriLabAction.saveDelete] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            throw new GeneralBOException(e.getMessage());
         }
 
         logger.info("[KategoriLabAction.saveDelete] end process <<<");
@@ -355,5 +379,30 @@ public class KategoriLabAction extends BaseMasterAction {
         logger.info("[KategoriLabAction.getListKategoriLab] end process <<<");
         return SUCCESS;
 
+    }
+
+    public String initComboPosition() {
+
+        Position position = new Position();
+        position.setFlag("Y");
+        position.setKategori("pelayanan");
+        List<Position> listOfPosition = new ArrayList<Position>();
+        try {
+            listOfPosition = positionBoProxy.getByCriteria(position);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = positionBoProxy.saveErrorMessage(e.getMessage(), "PositionBO.getByCriteria");
+            } catch (GeneralBOException e1) {
+                logger.error("[UserAction.initComboPosition] Error when saving error,", e1);
+            }
+            logger.error("[UserAction.initComboPosition] Error when searching data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
+            return "failure";
+        }
+
+        listOfComboPositions.addAll(listOfPosition);
+
+        return "init_combo_position";
     }
 }
