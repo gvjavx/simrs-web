@@ -29,6 +29,10 @@
             }
         }
     </script>
+
+    <script src="<s:url value="/pages/plugins/tree/jquery.treegrid.bootstrap3.js"/>"></script>
+    <script src="<s:url value="/pages/plugins/tree/jquery.treegrid.js"/>"></script>
+    <script src="<s:url value="/pages/plugins/tree/lodash.js"/>"></script>
 </head>
 
 <body class="hold-transition skin-blue fixed sidebar-mini">
@@ -166,7 +170,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <label class="control-label col-sm-2">Nilai</label>
+                                        <label class="control-label col-sm-2">Tarif (Satuan)</label>
                                         <div class="col-sm-4">
                                             <input type="number" class="form-control" id="nilai"/>
                                         </div>
@@ -450,7 +454,7 @@
 
                         <div class="form-group" style="margin-top: 10px">
                             <div class="col-md-4 col-md-offset-5">
-                                <button class="btn btn-success" onclick="back()"><i class="fa fa-arrow-left"></i> Back</button>
+                                <button class="btn btn-success" onclick="back()"><i class="fa fa-arrow-left"></i> Save</button>
                                 <%--<button class="btn btn-success" id="btn-save" onclick="save()"><i class="fa fa-check"></i> Save </button>--%>
                             </div>
                         </div>
