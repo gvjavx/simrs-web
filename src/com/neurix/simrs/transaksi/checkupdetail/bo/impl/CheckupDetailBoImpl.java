@@ -559,6 +559,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                         tindakanRawatEntity.setLastUpdateWho(bean.getCreatedWho());
                         tindakanRawatEntity.setFlag("Y");
                         tindakanRawatEntity.setAction("U");
+                        tindakanRawatEntity.setApproveFlag("Y");
 
                         if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "ptpn".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
                             tindakanRawatEntity.setTarif(tindakanEntity.getTarifBpjs());

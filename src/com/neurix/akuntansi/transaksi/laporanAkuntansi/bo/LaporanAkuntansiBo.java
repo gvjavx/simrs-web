@@ -1,5 +1,6 @@
 package com.neurix.akuntansi.transaksi.laporanAkuntansi.bo;
 
+import com.neurix.akuntansi.transaksi.budgeting.model.BudgettingDTO;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.Aging;
 import com.neurix.akuntansi.master.settingReportKeuanganKonsol.model.AkunSettingReportKeuanganKonsol;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.ArusKasDTO;
@@ -29,4 +30,6 @@ public interface LaporanAkuntansiBo extends BaseMasterBo<LaporanAkuntansi>{
     String levelKodeRekening(String reportId) throws GeneralBOException;
 
     String getKodeRekeningkas() throws GeneralBOException;
+
+    List<BudgettingDTO> getBudgetting(String tipeLaporan, String unit, String tahun);
 }

@@ -115,7 +115,7 @@
                         <div class="form-group">
                             <s:form id="uangmukaForm" method="post" namespace="/uangmuka" action="searchUangMuka_uangmuka.action" theme="simple" cssClass="form-horizontal">
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4">ID Pasien</label>
+                                    <label class="control-label col-sm-4">No RM</label>
                                     <div class="col-sm-4">
                                         <s:textfield id="id_pasien" cssStyle="margin-top: 7px"
                                                      name="headerDetailCheckup.idPasien" required="false"
@@ -125,7 +125,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Nama</label>
                                     <div class="col-sm-4">
-                                        <s:textfield id="nama_pasien" name="headerDetailCheckup.nama"
+                                        <s:textfield id="nama_pasien" name="headerDetailCheckup.namaPasien"
                                                      required="false" readonly="false"
                                                      cssClass="form-control" cssStyle="margin-top: 7px"/>
                                     </div>

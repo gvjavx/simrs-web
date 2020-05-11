@@ -119,6 +119,7 @@ public class Payroll extends BaseModel {
     private BigDecimal pph11BulanNilai;
     private BigDecimal selisihPphNilai;
     private BigDecimal totalLain11BulanNilai;
+    private BigDecimal totalPendapatan;
 
     private String pphSeharusnya;
     private String pph11Bulan;
@@ -129,6 +130,14 @@ public class Payroll extends BaseModel {
     private boolean kantorPusat =  false;
     private boolean cetakSatuan = false;
     private boolean adaCheckBox = false;
+
+    public BigDecimal getTotalPendapatan() {
+        return totalPendapatan;
+    }
+
+    public void setTotalPendapatan(BigDecimal totalPendapatan) {
+        this.totalPendapatan = totalPendapatan;
+    }
 
     public boolean isAdaCheckBox() {
         return adaCheckBox;

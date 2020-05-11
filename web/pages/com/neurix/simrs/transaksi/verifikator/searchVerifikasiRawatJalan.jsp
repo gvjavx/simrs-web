@@ -299,10 +299,14 @@
                                     <td><b>Alamat</b></td>
                                     <td><span id="det_desa"></span>, <span id="det_kecamatan"></span></td>
                                 </tr>
-                                <%--<tr>--%>
-                                    <%--<td><b>Provinsi</b></td>--%>
-                                    <%--<td><span id="det_provinsi"></span></td>--%>
-                                <%--</tr>--%>
+                                <tr>
+                                    <td><b>Nama Poli</b></td>
+                                    <td><span id="det_nama_poli"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Jenis Pasien</b></td>
+                                    <td><span id="det_jenis_pasien"></span></td>
+                                </tr>
                                 <%--<tr>--%>
                                     <%--<td><b>Kabupaten</b></td>--%>
                                     <%--<td></span></td>--%>
@@ -458,6 +462,14 @@
                                 <tr>
                                     <td><b>Alamat</b></td>
                                     <td><span id="fin_desa"></span>, <span id="fin_kecamatan"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Nama Poli</b></td>
+                                    <td><span id="fin_nama_poli"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Jenis Pasien</b></td>
+                                    <td><span id="fin_jenis_pasien"></span></td>
                                 </tr>
                             </table>
                         </div>
@@ -653,6 +665,7 @@
             $('#v_'+idCheckup).attr('src',url).css('width', '', 'height', '');
             CheckupAction.listDataPasien(idDetailCheckup, function (response) {
                 if (response != null) {
+                    console.log(response);
                         var tanggal = response.tglLahir;
                         var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
                         noCheckup = response.noCheckup;
@@ -674,6 +687,8 @@
                         desa = response.namaDesa;
                         noSep = response.noSep;
                         $('#det_no_rm').html(response.idPasien);
+                        $('#det_nama_poli').html(response.namaPelayanan);
+                        $('#det_jenis_pasien').html(response.statusPeriksaName);
                         jenisPasien = response.idJenisPeriksaPasien;
                 }
             });
@@ -720,8 +735,7 @@
                             onclick = "";
                         }
 
-                        if(item.kategoriTindakanBpjs == null || item.kategoriTindakanBpjs == '' &&
-                            item.flagUpdateKlaim != null && item.flagUpdateKlaim != ''){
+                        if(item.flagUpdateKlaim == '' || item.flagUpdateKlaim == null){
                             cekTindakan = true;
                         }
 
@@ -949,6 +963,8 @@
                         desa = response.namaDesa;
                         noSep = response.noSep;
                         $('#fin_no_rm').html(response.idPasien);
+                        $('#fin_nama_poli').html(response.namaPelayanan);
+                        $('#fin_jenis_pasien').html(response.statusPeriksaName);
                         jenisPasien = response.idJenisPeriksaPasien;
                 }
             });

@@ -1186,7 +1186,7 @@
                     Silahkan cek kembali data inputan!
                 </div>
                 <div class="row">
-                    <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "bpjs"'>
+                    <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "bpjs" || headerDetailCheckup.idJenisPeriksaPasien == "ptpn"'>
                         <div class="form-group">
                         <label class="col-md-3">Diagnosa</label>
                         <div class="col-md-7">
@@ -2527,6 +2527,9 @@
             }
 
             if (idKtg == "selesai") {
+
+                metodeBayar = $("#jenis_bayar").val();
+
                 if (ket_selesai != '') {
                     if(isLaka == "Y"){
                         if(noRujukan != '' && tglRujukan != '' && suratRujukan != ''){
@@ -3105,7 +3108,7 @@
         var jenisPasien = $('#jenis_pasien').val();
         var idDiag = "";
 
-        if(jenisPasien == "bpjs"){
+        if(jenisPasien == "bpjs" || jenisPasien == "ptpn"){
             idDiag = idDiagnosaBpjs;
         }else{
             idDiag = idDiagnosa;
@@ -3313,6 +3316,13 @@
                     var tanggal = item.createdDate;
                     var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
                     var btn = '<img border="0" class="hvr-grow" onclick="editLab(\'' + item.idPeriksaLab + '\',\'' + item.idLab + '\',\'' + item.idKategoriLab + '\',\''+item.kategoriLabName+'\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">';
+                    var tipe = "";
+
+                    if(item.kategoriLabName == "Radiologi"){
+                        tipe = "radiologi";
+                    }else{
+                        tipe = "lab";
+                    }
 
                     if (item.idLab != null) {
                         pemeriksaan = item.idLab;
@@ -3324,7 +3334,7 @@
                         lab = item.labName;
                     }
                     if(item.approveFlag == "Y"){
-                        btn = "";
+                       btn = '<a target="_blank" href="printLabRadiologi_checkupdetail.action?id='+idDetailCheckup+'&tipe='+tipe+'&lab='+item.idPeriksaLab+'"><img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;"></a>';
                     }
 
                     if("paket_perusahaan" == jenisPeriksaPasien || "paket_individu" == jenisPeriksaPasien){
@@ -3580,7 +3590,7 @@
     function editDiagnosa(id, idDiagnosa, jenis, ket) {
         var jenisPasien = $('#jenis_pasien').val();
         $('#load_diagnosa, #warning_diagnosa, #war_diagnosa, #war_jenis_diagnosa').hide();
-        if(jenisPasien == "bpjs"){
+        if(jenisPasien == "bpjs" || jenisPasien == "ptpn"){
             $('#nosa_id_diagnosa_bpjs').val(idDiagnosa);
             $('#nosa_ket_diagnosa').val(ket);
         }else{

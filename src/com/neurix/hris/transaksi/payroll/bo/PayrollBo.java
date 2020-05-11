@@ -154,4 +154,6 @@ public interface PayrollBo extends BaseMasterBo<Payroll>{
     PayrollModalDTO searchDetailPPhSeharusnya(String nip, String tahun, String totalA, String totalRlab, String tunjDapen, String tunjBpjsKs, String tunjBpjsTk, String iuranDapen, String iuranBpjsKs, String iuranBpjsTk, String statusKelurga, String jumlahAnak) throws GeneralBOException;
 
     List<Ptt> getPayrollPttByPayrollId(String payrollId) throws GeneralBOException;
+
+    List<Payroll> getDaftarGajiKaryawan(String bulan, String tahun, String branch) throws GeneralBOException;
 }

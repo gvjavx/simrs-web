@@ -562,6 +562,7 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
                 pembayaranUtangPiutangDetailEntity.setRekeningId(data.getRekeningId());
                 pembayaranUtangPiutangDetailEntity.setJumlahPembayaran(jumlahPembayaran);
                 pembayaranUtangPiutangDetailEntity.setDivisiId(data.getDivisiId());
+                pembayaranUtangPiutangDetailEntity.setPosisiCoa(data.getPosisiCoa());
 
                 pembayaranUtangPiutangDetailEntity.setFlag(bean.getFlag());
                 pembayaranUtangPiutangDetailEntity.setAction(bean.getAction());
@@ -607,6 +608,7 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
                 returnPembayaranUtangPiutangDetail.setDivisiId(pembayaranUtangPiutangDetail.getDivisiId());
                 returnPembayaranUtangPiutangDetail.setRekeningId(pembayaranUtangPiutangDetail.getRekeningId());
                 returnPembayaranUtangPiutangDetail.setNoNota(pembayaranUtangPiutangDetail.getNoNota());
+                returnPembayaranUtangPiutangDetail.setPosisiCoa(pembayaranUtangPiutangDetail.getPosisiCoa());
                 returnPembayaranUtangPiutangDetail.setStJumlahPembayaran(CommonUtil.numbericFormat(pembayaranUtangPiutangDetail.getJumlahPembayaran(),"###,###"));
                 listOfResult.add(returnPembayaranUtangPiutangDetail);
             }

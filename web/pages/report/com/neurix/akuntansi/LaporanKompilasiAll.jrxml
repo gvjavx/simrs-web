@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="IkhtisarPendapatan" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="814" leftMargin="14" rightMargin="14" topMargin="28" bottomMargin="28" isFloatColumnFooter="true" uuid="1ad74e3d-21c5-43ac-b65a-1f771461ad66">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.2100000000000108"/>
-	<property name="ireport.x" value="107"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.zoom" value="1.948717100000018"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="148"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -31,87 +31,89 @@
 	<parameter name="branch_id_3" class="java.lang.String"/>
 	<parameter name="branch_id_4" class="java.lang.String"/>
 	<parameter name="branch_id_all" class="java.lang.String"/>
+	<parameter name="periodeTitleTahunLalu" class="java.lang.String"/>
+	<parameter name="periodeTitle2TahunLalu" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
 	<field name="level1" class="java.lang.String"/>
 	<field name="level2" class="java.lang.String"/>
-	<field name="saldoUnit1" class="java.math.BigDecimal"/>
-	<field name="saldoUnit2" class="java.math.BigDecimal"/>
-	<field name="saldoUnit3" class="java.math.BigDecimal"/>
-	<field name="saldoUnit4" class="java.math.BigDecimal"/>
-	<field name="saldoUnitAll" class="java.math.BigDecimal"/>
+	<field name="saldoUnit11TahunLalu" class="java.math.BigDecimal"/>
+	<field name="saldoUnit21TahunLalu" class="java.math.BigDecimal"/>
+	<field name="saldoUnit31TahunLalu" class="java.math.BigDecimal"/>
+	<field name="saldoUnit41TahunLalu" class="java.math.BigDecimal"/>
+	<field name="saldoUnitAll1TahunLalu" class="java.math.BigDecimal"/>
 	<field name="kodeRekeningAlias" class="java.lang.String"/>
 	<field name="namaKodeRekeningAlias" class="java.lang.String"/>
-	<field name="lastSaldoUnit1" class="java.math.BigDecimal"/>
-	<field name="lastSaldoUnit2" class="java.math.BigDecimal"/>
-	<field name="lastSaldoUnit3" class="java.math.BigDecimal"/>
-	<field name="lastSaldoUnit4" class="java.math.BigDecimal"/>
-	<field name="lastSaldoUnitAll" class="java.math.BigDecimal"/>
+	<field name="saldoUnit12TahunLalu" class="java.math.BigDecimal"/>
+	<field name="saldoUnit22TahunLalu" class="java.math.BigDecimal"/>
+	<field name="saldoUnit32TahunLalu" class="java.math.BigDecimal"/>
+	<field name="saldoUnit42TahunLalu" class="java.math.BigDecimal"/>
+	<field name="saldoUnitAll2TahunLalu" class="java.math.BigDecimal"/>
 	<field name="curSaldoUnit1" class="java.math.BigDecimal"/>
 	<field name="curSaldoUnit2" class="java.math.BigDecimal"/>
 	<field name="curSaldoUnit3" class="java.math.BigDecimal"/>
 	<field name="curSaldoUnit4" class="java.math.BigDecimal"/>
 	<field name="curSaldoUnitAll" class="java.math.BigDecimal"/>
 	<variable name="SUM_level_2_unit_1" class="java.math.BigDecimal" resetType="Group" resetGroup="level2" calculation="Sum">
-		<variableExpression><![CDATA[$F{saldoUnit1}]]></variableExpression>
+		<variableExpression><![CDATA[$F{saldoUnit11TahunLalu}]]></variableExpression>
 	</variable>
 	<variable name="SUM_level_2_unit_2" class="java.math.BigDecimal" resetType="Group" resetGroup="level2" calculation="Sum">
-		<variableExpression><![CDATA[$F{saldoUnit2}]]></variableExpression>
+		<variableExpression><![CDATA[$F{saldoUnit21TahunLalu}]]></variableExpression>
 	</variable>
 	<variable name="SUM_level_2_unit_3" class="java.math.BigDecimal" resetType="Group" resetGroup="level2" calculation="Sum">
-		<variableExpression><![CDATA[$F{saldoUnit3}]]></variableExpression>
+		<variableExpression><![CDATA[$F{saldoUnit31TahunLalu}]]></variableExpression>
 	</variable>
 	<variable name="SUM_level_2_unit_4" class="java.math.BigDecimal" resetType="Group" resetGroup="level2" calculation="Sum">
-		<variableExpression><![CDATA[$F{saldoUnit4}]]></variableExpression>
+		<variableExpression><![CDATA[$F{saldoUnit41TahunLalu}]]></variableExpression>
 	</variable>
 	<variable name="SUM_level_2_unit_all" class="java.math.BigDecimal" resetType="Group" resetGroup="level2" calculation="Sum">
-		<variableExpression><![CDATA[$F{saldoUnitAll}]]></variableExpression>
+		<variableExpression><![CDATA[$F{saldoUnitAll1TahunLalu}]]></variableExpression>
 	</variable>
 	<variable name="SUM_level_1_unit_1" class="java.math.BigDecimal" resetType="Group" resetGroup="level1" calculation="Sum">
-		<variableExpression><![CDATA[$F{saldoUnit1}]]></variableExpression>
+		<variableExpression><![CDATA[$F{saldoUnit11TahunLalu}]]></variableExpression>
 	</variable>
 	<variable name="SUM_level_1_unit_2" class="java.math.BigDecimal" resetType="Group" resetGroup="level1" calculation="Sum">
-		<variableExpression><![CDATA[$F{saldoUnit2}]]></variableExpression>
+		<variableExpression><![CDATA[$F{saldoUnit21TahunLalu}]]></variableExpression>
 	</variable>
 	<variable name="SUM_level_1_unit_3" class="java.math.BigDecimal" resetType="Group" resetGroup="level1" calculation="Sum">
-		<variableExpression><![CDATA[$F{saldoUnit3}]]></variableExpression>
+		<variableExpression><![CDATA[$F{saldoUnit31TahunLalu}]]></variableExpression>
 	</variable>
 	<variable name="SUM_level_1_unit_4" class="java.math.BigDecimal" resetType="Group" resetGroup="level1" calculation="Sum">
-		<variableExpression><![CDATA[$F{saldoUnit4}]]></variableExpression>
+		<variableExpression><![CDATA[$F{saldoUnit41TahunLalu}]]></variableExpression>
 	</variable>
 	<variable name="SUM_level_1_unit_all" class="java.math.BigDecimal" resetType="Group" resetGroup="level1" calculation="Sum">
-		<variableExpression><![CDATA[$F{saldoUnitAll}]]></variableExpression>
+		<variableExpression><![CDATA[$F{saldoUnitAll1TahunLalu}]]></variableExpression>
 	</variable>
 	<variable name="SUM_level_2_unit_1_last_saldo" class="java.math.BigDecimal" resetType="Group" resetGroup="level2" calculation="Sum">
-		<variableExpression><![CDATA[$F{lastSaldoUnit1}]]></variableExpression>
+		<variableExpression><![CDATA[$F{saldoUnit12TahunLalu}]]></variableExpression>
 	</variable>
 	<variable name="SUM_level_2_unit_2_last_saldo" class="java.math.BigDecimal" resetType="Group" resetGroup="level2" calculation="Sum">
-		<variableExpression><![CDATA[$F{lastSaldoUnit2}]]></variableExpression>
+		<variableExpression><![CDATA[$F{saldoUnit22TahunLalu}]]></variableExpression>
 	</variable>
 	<variable name="SUM_level_2_unit_3_last_saldo" class="java.math.BigDecimal" resetType="Group" resetGroup="level2" calculation="Sum">
-		<variableExpression><![CDATA[$F{lastSaldoUnit3}]]></variableExpression>
+		<variableExpression><![CDATA[$F{saldoUnit32TahunLalu}]]></variableExpression>
 	</variable>
 	<variable name="SUM_level_2_unit_4_last_saldo" class="java.math.BigDecimal" resetType="Group" resetGroup="level2" calculation="Sum">
-		<variableExpression><![CDATA[$F{lastSaldoUnit4}]]></variableExpression>
+		<variableExpression><![CDATA[$F{saldoUnit42TahunLalu}]]></variableExpression>
 	</variable>
 	<variable name="SUM_level_2_unit_all_last_saldo" class="java.math.BigDecimal" resetType="Group" resetGroup="level2" calculation="Sum">
-		<variableExpression><![CDATA[$F{lastSaldoUnitAll}]]></variableExpression>
+		<variableExpression><![CDATA[$F{saldoUnitAll2TahunLalu}]]></variableExpression>
 	</variable>
 	<variable name="SUM_level_1_unit_1_last_saldo" class="java.math.BigDecimal" resetType="Group" resetGroup="level1" calculation="Sum">
-		<variableExpression><![CDATA[$F{lastSaldoUnit1}]]></variableExpression>
+		<variableExpression><![CDATA[$F{saldoUnit12TahunLalu}]]></variableExpression>
 	</variable>
 	<variable name="SUM_level_1_unit_2_last_saldo" class="java.math.BigDecimal" resetType="Group" resetGroup="level1" calculation="Sum">
-		<variableExpression><![CDATA[$F{lastSaldoUnit2}]]></variableExpression>
+		<variableExpression><![CDATA[$F{saldoUnit22TahunLalu}]]></variableExpression>
 	</variable>
 	<variable name="SUM_level_1_unit_3_last_saldo" class="java.math.BigDecimal" resetType="Group" resetGroup="level1" calculation="Sum">
-		<variableExpression><![CDATA[$F{lastSaldoUnit3}]]></variableExpression>
+		<variableExpression><![CDATA[$F{saldoUnit32TahunLalu}]]></variableExpression>
 	</variable>
 	<variable name="SUM_level_1_unit_4_last_saldo" class="java.math.BigDecimal" resetType="Group" resetGroup="level1" calculation="Sum">
-		<variableExpression><![CDATA[$F{lastSaldoUnit4}]]></variableExpression>
+		<variableExpression><![CDATA[$F{saldoUnit42TahunLalu}]]></variableExpression>
 	</variable>
 	<variable name="SUM_level_1_unit_all_last_saldo" class="java.math.BigDecimal" resetType="Group" resetGroup="level1" calculation="Sum">
-		<variableExpression><![CDATA[$F{lastSaldoUnitAll}]]></variableExpression>
+		<variableExpression><![CDATA[$F{saldoUnitAll2TahunLalu}]]></variableExpression>
 	</variable>
 	<variable name="SUM_level_2_unit_1_cur_saldo" class="java.math.BigDecimal" resetType="Group" resetGroup="level2" calculation="Sum">
 		<variableExpression><![CDATA[$F{curSaldoUnit1}]]></variableExpression>
@@ -839,7 +841,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Bulan Lalu"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{periodeTitle2TahunLalu}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-22" x="246" y="43" width="51" height="16" uuid="dc03c634-eb3e-4059-bd16-1ae0c32e8ae9"/>
@@ -852,7 +854,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Bulan Ini"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{periodeTitleTahunLalu}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-22" x="297" y="43" width="52" height="16" uuid="53c588f7-7acd-45cb-b76d-042071edca16"/>
@@ -865,7 +867,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA["s/d Bulan Ini"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{periodeTitle}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-22" x="349" y="23" width="154" height="20" uuid="30e43da4-576d-42a4-9896-f39bb1e44cd2"/>
@@ -891,7 +893,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Bulan Lalu"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{periodeTitle2TahunLalu}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-22" x="451" y="43" width="52" height="16" uuid="b8e93936-57a7-49ac-a2b0-7656aa0b8c20"/>
@@ -904,7 +906,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA["s/d Bulan Ini"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{periodeTitle}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-22" x="400" y="43" width="51" height="16" uuid="cc1077ba-a43f-448d-b762-41c0e099388e"/>
@@ -917,7 +919,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Bulan Ini"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{periodeTitleTahunLalu}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-22" x="503" y="23" width="154" height="20" uuid="294b79a6-1dfb-47e3-8c01-542bd72c03a6"/>
@@ -943,7 +945,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Bulan Lalu"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{periodeTitle2TahunLalu}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-22" x="605" y="43" width="52" height="16" uuid="dd1e60c4-4cd5-4429-91f8-23b01da0b350"/>
@@ -956,7 +958,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA["s/d Bulan Ini"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{periodeTitle}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-22" x="554" y="43" width="51" height="16" uuid="64f1b6e9-0200-43d4-99a7-5c5bb9dfd080"/>
@@ -969,7 +971,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Bulan Ini"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{periodeTitleTahunLalu}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-22" x="657" y="23" width="157" height="20" uuid="3d1249d2-17e1-428b-b50b-ec90af44dff5"/>
@@ -995,7 +997,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Bulan Lalu"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{periodeTitle2TahunLalu}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-22" x="759" y="43" width="55" height="16" uuid="d859e5ab-c961-4498-9a75-9028133722ad"/>
@@ -1008,7 +1010,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA["s/d Bulan Ini"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{periodeTitle}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-22" x="708" y="43" width="51" height="16" uuid="f8b1365a-89a9-4962-8172-eaecf20725b9"/>
@@ -1021,7 +1023,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Bulan Ini"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{periodeTitleTahunLalu}]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement key="line-2" x="195" y="42" width="619" height="1" uuid="c26d1daf-b119-49dc-a22c-00c30eb0cd18"/>
@@ -1070,7 +1072,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="6"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{lastSaldoUnit1}.abs()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{saldoUnit12TahunLalu}.abs()]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-22" x="246" y="2" width="52" height="15" uuid="a1f6d04a-8c7f-4afa-bbf2-605959542662"/>
@@ -1083,7 +1085,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="6"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{saldoUnit1}.abs()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{saldoUnit11TahunLalu}.abs()]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-22" x="297" y="2" width="52" height="15" uuid="603431c9-bcb0-4197-9de5-c7562b018d22"/>
@@ -1109,7 +1111,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="6"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{lastSaldoUnit2}.abs()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{saldoUnit22TahunLalu}.abs()]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-22" x="400" y="2" width="51" height="15" uuid="a72f057b-e2d4-42db-9af2-53708e3d61c3"/>
@@ -1122,7 +1124,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="6"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{saldoUnit2}.abs()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{saldoUnit11TahunLalu}.abs()]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-22" x="451" y="2" width="51" height="15" uuid="c932d6f2-bff1-4d5a-bd83-b6bf46591b53"/>
@@ -1148,7 +1150,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="6"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{lastSaldoUnit3}.abs()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{saldoUnit32TahunLalu}.abs()]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-22" x="554" y="2" width="51" height="15" uuid="f374f7d3-6fb6-459e-b243-46482832af30"/>
@@ -1161,7 +1163,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="6"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{saldoUnit3}.abs()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{saldoUnit31TahunLalu}.abs()]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-22" x="605" y="2" width="51" height="15" uuid="f7e57aed-db0a-48fd-af9e-b33fa0f45659"/>
@@ -1187,7 +1189,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="6"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{saldoUnit4}.abs()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{saldoUnit41TahunLalu}.abs()]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-22" x="759" y="2" width="55" height="15" uuid="a82ec710-739d-4fd3-b236-c6f5de51ab63"/>
@@ -1213,7 +1215,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="6"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{lastSaldoUnit4}.abs()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{saldoUnit42TahunLalu}.abs()]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

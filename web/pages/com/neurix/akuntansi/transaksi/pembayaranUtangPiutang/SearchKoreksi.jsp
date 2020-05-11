@@ -405,19 +405,38 @@
                 "<th style='text-align: center; color: #fff; background-color:  #30d196''>No. Vendor</th>" +
                 "<th style='text-align: center; color: #fff; background-color:  #30d196''>Divisi ID</th>" +
                 "<th style='text-align: center; color: #fff; background-color:  #30d196''>No. Nota</th>" +
-                "<th style='text-align: center; color: #fff; background-color:  #30d196''>Jml Pembayaran</th>" +
+                "<th style='text-align: center; color: #fff; background-color:  #30d196''>Jumlah Debit</th>" +
+                "<th style='text-align: center; color: #fff; background-color:  #30d196''>Jumlah Kredit</th>" +
                 "</tr></thead>";
             var i = i;
+            var totalDebit = 0;
+            var totalKredit = 0;
             $.each(listdata, function (i, item) {
+                var stDebit = "0";
+                var stKredit = "0";
+                if (item.posisiCoa=="D"){
+                    stDebit = item.stJumlahPembayaran;
+                    totalDebit=totalDebit+parseInt(stDebit.replace(/[.]/g,""));
+                }else {
+                    stKredit = item.stJumlahPembayaran;
+                    totalKredit=totalKredit+parseInt(stKredit.replace(/[.]/g,""));
+                }
+
                 tmp_table += '<tr style="font-size: 12px;" ">' +
                     '<td align="center">' + (i + 1) + '</td>' +
                     '<td align="center">' + item.pembayaranUtangPiutangDetailId + '</td>' +
                     '<td align="center">' + item.masterId + '</td>' +
                     '<td align="center">' + item.divisiId + '</td>' +
                     '<td align="center">' + item.noNota + '</td>' +
-                    '<td align="center">' + item.stJumlahPembayaran + '</td>' +
+                    '<td align="center">' + stDebit+ '</td>' +
+                    '<td align="center">' + stKredit+ '</td>' +
                     "</tr>";
             });
+            tmp_table += '<tr style="font-size: 12px;" ">' +
+                '<td align="center" colspan="5"> Jumlah </td>' +
+                '<td align="center">' + formatRupiahAtas(totalDebit)+ '</td>' +
+                '<td align="center">' + formatRupiahAtas(totalKredit)+ '</td>' +
+                "</tr>";
             $('.pembayaranTable').append(tmp_table);
         });
     };

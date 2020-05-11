@@ -2,8 +2,8 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="subReportDebetJurnal" pageWidth="535" pageHeight="842" columnWidth="535" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="cca1dfc8-ea7f-4a6f-b917-44b46a12815c">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.3310000000000006"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="3.138428376721004"/>
+	<property name="ireport.x" value="17"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -56,7 +56,7 @@ ORDER BY jumlah_debit DESC]]>
 	<columnHeader>
 		<band height="24" splitType="Stretch">
 			<staticText>
-				<reportElement key="staticText-1" x="0" y="0" width="98" height="15" uuid="1c096815-3e19-429d-b485-9635f7a96e43"/>
+				<reportElement key="staticText-1" x="0" y="0" width="71" height="15" uuid="1c096815-3e19-429d-b485-9635f7a96e43"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -82,7 +82,7 @@ ORDER BY jumlah_debit DESC]]>
 				<text><![CDATA[Jumlah Kredit]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-1" x="160" y="0" width="178" height="15" uuid="98cc99d1-4289-4430-a580-1b3bdc4b2784"/>
+				<reportElement key="staticText-1" x="185" y="0" width="154" height="15" uuid="98cc99d1-4289-4430-a580-1b3bdc4b2784"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -92,10 +92,10 @@ ORDER BY jumlah_debit DESC]]>
 				<textElement textAlignment="Center">
 					<font isBold="false" isUnderline="false" pdfFontName="Helvetica"/>
 				</textElement>
-				<text><![CDATA[Nama Perkiraan - Lawan / Uraian]]></text>
+				<text><![CDATA[Nama Perk. - Lawan / Uraian]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-1" x="99" y="0" width="61" height="15" uuid="cc86d00e-fc3b-444b-97ec-2c2682acd0e6"/>
+				<reportElement key="staticText-1" x="70" y="0" width="61" height="15" uuid="cc86d00e-fc3b-444b-97ec-2c2682acd0e6"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -120,12 +120,25 @@ ORDER BY jumlah_debit DESC]]>
 				</textElement>
 				<text><![CDATA[Jumlah Debit]]></text>
 			</staticText>
+			<staticText>
+				<reportElement key="staticText-1" x="131" y="0" width="54" height="15" uuid="cd01bf8e-db65-46af-b9af-22d06194c15f"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font isBold="false" isUnderline="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<text><![CDATA[Divisi ID]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="15" splitType="Stretch">
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField" x="0" y="0" width="98" height="15" uuid="9a808440-498c-45b0-ba03-1a4093001cee"/>
+				<reportElement key="textField" x="0" y="0" width="71" height="15" uuid="9a808440-498c-45b0-ba03-1a4093001cee"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -147,20 +160,20 @@ ORDER BY jumlah_debit DESC]]>
 				<textFieldExpression><![CDATA[$F{jumlah_kredit}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField" x="160" y="0" width="178" height="15" uuid="49dd8bc8-e1c2-44e1-9815-bce12d0897d4"/>
+				<reportElement key="textField" x="185" y="0" width="154" height="15" uuid="49dd8bc8-e1c2-44e1-9815-bce12d0897d4"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nama_kode_rekening} == null ? "" : $F{nama_kode_rekening}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField" x="99" y="0" width="61" height="15" uuid="7b1a2e52-db57-45f6-8e2f-0f13c77b18ac"/>
+				<reportElement key="textField" x="70" y="0" width="61" height="15" uuid="7b1a2e52-db57-45f6-8e2f-0f13c77b18ac"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -180,6 +193,17 @@ ORDER BY jumlah_debit DESC]]>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{jumlah_debit}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="131" y="0" width="54" height="15" uuid="3cad7f18-c408-48a5-9a80-4cc8ca466094"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[( $F{divisi_id} == null ? "" : $F{divisi_id} )]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

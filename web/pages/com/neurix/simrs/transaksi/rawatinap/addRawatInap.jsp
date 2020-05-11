@@ -1049,7 +1049,7 @@
                     Silahkan cek kembali data inputan!
                 </div>
                 <div class="row">
-                    <s:if test='rawatInap.idJenisPeriksa == "bpjs"'>
+                    <s:if test='rawatInap.idJenisPeriksa == "bpjs" || rawatInap.idJenisPeriksa == "ptpn"'>
                         <div class="form-group">
                             <label class="col-md-3">Diagnosa</label>
                             <div class="col-md-7">
@@ -1652,15 +1652,15 @@
                         <label class="col-md-3" style="margin-top: 7px">Waktu Minum</label>
                         <div class="col-md-7">
                             <div class="form-check" style="margin-top: 7px;">
-                                <input type="checkbox" name="cek_waktu" id="pagi" value="Pagi">
+                                <input type="checkbox" name="cek_waktu" id="pagi" value="Pagi" onclick="var warn =$('#war_rep_cek_waktu').is(':visible'); if (warn){$('#cor_rep_cek_waktu').show().fadeOut(3000);$('#war_rep_cek_waktu').hide()}">
                                 <label for="pagi"></label> Pagi
                             </div>
                             <div class="form-check" style="margin-top: 7px; margin-left: 10px">
-                                <input type="checkbox" name="cek_waktu" id="siang" value="Siang">
+                                <input type="checkbox" name="cek_waktu" id="siang" value="Siang" onclick="var warn =$('#war_rep_cek_waktu').is(':visible'); if (warn){$('#cor_rep_cek_waktu').show().fadeOut(3000);$('#war_rep_cek_waktu').hide()}">
                                 <label for="siang"></label> Siang
                             </div>
                             <div class="form-check" style="margin-top: 7px; margin-left: 10px">
-                                <input type="checkbox" name="cek_waktu" id="malam" value="Malam">
+                                <input type="checkbox" name="cek_waktu" id="malam" value="Malam" onclick="var warn =$('#war_rep_cek_waktu').is(':visible'); if (warn){$('#cor_rep_cek_waktu').show().fadeOut(3000);$('#war_rep_cek_waktu').hide()}">
                                 <label for="malam"></label> Malam
                             </div>
                         </div>
@@ -4163,10 +4163,10 @@
         var idDiagnosaBpjs = $('#nosa_id_diagnosa_bpjs').val();
         var ketDiagnosa = $('#nosa_ket_diagnosa').val();
         var jenisDiagnosa = $('#nosa_jenis_diagnosa').val();
-        var jenisPasien = $('#jenis_pasien').val();
+        var jenisPasien = $('#id_jenis_pasien').val();
         var idDiag = "";
 
-        if(jenisPasien == "bpjs"){
+        if(jenisPasien == "bpjs" || jenisPasien == "ptpn"){
             idDiag = idDiagnosaBpjs;
         }else{
             idDiag = idDiagnosa;
@@ -4378,6 +4378,14 @@
                     var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
                     var btn = '<img border="0" class="hvr-grow" onclick="editLab(\'' + item.idPeriksaLab + '\',\'' + item.idLab + '\',\'' + item.idKategoriLab + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">';
 
+                    var tipe = "";
+
+                    if(item.kategoriLabName == "Radiologi"){
+                        tipe = "radiologi";
+                    }else{
+                        tipe = "lab";
+                    }
+
                     if (item.idLab != null) {
                         pemeriksaan = item.idLab;
                     }
@@ -4388,7 +4396,7 @@
                         lab = item.labName;
                     }
                     if(item.approveFlag == "Y"){
-                        btn = "";
+                        btn = '<a target="_blank" href="printLabRadiologi_rawatinap.action?id='+idDetailCheckup+'&tipe='+tipe+'&lab='+item.idPeriksaLab+'"><img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;"></a>';
                     }
 
                     table += "<tr>" +
@@ -4796,10 +4804,10 @@
         $('#modal-tindakan').modal({show:true,backdrop:'static'});
     }
 
-    function editDiagnosa(id, idDiagnosa, jenis) {
-        var jenisPasien = $('#jenis_pasien').val();
+    function editDiagnosa(id, idDiagnosa, jenis, ket) {
+        var jenisPasien = $('#id_jenis_pasien').val();
         $('#load_diagnosa, #warning_diagnosa, #war_diagnosa, #war_jenis_diagnosa').hide();
-        if(jenisPasien == "bpjs"){
+        if(jenisPasien == "bpjs" || jenisPasien == "ptpn"){
             $('#nosa_id_diagnosa_bpjs').val(idDiagnosa);
             $('#nosa_ket_diagnosa').val(ket);
         }else{

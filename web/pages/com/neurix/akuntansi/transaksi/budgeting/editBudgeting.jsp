@@ -30,6 +30,10 @@
         }
 
     </script>
+
+    <script src="<s:url value="/pages/plugins/tree/jquery.treegrid.bootstrap3.js"/>"></script>
+    <script src="<s:url value="/pages/plugins/tree/jquery.treegrid.js"/>"></script>
+    <script src="<s:url value="/pages/plugins/tree/lodash.js"/>"></script>
 </head>
 
 <body class="hold-transition skin-blue fixed sidebar-mini">

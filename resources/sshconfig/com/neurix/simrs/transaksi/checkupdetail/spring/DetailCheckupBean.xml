@@ -15,6 +15,7 @@
           p:tindakanRawatBoProxy-ref="tindakanRawatBoProxy"
           p:branchBoProxy-ref="branchBoProxy"
           p:billingSystemBoProxy-ref="billingSystemBoProxy"
+          p:periksaLabBoProxy-ref="periksaLabBoProxy"
     />
 
     <bean id="checkupDetailBo" class="com.neurix.simrs.transaksi.checkupdetail.bo.impl.CheckupDetailBoImpl"
