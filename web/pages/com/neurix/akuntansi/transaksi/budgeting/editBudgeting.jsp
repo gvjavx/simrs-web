@@ -10,6 +10,17 @@
     <%@ include file="/pages/common/header.jsp" %>
     <style>
         .modal { overflow-y: auto}
+
+        .treegrid-collapsed {
+            background-color: #bfbfbf;
+        }
+        .treegrid-expanded {
+            background-color: #e6e6e6;
+        }
+
+        .treegrid-indent {width:16px; height: 16px; display: inline-block; position: relative;}
+
+        .treegrid-expander { width:16px; height: 16px; display: inline-block; position: relative; cursor: pointer;}
     </style>
 
     <script type='text/javascript' src='<s:url value="/dwr/interface/BranchAction.js"/>'></script>
@@ -23,7 +34,11 @@
                 var reverse = angka.toString().split('').reverse().join(''),
                     ribuan = reverse.match(/\d{1,3}/g);
                 ribuan = ribuan.join('.').split('').reverse().join('');
-                return ribuan;
+                if (angka < 0){
+                    return "-"+ribuan;
+                } else {
+                    return ribuan;
+                }
             }else{
                 return 0;
             }
@@ -138,7 +153,7 @@
 
                         <div class="row">
                             <div class="col-md-10 col-md-offset-1">
-                                <table id="sortTable" class="table table-bordered table-striped" style="font-size: 15px;">
+                                <table class="table table-bordered table-striped tree" style="font-size: 15px;">
                                     <thead id="head-budgeting">
                                     <tr bgcolor="#90ee90">
                                         <td style="width: 20%">COA</td>
@@ -162,46 +177,45 @@
                                             <td align="center">Selisih</td>
                                         </s:if>
                                         <td align="center">Action</td>
-                                    <%--<td align="center">Action</td>--%>
                                     </tr>
                                     </thead>
                                     <tbody id="body-budgeting">
-                                    <s:iterator value="#session.listOfCoa" status="listOfCoa" var="row">
-                                        <tr>
-                                            <td><s:property value="kodeRekening"/></td>
-                                            <td><s:property value="namaKodeRekening"/></td>
-                                            <s:if test='budgeting.tipe == "quartal"'>
-                                                <td align="center"><script>document.write(formatRupiah('<s:property value="nilaiTotal"/>'))</script></td>
-                                                <td align="center"><script>document.write(formatRupiah('<s:property value="quartal1"/>'))</script></td>
-                                                <td align="center"><script>document.write(formatRupiah('<s:property value="quartal2"/>'))</script></td>
-                                                <td align="center"><script>document.write(formatRupiah('<s:property value="quartal3"/>'))</script></td>
-                                                <td align="center"><script>document.write(formatRupiah('<s:property value="quartal4"/>'))</script></td>
-                                                <td align="center"><s:property value="selisih"/></td>
-                                            </s:if>
-                                            <s:if test='budgeting.tipe == "semester"'>
-                                                <td align="center"><script>document.write(formatRupiah('<s:property value="nilaiTotal"/>'))</script></td>
-                                                <td align="center"><script>document.write(formatRupiah('<s:property value="semester1"/>'))</script></td>
-                                                <td align="center"><script>document.write(formatRupiah('<s:property value="semester2"/>'))</script></td>
-                                                <td align="center"><s:property value="selisih"/></td>
-                                            </s:if>
-                                            <s:if test='budgeting.tipe == "tahunan"'>
-                                                <td align="center"><script>document.write(formatRupiah('<s:property value="nilaiTotal"/>'))</script></td>
-                                                <td align="center"><s:property value="selisih"/></td>
-                                            </s:if>
-                                            <td align="center">
-                                                <s:if test='#row.stLevel == "5"'>
-                                                    <button class="btn btn-sm btn-success btn-edit" onclick="detail('<s:property value="rekeningId"/>')"><i class="fa fa-edit"></i></button>
-                                                </s:if>
-                                            </td>
-                                        </tr>
-                                    </s:iterator>
+                                    <%--<s:iterator value="#session.listOfCoa" status="listOfCoa" var="row">--%>
+                                        <%--<tr>--%>
+                                            <%--<td><s:property value="kodeRekening"/></td>--%>
+                                            <%--<td><s:property value="namaKodeRekening"/></td>--%>
+                                            <%--<s:if test='budgeting.tipe == "quartal"'>--%>
+                                                <%--<td align="center"><script>document.write(formatRupiah('<s:property value="nilaiTotal"/>'))</script></td>--%>
+                                                <%--<td align="center"><script>document.write(formatRupiah('<s:property value="quartal1"/>'))</script></td>--%>
+                                                <%--<td align="center"><script>document.write(formatRupiah('<s:property value="quartal2"/>'))</script></td>--%>
+                                                <%--<td align="center"><script>document.write(formatRupiah('<s:property value="quartal3"/>'))</script></td>--%>
+                                                <%--<td align="center"><script>document.write(formatRupiah('<s:property value="quartal4"/>'))</script></td>--%>
+                                                <%--<td align="center"><s:property value="selisih"/></td>--%>
+                                            <%--</s:if>--%>
+                                            <%--<s:if test='budgeting.tipe == "semester"'>--%>
+                                                <%--<td align="center"><script>document.write(formatRupiah('<s:property value="nilaiTotal"/>'))</script></td>--%>
+                                                <%--<td align="center"><script>document.write(formatRupiah('<s:property value="semester1"/>'))</script></td>--%>
+                                                <%--<td align="center"><script>document.write(formatRupiah('<s:property value="semester2"/>'))</script></td>--%>
+                                                <%--<td align="center"><s:property value="selisih"/></td>--%>
+                                            <%--</s:if>--%>
+                                            <%--<s:if test='budgeting.tipe == "tahunan"'>--%>
+                                                <%--<td align="center"><script>document.write(formatRupiah('<s:property value="nilaiTotal"/>'))</script></td>--%>
+                                                <%--<td align="center"><s:property value="selisih"/></td>--%>
+                                            <%--</s:if>--%>
+                                            <%--<td align="center">--%>
+                                                <%--<s:if test='#row.stLevel == "5"'>--%>
+                                                    <%--<button class="btn btn-sm btn-primary btn-edit" onclick="detail('<s:property value="rekeningId"/>')"><i class="fa fa-edit"></i></button>--%>
+                                                <%--</s:if>--%>
+                                            <%--</td>--%>
+                                        <%--</tr>--%>
+                                    <%--</s:iterator>--%>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                         <div class="form-group" style="margin-top: 10px">
                             <div class="col-md-4 col-md-offset-5">
-                                <button class="btn btn-success" onclick="initForm()"><i class="fa fa-arrow-left"></i> Back</button>
+                                <button class="btn btn-warning" onclick="initForm()"><i class="fa fa-arrow-left"></i> Back</button>
                                 <button class="btn btn-success" id="btn-save" onclick="saveBudgeting()"><i class="fa fa-check"></i> Save </button>
                             </div>
                         </div>
@@ -293,8 +307,6 @@
     var trans = '<s:property value="trans" />';
 
     var form = { "budgeting.tahun":tahun, "budgeting.branchId":unit, "budgeting.tipe":tipe };
-
-    var listOfCoa = [];
     $( document ).ready(function() {
 
         console.log("hasil >>> "+unit+tahun+tipe);
@@ -304,9 +316,11 @@
         $("#sel-unit").val(unit);
 
         if (trans == "APPROVE_DRAFT" || trans == "APPROVE_FINAL" || trans == "APPROVE_REVISI"){
-            $(".btn-edit").hide();
+//            $(".btn-edit").hide();
             $("#btn-save").html("<i class='fa fa-check'></i> Approve");
         }
+
+        search();
     });
 
 
@@ -373,7 +387,109 @@
                 $("#error-msg").text(response.msg);
             }
         })
+    }
 
+    function search() {
+        var data = [];
+        var data2 = [];
+        dwr.engine.setAsync(true);
+        BudgetingAction.getListOfCoaBudgetingSession(function (response) {
+
+            console.log(response);
+            data = response;
+            data2 = new Array();
+            $.each(data, function(i,item){
+                console.log(item.rekeningId);
+                data2.push({_id : item.rekeningId, level : item.level,  nama : item.namaKodeRekening, parent : item.parentId, coa : item.kodeRekening,
+                    nilaiTotal : item.nilaiTotal, quartal1 : item.quartal1, quartal2: item.quartal2, quartal3 : item.quartal3, quartal4 : item.quartal4,
+                    semester1 : item.semester1, semester2:item.semester2, stLevel: item.stLevel, selisih : item.selisih});
+
+            });
+            function hierarhySort(hashArr, key, result) {
+                if (hashArr[key] == undefined){
+                    //level--;
+                    return;
+                }else{
+                    var arr = [] ;
+                    arr  = hashArr[key];
+                }
+                for (var i=0; i<arr.length; i++) {
+                    result.push(arr[i]);
+                    hierarhySort(hashArr, arr[i]._id, result);
+                }
+                return result;
+            }
+            var hashArr = {};
+            for (var i=0; i<data2.length; i++) {
+                if (hashArr[data2[i].parent] == undefined) {
+                    hashArr[data2[i].parent] = [];
+                }
+                hashArr[data2[i].parent].push(data2[i]);
+            }
+
+            var strList = "";
+            for(i = 0 ; i < data2.length ; i++){
+                if(data2[i].parent == "-"){
+                    strList += '<tr style="font-size: 12px;" class=" treegrid-' + data2[i]._id+ '">' +
+                        '<td >' + data2[i].coa + '</td>' +
+                        '<td >' + data2[i].nama + '</td>' + barisNilai(data2[i]) +
+                        "<td align='right'>"+formatRupiah(data2[i].selisih)+"</td>"+
+                        "<td align='center'>"+buttonEdit(data2[i]._id, data2[i].stLevel)+"</td>"+
+                        "</tr>";
+                } else {
+                    strList += '<tr style="font-size: 12px" class=" treegrid-' + data2[i]._id + ' treegrid-parent-' + data2[i].parent + '">' +
+                        + '<td style="border: 2px solid black;">' +
+                        '<td >' + data2[i].coa + '</td>' +
+                        '<td >' + data2[i].nama + '</td>' + barisNilai(data2[i]) +
+                        "<td align='right'>"+formatRupiah(data2[i].selisih)+"</td>"+
+                        "<td align='center'>"+buttonEdit(data2[i]._id, data2[i].stLevel)+"</td>"+
+                        "</tr>";
+                }
+            }
+            $("#body-budgeting").html(strList);
+            $('.tree').treegrid({
+                expanderExpandedClass: 'glyphicon glyphicon-minus',
+                expanderCollapsedClass: 'glyphicon glyphicon-plus'
+            });
+        });
+    }
+
+    function barisNilai(data){
+
+        var str = "";
+        if (tipe == "semester"){
+            str += "<td align='right'>"+formatRupiah(data.nilaiTotal)+"</td>"+
+                "<td align='right'>"+formatRupiah(data.semester1)+"</td>"+
+                "<td align='right'>"+formatRupiah(data.semester2)+"</td>";
+        }
+        if (tipe == "quartal"){
+            str += "<td align='right'>"+formatRupiah(data.nilaiTotal)+"</td>"+
+                "<td align='right'>"+formatRupiah(data.quartal1)+"</td>"+
+                "<td align='right'>"+formatRupiah(data.quartal2)+"</td>";
+                "<td align='right'>"+formatRupiah(data.quartal3)+"</td>";
+                "<td align='right'>"+formatRupiah(data.quartal4)+"</td>";
+        }
+        if (tipe == "tahunan"){
+            str += "<td align='right'>"+formatRupiah(data.nilaiTotal)+"</td>";
+        }
+
+        return str;
+    }
+
+    function buttonEdit(rekeningId, level){
+
+        var str = "";
+        if (trans == "APPROVE_DRAFT" || trans == "APPROVE_FINAL" || trans == "APPROVE_REVISI"){
+            str = "";
+        } else {
+            if (level == "5"){
+                str = "<button class=\"btn btn-sm btn-primary btn-edit\" onclick=\"detail(\'"+rekeningId+"\')\"><i class=\"fa fa-edit\"></i></button>";
+            } else {
+                str = "";
+            }
+        }
+
+        return str;
     }
 
 </script>
