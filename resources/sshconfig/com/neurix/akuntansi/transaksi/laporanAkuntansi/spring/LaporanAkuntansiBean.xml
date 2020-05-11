@@ -16,6 +16,7 @@
           p:personilPositionDao-ref="personilPositionDao"
           p:biodataDao-ref="biodataDao"
           p:kodeRekeningDao-ref="kodeRekeningDao"
+          p:budgetingDao-ref="budgetingDao"
           p:settingReportKeuanganKonsolDao-ref="settingReportKeuanganKonsolDao"
     />
 

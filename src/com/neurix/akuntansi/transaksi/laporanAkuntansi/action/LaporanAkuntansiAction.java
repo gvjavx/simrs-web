@@ -7,6 +7,7 @@ import com.neurix.akuntansi.master.settingReportUser.model.SettingReportUser;
 import com.neurix.akuntansi.master.tipeJurnal.bo.TipeJurnalBo;
 import com.neurix.akuntansi.master.tipeJurnal.model.TipeJurnal;
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
+import com.neurix.akuntansi.transaksi.budgeting.model.BudgettingDTO;
 import com.neurix.akuntansi.transaksi.jurnal.model.Jurnal;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.bo.LaporanAkuntansiBo;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.Aging;
@@ -15,6 +16,7 @@ import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.LaporanAkuntansi;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.PendapatanDTO;
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Branch;
+import com.neurix.authorization.position.bo.PositionBo;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
@@ -54,6 +56,15 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
     private List<PendapatanDTO> listPendapatanDokter = new ArrayList<>();
     private List<AkunSettingReportKeuanganKonsol> listKonsol= new ArrayList<>() ;
     private List<ArusKasDTO> arusKasDTOList = new ArrayList<>();
+    private List<BudgettingDTO> budgettingDTOList = new ArrayList<>();
+
+    public List<BudgettingDTO> getBudgettingDTOList() {
+        return budgettingDTOList;
+    }
+
+    public void setBudgettingDTOList(List<BudgettingDTO> budgettingDTOList) {
+        this.budgettingDTOList = budgettingDTOList;
+    }
 
     public List<ArusKasDTO> getArusKasDTOList() {
         return arusKasDTOList;
@@ -598,6 +609,18 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         }
         laporanAkuntansi=data;
         return "search_laporan_biaya";
+    }
+    public String searchReportBudgetting() {
+        logger.info("[LaporanAkuntansiAction.searchReportBudgetting] start process >>>");
+        String branchId = CommonUtil.userBranchLogin();
+        LaporanAkuntansi data = new LaporanAkuntansi();
+        if (branchId!=null){
+            data.setUnit(branchId);
+        }else{
+            data.setUnit("");
+        }
+        laporanAkuntansi=data;
+        return "search_laporan_budgetting";
     }
     public String searchReportIkhtisar() {
         logger.info("[LaporanAkuntansiAction.searchReportIkhtisarSubBukuBesar] start process >>>");
@@ -1245,6 +1268,57 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
             addActionError("Error, " + "[code=" + logId + "] Found problem when downloading data, please inform to your admin.");
         }
         logger.info("[LaporanAkuntansiAction.printReportBiaya] end process <<<");
+        return result;
+    }
+
+    public String printReportBudgetting(){
+        logger.info("[LaporanAkuntansiAction.printReportBudgetting] start process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        LaporanAkuntansiBo laporanAkuntansiBo = (LaporanAkuntansiBo) ctx.getBean("laporanAkuntansiBoProxy");
+        BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+        PositionBo positionBo = (PositionBo) ctx.getBean("positionBoProxy");
+        LaporanAkuntansi data = getLaporanAkuntansi();
+        Branch branch = branchBo.getBranchById(data.getUnit(),"Y");
+        String titleReport="";
+        String unit = "'"+data.getUnit()+"'";
+        String result="";
+
+        switch (data.getTipeLaporan()){
+            case "B":
+                titleReport="LAPORAN BUDGETTING";
+                result="print_report_budgetting";
+                budgettingDTOList = laporanAkuntansiBo.getBudgetting(data.getTipeLaporan(),data.getUnit(),data.getTahun());
+                break;
+            case "BPS":
+                titleReport="LAPORAN BUDGETTING PER SEMESTER";
+                result="print_report_budgetting_per_semester";
+                budgettingDTOList = laporanAkuntansiBo.getBudgetting(data.getTipeLaporan(),data.getUnit(),data.getTahun());
+                break;
+        }
+
+        reportParams.put("reportTitle", titleReport);
+        reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
+        reportParams.put("branchId", unit);
+        reportParams.put("periodeTitle", data.getTahun());
+        Date now = new Date();
+        reportParams.put("tanggal", CommonUtil.convertDateToString(now));
+        reportParams.put("periode", data.getBulan()+"-"+data.getTahun());
+        reportParams.put("kota",branch.getBranchName());
+        reportParams.put("alamatSurat",branch.getAlamatSurat());
+        reportParams.put("areaId",CommonUtil.userAreaName());
+        try {
+            preDownload();
+        } catch (SQLException e) {
+            Long logId = null;
+            try {
+                logId = laporanAkuntansiBo.saveErrorMessage(e.getMessage(), "printReportBudgetting");
+            } catch (GeneralBOException e1) {
+                logger.error("[LaporanAkuntansiAction.printReportBudgetting] Error when downloading ,", e1);
+            }
+            logger.error("[LaporanAkuntansiAction.printReportBudgetting] Error when print report ," + "[" + logId + "] Found problem when downloading data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when downloading data, please inform to your admin.");
+        }
+        logger.info("[LaporanAkuntansiAction.printReportBudgetting] end process <<<");
         return result;
     }
 
