@@ -11,7 +11,6 @@
 <%@ taglib prefix="sb" uri="/struts-bootstrap-tags" %>
 <%@ taglib prefix="ivelincloud" uri="/WEB-INF/tld/mainmenu.tld" %>
 <%@ taglib prefix="display" uri="/WEB-INF/tld/displaytag-el.tld" %>
-
 <html>
 <head>
     <%@ include file="/pages/common/header.jsp" %>
@@ -31,7 +30,7 @@
     <script type='text/javascript'>
         function getReportURL(selectReport) {
             var reportId = selectReport.value;
-            document.reportForm.action= "<s:property value="%{appname}">" + reportId;
+            document.reportForm.action= "<s:property value="appname" />" + reportId;
             document.reportForm.submit();
         }
     </script>

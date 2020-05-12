@@ -35,6 +35,7 @@ public class User extends BaseModel implements Serializable, Comparable<User> {
     private String branchName;
     private String idPelayanan;
     private String idDevice;
+    private String noMaster;
 
     private String logoBranch;
 
@@ -220,6 +221,14 @@ public class User extends BaseModel implements Serializable, Comparable<User> {
 
     public void setDisplayObjectCheck(DisplayObject displayObjectCheck) {
         this.displayObjectCheck = displayObjectCheck;
+    }
+
+    public String getNoMaster() {
+        return noMaster;
+    }
+
+    public void setNoMaster(String noMaster) {
+        this.noMaster = noMaster;
     }
 
     @Override

@@ -15,4 +15,6 @@ import java.util.List;
  */
 public interface MesinAbsensiDetailBo extends BaseMasterBo<MesinAbsensiDetail> {
     public void saveDelete(MesinAbsensiDetail bean) throws GeneralBOException;
+
+    List<MesinAbsensiDetail> getByCriteriaMobile(MesinAbsensiDetail searchBean) throws GeneralBOException;
 }

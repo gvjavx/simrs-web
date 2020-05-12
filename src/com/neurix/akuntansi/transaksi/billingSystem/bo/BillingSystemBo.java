@@ -15,6 +15,7 @@ public interface BillingSystemBo {
     //jurnal untuk pembayaran utang piutang
     String createJurnal(String transId, Map data, String branchId, String catatanPembuatanJurnal, String flagRegister);
 
+    String getParameterPembayaran(String transaksiId);
     //tutup period, Sigit
     public void saveTutupPeriod(List<TutupPeriod> listTransitoris, TutupPeriod tutupPeriod) throws GeneralBOException;
 }

@@ -59,6 +59,16 @@ public class PermintaanResep{
     private String namaApoteker;
     private String jenisResep;
 
+    private String approveFlag;
+
+    public String getApproveFlag() {
+        return approveFlag;
+    }
+
+    public void setApproveFlag(String approveFlag) {
+        this.approveFlag = approveFlag;
+    }
+
     public String getJenisResep() {
         return jenisResep;
     }

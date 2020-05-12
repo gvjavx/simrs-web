@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.neurix.hris.master.dokterKso.model.ImSimrsDokterKso" dynamic-update="true"
+           table="im_simrs_dokter_kso" select-before-update="true" schema="public">
+
+
+        <id name="dokterKsoId">
+            <column name="dokter_kso_id" sql-type="varchar" length="15" not-null="true" />
+        </id>
+
+        <property name="nip">
+            <column name="nip" sql-type="varchar" length="15" not-null="true" />
+        </property>
+        <property name="jenisKso">
+            <column name="jenis_kso" sql-type="varchar" length="10" not-null="true" />
+        </property>
+        <property name="masterId">
+            <column name="master_id" sql-type="varchar" length="10" not-null="true" />
+        </property>
+        <property name="tarifIna">
+            <column name="tarif_ina" sql-type="varchar" length="1" not-null="true" />
+        </property>
+        <property name="persenKso">
+            <column name="persen_kso" sql-type="numeric" length="5" precision="0" not-null="true" />
+        </property>
+        <property name="persenKs">
+            <column name="persen_ks" sql-type="numeric" length="5" precision="0" not-null="true" />
+        </property>
+        <property name="branchId">
+            <column name="branch_id" sql-type="varchar" length="15" not-null="true" />
+        </property>
+
+        <!--<property name="flag">-->
+            <!--<column name="flag" sql-type="varchar" length="1" not-null="false" />-->
+        <!--</property>-->
+        <!--<property name="action">-->
+            <!--<column name="action" sql-type="varchar" length="1" not-null="false" />-->
+        <!--</property>-->
+        <!--<property name="createdWho">-->
+            <!--<column name="created_who" sql-type="varchar" length="20" not-null="false" />-->
+        <!--</property>-->
+        <!--<property name="lastUpdateWho">-->
+            <!--<column name="last_update_who" sql-type="varchar" length="20" not-null="false" />-->
+        <!--</property>-->
+        <!--<property name="createdDate">-->
+            <!--<column name="created_date" sql-type="date" not-null="false" />-->
+        <!--</property>-->
+        <!--<property name="lastUpdate">-->
+            <!--<column name="last_update" sql-type="date" not-null="false" />-->
+        <!--</property>-->
+
+    </class>
+</hibernate-mapping>

@@ -547,7 +547,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                                     riwayatTindakan.setNamaTindakan(tindakanRawatEntity.getNamaTindakan());
                                     riwayatTindakan.setTotalTarif(new BigDecimal(String.valueOf(tindakanRawatEntity.getTarifTotal())));
                                     riwayatTindakan.setApproveBpjsFlag("Y");
-                                    riwayatTindakan.setKategoriTindakanBpjs("konsultasi");
+                                    riwayatTindakan.setKategoriTindakanBpjs(tindakan.getKategoriInaBpjs());
                                     riwayatTindakan.setKeterangan("tindakan");
                                     riwayatTindakan.setJenisPasien(jenPasien);
                                     riwayatTindakan.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());

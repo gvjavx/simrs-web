@@ -296,4 +296,29 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
 
         return periksaLab;
     }
+
+    public String getDivisiIdLabTransaction(String idDetailCheckup, String tipe){
+
+        String SQL = "SELECT c.id_kategori_lab, a.id_detail_checkup, d.kodering\n" +
+                "FROM it_simrs_periksa_lab a \n" +
+                "INNER JOIN im_simrs_lab b ON b.id_lab = a.id_lab\n" +
+                "INNER JOIN im_simrs_kategori_lab c ON c.id_kategori_lab = b.id_kategori_lab\n" +
+                "INNER JOIN im_position d ON d.position_id = c.divisi_id\n" +
+                "WHERE c.nama_kategori ILIKE :tipe\n" +
+                "AND a.id_detail_checkup ILIKE :idDetail\n" +
+                "ORDER BY a.last_update DESC LIMIT 1";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("idDetail", idDetailCheckup)
+                .setParameter("tipe", tipe)
+                .list();
+
+        String divisId = "";
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                divisId = obj[2] == null ? "" : obj[2].toString();
+            }
+        }
+        return divisId;
+    }
 }

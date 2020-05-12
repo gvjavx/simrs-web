@@ -40,7 +40,7 @@ public class TransDao extends GenericDao<ImTransEntity, String> {
                 criteria.add(Restrictions.ilike("transName", "%" + (String)mapCriteria.get("trans_name") + "%"));
             }
             if (mapCriteria.get("tipe_pembayaran")!=null) {
-                criteria.add(Restrictions.isNotNull("tipePembayaran"));
+                criteria.add(Restrictions.eq("tipePembayaran", (String) mapCriteria.get("tipe_pembayaran")));
             }
         }
 

@@ -46,6 +46,9 @@
         <property name="registeredWho">
             <column name="registered_who" sql-type="varchar" length="100" not-null="false" />
         </property>
+        <property name="tipePembayaran">
+            <column name="tipe_pembayaran" sql-type="varchar" length="5" not-null="false" />
+        </property>
 
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />

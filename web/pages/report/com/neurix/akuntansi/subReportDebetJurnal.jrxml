@@ -16,6 +16,7 @@
 		<![CDATA[select
 	a.*,
 	b.kode_rekening,
+	b.nama_kode_rekening,
 	c.nama
 from
 	it_akun_jurnal_detail a LEFT JOIN
@@ -42,7 +43,10 @@ ORDER BY jumlah_debit DESC]]>
 	<field name="jurnal_detail_id" class="java.lang.String"/>
 	<field name="kd_barang" class="java.lang.String"/>
 	<field name="pasien_id" class="java.lang.String"/>
+	<field name="nomor_rekening" class="java.lang.String"/>
+	<field name="divisi_id" class="java.lang.String"/>
 	<field name="kode_rekening" class="java.lang.String"/>
+	<field name="nama_kode_rekening" class="java.lang.String"/>
 	<field name="nama" class="java.lang.String">
 		<fieldDescription><![CDATA[Nama Master]]></fieldDescription>
 	</field>
@@ -144,7 +148,7 @@ ORDER BY jumlah_debit DESC]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{nama} == null ? "" : $F{nama}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nama_kode_rekening} == null ? "" : $F{nama_kode_rekening}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement key="textField" x="128" y="0" width="90" height="15" uuid="7b1a2e52-db57-45f6-8e2f-0f13c77b18ac"/>

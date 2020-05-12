@@ -49,8 +49,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Payroll Tunjangan Strategis
-            <small>GO-MEDSYS</small>
+            Payroll Tunjangan Fungsional
         </h1>
     </section>
 
@@ -61,7 +60,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Tunjangan Strategis </h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Tunjangan Fungsional </h3>
                     </div>
                     <div class="box-body">
                         <table width="100%" align="center">
@@ -83,7 +82,7 @@
                                         <table >
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>T. Jab Strategis Id :</small></label>
+                                                    <label class="control-label"><small>T. Jab Fungsional Id :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -165,7 +164,7 @@
                                                         </s:url>
                                                         <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">
                                                             <i class="fa fa-plus"></i>
-                                                            Add Tunjangan Jabatan Strategis
+                                                            Add Tunjangan Jabatan Fungsional
                                                         </sj:a>
                                                     </td>
                                                     <td>
@@ -185,7 +184,7 @@
                                                     <td align="center">
                                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
                                                                    height="400" width="550" autoOpen="false"
-                                                                   title="Payroll Tunjangan Strategis">
+                                                                   title="Payroll Tunjangan Fungsional">
                                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                                         </sj:dialog>
 
@@ -215,16 +214,16 @@
                                                                     </sj:a>
                                                                 </s:if>
                                                             </display:column>
-                                                            <display:column property="tunjStrategisId" sortable="true" title="T. Jab. Struktural ID" />
+                                                            <display:column property="tunjStrategisId" sortable="true" title="T. Jab. Fungsional ID" />
                                                             <display:column property="positionName" sortable="true" title="Jabatan"  />
                                                             <display:column property="stNilai" sortable="true" title="Nilai"  />
                                                             <display:column property="golonganName" sortable="true" title="Golongan"  />
-                                                            <display:column property="createdWho" sortable="true" title="Created who"  />
-                                                            <display:column property="lastUpdateWho" sortable="true" title="Last update who"  />
                                                             <display:column property="flag" sortable="true" title="flag"  />
                                                             <display:column property="action" sortable="true" title="action"  />
                                                             <display:column property="createdDate" sortable="true" title="Created date"  />
+                                                            <display:column property="createdWho" sortable="true" title="Created who"  />
                                                             <display:column property="lastUpdate" sortable="true" title="Last update"  />
+                                                            <display:column property="lastUpdateWho" sortable="true" title="Last update who"  />
                                                         </display:table>
                                                     </td>
                                                 </tr>

@@ -50,7 +50,6 @@
     <section class="content-header">
         <h1>
             Payroll Dana Pensiun DPLK
-            <small>GO-MEDSYS</small>
         </h1>
     </section>
 
@@ -188,12 +187,12 @@
                                             <display:column property="golonganName" sortable="true" title="Golongan"  />
                                             <display:column property="poin" sortable="true" title="Masa Golongan"  />
                                             <display:column property="stNilai" sortable="true" title="Nilai"  />
-                                            <display:column property="createdWho" sortable="true" title="Created who"  />
-                                            <display:column property="lastUpdateWho" sortable="true" title="Last update who"  />
                                             <display:column property="flag" sortable="true" title="flag"  />
                                             <display:column property="action" sortable="true" title="action"  />
                                             <display:column property="createdDate" sortable="true" title="Created date"  />
+                                            <display:column property="createdWho" sortable="true" title="Created who"  />
                                             <display:column property="lastUpdate" sortable="true" title="Last update"  />
+                                            <display:column property="lastUpdateWho" sortable="true" title="Last update who"  />
                                         </display:table>
                                     </td>
                                 </tr>

@@ -67,7 +67,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Pembayaran Hutang Piutang
+            Pengeluaran Kas/Bank
         </h1>
     </section>
     <!-- Main content -->
@@ -76,13 +76,14 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Pembayaran Hutang Piutang</h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Pengeluaran Kas/Bank </h3>
                     </div>
                     <div class="box-body">
                         <table width="100%" align="center">
                             <tr>
                                 <td align="center">
                                     <s:form id="pembayaranUtangPiutangForm" method="post"  theme="simple" namespace="/pembayaranUtangPiutang" action="search_pembayaranUtangPiutang.action" cssClass="form-horizontal">
+                                        <s:hidden name="pembayaranUtangPiutang.tipePembayaran" value="KK" />
                                         <table>
                                             <tr>
                                                 <td width="10%" align="center">
@@ -114,7 +115,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Pembayaran Hutang Piutang ID :</small></label>
+                                                    <label class="control-label"><small>Pengeluaran Kas/Bank ID :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -155,7 +156,7 @@
                                                             <i class="fa fa-calendar"></i>
                                                         </div>
                                                         <s:textfield id="tgl1" name="pembayaranUtangPiutang.stTanggalDari" cssClass="form-control pull-right"
-                                                                     required="false" size="7"  cssStyle=""/>
+                                                                     required="false"/>
                                                         <div class="input-group-addon">
                                                             s/d
                                                         </div>
@@ -163,7 +164,7 @@
                                                             <i class="fa fa-calendar"></i>
                                                         </div>
                                                         <s:textfield id="tgl2" name="pembayaranUtangPiutang.stTanggalSelesai" cssClass="form-control pull-right"
-                                                                     required="false" size="7"  cssStyle=""/>
+                                                                     required="false"/>
                                                     </div>
                                                     <script>
                                                         $('#tgl1').datepicker({
@@ -188,7 +189,7 @@
                                                         </sj:submit>
                                                     </td>
                                                     <td>
-                                                        <a href="add_pembayaranUtangPiutang.action" class="btn btn-success" ><i class="fa fa-plus"></i> Add Pembayaran Hutang Piutang</a>
+                                                        <a href="add_pembayaranUtangPiutang.action" class="btn btn-success" ><i class="fa fa-plus"></i> Add Pengeluaran Kas/Bank</a>
                                                     </td>
                                                     <td>
                                                         <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_pembayaranUtangPiutang"/>'">
@@ -219,11 +220,12 @@
                                                                     <img border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_view">
                                                                 </a>
                                                             </display:column>
-                                                            <display:column property="pembayaranUtangPiutangId" sortable="true" title="Tipe Jurnal ID" />
+                                                            <display:column property="pembayaranUtangPiutangId" sortable="true" title="Pengeluaran Kas/Bank ID" />
                                                             <display:column property="noJurnal" sortable="true" title="No. Jurnal" />
                                                             <display:column property="stTipeTransaksi" sortable="true" title="Tipe Transaksi"  />
                                                             <display:column property="stTanggal" sortable="true" title="Tanggal"  />
-                                                            <display:column property="metodePembayaran" sortable="true" title="Metode Pembayaran"  />
+                                                            <display:column property="metodePembayaran" sortable="true" title="COA Kas"  />
+                                                            <display:column property="metodePembayaranName" sortable="true" title="Kas"  />
                                                             <display:column property="bayar" sortable="true" title="Total Bayar"  />
                                                             <display:column property="keterangan" sortable="true" title="Keterangan"  />
                                                             <display:column property="noSlipBank" sortable="true" title="No. Referensi"  />
@@ -279,7 +281,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="col-md-4" style="margin-top: 7px">Pembayaran Hutang Piutang Id</label>
+                                <label class="col-md-4" style="margin-top: 7px">Pengeluaran Kas/Bank Id</label>
                                 <div class="col-md-6">
                                     <s:textfield id="mod_pembayaran_id" onkeypress="$(this).css('border','')" readonly="true" cssStyle="margin-top: 7px"
                                                  cssClass="form-control" />
@@ -371,7 +373,7 @@
                 $('#mod_no_jurnal').val(data.noJurnal);
                 $('#mod_tipe_transaksi').val(data.stTipeTransaksi);
                 $('#mod_tanggal').val(data.stTanggal);
-                $('#mod_metode_bayar').val(data.metodePembayaran);
+                $('#mod_metode_bayar').val(data.metodePembayaranName);
                 $('#mod_no_slip_bank').val(data.noSlipBank);
                 $('#mod_keterangan').val(data.keterangan);
                 $('#mod_total_bayar').val(data.stBayar);
@@ -389,7 +391,7 @@
                 $('#mod_no_jurnal').val(data.noJurnal);
                 $('#mod_tipe_transaksi').val(data.stTipeTransaksi);
                 $('#mod_tanggal').val(data.stTanggal);
-                $('#mod_metode_bayar').val(data.metodePembayaran);
+                $('#mod_metode_bayar').val(data.metodePembayaranName);
                 $('#mod_no_slip_bank').val(data.noSlipBank);
                 $('#mod_keterangan').val(data.keterangan);
                 $('#mod_total_bayar').val(data.stBayar);
@@ -409,7 +411,7 @@
         });
         $('#btnPostingJurnal').click(function () {
             var pembayaranId =  $('#mod_pembayaran_id').val();
-            if (confirm("apakah anda ingin memposting pembayaran dengan pembayaran id "+pembayaranId +" ?")){
+            if (confirm("apakah anda ingin memposting pengeluaran dengan pembayaran id "+pembayaranId +" ?")){
                 PembayaranUtangPiutangAction.postingJurnal(pembayaranId,function (listdata) {
                     alert(listdata);
                     window.location.reload();
@@ -429,6 +431,7 @@
                 "<th style='text-align: center; color: #fff; background-color:  #30d196'>No</th>" +
                 "<th style='text-align: center; color: #fff; background-color:  #30d196''>Detail ID</th>" +
                 "<th style='text-align: center; color: #fff; background-color:  #30d196''>No. Vendor</th>" +
+                "<th style='text-align: center; color: #fff; background-color:  #30d196''>Divisi ID</th>" +
                 "<th style='text-align: center; color: #fff; background-color:  #30d196''>No. Nota</th>" +
                 "<th style='text-align: center; color: #fff; background-color:  #30d196''>Jml Pembayaran</th>" +
                 "</tr></thead>";
@@ -438,6 +441,7 @@
                     '<td align="center">' + (i + 1) + '</td>' +
                     '<td align="center">' + item.pembayaranUtangPiutangDetailId + '</td>' +
                     '<td align="center">' + item.masterId + '</td>' +
+                    '<td align="center">' + item.divisiId + '</td>' +
                     '<td align="center">' + item.noNota + '</td>' +
                     '<td align="center">' + item.stJumlahPembayaran + '</td>' +
                     "</tr>";

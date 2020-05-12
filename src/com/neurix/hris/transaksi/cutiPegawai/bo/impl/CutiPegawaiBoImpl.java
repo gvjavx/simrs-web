@@ -440,6 +440,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
             itCutiPegawaiEntity.setLastUpdateWho(bean.getLastUpdateWho());
             itCutiPegawaiEntity.setCreatedDate(bean.getCreatedDate());
             itCutiPegawaiEntity.setLastUpdate(bean.getLastUpdate());
+            itCutiPegawaiEntity.setFlagPerbaikan(bean.getFlagPerbaikan());
 
             try {
                 // insert into database

@@ -289,6 +289,56 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
 
         return listOfResult;
     }
+
+    public List<KodeRekening> getPostByKodeRekening(String coa) throws GeneralBOException {
+        logger.info("[KodeRekeningBoImpl.getPostByKodeRekening] start process >>>");
+
+        // Mapping with collection and put
+        List<KodeRekening> listOfResult = new ArrayList();
+        List<ImKodeRekeningEntity> imKodeRekeningEntityList = null;
+        try {
+
+            imKodeRekeningEntityList = kodeRekeningDao.getKodeRekeningList(coa);
+        } catch (HibernateException e) {
+            logger.error("[KodeRekeningBoImpl.getPostByKodeRekening] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+
+        if(imKodeRekeningEntityList != null){
+            KodeRekening returnKodeRekening;
+            // Looping from dao to object and save in collection
+            for(ImKodeRekeningEntity kodeRekeningEntity : imKodeRekeningEntityList){
+                returnKodeRekening = new KodeRekening();
+                returnKodeRekening.setRekeningId(kodeRekeningEntity.getRekeningId());
+                returnKodeRekening.setKodeRekening(kodeRekeningEntity.getKodeRekening());
+                returnKodeRekening.setNamaKodeRekening(kodeRekeningEntity.getNamaKodeRekening());
+                returnKodeRekening.setParentId(kodeRekeningEntity.getParentId());
+                returnKodeRekening.setTipeRekeningId(kodeRekeningEntity.getTipeRekeningId());
+                returnKodeRekening.setLevel(kodeRekeningEntity.getLevel());
+
+                returnKodeRekening.setCreatedWho(kodeRekeningEntity.getCreatedWho());
+                returnKodeRekening.setCreatedDate(kodeRekeningEntity.getCreatedDate());
+                returnKodeRekening.setLastUpdate(kodeRekeningEntity.getLastUpdate());
+                returnKodeRekening.setAction(kodeRekeningEntity.getAction());
+                returnKodeRekening.setFlag(kodeRekeningEntity.getFlag());
+                listOfResult.add(returnKodeRekening);
+            }
+        }
+        logger.info("[KodeRekeningBoImpl.getPostByKodeRekening] end process <<<");
+
+        return listOfResult;
+    }
+
+    @Override
+    public ImKodeRekeningEntity getKodeRekeningById(String id) throws GeneralBOException {
+        return kodeRekeningDao.getById("rekeningId", id);
+    }
+
+    @Override
+    public List<ImKodeRekeningEntity> getListKodeRekeningByLevel(String coa, Long level) throws GeneralBOException {
+        return kodeRekeningDao.getKodeRekeningListByLevel(coa, level);
+    }
+
     @Override
     public List<KodeRekening> getAll() throws GeneralBOException {
         return null;
@@ -299,6 +349,28 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
         return null;
     }
 
+    @Override
+    public String getRekeningIdByKodeRekening ( String kodeRekening ){
+        return kodeRekeningDao.getRekeningIdByCoa(kodeRekening);
+    }
+
+    @Override
+    public List<KodeRekening> getKodeRekeningLawanByTransId(String transId, String posisiLawan) throws GeneralBOException {
+        logger.info("[KodeRekeningBoImpl.getKodeRekeningLawanByTransId] start process >>>");
+
+        // Mapping with collection and put
+        List<KodeRekening> listOfResult = new ArrayList();
+        try {
+            listOfResult = kodeRekeningDao.getKodeRekeningLawanByTransId(transId,posisiLawan);
+        } catch (HibernateException e) {
+            logger.error("[KodeRekeningBoImpl.getKodeRekeningLawanByTransId] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+
+        logger.info("[KodeRekeningBoImpl.getKodeRekeningLawanByTransId] end process <<<");
+
+        return listOfResult;
+    }
 
     public static Logger getLogger() {
         return logger;

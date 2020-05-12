@@ -10,8 +10,10 @@ public class KategoriTindakan {
     private String kategoriTindakan;
     private String flag;
     private String action;
+    private String stCreatedDate;
     private Timestamp createdDate;
     private String createdWho;
+    private String stLastUpdate;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
 
@@ -79,4 +81,19 @@ public class KategoriTindakan {
         this.lastUpdateWho = lastUpdateWho;
     }
 
+    public String getStCreatedDate() {
+        return stCreatedDate;
+    }
+
+    public void setStCreatedDate(String stCreatedDate) {
+        this.stCreatedDate = stCreatedDate;
+    }
+
+    public String getStLastUpdate() {
+        return stLastUpdate;
+    }
+
+    public void setStLastUpdate(String stLastUpdate) {
+        this.stLastUpdate = stLastUpdate;
+    }
 }

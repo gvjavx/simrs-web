@@ -167,7 +167,7 @@
                                         <div class="col-md-6">
                                             <a class="btn btn-success pull-right" onclick="addBatch()"><i class="fa fa-plus"></i> Tambah Batch</a>
                                             <s:if test='tipe == "reture"'>
-                                                <a href="/simrs/returobat/initForm_returobat.action" class="btn btn-warning pull-right" style="margin-right: 5px"><i class="fa fa-arrow-left"></i> Back</a>
+                                                <a href="<%= request.getContextPath() %>/returobat/initForm_returobat.action" class="btn btn-warning pull-right" style="margin-right: 5px"><i class="fa fa-arrow-left"></i> Back</a>
                                             </s:if>
                                             <s:else>
                                                 <a href="initForm_permintaanpo.action" class="btn btn-warning pull-right" style="margin-right: 5px"><i class="fa fa-arrow-left"></i> Back</a>

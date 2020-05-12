@@ -116,12 +116,12 @@
                                                 <td>
                                                     <table>
                                                         <s:if test='laporanAkuntansi.unit == "KP"'>
-                                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranchAkuntansi_branch"/>
                                                             <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="laporanAkuntansi.unit"
                                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                                         </s:if>
                                                         <s:else>
-                                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranchAkuntansi_branch"/>
                                                             <s:select list="#initComboBranch.listOfComboBranch" id="branchIdView" name="laporanAkuntansi.unit" disabled="true"
                                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                                             <s:hidden id="branchId" name="laporanAkuntansi.unit" />
@@ -161,7 +161,7 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:select list="#{'PD':'Pendapatan', 'PDM' : 'Pendapatan Per Master', 'PDD':'Pendapatan Per Divisi'}"
+                                                        <s:select list="#{'PD':'Pendapatan', 'PDM' : 'Pendapatan Per Master', 'PDD':'Pendapatan Per Divisi','PDDOK':'Pendapatan Per Dokter Per Activity','PDA':'Pendapatan Per Activity Per Dokter'}"
                                                                   id="tipePendapatan" name="laporanAkuntansi.tipeLaporan"
                                                                   headerKey="" headerValue="[Select One]" cssClass="form-control" />
                                                     </table>

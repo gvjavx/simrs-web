@@ -53,6 +53,11 @@ $('[name=radio_aud_kebutuhan4]').click(function () {
 });
 
 function showAsesmenUgd() {
+    if(isReadRM){
+        $('.btn-hide').hide();
+    }else{
+        $('.btn-hide').show();
+    }
     $('#modal-asesmen-ugd-dewasa').modal({show: true, backdrop: 'static'});
 }
 
@@ -940,7 +945,7 @@ function detailAud(jenis) {
                             cekSkor = true;
                         }else{
                             body += '<tr>' +
-                                '<td>' + item.parameter + '</td>' +
+                                '<td width="40%">' + item.parameter + '</td>' +
                                 '<td>' + item.jawaban + '</td>' +
                                 '</tr>';
                         }
@@ -992,7 +997,7 @@ function detailAud(jenis) {
 
             var newRow = $('<tr id="del_aud_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
             newRow.insertAfter($('table').find('#row_aud_' + jenis));
-            var url = '/simrs/pages/images/cancel-flat-new.png';
+            var url = contextPath+'/pages/images/minus-allnew.png';
             $('#btn_aud_' + jenis).attr('src', url);
             $('#btn_aud_' + jenis).attr('onclick', 'delRowAud(\'' + jenis + '\')');
         });
@@ -1001,7 +1006,7 @@ function detailAud(jenis) {
 
 function delRowAud(id) {
     $('#del_aud_' + id).remove();
-    var url = '/simrs/pages/images/icons8-plus-25.png';
+    var url = contextPath+'/pages/images/icons8-plus-25.png';
     $('#btn_aud_' + id).attr('src', url);
     $('#btn_aud_' + id).attr('onclick', 'detailAud(\'' + id + '\')');
 }

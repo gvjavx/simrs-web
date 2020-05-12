@@ -81,6 +81,7 @@
             <result name="init_combo_area">/pages/com/neurix/authorization/user/user.jsp</result>
             <result name="init_combo_branch">/pages/com/neurix/authorization/user/user.jsp</result>
             <result name="init_combo_position">/pages/com/neurix/authorization/user/user.jsp</result>
+            <result name="init_combo_nomaster">/pages/com/neurix/authorization/user/user.jsp</result>
             <result name="view_detail_add">/pages/com/neurix/authorization/user/addUser.jsp</result>
             <result name="view_detail">/pages/com/neurix/authorization/user/detailUser.jsp</result>
             <result name="success_save_edit" type="json">/pages/com/neurix/authorization/user/detailUser.jsp</result>

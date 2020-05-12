@@ -117,6 +117,17 @@ public class HistoryJabatanPegawaiDao extends GenericDao<ImtHrisHistoryJabatanPe
         List<ImtHrisHistoryJabatanPegawaiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImtHrisHistoryJabatanPegawaiEntity.class)
                 .add(Restrictions.eq("nip",term))
                 .add(Restrictions.eq("jabatanFlag", "Y"))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("historyJabatanId"))
+                .list();
+
+        return results;
+    }
+
+    public List<ImtHrisHistoryJabatanPegawaiEntity> getJabatan(String term) throws HibernateException {
+
+        List<ImtHrisHistoryJabatanPegawaiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImtHrisHistoryJabatanPegawaiEntity.class)
+                .add(Restrictions.eq("nip",term))
                 .addOrder(Order.asc("historyJabatanId"))
                 .list();
 

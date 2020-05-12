@@ -1,6 +1,7 @@
 package com.neurix.common.constant;
 
 import com.neurix.common.util.CommonUtil;
+import org.apache.struts2.ServletActionContext;
 
 /**
  * Created by IntelliJ IDEA.
@@ -39,11 +40,15 @@ public class CommonConstant {
     public final static String RESOURCE_PATH_TTD_DOKTER = "/upload/ttd_dokter/";
     public final static String RESOURCE_PATH_TTD_APOTEKER = "/upload/ttd_apoteker/";
     public final static String RESOURCE_PATH_AREA_OPERASI = "/upload/penanda_area_operasi/";
+    public final static String RESOURCE_PATH_TTD_RM = "/upload/ttd_rm/";
+    public final static String RESOURCE_PATH_DOC_RM = "/upload/cetakan_rm/";
 
 
     public final static String RESOURCE_PATH_USER_UPLOAD = "/pages/upload/image/profile/";
+    public final static String RESOURCE_PATH_USER_UPLOAD_IJAZAH = CommonUtil.getPropertyParams("resource.dir")+"mnt/ijazah/";
 
     //sodiq, 18 Nov 2019, Upload KTP pasien
+//    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = CommonUtil.getPropertyParams("upload.external.dir");
     public final static String RESOURCE_PATH_IMG_ASSET = CommonUtil.getPropertyParams("resource.dir");
     public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = CommonUtil.getPropertyParams("upload.folder");
 
@@ -54,7 +59,7 @@ public class CommonConstant {
 //    public final static String RESOURCE_PATH_IMG_ASSET = CommonUtil.getPropertyParams("resource.dir");
 //    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = "C:\\Users\\user\\Pictures";
 
-    public final static String EXTERNAL_IMG_URI = "/simrs/images";
+    public final static String EXTERNAL_IMG_URI = ServletActionContext.getRequest().getContextPath()+"/images";
     public final static String RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY = CommonUtil.getUploadFolderValue();
 
     public final static String LOGOUT_URL = "/j_spring_security_logout";
@@ -72,6 +77,7 @@ public class CommonConstant {
 
     public final static String URL_IMAGE_LOGO_REPORT = CommonUtil.getPropertyParams("base.dir")+"pages/images/logo-nmu.png";
     public final static String URL_LOGO_REPORT = CommonUtil.getPropertyParams("base.dir")+"pages/images/";
+    public final static String IMAGE_LOGO_KP = "KP.png";
     public final static String RESOURCE_DOCUMENT_PAYROLL = CommonUtil.getPropertyParams("resource.dir")+"mnt/documents/";
 
     public final static String REPORT_PAYROLL = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayroll3.jrxml";
@@ -83,7 +89,6 @@ public class CommonConstant {
     public final static String REPORT_PAYROLL_CUTI_PANJANG = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayrollCutiPanjangBranch3.jrxml";
     public final static String REPORT_PAYROLL_CUTI_TAHUNAN = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayrollCutiTahunanBranch3.jrxml";
 
-
     //ptpnx e-farming
     public final static String ROLE_ADMIN_POLI = "ADMIN POLI";
     public final static String ROLE_ADMIN_RS = "ADMIN RS";
@@ -91,7 +96,8 @@ public class CommonConstant {
     public final static String ROLE_ADMIN_APOTEK = "ADMIN APOTEK";
 
     //BPJS
-    public final static String APP_NAME = "simrs";
+    public final static String APP_NAME = ServletActionContext.getRequest().getContextPath();
+//    public final static String APP_NAME = "simrs";
 
     //for prod
     public final static String BPJS_BASE_URL = "https://new-api.bpjs-kesehatan.go.id:8080";

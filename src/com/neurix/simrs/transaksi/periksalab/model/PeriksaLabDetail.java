@@ -20,6 +20,15 @@ public class PeriksaLabDetail extends BaseModel {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String kategoriName;
+
+    public String getKategoriName() {
+        return kategoriName;
+    }
+
+    public void setKategoriName(String kategoriName) {
+        this.kategoriName = kategoriName;
+    }
 
     public String getIdPeriksaLabDetail() {
         return idPeriksaLabDetail;

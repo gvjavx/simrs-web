@@ -27,6 +27,7 @@ public class ImPembayaranUtangPiutangEntity implements Serializable {
     private String registeredFlag;
     private Date registeredDate;
     private String registeredWho;
+    private String tipePembayaran;
 
     private String flag;
     private String action;
@@ -34,6 +35,14 @@ public class ImPembayaranUtangPiutangEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+    public String getTipePembayaran() {
+        return tipePembayaran;
+    }
+
+    public void setTipePembayaran(String tipePembayaran) {
+        this.tipePembayaran = tipePembayaran;
+    }
 
     public String getBank() {
         return bank;

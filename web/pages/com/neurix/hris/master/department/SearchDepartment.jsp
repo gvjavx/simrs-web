@@ -50,7 +50,6 @@
     <section class="content-header">
         <h1>
             Bidang/ Divisi
-            <small>GO-MEDSYS</small>
         </h1>
     </section>
 
@@ -184,14 +183,13 @@
                                             </display:column>
                                             <display:column property="departmentId" sortable="true" title="Devisi ID" />
                                             <display:column property="departmentName" sortable="true" title="Nama Devisi"  />
-
-                                            <display:column property="createdWho" sortable="true" title="Created who"  />
-                                            <display:column property="lastUpdateWho" sortable="true" title="Last update who"  />
+                                            <display:column property="kodering" sortable="true" title="Kodering"  />
                                             <display:column property="flag" sortable="true" title="flag"  />
                                             <display:column property="action" sortable="true" title="action"  />
                                             <display:column property="createdDate" sortable="true" title="Created date"  />
+                                            <display:column property="createdWho" sortable="true" title="Created who"  />
                                             <display:column property="lastUpdate" sortable="true" title="Last update"  />
-
+                                            <display:column property="lastUpdateWho" sortable="true" title="Last update who"  />
                                         </display:table>
                                     </td>
                                 </tr>

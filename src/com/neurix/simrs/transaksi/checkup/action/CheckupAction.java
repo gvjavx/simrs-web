@@ -773,7 +773,7 @@ public class CheckupAction extends BaseMasterAction {
         java.util.Date dateNow = new java.util.Date(millis);
         String dateToday = new SimpleDateFormat("yyyy-MM-dd").format(dateNow);
 
-        //jika bpjs
+        //jika bpjs dan ptpn
         if ("bpjs".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien()) || "ptpn".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien())) {
 
             List<Pasien> pasienList = new ArrayList<>();
@@ -785,10 +785,8 @@ public class CheckupAction extends BaseMasterAction {
             try {
                 pasienList = pasienBoProxy.getByCriteria(pasien);
             } catch (GeneralBOException e) {
-                Long logId = null;
-                logger.error("[CheckupAction.saveAdd] Error when search item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-                addActionError("Error, " + "[code=" + logId + "] Found problem when search id pasien, please inform to your admin.\n" + e.getMessage());
-                return ERROR;
+                logger.error("[CheckupAction.saveAdd] Error when search pasien id ," + "[" + e + "] Found problem when saving add data, please inform to your admin.");
+                throw new GeneralBOException("Error when pasien id", e);
             }
 
             Branch branch = new Branch();
@@ -798,10 +796,8 @@ public class CheckupAction extends BaseMasterAction {
             try {
                 branchList = branchBoProxy.getByCriteria(branch);
             } catch (GeneralBOException e) {
-                Long logId = null;
-                logger.error("[CheckupAction.saveAdd] Error when search item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-                addActionError("Error, " + "[code=" + logId + "] Found problem when search id pasien, please inform to your admin.\n" + e.getMessage());
-                return ERROR;
+                logger.error("[CheckupAction.saveAdd] Error when search branch id ," + "[" + e + "] Found problem when saving add data, please inform to your admin.");
+                throw new GeneralBOException("Error when branch id ", e);
             }
 
             Branch getBranch = new Branch();
@@ -874,15 +870,16 @@ public class CheckupAction extends BaseMasterAction {
                         try {
                             response = bpjsBoProxy.insertSepBpjs(sepRequest, userArea);
                         } catch (Exception e) {
-                            Long logId = null;
-                            logger.error("[CheckupAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-                            addActionError("Error, " + "[code=" + logId + "] Found problem when insert SEP.\n" + e.getMessage());
-                            return ERROR;
+                            logger.error("[CheckupAction.saveAdd] Error when insert SEP ," + "[" + e + "] Found problem when saving add data, please inform to your admin.");
+                            throw new GeneralBOException("Error when new insert SEP", e);
                         }
 
                         if (response.getNoSep() != null) {
 
                             genNoSep = response.getNoSep();
+
+                            checkup.setNoSep(response.getNoSep());
+
                             logger.info("[CheckupAction.saveAdd] NO. SEP : " + genNoSep);
 
                             KlaimRequest klaimRequest = new KlaimRequest();
@@ -913,22 +910,124 @@ public class CheckupAction extends BaseMasterAction {
 
                             List<Tindakan> tindakanList = new ArrayList<>();
                             Tindakan tindakan = new Tindakan();
-                            tindakan.setIdTindakan("TDK0000787");
+                            tindakan.setBranchId(CommonUtil.userBranchLogin());
+                            tindakan.setIsIna("Y");
 
                             try {
                                 tindakanList = tindakanBoProxy.getByCriteria(tindakan);
                             } catch (GeneralBOException e) {
-                                Long logId = null;
-                                logger.error("[CheckupAction.saveAdd] Error when search item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-                                addActionError("Error, " + "[code=" + logId + "] Found problem when search tindakan, please inform to your admin.\n" + e.getMessage());
-                                return ERROR;
+                                logger.error("[CheckupAction.saveAdd] Error when tindakan ," + "[" + e + "] Found problem when saving add data, please inform to your admin.");
+                                throw new GeneralBOException("Error when new tindakan", e);
                             }
 
+                            BigInteger tarifRsProsedurNonBedah = new BigInteger(String.valueOf(0));
+                            BigInteger tarifRsTenagaAhli = new BigInteger(String.valueOf(0));
+                            BigInteger tarifRsRadiologi = new BigInteger(String.valueOf(0));
+                            BigInteger tarifRsRehabilitasi = new BigInteger(String.valueOf(0));
+                            BigInteger tarifRsObat = new BigInteger(String.valueOf(0));
+                            BigInteger tarifRsAlkes = new BigInteger(String.valueOf(0));
+
+                            BigInteger tarifRsProsedurBedah = new BigInteger(String.valueOf(0));
+                            BigInteger tarifRsKeperawatan = new BigInteger(String.valueOf(0));
+                            BigInteger tarifRsLaboratorium = new BigInteger(String.valueOf(0));
+                            BigInteger tarifRsKamar = new BigInteger(String.valueOf(0));
+                            BigInteger tarifRsObatKronis = new BigInteger(String.valueOf(0));
+                            BigInteger tarifRsBmhp = new BigInteger(String.valueOf(0));
+
+                            BigInteger tarifRsKonsultasi = new BigInteger(String.valueOf(0));
+                            BigInteger tarifRsPenunjang = new BigInteger(String.valueOf(0));
+                            BigInteger tarifRsPelayananDarah = new BigInteger(String.valueOf(0));
+                            BigInteger tarifRsRawatIntensif = new BigInteger(String.valueOf(0));
+                            BigInteger tarifRsObatKemoterapi = new BigInteger(String.valueOf(0));
+                            BigInteger tarifRsSewaAlat = new BigInteger(String.valueOf(0));
+
+
                             if (tindakanList.size() > 0) {
-                                tindakan = tindakanList.get(0);
+                                List<Tindakan> tindakans = new ArrayList<>();
+                                for (Tindakan entity : tindakanList) {
+
+                                    if ("prosedur_non_bedah".equalsIgnoreCase(entity.getKategoriInaBpjs())) {
+                                        tarifRsProsedurNonBedah = tarifRsProsedurNonBedah.add(new BigInteger(entity.getTarifBpjs().toString()));
+                                    }
+                                    if ("tenaga_ahli".equalsIgnoreCase(entity.getKategoriInaBpjs())) {
+                                        tarifRsTenagaAhli = tarifRsTenagaAhli.add(new BigInteger(entity.getTarifBpjs().toString()));
+                                    }
+                                    if ("radiologi".equalsIgnoreCase(entity.getKategoriInaBpjs())) {
+                                        tarifRsRadiologi = tarifRsRadiologi.add(new BigInteger(entity.getTarifBpjs().toString()));
+                                    }
+                                    if ("rehabilitasi".equalsIgnoreCase(entity.getKategoriInaBpjs())) {
+                                        tarifRsRehabilitasi = tarifRsRehabilitasi.add(new BigInteger(entity.getTarifBpjs().toString()));
+                                    }
+                                    if ("obat".equalsIgnoreCase(entity.getKategoriInaBpjs())) {
+                                        tarifRsObat = tarifRsObat.add(new BigInteger(entity.getTarifBpjs().toString()));
+                                    }
+                                    if ("alkes".equalsIgnoreCase(entity.getKategoriInaBpjs())) {
+                                        tarifRsAlkes = tarifRsAlkes.add(new BigInteger(entity.getTarifBpjs().toString()));
+
+                                    }
+
+                                    //--------------
+                                    if ("prosedur_bedah".equalsIgnoreCase(entity.getKategoriInaBpjs())) {
+                                        tarifRsProsedurBedah = tarifRsProsedurBedah.add(new BigInteger(entity.getTarifBpjs().toString()));
+
+                                    }
+                                    if ("keperawatan".equalsIgnoreCase(entity.getKategoriInaBpjs())) {
+                                        tarifRsKeperawatan = tarifRsKeperawatan.add(new BigInteger(entity.getTarifBpjs().toString()));
+
+                                    }
+                                    if ("laboratorium".equalsIgnoreCase(entity.getKategoriInaBpjs())) {
+                                        tarifRsLaboratorium = tarifRsLaboratorium.add(new BigInteger(entity.getTarifBpjs().toString()));
+
+                                    }
+                                    if ("kamar_akomodasi".equalsIgnoreCase(entity.getKategoriInaBpjs())) {
+                                        tarifRsKamar = tarifRsKamar.add(new BigInteger(entity.getTarifBpjs().toString()));
+
+                                    }
+                                    if ("obat_kronis".equalsIgnoreCase(entity.getKategoriInaBpjs())) {
+                                        tarifRsObatKronis = tarifRsObatKronis.add(new BigInteger(entity.getTarifBpjs().toString()));
+
+                                    }
+                                    if ("bmhp".equalsIgnoreCase(entity.getKategoriInaBpjs())) {
+                                        tarifRsBmhp = tarifRsBmhp.add(new BigInteger(entity.getTarifBpjs().toString()));
+
+                                    }
+
+                                    //--------------
+                                    if ("konsultasi".equalsIgnoreCase(entity.getKategoriInaBpjs())) {
+                                        tarifRsKonsultasi = tarifRsKonsultasi.add(new BigInteger(entity.getTarifBpjs().toString()));
+
+                                    }
+                                    if ("penunjang".equalsIgnoreCase(entity.getKategoriInaBpjs())) {
+                                        tarifRsPenunjang = tarifRsPenunjang.add(new BigInteger(entity.getTarifBpjs().toString()));
+
+                                    }
+                                    if ("pelayanan_darah".equalsIgnoreCase(entity.getKategoriInaBpjs())) {
+                                        tarifRsPelayananDarah = tarifRsPelayananDarah.add(new BigInteger(entity.getTarifBpjs().toString()));
+
+                                    }
+                                    if ("rawat_intensif".equalsIgnoreCase(entity.getKategoriInaBpjs())) {
+                                        tarifRsRawatIntensif = tarifRsRawatIntensif.add(new BigInteger(entity.getTarifBpjs().toString()));
+
+                                    }
+                                    if ("obat_kemoterapi".equalsIgnoreCase(entity.getKategoriInaBpjs())) {
+                                        tarifRsObatKemoterapi = tarifRsObatKemoterapi.add(new BigInteger(entity.getTarifBpjs().toString()));
+
+                                    }
+                                    if ("sewa_alat".equalsIgnoreCase(entity.getKategoriInaBpjs())) {
+                                        tarifRsSewaAlat = tarifRsSewaAlat.add(new BigInteger(entity.getTarifBpjs().toString()));
+
+                                    }
+
+                                    Tindakan tin = new Tindakan();
+                                    tin.setIdTindakan(entity.getIdTindakan());
+                                    tin.setKategoriInaBpjs(entity.getKategoriInaBpjs());
+                                    tindakans.add(tin);
+                                }
+                                checkup.setTindakanList(tindakans);
                             }
 
                             if (responseNewClaim.getPatientId() != null) {
+
                                 KlaimDetailRequest klaimDetailRequest = new KlaimDetailRequest();
                                 klaimDetailRequest.setNomorSep(genNoSep);
                                 klaimDetailRequest.setNomorKartu(getPasien.getNoKtp()); // pasien
@@ -949,25 +1048,28 @@ public class CheckupAction extends BaseMasterAction {
                                 klaimDetailRequest.setDiagnosa(checkup.getDiagnosa()); // checkup
                                 klaimDetailRequest.setProcedure("");
 
-                                klaimDetailRequest.setTarifRsNonBedah("");
-                                klaimDetailRequest.setTarifRsProsedurBedah("");
+                                //set tindakan untuk mendapatkan cover bpjs
 
-                                klaimDetailRequest.setTarifRsKonsultasi(tindakan.getTarifBpjs().toString()); // tindakak
-                                klaimDetailRequest.setTarifRsTenagaAhli("");
-                                klaimDetailRequest.setTarifRsKeperawatan("");
-                                klaimDetailRequest.setTarifRsPenunjang("");
-                                klaimDetailRequest.setTarifRsRadiologi("");
-                                klaimDetailRequest.setTarifRsLaboratorium("");
-                                klaimDetailRequest.setTarifRsPelayananDarah("");
-                                klaimDetailRequest.setTarifRsRehabilitasi("");
-                                klaimDetailRequest.setTarifRsKamar("");
-                                klaimDetailRequest.setTarifRsRawatIntensif("");
-                                klaimDetailRequest.setTarifRsObat("");
-                                klaimDetailRequest.setTarifRsObatKronis("");
-                                klaimDetailRequest.setTarifRsObatKemoterapi("");
-                                klaimDetailRequest.setTarifRsAlkes("");
-                                klaimDetailRequest.setTarifRsBmhp("");
-                                klaimDetailRequest.setTarifRsSewaAlat("");
+                                klaimDetailRequest.setTarifRsNonBedah(tarifRsProsedurNonBedah.toString());
+                                klaimDetailRequest.setTarifRsProsedurBedah(tarifRsProsedurBedah.toString());
+                                klaimDetailRequest.setTarifRsKonsultasi(tarifRsKonsultasi.toString());
+                                klaimDetailRequest.setTarifRsTenagaAhli(tarifRsTenagaAhli.toString());
+                                klaimDetailRequest.setTarifRsKeperawatan(tarifRsKeperawatan.toString());
+                                klaimDetailRequest.setTarifRsPenunjang(tarifRsPenunjang.toString());
+                                klaimDetailRequest.setTarifRsRadiologi(tarifRsRadiologi.toString());
+                                klaimDetailRequest.setTarifRsLaboratorium(tarifRsLaboratorium.toString());
+                                klaimDetailRequest.setTarifRsPelayananDarah(tarifRsPelayananDarah.toString());
+                                klaimDetailRequest.setTarifRsRehabilitasi(tarifRsRehabilitasi.toString());
+                                klaimDetailRequest.setTarifRsKamar(tarifRsKamar.toString());
+                                klaimDetailRequest.setTarifRsRawatIntensif(tarifRsRawatIntensif.toString());
+                                klaimDetailRequest.setTarifRsObat(tarifRsObat.toString());
+                                klaimDetailRequest.setTarifRsObatKronis(tarifRsObatKronis.toString());
+                                klaimDetailRequest.setTarifRsObatKemoterapi(tarifRsObatKemoterapi.toString());
+                                klaimDetailRequest.setTarifRsAlkes(tarifRsAlkes.toString());
+                                klaimDetailRequest.setTarifRsBmhp(tarifRsBmhp.toString());
+                                klaimDetailRequest.setTarifRsSewaAlat(tarifRsSewaAlat.toString());
+
+                                //end set tindakan
 
                                 klaimDetailRequest.setTarifPoliEks("");
                                 klaimDetailRequest.setNamaDokter(namaDokter);
@@ -1022,7 +1124,6 @@ public class CheckupAction extends BaseMasterAction {
                                             throw new GeneralBOException("Error when get cover biaya BPJS, [" + grouping1Response.getMessage() + "]");
                                         }
 
-
                                         // jika ada special cmg maka proses grouping stage 2
                                         if (grouping1Response.getSpecialCmgResponseList().size() > 0) {
 
@@ -1064,14 +1165,6 @@ public class CheckupAction extends BaseMasterAction {
                     throw new GeneralBOException("Error when search PPK pelayanan");
                 }
             }
-
-            Tindakan tindakan = new Tindakan();
-            tindakan.setIdTindakan("TDK0000787");
-
-            List<Tindakan> tindakans = new ArrayList<>();
-            tindakans.add(tindakan);
-            checkup.setTindakanList(tindakans);
-            checkup.setNoSep(genNoSep);
         }
 
         if (checkup.getDiagnosa() != null && !"".equalsIgnoreCase(checkup.getDiagnosa())
@@ -1115,17 +1208,7 @@ public class CheckupAction extends BaseMasterAction {
                 logger.error("[CheckupAction.saveAdd] Error Convert json to data admisi.", e);
             }
 
-            String tgl_lahir = checkup.getStTglLahir();
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-
-            try {
-                java.util.Date date = format.parse(tgl_lahir);
-                java.sql.Date sqlDate = new java.sql.Date(date.getTime());
-                checkup.setTglLahir(sqlDate);
-            } catch (ParseException e) {
-                logger.error("[CheckupAction.saveAdd] Error Convert String Tgl Lahir to Date.", e);
-            }
-
+            checkup.setTglLahir(Date.valueOf(checkup.getStTglLahir()));
             checkup.setNoCheckup(noCheckup);
             checkup.setBranchId(userArea);
             checkup.setCreatedWho(userLogin);
@@ -1171,7 +1254,7 @@ public class CheckupAction extends BaseMasterAction {
                         // file name
                         String fileName = this.fileUploadPolisiFileName;
                         String fileNameReplace = fileName.replace(" ", "_");
-                        String newFileName = checkup.getNoKtp() + "-" + dateFormater("dd")+dateFormater("MM") + dateFormater("yy") + "-" + fileNameReplace;
+                        String newFileName = checkup.getNoKtp() + "-" + dateFormater("dd") + dateFormater("MM") + dateFormater("yy") + "-" + fileNameReplace;
                         // deklarasi path file
                         String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_DOC_RUJUK_PASIEN;
                         logger.info("[CheckupAction.uploadImages] FILEPATH :" + filePath);
@@ -1289,6 +1372,22 @@ public class CheckupAction extends BaseMasterAction {
         return lisJenisPeriksa;
     }
 
+    public List<JenisPriksaPasien> getComboJenisPeriksaByIdDetailCheckup(String jenis, String idDetail) {
+        List<JenisPriksaPasien> lisJenisPeriksa = new ArrayList<>();
+        JenisPriksaPasien jenisPriksaPasien = new JenisPriksaPasien();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        JenisPriksaPasienBo jenisPriksaPasienBo = (JenisPriksaPasienBo) ctx.getBean("jenisPriksaPasienBoProxy");
+
+        try {
+            lisJenisPeriksa = jenisPriksaPasienBo.getListJenisPeriksaByIdDetailCheckup(jenis, idDetail);
+        } catch (HibernateException e) {
+            logger.error("[CheckupAction.getComboJenisPeriksaPasienNotBpjs] Error when get data for combo listOfJenisPriksaPasien", e);
+            addActionError(" Error when get data for combo listOfJenisPriksaPasien" + e.getMessage());
+        }
+
+        return lisJenisPeriksa;
+    }
+
     public String getComboPelayanan() {
 
         List<Pelayanan> pelayananList = new ArrayList<>();
@@ -1307,7 +1406,7 @@ public class CheckupAction extends BaseMasterAction {
         return "init_add";
     }
 
-    public List<Pelayanan> getListComboPoli(String branch){
+    public List<Pelayanan> getListComboPoli(String branch) {
 
         List<Pelayanan> pelayananList = new ArrayList<>();
         Pelayanan pelayanan = new Pelayanan();
@@ -1357,7 +1456,7 @@ public class CheckupAction extends BaseMasterAction {
         return "init_add";
     }
 
-    public List<Pelayanan> getListComboPelayananIgd(String branch){
+    public List<Pelayanan> getListComboPelayananIgd(String branch) {
 
         List<Pelayanan> pelayananList = new ArrayList<>();
         Pelayanan pelayanan = new Pelayanan();
@@ -1389,7 +1488,7 @@ public class CheckupAction extends BaseMasterAction {
         return "init_add";
     }
 
-    public List<Pelayanan> getListComboApotek(String branch){
+    public List<Pelayanan> getListComboApotek(String branch) {
 
         List<Pelayanan> pelayananList = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -1404,7 +1503,7 @@ public class CheckupAction extends BaseMasterAction {
         return pelayananList;
     }
 
-    public List<Pelayanan> getListComboGudang(){
+    public List<Pelayanan> getListComboGudang() {
 
         List<Pelayanan> pelayananList = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -1423,7 +1522,7 @@ public class CheckupAction extends BaseMasterAction {
         return pelayananList;
     }
 
-    public List<Pelayanan> getListComboGudangByBranch(String branchId){
+    public List<Pelayanan> getListComboGudangByBranch(String branchId) {
 
         List<Pelayanan> pelayananList = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();

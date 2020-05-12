@@ -42,7 +42,9 @@
         <property name="lastUpdateWho">
             <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
         </property>
-
+        <property name="tarif">
+            <column name="tarif" sql-type="numeric" not-null="false" />
+        </property>
 
     </class>
 </hibernate-mapping>

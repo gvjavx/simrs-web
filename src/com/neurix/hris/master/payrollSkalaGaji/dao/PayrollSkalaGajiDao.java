@@ -64,7 +64,7 @@ public class PayrollSkalaGajiDao extends GenericDao<ImPayrollSkalaGajiEntity, St
         Iterator<BigInteger> iter=query.list().iterator();
         String sId = String.format("%06d", iter.next());
 
-        return "SG" + sId;
+        return "PYN" + sId;
     }
 
     public List<ImPayrollSkalaGajiEntity> getData(String golonganId){

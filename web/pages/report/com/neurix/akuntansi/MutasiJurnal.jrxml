@@ -21,7 +21,7 @@
 	<parameter name="reportParams.branchId" class="java.lang.String"/>
 	<parameter name="reportParams.areaId" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[SELECT
+		<![CDATA[SELECT DISTINCT
   a.no_jurnal,
   a.tanggal_jurnal,
   a.sumber,

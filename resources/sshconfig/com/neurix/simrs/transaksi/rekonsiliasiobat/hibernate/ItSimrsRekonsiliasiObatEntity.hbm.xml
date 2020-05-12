@@ -7,7 +7,6 @@
     <class name="com.neurix.simrs.transaksi.rekonsiliasiobat.model.ItSimrsRekonsiliasiObatEntity" dynamic-update="true"
            table="it_simrs_rekonsiliasi_obat" select-before-update="true" schema="public">
 
-
         <id name="id">
             <column name="id" sql-type="varchar" length="30" not-null="true" />
         </id>
@@ -18,10 +17,10 @@
             <column name="bentuk" sql-type="varchar" length="30" not-null="false"/>
         </property>
         <property name="dosis">
-            <column name="dosis" sql-type="varchar" length="10" not-null="false"/>
+            <column name="dosis" sql-type="varchar" length="100" not-null="false"/>
         </property>
         <property name="satuanDosis">
-            <column name="satuan_dosis" sql-type="varchar" length="10" not-null="false"/>
+            <column name="satuan_dosis" sql-type="varchar" length="100" not-null="false"/>
         </property>
         <property name="frekuensi">
             <column name="frekuensi" sql-type="varchar" length="10" not-null="false"/>
@@ -55,6 +54,31 @@
         </property>
         <property name="lastUpdateWho">
             <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
+        </property>
+
+        <property name="idDetailCheckup">
+            <column name="id_detail_checkup" sql-type="varchar" length="30" not-null="false" />
+        </property>
+        <property name="aturanPakai">
+            <column name="aturan_pakai" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="indikasi">
+            <column name="indikasi" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="diteruskan">
+            <column name="diteruskan" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="tanggal">
+            <column name="tanggal" sql-type="date" not-null="false" />
+        </property>
+        <property name="ttdPasien">
+            <column name="ttd_pasien" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="ttdApoteker">
+            <column name="ttd_apoteker" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="ruangan">
+            <column name="ruangan" sql-type="varchar" length="100" not-null="false" />
         </property>
     </class>
 </hibernate-mapping>

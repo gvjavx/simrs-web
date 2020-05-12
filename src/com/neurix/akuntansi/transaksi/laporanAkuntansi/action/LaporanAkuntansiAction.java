@@ -10,7 +10,9 @@ import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.akuntansi.transaksi.jurnal.model.Jurnal;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.bo.LaporanAkuntansiBo;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.Aging;
+import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.ArusKasDTO;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.LaporanAkuntansi;
+import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.PendapatanDTO;
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Branch;
 import com.neurix.common.action.BaseMasterAction;
@@ -48,8 +50,26 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
     private LaporanAkuntansi laporanAkuntansi;
     private String tipeLaporan;
     private JRBeanCollectionDataSource dataPrint;
-    List<Aging> myList = new ArrayList<>() ;
-    List<AkunSettingReportKeuanganKonsol> listKonsol= new ArrayList<>() ;
+    private List<Aging> myList = new ArrayList<>() ;
+    private List<PendapatanDTO> listPendapatanDokter = new ArrayList<>();
+    private List<AkunSettingReportKeuanganKonsol> listKonsol= new ArrayList<>() ;
+    private List<ArusKasDTO> arusKasDTOList = new ArrayList<>();
+
+    public List<ArusKasDTO> getArusKasDTOList() {
+        return arusKasDTOList;
+    }
+
+    public void setArusKasDTOList(List<ArusKasDTO> arusKasDTOList) {
+        this.arusKasDTOList = arusKasDTOList;
+    }
+
+    public List<PendapatanDTO> getListPendapatanDokter() {
+        return listPendapatanDokter;
+    }
+
+    public void setListPendapatanDokter(List<PendapatanDTO> listPendapatanDokter) {
+        this.listPendapatanDokter = listPendapatanDokter;
+    }
 
     public BranchBo getBranchBoProxy() {
         return branchBoProxy;
@@ -614,7 +634,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         LaporanAkuntansi dataAtasan = laporanAkuntansiBo.getNipDanNamaManagerKeuanganDanGeneralManager(data.getUnit());
         Branch branch = branchBo.getBranchById(data.getUnit(),"Y");
         String unit = "";
-        if (("KP").equalsIgnoreCase(data.getUnit())){
+        if (("All").equalsIgnoreCase(data.getUnit())){
             List<Branch> branchList = new ArrayList<>();
             branchList = branchBo.getAll();
             int i = 1;
@@ -626,6 +646,8 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
                 }
                 i++;
             }
+            branch.setLogoName(CommonConstant.IMAGE_LOGO_KP);
+            branch.setBranchName("Semua");
         }else{
             unit="'"+data.getUnit()+"'";
         }
@@ -667,7 +689,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         LaporanAkuntansi dataAtasan = laporanAkuntansiBo.getNipDanNamaManagerKeuanganDanGeneralManager(data.getUnit());
         Branch branch = branchBo.getBranchById(data.getUnit(),"Y");
         String unit = "";
-        if (("KP").equalsIgnoreCase(data.getUnit())){
+        if (("All").equalsIgnoreCase(data.getUnit())){
             List<Branch> branchList = new ArrayList<>();
             branchList = branchBo.getAll();
             int i = 1;
@@ -679,6 +701,8 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
                 }
                 i++;
             }
+            branch.setLogoName(CommonConstant.IMAGE_LOGO_KP);
+            branch.setBranchName("Semua");
         }else{
             unit="'"+data.getUnit()+"'";
         }
@@ -721,7 +745,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         LaporanAkuntansi dataAtasan = laporanAkuntansiBo.getNipDanNamaManagerKeuanganDanGeneralManager(data.getUnit());
         Branch branch = branchBo.getBranchById(data.getUnit(),"Y");
         String unit = "";
-        if (("KP").equalsIgnoreCase(data.getUnit())){
+        if (("All").equalsIgnoreCase(data.getUnit())){
             List<Branch> branchList = new ArrayList<>();
             branchList = branchBo.getAll();
             int i = 1;
@@ -733,6 +757,8 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
                 }
                 i++;
             }
+            branch.setLogoName(CommonConstant.IMAGE_LOGO_KP);
+            branch.setBranchName("Semua");
         }else{
             unit="'"+data.getUnit()+"'";
         }
@@ -775,7 +801,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         LaporanAkuntansi dataAtasan = laporanAkuntansiBo.getNipDanNamaManagerKeuanganDanGeneralManager(data.getUnit());
         Branch branch = branchBo.getBranchById(data.getUnit(),"Y");
         String unit = "";
-        if (("KP").equalsIgnoreCase(data.getUnit())){
+        if (("All").equalsIgnoreCase(data.getUnit())){
             List<Branch> branchList = new ArrayList<>();
             branchList = branchBo.getAll();
             int i = 1;
@@ -787,6 +813,8 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
                 }
                 i++;
             }
+            branch.setLogoName(CommonConstant.IMAGE_LOGO_KP);
+            branch.setBranchName("Semua");
         }else{
             unit="'"+data.getUnit()+"'";
         }
@@ -825,6 +853,8 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
             java.sql.Date tanggalAwal = CommonUtil.convertStringToDate(data.getStTanggalAwal());
             java.sql.Date tanggalAkhir = CommonUtil.convertStringToDate(data.getStTanggalAkhir());
 
+            String[] stTanggalAwalBulan = data.getStTanggalAwal().split("-");
+
             Calendar c = Calendar.getInstance();
             c.setTime(tanggalAkhir);
             c.add(Calendar.DATE, 1);
@@ -832,6 +862,8 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
             java.sql.Date tanggalAkhirBaru = new java.sql.Date(c.getTimeInMillis());
 
             reportParams.put("tanggalAwal",tanggalAwal );
+            reportParams.put("tanggalAwalBulan",CommonUtil.convertStringToDate2(stTanggalAwalBulan[2]+"-"+stTanggalAwalBulan[1]+"-01" ));
+            reportParams.put("periode",stTanggalAwalBulan[1]+"-"+stTanggalAwalBulan[2] );
             reportParams.put("tanggalAkhir", tanggalAkhirBaru);
             reportParams.put("periodeTitle", data.getStTanggalAwal()+" s/d "+data.getStTanggalAkhir());
             if (!("").equalsIgnoreCase(data.getMasterId())){
@@ -864,7 +896,8 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         TipeJurnal tipeJurnal= tipeJurnalBo.getTipeJurnalById(data.getTipeJurnalId());
         String titleReport="";
         String unit = "";
-        if (("KP").equalsIgnoreCase(data.getUnit())){
+        String result ="";
+        if (("All").equalsIgnoreCase(data.getUnit())){
             List<Branch> branchList = new ArrayList<>();
             branchList = branchBo.getAll();
             int i = 1;
@@ -876,10 +909,19 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
                 }
                 i++;
             }
+            branch.setLogoName(CommonConstant.IMAGE_LOGO_KP);
+            branch.setBranchName("Semua");
         }else{
             unit="'"+data.getUnit()+"'";
         }
-        titleReport="MUTASI "+tipeJurnal.getTipeJurnalName().toUpperCase();
+
+        if (("M").equalsIgnoreCase(data.getTipeLaporan())){
+            result = "print_report_mutasi_jurnal";
+            titleReport="MUTASI "+tipeJurnal.getTipeJurnalName().toUpperCase();
+        }else if (("da").equalsIgnoreCase(data.getTipeLaporan())){
+            titleReport="MUTASI DETAIL ACTIVITY "+tipeJurnal.getTipeJurnalName().toUpperCase();
+            result = "print_report_mutasi_jurnal_activity";
+        }
 
         reportParams.put("reportTitle", titleReport);
         reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
@@ -910,7 +952,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
             addActionError("Error, " + "[code=" + logId + "] Found problem when downloading data, please inform to your admin.");
         }
         logger.info("[LaporanAkuntansiAction.printReportMutasiJurnal] end process <<<");
-        return "print_report_mutasi_jurnal";
+        return result;
     }
 
     public String printReportClosingKasir(){
@@ -971,7 +1013,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         String reportId="RPT04";
         String report="";
         String unit = "";
-        if (("KP").equalsIgnoreCase(data.getUnit())){
+        if (("All").equalsIgnoreCase(data.getUnit())){
             List<Branch> branchList = new ArrayList<>();
             branchList = branchBo.getAll();
             int i = 1;
@@ -983,6 +1025,8 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
                 }
                 i++;
             }
+            branch.setLogoName(CommonConstant.IMAGE_LOGO_KP);
+            branch.setBranchName("Semua");
         }else{
             unit="'"+data.getUnit()+"'";
         }
@@ -1055,7 +1099,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         String titleReport="";
         String reportId="RPT12";
         String unit = "";
-        if (("KP").equalsIgnoreCase(data.getUnit())){
+        if (("All").equalsIgnoreCase(data.getUnit())){
             List<Branch> branchList = new ArrayList<>();
             branchList = branchBo.getAll();
             int i = 1;
@@ -1067,6 +1111,8 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
                 }
                 i++;
             }
+            branch.setLogoName(CommonConstant.IMAGE_LOGO_KP);
+            branch.setBranchName("Semua");
         }else{
             unit="'"+data.getUnit()+"'";
         }
@@ -1081,6 +1127,16 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
             case "PDM":
                 titleReport="LAPORAN PENDAPATAN PER MASTER";
                 result="print_report_akuntansi_ikhitisar_pendapatan_master";
+                break;
+            case "PDDOK":
+                titleReport="LAPORAN PENDAPATAN PER DOKTER PER TINDAKAN";
+                result="print_report_akuntansi_ikhitisar_pendapatan_dokter";
+                listPendapatanDokter = laporanAkuntansiBo.getPendapatan(reportId,unit,data.getBulan()+"-"+data.getTahun(),"PDDOK");
+                break;
+            case "PDA":
+                titleReport="LAPORAN PENDAPATAN PER ACTIVITY";
+                result="print_report_akuntansi_ikhitisar_pendapatan_activity";
+                listPendapatanDokter = laporanAkuntansiBo.getPendapatan(reportId,unit,data.getBulan()+"-"+data.getTahun(),"PDA");
                 break;
             case "PDD":
                 titleReport="LAPORAN PENDAPATAN PER DIVISI";
@@ -1130,7 +1186,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         String titleReport="";
         String reportId="RPT23";
         String unit = "";
-        if (("KP").equalsIgnoreCase(data.getUnit())){
+        if (("All").equalsIgnoreCase(data.getUnit())){
             List<Branch> branchList = new ArrayList<>();
             branchList = branchBo.getAll();
             int i = 1;
@@ -1142,6 +1198,8 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
                 }
                 i++;
             }
+            branch.setLogoName(CommonConstant.IMAGE_LOGO_KP);
+            branch.setBranchName("Semua");
         }else{
             unit="'"+data.getUnit()+"'";
         }
@@ -1215,6 +1273,8 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
                 }
                 i++;
             }
+            branch.setLogoName(CommonConstant.IMAGE_LOGO_KP);
+            branch.setBranchName("Semua");
         }else{
             unit="'"+dataLaporan.getUnit()+"'";
         }
@@ -1242,7 +1302,8 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
                 break;
         }
 
-        List<Aging> agingList = laporanAkuntansiBo.getAging(unit,periode,dataLaporan.getMasterId(),tipeAging,reportId,dataLaporan.getTipeLaporan());
+        String periodeAging = dataLaporan.getTahun()+"-"+dataLaporan.getBulan();
+        List<Aging> agingList = laporanAkuntansiBo.getAging(unit,periodeAging,dataLaporan.getMasterId(),tipeAging,reportId,dataLaporan.getTipeLaporan());
         List<Aging> listOfAgingTemp = new ArrayList<>();
         if (agingList.size()==0){
             return "print_report_akuntansi_aging";
@@ -1618,7 +1679,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         String titleReport="";
         String reportId="RPT21";
         String unit = "";
-        if (("KP").equalsIgnoreCase(data.getUnit())){
+        if (("All").equalsIgnoreCase(data.getUnit())){
             List<Branch> branchList = new ArrayList<>();
             branchList = branchBo.getAll();
             int i = 1;
@@ -1630,6 +1691,8 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
                 }
                 i++;
             }
+            branch.setLogoName(CommonConstant.IMAGE_LOGO_KP);
+            branch.setBranchName("Semua");
         }else{
             unit="'"+data.getUnit()+"'";
         }
@@ -1640,10 +1703,12 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
             case "AK":
                 titleReport="LAPORAN ARUS KAS";
                 result="print_report_arus_kas";
+                arusKasDTOList = laporanAkuntansiBo.getArusKas(reportId,unit,data.getStTanggalAwal(),"AK");
                 break;
             case "ARD":
                 titleReport="LAPORAN ARUS KAS DETAIL";
                 result="print_report_arus_kas_detail";
+                arusKasDTOList = laporanAkuntansiBo.getArusKas(reportId,unit,data.getStTanggalAwal(),"ARD");
                 break;
         }
 

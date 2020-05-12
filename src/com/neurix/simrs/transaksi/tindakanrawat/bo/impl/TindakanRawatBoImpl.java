@@ -78,6 +78,7 @@ public class TindakanRawatBoImpl implements TindakanRawatBo {
                 tindakanRawatEntity.setCreatedWho(bean.getCreatedWho());
                 tindakanRawatEntity.setLastUpdate(bean.getLastUpdate());
                 tindakanRawatEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                tindakanRawatEntity.setApproveFlag(bean.getApproveFlag());
 
                 try {
                     tindakanRawatDao.addAndSave(tindakanRawatEntity);
@@ -284,6 +285,9 @@ public class TindakanRawatBoImpl implements TindakanRawatBo {
             }
             if(tindakanEntity != null){
                 tindakanRawat.setIdKategoriTindakan(tindakanEntity.getIdKategoriTindakan());
+                tindakanRawat.setKategoriInaBpjs(tindakanEntity.getKategoriInaBpjs());
+//                tindakanRawat.setTarifBpjs(tindakanEntity.getTarifBpjs());
+//                tindakanRawat.setTarif(tindakanEntity.getTarif());
             }
 
             results.add(tindakanRawat);

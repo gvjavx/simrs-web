@@ -18,6 +18,7 @@ public class Master extends BaseModel {
     private String noTelp;
 
     private String nomorVendor;
+    private String noMaster;
 
     public String getEmail() {
         return email;
@@ -75,4 +76,11 @@ public class Master extends BaseModel {
         this.npwp = npwp;
     }
 
+    public String getNoMaster() {
+        return noMaster;
+    }
+
+    public void setNoMaster(String noMaster) {
+        this.noMaster = noMaster;
+    }
 }
