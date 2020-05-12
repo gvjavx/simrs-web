@@ -121,6 +121,25 @@ public class HeaderCheckup {
     private String keterangan;
     private String isLaka;
 
+    private String belumBayarUangMuka;
+    private Integer noAntrian;
+
+    public Integer getNoAntrian() {
+        return noAntrian;
+    }
+
+    public void setNoAntrian(Integer noAntrian) {
+        this.noAntrian = noAntrian;
+    }
+
+    public String getBelumBayarUangMuka() {
+        return belumBayarUangMuka;
+    }
+
+    public void setBelumBayarUangMuka(String belumBayarUangMuka) {
+        this.belumBayarUangMuka = belumBayarUangMuka;
+    }
+
     public String getIsLaka() {
         return isLaka;
     }
