@@ -5,6 +5,7 @@
 <script type='text/javascript' src='<s:url value="/dwr/interface/NotifAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/CutiPegawaiAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/UserAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/TransaksiObatAction.js"/>'></script>
 <script type="text/javascript">
 
     function loadDataLogin() {
@@ -209,11 +210,51 @@
         $("#inner7").html(tmp_data_panjang);
         $("#count7").html(tmp_jml_panjang);
     }
+
+    function pushNotifResep(){
+        cekNotifResep();
+        setInterval(function () {
+            cekNotifResep();
+        }, 5000);
+    }
+
+    function cekNotifResep(){
+        TransaksiObatAction.pushNotifResep(function (res) {
+            var listResep = "";
+            if(res.length > 0){
+                $.each(res, function (i, item) {
+                    listResep += '<li>' +
+                        '<a href="<%= request.getContextPath() %>/reseppoli/searchResep_reseppoli.action?id='+item.idDetailCheckup+'&idPermintaan='+item.idPermintaanResep+'">' +
+                        '<i class="fa fa-info-circle text-green"></i> <small style="margin-left: -8px">'+' ['+item.idPermintaanResep +']'+' '+item.namaPasien+'</small><br>' +
+                        '</a>' +
+                        '</li>';
+                });
+                $('#inner2').html(listResep);
+                $('#count2').html(res.length);
+                $('#count3').html(res.length);
+            }else{
+                $('#inner2').html(listResep);
+                $('#count2').html('');
+                $('#count3').html('');
+            }
+        });
+    }
+
+    function cekRole(){
+        TransaksiObatAction.cekRole(function (res) {
+            if(res == "ADMIN APOTEK"){
+                pushNotifResep();
+            }
+        })
+    }
+
     $(document).ready(function() {
         loadDataLogin();
         loadUser();
         loadNotif();
         loadPegawaiCuti();
+        cekRole();
+
         $('.pemberitahuan').on('click', function() {
             var my = $(this).data('id');
             var theArray = my.split("~");

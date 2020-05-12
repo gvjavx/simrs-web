@@ -382,7 +382,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "AND a.branch_id LIKE :branchId \n" +
                 pelayanan +
                 "AND CAST(a.created_date AS date) = current_date\n" +
-                "ORDER BY c.nama_pelayanan, b.tgl_antrian ASC";
+                "ORDER BY b.tgl_antrian, c.nama_pelayanan ASC";
 
         List<Object[]> result = new ArrayList<>();
         result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -391,7 +391,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
 
         if (!result.isEmpty()) {
 
-            Integer index = 0;
+            Integer index = 1;
             for (Object[] obj : result) {
 
                 HeaderCheckup headerCheckup = new HeaderCheckup();
@@ -493,7 +493,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
 
         String SQL = "SELECT a.id_pasien, a.nama, a.desa_id, d.desa_name, b.id_pelayanan,\n" +
                 "c.nama_pelayanan, d.kecamatan_id, e.kecamatan_name, b.tgl_antrian, rc.flag_racik,\n" +
-                "pr.id_permintaan_resep\n" +
+                "pr.id_permintaan_resep, pr.status\n" +
                 "FROM it_simrs_header_checkup a\n" +
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                 "INNER JOIN im_hris_desa d ON CAST(a.desa_id AS character varying) = d.desa_id\n" +
@@ -546,6 +546,14 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     checkup.setKetRacik("Obat Racik, Harap Menunggu");
                 }
                 checkup.setIdPermintaanResep(obj[10].toString());
+                if(obj[11] != null){
+                    if("0".equalsIgnoreCase(obj[11].toString())){
+                        checkup.setStatusPeriksaName("Antrian");
+                    }
+                    if("1".equalsIgnoreCase(obj[12].toString())){
+                        checkup.setStatusPeriksaName("Proses");
+                    }
+                }
                 listOfResult.add(checkup);
             }
         }

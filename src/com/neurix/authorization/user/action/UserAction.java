@@ -931,25 +931,26 @@ public class UserAction extends BaseMasterAction {
     public User getUserData(){
         logger.info("[UserAction.getUserData] start process >>>");
 
-        String branchId = CommonUtil.userBranchLogin();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
 
+        String branchId = CommonUtil.userBranchLogin();
         User user = new User();
         user.setUsername(CommonUtil.userLogin());
         user.setBranchName(CommonUtil.userBranchNameLogin());
         user.setAreaName(CommonUtil.userAreaName());
 
-        if("RS01".equalsIgnoreCase(branchId)){
-            user.setLogoBranch(ServletActionContext.getRequest().getContextPath() +CommonConstant.LOGO_RS01);
-        }else if("RS02".equalsIgnoreCase(branchId)){
-            user.setLogoBranch(ServletActionContext.getRequest().getContextPath() +CommonConstant.LOGO_RS02);
-        }else if("RS03".equalsIgnoreCase(branchId)){
-            user.setLogoBranch(ServletActionContext.getRequest().getContextPath() +CommonConstant.LOGO_RS03);
-        }else if("KP".equalsIgnoreCase(branchId)){
-            user.setLogoBranch(ServletActionContext.getRequest().getContextPath() +CommonConstant.LOGO_KP);
+        Branch branches = new Branch();
+
+        try {
+            branches = branchBo.getBranchById(branchId, "Y");
+        } catch (GeneralBOException e) {
+            logger.error("Found Error when searhc branch logo");
         }
 
-        logger.info("[UserAction.getUserData] PATH LOGO : "+user.getLogoBranch());
-        logger.info("[UserAction.getUserData] GET CONTEXT : "+ServletActionContext.getRequest().getContextPath());
+        if (branches.getBranchId() != null) {
+            user.setLogoBranch(ServletActionContext.getRequest().getContextPath() +CommonConstant.RESOURCE_PATH_IMAGES+branches.getLogoName());
+        }
 
         logger.info("[UserAction.getUserData] end process <<<");
         return user;

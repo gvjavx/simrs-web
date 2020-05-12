@@ -59,6 +59,16 @@ public class PermintaanResep{
     private String namaApoteker;
     private String jenisResep;
 
+    private String isRead;
+
+    public String getIsRead() {
+        return isRead;
+    }
+
+    public void setIsRead(String isRead) {
+        this.isRead = isRead;
+    }
+
     private String approveFlag;
 
     public String getApproveFlag() {
