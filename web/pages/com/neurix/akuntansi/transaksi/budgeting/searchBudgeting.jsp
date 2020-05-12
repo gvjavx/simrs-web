@@ -10,6 +10,22 @@
     <%@ include file="/pages/common/header.jsp" %>
     <style>
         .modal { overflow-y: auto}
+
+        /*--body { background-color:#fafafa; font-family:'Open Sans';}*/
+        /*.container { margin:150px auto;}*/
+        .treegrid-collapsed {
+            background-color: #bfbfbf;
+        }
+        .treegrid-expanded {
+            background-color: #e6e6e6;
+        }
+
+        .treegrid-indent {width:16px; height: 16px; display: inline-block; position: relative;}
+
+        .treegrid-expander { width:16px; height: 16px; display: inline-block; position: relative; cursor: pointer;}
+
+        /*.treegrid-expander-expanded{background-image: url(collapse.png); }
+        .treegrid-expander-collapsed{background-image: url(expand.png);}*/
     </style>
 
     <script type='text/javascript' src='<s:url value="/dwr/interface/BranchAction.js"/>'></script>
@@ -17,6 +33,9 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/TutuPeriodAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/BudgetingAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/KodeRekeningAction.js"/>'></script>
+    <script src="<s:url value="/pages/plugins/tree/jquery.treegrid.bootstrap3.js"/>"></script>
+    <script src="<s:url value="/pages/plugins/tree/jquery.treegrid.js"/>"></script>
+    <script src="<s:url value="/pages/plugins/tree/lodash.js"/>"></script>
     <script type='text/javascript'>
 
         $( document ).ready(function() {
@@ -25,10 +44,6 @@
         });
 
     </script>
-
-    <script src="<s:url value="/pages/plugins/tree/jquery.treegrid.bootstrap3.js"/>"></script>
-    <script src="<s:url value="/pages/plugins/tree/jquery.treegrid.js"/>"></script>
-    <script src="<s:url value="/pages/plugins/tree/lodash.js"/>"></script>
 </head>
 
 <body class="hold-transition skin-blue fixed sidebar-mini">
@@ -139,10 +154,10 @@
                                 <div class="row">
                                     <div class="col-md-6 col-md-offset-4" style="margin-top: 10px">
                                         <button class="btn btn-success" onclick="search()"><i class="fa fa-search"></i> Search</button>
-                                        <button class="btn btn-success" onclick="add()" id="btn-add" style="display: inline-block;"><i class="fa fa-plus"></i> Add</button>
+                                        <button class="btn btn-primary" onclick="add()" id="btn-add"><i class="fa fa-plus"></i> Add</button>
                                         <div class="btn-group">
-                                            <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Action</button>
-                                            <button type="button" class="btn btn-success dropdown-toggle"
+                                            <button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Action</button>
+                                            <button type="button" class="btn btn-primary dropdown-toggle"
                                                     data-toggle="dropdown" style="height: 34px">
                                                 <span class="caret"></span>
                                                 <span class="sr-only">Toggle Dropdown</span>
@@ -150,7 +165,7 @@
                                             <ul class="dropdown-menu" role="menu" id="action-menu">
                                             </ul>
                                         </div>
-                                        <button class="btn btn-success" onclick=""><i class="fa fa-refresh"></i> Reset</button>
+                                        <button class="btn btn-danger" onclick="reset()"><i class="fa fa-refresh"></i> Reset</button>
                                     </div>
                                 </div>
                             </div>
@@ -160,8 +175,8 @@
 
                     <div class="box-header with-border"></div>
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-th-list"></i> List Data
-                            <%--List Tutup Period <strong><span id="label-tahun"></span> - <span id="label-bulan"></span></strong> --%>
+                        <h3 class="box-title"><i class="fa fa-th-list"></i> List Data Budgeting :
+                        <strong><span id="label-tahun"></span> - <span id="label-unit"></span></strong>
                         </h3>
                     </div>
                     <div class="box-body">
@@ -173,7 +188,7 @@
 
                         <div class="alert alert-success alert-dismissable" id="alert-success" style="display: none">
                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                            <strong>Success!</strong> Berhasil Menyimpan data
+                            <center><h5><strong>Loading ...</strong> Mencari data </h5></center>
                         </div>
 
                         <div class="alert alert-warning alert-dismissable" id="alert-error" style="display: none">
@@ -183,23 +198,24 @@
 
                         <div class="row">
                             <div class="col-md-12">
-                                <table class="table table-bordered table-striped">
+                                <table class="tree table table-bordered table-striped">
                                     <thead id="head-budgeting">
                                         <tr bgcolor="#90ee90">
-                                            <td>Action</td>
                                             <td style="width: 20%">COA</td>
-                                            <td align="center">Keterangan</td>
+                                            <td align="">Keterangan</td>
                                             <td align="center">Nilai Draf</td>
                                             <td align="center">Nilai Final</td>
                                             <td align="center">Nilai Revisi</td>
+                                            <td align="">No. Budgeting</td>
+                                            <td>Action</td>
                                         </tr>
                                     </thead>
-                                    <tbody id="body-budgeting">
+                                    <tbody id="body-budgeting" style="font-size: 13px">
                                     </tbody>
-                                    <input type="hidden" id="index-period"/>
-                                    <input type="hidden" id="index-branch"/>
-                                    <input type="hidden" id="bulan"/>
-                                    <input type="hidden" id="tahun"/>
+                                    <%--<input type="hidden" id="index-period"/>--%>
+                                    <%--<input type="hidden" id="index-branch"/>--%>
+                                    <%--<input type="hidden" id="bulan"/>--%>
+                                    <%--<input type="hidden" id="tahun"/>--%>
                                 </table>
                             </div>
                         </div>
@@ -217,22 +233,18 @@
     <!-- /.content -->
 </div>
 
+
 <%--<div class="modal fade" id="modal-confirm-dialog">--%>
     <%--<div class="modal-dialog modal-sm">--%>
         <%--<div class="modal-content">--%>
             <%--<div class="modal-header">--%>
                 <%--<button type="button" class="close" data-dismiss="modal" aria-label="Close">--%>
                     <%--<span aria-hidden="true">&times;</span></button>--%>
-                <%--<h4 class="modal-title"><i class="fa fa-info"></i> Confirmation--%>
+                <%--<h4 class="modal-title"><i class="fa fa-info"></i> Loading Dialog--%>
                 <%--</h4>--%>
             <%--</div>--%>
             <%--<div class="modal-body">--%>
-                <%--<h4 class="text-center">Do you want save this record?</h4>--%>
-            <%--</div>--%>
-            <%--<div class="modal-footer">--%>
-                <%--<button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No--%>
-                <%--</button>--%>
-                <%--<button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes</button>--%>
+                <%--<h4 class="text-center">Loading ... </h4>--%>
             <%--</div>--%>
         <%--</div>--%>
     <%--</div>--%>
@@ -243,7 +255,6 @@
     function changeAction(var1){
 
         var tahun = $("#sel-tahun").val();
-//        var unit = $("#sel-unit").val();
         var unit = var1;
 
         BudgetingAction.findLastStatus(unit, tahun, function(response){
@@ -532,31 +543,33 @@
         return [year, month, day].join('-');
     }
 
-
     function add() {
-
         var host = firstpath()+"/budgeting/add_budgeting.action";
         post(host);
-
-//        var tahun = $("#sel-tahun").val();
-//        var unit = $("#sel-unit").val();
-//
-//        BudgetingAction.checkTransaksiBudgeting(unit, tahun, function(response){
-//
-//            if (response.branchId == null && response.tahun == null){
-//                var host = firstpath()+"/budgeting/add_budgeting.action";
-//                post(host);
-//            } else {
-//                alert("Data Sudah Ada. di tahun "+response.tahun);
-//            }
-//        });
     }
+
+    function reset() {
+        var host = firstpath()+"/budgeting/initForm_budgeting.action";
+        post(host);
+    }
+
+    $('.tree').treegrid({
+        expanderExpandedClass: 'glyphicon glyphicon-minus',
+        expanderCollapsedClass: 'glyphicon glyphicon-plus'
+    });
 
     function search() {
         var tahun = $("#sel-tahun").val();
         var unit = $("#sel-unit").val();
+        var unitName = $("#sel-unit :selected").text();
         var status = $("#sel-status").val();
         var rekeningid = $("#rekeningid").val();
+        var data = [];
+        var data2 = [];
+
+        $("#alert-success").show();
+        $("#label-unit").text(unitName);
+        $("#label-tahun").text(tahun);
 
         if (unit != ""){
             var arr = [];
@@ -568,32 +581,84 @@
             });
 
             var strJson = JSON.stringify(arr);
+            dwr.engine.setAsync(true);
             BudgetingAction.getSearchListBudgeting(strJson, function (response) {
+                dwr.engine.setAsync(false);
+                $("#alert-success").hide();
                 if (response.status == "error"){
                     $("#alert-error").show().fadeOut(5000);
                     $("#error-msg").text(response.msg);
                 } else {
 
-                    var tipe = "";
-                    var strList = "";
-                    $.each(response.list, function (i, item) {
-                        strList += "<tr>" +
-                            "<td align='center'>"+actionView(item.idBudgeting, item.level)+"</td>"+
-                            "<td>"+item.kodeRekening+"</td>"+
-                            "<td>"+item.namaKodeRekening+"</td>"+
-                            "<td>"+formatRupiah(item.nilaiDraf)+"</td>"+
-                            "<td>"+formatRupiah(item.nilaiFinal)+"</td>"+
-                            "<td>"+formatRupiah(item.nilaiRevisi)+"</td>"+
-                            "</tr>";
-                    });
-                }
+                    data = response.list;
+                    data2 = new Array();
+                    $.each(data, function(i,item){
+                        console.log(item.rekeningId);
+                        data2.push({_id : item.rekeningId, level : item.level,  nama : item.namaKodeRekening, parent : item.parentId, coa : item.kodeRekening,
+                            nilaiDraf : item.nilaiDraf, nilaiFinal : item.nilaiFinal, nilaiRevisi : item.nilaiRevisi, noBudgeting : item.noBudgeting,
+                            idBudgeting : item.idBudgeting});
 
+                    });
+                    function hierarhySort(hashArr, key, result) {
+                        if (hashArr[key] == undefined){
+                            //level--;
+                            return;
+                        }else{
+                            var arr = [] ;
+                            arr  = hashArr[key];
+                        }
+                        for (var i=0; i<arr.length; i++) {
+                            result.push(arr[i]);
+                            hierarhySort(hashArr, arr[i]._id, result);
+                        }
+                        return result;
+                    }
+                    var hashArr = {};
+                    for (var i=0; i<data2.length; i++) {
+                        if (hashArr[data2[i].parent] == undefined) {
+                            hashArr[data2[i].parent] = [];
+                        }
+                        hashArr[data2[i].parent].push(data2[i]);
+                    }
+
+                    console.log("loop")
+                    var strList = "";
+                    for(i = 0 ; i < data2.length ; i++){
+                        if(data2[i].parent == "-"){
+                            strList += '<tr style="font-size: 12px;" class=" treegrid-' + data2[i]._id+ '">' +
+                                '<td >' + data2[i].coa + '</td>' +
+                                '<td >' + data2[i].nama + '</td>' +
+                                "<td align='right'>"+formatRupiah(data2[i].nilaiDraf)+"</td>"+
+                                "<td align='right'>"+formatRupiah(data2[i].nilaiFinal)+"</td>"+
+                                "<td align='right'>"+formatRupiah(data2[i].nilaiRevisi)+"</td>"+
+                                "<td>"+data2[i].noBudgeting+"</td>"+
+                                "<td align='center'>"+actionView(data2[i].idBudgeting, data2[i].level)+"</td>"+
+                                "</tr>";
+                        } else {
+                            strList += '<tr style="font-size: 12px" class=" treegrid-' + data2[i]._id + ' treegrid-parent-' + data2[i].parent + '">' +
+                                + '<td style="border: 2px solid black;">' +
+                                '<td >' + data2[i].coa + '</td>' +
+                                '<td >' + data2[i].nama + '</td>' +
+                                "<td align='right'>"+formatRupiah(data2[i].nilaiDraf)+"</td>"+
+                                "<td align='right'>"+formatRupiah(data2[i].nilaiFinal)+"</td>"+
+                                "<td align='right'>"+formatRupiah(data2[i].nilaiRevisi)+"</td>"+
+                                "<td>"+data2[i].noBudgeting+"</td>"+
+                                "<td align='center'>"+actionView(data2[i].idBudgeting, data2[i].level)+"</td>"+
+                                "</tr>";
+                        }
+                    }
+                }
                 $("#body-budgeting").html(strList);
-            })
+                $('.tree').treegrid({
+                    expanderExpandedClass: 'glyphicon glyphicon-minus',
+                    expanderCollapsedClass: 'glyphicon glyphicon-plus'
+                });
+            });
         } else {
+            $("#alert-success").hide();
+            $("#body-budgeting").html("");
             alert("Pilih Unit Terlebih Dahulu")
         }
-
     }
 
     function actionView(var1, var2) {
@@ -674,7 +739,6 @@
         } else {
             alert("Pilih Unit dan Tahun Dulu.")
         }
-
     }
 
 </script>

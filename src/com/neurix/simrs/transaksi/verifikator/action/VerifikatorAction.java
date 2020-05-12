@@ -998,7 +998,7 @@ public class VerifikatorAction extends BaseMasterAction {
                 }
             }
 
-            String catatan = "Closing Pasien "+ketPoli+" BPJS "+ketObat+" No Pasien "+idPasien;
+            String catatan = "Closing Pasien "+ketPoli+" BPJS "+ketObat+". No Detail Checkup "+idDetailCheckup+". No Pasien "+idPasien;
 
             String noJurnal = "";
             try {
@@ -1270,7 +1270,7 @@ public class VerifikatorAction extends BaseMasterAction {
             }
         }
 
-        String catatan = "Closing" + ketPoli + company + jenisPasien + "No. RM "+ headerChekupEntity.getIdPasien() + noKartu ;
+        String catatan = "Closing" + ketPoli + company + jenisPasien + " No Detail Checkup "+ idDetailCheckup + " No. RM "+ headerChekupEntity.getIdPasien() + noKartu ;
         String noJurnal = "";
         try {
             noJurnal = billingSystemBo.createJurnal(transId, hsCriteria, branchId, catatan, "Y");

@@ -1570,7 +1570,7 @@
                         <label class="col-md-3" style="margin-top: 7px">Apotek</label>
                         <div class="col-md-7">
                             <s:action id="initApotek" namespace="/checkup"
-                                      name="getComboApotek_checkup"/>
+                                      name="getComboApotekRi_checkup"/>
                             <s:select cssStyle="margin-top: 7px; width: 100%"
                                       list="#initApotek.listOfApotek" id="resep_apotek"
                                       listKey="idPelayanan + '|' + namaPelayanan"

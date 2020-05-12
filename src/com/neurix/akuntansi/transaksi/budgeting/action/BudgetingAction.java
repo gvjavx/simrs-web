@@ -654,32 +654,6 @@ public class BudgetingAction {
         sessionDetail.add(budgetingDetail);
         sessionDetailEdit.add(budgetingDetail);
 
-            // mencari kepala & sum kepala
-//            String rekeningId = budgetingDetail.getRekeningId();
-//            List<Budgeting> budgetingList = budgetingSessionList.stream().filter(p -> p.getRekeningId().equalsIgnoreCase(rekeningId)).collect(Collectors.toList());
-//            if (budgetingList.size() > 0){
-//                // jika ditemukan parent ditemukan
-//
-//                String parentId = budgetingList.get(0).getParentId();
-//                for (Budgeting budgeting : budgetingList){
-//
-//                    Budgeting parent = budgetingSessionList.stream().filter(p -> p.getRekeningId().equalsIgnoreCase(parentId)).collect(Collectors.toList()).get(0);
-//                    if (parent != null){
-////                        parent = kosongkanNilaiBudgeting(parent);
-//                        parent.setNilaiTotal(budgeting.getNilaiTotal().add(parent.getNilaiTotal()));
-//                        parent.setSemester1(budgeting.getSemester1().add(parent.getSemester1()));
-//                        parent.setSemester2(budgeting.getSemester2().add(parent.getSemester2()));
-//                        parent.setQuartal1(budgeting.getQuartal1().add(parent.getQuartal1()));
-//                        parent.setQuartal2(budgeting.getQuartal2().add(parent.getQuartal2()));
-//                        parent.setQuartal3(budgeting.getQuartal3().add(parent.getQuartal3()));
-//                        parent.setQuartal4(budgeting.getQuartal4().add(parent.getQuartal4()));
-//                    }
-//                    budgetingSessionList.remove(parent);
-//                    budgetingSessionList.add(parent);
-//                }
-//            }
-//        }
-
         // SUM KEPALA BUDGETING
         Long level = budgetingBo.getlastLevelKodeRekening();
         List<Budgeting> childBudgeting = budgetingSessionList.stream().filter(p -> p.getLevel().compareTo(level) == 0).collect(Collectors.toList());
@@ -949,35 +923,6 @@ public class BudgetingAction {
                 // update detail
                 sessionDetail.remove(budgetingDetail);
                 sessionDetail.add(budgetingDetail);
-
-                // update session budgeting
-//                for (Budgeting budgeting : budgetingSessionList){
-//                    if (budgeting.getRekeningId().equalsIgnoreCase(rekeningId)){
-//
-//                        budgeting.setNilaiTotal(nullEscape(budgeting.getNilaiTotal()));
-//                        budgeting.setSemester1(nullEscape(budgeting.getSemester1()));
-//                        budgeting.setSemester2(nullEscape(budgeting.getSemester2()));
-//                        budgeting.setQuartal1(nullEscape(budgeting.getQuartal1()));
-//                        budgeting.setQuartal2(nullEscape(budgeting.getQuartal2()));
-//                        budgeting.setQuartal3(nullEscape(budgeting.getQuartal3()));
-//                        budgeting.setQuartal4(nullEscape(budgeting.getQuartal4()));
-//
-//                        if ("quartal1".equalsIgnoreCase(budgetingDetail.getTipe()))
-//                            budgeting.setQuartal1(budgetingDetail.getSubTotal());
-//                        if ("quartal2".equalsIgnoreCase(budgetingDetail.getTipe()))
-//                            budgeting.setQuartal2((budgetingDetail.getSubTotal()));
-//                        if ("quartal3".equalsIgnoreCase(budgetingDetail.getTipe()))
-//                            budgeting.setQuartal3((budgetingDetail.getSubTotal()));
-//                        if ("quartal4".equalsIgnoreCase(budgetingDetail.getTipe()))
-//                            budgeting.setQuartal4((budgetingDetail.getSubTotal()));
-//                        if ("semester1".equalsIgnoreCase(budgetingDetail.getTipe()))
-//                            budgeting.setSemester1((budgetingDetail.getSubTotal()));
-//                        if ("semester2".equalsIgnoreCase(budgetingDetail.getTipe()))
-//                            budgeting.setSemester2((budgetingDetail.getSubTotal()));
-//
-//                        budgeting.setNilaiTotal(budgeting.getNilaiTotal().add(budgetingDetail.getSubTotal()));
-//                    }
-//                }
             }
         }
 
@@ -1061,7 +1006,6 @@ public class BudgetingAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<Budgeting> budgetingSessionList = (List<Budgeting>) session.getAttribute("listOfCoa");
         List<BudgetingDetail> sessionDetail = (List<BudgetingDetail>) session.getAttribute("listOfDetail");
-        List<BudgetingDetail> sessionDetailEdit = (List<BudgetingDetail>) session.getAttribute("listOfDetailEdit");
         List<BudgetingPengadaan> sessionPengadaan = (List<BudgetingPengadaan>) session.getAttribute("listOfPengadaan");
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -1091,11 +1035,17 @@ public class BudgetingAction {
             pengadaan.setIdBudgetingDetail(budgetingDetail.getIdBudgetingDetail());
 
             // set nilai pengadaan;
+            budgetingDetail.setIdBudgeting(budgetingBo.generateBudgetingDetailId());
+            budgetingDetail.setDivisiName(namaPengadaan);
+            budgetingDetail.setRekeningId(rekeningId);
+            budgetingDetail.setTipe(tipe);
             budgetingDetail.setQty(budgetingDetail.getQty().add(pengadaan.getQty()));
             budgetingDetail.setNilai(budgetingDetail.getNilai().add(pengadaan.getNilai()));
             budgetingDetail.setSubTotal(budgetingDetail.getSubTotal().add(pengadaan.getSubTotal()));
         }
 
+        sessionDetail.add(budgetingDetail);
+        sessionPengadaan.addAll(pengadaans);
         return response;
     }
 
@@ -1118,6 +1068,35 @@ public class BudgetingAction {
         BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
 
         return budgetingBo.checkBudgeting(branch, tahun);
+    }
+
+    public List<Budgeting> getListOfCoaBudgetingSession(){
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<Budgeting> budgetingSessionList = (List<Budgeting>) session.getAttribute("listOfCoa");
+
+        Collections.sort(budgetingSessionList, Budgeting.getKodeRekeningSorting());
+        if (budgetingSessionList != null){
+            return budgetingSessionList;
+        }
+        return new ArrayList<>();
+    }
+
+    public BudgetingDetail checkBudgetingDivisi(String tipe, String divisiId, String rekeningId){
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<BudgetingDetail> sessionDetailEdit = (List<BudgetingDetail>) session.getAttribute("listOfDetailEdit");
+
+        // collect budgeting dengan parameter
+        List<BudgetingDetail> budgetingDetails = sessionDetailEdit.stream().filter(
+                p -> p.getTipe().equalsIgnoreCase(tipe)
+                && p.getDivisiId().equalsIgnoreCase(divisiId)
+                && p.getRekeningId().equalsIgnoreCase(rekeningId)
+        ).collect(Collectors.toList());
+
+        if (budgetingDetails.size() > 0){
+            return budgetingDetails.get(0);
+        }
+
+        return null;
     }
 
     public void setBudgetingBoProxy(BudgetingBo budgetingBoProxy) {
