@@ -1501,6 +1501,19 @@ public class CheckupAction extends BaseMasterAction {
         return "init_add";
     }
 
+    public String getComboAllApotek() {
+        List<Pelayanan> pelayananList = new ArrayList<>();
+        try {
+            pelayananList = pelayananBoProxy.getListApotek(CommonUtil.userBranchLogin(), "");
+        } catch (HibernateException e) {
+            logger.error("[CheckupAction.getComboPelayanan] Error when get data for combo listOfPelayanan", e);
+            addActionError(" Error when get data for combo listOfPelayanan" + e.getMessage());
+        }
+
+        listOfApotek.addAll(pelayananList);
+        return "init_add";
+    }
+
     public List<Pelayanan> getListComboApotek(String branch) {
 
         List<Pelayanan> pelayananList = new ArrayList<>();

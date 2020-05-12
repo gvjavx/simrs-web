@@ -56,7 +56,7 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
                 "id_pelayanan, \n" +
                 "nama_pelayanan \n" +
                 "FROM im_simrs_pelayanan\n" +
-                "WHERE LIKE :tipe \n" +
+                "WHERE tipe_pelayanan ILIKE :tipe\n" +
                 "AND branch_id = :branchId\n" +
                 "AND flag = 'Y'";
 
