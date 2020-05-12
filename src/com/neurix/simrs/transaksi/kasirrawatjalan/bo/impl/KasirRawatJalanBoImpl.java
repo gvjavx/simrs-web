@@ -477,4 +477,9 @@ public class KasirRawatJalanBoImpl implements KasirRawatJalanBo {
     public ImAkunPembayaranEntity getPembayaranEntityByCoa(String coa) throws GeneralBOException {
         return pembayaranDao.getById("coa", coa);
     }
+
+    @Override
+    public ItSimrsUangMukaPendaftaranEntity getUangMukaEntityById(String id) throws GeneralBOException {
+        return uangMukaDao.getById("id", id);
+    }
 }

@@ -1475,10 +1475,23 @@ public class CheckupAction extends BaseMasterAction {
         return pelayananList;
     }
 
+    public String getComboApotekRi() {
+        List<Pelayanan> pelayananList = new ArrayList<>();
+        try {
+            pelayananList = pelayananBoProxy.getListApotek(CommonUtil.userBranchLogin(), "apotek_ri");
+        } catch (HibernateException e) {
+            logger.error("[CheckupAction.getComboPelayanan] Error when get data for combo listOfPelayanan", e);
+            addActionError(" Error when get data for combo listOfPelayanan" + e.getMessage());
+        }
+
+        listOfApotek.addAll(pelayananList);
+        return "init_add";
+    }
+
     public String getComboApotek() {
         List<Pelayanan> pelayananList = new ArrayList<>();
         try {
-            pelayananList = pelayananBoProxy.getListApotek(CommonUtil.userBranchLogin());
+            pelayananList = pelayananBoProxy.getListApotek(CommonUtil.userBranchLogin(), "apotek");
         } catch (HibernateException e) {
             logger.error("[CheckupAction.getComboPelayanan] Error when get data for combo listOfPelayanan", e);
             addActionError(" Error when get data for combo listOfPelayanan" + e.getMessage());
@@ -1494,7 +1507,7 @@ public class CheckupAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
         try {
-            pelayananList = pelayananBo.getListApotek(branch);
+            pelayananList = pelayananBo.getListApotek(branch, "");
         } catch (HibernateException e) {
             logger.error("[CheckupAction.getComboPelayanan] Error when get data for combo listOfPelayanan", e);
             addActionError(" Error when get data for combo listOfPelayanan" + e.getMessage());

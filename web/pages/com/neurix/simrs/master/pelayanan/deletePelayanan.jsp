@@ -163,8 +163,8 @@
                         </td>
                         <td>
                             <table>
-                                <s:select list="#{'igd':'IGD', 'rawat_jalan' : 'Rawat Jalan', 'apotek' : 'Apotek',
-                                                                'rawat_inap' : 'Rawat Inap', 'radiologi' : 'Radiologi', 'lab' : 'LAB'}"
+                                <s:select list="#{'igd':'IGD', 'rawat_jalan' : 'Rawat Jalan', 'apotek' : 'Instalasi Farmasi RJ', 'apotek_ri' : 'Instalasi Farmasi RI',
+                                                                'rawat_inap' : 'Rawat Inap', 'radiologi' : 'Radiologi', 'lab' : 'Laboratorium', 'gizi':'Instalasi Gizi'}"
                                           id="tipePelayanan1" name="pelayanan.tipePelayanan" disabled="true"
                                           headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                             </table>
