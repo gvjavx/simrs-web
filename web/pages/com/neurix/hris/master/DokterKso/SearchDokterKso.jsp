@@ -183,13 +183,13 @@
                                                         </sj:submit>
                                                     </td>
                                                     <td>
-                                                        <%--<a href="add_dokterkso.action" class="btn btn-success" ><i class="fa fa-plus"></i>Add Dokter Kso</a>--%>
-                                                        <s:url var="urlAdd" namespace="/dokterkso" action="add_dokterkso" escapeAmp="false">
-                                                        </s:url>
-                                                        <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">
-                                                            <i class="fa fa-plus"></i>
-                                                            Add Dokter Kso
-                                                        </sj:a>
+                                                        <a href="add_dokterkso.action" class="btn btn-success" ><i class="fa fa-plus"></i>Add Dokter Kso</a>
+                                                        <%--<s:url var="urlAdd" namespace="/dokterkso" action="add_dokterkso" escapeAmp="false">--%>
+                                                        <%--</s:url>--%>
+                                                        <%--<sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">--%>
+                                                            <%--<i class="fa fa-plus"></i>--%>
+                                                            <%--Add Dokter Kso--%>
+                                                        <%--</sj:a>--%>
                                                     </td>
                                                     <td>
                                                         <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_dokterkso"/>'">
@@ -240,28 +240,38 @@
                                                         <s:set name="listOfsearchDokterKso" value="#session.listOfResultDokterKso" scope="request" />
                                                         <display:table name="listOfsearchDokterKso" class="table table-condensed table-striped table-hover"
                                                                        requestURI="paging_displaytag_dokterkso.action" export="true" id="row" pagesize="14" style="font-size:10">
+                                                            <display:column media="html" title="View">
+                                                                <s:if test='#attr.row.flag == "Y"'>
+                                                                    <s:url var="urlView" namespace="/dokterkso" action="view_dokterkso" escapeAmp="false">
+                                                                        <s:param name="id"><s:property value="#attr.row.dokterKsoId"/></s:param>
+                                                                        <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
+                                                                    </s:url>
+                                                                    <s:a href="%{urlView}">
+                                                                        <img border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_edit">
+                                                                    </s:a>
+                                                                </s:if>
+                                                            </display:column>
+
                                                             <display:column media="html" title="Edit">
                                                                 <s:if test='#attr.row.flag == "Y"'>
                                                                     <s:url var="urlEdit" namespace="/dokterkso" action="edit_dokterkso" escapeAmp="false">
                                                                         <s:param name="id"><s:property value="#attr.row.dokterKsoId"/></s:param>
                                                                         <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
                                                                     </s:url>
-                                                                    <sj:a onClickTopics="showDialogMenu" href="%{urlEdit}">
+                                                                    <s:a href="%{urlEdit}">
                                                                         <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">
-                                                                    </sj:a>
+                                                                    </s:a>
                                                                 </s:if>
                                                             </display:column>
 
                                                             <display:column media="html" title="Delete" style="text-align:center;font-size:9">
-                                                                <s:if test='#attr.row.flag == "Y"'>
-                                                                    <s:url var="urlViewDelete" namespace="/dokterkso" action="delete_dokterkso" escapeAmp="false">
-                                                                        <s:param name="id"><s:property value="#attr.row.dokterKsoId" /></s:param>
-                                                                        <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
-                                                                    </s:url>
-                                                                    <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
-                                                                        <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
-                                                                    </sj:a>
-                                                                </s:if>
+                                                                <s:url var="urlDelete" namespace="/dokterkso" action="delete_dokterkso" escapeAmp="false">
+                                                                    <s:param name="id"><s:property value="#attr.row.dokterKsoId"/></s:param>
+                                                                    <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
+                                                                </s:url>
+                                                                <s:a href="%{urlDelete}">
+                                                                    <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_delete">
+                                                                </s:a>
                                                             </display:column>
                                                             <display:column property="dokterKsoId" sortable="true" title="ID Dokter KSO" />
                                                             <display:column property="nip" sortable="true" title="NIP Dokter"  />

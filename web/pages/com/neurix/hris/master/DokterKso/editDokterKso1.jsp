@@ -46,30 +46,23 @@
             };
 
             $.subscribe('beforeProcessSave', function (event, data) {
-                var nip = document.getElementById("nip1").value;
-                var branchId = document.getElementById("branchId1").value;
-                var masterId = document.getElementById("masterId1").value;
-                var jenisKso = document.getElementById("jenisKso1").value;
-                var positionId = document.getElementById("positionId1").value;
-                var persenKso = document.getElementById("persenKso1").value;
-                var persenKs = document.getElementById("persenKs1").value;
+                var dokterKsoId = document.getElementById("dokterKsoId2").value;
+                var nip = document.getElementById("nip2").value;
+                var branchId = document.getElementById("branchId2").value;
+                var masterId = document.getElementById("masterId2").value;
+                var jenisKso = document.getElementById("jenisKso2").value;
+                var positionId = document.getElementById("positionId2").value;
+                var persenKso = document.getElementById("persenKso2").value;
+                var persenKs = document.getElementById("persenKs2").value;
 
-                console.log(nip);
-                console.log(branchId);
-                console.log(masterId);
-                console.log(jenisKso);
-                console.log(positionId);
-                console.log(persenKso);
-                console.log(persenKs);
-
-                if (nip != ''&& branchId != '' && masterId != '' && jenisKso != ''
+                if (dokterKsoId != '' && nip != ''&& branchId != '' && masterId != '' && jenisKso != ''
                         && persenKso != '' && persenKs != '' && positionId != '') {
                     var status ="";
                     dwr.engine.setAsync(false);
-                    DokterKsoAction.cekBeforeSave(nip,"add",function (listData) {
+                    DokterKsoAction.cekBeforeSave(nip,"edit",function (listData) {
                         status=listData;
                     });
-                    if (status==""){
+                    if (status == ""){
                         if (confirm('Do you want to save this record?')) {
                             event.originalEvent.options.submit = true;
                             $.publish('showDialog');
@@ -85,6 +78,9 @@
                 } else {
                     event.originalEvent.options.submit = false;
                     var msg = "";
+                    if (dokterKsoId == '') {
+                        msg += 'Field <strong>Dokter KSO ID </strong> is required.' + '<br/>';
+                    }
                     if (nip == '') {
                         msg += 'Field <strong>Nip </strong> is required.' + '<br/>';
                     }
@@ -138,7 +134,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Add Dokter KSO
+            Edit Dokter KSO
         </h1>
     </section>
     <!-- Main content -->
@@ -147,13 +143,13 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-plus"></i> Add Dokter KSO</h3>
+                        <h3 class="box-title"><i class="fa fa-pencil"></i> Edit Dokter KSO</h3>
                     </div>
                     <div class="box-body">
                         <table width="100%" align="center">
                             <tr>
                                 <td align="center">
-                                    <s:form id="addDokterKsoForm" method="post" theme="simple" namespace="/dokterkso" action="saveAdd_dokterkso" cssClass="well form-horizontal">
+                                    <s:form id="editDokterKsoForm" method="post" theme="simple" namespace="/dokterkso" action="saveEdit_dokterkso" cssClass="well form-horizontal">
                                         <s:hidden name="addOrEdit"/>
                                         <s:hidden name="delete"/>
                                         <table>
@@ -167,17 +163,28 @@
                                         <table >
                                             <tr>
                                                 <td>
+                                                    <label class="control-label"><small>Dokter KSO ID :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:textfield id="dokterKsoId2" name="dokterKso.dokterKsoId" required="true" disabled="false" readonly="true" cssClass="form-control"/>
+                                                        <s:hidden id="dokterKsoTindakanId2" name="dokterKso.dokterKsoTindakanId" />
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
                                                     <label class="control-label"><small>NIP Dokter :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:textfield id="nip1" name="dokterKso.nip" cssClass="form-control"
+                                                        <s:textfield id="nip2" name="dokterKso.nip" cssClass="form-control" readonly="true"
                                                                      maxlength="12"
                                                         />
                                                         <script>
                                                             $(document).ready(function() {
                                                                 var functions, mapped;
-                                                                $('#nip1').typeahead({
+                                                                $('#nip2').typeahead({
                                                                     minLength: 1,
                                                                     source: function (query, process) {
                                                                         functions = [];
@@ -199,7 +206,7 @@
                                                                     },
                                                                     updater: function (item) {
                                                                         var selectedObj = mapped[item];
-                                                                        $('#namaDokter1').val(selectedObj.nama);
+                                                                        $('#namaDokter2').val(selectedObj.nama);
                                                                         return selectedObj.id;
                                                                     }
                                                                 });
@@ -214,7 +221,7 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:textfield id="namaDokter1" name="dokterKso.namaDokter" readonly="true" required="true" disabled="false" cssClass="form-control"/>
+                                                        <s:textfield id="namaDokter2" name="dokterKso.namaDokter" readonly="true" required="true" disabled="false" cssClass="form-control"/>
                                                     </table>
                                                 </td>
                                             </tr>
@@ -228,7 +235,7 @@
                                                             <%--'rawat_inap' : 'Rawat Inap', 'radiologi' : 'Radiologi', 'lab' : 'LAB'}" id="tipePelayanan" name="pelayanan.tipePelayanan"--%>
                                                             <%--listKey="positionId" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
                                                         <s:select list="#{'bpjs':'BPJS', 'umum' : 'Umum'}"
-                                                                  id="masterId1" name="dokterKso.masterId"
+                                                                  id="masterId2" name="dokterKso.masterId"
                                                                   headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                                     </table>
                                                 </td>
@@ -244,18 +251,19 @@
                                                             <%--listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
                                                         <s:if test='dokterKso.branchUser == "KP"'>
                                                             <s:action id="initComboBranch" namespace="/dokterkso" name="initComboBranch_dokterkso"/>
-                                                            <s:select list="#initComboBranch.listOfComboBranches" id="branchId1" name="dokterKso.branchId"
+                                                            <s:select list="#initComboBranch.listOfComboBranches" id="branchId2" name="dokterKso.branchId"
                                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                                         </s:if>
                                                         <s:else>
                                                             <s:action id="initComboBranch" namespace="/dokterkso" name="initComboBranch_dokterkso"/>
-                                                            <s:select list="#initComboBranch.listOfComboBranches" id="branchId1" name="dokterKso.branchId" disabled="true"
+                                                            <s:select list="#initComboBranch.listOfComboBranches" id="branchId2" name="dokterKso.branchId" disabled="true"
                                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                                                            <s:hidden id="branchId1" name="dokterKso.branchId" />
+                                                            <s:hidden id="branchId2" name="dokterKso.branchId" />
                                                         </s:else>
                                                     </table>
                                                 </td>
                                             </tr>
+
                                             <tr>
                                                 <td>
                                                     <label class="control-label"><small>Divisi :</small></label>
@@ -263,11 +271,12 @@
                                                 <td>
                                                     <table>
                                                         <s:action id="initComboPosition" namespace="/dokterkso" name="initComboPosition_dokterkso"/>
-                                                        <s:select list="#initComboPosition.listOfComboPositions" id="positionId1" name="dokterKso.positionId"
+                                                        <s:select list="#initComboPosition.listOfComboPositions" id="positionId2" name="dokterKso.positionId"
                                                                   listKey="positionId" listValue="positionName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                                     </table>
                                                 </td>
                                             </tr>
+
                                             <tr>
                                                 <td>
                                                     <label class="control-label"><small>Jenis KSO:</small></label>
@@ -275,7 +284,7 @@
                                                 <td>
                                                     <table>
                                                         <s:select list="#{'tindakan':'Tindakan', 'obat' : 'Obat', 'kamar' : 'Kamar'}"
-                                                                  id="jenisKso1" name="dokterKso.jenisKso"
+                                                                  id="jenisKso2" name="dokterKso.jenisKso"
                                                                   headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                                     </table>
                                                 </td>
@@ -287,27 +296,29 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:textfield id="persenKso1" name="dokterKso.persenKso" type="number" required="true" disabled="false" cssClass="form-control"/>
+                                                        <s:textfield id="persenKso2" name="dokterKso.persenKso" type="number" required="true" disabled="false" cssClass="form-control"/>
                                                     </table>
                                                 </td>
                                             </tr>
+
                                             <tr>
                                                 <td>
                                                     <label class="control-label"><small>Persen KS:</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:textfield id="persenKs1" name="dokterKso.persenKs" type="number" required="true" disabled="false" cssClass="form-control"/>
+                                                        <s:textfield id="persenKs2" name="dokterKso.persenKs" type="number" required="true" disabled="false" cssClass="form-control"/>
                                                     </table>
                                                 </td>
                                             </tr>
+
                                             <tr>
                                                 <td>
                                                     <label class="control-label"><small>Tarif Ina :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:select list="#{'N':'Non-Active'}" id="tarifIna1" name="dokterKso.tarifIna"
+                                                        <s:select list="#{'N':'Non-Active'}" id="tarifIna2" name="dokterKso.tarifIna"
                                                                   headerKey="Y" headerValue="Active" cssClass="form-control" />
                                                     </table>
 
@@ -317,9 +328,9 @@
                                         <br>
                                         <br>
                                         <h3>
-                                            Add Tindakan
+                                            Add Dokter KSO Tindakan
                                             <button
-                                                    id="btnAddTindakan" type="button" class="btn btn-default btn-info" data-toggle="modal" data-target="#modal-tambah"><i class="fa fa-plus"></i>
+                                                    id="btnAddDetail" type="button" class="btn btn-default btn-info" data-toggle="modal" data-target="#modal-tambah"><i class="fa fa-plus"></i>
                                             </button>
                                         </h3>
                                         <br>
@@ -338,7 +349,7 @@
                                             <table align="center">
                                                 <tr>
                                                     <td>
-                                                        <sj:submit targets="o" type="button" cssClass="btn btn-primary" formIds="addDokterKsoForm" id="save" name="save"
+                                                        <sj:submit targets="o" type="button" cssClass="btn btn-primary" formIds="editDokterKsoForm" id="save" name="save"
                                                                    onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
                                                                    onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
                                                             <i class="fa fa-check"></i>
@@ -346,8 +357,8 @@
                                                         </sj:submit>
                                                     </td>
                                                     <td>
-                                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="add_dokterkso.action"/>'">
-                                                            <i class="fa fa-refresh"></i> Reset
+                                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="search_dokterkso.action"/>'">
+                                                            <i class="fa fa-arrow-left"></i> Back
                                                         </button>
                                                     </td>
                                                 </tr>
@@ -432,7 +443,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Add Tindakan</h4>
+                <h4 class="modal-title">Add Data</h4>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" id="myForm">
@@ -543,11 +554,12 @@
                 });
             });
         };
-        $('#btnAddTindakan').click(function () {
+        listResult();
+        $('#btnAddDetail').click(function () {
             $('#myForm')[0].reset();
             $('#modal-edit').modal('show');
-            $('#myForm').attr('action', 'addDokterKsoTindakan');
-            $('#modal-edit').find('.modal-title').text('Add Dokter KSO Tindakan');
+            $('#myForm').attr('action', 'editDokterKsoTindakan');
+            $('#modal-edit').find('.modal-title').text('Edit Dokter KSO Tindakan');
         });
         $('#modBtnSave').click(function () {
             var riwayatTindakanId = $('#modRiwayatTindakanId').val();

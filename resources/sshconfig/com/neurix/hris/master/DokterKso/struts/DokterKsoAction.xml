@@ -76,16 +76,17 @@
             <result name="search">/pages/com/neurix/hris/master/DokterKso/SearchDokterKso.jsp</result>
             <result name="success">/pages/com/neurix/hris/master/DokterKso/SearchDokterKso.jsp</result>
             <result name="input">/pages/com/neurix/hris/master/DokterKso/SearchDokterKso.jsp</result>
-            <result name="init_add">/pages/com/neurix/hris/master/DokterKso/addDokterKso.jsp</result>
-            <result name="success_save_add">/pages/com/neurix/hris/master/DokterKso/addDokterKso.jsp</result>
-            <result name="error">/pages/com/neurix/hris/master/DokterKso/addDokterKso.jsp</result>
+            <result name="init_add">/pages/com/neurix/hris/master/DokterKso/addDokterKso1.jsp</result>
+            <result name="success_save_add">/pages/com/neurix/hris/master/DokterKso/addDokterKso1.jsp</result>
+            <result name="error">/pages/com/neurix/hris/master/DokterKso/addDokterKso1.jsp</result>
 
-            <result name="init_edit">/pages/com/neurix/hris/master/DokterKso/editDokterKso.jsp</result>
-            <result name="failure">/pages/com/neurix/hris/master/DokterKso/editDokterKso.jsp</result>
-            <result name="success_save_edit">/pages/com/neurix/hris/master/DokterKso/editDokterKso.jsp</result>
+            <result name="init_edit">/pages/com/neurix/hris/master/DokterKso/editDokterKso1.jsp</result>
+            <result name="failure">/pages/com/neurix/hris/master/DokterKso/editDokterKso1.jsp</result>
+            <result name="success_save_edit">/pages/com/neurix/hris/master/DokterKso/editDokterKso1.jsp</result>
 
-            <result name="success_save_delete">/pages/com/neurix/hris/master/DokterKso/deleteDokterKso.jsp</result>
-            <result name="init_delete">/pages/com/neurix/hris/master/DokterKso/deleteDokterKso.jsp</result>
+            <result name="success_save_delete">/pages/com/neurix/hris/master/DokterKso/deleteDokterKso1.jsp</result>
+            <result name="init_delete">/pages/com/neurix/hris/master/DokterKso/deleteDokterKso1.jsp</result>
+            <result name="init_view">/pages/com/neurix/hris/master/DokterKso/viewDokterKso.jsp</result>
             <!--<result name="error" type="httpheader">-->
             <!--<param name="status">504</param>-->
             <!--<param name="headers.message">${actionErrors}</param>-->

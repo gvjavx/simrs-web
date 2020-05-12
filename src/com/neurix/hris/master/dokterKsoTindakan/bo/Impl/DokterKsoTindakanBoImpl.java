@@ -118,8 +118,9 @@ public class DokterKsoTindakanBoImpl implements DokterKsoTindakanBo {
                         String tindakanName = riwayatTindakans.get(0).getNamaTindakan();
                         dokterKsoTindakan.setTindakanName(tindakanName);
                     }
+
+                    result.add(dokterKsoTindakan);
                 }
-                result.add(dokterKsoTindakan);
             }
         }
         return result;
