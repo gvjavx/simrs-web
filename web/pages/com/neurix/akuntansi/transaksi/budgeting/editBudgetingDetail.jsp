@@ -808,7 +808,6 @@
 
         var arrData = [];
         var strJson = JSON.stringify(arrData);
-
         BudgetingAction.saveAddPengadaan(strJson, function(response){
 
         });
