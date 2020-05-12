@@ -181,7 +181,7 @@
                                     <s:hidden id="surat_rujukan" name="headerDetailCheckup.suratRujukan"/>
                                     <s:hidden id="is_laka" name="headerDetailCheckup.isLaka"/>
 
-                                    <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "bpjs"'>
+                                    <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "bpjs" || headerDetailCheckup.idJenisPeriksaPasien == "ptpn"'>
                                         <tr>
                                             <td width="45%"><b>No SEP</b></td>
                                             <td style="vertical-align: middle;">

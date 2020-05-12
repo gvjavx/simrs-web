@@ -128,10 +128,10 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-5">
+                            <div class="col-md-7">
                                 <div class="box-header with-border">
                                     <div class="row">
-                                        <div class="col-md-5">
+                                        <div class="col-md-7">
                                             <h5 class="box-title"><i class="fa fa-user"></i> ANTRIAN APOTEK</h5>
                                         </div>
                                     </div>
@@ -320,7 +320,7 @@
                     $('#body_antrian_apotek').html("");
                 }
             });
-        },1000);
+        },5000);
     }
 
     function isRacik(racik) {

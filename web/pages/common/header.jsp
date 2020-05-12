@@ -507,6 +507,7 @@ apply the skin class to the body tag so the changes take effect.
         }
         return today;
     }
+
 </script>
 
 

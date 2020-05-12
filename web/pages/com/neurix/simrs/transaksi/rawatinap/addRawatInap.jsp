@@ -175,7 +175,7 @@
                                     <s:hidden id="surat_rujukan" name="rawatInap.suratRujukan"/>
                                     <s:hidden id="is_laka" name="rawatInap.isLaka"/>
 
-                                    <s:if test='rawatInap.idJenisPeriksa == "bpjs"'>
+                                    <s:if test='rawatInap.idJenisPeriksa == "bpjs" || rawatInap.idJenisPeriksa == "ptpn"'>
                                         <tr>
                                             <td width="45%"><b>No SEP</b></td>
                                             <td style="vertical-align: middle;">

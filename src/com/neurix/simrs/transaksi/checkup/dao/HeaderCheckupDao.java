@@ -550,7 +550,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     if("0".equalsIgnoreCase(obj[11].toString())){
                         checkup.setStatusPeriksaName("Antrian");
                     }
-                    if("1".equalsIgnoreCase(obj[12].toString())){
+                    if("1".equalsIgnoreCase(obj[11].toString())){
                         checkup.setStatusPeriksaName("Proses");
                     }
                 }
@@ -715,7 +715,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "b.tgl_cekup, \n" +
                     "b.keterangan_cekup_ulang, \n" +
                     "b.cover_biaya, \n" +
-                    "k.is_laka \n" +
+                    "k.is_laka, \n" +
+                    "a.created_date \n" +
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
@@ -787,6 +788,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     checkup.setKeterangan(obj[41] == null ? "" : obj[41].toString());
                     checkup.setCoverBiaya(obj[42] == null ? new BigDecimal(String.valueOf("0")) : new BigDecimal(obj[42].toString()));
                     checkup.setIsLaka(obj[43] == null ? "" : obj[43].toString());
+                    checkup.setCreatedDate(obj[44] == null ? null : (Timestamp) obj[44]);
                 }
             }
         }
