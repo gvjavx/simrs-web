@@ -154,7 +154,6 @@ public class MonitorRuanganAction extends BaseMasterAction {
                     ruangDipakai.setStatusRuangan(ruang.getStatusRuangan());
                     ruangDipakai.setTipeTransaksi(detailCheckup.getIdJenisPeriksaPasien());
                     ruangDipakai.setNamaPasien(detailCheckup.getNamaPasien());
-                    ruangDipakai.setKodeCbg(detailCheckup.getKodeCbg());
                     result.add(ruangDipakai);
                 }
             }
@@ -192,21 +191,24 @@ public class MonitorRuanganAction extends BaseMasterAction {
                 HeaderDetailCheckup headerDetailCheckup = detailCheckupList.get(0);
                 HeaderCheckup headerCheckup = new HeaderCheckup();
                 headerCheckup.setNoCheckup(headerDetailCheckup.getNoCheckup());
+
                 List<HeaderCheckup> headerCheckups = new ArrayList<>();
                 try {
                     headerCheckups = checkupBoProxy.getByCriteria(headerCheckup);
                 } catch (GeneralBOException e) {
                     logger.error("[CheckupDetailAction.getListBiayaForRawatInap] Error When Get Header Checkup Data", e);
                 }
+
                 if (headerCheckups.size() > 0) {
                     HeaderCheckup checkup = headerCheckups.get(0);
-                    if (headerDetailCheckup.getIdDetailCheckup() != null && !"".equalsIgnoreCase(headerDetailCheckup.getIdDetailCheckup())) {
-                        detailCheckup.setTarifBpjs(headerDetailCheckup.getTarifBpjs());
-                        detailCheckup.setKodeCbg(headerDetailCheckup.getKodeCbg());
-                        detailCheckup.setTarifTindakan(totalBiayaTindakan);
-                        detailCheckup.setIdJenisPeriksaPasien(headerDetailCheckup.getIdJenisPeriksaPasien());
-                        detailCheckup.setNamaPasien(checkup.getNama());
-                    }
+                    detailCheckup.setNamaPasien(checkup.getNama());
+                }
+
+                if (headerDetailCheckup.getIdDetailCheckup() != null && !"".equalsIgnoreCase(headerDetailCheckup.getIdDetailCheckup())) {
+                    detailCheckup.setTarifBpjs(headerDetailCheckup.getTarifBpjs());
+                    detailCheckup.setKodeCbg(headerDetailCheckup.getKodeCbg());
+                    detailCheckup.setTarifTindakan(totalBiayaTindakan);
+                    detailCheckup.setIdJenisPeriksaPasien(headerDetailCheckup.getIdJenisPeriksaPasien());
                 }
             }
         }
