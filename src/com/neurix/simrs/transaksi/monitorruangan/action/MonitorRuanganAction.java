@@ -157,7 +157,6 @@ public class MonitorRuanganAction extends BaseMasterAction {
                     result.add(ruangDipakai);
                 }
             }
-
         }
 
 

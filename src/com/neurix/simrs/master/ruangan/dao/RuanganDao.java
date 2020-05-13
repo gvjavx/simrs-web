@@ -120,10 +120,10 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
                     "INNER JOIN it_simrs_header_checkup b \n" +
                     "ON a.no_checkup = b.no_checkup\n" +
                     "WHERE a.flag = 'Y'\n" +
-                    "AND b.branch_id = :branchId) c On b.id_ruangan = c.id_ruangan\n" +
-                    "WHERE a.id_kelas_ruangan LIKE '%'\n" +
-                    "AND b.id_ruangan LIKE '%'\n" +
-                    "AND b.nama_ruangan LIKE '%'\n" +
+                    "AND b.branch_id LIKE :branchId) c On b.id_ruangan = c.id_ruangan\n" +
+                    "WHERE a.id_kelas_ruangan LIKE :idKelas\n" +
+                    "AND b.id_ruangan LIKE :idRuang\n" +
+                    "AND b.nama_ruangan LIKE :namaRuang\n" +
                     "ORDER BY a.id_kelas_ruangan ASC";
 
             List<Object[]> results = new ArrayList<>();
