@@ -122,7 +122,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Status</label>
                                     <div class="col-sm-4">
-                                        <s:select list="#{'1':'Proses', '4':'Selesai'}" cssStyle="margin-top: 7px"
+                                        <s:select list="#{'1':'Proses', '3':'Selesai'}" cssStyle="margin-top: 7px"
                                                   id="status" name="permintaanResep.status"
                                                   headerKey="0" headerValue="Antrian"
                                                   cssClass="form-control select2"/>

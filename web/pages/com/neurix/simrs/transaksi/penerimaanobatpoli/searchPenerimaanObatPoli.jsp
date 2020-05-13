@@ -36,7 +36,6 @@
     <section class="content-header">
         <h1>
             Penerimaan Obat Poli
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -503,6 +502,7 @@
                             $('#info_dialog').dialog('open');
                             $('#save_req').show();
                             $('#load_req').hide();
+                            $('body').scrollTop(0);
                         } else {
                             $('#warning_request').show().fadeOut(5000);
                             $('#msg_request').text(response);
@@ -534,6 +534,7 @@
                     $('#info_dialog').dialog('open');
                     $('#save_ret').show();
                     $('#load_ret').hide();
+                    $('body').scrollTop(0);
                 } else {
                     $('#warning_request').show().fadeOut(5000);
                     $('#msg_reture').text(response);

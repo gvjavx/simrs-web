@@ -755,6 +755,7 @@
                                 if(response.status == "success"){
                                     $('#waiting_dialog').dialog('close');
                                     $('#info_dialog').dialog('open');
+                                    $('body').scrollTop(0);
                                 }else{
                                     $('#waiting_dialog').dialog('close');
                                     $('#error_dialog').dialog('open');
@@ -819,6 +820,7 @@
                             if(response.status == "success"){
                                 $('#waiting_dialog').dialog('close');
                                 $('#info_dialog').dialog('open');
+                                $('body').scrollTop(0);
                             }else{
                                 $('#waiting_dialog').dialog('close');
                                 $('#error_dialog').dialog('open');
@@ -851,6 +853,7 @@
                             if(response.status == "success"){
                                 $('#waiting_dialog').dialog('close');
                                 $('#info_dialog').dialog('open');
+                                $('body').scrollTop(0);
                             }else{
                                 $('#waiting_dialog').dialog('close');
                                 $('#error_dialog').dialog('open');

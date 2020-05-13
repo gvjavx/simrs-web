@@ -738,6 +738,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                         tindakanRawatEntity.setCreatedWho(userLogin);
                         tindakanRawatEntity.setLastUpdate(time);
                         tindakanRawatEntity.setLastUpdateWho(userLogin);
+                        tindakanRawatEntity.setApproveFlag("Y");
                     }
 
                     try {

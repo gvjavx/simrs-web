@@ -76,6 +76,7 @@
                             $('#info_dialog').dialog('open');
                             $('#ref').val(1);
                             $('#modal-ttd').modal('hide');
+                            $('body').scrollTop(0);
                         }else{
                             $('#waiting_dialog').dialog('close');
                             $('#error_dialog').dialog('open');
@@ -218,7 +219,6 @@
     <section class="content-header">
         <h1>
             Resep Poli
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -1022,6 +1022,7 @@
                 $('#info_dialog').dialog('open');
                 $('#qtyAppove'+idObat).text(qtyApp);
                 $('#status'+idObat).html('<img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">');
+                $('body').scrollTop(0);
             } else {
                 $('#load_app').hide();
                 $('#save_app').show();
@@ -1065,6 +1066,7 @@
                     $('#ref').val(2);
                     $('#info_dialog').dialog('open');
                     $('#waiting_dialog').dialog('close');
+                    $('body').scrollTop(0);
                 } else {
                     $('#ref').val(1);
                     $('#info_dialog').dialog('close');

@@ -122,7 +122,6 @@
     <section class="content-header">
         <h1>
             Monitor Ruangan
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
