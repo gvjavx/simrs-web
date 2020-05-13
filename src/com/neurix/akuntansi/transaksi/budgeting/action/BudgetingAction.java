@@ -237,9 +237,6 @@ public class BudgetingAction {
             if (!"".equalsIgnoreCase(obj.get("coa").toString())){
                 budgeting.setRekeningId(obj.getString("coa").toString());
             }
-//            if (!"".equalsIgnoreCase(obj.get("status").toString())){
-//                budgeting.setStatus((obj.get("status").toString()));
-//            }
             if (!"".equalsIgnoreCase(obj.get("unit").toString())){
                 budgeting.setBranchId(obj.getString("unit").toString());
             }
@@ -371,6 +368,19 @@ public class BudgetingAction {
         budgetingNew.setSelisih(nullEscape(budgetingNew.getSelisih()));
         budgetingNew.setNilaiAwal(nullEscape(budgetingNew.getNilaiAwal()));
 
+        budgetingNew.setJanuari(nullEscape(budgetingNew.getJanuari()));
+        budgetingNew.setFebruari(nullEscape(budgetingNew.getFebruari()));
+        budgetingNew.setMaret(nullEscape(budgetingNew.getMaret()));
+        budgetingNew.setApril(nullEscape(budgetingNew.getApril()));
+        budgetingNew.setMei(nullEscape(budgetingNew.getMei()));
+        budgetingNew.setJuni(nullEscape(budgetingNew.getJuni()));
+        budgetingNew.setJuli(nullEscape(budgetingNew.getJuli()));
+        budgetingNew.setAgustus(nullEscape(budgetingNew.getAgustus()));
+        budgetingNew.setSeptember(nullEscape(budgetingNew.getSeptember()));
+        budgetingNew.setOktober(nullEscape(budgetingNew.getOktober()));
+        budgetingNew.setNovember(nullEscape(budgetingNew.getNovember()));
+        budgetingNew.setDesember(nullEscape(budgetingNew.getDesember()));
+
         return budgetingNew;
     }
 
@@ -408,6 +418,19 @@ public class BudgetingAction {
                     budgeting.setQuartal4(nullEscape(budgeting.getQuartal4()));
                     budgeting.setSelisih(nullEscape(budgeting.getSelisih()));
                     budgeting.setNilaiAwal(nullEscape(budgeting.getNilaiAwal()));
+
+                    budgeting.setJanuari(nullEscape(budgeting.getJanuari()));
+                    budgeting.setFebruari(nullEscape(budgeting.getFebruari()));
+                    budgeting.setMaret(nullEscape(budgeting.getMaret()));
+                    budgeting.setApril(nullEscape(budgeting.getApril()));
+                    budgeting.setMei(nullEscape(budgeting.getMei()));
+                    budgeting.setJuni(nullEscape(budgeting.getJuni()));
+                    budgeting.setJuli(nullEscape(budgeting.getJuli()));
+                    budgeting.setAgustus(nullEscape(budgeting.getAgustus()));
+                    budgeting.setSeptember(nullEscape(budgeting.getSeptember()));
+                    budgeting.setOktober(nullEscape(budgeting.getOktober()));
+                    budgeting.setNovember(nullEscape(budgeting.getNovember()));
+                    budgeting.setDesember(nullEscape(budgeting.getDesember()));
 
                     budgetingList.add(budgeting);
                 }
@@ -632,6 +655,19 @@ public class BudgetingAction {
                 budgeting.setQuartal2(nullEscape(budgeting.getQuartal2()));
                 budgeting.setQuartal3(nullEscape(budgeting.getQuartal3()));
                 budgeting.setQuartal4(nullEscape(budgeting.getQuartal4()));
+
+                budgeting.setJanuari(nullEscape(budgeting.getJanuari()));
+                budgeting.setFebruari(nullEscape(budgeting.getFebruari()));
+                budgeting.setMaret(nullEscape(budgeting.getMaret()));
+                budgeting.setApril(nullEscape(budgeting.getApril()));
+                budgeting.setMei(nullEscape(budgeting.getMei()));
+                budgeting.setJuni(nullEscape(budgeting.getJuni()));
+                budgeting.setJuli(nullEscape(budgeting.getJuli()));
+                budgeting.setAgustus(nullEscape(budgeting.getAgustus()));
+                budgeting.setSeptember(nullEscape(budgeting.getSeptember()));
+                budgeting.setOktober(nullEscape(budgeting.getOktober()));
+                budgeting.setNovember(nullEscape(budgeting.getNovember()));
+                budgeting.setDesember(nullEscape(budgeting.getDesember()));
 
                 if ("quartal1".equalsIgnoreCase(budgetingDetail.getTipe()))
                     budgeting.setQuartal1(budgeting.getQuartal1().add(budgetingDetail.getSubTotal()));

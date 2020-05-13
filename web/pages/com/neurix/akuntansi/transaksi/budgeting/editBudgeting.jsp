@@ -153,8 +153,8 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-md-10 col-md-offset-1">
-                                <table class="table table-bordered table-striped tree" style="font-size: 15px;">
+                            <div class="col-md-12">
+                                <table class="table table-bordered table-striped tree" style="font-size: 12px;">
                                     <thead id="head-budgeting">
                                     <tr bgcolor="#90ee90">
                                         <td style="width: 20%">COA</td>
@@ -392,7 +392,10 @@
                 console.log(item.rekeningId);
                 data2.push({_id : item.rekeningId, level : item.level,  nama : item.namaKodeRekening, parent : item.parentId, coa : item.kodeRekening,
                     nilaiTotal : item.nilaiTotal, quartal1 : item.quartal1, quartal2: item.quartal2, quartal3 : item.quartal3, quartal4 : item.quartal4,
-                    semester1 : item.semester1, semester2:item.semester2, stLevel: item.stLevel, selisih : item.selisih});
+                    semester1 : item.semester1, semester2:item.semester2, stLevel: item.stLevel, selisih : item.selisih,
+                    januari : item.januari, februari : item.februari, maret : item.maret, april : item.april, mei : item.mei, juni : item.juni,
+                    juli : item.juli, agustus : item.agustus, september : item.september, oktober : item.oktober, november : item.november, desember : item.desember
+                });
 
             });
             function hierarhySort(hashArr, key, result) {
@@ -420,14 +423,14 @@
             var strList = "";
             for(i = 0 ; i < data2.length ; i++){
                 if(data2[i].parent == "-"){
-                    strList += '<tr style="font-size: 12px;" class=" treegrid-' + data2[i]._id+ '">' +
+                    strList += '<tr style="font-size: 10px;" class=" treegrid-' + data2[i]._id+ '">' +
                         '<td >' + data2[i].coa + '</td>' +
                         '<td >' + data2[i].nama + '</td>' + barisNilai(data2[i]) +
                         "<td align='right'>"+formatRupiah(data2[i].selisih)+"</td>"+
                         "<td align='center'>"+buttonEdit(data2[i]._id, data2[i].stLevel)+"</td>"+
                         "</tr>";
                 } else {
-                    strList += '<tr style="font-size: 12px" class=" treegrid-' + data2[i]._id + ' treegrid-parent-' + data2[i].parent + '">' +
+                    strList += '<tr style="font-size: 10px" class=" treegrid-' + data2[i]._id + ' treegrid-parent-' + data2[i].parent + '">' +
                         + '<td style="border: 2px solid black;">' +
                         '<td >' + data2[i].coa + '</td>' +
                         '<td >' + data2[i].nama + '</td>' + barisNilai(data2[i]) +
@@ -455,9 +458,10 @@
         if (tipe == "quartal"){
             str += "<td align='right'>"+formatRupiah(data.nilaiTotal)+"</td>"+
                 "<td align='right'>"+formatRupiah(data.quartal1)+"</td>"+
-                "<td align='right'>"+formatRupiah(data.quartal2)+"</td>";
-                "<td align='right'>"+formatRupiah(data.quartal3)+"</td>";
+                "<td align='right'>"+formatRupiah(data.quartal2)+"</td>"+
+                "<td align='right'>"+formatRupiah(data.quartal3)+"</td>"+
                 "<td align='right'>"+formatRupiah(data.quartal4)+"</td>";
+
         }
         if (tipe == "tahunan"){
             str += "<td align='right'>"+formatRupiah(data.nilaiTotal)+"</td>";
@@ -465,16 +469,16 @@
         if (tipe == "bulanan"){
             str += "<td align='right'>"+formatRupiah(data.nilaiTotal)+"</td>"+
                 "<td align='right'>"+formatRupiah(data.januari)+"</td>"+
-                "<td align='right'>"+formatRupiah(data.februari)+"</td>";
-                "<td align='right'>"+formatRupiah(data.maret)+"</td>";
-                "<td align='right'>"+formatRupiah(data.april)+"</td>";
-                "<td align='right'>"+formatRupiah(data.mei)+"</td>";
-                "<td align='right'>"+formatRupiah(data.juni)+"</td>";
-                "<td align='right'>"+formatRupiah(data.juli)+"</td>";
-                "<td align='right'>"+formatRupiah(data.agustus)+"</td>";
-                "<td align='right'>"+formatRupiah(data.september)+"</td>";
-                "<td align='right'>"+formatRupiah(data.oktober)+"</td>";
-                "<td align='right'>"+formatRupiah(data.november)+"</td>";
+                "<td align='right'>"+formatRupiah(data.februari)+"</td>"+
+                "<td align='right'>"+formatRupiah(data.maret)+"</td>"+
+                "<td align='right'>"+formatRupiah(data.april)+"</td>"+
+                "<td align='right'>"+formatRupiah(data.mei)+"</td>"+
+                "<td align='right'>"+formatRupiah(data.juni)+"</td>"+
+                "<td align='right'>"+formatRupiah(data.juli)+"</td>"+
+                "<td align='right'>"+formatRupiah(data.agustus)+"</td>"+
+                "<td align='right'>"+formatRupiah(data.september)+"</td>"+
+                "<td align='right'>"+formatRupiah(data.oktober)+"</td>"+
+                "<td align='right'>"+formatRupiah(data.november)+"</td>"+
                 "<td align='right'>"+formatRupiah(data.desember)+"</td>";
         }
 

@@ -400,7 +400,7 @@ public class BudgetingBoImpl implements BudgetingBo {
                             for (BudgetingDetail budgetingDetail : details){
 
                                 ItAkunBudgetingDetailEntity budgetingDetailEntity = new ItAkunBudgetingDetailEntity();
-                                budgetingDetailEntity.setIdBudgetingDetail(budgetingDetail.getIdBudgetingDetail());
+                                budgetingDetailEntity.setIdBudgetingDetail(generateBudgetingDetailId());
                                 budgetingDetailEntity.setIdBudgeting(budgetingEntity.getIdBudgeting());
                                 budgetingDetailEntity.setNoBudgetingDetail(budgetingEntity.getNoBudgeting()+"-"+budgetingDetail.getTipe()+"-"+budgetingDetail.getDivisiId());
                                 budgetingDetailEntity.setNoBudgeting(budgetingEntity.getNoBudgeting());
@@ -424,7 +424,7 @@ public class BudgetingBoImpl implements BudgetingBo {
                                     throw new GeneralBOException("[BudgetingBoImpl.saveAddBudgeting] ERROR. "+e);
                                 }
 
-                                List<BudgetingPengadaan> pengadaans = budgetingPengadaans.stream().filter( p -> p.getIdBudgetingDetail().equalsIgnoreCase(budgetingDetailEntity.getIdBudgetingDetail())).collect(Collectors.toList());
+                                List<BudgetingPengadaan> pengadaans = budgetingPengadaans.stream().filter( p -> p.getIdBudgetingDetail().equalsIgnoreCase(budgetingDetail.getIdBudgetingDetail())).collect(Collectors.toList());
                                 if (pengadaans.size() > 0){
                                     for (BudgetingPengadaan budgetingPengadaan : pengadaans){
 
