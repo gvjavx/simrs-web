@@ -82,6 +82,19 @@ public class BudgetingBoImpl implements BudgetingBo {
                 budgeting.setNilaiFinal(getSumNilaiTotalByStatus(budgetingEntity.getRekeningId(), budgetingEntity.getBranchId(), budgetingEntity.getTahun(), "FINAL"));
                 budgeting.setNilaiRevisi(getSumNilaiTotalByStatus(budgetingEntity.getRekeningId(), budgetingEntity.getBranchId(), budgetingEntity.getTahun(), "REVISI"));
 
+                budgeting.setJanuari(budgetingEntity.getJanuari());
+                budgeting.setFebruari(budgetingEntity.getFebruari());
+                budgeting.setMaret(budgetingEntity.getMaret());
+                budgeting.setApril(budgetingEntity.getApril());
+                budgeting.setMei(budgetingEntity.getMei());
+                budgeting.setJuni(budgetingEntity.getJuni());
+                budgeting.setJuli(budgetingEntity.getJuli());
+                budgeting.setAgustus(budgetingEntity.getAgustus());
+                budgeting.setSeptember(budgetingEntity.getSeptember());
+                budgeting.setOktober(budgetingEntity.getOktober());
+                budgeting.setNovember(budgetingEntity.getNovember());
+                budgeting.setDesember(budgetingEntity.getDesember());
+
                 // kode rekening;
                 ImKodeRekeningEntity kodeRekeningEntity = getEntityKoderekeningById(budgetingEntity.getRekeningId());
                 if (kodeRekeningEntity != null){
@@ -268,6 +281,19 @@ public class BudgetingBoImpl implements BudgetingBo {
                         budgetingEntity.setQuartal3(new BigDecimal(0));
                         budgetingEntity.setQuartal4(new BigDecimal(0));
 
+                        budgetingEntity.setJanuari( new BigDecimal(0));
+                        budgetingEntity.setFebruari( new BigDecimal(0));
+                        budgetingEntity.setMaret( new BigDecimal(0));
+                        budgetingEntity.setApril( new BigDecimal(0));
+                        budgetingEntity.setMei( new BigDecimal(0));
+                        budgetingEntity.setJuni( new BigDecimal(0));
+                        budgetingEntity.setJuli( new BigDecimal(0));
+                        budgetingEntity.setAgustus( new BigDecimal(0));
+                        budgetingEntity.setSeptember( new BigDecimal(0));
+                        budgetingEntity.setOktober( new BigDecimal(0));
+                        budgetingEntity.setNovember( new BigDecimal(0));
+                        budgetingEntity.setDesember( new BigDecimal(0));
+
                         Budgeting budgetingNew = new Budgeting();
 
                         budgetingNew.setIdBudgeting(budgetingEntity.getIdBudgeting());
@@ -286,6 +312,19 @@ public class BudgetingBoImpl implements BudgetingBo {
                         budgetingNew.setQuartal3(new BigDecimal(0));
                         budgetingNew.setQuartal4(new BigDecimal(0));
 
+                        budgetingNew.setJanuari( new BigDecimal(0));
+                        budgetingNew.setFebruari( new BigDecimal(0));
+                        budgetingNew.setMaret( new BigDecimal(0));
+                        budgetingNew.setApril( new BigDecimal(0));
+                        budgetingNew.setMei( new BigDecimal(0));
+                        budgetingNew.setJuni( new BigDecimal(0));
+                        budgetingNew.setJuli( new BigDecimal(0));
+                        budgetingNew.setAgustus( new BigDecimal(0));
+                        budgetingNew.setSeptember( new BigDecimal(0));
+                        budgetingNew.setOktober( new BigDecimal(0));
+                        budgetingNew.setNovember( new BigDecimal(0));
+                        budgetingNew.setDesember( new BigDecimal(0));
+
                         List<Budgeting> budgetings = budgetingList.stream().filter( p -> p.getRekeningId().equalsIgnoreCase(kodeRekeningEntity.getRekeningId())).collect(Collectors.toList());
                         if (budgetings.size() > 0){
                             Budgeting budgeting = budgetings.get(0);
@@ -297,6 +336,19 @@ public class BudgetingBoImpl implements BudgetingBo {
                             budgetingEntity.setQuartal3(budgeting.getQuartal3());
                             budgetingEntity.setQuartal4(budgeting.getQuartal4());
 
+                            budgetingEntity.setJanuari(budgeting.getJanuari());
+                            budgetingEntity.setFebruari(budgeting.getFebruari());
+                            budgetingEntity.setMaret(budgeting.getMaret());
+                            budgetingEntity.setApril(budgeting.getApril());
+                            budgetingEntity.setMei(budgeting.getMei());
+                            budgetingEntity.setJuni(budgeting.getJuni());
+                            budgetingEntity.setJuli(budgeting.getJuli());
+                            budgetingEntity.setAgustus(budgeting.getAgustus());
+                            budgetingEntity.setSeptember(budgeting.getSeptember());
+                            budgetingEntity.setOktober(budgeting.getOktober());
+                            budgetingEntity.setNovember(budgeting.getNovember());
+                            budgetingEntity.setDesember(budgeting.getDesember());
+
                             budgetingNew.setNilaiTotal(budgeting.getNilaiTotal());
                             budgetingNew.setSemester1(budgeting.getSemester1());
                             budgetingNew.setSemester2(budgeting.getSemester2());
@@ -304,6 +356,19 @@ public class BudgetingBoImpl implements BudgetingBo {
                             budgetingNew.setQuartal2(budgeting.getQuartal2());
                             budgetingNew.setQuartal3(budgeting.getQuartal3());
                             budgetingNew.setQuartal4(budgeting.getQuartal4());
+
+                            budgetingNew.setJanuari(budgeting.getJanuari());
+                            budgetingNew.setFebruari(budgeting.getFebruari());
+                            budgetingNew.setMaret(budgeting.getMaret());
+                            budgetingNew.setApril(budgeting.getApril());
+                            budgetingNew.setMei(budgeting.getMei());
+                            budgetingNew.setJuni(budgeting.getJuni());
+                            budgetingNew.setJuli(budgeting.getJuli());
+                            budgetingNew.setAgustus(budgeting.getAgustus());
+                            budgetingNew.setSeptember(budgeting.getSeptember());
+                            budgetingNew.setOktober(budgeting.getOktober());
+                            budgetingNew.setNovember(budgeting.getNovember());
+                            budgetingNew.setDesember(budgeting.getDesember());
                         }
 
 
@@ -335,7 +400,7 @@ public class BudgetingBoImpl implements BudgetingBo {
                             for (BudgetingDetail budgetingDetail : details){
 
                                 ItAkunBudgetingDetailEntity budgetingDetailEntity = new ItAkunBudgetingDetailEntity();
-                                budgetingDetailEntity.setIdBudgetingDetail(generateBudgetingDetailId());
+                                budgetingDetailEntity.setIdBudgetingDetail(budgetingDetail.getIdBudgetingDetail());
                                 budgetingDetailEntity.setIdBudgeting(budgetingEntity.getIdBudgeting());
                                 budgetingDetailEntity.setNoBudgetingDetail(budgetingEntity.getNoBudgeting()+"-"+budgetingDetail.getTipe()+"-"+budgetingDetail.getDivisiId());
                                 budgetingDetailEntity.setNoBudgeting(budgetingEntity.getNoBudgeting());
@@ -359,7 +424,7 @@ public class BudgetingBoImpl implements BudgetingBo {
                                     throw new GeneralBOException("[BudgetingBoImpl.saveAddBudgeting] ERROR. "+e);
                                 }
 
-                                List<BudgetingPengadaan> pengadaans = budgetingPengadaans.stream().filter( p -> p.getRekeningId().equalsIgnoreCase(kodeRekeningEntity.getRekeningId())).collect(Collectors.toList());
+                                List<BudgetingPengadaan> pengadaans = budgetingPengadaans.stream().filter( p -> p.getIdBudgetingDetail().equalsIgnoreCase(budgetingDetailEntity.getIdBudgetingDetail())).collect(Collectors.toList());
                                 if (pengadaans.size() > 0){
                                     for (BudgetingPengadaan budgetingPengadaan : pengadaans){
 
@@ -389,7 +454,6 @@ public class BudgetingBoImpl implements BudgetingBo {
                                 }
                             }
                         }
-
                     }
                 }
                 // proses sum parent
@@ -418,6 +482,20 @@ public class BudgetingBoImpl implements BudgetingBo {
                 budgetingEntity.setQuartal2(budgeting.getQuartal2());
                 budgetingEntity.setQuartal3(budgeting.getQuartal3());
                 budgetingEntity.setQuartal4(budgeting.getQuartal4());
+
+                budgetingEntity.setJanuari(budgeting.getJanuari());
+                budgetingEntity.setFebruari(budgeting.getFebruari());
+                budgetingEntity.setMaret(budgeting.getMaret());
+                budgetingEntity.setApril(budgeting.getApril());
+                budgetingEntity.setMei(budgeting.getMei());
+                budgetingEntity.setJuni(budgeting.getJuni());
+                budgetingEntity.setJuli(budgeting.getJuli());
+                budgetingEntity.setAgustus(budgeting.getAgustus());
+                budgetingEntity.setSeptember(budgeting.getSeptember());
+                budgetingEntity.setOktober(budgeting.getOktober());
+                budgetingEntity.setNovember(budgeting.getNovember());
+                budgetingEntity.setDesember(budgeting.getDesember());
+
                 budgetingEntity.setFlag(bean.getFlag());
                 budgetingEntity.setAction("U");
                 budgetingEntity.setLastUpdate(bean.getLastUpdate());
@@ -436,6 +514,7 @@ public class BudgetingBoImpl implements BudgetingBo {
                     throw new GeneralBOException("[BudgetingBoImpl.saveEditBudgeting] ERROR. "+e);
                 }
 
+                // budgeting detail
                 List<BudgetingDetail> details = budgetingDetails.stream().filter( p -> p.getRekeningId().equalsIgnoreCase(budgetingEntity.getRekeningId())).collect(Collectors.toList());
                 if (details.size() > 0){
                     for (BudgetingDetail budgetingDetail : details){
@@ -459,7 +538,59 @@ public class BudgetingBoImpl implements BudgetingBo {
                                 logger.error("[BudgetingBoImpl.saveEditBudgeting] ERROR. ",e);
                                 throw new GeneralBOException("[BudgetingBoImpl.saveEditBudgeting] ERROR. "+e);
                             }
+
+                            // investasi
+                            ItAkunBudgetingDetailEntity finalBudgetingDetailEntity = budgetingDetailEntity;
+                            List<BudgetingPengadaan> pengadaans = budgetingPengadaans.stream().filter(p -> p.getIdBudgetingDetail().equalsIgnoreCase(finalBudgetingDetailEntity.getIdBudgetingDetail())).collect(Collectors.toList());
+                            if (pengadaans.size() > 0){
+                                for (BudgetingPengadaan budgetingPengadaan : pengadaans){
+
+                                    ItAkunBudgetingPengadaanEntity pengadaanEntity = budgetingPengadaanDao.getById("idPengadaan", budgetingPengadaan.getIdPengadaan());
+                                    if (pengadaanEntity != null){
+                                        pengadaanEntity.setNamPengadaan(budgetingPengadaan.getNamPengadaan());
+                                        pengadaanEntity.setNilai(budgetingPengadaan.getNilai());
+                                        pengadaanEntity.setQty(budgetingPengadaan.getQty());
+                                        pengadaanEntity.setSubTotal(budgetingPengadaan.getSubTotal());
+                                        pengadaanEntity.setTipe(budgetingPengadaan.getTipe());
+                                        pengadaanEntity.setFlag(bean.getFlag());
+                                        pengadaanEntity.setAction("U");
+                                        pengadaanEntity.setLastUpdate(bean.getLastUpdate());
+                                        pengadaanEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                                        try {
+                                            budgetingPengadaanDao.updateAndSave(pengadaanEntity);
+                                        } catch (HibernateException e){
+                                            logger.error("[BudgetingBoImpl.saveEditBudgeting] ERROR. ",e);
+                                            throw new GeneralBOException("[BudgetingBoImpl.saveEditBudgeting] ERROR. "+e);
+                                        }
+                                    } else {
+                                        pengadaanEntity = new ItAkunBudgetingPengadaanEntity();
+                                        pengadaanEntity.setIdPengadaan(generateBudgetingPengadaan());
+                                        pengadaanEntity.setIdBudgetingDetail(budgetingDetailEntity.getIdBudgetingDetail());
+                                        pengadaanEntity.setNoBudgetingDetail(budgetingDetailEntity.getNoBudgetingDetail());
+                                        pengadaanEntity.setNamPengadaan(budgetingPengadaan.getNamPengadaan());
+                                        pengadaanEntity.setNilai(budgetingPengadaan.getNilai());
+                                        pengadaanEntity.setQty(budgetingPengadaan.getQty());
+                                        pengadaanEntity.setSubTotal(budgetingPengadaan.getSubTotal());
+                                        pengadaanEntity.setTipe(budgetingPengadaan.getTipe());
+                                        pengadaanEntity.setFlag(bean.getFlag());
+                                        pengadaanEntity.setAction("U");
+                                        pengadaanEntity.setLastUpdate(bean.getLastUpdate());
+                                        pengadaanEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                                        try {
+                                            budgetingPengadaanDao.updateAndSave(pengadaanEntity);
+                                        } catch (HibernateException e){
+                                            logger.error("[BudgetingBoImpl.saveEditBudgeting] ERROR. ",e);
+                                            throw new GeneralBOException("[BudgetingBoImpl.saveEditBudgeting] ERROR. "+e);
+                                        }
+                                    }
+                                }
+                            }
+
                         } else {
+
+                            //budgeting detail
                             budgetingDetailEntity = new ItAkunBudgetingDetailEntity();
                             budgetingDetailEntity.setIdBudgetingDetail(budgetingDetail.getIdBudgetingDetail());
                             budgetingDetailEntity.setIdBudgeting(budgetingEntity.getIdBudgeting());
@@ -482,35 +613,16 @@ public class BudgetingBoImpl implements BudgetingBo {
                                 logger.error("[BudgetingBoImpl.saveEditBudgeting] ERROR. ",e);
                                 throw new GeneralBOException("[BudgetingBoImpl.saveEditBudgeting] ERROR. "+e);
                             }
-                        }
 
-
-                        List<BudgetingPengadaan> pengadaans = budgetingPengadaans.stream().filter( p -> p.getRekeningId().equalsIgnoreCase(budgetingEntity.getRekeningId())).collect(Collectors.toList());
-                        if (details.size() > 0){
-                            for (BudgetingPengadaan budgetingPengadaan : pengadaans){
-
-                                ItAkunBudgetingPengadaanEntity pengadaanEntity = budgetingPengadaanDao.getById("idPengadaan", budgetingPengadaan.getIdPengadaan());
-                                if (pengadaanEntity != null){
-                                    pengadaanEntity.setNamPengadaan(budgetingPengadaan.getNamPengadaan());
-                                    pengadaanEntity.setNilai(budgetingPengadaan.getNilai());
-                                    pengadaanEntity.setQty(budgetingPengadaan.getQty());
-                                    pengadaanEntity.setSubTotal(budgetingPengadaan.getSubTotal());
-                                    pengadaanEntity.setTipe(budgetingPengadaan.getTipe());
-                                    pengadaanEntity.setFlag(bean.getFlag());
-                                    pengadaanEntity.setAction("U");
-                                    pengadaanEntity.setLastUpdate(bean.getLastUpdate());
-                                    pengadaanEntity.setLastUpdateWho(bean.getLastUpdateWho());
-
-                                    try {
-                                        budgetingPengadaanDao.updateAndSave(pengadaanEntity);
-                                    } catch (HibernateException e){
-                                        logger.error("[BudgetingBoImpl.saveEditBudgeting] ERROR. ",e);
-                                        throw new GeneralBOException("[BudgetingBoImpl.saveEditBudgeting] ERROR. "+e);
-                                    }
-                                } else {
-                                    pengadaanEntity = new ItAkunBudgetingPengadaanEntity();
+                            // investasi
+                            ItAkunBudgetingDetailEntity finalBudgetingDetailEntity = budgetingDetailEntity;
+                            List<BudgetingPengadaan> pengadaans = budgetingPengadaans.stream().filter(p -> p.getIdBudgetingDetail().equalsIgnoreCase(finalBudgetingDetailEntity.getIdBudgetingDetail())).collect(Collectors.toList());
+                            if (pengadaans.size() > 0){
+                                for (BudgetingPengadaan budgetingPengadaan : pengadaans){
+                                    ItAkunBudgetingPengadaanEntity pengadaanEntity = new ItAkunBudgetingPengadaanEntity();
                                     pengadaanEntity.setIdPengadaan(generateBudgetingPengadaan());
-                                    pengadaanEntity.setIdBudgetingDetail(budgetingDetail.getIdBudgetingDetail());
+                                    pengadaanEntity.setIdBudgetingDetail(budgetingDetailEntity.getIdBudgetingDetail());
+                                    pengadaanEntity.setNoBudgetingDetail(budgetingDetailEntity.getNoBudgetingDetail());
                                     pengadaanEntity.setNamPengadaan(budgetingPengadaan.getNamPengadaan());
                                     pengadaanEntity.setNilai(budgetingPengadaan.getNilai());
                                     pengadaanEntity.setQty(budgetingPengadaan.getQty());
@@ -528,7 +640,6 @@ public class BudgetingBoImpl implements BudgetingBo {
                                         throw new GeneralBOException("[BudgetingBoImpl.saveEditBudgeting] ERROR. "+e);
                                     }
                                 }
-
                             }
                         }
                     }
@@ -574,6 +685,19 @@ public class BudgetingBoImpl implements BudgetingBo {
                         budgeting.setQuartal2(child.getQuartal2());
                         budgeting.setQuartal3(child.getQuartal3());
                         budgeting.setQuartal4(child.getQuartal4());
+
+                        budgeting.setJanuari(child.getJanuari());
+                        budgeting.setFebruari(child.getFebruari());
+                        budgeting.setMaret(child.getMaret());
+                        budgeting.setApril(child.getApril());
+                        budgeting.setMei(child.getMei());
+                        budgeting.setJuni(child.getJuni());
+                        budgeting.setJuli(child.getJuli());
+                        budgeting.setAgustus(child.getAgustus());
+                        budgeting.setSeptember(child.getSeptember());
+                        budgeting.setOktober(child.getOktober());
+                        budgeting.setNovember(child.getNovember());
+                        budgeting.setDesember(child.getDesember());
                         parentBudgetings.add(budgeting);
                         i++;
                     } else {
@@ -592,6 +716,19 @@ public class BudgetingBoImpl implements BudgetingBo {
                             budgeting.setQuartal3(minParentPeriod.getQuartal3().add(child.getQuartal3()));
                             budgeting.setQuartal4(minParentPeriod.getQuartal4().add(child.getQuartal4()));
 
+                            budgeting.setJanuari(minParentPeriod.getJanuari().add(child.getJanuari()));
+                            budgeting.setFebruari(minParentPeriod.getFebruari().add(child.getFebruari()));
+                            budgeting.setMaret(minParentPeriod.getMaret().add(child.getMaret()));
+                            budgeting.setApril(minParentPeriod.getApril().add(child.getApril()));
+                            budgeting.setMei(minParentPeriod.getMei().add(child.getMei()));
+                            budgeting.setJuni(minParentPeriod.getJuni().add(child.getJuni()));
+                            budgeting.setJuli(minParentPeriod.getJuli().add(child.getJuli()));
+                            budgeting.setAgustus(minParentPeriod.getAgustus().add(child.getAgustus()));
+                            budgeting.setSeptember(minParentPeriod.getSeptember().add(child.getSeptember()));
+                            budgeting.setOktober(minParentPeriod.getOktober().add(child.getOktober()));
+                            budgeting.setNovember(minParentPeriod.getNovember().add(child.getNovember()));
+                            budgeting.setDesember(minParentPeriod.getDesember().add(child.getDesember()));
+
                             // update list parrentPeriods;
                             parentBudgetings.remove(minParentPeriod);
                             parentBudgetings.add(budgeting);
@@ -607,6 +744,19 @@ public class BudgetingBoImpl implements BudgetingBo {
                             budgeting.setQuartal2((child.getQuartal2()));
                             budgeting.setQuartal3((child.getQuartal3()));
                             budgeting.setQuartal4((child.getQuartal4()));
+
+                            budgeting.setJanuari(child.getJanuari());
+                            budgeting.setFebruari(child.getFebruari());
+                            budgeting.setMaret(child.getMaret());
+                            budgeting.setApril(child.getApril());
+                            budgeting.setMei(child.getMei());
+                            budgeting.setJuni(child.getJuni());
+                            budgeting.setJuli(child.getJuli());
+                            budgeting.setAgustus(child.getAgustus());
+                            budgeting.setSeptember(child.getSeptember());
+                            budgeting.setOktober(child.getOktober());
+                            budgeting.setNovember(child.getNovember());
+                            budgeting.setDesember(child.getDesember());
                             parentBudgetings.add(budgeting);
                             i++;
                         }
@@ -639,6 +789,20 @@ public class BudgetingBoImpl implements BudgetingBo {
                     budgetingEntity.setQuartal2(new BigDecimal(0));
                     budgetingEntity.setQuartal3(new BigDecimal(0));
                     budgetingEntity.setQuartal4(new BigDecimal(0));
+
+                    budgetingEntity.setJanuari( new BigDecimal(0));
+                    budgetingEntity.setFebruari( new BigDecimal(0));
+                    budgetingEntity.setMaret( new BigDecimal(0));
+                    budgetingEntity.setApril( new BigDecimal(0));
+                    budgetingEntity.setMei( new BigDecimal(0));
+                    budgetingEntity.setJuni( new BigDecimal(0));
+                    budgetingEntity.setJuli( new BigDecimal(0));
+                    budgetingEntity.setAgustus( new BigDecimal(0));
+                    budgetingEntity.setSeptember( new BigDecimal(0));
+                    budgetingEntity.setOktober( new BigDecimal(0));
+                    budgetingEntity.setNovember( new BigDecimal(0));
+                    budgetingEntity.setDesember( new BigDecimal(0));
+
                     budgetingEntity.setFlag(bean.getFlag());
                     budgetingEntity.setAction(bean.getAction());
                     budgetingEntity.setCreatedDate(bean.getCreatedDate());
@@ -658,6 +822,19 @@ public class BudgetingBoImpl implements BudgetingBo {
                     budgeting.setQuartal3(new BigDecimal(0));
                     budgeting.setQuartal4(new BigDecimal(0));
 
+                    budgeting.setJanuari( new BigDecimal(0));
+                    budgeting.setFebruari( new BigDecimal(0));
+                    budgeting.setMaret( new BigDecimal(0));
+                    budgeting.setApril( new BigDecimal(0));
+                    budgeting.setMei( new BigDecimal(0));
+                    budgeting.setJuni( new BigDecimal(0));
+                    budgeting.setJuli( new BigDecimal(0));
+                    budgeting.setAgustus( new BigDecimal(0));
+                    budgeting.setSeptember( new BigDecimal(0));
+                    budgeting.setOktober( new BigDecimal(0));
+                    budgeting.setNovember( new BigDecimal(0));
+                    budgeting.setDesember( new BigDecimal(0));
+
 
                     if (parentBudgetings.size() > 0){
                         List<Budgeting> parents = parentBudgetings.stream().filter(p -> p.getRekeningId().equalsIgnoreCase(kodeRekeningEntity.getRekeningId())).collect(Collectors.toList());
@@ -671,6 +848,19 @@ public class BudgetingBoImpl implements BudgetingBo {
                             budgetingEntity.setQuartal3(parent.getQuartal3());
                             budgetingEntity.setQuartal4(parent.getQuartal4());
 
+                            budgetingEntity.setJanuari(parent.getJanuari());
+                            budgetingEntity.setFebruari(parent.getFebruari());
+                            budgetingEntity.setMaret(parent.getMaret());
+                            budgetingEntity.setApril(parent.getApril());
+                            budgetingEntity.setMei(parent.getMei());
+                            budgetingEntity.setJuni(parent.getJuni());
+                            budgetingEntity.setJuli(parent.getJuli());
+                            budgetingEntity.setAgustus(parent.getAgustus());
+                            budgetingEntity.setSeptember(parent.getSeptember());
+                            budgetingEntity.setOktober(parent.getOktober());
+                            budgetingEntity.setNovember(parent.getNovember());
+                            budgetingEntity.setDesember(parent.getDesember());
+
                             budgeting.setNilaiTotal(parent.getNilaiTotal());
                             budgeting.setSemester1(parent.getSemester1());
                             budgeting.setSemester2(parent.getSemester2());
@@ -678,6 +868,19 @@ public class BudgetingBoImpl implements BudgetingBo {
                             budgeting.setQuartal2(parent.getQuartal2());
                             budgeting.setQuartal3(parent.getQuartal3());
                             budgeting.setQuartal4(parent.getQuartal4());
+
+                            budgeting.setJanuari(parent.getJanuari());
+                            budgeting.setFebruari(parent.getFebruari());
+                            budgeting.setMaret(parent.getMaret());
+                            budgeting.setApril(parent.getApril());
+                            budgeting.setMei(parent.getMei());
+                            budgeting.setJuni(parent.getJuni());
+                            budgeting.setJuli(parent.getJuli());
+                            budgeting.setAgustus(parent.getAgustus());
+                            budgeting.setSeptember(parent.getSeptember());
+                            budgeting.setOktober(parent.getOktober());
+                            budgeting.setNovember(parent.getNovember());
+                            budgeting.setDesember(parent.getDesember());
                         }
                     }
 
@@ -775,7 +978,7 @@ public class BudgetingBoImpl implements BudgetingBo {
                 budgetingDetail.setPositionId(budgetingDetailEntity.getPositionId());
                 budgetingDetail.setTipe(budgetingDetailEntity.getTipe());
 
-                if (!"".equalsIgnoreCase(budgetingDetail.getPositionId())){
+                if (!"".equalsIgnoreCase(budgetingDetail.getPositionId()) && budgetingDetail.getPositionId() != null){
                     ImPosition position = positionDao.getById("positionId", budgetingDetail.getPositionId());
                     budgetingDetail.setDivisiName(position.getPositionName());
                 }

@@ -109,6 +109,7 @@
                                         <div class="col-sm-2">
                                             <select class="form-control" id="sel-tipe" name="budgeting.tipe" disabled="true">
                                                 <option value="tahunan">Tahunan</option>
+                                                <option value="bulanan">Bulanan</option>
                                                 <option value="semester">Semester</option>
                                                 <option value="quartal">Quartal</option>
                                             </select>
@@ -176,39 +177,27 @@
                                             <td align="center">Total</td>
                                             <td align="center">Selisih</td>
                                         </s:if>
+                                        <s:if test='budgeting.tipe == "bulanan"'>
+                                            <td align="center">Total</td>
+                                            <td align="center">Januari</td>
+                                            <td align="center">Februari</td>
+                                            <td align="center">Maret</td>
+                                            <td align="center">April</td>
+                                            <td align="center">Mei</td>
+                                            <td align="center">Juni</td>
+                                            <td align="center">Juli</td>
+                                            <td align="center">Agustus</td>
+                                            <td align="center">September</td>
+                                            <td align="center">Oktober</td>
+                                            <td align="center">November</td>
+                                            <td align="center">Desember</td>
+                                            <td align="center">Selisih</td>
+                                        </s:if>
                                         <td align="center">Action</td>
                                     </tr>
                                     </thead>
                                     <tbody id="body-budgeting">
-                                    <%--<s:iterator value="#session.listOfCoa" status="listOfCoa" var="row">--%>
-                                        <%--<tr>--%>
-                                            <%--<td><s:property value="kodeRekening"/></td>--%>
-                                            <%--<td><s:property value="namaKodeRekening"/></td>--%>
-                                            <%--<s:if test='budgeting.tipe == "quartal"'>--%>
-                                                <%--<td align="center"><script>document.write(formatRupiah('<s:property value="nilaiTotal"/>'))</script></td>--%>
-                                                <%--<td align="center"><script>document.write(formatRupiah('<s:property value="quartal1"/>'))</script></td>--%>
-                                                <%--<td align="center"><script>document.write(formatRupiah('<s:property value="quartal2"/>'))</script></td>--%>
-                                                <%--<td align="center"><script>document.write(formatRupiah('<s:property value="quartal3"/>'))</script></td>--%>
-                                                <%--<td align="center"><script>document.write(formatRupiah('<s:property value="quartal4"/>'))</script></td>--%>
-                                                <%--<td align="center"><s:property value="selisih"/></td>--%>
-                                            <%--</s:if>--%>
-                                            <%--<s:if test='budgeting.tipe == "semester"'>--%>
-                                                <%--<td align="center"><script>document.write(formatRupiah('<s:property value="nilaiTotal"/>'))</script></td>--%>
-                                                <%--<td align="center"><script>document.write(formatRupiah('<s:property value="semester1"/>'))</script></td>--%>
-                                                <%--<td align="center"><script>document.write(formatRupiah('<s:property value="semester2"/>'))</script></td>--%>
-                                                <%--<td align="center"><s:property value="selisih"/></td>--%>
-                                            <%--</s:if>--%>
-                                            <%--<s:if test='budgeting.tipe == "tahunan"'>--%>
-                                                <%--<td align="center"><script>document.write(formatRupiah('<s:property value="nilaiTotal"/>'))</script></td>--%>
-                                                <%--<td align="center"><s:property value="selisih"/></td>--%>
-                                            <%--</s:if>--%>
-                                            <%--<td align="center">--%>
-                                                <%--<s:if test='#row.stLevel == "5"'>--%>
-                                                    <%--<button class="btn btn-sm btn-primary btn-edit" onclick="detail('<s:property value="rekeningId"/>')"><i class="fa fa-edit"></i></button>--%>
-                                                <%--</s:if>--%>
-                                            <%--</td>--%>
-                                        <%--</tr>--%>
-                                    <%--</s:iterator>--%>
+
                                     </tbody>
                                 </table>
                             </div>
@@ -472,6 +461,21 @@
         }
         if (tipe == "tahunan"){
             str += "<td align='right'>"+formatRupiah(data.nilaiTotal)+"</td>";
+        }
+        if (tipe == "bulanan"){
+            str += "<td align='right'>"+formatRupiah(data.nilaiTotal)+"</td>"+
+                "<td align='right'>"+formatRupiah(data.januari)+"</td>"+
+                "<td align='right'>"+formatRupiah(data.februari)+"</td>";
+                "<td align='right'>"+formatRupiah(data.maret)+"</td>";
+                "<td align='right'>"+formatRupiah(data.april)+"</td>";
+                "<td align='right'>"+formatRupiah(data.mei)+"</td>";
+                "<td align='right'>"+formatRupiah(data.juni)+"</td>";
+                "<td align='right'>"+formatRupiah(data.juli)+"</td>";
+                "<td align='right'>"+formatRupiah(data.agustus)+"</td>";
+                "<td align='right'>"+formatRupiah(data.september)+"</td>";
+                "<td align='right'>"+formatRupiah(data.oktober)+"</td>";
+                "<td align='right'>"+formatRupiah(data.november)+"</td>";
+                "<td align='right'>"+formatRupiah(data.desember)+"</td>";
         }
 
         return str;

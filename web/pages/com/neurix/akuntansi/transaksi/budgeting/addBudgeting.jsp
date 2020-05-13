@@ -79,6 +79,7 @@
                                         <div class="col-sm-2">
                                             <select class="form-control" id="sel-tipe">
                                                 <option value="tahunan">Tahunan</option>
+                                                <option value="bulanan">Bulanan</option>
                                                 <option value="semester">Semester</option>
                                                 <option value="quartal">Quartal</option>
                                             </select>
