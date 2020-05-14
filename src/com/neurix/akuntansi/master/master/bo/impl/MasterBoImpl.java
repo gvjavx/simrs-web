@@ -8,6 +8,8 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.dokter.dao.DokterDao;
 import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.master.dokter.model.ImSimrsDokterEntity;
+import com.neurix.simrs.master.pasien.dao.PasienDao;
+import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -28,7 +30,15 @@ public class MasterBoImpl implements MasterBo {
     protected static transient Logger logger = Logger.getLogger(MasterBoImpl.class);
     private MasterDao masterDao;
     private DokterDao dokterDao;
+    private PasienDao pasienDao;
 
+    public PasienDao getPasienDao() {
+        return pasienDao;
+    }
+
+    public void setPasienDao(PasienDao pasienDao) {
+        this.pasienDao = pasienDao;
+    }
 
     public DokterDao getDokterDao() {
         return dokterDao;
@@ -205,6 +215,7 @@ public class MasterBoImpl implements MasterBo {
         List<Master> listOfResult = new ArrayList();
         List<ImMasterEntity> imMasterEntityList = null;
         List<ImSimrsDokterEntity> imSimrsDokterEntityList= null;
+        List<ImSimrsPasienEntity> imSimrsPasienEntityList= null;
 
         if ("dokter".equalsIgnoreCase(tipeMaster)){
             try {
@@ -221,6 +232,24 @@ public class MasterBoImpl implements MasterBo {
                     returnMaster = new Master();
                     returnMaster.setNomorVendor(dokterEntity.getKodering());
                     returnMaster.setNama(dokterEntity.getNamaDokter());
+                    listOfResult.add(returnMaster);
+                }
+            }
+        }else if ("pasien".equalsIgnoreCase(tipeMaster)){
+            try {
+                imSimrsPasienEntityList = pasienDao.getPasienListByLike(key);
+            } catch (HibernateException e) {
+                logger.error("[MasterBoImpl.typeaheadMasterPembayaran] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+            }
+
+            if(imSimrsPasienEntityList != null){
+                Master returnMaster;
+                // Looping from dao to object and save in collection
+                for(ImSimrsPasienEntity pasienEntity : imSimrsPasienEntityList){
+                    returnMaster = new Master();
+                    returnMaster.setNomorVendor(pasienEntity.getIdPasien());
+                    returnMaster.setNama(pasienEntity.getNama());
                     listOfResult.add(returnMaster);
                 }
             }

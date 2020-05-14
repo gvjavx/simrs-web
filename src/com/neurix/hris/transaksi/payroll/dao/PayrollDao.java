@@ -4486,4 +4486,147 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
         }
         return listOfResult;
     }
+
+    public List<Payroll> getRekapGajiKaryawan(String bulan, String tahun,String branch){
+        List<Payroll> listOfResult = new ArrayList<>();
+
+        List<Object[]> results = new ArrayList<Object[]>();
+        String query = "SELECT\n" +
+                "\tpb.nama_bagian,\n" +
+                "\tsum(pay.gaji_golongan) as gajigolongan,\n" +
+                "\tsum(pay.tunjangan_umk) as sankhus,\n" +
+                "\tsum(pay.tunjangan_jabatan_struktural) as tjabatan,\n" +
+                "\tsum(pay.tunjangan_struktural) as tstruktural,\n" +
+                "\tsum(pay.tunjangan_strategis) as tstrategis,\n" +
+                "\tsum(pay.tunjangan_peralihan) as tperalihan,\n" +
+                "\tsum(pay.tunjangan_lain) as tlain,\n" +
+                "\tsum(pay.tunjangan_lembur) as tlembur,\n" +
+                "\tsum(pay.tunjangan_rumah) as trumah,\n" +
+                "\tsum(pay.tunjangan_listrik) as tlistrik,\n" +
+                "\tsum(pay.tunjangan_air) as tair,\n" +
+                "\tsum(pay.tunjangan_bbm) as tbbm,\n" +
+                "\tsum(pay.tunjangan_pph) as tpph,\n" +
+                "\tsum(pay.tunjangan_dapen) as tdapen,\n" +
+                "\tsum(pay.tunjangan_bpjs_tk) as tbpjstk,\n" +
+                "\tsum(pay.tunjangan_bpjs_ks) as tbpjsks,\n" +
+                "\tsum(pay.tunjangan_sosial_lain) as tsosiallain,\n" +
+                "\tsum(pay.pph_gaji) as pphgaji,\n" +
+                "\tsum(pay.iuran_ypks) as iuranypks,\n" +
+                "\tsum(pay.iuran_dapen_peg) as iurandapenpeg,\n" +
+                "\tsum(pay.iuran_dapen_persh) as iurandapenpers,\n" +
+                "\tsum(pay.iuran_bpjs_tk_pers) as iuranbpjstkpers,\n" +
+                "\tsum(pay.iuran_bpjs_tk_kary) as iuranbpjstkkary,\n" +
+                "\tsum(pay.iuran_bpjs_ks_pers) as iuranbpjskspers,\n" +
+                "\tsum(pay.iuran_bpjs_ks_kary) as iuranbpjskskary,\n" +
+                "\tsum(pay.total_potongan_lain) as totalpotlain,\n" +
+                "\tpay.department_id,\n" +
+                "\tpay.department_name\n" +
+                "FROM\n" +
+                "\tit_hris_payroll pay \n" +
+                "\tLEFT JOIN im_hris_pegawai peg ON pay.nip = peg.nip \n" +
+                "\tLEFT JOIN im_position pos ON pay.position_id = pos.position_id\n" +
+                "\tLEFT JOIN im_hris_position_bagian pb ON pb.bagian_id = pos.bagian_id \n" +
+                "WHERE\n" +
+                "\tpay.bulan='"+bulan+"' \n" +
+                "\tAND pay.tahun='"+tahun+"'\n" +
+                "\tAND pay.branch_id='"+branch+"'\n" +
+                "\tAND pay.approval_flag='Y'\n" +
+                "\tAND pay.flag_payroll='Y'\n" +
+                "GROUP BY\n" +
+                "\tpb.nama_bagian,\n" +
+                "\tpay.department_id,\n" +
+                "\tpay.department_name\n" +
+                "ORDER BY\n" +
+                "\tpay.department_id ASC ";
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        for (Object[] row : results) {
+            Payroll data= new Payroll();
+            data.setNama((String) row[0]);
+            data.setGajiGolonganNilai(BigDecimal.valueOf(Double.parseDouble(row[1].toString())));
+            data.setTunjanganUmkNilai(BigDecimal.valueOf(Double.parseDouble(row[2].toString())));
+            data.setTunjanganJabatanStrukturalNilai(BigDecimal.valueOf(Double.parseDouble(row[3].toString())));
+            data.setTunjanganStrukturalNilai(BigDecimal.valueOf(Double.parseDouble(row[4].toString())));
+            data.setTunjanganStrategisNilai(BigDecimal.valueOf(Double.parseDouble(row[5].toString())));
+            data.setTunjanganPeralihanNilai(BigDecimal.valueOf(Double.parseDouble(row[6].toString())));
+            data.setTunjanganLainNilai(BigDecimal.valueOf(Double.parseDouble(row[7].toString())));
+            data.setTunjanganLemburNilai(BigDecimal.valueOf(Double.parseDouble(row[8].toString())));
+            data.setTunjanganRumahNilai(BigDecimal.valueOf(Double.parseDouble(row[9].toString())));
+            data.setTunjanganListrikNilai(BigDecimal.valueOf(Double.parseDouble(row[10].toString())));
+            data.setTunjanganAirNilai(BigDecimal.valueOf(Double.parseDouble(row[11].toString())));
+            data.setTunjanganBBMNilai(BigDecimal.valueOf(Double.parseDouble(row[12].toString())));
+            data.setTunjanganPphNilai(BigDecimal.valueOf(Double.parseDouble(row[13].toString())));
+            data.setTunjanganDapenNilai(BigDecimal.valueOf(Double.parseDouble(row[14].toString())));
+            data.setTunjanganBpjsTkNilai(BigDecimal.valueOf(Double.parseDouble(row[15].toString())));
+            data.setTunjanganBpjsKsNilai(BigDecimal.valueOf(Double.parseDouble(row[16].toString())));
+            data.setTunjanganSosialLainNilai(BigDecimal.valueOf(Double.parseDouble(row[17].toString())));
+            data.setPphGajiNilai(BigDecimal.valueOf(Double.parseDouble(row[18].toString())));
+            data.setIuranYpksNilai(BigDecimal.valueOf(Double.parseDouble(row[19].toString())));
+            data.setIuranDapenPegNilai(BigDecimal.valueOf(Double.parseDouble(row[20].toString())));
+            data.setIuranDapenPershNilai(BigDecimal.valueOf(Double.parseDouble(row[21].toString())));
+            data.setIuranBpjsTkPersNilai(BigDecimal.valueOf(Double.parseDouble(row[22].toString())));
+            data.setIuranBpjsTkKaryNilai(BigDecimal.valueOf(Double.parseDouble(row[23].toString())));
+            data.setIuranBpjsKsPersNilai(BigDecimal.valueOf(Double.parseDouble(row[24].toString())));
+            data.setIuranBpjsKsKaryNilai(BigDecimal.valueOf(Double.parseDouble(row[25].toString())));
+            data.setTotalPotonganLainNilai(BigDecimal.valueOf(Double.parseDouble(row[26].toString())));
+            data.setDepartmentId((String) row[27]);
+            data.setDepartmentName((String) row[28]);
+            listOfResult.add(data);
+        }
+        return listOfResult;
+    }
+
+    public List<Payroll> getPotonganIuranDapen(String bulan, String tahun,String branch,String tipeDapen){
+        List<Payroll> listOfResult = new ArrayList<>();
+
+        List<Object[]> results = new ArrayList<Object[]>();
+        String query = "SELECT \n" +
+                "\tpay.department_name,\n" +
+                "\tpay.nip,\n" +
+                "\tpay.nama,\n" +
+                "\tpeg.no_anggota_dapen,\n" +
+                "\tgdp.golongan_dapen_name,\n" +
+                "\tpay.gaji_pensiun,\n" +
+                "\tpay.iuran_dapen_peg,\n" +
+                "\tpay.iuran_dapen_persh\n" +
+                "FROM\n" +
+                "\tit_hris_payroll pay\n" +
+                "\tLEFT JOIN im_hris_pegawai peg ON pay.nip=peg.nip\n" +
+                "\tLEFT JOIN im_hris_golongan_dapen gdp ON gdp.golongan_dapen_id=peg.golongan_dapen_id\n" +
+                "WHERE\n" +
+                "\tpay.bulan='"+bulan+"'\n" +
+                "\tAND pay.tahun='"+tahun+"'\n" +
+                "\tAND pay.branch_id='"+branch+"'\n" +
+                "\tAND peg.dana_pensiun='"+tipeDapen+"'\n" +
+                "ORDER BY\n" +
+                "\tdepartment_id ASC";
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        int urut=1;
+        String departmentName = "";
+        for (Object[] row : results) {
+            if (!departmentName.equalsIgnoreCase((String) row[0])){
+                urut=1;
+                departmentName=(String) row[0];
+            }
+            Payroll data= new Payroll();
+            data.setPoint(urut);
+            data.setDepartmentName((String) row[0]);
+            data.setNip((String) row[1]);
+            data.setNama((String) row[2]);
+            data.setNoAnggotaDapen((String) row[3]);
+            data.setGolonganDapenName((String) row[4]);
+            data.setGajiPensiunNilai(BigDecimal.valueOf(Double.parseDouble(row[5].toString())));
+            data.setIuranDapenPegNilai(BigDecimal.valueOf(Double.parseDouble(row[6].toString())));
+            data.setIuranDapenPershNilai(BigDecimal.valueOf(Double.parseDouble(row[7].toString())));
+            data.setIuranPensiunJumlahNilai(data.getIuranDapenPegNilai().add(data.getIuranDapenPershNilai()));
+            urut++;
+            listOfResult.add(data);
+        }
+        return listOfResult;
+    }
 }

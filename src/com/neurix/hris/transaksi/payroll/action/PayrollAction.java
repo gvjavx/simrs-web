@@ -10136,9 +10136,24 @@ public class PayrollAction extends BaseMasterAction{
         PayrollBo payrollBo = (PayrollBo) ctx.getBean("payrollBoProxy");
         if(searchPayroll.getTipe().equalsIgnoreCase("GK")){
             payrollList = payrollBo.getDaftarGajiKaryawan(searchPayroll.getBulan(), searchPayroll.getTahun(),
-                    searchPayroll.getBranchId());
+                    searchPayroll.getBranchId(),"GK");
             titleReport = "DAFTAR GAJI KARYAWAN";
             hasil = "success_print_daftar_gaji_kary";
+        }else if (searchPayroll.getTipe().equalsIgnoreCase("RG")){
+            payrollList = payrollBo.getDaftarGajiKaryawan(searchPayroll.getBulan(), searchPayroll.getTahun(),
+                    searchPayroll.getBranchId(),"RK");
+            titleReport = "DAFTAR REKAP GAJI PER SUBDIV";
+            hasil = "success_print_rekap_gaji_kary";
+        } else if (searchPayroll.getTipe().equalsIgnoreCase("PIDPLK")){
+            payrollList = payrollBo.getDaftarIuranDapen(searchPayroll.getBulan(), searchPayroll.getTahun(),
+                    searchPayroll.getBranchId(),"PIDPLK");
+            titleReport = "DAFTAR POTONGAN IURAN NORMAL PROGRAM DPLK";
+            hasil = "success_print_daftar_potongan_dapen";
+        }else if (searchPayroll.getTipe().equalsIgnoreCase("PIDPB")){
+            payrollList = payrollBo.getDaftarIuranDapen(searchPayroll.getBulan(), searchPayroll.getTahun(),
+                    searchPayroll.getBranchId(),"PIDPB");
+            titleReport = "DAFTAR POTONGAN IURAN NORMAL PROGRAM DAPENBUN";
+            hasil = "success_print_daftar_potongan_dapen";
         }
 
         reportParams.put("reportTitle", titleReport);

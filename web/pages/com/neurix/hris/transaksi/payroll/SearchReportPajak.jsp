@@ -116,7 +116,7 @@
                                          'rapelPendidikan':'Rapel Pendidikan','rapelLembur':'Rapel Lembur','rapelInsentif':'Rapel Insentif',
                                          'rapelJubileum':'Rapel Jubileum'}"
                                                                   id="tipe" name="payroll.tipe" cssClass="form-control" />--%>
-                                                        <s:select list="#{'GK':'Gaji Karyawan', 'RG':'Rekap Gaji Karyawan', 'PI':'Potongan Iuran DPLK'}"
+                                                        <s:select list="#{'GK':'Gaji Karyawan', 'RG':'Rekap Gaji Karyawan', 'PIDPLK':'Daftar Potongan Iuran DPLK', 'PIDPB':'Daftar Potongan Iuran Dapenbun'}"
                                                                   id="tipe" name="payroll.tipe" cssClass="form-control" />
                                                     </table>
 

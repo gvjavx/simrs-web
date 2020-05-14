@@ -1326,7 +1326,7 @@ public class PendapatanDokterBoImpl implements PendapatanDokterBo {
                     List<Map> reduksiPendapatanRiList = new ArrayList<>();
 
                     for (BillingPendapatanDokter billingPendapatanDokter : billingDokter) {
-                        if ("rawat_jalan".equalsIgnoreCase(billingPendapatanDokter.getJenisRawat())){
+                        if ("rawat_jalan".equalsIgnoreCase(billingPendapatanDokter.getJenisRawat())||"igd".equalsIgnoreCase(billingPendapatanDokter.getJenisRawat())){
                             Map reduksiPendapatanRj = new HashMap();
 
                             reduksiPendapatanRj.put("nilai",billingPendapatanDokter.getNilai());
