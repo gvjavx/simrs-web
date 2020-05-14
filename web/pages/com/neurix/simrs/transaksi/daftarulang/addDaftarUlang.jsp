@@ -265,7 +265,7 @@
                                     <label class="col-md-4" style="margin-top: 7px">No Bpjs</label>
                                     <div class="col-md-8">
                                         <div class="input-group" style="margin-top: 7px">
-                                            <s:textfield onkeypress="$(this).css('border','')" name="headerDetailCheckup.noBpjs" cssClass="form-control" id="no_bpjs"></s:textfield>
+                                            <s:textfield readonly="true" onkeypress="$(this).css('border','')" name="headerDetailCheckup.noBpjs" cssClass="form-control" id="no_bpjs"></s:textfield>
                                             <div class="input-group-btn">
                                                 <a class="btn btn-success" onclick="checkBpjs()">
                                                  <span id="btn-cek-bpjs"><i class="fa fa-search"></i> Check</span>
