@@ -226,6 +226,7 @@
             var statusRujukan = $('#status_rujukan').val();
 
             var asuransi = $('#asuransi').val();
+            var isLaka = $('#is_laka').val();
             var noKartu = $('#no_kartu').val();
             var coverBiaya = $('#nominal_cover_biaya').val();
 
@@ -308,7 +309,7 @@
                 if(tipe == "asuransi"){
                     if(asuransi != '' && coverBiaya != ''){
 
-                        if(asuransi == "ASN00000001"){
+                        if(isLaka == "Y"){
                             $('#confirm_dialog').dialog('open');
                         }else{
                             if(noKartu != ''){
@@ -1193,7 +1194,7 @@
                                             <div class="form-group">
                                                 <label class="col-md-4" style="margin-top: 10px">Asuransi</label>
                                                 <div class="col-md-8">
-                                                    <select id="asuransi" name="headerCheckup.idAsuransi"
+                                                    <select id="asuransi"
                                                             class="form-control select2"
                                                             style="width: 100%"
                                                             onchange="var warn =$('#war_asuransi').is(':visible'); if (warn){$('#con_asuransi').show().fadeOut(3000);$('#war_asuransi').hide()}; showLaka(this.value)">
@@ -1204,6 +1205,8 @@
                                                     <span style="color: green; display: none" id="con_asuransi"><i
                                                             class="fa fa-check"></i> correct</span>
                                                 </div>
+                                                <s:hidden name="headerCheckup.idAsuransi" id="id_asuransi"></s:hidden>
+                                                <s:hidden id="is_laka"></s:hidden>
                                             </div>
                                             <div class="form-group" id="form_no_kartu">
                                                 <label class="col-md-4" style="margin-top: 10px">No Kartu</label>
@@ -2198,10 +2201,9 @@
     function listSelectAsuransi() {
         var option = "<option value=''>[Select One]</option>";
         CheckupAction.getComboAsuransi(function (response) {
-            console.log(response);
             if (response.length > 0) {
                 $.each(response, function (i, item) {
-                    option += '<option value="' + item.idAsuransi + '">' + item.namaAsuransi + '</option>';
+                    option += '<option value="' + item.idAsuransi +'|'+ item.isLaka +'">' + item.namaAsuransi + '</option>';
                 });
                 $('#asuransi').html(option);
             }else {
@@ -2256,19 +2258,25 @@
 
     function showLaka(idAsuransi){
         if(idAsuransi != ''){
-
-            if(idAsuransi == "ASN00000001"){
-                $('#form_jasaraharja_1, #form_jasaraharja_2').show();
-                $('#form_no_kartu').hide();
-                var cover = formatRupiah(20000000);
-                $('#nominal_cover_biaya').val(cover);
-                $('#cover_biaya').val('20000000');
-                $('#war_jml_cover').hide();
-            }else{
-                $('#form_jasaraharja_1, #form_jasaraharja_2').hide();
-                $('#form_no_kartu').show();
-                $('#cover_biaya').val('');
-                $('#nominal_cover_biaya').val('');
+            var temp = idAsuransi.split("|");
+            var id = temp[0];
+            var isLaka = temp[1];
+            if(id != 'null'){
+                $('#id_asuransi').val(id);
+                $('#is_laka').val(isLaka);
+                if(isLaka == "Y"){
+                    $('#form_jasaraharja_1, #form_jasaraharja_2').show();
+                    $('#form_no_kartu').hide();
+                    var cover = formatRupiah(20000000);
+                    $('#nominal_cover_biaya').val(cover);
+                    $('#cover_biaya').val('20000000');
+                    $('#war_jml_cover').hide();
+                }else{
+                    $('#form_jasaraharja_1, #form_jasaraharja_2').hide();
+                    $('#form_no_kartu').show();
+                    $('#cover_biaya').val('');
+                    $('#nominal_cover_biaya').val('');
+                }
             }
         }
     }
@@ -2327,7 +2335,6 @@
             CheckupAction.listOfDokter(idPelayanan, function (response) {
                 option = "<option value=''>[Select One]</option>";
                 if (response != null) {
-                    console.log(response);
                     $.each(response, function (i, item) {
                         option += "<option value='" + item.idDokter + "'>" + item.namaDokter + "</option>";
                     });
@@ -2380,7 +2387,6 @@
         var tglperiksa = "";
         var alergi = "";
 
-//        alert(noPasien);
         CheckupAction.initAlertPasien(noPasien, function (response) {
             if (response != null && response.namaPasien != null) {
 

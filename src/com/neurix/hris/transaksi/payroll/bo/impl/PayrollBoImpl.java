@@ -23398,4 +23398,19 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
         }
         return listOfResult;
     }
+
+    @Override
+    public List<Payroll> getDaftarGajiKaryawan(String bulan, String tahun, String branch) throws GeneralBOException {
+        List<Payroll> payrollList = new ArrayList<>();
+        payrollList = payrollDao.getDaftarGajiKaryawan(bulan,tahun,branch);
+
+        for (Payroll payroll : payrollList){
+            payroll.setTotalANilai(payroll.getGajiGolonganNilai().add(payroll.getTunjanganUmkNilai()).add(payroll.getTunjanganJabatanStrukturalNilai()).add(payroll.getTunjanganStrukturalNilai()).add(payroll.getTunjanganStrategisNilai()).add(payroll.getTunjanganPeralihanNilai()).add(payroll.getTunjanganLainNilai()).add(payroll.getTunjanganLemburNilai()));
+            payroll.setTotalBNilai(payroll.getTunjanganRumahNilai().add(payroll.getTunjanganListrikNilai()).add(payroll.getTunjanganAirNilai().add(payroll.getTunjanganBBMNilai().add(payroll.getTunjanganPphNilai().add(payroll.getTunjanganDapenNilai().add(payroll.getTunjanganBpjsTkNilai().add(payroll.getTunjanganBpjsKsNilai().add(payroll.getTunjanganSosialLainNilai()))))))));
+            payroll.setTotalPendapatan(payroll.getTotalANilai().add(payroll.getTotalBNilai()));
+            payroll.setTotalCNilai(payroll.getPphGajiNilai().add(payroll.getIuranYpksNilai().add(payroll.getIuranDapenPegNilai().add(payroll.getIuranDapenPershNilai().add(payroll.getIuranBpjsTkPersNilai().add(payroll.getIuranBpjsTkKaryNilai().add(payroll.getIuranBpjsKsPersNilai().add(payroll.getIuranBpjsKsKaryNilai().add(payroll.getTotalPotonganLainNilai())))))))));
+            payroll.setTotalGajiBersihNilai(payroll.getTotalPendapatan().subtract(payroll.getTotalCNilai()));
+        }
+        return payrollList;
+    }
 }

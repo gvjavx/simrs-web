@@ -1,7 +1,9 @@
 package com.neurix.simrs.transaksi.permintaanvendor.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.simrs.transaksi.permintaanvendor.model.BatchPermintaanObat;
 import com.neurix.simrs.transaksi.permintaanvendor.model.MtSimrsPermintaanVendorEntity;
+import com.neurix.simrs.transaksi.permintaanvendor.model.PermintaanVendor;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -131,6 +133,59 @@ public class PermintaanVendorDao extends GenericDao<MtSimrsPermintaanVendorEntit
             }
         }
         return obatDetailList;
+    }
+
+    public TransaksiObatDetail getDiskonBrutoNetto(String idObat){
+        TransaksiObatDetail detail = new TransaksiObatDetail();
+        if(idObat != null && !"".equalsIgnoreCase(idObat)) {
+            String SQL = "SELECT\n" +
+                    "a.id_transaksi_obat_detail,\n" +
+                    "b.diskon,\n" +
+                    "b.bruto,\n" +
+                    "b.netto\n" +
+                    "FROM\n" +
+                    "\t(\n" +
+                    "\tSELECT \n" +
+                    "\ta.id_transaksi_obat_detail,\n" +
+                    "\ta.id_obat,\n" +
+                    "\ta.created_date\n" +
+                    "\tFROM mt_simrs_transaksi_obat_detail a\n" +
+                    "\tINNER JOIN mt_simrs_approval_transaksi_obat b\n" +
+                    "\tON a.id_approval_obat = b.id_approval_obat\n" +
+                    "\tINNER JOIN mt_simrs_permintaan_obat_vendor c\n" +
+                    "\tON a.id_approval_obat = c.id_approval_obat\n" +
+                    "\tWHERE a.id_obat = :idObat\n" +
+                    "\tAND b.tipe_permintaan = '004'\n" +
+                    "\tAND c.tipe_transaksi NOT LIKE 'reture'\n" +
+                    "\tORDER BY a.created_date DESC\n" +
+                    "\tLIMIT 1\n" +
+                    "\t) a\n" +
+                    "INNER JOIN \n" +
+                    "\t(\n" +
+                    "\tSELECT \n" +
+                    "\tid_transaksi_obat_detail,\n" +
+                    "\tdiskon,\n" +
+                    "\tbruto,\n" +
+                    "\tnetto\n" +
+                    "\tFROM \n" +
+                    "\tmt_simrs_transaksi_obat_detail_batch\n" +
+                    "\t) b\n" +
+                    "ON a.id_transaksi_obat_detail = b.id_transaksi_obat_detail\n" +
+                    "\n";
+
+            List<Object[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("idObat", idObat)
+                    .list();
+            if(result.size() > 0){
+                Object[] objects = result.get(0);
+                detail.setIdObat(objects[0] != null ? objects[0].toString() : "");
+                detail.setDiskon(objects[1] != null ? new BigDecimal(objects[1].toString()) : new BigDecimal(String.valueOf(0)));
+                detail.setBruto(objects[2] != null ? new BigDecimal(objects[2].toString()) : new BigDecimal(String.valueOf(0)));
+                detail.setNetto(objects[3] != null ? new BigDecimal(objects[3].toString()) : new BigDecimal(String.valueOf(0)));
+            }
+        }
+        return detail;
     }
 
     public String getNextSeq() {

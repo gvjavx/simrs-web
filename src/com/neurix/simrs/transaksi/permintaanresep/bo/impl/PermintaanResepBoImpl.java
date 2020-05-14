@@ -9,6 +9,7 @@ import com.neurix.simrs.transaksi.permintaanresep.model.ImSimrsPermintaanResepEn
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.transaksiobat.dao.ApprovalTransaksiObatDao;
 import com.neurix.simrs.transaksi.transaksiobat.dao.TransaksiObatDetailDao;
+import com.neurix.simrs.transaksi.transaksiobat.model.ApprovalTransaksiObat;
 import com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsApprovalTransaksiObatEntity;
 import com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsTransaksiObatDetailEntity;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
@@ -66,6 +67,13 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
                         permintaanResep.setNamaPasien(pasienEntity.getNama());
                     }
 
+                    if(resepEntity.getIdApprovalObat() != null){
+                        ImtSimrsApprovalTransaksiObatEntity approve = getListApprovalEntity(resepEntity.getIdApprovalObat());
+                        if(approve.getIdApprovalObat() != null){
+                            permintaanResep.setApproveFlag(approve.getApprovalFlag());
+                        }
+                    }
+
                     listOfResults.add(permintaanResep);
                 }
             }
@@ -96,6 +104,26 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
             }
         }
         return null;
+    }
+
+    public ImtSimrsApprovalTransaksiObatEntity getListApprovalEntity(String idApproval){
+        ImtSimrsApprovalTransaksiObatEntity entity = new ImtSimrsApprovalTransaksiObatEntity();
+        List<ImtSimrsApprovalTransaksiObatEntity> list = new ArrayList<>();
+        if(idApproval != null && !"".equalsIgnoreCase(idApproval)){
+            Map hsCriteria = new HashMap();
+            hsCriteria.put("id_approval_obat", idApproval);
+
+            try {
+                list = approvalTransaksiObatDao.getByCriteria(hsCriteria);
+            }catch (HibernateException e){
+                logger.error("error" +e.getMessage());
+            }
+
+            if(list.size() > 0){
+                entity = list.get(0);
+            }
+        }
+        return entity;
     }
 
     @Override
@@ -247,6 +275,11 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
             throw new GeneralBOException("[PermintaanResepBoImpl.saveObatResep]  ERROR when insert into transaksi obat detail. ", e);
         }
         logger.info("[PermintaanResepBoImpl.saveObatResep] END <<<<<<<");
+    }
+
+    @Override
+    public ImSimrsPermintaanResepEntity getEntityPermintaanResepById(String id) throws GeneralBOException {
+        return permintaanResepDao.getById("idPermintaanResep", id);
     }
 
     private String getNextPermintaanResepId() throws GeneralBOException {

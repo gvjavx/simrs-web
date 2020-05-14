@@ -249,8 +249,8 @@
                                                                    height="680" width="700" autoOpen="false"
                                                                    title="Pendapatan Dokter">
                                                         </sj:dialog>
-                                                        <s:set name="listOfPendapatanDokter" value="#session.listOfResultPendapatanDokter" scope="request" />
-                                                        <display:table name="listOfPendapatanDokter" class="table table-condensed table-striped table-hover"
+                                                        <s:set name="listOfSearchPendapatanDokter" value="#session.listOfResultPendapatanDokter" scope="request" />
+                                                        <display:table name="listOfSearchPendapatanDokter" class="table table-condensed table-striped table-hover"
                                                                        requestURI="paging_displaytag_pendapatanDokter.action" export="true" id="row" pagesize="30" style="font-size:10">
                                                             <display:column media="html" title="View" style="text-align:center;font-size:9">
                                                                 <%--<s:url var="urlView" namespace="/pendapatanDokter" action="view_pendapatanDokter" escapeAmp="false">--%>

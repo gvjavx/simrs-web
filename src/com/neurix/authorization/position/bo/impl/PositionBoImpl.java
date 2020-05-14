@@ -647,4 +647,43 @@ public class PositionBoImpl implements PositionBo {
     public ImPosition getPositionEntityById(String id) throws GeneralBOException {
         return positionDao.getById("positionId", id);
     }
+
+    @Override
+    public List<Position> typeAheadPosition(String key) throws GeneralBOException {
+        logger.info("[PositionBoImpl.getPositionById] start process >>>");
+        List<Position> positionList = new ArrayList<>();
+        List<ImPosition> imPositionList = null;
+        try {
+            imPositionList = positionDao.getTypeAheadPosition(key);
+        } catch (HibernateException e) {
+            logger.error("[PositionBoImpl.getPositionById] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when retrieving position based on id and flag, please info to your admin..." + e.getMessage());
+        }
+        if (imPositionList != null) {
+            for (ImPosition imPosition : imPositionList) {
+                Position resultPosition = new Position();
+                resultPosition.setPositionId(imPosition.getPositionId());
+                resultPosition.setStPositionId(imPosition.getPositionId());
+                resultPosition.setPositionName(imPosition.getPositionName());
+                resultPosition.setKodering(imPosition.getKodering());
+                resultPosition.setBagianId(imPosition.getBagianId());
+                resultPosition.setBagianName(imPosition.getImPositionBagianEntity().getBagianName());
+                resultPosition.setKelompokId(imPosition.getKelompokId());
+                resultPosition.setKelompokName(imPosition.getImKelompokPositionEntity().getKelompokName());
+                resultPosition.setDepartmentId(imPosition.getDepartmentId());
+                resultPosition.setDepartmentName(imPosition.getImDepartmentEntity().getDepartmentName());
+                resultPosition.setFlag(imPosition.getFlag());
+
+                positionList.add(resultPosition);
+            }
+        }
+        logger.info("[PositionBoImpl.getPositionById] end process <<<");
+
+        return positionList;
+    }
+
+    public List<ImPosition> getPositionByString(String query) throws GeneralBOException {
+        String term = "%"+query+"%";
+        return positionDao.getListPosition(term);
+    }
 }

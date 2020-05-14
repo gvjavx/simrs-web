@@ -41,7 +41,7 @@
             if ( unit != '' && periodeTahun != ''&& periodeBulan != ''&&tipeLaporan!='') {
                 event.originalEvent.options.submit = false;
                 var url = "printReportAging_laporanAkuntansi.action?laporanAkuntansi.tipeLaporan="+tipeLaporan+"&laporanAkuntansi.unit="+unit+"&laporanAkuntansi.tahun="+periodeTahun+"&laporanAkuntansi.bulan="+periodeBulan+"&laporanAkuntansi.masterId="+master;
-                window.open(url,'_self');
+                window.open(url,'_blank');
             } else {
                 event.originalEvent.options.submit = false;
                 var msg = "";
@@ -119,12 +119,12 @@
                                                 <td>
                                                     <table>
                                                         <s:if test='laporanAkuntansi.unit == "KP"'>
-                                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranchAkuntansi_branch"/>
                                                             <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="laporanAkuntansi.unit"
                                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                                         </s:if>
                                                         <s:else>
-                                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranchAkuntansi_branch"/>
                                                             <s:select list="#initComboBranch.listOfComboBranch" id="branchIdView" name="laporanAkuntansi.unit" disabled="true"
                                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                                             <s:hidden id="branchId" name="laporanAkuntansi.unit" />

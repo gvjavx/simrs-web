@@ -1,6 +1,9 @@
-var idDetailCheckup = $('#id_detail_checkup').val();
-
 function pengkajianFisioterapi(idDetailCheckup) {
+    if(isReadRM){
+        $('.btn-hide').hide();
+    }else{
+        $('.btn-hide').show();
+    }
     $('#modal-pengkajian-fisioterapi').modal({show: true, backdrop: 'static'});
 }
 
@@ -157,10 +160,26 @@ function detailFisio(jenis) {
             if (res.length > 0) {
 
                 $.each(res, function (i, item) {
-                    body += '<tr>' +
-                        '<td>' + item.parameter + '</td>' +
-                        '<td>' + item.jawaban + '</td>' +
-                        '</tr>';
+
+                    if("psikologis" == item.keterangan){
+                        var jwb = "";
+                        var li = "";
+                        if(item.jawaban != null){
+                            jwb = item.jawaban.split(",");
+                            $.each(jwb, function (i, item) {
+                               li += '<li>'+item+'</li>'
+                            });
+                        }
+                        body += '<tr>' +
+                            '<td width="40%">' + item.parameter + '</td>' +
+                            '<td>' + '<ul style="margin-left: 10px;">'+li+'</ul>' + '</td>' +
+                            '</tr>';
+                    }else{
+                        body += '<tr>' +
+                            '<td width="40%">' + item.parameter + '</td>' +
+                            '<td>' + item.jawaban + '</td>' +
+                            '</tr>';
+                    }
                 });
 
             } else {
@@ -175,7 +194,7 @@ function detailFisio(jenis) {
 
             var newRow = $('<tr id="del_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
             newRow.insertAfter($('table').find('#row_' + jenis));
-            var url = '/simrs/pages/images/cancel-flat-new.png';
+            var url = contextPath+'/pages/images/minus-allnew.png';
             $('#btn_' + jenis).attr('src', url);
             $('#btn_' + jenis).attr('onclick', 'delRow(\'' + jenis + '\')');
         });
@@ -184,13 +203,27 @@ function detailFisio(jenis) {
 
 function delRow(id) {
     $('#del_' + id).remove();
-    var url = '/simrs/pages/images/icons8-plus-25.png';
+    var url = contextPath+'/pages/images/icons8-plus-25.png';
     $('#btn_' + id).attr('src', url);
     $('#btn_' + id).attr('onclick', 'detailFisio(\'' + id + '\')');
 }
 
 function addMonitoringFisioterapi(){
     listMonitoringFisioterapi();
+    if(isReadRM){
+        $('.btn-hide').hide();
+    }else{
+        $('.btn-hide').show();
+    }
+
+    var tgl = $('.tgl').length;
+    if (tgl > 0) {
+        $('.tgl').datepicker({
+            dateFormat: 'dd-mm-yy'
+        });
+        $('.tgl').val(formaterDate(new Date()));
+        $('.tgl').inputmask('dd-mm-yyyy', {'placeholder': 'dd-mm-yyyy'});
+    }
     $('#modal-monitoring-kunjungan').modal({show: true, backdrop: 'static'});
 }
 

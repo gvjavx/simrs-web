@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.rawatinap.model;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 
@@ -73,6 +74,90 @@ public class RawatInap {
     private String metodePembayaran;
 
     private String notLike;
+
+    private String noRujukan;
+    private String tglRujukan;
+    private String suratRujukan;
+    private String namaAsuransi;
+
+    private BigDecimal coverBiaya;
+    private String idAsuransi;
+    private String idPaket;
+    private String noKartuAsuransi;
+
+    private String isLaka;
+
+    public BigDecimal getCoverBiaya() {
+        return coverBiaya;
+    }
+
+    public void setCoverBiaya(BigDecimal coverBiaya) {
+        this.coverBiaya = coverBiaya;
+    }
+
+    public String getIdAsuransi() {
+        return idAsuransi;
+    }
+
+    public void setIdAsuransi(String idAsuransi) {
+        this.idAsuransi = idAsuransi;
+    }
+
+    public String getIdPaket() {
+        return idPaket;
+    }
+
+    public void setIdPaket(String idPaket) {
+        this.idPaket = idPaket;
+    }
+
+    public String getNoKartuAsuransi() {
+        return noKartuAsuransi;
+    }
+
+    public void setNoKartuAsuransi(String noKartuAsuransi) {
+        this.noKartuAsuransi = noKartuAsuransi;
+    }
+
+    public String getIsLaka() {
+        return isLaka;
+    }
+
+    public void setIsLaka(String isLaka) {
+        this.isLaka = isLaka;
+    }
+
+    public String getNoRujukan() {
+        return noRujukan;
+    }
+
+    public void setNoRujukan(String noRujukan) {
+        this.noRujukan = noRujukan;
+    }
+
+    public String getTglRujukan() {
+        return tglRujukan;
+    }
+
+    public void setTglRujukan(String tglRujukan) {
+        this.tglRujukan = tglRujukan;
+    }
+
+    public String getSuratRujukan() {
+        return suratRujukan;
+    }
+
+    public void setSuratRujukan(String suratRujukan) {
+        this.suratRujukan = suratRujukan;
+    }
+
+    public String getNamaAsuransi() {
+        return namaAsuransi;
+    }
+
+    public void setNamaAsuransi(String namaAsuransi) {
+        this.namaAsuransi = namaAsuransi;
+    }
 
     public String getNotLike() {
         return notLike;

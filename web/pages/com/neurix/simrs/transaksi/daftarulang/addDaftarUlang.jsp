@@ -49,6 +49,7 @@
                                     <s:hidden id="id_pasien" name="headerDetailCheckup.idPasien"/>
                                     <s:hidden id="jenis_pasien" name="headerDetailCheckup.idJenisPeriksaPasien"/>
                                     <s:hidden id="jenis_bayar" name="headerDetailCheckup.metodePembayaran"/>
+                                    <s:hidden id="id_rawat_inap" name="headerDetailCheckup.idRawatInap"/>
                                     <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "bpjs"'>
                                         <tr>
                                             <td width="45%"><b>No SEP</b></td>
@@ -716,6 +717,7 @@
         var statusBpjs      = $('#status_bpjs').val();
         var statusRujukan   = $('#status_rujukan').val();
         var rawatInap = '<s:property value="headerDetailCheckup.rawatInap"/>';
+        var idRawatInap = $('#id_rawat_inap').val();
 
         if(jenisPeriksa != ''){
 
@@ -738,7 +740,8 @@
                         'id_kelas':idkelas,
                         'id_pelayanan':idPelayananBpjs,
                         'foto_surat':dataURL,
-                        'rawat_inap':rawatInap
+                        'rawat_inap':rawatInap,
+                        'id_rawat_inap':idRawatInap
                     }
 
                     if(statusBpjs != '' && statusRujukan != ''){
@@ -803,7 +806,8 @@
                         'jenis_periksa':jenisPeriksa,
                         'id_pasien':idPasien,
                         'id_detail_checkup':idDetail,
-                        'rawat_inap':rawatInap
+                        'rawat_inap':rawatInap,
+                        'id_rawat_inap':idRawatInap
                     }
 
                     var result = JSON.stringify(data);
@@ -835,7 +839,8 @@
                         'jenis_periksa':jenisPeriksa,
                         'id_pasien':idPasien,
                         'id_detail_checkup':idDetail,
-                        'rawat_inap':rawatInap
+                        'rawat_inap':rawatInap,
+                        'id_rawat_inap':idRawatInap
                     }
 
                     var result = JSON.stringify(data);

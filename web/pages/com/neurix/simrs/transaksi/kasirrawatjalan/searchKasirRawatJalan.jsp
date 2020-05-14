@@ -103,7 +103,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Jenis Pasien</label>
                                     <div class="col-sm-4">
-                                        <s:select list="#{'bpjs':'BPJS','asuransi':'ASURANSI'}" cssStyle="margin-top: 7px"
+                                        <s:select list="#{'asuransi':'ASURANSI'}" cssStyle="margin-top: 7px"
                                                   headerKey="umum" headerValue="UMUM" name="headerDetailCheckup.idJenisPeriksaPasien"
                                                   cssClass="form-control"/>
                                     </div>
@@ -319,6 +319,10 @@
                                 <tr>
                                     <td><b>Jenis Pasien</b></td>
                                     <td><span id="fin_jenis_pasien"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Nama Poli</b></td>
+                                    <td><span id="fin_poli"></span></td>
                                 </tr>
                                 <tr style="display: none;" id="label-asuransi">
                                     <td><b>Asuransi</b></td>
@@ -552,6 +556,7 @@
                         }
 
                         $('#fin_no_rm').html(response.idPasien);
+                        $('#fin_poli').html(response.namaPelayanan);
 
                     // });
 

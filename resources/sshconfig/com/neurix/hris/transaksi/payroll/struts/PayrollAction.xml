@@ -104,6 +104,16 @@
             <result name="failure">/pages/com/neurix/hris/transaksi/payroll/editPayroll.jsp</result>
 
 
+            <!--  CETAKAN LAPORAN PAYROLL-->
+            <result name="success_print_daftar_gaji_kary" type="jasper">
+                <param name="location">/pages/report/com/neurix/hris/daftarGajiKaryawan.jasper</param>
+                <param name="format">PDF</param>
+                <param name="dataSource">payrollList</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+            <!-- END OF LAPORAN PAYROLL -->
+
+
             <result name="success_print_report_payroll" type="jasper">
                 <param name="location">/pages/report/com/neurix/hris/reportPayroll3.jasper</param>
                 <param name="connection">connection</param>

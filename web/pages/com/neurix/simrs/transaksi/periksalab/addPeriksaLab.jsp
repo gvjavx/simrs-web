@@ -165,7 +165,7 @@
                                     <tr>
                                         <td><b>Labotarium</b></td>
                                         <td>
-                                            <table><label class="label label-success"><span id="lab_name"></span> </label></table>
+                                            <table><s:label name="periksaLab.kategoriLabName" class="label label-success"></s:label></table>
                                         </td>
                                     </tr>
                                 </table>
@@ -237,7 +237,7 @@
                                            style="margin-top: 25px;" id="back_ket"><i
                                                 class="fa fa-arrow-left"></i> Back
                                         </a>
-                                        <button class="btn btn-success" style="margin-top: 25px;" id="save_ket" onclick="saveDokterLab()"><i
+                                        <button class="btn btn-success" style="margin-top: 25px;" id="save_ket" onclick="conSaveDokter()"><i
                                                 class="fa fa-arrow-right"></i> Save
                                         </button>
                                         <button style="display: none; cursor: no-drop; margin-top: 25px;" type="button"
@@ -432,6 +432,27 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-confirm-dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Confirmation
+                </h4>
+            </div>
+            <div class="modal-body">
+                <h4 class="text-center">Do you want save this record?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
+                </button>
+                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="mask"></div>
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
@@ -467,21 +488,30 @@
     });
 
     function listSelectDokter() {
-        var option = "";
-        PeriksaLabAction.getListDokterTeamByNoDetail(idDetailCheckup, function (response) {
-            option = "<option value=''>[Select One]</option>";
+        var option = "<option value=''>[Select One]</option>";
+        // PeriksaLabAction.getListDokterTeamByNoDetail(idDetailCheckup, function (response) {
+        //     option = "<option value=''>[Select One]</option>";
+        //     if (response != null) {
+        //         $.each(response, function (i, item) {
+        //             option += "<option value='" + item.idDokter + "'>" + item.namaDokter + "</option>";
+        //         });
+        //     } else {
+        //         option = option;
+        //     }
+        // });
+        PeriksaLabAction.getListDokterLabRadiologi("lab", function (response) {
             if (response != null) {
                 $.each(response, function (i, item) {
                     option += "<option value='" + item.idDokter + "'>" + item.namaDokter + "</option>";
                 });
+                $('#list_dokter').html(option);
             } else {
-                option = option;
+                $('#list_dokter').html(option);
             }
         });
-        $('#list_dokter').html(option);
     }
 
-    function saveDokterLab(){
+    function conSaveDokter(){
         var data = $('#tabel_lab').tableToJSON();
         var cek = false;
         $.each(data, function (i, item) {
@@ -491,6 +521,16 @@
         });
         var idDokter = $('#list_dokter').val();
         if (idPeriksaLab != '' && idDokter != '' && !cek) {
+            $('#modal-confirm-dialog').modal('show');
+            $('#save_con').attr('onclick', 'saveDokterLab(\''+idDokter+'\')');
+        } else {
+            $('#warning_dok').show().fadeOut(5000);
+            $('#msg_dok').text("Silahkan kembali cek kembali hasil pemeriksaan lad dan data dokter..!");
+        }
+    }
+
+    function saveDokterLab(idDokter){
+        $('#modal-confirm-dialog').modal('hide');
             $('#save_ket').hide();
             $('#load_ket').show();
             dwr.engine.setAsync(true);
@@ -510,11 +550,7 @@
                         $('#msg_dok').text(response.message);
                     }
                 }
-            })
-        } else {
-            $('#warning_dok').show().fadeOut(5000);
-            $('#msg_dok').text("Silahkan kembali cek kembali hasil pemeriksaan lad dan data dokter..!");
-        }
+            });
     }
 
     function toContent() {

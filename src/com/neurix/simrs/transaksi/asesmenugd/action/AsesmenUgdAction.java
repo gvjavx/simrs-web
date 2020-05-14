@@ -27,6 +27,7 @@ public class AsesmenUgdAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         AsesmenUgdBo asesmenUgdBo = (AsesmenUgdBo) ctx.getBean("asesmenUgdBoProxy");
         JSONArray json = new JSONArray(data);
+        List<AsesmenUgd> ugdList = new ArrayList<>();
 
         for (int i = 0; i < json.length(); i++) {
 
@@ -49,14 +50,14 @@ public class AsesmenUgdAction {
             asesmenUgd.setCreatedDate(time);
             asesmenUgd.setLastUpdateWho(userLogin);
             asesmenUgd.setLastUpdate(time);
-
-            try {
-                response = asesmenUgdBo.saveAdd(asesmenUgd);
-            } catch (GeneralBOException e) {
-                response.setStatus("Error");
-                response.setMsg("Found Error " + e.getMessage());
-                return response;
-            }
+            ugdList.add(asesmenUgd);
+        }
+        try {
+            response = asesmenUgdBo.saveAdd(ugdList);
+        } catch (GeneralBOException e) {
+            response.setStatus("Error");
+            response.setMsg("Found Error " + e.getMessage());
+            return response;
         }
         return response;
     }

@@ -1,11 +1,9 @@
 package com.neurix.simrs.transaksi.rekonsiliasiobat.model;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.sql.Timestamp;
 
-/**
- * Created by reza on 08/02/20.
- */
 public class ItSimrsRekonsiliasiObatEntity implements Serializable {
     private String id;
     private String noCheckup;
@@ -23,6 +21,78 @@ public class ItSimrsRekonsiliasiObatEntity implements Serializable {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String idDetailCheckup;
+    private String aturanPakai;
+    private String indikasi;
+    private String diteruskan;
+    private Date tanggal;
+    private String ttdPasien;
+    private String ttdApoteker;
+    private String ruangan;
+
+    public String getTtdPasien() {
+        return ttdPasien;
+    }
+
+    public void setTtdPasien(String ttdPasien) {
+        this.ttdPasien = ttdPasien;
+    }
+
+    public String getTtdApoteker() {
+        return ttdApoteker;
+    }
+
+    public void setTtdApoteker(String ttdApoteker) {
+        this.ttdApoteker = ttdApoteker;
+    }
+
+    public String getRuangan() {
+        return ruangan;
+    }
+
+    public void setRuangan(String ruangan) {
+        this.ruangan = ruangan;
+    }
+
+    public String getIdDetailCheckup() {
+        return idDetailCheckup;
+    }
+
+    public void setIdDetailCheckup(String idDetailCheckup) {
+        this.idDetailCheckup = idDetailCheckup;
+    }
+
+    public String getAturanPakai() {
+        return aturanPakai;
+    }
+
+    public void setAturanPakai(String aturanPakai) {
+        this.aturanPakai = aturanPakai;
+    }
+
+    public String getIndikasi() {
+        return indikasi;
+    }
+
+    public void setIndikasi(String indikasi) {
+        this.indikasi = indikasi;
+    }
+
+    public String getDiteruskan() {
+        return diteruskan;
+    }
+
+    public void setDiteruskan(String diteruskan) {
+        this.diteruskan = diteruskan;
+    }
+
+    public Date getTanggal() {
+        return tanggal;
+    }
+
+    public void setTanggal(Date tanggal) {
+        this.tanggal = tanggal;
+    }
 
     public String getId() {
         return id;

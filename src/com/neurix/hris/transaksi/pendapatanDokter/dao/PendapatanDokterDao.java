@@ -260,17 +260,16 @@ public class PendapatanDokterDao extends GenericDao<ItHrisPendapatanDokterEntity
                 .createSQLQuery(sqlQuery)
                 .list();
 
-//        for (Object[] row : results){
-//            ItHrisPendapatanDokterEntity itHrisPendapatanDokterEntity = new ItHrisPendapatanDokterEntity();
-//            if (row[0] != null)
-//                itHrisPendapatanDokterEntity.setTanggalJurnal((Date) row[0]);
-//            itHrisPendapatanDokterEntity.setJurnalDetailId((String) row[1]);
-//            itHrisPendapatanDokterEntity.setDivisiId((String) row[2]);
-//            itHrisPendapatanDokterEntity.setActivityId((String) row[3]);
-//            itHrisPendapatanDokterEntity.setPersonId((String) row[4]);
-//            itHrisPendapatanDokterEntity.setJumlahBulanIni((Double) row[5]);
-//            listOfResults.add(itHrisPendapatanDokterEntity);
-//        }
+        return results;
+    }
+
+    public List<ItHrisPendapatanDokterEntity> getDataPendapatanDokter(String branchId, String bulan, String tahun) throws HibernateException {
+        List<ItHrisPendapatanDokterEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItHrisPendapatanDokterEntity.class)
+                .add(Restrictions.eq("branchId", branchId))
+                .add(Restrictions.eq("bulan", bulan))
+                .add(Restrictions.eq("tahun", tahun))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
 
         return results;
     }

@@ -26,11 +26,12 @@
             document.kelasruanganForm.submit();
         };
 
-        $.subscribe('beforeProcessSave', function (event, data) {
+        $.subscribe('beforeProcessSave2', function (event, data) {
             // var idRuangan = document.getElementById("id_ruangan2").value;
             var nameKelasRuangan = document.getElementById("nama_kelasruangan2").value;
+            var position = document.getElementById("positionId2").value;
 
-            if (nameKelasRuangan != '') {
+            if (nameKelasRuangan != '' && position != '') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -50,8 +51,11 @@
                 if (nameKelasRuangan == '') {
                     msg += 'Field <strong>Nama Kelas Ruangan</strong> is required.' + '<br/>';
                 }
+                if (position == '') {
+                    msg += 'Field <strong>Position</strong> is required.' + '<br/>';
+                }
 
-                document.getElementById('errorValidationMessage').innerHTML = msg;
+                document.getElementById('errorValidationMessage2').innerHTML = msg;
 
                 $.publish('showErrorValidationDialog');
 
@@ -150,7 +154,7 @@
                         <td>
                             <table>
                                 <s:action id="initComboPosition" namespace="/kelasruangan" name="initComboPosition_kelasruangan"/>
-                                <s:select list="#initComboPosition.listOfComboPositions" id="positionId" name="kelasRuangan.positionId"
+                                <s:select list="#initComboPosition.listOfComboPositions" id="positionId2" name="kelasRuangan.positionId"
                                           listKey="positionId" listValue="positionName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                             </table>
                         </td>
@@ -164,7 +168,7 @@
                     <div class="col-sm-offset-2 col-sm-10">
                             <%--<button type="submit" class="btn btn-default">Submit</button>--%>
                         <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="editKelasRuanganForm" id="edit" name="edit"
-                                   onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
+                                   onBeforeTopics="beforeProcessSave2" onCompleteTopics="closeDialog,successDialog"
                                    onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
                             <i class="fa fa-check"></i>
                             Save
@@ -236,7 +240,7 @@
                                                 <label class="control-label" align="left">
                                                     <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> Please check this field :
                                                     <br/>
-                                                    <center><div id="errorValidationMessage"></div></center>
+                                                    <center><div id="errorValidationMessage2"></div></center>
                                                 </label>
                                             </div>
                                         </sj:dialog>

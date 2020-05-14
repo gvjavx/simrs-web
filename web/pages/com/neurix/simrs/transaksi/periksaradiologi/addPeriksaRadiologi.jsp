@@ -164,7 +164,7 @@
                                     <tr>
                                         <td><b>Permeriksaan</b></td>
                                         <td>
-                                            <table><label class="label label-success"><span id="pemeriksa"></span> </label></table>
+                                            <table><s:label name="periksaLab.kategoriLabName" class="label label-success"></s:label></table>
                                         </td>
                                     </tr>
                                 </table>
@@ -402,18 +402,28 @@
     }
 
     function listSelectDokter() {
-        var option = "";
-        PeriksaLabAction.getListDokterTeamByNoDetail(idDetailCheckup, function (response) {
-            option = "<option value=''>[Select One]</option>";
+        var option = "<option value=''>[Select One]</option>";
+        // PeriksaLabAction.getListDokterTeamByNoDetail(idDetailCheckup, function (response) {
+        //     option = "<option value=''>[Select One]</option>";
+        //     if (response != null) {
+        //         $.each(response, function (i, item) {
+        //             option += "<option value='" + item.idDokter + "'>" + item.namaDokter + "</option>";
+        //         });
+        //     } else {
+        //         option = option;
+        //     }
+        // });
+        // $('#id_dokter').html(option);
+        PeriksaLabAction.getListDokterLabRadiologi("radiologi", function (response) {
             if (response != null) {
                 $.each(response, function (i, item) {
                     option += "<option value='" + item.idDokter + "'>" + item.namaDokter + "</option>";
                 });
+                $('#id_dokter').html(option);
             } else {
-                option = option;
+                $('#id_dokter').html(option);
             }
         });
-        $('#id_dokter').html(option);
     }
 
     function saveRadiologi(id) {

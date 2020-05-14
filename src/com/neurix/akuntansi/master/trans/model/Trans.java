@@ -15,11 +15,57 @@ public class Trans extends BaseModel {
     private String tipePembayaran;
     private String tipePembayaranName;
     private String flagSumberBaru;
-    private String master;
+//    private String master;
     private String masterName;
 
     private String stCreatedDate;
     private String stLastUpdate;
+
+    private String master;
+    private String divisiId;
+    private String noNota;
+    private String masterId;
+    private String biaya;
+
+    public String getMaster() {
+        return master;
+    }
+
+    public void setMaster(String master) {
+        this.master = master;
+    }
+
+    public String getDivisiId() {
+        return divisiId;
+    }
+
+    public void setDivisiId(String divisiId) {
+        this.divisiId = divisiId;
+    }
+
+    public String getNoNota() {
+        return noNota;
+    }
+
+    public void setNoNota(String noNota) {
+        this.noNota = noNota;
+    }
+
+    public String getMasterId() {
+        return masterId;
+    }
+
+    public void setMasterId(String masterId) {
+        this.masterId = masterId;
+    }
+
+    public String getBiaya() {
+        return biaya;
+    }
+
+    public void setBiaya(String biaya) {
+        this.biaya = biaya;
+    }
 
     public String getFlagSumberBaru() {
         return flagSumberBaru;
@@ -53,13 +99,13 @@ public class Trans extends BaseModel {
         this.transName = transName;
     }
 
-    public String getMaster() {
-        return master;
-    }
-
-    public void setMaster(String master) {
-        this.master = master;
-    }
+//    public String getMaster() {
+//        return master;
+//    }
+//
+//    public void setMaster(String master) {
+//        this.master = master;
+//    }
 
     @Override
     public String getStCreatedDate() {

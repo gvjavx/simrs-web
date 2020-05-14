@@ -35,6 +35,9 @@
         <property name="noMaster">
             <column name="no_master" sql-type="varchar" length="30" not-null="false" />
         </property>
+        <property name="isLaka">
+            <column name="is_laka" sql-type="varchar" length="100" not-null="false" />
+        </property>
 
     </class>
 </hibernate-mapping>

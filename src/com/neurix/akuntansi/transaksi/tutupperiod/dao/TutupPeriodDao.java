@@ -49,11 +49,6 @@ public class TutupPeriodDao extends GenericDao<ItAkunTutupPeriodEntity, String> 
 
     public List<TutupPeriod> getListDetailJurnalByCriteria(TutupPeriod bean){
 
-//        String rekening = "%";
-//        if (bean.getRekeningId() != null && !"".equalsIgnoreCase(bean.getRekeningId())){
-//            rekening = bean.getRekeningId();
-//        }
-
         BigDecimal dcBulan = new BigDecimal(bean.getBulan());
         BigDecimal dcTahun = new BigDecimal(bean.getTahun());
         String rekenigId = "%";
@@ -109,6 +104,72 @@ public class TutupPeriodDao extends GenericDao<ItAkunTutupPeriodEntity, String> 
         return tutupPeriods;
     }
 
+    public List<TutupPeriod> getListDetailJurnalByCriteriaPerDivisi(TutupPeriod bean){
+
+        BigDecimal dcBulan = new BigDecimal(bean.getBulan());
+        BigDecimal dcTahun = new BigDecimal(bean.getTahun());
+        String rekenigId = "%";
+        if (bean.getRekeningId() != null && !"".equalsIgnoreCase(bean.getRekeningId())){
+            rekenigId = bean.getRekeningId();
+        }
+
+        String SQL = "SELECT\n" +
+                "dt.rekening_id,\n" +
+                "kd.parent_id,\n" +
+                "kd.kode_rekening,\n" +
+                "kd.nama_kode_rekening,\n" +
+                "SUM(dt.jumlah_debit) as jumlah_debit,\n" +
+                "SUM(dt.jumlah_kredit) as jumlah_kredit,\n" +
+                "dt.master_id,\n" +
+                "dt.divisi_id,\n" +
+                "dt.pasien_id \n" +
+                "FROM it_akun_jurnal h\n" +
+                "INNER JOIN it_akun_jurnal_detail dt ON dt.no_jurnal = h.no_jurnal\n" +
+                "INNER JOIN im_akun_kode_rekening kd ON kd.rekening_id = dt.rekening_id\n" +
+                "WHERE registered_flag = 'Y'\n" +
+                "AND EXTRACT(MONTH FROM h.tanggal_jurnal) = :bulan \n" +
+                "AND EXTRACT(YEAR FROM h.tanggal_jurnal) = :tahun \n" +
+                "AND h.branch_id = :unit \n" +
+                "AND dt.rekening_id LIKE :rekening\n" +
+                "GROUP\n" +
+                "BY \n" +
+                "dt.rekening_id,\n" +
+                "kd.parent_id,\n" +
+                "kd.kode_rekening,\n" +
+                "kd.nama_kode_rekening,\n" +
+                "dt.master_id,\n" +
+                "dt.divisi_id,\n" +
+                "dt.pasien_id\n" +
+                "ORDER BY kd.parent_id, kd.kode_rekening";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("unit", bean.getUnit())
+                .setParameter("bulan", dcBulan)
+                .setParameter("tahun", dcTahun)
+                .setParameter("rekening", rekenigId)
+                .list();
+
+        List<TutupPeriod> tutupPeriods = new ArrayList<>();
+        if (results.size() > 0){
+            TutupPeriod tutupPeriod;
+            for (Object[] obj : results){
+                tutupPeriod = new TutupPeriod();
+                tutupPeriod.setRekeningId(obj[0].toString());
+                tutupPeriod.setParentId(obj[1].toString());
+                tutupPeriod.setKodeRekening(obj[2].toString());
+                tutupPeriod.setNamaKodeRekening(obj[3].toString());
+                tutupPeriod.setJumlahDebit(obj[4] == null ? new BigDecimal(0) : (BigDecimal) obj[4]);
+                tutupPeriod.setJumlahKredit(obj[5] == null ? new BigDecimal(0) : (BigDecimal) obj[5]);
+                tutupPeriod.setMasterId(obj[6] == null ? "" : obj[6].toString());
+                tutupPeriod.setDivisiId(obj[7] == null ? "" : obj[7].toString());
+                tutupPeriod.setPasienId(obj[8] == null ? "" : obj[8].toString());
+                tutupPeriods.add(tutupPeriod);
+            }
+        }
+
+        return tutupPeriods;
+    }
+
     public Integer getLowestLevelKodeRekening(){
 
         String SQL = "SELECT rekening_id, MAX(level) FROM im_akun_kode_rekening \n" +
@@ -125,5 +186,75 @@ public class TutupPeriodDao extends GenericDao<ItAkunTutupPeriodEntity, String> 
         }
 
         return result;
+    }
+
+    public List<String> getListNoJurnalPending(String bulan, String tahun, String unit){
+
+        BigDecimal dcBulan = new BigDecimal(bulan);
+        BigDecimal dcTahun = new BigDecimal(tahun);
+
+        String SQL = "SELECT \n" +
+                "jn.no_jurnal, \n" +
+                "jn.branch_id \n" +
+                "FROM it_akun_jurnal_pending jn\n" +
+                "WHERE jn.registered_flag = 'Y'\n" +
+                "AND EXTRACT(MONTH FROM jn.tanggal_jurnal) = :bulan\n" +
+                "AND EXTRACT(YEAR FROM jn.tanggal_jurnal) = :tahun\n" +
+                "AND jn.branch_id = :unit\n" +
+                "GROUP BY jn.no_jurnal, jn.branch_id";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("bulan", dcBulan)
+                .setParameter("tahun", dcTahun)
+                .setParameter("unit",unit)
+                .list();
+
+        List<String> noJurnals = new ArrayList<>();
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                noJurnals.add(obj[0].toString());
+            }
+        }
+        return noJurnals;
+    }
+
+    public String checkIsPendingTransitorisByNoJurnal(String noJurnal){
+        String SQL = "SELECT no_jurnal, jumlah_debit\n" +
+                "FROM it_akun_jurnal_detail_pending jp \n" +
+                "WHERE jumlah_debit > '0'\n" +
+                "AND rekening_id = '00046'\n" +
+                "AND no_jurnal = :noJurnal\n" +
+                "GROUP BY no_jurnal, jumlah_debit";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("noJurnal", noJurnal)
+                .list();
+
+        String result = "N";
+        if (results.size() > 0){
+            result = "Y";
+        }
+
+        return result;
+    }
+
+    public String checkIfJurnalTransitoris(String transId){
+
+        String SQL = "SELECT posisi, keterangan FROM im_akun_mapping_jurnal\n" +
+                "WHERE keterangan = 'piutang_transistoris_pasien_rawat_inap'\n" +
+                "AND posisi = 'D'\n" +
+                "AND trans_id = :transId";
+
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("transId", transId)
+                .list();
+
+        String found = "N";
+        if (results.size() > 0){
+            found = "Y";
+        }
+
+        return found;
     }
 }

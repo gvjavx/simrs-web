@@ -215,14 +215,31 @@
     <import resource="sshconfig/com/neurix/akuntansi/transaksi/tutupperiod/spring/TutupPeriodBean.xml"/>
     <import resource="sshconfig/com/neurix/akuntansi/master/pembayaran/spring/PembayaranBean.xml"/>
     <import resource="sshconfig/com/neurix/akuntansi/master/reportKeuanganKonsol/spring/ReportKeuanganKonsolBean.xml"/>
+
     <import resource="sshconfig/com/neurix/akuntansi/master/reportKeuanganKonsol/spring/ReportKeuanganKonsolDetailBean.xml"/>
+    <import resource="sshconfig/com/neurix/akuntansi/transaksi/budgeting/spring/BudgetingBean.xml"/>
 
     <import resource="sshconfig/com/neurix/simrs/transaksi/fisioterapi/spring/FisioterapiBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/fisioterapi/spring/MonitoringFisioterapiBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/asesmenugd/spring/AsesmenUgdBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/asesmenoperasi/spring/AsesmenOperasiBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/mpp/spring/MppBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/hemodialisa/spring/HemodialisaBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/hemodialisa/spring/MonitoringTransfusiDarahBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/appendecitomy/spring/AppendecitomyBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/asesmenrawatinap/spring/AsesmenRawatInapBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/pengkajiankeperawatan/spring/PengkajianUlangKeperawatanBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/catatanteritegrasi/spring/CatatanTeritegrasiBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/rekakmedik/spring/RekamMedikBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/pemberianobat/spring/CatatanPemberianObatBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/rencanaasuhankeperawatan/spring/RencanaAsuhanKeperawatanBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/rekonsiliasiobat/spring/RekonsiliasiObatBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/profilrekammedisrj/spring/RekamMedisRawatJalanBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/ringkasanpasien/spring/RingkasanPasienBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/cetakanrm/spring/CetakanRmBean.xml"/>
 
     <import resource="sshconfig/com/neurix/hris/transaksi/pendapatanDokter/spring/PendapatanDokterBean.xml"/>
     <import resource="sshconfig/com/neurix/hris/master/DokterKso/spring/DokterKsoBean.xml"/>
     <import resource="sshconfig/com/neurix/hris/master/DokterKso/spring/DokterKsoTindakanBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/master/tindakan/spring/KategoriTindakanPelayananBean.xml"/>
 </beans>

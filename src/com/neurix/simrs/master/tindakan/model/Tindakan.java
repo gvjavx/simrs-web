@@ -30,6 +30,25 @@ public class Tindakan {
     private String branchId;
     private String branchName;
     private BigDecimal diskon;
+    private String isIna;
+    private String kategoriInaBpjs;
+
+    public String getKategoriInaBpjs() {
+        return kategoriInaBpjs;
+    }
+
+    public void setKategoriInaBpjs(String kategoriInaBpjs) {
+        this.kategoriInaBpjs = kategoriInaBpjs;
+    }
+
+    public String getIsIna() {
+        return isIna;
+    }
+
+    public void setIsIna(String isIna) {
+        this.isIna = isIna;
+    }
+
     private String stDiskon;
 
     public String getBranchId() {

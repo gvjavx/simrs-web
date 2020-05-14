@@ -110,24 +110,19 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                            <%--<s:select list="#{'PK':'Penghasilan Kotor', 'PD':'Potongan Dinas', 'PL':'Potongan Lain',--%>
-                                                            <%--'R':'Rekapitulasi Penghasilan Karyawan', 'pendidikan':'Pendidikan', 'thr':'THR',--%>
-                                                            <%--'jasprod':'Jasprod', 'insentif':'Insentif', 'rapelBulan':'Rapel Bulan', 'rapelBulanDetail':'Rapel Bulan Detail', 'rapelThr':'Rapel THR',--%>
-                                                            <%--'rapelPendidikan':'Rapel Pendidikan','rapelLembur':'Rapel Lembur','rapelInsentif':'Rapel Insentif',--%>
-                                                            <%--'rapelJubileum':'Rapel Jubileum'}"--%>
-                                                            <%--id="tipe" name="payroll.tipe" cssClass="form-control" />--%>
-                                                        <s:select list="#{'PK':'Penghasilan Kotor', 'PD':'Potongan Dinas', 'PL':'Potongan Lain',
+                                                        <%--<s:select list="#{'PK':'Penghasilan Kotor', 'PD':'Potongan Dinas', 'PL':'Potongan Lain',
                                         'R':'Rekapitulasi Penghasilan Karyawan', 'pendidikan':'Pendidikan', 'thr':'THR',
                                          'jasprod':'Jasprod', 'insentif':'Insentif', 'rapelBulan':'Rapel Bulan', 'rapelBulanDetail':'Rapel Bulan Detail', 'rapelThr':'Rapel THR',
                                          'rapelPendidikan':'Rapel Pendidikan','rapelLembur':'Rapel Lembur','rapelInsentif':'Rapel Insentif',
                                          'rapelJubileum':'Rapel Jubileum'}"
+                                                                  id="tipe" name="payroll.tipe" cssClass="form-control" />--%>
+                                                        <s:select list="#{'GK':'Gaji Karyawan', 'RG':'Rekap Gaji Karyawan', 'PI':'Potongan Iuran DPLK'}"
                                                                   id="tipe" name="payroll.tipe" cssClass="form-control" />
                                                     </table>
 
                                                 </td>
                                             </tr>
-
-                                            <tr>
+                                           <%-- <tr>
                                                 <td>
                                                     <label class="control-label"><small>Status :</small></label>
                                                 </td>
@@ -137,7 +132,7 @@
                                                                   cssClass="form-control" />
                                                     </table>
                                                 </td>
-                                            </tr>
+                                            </tr>--%>
                                         </table>
                                         <br>
                                         <div id="actions" class="form-actions">
@@ -150,11 +145,11 @@
                                                             Print Pdf
                                                         </sj:submit>
                                                     </td>
-                                                    <td>
+                                                    <%--<td>
                                                         <button type="button" class="btn btn-success" id="btnExcell">
                                                             <i class="fa fa-download"></i> Download Excel
                                                         </button>
-                                                    </td>
+                                                    </td>--%>
                                                     <td>
                                                         <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_payroll"/>'">
                                                             <i class="fa fa-refresh"></i> Reset

@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.6105100000000023"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="87"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -25,53 +25,49 @@
 	<parameter name="parameter2" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
-	a.*,
-	b.department_name as divisi
-	FROM (
-	SELECT
-  distinct a.divisi_id as divisi_id,
-  a.grup as grup,
-  $P{periode} as periode,
-  a.position_name as divisi_name,
-  (
-    CASE WHEN length(a.divisi_id) = 8 THEN (b.jumlah_debit - b.jumlah_kredit) ELSE NULL END
-  ) as saldo,
-  (
-    CASE WHEN length(a.divisi_id) = 8 THEN (c.jumlah_debit - c.jumlah_kredit) ELSE NULL END
-  ) as saldoSekarang,
-  (
-    CASE WHEN length(a.divisi_id) = 8 THEN (
-      CASE WHEN d.jumlah_debit IS NULL
-      OR d.jumlah_kredit IS NULL THEN 0 ELSE (d.jumlah_debit - d.jumlah_kredit) END
-    ) ELSE NULL END
-  ) as lastSaldo
+  a.*,
+  a.saldosekarang + a.lastsaldo as saldo,
+  b.department_name as divisi
 FROM
   (
     SELECT
-      x.*,
-      y.nama_bagian as grup
+      distinct a.divisi_id as divisi_id,
+      a.grup as grup,
+      $P{periode} as periode,
+      a.position_name as divisi_name,
+	  (
+        CASE WHEN length(a.divisi_id) = 8 THEN (
+          CASE WHEN c.jumlah_debit IS NULL
+          OR c.jumlah_kredit IS NULL THEN 0 ELSE (c.jumlah_debit - c.jumlah_kredit) END
+        ) ELSE NULL END
+      ) as saldoSekarang,
+      (
+        CASE WHEN length(a.divisi_id) = 8 THEN (
+          CASE WHEN d.jumlah_debit IS NULL
+          OR d.jumlah_kredit IS NULL THEN 0 ELSE (d.jumlah_debit - d.jumlah_kredit) END
+        ) ELSE NULL END
+      ) as lastSaldo
     FROM
       (
-        select
-          kodering as divisi_id,
-          position_name,
-          left(kodering, 5) as grup_id
-        from
-          im_position
-        where
-          flag = 'Y'
-        order by
-          position_id
-      ) x
-      INNER JOIN im_hris_position_bagian y ON x.grup_id = y.kodering
-  ) a
-  left outer JOIN (
-    select
-      divisi_id,
-      sum(jumlah_debit) as jumlah_debit,
-      sum(jumlah_kredit) as jumlah_kredit
-    from
-      (
+        SELECT
+          x.*,
+          y.nama_bagian as grup
+        FROM
+          (
+            select
+              kodering as divisi_id,
+              position_name,
+              left(kodering, 5) as grup_id
+            from
+              im_position
+            where
+              flag = 'Y'
+            order by
+              position_id
+          ) x
+          INNER JOIN im_hris_position_bagian y ON x.grup_id = y.kodering
+      ) a
+      left outer JOIN (
         select
           y.divisi_id as divisi_id,
           sum(y.jumlah_debit * x.kurs) as jumlah_debit,
@@ -79,35 +75,12 @@ FROM
         from
           it_akun_jurnal x
           inner join it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal
+          left outer join im_akun_mata_uang mu ON (x.mata_uang_id = mu.mata_uang_id)
         where
-          x.tanggal_jurnal < (
-            select
-              to_date($P{periode}, 'MM-yyyy') + Interval '1 month'
-          )
+          to_char(x.tanggal_jurnal, 'MM-yyyy') = $P{periode}
+          and x.registered_flag = 'Y'
           and x.branch_id IN ($P!{branchId})
           AND y.rekening_id IN (
-            SELECT
-              rekening_id
-            FROM
-              im_akun_report_detail
-            WHERE
-              report_id =  $P{reportId}
-              AND flag = 'Y'
-          )
-        group by
-          y.divisi_id
-        union all
-        select
-          i.divisi_id,
-          i.jumlah_debit,
-          i.jumlah_kredit
-        from
-          it_akun_jurnal_detail_akhir_tahun i
-          inner join it_akun_jurnal_akhir_tahun j on i.no_jurnal = j.no_jurnal
-        where
-          to_date(j.periode, 'MM-yyyy') = to_date($P{periode}, 'MM-yyyy') - Interval '1 month'
-          and j.branch_id IN ($P!{branchId})
-          AND i.rekening_id IN (
             SELECT
               rekening_id
             FROM
@@ -116,65 +89,37 @@ FROM
               report_id = $P{reportId}
               AND flag = 'Y'
           )
-      ) jurnal_gabungan
-    group by
-      divisi_id
-  ) b ON b.divisi_id = a.divisi_id
-  left outer JOIN (
-    select
-      y.divisi_id as divisi_id,
-      sum(y.jumlah_debit * x.kurs) as jumlah_debit,
-      sum(y.jumlah_kredit * x.kurs) as jumlah_kredit
-    from
-      it_akun_jurnal x
-      inner join it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal
-      left outer join im_akun_mata_uang mu ON (x.mata_uang_id = mu.mata_uang_id)
-    where
-      to_char(x.tanggal_jurnal, 'MM-yyyy') = $P{periode}
-      and x.registered_flag = 'Y'
-      and x.branch_id IN ($P!{branchId})
-      AND y.rekening_id IN (
-        SELECT
-          rekening_id
-        FROM
-          im_akun_report_detail
-        WHERE
-          report_id = $P{reportId}
-          AND flag = 'Y'
-      )
-    group by
-      y.divisi_id
-  ) c ON c.divisi_id = a.divisi_id
-  left outer JOIN (
-    select
-      y.divisi_id as divisi_id,
-      sum(y.jumlah_debit * x.kurs) as jumlah_debit,
-      sum(y.jumlah_kredit * x.kurs) as jumlah_kredit
-    from
-      it_akun_jurnal x
-      inner join it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal
-    where
-      x.tanggal_jurnal < (
+        group by
+          y.divisi_id
+      ) c ON c.divisi_id = a.divisi_id
+      left outer JOIN (
         select
-          to_date($P{periode}, 'MM-yyyy')
-      )
-      and x.branch_id IN ($P!{branchId})
-      AND y.rekening_id IN (
-        SELECT
-          rekening_id
-        FROM
-          im_akun_report_detail
-        WHERE
-          report_id =  $P{reportId}
-          AND flag = 'Y'
-      )
-    group by
-      y.divisi_id
-  ) d ON d.divisi_id = a.divisi_id
+          x.divisi_id as divisi_id,
+          sum(x.jumlah_debit) as jumlah_debit,
+          sum(x.jumlah_kredit) as jumlah_kredit
+        from
+          it_akun_saldo_akhir_detail x
+        where
+          to_date(x.periode, 'MM-yyyy') = to_date($P{periode}, 'MM-yyyy') - Interval '1 month'
+          and x.branch_id IN ($P!{branchId})
+          AND x.rekening_id IN (
+            SELECT
+              rekening_id
+            FROM
+              im_akun_report_detail
+            WHERE
+              report_id = $P{reportId}
+              AND flag = 'Y'
+          )
+        group by
+          x.divisi_id
+      ) d ON d.divisi_id = a.divisi_id
+  ) a
+  LEFT JOIN im_hris_department b ON LEFT(a.divisi_id, 2)= b.kodering
 where
-  b.jumlah_debit IS NOT NULL
-	) a
-LEFT JOIN im_hris_department b ON LEFT(a.divisi_id,2)=b.kodering]]>
+  a.saldosekarang + a.lastsaldo <>0
+order by
+  divisi_id]]>
 	</queryString>
 	<field name="divisi_id" class="java.lang.String"/>
 	<field name="grup" class="java.lang.String"/>
@@ -183,9 +128,9 @@ LEFT JOIN im_hris_department b ON LEFT(a.divisi_id,2)=b.kodering]]>
 ]]></fieldDescription>
 	</field>
 	<field name="divisi_name" class="java.lang.String"/>
-	<field name="saldo" class="java.math.BigDecimal"/>
 	<field name="saldosekarang" class="java.math.BigDecimal"/>
 	<field name="lastsaldo" class="java.math.BigDecimal"/>
+	<field name="saldo" class="java.math.BigDecimal"/>
 	<field name="divisi" class="java.lang.String"/>
 	<variable name="SUM_saldo_1" class="java.math.BigDecimal" resetType="Group" resetGroup="rekening" calculation="Sum">
 		<variableExpression><![CDATA[$F{saldo}]]></variableExpression>
@@ -315,7 +260,7 @@ LEFT JOIN im_hris_department b ON LEFT(a.divisi_id,2)=b.kodering]]>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{sumLastSaldo2Display}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{SUM_lastSaldo_2}.abs()]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
@@ -357,12 +302,6 @@ LEFT JOIN im_hris_department b ON LEFT(a.divisi_id,2)=b.kodering]]>
 			<band height="23" splitType="Stretch">
 				<line>
 					<reportElement key="line-4" isPrintRepeatedValues="false" x="240" y="1" width="327" height="1" printWhenGroupChanges="rekening" uuid="cc6f4363-fe67-4ec9-afc7-cca5639dfc22"/>
-					<graphicElement>
-						<pen lineWidth="1.0" lineStyle="Dashed"/>
-					</graphicElement>
-				</line>
-				<line>
-					<reportElement key="line-5" isPrintRepeatedValues="false" x="240" y="20" width="327" height="1" printWhenGroupChanges="rekening" uuid="59b1f12b-4a3b-4169-b044-2ec22ab906d4"/>
 					<graphicElement>
 						<pen lineWidth="1.0" lineStyle="Dashed"/>
 					</graphicElement>
@@ -417,7 +356,7 @@ LEFT JOIN im_hris_department b ON LEFT(a.divisi_id,2)=b.kodering]]>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{sumLastSaldo1Display}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{SUM_lastSaldo_1}.abs()]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>

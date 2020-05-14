@@ -26,7 +26,7 @@
             document.kelasruanganForm.submit();
         };
 
-        $.subscribe('beforeProcessSave', function (event, data) {
+        $.subscribe('beforeProcessSave3', function (event, data) {
             // var idRuangan = document.getElementById("id_ruangan").value;
             var idKelasRuangan = document.getElementById("id_kelasruangan3").value;
 
@@ -163,7 +163,7 @@
                     <div class="col-sm-offset-2 col-sm-10">
                             <%--<button type="submit" class="btn btn-default">Submit</button>--%>
                         <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="deleteKelasRuanganForm" id="delete" name="delete"
-                                   onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
+                                   onBeforeTopics="beforeProcessSave3" onCompleteTopics="closeDialog,successDialog"
                                    onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
                             <i class="fa fa-check"></i>
                             Delete

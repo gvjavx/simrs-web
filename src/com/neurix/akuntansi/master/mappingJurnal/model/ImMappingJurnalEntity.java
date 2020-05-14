@@ -32,6 +32,14 @@ public class ImMappingJurnalEntity implements Serializable {
     private String createdWho;
     private String lastUpdateWho;
 
+    public String getEditBiaya() {
+        return editBiaya;
+    }
+
+    public void setEditBiaya(String editBiaya) {
+        this.editBiaya = editBiaya;
+    }
+
     public String getDivisiId() {
         return divisiId;
     }
@@ -168,11 +176,11 @@ public class ImMappingJurnalEntity implements Serializable {
         this.lastUpdateWho = lastUpdateWho;
     }
 
-    public String getEditBiaya() {
-        return editBiaya;
-    }
-
-    public void setEditBiaya(String editBiaya) {
-        this.editBiaya = editBiaya;
-    }
+//    public String getEditBiaya() {
+//        return editBiaya;
+//    }
+//
+//    public void setEditBiaya(String editBiaya) {
+//        this.editBiaya = editBiaya;
+//    }
 }

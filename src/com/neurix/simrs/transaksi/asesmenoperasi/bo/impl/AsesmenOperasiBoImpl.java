@@ -22,7 +22,7 @@ public class AsesmenOperasiBoImpl implements AsesmenOperasiBo {
     @Override
     public List<AsesmenOperasi> getByCriteria(AsesmenOperasi bean) throws GeneralBOException {
         List<AsesmenOperasi> list = new ArrayList<>();
-        if(bean != null) {
+        if (bean != null) {
             Map hsCriteria = new HashMap();
             if (bean.getIdAsesmenOperasi() != null && !"".equalsIgnoreCase(bean.getIdAsesmenOperasi())) {
                 hsCriteria.put("id_asesmen_operasi", bean.getIdAsesmenOperasi());
@@ -44,23 +44,25 @@ public class AsesmenOperasiBoImpl implements AsesmenOperasiBo {
             } catch (HibernateException e) {
                 logger.error(e.getMessage());
             }
-            if(entityList.size() > 0){
-                for (ItSimrsAsesmenOperasiEntity entity: entityList){
+            if (entityList.size() > 0) {
+                for (ItSimrsAsesmenOperasiEntity entity : entityList) {
                     AsesmenOperasi operasi = new AsesmenOperasi();
                     operasi.setIdAsesmenOperasi(entity.getIdAsesmenOperasi());
                     operasi.setIdDetailCheckup(entity.getIdDetailCheckup());
                     operasi.setParameter(entity.getParameter());
-                    if("penandaan_area".equalsIgnoreCase(entity.getKeterangan())){
-                        if("area_penanda".equalsIgnoreCase(entity.getJenis())){
-                            operasi.setJawaban1(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_AREA_OPERASI+entity.getJawaban1());
+                    if ("penandaan_area".equalsIgnoreCase(entity.getKeterangan())) {
+                        if ("area_penanda".equalsIgnoreCase(entity.getJenis())) {
+                            operasi.setJawaban1(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_AREA_OPERASI + entity.getJawaban1());
                         }
-                        if("ttd_pasien".equalsIgnoreCase(entity.getJenis())){
-                            operasi.setJawaban1(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_TTD_PASIEN+entity.getJawaban1());
+                        if ("ttd_pasien".equalsIgnoreCase(entity.getJenis())) {
+                            operasi.setJawaban1(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_TTD_PASIEN + entity.getJawaban1());
                         }
-                        if("ttd_dokter".equalsIgnoreCase(entity.getJenis())){
-                            operasi.setJawaban1(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_TTD_DOKTER+entity.getJawaban1());
+                        if ("ttd_dokter".equalsIgnoreCase(entity.getJenis())) {
+                            operasi.setJawaban1(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_TTD_DOKTER + entity.getJawaban1());
                         }
-                    }else{
+                    } else if ("general_penyataan".equalsIgnoreCase(entity.getKeterangan()) || "regional_penyataan".equalsIgnoreCase(entity.getKeterangan())) {
+                        operasi.setJawaban1(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_TTD_RM + entity.getJawaban1());
+                    } else {
                         operasi.setJawaban1(entity.getJawaban1());
                     }
                     operasi.setJawaban2(entity.getJawaban2());
@@ -81,32 +83,34 @@ public class AsesmenOperasiBoImpl implements AsesmenOperasiBo {
     }
 
     @Override
-    public CrudResponse saveAdd(AsesmenOperasi bean) throws GeneralBOException {
+    public CrudResponse saveAdd(List<AsesmenOperasi> list) throws GeneralBOException {
         CrudResponse response = new CrudResponse();
-        if(bean != null){
-            ItSimrsAsesmenOperasiEntity operasi = new ItSimrsAsesmenOperasiEntity();
-            operasi.setIdAsesmenOperasi("ASO"+asesmenOperasiDao.getNextSeq());
-            operasi.setIdDetailCheckup(bean.getIdDetailCheckup());
-            operasi.setParameter(bean.getParameter());
-            operasi.setJawaban1(bean.getJawaban1());
-            operasi.setJawaban2(bean.getJawaban2());
-            operasi.setKeterangan(bean.getKeterangan());
-            operasi.setJenis(bean.getJenis());
-            operasi.setSkor(bean.getSkor());
-            operasi.setAction(bean.getAction());
-            operasi.setFlag(bean.getFlag());
-            operasi.setCreatedDate(bean.getCreatedDate());
-            operasi.setCreatedWho(bean.getCreatedWho());
-            operasi.setLastUpdate(bean.getLastUpdate());
-            operasi.setLastUpdateWho(bean.getLastUpdateWho());
-            try {
-                asesmenOperasiDao.addAndSave(operasi);
-                response.setStatus("success");
-                response.setMsg("Berhasil");
-            }catch (HibernateException e){
-                response.setStatus("error");
-                response.setMsg("Found Error "+e.getMessage());
-                logger.error(e.getMessage());
+        if (list.size() >0) {
+            for (AsesmenOperasi bean: list){
+                ItSimrsAsesmenOperasiEntity operasi = new ItSimrsAsesmenOperasiEntity();
+                operasi.setIdAsesmenOperasi("ASO" + asesmenOperasiDao.getNextSeq());
+                operasi.setIdDetailCheckup(bean.getIdDetailCheckup());
+                operasi.setParameter(bean.getParameter());
+                operasi.setJawaban1(bean.getJawaban1());
+                operasi.setJawaban2(bean.getJawaban2());
+                operasi.setKeterangan(bean.getKeterangan());
+                operasi.setJenis(bean.getJenis());
+                operasi.setSkor(bean.getSkor());
+                operasi.setAction(bean.getAction());
+                operasi.setFlag(bean.getFlag());
+                operasi.setCreatedDate(bean.getCreatedDate());
+                operasi.setCreatedWho(bean.getCreatedWho());
+                operasi.setLastUpdate(bean.getLastUpdate());
+                operasi.setLastUpdateWho(bean.getLastUpdateWho());
+                try {
+                    asesmenOperasiDao.addAndSave(operasi);
+                    response.setStatus("success");
+                    response.setMsg("Berhasil");
+                } catch (HibernateException e) {
+                    response.setStatus("error");
+                    response.setMsg("Found Error " + e.getMessage());
+                    logger.error(e.getMessage());
+                }
             }
         }
         return response;

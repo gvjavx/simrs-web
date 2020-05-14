@@ -50,7 +50,7 @@
                     msg += 'Field <strong>Bulan </strong> masih belum dipilih' + '<br/>';
                 }
                 if ( tipePendapatan == '') {
-                    msg += 'Field <strong>Tipe Pendapatan</strong> masih belum dipilih' + '<br/>';
+                    msg += 'Field <strong>Tipe Laporan</strong> masih belum dipilih' + '<br/>';
                 }
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
@@ -133,12 +133,12 @@
                                                 <td>
                                                     <table>
                                                         <s:if test='laporanAkuntansi.unit == "KP"'>
-                                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranchAkuntansi_branch"/>
                                                             <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="laporanAkuntansi.unit"
                                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                                         </s:if>
                                                         <s:else>
-                                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranchAkuntansi_branch"/>
                                                             <s:select list="#initComboBranch.listOfComboBranch" id="branchIdView" name="laporanAkuntansi.unit" disabled="true"
                                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                                             <s:hidden id="branchId" name="laporanAkuntansi.unit" />

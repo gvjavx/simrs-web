@@ -299,10 +299,14 @@
                                     <td><b>Alamat</b></td>
                                     <td><span id="det_desa"></span>, <span id="det_kecamatan"></span></td>
                                 </tr>
-                                <%--<tr>--%>
-                                    <%--<td><b>Provinsi</b></td>--%>
-                                    <%--<td><span id="det_provinsi"></span></td>--%>
-                                <%--</tr>--%>
+                                <tr>
+                                    <td><b>Nama Poli</b></td>
+                                    <td><span id="det_nama_poli"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Jenis Pasien</b></td>
+                                    <td><span id="det_jenis_pasien"></span></td>
+                                </tr>
                                 <%--<tr>--%>
                                     <%--<td><b>Kabupaten</b></td>--%>
                                     <%--<td></span></td>--%>
@@ -368,7 +372,7 @@
                     <h3 class="box-title"><i class="fa fa-medkit"></i> Daftar Tindakan Rawat</h3>
                 </div>
                 <div class="box-body">
-                    <table class="table table-bordered table-striped" id="tabel_tindakan_ts">
+                    <table class="table table-bordered table-striped" id="tabel_tindakan_ts" style="font-size: 12px">
                         <thead>
                         <tr bgcolor="#90ee90">
                             <td width="19%">Tanggal</td>
@@ -459,6 +463,14 @@
                                     <td><b>Alamat</b></td>
                                     <td><span id="fin_desa"></span>, <span id="fin_kecamatan"></span></td>
                                 </tr>
+                                <tr>
+                                    <td><b>Nama Poli</b></td>
+                                    <td><span id="fin_nama_poli"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Jenis Pasien</b></td>
+                                    <td><span id="fin_jenis_pasien"></span></td>
+                                </tr>
                             </table>
                         </div>
                     </div>
@@ -509,7 +521,7 @@
                     <h3 class="box-title"><i class="fa fa-medkit"></i> Daftar Tindakan Rawat</h3>
                 </div>
                 <div class="box-body">
-                    <table class="table table-bordered table-striped" id="tabel_tindakan_fin">
+                    <table class="table table-bordered table-striped" id="tabel_tindakan_fin" style="font-size: 12px">
                         <thead>
                         <tr bgcolor="#90ee90">
                             <td width="20%">Tanggal</td>
@@ -575,9 +587,7 @@
 
     function hitungStatusBiaya(idDetailCheckup) {
         CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, "RJ",  function (response) {
-            // if (response.idJenisPeriksaPasien == "bpjs") {
                 if (response.tarifBpjs != null && response.tarifTindakan != null) {
-
                     var coverBiaya = response.tarifBpjs;
                     var biayaTindakan = response.tarifTindakan;
 
@@ -655,6 +665,7 @@
             $('#v_'+idCheckup).attr('src',url).css('width', '', 'height', '');
             CheckupAction.listDataPasien(idDetailCheckup, function (response) {
                 if (response != null) {
+                    console.log(response);
                         var tanggal = response.tglLahir;
                         var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
                         noCheckup = response.noCheckup;
@@ -676,8 +687,9 @@
                         desa = response.namaDesa;
                         noSep = response.noSep;
                         $('#det_no_rm').html(response.idPasien);
+                        $('#det_nama_poli').html(response.namaPelayanan);
+                        $('#det_jenis_pasien').html(response.statusPeriksaName);
                         jenisPasien = response.idJenisPeriksaPasien;
-
                 }
             });
 
@@ -705,7 +717,7 @@
                         });
 
                         var kategori =
-                                '<select class="form-control" id="kategori'+i+'">' +
+                                '<select style="width: 100%;" class="form-control select-2" id="kategori'+i+'">' +
                                 '<option value="">[Select One]</option>'+
                                 tindakanina +
                                 '</select>';
@@ -723,7 +735,7 @@
                             onclick = "";
                         }
 
-                        if(item.kategoriTindakanBpjs == null || item.kategoriTindakanBpjs == ''){
+                        if(item.flagUpdateKlaim == '' || item.flagUpdateKlaim == null){
                             cekTindakan = true;
                         }
 
@@ -800,6 +812,12 @@
             }else{
                 $('#save_verif').hide();
             }
+
+            var select2 = $('.select-2').length;
+            if(select2 > 0){
+                $('.select-2').select2({
+                });
+            }
             $('#modal-detail-pasien').modal({show:true, backdrop:'static'});
         }, 100);
     }
@@ -855,6 +873,7 @@
         if (cek) {
             $('#msg_tin').text("Silahkan pilih kategori tindakan BPJS terlebih kemudian klik icon di pinggir untuk konfirmasi...!");
             $('#warning_tin').show().fadeOut(5000);
+            $('#modal-detail-pasien').scrollTop(0);
         } else {
             $('#save_con').attr('onclick','saveApproveTindakan(\''+idDetailCheckup+'\')');
             $('#modal-confirm-dialog').modal('show');
@@ -879,6 +898,7 @@
                     $('#save_verif').show();
                     $('#msg_tin').text(response.message);
                     $('#warning_tin').show().fadeOut(5000);
+                    $('#modal-detail-pasien').scrollTop(0);
                 }
             }
         });
@@ -943,6 +963,8 @@
                         desa = response.namaDesa;
                         noSep = response.noSep;
                         $('#fin_no_rm').html(response.idPasien);
+                        $('#fin_nama_poli').html(response.namaPelayanan);
+                        $('#fin_jenis_pasien').html(response.statusPeriksaName);
                         jenisPasien = response.idJenisPeriksaPasien;
                 }
             });

@@ -387,6 +387,20 @@ public class PositionDao extends GenericDao<ImPosition,String> {
         return results;
     }
 
+    public List<ImPosition> getTypeAheadPosition (String key) throws HibernateException {
+        List<ImPosition> results = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class)
+                .add(
+                        Restrictions.or(
+                                Restrictions.ilike("kodering", key + "%"),
+                                Restrictions.ilike("positionName", "%" + key + "%")
+                        )
+                )
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("positionId"))
+                .list();
+        return results;
+    }
+
     public String getKodringPosition(Map mapCriteria){
         String kode = null;
         Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class);

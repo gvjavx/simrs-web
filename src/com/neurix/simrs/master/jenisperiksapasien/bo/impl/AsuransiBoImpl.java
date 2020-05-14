@@ -82,21 +82,45 @@ public class AsuransiBoImpl implements AsuransiBo  {
             }
 
             if (imSimrsAsuransiEntity != null) {
-                imSimrsAsuransiEntity.setIdAsuransi(bean.getIdAsuransi());
-                imSimrsAsuransiEntity.setNamaAsuransi(bean.getNamaAsuransi());
-                imSimrsAsuransiEntity.setNoMaster(bean.getNoMaster());
-                imSimrsAsuransiEntity.setFlag(bean.getFlag());
-                imSimrsAsuransiEntity.setAction(bean.getAction());
-                imSimrsAsuransiEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                imSimrsAsuransiEntity.setLastUpdate(bean.getLastUpdate());
+                if (imSimrsAsuransiEntity.getNamaAsuransi().equalsIgnoreCase(bean.getNamaAsuransi())){
+                    imSimrsAsuransiEntity.setIdAsuransi(bean.getIdAsuransi());
+                    imSimrsAsuransiEntity.setNamaAsuransi(bean.getNamaAsuransi());
+                    imSimrsAsuransiEntity.setNoMaster(bean.getNoMaster());
+                    imSimrsAsuransiEntity.setFlag(bean.getFlag());
+                    imSimrsAsuransiEntity.setAction(bean.getAction());
+                    imSimrsAsuransiEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    imSimrsAsuransiEntity.setLastUpdate(bean.getLastUpdate());
 
-                try {
-                    // Update into database
-                    asuransiDao.updateAndSave(imSimrsAsuransiEntity);
-                    //payrollSkalaGajiDao.addAndSaveHistory(imPayrollSkalaGajiHistoryEntity);
-                } catch (HibernateException e) {
-                    logger.error("[AsuransiBoImpl.saveEdit] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving update data Asuransi, please info to your admin..." + e.getMessage());
+                    try {
+                        // Update into database
+                        asuransiDao.updateAndSave(imSimrsAsuransiEntity);
+                        //payrollSkalaGajiDao.addAndSaveHistory(imPayrollSkalaGajiHistoryEntity);
+                    } catch (HibernateException e) {
+                        logger.error("[AsuransiBoImpl.saveEdit] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving update data Asuransi, please info to your admin..." + e.getMessage());
+                    }
+                }else {
+                    String status = cekStatus(bean.getNamaAsuransi());
+                    if (!status.equalsIgnoreCase("exist")){
+                        imSimrsAsuransiEntity.setIdAsuransi(bean.getIdAsuransi());
+                        imSimrsAsuransiEntity.setNamaAsuransi(bean.getNamaAsuransi());
+                        imSimrsAsuransiEntity.setNoMaster(bean.getNoMaster());
+                        imSimrsAsuransiEntity.setFlag(bean.getFlag());
+                        imSimrsAsuransiEntity.setAction(bean.getAction());
+                        imSimrsAsuransiEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                        imSimrsAsuransiEntity.setLastUpdate(bean.getLastUpdate());
+
+                        try {
+                            // Update into database
+                            asuransiDao.updateAndSave(imSimrsAsuransiEntity);
+                            //payrollSkalaGajiDao.addAndSaveHistory(imPayrollSkalaGajiHistoryEntity);
+                        } catch (HibernateException e) {
+                            logger.error("[AsuransiBoImpl.saveEdit] Error, " + e.getMessage());
+                            throw new GeneralBOException("Found problem when saving update data Asuransi, please info to your admin..." + e.getMessage());
+                        }
+                    }else {
+                        throw new GeneralBOException("Maaf Data dengan Nama Asuransi Tersebut Sudah Ada");
+                    }
                 }
             } else {
                 logger.error("[AsuransiBoImpl.saveEdit] Error, not found data Asuransi with request id, please check again your data ...");
@@ -197,6 +221,7 @@ public class AsuransiBoImpl implements AsuransiBo  {
                     asuransi.setStLastUpdate(entity.getLastUpdate().toString());
                     asuransi.setLastUpdate(entity.getLastUpdate());
                     asuransi.setLastUpdateWho(entity.getLastUpdateWho());
+                    asuransi.setIsLaka(entity.getIsLaka());
                     asuransiList.add(asuransi);
                 }
             }

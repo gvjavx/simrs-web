@@ -36,8 +36,11 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
             if (mapCriteria.get("branch_id") != null) {
                 criteria.add(Restrictions.eq("branchId", mapCriteria.get("branch_id").toString()));
             }
-            if (mapCriteria.get("id_kategori_tindakan") != null) {
-                criteria.add(Restrictions.eq("idKategoriTindakan", mapCriteria.get("id_kategori_tindakan").toString()));
+            if (mapCriteria.get("branch_id") != null) {
+                criteria.add(Restrictions.eq("branchId", mapCriteria.get("branch_id").toString()));
+            }
+            if (mapCriteria.get("is_ina") != null) {
+                criteria.add(Restrictions.eq("isIna", mapCriteria.get("is_ina").toString()));
             }
             if (mapCriteria.get("kategori_ina_bpjs") != null) {
                 criteria.add(Restrictions.eq("kategoriInaBpjs", mapCriteria.get("kategori_ina_bpjs").toString()));
@@ -46,6 +49,7 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
                 criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
             }
         }
+
         List<ImSimrsTindakanEntity> result = criteria.list();
         return result;
     }

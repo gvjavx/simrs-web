@@ -19,9 +19,10 @@
 
         $.subscribe('beforeProcessSave', function (event, data) {
             var namaAsuransi = document.getElementById("namaAsuransi1").value;
+            var noMaster = document.getElementById("noMaster").value;
             console.log(namaAsuransi);
 
-            if (namaAsuransi != '') {
+            if (namaAsuransi != '' && noMaster != '') {
                 if (confirm('Do you want to update this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -35,8 +36,11 @@
                 if (namaAsuransi == '') {
                     msg += 'Field <strong>Nama Asuransi </strong> is required.' + '<br/>';
                 }
+                if (noMaster == '') {
+                    msg += 'Field <strong>No Master </strong> is required.' + '<br/>';
+                }
 
-                document.getElementById('errorValidationMessage').innerHTML = msg;
+                document.getElementById('errorValidationMessage2').innerHTML = msg;
 
                 $.publish('showErrorValidationDialog');
             }
@@ -198,14 +202,14 @@
                                         <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog" modal="true" resizable="false"
                                                    height="280" width="500" autoOpen="false" title="Warning"
                                                    buttons="{
-                                                                        'OK':function() { $('#error_validation_dialog').dialog('close'); }
+                                                                        'OK':function() { $('#error_validation_dialog').dialog('close'); window.location.reload(true)}
                                                                     }"
                                         >
                                             <div class="alert alert-error fade in">
                                                 <label class="control-label" align="left">
                                                     <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> Please check this field :
                                                     <br/>
-                                                    <center><div id="errorValidationMessage"></div></center>
+                                                    <center><div id="errorValidationMessage2"></div></center>
                                                 </label>
                                             </div>
                                         </sj:dialog>

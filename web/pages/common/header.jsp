@@ -446,6 +446,67 @@ apply the skin class to the body tag so the changes take effect.
             el.value = el.value.substring(0,el.value.length - 1);
         }
     }
+    function formatRupiahAtas(angka) {
+        if(angka != null && angka != '' && angka > 0){
+            var reverse = angka.toString().split('').reverse().join(''),
+                ribuan = reverse.match(/\d{1,3}/g);
+            ribuan = ribuan.join('.').split('').reverse().join('');
+            return ribuan;
+        }else{
+            return 0;
+        }
+    }
+
+    function converterDateTime(dateTime) {
+
+        var today = "";
+        if (dateTime != '' && dateTime != null) {
+
+            today = new Date(dateTime);
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+            var hh = ((today.getHours() < 10 ? '0' : '') + today.getHours());
+            var min = ((today.getMinutes() < 10 ? '0' : '') + today.getMinutes());
+            var sec = today.getSeconds();
+            today = dd + '-' + mm + '-' + yyyy + ' ' + hh + ':' + min;
+        }
+        return today;
+    }
+
+    function converterDate(dateTime) {
+
+        var today = "";
+        if (dateTime != '' && dateTime != null) {
+
+            today = new Date(dateTime);
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+            var hh = ((today.getHours() < 10 ? '0' : '') + today.getHours());
+            var min = ((today.getMinutes() < 10 ? '0' : '') + today.getMinutes());
+            var sec = today.getSeconds();
+            today = dd + '-' + mm + '-' + yyyy;
+        }
+        return today;
+    }
+
+    function converterTime(dateTime) {
+
+        var today = "";
+        if (dateTime != '' && dateTime != null) {
+
+            today = new Date(dateTime);
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+            var hh = ((today.getHours() < 10 ? '0' : '') + today.getHours());
+            var min = ((today.getMinutes() < 10 ? '0' : '') + today.getMinutes());
+            var sec = today.getSeconds();
+            today = hh + ':' + min;
+        }
+        return today;
+    }
 </script>
 
 

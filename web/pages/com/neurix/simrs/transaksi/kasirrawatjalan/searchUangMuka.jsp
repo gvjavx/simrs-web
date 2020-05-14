@@ -115,7 +115,7 @@
                         <div class="form-group">
                             <s:form id="uangmukaForm" method="post" namespace="/uangmuka" action="searchUangMuka_uangmuka.action" theme="simple" cssClass="form-horizontal">
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4">ID Pasien</label>
+                                    <label class="control-label col-sm-4">No RM</label>
                                     <div class="col-sm-4">
                                         <s:textfield id="id_pasien" cssStyle="margin-top: 7px"
                                                      name="headerDetailCheckup.idPasien" required="false"
@@ -125,7 +125,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Nama</label>
                                     <div class="col-sm-4">
-                                        <s:textfield id="nama_pasien" name="headerDetailCheckup.nama"
+                                        <s:textfield id="nama_pasien" name="headerDetailCheckup.namaPasien"
                                                      required="false" readonly="false"
                                                      cssClass="form-control" cssStyle="margin-top: 7px"/>
                                     </div>
@@ -670,7 +670,7 @@
                 if (response != null) {
                     // $.each(dataPasien, function (i, item) {
                         var tanggal = response.tglLahir;
-                        var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
+                        var dateFormat = converterDate(new Date(tanggal));
                         noCheckup = response.noCheckup;
                         nik = response.noKtp;
                         namaPasien = response.nama;
@@ -758,15 +758,29 @@
 
         var tgl = "";
         if(tanggal != null && tanggal != ''){
-            tgl = $.datepicker.formatDate("dd-mm-yy", new Date(tanggal));
+            tgl = converterDate(new Date(tanggal));
         }
         return tgl;
     }
 
     function confirmSaveUangMuka(id, idPasien, uangmuka){
-        if(id != '' && idPasien != '' && uangmuka > 0){
-            $('#modal-confirm-dialog').modal('show');
-            $('#save_con').attr('onclick','saveUangMuka(\''+id+'\',\''+idPasien+'\',\''+uangmuka+'\')');
+        var jumlah = $('#val_uang_muka').val();
+        var metodeBayar = $('#metode_bayar').val();
+        var kodeBank = $('#bank').val();
+        var noRekening = $('#no_rekening').val();
+        if(id != '' && idPasien != '' && uangmuka > 0 && parseInt(jumlah) >= parseInt(uangmuka) && metodeBayar != ''){
+            if("transfer" == metodeBayar){
+                if(kodeBank != '' && noRekening != ''){
+                    $('#modal-confirm-dialog').modal('show');
+                    $('#save_con').attr('onclick','saveUangMuka(\''+id+'\',\''+idPasien+'\',\''+uangmuka+'\')');
+                }else{
+                    $('#warning_fin').show().fadeOut(5000);
+                    $('#msg_fin').text("Silahkan cek data yang diinput");
+                }
+            }else {
+                $('#modal-confirm-dialog').modal('show');
+                $('#save_con').attr('onclick','saveUangMuka(\''+id+'\',\''+idPasien+'\',\''+uangmuka+'\')');
+            }
         }else{
             $('#warning_fin').show().fadeOut(5000);
             $('#msg_fin').text("Silahkan cek data yang diinput");
@@ -804,7 +818,7 @@
         CheckupAction.listDataPasien(idDetailCheckup, function (response) {
             if (response != null) {
                 var tanggal = response.tglLahir;
-                var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
+                var dateFormat = converterDate(new Date(tanggal));
                 var jenisKelamin = "";
 
                 if (response.jenisKelamin == "L") {

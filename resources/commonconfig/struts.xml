@@ -180,6 +180,7 @@
     <include file="sshconfig/com/neurix/simrs/master/dokter/struts/DokterAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/master/tindakan/struts/TindakanAction.xml"/>
     <include file="sshconfig/com/neurix/hris/master/DokterKso/struts/DokterKsoAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/master/tindakan/struts/KategoriTindakanPelayananAction.xml"/>
 
     <!--TRANSAKSI -->
     <include file="sshconfig/com/neurix/simrs/transaksi/checkup/struts/CheckupAction.xml"/>
@@ -216,6 +217,7 @@
     <include file="sshconfig/com/neurix/simrs/master/obat/struts/ReturObatAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/plankegiatanrawat/struts/PlanKegiatanRawatAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/checkupdetail/struts/RekamMedikAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/rekakmedik/struts/RekamMedisAction.xml"/>
 
     <include file="sshconfig/com/neurix/hris/transaksi/pendapatanDokter/struts/PendapatanDokterAction.xml"/>
 
@@ -235,6 +237,7 @@
     <include file="sshconfig/com/neurix/akuntansi/master/settingReportUser/struts/SettingReportUserAction.xml"/>
     <include file="sshconfig/com/neurix/akuntansi/transaksi/tutupperiod/struts/SettingTutupPeriodAction.xml"/>
     <include file="sshconfig/com/neurix/akuntansi/transaksi/tutupperiod/struts/TutupPeriodAction.xml"/>
+    <include file="sshconfig/com/neurix/akuntansi/transaksi/budgeting/struts/BudgetingAction.xml"/>
     <include file="sshconfig/com/neurix/akuntansi/master/pembayaran/struts/PembayaranAction.xml"/>
     <include file="sshconfig/com/neurix/akuntansi/master/reportKeuanganKonsol/struts/ReportKeuanganKonsolAction.xml"/>
 

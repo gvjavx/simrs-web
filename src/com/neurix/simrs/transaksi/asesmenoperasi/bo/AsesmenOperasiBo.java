@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface AsesmenOperasiBo {
     public List<AsesmenOperasi> getByCriteria(AsesmenOperasi bean) throws GeneralBOException;
-    public CrudResponse saveAdd(AsesmenOperasi bean) throws GeneralBOException;
+    public CrudResponse saveAdd(List<AsesmenOperasi> list) throws GeneralBOException;
 }

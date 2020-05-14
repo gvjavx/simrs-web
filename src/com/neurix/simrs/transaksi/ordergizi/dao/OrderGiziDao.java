@@ -137,7 +137,7 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
                     "e.nama_ruangan,\n" +
                     "f.nama_kelas_ruangan,\n" +
                     "f.id_kelas_ruangan,\n" +
-                    "a.no_sep, \n" +
+                    "b.no_sep, \n" +
                     "d.id_rawat_inap\n" +
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
@@ -159,7 +159,7 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
                     "AND e.id_ruangan LIKE :idRuang\n" +
                     "AND b.id_detail_checkup LIKE :idDetailCheckup\n" +
                     "AND a.branch_id LIKE :branchId\n" +
-                    "AND a.id_jenis_periksa_pasien LIKE :jenisPeriksa\n" +
+                    "AND b.id_jenis_periksa_pasien LIKE :jenisPeriksa\n" +
                     "AND a.flag = 'Y' \n";
 
             List<Object[]> results = new ArrayList<>();

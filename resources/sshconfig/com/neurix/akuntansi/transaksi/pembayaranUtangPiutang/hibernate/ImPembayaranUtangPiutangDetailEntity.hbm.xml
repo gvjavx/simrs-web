@@ -25,6 +25,12 @@
         <property name="rekeningId">
             <column name="rekening_id" sql-type="varchar" length="30" not-null="false" />
         </property>
+        <property name="divisiId">
+            <column name="divisi_id" sql-type="varchar" length="10" not-null="false" />
+        </property>
+        <property name="posisiCoa">
+            <column name="posisi_coa" sql-type="varchar" length="1" not-null="false" />
+        </property>
 
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />
