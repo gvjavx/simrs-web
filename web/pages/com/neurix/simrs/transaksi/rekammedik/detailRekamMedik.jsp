@@ -767,7 +767,7 @@
             </div>
             <div class="modal-body">
                 <div class="box-body">
-                    <video controls id="video_rm" src="/go-medsys/images/upload/video_rm/sodiq.mp4" width="100%" height="400px"></video>
+                    <video controls id="video_rm" src="<s:property value="detailCheckup.videoRm"/>" width="100%" height="400px"></video>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
