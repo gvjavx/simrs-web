@@ -172,35 +172,6 @@ public class DaftarUlangBoImpl implements DaftarUlangBo {
             throw new GeneralBOException("[CheckupDetailBoImpl.saveAdd] Error When Saving data detail checkup");
         }
 
-        // saving dokter
-        if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())) {
-
-            List<ItSimrsDokterTeamEntity> listDokter = new ArrayList<>();
-
-            Map hsCriteria = new HashMap();
-            hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
-            try {
-                listDokter = dokterTeamDao.getByCriteria(hsCriteria);
-            }catch (HibernateException e){
-                response.setStatus("error");
-                response.setMessage("Found Error "+e.getMessage());
-                logger.error("Found Error when search dokter "+e.getMessage());
-            }
-
-            ItSimrsDokterTeamEntity dokter = new ItSimrsDokterTeamEntity();
-            if(listDokter.size() > 0){
-                dokter = listDokter.get(0);
-                idDokter = dokter.getIdDokter();
-            }
-
-            DokterTeam dokterTeam = new DokterTeam();
-            dokterTeam.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
-            dokterTeam.setIdDokter(dokter.getIdDokter());
-            dokterTeam.setCreatedWho(bean.getCreatedWho());
-            dokterTeam.setLastUpdateWho(bean.getLastUpdateWho());
-            response = saveTeamDokter(dokterTeam);
-        }
-
         // for rawat Inap
         if (bean.getRawatInap()) {
             List<ItSimrsDokterTeamEntity> dokterEntities = null;
@@ -269,6 +240,7 @@ public class DaftarUlangBoImpl implements DaftarUlangBo {
                                 tindakanRawatEntity.setLastUpdateWho(bean.getCreatedWho());
                                 tindakanRawatEntity.setFlag("Y");
                                 tindakanRawatEntity.setAction("U");
+                                tindakanRawatEntity.setApproveFlag("Y");
 
                                 if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
                                     tindakanRawatEntity.setTarif(tindakanEntity.getTarifBpjs());
@@ -327,6 +299,35 @@ public class DaftarUlangBoImpl implements DaftarUlangBo {
                         }
                     }
                 }
+            }
+        }else{
+            // saving dokter
+            if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())) {
+
+                List<ItSimrsDokterTeamEntity> listDokter = new ArrayList<>();
+
+                Map hsCriteria = new HashMap();
+                hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+                try {
+                    listDokter = dokterTeamDao.getByCriteria(hsCriteria);
+                }catch (HibernateException e){
+                    response.setStatus("error");
+                    response.setMessage("Found Error "+e.getMessage());
+                    logger.error("Found Error when search dokter "+e.getMessage());
+                }
+
+                ItSimrsDokterTeamEntity dokter = new ItSimrsDokterTeamEntity();
+                if(listDokter.size() > 0){
+                    dokter = listDokter.get(0);
+                    idDokter = dokter.getIdDokter();
+                }
+
+                DokterTeam dokterTeam = new DokterTeam();
+                dokterTeam.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
+                dokterTeam.setIdDokter(dokter.getIdDokter());
+                dokterTeam.setCreatedWho(bean.getCreatedWho());
+                dokterTeam.setLastUpdateWho(bean.getLastUpdateWho());
+                response = saveTeamDokter(dokterTeam);
             }
         }
 
@@ -388,6 +389,7 @@ public class DaftarUlangBoImpl implements DaftarUlangBo {
                         tindakanRawatEntity.setLastUpdateWho(bean.getCreatedWho());
                         tindakanRawatEntity.setFlag("Y");
                         tindakanRawatEntity.setAction("U");
+                        tindakanRawatEntity.setApproveFlag("Y");
 
                         if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
                             tindakanRawatEntity.setTarif(tindakanEntity.getTarifBpjs());

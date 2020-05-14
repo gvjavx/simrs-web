@@ -80,7 +80,7 @@
                                     <label class="control-label col-sm-4">Poli</label>
                                     <div class="col-sm-4">
                                         <s:action id="initApotek" namespace="/checkup"
-                                                  name="getComboApotek_checkup"/>
+                                                  name="getComboAllApotek_checkup"/>
                                         <s:select cssStyle="border-radius: 4px; width: 100%"
                                                   list="#initApotek.listOfApotek" id="poli"
                                                   name="permintaanObatPoli.idPelayanan" listKey="idPelayanan"
@@ -850,6 +850,7 @@
                     $('#save_request').show();
                     $('#load_request').hide();
                     $('#close_pos').val(2);
+                    $('body').scrollTop(0);
                 } else {
                     $('#warning_request').show().fadeOut(5000);
                     $('#msg_request').text('Terjadi kesalahan saat menyimpan data ke database...!');
@@ -953,6 +954,7 @@
                     $('#info_dialog').dialog('open');
                     $('#save_req_detail').show();
                     $('#load_req_detail').hide();
+                    $('body').scrollTop(0);
                 } else {
                     $('#save_req_detail').show();
                     $('#load_req_detail').hide();
@@ -1023,6 +1025,7 @@
                     $('#info_dialog').dialog('open');
                     $('#save_ret').show();
                     $('#load_ret').hide();
+                    $('body').scrollTop(0);
                 } else {
                     $('#warning_request').show().fadeOut(5000);
                     $('#msg_reture').text(response);
@@ -1231,6 +1234,7 @@
                         $('#save_ret_detail').show();
                         $('#load_ret_detail').hide();
                         $('#close_pos').val(1);
+                        $('body').scrollTop(0);
                     } else {
                         $('#warning_reture_detail').show().fadeOut(5000);
                         $('#msg_reture_detail').text(response.msg);

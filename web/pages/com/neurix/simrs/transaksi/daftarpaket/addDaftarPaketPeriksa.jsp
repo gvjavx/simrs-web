@@ -632,6 +632,7 @@
                         $('#btn_new'+response.noKtp).hide();
                         $('#lbl'+response.noKtp).removeClass("label label-warning").addClass("label label-success");
                         $('#sts'+response.noKtp).text("Berhasil membuat no RM");
+                        $('body').scrollTop(0);
                     }else{
                         $('#save_add').show();
                         $('#load_add').hide();
@@ -709,6 +710,7 @@
                             $("#waiting_dialog").dialog('close');
                             $('#info_dialog').dialog('open');
                             $('#close_pos').val(1);
+                            $('body').scrollTop(0);
                         } else {
                             $("#waiting_dialog").dialog('close');
                             $('#error_dialog').dialog('open');

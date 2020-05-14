@@ -43,6 +43,16 @@ public class Ruangan extends BaseModel {
     private String namaPasien;
     private String branchUser;
 
+    private String kodeCbg;
+
+    public String getKodeCbg() {
+        return kodeCbg;
+    }
+
+    public void setKodeCbg(String kodeCbg) {
+        this.kodeCbg = kodeCbg;
+    }
+
     public String getNamaPasien() {
         return namaPasien;
     }

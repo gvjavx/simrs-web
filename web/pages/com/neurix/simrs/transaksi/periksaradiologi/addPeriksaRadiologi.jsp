@@ -444,6 +444,7 @@
                         $('#save_ket').show();
                         $('#load_ket').hide();
                         $('#info_dialog').dialog('open');
+                        $('body').scrollTop(0);
                         getIdRadiologi();
                     } else {
                         $('#warning_par').show().fadeOut(5000);
@@ -521,6 +522,7 @@
                     $('#load_ket').hide();
                     $('#info_dialog').dialog('open');
                     $('#close_pos').val(1);
+                    $('body').scrollTop(0);
                 }else{
                     $('#warning_rad').show().fadeOut(5000);
                     $('#msg_rad').text(res.message);

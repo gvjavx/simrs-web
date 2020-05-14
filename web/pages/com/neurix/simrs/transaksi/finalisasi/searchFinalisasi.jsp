@@ -45,7 +45,6 @@
     <section class="content-header">
         <h1>
             Finalisasi E-Klaim
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -668,6 +667,7 @@
                     $('#modal-send-klaim').modal('hide');
                     $('#modal-detail-pasien').modal('hide');
                     $('#info_dialog').dialog('open');
+                    $('body').scrollTop(0);
                 }else{
                     $('#load_send').hide();
                     $('#save_send').show();

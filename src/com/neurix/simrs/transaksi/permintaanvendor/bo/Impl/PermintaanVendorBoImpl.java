@@ -18,6 +18,8 @@ import com.neurix.simrs.transaksi.permintaanvendor.bo.PermintaanVendorBo;
 import com.neurix.simrs.transaksi.permintaanvendor.dao.PermintaanVendorDao;
 import com.neurix.simrs.transaksi.permintaanvendor.dao.TempObatGejalaDao;
 import com.neurix.simrs.transaksi.permintaanvendor.model.*;
+import com.neurix.simrs.transaksi.riwayatbarang.dao.RiwayatBarangDao;
+import com.neurix.simrs.transaksi.riwayatbarang.model.ItSimrsRiwayatBarangMasukEntity;
 import com.neurix.simrs.transaksi.transaksiobat.dao.ApprovalTransaksiObatDao;
 import com.neurix.simrs.transaksi.transaksiobat.dao.TransaksiObatDetailBatchDao;
 import com.neurix.simrs.transaksi.transaksiobat.dao.TransaksiObatDetailDao;
@@ -55,7 +57,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
     private TransaksiObatDetailBatchDao transaksiObatDetailBatchDao;
     private VendorDao vendorDao;
     private ObatGejalaDao obatGejalaDao;
-
+    private RiwayatBarangDao riwayatBarangDao;
 
     @Override
     public List<PermintaanVendor> getByCriteria(PermintaanVendor bean) throws GeneralBOException {
@@ -967,7 +969,61 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         }
 
         updateAllNewAverageHargaByObatId(bean.getIdObat(), newObatEntity.getAverageHargaBox(), newObatEntity.getAverageHargaLembar(), newObatEntity.getAverageHargaBiji());
+        saveToRiwayatBarangMasuk(obatEntity, "");
+
         logger.info("[PermintaanVendorBoImpl.updateAddStockGudang] END <<<");
+    }
+
+    private void saveToRiwayatBarangMasuk(ImSimrsObatEntity obatEntity, String idVendor) throws GeneralBOException{
+        logger.info("[PermintaanVendorBoImpl.saveToRiwayatBarangMasuk] START >>>");
+
+        if (obatEntity != null){
+
+            BigInteger cons = obatEntity.getBijiPerLembar().multiply(obatEntity.getLembarPerBox());
+            BigInteger boxToBiji = obatEntity.getQtyBox().multiply(cons);
+            BigInteger lembarToBiji = obatEntity.getQtyLembar().multiply(obatEntity.getBijiPerLembar());
+            BigInteger qty = obatEntity.getQtyBiji().add(lembarToBiji).add(boxToBiji);
+
+            BigInteger qtyStock = new BigInteger(String.valueOf(0));
+            Obat stockObat = obatDao.getSumStockObatGudangById(obatEntity.getIdObat(), "");
+            if (stockObat != null){
+                BigInteger stockBox = stockObat.getQtyBox().multiply(cons);
+                BigInteger stockLembar = stockObat.getQtyLembar().multiply(obatEntity.getBijiPerLembar());
+                BigInteger stockBiji = stockObat.getQtyBiji().add(stockBox).add(stockLembar);
+                qtyStock = stockBiji;
+            }
+
+            java.util.Date now = new java.util.Date();
+            SimpleDateFormat f = new SimpleDateFormat("yyyyMMdd");
+
+            String seq = riwayatBarangDao.getNextSeq();
+            String idBarangMasuk = "RB"+ obatEntity.getBranchId() + f.format(now) + seq;
+
+            ItSimrsRiwayatBarangMasukEntity barangMasukEntity = new ItSimrsRiwayatBarangMasukEntity();
+            barangMasukEntity.setIdBarangMasuk(idBarangMasuk);
+            barangMasukEntity.setIdBarang(obatEntity.getIdBarang());
+            barangMasukEntity.setIdVendor(idVendor);
+            barangMasukEntity.setBranchId(obatEntity.getBranchId());
+            barangMasukEntity.setHargaTerakhir(obatEntity.getHargaTerakhir().divide(new BigDecimal(cons) ,2, RoundingMode.HALF_UP));
+            barangMasukEntity.setQty(qty);
+            barangMasukEntity.setAverageHarga(obatEntity.getAverageHargaBiji());
+            barangMasukEntity.setFlag(obatEntity.getFlag());
+            barangMasukEntity.setAction(obatEntity.getAction());
+            barangMasukEntity.setCreatedDate(obatEntity.getCreatedDate());
+            barangMasukEntity.setLastUpdate(obatEntity.getLastUpdate());
+            barangMasukEntity.setCreatedWho(obatEntity.getCreatedWho());
+            barangMasukEntity.setLastUpdateWho(obatEntity.getLastUpdateWho());
+            barangMasukEntity.setStock(qtyStock.subtract(qty));
+
+            try {
+                riwayatBarangDao.addAndSave(barangMasukEntity);
+            } catch (HibernateException e){
+                logger.error("[PermintaanVendorBoImpl.saveToRiwayatBarangMasuk] ERROR.", e);
+                throw new GeneralBOException("[PermintaanVendorBoImpl.saveToRiwayatBarangMasuk] ERROR." + e.getMessage());
+            }
+        }
+
+        logger.info("[PermintaanVendorBoImpl.saveToRiwayatBarangMasuk] END <<<");
     }
 
     private void updateAllNewAverageHargaByObatId(String idObat, BigDecimal avgBox, BigDecimal avgLembar, BigDecimal avgBiji) throws GeneralBOException {
@@ -1659,5 +1715,9 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 
     public void setObatGejalaDao(ObatGejalaDao obatGejalaDao) {
         this.obatGejalaDao = obatGejalaDao;
+    }
+
+    public void setRiwayatBarangDao(RiwayatBarangDao riwayatBarangDao) {
+        this.riwayatBarangDao = riwayatBarangDao;
     }
 }
