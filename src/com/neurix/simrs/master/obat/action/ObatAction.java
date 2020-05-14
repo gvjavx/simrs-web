@@ -707,7 +707,11 @@ public class ObatAction extends BaseMasterAction {
     public String initPrintReportRiwayat(){
         logger.info("[ObatAction.initPrintReportRiwayat] START >>>");
 
+        String formatDate = new SimpleDateFormat("yyyy-MM-dd").format(new Timestamp(System.currentTimeMillis()));
+
         Obat obat = new Obat();
+        obat.setStTglFrom(formatDate);
+        obat.setStTglTo(formatDate);
         setObat(obat);
 
         logger.info("[ObatAction.initPrintReportRiwayat] END <<<");
@@ -754,7 +758,7 @@ public class ObatAction extends BaseMasterAction {
         }
 
         logger.info("[ObatAction.initPrintReportRiwayat] END <<<");
-        return "print";
+        return "print_riwayat";
 
     }
 

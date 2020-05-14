@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printReportRiwayatObatMasuk" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b1f1d46d-b0ce-493a-8119-1250c2de0d06">
+	<property name="ireport.zoom" value="1.3310000000000006"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="reportParams.logo" class="java.lang.String"/>
+	<parameter name="reportParams.area" class="java.lang.String"/>
+	<parameter name="reportParams.unit" class="java.lang.String"/>
+	<parameter name="reportParams.tglForm" class="java.lang.String"/>
+	<parameter name="reportParams.tglTo" class="java.lang.String"/>
+	<parameter name="reportParams.printDate" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT rw.created_date, ob.nama_obat, rw.stock as stock_sebelum, rw.qty,
+rw.stock + rw.qty AS stock_total, rw.harga_terakhir, rw.average_harga FROM it_simrs_riwayat_barang_masuk rw
+INNER JOIN im_simrs_obat ob ON rw.id_barang = ob.id_barang
+WHERE rw.created_date::date >= to_date($P{reportParams.tglForm}, 'dd-MM-yyyy')
+AND rw.created_date::date <= to_date($P{reportParams.tglTo}, 'dd-MM-yyyy')]]>
+	</queryString>
+	<field name="created_date" class="java.sql.Timestamp"/>
+	<field name="nama_obat" class="java.lang.String"/>
+	<field name="stock_sebelum" class="java.lang.Long"/>
+	<field name="qty" class="java.lang.Long"/>
+	<field name="stock_total" class="java.lang.Long"/>
+	<field name="harga_terakhir" class="java.math.BigDecimal"/>
+	<field name="average_harga" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="91" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="64" width="173" height="20" uuid="05994a7a-2190-4070-b521-1c5c1f98e2a9"/>
+				<box leftPadding="0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.unit} == null ? "" : $P{reportParams.unit}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="44" width="173" height="20" uuid="eea67a7c-2985-4321-86a2-8f97edc1dfd5"/>
+				<box leftPadding="0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.area} == null ? "" : $P{reportParams.area}]]></textFieldExpression>
+			</textField>
+			<image onErrorType="Blank">
+				<reportElement x="0" y="0" width="94" height="39" uuid="8ac7c141-71c7-42b1-89af-2c0b0ab37869"/>
+				<imageExpression><![CDATA[$P{reportParams.logo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="190" y="19" width="172" height="20" uuid="e3af36e9-e291-40da-ab09-c31164c4fffb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Report Riwayat Obat Masuk]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="36" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="77" height="35" uuid="c032f618-866c-45b9-83c3-8c9919b6900a"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Tanggal Masuk]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="77" y="0" width="100" height="35" uuid="6cc52afa-8cab-45d6-b9cb-8290eb69ea7a"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Nama Barang]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="177" y="0" width="75" height="35" uuid="9660d5c9-f1ca-4f45-875e-8881bba4796b"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Stock Sebelum Barang Masuk (Bijian)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="252" y="0" width="74" height="35" uuid="49a63b56-8bdf-4ecc-be70-7df81fa96394"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Qty Barang Masuk (Bijian)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="326" y="0" width="72" height="35" uuid="2177a10b-7bee-4ba1-aa92-f165fde0d322"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Stock Sesudah Barangg Masuk (Bijian)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="397" y="0" width="72" height="35" uuid="21491c9c-0146-41ce-8005-1db61b66053c"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Harga Barang Masuk (Bijian)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="469" y="0" width="86" height="35" uuid="3be9b23a-5298-4ffc-bf52-a48e20138204"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Harga Rata - Rata (Bijian)]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="35" width="555" height="1" uuid="ab1b9c48-6ce6-4ca5-ba8b-5711d0a4d0d0"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="555" height="1" uuid="e844cc8f-2904-4bce-b8d5-424c4a0b5b54"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="77" height="20" uuid="1a97eaf9-f660-4a31-929a-1c0bb3b30bbf"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{created_date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="177" y="0" width="75" height="20" uuid="2cd17a26-85ab-487d-8d3b-fb96696f9174"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock_sebelum}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="326" y="0" width="71" height="20" uuid="c0f8346f-31e5-4d82-b9b1-f1ad69d0994f"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock_total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="397" y="0" width="72" height="20" uuid="30bb1eeb-f577-435d-bd97-d4653d849bb0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{harga_terakhir}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="469" y="0" width="86" height="20" uuid="697867db-1aa5-46cb-bc8a-fb70ad232ef3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{average_harga}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="77" y="0" width="100" height="20" uuid="857eb5de-2c8c-414b-b999-698109d80a6c"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nama_obat}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="251" y="0" width="75" height="20" uuid="9644f1d2-d4ff-4103-b948-fec7433b05bf"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{qty}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
