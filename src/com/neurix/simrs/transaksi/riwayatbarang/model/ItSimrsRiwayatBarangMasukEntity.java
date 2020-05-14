@@ -23,6 +23,7 @@ public class ItSimrsRiwayatBarangMasukEntity implements Serializable {
     private String action;
     private String branchId;
     private String idVendor;
+    private BigInteger stock;
 
     public String getIdBarangMasuk() {
         return idBarangMasuk;
@@ -126,5 +127,13 @@ public class ItSimrsRiwayatBarangMasukEntity implements Serializable {
 
     public void setIdVendor(String idVendor) {
         this.idVendor = idVendor;
+    }
+
+    public BigInteger getStock() {
+        return stock;
+    }
+
+    public void setStock(BigInteger stock) {
+        this.stock = stock;
     }
 }

@@ -1196,6 +1196,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                         detailCheckupEntity.setTransDate(bean.getTransDate());
                         detailCheckupEntity.setInvoiceTrans(bean.getInvoice());
                     } else {
+                        detailCheckupEntity.setInvoice(bean.getInvoice());
                         detailCheckupEntity.setNoJurnal(bean.getNoJurnal());
                     }
 
