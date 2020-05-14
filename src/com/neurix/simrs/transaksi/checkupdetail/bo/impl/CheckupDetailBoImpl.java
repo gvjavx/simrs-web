@@ -213,6 +213,58 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         return detailCheckup;
     }
 
+    public boolean editVideoRm (String idDetailCheckup, String path) {
+        logger.info("[CheckupDetailBoImpl.editVideoRm] Start <<<<<<<<");
+
+        ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = null;
+        boolean isSuccess = false;
+
+        try {
+            detailCheckupEntity = checkupDetailDao.getById("idDetailCheckup", idDetailCheckup, "Y");
+        } catch (GeneralBOException e) {
+            logger.info("[CheckupDetailBoImpl.editVideoRm] Error when editVideoRm ", e);
+        }
+
+        if (detailCheckupEntity != null) {
+            detailCheckupEntity.setVideoRm(path);
+            try {
+                checkupDetailDao.updateAndSave(detailCheckupEntity);
+                isSuccess = true;
+            } catch (GeneralBOException e) {
+                logger.info("[CheckupDetailBoImpl.editVideoRm] Error when editVideoRm ", e);
+            }
+        }
+
+        logger.info("[CheckupDetailBoImpl.editVideoRm] End <<<<<<<<");
+        return isSuccess;
+    }
+
+    public boolean editFlagCall (String idDetailCheckup, String flagCall) {
+        logger.info("[CheckupDetailBoImpl.editVideoRm] Start <<<<<<<<");
+
+        ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = null;
+        boolean isSuccess = false;
+
+        try {
+            detailCheckupEntity = checkupDetailDao.getById("idDetailCheckup", idDetailCheckup, "Y");
+        } catch (GeneralBOException e) {
+            logger.info("[CheckupDetailBoImpl.editVideoRm] Error when editVideoRm ", e);
+        }
+
+        if (detailCheckupEntity != null) {
+            detailCheckupEntity.setFlagCall(flagCall);
+            try {
+                checkupDetailDao.updateAndSave(detailCheckupEntity);
+                isSuccess = true;
+            } catch (GeneralBOException e) {
+                logger.info("[CheckupDetailBoImpl.editVideoRm] Error when editVideoRm ", e);
+            }
+        }
+
+        logger.info("[CheckupDetailBoImpl.editVideoRm] End <<<<<<<<");
+        return isSuccess;
+    }
+
     @Override
     public HeaderDetailCheckup getTotalBiayaTindakanBpjs(String idDetailCheckup) throws GeneralBOException {
         HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();

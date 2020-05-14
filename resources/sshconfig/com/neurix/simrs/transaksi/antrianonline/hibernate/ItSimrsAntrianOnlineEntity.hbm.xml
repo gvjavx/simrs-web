@@ -15,7 +15,7 @@
             <column name="no_checkup_online" sql-type="varchar" length="30" not-null="true"/>
         </property>
         <property name="idPelayanan">
-            <column name="id_pelayanan" sql-type="varchar" length="10" not-null="true"/>
+            <column name="id_pelayanan" sql-type="varchar" length="20" not-null="true"/>
         </property>
         <property name="idDokter">
             <column name="id_dokter" sql-type="varchar" length="30" not-null="true"/>

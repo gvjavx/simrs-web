@@ -11,6 +11,7 @@ import org.apache.struts2.ServletActionContext;
  * To change this template use File | Settings | File Templates.
  */
 public class CommonConstant {
+
     public final static String PREV_TAG_BTN = "<img src=\"";
     public final static String EDIT_BTN = "/pages/images/icon_edit.ico\" border=\"none\" cursor:hand;\" >";
     public final static String VIEW_BTN = "/pages/images/icon_lup.ico\" border=\"none\" cursor:hand;\" >";
@@ -42,15 +43,18 @@ public class CommonConstant {
     public final static String RESOURCE_PATH_AREA_OPERASI = "/upload/penanda_area_operasi/";
     public final static String RESOURCE_PATH_TTD_RM = "/upload/ttd_rm/";
     public final static String RESOURCE_PATH_DOC_RM = "/upload/cetakan_rm/";
+    public final static String RESOURCE_PATH_VIDEO_RM = "/upload/video_rm/";
 
 
     public final static String RESOURCE_PATH_USER_UPLOAD = "/pages/upload/image/profile/";
     public final static String RESOURCE_PATH_USER_UPLOAD_IJAZAH = CommonUtil.getPropertyParams("resource.dir")+"mnt/ijazah/";
 
     //sodiq, 18 Nov 2019, Upload KTP pasien
-//    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = CommonUtil.getPropertyParams("upload.external.dir");
+    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = CommonUtil.getPropertyParams("upload.external.dir");
+
+
     public final static String RESOURCE_PATH_IMG_ASSET = CommonUtil.getPropertyParams("resource.dir");
-    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = CommonUtil.getPropertyParams("upload.folder");
+//    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = CommonUtil.getPropertyParams("upload.folder");
 
 //    public final static String RESOURCE_PATH_IMG_ASSET = "C:\\apache-tomcat-8.5.40\\webapps";
 //    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = "C:\\Users\\pc001\\Pictures";
@@ -139,6 +143,12 @@ public class CommonConstant {
 
     public final static String URL_IMG = "/images/";
     public final static String URL_IMG_RM = "rekam_medic";
+
+    public static final String AGORA_LIB = "/opt/tomcat/webapps/simrs/WEB-INF/lib";
+
+    public final static String AGORA_DIR = "/home/gondok/workspace/Agora_Recording_SDK_for_Linux_v3.0.1/Agora_Recording_SDK_for_Linux_FULL/bin";
+    public static final String AOGRA_REC_DIR = "/home/gondok/workspace/record ";
+    public static final String APP_ID = "5d338ec051e042828420e2da2c90247e";
 
 
 }

@@ -63,6 +63,33 @@ public class PurchaseOrderController implements ModelDriven<Object> {
     private String branchId;
     private String action;
 
+    private String diskon;
+    private String bruto;
+    private String netto;
+
+    public String getDiskon() {
+        return diskon;
+    }
+
+    public void setDiskon(String diskon) {
+        this.diskon = diskon;
+    }
+
+    public String getBruto() {
+        return bruto;
+    }
+
+    public void setBruto(String bruto) {
+        this.bruto = bruto;
+    }
+
+    public String getNetto() {
+        return netto;
+    }
+
+    public void setNetto(String netto) {
+        this.netto = netto;
+    }
 
     public String getUserId() {
         return userId;
@@ -464,6 +491,9 @@ public class PurchaseOrderController implements ModelDriven<Object> {
 
                     transaksiObatDetail.setExpDate(CommonUtil.convertStringToDate(expDate));
                     transaksiObatDetail.setQtyApprove(new BigInteger(qtyApprove));
+                    transaksiObatDetail.setBruto(new BigDecimal(bruto));
+                    transaksiObatDetail.setNetto(new BigDecimal(netto));
+                    transaksiObatDetail.setDiskon(new BigDecimal(diskon));
 
                     try {
                         permintaanVendorBoProxy.saveUpdateTransObatDetail(transaksiObatDetail);

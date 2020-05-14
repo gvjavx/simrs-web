@@ -260,6 +260,7 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
             dokter.setLat(entity.getLat());
             dokter.setLon(entity.getLon());
             dokter.setKodeDpjp(entity.getKodeDpjp());
+            dokter.setFlagCall(entity.getFlagCall());
             results.add(dokter);
         }
 
@@ -367,6 +368,32 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
         }
 
         logger.info("[DokterBoImpl.editKuota] End <<<<<<<<");
+        return isSuccess;
+    }
+
+    public boolean editFlagCall(String idDokter, String flagCall) {
+        logger.info("[DokterBoImpl.editFlagCall] Start <<<<<<<<");
+
+        ImSimrsDokterEntity dokter = null;
+        boolean isSuccess = false;
+
+        try {
+            dokter = dokterDao.getById("idDokter", idDokter, "Y");
+        } catch (GeneralBOException e) {
+            logger.info("[DokterBoImpl.editKuota] Error when editKuota ", e);
+        }
+
+        if (dokter != null) {
+            dokter.setFlagCall(flagCall);
+            try {
+                dokterDao.updateAndSave(dokter);
+                isSuccess = true;
+            } catch (GeneralBOException e) {
+                logger.info("[DokterBoImpl.editKuota] Error when editKuota ", e);
+            }
+        }
+
+        logger.info("[DokterBoImpl.editFlagCall] End <<<<<<<<");
         return isSuccess;
     }
 

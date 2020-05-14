@@ -716,6 +716,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "b.keterangan_cekup_ulang, \n" +
                     "b.cover_biaya, \n" +
                     "k.is_laka, \n" +
+                    "b.flag_call, \n" +
                     "a.created_date \n" +
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
@@ -788,7 +789,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     checkup.setKeterangan(obj[41] == null ? "" : obj[41].toString());
                     checkup.setCoverBiaya(obj[42] == null ? new BigDecimal(String.valueOf("0")) : new BigDecimal(obj[42].toString()));
                     checkup.setIsLaka(obj[43] == null ? "" : obj[43].toString());
-                    checkup.setCreatedDate(obj[44] == null ? null : (Timestamp) obj[44]);
+                    checkup.setFlagCall(obj[44] == null ? "" : obj[44].toString());
+                    checkup.setCreatedDate(obj[45] == null ? null : (Timestamp) obj[44]);
                 }
             }
         }

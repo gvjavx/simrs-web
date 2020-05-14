@@ -90,7 +90,7 @@ public class PermintaanResepAction extends BaseMasterAction{
                 byte[] decodedBytes = decoder.decodeBuffer(ttdDokter);
                 logger.info("Decoded upload data : " + decodedBytes.length);
                 String fileName = idDokter+"-"+idDetailCheckup+"-"+dateFormater("MM")+dateFormater("yy")+".png";
-                String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_TTD_DOKTER+fileName;
+                String uploadFile = "/mnt/images"+CommonConstant.RESOURCE_PATH_TTD_DOKTER+fileName;
                 logger.info("File save path : " + uploadFile);
                 BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
 

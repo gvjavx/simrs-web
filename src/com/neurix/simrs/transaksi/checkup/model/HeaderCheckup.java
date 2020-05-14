@@ -120,6 +120,15 @@ public class HeaderCheckup {
     private Date tglCheckup;
     private String keterangan;
     private String isLaka;
+    private String flagCall;
+
+    public String getFlagCall() {
+        return flagCall;
+    }
+
+    public void setFlagCall(String flagCall) {
+        this.flagCall = flagCall;
+    }
 
     private String belumBayarUangMuka;
     private Integer noAntrian;
