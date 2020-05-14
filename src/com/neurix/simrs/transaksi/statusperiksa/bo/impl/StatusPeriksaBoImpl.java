@@ -250,6 +250,7 @@ public class StatusPeriksaBoImpl implements StatusPeriksaBo {
                                                 tindakanRawatEntity.setLastUpdateWho(bean.getCreatedWho());
                                                 tindakanRawatEntity.setFlag("Y");
                                                 tindakanRawatEntity.setAction("U");
+                                                tindakanRawatEntity.setApproveFlag("Y");
 
                                                 if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
                                                     tindakanRawatEntity.setTarif(tindakanEntity.getTarifBpjs());

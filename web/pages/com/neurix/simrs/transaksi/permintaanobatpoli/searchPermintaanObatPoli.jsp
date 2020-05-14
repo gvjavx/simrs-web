@@ -59,7 +59,6 @@
     <section class="content-header">
         <h1>
             Permintaan Obat Poli
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -863,6 +862,7 @@
                         $('#info_dialog').dialog('open');
                         $('#save_request').show();
                         $('#load_request').hide();
+                        $('body').scrollTop(0);
                     } else {
                         $('#warning_request').show().fadeOut(5000);
                         $('#save_request').show();
@@ -937,6 +937,7 @@
                         $('#info_dialog').dialog('open');
                         $('#save_req_detail').show();
                         $('#load_req_detail').hide();
+                        $('body').scrollTop(0);
                     } else {
                         $('#warning_reture').show().fadeOut(5000);
                         $('#save_reture').show();
@@ -1060,6 +1061,7 @@
                         $('#info_dialog').dialog('open');
                         $('#save_req_detail').show();
                         $('#load_ret_detail').hide();
+                        $('body').scrollTop(0);
                     } else {
                         $('#warning_reture_detail').show().fadeOut(5000);
                         $('#msg_reture_detail').text('Terjadi kesalahan saat menyimpan data...!');

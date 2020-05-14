@@ -56,6 +56,7 @@ public class Obat extends BaseModel {
     private String isMinStok;
 
     private String flagBpjs;
+    private String flagKronis;
 
     private String idPermintaanVendor;
     private String idApprovalObat;
@@ -70,6 +71,14 @@ public class Obat extends BaseModel {
     private BigDecimal netto;
 
     private String keterangan;
+
+    public String getFlagKronis() {
+        return flagKronis;
+    }
+
+    public void setFlagKronis(String flagKronis) {
+        this.flagKronis = flagKronis;
+    }
 
     public String getKeterangan() {
         return keterangan;

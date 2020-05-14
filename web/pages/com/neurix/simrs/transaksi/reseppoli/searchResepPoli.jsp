@@ -14,6 +14,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/ObatPoliAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/ObatAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/TransaksiObatAction.js"/>'></script>
+
     <script type='text/javascript'>
 
         $(document).ready(function () {
@@ -59,7 +60,6 @@
     <section class="content-header">
         <h1>
             Resep Poli
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -122,9 +122,9 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Status</label>
                                     <div class="col-sm-4">
-                                        <s:select list="#{'4':'Selesai'}" cssStyle="margin-top: 7px"
+                                        <s:select list="#{'1':'Proses', '3':'Selesai'}" cssStyle="margin-top: 7px"
                                                   id="status" name="permintaanResep.status"
-                                                  headerKey="3" headerValue="Proses"
+                                                  headerKey="0" headerValue="Antrian"
                                                   cssClass="form-control select2"/>
                                     </div>
                                 </div>
@@ -233,13 +233,7 @@
     </section>
     <!-- /.content -->
 </div>
-<script src="https://code.responsivevoice.org/responsivevoice.js"></script>
 <script type='text/javascript'>
-
-    function tesSuara(){
-       var text =  $('#namaOrang').val();
-        responsiveVoice.speak(text,"Indonesian Female");
-    }
 
     function saveAntrian(){
         var idResep = $('#add_resep').val();
@@ -262,7 +256,6 @@
                     }
                 })
             },1500)
-//            dwr.engine.setAsync(true);
         }else{
 
         }

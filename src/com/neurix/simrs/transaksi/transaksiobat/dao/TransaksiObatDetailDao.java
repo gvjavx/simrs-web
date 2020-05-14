@@ -164,7 +164,7 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
         String idDetil       = "%";
         String nama          = "%";
         String status        = "%";
-        String flag          = "Y";
+        String flag          = "%";
 
         if (bean.getIsUmum() != null && !"".equalsIgnoreCase(bean.getIsUmum())){
             isUmum = bean.getIsUmum();
@@ -185,17 +185,13 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
             nama = "%"+bean.getNamaPasien()+"%";
         }
         if (bean.getStatus() != null && !"".equalsIgnoreCase(bean.getStatus())){
-            if("4".equalsIgnoreCase(bean.getStatus())){
-                flag = "N";
-            }else{
-                status = bean.getStatus();
-            }
+            status = bean.getStatus();
         }
 //        if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())){
 //            flag = bean.getFlag();
 //        }
 
-        String SQL = "SELECT a.id_permintaan_resep, a.id_detail_checkup, c.nama, d.keterangan, a.id_approval_obat, b.id_jenis_periksa_pasien FROM mt_simrs_permintaan_resep a\n" +
+        String SQL = "SELECT a.id_permintaan_resep, a.id_detail_checkup, c.nama, d.keterangan, a.id_approval_obat, b.id_jenis_periksa_pasien, a.flag FROM mt_simrs_permintaan_resep a\n" +
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.id_detail_checkup = b.id_detail_checkup\n" +
                 "INNER JOIN it_simrs_header_checkup c ON b.no_checkup = c.no_checkup\n" +
                 "INNER JOIN im_simrs_status_pasien d ON a.status = d.id_status_pasien\n" +
@@ -223,11 +219,11 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
         List<PermintaanResep> permintaanResepList = new ArrayList<>();
 
         String statusName = "";
-        if ("1".equalsIgnoreCase(status)){
+        if ("0".equalsIgnoreCase(status)){
             statusName = "Antrian";
-        } else if ("3".equalsIgnoreCase(status)){
+        } else if ("1".equalsIgnoreCase(status)){
             statusName = "Proses";
-        } else if ("N".equalsIgnoreCase(flag)){
+        } else if ("3".equalsIgnoreCase(status)){
             statusName = "Selesai";
         }
 
@@ -242,9 +238,9 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                 permintaanResep.setNamaPasien(obj[2].toString());
                 permintaanResep.setIdApprovalObat(obj[4].toString());
                 permintaanResep.setStatus(statusName);
-                permintaanResep.setFlag(flag);
                 permintaanResep.setIdApprovalObat(obj[4].toString());
                 permintaanResep.setIdJenisPeriksa(obj[5].toString());
+                permintaanResep.setFlag(obj[6].toString());
                 permintaanResepList.add(permintaanResep);
             }
         }
@@ -581,6 +577,44 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
         }
 
         return transaksiObatDetailList;
+    }
+
+    public List<PermintaanResep> getListNotifResep(String idPelayanan, String branchId){
+        List<PermintaanResep> list = new ArrayList<>();
+        if(idPelayanan != null && !"".equalsIgnoreCase(idPelayanan)
+                && branchId != null && !"".equalsIgnoreCase(branchId)){
+            String SQl = "SELECT \n" +
+                    "a.id_permintaan_resep,\n" +
+                    "a.id_pasien,\n" +
+                    "a.tgl_antrian,\n" +
+                    "b.nama,\n" +
+                    "a.id_detail_checkup\n" +
+                    "FROM mt_simrs_permintaan_resep a \n" +
+                    "INNER JOIN im_simrs_pasien b ON a.id_pasien = b.id_pasien\n" +
+                    "WHERE a.tujuan_pelayanan = :idPel\n" +
+                    "AND a.branch_id = :branch\n" +
+                    "AND a.status = '0'\n" +
+                    "AND a.flag = 'Y'\n" +
+                    "AND a.is_read IS NULL";
+
+            List<Object[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQl)
+                    .setParameter("idPel", idPelayanan)
+                    .setParameter("branch", branchId)
+                    .list();
+            if(result.size() > 0){
+                for (Object[] obj: result){
+                    PermintaanResep permintaanResep = new PermintaanResep();
+                    permintaanResep.setIdPermintaanResep(obj[0] == null ? "" : obj[0].toString());
+                    permintaanResep.setIdPasien(obj[1] == null ? "" : obj[1].toString());
+                    permintaanResep.setTglAntrian(obj[2] == null ? null :(Timestamp)obj[2]);
+                    permintaanResep.setNamaPasien(obj[3] == null ? ""  : obj[3].toString());
+                    permintaanResep.setIdDetailCheckup(obj[4] == null ? ""  : obj[4].toString());
+                    list.add(permintaanResep);
+                }
+            }
+        }
+        return list;
     }
 
     public String getNextId(){

@@ -131,8 +131,8 @@
                                                         <%--<s:select list="#{'igd':'IGD', 'rawat_jalan' : 'Rawat Jalan', 'apotek' : 'Apotek',--%>
                                                                 <%--'rawat_inap' : 'Rawat Inap', 'radiologi' : 'Radiologi', 'lab' : 'LAB'}" id="tipePelayanan" name="pelayanan.tipePelayanan"--%>
                                                                   <%--listKey="positionId" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
-                                                        <s:select list="#{'igd':'IGD', 'rawat_jalan' : 'Rawat Jalan', 'apotek' : 'Apotek',
-                                                                'rawat_inap' : 'Rawat Inap', 'radiologi' : 'Radiologi', 'lab' : 'LAB'}"
+                                                        <s:select list="#{'igd':'IGD', 'rawat_jalan' : 'Rawat Jalan', 'apotek' : 'Instalasi Farmasi RJ', 'apotek_ri' : 'Instalasi Farmasi RI',
+                                                                'rawat_inap' : 'Rawat Inap', 'radiologi' : 'Radiologi', 'lab' : 'Laboratorium', 'gizi':'Instalasi Gizi'}"
                                                                   id="tipePelayanan" name="pelayanan.tipePelayanan"
                                                                   headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                                     </table>

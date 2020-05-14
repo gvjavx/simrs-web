@@ -31,7 +31,6 @@
     <section class="content-header">
         <h1>
             Periksa Radiologi Pasien
-            <small>e-HEALTH</small>
         </h1>
     </section>
 

@@ -193,7 +193,7 @@
                                     <s:hidden id="surat_rujukan" name="headerDetailCheckup.suratRujukan"/>
                                     <s:hidden id="is_laka" name="headerDetailCheckup.isLaka"/>
 
-                                    <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "bpjs"'>
+                                    <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "bpjs" || headerDetailCheckup.idJenisPeriksaPasien == "ptpn"'>
                                         <tr>
                                             <td width="45%"><b>No SEP</b></td>
                                             <td style="vertical-align: middle;">
@@ -1548,15 +1548,15 @@
                         <label class="col-md-3" style="margin-top: 7px">Waktu Minum</label>
                         <div class="col-md-7">
                             <div class="form-check" style="margin-top: 7px;">
-                                <input type="checkbox" name="cek_waktu" id="pagi" value="Pagi">
+                                <input type="checkbox" name="cek_waktu" id="pagi" value="Pagi" onclick="var warn =$('#war_rep_cek_waktu').is(':visible'); if (warn){$('#cor_rep_cek_waktu').show().fadeOut(3000);$('#war_rep_cek_waktu').hide()}">
                                 <label for="pagi"></label> Pagi
                             </div>
                             <div class="form-check" style="margin-top: 7px; margin-left: 10px">
-                                <input type="checkbox" name="cek_waktu" id="siang" value="Siang">
+                                <input type="checkbox" name="cek_waktu" id="siang" value="Siang" onclick="var warn =$('#war_rep_cek_waktu').is(':visible'); if (warn){$('#cor_rep_cek_waktu').show().fadeOut(3000);$('#war_rep_cek_waktu').hide()}" >
                                 <label for="siang"></label> Siang
                             </div>
                             <div class="form-check" style="margin-top: 7px; margin-left: 10px">
-                                <input type="checkbox" name="cek_waktu" id="malam" value="Malam">
+                                <input type="checkbox" name="cek_waktu" id="malam" value="Malam" onclick="var warn =$('#war_rep_cek_waktu').is(':visible'); if (warn){$('#cor_rep_cek_waktu').show().fadeOut(3000);$('#war_rep_cek_waktu').hide()}">
                                 <label for="malam"></label> Malam
                             </div>
                         </div>
@@ -1670,6 +1670,7 @@
                         <td>Racik</td>
                         <td>Kronis</td>
                         <td>Pengambilan Berikutnya</td>
+                        <td>Harga</td>
                         <td align="center" width="5%">Action</td>
                         </thead>
                         <tbody id="body_detail">

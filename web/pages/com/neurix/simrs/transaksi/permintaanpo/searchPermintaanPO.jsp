@@ -42,7 +42,6 @@
     <section class="content-header">
         <h1>
             Purchase Order (PO)
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -460,6 +459,7 @@
                     $('#info_dialog').dialog('open');
                     $('#save_detail').show();
                     $('#load_detail').hide();
+                    $('body').scrollTop(0);
                 } else {
                     $('#save_detail').show();
                     $('#load_detail').hide();

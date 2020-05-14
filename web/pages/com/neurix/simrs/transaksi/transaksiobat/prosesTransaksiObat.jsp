@@ -41,7 +41,6 @@
     <section class="content-header">
         <h1>
             Transaksi Obat Apotek
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -1111,6 +1110,7 @@
                 $('#modal-approve').modal('hide');
                 $('#info_dialog').dialog('open');
                 $('#qtyAppove'+idObat).text(qtyApp);
+                $('body').scrollTop(0);
                 $('#status'+idObat).html('<img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">');
             } else {
                 $('#load_app').hide();
