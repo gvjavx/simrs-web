@@ -898,7 +898,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-plus"></i> Tambah Rincian
+                <h4 class="modal-title"><i class="fa fa-plus"></i> Investasi
                 </h4>
             </div>
             <div class="modal-body">
@@ -914,11 +914,12 @@
                     <tbody id="body-add-pengadaan">
 
                     </tbody>
+                    <input type="hidden" id="id-detail"/>
                 </table>
                 <div class="row">
                     <label class="control-label col-sm-2">Nama </label>
                     <div class="col-sm-4">
-                       <input type="text" class="form form-control" id="nama-head-pengadaan"/>
+                       <input type="text" class="form form-control" id="nama-head-pengadaan" readonly/>
                     </div>
                 </div>
                 <div class="row">
@@ -1086,6 +1087,9 @@
             // jika inputan divisi kosong makan muncul modal input pengadaan
             n = 0;
             strPengadaan = "";
+            $("#label-tipe-pengadaan").show();
+            $("#sel-tipe-pengadaan").show();
+            $("#id-detail").val("");
             $("#body-add-pengadaan").html("");
             $("#nama-head-pengadaan").val("Investasi");
             $("#modal-pengadaan").modal('show');
@@ -1134,13 +1138,37 @@
     }
 
     function edit(id) {
-        $("#modal-edit").modal('show');
         BudgetingAction.getBudgetinDetailById(id, function(response){
-            $("#edit-id").val(response.idBudgetingDetail);
-            $("#edit-divisi").val(response.divisiId);
-            $("#edit-divisi-name").val(response.divisiName);
-            $("#edit-qty").val(response.qty);
-            $("#edit-nilai").val(response.nilai);
+
+            if (response.divisiId == "INVS"){
+                strPengadaan = "";
+                n = 0;
+                BudgetingAction.getListPengadaan(id, function(list){
+                    if (list != null){
+                        $.each(list, function (i, item) {
+                            strPengadaan += '<tr>' +
+                                '<td><input type="hidden" id="id-add-'+i+'" value="'+item.idPengadaan+'"><input type="text" class="form form-control" id="nama-add-'+i+'" value="'+item.namPengadaan+'"/></td>' +
+                                '<td><input type="number" class="form form-control" id="qty-add-'+i+'" value="'+item.qty+'"/></td>' +
+                                '<td><input type="number" class="form form-control" id="nilai-add-'+i+'" value="'+item.nilai+'"/></td>' +
+                                '</tr>';
+                        });
+                        n = list.length;
+                        $("#id-detail").val(id);
+                        $("#label-tipe-pengadaan").hide();
+                        $("#sel-tipe-pengadaan").hide();
+                        $("#body-add-pengadaan").html(strPengadaan);
+                        $("#nama-head-pengadaan").val("Investasi");
+                        $("#modal-pengadaan").modal('show');
+                    }
+                }) ;
+            } else {
+                $("#modal-edit").modal('show');
+                $("#edit-id").val(response.idBudgetingDetail);
+                $("#edit-divisi").val(response.divisiId);
+                $("#edit-divisi-name").val(response.divisiName);
+                $("#edit-qty").val(response.qty);
+                $("#edit-nilai").val(response.nilai);
+            }
         });
 
     }
@@ -1170,7 +1198,7 @@
     var strPengadaan = "";
     function addInputUpload() {
         strPengadaan += '<tr>' +
-            '<td><input type="text" class="form form-control" id="nama-add-'+n+'"/></td>' +
+            '<td><input type="hidden" id="id-add-'+n+'"><input type="text" class="form form-control" id="nama-add-'+n+'"/></td>' +
             '<td><input type="number" class="form form-control" id="qty-add-'+n+'"/></td>' +
             '<td><input type="number" class="form form-control" id="nilai-add-'+n+'"/></td>' +
             '</tr>';
@@ -1180,8 +1208,9 @@
     
     function saveAddPengadaan() {
 
-        var namainvestasi = $("#nama-head-pengadaan").val();
-        var tipepengadaan = $("#sel-tipe-pengadaan").val();
+        var namainvestasi   = $("#nama-head-pengadaan").val();
+        var tipepengadaan   = $("#sel-tipe-pengadaan").val();
+        var iddetail        = $("#id-detail").val();
 
         var arrData = [];
         for (i = 0; i < n; i++){
@@ -1189,22 +1218,39 @@
             var qty = $("#qty-add-"+i).val();
             var nilai = $("#nilai-add-"+i).val();
 
-            arrData.push({ "name":name, "qty":qty, "nilai":nilai });
+            if (iddetail == "") {
+                arrData.push({ "name":name, "qty":qty, "nilai":nilai, "id":"" });
+            } else {
+
+                var id = $("#id-add-"+i).val();
+                arrData.push({ "name":name, "qty":qty, "nilai":nilai, "id":id });
+            }
         }
 
         var strJson = JSON.stringify(arrData);
 
-        BudgetingAction.checkBudgetingDivisi(tipepengadaan, "", rekeningid, function (response) {
-            if (response != null){
-                $("#alert-error-add-pengadaan").show().fadeOut(5000);
-                $("#error-msg-add-pengadaan").text(" Data Investasi Sudah Ada. Pada : "+tipepengadaan);
-            } else {
-                BudgetingAction.saveAddPengadaan(strJson, namainvestasi, rekeningid, tipepengadaan, function(response){
-                    refresh();
-                });
-                $("#modal-pengadaan").modal('hide');
-            }
-        });
+        if (iddetail != "") {
+            // jika id detail tidak kosong = save edit
+            BudgetingAction.saveEditPengadaan(strJson, namainvestasi, rekeningid, iddetail, function(response){
+                refresh();
+            });
+            $("#modal-pengadaan").modal('hide');
+        } else {
+            BudgetingAction.checkBudgetingDivisi(tipepengadaan, "", rekeningid, function (response) {
+                if (response != null){
+                    $("#alert-error-add-pengadaan").show().fadeOut(5000);
+                    $("#error-msg-add-pengadaan").text(" Data Investasi Sudah Ada. Pada : "+tipepengadaan);
+                } else {
+                    // jika id detail kosong = save add
+                    BudgetingAction.saveAddPengadaan(strJson, namainvestasi, rekeningid, tipepengadaan, function(response){
+                        refresh();
+                    });
+                    $("#modal-pengadaan").modal('hide');
+                }
+            });
+        }
+
+
     }
 
     function search() {

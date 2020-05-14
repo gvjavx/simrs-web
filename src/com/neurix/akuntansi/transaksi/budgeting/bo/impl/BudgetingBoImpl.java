@@ -565,7 +565,7 @@ public class BudgetingBoImpl implements BudgetingBo {
                                         }
                                     } else {
                                         pengadaanEntity = new ItAkunBudgetingPengadaanEntity();
-                                        pengadaanEntity.setIdPengadaan(generateBudgetingPengadaan());
+                                        pengadaanEntity.setIdPengadaan(budgetingPengadaan.getIdPengadaan());
                                         pengadaanEntity.setIdBudgetingDetail(budgetingDetailEntity.getIdBudgetingDetail());
                                         pengadaanEntity.setNoBudgetingDetail(budgetingDetailEntity.getNoBudgetingDetail());
                                         pengadaanEntity.setNamPengadaan(budgetingPengadaan.getNamPengadaan());
@@ -632,6 +632,8 @@ public class BudgetingBoImpl implements BudgetingBo {
                                     pengadaanEntity.setAction("U");
                                     pengadaanEntity.setLastUpdate(bean.getLastUpdate());
                                     pengadaanEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                                    pengadaanEntity.setCreatedDate(bean.getCreatedDate());
+                                    pengadaanEntity.setCreatedWho(bean.getCreatedWho());
 
                                     try {
                                         budgetingPengadaanDao.updateAndSave(pengadaanEntity);
@@ -983,6 +985,10 @@ public class BudgetingBoImpl implements BudgetingBo {
                     budgetingDetail.setDivisiName(position.getPositionName());
                 }
 
+                if ("INVS".equalsIgnoreCase(budgetingDetailEntity.getDivisiId())){
+                    budgetingDetail.setDivisiName("Investasi");
+                }
+
                 if (!"".equalsIgnoreCase(budgetingDetail.getIdBudgeting())){
                     ItAkunBudgetingEntity budgetingEntity = budgetingDao.getById("idBudgeting", budgetingDetail.getIdBudgeting());
                     if (budgetingEntity != null){
@@ -994,6 +1000,43 @@ public class BudgetingBoImpl implements BudgetingBo {
             }
         }
         return budgetingDetails;
+    }
+
+    @Override
+    public List<BudgetingPengadaan> getListBudgetingPengadaanNoDetail(String id) throws GeneralBOException {
+        logger.info("[BudgetingBoImpl.getListBudgetingPengadaanNoDetail] START >>>");
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_budgeting_detail", id);
+
+        List<BudgetingPengadaan> budgetingPengadaans = new ArrayList<>();
+        List<ItAkunBudgetingPengadaanEntity> budgetingPengadaanEntities = budgetingPengadaanDao.getByCriteria(hsCriteria);
+        if (budgetingPengadaanEntities.size() > 0) {
+
+            BudgetingPengadaan budgetingPengadaan;
+            for (ItAkunBudgetingPengadaanEntity pengadaanEntity : budgetingPengadaanEntities) {
+                budgetingPengadaan = new BudgetingPengadaan();
+                budgetingPengadaan.setIdPengadaan(pengadaanEntity.getIdPengadaan());
+                budgetingPengadaan.setNoBudgeting(pengadaanEntity.getNoBudgetingDetail());
+                budgetingPengadaan.setNamPengadaan(pengadaanEntity.getNamPengadaan());
+                budgetingPengadaan.setNilai(pengadaanEntity.getNilai());
+                budgetingPengadaan.setQty(pengadaanEntity.getQty());
+                budgetingPengadaan.setSubTotal(pengadaanEntity.getSubTotal());
+                budgetingPengadaan.setTipe(pengadaanEntity.getTipe());
+                budgetingPengadaan.setFlag(pengadaanEntity.getFlag());
+                budgetingPengadaan.setAction(pengadaanEntity.getAction());
+                budgetingPengadaan.setCreatedDate(pengadaanEntity.getCreatedDate());
+                budgetingPengadaan.setCreatedWho(pengadaanEntity.getCreatedWho());
+                budgetingPengadaan.setLastUpdate(pengadaanEntity.getLastUpdate());
+                budgetingPengadaan.setLastUpdateWho(pengadaanEntity.getLastUpdateWho());
+                budgetingPengadaan.setIdBudgetingDetail(pengadaanEntity.getIdBudgetingDetail());
+                budgetingPengadaans.add(budgetingPengadaan);
+            }
+
+        }
+
+        logger.info("[BudgetingBoImpl.getListBudgetingPengadaanNoDetail] END <<<");
+        return budgetingPengadaans;
     }
 
     @Override
