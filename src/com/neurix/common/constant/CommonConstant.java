@@ -43,6 +43,7 @@ public class CommonConstant {
     public final static String RESOURCE_PATH_AREA_OPERASI = "/upload/penanda_area_operasi/";
     public final static String RESOURCE_PATH_TTD_RM = "/upload/ttd_rm/";
     public final static String RESOURCE_PATH_DOC_RM = "/upload/cetakan_rm/";
+    public final static String RESOURCE_PATH_VIDEO_RM = "/upload/video_rm/";
 
 
     public final static String RESOURCE_PATH_USER_UPLOAD = "/pages/upload/image/profile/";

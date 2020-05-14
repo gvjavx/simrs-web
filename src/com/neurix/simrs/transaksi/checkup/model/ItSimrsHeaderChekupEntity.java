@@ -40,6 +40,16 @@ public class ItSimrsHeaderChekupEntity implements Serializable {
     private String berat;
     private Timestamp tglKeluar;
 
+    private String flagCall;
+
+    public String getFlagCall() {
+        return flagCall;
+    }
+
+    public void setFlagCall(String flagCall) {
+        this.flagCall = flagCall;
+    }
+
     public String getNoCheckup() {
         return noCheckup;
     }

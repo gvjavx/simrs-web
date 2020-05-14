@@ -634,6 +634,26 @@ public class RawatInapBoImpl implements RawatInapBo {
                     monPemberianObat.setStDate(stringDate(entity.getCreatedDate()));
                     monPemberianObat.setKategori(entity.getKategori());
                     monPemberianObats.add(monPemberianObat);
+                } else if  (bean.getIsMobile().equalsIgnoreCase("Y")){
+                    monPemberianObat = new MonPemberianObat();
+                    monPemberianObat.setId(entity.getId());
+                    monPemberianObat.setNoCheckup(entity.getNoCheckup());
+                    monPemberianObat.setIdDetailCheckup(entity.getIdDetailCheckup());
+                    monPemberianObat.setNamaObat(entity.getNamaObat());
+                    monPemberianObat.setCaraPemberian(entity.getCaraPemberian());
+                    monPemberianObat.setDosis(entity.getDosis());
+                    monPemberianObat.setSkinTes(entity.getSkinTes());
+                    monPemberianObat.setWaktu(entity.getWaktu());
+                    monPemberianObat.setKeterangan(entity.getKeterangan());
+                    monPemberianObat.setFlag(entity.getFlag());
+                    monPemberianObat.setAction(entity.getAction());
+                    monPemberianObat.setCreatedDate(entity.getCreatedDate());
+                    monPemberianObat.setCreatedWho(entity.getCreatedWho());
+                    monPemberianObat.setLastUpdate(entity.getLastUpdate());
+                    monPemberianObat.setLastUpdateWho(entity.getLastUpdateWho());
+                    monPemberianObat.setStDate(stringDate(entity.getCreatedDate()));
+                    monPemberianObat.setKategori(entity.getKategori());
+                    monPemberianObats.add(monPemberianObat);
                 }
             }
         }

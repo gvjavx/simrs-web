@@ -128,6 +128,16 @@ public class RawatInapController implements ModelDriven<Object> {
     private String idMonVitalSign;
     private String idPembObat;
 
+    private String isMobile;
+
+    public String getIsMobile() {
+        return isMobile;
+    }
+
+    public void setIsMobile(String isMobile) {
+        this.isMobile = isMobile;
+    }
+
     public Collection<PlanKegiatanRawatMobile> getListOfPlanKegiatanRawat() {
         return listOfPlanKegiatanRawat;
     }
@@ -869,11 +879,8 @@ public class RawatInapController implements ModelDriven<Object> {
         if (action.equalsIgnoreCase("getKategoriTindakan")){
             List<KategoriTindakan> result = new ArrayList<>();
 
-            KategoriTindakan kategoriTindakan = new KategoriTindakan();
-            kategoriTindakan.setIdKategoriTindakan("KAT00000001");
-
             try {
-                result = kategoriTindakanBoProxy.getByCriteria(kategoriTindakan);
+                result = kategoriTindakanBoProxy.getListKategoriTindakan(idPelayanan);
             } catch (GeneralBOException e){
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }
@@ -1044,7 +1051,7 @@ public class RawatInapController implements ModelDriven<Object> {
             MonVitalSign monVitalSign = new MonVitalSign();
             monVitalSign.setIdDetailCheckup(idDetailCheckup);
             monVitalSign.setId(idMonVitalSign);
-            monVitalSign.setIsMobile("Y");
+            monVitalSign.setIsMobile(isMobile);
 
             try {
                 result = rawatInapBoProxy.getListMonVitalSign(monVitalSign);
@@ -1134,6 +1141,7 @@ public class RawatInapController implements ModelDriven<Object> {
             monPemberianObat.setIdDetailCheckup(idDetailCheckup);
             monPemberianObat.setKategori(kategori);
             monPemberianObat.setId(idPembObat);
+            monPemberianObat.setIsMobile(isMobile);
 
             try {
                 result = rawatInapBoProxy.getListPemberianObat(monPemberianObat);
@@ -1171,7 +1179,7 @@ public class RawatInapController implements ModelDriven<Object> {
             MonCairan monCairan = new MonCairan();
             monCairan.setIdDetailCheckup(idDetailCheckup);
             monCairan.setId(idMonCairan);
-            monCairan.setIsMobile("Y");
+            monCairan.setIsMobile(isMobile);
 
             try {
                 result = rawatInapBoProxy.getListMonCairan(monCairan);

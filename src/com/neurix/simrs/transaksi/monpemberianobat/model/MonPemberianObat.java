@@ -26,6 +26,15 @@ public class MonPemberianObat {
     private String kategori;
     private String waktuPemberian;
     private String catatanDokter;
+    private String isMobile;
+
+    public String getIsMobile() {
+        return isMobile;
+    }
+
+    public void setIsMobile(String isMobile) {
+        this.isMobile = isMobile;
+    }
 
     public String getWaktuPemberian() {
         return waktuPemberian;

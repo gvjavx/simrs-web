@@ -23,6 +23,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.rest.DefaultHttpHeaders;
 import org.apache.struts2.rest.HttpHeaders;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -89,6 +90,15 @@ public class AntrianOnlineController implements ModelDriven<Object> {
     private String action;
 
     private String idDetailCheckup;
+    private String flagCall;
+
+    public String getFlagCall() {
+        return flagCall;
+    }
+
+    public void setFlagCall(String flagCall) {
+        this.flagCall = flagCall;
+    }
 
     private String channelId;
     private String uid;
@@ -126,6 +136,9 @@ public class AntrianOnlineController implements ModelDriven<Object> {
     private String userAccount = "";
     private long lastKeepAudioTime = 0;
     private long lastKeepVideoTime = 0;
+
+    private String videoFileName;
+    private String audioFileName;
 
 
     public CheckupDetailBo getCheckupDetailBoProxy() {
@@ -295,20 +308,22 @@ public class AntrianOnlineController implements ModelDriven<Object> {
     public HttpHeaders create() {
         logger.info("[AntrianOnlineController.create] start process POST / <<<");
 
+        String test = getVideoFileName(new File("/mnt/images/upload/video_rm/20200514/RS0104200035_020415_271083945/"));
+
         RecordingSDK recordingSDK = new RecordingSDK();
         RecordingSDKInstance = recordingSDK;
         RecordingConfig recordingConfig = new RecordingConfig();
         recordingConfig.channelProfile = Common.CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_COMMUNICATION;
         recordingConfig.appliteDir = CommonConstant.AGORA_DIR;
         recordingConfig.triggerMode = 0;
-        recordingConfig.recordFileRootDir = CommonConstant.AOGRA_REC_DIR;
+        recordingConfig.recordFileRootDir = CommonUtil.getPropertyParams("upload.folder") + CommonConstant.RESOURCE_PATH_VIDEO_RM;
         recordingConfig.idleLimitSec = 5 * 60;
         recordingConfig.isVideoOnly = false;
         recordingConfig.isAudioOnly = false;
-        recordingConfig.isMixingEnabled = true;
+        recordingConfig.isMixingEnabled = false;
         recordingConfig.mixResolution = "360,640,15,500";
-        recordingConfig.mixedVideoAudio = Common.MIXED_AV_CODEC_TYPE.values() [Common.MIXED_AV_CODEC_TYPE.MIXED_AV_CODEC_V1.ordinal()];
-        recordingConfig.cfgFilePath = "";
+        recordingConfig.mixedVideoAudio = Common.MIXED_AV_CODEC_TYPE.values() [Common.MIXED_AV_CODEC_TYPE.MIXED_AV_DEFAULT.ordinal()];
+        recordingConfig.cfgFilePath = "/uid/";
         recordingConfig.secret = "";
         recordingConfig.decryptionMode = "";
         recordingConfig.lowUdpPort = 40000;
@@ -375,6 +390,17 @@ public class AntrianOnlineController implements ModelDriven<Object> {
             @Override
             public void onLeaveChannel(int reason) {
                 logger.error("[AntrianOnlineController.record] onLeaveChannel : " + reason);
+                videoFileName = getVideoFileName(new File(storageDir));
+                audioFileName = getAudioFileName(new File(storageDir));
+                logger.info("File name : " + videoFileName + " "+ audioFileName);
+                String path = storageDir+videoFileName;
+                try {
+                     checkupDetailBoProxy.editVideoRm(idDetailCheckup, path);
+                } catch (GeneralBOException e) {
+                    logger.error("[AntrianOnlineController.getAntrianAll] Error get antrian all " + e.getMessage());
+                    throw new GeneralBOException("[AntrianOnlineController.getAntrianAll] Error When Error get antrian all");
+                }
+
             }
 
             @Override
@@ -410,6 +436,16 @@ public class AntrianOnlineController implements ModelDriven<Object> {
             @Override
             public void onUserOffline(long uid, int reason) {
                 logger.info("RecordingSDK onUserOffline uid:" + uid + ",offline reason:" + reason);
+                videoFileName = getVideoFileName(new File(storageDir));
+                audioFileName = getAudioFileName(new File(storageDir));
+                logger.info("File name : " + videoFileName + " "+ audioFileName + " UID:" + uid);
+                String path = storageDir+videoFileName;
+                try {
+                    checkupDetailBoProxy.editVideoRm(idDetailCheckup, path);
+                } catch (GeneralBOException e) {
+                    logger.error("[AntrianOnlineController.getAntrianAll] Error get antrian all " + e.getMessage());
+                    throw new GeneralBOException("[AntrianOnlineController.getAntrianAll] Error When Error get antrian all");
+                }
                 m_peers.remove(uid);
                 //PrintUsersInfo(m_peers);
                 SetVideoMixingLayout();
@@ -419,6 +455,7 @@ public class AntrianOnlineController implements ModelDriven<Object> {
             public void onUserJoined(long uid, String recordingDir) {
                 logger.info("onUserJoined uid:" + uid + ",recordingDir:" + recordingDir);
                 storageDir = recordingDir;
+                logger.info("File name : " + videoFileName + " "+ audioFileName + " UID:" + uid);
                 m_peers.add(uid);
                 //PrintUsersInfo(m_peers);
                 // When the user joined, we can re-layout the canvas
@@ -775,6 +812,29 @@ public class AntrianOnlineController implements ModelDriven<Object> {
                 }
             }
         }
+    }
+
+    private String getVideoFileName(final File folder) {
+        String fileName = "";
+        for (final File fileEntry : folder.listFiles()) {
+           if (fileEntry.getName().contains(".mp4")) {
+               fileName = fileEntry.getName();
+               break;
+           }
+        }
+        return fileName;
+    }
+
+    private String getAudioFileName(final File folder) {
+        String fileName = "";
+        for (final File fileEntry : folder.listFiles()) {
+            if (fileEntry.getName().contains(".aac")) {
+                fileName = fileEntry.getName();
+                break;
+            }
+        }
+        return fileName;
+
     }
 
 

@@ -25,6 +25,15 @@ public class AntrianMobile {
     private String flagPeriksa;
     private String noCheckup;
     private String idDetailCheckup;
+    private String flagCall;
+
+    public String getFlagCall() {
+        return flagCall;
+    }
+
+    public void setFlagCall(String flagCall) {
+        this.flagCall = flagCall;
+    }
 
     public String getNoCheckup() {
         return noCheckup;

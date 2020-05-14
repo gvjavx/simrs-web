@@ -66,6 +66,26 @@ public class ItSimrsHeaderDetailCheckupEntity implements Serializable{
     private Timestamp transDate;
     private String transPeriode;
 
+    private String flagCall;
+
+    private String videoRm;
+
+    public String getVideoRm() {
+        return videoRm;
+    }
+
+    public void setVideoRm(String videoRm) {
+        this.videoRm = videoRm;
+    }
+
+    public String getFlagCall() {
+        return flagCall;
+    }
+
+    public void setFlagCall(String flagCall) {
+        this.flagCall = flagCall;
+    }
+
     public String getInvoiceTrans() {
         return invoiceTrans;
     }

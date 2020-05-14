@@ -143,6 +143,25 @@ public class HeaderDetailCheckup extends BaseModel{
 
     private String isLaka;
 
+    private String videoRm;
+    private String flagCall;
+
+    public String getFlagCall() {
+        return flagCall;
+    }
+
+    public void setFlagCall(String flagCall) {
+        this.flagCall = flagCall;
+    }
+
+    public String getVideoRm() {
+        return videoRm;
+    }
+
+    public void setVideoRm(String videoRm) {
+        this.videoRm = videoRm;
+    }
+
     public String getIsLaka() {
         return isLaka;
     }

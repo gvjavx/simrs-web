@@ -1301,6 +1301,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
         return finalResult;
     }
 
+
     @Override
     public void updatePenunjang(HeaderCheckup bean) throws GeneralBOException {
         logger.info("[CheckupBoImpl.updatePenunjang] Start >>>>>>>>");
