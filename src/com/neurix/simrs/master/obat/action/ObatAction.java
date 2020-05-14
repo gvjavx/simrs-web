@@ -1,9 +1,12 @@
 package com.neurix.simrs.master.obat.action;
 
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
+import com.neurix.authorization.company.bo.BranchBo;
+import com.neurix.authorization.company.model.Branch;
 import com.neurix.authorization.position.bo.PositionBo;
 import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.common.action.BaseMasterAction;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.obat.bo.ObatBo;
@@ -32,6 +35,7 @@ import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -697,6 +701,61 @@ public class ObatAction extends BaseMasterAction {
         }
 
         return obatList;
+    }
+
+
+    public String initPrintReportRiwayat(){
+        logger.info("[ObatAction.initPrintReportRiwayat] START >>>");
+
+        Obat obat = new Obat();
+        setObat(obat);
+
+        logger.info("[ObatAction.initPrintReportRiwayat] END <<<");
+        return "init_print";
+    }
+
+    public String printReportRiwayat(){
+        logger.info("[ObatAction.initPrintReportRiwayat] START >>>");
+
+        Obat obat = getObat();
+
+        String branch = CommonUtil.userBranchLogin();
+        String branchName = CommonUtil.userBranchNameLogin();
+        String logo = "";
+        Branch branches = new Branch();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+
+        try {
+            branches = branchBo.getBranchById(branch, "Y");
+        } catch (GeneralBOException e) {
+            logger.error("Found Error when searhc branch logo");
+        }
+
+        if (branches != null) {
+            logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.RESOURCE_PATH_IMAGES + branches.getLogoName();
+        }
+
+        String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(new Timestamp(System.currentTimeMillis()));
+        reportParams.put("tglForm", obat.getStTglFrom());
+        reportParams.put("tglTo", obat.getStTglTo());
+        reportParams.put("area", CommonUtil.userAreaName());
+        reportParams.put("unit", branchName);
+        reportParams.put("logo", logo);
+        reportParams.put("printDate", formatDate);
+
+        try {
+            preDownload();
+        } catch (SQLException e) {
+            logger.error("[ReportAction.printCard] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
+            return "search";
+        }
+
+        logger.info("[ObatAction.initPrintReportRiwayat] END <<<");
+        return "print";
+
     }
 
 }
