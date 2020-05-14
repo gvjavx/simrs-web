@@ -5,7 +5,7 @@
 <hibernate-mapping>
 
     <class name="com.neurix.simrs.transaksi.riwayatbarang.model.ItSimrsRiwayatBarangMasukEntity" dynamic-update="true"
-           table="It_simrs_riwayat_barang_masuk" select-before-update="true" schema="public">
+           table="it_simrs_riwayat_barang_masuk" select-before-update="true" schema="public">
 
         <id name="idBarangMasuk">
             <column name="id_barang_masuk" sql-type="varchar" length="30" not-null="true" />
