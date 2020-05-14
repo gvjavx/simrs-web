@@ -109,6 +109,7 @@
                                         <div class="col-sm-2">
                                             <select class="form-control" id="sel-tipe" name="budgeting.tipe" disabled="true">
                                                 <option value="tahunan">Tahunan</option>
+                                                <option value="bulanan">Bulanan</option>
                                                 <option value="semester">Semester</option>
                                                 <option value="quartal">Quartal</option>
                                             </select>
@@ -152,8 +153,8 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-md-10 col-md-offset-1">
-                                <table class="table table-bordered table-striped tree" style="font-size: 15px;">
+                            <div class="col-md-12">
+                                <table class="table table-bordered table-striped tree" style="font-size: 12px;">
                                     <thead id="head-budgeting">
                                     <tr bgcolor="#90ee90">
                                         <td style="width: 20%">COA</td>
@@ -176,39 +177,27 @@
                                             <td align="center">Total</td>
                                             <td align="center">Selisih</td>
                                         </s:if>
+                                        <s:if test='budgeting.tipe == "bulanan"'>
+                                            <td align="center">Total</td>
+                                            <td align="center">Januari</td>
+                                            <td align="center">Februari</td>
+                                            <td align="center">Maret</td>
+                                            <td align="center">April</td>
+                                            <td align="center">Mei</td>
+                                            <td align="center">Juni</td>
+                                            <td align="center">Juli</td>
+                                            <td align="center">Agustus</td>
+                                            <td align="center">September</td>
+                                            <td align="center">Oktober</td>
+                                            <td align="center">November</td>
+                                            <td align="center">Desember</td>
+                                            <td align="center">Selisih</td>
+                                        </s:if>
                                         <td align="center">Action</td>
                                     </tr>
                                     </thead>
                                     <tbody id="body-budgeting">
-                                    <%--<s:iterator value="#session.listOfCoa" status="listOfCoa" var="row">--%>
-                                        <%--<tr>--%>
-                                            <%--<td><s:property value="kodeRekening"/></td>--%>
-                                            <%--<td><s:property value="namaKodeRekening"/></td>--%>
-                                            <%--<s:if test='budgeting.tipe == "quartal"'>--%>
-                                                <%--<td align="center"><script>document.write(formatRupiah('<s:property value="nilaiTotal"/>'))</script></td>--%>
-                                                <%--<td align="center"><script>document.write(formatRupiah('<s:property value="quartal1"/>'))</script></td>--%>
-                                                <%--<td align="center"><script>document.write(formatRupiah('<s:property value="quartal2"/>'))</script></td>--%>
-                                                <%--<td align="center"><script>document.write(formatRupiah('<s:property value="quartal3"/>'))</script></td>--%>
-                                                <%--<td align="center"><script>document.write(formatRupiah('<s:property value="quartal4"/>'))</script></td>--%>
-                                                <%--<td align="center"><s:property value="selisih"/></td>--%>
-                                            <%--</s:if>--%>
-                                            <%--<s:if test='budgeting.tipe == "semester"'>--%>
-                                                <%--<td align="center"><script>document.write(formatRupiah('<s:property value="nilaiTotal"/>'))</script></td>--%>
-                                                <%--<td align="center"><script>document.write(formatRupiah('<s:property value="semester1"/>'))</script></td>--%>
-                                                <%--<td align="center"><script>document.write(formatRupiah('<s:property value="semester2"/>'))</script></td>--%>
-                                                <%--<td align="center"><s:property value="selisih"/></td>--%>
-                                            <%--</s:if>--%>
-                                            <%--<s:if test='budgeting.tipe == "tahunan"'>--%>
-                                                <%--<td align="center"><script>document.write(formatRupiah('<s:property value="nilaiTotal"/>'))</script></td>--%>
-                                                <%--<td align="center"><s:property value="selisih"/></td>--%>
-                                            <%--</s:if>--%>
-                                            <%--<td align="center">--%>
-                                                <%--<s:if test='#row.stLevel == "5"'>--%>
-                                                    <%--<button class="btn btn-sm btn-primary btn-edit" onclick="detail('<s:property value="rekeningId"/>')"><i class="fa fa-edit"></i></button>--%>
-                                                <%--</s:if>--%>
-                                            <%--</td>--%>
-                                        <%--</tr>--%>
-                                    <%--</s:iterator>--%>
+
                                     </tbody>
                                 </table>
                             </div>
@@ -403,7 +392,10 @@
                 console.log(item.rekeningId);
                 data2.push({_id : item.rekeningId, level : item.level,  nama : item.namaKodeRekening, parent : item.parentId, coa : item.kodeRekening,
                     nilaiTotal : item.nilaiTotal, quartal1 : item.quartal1, quartal2: item.quartal2, quartal3 : item.quartal3, quartal4 : item.quartal4,
-                    semester1 : item.semester1, semester2:item.semester2, stLevel: item.stLevel, selisih : item.selisih});
+                    semester1 : item.semester1, semester2:item.semester2, stLevel: item.stLevel, selisih : item.selisih,
+                    januari : item.januari, februari : item.februari, maret : item.maret, april : item.april, mei : item.mei, juni : item.juni,
+                    juli : item.juli, agustus : item.agustus, september : item.september, oktober : item.oktober, november : item.november, desember : item.desember
+                });
 
             });
             function hierarhySort(hashArr, key, result) {
@@ -431,14 +423,14 @@
             var strList = "";
             for(i = 0 ; i < data2.length ; i++){
                 if(data2[i].parent == "-"){
-                    strList += '<tr style="font-size: 12px;" class=" treegrid-' + data2[i]._id+ '">' +
+                    strList += '<tr style="font-size: 10px;" class=" treegrid-' + data2[i]._id+ '">' +
                         '<td >' + data2[i].coa + '</td>' +
                         '<td >' + data2[i].nama + '</td>' + barisNilai(data2[i]) +
                         "<td align='right'>"+formatRupiah(data2[i].selisih)+"</td>"+
                         "<td align='center'>"+buttonEdit(data2[i]._id, data2[i].stLevel)+"</td>"+
                         "</tr>";
                 } else {
-                    strList += '<tr style="font-size: 12px" class=" treegrid-' + data2[i]._id + ' treegrid-parent-' + data2[i].parent + '">' +
+                    strList += '<tr style="font-size: 10px" class=" treegrid-' + data2[i]._id + ' treegrid-parent-' + data2[i].parent + '">' +
                         + '<td style="border: 2px solid black;">' +
                         '<td >' + data2[i].coa + '</td>' +
                         '<td >' + data2[i].nama + '</td>' + barisNilai(data2[i]) +
@@ -466,12 +458,28 @@
         if (tipe == "quartal"){
             str += "<td align='right'>"+formatRupiah(data.nilaiTotal)+"</td>"+
                 "<td align='right'>"+formatRupiah(data.quartal1)+"</td>"+
-                "<td align='right'>"+formatRupiah(data.quartal2)+"</td>";
-                "<td align='right'>"+formatRupiah(data.quartal3)+"</td>";
+                "<td align='right'>"+formatRupiah(data.quartal2)+"</td>"+
+                "<td align='right'>"+formatRupiah(data.quartal3)+"</td>"+
                 "<td align='right'>"+formatRupiah(data.quartal4)+"</td>";
+
         }
         if (tipe == "tahunan"){
             str += "<td align='right'>"+formatRupiah(data.nilaiTotal)+"</td>";
+        }
+        if (tipe == "bulanan"){
+            str += "<td align='right'>"+formatRupiah(data.nilaiTotal)+"</td>"+
+                "<td align='right'>"+formatRupiah(data.januari)+"</td>"+
+                "<td align='right'>"+formatRupiah(data.februari)+"</td>"+
+                "<td align='right'>"+formatRupiah(data.maret)+"</td>"+
+                "<td align='right'>"+formatRupiah(data.april)+"</td>"+
+                "<td align='right'>"+formatRupiah(data.mei)+"</td>"+
+                "<td align='right'>"+formatRupiah(data.juni)+"</td>"+
+                "<td align='right'>"+formatRupiah(data.juli)+"</td>"+
+                "<td align='right'>"+formatRupiah(data.agustus)+"</td>"+
+                "<td align='right'>"+formatRupiah(data.september)+"</td>"+
+                "<td align='right'>"+formatRupiah(data.oktober)+"</td>"+
+                "<td align='right'>"+formatRupiah(data.november)+"</td>"+
+                "<td align='right'>"+formatRupiah(data.desember)+"</td>";
         }
 
         return str;

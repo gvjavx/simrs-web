@@ -470,6 +470,362 @@
                             </div>
                         </s:if>
 
+                        <%--TIPE BULANAN START--%>
+                        <s:if test='budgeting.tipe == "bulanan"'>
+                            <div class="row">
+                                <div class="col-md-10 col-md-offset-1">
+                                    <label>Periode Januari</label>
+                                    <table class="table table-bordered table-striped" style="font-size: 15px;">
+                                        <thead>
+                                        <tr bgcolor="#90ee90">
+                                            <td style="width: 20%">Divisi Id</td>
+                                            <td align="center">Nama Divisi</td>
+                                            <td align="center">Quantity</td>
+                                            <td align="center">Nilai</td>
+                                            <td align="center">Sub Total</td>
+                                            <td align="center">Action</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <s:iterator value="#session.listOfDetailEdit" var="row">
+                                            <s:if test='#row.tipe == "januari"'>
+                                                <tr>
+                                                    <td><s:property value="divisiId"/></td>
+                                                    <td><s:property value="divisiName"/></td>
+                                                    <td align="center"><s:property value="qty"/></td>
+                                                    <td align="center"><s:property value="nilai"/></td>
+                                                    <td align="center"><s:property value="subTotal"/></td>
+                                                    <td align="center"><button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button></td>
+                                                </tr>
+                                            </s:if>
+                                        </s:iterator>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-md-10 col-md-offset-1">
+                                    <label>Periode Februari</label>
+                                    <table class="table table-bordered table-striped" style="font-size: 15px;">
+                                        <thead>
+                                        <tr bgcolor="#90ee90">
+                                            <td style="width: 20%">Divisi Id</td>
+                                            <td align="center">Nama Divisi</td>
+                                            <td align="center">Quantity</td>
+                                            <td align="center">Nilai</td>
+                                            <td align="center">Sub Total</td>
+                                            <td align="center">Action</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <s:iterator value="#session.listOfDetailEdit" var="row">
+                                            <s:if test='#row.tipe == "februari"'>
+                                                <tr>
+                                                    <td><s:property value="divisiId"/></td>
+                                                    <td><s:property value="divisiName"/></td>
+                                                    <td align="center"><s:property value="qty"/></td>
+                                                    <td align="center"><s:property value="nilai"/></td>
+                                                    <td align="center"><s:property value="subTotal"/></td>
+                                                    <td align="center"><button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button></td>
+                                                </tr>
+                                            </s:if>
+                                        </s:iterator>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-md-10 col-md-offset-1">
+                                    <label>Periode Maret</label>
+                                    <table class="table table-bordered table-striped" style="font-size: 15px;">
+                                        <thead>
+                                        <tr bgcolor="#90ee90">
+                                            <td style="width: 20%">Divisi Id</td>
+                                            <td align="center">Nama Divisi</td>
+                                            <td align="center">Quantity</td>
+                                            <td align="center">Nilai</td>
+                                            <td align="center">Sub Total</td>
+                                            <td align="center">Action</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <s:iterator value="#session.listOfDetailEdit" var="row">
+                                            <s:if test='#row.tipe == "maret"'>
+                                                <tr>
+                                                    <td><s:property value="divisiId"/></td>
+                                                    <td><s:property value="divisiName"/></td>
+                                                    <td align="center"><s:property value="qty"/></td>
+                                                    <td align="center"><s:property value="nilai"/></td>
+                                                    <td align="center"><s:property value="subTotal"/></td>
+                                                    <td align="center"><button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button></td>
+                                                </tr>
+                                            </s:if>
+                                        </s:iterator>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-md-10 col-md-offset-1">
+                                    <label>Periode April</label>
+                                    <table class="table table-bordered table-striped" style="font-size: 15px;">
+                                        <thead>
+                                        <tr bgcolor="#90ee90">
+                                            <td style="width: 20%">Divisi Id</td>
+                                            <td align="center">Nama Divisi</td>
+                                            <td align="center">Quantity</td>
+                                            <td align="center">Nilai</td>
+                                            <td align="center">Sub Total</td>
+                                            <td align="center">Action</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <s:iterator value="#session.listOfDetailEdit" var="row">
+                                            <s:if test='#row.tipe == "april"'>
+                                                <tr>
+                                                    <td><s:property value="divisiId"/></td>
+                                                    <td><s:property value="divisiName"/></td>
+                                                    <td align="center"><s:property value="qty"/></td>
+                                                    <td align="center"><s:property value="nilai"/></td>
+                                                    <td align="center"><s:property value="subTotal"/></td>
+                                                    <td align="center"><button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button></td>
+                                                </tr>
+                                            </s:if>
+                                        </s:iterator>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-md-10 col-md-offset-1">
+                                    <label>Periode Mei</label>
+                                    <table class="table table-bordered table-striped" style="font-size: 15px;">
+                                        <thead>
+                                        <tr bgcolor="#90ee90">
+                                            <td style="width: 20%">Divisi Id</td>
+                                            <td align="center">Nama Divisi</td>
+                                            <td align="center">Quantity</td>
+                                            <td align="center">Nilai</td>
+                                            <td align="center">Sub Total</td>
+                                            <td align="center">Action</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <s:iterator value="#session.listOfDetailEdit" var="row">
+                                            <s:if test='#row.tipe == "mei"'>
+                                                <tr>
+                                                    <td><s:property value="divisiId"/></td>
+                                                    <td><s:property value="divisiName"/></td>
+                                                    <td align="center"><s:property value="qty"/></td>
+                                                    <td align="center"><s:property value="nilai"/></td>
+                                                    <td align="center"><s:property value="subTotal"/></td>
+                                                    <td align="center"><button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button></td>
+                                                </tr>
+                                            </s:if>
+                                        </s:iterator>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-md-10 col-md-offset-1">
+                                    <label>Periode Juni</label>
+                                    <table class="table table-bordered table-striped" style="font-size: 15px;">
+                                        <thead>
+                                        <tr bgcolor="#90ee90">
+                                            <td style="width: 20%">Divisi Id</td>
+                                            <td align="center">Nama Divisi</td>
+                                            <td align="center">Quantity</td>
+                                            <td align="center">Nilai</td>
+                                            <td align="center">Sub Total</td>
+                                            <td align="center">Action</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <s:iterator value="#session.listOfDetailEdit" var="row">
+                                            <s:if test='#row.tipe == "juni"'>
+                                                <tr>
+                                                    <td><s:property value="divisiId"/></td>
+                                                    <td><s:property value="divisiName"/></td>
+                                                    <td align="center"><s:property value="qty"/></td>
+                                                    <td align="center"><s:property value="nilai"/></td>
+                                                    <td align="center"><s:property value="subTotal"/></td>
+                                                    <td align="center"><button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button></td>
+                                                </tr>
+                                            </s:if>
+                                        </s:iterator>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-md-10 col-md-offset-1">
+                                    <label>Periode Juli</label>
+                                    <table class="table table-bordered table-striped" style="font-size: 15px;">
+                                        <thead>
+                                        <tr bgcolor="#90ee90">
+                                            <td style="width: 20%">Divisi Id</td>
+                                            <td align="center">Nama Divisi</td>
+                                            <td align="center">Quantity</td>
+                                            <td align="center">Nilai</td>
+                                            <td align="center">Sub Total</td>
+                                            <td align="center">Action</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <s:iterator value="#session.listOfDetailEdit" var="row">
+                                            <s:if test='#row.tipe == "juli"'>
+                                                <tr>
+                                                    <td><s:property value="divisiId"/></td>
+                                                    <td><s:property value="divisiName"/></td>
+                                                    <td align="center"><s:property value="qty"/></td>
+                                                    <td align="center"><s:property value="nilai"/></td>
+                                                    <td align="center"><s:property value="subTotal"/></td>
+                                                    <td align="center"><button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button></td>
+                                                </tr>
+                                            </s:if>
+                                        </s:iterator>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-md-10 col-md-offset-1">
+                                    <label>Periode Agustus</label>
+                                    <table class="table table-bordered table-striped" style="font-size: 15px;">
+                                        <thead>
+                                        <tr bgcolor="#90ee90">
+                                            <td style="width: 20%">Divisi Id</td>
+                                            <td align="center">Nama Divisi</td>
+                                            <td align="center">Quantity</td>
+                                            <td align="center">Nilai</td>
+                                            <td align="center">Sub Total</td>
+                                            <td align="center">Action</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <s:iterator value="#session.listOfDetailEdit" var="row">
+                                            <s:if test='#row.tipe == "agustus"'>
+                                                <tr>
+                                                    <td><s:property value="divisiId"/></td>
+                                                    <td><s:property value="divisiName"/></td>
+                                                    <td align="center"><s:property value="qty"/></td>
+                                                    <td align="center"><s:property value="nilai"/></td>
+                                                    <td align="center"><s:property value="subTotal"/></td>
+                                                    <td align="center"><button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button></td>
+                                                </tr>
+                                            </s:if>
+                                        </s:iterator>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-md-10 col-md-offset-1">
+                                    <label>Periode September</label>
+                                    <table class="table table-bordered table-striped" style="font-size: 15px;">
+                                        <thead>
+                                        <tr bgcolor="#90ee90">
+                                            <td style="width: 20%">Divisi Id</td>
+                                            <td align="center">Nama Divisi</td>
+                                            <td align="center">Quantity</td>
+                                            <td align="center">Nilai</td>
+                                            <td align="center">Sub Total</td>
+                                            <td align="center">Action</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <s:iterator value="#session.listOfDetailEdit" var="row">
+                                            <s:if test='#row.tipe == "september"'>
+                                                <tr>
+                                                    <td><s:property value="divisiId"/></td>
+                                                    <td><s:property value="divisiName"/></td>
+                                                    <td align="center"><s:property value="qty"/></td>
+                                                    <td align="center"><s:property value="nilai"/></td>
+                                                    <td align="center"><s:property value="subTotal"/></td>
+                                                    <td align="center"><button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button></td>
+                                                </tr>
+                                            </s:if>
+                                        </s:iterator>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-md-10 col-md-offset-1">
+                                    <label>Periode Oktober</label>
+                                    <table class="table table-bordered table-striped" style="font-size: 15px;">
+                                        <thead>
+                                        <tr bgcolor="#90ee90">
+                                            <td style="width: 20%">Divisi Id</td>
+                                            <td align="center">Nama Divisi</td>
+                                            <td align="center">Quantity</td>
+                                            <td align="center">Nilai</td>
+                                            <td align="center">Sub Total</td>
+                                            <td align="center">Action</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <s:iterator value="#session.listOfDetailEdit" var="row">
+                                            <s:if test='#row.tipe == "oktober"'>
+                                                <tr>
+                                                    <td><s:property value="divisiId"/></td>
+                                                    <td><s:property value="divisiName"/></td>
+                                                    <td align="center"><s:property value="qty"/></td>
+                                                    <td align="center"><s:property value="nilai"/></td>
+                                                    <td align="center"><s:property value="subTotal"/></td>
+                                                    <td align="center"><button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button></td>
+                                                </tr>
+                                            </s:if>
+                                        </s:iterator>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-md-10 col-md-offset-1">
+                                    <label>Periode November</label>
+                                    <table class="table table-bordered table-striped" style="font-size: 15px;">
+                                        <thead>
+                                        <tr bgcolor="#90ee90">
+                                            <td style="width: 20%">Divisi Id</td>
+                                            <td align="center">Nama Divisi</td>
+                                            <td align="center">Quantity</td>
+                                            <td align="center">Nilai</td>
+                                            <td align="center">Sub Total</td>
+                                            <td align="center">Action</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <s:iterator value="#session.listOfDetailEdit" var="row">
+                                            <s:if test='#row.tipe == "november"'>
+                                                <tr>
+                                                    <td><s:property value="divisiId"/></td>
+                                                    <td><s:property value="divisiName"/></td>
+                                                    <td align="center"><s:property value="qty"/></td>
+                                                    <td align="center"><s:property value="nilai"/></td>
+                                                    <td align="center"><s:property value="subTotal"/></td>
+                                                    <td align="center"><button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button></td>
+                                                </tr>
+                                            </s:if>
+                                        </s:iterator>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-md-10 col-md-offset-1">
+                                    <label>Periode Desember</label>
+                                    <table class="table table-bordered table-striped" style="font-size: 15px;">
+                                        <thead>
+                                        <tr bgcolor="#90ee90">
+                                            <td style="width: 20%">Divisi Id</td>
+                                            <td align="center">Nama Divisi</td>
+                                            <td align="center">Quantity</td>
+                                            <td align="center">Nilai</td>
+                                            <td align="center">Sub Total</td>
+                                            <td align="center">Action</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <s:iterator value="#session.listOfDetailEdit" var="row">
+                                            <s:if test='#row.tipe == "desember"'>
+                                                <tr>
+                                                    <td><s:property value="divisiId"/></td>
+                                                    <td><s:property value="divisiName"/></td>
+                                                    <td align="center"><s:property value="qty"/></td>
+                                                    <td align="center"><s:property value="nilai"/></td>
+                                                    <td align="center"><s:property value="subTotal"/></td>
+                                                    <td align="center"><button class="btn btn-sm btn-primary" onclick="edit('<s:property value="idBudgetingDetail"/>')" ><i class="fa fa-edit"></i></button></td>
+                                                </tr>
+                                            </s:if>
+                                        </s:iterator>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </s:if>
+
+                        <%--TIPE BULANAN END--%>
+
                         <div class="form-group" style="margin-top: 10px">
                             <div class="col-md-4 col-md-offset-5">
                                 <button class="btn btn-success" onclick="back()"><i class="fa fa-check"></i> Save</button>
@@ -542,7 +898,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-plus"></i> Tambah Rincian
+                <h4 class="modal-title"><i class="fa fa-plus"></i> Investasi
                 </h4>
             </div>
             <div class="modal-body">
@@ -558,11 +914,12 @@
                     <tbody id="body-add-pengadaan">
 
                     </tbody>
+                    <input type="hidden" id="id-detail"/>
                 </table>
                 <div class="row">
                     <label class="control-label col-sm-2">Nama </label>
                     <div class="col-sm-4">
-                       <input type="text" class="form form-control" id="nama-head-pengadaan"/>
+                       <input type="text" class="form form-control" id="nama-head-pengadaan" readonly/>
                     </div>
                 </div>
                 <div class="row">
@@ -599,7 +956,7 @@
 
 //    var listOfCoa = [];
     $( document ).ready(function() {
-        console.log("hasil >>> "+unit+tahun+tipe);
+//        console.log("hasil >>> "+unit+tahun+tipe);
         comboTipe();
         search();
     });
@@ -627,6 +984,23 @@
 
             label = "Tahunan";
             opt = "<option value='tahunan'>Tahunan</option>";
+        }
+
+        if (tipe == "bulanan"){
+
+            label = "Bulanan";
+            opt = "<option value='januari'>Januari</option>" +
+                "<option value='februari'>Februari</option>" +
+                "<option value='maret'>Maret</option>" +
+                "<option value='april'>April</option>" +
+                "<option value='mei'>Mei</option>" +
+                "<option value='juni'>Juni</option>" +
+                "<option value='juli'>Juli</option>" +
+                "<option value='agustus'>Agustus</option>" +
+                "<option value='september'>September</option>" +
+                "<option value='oktober'>Oktober</option>" +
+                "<option value='november'>November</option>" +
+                "<option value='desember'>Desember</option>";
         }
 
         $("#label-tipe").text(label);
@@ -713,7 +1087,11 @@
             // jika inputan divisi kosong makan muncul modal input pengadaan
             n = 0;
             strPengadaan = "";
+            $("#label-tipe-pengadaan").show();
+            $("#sel-tipe-pengadaan").show();
+            $("#id-detail").val("");
             $("#body-add-pengadaan").html("");
+            $("#nama-head-pengadaan").val("Investasi");
             $("#modal-pengadaan").modal('show');
         } else {
 
@@ -760,13 +1138,37 @@
     }
 
     function edit(id) {
-        $("#modal-edit").modal('show');
         BudgetingAction.getBudgetinDetailById(id, function(response){
-            $("#edit-id").val(response.idBudgetingDetail);
-            $("#edit-divisi").val(response.divisiId);
-            $("#edit-divisi-name").val(response.divisiName);
-            $("#edit-qty").val(response.qty);
-            $("#edit-nilai").val(response.nilai);
+
+            if (response.divisiId == "INVS"){
+                strPengadaan = "";
+                n = 0;
+                BudgetingAction.getListPengadaan(id, function(list){
+                    if (list != null){
+                        $.each(list, function (i, item) {
+                            strPengadaan += '<tr>' +
+                                '<td><input type="hidden" id="id-add-'+i+'" value="'+item.idPengadaan+'"><input type="text" class="form form-control" id="nama-add-'+i+'" value="'+item.namPengadaan+'"/></td>' +
+                                '<td><input type="number" class="form form-control" id="qty-add-'+i+'" value="'+item.qty+'"/></td>' +
+                                '<td><input type="number" class="form form-control" id="nilai-add-'+i+'" value="'+item.nilai+'"/></td>' +
+                                '</tr>';
+                        });
+                        n = list.length;
+                        $("#id-detail").val(id);
+                        $("#label-tipe-pengadaan").hide();
+                        $("#sel-tipe-pengadaan").hide();
+                        $("#body-add-pengadaan").html(strPengadaan);
+                        $("#nama-head-pengadaan").val("Investasi");
+                        $("#modal-pengadaan").modal('show');
+                    }
+                }) ;
+            } else {
+                $("#modal-edit").modal('show');
+                $("#edit-id").val(response.idBudgetingDetail);
+                $("#edit-divisi").val(response.divisiId);
+                $("#edit-divisi-name").val(response.divisiName);
+                $("#edit-qty").val(response.qty);
+                $("#edit-nilai").val(response.nilai);
+            }
         });
 
     }
@@ -780,7 +1182,7 @@
         var arrData = [];
         arrData.push({"id":id, "qty":qty, "nilai":nilai, "rekeningid":rekeningid});
         var jsonStr = JSON.stringify(arrData);
-        console.log(arrData);
+//        console.log(arrData);
         BudgetingAction.saveEditDetail( jsonStr, function(response){
 
             if (response.status == "success"){
@@ -796,7 +1198,7 @@
     var strPengadaan = "";
     function addInputUpload() {
         strPengadaan += '<tr>' +
-            '<td><input type="text" class="form form-control" id="nama-add-'+n+'"/></td>' +
+            '<td><input type="hidden" id="id-add-'+n+'"><input type="text" class="form form-control" id="nama-add-'+n+'"/></td>' +
             '<td><input type="number" class="form form-control" id="qty-add-'+n+'"/></td>' +
             '<td><input type="number" class="form form-control" id="nilai-add-'+n+'"/></td>' +
             '</tr>';
@@ -806,12 +1208,49 @@
     
     function saveAddPengadaan() {
 
-        var arrData = [];
-        var strJson = JSON.stringify(arrData);
-        BudgetingAction.saveAddPengadaan(strJson, function(response){
+        var namainvestasi   = $("#nama-head-pengadaan").val();
+        var tipepengadaan   = $("#sel-tipe-pengadaan").val();
+        var iddetail        = $("#id-detail").val();
 
-        });
-        $("#modal-pengadaan").modal('hide');
+        var arrData = [];
+        for (i = 0; i < n; i++){
+            var name = $("#nama-add-"+i).val();
+            var qty = $("#qty-add-"+i).val();
+            var nilai = $("#nilai-add-"+i).val();
+
+            if (iddetail == "") {
+                arrData.push({ "name":name, "qty":qty, "nilai":nilai, "id":"" });
+            } else {
+
+                var id = $("#id-add-"+i).val();
+                arrData.push({ "name":name, "qty":qty, "nilai":nilai, "id":id });
+            }
+        }
+
+        var strJson = JSON.stringify(arrData);
+
+        if (iddetail != "") {
+            // jika id detail tidak kosong = save edit
+            BudgetingAction.saveEditPengadaan(strJson, namainvestasi, rekeningid, iddetail, function(response){
+                refresh();
+            });
+            $("#modal-pengadaan").modal('hide');
+        } else {
+            BudgetingAction.checkBudgetingDivisi(tipepengadaan, "", rekeningid, function (response) {
+                if (response != null){
+                    $("#alert-error-add-pengadaan").show().fadeOut(5000);
+                    $("#error-msg-add-pengadaan").text(" Data Investasi Sudah Ada. Pada : "+tipepengadaan);
+                } else {
+                    // jika id detail kosong = save add
+                    BudgetingAction.saveAddPengadaan(strJson, namainvestasi, rekeningid, tipepengadaan, function(response){
+                        refresh();
+                    });
+                    $("#modal-pengadaan").modal('hide');
+                }
+            });
+        }
+
+
     }
 
     function search() {
@@ -820,11 +1259,11 @@
         dwr.engine.setAsync(true);
         BudgetingAction.getListOfCoaBudgetingSession(function (response) {
 
-            console.log(response);
+//            console.log(response);
             data = response;
             data2 = new Array();
             $.each(data, function(i,item){
-                console.log(item.rekeningId);
+//                console.log(item.rekeningId);
                 data2.push({_id : item.rekeningId, level : item.level,  nama : item.namaKodeRekening, parent : item.parentId, coa : item.kodeRekening,
                     nilaiTotal : item.nilaiTotal, quartal1 : item.quartal1, quartal2: item.quartal2, quartal3 : item.quartal3, quartal4 : item.quartal4,
                     semester1 : item.semester1, semester2:item.semester2, stLevel: item.stLevel, selisih : item.selisih});

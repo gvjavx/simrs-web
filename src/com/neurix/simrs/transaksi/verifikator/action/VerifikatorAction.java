@@ -841,6 +841,7 @@ public class VerifikatorAction extends BaseMasterAction {
                 detailCheckup.setLastUpdate(updateTime);
                 detailCheckup.setLastUpdateWho(userLogin);
                 detailCheckup.setNoJurnal(jurnalResponse.getNoJurnal());
+                detailCheckup.setInvoice(jurnalResponse.getInvoice());
 
                 try {
                     checkupDetailBo.saveUpdateNoJuran(detailCheckup);
@@ -875,7 +876,6 @@ public class VerifikatorAction extends BaseMasterAction {
 
             // FILTER JIKA JENIS PASIEN ADALAH PTPN
             response = closingPasienPtpnBpjs(idDetailCheckup, branchId);
-
         } else {
             Map hsCriteria = new HashMap();
 
@@ -1138,6 +1138,7 @@ public class VerifikatorAction extends BaseMasterAction {
             }
         }
 
+        String noInvoicePtpnMurni = billingSystemBo.createInvoiceNumber(kode, branchId);
         if ("murni".equalsIgnoreCase(jenisPtpn)){
 
             //** BPJS MURNI **//
@@ -1188,7 +1189,7 @@ public class VerifikatorAction extends BaseMasterAction {
                 hsCriteria.put("pendapatan_rawat_inap_bpjs", listOfMapTindakanBpjs);
 
                 Map mapPiutang = new HashMap();
-                mapPiutang.put("bukti", detailCheckupEntity.getNoSep());
+                mapPiutang.put("bukti", noInvoicePtpnMurni);
                 mapPiutang.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, "bpjs", ""));
                 mapPiutang.put("master_id", getMasterIdByTipe(idDetailCheckup, "bpjs"));
 
@@ -1276,6 +1277,7 @@ public class VerifikatorAction extends BaseMasterAction {
             noJurnal = billingSystemBo.createJurnal(transId, hsCriteria, branchId, catatan, "Y");
             response.setStatus("success");
             response.setNoJurnal(noJurnal);
+            response.setInvoice(noInvoicePtpnMurni);
         } catch (GeneralBOException e){
             logger.error("[VerifikatorAction.closingPasienPtpnBpjs] ERROR Create Jurnal. ", e);
             response.setStatus("error");

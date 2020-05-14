@@ -17,6 +17,7 @@ public interface BudgetingBo {
 
     public List<Budgeting> getSearchByCriteria(Budgeting bean) throws GeneralBOException;
     public List<BudgetingDetail> getListBudgetingDetailByNoBudgeting(String id) throws GeneralBOException;
+    public List<BudgetingPengadaan> getListBudgetingPengadaanNoDetail(String id) throws GeneralBOException;
     public List<ItAkunBudgetingPengadaanEntity> getListBudgetingPengadaanByIdDetail(String id) throws GeneralBOException;
     public void saveAddCoaBudgeting(List<Budgeting> budgetingList) throws GeneralBOException;
     public void saveBudgetingDetail(List<Budgeting> budgetingList, String type) throws GeneralBOException;
