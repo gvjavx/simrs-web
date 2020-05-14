@@ -2956,6 +2956,7 @@
         var dokter = "";
         TeamDokterAction.listDokter(idDetailCheckup, function (response) {
             data = response;
+            console.log(data);
             if (data != null) {
                 $.each(data, function (i, item) {
                     table += "<tr>" +
