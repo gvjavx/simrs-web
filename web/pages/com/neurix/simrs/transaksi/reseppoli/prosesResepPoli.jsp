@@ -1046,6 +1046,7 @@
         // });
 
         $('#confirm_dialog').dialog('open');
+        $('body').scrollTop(0);
         // if(cek > 0){
         //     $('#confirm_dialog').dialog('open');
         // }else{
