@@ -565,6 +565,7 @@ public class BudgetingAction {
 
             if (budgetingSessionList.size() == 0){
                 if (this.trans != null){
+                    List<Budgeting> listOfBudgeting = new ArrayList<>();
                     for (StatusBudgeting statusBudgeting : this.listOfStatusBudgeting()){
 
                         Budgeting searchBudgeting = new Budgeting();
@@ -606,10 +607,14 @@ public class BudgetingAction {
 
                             session.removeAttribute("listOfCoa");
                             session.setAttribute("listOfCoa", budgetingList);
+                            listOfBudgeting.addAll(budgetingList);
                             break;
-                        } else {
-                            return add();
                         }
+                    }
+
+                    // jika tidak ada return ke add;
+                    if (listOfBudgeting.size() == 0){
+                        return add();
                     }
                 }
             } else {
