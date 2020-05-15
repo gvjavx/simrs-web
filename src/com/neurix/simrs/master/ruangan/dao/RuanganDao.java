@@ -173,4 +173,19 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
 
         return results;
     }
+
+    public List<MtSimrsRuanganEntity> cekData(String idRuangan) throws HibernateException{
+        List<MtSimrsRuanganEntity> results = new ArrayList<>();
+
+        String query = "SELECT a.id_ruangan, b.id_rawat_inap\n" +
+                "FROM mt_simrs_ruangan a\n" +
+                "INNER JOIN it_simrs_rawat_inap b ON b.id_ruangan = a.id_ruangan\n" +
+                "WHERE a.id_ruangan = '"+idRuangan+"' LIMIT 1";
+
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        return results;
+    }
 }

@@ -2049,10 +2049,6 @@ public class TransaksiObatAction extends BaseMasterAction {
     }
 
     public List<PermintaanResep> pushNotifResep() {
-        String role = CommonUtil.roleAsLogin();
-        if("ADMIN APOTEK".equalsIgnoreCase(role)){
-
-        }
         List<PermintaanResep> list = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         TransaksiObatBo transaksiObatBo = (TransaksiObatBo) ctx.getBean("transaksiObatBoProxy");

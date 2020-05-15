@@ -20,8 +20,9 @@
         $.subscribe('beforeProcessSave', function (event, data) {
             var idKategoriLab = document.getElementById("idKategoriLab2").value;
             var namaKategoriLab = document.getElementById("namaKategori2").value;
+            var divisi = document.getElementById("positionId2").value;
 
-            if (idKategoriLab != '' && namaKategoriLab != '') {
+            if (idKategoriLab != '' && namaKategoriLab != '' && divisi != '') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -37,6 +38,9 @@
                 }
                 if (namaKategoriLab == '') {
                     msg += 'Field <strong>Nama Kategori Lab </strong> is required.' + '<br/>';
+                }
+                if (divisi == '') {
+                    msg += 'Field <strong>Divisi </strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
@@ -110,6 +114,18 @@
                             </table>
                         </td>
                     </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Divisi :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:action id="initComboPosition" namespace="/kategorilab" name="initComboPosition_kategorilab"/>
+                                <s:select list="#initComboPosition.listOfComboPositions" id="positionId2" name="kategoriLab.divisiId"
+                                          listKey="positionId" listValue="positionName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
 
                 </table>
 
@@ -170,7 +186,7 @@
                                         <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
                                                    height="250" width="600" autoOpen="false" title="Error Dialog"
                                                    buttons="{
-                                                                        'OK':function() { $('#error_dialog').dialog('close'); }
+                                                                        'OK':function() { $('#error_dialog').dialog('close');window.location.reload(true)}
                                                                     }"
                                         >
                                             <div class="alert alert-error fade in">
@@ -183,7 +199,7 @@
                                         <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog" modal="true" resizable="false"
                                                    height="280" width="500" autoOpen="false" title="Warning"
                                                    buttons="{
-                                                                        'OK':function() { $('#error_validation_dialog').dialog('close'); }
+                                                                        'OK':function() { $('#error_validation_dialog').dialog('close');}
                                                                     }"
                                         >
                                             <div class="alert alert-error fade in">

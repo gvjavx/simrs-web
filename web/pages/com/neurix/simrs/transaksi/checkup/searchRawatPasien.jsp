@@ -64,7 +64,7 @@
                             <s:form id="checkupForm" method="post" namespace="/checkup" action="search_checkup.action"
                                     theme="simple" cssClass="form-horizontal">
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4" for="headerCheckup.idPasien">ID Pasien</label>
+                                    <label class="control-label col-sm-4" for="headerCheckup.idPasien">No RM</label>
                                     <div class="col-sm-4">
                                         <s:textfield id="id_pasien" cssStyle="margin-top: 7px"
                                                      name="headerCheckup.idPasien" required="false"
@@ -110,13 +110,13 @@
                                                   cssClass="form-control select2"/>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4" for="headerCheckup.jalan">Alamat</label>
-                                    <div class="col-sm-4">
-                                        <s:textarea cssStyle="margin-top: 7px" id="alamat" name="headerCheckup.jalan"
-                                                    required="false" readonly="false" cssClass="form-control"/>
-                                    </div>
-                                </div>
+                                <%--<div class="form-group">--%>
+                                    <%--<label class="control-label col-sm-4" for="headerCheckup.jalan">Alamat</label>--%>
+                                    <%--<div class="col-sm-4">--%>
+                                        <%--<s:textarea cssStyle="margin-top: 7px" id="alamat" name="headerCheckup.jalan"--%>
+                                                    <%--required="false" readonly="false" cssClass="form-control"/>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Tanggal Masuk</label>
                                     <div class="col-sm-2">

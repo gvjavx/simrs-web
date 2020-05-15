@@ -4,6 +4,8 @@ import com.neurix.akuntansi.master.settingReportKeuanganKonsol.model.AkunSetting
 import com.neurix.common.bo.BaseMasterBo;
 import com.neurix.common.exception.GeneralBOException;
 
+import java.util.List;
+
 /**
  * Created by IntelliJ IDEA.
  * User: gondok
@@ -13,4 +15,7 @@ import com.neurix.common.exception.GeneralBOException;
  */
 public interface AkunSettingReportKeuanganKonsolBo extends BaseMasterBo<AkunSettingReportKeuanganKonsol> {
     public void saveDelete(AkunSettingReportKeuanganKonsol bean) throws GeneralBOException;
+
+    public List<AkunSettingReportKeuanganKonsol> getByDataCriteria(AkunSettingReportKeuanganKonsol bean) throws GeneralBOException;
+    public List<AkunSettingReportKeuanganKonsol> getDataById(AkunSettingReportKeuanganKonsol bean) throws GeneralBOException;
 }

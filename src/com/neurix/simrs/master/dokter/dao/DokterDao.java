@@ -119,4 +119,35 @@ public class DokterDao extends GenericDao<ImSimrsDokterEntity, String> {
 
         return sId;
     }
+
+    public List<ImSimrsDokterEntity> cekData(String idDokter) throws HibernateException{
+        List<ImSimrsDokterEntity> results = new ArrayList<>();
+
+        String query = "SELECT a.id_team_dokter, b.id_dokter\n" +
+                "FROM it_simrs_dokter_team a\n" +
+                "INNER JOIN im_simrs_dokter b ON b.id_dokter = a.id_dokter\n" +
+                "WHERE a.id_dokter = '"+idDokter+"' LIMIT 1";
+
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        return results;
+    }
+
+    //for typeahead
+    public List<ImSimrsDokterEntity> getDokterListByLikeDokterName(String dokterName) {
+        Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ImSimrsDokterEntity.class);
+        criteria.add(
+                Restrictions.or(
+                        Restrictions.ilike("idDokter", dokterName + "%"),
+                        Restrictions.ilike("namaDokter", "%"+dokterName+"%")
+                )
+        );
+        criteria.add(Restrictions.eq("flag", "Y"));
+        criteria.addOrder(Order.asc("idDokter"));
+
+        List<ImSimrsDokterEntity> results = criteria.list();
+        return results;
+    }
 }

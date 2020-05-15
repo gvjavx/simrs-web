@@ -175,4 +175,12 @@ public class ImMappingJurnalEntity implements Serializable {
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
     }
+
+//    public String getEditBiaya() {
+//        return editBiaya;
+//    }
+//
+//    public void setEditBiaya(String editBiaya) {
+//        this.editBiaya = editBiaya;
+//    }
 }

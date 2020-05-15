@@ -111,6 +111,18 @@
                 <param name="dataSource">payrollList</param>
                 <param name="reportParameters">reportParams</param>
             </result>
+            <result name="success_print_rekap_gaji_kary" type="jasper">
+                <param name="location">/pages/report/com/neurix/hris/daftarRekapGajiKaryawan.jasper</param>
+                <param name="format">PDF</param>
+                <param name="dataSource">payrollList</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+            <result name="success_print_daftar_potongan_dapen" type="jasper">
+                <param name="location">/pages/report/com/neurix/hris/daftarIuranDapen.jasper</param>
+                <param name="format">PDF</param>
+                <param name="dataSource">payrollList</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
             <!-- END OF LAPORAN PAYROLL -->
 
 

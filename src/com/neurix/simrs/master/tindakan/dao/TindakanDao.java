@@ -120,4 +120,19 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
         return results;
     }
 
+    public List<ImSimrsTindakanEntity> cekData(String idTindakan) throws HibernateException{
+        List<ImSimrsTindakanEntity> results = new ArrayList<>();
+
+        String query = "SELECT a.id_tindakan, b.id_tindakan_rawat\n" +
+                "FROM im_simrs_tindakan a\n" +
+                "INNER JOIN it_simrs_tindakan_rawat b ON b.id_tindakan = a.id_tindakan\n" +
+                "WHERE a.id_tindakan = '"+idTindakan+"' LIMIT 1";
+
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        return results;
+    }
+
 }

@@ -187,7 +187,7 @@
                         </table>
                         <a class="btn btn-danger" href="detail_rekammedis.action?idPasien=<s:property value="detailCheckup.idPasien"/>"><i class="fa fa-refresh"></i> Reset</a>
                         <a class="btn btn-warning" href="initForm_rekammedis.action"><i class="fa fa-times"></i> Back</a>
-                        <a class="btn btn-info" onclick="viewTelemedic()"><i class="fa fa-film"></i> Veiw Telemedic</a>
+                        <a class="btn btn-info" style="display: none" id="btn-vidio-rm" onclick="viewTelemedic()"><i class="fa fa-film"></i> Veiw Telemedic</a>
                     </div>
                     <div class="box-header with-border"></div>
                     <s:if test='detailCheckup.idDetailCheckup != null'>
@@ -767,7 +767,7 @@
             </div>
             <div class="modal-body">
                 <div class="box-body">
-                    <iframe src="/go-medsys/images/upload/video_rm/sodiq.mp4" width="100%" height="400px"></iframe>
+                    <video controls id="video_rm" src="<s:property value="detailCheckup.videoRm"/>" width="100%" height="400px"></video>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
@@ -900,6 +900,7 @@
 
         if(idDetailCheckup != null && idDetailCheckup != ''){
             $('[type=search]').val(idDetailCheckup).trigger('input');
+            $('#btn-vidio-rm').show();
         }
     });
 

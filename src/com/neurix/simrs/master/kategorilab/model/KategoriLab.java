@@ -8,6 +8,8 @@ public class KategoriLab extends BaseModel {
 
     private String idKategoriLab;
     private String namaKategori;
+    private String divisiId;
+    private String divisiName;
     private String flag;
     private String action;
     private String stCreatedDate;
@@ -109,5 +111,21 @@ public class KategoriLab extends BaseModel {
 
     public void setStLastUpdate(String stLastUpdate) {
         this.stLastUpdate = stLastUpdate;
+    }
+
+    public String getDivisiId() {
+        return divisiId;
+    }
+
+    public void setDivisiId(String divisiId) {
+        this.divisiId = divisiId;
+    }
+
+    public String getDivisiName() {
+        return divisiName;
+    }
+
+    public void setDivisiName(String divisiName) {
+        this.divisiName = divisiName;
     }
 }

@@ -1,5 +1,7 @@
 package com.neurix.simrs.master.kategorilab.bo.impl;
 
+import com.neurix.authorization.position.bo.PositionBo;
+import com.neurix.authorization.position.model.Position;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.jenisobat.bo.JenisObatBo;
 import com.neurix.simrs.master.jenisobat.model.JenisObat;
@@ -9,6 +11,8 @@ import com.neurix.simrs.master.kategorilab.model.ImSimrsKategoriLabEntity;
 import com.neurix.simrs.master.kategorilab.model.KategoriLab;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.ContextLoader;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,39 +38,42 @@ public class KategoriLabBoImpl implements KategoriLabBo {
         logger.info("[saveDelete.KategoriLabBoImpl] start process >>>");
 
         if (bean!=null) {
-
             String idKategoriLab = bean.getIdKategoriLab();
-
-            ImSimrsKategoriLabEntity entity = null;
-
-            try {
-                // Get data from database by ID
-                entity = kategoriLabDao.getById("idKategoriLab", idKategoriLab);
-            } catch (HibernateException e) {
-                logger.error("[KategoriLabBoImpl.saveDelete] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when searching data Lab by IdLab, please inform to your admin...," + e.getMessage());
-            }
-
-            if (entity != null) {
-
-                // Modify from bean to entity serializable
-                entity.setIdKategoriLab(bean.getIdKategoriLab());
-                entity.setFlag(bean.getFlag());
-                entity.setAction(bean.getAction());
-                entity.setLastUpdateWho(bean.getLastUpdateWho());
-                entity.setLastUpdate(bean.getLastUpdate());
+            String status = cekBeforeDelete(idKategoriLab);
+            if (!status.equalsIgnoreCase("exist")){
+                ImSimrsKategoriLabEntity entity = null;
 
                 try {
-                    // Delete (Edit) into database
-                    kategoriLabDao.updateAndSave(entity);
+                    // Get data from database by ID
+                    entity = kategoriLabDao.getById("idKategoriLab", idKategoriLab);
                 } catch (HibernateException e) {
                     logger.error("[KategoriLabBoImpl.saveDelete] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving update data Lab, please info to your admin..." + e.getMessage());
+                    throw new GeneralBOException("Found problem when searching data Lab by IdLab, please inform to your admin...," + e.getMessage());
                 }
 
-            } else {
-                logger.error("[KategoriLabBoImpl.saveDelete] Error, not found data Lab with request id, please check again your data ...");
-                throw new GeneralBOException("Error, not found data Lab with request id, please check again your data ...");
+                if (entity != null) {
+
+                    // Modify from bean to entity serializable
+                    entity.setIdKategoriLab(bean.getIdKategoriLab());
+                    entity.setFlag(bean.getFlag());
+                    entity.setAction(bean.getAction());
+                    entity.setLastUpdateWho(bean.getLastUpdateWho());
+                    entity.setLastUpdate(bean.getLastUpdate());
+
+                    try {
+                        // Delete (Edit) into database
+                        kategoriLabDao.updateAndSave(entity);
+                    } catch (HibernateException e) {
+                        logger.error("[KategoriLabBoImpl.saveDelete] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving update data Lab, please info to your admin..." + e.getMessage());
+                    }
+
+                } else {
+                    logger.error("[KategoriLabBoImpl.saveDelete] Error, not found data Lab with request id, please check again your data ...");
+                    throw new GeneralBOException("Error, not found data Lab with request id, please check again your data ...");
+                }
+            }else {
+                throw new GeneralBOException("Maaf Data tidak dapat dihapus, karna masih digunakan pada data Transaksi");
             }
         }
         logger.info("[KategoriLabBoImpl.saveDelete] end process <<<");
@@ -91,6 +98,7 @@ public class KategoriLabBoImpl implements KategoriLabBo {
             if (entity != null) {
                 entity.setIdKategoriLab(bean.getIdKategoriLab());
                 entity.setNamaKategori(bean.getNamaKategori());
+                entity.setDivisiId(bean.getDivisiId());
                 entity.setFlag(bean.getFlag());
                 entity.setAction(bean.getAction());
                 entity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -131,6 +139,7 @@ public class KategoriLabBoImpl implements KategoriLabBo {
                 ImSimrsKategoriLabEntity entity = new ImSimrsKategoriLabEntity();
                 entity.setIdKategoriLab(kategoriLabId);
                 entity.setNamaKategori(bean.getNamaKategori());
+                entity.setDivisiId(bean.getDivisiId());
                 entity.setFlag(bean.getFlag());
                 entity.setAction(bean.getAction());
                 entity.setCreatedWho(bean.getCreatedWho());
@@ -191,6 +200,7 @@ public class KategoriLabBoImpl implements KategoriLabBo {
                     kategoriLab = new KategoriLab();
                     kategoriLab.setIdKategoriLab(kategoriLabEntity.getIdKategoriLab());
                     kategoriLab.setNamaKategori(kategoriLabEntity.getNamaKategori());
+                    kategoriLab.setDivisiId(kategoriLabEntity.getDivisiId());
                     kategoriLab.setFlag(kategoriLabEntity.getFlag());
                     kategoriLab.setAction(kategoriLabEntity.getAction());
                     kategoriLab.setStCreatedDate(kategoriLabEntity.getCreatedDate().toString());
@@ -199,6 +209,17 @@ public class KategoriLabBoImpl implements KategoriLabBo {
                     kategoriLab.setStLastUpdate(kategoriLabEntity.getLastUpdate().toString());
                     kategoriLab.setLastUpdate(kategoriLabEntity.getLastUpdate());
                     kategoriLab.setLastUpdateWho(kategoriLabEntity.getLastUpdateWho());
+                    ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
+                    if (kategoriLabEntity.getDivisiId() != null){
+                        Position position = new Position();
+                        PositionBo positionBo = (PositionBo) context.getBean("positionBoProxy");
+                        position.setPositionId(kategoriLabEntity.getDivisiId());
+                        position.setFlag("Y");
+                        List<Position> positions = positionBo.getByCriteria(position);
+                        String positionName = positions.get(0).getPositionName();
+                        kategoriLab.setDivisiName(positionName);
+                    }
+
                     result.add(kategoriLab);
                 }
             }
@@ -224,6 +245,23 @@ public class KategoriLabBoImpl implements KategoriLabBo {
             entities = kategoriLabDao.getDataKategoriLab(namaPelayanan);
         } catch (HibernateException e) {
             logger.error("[KategoriLabBoImpl.cekStatus] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        if (entities.size()>0){
+            status = "exist";
+        }else{
+            status="notExits";
+        }
+        return status;
+    }
+
+    public String cekBeforeDelete(String idKategoriLab)throws GeneralBOException{
+        String status ="";
+        List<ImSimrsKategoriLabEntity> entities = new ArrayList<>();
+        try {
+            entities = kategoriLabDao.cekData(idKategoriLab);
+        } catch (HibernateException e) {
+            logger.error("[KategoriLabBoImpl.cekBeforeDelete] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
         }
         if (entities.size()>0){

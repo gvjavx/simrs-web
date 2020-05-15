@@ -39,27 +39,27 @@ public class PembayaranAction extends BaseMasterAction {
         this.pembayaranBoProxy = pembayaranBoProxy;
     }
 
-//    public Pembayaran init(String kode, String flag){
-//        logger.info("[PembayaranAction.init] start process >>>");
-//        HttpSession session = ServletActionContext.getRequest().getSession();
-//        List<Pembayaran> listOfResult = (List<Pembayaran>) session.getAttribute("listOfResultPembayaran");
-//
-//        if(kode != null && !"".equalsIgnoreCase(kode)){
-//            if(listOfResult != null){
-//                for (Pembayaran pembayaran: listOfResult) {
-//                    if(kode.equalsIgnoreCase(labDetail.getIdLabDetail()) && flag.equalsIgnoreCase(labDetail.getFlag())){
-//                        setLabDetail(labDetail);
-//                        break;
-//                    }
-//                }
-//            } else {
-//                setLabDetail(new LabDetail());
-//            }
-//
-//            logger.info("[LabDetailAction.init] end process >>>");
-//        }
-//        return getLabDetail();
-//    }
+    public Pembayaran init(String kode, String flag){
+        logger.info("[PembayaranAction.init] start process >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<Pembayaran> listOfResult = (List<Pembayaran>) session.getAttribute("listOfResultPembayaran");
+
+        if(kode != null && !"".equalsIgnoreCase(kode)){
+            if(listOfResult != null){
+                for (Pembayaran pembayaran: listOfResult) {
+                    if(kode.equalsIgnoreCase(pembayaran.getPembayaranId()) && flag.equalsIgnoreCase(pembayaran.getFlag())){
+                        setPembayaran(pembayaran);
+                        break;
+                    }
+                }
+            } else {
+                setPembayaran(new Pembayaran());
+            }
+
+            logger.info("[PembayaranAction.init] end process >>>");
+        }
+        return getPembayaran();
+    }
 
     @Override
     public String add() {
@@ -78,52 +78,93 @@ public class PembayaranAction extends BaseMasterAction {
 
     @Override
     public String edit() {
-//        logger.info("[PembayaranAction.edit] start process >>>");
-//        String itemId = getId();
-//        String itemFlag = getFlag();
-//
-//        Pembayaran editPembayaran = new Pembayaran();
-//
-//        if(itemFlag != null){
-//            try {
-//                editPembayaran = init(itemId, itemFlag);
-//            } catch (GeneralBOException e) {
-//                Long logId = null;
-//                try {
-//                    logId = labDetailBoProxy.saveErrorMessage(e.getMessage(), "LabDetailBO.edit");
-//                } catch (GeneralBOException e1) {
-//                    logger.error("[LabDetailAction.edit] Error when retrieving edit data,", e1);
-//                }
-//                logger.error("[LabDetailAction.edit] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
-//                addActionError("Error, " + "[code=" + logId + "] Found problem when retrieving data for edit, please inform to your admin.");
-//                return "failure";
-//            }
-//
-//            if(editLabDetail != null) {
-//                setLabDetail(editLabDetail);
-//            } else {
-//                editLabDetail.setFlag(itemFlag);
-//                //editPayrollSkalaGaji.getSkalaGajiId(itemId);
-//                setLabDetail(editLabDetail);
-//                addActionError("Error, Unable to find data with id = " + itemId);
-//                return "failure";
-//            }
-//        } else {
-//            //editPayrollSkalaGaji.getSkalaGajiId(itemId);
-//            editLabDetail.setFlag(getFlag());
-//            setLabDetail(editLabDetail);
-//            addActionError("Error, Unable to edit again with flag = N.");
-//            return "failure";
-//        }
-//
-//        setAddOrEdit(true);
-//        logger.info("[LabDetailAction.edit] end process >>>");
+        logger.info("[PembayaranAction.edit] start process >>>");
+        String itemId = getId();
+        String itemFlag = getFlag();
+
+        Pembayaran editPembayaran = new Pembayaran();
+
+        if(itemFlag != null){
+            try {
+                editPembayaran = init(itemId, itemFlag);
+            } catch (GeneralBOException e) {
+                Long logId = null;
+                try {
+                    logId = pembayaranBoProxy.saveErrorMessage(e.getMessage(), "PembayaranBO.edit");
+                } catch (GeneralBOException e1) {
+                    logger.error("[PembayaranAction.edit] Error when retrieving edit data,", e1);
+                }
+                logger.error("[PembayaranAction.edit] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
+                addActionError("Error, " + "[code=" + logId + "] Found problem when retrieving data for edit, please inform to your admin.");
+                return "failure";
+            }
+
+            if(editPembayaran != null) {
+                setPembayaran(editPembayaran);
+            } else {
+                editPembayaran.setFlag(itemFlag);
+                //editPayrollSkalaGaji.getSkalaGajiId(itemId);
+                setPembayaran(editPembayaran);
+                addActionError("Error, Unable to find data with id = " + itemId);
+                return "failure";
+            }
+        } else {
+            //editPayrollSkalaGaji.getSkalaGajiId(itemId);
+            editPembayaran.setFlag(getFlag());
+            setPembayaran(editPembayaran);
+            addActionError("Error, Unable to edit again with flag = N.");
+            return "failure";
+        }
+
+        setAddOrEdit(true);
+        logger.info("[PembayaranAction.edit] end process >>>");
         return "init_edit";
     }
 
     @Override
     public String delete() {
-        return null;
+        logger.info("[PembayaranAction.delete] start process >>>");
+
+        String itemId = getId();
+        String itemFlag = getFlag();
+        Pembayaran deletePembayaran = new Pembayaran();
+
+        if (itemFlag != null ) {
+            try {
+                deletePembayaran = init(itemId, itemFlag);
+            } catch (GeneralBOException e) {
+                Long logId = null;
+                try {
+                    logId = pembayaranBoProxy.saveErrorMessage(e.getMessage(), "PembayaranBO.getPembayaranById");
+                } catch (GeneralBOException e1) {
+                    logger.error("[PembayaranAction.delete] Error when retrieving delete data,", e1);
+                }
+                logger.error("[PembayaranAction.delete] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
+                addActionError("Error, " + "[code=" + logId + "] Found problem when retrieving data for delete, please inform to your admin.");
+                return "failure";
+            }
+
+            if (deletePembayaran != null) {
+                setPembayaran(deletePembayaran);
+
+            } else {
+                //deletePayrollSkalaGaji.getSkalaGajiId(itemId);
+                deletePembayaran.setFlag(itemFlag);
+                setPembayaran(deletePembayaran);
+                addActionError("Error, Unable to find data with id = " + itemId);
+                return "failure";
+            }
+        } else {
+            //deletePayrollSkalaGaji.getSkalaGajiId(itemId);
+            deletePembayaran.setFlag(itemFlag);
+            setPembayaran(deletePembayaran);
+            addActionError("Error, Unable to delete again with flag = N.");
+            return "failure";
+        }
+
+        logger.info("[PembayaranAction.delete] end process <<<");
+
+        return "init_delete";
     }
 
     @Override
@@ -244,5 +285,71 @@ public class PembayaranAction extends BaseMasterAction {
 
         logger.info("[pembayaranAction.saveAdd] end process >>>");
         return "success_save_add";
+    }
+
+    public String saveEdit(){
+        logger.info("[PembayaranAction.saveEdit] start process >>>");
+        try {
+
+            Pembayaran editPembayaran = getPembayaran();
+
+            String userLogin = CommonUtil.userLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+            editPembayaran.setLastUpdateWho(userLogin);
+            editPembayaran.setLastUpdate(updateTime);
+            editPembayaran.setAction("U");
+            editPembayaran.setFlag("Y");
+
+            pembayaranBoProxy.saveEdit(editPembayaran);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = pembayaranBoProxy.saveErrorMessage(e.getMessage(), "PembayaranBO.saveEdit");
+            } catch (GeneralBOException e1) {
+                logger.error("[PembayaranAction.saveEdit] Error when saving error,", e1);
+                return ERROR;
+            }
+            logger.error("[PembayaranAction.saveEdit] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
+            return ERROR;
+        }
+
+        logger.info("[pembayaranAction.saveEdit] end process <<<");
+
+        return "success_save_edit";
+    }
+
+    public String saveDelete(){
+        logger.info("[PembayaranAction.saveDelete] start process >>>");
+        try {
+
+            Pembayaran deletePembayaran = getPembayaran();
+
+            String userLogin = CommonUtil.userLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+            deletePembayaran.setLastUpdate(updateTime);
+            deletePembayaran.setLastUpdateWho(userLogin);
+            deletePembayaran.setAction("U");
+            deletePembayaran.setFlag("N");
+
+            pembayaranBoProxy.saveDelete(deletePembayaran);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = pembayaranBoProxy.saveErrorMessage(e.getMessage(), "PembayaranBO.saveDelete");
+            } catch (GeneralBOException e1) {
+                logger.error("[PembayaranAction.saveDelete] Error when saving error,", e1);
+                return ERROR;
+            }
+            logger.error("[PembayaranAction.saveDelete] Error when editing item PembayaranId," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
+            return ERROR;
+        }
+
+        logger.info("[PembayaranAction.saveDelete] end process <<<");
+
+        return "success_save_delete";
     }
 }

@@ -116,7 +116,7 @@
                                                         </s:url>
                                                         <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">
                                                             <i class="fa fa-plus"></i>
-                                                            Add Lab
+                                                            Add Kategori Lab
                                                         </sj:a>
                                                     </td>
                                                     <td>
@@ -193,6 +193,7 @@
                                                             </display:column>
                                                             <display:column property="idKategoriLab" sortable="true" title="ID Kategori Lab" />
                                                             <display:column property="namaKategori" sortable="true" title="Nama Kategori Lab"  />
+                                                            <display:column property="divisiName" sortable="true" title="Divisi"  />
                                                             <display:column property="flag" sortable="true" title="flag"  />
                                                             <display:column property="action" sortable="true" title="action"  />
                                                             <display:column property="stCreatedDate" sortable="true" title="Created date"  />

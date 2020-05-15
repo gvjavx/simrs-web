@@ -399,6 +399,11 @@
         if(ref == 1){
             window.location.href = 'initForm_radiologi.action';
         }
+        if(ref == 2){
+            $('html, body').animate({
+                scrollTop: $('#pos_lab').offset().top
+            }, 2000);
+        }
     }
 
     function listSelectDokter() {
@@ -444,6 +449,7 @@
                         $('#save_ket').show();
                         $('#load_ket').hide();
                         $('#info_dialog').dialog('open');
+                        $('#close_pos').val(2);
                         $('body').scrollTop(0);
                         getIdRadiologi();
                     } else {

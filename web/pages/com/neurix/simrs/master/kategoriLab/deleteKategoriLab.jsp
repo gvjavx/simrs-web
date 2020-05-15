@@ -19,9 +19,9 @@
 
         $.subscribe('beforeProcessSave', function (event, data) {
             var idKategoriLab = document.getElementById("idKategoriLab3").value;
-            var namaKategoriLab = document.getElementById("namaKategori3").value;
+//            var namaKategoriLab = document.getElementById("namaKategori3").value;
 
-            if (idKategoriLab != '' && namaKategoriLab != '') {
+            if (idKategoriLab != '') {
                 if (confirm('Do you want to delete this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -35,9 +35,9 @@
                 if (idKategoriLab == '') {
                     msg += 'Field <strong>Id Kategori Lab </strong> is required.' + '<br/>';
                 }
-                if (namaKategoriLab == '') {
-                    msg += 'Field <strong>Nama Kategori Lab </strong> is required.' + '<br/>';
-                }
+//                if (namaKategoriLab == '') {
+//                    msg += 'Field <strong>Nama Kategori Lab </strong> is required.' + '<br/>';
+//                }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
@@ -109,6 +109,18 @@
                             </table>
                         </td>
                     </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Divisi :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:action id="initComboPosition" namespace="/kategorilab" name="initComboPosition_kategorilab"/>
+                                <s:select list="#initComboPosition.listOfComboPositions" id="positionId3" name="kategoriLab.divisiId" disabled="true"
+                                          listKey="positionId" listValue="positionName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
 
                 </table>
 
@@ -169,7 +181,7 @@
                                         <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
                                                    height="250" width="600" autoOpen="false" title="Error Dialog"
                                                    buttons="{
-                                                                        'OK':function() { $('#error_dialog').dialog('close'); }
+                                                                        'OK':function() { $('#error_dialog').dialog('close'); window.location.reload(true)}
                                                                     }"
                                         >
                                             <div class="alert alert-error fade in">
@@ -182,7 +194,7 @@
                                         <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog" modal="true" resizable="false"
                                                    height="280" width="500" autoOpen="false" title="Warning"
                                                    buttons="{
-                                                                        'OK':function() { $('#error_validation_dialog').dialog('close'); }
+                                                                        'OK':function() { $('#error_validation_dialog').dialog('close');}
                                                                     }"
                                         >
                                             <div class="alert alert-error fade in">

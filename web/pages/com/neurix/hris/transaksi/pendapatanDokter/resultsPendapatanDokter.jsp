@@ -231,17 +231,6 @@
                                                     <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="pendapatanDokter.branchId" disabled="true"
                                                               listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                                     <s:hidden id="branchId" name="pendapatanDokter.branchId" />
-                                                    <%--<s:if test='pendapatanDokter.branchId == "KP"'>--%>
-                                                        <%--<s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>--%>
-                                                        <%--<s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="pendapatanDokter.branchId"--%>
-                                                                  <%--listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
-                                                    <%--</s:if>--%>
-                                                    <%--<s:else>--%>
-                                                        <%--<s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>--%>
-                                                        <%--<s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="pendapatanDokter.branchId" disabled="true"--%>
-                                                                  <%--listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
-                                                        <%--<s:hidden id="branchId" name="pendapatanDokter.branchId" />--%>
-                                                    <%--</s:else>--%>
                                                 </table>
                                             </td>
                                         </tr>

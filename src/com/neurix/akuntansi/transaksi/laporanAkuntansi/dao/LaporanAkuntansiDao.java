@@ -321,7 +321,8 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "      (b.jumlah_debit - b.jumlah_kredit) as total, \n" +
                 "      b.pasien_id as masterId, \n" +
                 "      d.nama as namaMaster, \n" +
-                "      f.nilai_kurs as kurs \n" +
+                "      f.nilai_kurs as kurs, \n" +
+                "      kr.nama_kode_rekening " +
                 "    from \n" +
                 "      (\n" +
                 "        -- mencari semua data di jurnal yang di joinkan dengan setting aging jurnal          \n" +
@@ -388,6 +389,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
             data.setNamaMaster((String) row[7]);
 //            data.setMasterGrp(row[8].toString());
             data.setKurs(BigDecimal.valueOf(Double.parseDouble(row[8].toString())));
+            data.setNamaRekening((String) row[9]);
             listOfResult.add(data);
         }
         return listOfResult;

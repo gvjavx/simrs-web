@@ -581,6 +581,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
             obatEntity.setAverageHargaLembar(new BigDecimal(String.valueOf("0")));
             obatEntity.setAverageHargaBiji(new BigDecimal(String.valueOf("0")));
             obatEntity.setMinStok(bean.getMinStok());
+            obatEntity.setHargaTerakhir(new BigDecimal(String.valueOf(0)));
 
             try {
                 obatDao.addAndSave(obatEntity);
@@ -960,6 +961,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         newObatEntity.setLastUpdateWho(bean.getLastUpdateWho());
         newObatEntity.setBranchId(branchId);
         newObatEntity.setFlagBpjs(bean.getTipeObat());
+        newObatEntity.setFlagKronis(obatEntity.getFlagKronis());
 
         try {
             obatDao.addAndSave(newObatEntity);

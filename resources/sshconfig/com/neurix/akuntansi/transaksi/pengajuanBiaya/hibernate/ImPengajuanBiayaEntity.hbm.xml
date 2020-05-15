@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.neurix.akuntansi.transaksi.pengajuanBiaya.model.ImPengajuanBiayaEntity" dynamic-update="true"
+           table="it_akun_pembayaran_utang_piutang" select-before-update="true" schema="public">
+
+        <id name="pengajuanBiayaId">
+            <column name="pengajuan_biaya_id" sql-type="varchar" length="20" not-null="true" />
+        </id>
+
+        <property name="divisiId">
+            <column name="divisi_id" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="coaAjuan">
+            <column name="coa_ajuan" sql-type="varchar" length="30" not-null="false" />
+        </property>
+        <property name="totalBiaya">
+            <column name="total_biaya" sql-type="numeric" not-null="false" />
+        </property>
+        <property name="tahun">
+            <column name="tahun" sql-type="varchar" length="4" not-null="false" />
+        </property>
+
+        <property name="aprovalId">
+            <column name="aproval_id" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="aprovalName">
+            <column name="aproval_name" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="aprovalDate">
+            <column name="aproval_date" sql-type="date" not-null="false" />
+        </property>
+        <property name="aprovalFlag">
+            <column name="aproval_flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="budgetSaatIni">
+            <column name="budget_saat_ini" sql-type="numeric" not-null="false" />
+        </property>
+        <property name="branchId">
+            <column name="branch_id" sql-type="varchar" length="5" not-null="false" />
+        </property>
+
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="date" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="date" not-null="false" />
+        </property>
+
+    </class>
+</hibernate-mapping>

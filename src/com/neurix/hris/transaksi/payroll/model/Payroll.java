@@ -127,9 +127,20 @@ public class Payroll extends BaseModel {
     private String totalLain11Bulan;
     private String statusApprove;
 
+    //for report baru
+    private String noAnggotaDapen;
+
     private boolean kantorPusat =  false;
     private boolean cetakSatuan = false;
     private boolean adaCheckBox = false;
+
+    public String getNoAnggotaDapen() {
+        return noAnggotaDapen;
+    }
+
+    public void setNoAnggotaDapen(String noAnggotaDapen) {
+        this.noAnggotaDapen = noAnggotaDapen;
+    }
 
     public BigDecimal getTotalPendapatan() {
         return totalPendapatan;

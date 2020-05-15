@@ -12,9 +12,14 @@ public class KategoriTindakanPelayanan extends BaseModel {
     private String action;
     private String flag;
     private Timestamp createdDate;
+    private String stCreatedDate;
     private String createdWho;
     private Timestamp lastUpdate;
+    private String stLastUpdate;
     private String lastUpdateWho;
+
+    private String kategoriName;
+    private String pelayananName;
 
     public String getIdKategoriPelayanan() {
         return idKategoriPelayanan;
@@ -98,5 +103,39 @@ public class KategoriTindakanPelayanan extends BaseModel {
     @Override
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    @Override
+    public String getStCreatedDate() {
+        return stCreatedDate;
+    }
+
+    public void setStCreatedDate(String stCreatedDate) {
+        this.stCreatedDate = stCreatedDate;
+    }
+
+    @Override
+    public String getStLastUpdate() {
+        return stLastUpdate;
+    }
+
+    public void setStLastUpdate(String stLastUpdate) {
+        this.stLastUpdate = stLastUpdate;
+    }
+
+    public String getKategoriName() {
+        return kategoriName;
+    }
+
+    public void setKategoriName(String kategoriName) {
+        this.kategoriName = kategoriName;
+    }
+
+    public String getPelayananName() {
+        return pelayananName;
+    }
+
+    public void setPelayananName(String pelayananName) {
+        this.pelayananName = pelayananName;
     }
 }

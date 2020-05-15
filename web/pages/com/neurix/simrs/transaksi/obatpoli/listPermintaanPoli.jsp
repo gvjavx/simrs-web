@@ -439,7 +439,9 @@
                     $('#save_app').attr('onclick', 'confirmSaveApprove(\'' + idObat + '\',\'' + qtyReq + '\',\'' + idTransaksi + '\',\'' + lembarPerBox + '\',\'' + bijiPerLembar + '\',\'' + satuan + '\')');
                     $('#body_approve').html(table);
                 }else {
-                    $('#modal-warning').modal('show');
+                    $('#error_dialog').dialog('open');
+                    $('#errorMessage').text("ID obat tidak sesuai dengan list obat..!");
+                    $('body').scrollTop(0);
                     $('#status' + idObat).html('<img src="<s:url value="/pages/images/icon_failure.ico"/>" style="height: 20px; width: 20px;">');
                 }
             });

@@ -9,6 +9,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -66,5 +67,20 @@ public class LabDetailDao extends GenericDao<ImSimrsLabDetailEntity, String> {
         String sId = String.format("%08d", iter.next());
 
         return "LDB" + sId;
+    }
+
+    public List<ImSimrsLabDetailEntity> cekData(String idLabDetail) throws HibernateException{
+        List<ImSimrsLabDetailEntity> results = new ArrayList<>();
+
+        String query = "SELECT a.id_lab_detail, b.id_periksa_lab_detail\n" +
+                "FROM im_simrs_lab_detail a\n" +
+                "INNER JOIN it_simrs_periksa_lab_detail b ON b.id_lab_detail = a.id_lab_detail\n" +
+                "WHERE a.id_lab_detail = '"+idLabDetail+"' LIMIT 1";
+
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        return results;
     }
 }

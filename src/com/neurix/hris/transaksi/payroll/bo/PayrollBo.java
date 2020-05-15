@@ -155,5 +155,7 @@ public interface PayrollBo extends BaseMasterBo<Payroll>{
 
     List<Ptt> getPayrollPttByPayrollId(String payrollId) throws GeneralBOException;
 
-    List<Payroll> getDaftarGajiKaryawan(String bulan, String tahun, String branch) throws GeneralBOException;
+    List<Payroll> getDaftarGajiKaryawan(String bulan, String tahun, String branch,String tipe) throws GeneralBOException;
+
+    List<Payroll> getDaftarIuranDapen(String bulan, String tahun, String branch, String tipe) throws GeneralBOException;
 }

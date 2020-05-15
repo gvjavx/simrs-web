@@ -224,7 +224,7 @@ To change this template use File | Settings | File Templates.
                                                         </sj:dialog>
                                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
                                                                    height="500" width="600" autoOpen="false"
-                                                                   title="Pelayanan ">
+                                                                   title="Ruangan ">
                                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                                         </sj:dialog>
 
@@ -262,7 +262,7 @@ To change this template use File | Settings | File Templates.
                                                         <display:column property="idRuangan" sortable="true" title="Ruangan ID"/>
                                                         <display:column property="namaRuangan" sortable="true" title="Nama"  />
                                                         <display:column property="noRuangan" sortable="true" title="No. Ruangan"  />
-                                                        <display:column property="statusRuangan" sortable="true" title="Status Ruangan" />
+                                                        <display:column property="statusRuanganName" sortable="true" title="Status Ruangan" />
                                                         <display:column property="namaKelasRuangan" sortable="true" title="Kelas Ruangan" />
                                                         <display:column property="keterangan" sortable="true" title="Keterangan" />
                                                         <display:column property="branchName" sortable="true" title="Unit" />

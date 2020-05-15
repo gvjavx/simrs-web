@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.8531167061100047"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="240"/>
+	<property name="ireport.y" value="144"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -56,7 +56,7 @@ WHERE
   AND to_char(a.tanggal_jurnal, 'MM-yyyy') = $P{periode}
   and a.registered_flag = 'Y' and a.flag='Y'
 and a.branch_id IN ($P!{reportParams.branchId})
-  order by a.no_jurnal,a.tanggal_jurnal,b.jumlah_kredit,c.kode_rekening]]>
+  order by a.no_jurnal DESC,a.tanggal_jurnal DESC,b.jumlah_kredit,c.kode_rekening]]>
 	</queryString>
 	<field name="no_jurnal" class="java.lang.String"/>
 	<field name="tanggal_jurnal" class="java.sql.Date"/>

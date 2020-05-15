@@ -497,11 +497,11 @@ public class TindakanAction extends BaseMasterAction {
                 logId = tindakanBoProxy.saveErrorMessage(e.getMessage(), "TindakanBo.saveDelete");
             } catch (GeneralBOException e1) {
                 logger.error("[TindakanAction.saveDelete] Error when saving error,", e1);
-                return ERROR;
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[TindakanAction.saveDelete] Error when editing item pasien," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            throw new GeneralBOException(e.getMessage());
         }
         logger.info("[TindakanAction.saveDelete] end process <<<");
         return "success_save_delete";

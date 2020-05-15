@@ -35,38 +35,41 @@ public class TindakanBoImpl implements TindakanBo {
         logger.info("[TindakanBoImpl.saveDelete] start process");
 
         if (bean != null) {
-
             String idTindakan = bean.getIdTindakan();
-
-            ImSimrsTindakanEntity entity = null;
-            try {
-                // Get data from database by ID
-                entity = tindakanDao.getById("idTindakan", idTindakan);
-            } catch (HibernateException e) {
-                logger.error("[TindakanBoImpl.saveDelete] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when searching data tindakan by idTindakan, please inform to your admin...," + e.getMessage());
-            }
-
-            if (entity != null) {
-                // Modify from bean to entity serializable
-                entity.setIdTindakan(idTindakan);
-                entity.setFlag(bean.getFlag());
-                entity.setAction(bean.getAction());
-                entity.setLastUpdate(bean.getLastUpdate());
-                entity.setLastUpdateWho(bean.getLastUpdateWho());
-
+            String status = cekBeforeDelete(idTindakan);
+            if (!status.equalsIgnoreCase("exist")){
+                ImSimrsTindakanEntity entity = null;
                 try {
-                    // Delete (Edit) into database
-                    tindakanDao.updateAndSave(entity);
+                    // Get data from database by ID
+                    entity = tindakanDao.getById("idTindakan", idTindakan);
                 } catch (HibernateException e) {
                     logger.error("[TindakanBoImpl.saveDelete] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving update data Tindakan, please info to your admin..." + e.getMessage());
+                    throw new GeneralBOException("Found problem when searching data tindakan by idTindakan, please inform to your admin...," + e.getMessage());
                 }
 
+                if (entity != null) {
+                    // Modify from bean to entity serializable
+                    entity.setIdTindakan(idTindakan);
+                    entity.setFlag(bean.getFlag());
+                    entity.setAction(bean.getAction());
+                    entity.setLastUpdate(bean.getLastUpdate());
+                    entity.setLastUpdateWho(bean.getLastUpdateWho());
 
-            } else {
-                logger.error("[TindakanBoImpl.saveDelete] Error, not found data Tindakan with request id, please check again your data ...");
-                throw new GeneralBOException("Error, not found data Ruangan with request id, please check again your data ...");
+                    try {
+                        // Delete (Edit) into database
+                        tindakanDao.updateAndSave(entity);
+                    } catch (HibernateException e) {
+                        logger.error("[TindakanBoImpl.saveDelete] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving update data Tindakan, please info to your admin..." + e.getMessage());
+                    }
+
+
+                } else {
+                    logger.error("[TindakanBoImpl.saveDelete] Error, not found data Tindakan with request id, please check again your data ...");
+                    throw new GeneralBOException("Error, not found data Ruangan with request id, please check again your data ...");
+                }
+            }else {
+                throw new GeneralBOException("Maaf Data tidak dapat dihapus, karna masih digunakan pada data Transaksi");
             }
         }
 
@@ -344,6 +347,23 @@ public class TindakanBoImpl implements TindakanBo {
             entities = tindakanDao.getDataTindakan(namaTindakan);
         } catch (HibernateException e) {
             logger.error("[PayrollSkalaGajiBoImpl.getSearchPayrollSkalaGajiByCriteria] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        if (entities.size()>0){
+            status = "exist";
+        }else{
+            status="notExits";
+        }
+        return status;
+    }
+
+    public String cekBeforeDelete(String idTindakan)throws GeneralBOException{
+        String status ="";
+        List<ImSimrsTindakanEntity> entities = new ArrayList<>();
+        try {
+            entities = tindakanDao.cekData(idTindakan);
+        } catch (HibernateException e) {
+            logger.error("[TindakanBoImpl.cekBeforeDelete] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
         }
         if (entities.size()>0){

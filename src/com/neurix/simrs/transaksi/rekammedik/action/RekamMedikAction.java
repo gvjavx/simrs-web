@@ -141,6 +141,7 @@ public class RekamMedikAction extends BaseTransactionAction {
             detailCheckup.setIdAsuransi(checkup.getIdAsuransi());
             detailCheckup.setNamaAsuransi(checkup.getNamaAsuransi());
             detailCheckup.setCoverBiaya(checkup.getCoverBiaya());
+            detailCheckup.setVideoRm(checkup.getVideoRm());
             setDetailCheckup(detailCheckup);
 
         } else {
