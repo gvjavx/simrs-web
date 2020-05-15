@@ -527,6 +527,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "AND a.branch_id LIKE :branchId \n" + pelayanan +
                 "AND pl.tipe_pelayanan = 'rawat_jalan' OR  pl.tipe_pelayanan = 'igd' \n" +
                 "AND CAST(a.created_date AS date) = current_date\n" +
+                "AND pr.status IN ('0', '1')\n" +
                 "ORDER BY c.nama_pelayanan, pr.tgl_antrian ASC";
 
         List<Object[]> result = new ArrayList<>();
@@ -1029,9 +1030,9 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         return checkupList;
     }
 
-    public List<HeaderCheckup> getListVideoRm(String idPasien){
+    public List<HeaderCheckup> getListVideoRm(String idPasien) {
         List<HeaderCheckup> checkupList = new ArrayList<>();
-        if(idPasien != null){
+        if (idPasien != null) {
             String SQL = "SELECT \n" +
                     "a.no_checkup,\n" +
                     "b.id_detail_checkup,\n" +
@@ -1058,10 +1059,10 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     checkup.setNoCheckup(obj[0] == null ? "" : obj[0].toString());
                     checkup.setIdDetailCheckup(obj[1] == null ? "" : obj[2].toString());
                     checkup.setNamaPelayanan(obj[2] == null ? "" : obj[3].toString());
-                    checkup.setCreatedDate(obj[3] == null ? null :(Timestamp) obj[4]);
-                    checkup.setTglKeluar(obj[4] == null ? null:(Timestamp) obj[5]);
-                    if(obj[5] != null){
-                        checkup.setVideoRm(CommonConstant.EXTERNAL_IMG_URI+obj[5].toString());
+                    checkup.setCreatedDate(obj[3] == null ? null : (Timestamp) obj[4]);
+                    checkup.setTglKeluar(obj[4] == null ? null : (Timestamp) obj[5]);
+                    if (obj[5] != null) {
+                        checkup.setVideoRm(CommonConstant.EXTERNAL_IMG_URI + obj[5].toString());
                     }
                     checkupList.add(checkup);
                 }

@@ -444,8 +444,8 @@
                         <h3 class="box-title"><i class="fa fa-laptop"></i> Monitoring</h3>
                     </div>
                     <div class="box-body">
-                        <button class="btn btn-danger" onclick="showModalPlan('<s:property value="rawatInap.idDetailCheckup"/>','','suster')">
-                            <i class="fa fa-edit"></i> Schedule Rawat
+                        <button class="btn btn-primary" onclick="showModalPlan('<s:property value="rawatInap.idDetailCheckup"/>','','suster')">
+                            <i class="fa fa-calendar"></i> Schedule Rawat
                         </button>
                         <br>
                         <button class="btn btn-info" onclick="showModalCairan('<s:property value="rawatInap.idDetailCheckup"/>')">
@@ -3296,6 +3296,7 @@
     var today           = new Date();
     var month           = ""+(today.getMonth()+1);
     var day             = ""+today.getDate();
+    var pathImages = '<%= request.getContextPath() %>';
 
     if (month.length < 2) {
         month = "0"+month;
@@ -4376,7 +4377,7 @@
                     var lab = "-";
                     var tanggal = item.createdDate;
                     var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
-                    var btn = '<img border="0" class="hvr-grow" onclick="editLab(\'' + item.idPeriksaLab + '\',\'' + item.idLab + '\',\'' + item.idKategoriLab + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">';
+                    var btn = '<img border="0" class="hvr-grow" onclick="editLab(\'' + item.idPeriksaLab + '\',\'' + item.idLab + '\',\'' + item.idKategoriLab + '\',\''+item.kategoriLabName+'\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">';
 
                     var tipe = "";
 
@@ -4818,15 +4819,14 @@
         $('#modal-diagnosa').modal({show:true, backdrop:'static'});
     }
 
-    function editLab(id, idLab, idKategoriLab) {
+    function editLab(id, idLab, idKategoriLab, kategoriName) {
         $('#load_lab, #warning_lab, #war_kategori_lab, #war_lab, #war_parameter').hide();
         $('#save_lab').attr('onclick', 'saveLab(\'' + id + '\')').show();
         $('#lab_kategori').val(idKategoriLab).trigger('change');
         var idParameter = [];
         PeriksaLabAction.listParameterPemeriksaan(id, function (response) {
-            data = response;
-            if (data != null) {
-                $.each(data, function (i, item) {
+            if (response.length > 0) {
+                $.each(response, function (i, item) {
                     idParameter.push(item.idLabDetail);
                 });
             }

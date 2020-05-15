@@ -351,6 +351,7 @@ public class ObatBoImpl implements ObatBo {
         obatEntity.setIdPabrik(bean.getIdPabrik());
         obatEntity.setMerk(bean.getMerk());
         obatEntity.setMinStok(bean.getMinStok());
+        obatEntity.setHargaTerakhir(bean.getHargaTerakhir());
 
         try {
             obatDao.addAndSave(obatEntity);
