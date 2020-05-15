@@ -12,6 +12,7 @@
 
     <bean id="diagnosaRawatBo" class="com.neurix.simrs.transaksi.diagnosarawat.bo.impl.DiagnosaRawatBoImpl"
           p:diagnosaRawatDao-ref="diagnosaRawatDao"
+          p:checkupDetailDao-ref="checkupDetailDao"
     />
 
     <bean id="rawatInapController" class="com.neurix.simrs.mobileapi.RawatInapController"

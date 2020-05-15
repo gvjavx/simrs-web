@@ -148,7 +148,7 @@
                                                         <s:set name="listOfMappingJurnal" value="#session.listOfResult" scope="request" />
                                                         <display:table name="listOfMappingJurnal" class="table table-condensed table-striped table-hover"
                                                                        requestURI="paging_displaytag_mappingJurnal.action" export="true" id="row" pagesize="30" style="font-size:10">
-                                                            <s:if test="#attr.row.transBaru">
+                                                            <s:if test='#attr.row.flag == "Y"'>
                                                                 <display:column media="html" title="View">
                                                                     <s:url var="urlView" namespace="/mappingJurnal" action="view_mappingJurnal" escapeAmp="false">
                                                                         <s:param name="transId"><s:property value="#attr.row.transId"/></s:param>

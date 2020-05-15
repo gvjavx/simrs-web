@@ -14,21 +14,24 @@
 
 <html>
 <head>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/ProvinsiAction.js"/>'></script>
+    <%--<script type='text/javascript' src='<s:url value="/dwr/interface/ProvinsiAction.js"/>'></script>--%>
     <script type="text/javascript">
 
         function callSearch() {
             //$('#waiting_dialog').dialog('close');
             $('#view_dialog_menu').dialog('close');
             $('#info_dialog').dialog('close');
-            window.location.reload(true);
+//            window.location.reload(true);
+            document.kelasruanganForm.action = "search_kelasruangan.action";
+            document.kelasruanganForm.submit();
         };
 
-        $.subscribe('beforeProcessSave', function (event, data) {
+        $.subscribe('beforeProcessSave2', function (event, data) {
             // var idRuangan = document.getElementById("id_ruangan2").value;
             var nameKelasRuangan = document.getElementById("nama_kelasruangan2").value;
+            var position = document.getElementById("positionId2").value;
 
-            if (nameKelasRuangan != '') {
+            if (nameKelasRuangan != '' && position != '') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -48,8 +51,11 @@
                 if (nameKelasRuangan == '') {
                     msg += 'Field <strong>Nama Kelas Ruangan</strong> is required.' + '<br/>';
                 }
+                if (position == '') {
+                    msg += 'Field <strong>Position</strong> is required.' + '<br/>';
+                }
 
-                document.getElementById('errorValidationMessage').innerHTML = msg;
+                document.getElementById('errorValidationMessage2').innerHTML = msg;
 
                 $.publish('showErrorValidationDialog');
 
@@ -115,10 +121,17 @@
                 </table>
 
                 <table >
-                    <S:hidden name="kelasRuangan.idKelasRuangan">
-
-                    </S:hidden>
-
+                    <tr >
+                        <td>
+                            <label class="control-label"><small>ID Kelas Ruangan</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield cssStyle="margin-top: 7px" id="id_kelasruangan" name="kelasRuangan.idKelasRuangan" required="false" disabled="true" cssClass="form-control"/>
+                                <S:hidden name="kelasRuangan.idKelasRuangan"></S:hidden>
+                            </table>
+                        </td>
+                    </tr>
                     <tr>
                         <td>
                             <label class="control-label">
@@ -133,6 +146,19 @@
                             </table>
                         </td>
                     </tr>
+
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Divisi :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:action id="initComboPosition" namespace="/kelasruangan" name="initComboPosition_kelasruangan"/>
+                                <s:select list="#initComboPosition.listOfComboPositions" id="positionId2" name="kelasRuangan.positionId"
+                                          listKey="positionId" listValue="positionName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
                 </table>
 
 
@@ -142,7 +168,7 @@
                     <div class="col-sm-offset-2 col-sm-10">
                             <%--<button type="submit" class="btn btn-default">Submit</button>--%>
                         <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="editKelasRuanganForm" id="edit" name="edit"
-                                   onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
+                                   onBeforeTopics="beforeProcessSave2" onCompleteTopics="closeDialog,successDialog"
                                    onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
                             <i class="fa fa-check"></i>
                             Save
@@ -160,15 +186,21 @@
                             <div id="crud">
                                 <td>
                                     <table>
-                                        <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"
+                                        <sj:dialog id="waiting_dialog" openTopics="showDialog"
+                                                   closeTopics="closeDialog" modal="true"
                                                    resizable="false"
-                                                   height="350" width="600" autoOpen="false" title="Saving ...">
+                                                   height="250" width="600" autoOpen="false"
+                                                   title="Update Data ...">
                                             Please don't close this window, server is processing your request ...
-                                            </br>
-                                            </br>
-                                            </br>
+                                            <br>
                                             <center>
-                                                <img border="0" src="<s:url value="/pages/images/indicator-write.gif"/>" name="image_indicator_write">
+                                                <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                     src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                     name="image_indicator_write">
+                                                <br>
+                                                <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                     src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                     name="image_indicator_write">
                                             </center>
                                         </sj:dialog>
 
@@ -188,7 +220,7 @@
                                         <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
                                                    height="250" width="600" autoOpen="false" title="Error Dialog"
                                                    buttons="{
-                                                                        'OK':function() { $('#error_dialog').dialog('close'); }
+                                                                        'OK':function() { $('#error_dialog').dialog('close'); window.location.reload(true)}
                                                                     }"
                                         >
                                             <div class="alert alert-error fade in">
@@ -208,7 +240,7 @@
                                                 <label class="control-label" align="left">
                                                     <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> Please check this field :
                                                     <br/>
-                                                    <center><div id="errorValidationMessage"></div></center>
+                                                    <center><div id="errorValidationMessage2"></div></center>
                                                 </label>
                                             </div>
                                         </sj:dialog>

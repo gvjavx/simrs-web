@@ -783,7 +783,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
 
         Boolean cek = false;
 
-        String SQL = "SELECT id_detail_checkup, approve_bpjs_flag\n" +
+        String SQL = "SELECT id_detail_checkup, approve_bpjs_flag, flag_update_klaim\n" +
                 "FROM it_simrs_riwayat_tindakan\n" +
                 "WHERE id_detail_checkup LIKE :id ";
 
@@ -794,7 +794,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
 
         if (results != null) {
             for (Object[] obj : results) {
-                if (obj[1] == null || "".equalsIgnoreCase(obj[1].toString())) {
+                if (obj[2] == null || "".equalsIgnoreCase(obj[1].toString())) {
                     cek = true;
                 }
             }
@@ -886,6 +886,9 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
         String dateFrom = "";
         String dateTo = "";
 
+        String idPasien = "%";
+        String namaPasien = "%";
+
         if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())) {
             idDetail = bean.getIdDetailCheckup();
         }
@@ -906,6 +909,13 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
             dateTo = bean.getStDateTo();
         }
 
+        if(bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())){
+            idPasien = bean.getIdPasien();
+        }
+
+        if(bean.getNamaPasien() != null && !"".equalsIgnoreCase(bean.getNamaPasien())){
+            namaPasien = "%"+bean.getNamaPasien() +"%";
+        }
 
         if ("Y".equalsIgnoreCase(bean.getStatusBayar())) {
             statusBayar = "\n AND um.status_bayar = '" + bean.getStatusBayar() + "'";
@@ -931,6 +941,8 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 "WHERE dt.id_detail_checkup LIKE :idDetail\n" +
                 "AND dt.id_pelayanan LIKE :idPoli\n" +
                 "AND ck.branch_id LIKE :branchId\n" +
+                "AND ck.id_pasien LIKE :idPasien\n" +
+                "AND ck.nama LIKE :nama\n" +
                 "AND um.id LIKE :idUang" + statusBayar;
 
         List<Object[]> resuts = new ArrayList<>();
@@ -949,6 +961,8 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     .setParameter("dateTo", dateTo)
                     .setParameter("dateFrom", dateFrom)
                     .setParameter("branchId", branchId)
+                    .setParameter("idPasien", idPasien)
+                    .setParameter("nama", namaPasien)
                     .list();
 
         } else {
@@ -959,6 +973,8 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     .setParameter("idPoli", idPelayanan)
                     .setParameter("idUang", idUangMuka)
                     .setParameter("branchId", branchId)
+                    .setParameter("idPasien", idPasien)
+                    .setParameter("nama", namaPasien)
                     .list();
         }
 
@@ -993,6 +1009,8 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
         String jenisPasien = "%";
         if (!"".equalsIgnoreCase(jenis)) {
             jenisPasien = jenis;
+        } else if ("ptpn".equalsIgnoreCase(jenis)){
+            jenisPasien = "bpjs";
         }
 
         String SQL = "SELECT \n" +
@@ -1004,6 +1022,11 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 "id_detail_checkup = :idDetail\n" +
                 "AND keterangan LIKE :ket\n" +
                 "AND jenis_pasien LIKE :jenis\n" +
+                "AND id_riwayat_tindakan NOT IN (\n" +
+                "\tSELECT id_riwayat_tindakan \n" +
+                "\tFROM it_simrs_tindakan_transitoris\n" +
+                "\tWHERE id_detail_checkup = :idDetail\n" +
+                ")\n" +
                 "GROUP BY id_detail_checkup";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -1984,7 +2007,8 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "c.total_lab,\n" +
                     "d.total_radiologi,\n" +
                     "e.total_resep, \n" +
-                    "a.id_jenis_periksa_pasien \n" +
+                    "a.id_jenis_periksa_pasien, \n" +
+                    "a.kode_cbg\n" +
                     "FROM it_simrs_header_detail_checkup a\n" +
                     "LEFT JOIN (\n" +
                     "SELECT id_detail_checkup, SUM(tarif_total) as total_tindakan\n" +
@@ -2050,6 +2074,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     detailCheckup.setTarifBpjs(tarifBpjs);
                     detailCheckup.setTarifTindakan(totalTindakan);
                     detailCheckup.setIdJenisPeriksaPasien(objects[7] == null ? "" : objects[7].toString());
+                    detailCheckup.setKodeCbg(objects[8] == null ? "" : objects[8].toString());
                 }
             }
         }

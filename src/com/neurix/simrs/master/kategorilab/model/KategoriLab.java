@@ -8,10 +8,14 @@ public class KategoriLab extends BaseModel {
 
     private String idKategoriLab;
     private String namaKategori;
+    private String divisiId;
+    private String divisiName;
     private String flag;
     private String action;
+    private String stCreatedDate;
     private Timestamp createdDate;
     private String createdWho;
+    private String stLastUpdate;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
 
@@ -89,5 +93,39 @@ public class KategoriLab extends BaseModel {
     @Override
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    @Override
+    public String getStCreatedDate() {
+        return stCreatedDate;
+    }
+
+    public void setStCreatedDate(String stCreatedDate) {
+        this.stCreatedDate = stCreatedDate;
+    }
+
+    @Override
+    public String getStLastUpdate() {
+        return stLastUpdate;
+    }
+
+    public void setStLastUpdate(String stLastUpdate) {
+        this.stLastUpdate = stLastUpdate;
+    }
+
+    public String getDivisiId() {
+        return divisiId;
+    }
+
+    public void setDivisiId(String divisiId) {
+        this.divisiId = divisiId;
+    }
+
+    public String getDivisiName() {
+        return divisiName;
+    }
+
+    public void setDivisiName(String divisiName) {
+        this.divisiName = divisiName;
     }
 }

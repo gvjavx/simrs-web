@@ -24,6 +24,15 @@ public class BudgetingPengadaan{
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String rekeningId;
+    private String idBudgetingDetail;
+
+    public String getIdBudgetingDetail() {
+        return idBudgetingDetail;
+    }
+
+    public void setIdBudgetingDetail(String idBudgetingDetail) {
+        this.idBudgetingDetail = idBudgetingDetail;
+    }
 
     public String getIdPengadaan() {
         return idPengadaan;

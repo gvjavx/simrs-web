@@ -23,5 +23,8 @@ public interface RiwayatTindakanBo {
     public List<ItSimrsRiwayatTindakanEntity> getListEntityRiwayatTindakan(RiwayatTindakan bean);
     public void updateByEntity(ItSimrsRiwayatTindakanEntity entity) throws GeneralBOException;
     public ItSimrsTindakanTransitorisEntity getTindakanTransitorisById(String id) throws GeneralBOException;
+
+    List<RiwayatTindakan> typeaheadRiwayatTindakan(String idRiwayatTindakan) throws GeneralBOException;
     public ItSimrsRiwayatTindakanEntity getRiwayatTindakanResep(String idDetail, String jenisPasien) throws GeneralBOException;
+    public List<String> getListKeteranganByIdDetailCheckup(String idDetailCheckup) throws GeneralBOException;
 }

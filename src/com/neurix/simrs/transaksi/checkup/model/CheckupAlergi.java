@@ -89,4 +89,5 @@ public class CheckupAlergi {
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
     }
+
 }

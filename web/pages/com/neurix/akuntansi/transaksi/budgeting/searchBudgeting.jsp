@@ -24,8 +24,11 @@
             $('#pembayaran_open').addClass('menu-open');
         });
 
-
     </script>
+
+    <script src="<s:url value="/pages/plugins/tree/jquery.treegrid.bootstrap3.js"/>"></script>
+    <script src="<s:url value="/pages/plugins/tree/jquery.treegrid.js"/>"></script>
+    <script src="<s:url value="/pages/plugins/tree/lodash.js"/>"></script>
 </head>
 
 <body class="hold-transition skin-blue fixed sidebar-mini">
@@ -138,8 +141,8 @@
                                         <button class="btn btn-success" onclick="search()"><i class="fa fa-search"></i> Search</button>
                                         <button class="btn btn-success" onclick="add()" id="btn-add" style="display: inline-block;"><i class="fa fa-plus"></i> Add</button>
                                         <div class="btn-group">
-                                            <button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Action</button>
-                                            <button type="button" class="btn btn-primary dropdown-toggle"
+                                            <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Action</button>
+                                            <button type="button" class="btn btn-success dropdown-toggle"
                                                     data-toggle="dropdown" style="height: 34px">
                                                 <span class="caret"></span>
                                                 <span class="sr-only">Toggle Dropdown</span>
@@ -157,7 +160,7 @@
 
                     <div class="box-header with-border"></div>
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-th-list"></i>
+                        <h3 class="box-title"><i class="fa fa-th-list"></i> List Data
                             <%--List Tutup Period <strong><span id="label-tahun"></span> - <span id="label-bulan"></span></strong> --%>
                         </h3>
                     </div>
@@ -179,7 +182,7 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-md-8 col-md-offset-2">
+                            <div class="col-md-12">
                                 <table class="table table-bordered table-striped">
                                     <thead id="head-budgeting">
                                         <tr bgcolor="#90ee90">
@@ -476,68 +479,8 @@
             }
 
             $("#action-menu").html(str);
-
-//            if ("DRAFT" == var1){
-//                str += "<li>"+
-//                    "<a href=\"#\" onclick=\"action('EDIT_DRAFT')\">"+
-//                    "<i class=\"fa fa-edit\"></i>Edit Draft</a>"+
-//                    "</li>";
-//
-//                str += "<li>"+
-//                    "<a href=\"#\" onclick=\"action('APPROVE_DRAFT')\">"+
-//                    "<i class=\"fa fa-edit\"></i>Approve Draft</a>"+
-//                    "</li>";
-//
-//                str += "<li>"+
-//                    "<a href=\"#\" onclick=\"action('ADJUST_DRAFT')\">"+
-//                    "<i class=\"fa fa-edit\"></i>Adjust Draft</a>"+
-//                    "</li><hr>";
-//            }
-//            if ("FINAL" == var1){
-//                str += "<li>"+
-//                    "<a href=\"#\" onclick=\"action('EDIT_FINAL')\">"+
-//                    "<i class=\"fa fa-edit\"></i>Edit Final</a>"+
-//                    "</li>";
-//
-//                str += "<li>"+
-//                    "<a href=\"#\" onclick=\"action('APPROVE_FINAL')\">"+
-//                    "<i class=\"fa fa-edit\"></i>Approve Final</a>"+
-//                    "</li>";
-//
-//                str += "<li>"+
-//                    "<a href=\"#\" onclick=\"action('ADJUST_FINAL')\">"+
-//                    "<i class=\"fa fa-edit\"></i>Adjust Final</a>"+
-//                    "</li><hr>";
-//            }
-//            if ("REVISI" == var1){
-//                str += "<li>"+
-//                    "<a href=\"#\" onclick=\"action('EDIT_REVISI')\">"+
-//                    "<i class=\"fa fa-edit\"></i>Edit Revisi</a>"+
-//                    "</li>";
-//
-//                str += "<li>"+
-//                    "<a href=\"#\" onclick=\"action('APPROVE_REVISI')\">"+
-//                    "<i class=\"fa fa-edit\"></i>Approve Revisi</a>"+
-//                    "</li>";
-//
-//                str += "<li>"+
-//                    "<a href=\"#\" onclick=\"action('ADJUST_REVISI')\">"+
-//                    "<i class=\"fa fa-edit\"></i>Adjust Revisi</a>"+
-//                    "</li><hr>";
-//            }
-
-
         });
     }
-
-//    function tipeAction(tipe) {
-//
-//
-//
-//    <a href="addRawatIgd_igd.action?tipe=umum">
-//            <i class="fa fa-edit"></i>edit
-//            </a>
-//    }
 
     // exemple : post('/contact/', {name: 'Johnny Bravo'});
     function post(path, params) {
@@ -564,6 +507,17 @@
         form.submit();
     }
 
+    function formatRupiah(angka) {
+        if(angka != null && angka != '' && angka > 0){
+            var reverse = angka.toString().split('').reverse().join(''),
+                ribuan = reverse.match(/\d{1,3}/g);
+            ribuan = ribuan.join('.').split('').reverse().join('');
+            return ribuan;
+        }else{
+            return 0;
+        }
+    }
+
     function formatDate(date) {
         var d = new Date(date),
             month = '' + (d.getMonth() + 1),
@@ -580,8 +534,22 @@
 
 
     function add() {
+
         var host = firstpath()+"/budgeting/add_budgeting.action";
         post(host);
+
+//        var tahun = $("#sel-tahun").val();
+//        var unit = $("#sel-unit").val();
+//
+//        BudgetingAction.checkTransaksiBudgeting(unit, tahun, function(response){
+//
+//            if (response.branchId == null && response.tahun == null){
+//                var host = firstpath()+"/budgeting/add_budgeting.action";
+//                post(host);
+//            } else {
+//                alert("Data Sudah Ada. di tahun "+response.tahun);
+//            }
+//        });
     }
 
     function search() {
@@ -610,12 +578,12 @@
                     var strList = "";
                     $.each(response.list, function (i, item) {
                         strList += "<tr>" +
-                            "<td align='center'>"+setIconByAction(item.status, item.level)+"</td>"+
+                            "<td align='center'>"+actionView(item.idBudgeting, item.level)+"</td>"+
                             "<td>"+item.kodeRekening+"</td>"+
                             "<td>"+item.namaKodeRekening+"</td>"+
-                            "<td>"+item.nilaiDraf+"</td>"+
-                            "<td>"+item.nilaiFinal+"</td>"+
-                            "<td>"+item.nilaiRevisi+"</td>"+
+                            "<td>"+formatRupiah(item.nilaiDraf)+"</td>"+
+                            "<td>"+formatRupiah(item.nilaiFinal)+"</td>"+
+                            "<td>"+formatRupiah(item.nilaiRevisi)+"</td>"+
                             "</tr>";
                     });
                 }
@@ -628,16 +596,16 @@
 
     }
 
-    function setIconByAction( var1 , var2, var3) {
-
+    function actionView(var1, var2) {
         var str = "";
-        if ( ("ADD_DRAFT" || "EDIT_DRAF") == var1){
-            if ("5" == var2){
-                str = "<button class='btn btn-sm btn-success' onclick=\"editdraft(\'"+var3+"\')\"><i class='fa fa-edit'></i></button>";
-            }
+        if (var2 == "5"){
+        str = "<button class='btn btn-sm btn-success' onclick='"+view(var1)+"'><i class='fa fa-search'></i></button>";
         }
-
         return str;
+    }
+
+    function view(var1) {
+
     }
 
     function saveTutup(unit, tahun, bulan) {

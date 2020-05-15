@@ -76,6 +76,13 @@
             <result name="search">/pages/com/neurix/simrs/transaksi/periksaradiologi/searchPeriksaRadiologi.jsp</result>
             <result name="init_add">/pages/com/neurix/simrs/transaksi/periksaradiologi/addPeriksaRadiologi.jsp</result>
 
+            <result name="print_radiologi" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/printHasilPeriksaRadiologi.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+
         </action>
     </package>
 </struts>

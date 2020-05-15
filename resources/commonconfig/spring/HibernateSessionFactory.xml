@@ -33,10 +33,15 @@
                 <prop key="hibernate.use_sql_comments">false</prop>
                 <prop key="hibernate.bytecode.use_reflection_optimizer">false</prop>
 
-<!--                <prop key="hibernate.connection.url">jdbc:postgresql://192.168.1.101:5432:5432/simrs</prop>
-                <prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>
-                <prop key="hibernate.connection.username">postgres</prop>
-                <prop key="hibernate.connection.password">123456</prop>-->
+                <!--<prop key="hibernate.connection.url">jdbc:postgresql://192.168.0.10:5432/simrs</prop>-->
+                <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
+                <!--<prop key="hibernate.connection.username">root</prop>-->
+                <!--<prop key="hibernate.connection.password">123456</prop>-->
+
+                <!--<prop key="hibernate.connection.url">jdbc:postgresql://db.simrs.local:5432/gomedsys_nmu</prop>-->
+                <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
+                <!--<prop key="hibernate.connection.username">root</prop>-->
+                <!--<prop key="hibernate.connection.password">123456</prop>-->
 
                 <prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs</prop>
                 <prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>
@@ -400,6 +405,8 @@
                 <value>sshconfig/com/neurix/akuntansi/transaksi/saldoakhir/hibernate/ItAkunSaldoAkhirEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/saldoakhir/hibernate/ItAkunSaldoAkhirDetailEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/master/reportKeuanganKonsol/hibernate/ImReportKeuanganKonsolEntity.hbm.xml</value>
+
+                <value>sshconfig/com/neurix/akuntansi/master/reportKeuanganKonsol/hibernate/ImAkunSettingReportKeuanganKonsolDetail.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/budgeting/hibernate/ItAkunBudgetingEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/budgeting/hibernate/ItAkunBudgetingDetailEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/budgeting/hibernate/ItAkunBudgetingPengadaanEntity.hbm.xml</value>
@@ -423,8 +430,12 @@
 
                 <value>sshconfig/com/neurix/hris/transaksi/pendapatanDokter/hibernate/ItHrisPendapatanDokterEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/transaksi/pendapatanDokter/hibernate/ItHrisPendapatanDokterDetailEntity.hbm.xml</value>
+
+                <value>sshconfig/com/neurix/hris/transaksi/pendapatanDokter/hibernate/ImHrisPajakEntity.hbm.xml</value>
+
                 <value>sshconfig/com/neurix/hris/master/DokterKso/hibernate/ImSimrsDokterKso.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/master/pembayaran/hibernate/ImAkunPembayaranEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/transaksi/pendapatanDokter/hibernate/ItHrisPendapatanDokterPphLebihEntity.hbm.xml</value>
 
                 <value>sshconfig/com/neurix/simrs/transaksi/fisioterapi/hibernate/ItSimrsFisioterapiEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/fisioterapi/hibernate/ItSimrsMonitoringFisioterapiEntity.hbm.xml</value>
@@ -441,7 +452,9 @@
                 <value>sshconfig/com/neurix/simrs/transaksi/rencanaasuhankeperawatan/hibernate/ItSimrsRencanaAsuhanKeperawatanEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/profilrekammedisrj/hibernate/ItSimrsRekamMedisRawatJalanEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/ringkasanpasien/hibernate/ItSimrsRingkasanPasienEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/cetakanrm/hibernate/ItSimrsCetakanRmEntity.hbm.xml</value>
 
+                <value>sshconfig/com/neurix/hris/master/DokterKso/hibernate/ImSimrsDokterKsoTindakan.hbm.xml</value>
             </list>
         </property>
     </bean>

@@ -1,6 +1,8 @@
 package com.neurix.simrs.transaksi.periksalab.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.periksalab.model.ItSimrsPeriksaLabEntity;
 import com.neurix.simrs.transaksi.periksalab.model.PeriksaLab;
@@ -127,7 +129,8 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                     "c.id_pasien,\n" +
                     "c.nama,\n" +
                     "lab.nama_lab,\n" +
-                    "pl.created_date\n" +
+                    "pl.created_date,\n" +
+                    "pl.approve_flag\n" +
                     "FROM it_simrs_periksa_lab pl\n" +
                     "INNER JOIN it_simrs_header_detail_checkup dc ON dc.id_detail_checkup = pl.id_detail_checkup\n" +
                     "INNER JOIN it_simrs_header_checkup c ON c.no_checkup = dc.no_checkup\n" +
@@ -186,6 +189,7 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                     dataLab.setCreatedDate((Timestamp) obj[6]);
                     String formatDate = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(dataLab.getCreatedDate());
                     dataLab.setStCreatedDate(formatDate);
+                    dataLab.setApproveFlag(obj[7] == null ? "" : obj[7].toString());
                     checkupList.add(dataLab);
                 }
             }
@@ -295,5 +299,81 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
         }
 
         return periksaLab;
+    }
+
+    public String getDivisiIdLabTransaction(String idDetailCheckup, String tipe){
+
+        String SQL = "SELECT c.id_kategori_lab, a.id_detail_checkup, d.kodering\n" +
+                "FROM it_simrs_periksa_lab a \n" +
+                "INNER JOIN im_simrs_lab b ON b.id_lab = a.id_lab\n" +
+                "INNER JOIN im_simrs_kategori_lab c ON c.id_kategori_lab = b.id_kategori_lab\n" +
+                "INNER JOIN im_position d ON d.position_id = c.divisi_id\n" +
+                "WHERE c.nama_kategori ILIKE :tipe\n" +
+                "AND a.id_detail_checkup ILIKE :idDetail\n" +
+                "ORDER BY a.last_update DESC LIMIT 1";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("idDetail", idDetailCheckup)
+                .setParameter("tipe", tipe)
+                .list();
+
+        String divisId = "";
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                divisId = obj[2] == null ? "" : obj[2].toString();
+            }
+        }
+        return divisId;
+    }
+
+    public List<Dokter> getListDokterLabRadiologi(String tipe){
+        List<Dokter> dokterList = new ArrayList<>();
+        if(tipe != null && !"".equalsIgnoreCase(tipe)){
+            String SQL = "SELECT \n" +
+                    "a.id_dokter,\n" +
+                    "a.nama_dokter\n" +
+                    "FROM im_simrs_dokter a\n" +
+                    "INNER JOIN im_simrs_dokter_pelayanan b ON a.id_dokter = b.id_dokter\n" +
+                    "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
+                    "WHERE c.branch_id = :branchId\n" +
+                    "AND c.tipe_pelayanan LIKE :tipe";
+
+            List<Objects[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("tipe", tipe)
+                    .setParameter("branchId", CommonUtil.userBranchLogin())
+                    .list();
+
+            if(result.size() > 0){
+                for (Object[] obj: result){
+                    Dokter dokter = new Dokter();
+                    dokter.setIdDokter(obj[0] == null ? "" : obj[0].toString());
+                    dokter.setNamaDokter(obj[1] == null ? "" : obj[1].toString());
+                    dokterList.add(dokter);
+                }
+            }
+        }
+        return dokterList;
+    }
+
+    public PeriksaLab getNamaLab(String idPeriksa){
+        PeriksaLab lab = new PeriksaLab();
+        if(idPeriksa != null && !"".equalsIgnoreCase(idPeriksa)){
+            String SQL = "SELECT \n" +
+                    "a.id_periksa_lab, \n" +
+                    "b.nama_lab FROM it_simrs_periksa_lab a\n" +
+                    "INNER JOIN im_simrs_lab b ON a.id_lab = b.id_lab\n" +
+                    "WHERE id_periksa_lab = :idPeriksaLab";
+            List<Objects[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("idPeriksaLab", idPeriksa)
+                    .list();
+            if(result.size() > 0){
+                Object[] objects = result.get(0);
+                lab.setIdPeriksaLab(objects[0] == null ? "" : objects[0].toString());
+                lab.setKategoriLabName(objects[1] == null ? "" : objects[1].toString());
+            }
+        }
+        return lab;
     }
 }

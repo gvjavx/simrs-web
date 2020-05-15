@@ -1,8 +1,12 @@
 package com.neurix.simrs.master.ruangan.bo.impl;
 
+import com.neurix.authorization.company.bo.BranchBo;
+import com.neurix.authorization.company.model.Branch;
 import com.neurix.common.exception.GeneralBOException;
 
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.kelasruangan.bo.KelasRuanganBo;
+import com.neurix.simrs.master.kelasruangan.model.KelasRuangan;
 import com.neurix.simrs.master.ruangan.bo.RuanganBo;
 import com.neurix.simrs.master.ruangan.dao.RuanganDao;
 import com.neurix.simrs.master.ruangan.model.MtSimrsRuanganEntity;
@@ -11,6 +15,8 @@ import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.ContextLoader;
 
 import java.math.BigInteger;
 import java.sql.Timestamp;
@@ -43,6 +49,21 @@ public class RuanganBoImpl implements RuanganBo {
         if (bean.getIdRuangan() != null && !"".equalsIgnoreCase(bean.getIdRuangan())) {
             hsCriteria.put("id_ruangan", bean.getIdRuangan());
         }
+        if (bean.getNamaRuangan() != null && !"".equalsIgnoreCase(bean.getNamaRuangan())) {
+            hsCriteria.put("nama_ruangan", bean.getNamaRuangan());
+        }
+        if (bean.getIdKelasRuangan() != null && !"".equalsIgnoreCase(bean.getIdKelasRuangan())) {
+            hsCriteria.put("id_kelas_ruangan", bean.getIdKelasRuangan());
+        }
+        if (bean.getStatusRuangan() != null && !"".equalsIgnoreCase(bean.getStatusRuangan())) {
+            hsCriteria.put("status_ruangan", bean.getStatusRuangan());
+        }
+        if (bean.getNoRuangan() != null && !"".equalsIgnoreCase(bean.getNoRuangan())) {
+            hsCriteria.put("no_ruangan", bean.getNoRuangan());
+        }
+        if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())) {
+            hsCriteria.put("branch_id", bean.getBranchId());
+        }
         if (bean.getIdKelasRuangan() != null && !"".equalsIgnoreCase(bean.getIdKelasRuangan())) {
             hsCriteria.put("id_kelas_ruangan", bean.getIdKelasRuangan());
         }
@@ -53,6 +74,12 @@ public class RuanganBoImpl implements RuanganBo {
             hsCriteria.put("sisa_kuota", bean.getSisaKuota());
         }
         if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
+            if ("N".equalsIgnoreCase(bean.getFlag())) {
+                hsCriteria.put("flag", "N");
+            } else {
+                hsCriteria.put("flag", bean.getFlag());
+            }
+        } else {
             hsCriteria.put("flag", "Y");
         }
 
@@ -67,16 +94,52 @@ public class RuanganBoImpl implements RuanganBo {
             Ruangan ruangan;
             for (MtSimrsRuanganEntity listEntity : mtSimrsRuanganEntityList) {
                 ruangan = new Ruangan();
-                ruangan.setIdKelasRuangan(listEntity.getIdKelasRuangan());
                 ruangan.setIdRuangan(listEntity.getIdRuangan());
-                ruangan.setNoRuangan(listEntity.getNoRuangan());
                 ruangan.setNamaRuangan(listEntity.getNamaRuangan());
-                ruangan.setTarif(listEntity.getTarif());
+                ruangan.setNoRuangan(listEntity.getNoRuangan());
+
                 ruangan.setStatusRuangan(listEntity.getStatusRuangan());
-                ruangan.setNamaKelasRuangan(listEntity.getImSimrsKelasRuanganEntity().getNamaKelasRuangan());
+                if (listEntity.getStatusRuangan().equalsIgnoreCase("Y"))
+                    ruangan.setStatusRuanganName("Tersedia");
+                else
+                    ruangan.setStatusRuanganName("Tidak Tersedia");
+
+                ruangan.setIdKelasRuangan(listEntity.getIdKelasRuangan());
                 ruangan.setKeterangan(listEntity.getKeterangan());
+                ruangan.setTarif(listEntity.getTarif());
+//                ruangan.setStTarif(CommonUtil.numbericFormat(listEntity.getTarif(),"###,###"));
+                ruangan.setBranchId(listEntity.getBranchId());
+//                ruangan.setNamaKelasRuangan(listEntity.getImSimrsKelasRuanganEntity().getNamaKelasRuangan());
+                ruangan.setSisaKuota(listEntity.getSisaKuota());
+                ruangan.setKuota(listEntity.getKuota());
                 ruangan.setFlag(listEntity.getFlag());
                 ruangan.setAction(listEntity.getAction());
+                ruangan.setStCreatedDate(listEntity.getCreatedDate().toString());
+                ruangan.setCreatedWho(listEntity.getCreatedWho());
+                ruangan.setStLastUpdate(listEntity.getLastUpdate().toString());
+                ruangan.setLastUpdateWho(listEntity.getLastUpdateWho());
+
+                ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
+                KelasRuangan kelasRuangan = new KelasRuangan();
+                KelasRuanganBo kelasRuanganBo = (KelasRuanganBo) context.getBean("kelasRuanganBoProxy");
+                kelasRuangan.setIdKelasRuangan(listEntity.getIdKelasRuangan());
+                kelasRuangan.setFlag("Y");
+                List<KelasRuangan> kelasRuangans = kelasRuanganBo.getByCriteria(kelasRuangan);
+                String kelasRuanganName = kelasRuangans.get(0).getNamaKelasRuangan();
+                ruangan.setNamaKelasRuangan(kelasRuanganName);
+
+                if (listEntity.getBranchId() != null){
+//                    ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
+                    Branch branch = new Branch();
+                    BranchBo branchBo = (BranchBo) context.getBean("branchBoProxy");
+                    branch.setBranchId(listEntity.getBranchId());
+                    branch.setFlag("Y");
+                    List<Branch> branches = branchBo.getByCriteria(branch);
+                    String branchName = branches.get(0).getBranchName();
+                    ruangan.setBranchName(branchName);
+                }else {
+                    ruangan.setBranchName("-");
+                }
 
                 result.add(ruangan);
             }
@@ -91,33 +154,40 @@ public class RuanganBoImpl implements RuanganBo {
         logger.info("[RuanganBoImpl.saveAdd] Start >>>>>>>");
 
         if (ruangan != null) {
-            MtSimrsRuanganEntity mtSimrsRuanganEntity = new MtSimrsRuanganEntity();
-            String id = getIdRuangan();
+            String status = cekStatus(ruangan.getNamaRuangan());
+            if (!status.equalsIgnoreCase("exist")){
+                MtSimrsRuanganEntity mtSimrsRuanganEntity = new MtSimrsRuanganEntity();
+                String id = getIdRuangan();
 
-            mtSimrsRuanganEntity.setIdRuangan("R" + id);
-            mtSimrsRuanganEntity.setNamaRuangan(ruangan.getNamaRuangan());
-            mtSimrsRuanganEntity.setNoRuangan(ruangan.getNoRuangan());
-            mtSimrsRuanganEntity.setStatusRuangan(ruangan.getStatusRuangan());
-            mtSimrsRuanganEntity.setIdKelasRuangan(ruangan.getIdKelasRuangan());
-            mtSimrsRuanganEntity.setKeterangan(ruangan.getKeterangan());
-            mtSimrsRuanganEntity.setTarif(ruangan.getTarif());
-            mtSimrsRuanganEntity.setBranchId(ruangan.getBranchId());
+                mtSimrsRuanganEntity.setIdRuangan("R" + id);
+                mtSimrsRuanganEntity.setNamaRuangan(ruangan.getNamaRuangan());
+                mtSimrsRuanganEntity.setNoRuangan(ruangan.getNoRuangan());
+                mtSimrsRuanganEntity.setStatusRuangan(ruangan.getStatusRuangan());
+                mtSimrsRuanganEntity.setIdKelasRuangan(ruangan.getIdKelasRuangan());
+                mtSimrsRuanganEntity.setKeterangan(ruangan.getKeterangan());
+                mtSimrsRuanganEntity.setTarif(ruangan.getTarif());
+                mtSimrsRuanganEntity.setBranchId(ruangan.getBranchId());
+                mtSimrsRuanganEntity.setKuota(ruangan.getKuota());
+                mtSimrsRuanganEntity.setSisaKuota(ruangan.getSisaKuota());
 
-            mtSimrsRuanganEntity.setFlag("Y");
-            mtSimrsRuanganEntity.setAction("C");
-            mtSimrsRuanganEntity.setCreatedDate(ruangan.getCreatedDate());
-            mtSimrsRuanganEntity.setLastUpdate(ruangan.getLastUpdate());
-            mtSimrsRuanganEntity.setCreatedWho(ruangan.getCreatedWho());
-            mtSimrsRuanganEntity.setLastUpdateWho(ruangan.getLastUpdateWho());
+                mtSimrsRuanganEntity.setFlag("Y");
+                mtSimrsRuanganEntity.setAction("C");
+                mtSimrsRuanganEntity.setCreatedDate(ruangan.getCreatedDate());
+                mtSimrsRuanganEntity.setLastUpdate(ruangan.getLastUpdate());
+                mtSimrsRuanganEntity.setCreatedWho(ruangan.getCreatedWho());
+                mtSimrsRuanganEntity.setLastUpdateWho(ruangan.getLastUpdateWho());
 
-            try {
-                ruanganDao.addAndSave(mtSimrsRuanganEntity);
-            } catch (HibernateException e) {
-                logger.error("[PasienBoImpl.saveAdd] Error when saving data pasien", e);
-                throw new GeneralBOException(" Error when saving data pasien " + e.getMessage());
+                try {
+                    ruanganDao.addAndSave(mtSimrsRuanganEntity);
+                } catch (HibernateException e) {
+                    logger.error("[RuanganBoImpl.saveAdd] Error when saving data ruangan", e);
+                    throw new GeneralBOException(" Error when saving data ruangan " + e.getMessage());
+                }
+            }else {
+                throw new GeneralBOException("Maaf Data dengan Nama Ruangan Tersebut Sudah Ada");
             }
         } else {
-            logger.error("[PasienBoImpl.saveAdd] Error when saving data pasien data is null");
+            logger.error("[RuanganBoImpl.saveAdd] Error when saving data pasien data is null");
             throw new GeneralBOException(" Error when saving data pasien data is null");
         }
 
@@ -126,16 +196,27 @@ public class RuanganBoImpl implements RuanganBo {
 
     @Override
     public void saveEdit(Ruangan ruangan) throws GeneralBOException {
-        logger.info("[PasienBoImpl.saveEdit] Start >>>>>>>");
+        logger.info("[RuanganBoImpl.saveEdit] Start >>>>>>>");
 
         if (ruangan != null && ruangan.getIdRuangan() != null && !"".equalsIgnoreCase(ruangan.getIdRuangan())) {
 
-            Ruangan editRuangan = new Ruangan();
-            editRuangan.setIdRuangan(ruangan.getIdRuangan());
-            MtSimrsRuanganEntity mtSimrsRuanganEntity = getEntityByCriteria(editRuangan).get(0);
+            String idRuangan = ruangan.getIdRuangan();
+            MtSimrsRuanganEntity mtSimrsRuanganEntity = null;
+            try {
+                // Get data from database by ID
+                mtSimrsRuanganEntity = ruanganDao.getById("idRuangan", idRuangan);
+                //historyId = payrollSkalaGajiDao.getNextSkalaGaji();
+            } catch (HibernateException e) {
+                logger.error("[PayrollSkalaGajiBoImpl.saveEdit] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data PayrollSkalaGaji by Kode PayrollSkalaGaji, please inform to your admin...," + e.getMessage());
+            }
+
+//            Ruangan editRuangan = new Ruangan();
+//            editRuangan.setIdRuangan(ruangan.getIdRuangan());
+//            MtSimrsRuanganEntity mtSimrsRuanganEntity = getEntityByCriteria(editRuangan).get(0);
 
             if (mtSimrsRuanganEntity != null) {
-
+                mtSimrsRuanganEntity.setIdRuangan(ruangan.getIdRuangan());
                 mtSimrsRuanganEntity.setNamaRuangan(ruangan.getNamaRuangan());
                 mtSimrsRuanganEntity.setNoRuangan(ruangan.getNoRuangan());
                 mtSimrsRuanganEntity.setStatusRuangan(ruangan.getStatusRuangan());
@@ -143,6 +224,9 @@ public class RuanganBoImpl implements RuanganBo {
                 mtSimrsRuanganEntity.setKeterangan(ruangan.getKeterangan());
                 mtSimrsRuanganEntity.setTarif(ruangan.getTarif());
                 mtSimrsRuanganEntity.setBranchId(ruangan.getBranchId());
+                mtSimrsRuanganEntity.setKuota(ruangan.getKuota());
+                mtSimrsRuanganEntity.setSisaKuota(ruangan.getSisaKuota());
+
                 mtSimrsRuanganEntity.setFlag(ruangan.getFlag());
                 mtSimrsRuanganEntity.setAction("U");
                 mtSimrsRuanganEntity.setLastUpdate(ruangan.getLastUpdate());
@@ -172,48 +256,53 @@ public class RuanganBoImpl implements RuanganBo {
         logger.info("[RuanganBoImpl.saveDelete] start process");
 
         if (ruangan != null) {
-
             String idRuangan = ruangan.getIdRuangan();
-
-            MtSimrsRuanganEntity entity = null;
-            try {
-                // Get data from database by ID
-                entity = ruanganDao.getById("idRuangan", idRuangan);
-            } catch (HibernateException e) {
-                logger.error("[RuanganBoImpl.saveDelete] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when searching data ruangan by Ruangan id, please inform to your admin...," + e.getMessage());
-            }
-
-            if (entity != null) {
-                // Modify from bean to entity serializable
-                entity.setNamaRuangan(ruangan.getNamaRuangan());
-                entity.setNoRuangan(ruangan.getNoRuangan());
-                entity.setIdKelasRuangan(ruangan.getIdKelasRuangan());
-                entity.setKeterangan(ruangan.getKeterangan());
-                entity.setTarif(ruangan.getTarif());
-                entity.setBranchId(ruangan.getBranchId());
-
-                entity.setFlag(ruangan.getFlag());
-                entity.setAction("U");
-                entity.setLastUpdate(ruangan.getLastUpdate());
-                entity.setLastUpdateWho(ruangan.getLastUpdateWho());
-
+            String status = cekBeforeDelete(idRuangan);
+            if (!status.equalsIgnoreCase("exist")){
+                MtSimrsRuanganEntity entity = null;
                 try {
-                    // Delete (Edit) into database
-                    ruanganDao.updateAndSave(entity);
+                    // Get data from database by ID
+                    entity = ruanganDao.getById("idRuangan", idRuangan);
                 } catch (HibernateException e) {
                     logger.error("[RuanganBoImpl.saveDelete] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving update data Ruangan, please info to your admin..." + e.getMessage());
+                    throw new GeneralBOException("Found problem when searching data ruangan by Ruangan id, please inform to your admin...," + e.getMessage());
                 }
 
+                if (entity != null) {
+                    // Modify from bean to entity serializable
+                    entity.setIdRuangan(idRuangan);
+//                entity.setNamaRuangan(ruangan.getNamaRuangan());
+//                entity.setNoRuangan(ruangan.getNoRuangan());
+//                entity.setIdKelasRuangan(ruangan.getIdKelasRuangan());
+//                entity.setKeterangan(ruangan.getKeterangan()
+// );
+//                entity.setTarif(ruangan.getTarif());
+//                entity.setBranchId(ruangan.getBranchId());
 
-            } else {
-                logger.error("[RuanganBoImpl.saveDelete] Error, not found data Ruangan with request id, please check again your data ...");
-                throw new GeneralBOException("Error, not found data Ruangan with request id, please check again your data ...");
+                    entity.setFlag(ruangan.getFlag());
+                    entity.setAction("U");
+                    entity.setLastUpdate(ruangan.getLastUpdate());
+                    entity.setLastUpdateWho(ruangan.getLastUpdateWho());
+
+                    try {
+                        // Delete (Edit) into database
+                        ruanganDao.updateAndSave(entity);
+                    } catch (HibernateException e) {
+                        logger.error("[RuanganBoImpl.saveDelete] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving update data Ruangan, please info to your admin..." + e.getMessage());
+                    }
+
+
+                } else {
+                    logger.error("[RuanganBoImpl.saveDelete] Error, not found data Ruangan with request id, please check again your data ...");
+                    throw new GeneralBOException("Error, not found data Ruangan with request id, please check again your data ...");
+                }
+            }else {
+                throw new GeneralBOException("Maaf Data tidak dapat dihapus, karna masih digunakan pada data Transaksi");
             }
         }
 
-        logger.info("[RuanganBoImpl.saveEdit] End <<<<<<<");
+        logger.info("[RuanganBoImpl.saveDelete] End <<<<<<<");
     }
 
     @Override
@@ -322,5 +411,39 @@ public class RuanganBoImpl implements RuanganBo {
 
         logger.info("[RuanganBoImpl.getEntityByCriteria] End <<<<<<<");
         return results;
+    }
+
+    public String cekStatus(String namaRuangan)throws GeneralBOException{
+        String status ="";
+        List<MtSimrsRuanganEntity> entities = new ArrayList<>();
+        try {
+            entities = ruanganDao.getDataPelayanan(namaRuangan);
+        } catch (HibernateException e) {
+            logger.error("[PayrollSkalaGajiBoImpl.getSearchPayrollSkalaGajiByCriteria] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        if (entities.size()>0){
+            status = "exist";
+        }else{
+            status="notExits";
+        }
+        return status;
+    }
+
+    public String cekBeforeDelete(String idRuangan)throws GeneralBOException{
+        String status ="";
+        List<MtSimrsRuanganEntity> entities = new ArrayList<>();
+        try {
+            entities = ruanganDao.cekData(idRuangan);
+        } catch (HibernateException e) {
+            logger.error("[PelayananBoImpl.cekBeforeDelete] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        if (entities.size()>0){
+            status = "exist";
+        }else{
+            status="notExits";
+        }
+        return status;
     }
 }

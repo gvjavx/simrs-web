@@ -23,6 +23,7 @@ public class MappingJurnal extends BaseModel {
     private String transName;
     private String kirimList;
     private String divisiId;
+    private String editBiaya;
 
     private String kodeRekeningName;
     private boolean transBaru=false;
@@ -145,5 +146,13 @@ public class MappingJurnal extends BaseModel {
 
     public void setPosisi(String posisi) {
         this.posisi = posisi;
+    }
+
+    public String getEditBiaya() {
+        return editBiaya;
+    }
+
+    public void setEditBiaya(String editBiaya) {
+        this.editBiaya = editBiaya;
     }
 }

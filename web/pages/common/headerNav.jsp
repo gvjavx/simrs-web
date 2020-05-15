@@ -333,7 +333,7 @@
 <div class="wrapper">
 <header class="main-header">
     <!-- Logo -->
-    <a href="/simrs" class="logo" style="background-color: #3bb387 !important; text-decoration: none;">
+    <a href="<%= request.getContextPath() %>" class="logo" style="background-color: #3bb387 !important; text-decoration: none;">
         <!-- mini logo for sidebar mini 50x50 pixels -->
         <span class="logo-mini"><b>NMU</b></span>
         <!-- logo for regular state and mobile devices -->

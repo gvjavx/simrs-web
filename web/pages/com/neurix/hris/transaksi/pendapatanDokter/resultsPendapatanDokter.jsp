@@ -31,10 +31,10 @@
             font-family: monospace;
             font-weight: normal;
         }
-        .modal-dialog{
-            width: 1150px;
-            margin-top: auto;
-        }
+        /*.modal-dialog{*/
+            /*width: 1150px;*/
+            /*margin-top: auto;*/
+        /*}*/
     </style>
     <style>
         .pagebanner {
@@ -231,17 +231,6 @@
                                                     <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="pendapatanDokter.branchId" disabled="true"
                                                               listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                                     <s:hidden id="branchId" name="pendapatanDokter.branchId" />
-                                                    <%--<s:if test='pendapatanDokter.branchId == "KP"'>--%>
-                                                        <%--<s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>--%>
-                                                        <%--<s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="pendapatanDokter.branchId"--%>
-                                                                  <%--listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
-                                                    <%--</s:if>--%>
-                                                    <%--<s:else>--%>
-                                                        <%--<s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>--%>
-                                                        <%--<s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="pendapatanDokter.branchId" disabled="true"--%>
-                                                                  <%--listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
-                                                        <%--<s:hidden id="branchId" name="pendapatanDokter.branchId" />--%>
-                                                    <%--</s:else>--%>
                                                 </table>
                                             </td>
                                         </tr>
@@ -506,6 +495,10 @@
                     <div class="col-md-12">
                         <table class="table table-striped">
                             <tr>
+                                <td><b>Dokter Id</b></td>
+                                <td><span id="id_dokter"></span></td>
+                            </tr>
+                            <tr>
                                 <td><b>Nama</b></td>
                                 <td><span id="nama_dokter"></span></td>
                             </tr>
@@ -514,7 +507,7 @@
                                 <td><span id="nama_unit"></span></td>
                             </tr>
                             <tr>
-                                <td><b>Kode Jabatan</b></td>
+                                <td><b>Kode Dokter</b></td>
                                 <td><span id="kode_jabatan"></span></td>
                             </tr>
                             <tr>
@@ -527,43 +520,48 @@
                             </tr>
                             <tr>
                                 <td><b>Bruto</b></td>
-                                <td><span id="bruto"></span></td>
+                                <td align="right"><span id="bruto"></span></td>
                             </tr>
                             <tr>
                                 <td><b>Pendapatan Rs</b></td>
-                                <td><span id="pendapatan_rs"></span></td>
+                                <td align="right"><span id="pendapatan_rs"></span></td>
                             </tr>
                             <tr>
                                 <td><b>Hr Bruto</b></td>
-                                <td><span id="hr_bruto"></span></td>
+                                <td align="right"><span id="hr_bruto"></span></td>
                             </tr>
                             <tr>
                                 <td><b>Dpp Pph 21</b></td>
-                                <td><span id="dpp_pph_21"></span></td>
+                                <td align="right"><span id="dpp_pph_21"></span></td>
+                                <td>
+                                    <a id="btn" href="javascript:void(0)">
+                                        <img sizes="30" id="btnViewPphLebih" border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_trash">
+                                    </a>
+                                </td>
                             </tr>
                             <tr>
                                 <td><b>Dpp Pph Komulatif</b></td>
-                                <td><span id="dpp_pph_komulatif"></span></td>
+                                <td align="right"><span id="dpp_pph_komulatif"></span></td>
                             </tr>
                             <tr>
                                 <td><b>Pajak</b></td>
-                                <td><span id="pajak"></span></td>
+                                <td align="right"><span id="pajak"></span></td>
                             </tr>
                             <tr>
                                 <td><b>Pot. Pajak</b></td>
-                                <td><span id="pot_pajak"></span></td>
+                                <td align="right"><span id="pot_pajak"></span></td>
                             </tr>
                             <tr>
                                 <td><b>Hr Aktifitas Netto</b></td>
-                                <td><span id="hr_aktifitas_netto"></span></td>
+                                <td align="right"><span id="hr_aktifitas_netto"></span></td>
                             </tr>
                             <tr>
                                 <td><b>Pot. Ks</b></td>
-                                <td><span id="pot_ks"></span></td>
+                                <td align="right"><span id="pot_ks"></span></td>
                             </tr>
                             <tr>
                                 <td><b>Hr Netto</b></td>
-                                <td><span id="hr_netto"></span></td>
+                                <td align="right"><span id="hr_netto"></span></td>
                             </tr>
                         </table>
                     </div>
@@ -588,6 +586,30 @@
         </div>
     </div>
 </div>
+
+<div id="modal-pph" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Detail PPH Lebih</h4>
+            </div>
+            <div class="modal-body">
+                <table style="width: 100%;" class="detailPphTable table table-bordered">
+                </table>
+            </div>
+            <div class="modal-body">
+                <table style="width: 100%;" class="detailPphLebihTable table table-bordered">
+                </table>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn btn-default" data-dismiss="modal">Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     window.cekKoneksi = function(){
         dwr.engine.setAsync(false);
@@ -641,7 +663,7 @@
                         "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Unit</th>"+
                         "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Id Dokter</th>"+
                         "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Nama Dokter</th>"+
-                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Kode Jabatan</th>"+
+                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Kode Dokter</th>"+
                         "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Bulan</th>"+
                         "<th style='text-align: center; color: #fff; background-color:  #3c8dbc''>Tahun</th>"+
                         "<th style='text-align: center; color: #fff; background-color:  #3c8dbc''>Bruto</th>"+
@@ -655,9 +677,9 @@
                             '<td align="center">' +
                             "<a href='javascript:;' class ='item-view-pendapatan' unit ='"+item.branchName+"' nama = '"+item.dokterName+"' kodeJabatan = '"+item.kodeJabatan+"' bulan ='"+item.bulan+"' " +
                             "tahun ='"+item.tahun+"' dokter ='"+item.dokterId+"' bruto = '"+item.stTotalBruto+"' pdptnRs = '"+item.stTotalPendapatanRs+"' " +
-                            "hrBruto = '"+item.stTotalHrBruto+"' pph21 = '"+item.stTotalDppPph50+"' komulatif = '"+item.stTotalDppPph21Komulatif+"' " +
-                            "komulatif = '"+item.stTotalDppPph21Komulatif+"' pajak = '"+item.stTarif+"' potPjk = '"+item.stTotalPphDipungut+"'" +
-                            "hrAktifitas = '"+item.stTotalHrAktifitasNetto+"' potKs = '"+item.stTotalPotKs+"' gajiBersih = '"+item.stTotalGajiBersih+"'>" +
+                            "hrBruto = '"+item.stTotalHrBruto+"' pph21 = '"+item.stTotalDppPph50+"' pphLebih = '"+item.stTotalPphLebih+"' komulatifLebih = '"+item.stTotalDppPph21KomulatifLebih+"' " +
+                            "komulatif = '"+item.stTotalDppPph21Komulatif+"' pajak = '"+item.stTarif+"' potPjk = '"+item.stTotalPphDipungut+"' komulatifLebih = '"+item.stTotalDppPph21KomulatifLebih+"'" +
+                            "hrAktifitas = '"+item.stTotalHrAktifitasNetto+"' potKs = '"+item.stTotalPotKs+"' gajiBersih = '"+item.stTotalGajiBersih+"' dokterId = '"+item.dokterId+"'>" +
                             "<img border='0' src='<s:url value='/pages/images/view.png'/>' name='icon_view'>"+
                             '</a>' +
                             '</td>' +
@@ -717,18 +739,36 @@
 //        var bulan = $(this).attr('bulan');
 //        var tahun = $(this).attr('tahun');
         var dokterId = $(this).attr('dokter');
+        var pphLebih = $(this).attr('pphLebih');
+        if (pphLebih == '0' || pphLebih == ''){
+            $('#btn').hide();
+        }else {
+            $('#btn').show();
+        }
         $('#bulan').text($(this).attr('bulan'));
         $('#tahun').text($(this).attr('tahun'));
+        $('#id_dokter').text($(this).attr('dokter'));
         $('#nama_dokter').text($(this).attr('nama'));
         $('#kode_jabatan').text($(this).attr('kodeJabatan'));
         $('#nama_unit').text($(this).attr('unit'));
         $('#bruto').text($(this).attr('bruto'));
         $('#pendapatan_rs').text($(this).attr('pdptnRs'));
         $('#hr_bruto').text($(this).attr('hrbruto'));
-        $('#dpp_pph_21').text($(this).attr('pph21'));
-        $('#dpp_pph_komulatif').text($(this).attr('komulatif'));
-        $('#pajak').text($(this).attr('pajak'));
-        $('#pot_pajak').text($(this).attr('potPjk'));
+        console.log($(this).attr('komulatifLebih'));
+        if ($(this).attr('komulatifLebih') == 'null'){
+            $('#dpp_pph_21').text($(this).attr('pph21'));
+            $('#dpp_pph_komulatif').text($(this).attr('komulatif'));
+            $('#pajak').text($(this).attr('pajak'));
+            $('#pot_pajak').text($(this).attr('potPjk'));
+            $('#hr_aktifitas_netto').text($(this).attr('hrAktifitas'));
+            $('#pot_ks').text($(this).attr('potKs'));
+            $('#hr_netto').text($(this).attr('gajiBersih'));
+        }else {
+            $('#dpp_pph_21').text('-');
+            $('#dpp_pph_komulatif').text('-');
+            $('#pajak').text('-');
+            $('#pot_pajak').text('-');
+        }
         $('#hr_aktifitas_netto').text($(this).attr('hrAktifitas'));
         $('#pot_ks').text($(this).attr('potKs'));
         $('#hr_netto').text($(this).attr('gajiBersih'));
@@ -809,5 +849,113 @@
         $('#modal-detail-pendapatan').modal('show');
 //        $('#modal-list').find('.modal-title').text('View Detail Pendapatan');
 //        $('#modal-list').modal('show');
+    });
+
+    $('#btnViewPphLebih').click(function () {
+        var nip = document.getElementById('id_dokter').innerHTML;;
+
+        if (nip!=""){
+            $('.detailPphTable').find('tbody').remove();
+            $('.detailPphTable').find('thead').remove();
+//            dwr.engine.setAsync(false);
+//            var table = "";
+//            PendapatanDokterAction.loadResultsPphLebih(nip,function(listdata) {
+//                if (listdata!=""){
+//                    console.log("Tes");
+//                    table = "<thead style='font-size: 14px' >" +
+////                            "<tr>" +
+////                            "<th colspan='6' align='center' style='outline: 0px;text-align: center'>Pendapatan Pph Lebih</th>" +
+////                            "</tr>"+
+//                            "<tr class='active'>"+
+////                            "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>No</th>"+
+//                            "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Pph Komulatif</th>"+
+//                            "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Pph 21</th>"+
+//                            "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Pajak</th>"+
+//                            "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Pph Dipungut</th>"+
+//                            "</tr></thead>";
+//                    var i = i;
+//                    $.each(listdata, function (i, item) {
+//                        tmp_table += '<tr style="font-size: 12px;" ">' +
+////                                '<td align="center">' + (i + 1) + '</td>' +
+//                                '<td align="right">' + item.stTotalDppPph50 + '</td>' +
+//                                '<td align="right">' + item.stTotalDppPph21Komulatif + '</td>' +
+//                                '<td align="right">' + item.stTarif + '</td>' +
+//                                '<td align="right">' + item.stTotalPphDipungut + '</td>' +
+//                                "</tr>";
+//                    });
+//                    $('.detailPphTable').append(tmp_table);
+//                    $("#detailPphTable").find("td:contains('null')").html("-");
+
+            $('.detailPphLebihTable').find('tbody').remove();
+            $('.detailPphLebihTable').find('thead').remove();
+            dwr.engine.setAsync(false);
+            var table = "";
+            var tmp_table = "";
+            PendapatanDokterAction.loadResultsPphLebih(nip,function(listdata) {
+                if (listdata!=""){
+                    console.log("Tes");
+                    table = "<thead style='font-size: 14px' >" +
+//                            "<tr>" +
+//                            "<th colspan='6' align='center' style='outline: 0px;text-align: center'>Pendapatan Pph Lebih</th>" +
+//                            "</tr>"+
+                            "<tr class='active'>"+
+//                            "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>No</th>"+
+                            "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Pph Komulatif</th>"+
+                            "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Pph 21</th>"+
+                            "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Pajak</th>"+
+                            "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Pph Dipungut</th>"+
+                            "</tr></thead>";
+                    var i = i;
+                    $.each(listdata, function (i, item) {
+                        table += '<tr style="font-size: 12px;" ">' +
+//                                '<td align="center">' + (i + 1) + '</td>' +
+                                '<td align="right">' + item.stTotalDppPph21Komulatif + '</td>' +
+                                '<td align="right">' + item.stTotalDppPph50 + '</td>' +
+                                '<td align="right">' + item.stTarif + '</td>' +
+                                '<td align="right">' + item.stTotalPphDipungut + '</td>' +
+                                "</tr>";
+                    });
+
+                    $('.detailPphTable').append(table);
+                    $("#detailPphTable").find("td:contains('null')").html("-");
+
+                    tmp_table = "<thead style='font-size: 14px' >" +
+//                            "<tr>" +
+//                            "<th colspan='6' align='center' style='outline: 0px;text-align: center'>Pendapatan Pph Lebih</th>" +
+//                            "</tr>"+
+                            "<tr class='active'>"+
+//                            "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>No</th>"+
+                            "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Pph Komulatif Lebih</th>"+
+                            "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Pph 21 Lebih</th>"+
+                            "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Pajak</th>"+
+                            "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Pph Dipungut Lebih</th>"+
+                            "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Pph Lebih</th>"+
+                            "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Pph Final</th>"+
+                            "</tr></thead>";
+                    var i = i;
+                    $.each(listdata, function (i, item) {
+                        tmp_table += '<tr style="font-size: 12px;" ">' +
+//                                '<td align="center">' + (i + 1) + '</td>' +
+                                '<td align="right">' + item.stTotalDppPph21KomulatifLebih + '</td>' +
+                                '<td align="right">' + item.stTotalDppPph21Lebih + '</td>' +
+                                '<td align="right">' + item.stTarifLebih + '</td>' +
+                                '<td align="right">' + item.stTotalPphDipungutLebih + '</td>' +
+                                '<td align="right">' + item.stTotalPphLebih + '</td>' +
+                                '<td align="right">' + item.stTotalPphFinal + '</td>' +
+                                "</tr>";
+                    });
+                    $('.detailPphLebihTable').append(tmp_table);
+                    $("#detailPphLebihTable").find("td:contains('null')").html("-");
+
+                    $('#modal-pph').find('.modal-title').text('View Detail PPH Lebih');
+                    $('#modal-pph').modal('show');
+                }else {
+                    alert("data PPH Lebih Kosong")
+                }
+            });
+
+        }else{
+            alert("Isi NIP terlebih dahulu");
+        }
     });
 </script>

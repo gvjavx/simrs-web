@@ -232,8 +232,18 @@
     var listOfCoa = [];
     $( document ).ready(function() {
 
+        chekTipe();
     });
 
+    var tipe = '<s:property value="budgeting.tipe"/>';
+    var flagDisable = '<s:property value="budgeting.flagDisable"/>';
+
+    function chekTipe() {
+        if ("Y" == flagDisable){
+            $("#sel-tipe").attr('readonly',true);
+            $("#sel-tipe").val(tipe);
+        }
+    }
 
     // exemple : post('/contact/', {name: 'Johnny Bravo'});
     function post(path, params) {
@@ -346,10 +356,20 @@
         var unit = $("#sel-unit").val();
         var tipe = $("#sel-tipe").val();
 
-        var form = { "budgeting.tahun":tahun, "budgeting.branchId":unit, "budgeting.tipe":tipe };
+        BudgetingAction.checkTransaksiBudgeting(unit, tahun, function(response){
 
-        var host = firstpath()+"/budgeting/add_budgeting.action?status=add&tipe=detail&trans=ADD_DRAFT";
-        post(host, form);
+            if (response.branchId == null && response.tahun == null){
+                var form = { "budgeting.tahun":tahun, "budgeting.branchId":unit, "budgeting.tipe":tipe };
+                var host = firstpath()+"/budgeting/add_budgeting.action?status=add&tipe=detail&trans=ADD_DRAFT";
+                post(host, form);
+            } else {
+                alert("Data Sudah Ada. di tahun "+response.tahun);
+            }
+        });
+
+//        var form = { "budgeting.tahun":tahun, "budgeting.branchId":unit, "budgeting.tipe":tipe };
+//        var host = firstpath()+"/budgeting/add_budgeting.action?status=add&tipe=detail&trans=ADD_DRAFT";
+//        post(host, form);
     }
 
 </script>

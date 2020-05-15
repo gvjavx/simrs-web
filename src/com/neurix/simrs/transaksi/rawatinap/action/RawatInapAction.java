@@ -24,6 +24,8 @@ import com.neurix.simrs.transaksi.monpemberianobat.model.ItSimrsMonPemberianObat
 import com.neurix.simrs.transaksi.monpemberianobat.model.MonPemberianObat;
 import com.neurix.simrs.transaksi.monvitalsign.model.ItSimrsMonVitalSignEntity;
 import com.neurix.simrs.transaksi.monvitalsign.model.MonVitalSign;
+import com.neurix.simrs.transaksi.periksalab.bo.PeriksaLabBo;
+import com.neurix.simrs.transaksi.periksalab.model.PeriksaLab;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
@@ -62,10 +64,33 @@ public class RawatInapAction extends BaseMasterAction {
     private DietGiziBo dietGiziBoProxy;
     private CheckupDetailBo checkupDetailBoProxy;
     private BranchBo branchBoProxy;
+    private PeriksaLabBo periksaLabBoProxy;
 
     private String id;
     private String idResep;
     private String idDetail;
+    private String tipe;
+    private String lab;
+
+    public void setPeriksaLabBoProxy(PeriksaLabBo periksaLabBoProxy) {
+        this.periksaLabBoProxy = periksaLabBoProxy;
+    }
+
+    public String getTipe() {
+        return tipe;
+    }
+
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
+    }
+
+    public String getLab() {
+        return lab;
+    }
+
+    public void setLab(String lab) {
+        this.lab = lab;
+    }
 
     private List<DietGizi> listOfDietGizi = new ArrayList<>();
 
@@ -205,6 +230,13 @@ public class RawatInapAction extends BaseMasterAction {
 
                             String user = CommonUtil.userLogin();
                             Timestamp now = new Timestamp(System.currentTimeMillis());
+                            String jenisPasien = "";
+
+                            if("ptpn".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien())){
+                                jenisPasien = "bpjs";
+                            }else{
+                                jenisPasien = checkup.getIdJenisPeriksaPasien();
+                            }
 
                             RiwayatTindakan tindakan = new RiwayatTindakan();
                             tindakan.setIdTindakan(ruangan.getIdRuangan());
@@ -212,7 +244,7 @@ public class RawatInapAction extends BaseMasterAction {
                             tindakan.setKeterangan("kamar");
                             tindakan.setTotalTarif(new BigDecimal(ruangan.getTarif()));
                             tindakan.setIdDetailCheckup(checkup.getIdDetailCheckup());
-                            tindakan.setJenisPasien(checkup.getIdJenisPeriksaPasien());
+                            tindakan.setJenisPasien(jenisPasien);
                             tindakan.setAction("C");
                             tindakan.setFlag("Y");
                             tindakan.setCreatedDate(now);
@@ -966,5 +998,85 @@ public class RawatInapAction extends BaseMasterAction {
 
         return rawatInapBo.getListGraf(monVitalSign);
     }
+
+    public String printLabRadiologi() {
+
+        HeaderCheckup checkup = new HeaderCheckup();
+        String lab = getLab();
+        String id = getId();
+        String tipe = getTipe();
+        String jk = "";
+
+        String branch = CommonUtil.userBranchLogin();
+        String logo = "";
+        Branch branches = new Branch();
+
+        try {
+            branches = branchBoProxy.getBranchById(branch, "Y");
+        } catch (GeneralBOException e) {
+            logger.error("Found Error when searhc branch logo");
+        }
+
+        if (branches != null) {
+            logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.RESOURCE_PATH_IMAGES + branches.getLogoName();
+        }
+
+        try {
+            checkup = checkupBoProxy.getDataDetailPasien(id);
+        } catch (GeneralBOException e) {
+            logger.error("Found Error when search data detail pasien " + e.getMessage());
+        }
+
+        if (checkup != null) {
+
+            PeriksaLab periksalb = new PeriksaLab();
+            try {
+                periksalb = periksaLabBoProxy.getNamaLab(lab);
+            }catch (HibernateException e){
+                logger.error("Found Error "+e.getMessage());
+            }
+
+            if(periksalb.getIdPeriksaLab() != null){
+                reportParams.put("title", "Hasil Periksa Lab "+periksalb.getKategoriLabName());
+            }
+
+            reportParams.put("area", CommonUtil.userAreaName());
+            reportParams.put("unit", CommonUtil.userBranchNameLogin());
+            reportParams.put("idPasien", checkup.getIdPasien());
+            reportParams.put("idPeriksaLab", lab);
+            reportParams.put("logo", logo);
+            reportParams.put("nik", checkup.getNoKtp());
+            reportParams.put("nama", checkup.getNama());
+            String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
+            reportParams.put("tglLahir", checkup.getTempatLahir() + ", " + formatDate);
+            if ("L".equalsIgnoreCase(checkup.getJenisKelamin())) {
+                jk = "Laki-Laki";
+            } else {
+                jk = "Perempuan";
+            }
+            reportParams.put("jenisKelamin", jk);
+            reportParams.put("jenisPasien", checkup.getStatusPeriksaName());
+            reportParams.put("poli", checkup.getNamaPelayanan());
+            reportParams.put("provinsi", checkup.getNamaProvinsi());
+            reportParams.put("kabupaten", checkup.getNamaKota());
+            reportParams.put("kecamatan", checkup.getNamaKecamatan());
+            reportParams.put("desa", checkup.getNamaDesa());
+
+            try {
+                preDownload();
+            } catch (SQLException e) {
+                logger.error("[ReportAction.printCard] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+                addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
+                return "search";
+            }
+        }
+
+        if("lab".equalsIgnoreCase(tipe)){
+            return "print_lab";
+        }else{
+            return "print_radiologi";
+        }
+    }
+
 
 }

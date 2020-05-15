@@ -114,8 +114,7 @@ public class MasterBoImpl implements MasterBo {
 
             List<ImMasterEntity> imMasterEntityList = null;
             try {
-
-                imMasterEntityList = masterDao.getByCriteria(hsCriteria);
+                imMasterEntityList = masterDao.getByInput(hsCriteria);
             } catch (HibernateException e) {
                 logger.error("[MasterBoImpl.getSearchIjinByCriteria] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
@@ -126,7 +125,8 @@ public class MasterBoImpl implements MasterBo {
                 // Looping from dao to object and save in collection
                 for(ImMasterEntity masterEntity : imMasterEntityList){
                     returnMaster = new Master();
-
+                    returnMaster.setPrimaryKey(masterEntity.getPrimaryKey());
+                    returnMaster.setNoMaster(masterEntity.getPrimaryKey().getNomorMaster());
 
                     returnMaster.setCreatedWho(masterEntity.getCreatedWho());
                     returnMaster.setCreatedDate(masterEntity.getCreatedDate());

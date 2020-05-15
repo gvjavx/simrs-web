@@ -167,7 +167,7 @@
                                         <div class="col-md-6">
                                             <a class="btn btn-success pull-right" onclick="addBatch()"><i class="fa fa-plus"></i> Tambah Batch</a>
                                             <s:if test='tipe == "reture"'>
-                                                <a href="/simrs/returobat/initForm_returobat.action" class="btn btn-warning pull-right" style="margin-right: 5px"><i class="fa fa-arrow-left"></i> Back</a>
+                                                <a href="<%= request.getContextPath() %>/returobat/initForm_returobat.action" class="btn btn-warning pull-right" style="margin-right: 5px"><i class="fa fa-arrow-left"></i> Back</a>
                                             </s:if>
                                             <s:else>
                                                 <a href="initForm_permintaanpo.action" class="btn btn-warning pull-right" style="margin-right: 5px"><i class="fa fa-arrow-left"></i> Back</a>
@@ -207,7 +207,7 @@
                                                     </a>
                                                 </s:if>
                                                 <s:else>
-                                                    <img onclick="showDetailListObat('<s:property value="noBatch"/>','<s:property value="urlDoc"/>','<s:property value="noFaktur"/>','<s:property value="tanggalFaktur"/>','<s:property value="noInvoice"/>','<s:property value="noDo"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">
+                                                    <img onclick="showDetailListObat('<s:property value="noBatch"/>','<s:property value="urlDoc"/>','<s:property value="noFaktur"/>','<s:property value="stTanggakFaktur"/>','<s:property value="noInvoice"/>','<s:property value="noDo"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">
                                                 </s:else>
                                                 <img id='load<s:property value="noBatch"/>' src="<s:url value="/pages/images/spinner.gif"/>" style="height: 35px; width: 35px; display: none">
                                             </td>
@@ -676,9 +676,9 @@
         console.log(img);
         $('#det_img').attr('onclick','showDoc(\''+img+'\')');
         $('#det_no_faktur').text(noFaktur);
-        var tgl = $.datepicker.formatDate('dd-mm-yy', new Date(tglFaktur));
-        console.log(tgl);
-        $('#det_tlg_faktur').text(tgl);
+        // var tgl = converterDate(new Date(tglFaktur));
+        // console.log(tgl);
+        $('#det_tlg_faktur').text(tglFaktur);
         $('#det_no_invoice').text(noInvoice);
         $('#det_no_do').text(noDo);
         $('#modal-detail').modal({show:true, backdrop:'static'});

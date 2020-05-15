@@ -227,10 +227,44 @@ public class RiwayatTindakanDao extends GenericDao<ItSimrsRiwayatTindakanEntity,
         return found;
     }
 
+    public List<String> listOfKeteranganExistByIdDetailCheckup(String id){
+        String SQL = "SELECT keterangan, id_detail_checkup FROM it_simrs_riwayat_tindakan\n" +
+                "WHERE id_detail_checkup = :id \n" +
+                "GROUP BY keterangan, id_detail_checkup";
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", id)
+                .list();
+
+        List<String> listKeterangan = new ArrayList<>();
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                listKeterangan.add(obj[0].toString());
+            }
+        }
+
+        return listKeterangan;
+    }
+
     public String getNextSeq() {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_riwayat_tindakan')");
         Iterator<BigInteger> iter = query.list().iterator();
         String sId = String.format("%08d", iter.next());
         return sId;
+    }
+
+    //for typeahead
+    public List<ItSimrsRiwayatTindakanEntity> getRiwayatTindakanListByLike(String riwayatTindakanName) {
+        Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ItSimrsRiwayatTindakanEntity.class);
+        criteria.add(
+                Restrictions.or(
+                        Restrictions.ilike("idTindakan", riwayatTindakanName + "%"),
+                        Restrictions.ilike("namaTindakan", "%"+riwayatTindakanName+"%")
+                )
+        );
+        criteria.add(Restrictions.eq("flag", "Y"));
+        criteria.addOrder(Order.asc("idTindakan"));
+
+        List<ItSimrsRiwayatTindakanEntity> results = criteria.list();
+        return results;
     }
 }

@@ -21,21 +21,28 @@
             //$('#waiting_dialog').dialog('close');
             $('#view_dialog_menu').dialog('close');
             $('#info_dialog').dialog('close');
-            window.location.reload(true);
+//            window.location.reload(true);
+            document.ruanganForm.action = "search_ruangan.action";
+            document.ruanganForm.submit();
         };
 
         $.subscribe('beforeProcessSave', function (event, data) {
-            // var idRuangan = document.getElementById("id_ruangan").value;
-            var nameRuangan = document.getElementById("nama_ruangan3").value;
-            var noRuangan = document.getElementById("no_ruangan3").value;
-            var statusRuangan = document.getElementById("status_ruangan3").value;
-            var kelasRuangan = document.getElementById("kelas_ruangan3").value;
-            var keterangan = document.getElementById("keterangan3").value;
-            var tarifRuangan = document.getElementById("tarif_ruangan3").value;
+            var idRuangan = document.getElementById("id_ruangan3").value;
+//            var nameRuangan = document.getElementById("nama_ruangan3").value;
+//            var noRuangan = document.getElementById("no_ruangan3").value;
+//            var statusRuangan = document.getElementById("statusRuangan3").value;
+//            var kelasRuangan = document.getElementById("idKelasRuangan3").value;
+//            var tarifRuangan = document.getElementById("tarif3").value;
+//            var kuota = document.getElementById("kuota3").value;
+//            var keterangan = document.getElementById("keterangan3").value;
+//            var sisaKuota = document.getElementById("sisaKuota3").value
 
-            if (nameRuangan != '' && noRuangan != '' && statusRuangan != '' && kelasRuangan != ''
-                && tarifRuangan != '') {
-                if (confirm('Do you want to delete this record?')) {
+            console.log(idRuangan);
+            console.log("Test");
+
+            if (idRuangan != '') {
+
+                if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
 
@@ -44,28 +51,33 @@
                     event.originalEvent.options.submit = false;
                 }
 
-
             } else {
 
                 event.originalEvent.options.submit = false;
 
                 var msg = "";
 
-                if (nameRuangan == '') {
-                    msg += 'Field <strong>Nama Ruangan</strong> is required.' + '<br/>';
+                if (idRuangan == '') {
+                    msg += 'Field <strong>Id Ruangan</strong> is required.' + '<br/>';
                 }
-                if (noRuangan == '') {
-                    msg += 'Field <strong>No. Ruangan</strong> is required.' + '<br/>';
-                }
-                if (statusRuangan == '') {
-                    msg += 'Field <strong>Status Ruangan</strong> is required.' + '<br/>';
-                }
-                if (kelasRuangan == '') {
-                    msg += 'Field <strong>Kelas Ruangan</strong> is required.' + '<br/>';
-                }
-                if (tarifRuangan == '') {
-                    msg += 'Field <strong>Tarif Ruangan</strong> is required.' + '<br/>';
-                }
+//                if (noRuangan == '') {
+//                    msg += 'Field <strong>No. Ruangan</strong> is required.' + '<br/>';
+//                }
+//                if (statusRuangan == '') {
+//                    msg += 'Field <strong>Status Ruangan</strong> is required.' + '<br/>';
+//                }
+//                if (kelasRuangan == '') {
+//                    msg += 'Field <strong>Kelas Ruangan</strong> is required.' + '<br/>';
+//                }
+//                if (tarifRuangan == '') {
+//                    msg += 'Field <strong>Tarif Ruangan</strong> is required.' + '<br/>';
+//                }
+//                if (kuotan == '') {
+//                    msg += 'Field <strong>Kuota</strong> is required.' + '<br/>';
+//                }
+//                if (sisaKuota1 == '') {
+//                    msg += 'Field <strong>Sisa Kuota</strong> is required.' + '<br/>';
+//                }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
@@ -132,9 +144,17 @@
                 </table>
 
                 <table >
-                    <S:hidden name="ruangan.idRuangan">
-
-                    </S:hidden>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>ID Ruangan</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield cssStyle="margin-top: 7px"  id="id_ruangan3" name="ruangan.idRuangan" required="false" disabled="true" readonly="false" cssClass="form-control"/>
+                                <s:hidden id="id_ruangan1" name="ruangan.idRuangan" />
+                            </table>
+                        </td>
+                    </tr>
 
                     <tr>
                         <td>
@@ -164,6 +184,36 @@
                             </table>
                         </td>
                     </tr>
+
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Unit :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                    <%--<s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>--%>
+                                    <%--<s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="pendapatanDokter.branchId"--%>
+                                    <%--listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
+                                        <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                        <s:select list="#initComboBranch.listOfComboBranch" id="branchId3" name="ruangan.branchId" disabled="true"
+                                                  listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Kelas :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:action id="initComboKelas" namespace="/ruangan" name="initComboKelasRuangan_ruangan"/>
+                                <s:select list="#initComboKelas.listOfComboKelasRuangan" id="idKelasRuangan3" name="ruangan.idKelasRuangan" disabled="true"
+                                          listKey="idKelasRuangan" listValue="namaKelasRuangan" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+
                     <tr>
                         <td>
                             <label class="control-label">
@@ -172,45 +222,8 @@
                         </td>
                         <td>
                             <table>
-                                <s:select list="#{'Y':'Tersedia','N':'Tidak Tersedia'}" cssStyle="margin-top: 7px"
-                                          id="status_ruangan3" name="ruangan.statusRuangan"
-                                          headerKey="" headerValue="[Select one]" readonly="true"
-                                          cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label">
-                                <small>Kelas Ruangan :</small>
-                            </label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:action id="initComboKelas" namespace="/checkupdetail"
-                                          name="getListComboKelasRuangan_checkupdetail"/>
-                                <s:select cssStyle="margin-top: 7px"
-                                          list="#initComboKelas.listOfKelasRuangan" id="kelas_ruangan3"
-                                          name="ruangan.idKelasRuangan"
-                                          listKey="idKelasRuangan"
-                                          listValue="namaKelasRuangan"
-                                          headerKey="" headerValue="[Select one]"
-                                          cssClass="form-control select2"
-                                          readonly="true"/>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label">
-                                <small>Keterangan :</small>
-                            </label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textarea rows="4" id="keterangan3" name="ruangan.keterangan"
-                                            required="false" readonly="true"
-                                            cssClass="form-control" cssStyle="margin-top: 7px"/>
+                                <s:select list="#{'N':'Tidak Tersedia'}" id="statusRuangan3" name="ruangan.statusRuangan" disabled="true"
+                                          headerKey="Y" headerValue="Tersedia" cssClass="form-control" />
                             </table>
                         </td>
                     </tr>
@@ -225,6 +238,43 @@
                                 <s:textfield id="tarif_ruangan3" cssStyle="margin-top: 7px"
                                              name="ruangan.tarif" required="false"
                                              readonly="true" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Kuota</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield cssStyle="margin-top: 7px"  id="kuota3" name="ruangan.kuota" required="false" type="number" readonly="true" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Sisa Kuota</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield cssStyle="margin-top: 7px"  id="sisaKuota3" name="ruangan.sisaKuota" required="false" type="number" readonly="true" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label class="control-label">
+                                <small>Keterangan :</small>
+                            </label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textarea rows="4" id="keterangan3" name="ruangan.keterangan"
+                                            required="false" readonly="true"
+                                            cssClass="form-control" cssStyle="margin-top: 7px"/>
                             </table>
                         </td>
                     </tr>
@@ -283,7 +333,7 @@
                                         <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
                                                    height="250" width="600" autoOpen="false" title="Error Dialog"
                                                    buttons="{
-                                                                        'OK':function() { $('#error_dialog').dialog('close'); }
+                                                                        'OK':function() { $('#error_dialog').dialog('close');  window.location.reload(true)}
                                                                     }"
                                         >
                                             <div class="alert alert-error fade in">

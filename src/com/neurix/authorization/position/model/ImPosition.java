@@ -32,6 +32,7 @@ public class ImPosition implements Serializable {
     private String stPositionId;
     private String bagianName;
     private String kodering;
+    private String kategori;
 
     private ImDepartmentEntity imDepartmentEntity;
     private ImKelompokPositionEntity imKelompokPositionEntity;
@@ -234,6 +235,14 @@ public class ImPosition implements Serializable {
 
     public void setStPositionId(String stPositionId) {
         this.stPositionId = stPositionId;
+    }
+
+    public String getKategori() {
+        return kategori;
+    }
+
+    public void setKategori(String kategori) {
+        this.kategori = kategori;
     }
 
     private Set<ImUsers> imUserses;

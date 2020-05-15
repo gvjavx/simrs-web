@@ -2,6 +2,7 @@ package com.neurix.akuntansi.transaksi.budgeting.dao;
 
 import com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity;
 import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
+import com.neurix.akuntansi.transaksi.budgeting.model.Budgeting;
 import com.neurix.akuntansi.transaksi.budgeting.model.ItAkunBudgetingEntity;
 import com.neurix.common.dao.GenericDao;
 import org.hibernate.Criteria;
@@ -10,6 +11,7 @@ import org.hibernate.criterion.Restrictions;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Timestamp;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -110,10 +112,48 @@ public class BudgetingDao extends GenericDao<ItAkunBudgetingEntity, String> {
         return false;
     }
 
+    public String checkLastTipeOfBudgeting(){
+        String SQL = "SELECT no_budgeting, tipe FROM it_akun_budgeting LIMIT 1";
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                return obj[1].toString();
+            }
+        }
+        return "";
+    }
+
     public String getNextId() {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_budgeting')");
         Iterator<BigInteger> iter = query.list().iterator();
         String sId = String.format("%08d", iter.next());
         return sId;
+    }
+
+    public Budgeting getCheckTransaksi(String branchId, String tahun){
+
+        String SQL = "SELECT branch_id, tahun, status, last_update, last_update_who FROM it_akun_budgeting\n" +
+                "WHERE branch_id = :unit\n" +
+                "AND tahun = :tahun\n" +
+                "ORDER BY last_update DESC\n" +
+                "LIMIT 1";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("unit", branchId)
+                .setParameter("tahun", tahun)
+                .list();
+
+        Budgeting budgeting = new Budgeting();
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                budgeting.setBranchId(obj[0].toString());
+                budgeting.setTahun(obj[1].toString());
+                budgeting.setStatus(obj[2].toString());
+                budgeting.setLastUpdate((Timestamp) obj[3]);
+                budgeting.setLastUpdateWho(obj[4].toString());
+            }
+        }
+
+        return budgeting;
     }
 }

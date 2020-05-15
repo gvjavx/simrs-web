@@ -333,60 +333,115 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
         return listOfResults;
     }
 
-    public Obat getSumStockObatGudangById(String id) {
-
-//        String SQL = "SELECT \n" +
-//                "id_obat, \n" +
-//                "SUM(qty_box) as qty_box, \n" +
-//                "SUM(qty_lembar) as qty_lembar,\n" +
-//                "SUM(qty_biji) as qty_biji\n" +
-//                "FROM im_simrs_obat \n" +
-//                "WHERE (qty_box, qty_lembar, qty_biji) != ('0','0','0')\n" +
-//                "AND id_obat = :id\n" +
-//                "GROUP BY id_obat";
-
-        //stok obat digudang ditambah dengan stok di apotek
-        String SQL = "SELECT\n" +
-                "a.id_obat,\n" +
-                "(a.qty_box + b.jml_box) as qty_box,\n" +
-                "(a.qty_lembar + b.jml_lembar) as qty_lembar,\n" +
-                "(a.qty_biji + b.jml_biji) as qty_biji\n" +
-                "FROM\n" +
-                "\t(SELECT  \n" +
-                "\tid_obat,  \n" +
-                "\tSUM(qty_box) as qty_box,  \n" +
-                "\tSUM(qty_lembar) as qty_lembar, \n" +
-                "\tSUM(qty_biji) as qty_biji \n" +
-                "\tFROM im_simrs_obat\n" +
-                "\tWHERE (qty_box, qty_lembar, qty_biji) != (0,0,0) \n" +
-                "\tAND id_obat = :id\n" +
-                "\tAND branch_id = :branchId\n" +
-                "\tGROUP BY id_obat) a\n" +
-                "INNER JOIN\n" +
-                "\t(SELECT \n" +
-                "\tid_obat, \n" +
-                "\tSUM(qty_box) as jml_box, \n" +
-                "\tSUM(qty_lembar) as jml_lembar, \n" +
-                "\tSUM(qty_biji) as jml_biji\n" +
-                "\tFROM mt_simrs_obat_poli\n" +
-                "\tWHERE (qty_box, qty_lembar, qty_biji) != (0,0,0) \n" +
-                "\tAND id_obat = :id\n" +
-                "\tAND branch_id = :branchId\n" +
-                "\tGROUP BY id_obat) b\n" +
-                "ON a.id_obat = b.id_obat\n";
-
-        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
-                .setParameter("id", id)
-                .setParameter("branchId", CommonUtil.userBranchLogin())
-                .list();
+    public Obat getSumStockObatGudangById(String id, String ket) {
 
         Obat obat = new Obat();
-        if (results.size() > 0) {
-            for (Object[] obj : results) {
-                obat.setIdObat(obj[0].toString());
-                obat.setQtyBox(new BigInteger(String.valueOf(obj[1])));
-                obat.setQtyLembar(new BigInteger(String.valueOf(obj[2])));
-                obat.setQtyBiji(new BigInteger(String.valueOf(obj[3])));
+
+        if ("stok".equalsIgnoreCase(ket)) {
+
+            String SQL = "SELECT \n" +
+                    "id_obat, \n" +
+                    "SUM(qty_box) as qty_box, \n" +
+                    "SUM(qty_lembar) as qty_lembar,\n" +
+                    "SUM(qty_biji) as qty_biji\n" +
+                    "FROM im_simrs_obat \n" +
+                    "WHERE (qty_box, qty_lembar, qty_biji) != ('0','0','0')\n" +
+                    "AND id_obat = :id\n" +
+                    "AND branch_id = :branchId\n" +
+                    "GROUP BY id_obat";
+
+            List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("id", id)
+                    .setParameter("branchId", CommonUtil.userBranchLogin())
+                    .list();
+
+            if (results.size() > 0) {
+                for (Object[] obj : results) {
+                    obat.setIdObat(obj[0].toString());
+                    obat.setQtyBox(new BigInteger(String.valueOf(obj[1])));
+                    obat.setQtyLembar(new BigInteger(String.valueOf(obj[2])));
+                    obat.setQtyBiji(new BigInteger(String.valueOf(obj[3])));
+                }
+            }
+
+        } else {
+
+            //stok obat digudang ditambah dengan stok di apotek
+            String SQLMaster = "SELECT  \n" +
+                    "\tid_obat,  \n" +
+                    "\tSUM(qty_box) as qty_box,  \n" +
+                    "\tSUM(qty_lembar) as qty_lembar, \n" +
+                    "\tSUM(qty_biji) as qty_biji \n" +
+                    "\tFROM im_simrs_obat\n" +
+                    "\tWHERE (qty_box, qty_lembar, qty_biji) != (0,0,0) \n" +
+                    "\tAND id_obat = :id1\n" +
+                    "\tAND branch_id = :branchId1\n" +
+                    "\tGROUP BY id_obat";
+
+            String SQLPoli = "SELECT \n" +
+                    "\tid_obat, \n" +
+                    "\tSUM(qty_box) as jml_box, \n" +
+                    "\tSUM(qty_lembar) as jml_lembar, \n" +
+                    "\tSUM(qty_biji) as jml_biji\n" +
+                    "\tFROM mt_simrs_obat_poli\n" +
+                    "\tWHERE (qty_box, qty_lembar, qty_biji) != (0,0,0) \n" +
+                    "\tAND id_obat = :id2\n" +
+                    "\tAND branch_id = :branchId2\n" +
+                    "\tGROUP BY id_obat";
+
+            List<Object[]> results1 = this.sessionFactory.getCurrentSession().createSQLQuery(SQLMaster)
+                    .setParameter("id1", id)
+                    .setParameter("branchId1", CommonUtil.userBranchLogin())
+                    .list();
+
+            List<Object[]> results2 = this.sessionFactory.getCurrentSession().createSQLQuery(SQLPoli)
+                    .setParameter("id2", id)
+                    .setParameter("branchId2", CommonUtil.userBranchLogin())
+                    .list();
+
+            String idObat = "";
+            BigInteger totalBox1 = new BigInteger(String.valueOf(0));
+            BigInteger totalLembar1 = new BigInteger(String.valueOf(0));
+            BigInteger totalBiji1 = new BigInteger(String.valueOf(0));
+
+            if (results1.size() > 0) {
+                for (Object[] obj : results1) {
+                    idObat = obj[0].toString();
+                    if(obj[1] != null){
+                        totalBox1 = new BigInteger(obj[1].toString());
+                    }
+                    if(obj[2] != null){
+                        totalLembar1 = new BigInteger(obj[2].toString());
+                    }
+                    if(obj[3] != null){
+                        totalBiji1 = new BigInteger(obj[3].toString());
+                    }
+                }
+            }
+
+            BigInteger totalBox2 = new BigInteger(String.valueOf(0));
+            BigInteger totalLembar2 = new BigInteger(String.valueOf(0));
+            BigInteger totalBiji2 = new BigInteger(String.valueOf(0));
+
+            if (results2.size() > 0) {
+                for (Object[] obj : results2) {
+                    if(obj[1] != null){
+                        totalBox2 = new BigInteger(obj[1].toString());
+                    }
+                    if(obj[2] != null){
+                        totalLembar2 = new BigInteger(obj[2].toString());
+                    }
+                    if(obj[3] != null){
+                        totalBiji2 = new BigInteger(obj[3].toString());
+                    }
+                }
+            }
+
+            if(!"".equalsIgnoreCase(idObat)){
+                obat.setIdObat(idObat);
+                obat.setQtyBox(totalBox1.add(totalBox2));
+                obat.setQtyLembar(totalLembar1.add(totalLembar2));
+                obat.setQtyBiji(totalBiji1.add(totalBiji2));
             }
         }
 

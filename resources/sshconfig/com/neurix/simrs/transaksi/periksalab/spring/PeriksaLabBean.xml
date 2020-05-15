@@ -6,6 +6,11 @@
 	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
     <bean id="periksaLabAction" class="com.neurix.simrs.transaksi.periksalab.action.PeriksaLabAction"
+          p:branchBoProxy-ref="branchBoProxy"
+          p:checkupDetailBoProxy-ref="checkupDetailBoProxy"
+          p:checkupBoProxy-ref="checkupBoProxy"
+          p:jenisPriksaPasienBoProxy-ref="jenisPriksaPasienBoProxy"
+          p:periksaLabBoProxy-ref="periksaLabBoProxy"
     />
 
     <bean id="periksaLabBo" class="com.neurix.simrs.transaksi.periksalab.bo.impl.PeriksaLabBoImpl"

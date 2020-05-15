@@ -124,7 +124,8 @@ public class PendapatanDokterAction extends BaseMasterAction {
             try {
                 logId = pendapatanDokterBoProxy.saveErrorMessage(e.getMessage(), "pendapatanDokterBO.saveAdd");
             } catch (GeneralBOException e1) {
-                logger.error("[PendapatanDokterAction.save] Error when saving error,", e1);;
+                logger.error("[PendapatanDokterAction.save] Error when saving error,", e1);
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[PendapatanDokterAction.save] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
             throw new GeneralBOException(e.getMessage());
@@ -149,15 +150,15 @@ public class PendapatanDokterAction extends BaseMasterAction {
                 logger.error("[PendapatanDokterAction.search] Error when saving error,", e1);;
             }
             logger.error("[PendapatanDokterAction.search] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by    criteria, please inform to your admin" );
         }
 
         String branchId = CommonUtil.userBranchLogin();
         PendapatanDokter data = new PendapatanDokter();
         if (branchId != null){
-            data.setBranchId(branchId);
+            data.setBranchUser(branchId);
         }else {
-            data.setBranchId("");
+            data.setBranchUser("");
         }
 
         pendapatanDokter = data;
@@ -178,9 +179,10 @@ public class PendapatanDokterAction extends BaseMasterAction {
         String branchId = CommonUtil.userBranchLogin();
         PendapatanDokter data = new PendapatanDokter();
         if (branchId != null){
+            data.setBranchUser(branchId);
             data.setBranchId(branchId);
         }else {
-            data.setBranchId("");
+            data.setBranchUser("");
         }
 
         pendapatanDokter = data;
@@ -337,10 +339,12 @@ public class PendapatanDokterAction extends BaseMasterAction {
             try {
                 logId = pendapatanDokterBoProxy.saveErrorMessage(e.getMessage(), "pendapatanDokterBO.getByCriteriaForPendapatanDokter");
             } catch (GeneralBOException e1) {
-                logger.error("[PendapatanDokterAction.pendapatan] Error when saving error,", e1);;
+                logger.error("[PendapatanDokterAction.pendapatan] Error when saving error,", e1);
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[PendapatanDokterAction.pendapatan] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            throw new GeneralBOException(e.getMessage());
         }
 
         HttpSession session = ServletActionContext.getRequest().getSession();
@@ -362,4 +366,62 @@ public class PendapatanDokterAction extends BaseMasterAction {
         return pendapatanDokters;
     }
 
+    public List<PendapatanDokter> loadPendapatanPphLebih(String pendapatanId){
+        List<PendapatanDokter> listData = new ArrayList<>();
+        List<PendapatanDokter> listDataPendapatan = new ArrayList<>();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PendapatanDokterBo pendapatanDokterBo = (PendapatanDokterBo) ctx.getBean("pendapatanDokterBoProxy");
+        try{
+            listData = pendapatanDokterBo.getDetailPendapatanPph(pendapatanId);
+        }catch (GeneralBOException e){
+            Long logId = null;
+            try {
+                logId = pendapatanDokterBo.saveErrorMessage(e.getMessage(), "pendapatanDokterBO.getByCriteria");
+            } catch (GeneralBOException e1) {
+                logger.error("[PendapatanDokterAction.search] Error when saving error,", e1);;
+            }
+            logger.error("[PendapatanDokterAction.search] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+        }
+
+        return listData;
+    }
+
+    public List<PendapatanDokter> loadResultsPphLebih(String nip){
+        List<PendapatanDokter> pphLebihDokters = new ArrayList<>();
+        List<PendapatanDokter> pphLebih = new ArrayList<>();
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        pphLebihDokters = (List<PendapatanDokter>) session.getAttribute("listOfResultPendapatanDokter");
+
+        for (PendapatanDokter dokter: pphLebihDokters){
+            if (dokter.getDokterId() != null){
+                if (dokter.getDokterId().equalsIgnoreCase(nip)){
+                    PendapatanDokter pendapatanDokter = new PendapatanDokter();
+                    pendapatanDokter.setTotalDppPph21KomulatifLebih(dokter.getTotalDppPph21KomulatifLebih());
+                    pendapatanDokter.setTotalDppPph21Lebih(dokter.getTotalDppPph21Lebih());
+                    pendapatanDokter.setTarifLebih(dokter.getTarifLebih());
+                    pendapatanDokter.setTotalPphDipungutLebih(dokter.getTotalPphDipungutLebih());
+                    pendapatanDokter.setTotalPphLebih(dokter.getTotalPphLebih());
+                    pendapatanDokter.setTotalPphFinal(dokter.getTotalPphFinal());
+
+                    pendapatanDokter.setStTotalDppPph50(CommonUtil.numbericFormat(dokter.getTotalDppPph50(), "###,###"));
+                    pendapatanDokter.setStTotalDppPph21Komulatif(CommonUtil.numbericFormat(dokter.getTotalDppPph21Komulatif(), "###,###"));
+                    pendapatanDokter.setStTarif(CommonUtil.numbericFormat(dokter.getTarif(), "###,###")+"%");
+                    pendapatanDokter.setStTotalPphDipungut(CommonUtil.numbericFormat(dokter.getTotalPphDipungut(), "###,###"));
+
+                    pendapatanDokter.setStTotalDppPph21KomulatifLebih(CommonUtil.numbericFormat(dokter.getTotalDppPph21KomulatifLebih(), "###,###"));
+                    pendapatanDokter.setStTotalDppPph21Lebih(CommonUtil.numbericFormat(dokter.getTotalDppPph21Lebih(), "###,###"));
+                    pendapatanDokter.setStTarifLebih(dokter.getStTarifLebih()+"%");
+                    pendapatanDokter.setStTotalPphDipungutLebih(CommonUtil.numbericFormat(dokter.getTotalPphDipungutLebih(), "###,###"));
+                    pendapatanDokter.setStTotalPphLebih(CommonUtil.numbericFormat(dokter.getTotalPphLebih(), "###,###"));
+                    pendapatanDokter.setStTotalPphFinal(CommonUtil.numbericFormat(dokter.getTotalPphFinal(), "###,###"));
+
+                    pphLebih.add(pendapatanDokter);
+                }
+            }
+        }
+
+        return pphLebih;
+    }
 }

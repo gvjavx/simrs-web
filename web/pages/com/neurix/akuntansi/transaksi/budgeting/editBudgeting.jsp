@@ -18,7 +18,22 @@
     <script type='text/javascript'>
 
 
+        function formatRupiah(angka) {
+            if(angka != null && angka != ''){
+                var reverse = angka.toString().split('').reverse().join(''),
+                    ribuan = reverse.match(/\d{1,3}/g);
+                ribuan = ribuan.join('.').split('').reverse().join('');
+                return ribuan;
+            }else{
+                return 0;
+            }
+        }
+
     </script>
+
+    <script src="<s:url value="/pages/plugins/tree/jquery.treegrid.bootstrap3.js"/>"></script>
+    <script src="<s:url value="/pages/plugins/tree/jquery.treegrid.js"/>"></script>
+    <script src="<s:url value="/pages/plugins/tree/lodash.js"/>"></script>
 </head>
 
 <body class="hold-transition skin-blue fixed sidebar-mini">
@@ -130,17 +145,17 @@
                                         <td align="center">Keterangan</td>
                                         <s:if test='budgeting.tipe == "quartal"'>
                                             <td align="center">Total</td>
-                                            <td align="center">Selisih</td>
                                             <td align="center">Kuartal 1</td>
                                             <td align="center">Kuartal 2</td>
                                             <td align="center">Kuartal 3</td>
                                             <td align="center">Kuartal 4</td>
+                                            <td align="center">Selisih</td>
                                         </s:if>
                                         <s:if test='budgeting.tipe == "semester"'>
                                             <td align="center">Total</td>
-                                            <td align="center">Selisih</td>
                                             <td align="center">Semester 1</td>
                                             <td align="center">Semester 2</td>
+                                            <td align="center">Selisih</td>
                                         </s:if>
                                         <s:if test='budgeting.tipe == "tahunan"'>
                                             <td align="center">Total</td>
@@ -156,21 +171,21 @@
                                             <td><s:property value="kodeRekening"/></td>
                                             <td><s:property value="namaKodeRekening"/></td>
                                             <s:if test='budgeting.tipe == "quartal"'>
-                                                <td align="center"><s:property value="nilaiTotal"/></td>
+                                                <td align="center"><script>document.write(formatRupiah('<s:property value="nilaiTotal"/>'))</script></td>
+                                                <td align="center"><script>document.write(formatRupiah('<s:property value="quartal1"/>'))</script></td>
+                                                <td align="center"><script>document.write(formatRupiah('<s:property value="quartal2"/>'))</script></td>
+                                                <td align="center"><script>document.write(formatRupiah('<s:property value="quartal3"/>'))</script></td>
+                                                <td align="center"><script>document.write(formatRupiah('<s:property value="quartal4"/>'))</script></td>
                                                 <td align="center"><s:property value="selisih"/></td>
-                                                <td align="center"><s:property value="quartal1"/></td>
-                                                <td align="center"><s:property value="quartal2"/></td>
-                                                <td align="center"><s:property value="quartal3"/></td>
-                                                <td align="center"><s:property value="quartal4"/></td>
                                             </s:if>
                                             <s:if test='budgeting.tipe == "semester"'>
-                                                <td align="center"><s:property value="nilaiTotal"/></td>
+                                                <td align="center"><script>document.write(formatRupiah('<s:property value="nilaiTotal"/>'))</script></td>
+                                                <td align="center"><script>document.write(formatRupiah('<s:property value="semester1"/>'))</script></td>
+                                                <td align="center"><script>document.write(formatRupiah('<s:property value="semester2"/>'))</script></td>
                                                 <td align="center"><s:property value="selisih"/></td>
-                                                <td align="center"><s:property value="semester1"/></td>
-                                                <td align="center"><s:property value="semester2"/></td>
                                             </s:if>
                                             <s:if test='budgeting.tipe == "tahunan"'>
-                                                <td align="center"><s:property value="nilaiTotal"/></td>
+                                                <td align="center"><script>document.write(formatRupiah('<s:property value="nilaiTotal"/>'))</script></td>
                                                 <td align="center"><s:property value="selisih"/></td>
                                             </s:if>
                                             <td align="center">
@@ -187,7 +202,7 @@
                         <div class="form-group" style="margin-top: 10px">
                             <div class="col-md-4 col-md-offset-5">
                                 <button class="btn btn-success" onclick="initForm()"><i class="fa fa-arrow-left"></i> Back</button>
-                                <button class="btn btn-success" id="btn-save" onclick="saveBudgeting()"><i class="fa fa-arrow-right"></i> Save </button>
+                                <button class="btn btn-success" id="btn-save" onclick="saveBudgeting()"><i class="fa fa-check"></i> Save </button>
                             </div>
                         </div>
                     </div>

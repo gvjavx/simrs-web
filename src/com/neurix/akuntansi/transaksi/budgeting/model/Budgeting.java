@@ -44,6 +44,7 @@ public class Budgeting {
     private String kodeParent;
     private String namaParent;
     private BigDecimal nilaiAwal;
+    private String flagDisable;
 
 
     public static Comparator<Budgeting> kodeRekeningSorting = new Comparator<Budgeting>() {
@@ -65,6 +66,14 @@ public class Budgeting {
 
     public static void setKodeRekeningSorting(Comparator<Budgeting> kodeRekeningSorting) {
         Budgeting.kodeRekeningSorting = kodeRekeningSorting;
+    }
+
+    public String getFlagDisable() {
+        return flagDisable;
+    }
+
+    public void setFlagDisable(String flagDisable) {
+        this.flagDisable = flagDisable;
     }
 
     public BigDecimal getNilaiAwal() {

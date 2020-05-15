@@ -11,6 +11,22 @@ public class OperatorLabAction  extends BaseMasterAction{
     private OperatorLabBo operatorLabBoProxy;
     private OperatorLab operatorLab;
 
+    public OperatorLab getOperatorLab() {
+        return operatorLab;
+    }
+
+    public void setOperatorLab(OperatorLab operatorLab) {
+        this.operatorLab = operatorLab;
+    }
+
+    public OperatorLabBo getOperatorLabBoProxy() {
+        return operatorLabBoProxy;
+    }
+
+    public void setOperatorLabBoProxy(OperatorLabBo operatorLabBoProxy) {
+        this.operatorLabBoProxy = operatorLabBoProxy;
+    }
+
     @Override
     public String add() {
         return null;

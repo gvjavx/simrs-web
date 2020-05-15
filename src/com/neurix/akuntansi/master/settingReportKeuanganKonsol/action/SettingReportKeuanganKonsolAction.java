@@ -1,16 +1,22 @@
 package com.neurix.akuntansi.master.settingReportKeuanganKonsol.action;
 
 //import com.neurix.authorization.company.bo.AreaBo;
+import com.neurix.akuntansi.master.kodeRekening.bo.KodeRekeningBo;
+import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.master.settingReportKeuanganKonsol.bo.AkunSettingReportKeuanganKonsolBo;
 import com.neurix.akuntansi.master.settingReportKeuanganKonsol.bo.AkunSettingReportKeuanganKonsolBo;
+import com.neurix.akuntansi.master.settingReportKeuanganKonsol.bo.AkunSettingReportKeuanganKonsolDetailBo;
 import com.neurix.akuntansi.master.settingReportKeuanganKonsol.dao.SettingReportKeuanganKonsolDao;
 import com.neurix.akuntansi.master.settingReportKeuanganKonsol.model.AkunSettingReportKeuanganKonsol;
 import com.neurix.akuntansi.master.settingReportKeuanganKonsol.model.AkunSettingReportKeuanganKonsol;
+import com.neurix.akuntansi.master.settingReportKeuanganKonsol.model.AkunSettingReportKeuanganKonsolDetail;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
@@ -25,6 +31,8 @@ import java.util.List;
 public class SettingReportKeuanganKonsolAction extends BaseMasterAction {
     protected static transient Logger logger = Logger.getLogger(SettingReportKeuanganKonsolAction.class);
     private AkunSettingReportKeuanganKonsolBo akunSettingReportKeuanganKonsolBoProxy;
+    private AkunSettingReportKeuanganKonsolDetailBo akunSettingReportKeuanganKonsolDetailBoProxy;
+
     private AkunSettingReportKeuanganKonsol akunSettingReportKeuanganKonsol;
     private List<AkunSettingReportKeuanganKonsol> listOfComboSettingReportKeuanganKonsol = new ArrayList<AkunSettingReportKeuanganKonsol>();
     public static Logger getLogger() {
@@ -33,6 +41,14 @@ public class SettingReportKeuanganKonsolAction extends BaseMasterAction {
 
     public static void setLogger(Logger logger) {
         SettingReportKeuanganKonsolAction.logger = logger;
+    }
+
+    public AkunSettingReportKeuanganKonsolDetailBo getAkunSettingReportKeuanganKonsolDetailBoProxy() {
+        return akunSettingReportKeuanganKonsolDetailBoProxy;
+    }
+
+    public void setAkunSettingReportKeuanganKonsolDetailBoProxy(AkunSettingReportKeuanganKonsolDetailBo akunSettingReportKeuanganKonsolDetailBoProxy) {
+        this.akunSettingReportKeuanganKonsolDetailBoProxy = akunSettingReportKeuanganKonsolDetailBoProxy;
     }
 
     public AkunSettingReportKeuanganKonsolBo getAkunSettingReportKeuanganKonsolBoProxy() {
@@ -89,8 +105,8 @@ public class SettingReportKeuanganKonsolAction extends BaseMasterAction {
         setAddOrEdit(true);
         setAdd(true);
 
-        HttpSession session = ServletActionContext.getRequest().getSession();
-        session.removeAttribute("listOfResult");
+//        HttpSession session = ServletActionContext.getRequest().getSession();
+//        session.removeAttribute("listOfResult");
 
         logger.info("[AkunSettingReportKeuanganKonsolAction.add] stop process >>>");
         return "init_add";
@@ -99,135 +115,178 @@ public class SettingReportKeuanganKonsolAction extends BaseMasterAction {
     @Override
     public String edit() {
         logger.info("[AkunSettingReportKeuanganKonsolAction.edit] start process >>>");
-        String itemId = getId();
-        String itemFlag = getFlag();
+        String reportKonsolId = getId();
+        List<AkunSettingReportKeuanganKonsol> reportKeuanganKonsolList = new ArrayList<>();
+        List<AkunSettingReportKeuanganKonsolDetail> reportKeuanganKonsolDetailList = new ArrayList<>();
+        AkunSettingReportKeuanganKonsol search = new AkunSettingReportKeuanganKonsol();
+        search.setSettingReportKonsolId(reportKonsolId);
+        search.setFlag("Y");
 
-        AkunSettingReportKeuanganKonsol editAkunSettingReportKeuanganKonsol = new AkunSettingReportKeuanganKonsol();
+        AkunSettingReportKeuanganKonsolDetail detail = new AkunSettingReportKeuanganKonsolDetail();
+        detail.setSettingReportKonsolId(reportKonsolId);
+        detail.setFlag("Y");
 
-        if(itemFlag != null){
+        try {
+            reportKeuanganKonsolList= akunSettingReportKeuanganKonsolBoProxy.getByCriteria(search);
+            reportKeuanganKonsolDetailList = akunSettingReportKeuanganKonsolDetailBoProxy.getByCriteria(detail);
+        }catch (GeneralBOException e) {
+            Long logId = null;
             try {
-                editAkunSettingReportKeuanganKonsol = init(itemId, itemFlag);
-            } catch (GeneralBOException e) {
-                Long logId = null;
-                try {
-                    logId = akunSettingReportKeuanganKonsolBoProxy.saveErrorMessage(e.getMessage(), "AkunSettingReportKeuanganKonsolBO.getAkunSettingReportKeuanganKonsolByCriteria");
-                } catch (GeneralBOException e1) {
-                    logger.error("[AkunSettingReportKeuanganKonsolAction.edit] Error when retrieving edit data,", e1);
-                }
-                logger.error("[AkunSettingReportKeuanganKonsolAction.edit] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
-                addActionError("Error, " + "[code=" + logId + "] Found problem when retrieving data for edit, please inform to your admin.");
-                return "failure";
+                logId = akunSettingReportKeuanganKonsolBoProxy.saveErrorMessage(e.getMessage(), "AkunSettingReportKeuanganKonsolAction.edit");
+            } catch (GeneralBOException e1) {
+                logger.error("[AkunSettingReportKeuanganKonsolAction.edit] Error when saving error,", e1);
+                return ERROR;
             }
-
-            if(editAkunSettingReportKeuanganKonsol != null) {
-                setAkunSettingReportKeuanganKonsol(editAkunSettingReportKeuanganKonsol);
-            } else {
-                editAkunSettingReportKeuanganKonsol.setFlag(itemFlag);
-                editAkunSettingReportKeuanganKonsol.setSettingReportKonsolId(itemId);
-                setAkunSettingReportKeuanganKonsol(editAkunSettingReportKeuanganKonsol);
-                addActionError("Error, Unable to find data with id = " + itemId);
-                return "failure";
-            }
-        } else {
-            editAkunSettingReportKeuanganKonsol.setSettingReportKonsolId(itemId);
-            editAkunSettingReportKeuanganKonsol.setFlag(getFlag());
-            setAkunSettingReportKeuanganKonsol(editAkunSettingReportKeuanganKonsol);
-            addActionError("Error, Unable to edit again with flag = N.");
-            return "failure";
+            logger.error("[AkunSettingReportKeuanganKonsolAction.edit] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+            return ERROR;
         }
-        setAddOrEdit(true);
-        logger.info("[AkunSettingReportKeuanganKonsolAction.edit] end process >>>");
+        AkunSettingReportKeuanganKonsol edit = new AkunSettingReportKeuanganKonsol();
+        for (AkunSettingReportKeuanganKonsol konsol : reportKeuanganKonsolList){
+            edit.setSettingReportKonsolId(konsol.getSettingReportKonsolId());
+            edit.setKodeRekeningAlias(konsol.getKodeRekeningAlias());
+            edit.setNamaKodeRekeningAlias(konsol.getNamaKodeRekeningAlias());
+            edit.setFlagLabel(konsol.getFlagLabel());
+            break;
+        }
+        akunSettingReportKeuanganKonsol=edit;
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.setAttribute("listOfResultKonsolDetail",reportKeuanganKonsolDetailList);
+
+        logger.info("[AkunSettingReportKeuanganKonsolAction.edit] end process <<<");
         return "init_edit";
     }
 
     @Override
     public String delete() {
-        logger.info("[AkunSettingReportKeuanganKonsolAction.delete] start process >>>");
+        logger.info("[AkunSettingReportKeuanganKonsolAction.edit] start process >>>");
+        String reportKonsolId = getId();
+        List<AkunSettingReportKeuanganKonsol> reportKeuanganKonsolList = new ArrayList<>();
+        List<AkunSettingReportKeuanganKonsolDetail> reportKeuanganKonsolDetailList = new ArrayList<>();
+        AkunSettingReportKeuanganKonsol search = new AkunSettingReportKeuanganKonsol();
+        search.setSettingReportKonsolId(reportKonsolId);
+        search.setFlag("Y");
 
-        String itemId = getId();
-        String itemFlag = getFlag();
-        AkunSettingReportKeuanganKonsol deleteAkunSettingReportKeuanganKonsol = new AkunSettingReportKeuanganKonsol();
+        AkunSettingReportKeuanganKonsolDetail detail = new AkunSettingReportKeuanganKonsolDetail();
+        detail.setSettingReportKonsolId(reportKonsolId);
+        detail.setFlag("Y");
 
-        if (itemFlag != null ) {
-
+        try {
+            reportKeuanganKonsolList= akunSettingReportKeuanganKonsolBoProxy.getByCriteria(search);
+            reportKeuanganKonsolDetailList = akunSettingReportKeuanganKonsolDetailBoProxy.getByCriteria(detail);
+        }catch (GeneralBOException e) {
+            Long logId = null;
             try {
-                deleteAkunSettingReportKeuanganKonsol = init(itemId, itemFlag);
-            } catch (GeneralBOException e) {
-                Long logId = null;
-                try {
-                    logId = akunSettingReportKeuanganKonsolBoProxy.saveErrorMessage(e.getMessage(), "AkunSettingReportKeuanganKonsolBO.getAlatById");
-                } catch (GeneralBOException e1) {
-                    logger.error("[AkunSettingReportKeuanganKonsolAction.delete] Error when retrieving delete data,", e1);
-                }
-                logger.error("[AkunSettingReportKeuanganKonsolAction.delete] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
-                addActionError("Error, " + "[code=" + logId + "] Found problem when retrieving data for delete, please inform to your admin.");
-                return "failure";
+                logId = akunSettingReportKeuanganKonsolBoProxy.saveErrorMessage(e.getMessage(), "AkunSettingReportKeuanganKonsolAction.edit");
+            } catch (GeneralBOException e1) {
+                logger.error("[AkunSettingReportKeuanganKonsolAction.edit] Error when saving error,", e1);
+                return ERROR;
             }
-
-            if (deleteAkunSettingReportKeuanganKonsol != null) {
-                setAkunSettingReportKeuanganKonsol(deleteAkunSettingReportKeuanganKonsol);
-
-            } else {
-                deleteAkunSettingReportKeuanganKonsol.setSettingReportKonsolId(itemId);
-                deleteAkunSettingReportKeuanganKonsol.setFlag(itemFlag);
-                setAkunSettingReportKeuanganKonsol(deleteAkunSettingReportKeuanganKonsol);
-                addActionError("Error, Unable to find data with id = " + itemId);
-                return "failure";
-            }
-        } else {
-            deleteAkunSettingReportKeuanganKonsol.setSettingReportKonsolId(itemId);
-            deleteAkunSettingReportKeuanganKonsol.setFlag(itemFlag);
-            setAkunSettingReportKeuanganKonsol(deleteAkunSettingReportKeuanganKonsol);
-            addActionError("Error, Unable to delete again with flag = N.");
-            return "failure";
+            logger.error("[AkunSettingReportKeuanganKonsolAction.edit] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+            return ERROR;
         }
+        AkunSettingReportKeuanganKonsol edit = new AkunSettingReportKeuanganKonsol();
+        for (AkunSettingReportKeuanganKonsol konsol : reportKeuanganKonsolList){
+            edit.setSettingReportKonsolId(konsol.getSettingReportKonsolId());
+            edit.setKodeRekeningAlias(konsol.getKodeRekeningAlias());
+            edit.setNamaKodeRekeningAlias(konsol.getNamaKodeRekeningAlias());
+            edit.setFlagLabel(konsol.getFlagLabel());
+            break;
+        }
+        akunSettingReportKeuanganKonsol=edit;
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.setAttribute("listOfResultKonsolDetail",reportKeuanganKonsolDetailList);
 
-        logger.info("[AkunSettingReportKeuanganKonsolAction.delete] end process <<<");
+        logger.info("[AkunSettingReportKeuanganKonsolAction.edit] end process <<<");
         return "init_delete";
     }
 
     @Override
     public String view() {
-        logger.info("[AkunSettingReportKeuanganKonsolAction.view] start process >>>");
 
-        String itemId = getId();
-        String itemFlag = getFlag();
-        AkunSettingReportKeuanganKonsol deleteAkunSettingReportKeuanganKonsol = new AkunSettingReportKeuanganKonsol();
+        logger.info("[AkunSettingReportKeuanganKonsolAction.edit] start process >>>");
+        String reportKonsolId = getId();
+        List<AkunSettingReportKeuanganKonsol> reportKeuanganKonsolList = new ArrayList<>();
+        List<AkunSettingReportKeuanganKonsolDetail> reportKeuanganKonsolDetailList = new ArrayList<>();
+        AkunSettingReportKeuanganKonsol search = new AkunSettingReportKeuanganKonsol();
+        search.setSettingReportKonsolId(reportKonsolId);
+        search.setFlag("Y");
 
-        if (itemFlag != null ) {
+        AkunSettingReportKeuanganKonsolDetail detail = new AkunSettingReportKeuanganKonsolDetail();
+        detail.setSettingReportKonsolId(reportKonsolId);
+        detail.setFlag("Y");
+
+        try {
+            reportKeuanganKonsolList= akunSettingReportKeuanganKonsolBoProxy.getByCriteria(search);
+            reportKeuanganKonsolDetailList = akunSettingReportKeuanganKonsolDetailBoProxy.getByCriteria(detail);
+        }catch (GeneralBOException e) {
+            Long logId = null;
             try {
-                deleteAkunSettingReportKeuanganKonsol = init(itemId, itemFlag);
-            } catch (GeneralBOException e) {
-                Long logId = null;
-                try {
-                    logId = akunSettingReportKeuanganKonsolBoProxy.saveErrorMessage(e.getMessage(), "AkunSettingReportKeuanganKonsolBO.getAlatById");
-                } catch (GeneralBOException e1) {
-                    logger.error("[AkunSettingReportKeuanganKonsolAction.view] Error when retrieving delete data,", e1);
-                }
-                logger.error("[AkunSettingReportKeuanganKonsolAction.view] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
-                addActionError("Error, " + "[code=" + logId + "] Found problem when retrieving data for delete, please inform to your admin.");
-                return "failure";
+                logId = akunSettingReportKeuanganKonsolBoProxy.saveErrorMessage(e.getMessage(), "AkunSettingReportKeuanganKonsolAction.edit");
+            } catch (GeneralBOException e1) {
+                logger.error("[AkunSettingReportKeuanganKonsolAction.edit] Error when saving error,", e1);
+                return ERROR;
             }
-
-            if (deleteAkunSettingReportKeuanganKonsol != null) {
-                setAkunSettingReportKeuanganKonsol(deleteAkunSettingReportKeuanganKonsol);
-
-            } else {
-                deleteAkunSettingReportKeuanganKonsol.setSettingReportKonsolId(itemId);
-                deleteAkunSettingReportKeuanganKonsol.setFlag(itemFlag);
-                setAkunSettingReportKeuanganKonsol(deleteAkunSettingReportKeuanganKonsol);
-                addActionError("Error, Unable to find data with id = " + itemId);
-                return "failure";
-            }
-        } else {
-            deleteAkunSettingReportKeuanganKonsol.setSettingReportKonsolId(itemId);
-            deleteAkunSettingReportKeuanganKonsol.setFlag(itemFlag);
-            setAkunSettingReportKeuanganKonsol(deleteAkunSettingReportKeuanganKonsol);
-            addActionError("Error, Unable to delete again with flag = N.");
-            return "failure";
+            logger.error("[AkunSettingReportKeuanganKonsolAction.edit] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+            return ERROR;
         }
-        logger.info("[AkunSettingReportKeuanganKonsolAction.view] end process <<<");
+        AkunSettingReportKeuanganKonsol edit = new AkunSettingReportKeuanganKonsol();
+        for (AkunSettingReportKeuanganKonsol konsol : reportKeuanganKonsolList){
+            edit.setSettingReportKonsolId(konsol.getSettingReportKonsolId());
+            edit.setKodeRekeningAlias(konsol.getKodeRekeningAlias());
+            edit.setNamaKodeRekeningAlias(konsol.getNamaKodeRekeningAlias());
+            edit.setFlagLabel(konsol.getFlagLabel());
+            break;
+        }
+        akunSettingReportKeuanganKonsol=edit;
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.setAttribute("listOfResultKonsolDetail",reportKeuanganKonsolDetailList);
+
+        logger.info("[AkunSettingReportKeuanganKonsolAction.edit] end process <<<");
         return "init_view";
+
+//        logger.info("[AkunSettingReportKeuanganKonsolAction.view] start process >>>");
+//
+//        String itemId = getId();
+//        String itemFlag = getFlag();
+//        AkunSettingReportKeuanganKonsol deleteAkunSettingReportKeuanganKonsol = new AkunSettingReportKeuanganKonsol();
+//
+//        if (itemFlag != null ) {
+//            try {
+//                deleteAkunSettingReportKeuanganKonsol = init(itemId, itemFlag);
+//            } catch (GeneralBOException e) {
+//                Long logId = null;
+//                try {
+//                    logId = akunSettingReportKeuanganKonsolBoProxy.saveErrorMessage(e.getMessage(), "AkunSettingReportKeuanganKonsolBO.getAlatById");
+//                } catch (GeneralBOException e1) {
+//                    logger.error("[AkunSettingReportKeuanganKonsolAction.view] Error when retrieving delete data,", e1);
+//                }
+//                logger.error("[AkunSettingReportKeuanganKonsolAction.view] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
+//                addActionError("Error, " + "[code=" + logId + "] Found problem when retrieving data for delete, please inform to your admin.");
+//                return "failure";
+//            }
+//
+//            if (deleteAkunSettingReportKeuanganKonsol != null) {
+//                setAkunSettingReportKeuanganKonsol(deleteAkunSettingReportKeuanganKonsol);
+//
+//            } else {
+//                deleteAkunSettingReportKeuanganKonsol.setSettingReportKonsolId(itemId);
+//                deleteAkunSettingReportKeuanganKonsol.setFlag(itemFlag);
+//                setAkunSettingReportKeuanganKonsol(deleteAkunSettingReportKeuanganKonsol);
+//                addActionError("Error, Unable to find data with id = " + itemId);
+//                return "failure";
+//            }
+//        } else {
+//            deleteAkunSettingReportKeuanganKonsol.setSettingReportKonsolId(itemId);
+//            deleteAkunSettingReportKeuanganKonsol.setFlag(itemFlag);
+//            setAkunSettingReportKeuanganKonsol(deleteAkunSettingReportKeuanganKonsol);
+//            addActionError("Error, Unable to delete again with flag = N.");
+//            return "failure";
+//        }
+//        logger.info("[AkunSettingReportKeuanganKonsolAction.view] end process <<<");
+//        return "init_view";
     }
 
     @Override
@@ -244,6 +303,8 @@ public class SettingReportKeuanganKonsolAction extends BaseMasterAction {
 
             editAkunSettingReportKeuanganKonsol.setLastUpdateWho(userLogin);
             editAkunSettingReportKeuanganKonsol.setLastUpdate(updateTime);
+            editAkunSettingReportKeuanganKonsol.setCreatedDate(updateTime);
+            editAkunSettingReportKeuanganKonsol.setCreatedWho(userLogin);
             editAkunSettingReportKeuanganKonsol.setAction("U");
             editAkunSettingReportKeuanganKonsol.setFlag("Y");
 
@@ -301,38 +362,77 @@ public class SettingReportKeuanganKonsolAction extends BaseMasterAction {
         logger.info("[AkunSettingReportKeuanganKonsolAction.saveAdd] start process >>>");
 
         try {
-            AkunSettingReportKeuanganKonsol trans = getAkunSettingReportKeuanganKonsol();
+            AkunSettingReportKeuanganKonsol data = getAkunSettingReportKeuanganKonsol();
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
-            trans.setCreatedWho(userLogin);
-            trans.setLastUpdate(updateTime);
-            trans.setCreatedDate(updateTime);
-            trans.setLastUpdateWho(userLogin);
-            trans.setAction("C");
-            trans.setFlag("Y");
+            data.setCreatedWho(userLogin);
+            data.setLastUpdate(updateTime);
+            data.setCreatedDate(updateTime);
+            data.setLastUpdateWho(userLogin);
+            data.setAction("C");
+            data.setFlag("Y");
 
-            akunSettingReportKeuanganKonsolBoProxy.saveAdd(trans);
+            akunSettingReportKeuanganKonsolBoProxy.saveAdd(data);
         }catch (GeneralBOException e) {
             Long logId = null;
             try {
-                logId = akunSettingReportKeuanganKonsolBoProxy.saveErrorMessage(e.getMessage(), "liburBO.saveAdd");
+                logId = akunSettingReportKeuanganKonsolBoProxy.saveErrorMessage(e.getMessage(), "akunSettingReportKeuanganKonsolBo.saveAdd");
             } catch (GeneralBOException e1) {
-                logger.error("[liburAction.saveAdd] Error when saving error,", e1);
+                logger.error("[SettingReportKeuanganKonsolAction.saveAdd] Error when saving error,", e1);
                 return ERROR;
             }
-            logger.error("[liburAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            logger.error("[SettingReportKeuanganKonsolAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
             return ERROR;
         }
 
-
         HttpSession session = ServletActionContext.getRequest().getSession();
-        session.removeAttribute("listOfResult");
+        session.removeAttribute("listOfResultKeuanganKonsol");
+
+        session.removeAttribute("listOfResultKonsolDetail");
+        session.removeAttribute("listOfResultKonsolDetailEdit");
 
         logger.info("[liburAction.saveAdd] end process >>>");
         return "success_save_add";
     }
+
+//    public String saveAdd(){
+//        logger.info("[AkunSettingReportKeuanganKonsolAction.saveAdd] start process >>>");
+//
+//        try {
+//            AkunSettingReportKeuanganKonsol trans = getAkunSettingReportKeuanganKonsol();
+//            String userLogin = CommonUtil.userLogin();
+//            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+//
+//            trans.setCreatedWho(userLogin);
+//            trans.setLastUpdate(updateTime);
+//            trans.setCreatedDate(updateTime);
+//            trans.setLastUpdateWho(userLogin);
+//            trans.setAction("C");
+//            trans.setFlag("Y");
+//
+//            akunSettingReportKeuanganKonsolBoProxy.saveAdd(trans);
+//        }catch (GeneralBOException e) {
+//            Long logId = null;
+//            try {
+//                logId = akunSettingReportKeuanganKonsolBoProxy.saveErrorMessage(e.getMessage(), "liburBO.saveAdd");
+//            } catch (GeneralBOException e1) {
+//                logger.error("[liburAction.saveAdd] Error when saving error,", e1);
+//                return ERROR;
+//            }
+//            logger.error("[liburAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+//            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+//            return ERROR;
+//        }
+//
+//
+//        HttpSession session = ServletActionContext.getRequest().getSession();
+//        session.removeAttribute("listOfResult");
+//
+//        logger.info("[liburAction.saveAdd] end process >>>");
+//        return "success_save_add";
+//    }
 
     @Override
     public String search() {
@@ -355,8 +455,10 @@ public class SettingReportKeuanganKonsolAction extends BaseMasterAction {
         }
 
         HttpSession session = ServletActionContext.getRequest().getSession();
-        session.removeAttribute("listOfResult");
-        session.setAttribute("listOfResult", listOfsearchAkunSettingReportKeuanganKonsol);
+        session.removeAttribute("listOfResultKonsolDetail");
+        session.removeAttribute("listOfResultKonsolDetailEdit");
+        session.removeAttribute("listOfResultKeuanganKonsol");
+        session.setAttribute("listOfResultKeuanganKonsol", listOfsearchAkunSettingReportKeuanganKonsol);
 
         logger.info("[AkunSettingReportKeuanganKonsolAction.search] end process <<<");
 
@@ -368,7 +470,7 @@ public class SettingReportKeuanganKonsolAction extends BaseMasterAction {
         logger.info("[AkunSettingReportKeuanganKonsolAction.initForm] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
 
-        session.removeAttribute("listOfResult");
+        session.removeAttribute("listOfResultKeuanganKonsol");
 
         logger.info("[AkunSettingReportKeuanganKonsolAction.initForm] end process >>>");
         return INPUT;
@@ -399,6 +501,26 @@ public class SettingReportKeuanganKonsolAction extends BaseMasterAction {
         return SUCCESS;
     }
 
+    public List<KodeRekening> initTypeaheadKodeRekening(String coa) {
+        logger.info("[KodeRekeningAction.initTypeaheadKodeRekening] start process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        KodeRekeningBo kodeRekeningBo = (KodeRekeningBo) ctx.getBean("kodeRekeningBoProxy");
+        List<KodeRekening> kodeRekeningList = new ArrayList();
+        try {
+            kodeRekeningList = kodeRekeningBo.typeaheadKodeRekening(coa);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = kodeRekeningBo.saveErrorMessage(e.getMessage(), "StrukturJabatanBO.getByCriteria");
+            } catch (GeneralBOException e1) {
+                logger.error("[KodeRekeningAction.initTypeaheadKodeRekening] Error when saving error,", e1);
+            }
+            logger.error("[KodeRekeningAction.initTypeaheadKodeRekening] Error when searching data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+        }
+        return kodeRekeningList;
+    }
+
     public String paging(){
         return SUCCESS;
     }
@@ -411,5 +533,116 @@ public class SettingReportKeuanganKonsolAction extends BaseMasterAction {
     @Override
     public String downloadXls() {
         return SUCCESS;
+    }
+
+    public String cekBeforeSave(String kodeRekening,String metode){
+        String status="";
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        AkunSettingReportKeuanganKonsolBo keuanganKonsolBo= (AkunSettingReportKeuanganKonsolBo) ctx.getBean("akunSettingReportKeuanganKonsolBoProxy");
+        List<AkunSettingReportKeuanganKonsol> keuanganKonsolList = new ArrayList<>();
+        AkunSettingReportKeuanganKonsol search = new AkunSettingReportKeuanganKonsol();
+        search.setFlag("Y");
+        search.setKodeRekeningAlias(kodeRekening);
+        try {
+            if (("add").equalsIgnoreCase(metode)){
+                keuanganKonsolList=keuanganKonsolBo.getByDataCriteria(search);
+            }
+        } catch (GeneralBOException e1) {
+            logger.error("[MappingJurnalAction.initComboMappingJurnal] Error when saving error,", e1);
+        }
+        if (keuanganKonsolList.size()!=0){
+            HttpSession session = ServletActionContext.getRequest().getSession();
+            List<AkunSettingReportKeuanganKonsol> listOfsearch= (List<AkunSettingReportKeuanganKonsol>) session.getAttribute("listOfResultKonsolDetail");
+
+            if (listOfsearch==null){
+                status="Belum ada report keuangan konsol detail, silahkan ditambahkan";
+            }
+        }else{
+            status="Parent Kode Rekening Alias Tidak Ada";
+        }
+        return status;
+    }
+
+    public void saveKonsolDetailSession(String idRekeneing, String namaKodeRekening, String operator){
+        logger.info("[SettingReportKeuanganKonsolAction.saveKoderingSession] start process >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<AkunSettingReportKeuanganKonsolDetail> listOfResult = (List<AkunSettingReportKeuanganKonsolDetail>) session.getAttribute("listOfResultKonsolDetail");
+        List<AkunSettingReportKeuanganKonsolDetail> listOfResultEdit = (List<AkunSettingReportKeuanganKonsolDetail>) session.getAttribute("listOfResultKonsolDetailEdit");
+
+        if (listOfResult==null){
+            listOfResult= new ArrayList<>();
+        }
+
+        AkunSettingReportKeuanganKonsolDetail result = new AkunSettingReportKeuanganKonsolDetail();
+        result.setRekeningId(idRekeneing);
+        result.setNamaRekening(namaKodeRekening);
+        result.setOperator(operator);
+        if (operator.equalsIgnoreCase("T"))
+            result.setSbOperator("+");
+        else
+            result.setSbOperator("-");
+        listOfResult.add(result);
+
+        if (listOfResultEdit != null){
+            AkunSettingReportKeuanganKonsolDetail result1 = new AkunSettingReportKeuanganKonsolDetail();
+            result1.setRekeningId(idRekeneing);
+            result1.setNamaRekening(namaKodeRekening);
+            result1.setOperator(operator);
+            if (operator.equalsIgnoreCase("T"))
+                result1.setSbOperator("+");
+            else
+                result1.setSbOperator("-");
+            listOfResultEdit.add(result1);
+        }else {
+            listOfResultEdit = new ArrayList<>();
+            AkunSettingReportKeuanganKonsolDetail result1 = new AkunSettingReportKeuanganKonsolDetail();
+            result1.setRekeningId(idRekeneing);
+            result1.setNamaRekening(namaKodeRekening);
+            result1.setOperator(operator);
+            if (operator.equalsIgnoreCase("T"))
+                result1.setSbOperator("+");
+            else
+                result1.setSbOperator("-");
+            listOfResultEdit.add(result1);
+        }
+
+        session.setAttribute("listOfResultKonsolDetail",listOfResult);
+        session.setAttribute("listOfResultKonsolDetailEdit",listOfResultEdit);
+        logger.info("[SettingReportKeuanganKonsolAction.saveKonsolDetailSession] end process <<<");
+    }
+
+    public List<AkunSettingReportKeuanganKonsolDetail> searchKonsolDetailSession() {
+        logger.info("[SettingReportKeuanganKonsolAction.searchKonsolDetailSession] start process >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<AkunSettingReportKeuanganKonsolDetail> listOfsearch= (List<AkunSettingReportKeuanganKonsolDetail>) session.getAttribute("listOfResultKonsolDetail");
+        return listOfsearch;
+    }
+
+    public String deleteSessionKonsolDetail(String rekeningId) {
+        logger.info("[SettingReportKeuanganKonsolAction.deleteSessionKonsolDetail] start process >>>");
+        String status="";
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<AkunSettingReportKeuanganKonsolDetail> konsolDetailList = (List<AkunSettingReportKeuanganKonsolDetail>) session.getAttribute("listOfResultKonsolDetail");
+        List<AkunSettingReportKeuanganKonsolDetail> konsolDetailArrayList = new ArrayList<>();
+        List<AkunSettingReportKeuanganKonsolDetail> konsolDetailArrayListEdit = new ArrayList<>();
+
+        for (AkunSettingReportKeuanganKonsolDetail keuanganKonsolDetail:konsolDetailList){
+            if (keuanganKonsolDetail.getRekeningId().equalsIgnoreCase(rekeningId)){
+                keuanganKonsolDetail.setFlag("N");
+            }else{
+                keuanganKonsolDetail.setFlag("Y");
+                konsolDetailArrayList.add(keuanganKonsolDetail);
+            }
+
+//            AkunSettingReportKeuanganKonsolDetail detail = new AkunSettingReportKeuanganKonsolDetail();
+//            keuanganKonsolDetail.setRekeningId(keuanganKonsolDetail.getRekeningId());
+//            keuanganKonsolDetail.setOperator(keuanganKonsolDetail.getOperator());
+            konsolDetailArrayListEdit.add(keuanganKonsolDetail);
+        }
+
+        session.setAttribute("listOfResultKonsolDetailEdit",konsolDetailArrayListEdit);
+        session.setAttribute("listOfResultKonsolDetail",konsolDetailArrayList);
+        logger.info("[SettingReportKeuanganKonsolAction.deleteSessionKonsolDetail] end process >>>");
+        return status;
     }
 }

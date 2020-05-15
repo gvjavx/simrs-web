@@ -229,6 +229,35 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
     }
 
     @Override
+    public List<RiwayatTindakan> typeaheadRiwayatTindakan(String riwayatTindakanName) throws GeneralBOException {
+        logger.info("[KodeRekeningBoImpl.typeaheadKodeRekening] start process >>>");
+
+        // Mapping with collection and put
+        List<RiwayatTindakan> listOfResult = new ArrayList();
+        List<ItSimrsRiwayatTindakanEntity> itSimrsRiwayatTindakanEntities = null;
+        try {
+            itSimrsRiwayatTindakanEntities = riwayatTindakanDao.getRiwayatTindakanListByLike(riwayatTindakanName);
+        } catch (HibernateException e) {
+            logger.error("[KodeRekeningBoImpl.typeaheadKodeRekening] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+
+        if(itSimrsRiwayatTindakanEntities != null){
+            RiwayatTindakan riwayatTindakan;
+            // Looping from dao to object and save in collection
+            for(ItSimrsRiwayatTindakanEntity riwayatTindakanEntity : itSimrsRiwayatTindakanEntities){
+                riwayatTindakan = new RiwayatTindakan();
+                riwayatTindakan.setIdTindakan(riwayatTindakanEntity.getIdTindakan());
+                riwayatTindakan.setNamaTindakan(riwayatTindakanEntity.getNamaTindakan());
+                listOfResult.add(riwayatTindakan);
+            }
+        }
+        logger.info("[KodeRekeningBoImpl.typeaheadKodeRekening] end process <<<");
+
+        return listOfResult;
+    }
+
+    @Override
     public void updateByEntity(ItSimrsRiwayatTindakanEntity entity) throws GeneralBOException {
         try {
             riwayatTindakanDao.updateAndSave(entity);
@@ -274,5 +303,10 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
         }
 
         return new ItSimrsRiwayatTindakanEntity();
+    }
+
+    @Override
+    public List<String> getListKeteranganByIdDetailCheckup(String idDetailCheckup) throws GeneralBOException {
+        return riwayatTindakanDao.listOfKeteranganExistByIdDetailCheckup(idDetailCheckup);
     }
 }

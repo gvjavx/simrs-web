@@ -77,6 +77,32 @@ public class PositionAction extends BaseMasterAction {
         return initPosition;
     }
 
+    private String initComboPosition(){
+        logger.info("[PositionAction.search] start process >>>");
+
+        Position searchPosition = new Position();
+        List<Position> listOfSearchPosition = new ArrayList();
+        searchPosition.setFlag("Y");
+        try {
+            listOfSearchPosition = positionBoProxy.getByCriteria(searchPosition);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = positionBoProxy.saveErrorMessage(e.getMessage(), "PositionBO.getByCriteria");
+            } catch (GeneralBOException e1) {
+                logger.error("[PositionAction.search] Error when saving error,", e1);
+            }
+            logger.error("[PositionhAction.save] Error when searching function by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            return "failure";
+        }
+
+        listOfComboPosition.addAll(listOfSearchPosition);
+        logger.info("[PositionAction.search] end process <<<");
+
+        return SUCCESS;
+    }
+
     @Override
     public String edit() {
 

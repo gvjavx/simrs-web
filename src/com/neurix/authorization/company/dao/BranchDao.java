@@ -139,4 +139,25 @@ public class BranchDao extends GenericDao<ImBranches,ImBranchesPK> {
         }
         return result;
     }
+
+    public String getKodringBranches(Map mapCriteria){
+        String kode = null;
+        Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ImBranches.class);
+
+        if (mapCriteria != null){
+            if (mapCriteria.get("branch_id")!=null) {
+                criteria.add(Restrictions.ilike("primaryKey.id", (String) mapCriteria.get("branch_id")));
+            }
+        }
+        criteria.add(Restrictions.eq("flag", "Y"));
+        List<ImBranches> results = criteria.list();
+
+        if (results != null){
+            for (ImBranches branches : results){
+                kode = branches.getKodering();
+            }
+        }
+
+        return kode;
+    }
 }

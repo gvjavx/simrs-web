@@ -626,7 +626,7 @@
                         </div>
                         <div class="form-group" style="display: none" id="form-ina-pfi51">
                             <div class="col-md-offset-3 col-md-4">
-                                <input placeholder="Tanggal" id="ket1_pfi5" class="form-control">
+                                <input placeholder="Tanggal" id="ket1_pfi5" class="form-control tgl">
                             </div>
                             <div class="col-md-4">
                                 <input placeholder="No" id="ket2_pfi5" class="form-control">

@@ -3,63 +3,46 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib prefix="sj" uri="/struts-jquery-tags" %>
 <%@ taglib prefix="display" uri="/WEB-INF/tld/displaytag-el.tld" %>
-<%@ taglib prefix="S" uri="/struts-tags" %>
 
 <html>
 <head>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/ProvinsiAction.js"/>'></script>
+    <%--<script type='text/javascript' src='<s:url value="/dwr/interface/PayrollSkalaGajiAction.js"/>'></script>--%>
     <script type="text/javascript">
-
-        function callSearch() {
+        function callSearch2() {
             //$('#waiting_dialog').dialog('close');
             $('#view_dialog_menu').dialog('close');
             $('#info_dialog').dialog('close');
             window.location.reload(true);
         };
 
-        $.subscribe('beforeProcessSave', function (event, data) {
-            // var idRuangan = document.getElementById("id_ruangan1").value;
-            var nameKelasRuangan = document.getElementById("nama_kelasruangan1").value;
+        $.subscribe('beforeProcessSave1', function (event, data) {
+            var namaKelasRuangan = document.getElementById("nama_kelasruangan1").value;
+            var position = document.getElementById("positionId1").value;
+            console.log(position);
 
-            if (nameKelasRuangan != '') {
+            if (namaKelasRuangan != '' && position != '') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
-
                 } else {
                     // Cancel Submit comes with 1.8.0
                     event.originalEvent.options.submit = false;
                 }
-
-
             } else {
-
                 event.originalEvent.options.submit = false;
-
                 var msg = "";
-
-                if (nameKelasRuangan == '') {
-                    msg += 'Field <strong>Nama Kelas Ruangan</strong> is required.' + '<br/>';
+                if (namaKelasRuangan == '') {
+                    msg += 'Field <strong>Nama Kelas Ruangan </strong> is required.' + '<br/>';
+                }
+                if (position == ''){
+                    msg += 'Field <strong>Divisi </strong> is required.' + '<br/>';
                 }
 
-                document.getElementById('errorValidationMessage').innerHTML = msg;
+                document.getElementById('errorValidationMessage1').innerHTML = msg;
 
                 $.publish('showErrorValidationDialog');
-
             }
         });
-
-        $.subscribe('beforeProcessDelete', function (event, data) {
-            if (confirm('Do you want to delete this record ?')) {
-                event.originalEvent.options.submit = true;
-                $.publish('showDialog');
-
-            } else {
-                // Cancel Submit comes with 1.8.0
-                event.originalEvent.options.submit = false;
-            }
-        });
-
 
         $.subscribe('successDialog', function (event, data) {
             if (event.originalEvent.request.status == 200) {
@@ -86,14 +69,13 @@
 
 <body bgcolor="#FFFFFF">
 
-
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="addKelasRuanganForm" method="post" theme="simple" namespace="/kelasruangan" action="saveAdd_kelasruangan.action" cssClass="well form-horizontal">
+            <s:form id="addKelasRuanganForm" method="post" theme="simple" namespace="/kelasruangan" action="saveAdd_kelasruangan" cssClass="well form-horizontal">
+
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
-
 
                 <legend align="left">Add Kelas Ruangan</legend>
 
@@ -110,15 +92,6 @@
                     <tr>
                         <td>
                             <label class="control-label">
-                                <h4>Data Kelas Ruangan</h4>
-                            </label>
-                        </td>
-                        <td>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label">
                                 <small>Nama Kelas Ruangan</small>
                             </label>
                         </td>
@@ -130,21 +103,31 @@
                             </table>
                         </td>
                     </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Divisi :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:action id="initComboPosition" namespace="/kelasruangan" name="initComboPosition_kelasruangan"/>
+                                <s:select list="#initComboPosition.listOfComboPositions" id="positionId1" name="kelasRuangan.positionId"
+                                          listKey="positionId" listValue="positionName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
                 </table>
-
-
 
                 <br>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                             <%--<button type="submit" class="btn btn-default">Submit</button>--%>
-                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="addKelasRuanganForm" id="add" name="add"
-                                   onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
+                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="addKelasRuanganForm" id="save" name="save"
+                                   onBeforeTopics="beforeProcessSave1" onCompleteTopics="closeDialog,successDialog"
                                    onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
                             <i class="fa fa-check"></i>
                             Save
                         </sj:submit>
-                        <button type="button" id="cancel" class="btn btn-default" style="font-family: Arial, Helvetica, sans-serif;font-size: 12px;font-weight: bold;" onclick="cancelBtn();">
+                        <button type="button" id="cancel" class="btn btn-danger" onclick="cancelBtn();">
                             <i class="fa fa-refresh"/> Cancel
                         </button>
                     </div>
@@ -157,15 +140,21 @@
                             <div id="crud">
                                 <td>
                                     <table>
-                                        <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"
+                                        <sj:dialog id="waiting_dialog" openTopics="showDialog"
+                                                   closeTopics="closeDialog" modal="true"
                                                    resizable="false"
-                                                   height="350" width="600" autoOpen="false" title="Saving ...">
+                                                   height="250" width="600" autoOpen="false"
+                                                   title="Save Data ...">
                                             Please don't close this window, server is processing your request ...
-                                            </br>
-                                            </br>
-                                            </br>
+                                            <br>
                                             <center>
-                                                <img border="0" src="<s:url value="/pages/images/indicator-write.gif"/>" name="image_indicator_write">
+                                                <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                     src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                     name="image_indicator_write">
+                                                <br>
+                                                <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                     src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                     name="image_indicator_write">
                                             </center>
                                         </sj:dialog>
 
@@ -174,7 +163,7 @@
                                                    buttons="{
                                                               'OK':function() {
                                                                     //$(this).dialog('close');
-                                                                      callSearch();
+                                                                      callSearch2();
                                                                    }
                                                             }"
                                         >
@@ -185,7 +174,7 @@
                                         <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
                                                    height="250" width="600" autoOpen="false" title="Error Dialog"
                                                    buttons="{
-                                                                        'OK':function() { $('#error_dialog').dialog('close'); }
+                                                                        'OK':function() { $('#error_dialog').dialog('close'); window.location.reload(true)}
                                                                     }"
                                         >
                                             <div class="alert alert-error fade in">
@@ -205,7 +194,7 @@
                                                 <label class="control-label" align="left">
                                                     <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> Please check this field :
                                                     <br/>
-                                                    <center><div id="errorValidationMessage"></div></center>
+                                                    <center><div id="errorValidationMessage1"></div></center>
                                                 </label>
                                             </div>
                                         </sj:dialog>
@@ -221,3 +210,4 @@
 </table>
 </body>
 </html>
+

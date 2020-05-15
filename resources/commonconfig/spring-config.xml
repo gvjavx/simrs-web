@@ -158,11 +158,12 @@
     <import resource="sshconfig/com/neurix/simrs/master/statuspasien/spring/StatusPasienBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/master/tindakan/spring/TindakanBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/master/kategoritindakan/spring/KategoriTindakanBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/master/kategoritindakanina/spring/KategoriTindakanInaBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/master/operatorlab/spring/OperatorLabBean.xml"/>
 
     <import resource="sshconfig/com/neurix/simrs/transaksi/tindakanrawat/spring/TindakanRawatBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/antrianonline/spring/RegistrasiOnlineBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/antrianonline/spring/AntrianOnlineBean.xml"/>
-
 
     <import resource="sshconfig/com/neurix/simrs/master/dokter/spring/DokterBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/master/diagnosa/spring/DiagnosaBean.xml"/>
@@ -214,6 +215,8 @@
     <import resource="sshconfig/com/neurix/akuntansi/transaksi/tutupperiod/spring/TutupPeriodBean.xml"/>
     <import resource="sshconfig/com/neurix/akuntansi/master/pembayaran/spring/PembayaranBean.xml"/>
     <import resource="sshconfig/com/neurix/akuntansi/master/reportKeuanganKonsol/spring/ReportKeuanganKonsolBean.xml"/>
+
+    <import resource="sshconfig/com/neurix/akuntansi/master/reportKeuanganKonsol/spring/ReportKeuanganKonsolDetailBean.xml"/>
     <import resource="sshconfig/com/neurix/akuntansi/transaksi/budgeting/spring/BudgetingBean.xml"/>
     <import resource="sshconfig/com/neurix/akuntansi/transaksi/pengajuanBiaya/spring/PengajuanBiayaBean.xml"/>
 
@@ -234,6 +237,10 @@
     <import resource="sshconfig/com/neurix/simrs/transaksi/rekonsiliasiobat/spring/RekonsiliasiObatBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/profilrekammedisrj/spring/RekamMedisRawatJalanBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/ringkasanpasien/spring/RingkasanPasienBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/cetakanrm/spring/CetakanRmBean.xml"/>
 
     <import resource="sshconfig/com/neurix/hris/transaksi/pendapatanDokter/spring/PendapatanDokterBean.xml"/>
+    <import resource="sshconfig/com/neurix/hris/master/DokterKso/spring/DokterKsoBean.xml"/>
+    <import resource="sshconfig/com/neurix/hris/master/DokterKso/spring/DokterKsoTindakanBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/master/tindakan/spring/KategoriTindakanPelayananBean.xml"/>
 </beans>

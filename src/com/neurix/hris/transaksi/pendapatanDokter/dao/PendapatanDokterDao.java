@@ -59,6 +59,32 @@ public class PendapatanDokterDao extends GenericDao<ItHrisPendapatanDokterEntity
         return "PDR"+sId;
     }
 
+    public List<Object[]> getDataPendapatanPphLebih(String pendapatanId){
+        List<Object[]> result = new ArrayList<Object[]>();
+
+        String query = "SELECT\n" +
+                "\ta.dpp_pph_21_komulatif,\n" +
+                "\ta.dpp_pph_21,\n" +
+                "\ta.tarif,\n" +
+                "\ta.pph_dipungut,\n" +
+                "\ta.pph_lebih,\n" +
+                "\ta.pph_final,\n" +
+                "\tb.dpp_pph_50 AS pph21Lebih,\n" +
+                "\tb.dpp_pph_21_komulatif AS komulatifLebih,\n" +
+                "\tb.tarif AS tarifLebih,\n" +
+                "\tb.pph_dipungut AS pphDipungutLebih\n" +
+                "\tFROM\n" +
+                "\t(SELECT * FROM it_hris_pendapatan_dokter) a LEFT JOIN\n" +
+                "\t(SELECT * FROM it_hris_pendapatan_dokter_pph_lebih) b ON b.pendapatan_dokter_id = a.pendapatan_dokter_id\n" +
+                "\tWHERE\n" +
+                "\ta.pendapatan_dokter_id = '"+pendapatanId+"'";
+
+        result = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+        return result;
+    }
+
     public List<Object[]> getDataPendapatan(String unit, String bulan, String tahun, String dokterId){
         List<Object[]> results = new ArrayList<Object[]>();
 
@@ -94,6 +120,36 @@ public class PendapatanDokterDao extends GenericDao<ItHrisPendapatanDokterEntity
         return results;
     }
 
+    public String getLevel(String dokterId, String bulan, String tahun){
+        List<Object[]> pendapatanDokterEntityList = new ArrayList<>();
+        String level = "";
+        int month = Integer.parseInt(bulan) - 1;
+        if (month < 10)
+            bulan = "0"+month;
+
+        String query = "select  \n" +
+                "\t\tbranch_id,\n" +
+                "\t\tlevel\n" +
+                "                from  \n" +
+                "                it_hris_pendapatan_dokter \n" +
+                "                where \n" +
+                "                bulan='"+bulan+"' and  \n" +
+                "                tahun='"+tahun+"' and  \n" +
+                "                dokter_id='"+dokterId+"'";
+        pendapatanDokterEntityList = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+        if (pendapatanDokterEntityList != null){
+            for (Object[] entity : pendapatanDokterEntityList){
+                if (entity != null){
+                    level = String.valueOf(entity[1]);
+                }
+            }
+        }
+
+        return level;
+    }
+
     public Double getPphKomulatif(String dokterId, String bulan, String tahun){
         List<Object[]> pendapatanDokterEntityList = new ArrayList<>();
         Double pphKomulatif = 0.0;
@@ -101,23 +157,29 @@ public class PendapatanDokterDao extends GenericDao<ItHrisPendapatanDokterEntity
         if (month < 10)
             bulan = "0"+month;
 
-        String query = "select \n" +
-                "\tsum(dpp_pph_21_komulatif) AS pendapatan_dokter \n" +
-                "\tfrom \n" +
-                "\t\tit_hris_pendapatan_dokter\n" +
-                "\twhere\n" +
-                "\t\tbulan='"+bulan+"' and \n" +
-                "\t\ttahun='"+tahun+"' and \n" +
-                "\t\tdokter_id='"+dokterId+"' ";
+        String query = "select  \n" +
+                "                sum(dpp_pph_21_komulatif) AS pph_komulatif_last,\n" +
+                "                branch_id  \n" +
+                "                from  \n" +
+                "                it_hris_pendapatan_dokter \n" +
+                "                where \n" +
+                "                bulan='"+bulan+"' and  \n" +
+                "                tahun='"+tahun+"' and  \n" +
+                "                dokter_id='"+dokterId+"'\n" +
+                "                group by branch_id";
+
         pendapatanDokterEntityList = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
                 .list();
         if (pendapatanDokterEntityList != null){
             for (Object[] entity : pendapatanDokterEntityList){
-                if (entity != null)
-                    pphKomulatif = (Double) entity[0];
-                else
+                if (entity != null){
+                    BigDecimal komulatif = (BigDecimal) entity[0];
+                    pphKomulatif = komulatif.doubleValue();
+                }
+                else {
                     pphKomulatif = 0.0;
+                }
 
             }
         }
@@ -198,17 +260,16 @@ public class PendapatanDokterDao extends GenericDao<ItHrisPendapatanDokterEntity
                 .createSQLQuery(sqlQuery)
                 .list();
 
-//        for (Object[] row : results){
-//            ItHrisPendapatanDokterEntity itHrisPendapatanDokterEntity = new ItHrisPendapatanDokterEntity();
-//            if (row[0] != null)
-//                itHrisPendapatanDokterEntity.setTanggalJurnal((Date) row[0]);
-//            itHrisPendapatanDokterEntity.setJurnalDetailId((String) row[1]);
-//            itHrisPendapatanDokterEntity.setDivisiId((String) row[2]);
-//            itHrisPendapatanDokterEntity.setActivityId((String) row[3]);
-//            itHrisPendapatanDokterEntity.setPersonId((String) row[4]);
-//            itHrisPendapatanDokterEntity.setJumlahBulanIni((Double) row[5]);
-//            listOfResults.add(itHrisPendapatanDokterEntity);
-//        }
+        return results;
+    }
+
+    public List<ItHrisPendapatanDokterEntity> getDataPendapatanDokter(String branchId, String bulan, String tahun) throws HibernateException {
+        List<ItHrisPendapatanDokterEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItHrisPendapatanDokterEntity.class)
+                .add(Restrictions.eq("branchId", branchId))
+                .add(Restrictions.eq("bulan", bulan))
+                .add(Restrictions.eq("tahun", tahun))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
 
         return results;
     }

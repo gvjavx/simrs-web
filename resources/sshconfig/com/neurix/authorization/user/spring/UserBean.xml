@@ -23,7 +23,9 @@
           p:roleBoProxy-ref="roleBoProxy"
           p:areaBoProxy-ref="areaBoProxy"
           p:branchBoProxy-ref="branchBoProxy"
-          p:positionBoProxy-ref="positionBoProxy"  />
+          p:positionBoProxy-ref="positionBoProxy"
+          p:masterBoProxy-ref="masterBoProxy"
+    />
 
     <bean id="userBo" class="com.neurix.authorization.user.bo.impl.UserBoImpl"
           p:userDao-ref="userDao"

@@ -5,7 +5,7 @@
         "http://struts.apache.org/dtds/struts-2.3.dtd">
 
 <struts>
-    <package name="reportKeuanganKonsol" namespace="/reportKeuanganKonsol" extends="struts-default, jasperreports-default, json-default">
+    <package name="pelayanan" namespace="/pelayanan" extends="struts-default, jasperreports-default, json-default">
 
         <result-types>
             <result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult" default="false" />
@@ -69,29 +69,34 @@
             <exception-mapping exception="java.lang.RuntimeException" result="global_error" />
         </global-exception-mappings>
 
-        <action name="*_reportDetail"
-                class="com.neurix.akuntansi.master.reportDetail.action.ReportDetailAction" method="{1}">
+        <action name="*_pelayanan"
+                class="com.neurix.simrs.master.pelayanan.action.PelayananAction" method="{1}">
             <interceptor-ref name="ivelinStack" />
-            <result name="input">/pages/com/neurix/akuntansi/master/reportDetail/searchReportDetail.jsp</result>
-            <result name="success">/pages/com/neurix/akuntansi/master/reportDetail/searchReportDetail.jsp</result>
 
-            <result name="error">/pages/com/neurix/akuntansi/master/reportDetail/addReportDetail.jsp</result>
-            <result name="init_add">/pages/com/neurix/akuntansi/master/reportDetail/addReportDetail.jsp</result>
-            <result name="success_save_add">/pages/com/neurix/akuntansi/master/reportDetail/addReportDetail.jsp</result>
+            <result name="search">/pages/com/neurix/simrs/master/pelayanan/SearchPelayanan.jsp</result>
+            <result name="success">/pages/com/neurix/simrs/master/pelayanan/SearchPelayanan.jsp</result>
+            <result name="input">/pages/com/neurix/simrs/master/pelayanan/SearchPelayanan.jsp</result>
+            <result name="init_add">/pages/com/neurix/simrs/master/pelayanan/addPelayanan.jsp</result>
+            <result name="success_save_add">/pages/com/neurix/simrs/master/pelayanan/addPelayanan.jsp</result>
+            <result name="error">/pages/com/neurix/simrs/master/pelayanan/addPelayanan.jsp</result>
 
-            <result name="success_save_delete">/pages/com/neurix/akuntansi/master/reportDetail/deleteReportDetail.jsp</result>
-            <result name="init_delete">/pages/com/neurix/akuntansi/master/reportDetail/deleteReportDetail.jsp</result>
-            <result name="init_edit">/pages/com/neurix/akuntansi/master/reportDetail/editReportDetail.jsp</result>
-            <result name="success_save_edit">/pages/com/neurix/akuntansi/master/reportDetail/editReportDetail.jsp</result>
-            <result name="failure">/pages/com/neurix/akuntansi/master/reportDetail/editReportDetail.jsp</result>
+            <result name="init_edit">/pages/com/neurix/simrs/master/pelayanan/editPelayanan.jsp</result>
+            <result name="failure">/pages/com/neurix/simrs/master/pelayanan/editPelayanan.jsp</result>
+            <result name="success_save_edit">/pages/com/neurix/simrs/master/pelayanan/editPelayanan.jsp</result>
 
+            <result name="success_save_delete">/pages/com/neurix/simrs/master/pelayanan/deletePelayanan.jsp</result>
+            <result name="init_delete">/pages/com/neurix/simrs/master/pelayanan/deletePelayanan.jsp</result>
+            <!--<result name="error" type="httpheader">-->
+            <!--<param name="status">504</param>-->
+            <!--<param name="headers.message">${actionErrors}</param>-->
+            <!--</result>-->
         </action>
 
 
-        <action name="paging_displaytag_reportDetail"
-                class="com.neurix.akuntansi.master.reportDetail.action.ReportDetailAction" method="paging">
+        <action name="paging_displaytag_pelayanan"
+                class="com.neurix.simrs.master.pelayanan.action.PelayananAction" method="paging">
             <interceptor-ref name="defaultStack"/>
-            <result name="success">/pages/com/neurix/akuntansi/master/reportDetail/searchReportDetail.jsp</result>
+            <result name="success">/pages/com/neurix/simrs/master/pelayanan/SearchPelayanan.jsp</result>
         </action>
 
     </package>

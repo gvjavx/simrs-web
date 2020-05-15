@@ -183,7 +183,8 @@ FROM
       it_akun_saldo_akhir
     where
       to_date(periode, 'MM-yyyy') = to_date($P{reportParams.periode}, 'MM-yyyy') - Interval '1 month' and branch_id IN ($P!{reportParams.branchId})
-  ) c ON a.rekening_id = c.rekening_id]]>
+  ) c ON a.rekening_id = c.rekening_id
+ORDER BY a.kode_rekening asc]]>
 	</queryString>
 	<field name="grup" class="java.lang.String"/>
 	<field name="koderekening" class="java.lang.String"/>

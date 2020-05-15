@@ -51,7 +51,6 @@ To change this template use File | Settings | File Templates.
     <section class="content-header">
         <h1>
             Ruangan
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -110,6 +109,68 @@ To change this template use File | Settings | File Templates.
                                                 </table>
                                             </td>
                                         </tr>
+                                        <tr>
+                                            <td>
+                                                <label class="control-label"><small>Unit :</small></label>
+                                            </td>
+                                            <td>
+                                                <table>
+                                                        <%--<s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>--%>
+                                                        <%--<s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="pendapatanDokter.branchId"--%>
+                                                        <%--listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
+                                                    <s:if test='pelayanan.branchUser == "KP"'>
+                                                        <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                                        <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="ruangan.branchId"
+                                                                  listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                    </s:if>
+                                                    <s:else>
+                                                        <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                                        <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="ruangan.branchId" disabled="true"
+                                                                  listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                        <s:hidden id="branchId" name="ruangan.branchId" />
+                                                    </s:else>
+                                                </table>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <label class="control-label"><small>Kelas :</small></label>
+                                            </td>
+                                            <td>
+                                                <table>
+                                                    <s:action id="initComboKelas" namespace="/ruangan" name="initComboKelasRuangan_ruangan"/>
+                                                    <s:select list="#initComboKelas.listOfComboKelasRuangan" id="idKelasRuangan" name="ruangan.idKelasRuangan"
+                                                              listKey="idKelasRuangan" listValue="namaKelasRuangan" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                </table>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <label class="control-label"><small>Status Ruangan :</small></label>
+                                            </td>
+                                            <td>
+                                                <table>
+                                                    <s:select list="#{'N':'Tidak Tersedia'}" id="statusRuangan" name="ruangan.statusRuangan"
+                                                              headerKey="Y" headerValue="Tersedia" cssClass="form-control" />
+                                                </table>
+
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <label class="control-label"><small>Flag :</small></label>
+                                            </td>
+                                            <td>
+                                                <table>
+                                                    <s:select list="#{'N':'Non-Active'}" id="flag" name="ruangan.flag"
+                                                              headerKey="Y" headerValue="Active" cssClass="form-control" />
+                                                </table>
+
+                                            </td>
+                                        </tr>
                                     </table>
                                     <br>
                                     <div id="actions" class="form-actions">
@@ -144,28 +205,36 @@ To change this template use File | Settings | File Templates.
                                         <table id="showdata" width="90%">
                                             <tr>
                                                 <td align="center">
-                                                    <sj:dialog id="waiting_dialog_loading" openTopics="showDialogLoading" closeTopics="closeDialogLoading" modal="true"
-                                                               resizable="false"
-                                                               height="350" width="600" autoOpen="false" title="Loading ...">
-                                                        Please don't close this window, server is processing your request ...
-                                                        </br>
-                                                        </br>
-                                                        </br>
-                                                        <center>
-                                                            <img border="0" src="<s:url value="/pages/images/indicator-read.gif"/>" name="image_indicator_read">
-                                                        </center>
-                                                    </sj:dialog>
-                                                    <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
-                                                               height="800" width="1100" autoOpen="false"
-                                                               title="Ruangan ">
-                                                    </sj:dialog>
+                                                        <sj:dialog id="waiting_dialog_loading" openTopics="showDialogLoading"
+                                                                   closeTopics="closeDialogLoading" modal="true"
+                                                                   resizable="false"
+                                                                   height="250" width="600" autoOpen="false"
+                                                                   title="Search Data ...">
+                                                            Please don't close this window, server is processing your request ...
+                                                            <br>
+                                                            <center>
+                                                                <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                                     src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                                     name="image_indicator_write">
+                                                                <br>
+                                                                <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                                     src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                                     name="image_indicator_write">
+                                                            </center>
+                                                        </sj:dialog>
+                                                        <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
+                                                                   height="500" width="600" autoOpen="false"
+                                                                   title="Ruangan ">
+                                                            <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
+                                                        </sj:dialog>
+
                                                     <sj:dialog id="view_dialog_menu" openTopics="showDialogMenuView" modal="true"
                                                                height="700" width="1100" autoOpen="false"
                                                                title="Rekruitmen ">
                                                         <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                                     </sj:dialog>
-                                                    <s:set name="listOfRekruitmen" value="#session.listOfResult" scope="request" />
-                                                    <display:table name="listOfRekruitmen" class=" tableRekruitmen table table-condensed table-striped table-hover"
+                                                    <s:set name="listOfRuangan" value="#session.listOfResultRuangan" scope="request" />
+                                                    <display:table name="listOfRuangan" class=" tableRekruitmen table table-condensed table-striped table-hover"
                                                                    requestURI="paging_displaytag_ruangan.action" export="true" id="row" pagesize="14" style="font-size:12">
                                                         <%--<display:column property="calonPegawaiId" sortable="true" title="Cal Peg ID"  />--%>
                                                         <display:column media="html" title="Edit">
@@ -193,8 +262,12 @@ To change this template use File | Settings | File Templates.
                                                         <display:column property="idRuangan" sortable="true" title="Ruangan ID"/>
                                                         <display:column property="namaRuangan" sortable="true" title="Nama"  />
                                                         <display:column property="noRuangan" sortable="true" title="No. Ruangan"  />
-                                                        <display:column property="statusRuangan" sortable="true" title="Status Ruangan" />
+                                                        <display:column property="statusRuanganName" sortable="true" title="Status Ruangan" />
                                                         <display:column property="namaKelasRuangan" sortable="true" title="Kelas Ruangan" />
+                                                        <display:column property="keterangan" sortable="true" title="Keterangan" />
+                                                        <display:column property="branchName" sortable="true" title="Unit" />
+                                                        <display:column property="sisaKuota" sortable="true" title="Sisa Kuota" />
+                                                        <display:column property="kuota" sortable="true" title="Kuota" />
                                                         <display:column property="tarif" sortable="true" title="Tarif" />
 
                                                     </display:table>

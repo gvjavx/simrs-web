@@ -27,6 +27,7 @@
   c.kode_rekening,
   c.nama_kode_rekening,
   b.master_id,
+  b.jurnal_detail_id,
   m.nama,
   b.divisi_id,
   dv.position_name,
@@ -61,6 +62,7 @@ order by
 	<field name="kode_rekening" class="java.lang.String"/>
 	<field name="nama_kode_rekening" class="java.lang.String"/>
 	<field name="master_id" class="java.lang.String"/>
+	<field name="jurnal_detail_id" class="java.lang.String"/>
 	<field name="nama" class="java.lang.String">
 		<fieldDescription><![CDATA[Nama Master]]></fieldDescription>
 	</field>

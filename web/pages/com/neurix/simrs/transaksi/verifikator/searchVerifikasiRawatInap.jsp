@@ -287,6 +287,14 @@
                                     <td><b>Alamat</b></td>
                                     <td><span id="det_desa"></span>, <span id="det_kecamatan"></span></td>
                                 </tr>
+                                <tr>
+                                    <td><b>Nama Poli</b></td>
+                                    <td><span id="det_nama_poli"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Jenis Pasien</b></td>
+                                    <td><span id="det_jenis_pasien"></span></td>
+                                </tr>
                                 <%--<tr>--%>
                                 <%--<td><b>Provinsi</b></td>--%>
                                 <%--<td><span id="det_provinsi"></span></td>--%>
@@ -356,7 +364,7 @@
                     <h3 class="box-title"><i class="fa fa-medkit"></i> Daftar Tindakan Rawat</h3>
                 </div>
                 <div class="box-body">
-                    <table class="table table-bordered table-striped" id="tabel_tindakan_ts">
+                    <table class="table table-bordered table-striped" id="tabel_tindakan_ts" style="font-size: 12px">
                         <thead>
                         <tr bgcolor="#90ee90">
                             <td width="20%">Tanggal</td>
@@ -434,7 +442,7 @@
                         </div>
                         <!-- /.col -->
                         <div class="col-md-6">
-                            <table class="table table-striped">
+                            <table class="table table-striped" >
                                 <tr>
                                     <td><b>Jenis Kelamin</b></td>
                                     <td><span id="fin_jenis_kelamin"></span></td>
@@ -447,22 +455,14 @@
                                     <td><b>Alamat</b></td>
                                     <td><span id="fin_desa"></span>, <span id="fin_kecamatan"></span></td>
                                 </tr>
-                                <%--<tr>--%>
-                                <%--<td><b>Provinsi</b></td>--%>
-                                <%--<td><span id="fin_provinsi"></span></td>--%>
-                                <%--</tr>--%>
-                                <%--<tr>--%>
-                                <%--<td><b>Kabupaten</b></td>--%>
-                                <%--<td><span id="fin_kabupaten"></span></td>--%>
-                                <%--</tr>--%>
-                                <%--<tr>--%>
-                                <%--<td><b>Kecamatan</b></td>--%>
-                                <%--<td><span id="fin_kecamatan"></span></td>--%>
-                                <%--</tr>--%>
-                                <%--<tr>--%>
-                                <%--<td><b>Desa</b></td>--%>
-                                <%--<td><span id="fin_desa"></span></td>--%>
-                                <%--</tr>--%>
+                                <tr>
+                                    <td><b>Nama Poli</b></td>
+                                    <td><span id="fin_nama_poli"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Jenis Pasien</b></td>
+                                    <td><span id="fin_jenis_pasien"></span></td>
+                                </tr>
                             </table>
                         </div>
                     </div>
@@ -513,7 +513,7 @@
                     <h3 class="box-title"><i class="fa fa-medkit"></i> Daftar Tindakan Rawat</h3>
                 </div>
                 <div class="box-body">
-                    <table class="table table-bordered table-striped" id="tabel_tindakan_fin">
+                    <table class="table table-bordered table-striped" id="tabel_tindakan_fin" style="font-size: 12px">
                         <thead>
                         <tr bgcolor="#90ee90">
                             <td width="20%">Tanggal</td>
@@ -681,6 +681,8 @@
                         desa = response.namaDesa;
                         noSep = response.noSep;
                         $('#det_no_rm').html(response.idPasien);
+                        $('#det_nama_poli').html(response.namaPelayanan);
+                        $('#det_jenis_pasien').html(response.statusPeriksaName);
                         jenisPasien = response.idJenisPeriksaPasien;
                 }
             });
@@ -708,7 +710,7 @@
                         });
 
                         var kategori =
-                            '<select class="form-control" id="kategori'+i+'">' +
+                            '<select style="width: 100%;" class="form-control select-2" id="kategori'+i+'">' +
                             '<option value="">[Select One]</option>'+ tindakanina +
                             '</select>';
 
@@ -725,7 +727,7 @@
                             onclick = "";
                         }
 
-                        if(item.kategoriTindakanBpjs == null || item.kategoriTindakanBpjs == ''){
+                        if(item.flagUpdateKlaim == '' || item.flagUpdateKlaim == null){
                             cekTindakan = true;
                         }
 
@@ -810,6 +812,11 @@
                 $('#save_verif').attr('onclick','confirmSaveApproveTindakan(\''+idDetailCheckup+'\')');
             }else{
                 $('#save_verif').hide();
+            }
+            var select2 = $('.select-2').length;
+            if(select2 > 0){
+                $('.select-2').select2({
+                });
             }
             $('#modal-detail-pasien').modal({show:true, backdrop:'static'});
         }, 100);
@@ -956,6 +963,8 @@
                         desa = response.namaDesa;
                         noSep = response.noSep;
                         $('#fin_no_rm').html(response.idPasien);
+                        $('#fin_nama_poli').html(response.namaPelayanan);
+                        $('#fin_jenis_pasien').html(response.statusPeriksaName);
                     jenisPasien = response.idJenisPeriksaPasien;
                 }
             });
@@ -1028,13 +1037,20 @@
                     });
 
                     if(jenisPasien == "ptpn"){
-                        table = table +'<tr><td colspan="4">PPN Obat</td><td align="right">'+formatRupiah(ppnObat)+'</td></tr>'+
+                        // table = table +'<tr><td colspan="4">PPN Obat</td><td align="right">'+formatRupiah(ppnObat)+'</td></tr>'+
+                        //     '<tr><td colspan="4">Total Biaya BPJS</td><td align="right">'+formatRupiah(bpjs)+'</td></tr>'+
+                        //     '<tr><td colspan="4">Total Biaya PTPN</td><td align="right">'+formatRupiah(ptpn)+'</td></tr>'+
+                        //     '<tr><td colspan="4">Total Jasa</td><td align="right">'+formatRupiah(total + ppnObat)+'</td></tr>';
+                        table = table +
                             '<tr><td colspan="4">Total Biaya BPJS</td><td align="right">'+formatRupiah(bpjs)+'</td></tr>'+
                             '<tr><td colspan="4">Total Biaya PTPN</td><td align="right">'+formatRupiah(ptpn)+'</td></tr>'+
-                            '<tr><td colspan="4">Total Jasa</td><td align="right">'+formatRupiah(total + ppnObat)+'</td></tr>';
+                            '<tr><td colspan="4">Total Jasa</td><td align="right">'+formatRupiah(total)+'</td></tr>';
                     }else{
-                        table = table +'<tr><td colspan="3">PPN Obat</td><td align="right">'+formatRupiah(ppnObat)+'</td></tr>'+
-                            '<tr><td colspan="3">Total Jasa</td><td align="right">'+formatRupiah(total + ppnObat)+'</td></tr>';
+                        // table = table +'<tr><td colspan="3">PPN Obat</td><td align="right">'+formatRupiah(ppnObat)+'</td></tr>'+
+                        //     '<tr><td colspan="3">Total Jasa</td><td align="right">'+formatRupiah(total + ppnObat)+'</td></tr>';
+
+                        table = table +
+                            '<tr><td colspan="3">Total Jasa</td><td align="right">'+formatRupiah(total)+'</td></tr>';
                     }
 
                     $('#body_tindakan_fin').html(table);

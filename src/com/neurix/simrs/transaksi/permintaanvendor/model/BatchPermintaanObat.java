@@ -22,6 +22,15 @@ public class BatchPermintaanObat {
     private Date tanggalFaktur;
     private String noInvoice;
     private String noDo;
+    private String stTanggakFaktur;
+
+    public String getStTanggakFaktur() {
+        return stTanggakFaktur;
+    }
+
+    public void setStTanggakFaktur(String stTanggakFaktur) {
+        this.stTanggakFaktur = stTanggakFaktur;
+    }
 
     public String getNoFaktur() {
         return noFaktur;

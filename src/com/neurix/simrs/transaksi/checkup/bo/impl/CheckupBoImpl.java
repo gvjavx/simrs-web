@@ -518,6 +518,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                             tindakanRawatEntity.setLastUpdateWho(bean.getCreatedWho());
                             tindakanRawatEntity.setFlag("Y");
                             tindakanRawatEntity.setAction("U");
+                            tindakanRawatEntity.setApproveFlag("Y");
 
                             if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "ptpn".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
                                 tindakanRawatEntity.setTarif(tindakanEntity.getTarifBpjs());
@@ -2336,6 +2337,9 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             resepEntity.setCreatedWho(bean.getCreatedWho());
             resepEntity.setLastUpdate(bean.getLastUpdate());
             resepEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            resepEntity.setIsUmum("N");
+            resepEntity.setTglAntrian(bean.getLastUpdate());
+            resepEntity.setStatus("3");
 
             try {
                 permintaanResepDao.addAndSave(resepEntity);

@@ -7,12 +7,22 @@ public class ImSimrsKategoriLabEntity implements Serializable {
 
     private String idKategoriLab;
     private String namaKategori;
+    private String divisiId;
     private String flag;
     private String action;
     private Timestamp createdDate;
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+//    private String divisiId;
+
+    public String getDivisiId() {
+        return divisiId;
+    }
+
+    public void setDivisiId(String divisiId) {
+        this.divisiId = divisiId;
+    }
 
     public String getIdKategoriLab() {
         return idKategoriLab;
@@ -77,4 +87,12 @@ public class ImSimrsKategoriLabEntity implements Serializable {
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
     }
+
+//    public String getDivisiId() {
+//        return divisiId;
+//    }
+//
+//    public void setDivisiId(String divisiId) {
+//        this.divisiId = divisiId;
+//    }
 }

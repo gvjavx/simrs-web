@@ -553,19 +553,19 @@ function detailFormMpp(jenis) {
                                 li += '<li>'+item+'</li>';
                             });
                             body += '<tr>' +
-                                '<td>'+item.parameter+'</td>' +
+                                '<td >'+item.parameter+'</td>' +
                                 '<td>'+'<ul style="margin-left: 10px">'+li+'</ul>'+'</td>' +
                                 '</tr>';
                         }else{
                             body += '<tr>' +
-                                '<td>'+item.parameter+'</td>' +
+                                '<td width="40%">'+item.parameter+'</td>' +
                                 '<td>'+jwb+'</td>' +
                                 '</tr>';
                         }
 
                     }else{
                         body += '<tr>' +
-                            '<td>'+item.parameter+'</td>' +
+                            '<td width="40%">'+item.parameter+'</td>' +
                             '<td>'+jwb+'</td>' +
                             '</tr>';
                     }

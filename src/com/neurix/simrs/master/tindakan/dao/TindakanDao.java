@@ -4,9 +4,13 @@ import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.master.tindakan.model.ImSimrsTindakanEntity;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -26,14 +30,20 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
             if (mapCriteria.get("id_tindakan") != null) {
                 criteria.add(Restrictions.eq("idTindakan", mapCriteria.get("id_tindakan").toString()));
             }
-            if (mapCriteria.get("id_kategori_tindakan") != null) {
-                criteria.add(Restrictions.eq("idKategoriTindakan", mapCriteria.get("id_kategori_tindakan").toString()));
+            if (mapCriteria.get("tindakan") != null){
+                criteria.add(Restrictions.ilike("tindakan", "%" + (String)mapCriteria.get("tindakan") + "%"));
+            }
+            if (mapCriteria.get("branch_id") != null) {
+                criteria.add(Restrictions.eq("branchId", mapCriteria.get("branch_id").toString()));
             }
             if (mapCriteria.get("branch_id") != null) {
                 criteria.add(Restrictions.eq("branchId", mapCriteria.get("branch_id").toString()));
             }
             if (mapCriteria.get("is_ina") != null) {
                 criteria.add(Restrictions.eq("isIna", mapCriteria.get("is_ina").toString()));
+            }
+            if (mapCriteria.get("kategori_ina_bpjs") != null) {
+                criteria.add(Restrictions.eq("kategoriInaBpjs", mapCriteria.get("kategori_ina_bpjs").toString()));
             }
             if (mapCriteria.get("flag") != null) {
                 criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
@@ -92,4 +102,37 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
         }
         return tindakanList;
     }
+
+    public String getNextPelayananId() throws HibernateException {
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_tindakan')");
+        Iterator<BigInteger> iter=query.list().iterator();
+        String sId = String.format("%07d", iter.next());
+
+        return "TDK" + sId;
+    }
+
+    public List<ImSimrsTindakanEntity> getDataTindakan(String namaTindakan) throws HibernateException {
+        List<ImSimrsTindakanEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsTindakanEntity.class)
+                .add(Restrictions.eq("tindakan", namaTindakan))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+
+        return results;
+    }
+
+    public List<ImSimrsTindakanEntity> cekData(String idTindakan) throws HibernateException{
+        List<ImSimrsTindakanEntity> results = new ArrayList<>();
+
+        String query = "SELECT a.id_tindakan, b.id_tindakan_rawat\n" +
+                "FROM im_simrs_tindakan a\n" +
+                "INNER JOIN it_simrs_tindakan_rawat b ON b.id_tindakan = a.id_tindakan\n" +
+                "WHERE a.id_tindakan = '"+idTindakan+"' LIMIT 1";
+
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        return results;
+    }
+
 }

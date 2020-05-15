@@ -580,7 +580,6 @@
       <create creator="new">
           <param name="class" value="com.neurix.hris.transaksi.pendapatanDokter.action.PendapatanDokterAction"/>
       </create>
-
       <convert converter="bean" match="com.neurix.hris.transaksi.pendapatanDokter.model.PendapatanDokter"/>
       <convert converter="bean" match="com.neurix.akuntansi.master.pembayaran.model.ImAkunPembayaranEntity"/>
 
@@ -652,6 +651,32 @@
       <convert converter="bean" match="com.neurix.akuntansi.transaksi.budgeting.model.BudgetingDetail"/>
       <convert converter="bean" match="com.neurix.akuntansi.transaksi.budgeting.model.BudgetingPengadaan"/>
       <convert converter="bean" match="com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity"/>
+
+      <create creator="new">
+          <param name="class" value="com.neurix.akuntansi.master.pembayaran.action.PembayaranAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.akuntansi.master.pembayaran.model.Pembayaran"/>
+
+      <create creator="new">
+          <param name="class" value="com.neurix.akuntansi.master.settingReportKeuanganKonsol.action.SettingReportKeuanganKonsolAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.akuntansi.master.settingReportKeuanganKonsol.model.AkunSettingReportKeuanganKonsol"/>
+      <convert converter="bean" match="com.neurix.akuntansi.master.settingReportKeuanganKonsol.model.AkunSettingReportKeuanganKonsolDetail"/>
+
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.master.dokter.action.DokterAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.master.dokter.model.Dokter"/>
+      <convert converter="bean" match="com.neurix.simrs.master.dokter.model.ImSimrsDokterEntity"/>
+
+      <create creator="new">
+          <param name="class" value="com.neurix.hris.master.dokterKso.action.DokterKsoAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.hris.master.dokterKso.model.DokterKso"/>
+      <convert converter="bean" match="com.neurix.hris.master.dokterKso.model.ImSimrsDokterKso"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsRiwayatTindakanEntity"/>
+      <convert converter="bean" match="com.neurix.hris.master.dokterKsoTindakan.model.DokterKsoTindakan"/>
+      <convert converter="bean" match="com.neurix.hris.master.dokterKsoTindakan.model.ImSimrsDokterKsoTindakan"/>
   </allow>
 
 </dwr>
