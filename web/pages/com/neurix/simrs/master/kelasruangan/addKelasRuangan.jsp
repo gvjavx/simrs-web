@@ -15,10 +15,12 @@
             window.location.reload(true);
         };
 
-        $.subscribe('beforeProcessSave', function (event, data) {
+        $.subscribe('beforeProcessSave1', function (event, data) {
             var namaKelasRuangan = document.getElementById("nama_kelasruangan1").value;
+            var position = document.getElementById("positionId1").value;
+            console.log(position);
 
-            if (namaKelasRuangan != '') {
+            if (namaKelasRuangan != '' && position != '') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -32,8 +34,11 @@
                 if (namaKelasRuangan == '') {
                     msg += 'Field <strong>Nama Kelas Ruangan </strong> is required.' + '<br/>';
                 }
+                if (position == ''){
+                    msg += 'Field <strong>Divisi </strong> is required.' + '<br/>';
+                }
 
-                document.getElementById('errorValidationMessage').innerHTML = msg;
+                document.getElementById('errorValidationMessage1').innerHTML = msg;
 
                 $.publish('showErrorValidationDialog');
             }
@@ -105,7 +110,7 @@
                         <td>
                             <table>
                                 <s:action id="initComboPosition" namespace="/kelasruangan" name="initComboPosition_kelasruangan"/>
-                                <s:select list="#initComboPosition.listOfComboPositions" id="positionId" name="kelasRuangan.positionId"
+                                <s:select list="#initComboPosition.listOfComboPositions" id="positionId1" name="kelasRuangan.positionId"
                                           listKey="positionId" listValue="positionName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                             </table>
                         </td>
@@ -117,7 +122,7 @@
                     <div class="col-sm-offset-2 col-sm-10">
                             <%--<button type="submit" class="btn btn-default">Submit</button>--%>
                         <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="addKelasRuanganForm" id="save" name="save"
-                                   onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
+                                   onBeforeTopics="beforeProcessSave1" onCompleteTopics="closeDialog,successDialog"
                                    onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
                             <i class="fa fa-check"></i>
                             Save
@@ -169,7 +174,7 @@
                                         <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
                                                    height="250" width="600" autoOpen="false" title="Error Dialog"
                                                    buttons="{
-                                                                        'OK':function() { $('#error_dialog').dialog('close'); }
+                                                                        'OK':function() { $('#error_dialog').dialog('close'); window.location.reload(true)}
                                                                     }"
                                         >
                                             <div class="alert alert-error fade in">
@@ -189,7 +194,7 @@
                                                 <label class="control-label" align="left">
                                                     <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> Please check this field :
                                                     <br/>
-                                                    <center><div id="errorValidationMessage"></div></center>
+                                                    <center><div id="errorValidationMessage1"></div></center>
                                                 </label>
                                             </div>
                                         </sj:dialog>

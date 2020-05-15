@@ -25,7 +25,7 @@
         };
 
         $.subscribe('beforeProcessSave', function (event, data) {
-            // var idRuangan = document.getElementById("id_ruangan2").value;
+            var idRuangan = document.getElementById("id_ruangan2").value;
             var nameRuangan = document.getElementById("nama_ruangan2").value;
             var noRuangan = document.getElementById("no_ruangan2").value;
             var statusRuangan = document.getElementById("status_ruangan2").value;
@@ -33,7 +33,7 @@
             var keterangan = document.getElementById("keterangan2").value;
             var tarifRuangan = document.getElementById("tarif_ruangan2").value;
 
-            if (nameRuangan != '' && noRuangan != '' && statusRuangan != '' && kelasRuangan != '' && keterangan != ''
+            if (idRuangan != '' && nameRuangan != '' && noRuangan != '' && statusRuangan != '' && kelasRuangan != '' && keterangan != ''
                 && tarifRuangan != '') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
@@ -50,7 +50,9 @@
                 event.originalEvent.options.submit = false;
 
                 var msg = "";
-
+                if (idRuangan == '') {
+                    msg += 'Field <strong>ID Ruangan</strong> is required.' + '<br/>';
+                }
                 if (nameRuangan == '') {
                     msg += 'Field <strong>Nama Ruangan</strong> is required.' + '<br/>';
                 }
@@ -133,7 +135,7 @@
                 </table>
 
                 <table >
-                    <S:hidden name="ruangan.idRuangan">
+                    <S:hidden id="id_ruangan2" name="ruangan.idRuangan">
 
                     </S:hidden>
 

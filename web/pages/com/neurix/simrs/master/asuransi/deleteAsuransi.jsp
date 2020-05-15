@@ -18,10 +18,9 @@
         };
 
         $.subscribe('beforeProcessSave', function (event, data) {
-            var namaAsuransi = document.getElementById("namaAsuransi1").value;
-            console.log(namaAsuransi);
+            var idAsuransi = document.getElementById("idAsuransi1").value;
 
-            if (namaAsuransi != '') {
+            if (idAsuransi != '') {
                 if (confirm('Do you want to delete this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -32,8 +31,8 @@
             } else {
                 event.originalEvent.options.submit = false;
                 var msg = "";
-                if (namaAsuransi == '') {
-                    msg += 'Field <strong>Nama Asuransi </strong> is required.' + '<br/>';
+                if (idAsuransi == '') {
+                    msg += 'Field <strong>ID Asuransi </strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
@@ -133,7 +132,7 @@
                                    onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
                                    onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
                             <i class="fa fa-check"></i>
-                            Save
+                            Delete
                         </sj:submit>
                         <button type="button" id="cancel" class="btn btn-danger" onclick="cancelBtn();">
                             <i class="fa fa-refresh"/> Cancel
@@ -182,7 +181,7 @@
                                         <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
                                                    height="250" width="600" autoOpen="false" title="Error Dialog"
                                                    buttons="{
-                                                                        'OK':function() { $('#error_dialog').dialog('close'); }
+                                                                        'OK':function() { $('#error_dialog').dialog('close'); window.location.reload(true)}
                                                                     }"
                                         >
                                             <div class="alert alert-error fade in">

@@ -80,7 +80,7 @@ public class PasienDao extends GenericDao<ImSimrsPasienEntity, String> {
                 )
         );
         criteria.add(Restrictions.eq("flag", "Y"));
-        criteria.addOrder(Order.asc("primaryKey.nomorMaster"));
+        criteria.addOrder(Order.asc("idPasien"));
 
         List<ImSimrsPasienEntity> results = criteria.list();
         return results;

@@ -121,6 +121,21 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
         return results;
     }
 
+    public List<ImSimrsPelayananEntity> cekData(String idPelayanan) throws HibernateException{
+        List<ImSimrsPelayananEntity> results = new ArrayList<>();
+
+        String query = "SELECT a.id_pelayanan, b.id_detail_checkup\n" +
+                "FROM im_simrs_pelayanan a\n" +
+                "INNER JOIN it_simrs_header_detail_checkup b ON b.id_pelayanan = a.id_pelayanan\n" +
+                "WHERE a.id_pelayanan = '"+idPelayanan+"' LIMIT 1";
+
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        return results;
+    }
+
     public String getNextPelayananId() throws HibernateException {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_pelayanan')");
         Iterator<BigInteger> iter=query.list().iterator();

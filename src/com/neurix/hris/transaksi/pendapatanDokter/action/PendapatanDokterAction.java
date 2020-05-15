@@ -124,7 +124,8 @@ public class PendapatanDokterAction extends BaseMasterAction {
             try {
                 logId = pendapatanDokterBoProxy.saveErrorMessage(e.getMessage(), "pendapatanDokterBO.saveAdd");
             } catch (GeneralBOException e1) {
-                logger.error("[PendapatanDokterAction.save] Error when saving error,", e1);;
+                logger.error("[PendapatanDokterAction.save] Error when saving error,", e1);
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[PendapatanDokterAction.save] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
             throw new GeneralBOException(e.getMessage());
@@ -338,10 +339,12 @@ public class PendapatanDokterAction extends BaseMasterAction {
             try {
                 logId = pendapatanDokterBoProxy.saveErrorMessage(e.getMessage(), "pendapatanDokterBO.getByCriteriaForPendapatanDokter");
             } catch (GeneralBOException e1) {
-                logger.error("[PendapatanDokterAction.pendapatan] Error when saving error,", e1);;
+                logger.error("[PendapatanDokterAction.pendapatan] Error when saving error,", e1);
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[PendapatanDokterAction.pendapatan] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            throw new GeneralBOException(e.getMessage());
         }
 
         HttpSession session = ServletActionContext.getRequest().getSession();
@@ -421,5 +424,4 @@ public class PendapatanDokterAction extends BaseMasterAction {
 
         return pphLebih;
     }
-
 }

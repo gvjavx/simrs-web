@@ -6,7 +6,8 @@
 	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
     <bean id="kategoriLabAction" class="com.neurix.simrs.master.kategorilab.action.KategoriLabAction"
-          p:kategoriLabBoProxy-ref="kategoriLabBoProxy"/>
+          p:kategoriLabBoProxy-ref="kategoriLabBoProxy"
+    />
 
     <bean id="kategoriLabBo" class="com.neurix.simrs.master.kategorilab.bo.impl.KategoriLabBoImpl"
           p:kategoriLabDao-ref="kategoriLabDao"/>

@@ -178,6 +178,7 @@ public class MappingJurnalBoImpl implements MappingJurnalBo {
             imMappingJurnalEntity.setKodeBarang(bean.getKodeBarang());
             imMappingJurnalEntity.setKirimList(bean.getKirimList());
             imMappingJurnalEntity.setKeterangan(bean.getKeterangan());
+            imMappingJurnalEntity.setEditBiaya(bean.getEditBiaya());
 
             imMappingJurnalEntity.setMappingJurnalId(mappingJurnalId);
             imMappingJurnalEntity.setFlag(bean.getFlag());
@@ -301,6 +302,12 @@ public class MappingJurnalBoImpl implements MappingJurnalBo {
                         returnMappingJurnal.setTipeJurnalName("");
                         returnMappingJurnal.setTransName("");
                     }
+
+                    if (mappingJurnalEntity.getEditBiaya() != null)
+                        returnMappingJurnal.setEditBiaya(mappingJurnalEntity.getEditBiaya());
+                    else
+                        returnMappingJurnal.setEditBiaya("-");
+
                     listOfResult.add(returnMappingJurnal);
                 }
             }

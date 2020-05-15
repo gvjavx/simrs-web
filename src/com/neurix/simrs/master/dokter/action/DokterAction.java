@@ -389,11 +389,11 @@ public class DokterAction extends BaseMasterAction {
                 logId = dokterBoProxy.saveErrorMessage(e.getMessage(), "DokterBO.saveDelete");
             } catch (GeneralBOException e1) {
                 logger.error("[DokterAction.saveDelete] Error when saving error,", e1);
-                return ERROR;
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[DokterAction.saveDelete] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            throw new GeneralBOException(e.getMessage());
         }
 
         logger.info("[DokterAction.saveDelete] end process <<<");
@@ -425,5 +425,25 @@ public class DokterAction extends BaseMasterAction {
         listOfComboPositions.addAll(listOfPosition);
 
         return "init_combo_position";
+    }
+
+    public List<Dokter> initTypeaheadDokter(String dokterName) {
+        logger.info("[KodeRekeningAction.initTypeaheadKodeRekening] start process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        DokterBo dokterBoProxy = (DokterBo) ctx.getBean("dokterBoProxy");
+        List<Dokter> dokterList = new ArrayList();
+        try {
+            dokterList = dokterBoProxy.typeaheadDokter(dokterName);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = dokterBoProxy.saveErrorMessage(e.getMessage(), "StrukturJabatanBO.getByCriteria");
+            } catch (GeneralBOException e1) {
+                logger.error("[KodeRekeningAction.initTypeaheadKodeRekening] Error when saving error,", e1);
+            }
+            logger.error("[KodeRekeningAction.initTypeaheadKodeRekening] Error when searching data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+        }
+        return dokterList;
     }
 }
