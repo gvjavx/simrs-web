@@ -58,17 +58,20 @@
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </div>
-                                            <s:textfield id="tgl_from" name="obat.stTglFrom" cssClass="form-control"
-                                                         required="false"/>
+                                            <input type="date" name="obat.stTglFrom"/>
+                                            <%----%>
+                                            <%--<s:textfield id="tgl_from" name="obat.stTglFrom" cssClass="form-control"--%>
+                                                         <%--required="false"/>--%>
                                         </div>
                                     </div>
-                                    <div class="col-sm-2">
+                                    <div class="col-sm-3">
                                         <div class="input-group date" style="margin-top: 7px">
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </div>
-                                            <s:textfield id="tgl_to" name="obat.stTglTo" cssClass="form-control"
-                                                         required="false"/>
+                                            <input type="date" name="obat.stTglTo"/>
+                                            <%--<s:textfield id="tgl_to" name="obat.stTglTo" cssClass="form-control"--%>
+                                                         <%--required="false"/>--%>
                                         </div>
                                     </div>
                                 </div>

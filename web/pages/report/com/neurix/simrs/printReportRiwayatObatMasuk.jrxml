@@ -13,8 +13,8 @@
 		<![CDATA[SELECT rw.created_date, ob.nama_obat, rw.stock as stock_sebelum, rw.qty,
 rw.stock + rw.qty AS stock_total, rw.harga_terakhir, rw.average_harga FROM it_simrs_riwayat_barang_masuk rw
 INNER JOIN im_simrs_obat ob ON rw.id_barang = ob.id_barang
-WHERE rw.created_date::date >= to_date($P{reportParams.tglForm}, 'dd-MM-yyyy')
-AND rw.created_date::date <= to_date($P{reportParams.tglTo}, 'dd-MM-yyyy')]]>
+WHERE rw.created_date::date >= $P{reportParams.tglForm}::date
+AND rw.created_date::date <= $P{reportParams.tglTo}::date ]]>
 	</queryString>
 	<field name="created_date" class="java.sql.Timestamp"/>
 	<field name="nama_obat" class="java.lang.String"/>
@@ -37,7 +37,7 @@ AND rw.created_date::date <= to_date($P{reportParams.tglTo}, 'dd-MM-yyyy')]]>
 				<textFieldExpression><![CDATA[$P{reportParams.unit} == null ? "" : $P{reportParams.unit}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="44" width="173" height="20" uuid="eea67a7c-2985-4321-86a2-8f97edc1dfd5"/>
+				<reportElement x="0" y="51" width="173" height="20" uuid="eea67a7c-2985-4321-86a2-8f97edc1dfd5"/>
 				<box leftPadding="0"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
@@ -45,7 +45,7 @@ AND rw.created_date::date <= to_date($P{reportParams.tglTo}, 'dd-MM-yyyy')]]>
 				<textFieldExpression><![CDATA[$P{reportParams.area} == null ? "" : $P{reportParams.area}]]></textFieldExpression>
 			</textField>
 			<image onErrorType="Blank">
-				<reportElement x="0" y="0" width="94" height="39" uuid="8ac7c141-71c7-42b1-89af-2c0b0ab37869"/>
+				<reportElement x="0" y="12" width="94" height="39" uuid="8ac7c141-71c7-42b1-89af-2c0b0ab37869"/>
 				<imageExpression><![CDATA[$P{reportParams.logo}]]></imageExpression>
 			</image>
 			<staticText>
@@ -57,9 +57,6 @@ AND rw.created_date::date <= to_date($P{reportParams.tglTo}, 'dd-MM-yyyy')]]>
 			</staticText>
 		</band>
 	</title>
-	<pageHeader>
-		<band height="35" splitType="Stretch"/>
-	</pageHeader>
 	<columnHeader>
 		<band height="36" splitType="Stretch">
 			<staticText>
@@ -99,14 +96,14 @@ AND rw.created_date::date <= to_date($P{reportParams.tglTo}, 'dd-MM-yyyy')]]>
 			</staticText>
 			<staticText>
 				<reportElement x="397" y="0" width="72" height="35" uuid="21491c9c-0146-41ce-8005-1db61b66053c"/>
-				<textElement verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[Harga Barang Masuk (Bijian)]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="469" y="0" width="86" height="35" uuid="3be9b23a-5298-4ffc-bf52-a48e20138204"/>
-				<textElement verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[Harga Rata - Rata (Bijian)]]></text>
