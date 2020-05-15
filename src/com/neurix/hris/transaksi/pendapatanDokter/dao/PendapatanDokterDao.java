@@ -114,6 +114,7 @@ public class PendapatanDokterDao extends GenericDao<ItHrisPendapatanDokterEntity
                 "\t\tjurnal.tanggal_jurnal >= '"+paramTglStart+"' AND\n" +
                 "\t\tjurnal.tanggal_jurnal < '"+paramTglEnd+"' AND\n" +
                 "\t\tdetailActivity.person_id = '"+dokterId+"'";
+
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
                 .list();
@@ -213,48 +214,91 @@ public class PendapatanDokterDao extends GenericDao<ItHrisPendapatanDokterEntity
 //                "\tjurnal.tanggal_jurnal < '"+paramTglEnd+"' AND\n" +
 //                "\tdetailActivity.person_id IS NOT NULL";
 
+//        String sqlQuery = "SELECT\n" +
+//                " \n" +
+//                "                jurnal.tanggal_jurnal, \n" +
+//                "                jurnalDetail.jurnal_detail_id, \n" +
+//                "                jurnalDetail.divisi_id, \n" +
+//                "                detailActivity.activity_id, \n" +
+//                "                detailActivity.person_id AS dokter_id,\n" +
+//                "                dokter.nama_dokter, \n" +
+//                "                detailActivity.no_trans AS no_reg,\n" +
+//                "                pelayanan.tipe_pelayanan AS jenis_rawat,\n" +
+//                "                detailActivity.tipe AS kdjnspas,\n" +
+//                "                checkup.created_date AS tanggal,\n" +
+//                "                jurnal.keterangan AS keterangan,\n" +
+//                "                checkup.tarif_bpjs AS tarif_inacbg, \n" +
+//                "                detailActivity.jumlah AS bruto,\n" +
+//                "                kso.jenis_kso,\n" +
+//                "                kso.master_id,\n" +
+//                "                kso.persen_kso,\n" +
+//                "                ksoTindakan.persen_kso AS persen_kso_tindakan,\n" +
+//                "                headerCheckup.id_pasien,\n" +
+//                "                headerCheckup.nama AS nama_pasien,\n" +
+//                "                kso.persen_ks,\n" +
+//                "                pelayanan.id_pelayanan AS id_poli,\n" +
+//                "                pelayanan.nama_pelayanan AS nama_poli,\n" +
+//                "                tindakan.nama_tindakan AS activity_name,\n" +
+//                "                kso.kodering AS kode_jabatan\n" +
+//                "                FROM \n" +
+//                "                (SELECT * FROM it_akun_jurnal) jurnal LEFT JOIN  \n" +
+//                "                (SELECT * FROM it_akun_jurnal_detail) jurnalDetail ON jurnalDetail.no_jurnal = jurnal.no_jurnal LEFT JOIN  \n" +
+//                "                (SELECT * FROM it_akun_jurnal_detail_activity) detailActivity ON detailActivity.jurnal_detail_id = jurnalDetail.jurnal_detail_id LEFT JOIN \n" +
+//                "                (SELECT * FROM im_simrs_dokter) dokter ON dokter.id_dokter = detailActivity.person_id LEFT JOIN\n" +
+//                "                (SELECT * FROM it_simrs_header_detail_checkup) checkup ON checkup.id_detail_checkup = detailActivity.no_trans LEFT JOIN\n" +
+//                "                (SELECT * FROM im_simrs_pelayanan) pelayanan ON pelayanan.id_pelayanan = checkup.id_pelayanan LEFT JOIN\n" +
+//                "                (SELECT * FROM im_simrs_dokter_kso) kso ON kso.nip = dokter.id_dokter LEFT JOIN\n" +
+//                "                (SELECT * FROM im_simrs_dokter_kso_tindakan) ksoTindakan ON ksoTindakan.dokter_kso_id = kso.dokter_kso_id LEFT JOIN\n" +
+//                "                (SELECT * FROM it_simrs_header_checkup) headerCheckup ON headerCheckup.no_checkup = checkup.no_checkup LEFT JOIN\n" +
+//                "                (SELECT * FROM it_simrs_riwayat_tindakan) tindakan ON tindakan.id_tindakan = detailActivity.activity_id\n" +
+//                "                WHERE \n" +
+//                "                jurnal.branch_id = '"+unit+"' AND \n" +
+//                "                jurnal.tanggal_jurnal >= '"+paramTglStart+"' AND  \n" +
+//                "                jurnal.tanggal_jurnal < '"+paramTglEnd+"' AND  \n" +
+//                "                detailActivity.person_id = '"+dokterId+"'";
         String sqlQuery = "SELECT\n" +
                 " \n" +
-                "                jurnal.tanggal_jurnal, \n" +
-                "                jurnalDetail.jurnal_detail_id, \n" +
-                "                jurnalDetail.divisi_id, \n" +
-                "                detailActivity.activity_id, \n" +
-                "                detailActivity.person_id AS dokter_id,\n" +
-                "                dokter.nama_dokter, \n" +
-                "                detailActivity.no_trans AS no_reg,\n" +
-                "                pelayanan.tipe_pelayanan AS jenis_rawat,\n" +
-                "                detailActivity.tipe AS kdjnspas,\n" +
-                "                checkup.created_date AS tanggal,\n" +
-                "                jurnal.keterangan AS keterangan,\n" +
-                "                checkup.tarif_bpjs AS tarif_inacbg, \n" +
-                "                detailActivity.jumlah AS bruto,\n" +
-                "                kso.jenis_kso,\n" +
-                "                kso.master_id,\n" +
-                "                kso.persen_kso,\n" +
-                "                ksoTindakan.persen_kso AS persen_kso_tindakan,\n" +
-                "                headerCheckup.id_pasien,\n" +
-                "                headerCheckup.nama AS nama_pasien,\n" +
-                "                kso.persen_ks,\n" +
-                "                pelayanan.id_pelayanan AS id_poli,\n" +
-                "                pelayanan.nama_pelayanan AS nama_poli,\n" +
-                "                tindakan.nama_tindakan AS activity_name,\n" +
-                "                kso.kodering AS kode_jabatan\n" +
-                "                FROM \n" +
-                "                (SELECT * FROM it_akun_jurnal) jurnal LEFT JOIN  \n" +
-                "                (SELECT * FROM it_akun_jurnal_detail) jurnalDetail ON jurnalDetail.no_jurnal = jurnal.no_jurnal LEFT JOIN  \n" +
-                "                (SELECT * FROM it_akun_jurnal_detail_activity) detailActivity ON detailActivity.jurnal_detail_id = jurnalDetail.jurnal_detail_id LEFT JOIN \n" +
-                "                (SELECT * FROM im_simrs_dokter) dokter ON dokter.id_dokter = detailActivity.person_id LEFT JOIN\n" +
-                "                (SELECT * FROM it_simrs_header_detail_checkup) checkup ON checkup.id_detail_checkup = detailActivity.no_trans LEFT JOIN\n" +
-                "                (SELECT * FROM im_simrs_pelayanan) pelayanan ON pelayanan.id_pelayanan = checkup.id_pelayanan LEFT JOIN\n" +
-                "                (SELECT * FROM im_simrs_dokter_kso) kso ON kso.nip = dokter.id_dokter LEFT JOIN\n" +
-                "                (SELECT * FROM im_simrs_dokter_kso_tindakan) ksoTindakan ON ksoTindakan.dokter_kso_id = kso.dokter_kso_id LEFT JOIN\n" +
-                "                (SELECT * FROM it_simrs_header_checkup) headerCheckup ON headerCheckup.no_checkup = checkup.no_checkup LEFT JOIN\n" +
-                "                (SELECT * FROM it_simrs_riwayat_tindakan) tindakan ON tindakan.id_tindakan = detailActivity.activity_id\n" +
-                "                WHERE \n" +
-                "                jurnal.branch_id = '"+unit+"' AND \n" +
-                "                jurnal.tanggal_jurnal >= '"+paramTglStart+"' AND  \n" +
-                "                jurnal.tanggal_jurnal < '"+paramTglEnd+"' AND  \n" +
-                "                detailActivity.person_id = '"+dokterId+"'";
+                "                  \n" +
+                "                                jurnal.tanggal_jurnal,  \n" +
+                "                                jurnalDetail.jurnal_detail_id,  \n" +
+                "                                jurnalDetail.divisi_id,  \n" +
+                "                                detailActivity.activity_id,  \n" +
+                "                                detailActivity.person_id AS dokter_id, \n" +
+                "                                dokter.nama_dokter,  \n" +
+                "                                detailActivity.no_trans AS no_reg, \n" +
+                "                                pelayanan.tipe_pelayanan AS jenis_rawat, \n" +
+                "                                detailActivity.tipe AS kdjnspas, \n" +
+                "                                checkup.created_date AS tanggal, \n" +
+                "                                jurnal.keterangan AS keterangan, \n" +
+                "                                checkup.tarif_bpjs AS tarif_inacbg,  \n" +
+                "                                detailActivity.jumlah AS bruto, \n" +
+                "                                kso.jenis_kso, \n" +
+                "                                kso.master_id, \n" +
+                "                                kso.persen_kso, \n" +
+                "                                ksoTindakan.persen_kso AS persen_kso_tindakan, \n" +
+                "                                headerCheckup.id_pasien, \n" +
+                "                                headerCheckup.nama AS nama_pasien, \n" +
+                "                                kso.persen_ks, \n" +
+                "                                pelayanan.id_pelayanan AS id_poli, \n" +
+                "                                pelayanan.nama_pelayanan AS nama_poli,\n" +
+                "                                tindakan.nama_tindakan AS activity_name,\n" +
+                "                                kso.kodering AS kode_jabatan \n" +
+                "                                FROM  \n" +
+                "                                (SELECT * FROM it_akun_jurnal) jurnal LEFT JOIN   \n" +
+                "                                (SELECT * FROM it_akun_jurnal_detail) jurnalDetail ON jurnalDetail.no_jurnal = jurnal.no_jurnal LEFT JOIN   \n" +
+                "                                (SELECT * FROM it_akun_jurnal_detail_activity) detailActivity ON detailActivity.jurnal_detail_id = jurnalDetail.jurnal_detail_id LEFT JOIN  \n" +
+                "                                (SELECT * FROM im_simrs_dokter) dokter ON dokter.id_dokter = detailActivity.person_id LEFT JOIN \n" +
+                "                                (SELECT * FROM it_simrs_header_detail_checkup) checkup ON checkup.id_detail_checkup = detailActivity.no_trans LEFT JOIN \n" +
+                "                                (SELECT * FROM im_simrs_pelayanan) pelayanan ON pelayanan.id_pelayanan = checkup.id_pelayanan LEFT JOIN \n" +
+                "                                (SELECT * FROM im_simrs_dokter_kso) kso ON kso.nip = dokter.id_dokter LEFT JOIN \n" +
+                "                                (SELECT * FROM im_simrs_dokter_kso_tindakan) ksoTindakan ON ksoTindakan.dokter_kso_id = kso.dokter_kso_id LEFT JOIN \n" +
+                "                                (SELECT * FROM it_simrs_header_checkup) headerCheckup ON headerCheckup.no_checkup = checkup.no_checkup LEFT JOIN\n" +
+                "                                (SELECT id_tindakan, nama_tindakan FROM it_simrs_riwayat_tindakan GROUP BY id_tindakan, nama_tindakan) tindakan ON tindakan.id_tindakan = detailActivity.activity_id \n" +
+                "                                WHERE  \n" +
+                "                                jurnal.branch_id = '"+unit+"' AND  \n" +
+                "                                jurnal.tanggal_jurnal >= '"+paramTglStart+"' AND   \n" +
+                "                                jurnal.tanggal_jurnal < '"+paramTglEnd+"' AND   \n" +
+                "                                detailActivity.person_id = '"+dokterId+"'";
 
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(sqlQuery)

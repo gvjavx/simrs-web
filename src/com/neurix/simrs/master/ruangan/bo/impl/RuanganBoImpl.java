@@ -216,27 +216,57 @@ public class RuanganBoImpl implements RuanganBo {
 //            MtSimrsRuanganEntity mtSimrsRuanganEntity = getEntityByCriteria(editRuangan).get(0);
 
             if (mtSimrsRuanganEntity != null) {
-                mtSimrsRuanganEntity.setIdRuangan(ruangan.getIdRuangan());
-                mtSimrsRuanganEntity.setNamaRuangan(ruangan.getNamaRuangan());
-                mtSimrsRuanganEntity.setNoRuangan(ruangan.getNoRuangan());
-                mtSimrsRuanganEntity.setStatusRuangan(ruangan.getStatusRuangan());
-                mtSimrsRuanganEntity.setIdKelasRuangan(ruangan.getIdKelasRuangan());
-                mtSimrsRuanganEntity.setKeterangan(ruangan.getKeterangan());
-                mtSimrsRuanganEntity.setTarif(ruangan.getTarif());
-                mtSimrsRuanganEntity.setBranchId(ruangan.getBranchId());
-                mtSimrsRuanganEntity.setKuota(ruangan.getKuota());
-                mtSimrsRuanganEntity.setSisaKuota(ruangan.getSisaKuota());
+                if (ruangan.getNamaRuangan().equalsIgnoreCase(mtSimrsRuanganEntity.getNamaRuangan())){
+                    mtSimrsRuanganEntity.setIdRuangan(ruangan.getIdRuangan());
+                    mtSimrsRuanganEntity.setNamaRuangan(ruangan.getNamaRuangan());
+                    mtSimrsRuanganEntity.setNoRuangan(ruangan.getNoRuangan());
+                    mtSimrsRuanganEntity.setStatusRuangan(ruangan.getStatusRuangan());
+                    mtSimrsRuanganEntity.setIdKelasRuangan(ruangan.getIdKelasRuangan());
+                    mtSimrsRuanganEntity.setKeterangan(ruangan.getKeterangan());
+                    mtSimrsRuanganEntity.setTarif(ruangan.getTarif());
+                    mtSimrsRuanganEntity.setBranchId(ruangan.getBranchId());
+                    mtSimrsRuanganEntity.setKuota(ruangan.getKuota());
+                    mtSimrsRuanganEntity.setSisaKuota(ruangan.getSisaKuota());
 
-                mtSimrsRuanganEntity.setFlag(ruangan.getFlag());
-                mtSimrsRuanganEntity.setAction("U");
-                mtSimrsRuanganEntity.setLastUpdate(ruangan.getLastUpdate());
-                mtSimrsRuanganEntity.setLastUpdateWho(ruangan.getLastUpdateWho());
+                    mtSimrsRuanganEntity.setFlag(ruangan.getFlag());
+                    mtSimrsRuanganEntity.setAction("U");
+                    mtSimrsRuanganEntity.setLastUpdate(ruangan.getLastUpdate());
+                    mtSimrsRuanganEntity.setLastUpdateWho(ruangan.getLastUpdateWho());
 
-                try {
-                    ruanganDao.updateAndSave(mtSimrsRuanganEntity);
-                } catch (HibernateException e) {
-                    logger.error("[RuanganBoImpl.saveAdd] Error when Updating data ruangan", e);
-                    throw new GeneralBOException(" Error when Updating data ruangan " + e.getMessage());
+                    try {
+                        ruanganDao.updateAndSave(mtSimrsRuanganEntity);
+                    } catch (HibernateException e) {
+                        logger.error("[RuanganBoImpl.saveAdd] Error when Updating data ruangan", e);
+                        throw new GeneralBOException(" Error when Updating data ruangan " + e.getMessage());
+                    }
+                }else {
+                    String status = cekStatus(ruangan.getNamaRuangan());
+                    if (!status.equalsIgnoreCase("exist")){
+                        mtSimrsRuanganEntity.setIdRuangan(ruangan.getIdRuangan());
+                        mtSimrsRuanganEntity.setNamaRuangan(ruangan.getNamaRuangan());
+                        mtSimrsRuanganEntity.setNoRuangan(ruangan.getNoRuangan());
+                        mtSimrsRuanganEntity.setStatusRuangan(ruangan.getStatusRuangan());
+                        mtSimrsRuanganEntity.setIdKelasRuangan(ruangan.getIdKelasRuangan());
+                        mtSimrsRuanganEntity.setKeterangan(ruangan.getKeterangan());
+                        mtSimrsRuanganEntity.setTarif(ruangan.getTarif());
+                        mtSimrsRuanganEntity.setBranchId(ruangan.getBranchId());
+                        mtSimrsRuanganEntity.setKuota(ruangan.getKuota());
+                        mtSimrsRuanganEntity.setSisaKuota(ruangan.getSisaKuota());
+
+                        mtSimrsRuanganEntity.setFlag(ruangan.getFlag());
+                        mtSimrsRuanganEntity.setAction("U");
+                        mtSimrsRuanganEntity.setLastUpdate(ruangan.getLastUpdate());
+                        mtSimrsRuanganEntity.setLastUpdateWho(ruangan.getLastUpdateWho());
+
+                        try {
+                            ruanganDao.updateAndSave(mtSimrsRuanganEntity);
+                        } catch (HibernateException e) {
+                            logger.error("[RuanganBoImpl.saveAdd] Error when Updating data ruangan", e);
+                            throw new GeneralBOException(" Error when Updating data ruangan " + e.getMessage());
+                        }
+                    }else {
+                        throw new GeneralBOException("Maaf Data dengan Nama Ruangan Tersebut Sudah Ada");
+                    }
                 }
             } else {
                 logger.error("[RuanganBoImpl.saveAdd] Error when get entity ruangan is null");

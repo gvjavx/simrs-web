@@ -93,6 +93,7 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
         logger.info("[DokterBoImpl.saveEdit] start process >>>");
         if (bean!=null) {
             String historyId = "";
+            String kodering, seqKodering;
             String dokterId = bean.getIdDokter();
 
             ImSimrsDokterEntity imSimrsDokterEntity = null;
@@ -104,41 +105,111 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
                 throw new GeneralBOException("Found problem when searching data Dokter by IdDokter, please inform to your admin...," + e.getMessage());
             }
 
-            String kode = imSimrsDokterEntity.getKodering();
-            String[] arrOfStr = kode.split("\\.");
-            String seqKodering = arrOfStr[4];
-
-            Map map = new HashMap<>();
-            map.put("position_id", bean.getPositionId());
-            String koderingPosition = positionDao.getKodringPosition(map);
-
-            String branchId = CommonUtil.userBranchLogin();
-            Map map1 = new HashMap<>();
-            map1.put("branch_id", branchId);
-            String koderingBranch = branchDao.getKodringBranches(map1);
-
-            String kodering = koderingBranch+"."+koderingPosition+"."+seqKodering;
-
             if (imSimrsDokterEntity != null) {
-                imSimrsDokterEntity.setIdDokter(bean.getIdDokter());
-                imSimrsDokterEntity.setNamaDokter(bean.getNamaDokter());
-                imSimrsDokterEntity.setIdPelayanan(bean.getIdPelayanan());
-                imSimrsDokterEntity.setKuota(bean.getKuota());
-                imSimrsDokterEntity.setKodeDpjp(bean.getKodeDpjp());
-                imSimrsDokterEntity.setKodering(kodering);
-                imSimrsDokterEntity.setFlag(bean.getFlag());
-                imSimrsDokterEntity.setAction(bean.getAction());
-                imSimrsDokterEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                imSimrsDokterEntity.setLastUpdate(bean.getLastUpdate());
+                if (bean.getNamaDokter().equalsIgnoreCase(imSimrsDokterEntity.getNamaDokter())){
+                    String kode = imSimrsDokterEntity.getKodering();
+                    if (kode != null){
+                        String[] arrOfStr = kode.split("\\.");
+                        seqKodering = arrOfStr[4];
 
-                String flag;
-                try {
-                    // Update into database
-                    dokterDao.updateAndSave(imSimrsDokterEntity);
-                    //payrollSkalaGajiDao.addAndSaveHistory(imPayrollSkalaGajiHistoryEntity);
-                } catch (HibernateException e) {
-                    logger.error("[DokterBoImpl.saveEdit] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving update data Dokter, please info to your admin..." + e.getMessage());
+                        Map map = new HashMap<>();
+                        map.put("position_id", bean.getPositionId());
+                        String koderingPosition = positionDao.getKodringPosition(map);
+
+                        String branchId = CommonUtil.userBranchLogin();
+                        Map map1 = new HashMap<>();
+                        map1.put("branch_id", branchId);
+                        String koderingBranch = branchDao.getKodringBranches(map1);
+
+                        kodering = koderingBranch+"."+koderingPosition+"."+seqKodering;
+                    }else {
+                        seqKodering = dokterDao.getNextKodering();
+                        Map map = new HashMap<>();
+                        map.put("position_id", bean.getPositionId());
+                        String koderingPosition = positionDao.getKodringPosition(map);
+
+                        String branchId = CommonUtil.userBranchLogin();
+                        Map map1 = new HashMap<>();
+                        map1.put("branch_id", branchId);
+                        String koderingBranch = branchDao.getKodringBranches(map1);
+
+                        kodering = koderingBranch+"."+koderingPosition+"."+seqKodering;
+                    }
+
+                    imSimrsDokterEntity.setIdDokter(bean.getIdDokter());
+                    imSimrsDokterEntity.setNamaDokter(bean.getNamaDokter());
+                    imSimrsDokterEntity.setIdPelayanan(bean.getIdPelayanan());
+                    imSimrsDokterEntity.setKuota(bean.getKuota());
+                    imSimrsDokterEntity.setKodeDpjp(bean.getKodeDpjp());
+                    imSimrsDokterEntity.setKodering(kodering);
+                    imSimrsDokterEntity.setFlag(bean.getFlag());
+                    imSimrsDokterEntity.setAction(bean.getAction());
+                    imSimrsDokterEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    imSimrsDokterEntity.setLastUpdate(bean.getLastUpdate());
+
+                    String flag;
+                    try {
+                        // Update into database
+                        dokterDao.updateAndSave(imSimrsDokterEntity);
+                        //payrollSkalaGajiDao.addAndSaveHistory(imPayrollSkalaGajiHistoryEntity);
+                    } catch (HibernateException e) {
+                        logger.error("[DokterBoImpl.saveEdit] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving update data Dokter, please info to your admin..." + e.getMessage());
+                    }
+                }else {
+                    String status = cekStatus(bean.getNamaDokter());
+                    if (!status.equalsIgnoreCase("exist")){
+                        String kode = imSimrsDokterEntity.getKodering();
+                        if (kode != null){
+                            String[] arrOfStr = kode.split("\\.");
+                            seqKodering = arrOfStr[4];
+
+                            Map map = new HashMap<>();
+                            map.put("position_id", bean.getPositionId());
+                            String koderingPosition = positionDao.getKodringPosition(map);
+
+                            String branchId = CommonUtil.userBranchLogin();
+                            Map map1 = new HashMap<>();
+                            map1.put("branch_id", branchId);
+                            String koderingBranch = branchDao.getKodringBranches(map1);
+
+                            kodering = koderingBranch+"."+koderingPosition+"."+seqKodering;
+                        }else {
+                            seqKodering = dokterDao.getNextKodering();
+                            Map map = new HashMap<>();
+                            map.put("position_id", bean.getPositionId());
+                            String koderingPosition = positionDao.getKodringPosition(map);
+
+                            String branchId = CommonUtil.userBranchLogin();
+                            Map map1 = new HashMap<>();
+                            map1.put("branch_id", branchId);
+                            String koderingBranch = branchDao.getKodringBranches(map1);
+
+                            kodering = koderingBranch+"."+koderingPosition+"."+seqKodering;
+                        }
+                        imSimrsDokterEntity.setIdDokter(bean.getIdDokter());
+                        imSimrsDokterEntity.setNamaDokter(bean.getNamaDokter());
+                        imSimrsDokterEntity.setIdPelayanan(bean.getIdPelayanan());
+                        imSimrsDokterEntity.setKuota(bean.getKuota());
+                        imSimrsDokterEntity.setKodeDpjp(bean.getKodeDpjp());
+                        imSimrsDokterEntity.setKodering(kodering);
+                        imSimrsDokterEntity.setFlag(bean.getFlag());
+                        imSimrsDokterEntity.setAction(bean.getAction());
+                        imSimrsDokterEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                        imSimrsDokterEntity.setLastUpdate(bean.getLastUpdate());
+
+                        String flag;
+                        try {
+                            // Update into database
+                            dokterDao.updateAndSave(imSimrsDokterEntity);
+                            //payrollSkalaGajiDao.addAndSaveHistory(imPayrollSkalaGajiHistoryEntity);
+                        } catch (HibernateException e) {
+                            logger.error("[DokterBoImpl.saveEdit] Error, " + e.getMessage());
+                            throw new GeneralBOException("Found problem when saving update data Dokter, please info to your admin..." + e.getMessage());
+                        }
+                    }else {
+                        throw new GeneralBOException("Maaf Data dengan Nama Dokter Tersebut Sudah Ada");
+                    }
                 }
             } else {
                 logger.error("[DokterBoImpl.saveEdit] Error, not found data Dokter with request id, please check again your data ...");

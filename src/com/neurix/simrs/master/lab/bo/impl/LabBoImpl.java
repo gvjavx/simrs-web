@@ -101,25 +101,53 @@ public class LabBoImpl implements LabBo {
             }
 
             if (imSimrsLabEntity != null) {
-                imSimrsLabEntity.setIdLab(bean.getIdLab());
-                imSimrsLabEntity.setNamaLab(bean.getNamaLab());
-                imSimrsLabEntity.setIdOperatorLab(bean.getIdOperatorLab());
-                imSimrsLabEntity.setIdDokter(bean.getIdDokter());
-                imSimrsLabEntity.setIdKategoriLab(bean.getIdKategoriLab());
-                imSimrsLabEntity.setTarif(bean.getTarif());
-                imSimrsLabEntity.setFlag(bean.getFlag());
-                imSimrsLabEntity.setAction(bean.getAction());
-                imSimrsLabEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                imSimrsLabEntity.setLastUpdate(bean.getLastUpdate());
+                if (bean.getNamaLab().equalsIgnoreCase(imSimrsLabEntity.getNamaLab())){
+                    imSimrsLabEntity.setIdLab(bean.getIdLab());
+                    imSimrsLabEntity.setNamaLab(bean.getNamaLab());
+                    imSimrsLabEntity.setIdOperatorLab(bean.getIdOperatorLab());
+                    imSimrsLabEntity.setIdDokter(bean.getIdDokter());
+                    imSimrsLabEntity.setIdKategoriLab(bean.getIdKategoriLab());
+                    imSimrsLabEntity.setTarif(bean.getTarif());
+                    imSimrsLabEntity.setFlag(bean.getFlag());
+                    imSimrsLabEntity.setAction(bean.getAction());
+                    imSimrsLabEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    imSimrsLabEntity.setLastUpdate(bean.getLastUpdate());
 
-                String flag;
-                try {
-                    // Update into database
-                    labDao.updateAndSave(imSimrsLabEntity);
-                    //payrollSkalaGajiDao.addAndSaveHistory(imPayrollSkalaGajiHistoryEntity);
-                } catch (HibernateException e) {
-                    logger.error("[LabBoImpl.saveEdit] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving update data Lab, please info to your admin..." + e.getMessage());
+                    String flag;
+                    try {
+                        // Update into database
+                        labDao.updateAndSave(imSimrsLabEntity);
+                        //payrollSkalaGajiDao.addAndSaveHistory(imPayrollSkalaGajiHistoryEntity);
+                    } catch (HibernateException e) {
+                        logger.error("[LabBoImpl.saveEdit] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving update data Lab, please info to your admin..." + e.getMessage());
+                    }
+                }else {
+                    String status = cekStatus(bean.getNamaLab());
+                    if (!status.equalsIgnoreCase("exist")){
+                        imSimrsLabEntity.setIdLab(bean.getIdLab());
+                        imSimrsLabEntity.setNamaLab(bean.getNamaLab());
+                        imSimrsLabEntity.setIdOperatorLab(bean.getIdOperatorLab());
+                        imSimrsLabEntity.setIdDokter(bean.getIdDokter());
+                        imSimrsLabEntity.setIdKategoriLab(bean.getIdKategoriLab());
+                        imSimrsLabEntity.setTarif(bean.getTarif());
+                        imSimrsLabEntity.setFlag(bean.getFlag());
+                        imSimrsLabEntity.setAction(bean.getAction());
+                        imSimrsLabEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                        imSimrsLabEntity.setLastUpdate(bean.getLastUpdate());
+
+                        String flag;
+                        try {
+                            // Update into database
+                            labDao.updateAndSave(imSimrsLabEntity);
+                            //payrollSkalaGajiDao.addAndSaveHistory(imPayrollSkalaGajiHistoryEntity);
+                        } catch (HibernateException e) {
+                            logger.error("[LabBoImpl.saveEdit] Error, " + e.getMessage());
+                            throw new GeneralBOException("Found problem when saving update data Lab, please info to your admin..." + e.getMessage());
+                        }
+                    }else {
+                        throw new GeneralBOException("Maaf Data dengan Nama Lab Tersebut Sudah Ada");
+                    }
                 }
             } else {
                 logger.error("[LabBoImpl.saveEdit] Error, not found data Lab with request id, please check again your data ...");

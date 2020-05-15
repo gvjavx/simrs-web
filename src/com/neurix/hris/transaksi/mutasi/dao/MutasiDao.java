@@ -72,7 +72,7 @@ public class MutasiDao extends GenericDao<ItMutasiEntity, String> {
                 criteria.add(Restrictions.eq("tanggalEfektif", mapCriteria.get("tanggal_efektif")));
             }
         }
-
+        criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
         // Order by
         criteria.addOrder(Order.desc("mutasiId"));
 
