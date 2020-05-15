@@ -265,13 +265,15 @@
                                                             </display:column>
 
                                                             <display:column media="html" title="Delete" style="text-align:center;font-size:9">
-                                                                <s:url var="urlDelete" namespace="/dokterkso" action="delete_dokterkso" escapeAmp="false">
-                                                                    <s:param name="id"><s:property value="#attr.row.dokterKsoId"/></s:param>
-                                                                    <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
-                                                                </s:url>
-                                                                <s:a href="%{urlDelete}">
-                                                                    <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_delete">
-                                                                </s:a>
+                                                                <s:if test='#attr.row.flag == "Y"'>
+                                                                    <s:url var="urlDelete" namespace="/dokterkso" action="delete_dokterkso" escapeAmp="false">
+                                                                        <s:param name="id"><s:property value="#attr.row.dokterKsoId"/></s:param>
+                                                                        <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
+                                                                    </s:url>
+                                                                    <s:a href="%{urlDelete}">
+                                                                        <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_delete">
+                                                                    </s:a>
+                                                                </s:if>
                                                             </display:column>
                                                             <display:column property="dokterKsoId" sortable="true" title="ID Dokter KSO" />
                                                             <display:column property="nip" sortable="true" title="NIP Dokter"  />

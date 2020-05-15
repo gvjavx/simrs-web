@@ -266,11 +266,11 @@ public class KategoriLabAction extends BaseMasterAction {
                 logId = kategoriLabBoProxy.saveErrorMessage(e.getMessage(), "KategoriLabBO.saveEdit");
             } catch (GeneralBOException e1) {
                 logger.error("[KategoriLabAction.saveEdit] Error when saving error,", e1);
-                return ERROR;
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("Kategori[LabAction.saveEdit] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            throw new GeneralBOException(e.getMessage());
         }
 
         logger.info("[KategoriLabAction.saveEdit] end process <<<");

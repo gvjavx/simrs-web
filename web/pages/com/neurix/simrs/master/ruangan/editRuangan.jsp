@@ -24,7 +24,7 @@
             document.ruanganForm.submit();
         };
 
-        $.subscribe('beforeProcessSave', function (event, data) {
+        $.subscribe('beforeProcessSave2', function (event, data) {
             var nameRuangan = document.getElementById("nama_ruangan1").value;
             var noRuangan = document.getElementById("no_ruangan1").value;
             var statusRuangan = document.getElementById("statusRuangan1").value;
@@ -77,14 +77,14 @@
                 if (tarifRuangan == '') {
                     msg += 'Field <strong>Tarif Ruangan</strong> is required.' + '<br/>';
                 }
-                if (kuotan == '') {
+                if (kuota == '') {
                     msg += 'Field <strong>Kuota</strong> is required.' + '<br/>';
                 }
-                if (sisaKuota1 == '') {
+                if (sisaKuota == '') {
                     msg += 'Field <strong>Sisa Kuota</strong> is required.' + '<br/>';
                 }
 
-                document.getElementById('errorValidationMessage').innerHTML = msg;
+                document.getElementById('errorValidationMessage2').innerHTML = msg;
 
                 $.publish('showErrorValidationDialog');
 
@@ -274,7 +274,7 @@
                     <div class="col-sm-offset-2 col-sm-10">
                             <%--<button type="submit" class="btn btn-default">Submit</button>--%>
                         <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="editRuanganForm" id="save" name="save"
-                                   onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
+                                   onBeforeTopics="beforeProcessSave2" onCompleteTopics="closeDialog,successDialog"
                                    onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
                             <i class="fa fa-check"></i>
                             Save
@@ -326,7 +326,7 @@
                                         <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
                                                    height="250" width="600" autoOpen="false" title="Error Dialog"
                                                    buttons="{
-                                                                        'OK':function() { $('#error_dialog').dialog('close'); }
+                                                                        'OK':function() { $('#error_dialog').dialog('close'); window.location.reload(true)}
                                                                     }"
                                         >
                                             <div class="alert alert-error fade in">
@@ -339,14 +339,14 @@
                                         <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog" modal="true" resizable="false"
                                                    height="280" width="500" autoOpen="false" title="Warning"
                                                    buttons="{
-                                                                        'OK':function() { $('#error_validation_dialog').dialog('close'); }
+                                                                        'OK':function() { $('#error_validation_dialog').dialog('close'); window.location.reload(true)}
                                                                     }"
                                         >
                                             <div class="alert alert-error fade in">
                                                 <label class="control-label" align="left">
                                                     <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> Please check this field :
                                                     <br/>
-                                                    <center><div id="errorValidationMessage"></div></center>
+                                                    <center><div id="errorValidationMessage2"></div></center>
                                                 </label>
                                             </div>
                                         </sj:dialog>
