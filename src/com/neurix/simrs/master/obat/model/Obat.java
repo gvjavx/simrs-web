@@ -69,7 +69,6 @@ public class Obat extends BaseModel {
     private String noJurnal;
     private BigDecimal bruto;
     private BigDecimal netto;
-
     private String keterangan;
 
     public String getFlagKronis() {
@@ -80,12 +79,31 @@ public class Obat extends BaseModel {
         this.flagKronis = flagKronis;
     }
 
+    private String stTglFrom;
+    private String stTglTo;
+
     public String getKeterangan() {
         return keterangan;
     }
 
     public void setKeterangan(String keterangan) {
         this.keterangan = keterangan;
+    }
+
+    public String getStTglFrom() {
+        return stTglFrom;
+    }
+
+    public void setStTglFrom(String stTglFrom) {
+        this.stTglFrom = stTglFrom;
+    }
+
+    public String getStTglTo() {
+        return stTglTo;
+    }
+
+    public void setStTglTo(String stTglTo) {
+        this.stTglTo = stTglTo;
     }
 
     public BigDecimal getBruto() {
