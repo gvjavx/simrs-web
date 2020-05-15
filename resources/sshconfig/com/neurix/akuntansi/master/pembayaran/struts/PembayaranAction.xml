@@ -80,12 +80,12 @@
             <result name="success_save_add">/pages/com/neurix/hris/master/pembayaran/addPembayaran.jsp</result>
             <result name="error">/pages/com/neurix/hris/master/pembayaran/addPembayaran.jsp</result>
 
-            <result name="init_edit">/pages/com/neurix/simrs/master/detaillab/editLabDetail.jsp</result>
-            <result name="failure">/pages/com/neurix/simrs/master/detaillab/editLabDetail.jsp</result>
-            <result name="success_save_edit">/pages/com/neurix/simrs/master/detaillab/editLabDetail.jsp</result>
+            <result name="init_edit">/pages/com/neurix/hris/master/pembayaran/editPembayaran.jsp</result>
+            <result name="failure">/pages/com/neurix/hris/master/pembayaran/editPembayaran.jsp</result>
+            <result name="success_save_edit">/pages/com/neurix/hris/master/pembayaran/editPembayaran.jsp</result>
 
-            <result name="success_save_delete">/pages/com/neurix/simrs/master/detaillab/deleteLabDetail.jsp</result>
-            <result name="init_delete">/pages/com/neurix/simrs/master/detaillab/deleteLabDetail.jsp</result>
+            <result name="success_save_delete">/pages/com/neurix/hris/master/pembayaran/deletePembayaran.jsp</result>
+            <result name="init_delete">/pages/com/neurix/hris/master/pembayaran/deletePembayaran.jsp</result>
 
             <!--<result name="error" type="httpheader">-->
             <!--<param name="status">504</param>-->
@@ -97,7 +97,7 @@
         <action name="paging_displaytag_akunpembayaran"
                 class="com.neurix.akuntansi.master.pembayaran.action.PembayaranAction" method="paging">
             <interceptor-ref name="defaultStack"/>
-            <result name="success">/pages/com/neurix/akuntansi/master/reportDetail/searchReportDetail.jsp</result>
+            <result name="success">/pages/com/neurix/hris/master/pembayaran/searchPembayaran.jsp</result>
         </action>
 
     </package>

@@ -17,8 +17,9 @@
 
         $.subscribe('beforeProcessSave', function (event, data) {
             var namaKategoriLab = document.getElementById("namaKategori1").value;
+            var divisi = document.getElementById("positionId1").value;
 
-            if (namaKategoriLab != '') {
+            if (namaKategoriLab != '' && divisi != '') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -31,6 +32,9 @@
                 var msg = "";
                 if (namaKategoriLab == '') {
                     msg += 'Field <strong>Nama Kategori Lab </strong> is required.' + '<br/>';
+                }
+                if (divisi == '') {
+                    msg += 'Field <strong>Divisi </strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
@@ -88,6 +92,18 @@
                         <td>
                             <table>
                                 <s:textfield id="namaKategori1" name="kategoriLab.namaKategori" required="true" disabled="false" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Divisi :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:action id="initComboPosition" namespace="/kategorilab" name="initComboPosition_kategorilab"/>
+                                <s:select list="#initComboPosition.listOfComboPositions" id="positionId1" name="kategoriLab.divisiId"
+                                          listKey="positionId" listValue="positionName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -152,7 +168,7 @@
                                         <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
                                                    height="250" width="600" autoOpen="false" title="Error Dialog"
                                                    buttons="{
-                                                                        'OK':function() { $('#error_dialog').dialog('close'); }
+                                                                        'OK':function() { $('#error_dialog').dialog('close'); window.location.reload(true)}
                                                                     }"
                                         >
                                             <div class="alert alert-error fade in">

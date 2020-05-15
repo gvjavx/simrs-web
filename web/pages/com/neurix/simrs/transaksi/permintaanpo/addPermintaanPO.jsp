@@ -101,7 +101,6 @@
     <section class="content-header">
         <h1>
             Tambah Purchase Order (PO)
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -140,18 +139,23 @@
                                            id="cor_po_vendor"><i class="fa fa-check"></i> correct</p>
                                     </div>
                                 </div>
+                                <input id="id_obat" type="hidden">
+                                <input id="id_pabrik" type="hidden">
+                                <input id="lb_bx" type="hidden">
+                                <input id="bj_lb" type="hidden">
                                 <div class="form-group">
                                     <label class="col-md-4" style="margin-top: 7px">Nama Obat</label>
                                     <div class="col-md-8">
-                                        <s:action id="initObat" namespace="/obat"
-                                                  name="getListObat_obat"/>
-                                        <s:select cssStyle="margin-top: 7px; width: 100%"
-                                                  list="#initObat.listOfObat" id="nama_obat"
-                                                  listKey="idObat + '|' + namaObat + '|' + lembarPerBox + '|' + bijiPerLembar + '|' + idPabrik"
-                                                  onchange="var warn =$('#war_po_obat').is(':visible'); if (warn){$('#cor_po_obat').show().fadeOut(3000);$('#war_po_obat').hide()}; resetField(this);"
-                                                  listValue="idPabrik +' | '+ namaObat +' | '+'LB/BX:'+lembarPerBox+' | '+'BJ/LB:'+bijiPerLembar"
-                                                  headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control select2"/>
+                                        <%--<s:action id="initObat" namespace="/obat"--%>
+                                                  <%--name="getListObat_obat"/>--%>
+                                        <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
+                                                  <%--list="#initObat.listOfObat" id="nama_obat"--%>
+                                                  <%--listKey="idObat + '|' + namaObat + '|' + lembarPerBox + '|' + bijiPerLembar + '|' + idPabrik"--%>
+                                                  <%--onchange="var warn =$('#war_po_obat').is(':visible'); if (warn){$('#cor_po_obat').show().fadeOut(3000);$('#war_po_obat').hide()}; resetField(this);"--%>
+                                                  <%--listValue="idPabrik +' | '+ namaObat +' | '+'LB/BX:'+lembarPerBox+' | '+'BJ/LB:'+bijiPerLembar"--%>
+                                                  <%--headerKey="" headerValue="[Select one]"--%>
+                                                  <%--cssClass="form-control select2"/>--%>
+                                            <input class="form-control" style="margin-top: 7px" id="nama_obat" oninput="var warn =$('#war_po_obat').is(':visible'); if (warn){$('#cor_po_obat').show().fadeOut(3000);$('#war_po_obat').hide()}; resetField(this);">
                                         <p style="color: red; display: none;"
                                            id="war_po_obat"><i class="fa fa-times"></i> required</p>
                                         <p style="color: green; display: none;"
@@ -344,7 +348,7 @@
                                                 <i class="fa fa-calendar"></i>
                                             </div>
                                             <input class="form-control datepicker2 datemask2" id="tgl_cair"
-                                                   oninput="var warn =$('#war_po_cair').is(':visible'); if (warn){$('#cor_po_cair').show().fadeOut(3000);$('#war_po_cair').hide()};"/>
+                                                   onchange="var warn =$('#war_po_cair').is(':visible'); if (warn){$('#cor_po_cair').show().fadeOut(3000);$('#war_po_cair').hide()};"/>
                                         </div>
                                         <p style="color: red; display: none;"
                                            id="war_po_cair"><i class="fa fa-times"></i> required</p>
@@ -447,6 +451,66 @@
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
 
+    var functions, mapped;
+    $('#nama_obat').typeahead({
+        minLength: 3,
+        source: function (query, process) {
+            functions = [];
+            mapped = {};
+
+            var data = [];
+            dwr.engine.setAsync(false);
+
+            PermintaanVendorAction.searchObat(query, function (listdata) {
+                data = listdata;
+            });
+
+            if (data.length > 0) {
+                console.log(data);
+                $.each(data, function (i, item) {
+                    var labelItem =  item.idObat+"-"+item.idPabrik +"-" + item.namaObat;
+                    mapped[labelItem] = {
+                        id: item.idObat,
+                        nama: item.namaObat,
+                        idPabrik: item.idPabrik,
+                        lb: item.lembarPerBox,
+                        bj: item.bijiPerLembar,
+                        isBpjs: item.flagBpjs
+                    };
+                    functions.push(labelItem);
+                });
+                process(functions);
+            }
+        },
+        updater: function (item) {
+            var selectedObj = mapped[item];
+            var warn1 = $('#war_po_lembar_perbox').is(':visible');
+            if (warn1) {
+                $('#cor_po_lembar_perbox').show().fadeOut(3000);
+                $('#war_po_lembar_perbox').hide()
+            }
+
+            var warn2 = $('#war_po_biji_perlembar').is(':visible');
+            if (warn2) {
+                $('#cor_po_biji_perlembar').show().fadeOut(3000);
+                $('#war_po_biji_perlembar').hide()
+            }
+            if(selectedObj.isBpjs == "Y"){
+                $('#tipe_obat').val('bpjs').trigger('change');
+            }else{
+                $('#tipe_obat').val('umum').trigger('change');
+            }
+            $('#lembar_perbox, #lb_bx').val(selectedObj.lb);
+            $('#biji_perlembar, #bj_lb').val(selectedObj.bj);
+            $('#jenis_satuan').val('').trigger('change');
+            $('#jumlah, #harga').val('');
+            $('#warning_fisik').html('');
+            $('#id_obat').val(selectedObj.id);
+            $('#id_pabrik').val(selectedObj.idPabrik);
+            return selectedObj.nama;
+        }
+    });
+
     function reset() {
         window.location.reload(true);
     }
@@ -501,7 +565,7 @@
     function addToListPo() {
 
         var vendor = $('#nama_vendor').val();
-        var obat = $('#nama_obat').val();
+        var namaObat = $('#nama_obat').val();
         var jenis = $('#jenis_satuan').val();
         var jumlah = $('#jumlah').val();
         var harga = $('#harga').val();
@@ -511,19 +575,18 @@
         var tipe = $('#tipe_obat').val();
         var tgl = $('#tgl_cair').val();
 
-        var idObat = "";
-        var namaObat = "";
+        var idObat = $('#id_obat').val();
 
         var cek = false;
 
-        if (obat != '' && vendor != '' && jenis != '' && parseInt(jumlah) > 0 && harga != '' && lembarPerBox != '' && bijiPerLembar != '' && tipe != '') {
+        if (namaObat != '' && vendor != '' && jenis != '' && parseInt(jumlah) > 0 && harga != '' && lembarPerBox != '' && bijiPerLembar != '' && tipe != '') {
 
-            if (obat.split('|')[0] != 'null' && obat.split('|')[0] != '') {
-                idObat = obat.split('|')[0];
-            }
-            if (obat.split('|')[1] != 'null' && obat.split('|')[1] != '') {
-                namaObat = obat.split('|')[1];
-            }
+            // if (obat.split('|')[0] != 'null' && obat.split('|')[0] != '') {
+            //     idObat = obat.split('|')[0];
+            // }
+            // if (obat.split('|')[1] != 'null' && obat.split('|')[1] != '') {
+            //     namaObat = obat.split('|')[1];
+            // }
 
             $.each(data, function (i, item) {
                 if (item.ID == idObat) {
@@ -554,7 +617,7 @@
                 $('#tgl_cair').attr('disabled',true);
             }
         } else {
-            if (obat == '' || obat == null) {
+            if (namaObat == '') {
                 $('#war_po_obat').show();
             }
             if (vendor == '' || vendor == null) {
@@ -634,6 +697,7 @@
                 if (response.status == "success") {
                     $('#waiting_dialog').dialog('close');
                     $('#info_dialog').dialog('open');
+                    $('body').scrollTop(0);
                 } else {
                     $('#error_dialog').dialog('open');
                     $('#errorMessage').text(response.message);
@@ -644,31 +708,30 @@
 
     function cekFisik() {
 
-        var obat = $('#nama_obat').val();
+        var namaObat = $('#nama_obat').val();
         var lembar = $('#lembar_perbox').val();
         var biji = $('#biji_perlembar').val();
-        var idObat = "";
-        var namaObat = "";
-        var lembarperBox = "";
-        var bijiPerLembar = "";
-        var idPabrik = "";
+        var idObat = $('#id_obat').val();
+        var lembarperBox =  $('#lb_bx').val();
+        var bijiPerLembar =  $('#bj_lb').val();
+        var idPabrik =  $('#id_pabrik').val();
 
-        if (obat != '') {
-            if (obat.split('|')[0] != 'null' && obat.split('|')[0] != '') {
-                idObat = obat.split('|')[0];
-            }
-            if (obat.split('|')[1] != 'null' && obat.split('|')[1] != '') {
-                namaObat = obat.split('|')[1];
-            }
-            if (obat.split('|')[2] != 'null' && obat.split('|')[2] != '') {
-                lembarperBox = obat.split('|')[2];
-            }
-            if (obat.split('|')[3] != 'null' && obat.split('|')[3] != '') {
-                bijiPerLembar = obat.split('|')[3];
-            }
-            if (obat.split('|')[4] != 'null' && obat.split('|')[4] != '') {
-                idPabrik = obat.split('|')[4];
-            }
+        if (namaObat != '') {
+            // if (obat.split('|')[0] != 'null' && obat.split('|')[0] != '') {
+            //     idObat = obat.split('|')[0];
+            // }
+            // if (obat.split('|')[1] != 'null' && obat.split('|')[1] != '') {
+            //     namaObat = obat.split('|')[1];
+            // }
+            // if (obat.split('|')[2] != 'null' && obat.split('|')[2] != '') {
+            //     lembarperBox = obat.split('|')[2];
+            // }
+            // if (obat.split('|')[3] != 'null' && obat.split('|')[3] != '') {
+            //     bijiPerLembar = obat.split('|')[3];
+            // }
+            // if (obat.split('|')[4] != 'null' && obat.split('|')[4] != '') {
+            //     idPabrik = obat.split('|')[4];
+            // }
 
             var newLembar = '<p>&nbsp;&nbsp;</p>';
             var newBiji = '<p>&nbsp;&nbsp;</p>';

@@ -1,6 +1,7 @@
 package com.neurix.simrs.master.ruangan.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.ruangan.model.MtSimrsRuanganEntity;
 import com.neurix.simrs.master.ruangan.model.Ruangan;
 import org.hibernate.Criteria;
@@ -101,10 +102,25 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
                 idkelas = bean.getIdKelasRuangan();
             }
 
-            String SQL = "SELECT a.id_kelas_ruangan, b.id_ruangan, b.nama_ruangan, b.no_ruangan, b.status_ruangan,\n" +
-                    "c.id_detail_checkup, c.tgl_masuk, b.sisa_kuota, b.kuota FROM im_simrs_kelas_ruangan a\n" +
+            String SQL = "SELECT \n" +
+                    "a.id_kelas_ruangan, \n" +
+                    "b.id_ruangan, \n" +
+                    "b.nama_ruangan, \n" +
+                    "b.no_ruangan, \n" +
+                    "b.status_ruangan,\n" +
+                    "c.id_detail_checkup, \n" +
+                    "c.tgl_masuk, \n" +
+                    "b.sisa_kuota, \n" +
+                    "b.kuota \n" +
+                    "FROM im_simrs_kelas_ruangan a\n" +
                     "INNER JOIN mt_simrs_ruangan b ON a.id_kelas_ruangan = b.id_kelas_ruangan\n" +
-                    "LEFT JOIN (SELECT * FROM it_simrs_rawat_inap WHERE flag = 'Y') c On b.id_ruangan = c.id_ruangan\n" +
+                    "LEFT JOIN (\n" +
+                    "SELECT * \n" +
+                    "FROM it_simrs_rawat_inap a\n" +
+                    "INNER JOIN it_simrs_header_checkup b \n" +
+                    "ON a.no_checkup = b.no_checkup\n" +
+                    "WHERE a.flag = 'Y'\n" +
+                    "AND b.branch_id LIKE :branchId) c On b.id_ruangan = c.id_ruangan\n" +
                     "WHERE a.id_kelas_ruangan LIKE :idKelas\n" +
                     "AND b.id_ruangan LIKE :idRuang\n" +
                     "AND b.nama_ruangan LIKE :namaRuang\n" +
@@ -116,6 +132,7 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
                     .setParameter("idKelas", idkelas)
                     .setParameter("idRuang", idRuang)
                     .setParameter("namaRuang", namaRuang)
+                    .setParameter("branchId", CommonUtil.userBranchLogin())
                     .list();
 
             if (results != null) {
@@ -152,6 +169,21 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
         List<MtSimrsRuanganEntity> results = this.sessionFactory.getCurrentSession().createCriteria(MtSimrsRuanganEntity.class)
                 .add(Restrictions.eq("namaRuangan", namaRuangan))
                 .add(Restrictions.eq("flag", "Y"))
+                .list();
+
+        return results;
+    }
+
+    public List<MtSimrsRuanganEntity> cekData(String idRuangan) throws HibernateException{
+        List<MtSimrsRuanganEntity> results = new ArrayList<>();
+
+        String query = "SELECT a.id_ruangan, b.id_rawat_inap\n" +
+                "FROM mt_simrs_ruangan a\n" +
+                "INNER JOIN it_simrs_rawat_inap b ON b.id_ruangan = a.id_ruangan\n" +
+                "WHERE a.id_ruangan = '"+idRuangan+"' LIMIT 1";
+
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
                 .list();
 
         return results;

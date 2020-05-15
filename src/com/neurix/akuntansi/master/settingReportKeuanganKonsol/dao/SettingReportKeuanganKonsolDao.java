@@ -31,7 +31,18 @@ public class SettingReportKeuanganKonsolDao extends GenericDao<ImAkunSettingRepo
     public List<ImAkunSettingReportKeuanganKonsol> getByCriteria(Map mapCriteria) {
         Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ImAkunSettingReportKeuanganKonsol.class);
 
-        criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
+        if (mapCriteria != null) {
+            if (mapCriteria.get("setting_report_konsol_id") != null){
+                criteria.add(Restrictions.eq("settingReportKonsolId", mapCriteria.get("setting_report_konsol_id").toString()));
+            }
+            if (mapCriteria.get("nama_kode_rekening_alias") != null){
+                criteria.add(Restrictions.ilike("namaKodeRekeningAlias", "%" + (String)mapCriteria.get("nama_kode_rekening_alias") + "%"));
+            }
+            if(mapCriteria.get("kode_rekening_alias") != null){
+                criteria.add(Restrictions.eq("kodeRekeningAlias",  mapCriteria.get("kode_rekening_alias").toString()));
+            }
+            criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
+        }
 
         // Order by
         criteria.addOrder(Order.desc("settingReportKonsolId"));
@@ -70,5 +81,30 @@ public class SettingReportKeuanganKonsolDao extends GenericDao<ImAkunSettingRepo
             result = results.toString();
         }
         return result;
+    }
+
+    public List<ImAkunSettingReportKeuanganKonsol> getDataPelayanan(String namaKodeAlias) throws HibernateException {
+        List<ImAkunSettingReportKeuanganKonsol> results = this.sessionFactory.getCurrentSession().createCriteria(ImAkunSettingReportKeuanganKonsol.class)
+                .add(Restrictions.eq("namaKodeRekeningAlias", namaKodeAlias))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+
+        return results;
+    }
+
+    public String getNextKeuanganKonsolId() throws HibernateException {
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_report_konsol')");
+        Iterator<BigInteger> iter=query.list().iterator();
+        String sId = String.format("%07d", iter.next());
+
+        return "SRK" + sId;
+    }
+
+    public String getNextKeuanganKonsolDetailId() throws HibernateException {
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_report_konsol_detail')");
+        Iterator<BigInteger> iter=query.list().iterator();
+        String sId = String.format("%07d", iter.next());
+
+        return "SRKD" + sId;
     }
 }

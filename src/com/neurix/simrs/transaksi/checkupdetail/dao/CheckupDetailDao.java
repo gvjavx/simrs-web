@@ -2247,4 +2247,23 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
         String sId = String.format("%08d", iter.next());
         return sId;
     }
+
+    public BigDecimal getBiayaByNoSep(String nosep){
+        BigDecimal total = new BigDecimal(0);
+        String query="SELECT\n" +
+                "\tsum(total_tarif) as total_tarif\n" +
+                "FROM\n" +
+                "\tit_simrs_header_detail_checkup dc\n" +
+                "\tLEFT JOIN it_simrs_riwayat_tindakan rt ON dc.id_detail_checkup=rt.id_detail_checkup\n" +
+                "WHERE\n" +
+                "\tdc.no_sep='"+nosep+"'";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            total = BigDecimal.valueOf(Double.parseDouble(results.toString()));
+        }else{
+            total = BigDecimal.valueOf(0);
+        }
+        return total;
+    }
 }

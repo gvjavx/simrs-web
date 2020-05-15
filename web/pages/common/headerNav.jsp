@@ -221,6 +221,10 @@
     function cekNotifResep(){
         TransaksiObatAction.pushNotifResep(function (res) {
             var listResep = "";
+            var cekCount = $('#count2').text();
+            if(cekCount == ''){
+                cekCount = 0;
+            }
             if(res.length > 0){
                 $.each(res, function (i, item) {
                     listResep += '<li>' +
@@ -232,6 +236,12 @@
                 $('#inner2').html(listResep);
                 $('#count2').html(res.length);
                 $('#count3').html(res.length);
+                if(res.length > parseInt(cekCount)){
+                    $('#notif_sound').get(0).autoplay = true;
+                    $('#notif_sound').get(0).load();
+                    // $('#notif_sound').get(0).muted = false;
+                    // console.log($('#notif_sound').get(0).preload);
+                }
             }else{
                 $('#inner2').html(listResep);
                 $('#count2').html('');
@@ -504,6 +514,7 @@
             </ul>
         </div>
     </nav>
+    <audio id="notif_sound" src='<s:url value="/pages/images/notif.mp3"/>'></audio>
 </header>
     <!-- Modal -->
     <div class="modal fade" id="modal-view-notif" role="dialog">

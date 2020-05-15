@@ -30,12 +30,84 @@ public class PembayaranBoImpl implements PembayaranBo {
 
     @Override
     public void saveDelete(Pembayaran bean) throws GeneralBOException {
+        logger.info("[saveDelete.PembayaranBoImpl] start process >>>");
 
+        if (bean!=null) {
+
+            String idPembayaran = bean.getPembayaranId();
+
+            ImAkunPembayaranEntity entity = null;
+
+            try {
+                // Get data from database by ID
+                entity = pembayaranDao.getById("pembayaranId", idPembayaran);
+            } catch (HibernateException e) {
+                logger.error("[PembayaranBoImpl.saveDelete] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data Akun Pembayaran by idPembayaran, please inform to your admin...," + e.getMessage());
+            }
+
+            if (entity != null) {
+                // Modify from bean to entity serializable
+                entity.setPembayaranId(bean.getPembayaranId());
+                entity.setFlag(bean.getFlag());
+                entity.setAction(bean.getAction());
+                entity.setLastUpdateWho(bean.getLastUpdateWho());
+                entity.setLastUpdate(bean.getLastUpdate());
+
+                try {
+                    // Delete (Edit) into database
+                    pembayaranDao.updateAndSave(entity);
+                } catch (HibernateException e) {
+                    logger.error("[PembayaranBoImpl.saveDelete] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving update data Lab Detail, please info to your admin..." + e.getMessage());
+                }
+            } else {
+                logger.error("[PembayaranBoImpl.saveDelete] Error, not found data Lab Detail with request id, please check again your data ...");
+                throw new GeneralBOException("Error, not found data Lab with request id, please check again your data ...");
+            }
+        }
+        logger.info("[PembayaranBoImpl.saveDelete] end process <<<");
     }
 
     @Override
     public void saveEdit(Pembayaran bean) throws GeneralBOException {
+        logger.info("[PembayaranBoImpl.saveEdit] start process >>>");
+        if (bean!=null) {
+            String pembayaranId = bean.getPembayaranId();
 
+            ImAkunPembayaranEntity entity = null;
+            try {
+                // Get data from database by ID
+                entity = pembayaranDao.getById("pembayaranId", pembayaranId);
+                //historyId = payrollSkalaGajiDao.getNextSkalaGaji();
+            } catch (HibernateException e) {
+                logger.error("[PembayaranBoImpl.saveEdit] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data akunPembayaran by pembayaranId, please inform to your admin...," + e.getMessage());
+            }
+
+            if (entity != null) {
+                entity.setPembayaranId(bean.getPembayaranId());
+                entity.setPembayaranName(bean.getPembayaranName());
+                entity.setCoa(bean.getCoa());
+                entity.setFlag(bean.getFlag());
+                entity.setAction(bean.getAction());
+                entity.setLastUpdateWho(bean.getLastUpdateWho());
+                entity.setLastUpdate(bean.getLastUpdate());
+
+                try {
+                    // Update into database
+                    pembayaranDao.updateAndSave(entity);
+                    //payrollSkalaGajiDao.addAndSaveHistory(imPayrollSkalaGajiHistoryEntity);
+                } catch (HibernateException e) {
+                    logger.error("[PembayaranBoImpl.saveEdit] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving update data Akun Pembayaran, please info to your admin..." + e.getMessage());
+                }
+            } else {
+                logger.error("[PembayaranBoImpl.saveEdit] Error, not found data Akun Pembayaran with pembayaran id, please check again your data ...");
+                throw new GeneralBOException("Error, not found data Lab with request id, please check again your data ...");
+            }
+        }
+        logger.info("[PembayaranBoImpl.saveEdit] end process <<<");
     }
 
     @Override

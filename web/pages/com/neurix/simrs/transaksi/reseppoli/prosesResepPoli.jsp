@@ -76,6 +76,7 @@
                             $('#info_dialog').dialog('open');
                             $('#ref').val(1);
                             $('#modal-ttd').modal('hide');
+                            $('body').scrollTop(0);
                         }else{
                             $('#waiting_dialog').dialog('close');
                             $('#error_dialog').dialog('open');
@@ -218,7 +219,6 @@
     <section class="content-header">
         <h1>
             Resep Poli
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -848,7 +848,9 @@
                         $('#body_approve').html(table);
                     } else {
                         $('#status' + idObat).html('<img src="<s:url value="/pages/images/icon_failure.ico"/>" style="height: 20px; width: 20px;">');
-                        $('#modal-warning').modal('show');
+                        $('#error_dialog').dialog('open');
+                        $('body').scrollTop(0);
+                        $('#errorMessage').html("ID obat tidak cocok dengan list resep...!")
                         $('#loading_data').hide();
                     }
                 }
@@ -879,12 +881,8 @@
 
         $.each(result, function (i, item) {
             var exp = new Date(result[i]["expired"]);
-            console.log(exp);
-            console.log(choseDate.getTime());
-            console.log(exp.getTime());
            if(choseDate.getTime() > exp.getTime()){
                check = true;
-               console.log("true");
            }
         });
 
@@ -1022,6 +1020,7 @@
                 $('#info_dialog').dialog('open');
                 $('#qtyAppove'+idObat).text(qtyApp);
                 $('#status'+idObat).html('<img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">');
+                $('body').scrollTop(0);
             } else {
                 $('#load_app').hide();
                 $('#save_app').show();
@@ -1034,17 +1033,17 @@
     function confirm(){
 
         // var data = $('#tabel_list_obat').tableToJSON();
-        var cek = 0;
-
+        // var cek = false;
         // $.each(data, function (i, item) {
-        //     var qtyApp = data[i]["Qty Approve"];
+        //     var qtyApp = data[i]["Scan ID Obat"];
         //     if (qtyApp == ""){
-        //         qtyApp = 0;
+        //         cek = true;
         //     }
         //     cek = parseInt(cek) + parseInt(qtyApp);
         // });
 
         $('#confirm_dialog').dialog('open');
+        $('body').scrollTop(0);
         // if(cek > 0){
         //     $('#confirm_dialog').dialog('open');
         // }else{
@@ -1065,6 +1064,7 @@
                     $('#ref').val(2);
                     $('#info_dialog').dialog('open');
                     $('#waiting_dialog').dialog('close');
+                    $('body').scrollTop(0);
                 } else {
                     $('#ref').val(1);
                     $('#info_dialog').dialog('close');

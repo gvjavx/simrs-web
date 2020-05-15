@@ -169,33 +169,35 @@
                                                         <s:set name="listOfLaporanAkuntansi" value="#session.listOfResult" scope="request" />
                                                         <display:table name="listOfLaporanAkuntansi" class="table table-condensed table-striped table-hover"
                                                                        requestURI="paging_displaytag_laporanAkuntansi.action" export="true" id="row" pagesize="20" style="font-size:10">
-                                                            <display:column media="html" title="View">
-                                                                <s:url var="urlView" namespace="/laporanAkuntansi" action="view_laporanAkuntansi" escapeAmp="false">
-                                                                    <s:param name="id"><s:property value="#attr.row.laporanAkuntansiId"/></s:param>
-                                                                    <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
-                                                                </s:url>
-                                                                <sj:a onClickTopics="showDialogMenu" href="%{urlView}">
-                                                                    <img border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_view">
-                                                                </sj:a>
-                                                            </display:column>
-                                                            <display:column media="html" title="Edit">
-                                                                <s:url var="urlEdit" namespace="/laporanAkuntansi" action="edit_laporanAkuntansi" escapeAmp="false">
-                                                                    <s:param name="id"><s:property value="#attr.row.laporanAkuntansiId"/></s:param>
-                                                                    <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
-                                                                </s:url>
-                                                                <sj:a onClickTopics="showDialogMenu" href="%{urlEdit}">
-                                                                    <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">
-                                                                </sj:a>
-                                                            </display:column>
-                                                            <display:column media="html" title="Delete" style="text-align:center;font-size:9">
-                                                                <s:url var="urlViewDelete" namespace="/laporanAkuntansi" action="delete_laporanAkuntansi" escapeAmp="false">
-                                                                    <s:param name="id"><s:property value="#attr.row.laporanAkuntansiId" /></s:param>
-                                                                    <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
-                                                                </s:url>
-                                                                <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
-                                                                    <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
-                                                                </sj:a>
-                                                            </display:column>
+                                                            <s:if test='#attr.row.flag == "Y"'>
+                                                                <display:column media="html" title="View">
+                                                                    <s:url var="urlView" namespace="/laporanAkuntansi" action="view_laporanAkuntansi" escapeAmp="false">
+                                                                        <s:param name="id"><s:property value="#attr.row.laporanAkuntansiId"/></s:param>
+                                                                        <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
+                                                                    </s:url>
+                                                                    <sj:a onClickTopics="showDialogMenu" href="%{urlView}">
+                                                                        <img border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_view">
+                                                                    </sj:a>
+                                                                </display:column>
+                                                                <display:column media="html" title="Edit">
+                                                                    <s:url var="urlEdit" namespace="/laporanAkuntansi" action="edit_laporanAkuntansi" escapeAmp="false">
+                                                                        <s:param name="id"><s:property value="#attr.row.laporanAkuntansiId"/></s:param>
+                                                                        <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
+                                                                    </s:url>
+                                                                    <sj:a onClickTopics="showDialogMenu" href="%{urlEdit}">
+                                                                        <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">
+                                                                    </sj:a>
+                                                                </display:column>
+                                                                <display:column media="html" title="Delete" style="text-align:center;font-size:9">
+                                                                    <s:url var="urlViewDelete" namespace="/laporanAkuntansi" action="delete_laporanAkuntansi" escapeAmp="false">
+                                                                        <s:param name="id"><s:property value="#attr.row.laporanAkuntansiId" /></s:param>
+                                                                        <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
+                                                                    </s:url>
+                                                                    <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
+                                                                        <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
+                                                                    </sj:a>
+                                                                </display:column>
+                                                            </s:if>
                                                             <display:column property="laporanAkuntansiId" sortable="true" title="Laporan Akuntansi ID" />
                                                             <display:column property="laporanAkuntansiName" sortable="true" title="Nama Laporan Akuntansi"  />
                                                             <display:column property="url" sortable="true" title="URL Laporan Akuntansi"  />

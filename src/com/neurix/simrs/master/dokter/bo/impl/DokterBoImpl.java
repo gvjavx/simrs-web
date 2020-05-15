@@ -47,38 +47,42 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
         logger.info("[saveDelete.PelayananBoImpl] start process >>>");
 
         if (bean!=null) {
-
             String idDokter = bean.getIdDokter();
+            String status = cekBeforeDelete(idDokter);
 
-            ImSimrsDokterEntity entity = null;
-
-            try {
-                // Get data from database by ID
-                entity = dokterDao.getById("idDokter", idDokter);
-            } catch (HibernateException e) {
-                logger.error("[DokterBoImpl.saveDelete] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when searching data Dokter by Kode Dokter, please inform to your admin...," + e.getMessage());
-            }
-
-            if (entity != null) {
-
-                // Modify from bean to entity serializable
-                entity.setIdDokter(bean.getIdDokter());
-                entity.setFlag(bean.getFlag());
-                entity.setAction(bean.getAction());
-                entity.setLastUpdateWho(bean.getLastUpdateWho());
-                entity.setLastUpdate(bean.getLastUpdate());
+            if (!status.equalsIgnoreCase("exist")){
+                ImSimrsDokterEntity entity = null;
 
                 try {
-                    // Delete (Edit) into database
-                    dokterDao.updateAndSave(entity);
+                    // Get data from database by ID
+                    entity = dokterDao.getById("idDokter", idDokter);
                 } catch (HibernateException e) {
                     logger.error("[DokterBoImpl.saveDelete] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving update data Dokter, please info to your admin..." + e.getMessage());
+                    throw new GeneralBOException("Found problem when searching data Dokter by Kode Dokter, please inform to your admin...," + e.getMessage());
                 }
-            } else {
-                logger.error("[DokterBoImpl.saveDelete] Error, not found data Dokter with request id, please check again your data ...");
-                throw new GeneralBOException("Error, not found data Dokter with request id, please check again your data ...");
+
+                if (entity != null) {
+
+                    // Modify from bean to entity serializable
+                    entity.setIdDokter(bean.getIdDokter());
+                    entity.setFlag(bean.getFlag());
+                    entity.setAction(bean.getAction());
+                    entity.setLastUpdateWho(bean.getLastUpdateWho());
+                    entity.setLastUpdate(bean.getLastUpdate());
+
+                    try {
+                        // Delete (Edit) into database
+                        dokterDao.updateAndSave(entity);
+                    } catch (HibernateException e) {
+                        logger.error("[DokterBoImpl.saveDelete] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving update data Dokter, please info to your admin..." + e.getMessage());
+                    }
+                } else {
+                    logger.error("[DokterBoImpl.saveDelete] Error, not found data Dokter with request id, please check again your data ...");
+                    throw new GeneralBOException("Error, not found data Dokter with request id, please check again your data ...");
+                }
+            }else {
+                throw new GeneralBOException("Maaf Data tidak dapat dihapus, karna masih digunakan pada data Transaksi");
             }
         }
         logger.info("[DokterBoImpl.saveDelete] end process <<<");
@@ -260,6 +264,7 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
             dokter.setLat(entity.getLat());
             dokter.setLon(entity.getLon());
             dokter.setKodeDpjp(entity.getKodeDpjp());
+            dokter.setFlagCall(entity.getFlagCall());
             results.add(dokter);
         }
 
@@ -370,6 +375,32 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
         return isSuccess;
     }
 
+    public boolean editFlagCall(String idDokter, String flagCall) {
+        logger.info("[DokterBoImpl.editFlagCall] Start <<<<<<<<");
+
+        ImSimrsDokterEntity dokter = null;
+        boolean isSuccess = false;
+
+        try {
+            dokter = dokterDao.getById("idDokter", idDokter, "Y");
+        } catch (GeneralBOException e) {
+            logger.info("[DokterBoImpl.editKuota] Error when editKuota ", e);
+        }
+
+        if (dokter != null) {
+            dokter.setFlagCall(flagCall);
+            try {
+                dokterDao.updateAndSave(dokter);
+                isSuccess = true;
+            } catch (GeneralBOException e) {
+                logger.info("[DokterBoImpl.editKuota] Error when editKuota ", e);
+            }
+        }
+
+        logger.info("[DokterBoImpl.editFlagCall] End <<<<<<<<");
+        return isSuccess;
+    }
+
     @Override
     public List<Dokter> getDokterByPelayanan(String idPelayanan) throws GeneralBOException {
         List<Dokter> dokterList = new ArrayList<>();
@@ -445,9 +476,10 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
                         List<Pelayanan> pelayanans = pelayananBo.getByCriteria(pelayanan);
                         String pelayananName = pelayanans.get(0).getNamaPelayanan();
                         dokter.setNamaPelayanan(pelayananName);
-                    }else {
-                        dokter.setNamaPelayanan("-");
                     }
+//                    else {
+//                        dokter.setNamaPelayanan("-");
+//                    }
 
                     dokterList.add(dokter);
                 }
@@ -455,6 +487,42 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
         }
 
         return dokterList;
+    }
+
+    @Override
+    public List<Dokter> typeaheadDokter(String dokterName) throws GeneralBOException {
+        logger.info("[KodeRekeningBoImpl.typeaheadKodeRekening] start process >>>");
+
+        // Mapping with collection and put
+        List<Dokter> listOfResult = new ArrayList();
+        List<ImSimrsDokterEntity> imDokterEntityList = null;
+        try {
+
+            imDokterEntityList = dokterDao.getDokterListByLikeDokterName(dokterName);
+        } catch (HibernateException e) {
+            logger.error("[KodeRekeningBoImpl.typeaheadKodeRekening] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+
+        if(imDokterEntityList != null){
+            Dokter returnDokter;
+            // Looping from dao to object and save in collection
+            for(ImSimrsDokterEntity imSimrsDokterEntity : imDokterEntityList){
+                returnDokter = new Dokter();
+                returnDokter.setIdDokter(imSimrsDokterEntity.getIdDokter());
+                returnDokter.setNamaDokter(imSimrsDokterEntity.getNamaDokter());
+
+                returnDokter.setCreatedWho(imSimrsDokterEntity.getCreatedWho());
+                returnDokter.setCreatedDate(imSimrsDokterEntity.getCreatedDate());
+                returnDokter.setLastUpdate(imSimrsDokterEntity.getLastUpdate());
+                returnDokter.setAction(imSimrsDokterEntity.getAction());
+                returnDokter.setFlag(imSimrsDokterEntity.getFlag());
+                listOfResult.add(returnDokter);
+            }
+        }
+        logger.info("[KodeRekeningBoImpl.typeaheadKodeRekening] end process <<<");
+
+        return listOfResult;
     }
 
     public void setDokterDao(DokterDao dokterDao) {
@@ -477,6 +545,23 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
             entities = dokterDao.getDataDokter(namaDokter);
         } catch (HibernateException e) {
             logger.error("[DokterBoImpl.cekStatus] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        if (entities.size()>0){
+            status = "exist";
+        }else{
+            status="notExits";
+        }
+        return status;
+    }
+
+    public String cekBeforeDelete(String idDokter)throws GeneralBOException{
+        String status ="";
+        List<ImSimrsDokterEntity> entities = new ArrayList<>();
+        try {
+            entities = dokterDao.cekData(idDokter);
+        } catch (HibernateException e) {
+            logger.error("[PelayananBoImpl.cekBeforeDelete] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
         }
         if (entities.size()>0){

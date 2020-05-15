@@ -10,6 +10,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -70,5 +71,35 @@ public class LabDao extends GenericDao<ImSimrsLabEntity, String> {
         String sId = String.format("%08d", iter.next());
 
         return "LAB" + sId;
+    }
+
+    public List<ImSimrsLabEntity> cekData(String idLab) throws HibernateException{
+        List<ImSimrsLabEntity> results = new ArrayList<>();
+
+        String query = "SELECT a.id_periksa_lab, b.id_lab\n" +
+                "FROM it_simrs_periksa_lab a\n" +
+                "INNER JOIN im_simrs_lab b ON b.id_lab = a.id_lab\n" +
+                "WHERE a.id_lab = '"+idLab+"' LIMIT 1";
+
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        return results;
+    }
+
+    public List<ImSimrsLabEntity> cekDataRadiologi(String idLab) throws HibernateException{
+        List<ImSimrsLabEntity> results = new ArrayList<>();
+
+        String query = "SELECT a.id_lab, b.id_periksa_radiologi\n" +
+                "FROM im_simrs_lab a\n" +
+                "INNER JOIN it_simrs_periksa_radiologi b ON b.id_lab = a.id_lab\n" +
+                "WHERE a.id_lab = '"+idLab+"' LIMIT 1";
+
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        return results;
     }
 }

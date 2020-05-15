@@ -110,17 +110,17 @@
                                             </tr>
 
                                             <tr>
-                                                <td>
-                                                    <label class="control-label"><small>Kategori Tindakan :</small></label>
-                                                </td>
-                                                <td>
-                                                    <table>
-                                                            <s:action id="initComboKategori" namespace="/tindakan" name="initComboKategori_tindakan"/>
-                                                            <s:select list="#initComboKategori.listOfComboKategoriTindakan" id="idKategoriTindakan" name="tindakan.idKategoriTindakan"
-                                                            listKey="idKategoriTindakan" listValue="kategoriTindakan" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                                                    </table>
-                                                </td>
-                                            </tr>
+                                            <td>
+                                                <label class="control-label"><small>Kategori Tindakan :</small></label>
+                                            </td>
+                                            <td>
+                                                <table>
+                                                    <s:action id="initComboKategori" namespace="/tindakan" name="initComboKategori_tindakan"/>
+                                                    <s:select list="#initComboKategori.listOfComboKategoriTindakan" id="idKategoriTindakan" name="tindakan.idKategoriTindakan"
+                                                              listKey="idKategoriTindakan" listValue="kategoriTindakan" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                </table>
+                                            </td>
+                                        </tr>
 
                                             <tr>
                                                 <td>

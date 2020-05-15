@@ -176,10 +176,7 @@ public class KelasRuanganBoImpl implements KelasRuanganBo {
         logger.info("[KelasRuanganBoImpl.saveEdit] Start >>>>>>>");
 
         if (kelasRuangan != null && kelasRuangan.getIdKelasRuangan() != null && !"".equalsIgnoreCase(kelasRuangan.getIdKelasRuangan())){
-
-//            KelasRuangan editRuangan = new KelasRuangan();
-//            editRuangan.setIdKelasRuangan(kelasRuangan.getIdKelasRuangan());
-//            ImSimrsKelasRuanganEntity imSimrsKelasRuanganEntity = getEntityByCriteria(editRuangan).get(0);
+            String kodering, seqKodering;
             ImSimrsKelasRuanganEntity imSimrsPelayananEntity = null;
             try {
                 // Get data from database by ID
@@ -190,35 +187,96 @@ public class KelasRuanganBoImpl implements KelasRuanganBo {
                 throw new GeneralBOException("Found problem when searching data PayrollSkalaGaji by Kode PayrollSkalaGaji, please inform to your admin...," + e.getMessage());
             }
 
-            String kode = imSimrsPelayananEntity.getKodering();
-            String[] arrOfStr = kode.split("\\.");
-            String seqKodering = arrOfStr[4];
-
-            Map map = new HashMap<>();
-            map.put("position_id", kelasRuangan.getPositionId());
-            String koderingPosition = positionDao.getKodringPosition(map);
-
-            String branchId = CommonUtil.userBranchLogin();
-            Map map1 = new HashMap<>();
-            map1.put("branch_id", branchId);
-            String koderingBranch = branchDao.getKodringBranches(map1);
-
-            String kodering = koderingBranch+"."+koderingPosition+"."+seqKodering;
-
             if (imSimrsPelayananEntity != null){
-                imSimrsPelayananEntity.setNamaKelasRuangan(kelasRuangan.getNamaKelasRuangan());
-                imSimrsPelayananEntity.setKodering(kodering);
-                imSimrsPelayananEntity.setDivisiId(kelasRuangan.getPositionId());
-                imSimrsPelayananEntity.setFlag(kelasRuangan.getFlag());
-                imSimrsPelayananEntity.setAction("U");
-                imSimrsPelayananEntity.setLastUpdate(kelasRuangan.getLastUpdate());
-                imSimrsPelayananEntity.setLastUpdateWho(kelasRuangan.getLastUpdateWho());
+                if (kelasRuangan.getNamaKelasRuangan().equalsIgnoreCase(imSimrsPelayananEntity.getNamaKelasRuangan())){
+                    String kode = imSimrsPelayananEntity.getKodering();
+                    if (kode != null){
+                        String[] arrOfStr = kode.split("\\.");
+                        seqKodering = arrOfStr[4];
 
-                try {
-                    kelasRuanganDao.updateAndSave(imSimrsPelayananEntity);
-                } catch (HibernateException e){
-                    logger.error("[KelasRuanganBoImpl.saveAdd] Error when Updating data ruangan", e);
-                    throw new GeneralBOException(" Error when Updating data kelas ruangan "+e.getMessage());
+                        Map map = new HashMap<>();
+                        map.put("position_id", kelasRuangan.getPositionId());
+                        String koderingPosition = positionDao.getKodringPosition(map);
+
+                        String branchId = CommonUtil.userBranchLogin();
+                        Map map1 = new HashMap<>();
+                        map1.put("branch_id", branchId);
+                        String koderingBranch = branchDao.getKodringBranches(map1);
+                        kodering = koderingBranch+"."+koderingPosition+"."+seqKodering;
+                    }else {
+                        seqKodering = kelasRuanganDao.getNextKodering();
+                        Map map = new HashMap<>();
+                        map.put("position_id", kelasRuangan.getPositionId());
+                        String koderingPosition = positionDao.getKodringPosition(map);
+
+                        String branchId = CommonUtil.userBranchLogin();
+                        Map map1 = new HashMap<>();
+                        map1.put("branch_id", branchId);
+                        String koderingBranch = branchDao.getKodringBranches(map1);
+                        kodering = koderingBranch+"."+koderingPosition+"."+seqKodering;
+                    }
+
+                    imSimrsPelayananEntity.setNamaKelasRuangan(kelasRuangan.getNamaKelasRuangan());
+                    imSimrsPelayananEntity.setKodering(kodering);
+                    imSimrsPelayananEntity.setDivisiId(kelasRuangan.getPositionId());
+                    imSimrsPelayananEntity.setFlag(kelasRuangan.getFlag());
+                    imSimrsPelayananEntity.setAction("U");
+                    imSimrsPelayananEntity.setLastUpdate(kelasRuangan.getLastUpdate());
+                    imSimrsPelayananEntity.setLastUpdateWho(kelasRuangan.getLastUpdateWho());
+
+                    try {
+                        kelasRuanganDao.updateAndSave(imSimrsPelayananEntity);
+                    } catch (HibernateException e){
+                        logger.error("[KelasRuanganBoImpl.saveAdd] Error when Updating data ruangan", e);
+                        throw new GeneralBOException(" Error when Updating data kelas ruangan "+e.getMessage());
+                    }
+                }else {
+                    String status = cekStatus(kelasRuangan.getNamaKelasRuangan());
+                    if (!status.equalsIgnoreCase("exist")){
+                        String kode = imSimrsPelayananEntity.getKodering();
+                        if (kode != null){
+                            String[] arrOfStr = kode.split("\\.");
+                            seqKodering = arrOfStr[4];
+
+                            Map map = new HashMap<>();
+                            map.put("position_id", kelasRuangan.getPositionId());
+                            String koderingPosition = positionDao.getKodringPosition(map);
+
+                            String branchId = CommonUtil.userBranchLogin();
+                            Map map1 = new HashMap<>();
+                            map1.put("branch_id", branchId);
+                            String koderingBranch = branchDao.getKodringBranches(map1);
+                            kodering = koderingBranch+"."+koderingPosition+"."+seqKodering;
+                        }else {
+                            seqKodering = kelasRuanganDao.getNextKodering();
+                            Map map = new HashMap<>();
+                            map.put("position_id", kelasRuangan.getPositionId());
+                            String koderingPosition = positionDao.getKodringPosition(map);
+
+                            String branchId = CommonUtil.userBranchLogin();
+                            Map map1 = new HashMap<>();
+                            map1.put("branch_id", branchId);
+                            String koderingBranch = branchDao.getKodringBranches(map1);
+                            kodering = koderingBranch+"."+koderingPosition+"."+seqKodering;
+                        }
+
+                        imSimrsPelayananEntity.setNamaKelasRuangan(kelasRuangan.getNamaKelasRuangan());
+                        imSimrsPelayananEntity.setKodering(kodering);
+                        imSimrsPelayananEntity.setDivisiId(kelasRuangan.getPositionId());
+                        imSimrsPelayananEntity.setFlag(kelasRuangan.getFlag());
+                        imSimrsPelayananEntity.setAction("U");
+                        imSimrsPelayananEntity.setLastUpdate(kelasRuangan.getLastUpdate());
+                        imSimrsPelayananEntity.setLastUpdateWho(kelasRuangan.getLastUpdateWho());
+
+                        try {
+                            kelasRuanganDao.updateAndSave(imSimrsPelayananEntity);
+                        } catch (HibernateException e){
+                            logger.error("[KelasRuanganBoImpl.saveAdd] Error when Updating data ruangan", e);
+                            throw new GeneralBOException(" Error when Updating data kelas ruangan "+e.getMessage());
+                        }
+                    }else {
+                        throw new GeneralBOException("Maaf Data dengan Nama Kelas Ruangan Tersebut Sudah Ada");
+                    }
                 }
             } else {
                 logger.error("[Kelas RuanganBoImpl.saveAdd] Error when get entity kelas ruangan is null");
@@ -238,38 +296,40 @@ public class KelasRuanganBoImpl implements KelasRuanganBo {
         logger.info("[KelasRuanganBoImpl.saveDelete] start process");
 
         if (kelasRuangan!=null) {
+            String status =cekBeforeDelete(kelasRuangan.getIdKelasRuangan());
+            if (!status.equalsIgnoreCase("exist")){
+                String idKelasRuangan = kelasRuangan.getIdKelasRuangan();
 
-            String idKelasRuangan = kelasRuangan.getIdKelasRuangan();
-
-            ImSimrsKelasRuanganEntity entity = null;
-            try {
-                // Get data from database by ID
-                entity = kelasRuanganDao.getById("idKelasRuangan", idKelasRuangan);
-            } catch (HibernateException e) {
-                logger.error("[KelasRuanganBoImpl.saveDelete] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when searching data ruangan by Kelas Ruangan id, please inform to your admin...," + e.getMessage());
-            }
-
-            if (entity != null) {
-                // Modify from bean to entity serializable
-                entity.setNamaKelasRuangan(kelasRuangan.getNamaKelasRuangan());
-                entity.setFlag(kelasRuangan.getFlag());
-                entity.setAction("U");
-                entity.setLastUpdate(kelasRuangan.getLastUpdate());
-                entity.setLastUpdateWho(kelasRuangan.getLastUpdateWho());
-
+                ImSimrsKelasRuanganEntity entity = null;
                 try {
-                    // Delete (Edit) into database
-                    kelasRuanganDao.updateAndSave(entity);
+                    // Get data from database by ID
+                    entity = kelasRuanganDao.getById("idKelasRuangan", idKelasRuangan);
                 } catch (HibernateException e) {
                     logger.error("[KelasRuanganBoImpl.saveDelete] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving update data Kelas Ruangan, please info to your admin..." + e.getMessage());
+                    throw new GeneralBOException("Found problem when searching data ruangan by Kelas Ruangan id, please inform to your admin...," + e.getMessage());
                 }
 
+                if (entity != null) {
+                    // Modify from bean to entity serializable
+                    entity.setNamaKelasRuangan(kelasRuangan.getNamaKelasRuangan());
+                    entity.setFlag(kelasRuangan.getFlag());
+                    entity.setAction("U");
+                    entity.setLastUpdate(kelasRuangan.getLastUpdate());
+                    entity.setLastUpdateWho(kelasRuangan.getLastUpdateWho());
 
-            } else {
-                logger.error("[KelasRuanganBoImpl.saveDelete] Error, not found data Ruangan with request id, please check again your data ...");
-                throw new GeneralBOException("Error, not found data Kelas Ruangan with request id, please check again your data ...");
+                    try {
+                        // Delete (Edit) into database
+                        kelasRuanganDao.updateAndSave(entity);
+                    } catch (HibernateException e) {
+                        logger.error("[KelasRuanganBoImpl.saveDelete] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving update data Kelas Ruangan, please info to your admin..." + e.getMessage());
+                    }
+                } else {
+                    logger.error("[KelasRuanganBoImpl.saveDelete] Error, not found data Ruangan with request id, please check again your data ...");
+                    throw new GeneralBOException("Error, not found data Kelas Ruangan with request id, please check again your data ...");
+                }
+            }else {
+                throw new GeneralBOException("Maaf Data tidak dapat dihapus, karna masih digunakan di Master Ruangan");
             }
         }
 
@@ -335,6 +395,23 @@ public class KelasRuanganBoImpl implements KelasRuanganBo {
             entities = kelasRuanganDao.getDataKelasRuangan(namaKelasRuang);
         } catch (HibernateException e) {
             logger.error("[KelasRuanganBoImpl.cekStatus] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        if (entities.size()>0){
+            status = "exist";
+        }else{
+            status="notExits";
+        }
+        return status;
+    }
+
+    public String cekBeforeDelete(String idKelasRuangan)throws GeneralBOException{
+        String status ="";
+        List<ImSimrsKelasRuanganEntity> entities = new ArrayList<>();
+        try {
+            entities = kelasRuanganDao.cekData(idKelasRuangan);
+        } catch (HibernateException e) {
+            logger.error("[KelasRuanganBoImpl.cekBeforeDelete] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
         }
         if (entities.size()>0){

@@ -98,11 +98,11 @@ public class RuanganBoImpl implements RuanganBo {
                 ruangan.setNamaRuangan(listEntity.getNamaRuangan());
                 ruangan.setNoRuangan(listEntity.getNoRuangan());
 
-//                ruangan.setStatusRuangan(listEntity.getStatusRuangan());
+                ruangan.setStatusRuangan(listEntity.getStatusRuangan());
                 if (listEntity.getStatusRuangan().equalsIgnoreCase("Y"))
-                    ruangan.setStatusRuangan("Tersedia");
+                    ruangan.setStatusRuanganName("Tersedia");
                 else
-                    ruangan.setStatusRuangan("Tidak Tersedia");
+                    ruangan.setStatusRuanganName("Tidak Tersedia");
 
                 ruangan.setIdKelasRuangan(listEntity.getIdKelasRuangan());
                 ruangan.setKeterangan(listEntity.getKeterangan());
@@ -256,21 +256,21 @@ public class RuanganBoImpl implements RuanganBo {
         logger.info("[RuanganBoImpl.saveDelete] start process");
 
         if (ruangan != null) {
-
             String idRuangan = ruangan.getIdRuangan();
+            String status = cekBeforeDelete(idRuangan);
+            if (!status.equalsIgnoreCase("exist")){
+                MtSimrsRuanganEntity entity = null;
+                try {
+                    // Get data from database by ID
+                    entity = ruanganDao.getById("idRuangan", idRuangan);
+                } catch (HibernateException e) {
+                    logger.error("[RuanganBoImpl.saveDelete] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when searching data ruangan by Ruangan id, please inform to your admin...," + e.getMessage());
+                }
 
-            MtSimrsRuanganEntity entity = null;
-            try {
-                // Get data from database by ID
-                entity = ruanganDao.getById("idRuangan", idRuangan);
-            } catch (HibernateException e) {
-                logger.error("[RuanganBoImpl.saveDelete] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when searching data ruangan by Ruangan id, please inform to your admin...," + e.getMessage());
-            }
-
-            if (entity != null) {
-                // Modify from bean to entity serializable
-                entity.setIdRuangan(idRuangan);
+                if (entity != null) {
+                    // Modify from bean to entity serializable
+                    entity.setIdRuangan(idRuangan);
 //                entity.setNamaRuangan(ruangan.getNamaRuangan());
 //                entity.setNoRuangan(ruangan.getNoRuangan());
 //                entity.setIdKelasRuangan(ruangan.getIdKelasRuangan());
@@ -279,23 +279,26 @@ public class RuanganBoImpl implements RuanganBo {
 //                entity.setTarif(ruangan.getTarif());
 //                entity.setBranchId(ruangan.getBranchId());
 
-                entity.setFlag(ruangan.getFlag());
-                entity.setAction("U");
-                entity.setLastUpdate(ruangan.getLastUpdate());
-                entity.setLastUpdateWho(ruangan.getLastUpdateWho());
+                    entity.setFlag(ruangan.getFlag());
+                    entity.setAction("U");
+                    entity.setLastUpdate(ruangan.getLastUpdate());
+                    entity.setLastUpdateWho(ruangan.getLastUpdateWho());
 
-                try {
-                    // Delete (Edit) into database
-                    ruanganDao.updateAndSave(entity);
-                } catch (HibernateException e) {
-                    logger.error("[RuanganBoImpl.saveDelete] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving update data Ruangan, please info to your admin..." + e.getMessage());
+                    try {
+                        // Delete (Edit) into database
+                        ruanganDao.updateAndSave(entity);
+                    } catch (HibernateException e) {
+                        logger.error("[RuanganBoImpl.saveDelete] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving update data Ruangan, please info to your admin..." + e.getMessage());
+                    }
+
+
+                } else {
+                    logger.error("[RuanganBoImpl.saveDelete] Error, not found data Ruangan with request id, please check again your data ...");
+                    throw new GeneralBOException("Error, not found data Ruangan with request id, please check again your data ...");
                 }
-
-
-            } else {
-                logger.error("[RuanganBoImpl.saveDelete] Error, not found data Ruangan with request id, please check again your data ...");
-                throw new GeneralBOException("Error, not found data Ruangan with request id, please check again your data ...");
+            }else {
+                throw new GeneralBOException("Maaf Data tidak dapat dihapus, karna masih digunakan pada data Transaksi");
             }
         }
 
@@ -417,6 +420,23 @@ public class RuanganBoImpl implements RuanganBo {
             entities = ruanganDao.getDataPelayanan(namaRuangan);
         } catch (HibernateException e) {
             logger.error("[PayrollSkalaGajiBoImpl.getSearchPayrollSkalaGajiByCriteria] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        if (entities.size()>0){
+            status = "exist";
+        }else{
+            status="notExits";
+        }
+        return status;
+    }
+
+    public String cekBeforeDelete(String idRuangan)throws GeneralBOException{
+        String status ="";
+        List<MtSimrsRuanganEntity> entities = new ArrayList<>();
+        try {
+            entities = ruanganDao.cekData(idRuangan);
+        } catch (HibernateException e) {
+            logger.error("[PelayananBoImpl.cekBeforeDelete] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
         }
         if (entities.size()>0){

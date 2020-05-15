@@ -31,10 +31,21 @@ public class SettingReportKeuanganKonsolDetailDao extends GenericDao<ImAkunSetti
     public List<ImAkunSettingReportKeuanganKonsolDetail> getByCriteria(Map mapCriteria) {
         Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ImAkunSettingReportKeuanganKonsolDetail.class);
 
-        criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
+        if (mapCriteria != null) {
+            if (mapCriteria.get("setting_report_konsol_id") != null){
+                criteria.add(Restrictions.eq("settingReportKonsolId", mapCriteria.get("setting_report_konsol_id").toString()));
+            }
+            if (mapCriteria.get("setting_report_konsol_detail_id") != null){
+                criteria.add(Restrictions.eq("settingReportKonsolDetailId", (String)mapCriteria.get("setting_report_konsol_detail_id")));
+            }
+            if(mapCriteria.get("rekening_id") != null){
+                criteria.add(Restrictions.eq("rekeningId",  mapCriteria.get("rekening_id").toString()));
+            }
+            criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
+        }
 
         // Order by
-        criteria.addOrder(Order.desc("settingReportKonsolId"));
+        criteria.addOrder(Order.desc("settingReportKonsolDetailId"));
         List<ImAkunSettingReportKeuanganKonsolDetail> results = criteria.list();
 
         return results;

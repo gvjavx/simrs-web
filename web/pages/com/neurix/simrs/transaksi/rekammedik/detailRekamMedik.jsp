@@ -187,6 +187,7 @@
                         </table>
                         <a class="btn btn-danger" href="detail_rekammedis.action?idPasien=<s:property value="detailCheckup.idPasien"/>"><i class="fa fa-refresh"></i> Reset</a>
                         <a class="btn btn-warning" href="initForm_rekammedis.action"><i class="fa fa-times"></i> Back</a>
+                        <a class="btn btn-info" style="display: none" id="btn-vidio-rm" onclick="viewTelemedic()"><i class="fa fa-film"></i> Veiw Telemedic</a>
                     </div>
                     <div class="box-header with-border"></div>
                     <s:if test='detailCheckup.idDetailCheckup != null'>
@@ -755,6 +756,28 @@
     <!-- /.content -->
 </div>
 
+<div class="modal fade" id="modal-telemedic">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-md"></i> Telemedic Pasien
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <video controls id="video_rm" src="<s:property value="detailCheckup.videoRm"/>" width="100%" height="400px"></video>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="modal-temp"></div>
 
 <script type='text/javascript' src='<s:url value="/dwr/interface/FisioterapiAction.js"/>'></script>
@@ -877,8 +900,13 @@
 
         if(idDetailCheckup != null && idDetailCheckup != ''){
             $('[type=search]').val(idDetailCheckup).trigger('input');
+            $('#btn-vidio-rm').show();
         }
     });
+
+    function viewTelemedic(){
+        $('#modal-telemedic').modal({show:true, backdrop:'static'});
+    }
 
 </script>
 

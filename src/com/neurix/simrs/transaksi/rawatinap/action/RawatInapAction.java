@@ -681,6 +681,8 @@ public class RawatInapAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
 
+        monVitalSign.setIsMobile("N");
+
         return rawatInapBo.getListMonVitalSign(monVitalSign);
     }
 
@@ -895,6 +897,8 @@ public class RawatInapAction extends BaseMasterAction {
         if (!"".equalsIgnoreCase(kategori)) {
             monPemberianObat.setKategori(kategori);
         }
+
+        monPemberianObat.setIsMobile("N");
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");

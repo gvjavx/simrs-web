@@ -90,6 +90,23 @@ public class HeaderDetailCheckupMobile {
     private String tipePelayanan;
 
     private String urlTtd;
+    private String flagCall;
+
+    public String getCreatedDate() {
+        return createdDate;
+    }
+
+    public String getLastUpdate() {
+        return lastUpdate;
+    }
+
+    public String getFlagCall() {
+        return flagCall;
+    }
+
+    public void setFlagCall(String flagCall) {
+        this.flagCall = flagCall;
+    }
 
     public void setCreatedDate(String createdDate) {
         this.createdDate = createdDate;

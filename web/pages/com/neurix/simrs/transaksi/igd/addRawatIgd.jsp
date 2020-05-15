@@ -1670,6 +1670,7 @@
                         <td>Racik</td>
                         <td>Kronis</td>
                         <td>Pengambilan Berikutnya</td>
+                        <td>Harga</td>
                         <td align="center" width="5%">Action</td>
                         </thead>
                         <tbody id="body_detail">

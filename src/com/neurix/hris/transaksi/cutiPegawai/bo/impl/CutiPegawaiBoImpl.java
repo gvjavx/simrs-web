@@ -1527,33 +1527,6 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                     notifAtasan.setTo("kabid");
 
                     notifikasiList.add(notifAtasan);
-                    /*if (kelompok>4) {
-                        //Send notif ke kabid
-                        Notifikasi notifAtasan = new Notifikasi();
-                        notifAtasan.setNip(itCutiPegawaiEntity.getNip());
-                        notifAtasan.setNoRequest(bean.getCutiPegawaiId());
-                        notifAtasan.setTipeNotifId("umum");
-                        notifAtasan.setTipeNotifName(("Cuti Pegawai"));
-                        notifAtasan.setNote(imBiodataEntity.getNamaPegawai() + " mengajukan cuti pada tanggal " +CommonUtil.convertDateToString(itCutiPegawaiEntity.getTanggalDari()) + " sampai dengan tanggal " + CommonUtil.convertDateToString(itCutiPegawaiEntity.getTanggalSelesai()));
-                        notifAtasan.setCreatedWho(itCutiPegawaiEntity.getNip());
-                        notifAtasan.setTo("kabid");
-
-                        notifikasiList.add(notifAtasan);
-                    }
-
-                    if (kelompok>6){
-                        //Send notif ke kabag
-                        Notifikasi notifKabag= new Notifikasi();
-                        notifKabag.setNip(itCutiPegawaiEntity.getNip());
-                        notifKabag.setNoRequest(bean.getCutiPegawaiId());
-                        notifKabag.setTipeNotifId("umum");
-                        notifKabag.setTipeNotifName(("Cuti Pegawai"));
-                        notifKabag.setNote(imBiodataEntity.getNamaPegawai()+" mengajukan cuti pada tanggal "+itCutiPegawaiEntity.getTanggalDari()+" sampai dengan tanggal "+itCutiPegawaiEntity.getTanggalSelesai());
-                        notifKabag.setCreatedWho(itCutiPegawaiEntity.getNip());
-                        notifKabag.setTo("kabag");
-
-                        notifikasiList.add(notifKabag);
-                    }*/
 
                     if (!"".equalsIgnoreCase(bean.getPegawaiPenggantiSementara())){
                         //Send notif ke orang yang mengajukan
@@ -1576,14 +1549,25 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                         msg="dikarenakan "+itCutiPegawaiEntity.getNoteApproval();
                     }
                     //Send notif ke orang yang mengajukan
+//                    Notifikasi notifSelf= new Notifikasi();
+//                    notifSelf.setNip(itCutiPegawaiEntity.getCutiPegawaiId());
+//                    notifSelf.setNoRequest(bean.getCutiPegawaiId());
+//                    notifSelf.setTipeNotifId("umum");
+//                    notifSelf.setTipeNotifName(("Cuti Pegawai"));
+//                    notifSelf.setNote("Cuti anda pada tanggal "+itCutiPegawaiEntity.getTanggalDari()+" sampai dengan tanggal "+itCutiPegawaiEntity.getTanggalSelesai()+" tidak di approve oleh atasan "+msg);
+//                    notifSelf.setCreatedWho(itCutiPegawaiEntity.getNip());
+//                    notifSelf.setTo("self");
+//                    notifikasiList.add(notifSelf);
+
                     Notifikasi notifSelf= new Notifikasi();
-                    notifSelf.setNip(itCutiPegawaiEntity.getCutiPegawaiId());
+                    notifSelf.setNip(itCutiPegawaiEntity.getNip());
                     notifSelf.setNoRequest(bean.getCutiPegawaiId());
                     notifSelf.setTipeNotifId("umum");
                     notifSelf.setTipeNotifName(("Cuti Pegawai"));
                     notifSelf.setNote("Cuti anda pada tanggal "+itCutiPegawaiEntity.getTanggalDari()+" sampai dengan tanggal "+itCutiPegawaiEntity.getTanggalSelesai()+" tidak di approve oleh atasan "+msg);
                     notifSelf.setCreatedWho(itCutiPegawaiEntity.getNip());
                     notifSelf.setTo("self");
+
                     notifikasiList.add(notifSelf);
                 }
             } else {

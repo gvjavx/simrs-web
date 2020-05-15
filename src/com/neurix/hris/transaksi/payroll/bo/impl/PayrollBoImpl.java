@@ -23400,9 +23400,13 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
     }
 
     @Override
-    public List<Payroll> getDaftarGajiKaryawan(String bulan, String tahun, String branch) throws GeneralBOException {
+    public List<Payroll> getDaftarGajiKaryawan(String bulan, String tahun, String branch,String tipe) throws GeneralBOException {
         List<Payroll> payrollList = new ArrayList<>();
-        payrollList = payrollDao.getDaftarGajiKaryawan(bulan,tahun,branch);
+        if ("GK".equalsIgnoreCase(tipe)){
+            payrollList = payrollDao.getDaftarGajiKaryawan(bulan,tahun,branch);
+        }else if ("RK".equalsIgnoreCase(tipe)){
+            payrollList = payrollDao.getRekapGajiKaryawan(bulan,tahun,branch);
+        }
 
         for (Payroll payroll : payrollList){
             payroll.setTotalANilai(payroll.getGajiGolonganNilai().add(payroll.getTunjanganUmkNilai()).add(payroll.getTunjanganJabatanStrukturalNilai()).add(payroll.getTunjanganStrukturalNilai()).add(payroll.getTunjanganStrategisNilai()).add(payroll.getTunjanganPeralihanNilai()).add(payroll.getTunjanganLainNilai()).add(payroll.getTunjanganLemburNilai()));
@@ -23410,6 +23414,17 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
             payroll.setTotalPendapatan(payroll.getTotalANilai().add(payroll.getTotalBNilai()));
             payroll.setTotalCNilai(payroll.getPphGajiNilai().add(payroll.getIuranYpksNilai().add(payroll.getIuranDapenPegNilai().add(payroll.getIuranDapenPershNilai().add(payroll.getIuranBpjsTkPersNilai().add(payroll.getIuranBpjsTkKaryNilai().add(payroll.getIuranBpjsKsPersNilai().add(payroll.getIuranBpjsKsKaryNilai().add(payroll.getTotalPotonganLainNilai())))))))));
             payroll.setTotalGajiBersihNilai(payroll.getTotalPendapatan().subtract(payroll.getTotalCNilai()));
+        }
+        return payrollList;
+    }
+
+    @Override
+    public List<Payroll> getDaftarIuranDapen(String bulan, String tahun, String branch,String tipe) throws GeneralBOException {
+        List<Payroll> payrollList = new ArrayList<>();
+        if ("PIDPLK".equalsIgnoreCase(tipe)){
+            payrollList = payrollDao.getPotonganIuranDapen(bulan,tahun,branch,"DP01");
+        }else if ("PIDPB".equalsIgnoreCase(tipe)){
+            payrollList = payrollDao.getPotonganIuranDapen(bulan,tahun,branch,"DP02");
         }
         return payrollList;
     }

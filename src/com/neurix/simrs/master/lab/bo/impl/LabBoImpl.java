@@ -41,41 +41,44 @@ public class LabBoImpl implements LabBo {
         logger.info("[saveDelete.LabBoImpl] start process >>>");
 
         if (bean!=null) {
-
             String idLab = bean.getIdLab();
-
-            ImSimrsLabEntity entity = null;
-
-            try {
-                // Get data from database by ID
-                entity = labDao.getById("idLab", idLab);
-            } catch (HibernateException e) {
-                logger.error("[LabBoImpl.saveDelete] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when searching data Lab by IdLab, please inform to your admin...," + e.getMessage());
-            }
-
-            if (entity != null) {
-
-                // Modify from bean to entity serializable
-                entity.setIdLab(bean.getIdLab());
-                entity.setFlag(bean.getFlag());
-                entity.setAction(bean.getAction());
-                entity.setLastUpdateWho(bean.getLastUpdateWho());
-                entity.setLastUpdate(bean.getLastUpdate());
+            String status = cekBeforeDelete(idLab);
+            if (!status.equalsIgnoreCase("exist")){
+                ImSimrsLabEntity entity = null;
 
                 try {
-                    // Delete (Edit) into database
-                    labDao.updateAndSave(entity);
+                    // Get data from database by ID
+                    entity = labDao.getById("idLab", idLab);
                 } catch (HibernateException e) {
                     logger.error("[LabBoImpl.saveDelete] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving update data Lab, please info to your admin..." + e.getMessage());
+                    throw new GeneralBOException("Found problem when searching data Lab by IdLab, please inform to your admin...," + e.getMessage());
                 }
 
+                if (entity != null) {
 
-            } else {
-                logger.error("[LabBoImpl.saveDelete] Error, not found data Lab with request id, please check again your data ...");
-                throw new GeneralBOException("Error, not found data Lab with request id, please check again your data ...");
+                    // Modify from bean to entity serializable
+                    entity.setIdLab(bean.getIdLab());
+                    entity.setFlag(bean.getFlag());
+                    entity.setAction(bean.getAction());
+                    entity.setLastUpdateWho(bean.getLastUpdateWho());
+                    entity.setLastUpdate(bean.getLastUpdate());
 
+                    try {
+                        // Delete (Edit) into database
+                        labDao.updateAndSave(entity);
+                    } catch (HibernateException e) {
+                        logger.error("[LabBoImpl.saveDelete] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving update data Lab, please info to your admin..." + e.getMessage());
+                    }
+
+
+                } else {
+                    logger.error("[LabBoImpl.saveDelete] Error, not found data Lab with request id, please check again your data ...");
+                    throw new GeneralBOException("Error, not found data Lab with request id, please check again your data ...");
+
+                }
+            }else {
+                throw new GeneralBOException("Maaf Data tidak dapat dihapus, karna masih digunakan pada data Transaksi");
             }
         }
         logger.info("[LabBoImpl.saveDelete] end process <<<");
@@ -309,6 +312,28 @@ public class LabBoImpl implements LabBo {
             status = "exist";
         }else{
             status="notExits";
+        }
+        return status;
+    }
+
+    public String cekBeforeDelete(String idLab)throws GeneralBOException{
+        String status ="";
+        List<ImSimrsLabEntity> entities = new ArrayList<>();
+        List<ImSimrsLabEntity> entityList = new ArrayList<>();
+        try {
+            entities = labDao.cekData(idLab);
+            entityList = labDao.cekDataRadiologi(idLab);
+        } catch (HibernateException e) {
+            logger.error("[LabBoImpl.cekBeforeDelete] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        if (entities.size()>0){
+            status = "exist";
+        }else{
+            if (entityList.size()>0)
+                status = "exist";
+            else
+                status="notExits";
         }
         return status;
     }

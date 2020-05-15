@@ -2,6 +2,7 @@ package com.neurix.hris.master.dokterKso.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 public class ImSimrsDokterKso implements Serializable{
 
@@ -13,6 +14,14 @@ public class ImSimrsDokterKso implements Serializable{
     String branchId;
     BigDecimal persenKso;
     BigDecimal persenKs;
+    String kodering;
+
+    private String flag;
+    private String action;
+    private Timestamp createdDate;
+    private String createdWho;
+    private Timestamp lastUpdate;
+    private String lastUpdateWho;
 
     public String getDokterKsoId() {
         return dokterKsoId;
@@ -76,5 +85,61 @@ public class ImSimrsDokterKso implements Serializable{
 
     public void setBranchId(String branchId) {
         this.branchId = branchId;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    public Timestamp getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Timestamp createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getCreatedWho() {
+        return createdWho;
+    }
+
+    public void setCreatedWho(String createdWho) {
+        this.createdWho = createdWho;
+    }
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag;
+    }
+
+    public Timestamp getLastUpdate() {
+        return lastUpdate;
+    }
+
+    public void setLastUpdate(Timestamp lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
+
+    public String getLastUpdateWho() {
+        return lastUpdateWho;
+    }
+
+    public void setLastUpdateWho(String lastUpdateWho) {
+        this.lastUpdateWho = lastUpdateWho;
+    }
+
+    public String getKodering() {
+        return kodering;
+    }
+
+    public void setKodering(String kodering) {
+        this.kodering = kodering;
     }
 }

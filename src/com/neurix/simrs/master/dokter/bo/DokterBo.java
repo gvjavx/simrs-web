@@ -14,7 +14,9 @@ public interface DokterBo extends BaseMasterBo<Dokter> {
     public List<Dokter> getByIdPelayanan(String idPelayanan, String branchId) throws GeneralBOException;
     public boolean editKuota(String idDokter, String kuota) throws GeneralBOException;
     public boolean editLatLon(String idDokter, String lat, String lon) throws GeneralBOException;
+    public boolean editFlagCall(String idDokter, String flagCall) throws GeneralBOException;
     public List<Dokter> getDokterByPelayanan(String idPelayanan) throws GeneralBOException;
 
     public List<Dokter> getSearchByCriteria(Dokter bean) throws GeneralBOException;
+    List<Dokter> typeaheadDokter(String dokterName) throws GeneralBOException;
 }

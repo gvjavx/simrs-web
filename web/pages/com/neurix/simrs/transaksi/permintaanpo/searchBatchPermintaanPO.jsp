@@ -662,6 +662,7 @@
                     $('#modal-approve').modal('hide');
                     $('#save_approve').show();
                     $('#load_approve').hide();
+                    $('body').scrollTop(0);
                 }else{
                     $('#warning_app').show().fadeOut(5000);
                     $('#msg_app').text(response.message);

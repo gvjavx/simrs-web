@@ -51,29 +51,6 @@
                         <div class="form-group">
                             <s:form id="permintaanForm" method="post" namespace="/permintaangudang" action="search_permintaangudang.action"
                                     theme="simple" cssClass="form-horizontal">
-
-                                <%--<div class="form-group">--%>
-                                    <%--<label class="control-label col-sm-4">Jenis Obat</label>--%>
-                                    <%--<div class="col-sm-4">--%>
-                                        <%--<s:action id="initJenis" namespace="/jenisobat"--%>
-                                                  <%--name="getListJenisObat_jenisobat"/>--%>
-                                        <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
-                                                  <%--list="#initJenis.listOfJenisObat" id="obat_jenis_obat"--%>
-                                                  <%--listKey="idJenisObat"--%>
-                                                  <%--listValue="namaJenisObat"--%>
-                                                  <%--name="permintaanObatPoli.idJenisObat"--%>
-                                                  <%--headerKey="" headerValue="[Select one]"--%>
-                                                  <%--cssClass="form-control select2"/>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-                                <%--<div class="form-group">--%>
-                                    <%--<label class="control-label col-sm-4">ID Obat</label>--%>
-                                    <%--<div class="col-sm-4">--%>
-                                        <%--<s:textfield id="id_pasien" cssStyle="margin-top: 7px"--%>
-                                                     <%--name="permintaanObatPoli.idObat" required="false"--%>
-                                                     <%--readonly="false" cssClass="form-control"/>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Tipe Permintaan</label>
                                     <div class="col-sm-4">
@@ -107,29 +84,6 @@
                                                   cssClass="form-control select2"/>
                                     </div>
                                 </div>
-                                <%--<div class="form-group">--%>
-                                    <%--<label class="control-label col-sm-4">Tanggal Masuk</label>--%>
-                                    <%--<div class="col-sm-2">--%>
-                                        <%--<div class="input-group date" style="margin-top: 7px">--%>
-                                            <%--<div class="input-group-addon">--%>
-                                                <%--<i class="fa fa-calendar"></i>--%>
-                                            <%--</div>--%>
-                                            <%--<s:textfield id="tgl_from" name="headerCheckup.stTglFrom"--%>
-                                                         <%--cssClass="form-control"--%>
-                                                         <%--required="false"/>--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
-                                    <%--<div class="col-sm-2">--%>
-                                        <%--<div class="input-group date" style="margin-top: 7px">--%>
-                                            <%--<div class="input-group-addon">--%>
-                                                <%--<i class="fa fa-calendar"></i>--%>
-                                            <%--</div>--%>
-                                            <%--<s:textfield id="tgl_to" name="headerCheckup.stTglTo"--%>
-                                                         <%--cssClass="form-control"--%>
-                                                         <%--required="false"/>--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
                                 <br>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4"></label>
@@ -604,6 +558,7 @@
                         $('#info_dialog').dialog('open');
                         $('#save_req').show();
                         $('#load_req').hide();
+                        $('body').scrollTop(0);
                     } else {
                         $('#warning_request').show().fadeOut(5000);
                         $('#msg_request').text(response);
@@ -654,6 +609,7 @@
                 $('#info_dialog').dialog('open');
                 $('#save_ret').show();
                 $('#load_ret').hide();
+                $('body').scrollTop(0);
             } else {
                 $('#warning_request').show().fadeOut(5000);
                 $('#msg_reture').text(response);
@@ -671,6 +627,7 @@
                 $('#info_dialog').dialog('open');
                 $('#save_ret').show();
                 $('#load_ret').hide();
+                $('body').scrollTop(0);
             } else {
                 $('#warning_request').show().fadeOut(5000);
                 $('#msg_reture').text(response);

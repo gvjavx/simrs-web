@@ -120,6 +120,15 @@ public class HeaderCheckup {
     private Date tglCheckup;
     private String keterangan;
     private String isLaka;
+    private String flagCall;
+
+    public String getFlagCall() {
+        return flagCall;
+    }
+
+    public void setFlagCall(String flagCall) {
+        this.flagCall = flagCall;
+    }
 
     private String belumBayarUangMuka;
     private Integer noAntrian;
@@ -455,6 +464,16 @@ public class HeaderCheckup {
     private String noPpkRujukan;
     private String tglRujukan;
     private String klaimBpjsFlag;
+
+    private String videoRm;
+
+    public String getVideoRm() {
+        return videoRm;
+    }
+
+    public void setVideoRm(String videoRm) {
+        this.videoRm = videoRm;
+    }
 
     public String getKlaimBpjsFlag() {
         return klaimBpjsFlag;

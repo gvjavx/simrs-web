@@ -13,20 +13,26 @@ public class Trans extends BaseModel {
     private String transId;
     private String transName;
     private String tipePembayaran;
+    private String tipePembayaranName;
     private String flagSumberBaru;
+//    private String master;
+    private String masterName;
+
+    private String stCreatedDate;
+    private String stLastUpdate;
 
     private String master;
+    private String masterId;
     private String divisiId;
     private String noNota;
-    private String masterId;
     private String biaya;
 
-    public String getMaster() {
-        return master;
+    public String getMasterId() {
+        return masterId;
     }
 
-    public void setMaster(String master) {
-        this.master = master;
+    public void setMasterId(String masterId) {
+        this.masterId = masterId;
     }
 
     public String getDivisiId() {
@@ -45,20 +51,20 @@ public class Trans extends BaseModel {
         this.noNota = noNota;
     }
 
-    public String getMasterId() {
-        return masterId;
-    }
-
-    public void setMasterId(String masterId) {
-        this.masterId = masterId;
-    }
-
     public String getBiaya() {
         return biaya;
     }
 
     public void setBiaya(String biaya) {
         this.biaya = biaya;
+    }
+
+    public String getMaster() {
+        return master;
+    }
+
+    public void setMaster(String master) {
+        this.master = master;
     }
 
     public String getFlagSumberBaru() {
@@ -91,5 +97,47 @@ public class Trans extends BaseModel {
 
     public void setTransName(String transName) {
         this.transName = transName;
+    }
+
+//    public String getMaster() {
+//        return master;
+//    }
+//
+//    public void setMaster(String master) {
+//        this.master = master;
+//    }
+
+    @Override
+    public String getStCreatedDate() {
+        return stCreatedDate;
+    }
+
+    public void setStCreatedDate(String stCreatedDate) {
+        this.stCreatedDate = stCreatedDate;
+    }
+
+    @Override
+    public String getStLastUpdate() {
+        return stLastUpdate;
+    }
+
+    public void setStLastUpdate(String stLastUpdate) {
+        this.stLastUpdate = stLastUpdate;
+    }
+
+    public String getMasterName() {
+        return masterName;
+    }
+
+    public void setMasterName(String masterName) {
+        this.masterName = masterName;
+    }
+
+    public String getTipePembayaranName() {
+        return tipePembayaranName;
+    }
+
+    public void setTipePembayaranName(String tipePembayaranName) {
+        this.tipePembayaranName = tipePembayaranName;
     }
 }

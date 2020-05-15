@@ -69,7 +69,6 @@
     <section class="content-header">
         <h1>
             Vendor
-            <small>e-HEALTH</small>
         </h1>
     </section>
     <!-- Main content -->
@@ -171,31 +170,37 @@
                                                         <display:table name="listOfVendor" class="table table-condensed table-striped table-hover"
                                                                        requestURI="paging_displaytag_masterVendor.action" export="true" id="row" pagesize="20" style="font-size:10">
                                                             <display:column media="html" title="View">
-                                                                <s:url var="urlView" namespace="/masterVendor" action="view_masterVendor" escapeAmp="false">
-                                                                    <s:param name="id"><s:property value="#attr.row.nomorMaster"/></s:param>
-                                                                    <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
-                                                                </s:url>
-                                                                <sj:a onClickTopics="showDialogMenu" href="%{urlView}">
-                                                                    <img border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_view">
-                                                                </sj:a>
+                                                                <s:if test='#attr.row.flag == "Y"'>
+                                                                    <s:url var="urlView" namespace="/masterVendor" action="view_masterVendor" escapeAmp="false">
+                                                                        <s:param name="id"><s:property value="#attr.row.nomorMaster"/></s:param>
+                                                                        <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
+                                                                    </s:url>
+                                                                    <sj:a onClickTopics="showDialogMenu" href="%{urlView}">
+                                                                        <img border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_view">
+                                                                    </sj:a>
+                                                                </s:if>
                                                             </display:column>
                                                             <display:column media="html" title="Edit">
-                                                                <s:url var="urlEdit" namespace="/masterVendor" action="edit_masterVendor" escapeAmp="false">
-                                                                    <s:param name="id"><s:property value="#attr.row.nomorMaster"/></s:param>
-                                                                    <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
-                                                                </s:url>
-                                                                <sj:a onClickTopics="showDialogMenu" href="%{urlEdit}">
-                                                                    <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">
-                                                                </sj:a>
+                                                                <s:if test='#attr.row.flag == "Y"'>
+                                                                    <s:url var="urlEdit" namespace="/masterVendor" action="edit_masterVendor" escapeAmp="false">
+                                                                        <s:param name="id"><s:property value="#attr.row.nomorMaster"/></s:param>
+                                                                        <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
+                                                                    </s:url>
+                                                                    <sj:a onClickTopics="showDialogMenu" href="%{urlEdit}">
+                                                                        <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">
+                                                                    </sj:a>
+                                                                </s:if>
                                                             </display:column>
                                                             <display:column media="html" title="Delete" style="text-align:center;font-size:9">
-                                                                <s:url var="urlViewDelete" namespace="/masterVendor" action="delete_masterVendor" escapeAmp="false">
-                                                                    <s:param name="id"><s:property value="#attr.row.nomorMaster" /></s:param>
-                                                                    <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
-                                                                </s:url>
-                                                                <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
-                                                                    <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
-                                                                </sj:a>
+                                                                <s:if test='#attr.row.flag == "Y"'>
+                                                                    <s:url var="urlViewDelete" namespace="/masterVendor" action="delete_masterVendor" escapeAmp="false">
+                                                                        <s:param name="id"><s:property value="#attr.row.nomorMaster" /></s:param>
+                                                                        <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
+                                                                    </s:url>
+                                                                    <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
+                                                                        <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
+                                                                    </sj:a>
+                                                                </s:if>
                                                             </display:column>
                                                             <display:column property="nomorMaster" sortable="true" title="Vendor ID" />
                                                             <display:column property="nama" sortable="true" title="Nama Vendor"  />

@@ -34,7 +34,6 @@
     <section class="content-header">
         <h1>
             Permintaan Gizi
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -388,6 +387,7 @@
             $('#load_gizi').hide();
             $('#modal-detail-pasien').modal('hide');
             $('#info_dialog').dialog('open');
+            $('body').scrollTop(0);
         },500);
     }
 

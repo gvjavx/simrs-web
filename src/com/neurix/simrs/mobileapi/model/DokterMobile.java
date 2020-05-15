@@ -17,6 +17,16 @@ public class DokterMobile {
     private String lat;
     private String lon;
 
+    private String flagCall;
+
+    public String getFlagCall() {
+        return flagCall;
+    }
+
+    public void setFlagCall(String flagCall) {
+        this.flagCall = flagCall;
+    }
+
     public String getLat() {
         return lat;
     }

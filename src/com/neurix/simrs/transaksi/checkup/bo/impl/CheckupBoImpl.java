@@ -738,6 +738,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                         tindakanRawatEntity.setCreatedWho(userLogin);
                         tindakanRawatEntity.setLastUpdate(time);
                         tindakanRawatEntity.setLastUpdateWho(userLogin);
+                        tindakanRawatEntity.setApproveFlag("Y");
                     }
 
                     try {
@@ -1300,6 +1301,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
         logger.info("[CheckupBoImpl.completeBpjs] End <<<<<<<");
         return finalResult;
     }
+
 
     @Override
     public void updatePenunjang(HeaderCheckup bean) throws GeneralBOException {

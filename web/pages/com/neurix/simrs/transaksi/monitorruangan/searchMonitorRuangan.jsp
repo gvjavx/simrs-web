@@ -122,7 +122,6 @@
     <section class="content-header">
         <h1>
             Monitor Ruangan
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -250,7 +249,7 @@
                         <div class="row">
                             <div class="col-md-12" style="display:inline; padding-left: 5%">
                                 <s:iterator value="#session.listOfResult" var="row">
-                                <div class="btn-wrapper" onclick="detailTindakan('<s:property value="idDetailCheckup"/>', '<s:property value="tipeTransaksi"/>')">
+                                <div class="btn-wrapper" onclick="detailTindakan('<s:property value="idDetailCheckup"/>', '<s:property value="tipeTransaksi"/>', '<s:property value="namaPasien"/>')">
                                     <s:if test='#row.namaPasien != null'>
                                         <s:if test='#row.nilaiPersen > 70'>
                                             <div id="id_box" class="blink_me btn-trans box-red">
@@ -526,9 +525,9 @@
         });
     }
 
-    function detailTindakan(idDetailCheckup, jenis) {
+    function detailTindakan(idDetailCheckup, jenis, nama) {
         setTimeout(function () {
-        if(idDetailCheckup != ''){
+        if(idDetailCheckup != '' && nama != ''){
             $('#sts_cover_biaya').html('');
             $('#b_bpjs').html('');
             $('#sts_biaya_tindakan').html('');

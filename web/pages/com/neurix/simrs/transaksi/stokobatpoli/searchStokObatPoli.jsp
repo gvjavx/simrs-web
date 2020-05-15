@@ -55,7 +55,6 @@
     <section class="content-header">
         <h1>
             Stok Obat Poli
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -471,6 +470,7 @@
                         $('#info_dialog').dialog('open');
                         $('#save_add').show();
                         $('#load_add').hide();
+                        $('body').scrollTop(0);
                     } else {
                         $('#warning_add').show().fadeOut(5000);
                         $('#error_add').text('Data obat sudah tersedia..!');
@@ -512,6 +512,7 @@
                         $('#info_dialog').dialog('open');
                         $('#save_req').show();
                         $('#load_req').hide();
+                        $('body').scrollTop(0);
                     } else {
                         $('#warning_request').show().fadeOut(5000);
                         $('#error_request').text('Data obat sudah tersedia..!');
@@ -572,6 +573,7 @@
                             $('#info_dialog').dialog('open');
                             $('#save_req-2').show();
                             $('#load_req-2').hide();
+                            $('body').scrollTop(0);
                         } else {
                             $('#warning_request-2').show().fadeOut(5000);
                             $('#error_request-2').text('Transaksi untuk obat tersebut sudah ada..!');
@@ -595,6 +597,7 @@
                                 $('#info_dialog').dialog('open');
                                 $('#save_req-2').show();
                                 $('#load_req-2').hide();
+                                $('body').scrollTop(0);
                             } else {
                                 $('#warning_request-2').show().fadeOut(5000);
                                 $('#error_request-2').text('Transaksi untuk obat tersebut sudah ada..!');

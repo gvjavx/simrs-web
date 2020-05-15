@@ -152,38 +152,49 @@
                                                         <display:table name="listOfTrans" class="table table-condensed table-striped table-hover"
                                                                        requestURI="paging_displaytag_trans.action" export="true" id="row" pagesize="14" style="font-size:10">
                                                             <display:column media="html" title="View">
-                                                                <s:url var="urlView" namespace="/trans" action="view_trans" escapeAmp="false">
-                                                                    <s:param name="id"><s:property value="#attr.row.transId"/></s:param>
-                                                                    <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
-                                                                </s:url>
-                                                                <sj:a onClickTopics="showDialogMenu" href="%{urlView}">
-                                                                    <img border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_view">
-                                                                </sj:a>
+                                                                <s:if test='#attr.row.flag == "Y"'>
+                                                                    <s:url var="urlView" namespace="/trans" action="view_trans" escapeAmp="false">
+                                                                        <s:param name="id"><s:property value="#attr.row.transId"/></s:param>
+                                                                        <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
+                                                                    </s:url>
+                                                                    <sj:a onClickTopics="showDialogMenu" href="%{urlView}">
+                                                                        <img border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_view">
+                                                                    </sj:a>
+                                                                </s:if>
                                                             </display:column>
                                                             <display:column media="html" title="Edit">
-                                                                <s:url var="urlEdit" namespace="/trans" action="edit_trans" escapeAmp="false">
-                                                                    <s:param name="id"><s:property value="#attr.row.transId"/></s:param>
-                                                                    <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
-                                                                </s:url>
-                                                                <sj:a onClickTopics="showDialogMenu" href="%{urlEdit}">
-                                                                    <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">
-                                                                </sj:a>
+                                                                <s:if test='#attr.row.flag == "Y"'>
+                                                                    <s:url var="urlEdit" namespace="/trans" action="edit_trans" escapeAmp="false">
+                                                                        <s:param name="id"><s:property value="#attr.row.transId"/></s:param>
+                                                                        <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
+                                                                    </s:url>
+                                                                    <sj:a onClickTopics="showDialogMenu" href="%{urlEdit}">
+                                                                        <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">
+                                                                    </sj:a>
+                                                                </s:if>
                                                             </display:column>
                                                             <display:column media="html" title="Delete" style="text-align:center;font-size:9">
-                                                                <s:url var="urlViewDelete" namespace="/trans" action="delete_trans" escapeAmp="false">
-                                                                    <s:param name="id"><s:property value="#attr.row.transId" /></s:param>
-                                                                    <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
-                                                                </s:url>
-                                                                <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
-                                                                    <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
-                                                                </sj:a>
+                                                                <s:if test='#attr.row.flag == "Y"'>
+                                                                    <s:url var="urlViewDelete" namespace="/trans" action="delete_trans" escapeAmp="false">
+                                                                        <s:param name="id"><s:property value="#attr.row.transId" /></s:param>
+                                                                        <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
+                                                                    </s:url>
+                                                                    <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
+                                                                        <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
+                                                                    </sj:a>
+                                                                </s:if>
                                                             </display:column>
                                                             <display:column property="transId" sortable="true" title="Transaksi ID" />
                                                             <display:column property="transName" sortable="true" title="Nama Transaksi"  />
                                                             <display:column property="flagSumberBaru" sortable="true" title="Sumber Baru ?"  />
+                                                            <display:column property="masterName" sortable="true" title="Master" />
+                                                            <display:column property="tipePembayaranName" sortable="true" title="Tipe Pembayaran" />
                                                             <display:column property="flag" sortable="true" title="Flag" />
+                                                            <display:column property="action" sortable="true" title="Action" />
+                                                            <display:column property="stCreatedDate" sortable="true" title="Created Date" />
                                                             <display:column property="createdWho" sortable="true" title="Created Who"/>
-                                                            <display:column property="lastUpdate" sortable="true" title="Last Update"/>
+                                                            <display:column property="stLastUpdate" sortable="true" title="Flag" />
+                                                            <display:column property="lastUpdateWho" sortable="true" title="Last Update Who"/>
                                                         </display:table>
                                                     </td>
                                                 </tr>
