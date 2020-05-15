@@ -59,6 +59,9 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
                  kodeRekeningEntity.setTipeRekeningId(bean.getTipeRekeningId());
                  kodeRekeningEntity.setKodeRekening(bean.getKodeRekening());
                  kodeRekeningEntity.setNamaKodeRekening(bean.getNamaKodeRekening());
+                 kodeRekeningEntity.setTipeRekeningId(bean.getTipeRekeningId());
+                 kodeRekeningEntity.setFlagDivisi(bean.getFlagDivisi());
+                 kodeRekeningEntity.setFlagMaster(bean.getFlagDivisi());
 
                     String[] coa = bean.getKodeRekening().split("\\.");
                     if (coa.length==1){
@@ -94,6 +97,7 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
                         throw new GeneralBOException("ERROR :" +status);
                     }
                 }
+
                 kodeRekeningEntity.setFlag(bean.getFlag());
                 kodeRekeningEntity.setAction(bean.getAction());
                 kodeRekeningEntity.setLastUpdateWho(bean.getLastUpdateWho());

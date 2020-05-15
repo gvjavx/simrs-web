@@ -290,10 +290,27 @@
                         <label class="control-label col-sm-4" >Tipe Rekening :</label>
                         <div class="col-sm-6">
                             <s:action id="initComboTipeRekening" namespace="/tipeRekening" name="initComboTipeRekening_tipeRekening"/>
-                            <s:select list="#initComboTipeRekening.listOfComboTipeRekening" id="tipeRekeningIdEdit" name="kodeRekening.tipeRekeningId" disabled="true"
+                            <s:select list="#initComboTipeRekening.listOfComboTipeRekening" id="tipeRekeningIdEdit" name="kodeRekening.tipeRekeningId"
                                       listKey="tipeRekeningId" listValue="tipeRekeningName"  headerKey="" headerValue="[Select one]" cssClass="form-control" cssStyle="margin-top: 7px"/>
                         </div>
                     </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Master Id :</label>
+                        <div class="col-sm-6">
+                            <s:select list="#{'Y':'Active', 'N':'NonActive'}" id="" name="users.flagMaster"
+                                      headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Divisi Id :</label>
+                        <div class="col-sm-6">
+                            <s:select list="#{'Y':'Active', 'N':'NonActive'}" id="" name="users.flagDivisi"
+                                      headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                        </div>
+                    </div>
+
                 </s:form>
             </div>
             <div class="modal-footer">
