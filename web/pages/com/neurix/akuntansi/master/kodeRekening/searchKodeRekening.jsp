@@ -298,7 +298,7 @@
                     <div class="form-group">
                         <label class="control-label col-sm-4" >Master Id :</label>
                         <div class="col-sm-6">
-                            <s:select list="#{'Y':'Active', 'N':'NonActive'}" id="" name="users.flagMaster"
+                            <s:select list="#{'Y':'Active', 'N':'NonActive'}" id="flag-master-edit" name="users.flagMaster"
                                       headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                         </div>
                     </div>
@@ -306,7 +306,7 @@
                     <div class="form-group">
                         <label class="control-label col-sm-4" >Divisi Id :</label>
                         <div class="col-sm-6">
-                            <s:select list="#{'Y':'Active', 'N':'NonActive'}" id="" name="users.flagDivisi"
+                            <s:select list="#{'Y':'Active', 'N':'NonActive'}" id="flag-divisi-edit" name="users.flagDivisi"
                                       headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                         </div>
                     </div>
@@ -325,13 +325,16 @@
     $(document).ready(function () {
         //btn Save
         $('#btnEdit').click(function(){
-            var id      = $('#rekeningIdEdit').val();
-            var kodeRekeningName  = $('#kodeRekeningNameEdit').val();
-            var kodeRekening= $('#kodeRekeningEdit').val();
-            var result = '';
+            var id                  = $('#rekeningIdEdit').val();
+            var kodeRekeningName    = $('#kodeRekeningNameEdit').val();
+            var kodeRekening        = $('#kodeRekeningEdit').val();
+            var result              = '';
+            var flagMaster          = $("#flag-master-edit").val();
+            var flagDivisi          = $("#flag-divisi-edit").val();
+
             if(id != ''&&kodeRekeningName != ''&&kodeRekening != ''){
                 if (confirm('Are you sure you want to save this Record?')) {
-                    KodeRekeningAction.saveEdit(id, kodeRekeningName, kodeRekening,"edit",function(result) {
+                    KodeRekeningAction.saveEdit(id, kodeRekeningName, kodeRekening,"edit", "",flagMaster, flagDivisi, function(result) {
                         if (result==""){
                             alert('Record has been saved successfully.');
                             location.reload();

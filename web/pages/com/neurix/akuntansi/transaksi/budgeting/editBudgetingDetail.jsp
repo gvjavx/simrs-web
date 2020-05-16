@@ -27,6 +27,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/BudgetingAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/KodeRekeningAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PositionAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/MasterAction.js"/>'></script>
     <script src="<s:url value="/pages/plugins/tree/jquery.treegrid.bootstrap3.js"/>"></script>
     <script src="<s:url value="/pages/plugins/tree/jquery.treegrid.js"/>"></script>
     <script src="<s:url value="/pages/plugins/tree/lodash.js"/>"></script>
@@ -153,22 +154,21 @@
                                                 <script>
                                                     $(document).ready(function() {
                                                         var functions, mapped;
-                                                        $('#divisiid').typeahead({
+                                                        $('#masterid').typeahead({
                                                             minLength: 1,
                                                             source: function (query, process) {
                                                                 functions = [];
                                                                 mapped = {};
                                                                 var data = [];
                                                                 dwr.engine.setAsync(false);
-                                                                PositionAction.typeHeadPosition(query,function (listdata) {
+                                                                MasterAction.initTypeaheadMaster(query,function (listdata) {
                                                                     data = listdata;
                                                                 });
                                                                 $.each(data, function (i, item) {
-                                                                    var labelItem = item.kodering + " | " + item.positionName;
+                                                                    var labelItem = item.nomorVendor + " | " + item.nama;
                                                                     mapped[labelItem] = {
-                                                                        kode : item.kodering,
-                                                                        name :item.positionName,
-                                                                        id : item.positionId
+                                                                        name :item.nama,
+                                                                        id : item.nomorVendor
                                                                     };
                                                                     functions.push(labelItem);
                                                                 });
@@ -176,9 +176,8 @@
                                                             },
                                                             updater: function (item) {
                                                                 var selectedObj = mapped[item];
-                                                                $("#namadivisi").val(selectedObj.name);
-                                                                $("#positionid").val(selectedObj.id);
-                                                                return selectedObj.kode;
+                                                                $("#namamaster").val(selectedObj.name);
+                                                                return selectedObj.id;
                                                             }
                                                         });
                                                     });
@@ -189,24 +188,6 @@
                                             <label class="control-label col-sm-2">Nama Master</label>
                                             <div class="col-sm-4">
                                                 <input type="text" class="form-control" id="namamaster" readonly/>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <label class="control-label col-sm-2">QTY</label>
-                                            <div class="col-sm-4">
-                                                <input type="number" class="form-control" id="qty-master"/>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <label class="control-label col-sm-2">Tarif (Satuan)</label>
-                                            <div class="col-sm-4">
-                                                <input type="number" class="form-control" id="nilai-master"/>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <label class="control-label col-sm-2">Sub Total</label>
-                                            <div class="col-sm-4">
-                                                <input type="number" class="form-control" id="total-master" disabled/>
                                             </div>
                                         </div>
                                     </div>
@@ -261,6 +242,12 @@
                                                 <input type="hidden" class="form-control" id="positionid" readonly/>
                                             </div>
                                         </div>
+                                    </div>
+
+                                    <br>
+                                    <div id="form-periode">
+                                        <strong>Nilai Per Periode</strong><hr style="width: 50%;">
+
                                         <div class="row">
                                             <label class="control-label col-sm-2">QTY</label>
                                             <div class="col-sm-4">
@@ -279,11 +266,6 @@
                                                 <input type="number" class="form-control" id="total-divisi" disabled/>
                                             </div>
                                         </div>
-                                    </div>
-
-                                    <br>
-                                    <div id="form-periode">
-                                        <strong>Periode</strong><hr style="width: 50%;">
                                         <div class="row">
                                             <label class="control-label col-sm-2" id="label-tipe"></label>
                                             <div class="col-sm-4">
@@ -337,8 +319,10 @@
                                     <table class="table table-bordered table-striped" style="font-size: 15px;">
                                         <thead>
                                         <tr bgcolor="#90ee90">
+                                            <td class="list-label-master-id">Master Id</td>
+                                            <td class="list-label-master-name">Master Name</td>
                                             <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
-                                            <td align="center" class="list-label-divisi-name" class="list-label-divisi-name">Nama Divisi</td>
+                                            <td align="center" class="list-label-divisi-name">Nama Divisi</td>
                                             <td align="center">Quantity</td>
                                             <td align="center">Nilai</td>
                                             <td align="center">Sub Total</td>
@@ -349,6 +333,8 @@
                                         <s:iterator value="#session.listOfDetailEdit" var="row">
                                             <s:if test='#row.tipe == "quartal1"'>
                                                 <tr>
+                                                    <td><s:property value="masterId"/></td>
+                                                    <td><s:property value="masterName"/></td>
                                                     <td><s:property value="divisiId"/></td>
                                                     <td><s:property value="divisiName"/></td>
                                                     <td align="center"><s:property value="qty"/></td>
@@ -369,6 +355,8 @@
                                     <table class="table table-bordered table-striped" style="font-size: 15px;">
                                         <thead>
                                         <tr bgcolor="#90ee90">
+                                            <td class="list-label-master-id">Master Id</td>
+                                            <td class="list-label-master-name">Master Name</td>
                                             <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
                                             <td align="center" class="list-label-divisi-name">Nama Divisi</td>
                                             <td align="center">Quantity</td>
@@ -381,6 +369,8 @@
                                         <s:iterator value="#session.listOfDetailEdit" var="row">
                                             <s:if test='#row.tipe == "quartal2"'>
                                                 <tr>
+                                                    <td><s:property value="masterId"/></td>
+                                                    <td><s:property value="masterName"/></td>
                                                     <td><s:property value="divisiId"/></td>
                                                     <td><s:property value="divisiName"/></td>
                                                     <td align="center"><s:property value="qty"/></td>
@@ -401,6 +391,8 @@
                                     <table class="table table-bordered table-striped" style="font-size: 15px;">
                                         <thead>
                                         <tr bgcolor="#90ee90">
+                                            <td class="list-label-master-id">Master Id</td>
+                                            <td class="list-label-master-name">Master Name</td>
                                             <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
                                             <td align="center" class="list-label-divisi-name">Nama Divisi</td>
                                             <td align="center">Quantity</td>
@@ -413,6 +405,8 @@
                                         <s:iterator value="#session.listOfDetailEdit" var="row">
                                             <s:if test='#row.tipe == "quartal3"'>
                                                 <tr>
+                                                    <td><s:property value="masterId"/></td>
+                                                    <td><s:property value="masterName"/></td>
                                                     <td><s:property value="divisiId"/></td>
                                                     <td><s:property value="divisiName"/></td>
                                                     <td align="center"><s:property value="qty"/></td>
@@ -433,6 +427,8 @@
                                     <table class="table table-bordered table-striped" style="font-size: 15px;">
                                         <thead>
                                         <tr bgcolor="#90ee90">
+                                            <td class="list-label-master-id">Master Id</td>
+                                            <td class="list-label-master-name">Master Name</td>
                                             <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
                                             <td align="center" class="list-label-divisi-name">Nama Divisi</td>
                                             <td align="center">Quantity</td>
@@ -445,6 +441,8 @@
                                         <s:iterator value="#session.listOfDetailEdit" var="row">
                                             <s:if test='#row.tipe == "quartal4"'>
                                                 <tr>
+                                                    <td><s:property value="masterId"/></td>
+                                                    <td><s:property value="masterName"/></td>
                                                     <td><s:property value="divisiId"/></td>
                                                     <td><s:property value="divisiName"/></td>
                                                     <td align="center"><s:property value="qty"/></td>
@@ -469,6 +467,8 @@
                                     <table class="table table-bordered table-striped" style="font-size: 15px;">
                                         <thead>
                                         <tr bgcolor="#90ee90">
+                                            <td class="list-label-master-id">Master Id</td>
+                                            <td class="list-label-master-name">Master Name</td>
                                             <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
                                             <td align="center" class="list-label-divisi-name">Nama Divisi</td>
                                             <td align="center">Quantity</td>
@@ -481,6 +481,8 @@
                                         <s:iterator value="#session.listOfDetailEdit" var="row">
                                             <s:if test='#row.tipe == "semester1"'>
                                                 <tr>
+                                                    <td><s:property value="masterId"/></td>
+                                                    <td><s:property value="masterName"/></td>
                                                     <td><s:property value="divisiId"/></td>
                                                     <td><s:property value="divisiName"/></td>
                                                     <td align="center"><s:property value="qty"/></td>
@@ -500,6 +502,8 @@
                                     <table class="table table-bordered table-striped" style="font-size: 15px;">
                                         <thead>
                                         <tr bgcolor="#90ee90">
+                                            <td class="list-label-master-id">Master Id</td>
+                                            <td class="list-label-master-name">Master Name</td>
                                             <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
                                             <td align="center" class="list-label-divisi-name">Nama Divisi</td>
                                             <td align="center">Quantity</td>
@@ -512,6 +516,8 @@
                                         <s:iterator value="#session.listOfDetailEdit" var="row">
                                             <s:if test='#row.tipe == "semester2"'>
                                                 <tr>
+                                                    <td><s:property value="masterId"/></td>
+                                                    <td><s:property value="masterName"/></td>
                                                     <td><s:property value="divisiId"/></td>
                                                     <td><s:property value="divisiName"/></td>
                                                     <td align="center"><s:property value="qty"/></td>
@@ -534,6 +540,8 @@
                                     <table class="table table-bordered table-striped" style="font-size: 15px;">
                                         <thead>
                                         <tr bgcolor="#90ee90">
+                                            <td class="list-label-master-id">Master Id</td>
+                                            <td class="list-label-master-name">Master Name</td>
                                             <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
                                             <td align="center" class="list-label-divisi-name">Nama Divisi</td>
                                             <td align="center">Quantity</td>
@@ -546,6 +554,8 @@
                                         <s:iterator value="#session.listOfDetailEdit" var="row">
                                             <s:if test='#row.tipe == "tahunan"'>
                                                 <tr>
+                                                    <td><s:property value="masterId"/></td>
+                                                    <td><s:property value="masterName"/></td>
                                                     <td><s:property value="divisiId"/></td>
                                                     <td><s:property value="divisiName"/></td>
                                                     <td align="center"><s:property value="qty"/></td>
@@ -569,6 +579,8 @@
                                     <table class="table table-bordered table-striped" style="font-size: 15px;">
                                         <thead>
                                         <tr bgcolor="#90ee90">
+                                            <td class="list-label-master-id">Master Id</td>
+                                            <td class="list-label-master-name">Master Name</td>
                                             <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
                                             <td align="center" class="list-label-divisi-name">Nama Divisi</td>
                                             <td align="center">Quantity</td>
@@ -581,6 +593,8 @@
                                         <s:iterator value="#session.listOfDetailEdit" var="row">
                                             <s:if test='#row.tipe == "januari"'>
                                                 <tr>
+                                                    <td><s:property value="masterId"/></td>
+                                                    <td><s:property value="masterName"/></td>
                                                     <td><s:property value="divisiId"/></td>
                                                     <td><s:property value="divisiName"/></td>
                                                     <td align="center"><s:property value="qty"/></td>
@@ -598,6 +612,8 @@
                                     <table class="table table-bordered table-striped" style="font-size: 15px;">
                                         <thead>
                                         <tr bgcolor="#90ee90">
+                                            <td class="list-label-master-id">Master Id</td>
+                                            <td class="list-label-master-name">Master Name</td>
                                             <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
                                             <td align="center" class="list-label-divisi-name">Nama Divisi</td>
                                             <td align="center">Quantity</td>
@@ -610,6 +626,8 @@
                                         <s:iterator value="#session.listOfDetailEdit" var="row">
                                             <s:if test='#row.tipe == "februari"'>
                                                 <tr>
+                                                    <td><s:property value="masterId"/></td>
+                                                    <td><s:property value="masterName"/></td>
                                                     <td><s:property value="divisiId"/></td>
                                                     <td><s:property value="divisiName"/></td>
                                                     <td align="center"><s:property value="qty"/></td>
@@ -627,6 +645,8 @@
                                     <table class="table table-bordered table-striped" style="font-size: 15px;">
                                         <thead>
                                         <tr bgcolor="#90ee90">
+                                            <td class="list-label-master-id">Master Id</td>
+                                            <td class="list-label-master-name">Master Name</td>
                                             <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
                                             <td align="center" class="list-label-divisi-name">Nama Divisi</td>
                                             <td align="center">Quantity</td>
@@ -639,6 +659,8 @@
                                         <s:iterator value="#session.listOfDetailEdit" var="row">
                                             <s:if test='#row.tipe == "maret"'>
                                                 <tr>
+                                                    <td><s:property value="masterId"/></td>
+                                                    <td><s:property value="masterName"/></td>
                                                     <td><s:property value="divisiId"/></td>
                                                     <td><s:property value="divisiName"/></td>
                                                     <td align="center"><s:property value="qty"/></td>
@@ -656,6 +678,8 @@
                                     <table class="table table-bordered table-striped" style="font-size: 15px;">
                                         <thead>
                                         <tr bgcolor="#90ee90">
+                                            <td class="list-label-master-id">Master Id</td>
+                                            <td class="list-label-master-name">Master Name</td>
                                             <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
                                             <td align="center" class="list-label-divisi-name">Nama Divisi</td>
                                             <td align="center">Quantity</td>
@@ -668,6 +692,8 @@
                                         <s:iterator value="#session.listOfDetailEdit" var="row">
                                             <s:if test='#row.tipe == "april"'>
                                                 <tr>
+                                                    <td><s:property value="masterId"/></td>
+                                                    <td><s:property value="masterName"/></td>
                                                     <td><s:property value="divisiId"/></td>
                                                     <td><s:property value="divisiName"/></td>
                                                     <td align="center"><s:property value="qty"/></td>
@@ -685,6 +711,8 @@
                                     <table class="table table-bordered table-striped" style="font-size: 15px;">
                                         <thead>
                                         <tr bgcolor="#90ee90">
+                                            <td class="list-label-master-id">Master Id</td>
+                                            <td class="list-label-master-name">Master Name</td>
                                             <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
                                             <td align="center" class="list-label-divisi-name">Nama Divisi</td>
                                             <td align="center">Quantity</td>
@@ -697,6 +725,8 @@
                                         <s:iterator value="#session.listOfDetailEdit" var="row">
                                             <s:if test='#row.tipe == "mei"'>
                                                 <tr>
+                                                    <td><s:property value="masterId"/></td>
+                                                    <td><s:property value="masterName"/></td>
                                                     <td><s:property value="divisiId"/></td>
                                                     <td><s:property value="divisiName"/></td>
                                                     <td align="center"><s:property value="qty"/></td>
@@ -714,6 +744,8 @@
                                     <table class="table table-bordered table-striped" style="font-size: 15px;">
                                         <thead>
                                         <tr bgcolor="#90ee90">
+                                            <td class="list-label-master-id">Master Id</td>
+                                            <td class="list-label-master-name">Master Name</td>
                                             <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
                                             <td align="center" class="list-label-divisi-name">Nama Divisi</td>
                                             <td align="center">Quantity</td>
@@ -726,6 +758,8 @@
                                         <s:iterator value="#session.listOfDetailEdit" var="row">
                                             <s:if test='#row.tipe == "juni"'>
                                                 <tr>
+                                                    <td><s:property value="masterId"/></td>
+                                                    <td><s:property value="masterName"/></td>
                                                     <td><s:property value="divisiId"/></td>
                                                     <td><s:property value="divisiName"/></td>
                                                     <td align="center"><s:property value="qty"/></td>
@@ -743,6 +777,8 @@
                                     <table class="table table-bordered table-striped" style="font-size: 15px;">
                                         <thead>
                                         <tr bgcolor="#90ee90">
+                                            <td class="list-label-master-id">Master Id</td>
+                                            <td class="list-label-master-name">Master Name</td>
                                             <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
                                             <td align="center" class="list-label-divisi-name">Nama Divisi</td>
                                             <td align="center">Quantity</td>
@@ -755,6 +791,8 @@
                                         <s:iterator value="#session.listOfDetailEdit" var="row">
                                             <s:if test='#row.tipe == "juli"'>
                                                 <tr>
+                                                    <td><s:property value="masterId"/></td>
+                                                    <td><s:property value="masterName"/></td>
                                                     <td><s:property value="divisiId"/></td>
                                                     <td><s:property value="divisiName"/></td>
                                                     <td align="center"><s:property value="qty"/></td>
@@ -772,6 +810,8 @@
                                     <table class="table table-bordered table-striped" style="font-size: 15px;">
                                         <thead>
                                         <tr bgcolor="#90ee90">
+                                            <td class="list-label-master-id">Master Id</td>
+                                            <td class="list-label-master-name">Master Name</td>
                                             <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
                                             <td align="center" class="list-label-divisi-name">Nama Divisi</td>
                                             <td align="center">Quantity</td>
@@ -784,6 +824,8 @@
                                         <s:iterator value="#session.listOfDetailEdit" var="row">
                                             <s:if test='#row.tipe == "agustus"'>
                                                 <tr>
+                                                    <td><s:property value="masterId"/></td>
+                                                    <td><s:property value="masterName"/></td>
                                                     <td><s:property value="divisiId"/></td>
                                                     <td><s:property value="divisiName"/></td>
                                                     <td align="center"><s:property value="qty"/></td>
@@ -801,6 +843,8 @@
                                     <table class="table table-bordered table-striped" style="font-size: 15px;">
                                         <thead>
                                         <tr bgcolor="#90ee90">
+                                            <td class="list-label-master-id">Master Id</td>
+                                            <td class="list-label-master-name">Master Name</td>
                                             <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
                                             <td align="center" class="list-label-divisi-name">Nama Divisi</td>
                                             <td align="center">Quantity</td>
@@ -813,6 +857,8 @@
                                         <s:iterator value="#session.listOfDetailEdit" var="row">
                                             <s:if test='#row.tipe == "september"'>
                                                 <tr>
+                                                    <td><s:property value="masterId"/></td>
+                                                    <td><s:property value="masterName"/></td>
                                                     <td><s:property value="divisiId"/></td>
                                                     <td><s:property value="divisiName"/></td>
                                                     <td align="center"><s:property value="qty"/></td>
@@ -830,6 +876,8 @@
                                     <table class="table table-bordered table-striped" style="font-size: 15px;">
                                         <thead>
                                         <tr bgcolor="#90ee90">
+                                            <td class="list-label-master-id">Master Id</td>
+                                            <td class="list-label-master-name">Master Name</td>
                                             <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
                                             <td align="center" class="list-label-divisi-name">Nama Divisi</td>
                                             <td align="center">Quantity</td>
@@ -842,6 +890,8 @@
                                         <s:iterator value="#session.listOfDetailEdit" var="row">
                                             <s:if test='#row.tipe == "oktober"'>
                                                 <tr>
+                                                    <td><s:property value="masterId"/></td>
+                                                    <td><s:property value="masterName"/></td>
                                                     <td><s:property value="divisiId"/></td>
                                                     <td><s:property value="divisiName"/></td>
                                                     <td align="center"><s:property value="qty"/></td>
@@ -859,6 +909,8 @@
                                     <table class="table table-bordered table-striped" style="font-size: 15px;">
                                         <thead>
                                         <tr bgcolor="#90ee90">
+                                            <td class="list-label-master-id">Master Id</td>
+                                            <td class="list-label-master-name">Master Name</td>
                                             <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
                                             <td align="center" class="list-label-divisi-name">Nama Divisi</td>
                                             <td align="center">Quantity</td>
@@ -871,6 +923,8 @@
                                         <s:iterator value="#session.listOfDetailEdit" var="row">
                                             <s:if test='#row.tipe == "november"'>
                                                 <tr>
+                                                    <td><s:property value="masterId"/></td>
+                                                    <td><s:property value="masterName"/></td>
                                                     <td><s:property value="divisiId"/></td>
                                                     <td><s:property value="divisiName"/></td>
                                                     <td align="center"><s:property value="qty"/></td>
@@ -888,6 +942,8 @@
                                     <table class="table table-bordered table-striped" style="font-size: 15px;">
                                         <thead>
                                         <tr bgcolor="#90ee90">
+                                            <td class="list-label-master-id">Master Id</td>
+                                            <td class="list-label-master-name">Master Name</td>
                                             <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
                                             <td align="center" class="list-label-divisi-name">Nama Divisi</td>
                                             <td align="center">Quantity</td>
@@ -900,6 +956,8 @@
                                         <s:iterator value="#session.listOfDetailEdit" var="row">
                                             <s:if test='#row.tipe == "desember"'>
                                                 <tr>
+                                                    <td><s:property value="masterId"/></td>
+                                                    <td><s:property value="masterName"/></td>
                                                     <td><s:property value="divisiId"/></td>
                                                     <td><s:property value="divisiName"/></td>
                                                     <td align="center"><s:property value="qty"/></td>
@@ -942,6 +1000,18 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
+                    <div class="row">
+                        <label class="col-md-2 col-md-offset-1">Master Id</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" id="edit-master" disabled>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-md-2 col-md-offset-1">Master Name</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" id="edit-master-name" disabled>
+                        </div>
+                    </div>
                     <div class="row">
                         <label class="col-md-2 col-md-offset-1">Divisi Id</label>
                         <div class="col-md-6">
@@ -1192,6 +1262,8 @@
         var qty         = $("#qty").val();
         var nilai       = $("#nilai").val();
         var tipe        = $("#sel-tipe").val();
+        var masterId    = $("#masterid").val();
+        var mastername  = $("#namamaster").val();
 
         if (divisi == ""){
             // jika inputan divisi kosong makan muncul modal input pengadaan
@@ -1223,7 +1295,17 @@
                         // jika ada inputan divisi maka save to session detail
                         if (rekeningid != ""){
                             var arrCoa = [];
-                            arrCoa.push({ "divisi":divisi, "divisiname":namadivisi, "qty":qty, "nilai":nilai, "tipe":tipe, "rekeningid":rekeningid, "positionid":positionid});
+                            arrCoa.push({
+                                "divisi":divisi == null ? "" : divisi,
+                                "divisiname":namadivisi == null ? "" : namadivisi,
+                                "qty":qty,
+                                "nilai":nilai,
+                                "tipe":tipe,
+                                "rekeningid":rekeningid,
+                                "positionid":positionid,
+                                "masterid":masterId == null ? "" : masterId,
+                                "mastername":mastername == null ? "": mastername
+                            });
                             var jsonString = JSON.stringify(arrCoa);
 
                             BudgetingAction.setToSessionCoaDetail(jsonString, function (response) {

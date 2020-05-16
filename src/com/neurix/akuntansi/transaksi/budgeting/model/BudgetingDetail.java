@@ -28,6 +28,24 @@ public class BudgetingDetail{
     private String rekeningId;
     private String idBudgeting;
     private String positionId;
+    private String masterId;
+    private String masterName;
+
+    public String getMasterId() {
+        return masterId;
+    }
+
+    public void setMasterId(String masterId) {
+        this.masterId = masterId;
+    }
+
+    public String getMasterName() {
+        return masterName;
+    }
+
+    public void setMasterName(String masterName) {
+        this.masterName = masterName;
+    }
 
     public String getPositionId() {
         return positionId;

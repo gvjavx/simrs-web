@@ -171,6 +171,9 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
                     returnKodeRekening.setParentId(kodeRekeningEntity.getParentId());
                     returnKodeRekening.setTipeRekeningId(kodeRekeningEntity.getTipeRekeningId());
                     returnKodeRekening.setLevel(kodeRekeningEntity.getLevel());
+                    returnKodeRekening.setTipeRekeningId(kodeRekeningEntity.getTipeRekeningId());
+                    returnKodeRekening.setFlagMaster(kodeRekeningEntity.getFlagMaster());
+                    returnKodeRekening.setFlagDivisi(kodeRekeningEntity.getFlagDivisi());
 
                     if (kodeRekeningEntity.getTipeRekeningId()!=null){
                         ImTipeRekeningEntity tipeRekeningEntity;

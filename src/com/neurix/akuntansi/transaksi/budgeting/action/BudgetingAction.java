@@ -536,15 +536,15 @@ public class BudgetingAction {
                 budgetingNew.setKodeRekening(budgetingList.get(0).getKodeRekening());
                 budgetingNew.setNamaKodeRekening(budgetingList.get(0).getNamaKodeRekening());
                 budgetingNew.setParentId(budgetingList.get(0).getParentId());
+                budgetingNew.setTipeCoa(budgetingList.get(0).getTipeCoa());
+                budgetingNew.setFlagMaster(budgetingList.get(0).getFlagMaster());
+                budgetingNew.setFlagDivisi(budgetingList.get(0).getFlagDivisi());
 
                 if (!"-".equalsIgnoreCase(budgetingNew.getParentId()) && !"".equalsIgnoreCase(budgetingNew.getParentId())){
                     List<Budgeting> parentList = budgetingSessionList.stream().filter(p -> p.getRekeningId().equalsIgnoreCase(budgetingNew.getParentId())).collect(Collectors.toList());
                     if (parentList.size() > 0){
                         budgetingNew.setKodeParent(parentList.get(0).getKodeRekening());
                         budgetingNew.setNamaParent(parentList.get(0).getNamaKodeRekening());
-                        budgetingNew.setTipeCoa(parentList.get(0).getTipeCoa());
-                        budgetingNew.setFlagMaster(parentList.get(0).getFlagMaster());
-                        budgetingNew.setFlagDivisi(parentList.get(0).getFlagDivisi());
                     }
                 }
             }
@@ -682,6 +682,8 @@ public class BudgetingAction {
             budgetingDetail.setNilai(new BigDecimal(obj.getString("nilai").toString()));
             budgetingDetail.setQty(new BigInteger(obj.getString("qty").toString()));
             budgetingDetail.setTipe(obj.getString("tipe").toString());
+            budgetingDetail.setMasterId(obj.getString("masterid").toString());
+            budgetingDetail.setMasterName(obj.getString("mastername").toString());
             budgetingDetail.setSubTotal(budgetingDetail.getNilai().multiply(new BigDecimal(budgetingDetail.getQty().toString())));
         }
 
