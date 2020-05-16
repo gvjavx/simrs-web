@@ -911,7 +911,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             // save approve tindakan
             saveAddToRiwayatTindakan(idDetailCheckup, jenisPasien);
 
-            if ("asuransi".equalsIgnoreCase(jenisPasien) || "ptpn".equalsIgnoreCase(jenisPasien)) {
+            if ("asuransi".equalsIgnoreCase(jenisPasien) || "ptpn".equalsIgnoreCase(jenisPasien) || "paket_individu".equalsIgnoreCase(jenisPasien) || "paket_perusahaan".equalsIgnoreCase(jenisPasien)) {
                 metodeBayar = "non_tunai";
             } else if ("umum".equalsIgnoreCase(jenisPasien)) {
                 metodeBayar = jenisBayar;

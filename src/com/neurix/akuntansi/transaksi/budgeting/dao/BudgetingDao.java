@@ -66,20 +66,25 @@ public class BudgetingDao extends GenericDao<ItAkunBudgetingEntity, String> {
         return criteria.list();
     }
 
-    public BigDecimal getSumNilaiByStatus(String rekeningId, String branchId, String tahun, String status){
+    public BigDecimal getSumNilaiByStatus(String rekeningId, String branchId, String tahun, String status, String approveFlag){
+
+        if (approveFlag != null && !"".equalsIgnoreCase(approveFlag)){
+            approveFlag = "AND approve_flag = '"+approveFlag+"' \n";
+        }
+
         String SQL = "SELECT rekening_id, SUM(nilai_total) \n" +
                 "FROM it_akun_budgeting\n" +
                 "WHERE rekening_id = :rekening \n" +
                 "AND branch_id = :unit \n" +
                 "AND tahun = :tahun \n" +
-                "AND status LIKE :status \n" +
+                "AND status LIKE :status \n" + approveFlag +
                 "GROUP BY rekening_id";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("rekening", rekeningId)
                 .setParameter("unit", branchId)
                 .setParameter("tahun", tahun)
-                .setParameter("status", "%"+status)
+                .setParameter("status", "%" + status)
                 .list();
 
         if (results.size()>0){
@@ -155,5 +160,29 @@ public class BudgetingDao extends GenericDao<ItAkunBudgetingEntity, String> {
         }
 
         return budgeting;
+    }
+
+    public String getNoSebelumnya(String tahun, String branchId, String rekeningId, String status){
+        String SQL = "SELECT no_budgeting, status, rekening_id\n" +
+                "FROM it_akun_budgeting\n" +
+                "WHERE tahun = :tahun\n" +
+                "AND branch_id = :unit\n" +
+                "AND rekening_id = :rekening\n" +
+                "AND status ILIKE :status";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("tahun", tahun)
+                .setParameter("unit", branchId)
+                .setParameter("rekening", rekeningId)
+                .setParameter("status", "%" + status)
+                .list();
+
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                return obj[0].toString();
+            }
+        }
+
+        return "";
     }
 }
