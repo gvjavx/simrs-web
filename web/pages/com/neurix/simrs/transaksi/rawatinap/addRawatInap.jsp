@@ -2042,7 +2042,7 @@
                         <i class="fa fa-pie-chart"></i> View Graf
                     </button>
                 </div>
-                <table class="table table-bordered">
+                <table class="table table-bordered" style="font-size: 12px">
                     <thead>
                     <td>Jam</td>
                     <td>Nafas</td>
@@ -2221,19 +2221,19 @@
                 </div>
                 <table class="table table-bordered" style="font-size:11px;">
                     <thead>
-                    <td width="10%">Tgl</td>
-                    <td>Macam Cairan</td>
-                    <td>Melalui</td>
-                    <td>Jumlah</td>
-                    <td>Jam Mulai</td>
-                    <td>Jam Selesai</td>
-                    <td>Cek Tambahan Obat</td>
-                    <td>Sisa</td>
-                    <td>Jam Ukur Buang</td>
-                    <td>Dari</td>
-                    <td>Balance Cairan</td>
-                    <td>Keterangan</td>
-                    <td>Created Who</td>
+                    <td align="center" width="10%" style="vertical-align: middle">Tgl</td>
+                    <td align="center" style="vertical-align: middle">Macam Cairan</td>
+                    <td align="center" style="vertical-align: middle">Melalui</td>
+                    <td align="center" style="vertical-align: middle"> Jumlah</td>
+                    <td align="center" style="vertical-align: middle">Jam Mulai</td>
+                    <td align="center" style="vertical-align: middle">Jam Selesai</td>
+                    <td align="center" style="vertical-align: middle">Cek Tambahan Obat</td>
+                    <td align="center" style="vertical-align: middle">Sisa</td>
+                    <td align="center" style="vertical-align: middle">Jam Ukur Buang</td>
+                    <td align="center" style="vertical-align: middle">Dari</td>
+                    <td align="center" style="vertical-align: middle">Balance Cairan</td>
+                    <td align="center" style="vertical-align: middle">Keterangan</td>
+                    <td align="center" style="vertical-align: middle">Created Who</td>
                     </thead>
                     <tbody id="body-list-cairan">
 
@@ -2417,7 +2417,7 @@
                         <i class="fa fa-plus"></i> Add
                     </button>
                 </div>
-                <table class="table table-bordered">
+                <table class="table table-bordered" style="font-size: 12px">
                     <thead id="thead_pemberian">
                     </thead>
                     <tbody id="body-list-pemberian">
@@ -2653,7 +2653,7 @@
                         <i class="fa fa-plus"></i> Add Parameter Edukasi
                     </button>
 
-                    <table class="table table-bordered">
+                    <table class="table table-bordered" style="font-size: 12px">
                         <thead>
                         <td>Asesmen</td>
                         <td>Created Who</td>

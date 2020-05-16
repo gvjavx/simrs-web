@@ -145,8 +145,46 @@ public class RekamMedikAction extends BaseTransactionAction {
             setDetailCheckup(detailCheckup);
 
         } else {
+
             HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
-            detailCheckup.setIdPasien(idPasien);
+            try {
+                checkup = checkupBoProxy.getLastDataPasienByIdPasien(idPasien);
+            } catch (GeneralBOException e) {
+                logger.error("Found error when detail pasien " + e.getMessage());
+            }
+            detailCheckup.setNoCheckup(checkup.getNoCheckup());
+            detailCheckup.setIdDetailCheckup(checkup.getIdDetailCheckup());
+            detailCheckup.setIdPasien(checkup.getIdPasien());
+            detailCheckup.setNamaPasien(checkup.getNama());
+            detailCheckup.setAlamat(checkup.getJalan());
+            detailCheckup.setDesa(checkup.getNamaDesa());
+            detailCheckup.setKecamatan(checkup.getNamaKecamatan());
+            detailCheckup.setKota(checkup.getNamaKota());
+            detailCheckup.setProvinsi(checkup.getNamaProvinsi());
+            detailCheckup.setNamaPelayanan(checkup.getNamaPelayanan());
+            if (checkup.getJenisKelamin() != null) {
+                if ("P".equalsIgnoreCase(checkup.getJenisKelamin())) {
+                    jk = "Perempuan";
+                } else {
+                    jk = "Laki-Laki";
+                }
+            }
+            detailCheckup.setJenisKelamin(jk);
+            detailCheckup.setTempatLahir(checkup.getTempatLahir());
+            detailCheckup.setTglLahir(checkup.getTglLahir() == null ? null : checkup.getTglLahir().toString());
+            String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
+            detailCheckup.setTempatTglLahir(checkup.getTempatLahir() + ", " + formatDate);
+            detailCheckup.setNik(checkup.getNoKtp());
+            detailCheckup.setIdJenisPeriksaPasien(checkup.getIdJenisPeriksaPasien());
+            detailCheckup.setTinggi(checkup.getTinggi());
+            detailCheckup.setBerat(checkup.getBerat());
+            detailCheckup.setNoSep(checkup.getNoSep());
+            detailCheckup.setJenisPeriksaPasien(checkup.getStatusPeriksaName());
+            if(checkup.getTglKeluar() != null){
+                String tglKeluar = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglKeluar());
+                detailCheckup.setTglKeluar(tglKeluar);
+            }
+            detailCheckup.setDiagnosa(checkup.getDiagnosa());
             setDetailCheckup(detailCheckup);
         }
 
