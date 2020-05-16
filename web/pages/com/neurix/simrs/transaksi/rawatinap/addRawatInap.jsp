@@ -5415,7 +5415,7 @@
         var idPel = poli.split('|')[0];
         var namePel = poli.split('|')[1];
         var option = "<option value=''>[Select One]</option>";
-        var jenisPasien = $('#jenis_pasien').val();
+        var jenisPasien = $('#id_jenis_pasien').val();
 
         if (poli != '') {
             ObatPoliAction.getSelectOptionObatByPoli(idPel, jenisPasien, function (response) {
