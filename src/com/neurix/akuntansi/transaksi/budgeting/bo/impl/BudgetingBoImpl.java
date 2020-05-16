@@ -103,6 +103,9 @@ public class BudgetingBoImpl implements BudgetingBo {
                     budgeting.setLevel(kodeRekeningEntity.getLevel());
                     budgeting.setStLevel(kodeRekeningEntity.getLevel() == null ? "" : kodeRekeningEntity.getLevel().toString());
                     budgeting.setParentId(kodeRekeningEntity.getParentId());
+                    budgeting.setTipeCoa(kodeRekeningEntity.getTipeRekeningId());
+                    budgeting.setFlagDivisi(kodeRekeningEntity.getFlagDivisi());
+                    budgeting.setFlagMaster(kodeRekeningEntity.getFlagMaster());
                 }
 
                 budgetings.add(budgeting);

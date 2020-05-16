@@ -7,6 +7,9 @@ import com.neurix.akuntansi.transaksi.budgeting.bo.BudgetingBo;
 import com.neurix.akuntansi.transaksi.budgeting.model.Budgeting;
 import com.neurix.akuntansi.transaksi.budgeting.model.BudgetingDetail;
 import com.neurix.akuntansi.transaksi.budgeting.model.BudgetingPengadaan;
+import com.neurix.authorization.company.bo.BranchBo;
+import com.neurix.authorization.company.model.Branch;
+import com.neurix.authorization.company.model.ImBranches;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.CrudResponse;
@@ -35,6 +38,7 @@ import static com.neurix.akuntansi.transaksi.budgeting.action.BudgetingAction.St
 public class BudgetingAction {
     private static transient Logger logger = Logger.getLogger(BudgetingAction.class);
     private BudgetingBo budgetingBoProxy;
+    private BranchBo branchBoProxy;
     private Budgeting budgeting;
     private String id;
     private String tipe;
@@ -507,6 +511,13 @@ public class BudgetingAction {
         budgetingNew.setTipe(budgeting.getTipe());
         budgetingNew.setBranchId(budgeting.getBranchId());
 
+        if (budgetingNew.getBranchId() != null && !"".equalsIgnoreCase(budgetingNew.getBranchId())){
+            Branch branch = branchBoProxy.getBranchById(budgetingNew.getBranchId(), "Y");
+            if (branch != null){
+                budgetingNew.setBranchName(branch.getBranchName());
+            }
+        }
+
         if (budgetingSessionList == null){
             budgetingSessionList = new ArrayList<>();
         }
@@ -517,7 +528,6 @@ public class BudgetingAction {
             sessionPengadaan = new ArrayList<>();
         }
 
-        logger.info("[BudgetingAction.edit] END <<<");
 
         if (!"".equalsIgnoreCase(this.id) && this.id != null){
             // medapatakan parent
@@ -526,11 +536,15 @@ public class BudgetingAction {
                 budgetingNew.setKodeRekening(budgetingList.get(0).getKodeRekening());
                 budgetingNew.setNamaKodeRekening(budgetingList.get(0).getNamaKodeRekening());
                 budgetingNew.setParentId(budgetingList.get(0).getParentId());
+
                 if (!"-".equalsIgnoreCase(budgetingNew.getParentId()) && !"".equalsIgnoreCase(budgetingNew.getParentId())){
                     List<Budgeting> parentList = budgetingSessionList.stream().filter(p -> p.getRekeningId().equalsIgnoreCase(budgetingNew.getParentId())).collect(Collectors.toList());
                     if (parentList.size() > 0){
                         budgetingNew.setKodeParent(parentList.get(0).getKodeRekening());
                         budgetingNew.setNamaParent(parentList.get(0).getNamaKodeRekening());
+                        budgetingNew.setTipeCoa(parentList.get(0).getTipeCoa());
+                        budgetingNew.setFlagMaster(parentList.get(0).getFlagMaster());
+                        budgetingNew.setFlagDivisi(parentList.get(0).getFlagDivisi());
                     }
                 }
             }
@@ -552,6 +566,8 @@ public class BudgetingAction {
                 session.removeAttribute("listOfDetail");
                 session.removeAttribute("listOfDetailEdit");
             }
+
+            logger.info("[BudgetingAction.edit] END <<<");
 
             setBudgeting(budgetingNew);
             if ("add".equalsIgnoreCase(this.status) || "edit".equalsIgnoreCase(this.status) && this.id != null){
@@ -612,6 +628,7 @@ public class BudgetingAction {
                         }
                     }
 
+                    logger.info("[BudgetingAction.edit] END <<<");
                     // jika tidak ada return ke add;
                     if (listOfBudgeting.size() == 0){
                         return add();
@@ -625,6 +642,7 @@ public class BudgetingAction {
                 setBudgeting(searchBudgeting);
             }
 
+            logger.info("[BudgetingAction.edit] END <<<");
             return "edit";
         }
     }
@@ -1610,5 +1628,9 @@ public class BudgetingAction {
 
     public void setBudgetingBoProxy(BudgetingBo budgetingBoProxy) {
         this.budgetingBoProxy = budgetingBoProxy;
+    }
+
+    public void setBranchBoProxy(BranchBo branchBoProxy) {
+        this.branchBoProxy = branchBoProxy;
     }
 }

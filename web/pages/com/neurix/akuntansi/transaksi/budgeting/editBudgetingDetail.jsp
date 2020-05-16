@@ -83,6 +83,16 @@
                         <table style="font-size: 15px; margin-bottom: 10px;" class="table">
                             <tbody>
                                 <tr>
+                                    <td>Tahun</td>
+                                    <td>:</td>
+                                    <td> <s:property value="budgeting.tahun"></s:property></td>
+                                </tr>
+                                <tr>
+                                    <td>Unit</td>
+                                    <td>:</td>
+                                    <td> <s:property value="budgeting.branchName"></s:property></td>
+                                </tr>
+                                <tr>
                                     <td>Parent COA </td>
                                     <td>:</td>
                                     <td> <s:property value="budgeting.kodeParent"></s:property> - <s:property value="budgeting.namaParent"></s:property></td>
@@ -91,6 +101,11 @@
                                     <td>Child COA </td>
                                     <td>:</td>
                                     <td> <s:property value="budgeting.kodeRekening"></s:property> - <s:property value="budgeting.namaKodeRekening"></s:property></td>
+                                </tr>
+                                <tr>
+                                    <td>Data lain (tipe coa - master id - divisi id) </td>
+                                    <td>:</td>
+                                    <td><s:property value="budgeting.tipeCoa"></s:property> - <s:property value="budgeting.flagMaster"></s:property> - <s:property value="budgeting.flagDivisi"></s:property></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -127,87 +142,163 @@
                         <div class="form-group form-horizontal" style="margin-top: 20px;">
                             <div class="row">
                                 <div class="col-md-12 col-md-offset-2">
-                                    <div class="row">
-                                        <label class="control-label col-sm-2">Divisi Id</label>
-                                        <div class="col-sm-4">
-                                            <input type="text" class="form-control" id="divisiid"/>
 
-                                            <script>
-                                                $(document).ready(function() {
-                                                    var functions, mapped;
-                                                    $('#divisiid').typeahead({
-                                                        minLength: 1,
-                                                        source: function (query, process) {
-                                                            functions = [];
-                                                            mapped = {};
-                                                            var data = [];
-                                                            dwr.engine.setAsync(false);
-                                                            PositionAction.typeHeadPosition(query,function (listdata) {
-                                                                data = listdata;
-                                                            });
-                                                            $.each(data, function (i, item) {
-                                                                var labelItem = item.kodering + " | " + item.positionName;
-                                                                mapped[labelItem] = {
-                                                                    kode : item.kodering,
-                                                                    name :item.positionName,
-                                                                    id : item.positionId
-                                                                };
-                                                                functions.push(labelItem);
-                                                            });
-                                                            process(functions);
-                                                        },
-                                                        updater: function (item) {
-                                                            var selectedObj = mapped[item];
-                                                            $("#namadivisi").val(selectedObj.name);
-                                                            $("#positionid").val(selectedObj.id);
-                                                            return selectedObj.kode;
-                                                        }
+                                    <div id="form-master">
+                                        <strong>Master</strong> <hr style="width: 50%;">
+                                        <div class="row">
+                                            <label class="control-label col-sm-2">Master Id</label>
+                                            <div class="col-sm-4">
+                                                <input type="text" class="form-control" id="masterid"/>
+
+                                                <script>
+                                                    $(document).ready(function() {
+                                                        var functions, mapped;
+                                                        $('#divisiid').typeahead({
+                                                            minLength: 1,
+                                                            source: function (query, process) {
+                                                                functions = [];
+                                                                mapped = {};
+                                                                var data = [];
+                                                                dwr.engine.setAsync(false);
+                                                                PositionAction.typeHeadPosition(query,function (listdata) {
+                                                                    data = listdata;
+                                                                });
+                                                                $.each(data, function (i, item) {
+                                                                    var labelItem = item.kodering + " | " + item.positionName;
+                                                                    mapped[labelItem] = {
+                                                                        kode : item.kodering,
+                                                                        name :item.positionName,
+                                                                        id : item.positionId
+                                                                    };
+                                                                    functions.push(labelItem);
+                                                                });
+                                                                process(functions);
+                                                            },
+                                                            updater: function (item) {
+                                                                var selectedObj = mapped[item];
+                                                                $("#namadivisi").val(selectedObj.name);
+                                                                $("#positionid").val(selectedObj.id);
+                                                                return selectedObj.kode;
+                                                            }
+                                                        });
                                                     });
-                                                });
-                                            </script>
-
-                                        <%--<select class="form-control" id="sel-tahun" name="budgeting.tahun">--%>
-                                                <%--<option value="2020">2020</option>--%>
-                                                <%--<option value="2021">2021</option>--%>
-                                                <%--<option value="2022">2022</option>--%>
-                                                <%--<option value="2023">2023</option>--%>
-                                            <%--</select>--%>
+                                                </script>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <label class="control-label col-sm-2">Nama Divisi</label>
-                                        <div class="col-sm-4">
-                                            <input type="text" class="form-control" id="namadivisi" readonly/>
-                                            <input type="hidden" class="form-control" id="positionid" readonly/>
+                                        <div class="row">
+                                            <label class="control-label col-sm-2">Nama Master</label>
+                                            <div class="col-sm-4">
+                                                <input type="text" class="form-control" id="namamaster" readonly/>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <label class="control-label col-sm-2">QTY</label>
-                                        <div class="col-sm-4">
-                                            <input type="number" class="form-control" id="qty"/>
+                                        <div class="row">
+                                            <label class="control-label col-sm-2">QTY</label>
+                                            <div class="col-sm-4">
+                                                <input type="number" class="form-control" id="qty-master"/>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <label class="control-label col-sm-2">Tarif (Satuan)</label>
-                                        <div class="col-sm-4">
-                                            <input type="number" class="form-control" id="nilai"/>
+                                        <div class="row">
+                                            <label class="control-label col-sm-2">Tarif (Satuan)</label>
+                                            <div class="col-sm-4">
+                                                <input type="number" class="form-control" id="nilai-master"/>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <label class="control-label col-sm-2" id="label-tipe"></label>
-                                        <div class="col-sm-4">
-                                            <select class="form-control" id="sel-tipe">
-
-                                            </select>
+                                        <div class="row">
+                                            <label class="control-label col-sm-2">Sub Total</label>
+                                            <div class="col-sm-4">
+                                                <input type="number" class="form-control" id="total-master" disabled/>
+                                            </div>
                                         </div>
                                     </div>
 
+                                    <br>
+                                    <div id="form-divisi">
+                                        <strong>Divisi</strong> <hr style="width: 50%;">
+                                        <div class="row">
+                                            <label class="control-label col-sm-2">Divisi Id</label>
+                                            <div class="col-sm-4">
+                                                <input type="text" class="form-control" id="divisiid"/>
+
+                                                <script>
+                                                    $(document).ready(function() {
+                                                        var functions, mapped;
+                                                        $('#divisiid').typeahead({
+                                                            minLength: 1,
+                                                            source: function (query, process) {
+                                                                functions = [];
+                                                                mapped = {};
+                                                                var data = [];
+                                                                dwr.engine.setAsync(false);
+                                                                PositionAction.typeHeadPosition(query,function (listdata) {
+                                                                    data = listdata;
+                                                                });
+                                                                $.each(data, function (i, item) {
+                                                                    var labelItem = item.kodering + " | " + item.positionName;
+                                                                    mapped[labelItem] = {
+                                                                        kode : item.kodering,
+                                                                        name :item.positionName,
+                                                                        id : item.positionId
+                                                                    };
+                                                                    functions.push(labelItem);
+                                                                });
+                                                                process(functions);
+                                                            },
+                                                            updater: function (item) {
+                                                                var selectedObj = mapped[item];
+                                                                $("#namadivisi").val(selectedObj.name);
+                                                                $("#positionid").val(selectedObj.id);
+                                                                return selectedObj.kode;
+                                                            }
+                                                        });
+                                                    });
+                                                </script>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <label class="control-label col-sm-2">Nama Divisi</label>
+                                            <div class="col-sm-4">
+                                                <input type="text" class="form-control" id="namadivisi" readonly/>
+                                                <input type="hidden" class="form-control" id="positionid" readonly/>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <label class="control-label col-sm-2">QTY</label>
+                                            <div class="col-sm-4">
+                                                <input type="number" class="form-control" id="qty"/>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <label class="control-label col-sm-2">Tarif (Satuan)</label>
+                                            <div class="col-sm-4">
+                                                <input type="number" class="form-control" id="nilai"/>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <label class="control-label col-sm-2">Sub Total</label>
+                                            <div class="col-sm-4">
+                                                <input type="number" class="form-control" id="total-divisi" disabled/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <br>
+                                    <div id="form-periode">
+                                        <strong>Periode</strong><hr style="width: 50%;">
+                                        <div class="row">
+                                            <label class="control-label col-sm-2" id="label-tipe"></label>
+                                            <div class="col-sm-4">
+                                                <select class="form-control" id="sel-tipe">
+
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
                             <div class="row">
-                                <div class="col-md-6 col-md-offset-7" style="margin-top: 10px">
-                                    <button class="btn btn-primary" onclick="saveAdd()"><i class="fa fa-plus"></i> Add</button>
+                                <div class="col-md-6 col-md-offset-5" style="margin-top: 10px">
+                                    <button class="btn btn-primary" onclick="saveAdd()" id="btn-save-add"><i class="fa fa-plus"></i> Add</button>
                                 </div>
                             </div>
                         </div>
@@ -246,8 +337,8 @@
                                     <table class="table table-bordered table-striped" style="font-size: 15px;">
                                         <thead>
                                         <tr bgcolor="#90ee90">
-                                            <td style="width: 20%">Divisi Id</td>
-                                            <td align="center">Nama Divisi</td>
+                                            <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
+                                            <td align="center" class="list-label-divisi-name" class="list-label-divisi-name">Nama Divisi</td>
                                             <td align="center">Quantity</td>
                                             <td align="center">Nilai</td>
                                             <td align="center">Sub Total</td>
@@ -278,8 +369,8 @@
                                     <table class="table table-bordered table-striped" style="font-size: 15px;">
                                         <thead>
                                         <tr bgcolor="#90ee90">
-                                            <td style="width: 20%">Divisi Id</td>
-                                            <td align="center">Nama Divisi</td>
+                                            <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
+                                            <td align="center" class="list-label-divisi-name">Nama Divisi</td>
                                             <td align="center">Quantity</td>
                                             <td align="center">Nilai</td>
                                             <td align="center">Sub Total</td>
@@ -310,8 +401,8 @@
                                     <table class="table table-bordered table-striped" style="font-size: 15px;">
                                         <thead>
                                         <tr bgcolor="#90ee90">
-                                            <td style="width: 20%">Divisi Id</td>
-                                            <td align="center">Nama Divisi</td>
+                                            <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
+                                            <td align="center" class="list-label-divisi-name">Nama Divisi</td>
                                             <td align="center">Quantity</td>
                                             <td align="center">Nilai</td>
                                             <td align="center">Sub Total</td>
@@ -342,8 +433,8 @@
                                     <table class="table table-bordered table-striped" style="font-size: 15px;">
                                         <thead>
                                         <tr bgcolor="#90ee90">
-                                            <td style="width: 20%">Divisi Id</td>
-                                            <td align="center">Nama Divisi</td>
+                                            <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
+                                            <td align="center" class="list-label-divisi-name">Nama Divisi</td>
                                             <td align="center">Quantity</td>
                                             <td align="center">Nilai</td>
                                             <td align="center">Sub Total</td>
@@ -378,8 +469,8 @@
                                     <table class="table table-bordered table-striped" style="font-size: 15px;">
                                         <thead>
                                         <tr bgcolor="#90ee90">
-                                            <td style="width: 20%">Divisi Id</td>
-                                            <td align="center">Nama Divisi</td>
+                                            <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
+                                            <td align="center" class="list-label-divisi-name">Nama Divisi</td>
                                             <td align="center">Quantity</td>
                                             <td align="center">Nilai</td>
                                             <td align="center">Sub Total</td>
@@ -409,8 +500,8 @@
                                     <table class="table table-bordered table-striped" style="font-size: 15px;">
                                         <thead>
                                         <tr bgcolor="#90ee90">
-                                            <td style="width: 20%">Divisi Id</td>
-                                            <td align="center">Nama Divisi</td>
+                                            <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
+                                            <td align="center" class="list-label-divisi-name">Nama Divisi</td>
                                             <td align="center">Quantity</td>
                                             <td align="center">Nilai</td>
                                             <td align="center">Sub Total</td>
@@ -443,8 +534,8 @@
                                     <table class="table table-bordered table-striped" style="font-size: 15px;">
                                         <thead>
                                         <tr bgcolor="#90ee90">
-                                            <td style="width: 20%">Divisi Id</td>
-                                            <td align="center">Nama Divisi</td>
+                                            <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
+                                            <td align="center" class="list-label-divisi-name">Nama Divisi</td>
                                             <td align="center">Quantity</td>
                                             <td align="center">Nilai</td>
                                             <td align="center">Sub Total</td>
@@ -474,12 +565,12 @@
                         <s:if test='budgeting.tipe == "bulanan"'>
                             <div class="row">
                                 <div class="col-md-10 col-md-offset-1">
-                                    <label>Periode Januari</label>
+                                    <label>Januari</label>
                                     <table class="table table-bordered table-striped" style="font-size: 15px;">
                                         <thead>
                                         <tr bgcolor="#90ee90">
-                                            <td style="width: 20%">Divisi Id</td>
-                                            <td align="center">Nama Divisi</td>
+                                            <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
+                                            <td align="center" class="list-label-divisi-name">Nama Divisi</td>
                                             <td align="center">Quantity</td>
                                             <td align="center">Nilai</td>
                                             <td align="center">Sub Total</td>
@@ -503,12 +594,12 @@
                                     </table>
                                 </div>
                                 <div class="col-md-10 col-md-offset-1">
-                                    <label>Periode Februari</label>
+                                    <label>Februari</label>
                                     <table class="table table-bordered table-striped" style="font-size: 15px;">
                                         <thead>
                                         <tr bgcolor="#90ee90">
-                                            <td style="width: 20%">Divisi Id</td>
-                                            <td align="center">Nama Divisi</td>
+                                            <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
+                                            <td align="center" class="list-label-divisi-name">Nama Divisi</td>
                                             <td align="center">Quantity</td>
                                             <td align="center">Nilai</td>
                                             <td align="center">Sub Total</td>
@@ -532,12 +623,12 @@
                                     </table>
                                 </div>
                                 <div class="col-md-10 col-md-offset-1">
-                                    <label>Periode Maret</label>
+                                    <label>Maret</label>
                                     <table class="table table-bordered table-striped" style="font-size: 15px;">
                                         <thead>
                                         <tr bgcolor="#90ee90">
-                                            <td style="width: 20%">Divisi Id</td>
-                                            <td align="center">Nama Divisi</td>
+                                            <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
+                                            <td align="center" class="list-label-divisi-name">Nama Divisi</td>
                                             <td align="center">Quantity</td>
                                             <td align="center">Nilai</td>
                                             <td align="center">Sub Total</td>
@@ -561,12 +652,12 @@
                                     </table>
                                 </div>
                                 <div class="col-md-10 col-md-offset-1">
-                                    <label>Periode April</label>
+                                    <label>April</label>
                                     <table class="table table-bordered table-striped" style="font-size: 15px;">
                                         <thead>
                                         <tr bgcolor="#90ee90">
-                                            <td style="width: 20%">Divisi Id</td>
-                                            <td align="center">Nama Divisi</td>
+                                            <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
+                                            <td align="center" class="list-label-divisi-name">Nama Divisi</td>
                                             <td align="center">Quantity</td>
                                             <td align="center">Nilai</td>
                                             <td align="center">Sub Total</td>
@@ -590,12 +681,12 @@
                                     </table>
                                 </div>
                                 <div class="col-md-10 col-md-offset-1">
-                                    <label>Periode Mei</label>
+                                    <label>Mei</label>
                                     <table class="table table-bordered table-striped" style="font-size: 15px;">
                                         <thead>
                                         <tr bgcolor="#90ee90">
-                                            <td style="width: 20%">Divisi Id</td>
-                                            <td align="center">Nama Divisi</td>
+                                            <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
+                                            <td align="center" class="list-label-divisi-name">Nama Divisi</td>
                                             <td align="center">Quantity</td>
                                             <td align="center">Nilai</td>
                                             <td align="center">Sub Total</td>
@@ -619,12 +710,12 @@
                                     </table>
                                 </div>
                                 <div class="col-md-10 col-md-offset-1">
-                                    <label>Periode Juni</label>
+                                    <label>Juni</label>
                                     <table class="table table-bordered table-striped" style="font-size: 15px;">
                                         <thead>
                                         <tr bgcolor="#90ee90">
-                                            <td style="width: 20%">Divisi Id</td>
-                                            <td align="center">Nama Divisi</td>
+                                            <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
+                                            <td align="center" class="list-label-divisi-name">Nama Divisi</td>
                                             <td align="center">Quantity</td>
                                             <td align="center">Nilai</td>
                                             <td align="center">Sub Total</td>
@@ -648,12 +739,12 @@
                                     </table>
                                 </div>
                                 <div class="col-md-10 col-md-offset-1">
-                                    <label>Periode Juli</label>
+                                    <label>Juli</label>
                                     <table class="table table-bordered table-striped" style="font-size: 15px;">
                                         <thead>
                                         <tr bgcolor="#90ee90">
-                                            <td style="width: 20%">Divisi Id</td>
-                                            <td align="center">Nama Divisi</td>
+                                            <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
+                                            <td align="center" class="list-label-divisi-name">Nama Divisi</td>
                                             <td align="center">Quantity</td>
                                             <td align="center">Nilai</td>
                                             <td align="center">Sub Total</td>
@@ -677,12 +768,12 @@
                                     </table>
                                 </div>
                                 <div class="col-md-10 col-md-offset-1">
-                                    <label>Periode Agustus</label>
+                                    <label>Agustus</label>
                                     <table class="table table-bordered table-striped" style="font-size: 15px;">
                                         <thead>
                                         <tr bgcolor="#90ee90">
-                                            <td style="width: 20%">Divisi Id</td>
-                                            <td align="center">Nama Divisi</td>
+                                            <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
+                                            <td align="center" class="list-label-divisi-name">Nama Divisi</td>
                                             <td align="center">Quantity</td>
                                             <td align="center">Nilai</td>
                                             <td align="center">Sub Total</td>
@@ -706,12 +797,12 @@
                                     </table>
                                 </div>
                                 <div class="col-md-10 col-md-offset-1">
-                                    <label>Periode September</label>
+                                    <label>September</label>
                                     <table class="table table-bordered table-striped" style="font-size: 15px;">
                                         <thead>
                                         <tr bgcolor="#90ee90">
-                                            <td style="width: 20%">Divisi Id</td>
-                                            <td align="center">Nama Divisi</td>
+                                            <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
+                                            <td align="center" class="list-label-divisi-name">Nama Divisi</td>
                                             <td align="center">Quantity</td>
                                             <td align="center">Nilai</td>
                                             <td align="center">Sub Total</td>
@@ -735,12 +826,12 @@
                                     </table>
                                 </div>
                                 <div class="col-md-10 col-md-offset-1">
-                                    <label>Periode Oktober</label>
+                                    <label>Oktober</label>
                                     <table class="table table-bordered table-striped" style="font-size: 15px;">
                                         <thead>
                                         <tr bgcolor="#90ee90">
-                                            <td style="width: 20%">Divisi Id</td>
-                                            <td align="center">Nama Divisi</td>
+                                            <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
+                                            <td align="center" class="list-label-divisi-name">Nama Divisi</td>
                                             <td align="center">Quantity</td>
                                             <td align="center">Nilai</td>
                                             <td align="center">Sub Total</td>
@@ -764,12 +855,12 @@
                                     </table>
                                 </div>
                                 <div class="col-md-10 col-md-offset-1">
-                                    <label>Periode November</label>
+                                    <label>November</label>
                                     <table class="table table-bordered table-striped" style="font-size: 15px;">
                                         <thead>
                                         <tr bgcolor="#90ee90">
-                                            <td style="width: 20%">Divisi Id</td>
-                                            <td align="center">Nama Divisi</td>
+                                            <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
+                                            <td align="center" class="list-label-divisi-name">Nama Divisi</td>
                                             <td align="center">Quantity</td>
                                             <td align="center">Nilai</td>
                                             <td align="center">Sub Total</td>
@@ -793,12 +884,12 @@
                                     </table>
                                 </div>
                                 <div class="col-md-10 col-md-offset-1">
-                                    <label>Periode Desember</label>
+                                    <label>Desember</label>
                                     <table class="table table-bordered table-striped" style="font-size: 15px;">
                                         <thead>
                                         <tr bgcolor="#90ee90">
-                                            <td style="width: 20%">Divisi Id</td>
-                                            <td align="center">Nama Divisi</td>
+                                            <td style="width: 20%" class="list-label-divisi-id">Divisi Id</td>
+                                            <td align="center" class="list-label-divisi-name">Nama Divisi</td>
                                             <td align="center">Quantity</td>
                                             <td align="center">Nilai</td>
                                             <td align="center">Sub Total</td>
@@ -951,15 +1042,34 @@
     var status      = '<s:property value="status" />';
     var rekeningid  = '<s:property value="id" />';
     var trans       = '<s:property value="trans" />';
+    var flagDivisi  = '<s:property value="budgeting.flagDivisi"/>';
+    var flagMaster  = '<s:property value="budgeting.flagMaster"/>';
+    var tipeCoa     = '<s:property value="budgeting.tipeCoa"/>';
 
     var form = { "budgeting.tahun":tahun, "budgeting.branchId":unit, "budgeting.tipe":tipe };
 
-//    var listOfCoa = [];
     $( document ).ready(function() {
-//        console.log("hasil >>> "+unit+tahun+tipe);
         comboTipe();
         search();
+        enableDisable();
     });
+
+    function enableDisable() {
+        if (flagDivisi == "N" && flagMaster == "N"){
+            $("#form-divisi").hide();
+            $("#form-master").hide();
+            $("#form-periode").hide();
+            $("#btn-save-add").html("<i class='fa fa-plus'></i> Add Investasi");
+            $(".list-label-divisi-id").text("Investasi Id");
+            $(".list-label-divisi-name").text("Nama Investasi");
+        }
+        if (flagDivisi == "N"){
+            $("#form-divisi").hide();
+        }
+        if (flagMaster == "N"){
+            $("#form-master").hide();
+        }
+    }
 
     function comboTipe() {
         var label = "";
