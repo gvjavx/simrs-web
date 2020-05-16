@@ -57,8 +57,7 @@ public class BudgetingBoImpl implements BudgetingBo {
             for (ItAkunBudgetingEntity budgetingEntity : budgetingEntities){
                 budgeting = new Budgeting();
                 budgeting.setIdBudgeting(budgetingEntity.getIdBudgeting());
-                budgeting.setNoBudgeting(budgetingEntity.getNoBudgeting());
-                budgeting.setTahun(budgeting.getTahun());
+                budgeting.setTahun(budgetingEntity.getTahun());
                 budgeting.setBranchId(budgetingEntity.getBranchId());
                 budgeting.setRekeningId(budgetingEntity.getRekeningId());
                 budgeting.setStatus(budgetingEntity.getStatus());
@@ -73,6 +72,13 @@ public class BudgetingBoImpl implements BudgetingBo {
                 budgeting.setQuartal4(nullEscape(budgetingEntity.getQuartal4()));
                 budgeting.setSelisih(nullEscape(budgetingEntity.getSelisih()));
                 budgeting.setApproveFlag(budgetingEntity.getApproveFlag());
+                if (budgeting.getApproveFlag() != null){
+                    budgeting.setNoBudgeting(budgetingEntity.getNoBudgeting());
+                } else {
+                    String[] arrStatus = budgeting.getStatus().split("_",2);
+                    String statusTrans = arrStatus[1].toString();
+                    budgeting.setNoBudgeting(noBudgetingSebelumnya(statusTrans,budgetingEntity.getTahun(),budgetingEntity.getBranchId(),budgetingEntity.getRekeningId()));
+                }
                 budgeting.setApproveWho(budgetingEntity.getApproveWho());
                 budgeting.setApproveTime(budgetingEntity.getApproveTime());
                 budgeting.setFlag(budgetingEntity.getFlag());
@@ -81,9 +87,9 @@ public class BudgetingBoImpl implements BudgetingBo {
                 budgeting.setCreatedWho(budgetingEntity.getCreatedWho());
                 budgeting.setLastUpdate(budgetingEntity.getLastUpdate());
                 budgeting.setLastUpdateWho(budgetingEntity.getLastUpdateWho());
-                budgeting.setNilaiDraf(getSumNilaiTotalByStatus(budgetingEntity.getRekeningId(), budgetingEntity.getBranchId(), budgetingEntity.getTahun(), "DRAFT"));
-                budgeting.setNilaiFinal(getSumNilaiTotalByStatus(budgetingEntity.getRekeningId(), budgetingEntity.getBranchId(), budgetingEntity.getTahun(), "FINAL"));
-                budgeting.setNilaiRevisi(getSumNilaiTotalByStatus(budgetingEntity.getRekeningId(), budgetingEntity.getBranchId(), budgetingEntity.getTahun(), "REVISI"));
+                budgeting.setNilaiDraf(getSumNilaiTotalByStatus(budgetingEntity.getRekeningId(), budgetingEntity.getBranchId(), budgetingEntity.getTahun(), "DRAFT", "Y"));
+                budgeting.setNilaiFinal(getSumNilaiTotalByStatus(budgetingEntity.getRekeningId(), budgetingEntity.getBranchId(), budgetingEntity.getTahun(), "FINAL", "Y"));
+                budgeting.setNilaiRevisi(getSumNilaiTotalByStatus(budgetingEntity.getRekeningId(), budgetingEntity.getBranchId(), budgetingEntity.getTahun(), "REVISI", "Y"));
 
                 budgeting.setJanuari(nullEscape(budgetingEntity.getJanuari()));
                 budgeting.setFebruari(nullEscape(budgetingEntity.getFebruari()));
@@ -122,12 +128,25 @@ public class BudgetingBoImpl implements BudgetingBo {
         return budgetings;
     }
 
+    private String noBudgetingSebelumnya(String status, String tahun, String branchId, String rekeningId){
+        String noBudgeting = "";
+        if (!"DRAFT".equalsIgnoreCase(status)){
+            if ("FINAL".equalsIgnoreCase(status)){
+                status = "DRAFT";
+            } else if ("REVISI".equalsIgnoreCase(status)){
+                status = "FINAL";
+            }
+            noBudgeting = budgetingDao.getNoSebelumnya(tahun,branchId,rekeningId,status);
+        }
+        return noBudgeting;
+    }
+
     private BigDecimal nullEscape(BigDecimal nilai){
         return nilai == null ? new BigDecimal(0) : nilai;
     }
 
-    private BigDecimal getSumNilaiTotalByStatus(String rekeningId, String branchId, String tahun, String status){
-        return budgetingDao.getSumNilaiByStatus(rekeningId, branchId, tahun, status);
+    private BigDecimal getSumNilaiTotalByStatus(String rekeningId, String branchId, String tahun, String status, String approveFlag){
+        return budgetingDao.getSumNilaiByStatus(rekeningId, branchId, tahun, status, approveFlag);
     }
 
     public List<ItAkunBudgetingEntity> getListBudgetingEntityByCriteria(Budgeting bean){

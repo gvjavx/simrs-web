@@ -179,18 +179,18 @@
                                         </s:if>
                                         <s:if test='budgeting.tipe == "bulanan"'>
                                             <td align="center">Total</td>
-                                            <td align="center">Januari</td>
-                                            <td align="center">Februari</td>
-                                            <td align="center">Maret</td>
-                                            <td align="center">April</td>
-                                            <td align="center">Mei</td>
-                                            <td align="center">Juni</td>
-                                            <td align="center">Juli</td>
-                                            <td align="center">Agustus</td>
-                                            <td align="center">September</td>
-                                            <td align="center">Oktober</td>
-                                            <td align="center">November</td>
-                                            <td align="center">Desember</td>
+                                            <td align="center">Bulan 1</td>
+                                            <td align="center">Bulan 2</td>
+                                            <td align="center">Bulan 3</td>
+                                            <td align="center">Bulan 4</td>
+                                            <td align="center">Bulan 5</td>
+                                            <td align="center">Bulan 6</td>
+                                            <td align="center">Bulan 7</td>
+                                            <td align="center">Bulan 8</td>
+                                            <td align="center">Bulan 9</td>
+                                            <td align="center">Bulan 10</td>
+                                            <td align="center">Bulan 11</td>
+                                            <td align="center">Bulan 12</td>
                                             <td align="center">Selisih</td>
                                         </s:if>
                                         <td align="center">Action</td>

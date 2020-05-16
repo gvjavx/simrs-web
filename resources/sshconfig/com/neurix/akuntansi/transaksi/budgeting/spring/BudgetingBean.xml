@@ -17,6 +17,7 @@
           p:budgetingDetailDao-ref="budgetingDetailDao"
           p:budgetingPengadaanDao-ref="budgetingPengadaanDao"
           p:kodeRekeningDao-ref="kodeRekeningDao"
+          p:masterDao-ref="masterDao"
     />
 
     <bean id="budgetingBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
