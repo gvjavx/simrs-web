@@ -3382,4 +3382,46 @@ public class CheckupAction extends BaseMasterAction {
 
         return vendorList;
     }
+
+    public List<HeaderCheckup> getListHistoryPasien(String idPasien){
+        List<HeaderCheckup> checkupList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+        if(idPasien != null){
+            try {
+                checkupList = checkupBo.getHistoryPasien(idPasien);
+            }catch (HibernateException e){
+                logger.error("Found Error "+e.getMessage());
+            }
+        }
+        return checkupList;
+    }
+
+    public List<HeaderCheckup> getListDetailHistoryPasien(String id, String keterangan){
+        List<HeaderCheckup> checkupList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+        if(id != null && keterangan != null){
+            try {
+                checkupList = checkupBo.getListDetailHistory(id, keterangan);
+            }catch (HibernateException e){
+                logger.error("Found Error "+e.getMessage());
+            }
+        }
+        return checkupList;
+    }
+
+    public List<HeaderCheckup> getListVideoRm(String id){
+        List<HeaderCheckup> checkupList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+        if(id != null){
+            try {
+                checkupList = checkupBo.getListVedioRm(id);
+            }catch (HibernateException e){
+                logger.error("Found Error "+e.getMessage());
+            }
+        }
+        return checkupList;
+    }
 }

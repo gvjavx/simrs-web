@@ -255,7 +255,7 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                                 "INNER JOIN it_simrs_periksa_radiologi b ON a.id_periksa_lab = b.id_periksa_lab\n" +
                                 "INNER JOIN im_simrs_lab_detail c ON b.id_lab_detail = c.id_lab_detail\n" +
                                 "INNER JOIN im_simrs_lab d ON a.id_lab = d.id_lab\n" +
-                                "WHERE a.id_periksa_lab = :idPeriksa\n" +
+                                "WHERE a.id_periksa_lab = :idPeriksa AND b.flag = 'Y'\n" +
                                 "GROUP BY a.id_periksa_lab, d.nama_lab";
 
                         List<Object[]> results = new ArrayList<>();
@@ -279,7 +279,7 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                                 "INNER JOIN it_simrs_periksa_lab_detail b ON a.id_periksa_lab = b.id_periksa_lab\n" +
                                 "INNER JOIN im_simrs_lab_detail c ON b.id_lab_detail = c.id_lab_detail\n" +
                                 "INNER JOIN im_simrs_lab d ON a.id_lab = d.id_lab\n" +
-                                "WHERE a.id_periksa_lab = :idPeriksa\n" +
+                                "WHERE a.id_periksa_lab = :idPeriksa AND b.flag = 'Y'\n" +
                                 "GROUP BY a.id_periksa_lab, d.nama_lab\n";
 
                         List<Object[]> results = new ArrayList<>();

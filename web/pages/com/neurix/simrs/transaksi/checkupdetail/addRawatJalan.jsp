@@ -3657,7 +3657,7 @@
         $('#lab_kategori').val(idKategoriLab).trigger('change');
         var idParameter = [];
         PeriksaLabAction.listParameterPemeriksaan(id, kategoriName, function (response) {
-            if (response != null) {
+            if (response.length > 0) {
                 $.each(response, function (i, item) {
                     idParameter.push(item.idLabDetail);
                 });

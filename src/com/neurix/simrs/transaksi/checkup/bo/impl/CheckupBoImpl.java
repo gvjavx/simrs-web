@@ -2398,6 +2398,50 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
     }
 
     @Override
+    public HeaderCheckup getLastDataPasienByIdPasien(String idPasien) throws GeneralBOException {
+        HeaderCheckup headerCheckup = new HeaderCheckup();
+        try{
+            headerCheckup = headerCheckupDao.getDataPasienByIdPasien(idPasien);
+        }catch (HibernateException e){
+            logger.error("Found error "+e.getMessage());
+        }
+        return headerCheckup;
+    }
+
+    @Override
+    public List<HeaderCheckup> getHistoryPasien(String idPasien) throws GeneralBOException {
+        List<HeaderCheckup> headerCheckupList = new ArrayList<>();
+        try{
+            headerCheckupList = headerCheckupDao.getListHistoryPasien(idPasien);
+        }catch (HibernateException e){
+            logger.error("Found error "+e.getMessage());
+        }
+        return headerCheckupList;
+    }
+
+    @Override
+    public List<HeaderCheckup> getListDetailHistory(String id, String keterangan) throws GeneralBOException {
+        List<HeaderCheckup> headerCheckupList = new ArrayList<>();
+        try{
+            headerCheckupList = headerCheckupDao.getListDetailHistoryPasien(id, keterangan);
+        }catch (HibernateException e){
+            logger.error("Found error "+e.getMessage());
+        }
+        return headerCheckupList;
+    }
+
+    @Override
+    public List<HeaderCheckup> getListVedioRm(String id) throws GeneralBOException {
+        List<HeaderCheckup> headerCheckupList = new ArrayList<>();
+        try{
+            headerCheckupList = headerCheckupDao.getListVideoRm(id);
+        }catch (HibernateException e){
+            logger.error("Found error "+e.getMessage());
+        }
+        return headerCheckupList;
+    }
+
+    @Override
     public List<MasterVendor> getComboListPtpn() throws GeneralBOException {
         List<MasterVendor> vendorList = new ArrayList<>();
         try {

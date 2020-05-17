@@ -59,6 +59,13 @@ public class Budgeting {
     private BigDecimal november;
     private BigDecimal desember;
 
+    private String tipeCoa;
+    private String flagDivisi;
+    private String flagMaster;
+    private String masterId;
+    private String masterName;
+    private String branchName;
+
     public static Comparator<Budgeting> kodeRekeningSorting = new Comparator<Budgeting>() {
 
         public int compare(Budgeting s1, Budgeting s2) {
@@ -462,5 +469,53 @@ public class Budgeting {
 
     public void setDesember(BigDecimal desember) {
         this.desember = desember;
+    }
+
+    public String getTipeCoa() {
+        return tipeCoa;
+    }
+
+    public void setTipeCoa(String tipeCoa) {
+        this.tipeCoa = tipeCoa;
+    }
+
+    public String getFlagDivisi() {
+        return flagDivisi;
+    }
+
+    public void setFlagDivisi(String flagDivisi) {
+        this.flagDivisi = flagDivisi;
+    }
+
+    public String getFlagMaster() {
+        return flagMaster;
+    }
+
+    public void setFlagMaster(String flagMaster) {
+        this.flagMaster = flagMaster;
+    }
+
+    public String getMasterId() {
+        return masterId;
+    }
+
+    public void setMasterId(String masterId) {
+        this.masterId = masterId;
+    }
+
+    public String getMasterName() {
+        return masterName;
+    }
+
+    public void setMasterName(String masterName) {
+        this.masterName = masterName;
+    }
+
+    public String getBranchName() {
+        return branchName;
+    }
+
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
     }
 }

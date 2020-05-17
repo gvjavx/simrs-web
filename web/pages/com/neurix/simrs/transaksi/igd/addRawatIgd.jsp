@@ -3866,7 +3866,7 @@
                     var lab = "-";
                     var tanggal = item.createdDate;
                     var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
-                    var btn = '<img border="0" class="hvr-grow" onclick="editLab(\'' + item.idPeriksaLab + '\',\'' + item.idLab + '\',\'' + item.idKategoriLab + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">';
+                    var btn = '<img border="0" class="hvr-grow" onclick="editLab(\'' + item.idPeriksaLab + '\',\'' + item.idLab + '\',\'' + item.idKategoriLab + '\',\''+item.kategoriLabName+'\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">';
 
                     var tipe = "";
 
@@ -4079,15 +4079,14 @@
         $('#modal-diagnosa').modal({show:true, backdrop:'static'});
     }
 
-    function editLab(id, idLab, idKategoriLab) {
+    function editLab(id, idLab, idKategoriLab, kategoriName) {
         $('#load_lab, #warning_lab, #war_kategori_lab, #war_lab, #war_parameter').hide();
         $('#save_lab').attr('onclick', 'saveLab(\'' + id + '\')').show();
         $('#lab_kategori').val(idKategoriLab).trigger('change');
         var idParameter = [];
-        PeriksaLabAction.listParameterPemeriksaan(id, function (response) {
-            data = response;
-            if (data != null) {
-                $.each(data, function (i, item) {
+        PeriksaLabAction.listParameterPemeriksaan(id, kategoriName, function (response) {
+            if (response.length > 0) {
+                $.each(response, function (i, item) {
                     idParameter.push(item.idLabDetail);
                 });
             }
