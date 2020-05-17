@@ -1057,12 +1057,12 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 for (Object[] obj : results) {
                     HeaderCheckup checkup = new HeaderCheckup();
                     checkup.setNoCheckup(obj[0] == null ? "" : obj[0].toString());
-                    checkup.setIdDetailCheckup(obj[1] == null ? "" : obj[2].toString());
-                    checkup.setNamaPelayanan(obj[2] == null ? "" : obj[3].toString());
-                    checkup.setCreatedDate(obj[3] == null ? null : (Timestamp) obj[4]);
-                    checkup.setTglKeluar(obj[4] == null ? null : (Timestamp) obj[5]);
+                    checkup.setIdDetailCheckup(obj[1] == null ? "" : obj[1].toString());
+                    checkup.setNamaPelayanan(obj[2] == null ? "" : obj[2].toString());
+                    checkup.setCreatedDate(obj[3] == null ? null : (Timestamp) obj[3]);
+                    checkup.setTglKeluar(obj[4] == null ? null : (Timestamp) obj[4]);
                     if (obj[5] != null) {
-                        checkup.setVideoRm(CommonConstant.EXTERNAL_IMG_URI + obj[5].toString());
+                        checkup.setVideoRm(CommonUtil.getPropertyParams("upload.folder") + obj[5].toString());
                     }
                     checkupList.add(checkup);
                 }
