@@ -4824,7 +4824,7 @@
         $('#save_lab').attr('onclick', 'saveLab(\'' + id + '\')').show();
         $('#lab_kategori').val(idKategoriLab).trigger('change');
         var idParameter = [];
-        PeriksaLabAction.listParameterPemeriksaan(id, function (response) {
+        PeriksaLabAction.listParameterPemeriksaan(id, kategoriName, function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {
                     idParameter.push(item.idLabDetail);

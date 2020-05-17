@@ -891,7 +891,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "INNER JOIN it_simrs_riwayat_tindakan c ON b.id_detail_checkup = c.id_detail_checkup\n" +
                     "INNER JOIN im_simrs_pelayanan d ON b.id_pelayanan = d.id_pelayanan\n" +
                     "WHERE a.id_pasien = :id AND a.branch_id = :branchId AND b.status_periksa = '3'\n" +
-                    "AND c.keterangan NOT LIKE 'kamar' ORDER BY b.id_detail_checkup DESC, c.tanggal_tindakan ASC";
+                    "AND is_kamar IS NULL ORDER BY b.id_detail_checkup DESC, c.tanggal_tindakan ASC";
 
             List<Object[]> results = new ArrayList<>();
             results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)

@@ -67,7 +67,7 @@ public class RiwayatTindakanDao extends GenericDao<ItSimrsRiwayatTindakanEntity,
         List<RiwayatTindakan> riwayatTindakanList = new ArrayList<>();
 
         String SQL = "SELECT id_tindakan, id_detail_checkup FROM it_simrs_riwayat_tindakan \n" +
-                "WHERE CAST(created_date AS date) = CURRENT_DATE AND id_detail_checkup = :idDetail AND keterangan = 'kamar'";
+                "WHERE CAST(created_date AS date) = CURRENT_DATE AND id_detail_checkup = :idDetail AND is_kamar = 'Y'";
 
         List<Object[]> result = new ArrayList<>();
 
