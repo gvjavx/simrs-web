@@ -26,6 +26,15 @@ public class ItSimrsTransaksiStokEntity implements Serializable {
     private String lastUpdateWho;
     private String idVendor;
     private String idBarang;
+    private String idPelayanan;
+
+    public String getIdPelayanan() {
+        return idPelayanan;
+    }
+
+    public void setIdPelayanan(String idPelayanan) {
+        this.idPelayanan = idPelayanan;
+    }
 
     public String getIdTransaksi() {
         return idTransaksi;

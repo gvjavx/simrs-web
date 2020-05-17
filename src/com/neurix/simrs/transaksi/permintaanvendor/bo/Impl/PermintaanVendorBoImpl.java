@@ -743,6 +743,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                                 obatDetail.setTipeObat(batchEntity.getFlagObatBpjs());
                                 obatDetail.setNetto(batchEntity.getNetto());
                                 obatDetail.setIdVendor(bean.getIdVendor());
+                                obatDetail.setIdPelayanan(bean.getIdPelayanan());
                                 //update stock and new harga rata-rata
                                 updateAddStockGudang(obatDetail);
                             }
@@ -917,8 +918,8 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
             ttlQtyPermintaan = bean.getQtyApprove().multiply(cons);
             ttlAvgHargaPermintaan = (bean.getNetto().divide(new BigDecimal(cons), 2, RoundingMode.HALF_UP))
                     .multiply(new BigDecimal(ttlQtyPermintaan));
-
-            newObatEntity.setHargaTerakhir(bean.getNetto());
+//            ttlAvgHargaPermintaan = bean.getNetto().divide(new BigDecimal(ttlQtyPermintaan), 2, RoundingMode.HALF_UP);
+            newObatEntity.setHargaTerakhir(bean.getNetto().divide(new BigDecimal(cons), 2, RoundingMode.HALF_UP));
         }
         if ("lembar".equalsIgnoreCase(bean.getJenisSatuan())) {
             qtyLembar = bean.getQtyApprove();
@@ -926,15 +927,15 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
             ttlQtyPermintaan = bean.getQtyApprove().multiply(obatEntity.getBijiPerLembar());
             ttlAvgHargaPermintaan = (bean.getNetto().divide(new BigDecimal(obatEntity.getBijiPerLembar()), 2, RoundingMode.HALF_UP))
                     .multiply(new BigDecimal(ttlQtyPermintaan));
-
-            newObatEntity.setHargaTerakhir(bean.getNetto());
+//            ttlAvgHargaPermintaan = bean.getNetto().divide(new BigDecimal(ttlQtyPermintaan), 2, RoundingMode.HALF_UP);
+            newObatEntity.setHargaTerakhir(bean.getNetto().divide(new BigDecimal(obatEntity.getBijiPerLembar()), 2, RoundingMode.HALF_UP));
         }
         if ("biji".equalsIgnoreCase(bean.getJenisSatuan())) {
             qtyBiji = bean.getQtyApprove();
 
             ttlQtyPermintaan = bean.getQtyApprove();
-            ttlAvgHargaPermintaan = bean.getNetto().multiply(new BigDecimal(ttlQtyPermintaan));
-
+            ttlAvgHargaPermintaan = bean.getNetto();
+//            ttlAvgHargaPermintaan = bean.getNetto().divide(new BigDecimal(ttlQtyPermintaan), 2, RoundingMode.HALF_UP);
             newObatEntity.setHargaTerakhir(bean.getNetto());
         }
 
@@ -979,12 +980,12 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         }
 
         updateAllNewAverageHargaByObatId(bean.getIdObat(), newObatEntity.getAverageHargaBox(), newObatEntity.getAverageHargaLembar(), newObatEntity.getAverageHargaBiji());
-        saveToRiwayatBarangMasuk(obatEntity, bean.getIdVendor());
+        saveToRiwayatBarangMasuk(newObatEntity, bean.getIdVendor(), bean.getIdPelayanan());
 
         logger.info("[PermintaanVendorBoImpl.updateAddStockGudang] END <<<");
     }
 
-    private void saveToRiwayatBarangMasuk(ImSimrsObatEntity obatEntity, String idVendor) throws GeneralBOException{
+    private void saveToRiwayatBarangMasuk(ImSimrsObatEntity obatEntity, String idVendor, String idPelayanan) throws GeneralBOException{
         logger.info("[PermintaanVendorBoImpl.saveToRiwayatBarangMasuk] START >>>");
 
         if (obatEntity != null){
@@ -992,7 +993,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
             ImBranchesPK branchesPK = new ImBranchesPK();
             branchesPK.setId(obatEntity.getBranchId());
 
-            ImBranches branches = branchDao.getById("primaryKey.id", branchesPK);
+            ImBranches branches = branchDao.getById("primaryKey", branchesPK);
             String branchName = "";
             if (branches != null){
                 branchName = branches.getBranchName();
@@ -1010,18 +1011,20 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
             BigInteger boxToBiji = obatEntity.getQtyBox().multiply(cons);
             BigInteger lembarToBiji = obatEntity.getQtyLembar().multiply(obatEntity.getBijiPerLembar());
             BigInteger qty = obatEntity.getQtyBiji().add(lembarToBiji).add(boxToBiji);
-            BigDecimal hargaBarang = obatEntity.getHargaTerakhir().divide(new BigDecimal(cons) ,2, RoundingMode.HALF_UP);
+
+
+//            BigDecimal hargaBarang = obatEntity.getHargaTerakhir().divide(new BigDecimal(cons) ,2, RoundingMode.HALF_UP);
+            BigDecimal hargaBarang = obatEntity.getAverageHargaBiji();
 
             java.util.Date now = new java.util.Date();
             SimpleDateFormat f = new SimpleDateFormat("yyyyMMdd");
-
             String seq = riwayatBarangDao.getNextSeq();
             String idBarangMasuk = "RB"+ obatEntity.getBranchId() + f.format(now) + seq;
 
             ItSimrsTransaksiStokEntity transaksiStokEntity = new ItSimrsTransaksiStokEntity();
             transaksiStokEntity.setIdTransaksi(idBarangMasuk);
             transaksiStokEntity.setIdObat(obatEntity.getIdObat());
-            transaksiStokEntity.setKeterangan("Barang Masuk Pada"+ branchName + " Nama Barang " + obatEntity.getNamaObat() + "Dari Vendor : " + vendorName);
+            transaksiStokEntity.setKeterangan("Barang Masuk Pada Gudang Farmasi "+ branchName + ". Nama Barang " + obatEntity.getNamaObat() + ". Dari Vendor " + vendorName);
             transaksiStokEntity.setTipe("D");
             transaksiStokEntity.setBranchId(obatEntity.getBranchId());
             transaksiStokEntity.setQty(qty);
@@ -1032,6 +1035,9 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
             transaksiStokEntity.setCreatedWho(obatEntity.getLastUpdateWho());
             transaksiStokEntity.setLastUpdate(obatEntity.getLastUpdate());
             transaksiStokEntity.setLastUpdateWho(obatEntity.getLastUpdateWho());
+            transaksiStokEntity.setIdVendor(idVendor);
+            transaksiStokEntity.setIdBarang(obatEntity.getIdBarang());
+            transaksiStokEntity.setIdPelayanan(idPelayanan);
 
             try {
                 transaksiStokDao.addAndSave(transaksiStokEntity);

@@ -17,8 +17,8 @@
         <property name="keterangan">
             <column name="keterangan" sql-type="text" not-null="false"/>
         </property>
-        <property name="keterangan">
-            <column name="keterangan" sql-type="text" not-null="false"/>
+        <property name="tipe">
+            <column name="tipe" sql-type="varchar" length="1" not-null="false"/>
         </property>
         <property name="branchId">
             <column name="branch_id" sql-type="varchar" length="10" not-null="false"/>
@@ -52,6 +52,9 @@
         </property>
         <property name="idBarang">
             <column name="id_barang" sql-type="varchar" length="100" not-null="false"/>
+        </property>
+        <property name="idPelayanan">
+            <column name="id_pelayanan" sql-type="varchar" length="50" not-null="false"/>
         </property>
 
     </class>
