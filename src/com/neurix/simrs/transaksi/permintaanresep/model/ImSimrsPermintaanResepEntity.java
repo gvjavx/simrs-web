@@ -33,6 +33,16 @@ public class ImSimrsPermintaanResepEntity implements Serializable {
     private String ttdApoteker;
     private String idApoteker;
 
+    private String isRead;
+
+    public String getIsRead() {
+        return isRead;
+    }
+
+    public void setIsRead(String isRead) {
+        this.isRead = isRead;
+    }
+
     public String getJenisResep() {
         return jenisResep;
     }

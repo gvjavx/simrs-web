@@ -43,7 +43,6 @@
     <section class="content-header">
         <h1>
             Verifikasi Permintaan Purchase Order (PO)
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -777,7 +776,7 @@
     function cekObat(value, idObat, qty, idDetail, nama, jenis, harga, idApp, lembarPerBox, bijiPerlembar,noBt, sumQty, diskon, bruto, netto){
         var functions, mapped;
         $('#pabrik'+idObat).typeahead({
-            minLength: 3,
+            minLength: 5,
             source: function (query, process) {
                 functions = [];
                 mapped = {};
@@ -811,11 +810,16 @@
             updater: function (item) {
                 var selectedObj = mapped[item];
                 if(selectedObj.id == idObat){
+                    var jml = "";
+                    if(sumQty != null && sumQty != ''){
+                        jml = parseInt(qty) - parseInt(sumQty);
+                    }
+
                     $('#app_expired').val('');
                     $('#app_lembar_perbox, #kon_lembar').val(lembarPerBox);
                     $('#app_biji_perlembar, #kon_biji').val(bijiPerlembar);
                     $('#app_qty').val(qty);
-                    $('#app_qty_app').val(sumQty);
+                    $('#app_qty_app').val(jml);
                     if(diskon != null && diskon != ''
                         && bruto != null && bruto != ''
                         && netto != null && netto != ''){
@@ -953,13 +957,16 @@
         var qtyApproveValue = $('#qtyApprove'+id).text();
         var qtyApprove = 0;
         var totalQtyApp= 0;
+        var limitQty = qtyReq;
 
         if(qtyApproveValue != '') {
             qtyApprove = qtyApproveValue;
+            limitQty = parseInt(qtyReq) - parseInt(qtyApprove);
+
         }
 
         if(qty != '' && lembarPerBox != '' && bijiPerLembar != '' && expired != '' && diskon != '' && bruto != '' ){
-            if(parseInt(qty) <= parseInt(qtyReq)) {
+            if(parseInt(qty) <= parseInt(limitQty)) {
                 $('#modal-confirm-dialog').modal('show');
                 $('#save_con').attr('onclick','saveApprove(\'' + id + '\',\'' + idDetail + '\',\'' + qty + '\',\'' + idPabrik + '\',\'' + lembarPerBox + '\',\'' + bijiPerLembar + '\',\'' + noBt + '\',\'' + expired + '\',\'' + totalQtyApp + '\',\'' + qtyReq + '\',\'' + qtyApprove + '\')');
             }else{
@@ -1022,6 +1029,7 @@
                 }
                 $('#qtyApprove' + id).text(totalQtyApp);
                 $('#info_dialog').dialog('open');
+                $('body').scrollTop(0);
             } else {
                 $('#save_obat').show();
                 $('#load_obat').hide();
@@ -1073,6 +1081,7 @@
                     $('#modal-obat').modal('hide');
                     $('#info_dialog').dialog('open');
                     $('#close_pos').val(1);
+                    $('body').scrollTop(0);
                     // listNewObat(idApp);
                     // $('#approve' + idObat).html("Dibuatkan obat baru").addClass("label label-warning");
                 } else {

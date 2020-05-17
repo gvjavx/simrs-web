@@ -46,6 +46,25 @@ public class Budgeting {
     private BigDecimal nilaiAwal;
     private String flagDisable;
 
+    private BigDecimal januari;
+    private BigDecimal februari;
+    private BigDecimal maret;
+    private BigDecimal april;
+    private BigDecimal mei;
+    private BigDecimal juni;
+    private BigDecimal juli;
+    private BigDecimal agustus;
+    private BigDecimal september;
+    private BigDecimal oktober;
+    private BigDecimal november;
+    private BigDecimal desember;
+
+    private String tipeCoa;
+    private String flagDivisi;
+    private String flagMaster;
+    private String masterId;
+    private String masterName;
+    private String branchName;
 
     public static Comparator<Budgeting> kodeRekeningSorting = new Comparator<Budgeting>() {
 
@@ -354,5 +373,149 @@ public class Budgeting {
 
     public void setStLevel(String stLevel) {
         this.stLevel = stLevel;
+    }
+
+    public BigDecimal getJanuari() {
+        return januari;
+    }
+
+    public void setJanuari(BigDecimal januari) {
+        this.januari = januari;
+    }
+
+    public BigDecimal getFebruari() {
+        return februari;
+    }
+
+    public void setFebruari(BigDecimal februari) {
+        this.februari = februari;
+    }
+
+    public BigDecimal getMaret() {
+        return maret;
+    }
+
+    public void setMaret(BigDecimal maret) {
+        this.maret = maret;
+    }
+
+    public BigDecimal getApril() {
+        return april;
+    }
+
+    public void setApril(BigDecimal april) {
+        this.april = april;
+    }
+
+    public BigDecimal getMei() {
+        return mei;
+    }
+
+    public void setMei(BigDecimal mei) {
+        this.mei = mei;
+    }
+
+    public BigDecimal getJuni() {
+        return juni;
+    }
+
+    public void setJuni(BigDecimal juni) {
+        this.juni = juni;
+    }
+
+    public BigDecimal getJuli() {
+        return juli;
+    }
+
+    public void setJuli(BigDecimal juli) {
+        this.juli = juli;
+    }
+
+    public BigDecimal getAgustus() {
+        return agustus;
+    }
+
+    public void setAgustus(BigDecimal agustus) {
+        this.agustus = agustus;
+    }
+
+    public BigDecimal getSeptember() {
+        return september;
+    }
+
+    public void setSeptember(BigDecimal september) {
+        this.september = september;
+    }
+
+    public BigDecimal getOktober() {
+        return oktober;
+    }
+
+    public void setOktober(BigDecimal oktober) {
+        this.oktober = oktober;
+    }
+
+    public BigDecimal getNovember() {
+        return november;
+    }
+
+    public void setNovember(BigDecimal november) {
+        this.november = november;
+    }
+
+    public BigDecimal getDesember() {
+        return desember;
+    }
+
+    public void setDesember(BigDecimal desember) {
+        this.desember = desember;
+    }
+
+    public String getTipeCoa() {
+        return tipeCoa;
+    }
+
+    public void setTipeCoa(String tipeCoa) {
+        this.tipeCoa = tipeCoa;
+    }
+
+    public String getFlagDivisi() {
+        return flagDivisi;
+    }
+
+    public void setFlagDivisi(String flagDivisi) {
+        this.flagDivisi = flagDivisi;
+    }
+
+    public String getFlagMaster() {
+        return flagMaster;
+    }
+
+    public void setFlagMaster(String flagMaster) {
+        this.flagMaster = flagMaster;
+    }
+
+    public String getMasterId() {
+        return masterId;
+    }
+
+    public void setMasterId(String masterId) {
+        this.masterId = masterId;
+    }
+
+    public String getMasterName() {
+        return masterName;
+    }
+
+    public void setMasterName(String masterName) {
+        this.masterName = masterName;
+    }
+
+    public String getBranchName() {
+        return branchName;
+    }
+
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
     }
 }

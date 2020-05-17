@@ -47,4 +47,5 @@ public interface TransaksiObatBo {
 
     public List<TransaksiObatDetail> listObatResepApprove(String idApprove) throws GeneralBOException;
 
+    public List<PermintaanResep> getListNotifResep(String idPelayanan, String branchId) throws GeneralBOException;
 }

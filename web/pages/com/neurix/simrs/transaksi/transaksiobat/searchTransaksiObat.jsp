@@ -59,7 +59,6 @@
     <section class="content-header">
         <h1>
             Transaksi Apotek
-            <small>e-HEALTH</small>
         </h1>
     </section>
 

@@ -7,6 +7,9 @@ import com.neurix.akuntansi.transaksi.budgeting.bo.BudgetingBo;
 import com.neurix.akuntansi.transaksi.budgeting.model.Budgeting;
 import com.neurix.akuntansi.transaksi.budgeting.model.BudgetingDetail;
 import com.neurix.akuntansi.transaksi.budgeting.model.BudgetingPengadaan;
+import com.neurix.authorization.company.bo.BranchBo;
+import com.neurix.authorization.company.model.Branch;
+import com.neurix.authorization.company.model.ImBranches;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.CrudResponse;
@@ -35,6 +38,7 @@ import static com.neurix.akuntansi.transaksi.budgeting.action.BudgetingAction.St
 public class BudgetingAction {
     private static transient Logger logger = Logger.getLogger(BudgetingAction.class);
     private BudgetingBo budgetingBoProxy;
+    private BranchBo branchBoProxy;
     private Budgeting budgeting;
     private String id;
     private String tipe;
@@ -214,6 +218,7 @@ public class BudgetingAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfCoa");
         session.removeAttribute("listOfDetail");
+        session.removeAttribute("listOfPengadaan");
         setBudgeting(new Budgeting());
 
         logger.info("[BudgetingAction.initForm] END <<<");
@@ -236,9 +241,6 @@ public class BudgetingAction {
             if (!"".equalsIgnoreCase(obj.get("coa").toString())){
                 budgeting.setRekeningId(obj.getString("coa").toString());
             }
-//            if (!"".equalsIgnoreCase(obj.get("status").toString())){
-//                budgeting.setStatus((obj.get("status").toString()));
-//            }
             if (!"".equalsIgnoreCase(obj.get("unit").toString())){
                 budgeting.setBranchId(obj.getString("unit").toString());
             }
@@ -370,6 +372,19 @@ public class BudgetingAction {
         budgetingNew.setSelisih(nullEscape(budgetingNew.getSelisih()));
         budgetingNew.setNilaiAwal(nullEscape(budgetingNew.getNilaiAwal()));
 
+        budgetingNew.setJanuari(nullEscape(budgetingNew.getJanuari()));
+        budgetingNew.setFebruari(nullEscape(budgetingNew.getFebruari()));
+        budgetingNew.setMaret(nullEscape(budgetingNew.getMaret()));
+        budgetingNew.setApril(nullEscape(budgetingNew.getApril()));
+        budgetingNew.setMei(nullEscape(budgetingNew.getMei()));
+        budgetingNew.setJuni(nullEscape(budgetingNew.getJuni()));
+        budgetingNew.setJuli(nullEscape(budgetingNew.getJuli()));
+        budgetingNew.setAgustus(nullEscape(budgetingNew.getAgustus()));
+        budgetingNew.setSeptember(nullEscape(budgetingNew.getSeptember()));
+        budgetingNew.setOktober(nullEscape(budgetingNew.getOktober()));
+        budgetingNew.setNovember(nullEscape(budgetingNew.getNovember()));
+        budgetingNew.setDesember(nullEscape(budgetingNew.getDesember()));
+
         return budgetingNew;
     }
 
@@ -407,6 +422,19 @@ public class BudgetingAction {
                     budgeting.setQuartal4(nullEscape(budgeting.getQuartal4()));
                     budgeting.setSelisih(nullEscape(budgeting.getSelisih()));
                     budgeting.setNilaiAwal(nullEscape(budgeting.getNilaiAwal()));
+
+                    budgeting.setJanuari(nullEscape(budgeting.getJanuari()));
+                    budgeting.setFebruari(nullEscape(budgeting.getFebruari()));
+                    budgeting.setMaret(nullEscape(budgeting.getMaret()));
+                    budgeting.setApril(nullEscape(budgeting.getApril()));
+                    budgeting.setMei(nullEscape(budgeting.getMei()));
+                    budgeting.setJuni(nullEscape(budgeting.getJuni()));
+                    budgeting.setJuli(nullEscape(budgeting.getJuli()));
+                    budgeting.setAgustus(nullEscape(budgeting.getAgustus()));
+                    budgeting.setSeptember(nullEscape(budgeting.getSeptember()));
+                    budgeting.setOktober(nullEscape(budgeting.getOktober()));
+                    budgeting.setNovember(nullEscape(budgeting.getNovember()));
+                    budgeting.setDesember(nullEscape(budgeting.getDesember()));
 
                     budgetingList.add(budgeting);
                 }
@@ -474,6 +502,7 @@ public class BudgetingAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<Budgeting> budgetingSessionList = (List<Budgeting>) session.getAttribute("listOfCoa");
         List<BudgetingDetail> sessionDetail = (List<BudgetingDetail>) session.getAttribute("listOfDetail");
+        List<BudgetingPengadaan> sessionPengadaan = (List<BudgetingPengadaan>) session.getAttribute("listOfPengadaan");
 
         Budgeting budgeting = getBudgeting();
 
@@ -482,15 +511,23 @@ public class BudgetingAction {
         budgetingNew.setTipe(budgeting.getTipe());
         budgetingNew.setBranchId(budgeting.getBranchId());
 
+        if (budgetingNew.getBranchId() != null && !"".equalsIgnoreCase(budgetingNew.getBranchId())){
+            Branch branch = branchBoProxy.getBranchById(budgetingNew.getBranchId(), "Y");
+            if (branch != null){
+                budgetingNew.setBranchName(branch.getBranchName());
+            }
+        }
+
         if (budgetingSessionList == null){
             budgetingSessionList = new ArrayList<>();
         }
-
         if (sessionDetail == null){
             sessionDetail = new ArrayList<>();
         }
+        if (sessionPengadaan == null){
+            sessionPengadaan = new ArrayList<>();
+        }
 
-        logger.info("[BudgetingAction.edit] END <<<");
 
         if (!"".equalsIgnoreCase(this.id) && this.id != null){
             // medapatakan parent
@@ -499,6 +536,10 @@ public class BudgetingAction {
                 budgetingNew.setKodeRekening(budgetingList.get(0).getKodeRekening());
                 budgetingNew.setNamaKodeRekening(budgetingList.get(0).getNamaKodeRekening());
                 budgetingNew.setParentId(budgetingList.get(0).getParentId());
+                budgetingNew.setTipeCoa(budgetingList.get(0).getTipeCoa());
+                budgetingNew.setFlagMaster(budgetingList.get(0).getFlagMaster());
+                budgetingNew.setFlagDivisi(budgetingList.get(0).getFlagDivisi());
+
                 if (!"-".equalsIgnoreCase(budgetingNew.getParentId()) && !"".equalsIgnoreCase(budgetingNew.getParentId())){
                     List<Budgeting> parentList = budgetingSessionList.stream().filter(p -> p.getRekeningId().equalsIgnoreCase(budgetingNew.getParentId())).collect(Collectors.toList());
                     if (parentList.size() > 0){
@@ -526,6 +567,8 @@ public class BudgetingAction {
                 session.removeAttribute("listOfDetailEdit");
             }
 
+            logger.info("[BudgetingAction.edit] END <<<");
+
             setBudgeting(budgetingNew);
             if ("add".equalsIgnoreCase(this.status) || "edit".equalsIgnoreCase(this.status) && this.id != null){
                 return "edit_detail";
@@ -538,6 +581,7 @@ public class BudgetingAction {
 
             if (budgetingSessionList.size() == 0){
                 if (this.trans != null){
+                    List<Budgeting> listOfBudgeting = new ArrayList<>();
                     for (StatusBudgeting statusBudgeting : this.listOfStatusBudgeting()){
 
                         Budgeting searchBudgeting = new Budgeting();
@@ -550,9 +594,20 @@ public class BudgetingAction {
 
                             List<BudgetingDetail> budgetingDetailList = new ArrayList<>();
                             for (Budgeting budgetingData : budgetingList){
+
+                                // Mencari Budgeting Detail
                                 List<BudgetingDetail> budgetingDetails = budgetingBoProxy.getListBudgetingDetailByNoBudgeting(budgetingData.getIdBudgeting());
                                 if (budgetingDetails.size() > 0){
                                     budgetingDetailList.addAll(budgetingDetails);
+
+                                    for (BudgetingDetail budgetingDetail : budgetingDetails){
+
+                                        // Mencari Budgeting Pengadaan
+                                        List<BudgetingPengadaan> pengadaans = budgetingBoProxy.getListBudgetingPengadaanNoDetail(budgetingDetail.getIdBudgetingDetail());
+                                        if (pengadaans.size() > 0){
+                                            sessionPengadaan.addAll(pengadaans);
+                                        }
+                                    }
                                 }
                             }
 
@@ -560,13 +615,23 @@ public class BudgetingAction {
                             searchBudgeting.setTipe(budgetingList.get(0).getTipe());
                             setBudgeting(searchBudgeting);
 
+                            session.removeAttribute("listOfPengadaan");
+                            session.setAttribute("listOfPengadaan", sessionPengadaan);
+
                             session.removeAttribute("listOfDetail");
                             session.setAttribute("listOfDetail", budgetingDetailList);
 
                             session.removeAttribute("listOfCoa");
                             session.setAttribute("listOfCoa", budgetingList);
+                            listOfBudgeting.addAll(budgetingList);
                             break;
                         }
+                    }
+
+                    logger.info("[BudgetingAction.edit] END <<<");
+                    // jika tidak ada return ke add;
+                    if (listOfBudgeting.size() == 0){
+                        return add();
                     }
                 }
             } else {
@@ -577,6 +642,7 @@ public class BudgetingAction {
                 setBudgeting(searchBudgeting);
             }
 
+            logger.info("[BudgetingAction.edit] END <<<");
             return "edit";
         }
     }
@@ -616,6 +682,8 @@ public class BudgetingAction {
             budgetingDetail.setNilai(new BigDecimal(obj.getString("nilai").toString()));
             budgetingDetail.setQty(new BigInteger(obj.getString("qty").toString()));
             budgetingDetail.setTipe(obj.getString("tipe").toString());
+            budgetingDetail.setMasterId(obj.getString("masterid").toString());
+            budgetingDetail.setMasterName(obj.getString("mastername").toString());
             budgetingDetail.setSubTotal(budgetingDetail.getNilai().multiply(new BigDecimal(budgetingDetail.getQty().toString())));
         }
 
@@ -632,6 +700,19 @@ public class BudgetingAction {
                 budgeting.setQuartal3(nullEscape(budgeting.getQuartal3()));
                 budgeting.setQuartal4(nullEscape(budgeting.getQuartal4()));
 
+                budgeting.setJanuari(nullEscape(budgeting.getJanuari()));
+                budgeting.setFebruari(nullEscape(budgeting.getFebruari()));
+                budgeting.setMaret(nullEscape(budgeting.getMaret()));
+                budgeting.setApril(nullEscape(budgeting.getApril()));
+                budgeting.setMei(nullEscape(budgeting.getMei()));
+                budgeting.setJuni(nullEscape(budgeting.getJuni()));
+                budgeting.setJuli(nullEscape(budgeting.getJuli()));
+                budgeting.setAgustus(nullEscape(budgeting.getAgustus()));
+                budgeting.setSeptember(nullEscape(budgeting.getSeptember()));
+                budgeting.setOktober(nullEscape(budgeting.getOktober()));
+                budgeting.setNovember(nullEscape(budgeting.getNovember()));
+                budgeting.setDesember(nullEscape(budgeting.getDesember()));
+
                 if ("quartal1".equalsIgnoreCase(budgetingDetail.getTipe()))
                     budgeting.setQuartal1(budgeting.getQuartal1().add(budgetingDetail.getSubTotal()));
                 if ("quartal2".equalsIgnoreCase(budgetingDetail.getTipe()))
@@ -645,6 +726,31 @@ public class BudgetingAction {
                 if ("semester2".equalsIgnoreCase(budgetingDetail.getTipe()))
                     budgeting.setSemester2(budgeting.getSemester2().add(budgetingDetail.getSubTotal()));
 
+                if ("januari".equalsIgnoreCase(budgetingDetail.getTipe()))
+                    budgeting.setJanuari(budgeting.getJanuari().add(budgetingDetail.getSubTotal()));
+                if ("februari".equalsIgnoreCase(budgetingDetail.getTipe()))
+                    budgeting.setFebruari(budgeting.getFebruari().add(budgetingDetail.getSubTotal()));
+                if ("maret".equalsIgnoreCase(budgetingDetail.getTipe()))
+                    budgeting.setMaret(budgeting.getMaret().add(budgetingDetail.getSubTotal()));
+                if ("april".equalsIgnoreCase(budgetingDetail.getTipe()))
+                    budgeting.setApril(budgeting.getApril().add(budgetingDetail.getSubTotal()));
+                if ("mei".equalsIgnoreCase(budgetingDetail.getTipe()))
+                    budgeting.setMei(budgeting.getMei().add(budgetingDetail.getSubTotal()));
+                if ("juni".equalsIgnoreCase(budgetingDetail.getTipe()))
+                    budgeting.setJuni(budgeting.getJuni().add(budgetingDetail.getSubTotal()));
+                if ("juli".equalsIgnoreCase(budgetingDetail.getTipe()))
+                    budgeting.setJuli(budgeting.getJuli().add(budgetingDetail.getSubTotal()));
+                if ("agustus".equalsIgnoreCase(budgetingDetail.getTipe()))
+                    budgeting.setAgustus(budgeting.getAgustus().add(budgetingDetail.getSubTotal()));
+                if ("september".equalsIgnoreCase(budgetingDetail.getTipe()))
+                    budgeting.setSeptember(budgeting.getSeptember().add(budgetingDetail.getSubTotal()));
+                if ("oktober".equalsIgnoreCase(budgetingDetail.getTipe()))
+                    budgeting.setOktober(budgeting.getOktober().add(budgetingDetail.getSubTotal()));
+                if ("november".equalsIgnoreCase(budgetingDetail.getTipe()))
+                    budgeting.setNovember(budgeting.getNovember().add(budgetingDetail.getSubTotal()));
+                if ("desember".equalsIgnoreCase(budgetingDetail.getTipe()))
+                    budgeting.setDesember(budgeting.getDesember().add(budgetingDetail.getSubTotal()));
+
                 budgeting.setNilaiTotal(budgeting.getNilaiTotal().add(budgetingDetail.getSubTotal()));
             }
         }
@@ -653,32 +759,6 @@ public class BudgetingAction {
             // sessionDetailEdit / listOfDetailEdit untuk temporari session
         sessionDetail.add(budgetingDetail);
         sessionDetailEdit.add(budgetingDetail);
-
-            // mencari kepala & sum kepala
-//            String rekeningId = budgetingDetail.getRekeningId();
-//            List<Budgeting> budgetingList = budgetingSessionList.stream().filter(p -> p.getRekeningId().equalsIgnoreCase(rekeningId)).collect(Collectors.toList());
-//            if (budgetingList.size() > 0){
-//                // jika ditemukan parent ditemukan
-//
-//                String parentId = budgetingList.get(0).getParentId();
-//                for (Budgeting budgeting : budgetingList){
-//
-//                    Budgeting parent = budgetingSessionList.stream().filter(p -> p.getRekeningId().equalsIgnoreCase(parentId)).collect(Collectors.toList()).get(0);
-//                    if (parent != null){
-////                        parent = kosongkanNilaiBudgeting(parent);
-//                        parent.setNilaiTotal(budgeting.getNilaiTotal().add(parent.getNilaiTotal()));
-//                        parent.setSemester1(budgeting.getSemester1().add(parent.getSemester1()));
-//                        parent.setSemester2(budgeting.getSemester2().add(parent.getSemester2()));
-//                        parent.setQuartal1(budgeting.getQuartal1().add(parent.getQuartal1()));
-//                        parent.setQuartal2(budgeting.getQuartal2().add(parent.getQuartal2()));
-//                        parent.setQuartal3(budgeting.getQuartal3().add(parent.getQuartal3()));
-//                        parent.setQuartal4(budgeting.getQuartal4().add(parent.getQuartal4()));
-//                    }
-//                    budgetingSessionList.remove(parent);
-//                    budgetingSessionList.add(parent);
-//                }
-//            }
-//        }
 
         // SUM KEPALA BUDGETING
         Long level = budgetingBo.getlastLevelKodeRekening();
@@ -709,9 +789,14 @@ public class BudgetingAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<Budgeting> budgetingSessionList = (List<Budgeting>) session.getAttribute("listOfCoa");
         List<BudgetingDetail> sessionDetail = (List<BudgetingDetail>) session.getAttribute("listOfDetail");
+        List<BudgetingPengadaan> sessionPengadaan = (List<BudgetingPengadaan>) session.getAttribute("listOfPengadaan");
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
+
+        if (sessionPengadaan == null){
+            sessionPengadaan = new ArrayList<>();
+        }
 
         String statusTrans = "";
         String typeTrans = "";
@@ -747,7 +832,7 @@ public class BudgetingAction {
             response.setStatus("error");
             if ("add".equalsIgnoreCase(type)){
                 try {
-                    budgetingBo.saveAddBudgeting(childs, sessionDetail, new ArrayList<>(), statusTrans, budgeting);
+                    budgetingBo.saveAddBudgeting(childs, sessionDetail, sessionPengadaan, statusTrans, budgeting);
                     response.setStatus("success");
                 } catch (GeneralBOException e){
                     logger.error("[BudgetingAction.saveBudgeting] ERROR. ", e);
@@ -760,7 +845,7 @@ public class BudgetingAction {
                 // jika ditemukan masih satu status maka update
                 if (foundSameStatus){
                     try {
-                        budgetingBo.saveEditBudgeting(budgetingSessionList, sessionDetail, new ArrayList<>(), statusTrans, typeTrans, budgeting);
+                        budgetingBo.saveEditBudgeting(budgetingSessionList, sessionDetail, sessionPengadaan, statusTrans, typeTrans, budgeting);
                         response.setStatus("success");
                     } catch (GeneralBOException e){
                         logger.error("[BudgetingAction.saveBudgeting] ERROR. ", e);
@@ -771,7 +856,7 @@ public class BudgetingAction {
                     // jika tidak ditemukan satu status / status baru
                     // maka insert baru dengan status baru
                     try {
-                        budgetingBo.saveAddBudgeting(childs, sessionDetail, new ArrayList<>(), statusTrans, budgeting);
+                        budgetingBo.saveAddBudgeting(childs, sessionDetail, sessionPengadaan, statusTrans, budgeting);
                         response.setStatus("success");
                     } catch (GeneralBOException e){
                         logger.error("[BudgetingAction.saveBudgeting] ERROR. ", e);
@@ -818,6 +903,20 @@ public class BudgetingAction {
                             parent.setQuartal2(child.getQuartal2());
                             parent.setQuartal3(child.getQuartal3());
                             parent.setQuartal4(child.getQuartal4());
+
+                            parent.setJanuari(child.getJanuari());
+                            parent.setFebruari(child.getFebruari());
+                            parent.setMaret(child.getMaret());
+                            parent.setApril(child.getApril());
+                            parent.setMei(child.getMei());
+                            parent.setJuni(child.getJuni());
+                            parent.setJuli(child.getJuli());
+                            parent.setAgustus(child.getAgustus());
+                            parent.setSeptember(child.getSeptember());
+                            parent.setOktober(child.getOktober());
+                            parent.setNovember(child.getNovember());
+                            parent.setDesember(child.getDesember());
+
                             parent.setSelisih(child.getNilaiTotal().subtract(child.getNilaiAwal()));
                             listParent.add(parent);
                         }
@@ -838,6 +937,19 @@ public class BudgetingAction {
                             parent.setQuartal3(child.getQuartal3().add(parent.getQuartal3()));
                             parent.setQuartal4(child.getQuartal4().add(parent.getQuartal4()));
 
+                            parent.setJanuari(child.getJanuari().add(parent.getJanuari()));
+                            parent.setFebruari(child.getFebruari().add(parent.getFebruari()));
+                            parent.setMaret(child.getMaret().add(parent.getMaret()));
+                            parent.setApril(child.getApril().add(parent.getApril()));
+                            parent.setMei(child.getMei().add(parent.getMei()));
+                            parent.setJuni(child.getJuni().add(parent.getJuni()));
+                            parent.setJuli(child.getJuli().add(parent.getJuli()));
+                            parent.setAgustus(child.getAgustus().add(parent.getAgustus()));
+                            parent.setSeptember(child.getSeptember().add(parent.getSeptember()));
+                            parent.setOktober(child.getOktober().add(parent.getOktober()));
+                            parent.setNovember(child.getNovember().add(parent.getNovember()));
+                            parent.setDesember(child.getDesember().add(parent.getDesember()));
+
                             parent.setSelisih(parent.getNilaiTotal().subtract(parent.getNilaiAwal()));
                             System.out.println("INNER IF CHILD : rekening_id => "+parent.getRekeningId()+" parent_id => "+parent.getParentId()+" Nilai => "+parent.getNilaiTotal());
 
@@ -857,6 +969,19 @@ public class BudgetingAction {
                                 parentNew.setQuartal2(child.getQuartal2());
                                 parentNew.setQuartal3(child.getQuartal3());
                                 parentNew.setQuartal4(child.getQuartal4());
+                                parentNew.setJanuari(child.getJanuari());
+                                parentNew.setFebruari(child.getFebruari());
+                                parentNew.setMaret(child.getMaret());
+                                parentNew.setApril(child.getApril());
+                                parentNew.setMei(child.getMei());
+                                parentNew.setJuni(child.getJuni());
+                                parentNew.setJuli(child.getJuli());
+                                parentNew.setAgustus(child.getAgustus());
+                                parentNew.setSeptember(child.getSeptember());
+                                parentNew.setOktober(child.getOktober());
+                                parentNew.setNovember(child.getNovember());
+                                parentNew.setDesember(child.getDesember());
+
                                 parentNew.setSelisih(parentNew.getNilaiTotal().subtract(parentNew.getNilaiAwal()));
 
                                 System.out.println("NEW PARENT : rekening_id => "+parentNew.getRekeningId()+" parent_id => "+parentNew.getParentId()+" Nilai => "+parentNew.getNilaiTotal());
@@ -949,35 +1074,6 @@ public class BudgetingAction {
                 // update detail
                 sessionDetail.remove(budgetingDetail);
                 sessionDetail.add(budgetingDetail);
-
-                // update session budgeting
-//                for (Budgeting budgeting : budgetingSessionList){
-//                    if (budgeting.getRekeningId().equalsIgnoreCase(rekeningId)){
-//
-//                        budgeting.setNilaiTotal(nullEscape(budgeting.getNilaiTotal()));
-//                        budgeting.setSemester1(nullEscape(budgeting.getSemester1()));
-//                        budgeting.setSemester2(nullEscape(budgeting.getSemester2()));
-//                        budgeting.setQuartal1(nullEscape(budgeting.getQuartal1()));
-//                        budgeting.setQuartal2(nullEscape(budgeting.getQuartal2()));
-//                        budgeting.setQuartal3(nullEscape(budgeting.getQuartal3()));
-//                        budgeting.setQuartal4(nullEscape(budgeting.getQuartal4()));
-//
-//                        if ("quartal1".equalsIgnoreCase(budgetingDetail.getTipe()))
-//                            budgeting.setQuartal1(budgetingDetail.getSubTotal());
-//                        if ("quartal2".equalsIgnoreCase(budgetingDetail.getTipe()))
-//                            budgeting.setQuartal2((budgetingDetail.getSubTotal()));
-//                        if ("quartal3".equalsIgnoreCase(budgetingDetail.getTipe()))
-//                            budgeting.setQuartal3((budgetingDetail.getSubTotal()));
-//                        if ("quartal4".equalsIgnoreCase(budgetingDetail.getTipe()))
-//                            budgeting.setQuartal4((budgetingDetail.getSubTotal()));
-//                        if ("semester1".equalsIgnoreCase(budgetingDetail.getTipe()))
-//                            budgeting.setSemester1((budgetingDetail.getSubTotal()));
-//                        if ("semester2".equalsIgnoreCase(budgetingDetail.getTipe()))
-//                            budgeting.setSemester2((budgetingDetail.getSubTotal()));
-//
-//                        budgeting.setNilaiTotal(budgeting.getNilaiTotal().add(budgetingDetail.getSubTotal()));
-//                    }
-//                }
             }
         }
 
@@ -992,6 +1088,19 @@ public class BudgetingAction {
                 budgeting.setQuartal2(new BigDecimal(0));
                 budgeting.setQuartal3(new BigDecimal(0));
                 budgeting.setQuartal4(new BigDecimal(0));
+
+                budgeting.setJanuari( new BigDecimal(0));
+                budgeting.setFebruari( new BigDecimal(0));
+                budgeting.setMaret( new BigDecimal(0));
+                budgeting.setApril( new BigDecimal(0));
+                budgeting.setMei( new BigDecimal(0));
+                budgeting.setJuni( new BigDecimal(0));
+                budgeting.setJuli( new BigDecimal(0));
+                budgeting.setAgustus( new BigDecimal(0));
+                budgeting.setSeptember( new BigDecimal(0));
+                budgeting.setOktober( new BigDecimal(0));
+                budgeting.setNovember( new BigDecimal(0));
+                budgeting.setDesember( new BigDecimal(0));
 
                 BigDecimal totalNilai = new BigDecimal(0);
                 List<BudgetingDetail> budgetingDetailList = sessionDetailEdit.stream().filter(p -> p.getRekeningId().equalsIgnoreCase(budgetingDetailData.getRekeningId())).collect(Collectors.toList());
@@ -1019,6 +1128,55 @@ public class BudgetingAction {
                         }
                         if ("semester2".equalsIgnoreCase(budgetingDetail.getTipe())){
                             budgeting.setSemester2(budgeting.getSemester2().add(budgetingDetail.getSubTotal()));
+                            totalNilai = totalNilai.add(budgetingDetail.getSubTotal());
+                        }
+
+                        if ("januari".equalsIgnoreCase(budgetingDetail.getTipe())) {
+                            budgeting.setJanuari(budgeting.getJanuari().add(budgetingDetail.getSubTotal()));
+                            totalNilai = totalNilai.add(budgetingDetail.getSubTotal());
+                        }
+                        if ("februari".equalsIgnoreCase(budgetingDetail.getTipe())){
+                            budgeting.setFebruari(budgeting.getFebruari().add(budgetingDetail.getSubTotal()));
+                            totalNilai = totalNilai.add(budgetingDetail.getSubTotal());
+                        }
+                        if ("maret".equalsIgnoreCase(budgetingDetail.getTipe())) {
+                            budgeting.setMaret(budgeting.getMaret().add(budgetingDetail.getSubTotal()));
+                            totalNilai = totalNilai.add(budgetingDetail.getSubTotal());
+                        }
+                        if ("april".equalsIgnoreCase(budgetingDetail.getTipe())) {
+                            budgeting.setApril(budgeting.getApril().add(budgetingDetail.getSubTotal()));
+                            totalNilai = totalNilai.add(budgetingDetail.getSubTotal());
+                        }
+                        if ("mei".equalsIgnoreCase(budgetingDetail.getTipe())) {
+                            budgeting.setMei(budgeting.getMei().add(budgetingDetail.getSubTotal()));
+                            totalNilai = totalNilai.add(budgetingDetail.getSubTotal());
+                        }
+                        if ("juni".equalsIgnoreCase(budgetingDetail.getTipe())) {
+                            budgeting.setJuni(budgeting.getJuni().add(budgetingDetail.getSubTotal()));
+                            totalNilai = totalNilai.add(budgetingDetail.getSubTotal());
+                        }
+                        if ("juli".equalsIgnoreCase(budgetingDetail.getTipe())) {
+                            budgeting.setJuli(budgeting.getJuli().add(budgetingDetail.getSubTotal()));
+                            totalNilai = totalNilai.add(budgetingDetail.getSubTotal());
+                        }
+                        if ("agustus".equalsIgnoreCase(budgetingDetail.getTipe())) {
+                            budgeting.setAgustus(budgeting.getAgustus().add(budgetingDetail.getSubTotal()));
+                            totalNilai = totalNilai.add(budgetingDetail.getSubTotal());
+                        }
+                        if ("september".equalsIgnoreCase(budgetingDetail.getTipe())) {
+                            budgeting.setSeptember(budgeting.getSeptember().add(budgetingDetail.getSubTotal()));
+                            totalNilai = totalNilai.add(budgetingDetail.getSubTotal());
+                        }
+                        if ("oktober".equalsIgnoreCase(budgetingDetail.getTipe())) {
+                            budgeting.setOktober(budgeting.getOktober().add(budgetingDetail.getSubTotal()));
+                            totalNilai = totalNilai.add(budgetingDetail.getSubTotal());
+                        }
+                        if ("november".equalsIgnoreCase(budgetingDetail.getTipe())) {
+                            budgeting.setNovember(budgeting.getNovember().add(budgetingDetail.getSubTotal()));
+                            totalNilai = totalNilai.add(budgetingDetail.getSubTotal());
+                        }
+                        if ("desember".equalsIgnoreCase(budgetingDetail.getTipe())) {
+                            budgeting.setDesember(budgeting.getDesember().add(budgetingDetail.getSubTotal()));
                             totalNilai = totalNilai.add(budgetingDetail.getSubTotal());
                         }
                     }
@@ -1061,8 +1219,15 @@ public class BudgetingAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<Budgeting> budgetingSessionList = (List<Budgeting>) session.getAttribute("listOfCoa");
         List<BudgetingDetail> sessionDetail = (List<BudgetingDetail>) session.getAttribute("listOfDetail");
-        List<BudgetingDetail> sessionDetailEdit = (List<BudgetingDetail>) session.getAttribute("listOfDetailEdit");
         List<BudgetingPengadaan> sessionPengadaan = (List<BudgetingPengadaan>) session.getAttribute("listOfPengadaan");
+
+        if (sessionPengadaan == null){
+            sessionPengadaan = new ArrayList<>();
+        }
+
+        if (sessionDetail == null){
+            sessionDetail = new ArrayList<>();
+        }
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
@@ -1076,6 +1241,7 @@ public class BudgetingAction {
             pengadaan.setQty(new BigInteger(obj.getString("qty").toString()));
             pengadaan.setNilai(new BigDecimal(obj.getString("nilai").toString()));
             pengadaan.setSubTotal(new BigDecimal(pengadaan.getQty()).multiply(pengadaan.getNilai()));
+            pengadaan.setRekeningId(rekeningId);
             pengadaans.add(pengadaan);
         }
 
@@ -1091,9 +1257,85 @@ public class BudgetingAction {
             pengadaan.setIdBudgetingDetail(budgetingDetail.getIdBudgetingDetail());
 
             // set nilai pengadaan;
+            budgetingDetail.setIdBudgeting(budgetingBo.generateBudgetingDetailId());
+            budgetingDetail.setDivisiName(namaPengadaan);
+            budgetingDetail.setRekeningId(rekeningId);
+            budgetingDetail.setTipe(tipe);
             budgetingDetail.setQty(budgetingDetail.getQty().add(pengadaan.getQty()));
             budgetingDetail.setNilai(budgetingDetail.getNilai().add(pengadaan.getNilai()));
             budgetingDetail.setSubTotal(budgetingDetail.getSubTotal().add(pengadaan.getSubTotal()));
+            budgetingDetail.setDivisiId("INVS");
+        }
+
+        // mengupdate budgetingSessionList
+        for (Budgeting budgeting : budgetingSessionList){
+            if (budgeting.getRekeningId().equalsIgnoreCase(budgetingDetail.getRekeningId())){
+
+                // if null change to 0
+                budgeting.setNilaiTotal(nullEscape(budgeting.getNilaiTotal()));
+                budgeting.setSemester1(nullEscape(budgeting.getSemester1()));
+                budgeting.setSemester2(nullEscape(budgeting.getSemester2()));
+                budgeting.setQuartal1(nullEscape(budgeting.getQuartal1()));
+                budgeting.setQuartal2(nullEscape(budgeting.getQuartal2()));
+                budgeting.setQuartal3(nullEscape(budgeting.getQuartal3()));
+                budgeting.setQuartal4(nullEscape(budgeting.getQuartal4()));
+
+                if ("quartal1".equalsIgnoreCase(budgetingDetail.getTipe()))
+                    budgeting.setQuartal1(budgeting.getQuartal1().add(budgetingDetail.getSubTotal()));
+                if ("quartal2".equalsIgnoreCase(budgetingDetail.getTipe()))
+                    budgeting.setQuartal2(budgeting.getQuartal2().add(budgetingDetail.getSubTotal()));
+                if ("quartal3".equalsIgnoreCase(budgetingDetail.getTipe()))
+                    budgeting.setQuartal3(budgeting.getQuartal3().add(budgetingDetail.getSubTotal()));
+                if ("quartal4".equalsIgnoreCase(budgetingDetail.getTipe()))
+                    budgeting.setQuartal4(budgeting.getQuartal4().add(budgetingDetail.getSubTotal()));
+                if ("semester1".equalsIgnoreCase(budgetingDetail.getTipe()))
+                    budgeting.setSemester1(budgeting.getSemester1().add(budgetingDetail.getSubTotal()));
+                if ("semester2".equalsIgnoreCase(budgetingDetail.getTipe()))
+                    budgeting.setSemester2(budgeting.getSemester2().add(budgetingDetail.getSubTotal()));
+
+                if ("januari".equalsIgnoreCase(budgetingDetail.getTipe()))
+                    budgeting.setJanuari(budgeting.getJanuari().add(budgetingDetail.getSubTotal()));
+                if ("februari".equalsIgnoreCase(budgetingDetail.getTipe()))
+                    budgeting.setFebruari(budgeting.getFebruari().add(budgetingDetail.getSubTotal()));
+                if ("maret".equalsIgnoreCase(budgetingDetail.getTipe()))
+                    budgeting.setMaret(budgeting.getMaret().add(budgetingDetail.getSubTotal()));
+                if ("april".equalsIgnoreCase(budgetingDetail.getTipe()))
+                    budgeting.setApril(budgeting.getApril().add(budgetingDetail.getSubTotal()));
+                if ("mei".equalsIgnoreCase(budgetingDetail.getTipe()))
+                    budgeting.setMei(budgeting.getMei().add(budgetingDetail.getSubTotal()));
+                if ("juni".equalsIgnoreCase(budgetingDetail.getTipe()))
+                    budgeting.setJuni(budgeting.getJuni().add(budgetingDetail.getSubTotal()));
+                if ("juli".equalsIgnoreCase(budgetingDetail.getTipe()))
+                    budgeting.setJuli(budgeting.getJuli().add(budgetingDetail.getSubTotal()));
+                if ("agustus".equalsIgnoreCase(budgetingDetail.getTipe()))
+                    budgeting.setAgustus(budgeting.getAgustus().add(budgetingDetail.getSubTotal()));
+                if ("september".equalsIgnoreCase(budgetingDetail.getTipe()))
+                    budgeting.setSeptember(budgeting.getSeptember().add(budgetingDetail.getSubTotal()));
+                if ("oktober".equalsIgnoreCase(budgetingDetail.getTipe()))
+                    budgeting.setOktober(budgeting.getOktober().add(budgetingDetail.getSubTotal()));
+                if ("november".equalsIgnoreCase(budgetingDetail.getTipe()))
+                    budgeting.setNovember(budgeting.getNovember().add(budgetingDetail.getSubTotal()));
+                if ("desember".equalsIgnoreCase(budgetingDetail.getTipe()))
+                    budgeting.setDesember(budgeting.getDesember().add(budgetingDetail.getSubTotal()));
+
+                budgeting.setNilaiTotal(budgeting.getNilaiTotal().add(budgetingDetail.getSubTotal()));
+            }
+        }
+
+        sessionDetail.add(budgetingDetail);
+        sessionPengadaan.addAll(pengadaans);
+
+        session.removeAttribute("listOfDetail");
+        session.setAttribute("listOfDetail", sessionDetail);
+
+        session.removeAttribute("listOfPengadaan");
+        session.setAttribute("listOfPengadaan", sessionPengadaan);
+
+        // SUM KEPALA BUDGETING
+        Long level = budgetingBo.getlastLevelKodeRekening();
+        List<Budgeting> childBudgeting = budgetingSessionList.stream().filter(p -> p.getLevel().compareTo(level) == 0).collect(Collectors.toList());
+        if (childBudgeting.size() > 0){
+            sumParent(childBudgeting, level);
         }
 
         return response;
@@ -1109,6 +1351,18 @@ public class BudgetingAction {
         budgeting.setQuartal2(nol);
         budgeting.setQuartal3(nol);
         budgeting.setQuartal4(nol);
+        budgeting.setJanuari(nol);
+        budgeting.setFebruari(nol);
+        budgeting.setMaret(nol);
+        budgeting.setApril(nol);
+        budgeting.setMei(nol);
+        budgeting.setJuni(nol);
+        budgeting.setJuli(nol);
+        budgeting.setAgustus(nol);
+        budgeting.setSeptember(nol);
+        budgeting.setOktober(nol);
+        budgeting.setNovember(nol);
+        budgeting.setDesember(nol);
         return budgeting;
     }
 
@@ -1120,7 +1374,265 @@ public class BudgetingAction {
         return budgetingBo.checkBudgeting(branch, tahun);
     }
 
+    public List<Budgeting> getListOfCoaBudgetingSession(){
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<Budgeting> budgetingSessionList = (List<Budgeting>) session.getAttribute("listOfCoa");
+
+        Collections.sort(budgetingSessionList, Budgeting.getKodeRekeningSorting());
+        if (budgetingSessionList != null){
+            return budgetingSessionList;
+        }
+        return new ArrayList<>();
+    }
+
+    public BudgetingDetail checkBudgetingDivisi(String tipe, String divisiId, String rekeningId){
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<BudgetingDetail> sessionDetailEdit = (List<BudgetingDetail>) session.getAttribute("listOfDetail");
+
+        if (sessionDetailEdit == null){
+            sessionDetailEdit = new ArrayList<>();
+        }
+
+        String divisi = "INVS";
+        if (divisiId != null && !"".equalsIgnoreCase(divisiId)){
+            divisi = divisiId;
+        }
+
+        // collect budgeting dengan parameter
+        String finalDivisi = divisi;
+        List<BudgetingDetail> budgetingDetails = sessionDetailEdit.stream().filter(
+                p -> p.getTipe().equalsIgnoreCase(tipe)
+                && p.getDivisiId().equalsIgnoreCase(finalDivisi)
+                && p.getRekeningId().equalsIgnoreCase(rekeningId)
+        ).collect(Collectors.toList());
+
+        if (budgetingDetails.size() > 0){
+            return budgetingDetails.get(0);
+        }
+
+        return null;
+    }
+
+    public List<BudgetingPengadaan> getListPengadaan(String idDetail){
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<BudgetingPengadaan> sessionPengadaan = (List<BudgetingPengadaan>) session.getAttribute("listOfPengadaan");
+
+        if (sessionPengadaan == null){
+            sessionPengadaan = new ArrayList<>();
+        }
+
+        List<BudgetingPengadaan> budgetingPengadaans = sessionPengadaan.stream().filter(p -> p.getIdBudgetingDetail().equalsIgnoreCase(idDetail)).collect(Collectors.toList());
+        if (budgetingPengadaans.size() > 0){
+            return budgetingPengadaans;
+        }
+
+        return null;
+    }
+
+    public CrudResponse saveEditPengadaan(String strJson, String namaPengadaan, String rekeningId, String idBudgetingDetail) throws JSONException{
+        CrudResponse response = new CrudResponse();
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<Budgeting> budgetingSessionList = (List<Budgeting>) session.getAttribute("listOfCoa");
+        List<BudgetingDetail> sessionDetail = (List<BudgetingDetail>) session.getAttribute("listOfDetail");
+        List<BudgetingPengadaan> sessionPengadaan = (List<BudgetingPengadaan>) session.getAttribute("listOfPengadaan");
+
+        if (sessionPengadaan == null){
+            sessionPengadaan = new ArrayList<>();
+        }
+
+        if (sessionDetail == null){
+            sessionDetail = new ArrayList<>();
+        }
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
+
+//        List<BudgetingPengadaan> pengadaans = new ArrayList<>();
+        JSONArray json = new JSONArray(strJson);
+        for (int i = 0; i < json.length(); i++) {
+            JSONObject obj = json.getJSONObject(i);
+            BudgetingPengadaan pengadaan = new BudgetingPengadaan();
+            pengadaan.setIdPengadaan(obj.getString("id").toString());
+            pengadaan.setNamPengadaan(obj.getString("name").toString());
+            pengadaan.setQty(new BigInteger(obj.getString("qty").toString()));
+            pengadaan.setNilai(new BigDecimal(obj.getString("nilai").toString()));
+            pengadaan.setSubTotal(new BigDecimal(pengadaan.getQty()).multiply(pengadaan.getNilai()));
+            pengadaan.setRekeningId(rekeningId);
+
+            // jika ada id pengadaan maka edit
+            if (pengadaan.getIdPengadaan() != null && !"".equalsIgnoreCase(pengadaan.getIdPengadaan())){
+
+                for (BudgetingPengadaan budgetingPengadaan : sessionPengadaan){
+                    if (budgetingPengadaan.getIdPengadaan().equalsIgnoreCase(pengadaan.getIdPengadaan())){
+                        budgetingPengadaan.setNilai(pengadaan.getNilai());
+                        budgetingPengadaan.setQty(pengadaan.getQty());
+                        budgetingPengadaan.setSubTotal(pengadaan.getSubTotal());
+                        budgetingPengadaan.setRekeningId(pengadaan.getRekeningId());
+                        break;
+                    }
+                }
+            } else {
+                pengadaan.setIdBudgetingDetail(idBudgetingDetail);
+                pengadaan.setIdPengadaan(budgetingBo.generateBudgetingPengadaan());
+                sessionPengadaan.add(pengadaan);
+            }
+        }
+
+
+
+        List<BudgetingDetail> budgetingDetails = sessionDetail.stream().filter(p -> p.getIdBudgetingDetail().equalsIgnoreCase(idBudgetingDetail)).collect(Collectors.toList());
+        if (budgetingDetails.size() > 0){
+            BudgetingDetail budgetingDetail = budgetingDetails.get(0);
+            budgetingDetail.setDivisiName(namaPengadaan);
+            budgetingDetail.setNilai(new BigDecimal(0));
+            budgetingDetail.setQty(new BigInteger(BigInteger.ZERO.toString()));
+            budgetingDetail.setSubTotal(new BigDecimal(0));
+
+
+            List<BudgetingPengadaan> pengadaans = sessionPengadaan.stream().filter(p -> p.getIdBudgetingDetail().equalsIgnoreCase(idBudgetingDetail)).collect(Collectors.toList());
+            for (BudgetingPengadaan pengadaan : pengadaans){
+               budgetingDetail.setNilai(budgetingDetail.getNilai().add(pengadaan.getNilai()));
+               budgetingDetail.setQty(budgetingDetail.getQty().add(pengadaan.getQty()));
+               budgetingDetail.setSubTotal(budgetingDetail.getSubTotal().add(pengadaan.getSubTotal()));
+            }
+
+            // update session detail
+            sessionDetail.remove(budgetingDetail);
+            sessionDetail.add(budgetingDetail);
+        }
+
+
+        List<Budgeting> budgetings = budgetingSessionList.stream().filter(p -> p.getRekeningId().equalsIgnoreCase(rekeningId)).collect(Collectors.toList());
+        if (budgetings.size() > 0){
+            for (Budgeting budgeting : budgetings) {
+
+                budgeting.setNilaiTotal(new BigDecimal(0));
+                budgeting.setSemester1(new BigDecimal(0));
+                budgeting.setSemester2(new BigDecimal(0));
+                budgeting.setQuartal1(new BigDecimal(0));
+                budgeting.setQuartal2(new BigDecimal(0));
+                budgeting.setQuartal3(new BigDecimal(0));
+                budgeting.setQuartal4(new BigDecimal(0));
+
+                budgeting.setJanuari( new BigDecimal(0));
+                budgeting.setFebruari( new BigDecimal(0));
+                budgeting.setMaret( new BigDecimal(0));
+                budgeting.setApril( new BigDecimal(0));
+                budgeting.setMei( new BigDecimal(0));
+                budgeting.setJuni( new BigDecimal(0));
+                budgeting.setJuli( new BigDecimal(0));
+                budgeting.setAgustus( new BigDecimal(0));
+                budgeting.setSeptember( new BigDecimal(0));
+                budgeting.setOktober( new BigDecimal(0));
+                budgeting.setNovember( new BigDecimal(0));
+                budgeting.setDesember( new BigDecimal(0));
+
+                BigDecimal totalNilai = new BigDecimal(0);
+                List<BudgetingDetail> budgetingDetailList = sessionDetail.stream().filter(p -> p.getRekeningId().equalsIgnoreCase(rekeningId)).collect(Collectors.toList());
+                if (budgetingDetailList.size() > 0){
+                    for (BudgetingDetail budgetingDetail : budgetingDetailList){
+                        if ("quartal1".equalsIgnoreCase(budgetingDetail.getTipe())){
+                            budgeting.setQuartal1(budgeting.getQuartal1().add(budgetingDetail.getSubTotal()));
+                            totalNilai = totalNilai.add(budgetingDetail.getSubTotal());
+                        }
+                        if ("quartal2".equalsIgnoreCase(budgetingDetail.getTipe())){
+                            budgeting.setQuartal2(budgeting.getQuartal2().add(budgetingDetail.getSubTotal()));
+                            totalNilai = totalNilai.add(budgetingDetail.getSubTotal());
+                        }
+                        if ("quartal3".equalsIgnoreCase(budgetingDetail.getTipe())){
+                            budgeting.setQuartal3(budgeting.getQuartal3().add(budgetingDetail.getSubTotal()));
+                            totalNilai = totalNilai.add(budgetingDetail.getSubTotal());
+                        }
+                        if ("quartal4".equalsIgnoreCase(budgetingDetail.getTipe())){
+                            budgeting.setQuartal4(budgeting.getQuartal4().add(budgetingDetail.getSubTotal()));
+                            totalNilai = totalNilai.add(budgetingDetail.getSubTotal());
+                        }
+                        if ("semester1".equalsIgnoreCase(budgetingDetail.getTipe())){
+                            budgeting.setSemester1(budgeting.getSemester1().add(budgetingDetail.getSubTotal()));
+                            totalNilai = totalNilai.add(budgetingDetail.getSubTotal());
+                        }
+                        if ("semester2".equalsIgnoreCase(budgetingDetail.getTipe())){
+                            budgeting.setSemester2(budgeting.getSemester2().add(budgetingDetail.getSubTotal()));
+                            totalNilai = totalNilai.add(budgetingDetail.getSubTotal());
+                        }
+
+                        if ("januari".equalsIgnoreCase(budgetingDetail.getTipe())) {
+                            budgeting.setJanuari(budgeting.getJanuari().add(budgetingDetail.getSubTotal()));
+                            totalNilai = totalNilai.add(budgetingDetail.getSubTotal());
+                        }
+                        if ("februari".equalsIgnoreCase(budgetingDetail.getTipe())){
+                            budgeting.setFebruari(budgeting.getFebruari().add(budgetingDetail.getSubTotal()));
+                            totalNilai = totalNilai.add(budgetingDetail.getSubTotal());
+                        }
+                        if ("maret".equalsIgnoreCase(budgetingDetail.getTipe())) {
+                            budgeting.setMaret(budgeting.getMaret().add(budgetingDetail.getSubTotal()));
+                            totalNilai = totalNilai.add(budgetingDetail.getSubTotal());
+                        }
+                        if ("april".equalsIgnoreCase(budgetingDetail.getTipe())) {
+                            budgeting.setApril(budgeting.getApril().add(budgetingDetail.getSubTotal()));
+                            totalNilai = totalNilai.add(budgetingDetail.getSubTotal());
+                        }
+                        if ("mei".equalsIgnoreCase(budgetingDetail.getTipe())) {
+                            budgeting.setMei(budgeting.getMei().add(budgetingDetail.getSubTotal()));
+                            totalNilai = totalNilai.add(budgetingDetail.getSubTotal());
+                        }
+                        if ("juni".equalsIgnoreCase(budgetingDetail.getTipe())) {
+                            budgeting.setJuni(budgeting.getJuni().add(budgetingDetail.getSubTotal()));
+                            totalNilai = totalNilai.add(budgetingDetail.getSubTotal());
+                        }
+                        if ("juli".equalsIgnoreCase(budgetingDetail.getTipe())) {
+                            budgeting.setJuli(budgeting.getJuli().add(budgetingDetail.getSubTotal()));
+                            totalNilai = totalNilai.add(budgetingDetail.getSubTotal());
+                        }
+                        if ("agustus".equalsIgnoreCase(budgetingDetail.getTipe())) {
+                            budgeting.setAgustus(budgeting.getAgustus().add(budgetingDetail.getSubTotal()));
+                            totalNilai = totalNilai.add(budgetingDetail.getSubTotal());
+                        }
+                        if ("september".equalsIgnoreCase(budgetingDetail.getTipe())) {
+                            budgeting.setSeptember(budgeting.getSeptember().add(budgetingDetail.getSubTotal()));
+                            totalNilai = totalNilai.add(budgetingDetail.getSubTotal());
+                        }
+                        if ("oktober".equalsIgnoreCase(budgetingDetail.getTipe())) {
+                            budgeting.setOktober(budgeting.getOktober().add(budgetingDetail.getSubTotal()));
+                            totalNilai = totalNilai.add(budgetingDetail.getSubTotal());
+                        }
+                        if ("november".equalsIgnoreCase(budgetingDetail.getTipe())) {
+                            budgeting.setNovember(budgeting.getNovember().add(budgetingDetail.getSubTotal()));
+                            totalNilai = totalNilai.add(budgetingDetail.getSubTotal());
+                        }
+                        if ("desember".equalsIgnoreCase(budgetingDetail.getTipe())) {
+                            budgeting.setDesember(budgeting.getDesember().add(budgetingDetail.getSubTotal()));
+                            totalNilai = totalNilai.add(budgetingDetail.getSubTotal());
+                        }
+                    }
+                }
+                budgeting.setNilaiTotal(totalNilai);
+
+                // updateBudgeting
+                budgetingSessionList.remove(budgeting);
+                budgetingSessionList.add(budgeting);
+            }
+        }
+
+        // SUM KEPALA BUDGETING
+        Long level = budgetingBo.getlastLevelKodeRekening();
+        List<Budgeting> childBudgeting = budgetingSessionList.stream().filter(p -> p.getLevel().compareTo(level) == 0).collect(Collectors.toList());
+        if (childBudgeting.size() > 0){
+            sumParent(childBudgeting, level);
+
+            response.setStatus("success");
+            return response;
+        }
+        return response;
+    }
+
     public void setBudgetingBoProxy(BudgetingBo budgetingBoProxy) {
         this.budgetingBoProxy = budgetingBoProxy;
+    }
+
+    public void setBranchBoProxy(BranchBo branchBoProxy) {
+        this.branchBoProxy = branchBoProxy;
     }
 }

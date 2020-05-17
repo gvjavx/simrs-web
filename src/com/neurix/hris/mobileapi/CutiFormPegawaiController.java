@@ -151,6 +151,7 @@ public class CutiFormPegawaiController implements ModelDriven<Object> {
             cutiPegawai.setSelf("");
             cutiPegawai.setLamaHariCuti(model.getLamaCuti());
             cutiPegawai.setFlag("Y");
+            cutiPegawai.setFlagPerbaikan("N");
             cutiPegawai.setAction("C");
             cutiPegawai.setCreatedWho(model.getNamaPegawai());
             cutiPegawai.setLastUpdateWho(model.getNamaPegawai());

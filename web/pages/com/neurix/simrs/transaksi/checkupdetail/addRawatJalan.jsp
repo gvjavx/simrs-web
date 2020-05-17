@@ -181,7 +181,7 @@
                                     <s:hidden id="surat_rujukan" name="headerDetailCheckup.suratRujukan"/>
                                     <s:hidden id="is_laka" name="headerDetailCheckup.isLaka"/>
 
-                                    <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "bpjs"'>
+                                    <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "bpjs" || headerDetailCheckup.idJenisPeriksaPasien == "ptpn"'>
                                         <tr>
                                             <td width="45%"><b>No SEP</b></td>
                                             <td style="vertical-align: middle;">
@@ -925,6 +925,26 @@
                                                 </div>
                                                 <s:hidden id="uang_muka_val"></s:hidden>
                                                 <s:textfield type="text" id="uang_muka" cssClass="form-control"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="form-asuransi" style="display: none">
+                                    <div class="form-group">
+                                        <label class="col-md-4" style="margin-top: 10px">Nama Asuransi</label>
+                                        <div class="col-md-8">
+                                            <input style="margin-top: 7px" class="form-control" id="ri_nama_asuransi" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4" style="margin-top: 7px">Cover Biaya</label>
+                                        <div class="col-md-8">
+                                            <div class="input-group" style="margin-top: 7px">
+                                                <div class="input-group-addon">
+                                                    Rp.
+                                                </div>
+                                                <s:hidden id="rj_cover_biaya_val"></s:hidden>
+                                                <s:textfield type="text" id="rj_cover_biaya" cssClass="form-control"/>
                                             </div>
                                         </div>
                                     </div>
@@ -2071,6 +2091,20 @@
             });
         }
 
+        var cover = document.getElementById('rj_cover_biaya');
+        if(cover != ''){
+            cover.addEventListener('keyup', function (e) {
+                cover.value = formatRupiah2(this.value);
+                var valCover = cover.value.replace(/[.]/g, '');
+
+                if(valCover != ''){
+                    $('#rj_cover_biaya_val').val(valCover);
+                }else{
+                    $('#rj_cover_biaya_val').val('');
+                }
+            });
+        }
+
         $(document).on('change', '.btn-file :file', function () {
             var input = $(this),
                 label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
@@ -2359,10 +2393,16 @@
                 $("#form-selesai").hide();
                 $("#form-cekup").hide();
 
-                if(jenisPasien == 'bpjs'){
-                    $('#pembayaran').hide();
-                }else{
+                if(jenisPasien == 'umum'){
+                    $('#form-asuransi').hide();
                     $('#pembayaran').show();
+                }else if (jenisPasien == 'asuransi'){
+                    $('#ri_nama_asuransi').val($('#nama_asuransi').val());
+                    $('#pembayaran').hide();
+                    $('#form-asuransi').show();
+                }else {
+                    $('#form-asuransi').hide();
+                    $('#pembayaran').hide();
                 }
             }
             if (idKtg == "rujuk") {
@@ -2432,13 +2472,22 @@
         var ket_cekup = $('#cekup_ket').val();
         var jenisPasien = $('#jenis_pasien').val();
         var metodeBayar = $("#metode_bayar").val();
-        var uangMuka = $("#uang_muka_val").val();
+        var uangMuka = "";
+        var uangUmum = $("#uang_muka_val").val();
+        var uangAsuransi = $("#rj_cover_biaya_val").val();
         var idPasien = $('#id_pasien').val();
         var namaAsuransi = $('#nama_asuransi').val();
         var noRujukan = $('#no_rujukan').val();
         var tglRujukan = $('#tgl_rujukan').val();
         var suratRujukan = $('#surat_rujukan').val();
         var isLaka = $('#is_laka').val();
+
+        if(jenisPasien == 'umum'){
+            uangMuka = uangUmum;
+        }
+        if(jenisPasien == 'asuransi'){
+            uangMuka = uangAsuransi;
+        }
 
         if (idKtg != '') {
 
@@ -2907,6 +2956,7 @@
         var dokter = "";
         TeamDokterAction.listDokter(idDetailCheckup, function (response) {
             data = response;
+            console.log(data);
             if (data != null) {
                 $.each(data, function (i, item) {
                     table += "<tr>" +
@@ -3607,7 +3657,7 @@
         $('#lab_kategori').val(idKategoriLab).trigger('change');
         var idParameter = [];
         PeriksaLabAction.listParameterPemeriksaan(id, kategoriName, function (response) {
-            if (response != null) {
+            if (response.length > 0) {
                 $.each(response, function (i, item) {
                     idParameter.push(item.idLabDetail);
                 });

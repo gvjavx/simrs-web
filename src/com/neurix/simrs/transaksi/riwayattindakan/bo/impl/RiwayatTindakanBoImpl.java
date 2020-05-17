@@ -89,6 +89,9 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
             entity.setLastUpdate(bean.getLastUpdate());
             entity.setLastUpdateWho(bean.getLastUpdateWho());
             entity.setTanggalTindakan(bean.getTanggalTindakan());
+            if(bean.getIsKamar() != null && !"".equalsIgnoreCase(bean.getIsKamar())){
+                entity.setIsKamar(bean.getIsKamar());
+            }
 
             try {
                 riwayatTindakanDao.addAndSave(entity);

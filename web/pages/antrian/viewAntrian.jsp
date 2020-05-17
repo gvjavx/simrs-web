@@ -103,7 +103,7 @@
                                     </div>
                                 </div>
                                 <div class="box-header with-border"></div>
-                                <table class="table table-striped">
+                                <table class="table">
                                     <tbody id="body_periksa">
                                     </tbody>
                                 </table>
@@ -121,20 +121,23 @@
                                     </div>
                                 </div>
                                 <div class="box-header with-border"></div>
-                                <table class="table table-striped">
+                                <table class="table">
                                     <tbody id="body_antrian">
                                     </tbody>
                                 </table>
-
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-7">
                                 <div class="box-header with-border">
                                     <div class="row">
-                                        <div class="col-md-12">
+                                        <div class="col-md-7">
                                             <h5 class="box-title"><i class="fa fa-user"></i> ANTRIAN APOTEK</h5>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="box-header with-border"></div>
-                                <table class="table table-striped">
+                                <div class="box-header"></div>
+                                <table class="table">
                                     <tbody id="body_antrian_apotek">
                                     </tbody>
                                 </table>
@@ -245,11 +248,18 @@
                             }
                         }
 
-                        tableAntrian += '<tr>' +
+                        var color = "";
+                        var classLbl = 'class="label label-warning"';
+                        if(item.belumBayarUangMuka == "Y"){
+                            color = 'style="color:red"';
+                            classLbl = 'class="label label-default"';
+                        }
+
+                        tableAntrian += '<tr '+color+'>' +
                             '<td>'+pol.toUpperCase()+'</td>'+
                             '<td><i class="fa fa-user"></i> '+item.nama.toUpperCase()+'</td>'+
                             '<td>'+item.namaDesa.toUpperCase()+'</td>'+
-                            '<td style="vertical-align: middle"><label class="label label-warning"> Selanjutnya</label></td>' +
+                            '<td style="vertical-align: middle"><label '+classLbl+'> '+item.noAntrian+'</label></td>' +
                             '</tr>';
                     });
 
@@ -296,10 +306,14 @@
                                 pol = item.namaPelayanan;
                             }
                         }
+                        var classLabel = 'class="label label-warning"';
+                        if(item.statusPeriksaName == "Proses"){
+                            classLabel = 'class="label label-success"';
+                        }
                         tableApotek += '<tr>' +
                             '<td>'+pol.toUpperCase()+'</td>'+
-                            '<td><i class="fa fa-user"></i> '+item.nama.toUpperCase()+'<br>'+'<i class="fa fa-medkit"></i> '+item.idPermintaanResep+'</td>'+
-                            '<td style="vertical-align: middle"><label class="label label-success" style="margin: 10px"> Antrian Obat</label>'+ isRacik(item.ketRacik) +'</td>' +
+                            '<td><i class="fa fa-user"></i> '+item.nama.toUpperCase()+'<br>'+'<small style="margin-left: 15px">'+item.idPermintaanResep+'</small></td>'+
+                            '<td style="vertical-align: middle"><label '+classLabel+' style="margin: 10px"> '+item.statusPeriksaName+ '</label>'+ isRacik(item.ketRacik) +'</td>' +
                             '</tr>';
                     });
                     $('#body_antrian_apotek').html(tableApotek);
@@ -307,7 +321,7 @@
                     $('#body_antrian_apotek').html("");
                 }
             });
-        },1000);
+        },5000);
     }
 
     function isRacik(racik) {

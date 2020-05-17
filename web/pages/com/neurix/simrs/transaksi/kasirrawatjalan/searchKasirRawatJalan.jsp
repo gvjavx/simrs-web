@@ -860,6 +860,7 @@
                     $('#load_fin').hide();
                     $('#modal-invoice').modal('hide');
                     $('#info_dialog').dialog('open');
+                    $('body').scrollTop(0);
                 } else {
                     $('#save_fin').show();
                     $('#load_fin').hide();

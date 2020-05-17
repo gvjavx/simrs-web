@@ -22,10 +22,15 @@
         </property>
 
         <property name="divisiId">
-            <column name="divisi_id" sql-type="varchar" length="30" not-null="true" />
+            <column name="divisi_id" sql-type="varchar" length="30" not-null="false" />
         </property>
+
+        <property name="masterId">
+            <column name="master_id" sql-type="varchar" length="30" not-null="false" />
+        </property>
+
         <property name="positionId">
-            <column name="position_id" sql-type="varchar" length="30" not-null="true" />
+            <column name="position_id" sql-type="varchar" length="30" not-null="false" />
         </property>
         <property name="nilai">
             <column name="nilai" sql-type="numeric" not-null="false" />

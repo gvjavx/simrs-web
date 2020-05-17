@@ -809,14 +809,14 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
             MtSimrsTransaksiObatDetailBatchEntity entity = new MtSimrsTransaksiObatDetailBatchEntity();
             entity = batchEntities.get(0);
 
-            if(entity != null){
+            if (entity != null) {
 
                 ImtSimrsTransaksiObatDetailEntity entities = new ImtSimrsTransaksiObatDetailEntity();
 
                 try {
-                    entities = transaksiObatDetailDao.getById("idTransaksiObatDetail",entity.getIdTransaksiObatDetail());
+                    entities = transaksiObatDetailDao.getById("idTransaksiObatDetail", entity.getIdTransaksiObatDetail());
 
-                    if(entities != null){
+                    if (entities != null) {
 
                         entities.setFlagVerifikasi("Y");
                         entities.setLastUpdate(entity.getLastUpdate());
@@ -824,12 +824,12 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
 
                         try {
                             transaksiObatDetailDao.updateAndSave(entities);
-                        }catch (HibernateException e){
+                        } catch (HibernateException e) {
                             logger.error("[TransaksiObatBoImpl.saveVerifikasiObat] ERROR when update data batch. ", e);
                             throw new GeneralBOException("[TransaksiObatBoImpl.getEntityPasienById] ERROR when update data batch. ", e);
                         }
                     }
-                }catch (HibernateException e){
+                } catch (HibernateException e) {
                     logger.error("[TransaksiObatBoImpl.saveVerifikasiObat] ERROR when update data batch. ", e);
                     throw new GeneralBOException("[TransaksiObatBoImpl.getEntityPasienById] ERROR when update data batch. ", e);
                 }
@@ -1042,7 +1042,8 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
             entity.setLastUpdateWho(bean.getLastUpdateWho());
             entity.setLastUpdate(bean.getLastUpdate());
             entity.setAction("U");
-            entity.setStatus("3");
+            entity.setStatus("1");
+            entity.setIsRead("Y");
 
             try {
                 permintaanResepDao.updateAndSave(entity);
@@ -1128,6 +1129,7 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
             // update to permintaan resep
             if (resepEntity.getIdPermintaanResep() != null) {
 
+                resepEntity.setStatus("3");
                 resepEntity.setFlag("N");
                 resepEntity.setAction("U");
                 resepEntity.setLastUpdate(bean.getLastUpdate());
@@ -1701,10 +1703,10 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
         logger.info("[TransaksiObatBoImpl.getRiwayatPembelianObat] START >>>>>>>>>>");
         List<MtSimrsRiwayatPembelianObat> result = new ArrayList<>();
 
-        if(idApprove != null){
+        if (idApprove != null) {
             try {
                 result = riwayatTransPembelianObatDao.getRiwayatPembelianObat(idApprove);
-            }catch (HibernateException e){
+            } catch (HibernateException e) {
                 logger.error("[TransaksiObatBoImpl.getListRiwayatPembelianObat] ERROR when search list pembelian obat. ", e);
                 throw new GeneralBOException("[TransaksiObatBoImpl.getListRiwayatPembelianObat] ERROR when search list pembelian obat. ", e);
             }
@@ -1858,12 +1860,12 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
         List<ImtSimrsTransaksiObatDetailEntity> obatDetailEntities = new ArrayList<>();
         try {
             obatDetailEntities = transaksiObatDetailDao.getByCriteria(hsCriteria);
-        } catch (HibernateException e){
+        } catch (HibernateException e) {
             logger.error("[ObatPoliBoImpl.saveEditFlagPengambilan] ERROR. ", e);
             throw new GeneralBOException("[ObatPoliBoImpl.saveEditFlagPengambilan] ERROR. ", e);
         }
 
-        if (obatDetailEntities.size() > 0){
+        if (obatDetailEntities.size() > 0) {
             ImtSimrsTransaksiObatDetailEntity transaksiObatDetailEntity = obatDetailEntities.get(0);
             transaksiObatDetailEntity.setFlagKronisDiambil("Y");
             transaksiObatDetailEntity.setAction("U");
@@ -1874,7 +1876,7 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
 
             try {
                 transaksiObatDetailDao.updateAndSave(transaksiObatDetailEntity);
-            } catch (HibernateException e){
+            } catch (HibernateException e) {
                 logger.error("[ObatPoliBoImpl.saveEditFlagPengambilan] ERROR. ", e);
                 throw new GeneralBOException("[ObatPoliBoImpl.saveEditFlagPengambilan] ERROR. ", e);
             }
@@ -1889,10 +1891,10 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
     @Override
     public Boolean cekObatKronis(String idApproval) throws GeneralBOException {
         Boolean response = false;
-        if(idApproval != null && !"".equalsIgnoreCase(idApproval)){
+        if (idApproval != null && !"".equalsIgnoreCase(idApproval)) {
             try {
                 response = transaksiObatDetailDao.cekObatKronis(idApproval);
-            }catch (HibernateException e){
+            } catch (HibernateException e) {
                 logger.error("Found Error when cek obat kronis");
             }
         }
@@ -1903,10 +1905,10 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
     public TransaksiObatDetail getTarifApproveResep(String idApproval) throws GeneralBOException {
 
         TransaksiObatDetail response = new TransaksiObatDetail();
-        if(idApproval != null && !"".equalsIgnoreCase(idApproval)){
+        if (idApproval != null && !"".equalsIgnoreCase(idApproval)) {
             try {
                 response = transaksiObatDetailDao.getTarifResepApprove(idApproval);
-            }catch (HibernateException e){
+            } catch (HibernateException e) {
                 logger.error("Found Error when cek obat kronis");
             }
         }
@@ -1917,10 +1919,10 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
     @Override
     public TransaksiObatDetail getTotalHargaResep(String idPermintaan) throws GeneralBOException {
         TransaksiObatDetail response = new TransaksiObatDetail();
-        if(idPermintaan != null && !"".equalsIgnoreCase(idPermintaan)){
+        if (idPermintaan != null && !"".equalsIgnoreCase(idPermintaan)) {
             try {
                 response = transaksiObatDetailDao.getTotalHargaResepApprove(idPermintaan);
-            }catch (HibernateException e){
+            } catch (HibernateException e) {
                 logger.error("Found Error when cek obat kronis");
             }
         }
@@ -1932,19 +1934,19 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
     public CheckResponse setTtdPasien(String idPermintaan, String ttdPasien, String ttdApoteker) throws GeneralBOException {
         CheckResponse response = new CheckResponse();
 
-        if(idPermintaan != null && !"".equalsIgnoreCase(idPermintaan)){
+        if (idPermintaan != null && !"".equalsIgnoreCase(idPermintaan)) {
             try {
 
                 ImSimrsPermintaanResepEntity entity = new ImSimrsPermintaanResepEntity();
 
                 try {
                     entity = permintaanResepDao.getById("idPermintaanResep", idPermintaan);
-                }catch (HibernateException e){
+                } catch (HibernateException e) {
                     response.setStatus("error");
-                    response.setMessage("Found Error"+e.getMessage());
+                    response.setMessage("Found Error" + e.getMessage());
                 }
 
-                if(entity != null){
+                if (entity != null) {
 
                     entity.setTtdPasien(ttdPasien);
                     entity.setTtdApoteker(ttdApoteker);
@@ -1954,15 +1956,15 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                     try {
                         permintaanResepDao.updateAndSave(entity);
                         response.setStatus("success");
-                    }catch (HibernateException e){
+                    } catch (HibernateException e) {
                         response.setStatus("error");
-                        response.setMessage("Found Error"+e.getMessage());
+                        response.setMessage("Found Error" + e.getMessage());
                     }
                 }
 
-            }catch (HibernateException e){
+            } catch (HibernateException e) {
                 response.setStatus("error");
-                response.setMessage("Found Error"+e.getMessage());
+                response.setMessage("Found Error" + e.getMessage());
             }
         }
         return response;
@@ -1972,15 +1974,26 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
     public List<TransaksiObatDetail> listObatResepApprove(String idApprove) throws GeneralBOException {
         List<TransaksiObatDetail> list = new ArrayList<>();
 
-        if(idApprove != null && !"".equalsIgnoreCase(idApprove)){
+        if (idApprove != null && !"".equalsIgnoreCase(idApprove)) {
 
             try {
                 list = transaksiObatDetailDao.getListObatResepApprove(idApprove);
-            }catch (HibernateException e){
-                logger.error("Found Error "+e.getMessage());
+            } catch (HibernateException e) {
+                logger.error("Found Error " + e.getMessage());
             }
         }
 
+        return list;
+    }
+
+    @Override
+    public List<PermintaanResep> getListNotifResep(String idPelayanan, String branchId) throws GeneralBOException {
+        List<PermintaanResep> list = new ArrayList<>();
+        try {
+            list = transaksiObatDetailDao.getListNotifResep(idPelayanan, branchId);
+        } catch (HibernateException e) {
+            logger.error("Found Error" + e.getMessage());
+        }
         return list;
     }
 

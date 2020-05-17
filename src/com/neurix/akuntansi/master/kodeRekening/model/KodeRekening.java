@@ -28,6 +28,8 @@ public class KodeRekening extends BaseModel {
     private String tipeRekeningName;
     private boolean adaRekeningReport=false;
     private boolean bisaCek=false;
+    private String flagMaster;
+    private String flagDivisi;
 
     public String getTampilanCoa() {
         return tampilanCoa;
@@ -131,5 +133,21 @@ public class KodeRekening extends BaseModel {
 
     public void setTipeRekeningId(String tipeRekeningId) {
         this.tipeRekeningId = tipeRekeningId;
+    }
+
+    public String getFlagMaster() {
+        return flagMaster;
+    }
+
+    public void setFlagMaster(String flagMaster) {
+        this.flagMaster = flagMaster;
+    }
+
+    public String getFlagDivisi() {
+        return flagDivisi;
+    }
+
+    public void setFlagDivisi(String flagDivisi) {
+        this.flagDivisi = flagDivisi;
     }
 }

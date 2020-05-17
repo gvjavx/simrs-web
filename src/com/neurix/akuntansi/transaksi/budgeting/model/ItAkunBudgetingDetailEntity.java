@@ -14,6 +14,7 @@ public class ItAkunBudgetingDetailEntity implements Serializable {
     private String noBudgetingDetail;
     private String noBudgeting;
     private String divisiId;
+    private String masterId;
     private BigDecimal nilai;
     private BigInteger qty;
     private BigDecimal subTotal;
@@ -153,5 +154,13 @@ public class ItAkunBudgetingDetailEntity implements Serializable {
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    public String getMasterId() {
+        return masterId;
+    }
+
+    public void setMasterId(String masterId) {
+        this.masterId = masterId;
     }
 }

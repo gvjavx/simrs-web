@@ -33,7 +33,6 @@
     <section class="content-header">
         <h1>
             Paket Periksa
-            <small>e-HEALTH</small>
         </h1>
     </section>
 

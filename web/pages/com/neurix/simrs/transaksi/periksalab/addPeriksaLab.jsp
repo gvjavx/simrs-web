@@ -543,6 +543,7 @@
                         $('#load_ket').hide();
                         $('#info_dialog').dialog('open');
                         $('#close_pos').val(2);
+                        $('body').scrollTop(0);
                     } else {
                         $('#save_ket').show();
                         $('#load_ket').hide();
@@ -664,6 +665,7 @@
                         $('#modal-lab').modal('hide');
                         $('#info_dialog').dialog('open');
                         $('#close_pos').val(1);
+                        $('body').scrollTop(0);
                     } else {
 
                     }
@@ -755,6 +757,7 @@
                         $('#modal-edit-parameter').modal('hide');
                         $('#info_dialog').dialog('open');
                         $('#close_pos').val(1);
+                        $('body').scrollTop(0);
                     } else {
 
                     }

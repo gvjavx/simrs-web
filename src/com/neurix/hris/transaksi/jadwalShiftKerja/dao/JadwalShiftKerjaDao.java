@@ -154,9 +154,7 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
         String query = "SELECT\n" +
                 "\tdk.id_dokter,\n" +
                 "\tdk.nama_dokter,\n" +
-                "\tds.id_spesialis,\n" +
-                "\tsp.nama_spesialis,\n" +
-                "\tspl.id_pelayanan,\n" +
+                "\tpl.id_pelayanan,\n" +
                 "\tpl.nama_pelayanan,\n" +
                 "\tjd.tanggal,\n" +
                 "\tsh.jam_awal,\n" +
@@ -166,11 +164,9 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
                 "\tdk.kuota\n" +
                 "FROM \n" +
                 "\tim_simrs_dokter dk\n" +
-                "\tINNER JOIN im_simrs_dokter_spesialis ds ON ds.id_dokter = dk.id_dokter\n" +
-                "\tINNER JOIN im_simrs_spesialis sp ON sp.id_spesialis = ds.id_spesialis\n" +
-                "\tINNER JOIN im_simrs_pelayanan_spesialis spl ON spl.id_spesialis = ds.id_spesialis\n" +
-                "\tINNER JOIN im_simrs_pelayanan pl ON pl.id_pelayanan = spl.id_pelayanan\n" +
-                " \tINNER JOIN im_hris_pegawai pg ON pg.nip=dk.id_dokter\n" +
+                "\tINNER JOIN im_simrs_dokter_pelayanan dpl ON dk.id_dokter = dpl.id_dokter\n" +
+                "\tINNER JOIN im_simrs_pelayanan pl ON pl.id_pelayanan = dpl.id_pelayanan\n" +
+                "\tINNER JOIN im_hris_pegawai pg ON pg.nip=dk.id_dokter\n" +
                 "\tINNER JOIN it_hris_jadwal_shift_kerja_detail jdd ON jdd.nip=pg.nip\n" +
                 "\tINNER JOIN it_hris_jadwal_shift_kerja jd ON jd.jadwal_shift_kerja_id=jdd.jadwal_shift_kerja_id\n" +
                 "\tINNER JOIN im_hris_shift sh ON sh.shift_id=jdd.shift_id\n" +
@@ -180,16 +176,16 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
                 "\tINNER JOIN im_branches br ON br.branch_id=jd.branch_id\n" +
                 "WHERE \n" +
                 "\tdk.flag='Y'\n" +
-                "\tAND ds.flag='Y'\n" +
-                "\tAND sp.flag='Y'\n" +
-                "\tAND spl.flag='Y'\n" +
+                "\tAND dpl.flag='Y'\n" +
                 "\tAND pl.flag='Y'\n" +
                 "\tAND pg.flag='Y'\n" +
                 "\tAND jdd.flag='Y'\n" +
                 "\tAND jd.flag='Y'\n" +
                 "\tAND sh.flag='Y'\n" +
                 "\tAND pp.flag='Y'\n" +
-                "\tAND ps.flag='Y'\n" + searchPelayanan + searchKelompok + searchBranch + searchNip + searchTanggal +
+                "\tAND ps.flag='Y'\n" +
+                "\tAND kp.flag='Y'\n" +
+                "\tAND br.flag='Y'\n" + searchPelayanan + searchKelompok + searchBranch + searchNip + searchTanggal +
                 "ORDER BY\n" +
                 "\tpg.nip";
 
@@ -201,16 +197,14 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
             JadwalPelayananDTO result  = new JadwalPelayananDTO();
             result.setIdDokter((String) row[0]);
             result.setNamaDokter((String) row[1]);
-            result.setIdSpesialis((String) row[2]);
-            result.setNamaSpesialis((String) row[3]);
-            result.setIdPelayanan((String) row[4]);
-            result.setNamaPelayanan((String) row[5]);
-            result.setTanggal((Date) row[6]);
-            result.setJamAwal((String) row[7]);
-            result.setJamAkhir((String) row[8]);
-            result.setBranchId((String) row[9]);
-            result.setBranchName((String) row[10]);
-            result.setKuota((String) row[11]);
+            result.setIdPelayanan((String) row[2]);
+            result.setNamaPelayanan((String) row[3]);
+            result.setTanggal((Date) row[4]);
+            result.setJamAwal((String) row[5]);
+            result.setJamAkhir((String) row[6]);
+            result.setBranchId((String) row[7]);
+            result.setBranchName((String) row[8]);
+            result.setKuota((String) row[9]);
             listOfResult.add(result);
         }
         return listOfResult;

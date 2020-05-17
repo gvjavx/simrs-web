@@ -241,7 +241,10 @@ public class RawatInapAction extends BaseMasterAction {
                             RiwayatTindakan tindakan = new RiwayatTindakan();
                             tindakan.setIdTindakan(ruangan.getIdRuangan());
                             tindakan.setNamaTindakan("Tarif Kamar " + ruangan.getNamaRuangan() + " No. " + ruangan.getNoRuangan());
-                            tindakan.setKeterangan("kamar");
+
+                            // dirubah oleh sigit, 2020-05-16
+//                            tindakan.setKeterangan("kamar");
+                            tindakan.setKeterangan("tindakan");
                             tindakan.setTotalTarif(new BigDecimal(ruangan.getTarif()));
                             tindakan.setIdDetailCheckup(checkup.getIdDetailCheckup());
                             tindakan.setJenisPasien(jenisPasien);
@@ -252,6 +255,7 @@ public class RawatInapAction extends BaseMasterAction {
                             tindakan.setLastUpdate(now);
                             tindakan.setLastUpdateWho(user);
                             tindakan.setTanggalTindakan(now);
+                            tindakan.setIsKamar("Y");
 
                             try {
                                 riwayatTindakanBoProxy.saveAdd(tindakan);
@@ -681,6 +685,8 @@ public class RawatInapAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
 
+        monVitalSign.setIsMobile("N");
+
         return rawatInapBo.getListMonVitalSign(monVitalSign);
     }
 
@@ -895,6 +901,8 @@ public class RawatInapAction extends BaseMasterAction {
         if (!"".equalsIgnoreCase(kategori)) {
             monPemberianObat.setKategori(kategori);
         }
+
+        monPemberianObat.setIsMobile("N");
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");

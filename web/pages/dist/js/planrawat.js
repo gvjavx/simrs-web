@@ -88,11 +88,11 @@ function viewPlanDetail(idDetail, tglMasuk, jenis){
                 strPagi += "<tr>" +
                     "<td style='width:200px'>" + item.kegiatan + "</td>" +
                     "<td align='left'><strong>" + item.createdwho + "</strong></td>" +
-                    "<td align='left'><strong>" + item.createddate + "</strong></td>" +
+                    "<td align='left'><strong>" + converterDateTime(item.createddate) + "</strong></td>" +
                     "<td style='width:15%'>" + item.ket + "</td>" +
                     "<td align='center'>" + setIconDikerjakan(item.flag) + "</td>" +
                     "<td align='left'><strong>" + setWaktuDikerjakan(item.flag, item.lastupdatewho) + "</strong></td>" +
-                    "<td align='left'><strong>" + setWaktuDikerjakan(item.flag, item.lastupdate) + "</strong></td>";
+                    "<td align='left'><strong>" + setWaktuDikerjakan(item.flag, converterDateTime(item.lastupdate)) + "</strong></td>";
 
                 if (jenis == 'suster'){
                     if (item.flag == "Y"){
@@ -121,11 +121,11 @@ function viewPlanDetail(idDetail, tglMasuk, jenis){
                 strSiang += "<tr>" +
                     "<td style='width:200px'>" + item.kegiatan + "</td>" +
                     "<td align='left'><strong>" + item.createdwho + "</strong></td>" +
-                    "<td align='left'><strong>" + item.createddate + "</strong></td>" +
+                    "<td align='left'><strong>" + converterDateTime(item.createddate) + "</strong></td>" +
                     "<td style='width:15%'>" + item.ket + "</td>" +
                     "<td align='center'>" + setIconDikerjakan(item.flag) + "</td>" +
                     "<td align='left'><strong>" + setWaktuDikerjakan(item.flag, item.lastupdatewho) + "</strong></td>" +
-                    "<td align='left'><strong>" + setWaktuDikerjakan(item.flag, item.lastupdate) + "</strong></td>";
+                    "<td align='left'><strong>" + setWaktuDikerjakan(item.flag, converterDateTime(item.lastupdate)) + "</strong></td>";
 
                 if (jenis == "suster"){
                     if (item.flag == "Y"){
@@ -155,11 +155,11 @@ function viewPlanDetail(idDetail, tglMasuk, jenis){
                 strMalam += "<tr>" +
                     "<td style='width:200px'>" + item.kegiatan + "</td>" +
                     "<td align='left'><strong>" + item.createdwho + "</strong></td>" +
-                    "<td align='left'><strong>" + item.createddate + "</strong></td>" +
+                    "<td align='left'><strong>" + converterDateTime(item.createddate) + "</strong></td>" +
                     "<td style='width:15%'>" + item.ket + "</td>" +
                     "<td align='center'>" + setIconDikerjakan(item.flag) + "</td>" +
                     "<td align='left'><strong>" + setWaktuDikerjakan(item.flag, item.lastupdatewho) + "</strong></td>" +
-                    "<td align='left'><strong>" + setWaktuDikerjakan(item.flag, item.lastupdate) + "</strong></td>";
+                    "<td align='left'><strong>" + setWaktuDikerjakan(item.flag, converterDateTime(item.lastupdate)) + "</strong></td>";
 
                 if (jenis == 'suster'){
                     if (item.flag == "Y"){
@@ -196,9 +196,9 @@ function viewPlanDetail(idDetail, tglMasuk, jenis){
                 "</tr>" +
                 "</thead>";
 
-            $("#body-list-plan-pagi").html(setLabelWaktu("pagi")+"<table class='table' style='font-size: 12px'>"+header+"<tbody>"+strPagi+"</tbody></table>");
-            $("#body-list-plan-siang").html(setLabelWaktu("siang")+"<table class='table' style='font-size: 12px'>"+header+"<tbody>"+strSiang+"</tbody></table>");
-            $("#body-list-plan-malam").html(setLabelWaktu("malam")+"<table class='table' style='font-size: 12px'>"+header+"<tbody>"+strMalam+"</tbody></table>");
+            $("#body-list-plan-pagi").html(setLabelWaktu("pagi")+"<table class='table' style='font-size: 11px'>"+header+"<tbody>"+strPagi+"</tbody></table>");
+            $("#body-list-plan-siang").html(setLabelWaktu("siang")+"<table class='table' style='font-size: 11px'>"+header+"<tbody>"+strSiang+"</tbody></table>");
+            $("#body-list-plan-malam").html(setLabelWaktu("malam")+"<table class='table' style='font-size: 11px'>"+header+"<tbody>"+strMalam+"</tbody></table>");
         } else {
             $("#body-list-plan-pagi").html("");
             $("#body-list-plan-siang").html("");
@@ -238,11 +238,11 @@ function setLabelKegiatan(param){
 
 function setLabelWaktu(param){
     if (param == "pagi")
-        return "<h4><span class='label label-info'>Pagi</span></h4>";
+        return "<h4><img src='"+pathImages+"/pages/images/ic_pagi.png' style='width: 30px'> <span class='label label-info'>Pagi</span></h4>";
     else if (param == "siang")
-        return "<h4><span class='label label-info'>Siang</span></h4>";
+        return "<h4><img src='"+pathImages+"/pages/images/ic_siang.png' style='width: 30px'> <span class='label label-info'>Siang</span></h4>";
     else if (param == "malam")
-        return "<h4><span class='label label-info'>Malam</span></h4>";
+        return "<h4><img src='"+pathImages+"/pages/images/ic_malam.png' style='width: 30px'> <span class='label label-info'>Malam</span></h4>";
     else
         return "<h4><span class='label label-default'>"+param+"</span></h4>";
 }

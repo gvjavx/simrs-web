@@ -80,5 +80,42 @@
             <column name="last_update" sql-type="timestamp" not-null="false" />
         </property>
 
+        <property name="januari">
+            <column name="januari" sql-type="numeric" not-null="false" />
+        </property>
+        <property name="februari">
+            <column name="februari" sql-type="numeric" not-null="false" />
+        </property>
+        <property name="maret">
+            <column name="maret" sql-type="numeric" not-null="false" />
+        </property>
+        <property name="april">
+            <column name="april" sql-type="numeric" not-null="false" />
+        </property>
+        <property name="mei">
+            <column name="mei" sql-type="numeric" not-null="false" />
+        </property>
+        <property name="juni">
+            <column name="juni" sql-type="numeric" not-null="false" />
+        </property>
+        <property name="juli">
+            <column name="juli" sql-type="numeric" not-null="false" />
+        </property>
+        <property name="agustus">
+            <column name="agustus" sql-type="numeric" not-null="false" />
+        </property>
+        <property name="september">
+            <column name="september" sql-type="numeric" not-null="false" />
+        </property>
+        <property name="oktober">
+            <column name="oktober" sql-type="numeric" not-null="false" />
+        </property>
+        <property name="november">
+            <column name="november" sql-type="numeric" not-null="false" />
+        </property>
+        <property name="desember">
+            <column name="desember" sql-type="numeric" not-null="false" />
+        </property>
+
     </class>
 </hibernate-mapping>

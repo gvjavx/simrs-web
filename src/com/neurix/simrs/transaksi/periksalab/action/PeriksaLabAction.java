@@ -480,6 +480,8 @@ public class PeriksaLabAction extends BaseMasterAction {
 
             periksaLab.setIdPeriksaLab(idPeriksaLab);
             periksaLab.setIdLab(idLab);
+            periksaLab.setCreatedDate(updateTime);
+            periksaLab.setCreatedWho(userLogin);
             periksaLab.setLastUpdate(updateTime);
             periksaLab.setLastUpdateWho(userLogin);
             periksaLab.setAction("U");
