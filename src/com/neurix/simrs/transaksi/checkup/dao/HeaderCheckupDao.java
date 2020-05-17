@@ -1046,6 +1046,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "WHERE a.id_pasien = :id \n" +
                     "AND a.branch_id = :branch\n" +
                     "AND b.status_periksa = '3'\n" +
+                    "AND a.tgl_keluar IS NOT NULL\n" +
                     "ORDER BY b.id_detail_checkup DESC";
 
             List<Object[]> results = new ArrayList<>();
