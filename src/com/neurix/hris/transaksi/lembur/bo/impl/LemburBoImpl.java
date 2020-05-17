@@ -707,6 +707,13 @@ public class LemburBoImpl implements LemburBo {
 //                    break;
 //                }
 //            }
+
+//            for (ItNotifikasiFcmEntity entity : notifikasiFcm){
+//                if(entity.getUserId().equals(atasanNip)){
+//                    FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), noteMobile, ACTION_CLICK);
+//                    break;
+//                }
+//            }
         }
         logger.info("[IjinKeluarBoImpl.saveAdd] end process <<<");
         return null;
