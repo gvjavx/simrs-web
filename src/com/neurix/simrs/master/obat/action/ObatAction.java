@@ -20,6 +20,7 @@ import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.hargaobat.model.HargaObat;
 import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
+import com.neurix.simrs.transaksi.riwayatbarang.model.TransaksiStok;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
@@ -46,6 +47,15 @@ public class ObatAction extends BaseMasterAction {
     private Obat obat;
     private List<Obat> listOfObat = new ArrayList<>();
     private String idPabrik;
+    private List<TransaksiStok> report = new ArrayList<>();
+
+    public List<TransaksiStok> getReport() {
+        return report;
+    }
+
+    public void setReport(List<TransaksiStok> report) {
+        this.report = report;
+    }
 
     public String getIdPabrik() {
         return idPabrik;

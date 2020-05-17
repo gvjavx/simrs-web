@@ -21,6 +21,9 @@ import com.neurix.simrs.transaksi.permintaanvendor.dao.PermintaanVendorDao;
 import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
 import com.neurix.simrs.transaksi.permintaanvendor.model.MtSimrsPermintaanVendorEntity;
 import com.neurix.simrs.transaksi.permintaanvendor.model.PermintaanVendor;
+import com.neurix.simrs.transaksi.riwayatbarang.dao.TransaksiStokDao;
+import com.neurix.simrs.transaksi.riwayatbarang.model.ItSimrsTransaksiStokEntity;
+import com.neurix.simrs.transaksi.riwayatbarang.model.TransaksiStok;
 import com.neurix.simrs.transaksi.transaksiobat.dao.ApprovalTransaksiObatDao;
 import com.neurix.simrs.transaksi.transaksiobat.dao.TransaksiObatDetailBatchDao;
 import com.neurix.simrs.transaksi.transaksiobat.dao.TransaksiObatDetailDao;
@@ -51,6 +54,11 @@ public class ObatBoImpl implements ObatBo {
     private ApprovalTransaksiObatDao approvalTransaksiObatDao;
     private PermintaanVendorDao permintaanVendorDao;
     private TransaksiObatDetailDao transaksiObatDetailDao;
+    private TransaksiStokDao transaksiStokDao;
+
+    public void setTransaksiStokDao(TransaksiStokDao transaksiStokDao) {
+        this.transaksiStokDao = transaksiStokDao;
+    }
 
     public void setApprovalTransaksiObatDao(ApprovalTransaksiObatDao approvalTransaksiObatDao) {
         this.approvalTransaksiObatDao = approvalTransaksiObatDao;
@@ -1299,6 +1307,42 @@ public class ObatBoImpl implements ObatBo {
             }
         }
         return response;
+    }
+
+    private List<TransaksiStok> getListReporTransaksiObat(String branchId, String bulan, String idObat){
+
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_barang", idObat);
+        hsCriteria.put("branch_id", branchId);
+        hsCriteria.put("bulan", bulan);
+
+        List<ItSimrsTransaksiStokEntity> stokEntities = new ArrayList<>();
+        try {
+           stokEntities = transaksiStokDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[ObatPoliBoImpl.getListReporTransaksiObat] ERROR .", e);
+            throw new GeneralBOException("[ObatPoliBoImpl.getListReporTransaksiObat] ERROR .", e);
+        }
+
+        List<TransaksiStok> listOfTransaksi = new ArrayList<>();
+        if (stokEntities.size() > 0){
+            for (ItSimrsTransaksiStokEntity stok : stokEntities){
+                TransaksiStok trans = new TransaksiStok();
+
+                if (listOfTransaksi.size() == 0){
+                    trans.setRegisteredDate(stok.getRegisteredDate());
+                    trans.setCreatedDate(stok.getCreatedDate());
+                    trans.setKeterangan(stok.getKeterangan());
+                    if ("D".equalsIgnoreCase(stok.getTipe())){
+
+                    }
+                    trans.setQty(stok.getQty());
+                }
+            }
+        }
+
+        return listOfTransaksi;
     }
 
     @Override
