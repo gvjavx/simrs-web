@@ -287,7 +287,19 @@
                 <param name="dataSource">budgettingDTOList</param>
                 <param name="reportParameters">reportParams</param>
             </result>
-            <!-- END OF KOMPILASI -->
+            <result name="print_report_budgetting_per_quartal" type="jasper">
+                <param name="location">/pages/report/com/neurix/akuntansi/LaporanBudgettingPerQuartal.jasper</param>
+                <param name="format">PDF</param>
+                <param name="dataSource">budgettingDTOList</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+            <result name="print_report_budgetting_per_bulan" type="jasper">
+                <param name="location">/pages/report/com/neurix/akuntansi/LaporanBudgettingPerBulan.jasper</param>
+                <param name="format">PDF</param>
+                <param name="dataSource">budgettingDTOList</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+            <!-- END OF Budgetting -->
         </action>
 
         <action name="paging_displaytag_laporanAkuntansi"

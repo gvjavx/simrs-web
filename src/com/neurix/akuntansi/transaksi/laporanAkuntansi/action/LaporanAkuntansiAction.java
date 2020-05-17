@@ -1287,14 +1287,21 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
             case "B":
                 titleReport="LAPORAN BUDGETTING";
                 result="print_report_budgetting";
-                budgettingDTOList = laporanAkuntansiBo.getBudgetting(data.getTipeLaporan(),data.getUnit(),data.getTahun());
                 break;
             case "BPS":
                 titleReport="LAPORAN BUDGETTING PER SEMESTER";
                 result="print_report_budgetting_per_semester";
-                budgettingDTOList = laporanAkuntansiBo.getBudgetting(data.getTipeLaporan(),data.getUnit(),data.getTahun());
+                break;
+            case "BPQ":
+                titleReport="LAPORAN BUDGETTING PER QUARTAL";
+                result="print_report_budgetting_per_quartal";
+                break;
+            case "BPB":
+                titleReport="LAPORAN BUDGETTING PER BULAN";
+                result="print_report_budgetting_per_bulan";
                 break;
         }
+        budgettingDTOList = laporanAkuntansiBo.getBudgetting(data.getTipeLaporan(),data.getUnit(),data.getTahun());
 
         reportParams.put("reportTitle", titleReport);
         reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
